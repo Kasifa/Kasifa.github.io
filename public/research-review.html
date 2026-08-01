@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="三维不可压缩 Navier–Stokes 存在性与光滑性问题：研究综述、攻关计划与公开研究日志。">
-  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#f2eddf" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Navier–Stokes 开放研究日志">
   <meta property="og:description" content="从正式问题、已知边界到可审计的逐项研究计划。">
   <title>Navier–Stokes 开放研究日志｜综述与攻关计划</title>
@@ -654,6 +655,7 @@
 
     /* Retro research dossier — deliberately flat, typographic, and archival. */
     :root {
+      color-scheme: light dark;
       --ink: #27221d;
       --muted: #675f55;
       --paper: #f2eddf;
@@ -667,6 +669,38 @@
       --shadow: none;
       --radius: 0;
       --content: 1120px;
+      --topbar: rgba(242, 237, 223, .97);
+      --selection: #cdbd97;
+      --verified: #435946;
+      --preprint: #7c622a;
+      --task-watermark: rgba(138, 48, 44, .07);
+      --footer-bg: #27221d;
+      --footer-text: #cfc5b3;
+      --footer-strong: #f2eddf;
+      --footer-link: #d6b56d;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --deep: #eee7d8;
+        --teal: #99aa96;
+        --orange: #ee8b7c;
+        --gold: #d9b567;
+        --line: rgba(238, 231, 216, .26);
+        --topbar: rgba(23, 24, 22, .96);
+        --selection: #614c3c;
+        --verified: #9fbea2;
+        --preprint: #dab96f;
+        --task-watermark: rgba(238, 139, 124, .08);
+        --footer-bg: #0d0f0e;
+        --footer-text: #bcb2a0;
+        --footer-strong: #eee7d8;
+        --footer-link: #e2bf78;
+      }
     }
 
     body {
@@ -685,7 +719,7 @@
       border-radius: 0;
       background: transparent;
     }
-    ::selection { background: #cdbd97; color: var(--ink); }
+    ::selection { background: var(--selection); color: var(--ink); }
     .progress {
       height: 2px;
       background: var(--orange);
@@ -700,7 +734,7 @@
     .topbar {
       border-top: 4px solid var(--ink);
       border-bottom: 3px double var(--ink);
-      background: rgba(242, 237, 223, .97);
+      background: var(--topbar);
       color: var(--ink);
       backdrop-filter: none;
     }
@@ -935,9 +969,9 @@
       background: transparent !important;
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
-    .tag.verified { color: #435946; }
+    .tag.verified { color: var(--verified); }
     .tag.open { color: var(--orange); }
-    .tag.preprint { color: #7c622a; }
+    .tag.preprint { color: var(--preprint); }
 
     .timeline { border-left-color: var(--orange); }
     .timeline-item::before {
@@ -978,7 +1012,7 @@
     .task-one::after {
       right: 18px;
       bottom: -24px;
-      color: rgba(138, 48, 44, .07);
+      color: var(--task-watermark);
       font-size: 150px;
     }
     .task-one h3 { color: var(--ink); }
@@ -990,11 +1024,11 @@
 
     .footer {
       border-top: 4px solid var(--orange);
-      background: var(--ink);
-      color: #cfc5b3;
+      background: var(--footer-bg);
+      color: var(--footer-text);
     }
-    .footer strong { color: var(--paper); }
-    .footer a { color: #d6b56d; }
+    .footer strong { color: var(--footer-strong); }
+    .footer a { color: var(--footer-link); }
 
     @media (max-width: 900px) {
       .hero-inner { gap: 38px; }
@@ -1013,6 +1047,18 @@
       .task-one { padding: 24px 20px; }
     }
     @media print {
+      :root {
+        color-scheme: light;
+        --ink: #27221d;
+        --muted: #675f55;
+        --paper: white;
+        --paper-2: white;
+        --deep: #27221d;
+        --teal: #4d5b4a;
+        --orange: #8a302c;
+        --gold: #9a7433;
+        --line: rgba(39, 34, 29, .28);
+      }
       body { background: white; color: black; }
       .hero { color: black; background: white; }
       .hero-lead,
@@ -1547,7 +1593,7 @@
               </li>
               <li>构造最小 Fourier 三波和多壳样例，检验所有拟议临界不等式。</li>
             </ol>
-            <p><strong style="color:#f2b84b">完成判据：</strong>形成一份可公开的、逐行可复核的 HTML/PDF 笔记，并得到“哪些类型的普适估计不可能成立”的清单。</p>
+            <p><strong style="color:var(--gold)">完成判据：</strong>形成一份可公开的、逐行可复核的 HTML/PDF 笔记，并得到“哪些类型的普适估计不可能成立”的清单。</p>
           </div>
         </section>
 

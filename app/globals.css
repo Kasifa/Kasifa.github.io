@@ -1,9 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light;
-  background: #f4f1e9;
-  color: #172126;
+  color-scheme: light dark;
+  --page-background: #f2eddf;
+  --page-foreground: #27221d;
+  background: var(--page-background);
+  color: var(--page-foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-background: #171816;
+    --page-foreground: #eee7d8;
+  }
 }
 
 * {

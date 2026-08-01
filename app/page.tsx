@@ -8,7 +8,7 @@ export default function Home() {
         width: "100%",
         height: "100dvh",
         border: 0,
-        background: "#f4f1e9",
+        background: "var(--page-background)",
       }}
     />
   );

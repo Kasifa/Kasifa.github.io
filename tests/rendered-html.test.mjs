@@ -41,3 +41,14 @@ test("labels the unresolved and preprint status explicitly", async () => {
   assert.match(html, /https:\/\/www\.claymath\.org\/wp-content/);
   assert.match(html, /https:\/\/arxiv\.org\/abs\/2509\.25116/);
 });
+
+test("follows the operating system light and dark color scheme", async () => {
+  const html = await readFile(siteUrl, "utf8");
+
+  assert.match(html, /color-scheme:\s*light dark/);
+  assert.match(html, /prefers-color-scheme:\s*dark/);
+  assert.match(
+    html,
+    /name="theme-color" content="#171816" media="\(prefers-color-scheme: dark\)"/,
+  );
+});

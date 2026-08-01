@@ -1,5 +1,15 @@
-import { redirect } from "next/navigation";
-
 export default function Home() {
-  redirect("/research-review.html");
+  return (
+    <iframe
+      src="/research-review.html"
+      title="Navier–Stokes 开放研究日志"
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100dvh",
+        border: 0,
+        background: "#f4f1e9",
+      }}
+    />
+  );
 }

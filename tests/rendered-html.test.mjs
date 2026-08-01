@@ -1,0 +1,43 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+const siteUrl = new URL("../public/research-review.html", import.meta.url);
+
+test("ships the complete Chinese research review as static HTML", async () => {
+  const html = await readFile(siteUrl, "utf8");
+
+  assert.match(html, /<html lang="zh-CN">/);
+  assert.match(html, /Navier–Stokes 开放研究日志/);
+  assert.match(html, /我们究竟要证明什么/);
+  assert.match(html, /研究综述：我们已经站在哪里/);
+  assert.match(html, /详细研究计划/);
+  assert.match(html, /第一项任务已经明确/);
+  assert.match(html, /GitHub Pages 是合适的第一选择/);
+  assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
+});
+
+test("keeps all in-page navigation targets resolvable", async () => {
+  const html = await readFile(siteUrl, "utf8");
+  const targets = new Set(
+    [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]),
+  );
+  const internalLinks = [
+    ...html.matchAll(/\shref="#([^"]+)"/g),
+  ].map((match) => match[1]);
+
+  assert.ok(internalLinks.length >= 10);
+  for (const target of internalLinks) {
+    assert.ok(targets.has(target), `Missing in-page target: #${target}`);
+  }
+});
+
+test("labels the unresolved and preprint status explicitly", async () => {
+  const html = await readFile(siteUrl, "utf8");
+
+  assert.match(html, /尚未解决/);
+  assert.match(html, /预印本主张/);
+  assert.match(html, /不能等同于已经过同行评议和独立复核的定理/);
+  assert.match(html, /https:\/\/www\.claymath\.org\/wp-content/);
+  assert.match(html, /https:\/\/arxiv\.org\/abs\/2509\.25116/);
+});

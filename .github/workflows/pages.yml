@@ -26,8 +26,8 @@ jobs:
       - name: Prepare static artifact
         run: |
           mkdir -p _site
+          cp -R public/. _site/
           cp public/research-review.html _site/index.html
-          cp public/favicon.svg _site/favicon.svg
           touch _site/.nojekyll
       - name: Configure Pages
         uses: actions/configure-pages@v5

@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.1：周期三维 Navier–Stokes 的 Leray 投影、临界缩放、能量演化与 Fourier 三波审计。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.1｜周期三维 NS 的临界能量与 Fourier 三波结构">
+  <meta property="og:description" content="从压力形式到 Leray 投影、临界缩放、三个能量层级与可复算 Fourier 三波。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og.png">
+  <title>R0.1｜周期三维 NS 的临界能量与 Fourier 三波结构</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    code {
+      padding: .08em .28em;
+      border-bottom: 1px solid var(--line);
+      font-size: .88em;
+    }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: rgba(242, 237, 223, .97);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 {
+      font-family: Georgia, "Songti SC", "STSong", serif;
+      color: var(--ink);
+    }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state {
+      display: block;
+      color: var(--red);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc {
+      position: sticky;
+      top: 88px;
+      align-self: start;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+    }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; text-transform: uppercase; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof {
+      margin: 24px 0;
+      padding: 19px 22px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      border-left: 3px solid var(--red);
+    }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin: 26px 0;
+      border-top: 1px solid var(--ink);
+    }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span {
+      display: block;
+      color: var(--green);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .audit-list { padding: 0; list-style: none; counter-reset: audit; }
+    .audit-list li {
+      position: relative;
+      padding: 16px 12px 16px 54px;
+      border-top: 1px solid var(--line);
+    }
+    .audit-list li::before {
+      counter-increment: audit;
+      content: "F" counter(audit);
+      position: absolute;
+      left: 4px;
+      color: var(--red);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+    }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: var(--ink); color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: var(--paper); }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      body { background: white; color: black; font-size: 11pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 36px; }
+      .equation, .proof, .status-item { break-inside: avoid; }
+      footer { background: white; color: black; border-top-color: black; }
+      footer strong { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · Open research dossier</a>
+      <nav aria-label="笔记导航">
+        <a href="#conclusions">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-1.pdf">PDF</a>
+        <a href="/" aria-label="返回研究站首页">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">Research packet R0.1 · Baseline audit</div>
+          <h1>周期三维 NS 的临界能量与 Fourier 三波结构</h1>
+          <p class="lead">
+            从压力形式到 Leray 投影、从精确缩放到三个能量层级，再到一个可复算的最小三波。
+            本笔记的职责不是宣布突破，而是建立以后每个候选估计必须通过的错误检测基线。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">AUDIT STATUS · VERIFIED DRAFT</span>
+          <strong>基线结果，不是新定理</strong>
+          <p>版本 v0.1 · 2026-08-01<br>目标域：\(\mathbb T^3\)<br>外力：\(f\equiv0\)</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>Contents</strong>
+        <ol>
+          <li><a href="#status">00 · 完成状态</a></li>
+          <li><a href="#conventions">01 · 基础约定</a></li>
+          <li><a href="#leray">02 · Leray / mild</a></li>
+          <li><a href="#scaling">03 · 临界缩放</a></li>
+          <li><a href="#energies">04 · 三类能量</a></li>
+          <li><a href="#fourier">05 · Fourier 三波</a></li>
+          <li><a href="#triad">06 · 显式检验</a></li>
+          <li><a href="#conclusions">07 · 否定清单</a></li>
+          <li><a href="#next">08 · 下一步</a></li>
+          <li><a href="#references">09 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>本轮交付到哪里</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>Complete</span>
+              <strong>压力形式 → Leray 形式</strong>
+              <p>固定 Fourier 约定，逐步导出压力、投影和 Duhamel 公式。</p>
+            </div>
+            <div class="status-item">
+              <span>Complete</span>
+              <strong>临界缩放表</strong>
+              <p>列出 \(L^p\)、Sobolev、Besov、时空范数和涡量缩放。</p>
+            </div>
+            <div class="status-item">
+              <span>Complete</span>
+              <strong>三个能量层级</strong>
+              <p>定位 \(L^2\)、enstrophy、\(\dot H^{1/2}\) 中的闭合与失闭。</p>
+            </div>
+            <div class="status-item">
+              <span>Complete</span>
+              <strong>Fourier 系数与对称性</strong>
+              <p>核对实值、无散、零均值、Leray 自伴性和三波守恒。</p>
+            </div>
+            <div class="status-item">
+              <span>Complete · first test</span>
+              <strong>最小三波反例</strong>
+              <p>给出整数波数、复振幅和精确传递率 \((1,-4,3)\)。</p>
+            </div>
+            <div class="status-item">
+              <span>Open</span>
+              <strong>真正的多壳级联</strong>
+              <p>本轮只有瞬时、稀疏多壳压力测试；尚未构造闭合动力学级联。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>严格边界</strong>
+            下面所有恒等式均针对光滑解，因此积分分部和 Fourier 逐项运算合法。
+            将它们推广到弱解需要单独的逼近、紧性和能量不等式论证，本笔记不把这一步隐藏在“形式上显然”之中。
+          </div>
+        </section>
+
+        <section id="conventions">
+          <div class="section-no">01 / Conventions</div>
+          <h2>固定域、内积与 Fourier 约定</h2>
+          <p>
+            为消除 \(2\pi\) 因子，本文计算采用
+            \(\mathbb T^3_{2\pi}=(\mathbb R/2\pi\mathbb Z)^3\)。
+            这与 Clay 命题 B 使用的单位周期环面通过线性尺度变换等价；以后引用 Clay 命题时仍明确写出这一归一化差异。
+          </p>
+          <div class="equation">
+            \[
+              \widehat u(k)=\frac1{(2\pi)^3}\int_{\mathbb T^3_{2\pi}}
+              u(x)e^{-ik\cdot x}\,dx,\qquad
+              u(x)=\sum_{k\in\mathbb Z^3}\widehat u(k)e^{ik\cdot x}.
+            \]
+          </div>
+          <p>使用归一化内积与范数</p>
+          <div class="equation">
+            \[
+              \langle f,g\rangle=\frac1{(2\pi)^3}\int f(x)\cdot\overline{g(x)}\,dx,
+              \qquad \|f\|_2^2=\sum_{k\in\mathbb Z^3}|\widehat f(k)|^2.
+            \]
+          </div>
+          <p>研究类固定为光滑、实值、无散、零均值速度场，因此</p>
+          <div class="equation">
+            \[
+              \widehat u(-k)=\overline{\widehat u(k)},\qquad
+              k\cdot\widehat u(k)=0,\qquad
+              \widehat u(0)=0.
+            \]
+          </div>
+          <p>
+            记 \(\Lambda=(-\Delta)^{1/2}\)，其非零 Fourier 模乘子为 \(|k|\)；
+            零均值保证齐次 Sobolev 范数在本域上没有零频歧义。
+          </p>
+        </section>
+
+        <section id="leray">
+          <div class="section-no">02 / Leray projection and mild form</div>
+          <h2>从压力消元到 Duhamel 公式</h2>
+          <p>从无外力不可压缩方程出发：</p>
+          <div class="equation">
+            \[
+              \partial_tu+(u\cdot\nabla)u=-\nabla p+\nu\Delta u,
+              \qquad \nabla\cdot u=0.
+            \]
+          </div>
+
+          <h3>压力并不是独立未知量</h3>
+          <p>对动量方程取散度，并使用 \(\partial_j u_j=0\)：</p>
+          <div class="equation">
+            \[
+              \Delta p=-\nabla\cdot((u\cdot\nabla)u)
+              =-\partial_i\partial_j(u_i u_j).
+            \]
+          </div>
+          <p>规定压力零均值后，Poisson 方程唯一确定 \(p\)：</p>
+          <div class="equation">
+            \[
+              p=-\Delta^{-1}\partial_i\partial_j(u_i u_j)
+              =R_iR_j(u_i u_j).
+            \]
+            <small>这里 \(R_j=\partial_j(-\Delta)^{-1/2}\)，重复指标求和。</small>
+          </div>
+
+          <h3>Leray 投影</h3>
+          <p>定义投影到无散子空间的算子</p>
+          <div class="equation">
+            \[
+              \mathbb P=I-\nabla\Delta^{-1}\nabla\cdot,\qquad
+              \widehat{\mathbb Pf}(k)=\mathbb P_k\widehat f(k),\qquad
+              \mathbb P_k=I-\frac{k\otimes k}{|k|^2}\quad(k\ne0).
+            \]
+          </div>
+          <div class="proof">
+            <strong>核对</strong>
+            \(\mathbb P_k^2=\mathbb P_k=\mathbb P_k^\ast\)，
+            \(k\cdot\mathbb P_kv=0\)，且 \(\mathbb P\nabla p=0\)。
+            因而 \(\mathbb P\) 是 \(L^2\) 中的正交投影，并与 \(\Delta\)、\(\Lambda^s\) 交换。
+          </div>
+          <p>应用 \(\mathbb P\) 后，压力恰好消失：</p>
+          <div class="equation">
+            \[
+              \partial_tu-\nu\Delta u
+              =-\mathbb P\nabla\cdot(u\otimes u).
+            \]
+          </div>
+
+          <h3>mild / Duhamel 形式</h3>
+          <p>对线性热半群作常数变易，得到</p>
+          <div class="equation">
+            \[
+              u(t)=e^{\nu t\Delta}u_0
+              -\int_0^t e^{\nu(t-s)\Delta}
+              \mathbb P\nabla\cdot(u\otimes u)(s)\,ds.
+            \]
+          </div>
+          <div class="proof">
+            <strong>反向核对</strong>
+            对右端求时间导数，使用
+            \(\partial_t e^{\nu(t-s)\Delta}=\nu\Delta e^{\nu(t-s)\Delta}\)
+            以及积分上限项，即恢复投影方程和初值。该公式正是局部不动点理论的起点。
+          </div>
+        </section>
+
+        <section id="scaling">
+          <div class="section-no">03 / Scaling audit</div>
+          <h2>临界不是形容词，而是一张指数表</h2>
+          <p>在 \(\mathbb R^3\) 上，若 \((u,p)\) 是解，则</p>
+          <div class="equation">
+            \[
+              u_\lambda(x,t)=\lambda u(\lambda x,\lambda^2t),\qquad
+              p_\lambda(x,t)=\lambda^2p(\lambda x,\lambda^2t)
+            \]
+          </div>
+          <p>
+            也是相同黏性系数下的解。周期域本身不在此变换下保持不变，所以这里的缩放是高频局部结构的审计工具；
+            不能把它误写成固定环面上的连续对称群。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>量</th><th>缩放因子</th><th>临界条件</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>\(\|u_\lambda\|_{L^p_x}\)</td>
+                  <td>\(\lambda^{1-3/p}\|u\|_{L^p_x}\)</td>
+                  <td>\(p=3\)</td>
+                </tr>
+                <tr>
+                  <td>\(\|u_\lambda\|_{\dot H^s_x}\)</td>
+                  <td>\(\lambda^{s-1/2}\|u\|_{\dot H^s_x}\)</td>
+                  <td>\(s=1/2\)</td>
+                </tr>
+                <tr>
+                  <td>\(\|u_\lambda\|_{\dot B^s_{p,q}}\)</td>
+                  <td>\(\lambda^{s+1-3/p}\|u\|_{\dot B^s_{p,q}}\)</td>
+                  <td>\(s=-1+3/p\)</td>
+                </tr>
+                <tr>
+                  <td>\(\|u_\lambda\|_{L^r_tL^p_x}\)</td>
+                  <td>\(\lambda^{1-3/p-2/r}\|u\|_{L^r_tL^p_x}\)</td>
+                  <td>\(2/r+3/p=1\)</td>
+                </tr>
+                <tr>
+                  <td>\(\|\omega_\lambda\|_{L^p_x}\)</td>
+                  <td>\(\lambda^{2-3/p}\|\omega\|_{L^p_x}\)</td>
+                  <td>\(p=3/2\)</td>
+                </tr>
+                <tr>
+                  <td>\(\|p_\lambda\|_{L^p_x}\)</td>
+                  <td>\(\lambda^{2-3/p}\|p\|_{L^p_x}\)</td>
+                  <td>\(p=3/2\)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="proof result">
+            <strong>审计规则 S1</strong>
+            任一声称仅由基本能量控制临界范数的估计，都必须解释它如何跨越
+            \(\|u_\lambda\|_2=\lambda^{-1/2}\|u\|_2\) 与临界指数 \(0\) 之间的半阶缺口。
+            如果推导没有产生额外结构或尺度小因子，缩放已经提示它不可能闭合。
+          </div>
+        </section>
+
+        <section id="energies">
+          <div class="section-no">04 / Three energy levels</div>
+          <h2>一个完全闭合，两个暴露障碍</h2>
+
+          <h3>\(L^2\)：精确闭合</h3>
+          <p>将方程与 \(u\) 作 \(L^2\) 内积。周期边界、无散条件与积分分部给出</p>
+          <div class="equation">
+            \[
+              \langle (u\cdot\nabla)u,u\rangle
+              =\frac12\int u\cdot\nabla|u|^2\,dx=0,\qquad
+              \langle\nabla p,u\rangle=0.
+            \]
+          </div>
+          <p>因此</p>
+          <div class="equation">
+            \[
+              \frac12\frac d{dt}\|u\|_2^2+\nu\|\nabla u\|_2^2=0.
+            \]
+          </div>
+          <p>这是全局控制，但它处在缩放临界线以下半阶，不能排除高频集中。</p>
+
+          <h3>Enstrophy：涡量拉伸不闭合</h3>
+          <p>取旋度得到</p>
+          <div class="equation">
+            \[
+              \partial_t\omega+(u\cdot\nabla)\omega
+              =(\omega\cdot\nabla)u+\nu\Delta\omega.
+            \]
+          </div>
+          <p>令 \(S=(\nabla u+\nabla u^\mathsf T)/2\)，则反对称部分在二次型中消失：</p>
+          <div class="equation">
+            \[
+              \frac12\frac d{dt}\|\omega\|_2^2+\nu\|\nabla\omega\|_2^2
+              =\int (S\omega)\cdot\omega\,dx.
+            \]
+          </div>
+          <p>Calderón–Zygmund 与 Gagliardo–Nirenberg 估计只给出</p>
+          <div class="equation">
+            \[
+              \left|\int(S\omega)\cdot\omega\right|
+              \le C\|\omega\|_3^3
+              \le C\|\omega\|_2^{3/2}\|\nabla\omega\|_2^{3/2}
+              \le \frac\nu2\|\nabla\omega\|_2^2
+              +C\nu^{-3}\|\omega\|_2^6.
+            \]
+          </div>
+          <p>
+            若 \(Y=\|\omega\|_2^2\)，得到 \(Y'\lesssim\nu^{-3}Y^3\)。
+            这个常微分不等式允许有限时发散，因此不是全局先验估计。
+          </p>
+
+          <h3>\(\dot H^{1/2}\)：临界但大数据无法吸收</h3>
+          <p>将投影方程与 \(\Lambda u\) 作内积：</p>
+          <div class="equation">
+            \[
+              \frac12\frac d{dt}\|\Lambda^{1/2}u\|_2^2
+              +\nu\|\Lambda^{3/2}u\|_2^2
+              =-\langle (u\cdot\nabla)u,\Lambda u\rangle.
+            \]
+          </div>
+          <p>临界乘积估计给出 Fujita–Kato 型界</p>
+          <div class="equation">
+            \[
+              \big|\langle (u\cdot\nabla)u,\Lambda u\rangle\big|
+              \le C\|\Lambda^{1/2}u\|_2\,
+              \|\Lambda^{3/2}u\|_2^2.
+            \]
+          </div>
+          <div class="proof result">
+            <strong>唯一不能闭合的临界项</strong>
+            当 \(\|\Lambda^{1/2}u\|_2&lt;\nu/C\) 时，非线性可被黏性吸收，这解释小临界数据全局理论。
+            对任意大数据，右端与耗散含有同一个 \(\dot H^{3/2}\) 因子，前面的临界范数未知且可能很大；
+            标准估计到此准确停止。
+          </div>
+        </section>
+
+        <section id="fourier">
+          <div class="section-no">05 / Exact Fourier kernel</div>
+          <h2>三波相互作用的精确代数</h2>
+          <p>卷积公式给出</p>
+          <div class="equation">
+            \[
+              \widehat{(u\cdot\nabla)u}(k)
+              =i\sum_{a+b=k}(b\cdot\widehat u(a))\widehat u(b).
+            \]
+          </div>
+          <p>故每个非零模满足</p>
+          <div class="equation">
+            \[
+              \partial_t\widehat u(k)+\nu|k|^2\widehat u(k)
+              =-i\sum_{a+b=k}
+              (b\cdot\widehat u(a))\,\mathbb P_k\widehat u(b).
+            \]
+          </div>
+          <p>
+            因 \(a\cdot\widehat u(a)=0\)，可将耦合因子改写为
+            \(b\cdot\widehat u(a)=k\cdot\widehat u(a)\)。
+            这个角度因子是原始不可压缩核的第一处几何信息。
+          </p>
+
+          <h3>零和三波记号</h3>
+          <p>
+            令 \(k+p+q=0\)，并记 \(u_k=\widehat u(k)\)。
+            将正负波数通过 \(u_{-k}=\overline{u_k}\) 配对后，三波对
+            \(\frac12|u_k|^2\) 的瞬时非线性能量传递可写成
+          </p>
+          <div class="equation">
+            \[
+              T_k(k,p,q)=\operatorname{Im}\!\left[
+              (q\cdot u_p)(u_k\cdot u_q)
+              +(p\cdot u_q)(u_k\cdot u_p)\right].
+            \]
+            <small>复向量间的点积在此是双线性的；Hermitian 共轭已经由实值配对处理。</small>
+          </div>
+          <p>循环置换得到 \(T_p,T_q\)，直接使用 \(k+p+q=0\) 与三个无散条件可核对</p>
+          <div class="equation">
+            \[
+              T_k+T_p+T_q=0.
+            \]
+          </div>
+          <div class="proof">
+            <strong>含义</strong>
+            非线性在单个三波内部重新分配 \(L^2\) 能量，但不创造总 \(L^2\) 能量。
+            Leray 投影在模能量公式中可被移去，因为 \(u_k\in k^\perp\) 且 \(\mathbb P_k\) 自伴。
+            这并不意味着带权能量 \(\sum w(k)|u_k|^2\) 也守恒。
+          </div>
+        </section>
+
+        <section id="triad">
+          <div class="section-no">06 / Explicit falsification test</div>
+          <h2>一个最小、可复算的非平凡三波</h2>
+          <p>取波数</p>
+          <div class="equation">
+            \[
+              k=(1,0,0),\qquad p=(0,2,0),\qquad q=(-1,-2,0),
+              \qquad k+p+q=0,
+            \]
+          </div>
+          <p>以及 Fourier 振幅</p>
+          <div class="equation">
+            \[
+              u_k=(0,1,0),\qquad
+              u_p=(1,0,0),\qquad
+              u_q=i(2,-1,0).
+            \]
+          </div>
+          <p>
+            三个无散条件逐项成立；再规定 \(u_{-a}=\overline{u_a}\)，便得到实值、零均值的三角多项式初值。
+            把振幅代入上一节公式：
+          </p>
+          <div class="equation">
+            \[
+              (T_k,T_p,T_q)=(1,-4,3),\qquad T_k+T_p+T_q=0.
+            \]
+          </div>
+          <p>
+            但临界二次量使用权重 \(|k|\)。在上述 \(T\) 的单模定义下，
+            正负模配对后的非线性贡献为
+          </p>
+          <div class="equation">
+            \[
+              2\bigl(|k|T_k+|p|T_p+|q|T_q\bigr)
+              =2(1-8+3\sqrt5)\ne0.
+            \]
+          </div>
+          <p>
+            将所有振幅复共轭会把三个 \(T\) 同时反号，所以这个临界传递既可为正也可为负。
+            因而 \(\dot H^{1/2}\) 没有类似 \(L^2\) 的非线性单调性。
+          </p>
+
+          <h3>稀疏多壳压力测试</h3>
+          <p>
+            将上述三波复制到尺度 \(N_j=8^j\)（\(j=0,1,2\)），并加入相反波数。
+            计算机穷举核对：这些尺度副本之间不存在“两个已支持模相加后落回另一个已支持模”的跨壳共振，
+            因而在初始时刻，各壳的三波传递可独立叠加。若第 \(j\) 壳振幅乘 \(A_j\)，则其
+            \(\dot H^{1/2}\) 非线性贡献按
+          </p>
+          <div class="equation">
+            \[
+              2N_j^2A_j^3(1-8+3\sqrt5)
+            \]
+          </div>
+          <p>缩放；选择相同相位可以让任意多个壳的符号一致。</p>
+          <div class="proof warning">
+            <strong>不能夸大的地方</strong>
+            这是候选不等式的瞬时压力测试，不是一个封闭 Galerkin 系统，也不是持续级联解。
+            非线性会立即生成原支持集之外的新模；黏性和后续相位演化也尚未分析。
+          </div>
+          <p>
+            可复现脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/triad-audit.mjs">research/triad-audit.mjs</a>。
+            自动测试同时核对三波闭合、无散性、\(L^2\) 守恒、临界带权非守恒和三个分离壳的无交叉支持共振。
+          </p>
+        </section>
+
+        <section id="conclusions">
+          <div class="section-no">07 / Falsified universal claims</div>
+          <h2>第一版“不可能成立”清单</h2>
+          <ol class="audit-list">
+            <li>
+              <strong>错误命题：</strong>
+              原始非线性对 \(\dot H^{1/2}\) 能量总是耗散或总是增长。
+              <br><strong>否定：</strong>显式三波给出非零贡献，复共轭立即反号。
+            </li>
+            <li>
+              <strong>错误命题：</strong>
+              三波 \(L^2\) 能量守恒自动推出临界带权能量守恒。
+              <br><strong>否定：</strong>\((1,-4,3)\) 的无权和为零，而
+              \(2(1-8+3\sqrt5)\ne0\)。
+            </li>
+            <li>
+              <strong>错误命题：</strong>
+              存在与振幅无关的统一常数 \(c&lt;1\)，使全部光滑场的临界三线性项都不超过
+              \(c\nu\|\Lambda^{3/2}u\|_2^2\)。
+              <br><strong>否定：</strong>三线性项随振幅三次增长，耗散随振幅二次增长。
+            </li>
+            <li>
+              <strong>不足路线：</strong>
+              只使用抽象能量抵消、双线性阶数和一般 Fourier 乘子估计。
+              <br><strong>审计理由：</strong>Tao 的 averaged Navier–Stokes 仍保留这类能量抵消，却可有限时爆破；
+              决定性正面论证必须使用原始核的更细结构。
+            </li>
+          </ol>
+          <div class="proof result">
+            <strong>本轮真正得到的研究信息</strong>
+            若要寻找新的临界耗散机制，它不能是逐三波的定号性。
+            更可能的候选必须来自许多三波之间的成对抵消、相位不相容、角度退化、
+            局部/非局部相互作用的净效应，或这些结构与黏性时间尺度的联合约束。
+          </div>
+        </section>
+
+        <section id="next">
+          <div class="section-no">08 / Next packet</div>
+          <h2>下一步：把单三波升级为相互作用核图谱</h2>
+          <p>R0.2 将只做以下四件事：</p>
+          <ol>
+            <li>对 \(b(u,v,w)=\langle\mathbb P(u\cdot\nabla v),w\rangle\) 作完整 dyadic 分解。</li>
+            <li>分别量化 low–high、high–low、high–high→low 与相近频率三波。</li>
+            <li>用 helical 基底分解三波，复核 Waleffe 的八类基本耦合及其符号。</li>
+            <li>检验“非局部三波成对近抵消”能否在临界频率包络中产生可求和缺陷因子。</li>
+          </ol>
+          <p>
+            通过标准不是得到漂亮公式，而是对每个候选估计同时给出：
+            精确假设、尺度指数、最坏三波、分离多壳测试和对 Tao averaged 非线性的区分点。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">09 / Primary references</div>
+          <h2>本轮使用的骨架文献</h2>
+          <ol class="refs">
+            <li>
+              C. L. Fefferman,
+              <a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Existence and Smoothness of the Navier–Stokes Equation</a>,
+              Clay Mathematics Institute 正式问题说明。
+            </li>
+            <li>
+              H. Fujita and T. Kato,
+              <a href="https://doi.org/10.1007/BF00276188">On the Navier–Stokes initial value problem I</a>,
+              Archive for Rational Mechanics and Analysis 16 (1964), 269–315。
+            </li>
+            <li>
+              T. Kato,
+              <a href="https://eudml.org/doc/173504">Strong \(L^p\)-solutions of the Navier–Stokes equation in \(\mathbb R^m\)</a>,
+              Mathematische Zeitschrift 187 (1984), 471–480。
+            </li>
+            <li>
+              H. Koch and D. Tataru,
+              <a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Well-posedness for the Navier–Stokes equations</a>,
+              Advances in Mathematics 157 (2001), 22–35。
+            </li>
+            <li>
+              T. Tao,
+              <a href="https://arxiv.org/abs/1402.0290">Finite time blowup for an averaged three-dimensional Navier–Stokes equation</a>,
+              Journal of the American Mathematical Society 29 (2016), 601–674。
+            </li>
+            <li>
+              F. Waleffe,
+              <a href="https://doi.org/10.1063/1.858309">The nature of triad interactions in homogeneous turbulence</a>,
+              Physics of Fluids A 4 (1992), 350–363。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>Navier–Stokes 开放研究日志</strong>研究笔记 R0.1 · 可勘误、可复算、非突破声明</span>
+      <span><a href="/">返回研究站</a> · <a href="/notes/r0-1.pdf">下载 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">查看版本记录</a></span>
+    </div>
+  </footer>
+</body>
+</html>

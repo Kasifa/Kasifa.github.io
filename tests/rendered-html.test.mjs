@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const siteUrl = new URL("../public/research-review.html", import.meta.url);
+const firstNoteUrl = new URL("../public/notes/r0-1.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -40,6 +41,20 @@ test("labels the unresolved and preprint status explicitly", async () => {
   assert.match(html, /不能等同于已经过同行评议和独立复核的定理/);
   assert.match(html, /https:\/\/www\.claymath\.org\/wp-content/);
   assert.match(html, /https:\/\/arxiv\.org\/abs\/2509\.25116/);
+});
+
+test("publishes and links the first auditable research note", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(firstNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-1\.html"/);
+  assert.match(note, /Research packet R0\.1/);
+  assert.match(note, /Leray 投影/);
+  assert.match(note, /\\dot H\^\{1\/2\}/);
+  assert.match(note, /\(T_k,T_p,T_q\)=\(1,-4,3\)/);
+  assert.match(note, /不是新定理/);
 });
 
 test("follows the operating system light and dark color scheme", async () => {

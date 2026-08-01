@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="三维不可压缩 Navier–Stokes 存在性与光滑性问题：研究综述、攻关计划与公开研究日志。">
-  <meta name="theme-color" content="#102f38">
+  <meta name="theme-color" content="#f2eddf">
   <meta property="og:title" content="Navier–Stokes 开放研究日志">
   <meta property="og:description" content="从正式问题、已知边界到可审计的逐项研究计划。">
   <title>Navier–Stokes 开放研究日志｜综述与攻关计划</title>
@@ -650,6 +650,378 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       * { transition: none !important; }
+    }
+
+    /* Retro research dossier — deliberately flat, typographic, and archival. */
+    :root {
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --card: transparent;
+      --deep: #27221d;
+      --teal: #4d5b4a;
+      --orange: #8a302c;
+      --gold: #9a7433;
+      --line: rgba(39, 34, 29, .28);
+      --shadow: none;
+      --radius: 0;
+      --content: 1120px;
+    }
+
+    body {
+      background: var(--paper);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--orange); }
+    a:hover { color: var(--ink); }
+    code {
+      padding: .08em .28em;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+    }
+    ::selection { background: #cdbd97; color: var(--ink); }
+    .progress {
+      height: 2px;
+      background: var(--orange);
+    }
+    .skip-link {
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .topbar {
+      border-top: 4px solid var(--ink);
+      border-bottom: 3px double var(--ink);
+      background: rgba(242, 237, 223, .97);
+      color: var(--ink);
+      backdrop-filter: none;
+    }
+    .topbar-inner { min-height: 62px; }
+    .brand {
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      width: 31px;
+      height: 31px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      color: var(--orange);
+    }
+    .topnav {
+      gap: 20px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+    }
+    .topnav a { color: var(--muted); }
+    .topnav a:hover { color: var(--orange); }
+    .print-button {
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      padding: .42rem .72rem;
+      background: transparent;
+      color: var(--ink);
+      font-family: inherit;
+    }
+    .print-button:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .hero {
+      overflow: visible;
+      border-bottom: 3px double var(--ink);
+      background: transparent;
+      color: var(--ink);
+    }
+    .hero::before,
+    .hero::after { display: none; }
+    .hero-inner {
+      padding: 74px 0 62px;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, .55fr);
+      gap: 72px;
+      align-items: center;
+    }
+    .eyebrow {
+      margin-bottom: 16px;
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .12em;
+    }
+    h1 {
+      max-width: 720px;
+      color: var(--ink);
+      font-size: clamp(3.8rem, 8vw, 6.6rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: .92;
+    }
+    .hero-lead {
+      max-width: 680px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+    }
+    .status-card {
+      padding: 24px;
+      border: 3px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+    .status-label {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      letter-spacing: .1em;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 0;
+      background: var(--orange);
+      box-shadow: none;
+    }
+    .status-card h2 {
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", serif;
+      font-weight: 500;
+    }
+    .status-card p { color: var(--muted); }
+    .status-meta {
+      border-top-color: var(--line);
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    .status-meta strong { color: var(--ink); }
+
+    .summary-band {
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper-2);
+    }
+    .summary-grid { padding: 25px 0; }
+    .summary-item { border-right-color: var(--line); }
+    .summary-item strong {
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .03em;
+    }
+    .summary-item span { color: var(--muted); }
+
+    .page-shell {
+      padding: 72px 0 110px;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 72px;
+    }
+    .toc { top: 92px; }
+    .toc-title {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-weight: 700;
+    }
+    .toc ol { border-top-color: var(--ink); }
+    .toc li { border-bottom-color: var(--line); }
+    .toc a { color: var(--muted); }
+    .toc a:hover {
+      color: var(--orange);
+      transform: none;
+    }
+    .toc-note {
+      padding: 15px 0;
+      border-top: 3px double var(--ink);
+      border-bottom: 3px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+
+    section { margin-bottom: 100px; }
+    .section-index {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      font-style: normal;
+      letter-spacing: .08em;
+    }
+    h2.section-title {
+      color: var(--ink);
+      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      font-weight: 400;
+      letter-spacing: -.025em;
+    }
+    .section-deck { color: var(--muted); }
+    h3 {
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", serif;
+      font-weight: 600;
+    }
+
+    .callout {
+      padding: 20px 24px;
+      border-top: 1px solid var(--line);
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      border-left: 3px solid var(--orange);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .callout strong { color: var(--ink); }
+    .callout.warning { border-left-color: var(--gold); }
+    .callout.dark {
+      border: 3px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+      color: var(--muted);
+    }
+    .callout.dark strong { color: var(--orange); }
+
+    .equation {
+      padding: 24px;
+      border: 3px double var(--ink);
+      border-radius: 0;
+      background: var(--paper-2);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .card-grid {
+      gap: 0;
+      border-top: 1px solid var(--ink);
+    }
+    .card {
+      padding: 24px 24px 26px;
+      border: 0;
+      border-bottom: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .card:nth-child(odd) { border-right: 1px solid var(--line); }
+    .card-kicker {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    .table-wrap {
+      border: 0;
+      border-top: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+    th, td { border-bottom-color: var(--line); }
+    th {
+      border-bottom: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    .tag {
+      border-radius: 0;
+      background: transparent !important;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    .tag.verified { color: #435946; }
+    .tag.open { color: var(--orange); }
+    .tag.preprint { color: #7c622a; }
+
+    .timeline { border-left-color: var(--orange); }
+    .timeline-item::before {
+      border: 3px solid var(--paper);
+      border-radius: 0;
+      background: var(--ink);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+    .timeline time { color: var(--orange); }
+
+    .phase {
+      margin: 0;
+      padding: 28px 0 30px 72px;
+      border: 0;
+      border-top: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+    .phase:last-child { border-bottom: 1px solid var(--ink); }
+    .phase::before {
+      top: 27px;
+      left: 0;
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 22px;
+      font-style: normal;
+    }
+    .phase dt { color: var(--ink); }
+
+    .task-one {
+      padding: 30px;
+      border: 4px double var(--orange);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      box-shadow: none;
+    }
+    .task-one::after {
+      right: 18px;
+      bottom: -24px;
+      color: rgba(138, 48, 44, .07);
+      font-size: 150px;
+    }
+    .task-one h3 { color: var(--ink); }
+    .task-one p,
+    .task-one li { color: var(--muted); }
+
+    .bibliography li { border-top-color: var(--line); }
+    .bibliography li::before { color: var(--orange); }
+
+    .footer {
+      border-top: 4px solid var(--orange);
+      background: var(--ink);
+      color: #cfc5b3;
+    }
+    .footer strong { color: var(--paper); }
+    .footer a { color: #d6b56d; }
+
+    @media (max-width: 900px) {
+      .hero-inner { gap: 38px; }
+      .page-shell { gap: 44px; }
+      .toc li:nth-child(odd) { border-right-color: var(--line); }
+    }
+    @media (max-width: 620px) {
+      body { font-size: 16px; }
+      .topbar { border-top-width: 3px; }
+      .hero-inner { padding: 52px 0 46px; }
+      h1 { font-size: 3.65rem; }
+      .status-card { padding: 21px; }
+      .card:nth-child(odd) { border-right: 0; }
+      .phase { padding: 68px 0 24px; }
+      .phase::before { top: 20px; left: 0; }
+      .task-one { padding: 24px 20px; }
+    }
+    @media print {
+      body { background: white; color: black; }
+      .hero { color: black; background: white; }
+      .hero-lead,
+      .status-card p,
+      .status-meta { color: #333; }
+      .status-card { border-color: #333; }
+      .status-card h2,
+      .status-meta strong { color: black; }
+      .task-one { border-color: #333; }
     }
   </style>
 </head>

@@ -95,7 +95,7 @@ function projectDivergenceFree(frequency, amplitude) {
   );
 }
 
-function profileAt(frequency, delta) {
+function profileAt(frequency, delta, amplitudes = centralAmplitudes) {
   const result = [[0, 0], [0, 0], [0, 0]];
   for (let index = 0; index < centers.length; index += 1) {
     for (const sign of [1, -1]) {
@@ -107,8 +107,8 @@ function profileAt(frequency, delta) {
       );
       if (bump === 0) continue;
       const amplitude = sign === 1
-        ? centralAmplitudes[index]
-        : centralAmplitudes[index].map(conjugate);
+        ? amplitudes[index]
+        : amplitudes[index].map(conjugate);
       const projected = projectDivergenceFree(frequency, amplitude);
       for (let axis = 0; axis < 3; axis += 1) {
         result[axis] = complexAdd(result[axis], complexScale(bump, projected[axis]));
@@ -118,7 +118,11 @@ function profileAt(frequency, delta) {
   return result;
 }
 
-export function buildDensePacket(N, delta = DEFAULT_DELTA) {
+export function buildDensePacket(
+  N,
+  delta = DEFAULT_DELTA,
+  amplitudes = centralAmplitudes,
+) {
   if (!Number.isInteger(N) || N < 1) throw new RangeError("N must be a positive integer.");
   if (!(delta > 0 && delta < 1 && (Math.SQRT2 + delta) / (1 - delta) < 2)) {
     throw new RangeError("delta must keep the six spectral lobes inside an annulus of ratio <2.");
@@ -146,7 +150,7 @@ export function buildDensePacket(N, delta = DEFAULT_DELTA) {
   const records = [];
   for (const wavevector of candidates.values()) {
     const frequency = scaleWavevector(1 / N, wavevector);
-    const profile = profileAt(frequency, delta);
+    const profile = profileAt(frequency, delta, amplitudes);
     if (complexVectorMagnitudeSquared(profile) === 0) continue;
     records.push({
       wavevector,

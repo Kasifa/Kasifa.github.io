@@ -40,10 +40,14 @@ def smooth_bump(distance_squared: float, delta: float) -> float:
     return math.exp(1.0 - 1.0 / (1.0 - normalized))
 
 
-def profile_at(frequency: np.ndarray, delta: float) -> np.ndarray:
+def profile_at(
+    frequency: np.ndarray,
+    delta: float,
+    amplitudes: np.ndarray = AMPLITUDES,
+) -> np.ndarray:
     value = np.zeros(3, dtype=np.complex128)
     length_squared = float(np.dot(frequency, frequency))
-    for center, amplitude in zip(CENTERS, AMPLITUDES, strict=True):
+    for center, amplitude in zip(CENTERS, amplitudes, strict=True):
         for sign in (1.0, -1.0):
             bump = smooth_bump(float(np.sum((frequency - sign * center) ** 2)), delta)
             if bump == 0.0:
@@ -56,7 +60,11 @@ def profile_at(frequency: np.ndarray, delta: float) -> np.ndarray:
     return value
 
 
-def packet_coefficients(scale: int, delta: float) -> dict[tuple[int, int, int], np.ndarray]:
+def packet_coefficients(
+    scale: int,
+    delta: float,
+    amplitudes: np.ndarray = AMPLITUDES,
+) -> dict[tuple[int, int, int], np.ndarray]:
     radius = delta * scale
     candidates: set[tuple[int, int, int]] = set()
     for center in CENTERS.astype(int):
@@ -71,7 +79,11 @@ def packet_coefficients(scale: int, delta: float) -> dict[tuple[int, int, int], 
 
     records: dict[tuple[int, int, int], np.ndarray] = {}
     for wavevector in sorted(candidates):
-        coefficient = profile_at(np.asarray(wavevector, dtype=float) / scale, delta)
+        coefficient = profile_at(
+            np.asarray(wavevector, dtype=float) / scale,
+            delta,
+            amplitudes,
+        )
         if np.vdot(coefficient, coefficient).real > 0.0:
             records[wavevector] = coefficient
     return records
@@ -85,6 +97,7 @@ class SpectralSystem:
     cutoff: int
     viscosity: float
     rho: float
+    amplitudes: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         if 3 * self.cutoff >= self.grid:
@@ -123,7 +136,8 @@ class SpectralSystem:
 
     def initial_state(self) -> np.ndarray:
         state = np.zeros((3, self.grid, self.grid, self.grid), dtype=np.complex128)
-        records = packet_coefficients(self.scale, self.delta)
+        amplitudes = AMPLITUDES if self.amplitudes is None else self.amplitudes
+        records = packet_coefficients(self.scale, self.delta, amplitudes)
         for wavevector, coefficient in records.items():
             if max(abs(component) for component in wavevector) > self.cutoff:
                 raise ValueError(f"initial mode {wavevector} lies outside the cutoff")
@@ -229,8 +243,17 @@ def evolve(
     step: float,
     final_time: float,
     checkpoints: list[float],
+    amplitudes: np.ndarray | None = None,
 ) -> dict[str, object]:
-    calibration = SpectralSystem(scale, delta, grid, cutoff, viscosity, rho=1.0)
+    calibration = SpectralSystem(
+        scale,
+        delta,
+        grid,
+        cutoff,
+        viscosity,
+        rho=1.0,
+        amplitudes=amplitudes,
+    )
     initial = calibration.initial_state()
     initial_nonlinear = calibration.rotational_nonlinearity(initial)
     size = np.sum(np.abs(initial) ** 2, axis=0)
@@ -250,7 +273,15 @@ def evolve(
         viscosity * scale**2 * initial_dissipation / (-initial_transfer)
     )
     rho = gamma * critical_amplitude
-    system = SpectralSystem(scale, delta, grid, cutoff, viscosity, rho)
+    system = SpectralSystem(
+        scale,
+        delta,
+        grid,
+        cutoff,
+        viscosity,
+        rho,
+        amplitudes=amplitudes,
+    )
     state = system.initial_state()
     initial = state.copy()
     trajectory = [system.diagnostics(state, initial, 0.0)]
@@ -275,7 +306,13 @@ def evolve(
             "criticalAmplitude": critical_amplitude,
             "timeStep": step,
             "finalTime": final_time,
-            "initialModeCount": len(packet_coefficients(scale, delta)),
+            "initialModeCount": len(
+                packet_coefficients(
+                    scale,
+                    delta,
+                    AMPLITUDES if amplitudes is None else amplitudes,
+                )
+            ),
         },
         "trajectory": trajectory,
     }

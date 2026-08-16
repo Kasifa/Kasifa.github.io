@@ -8,6 +8,7 @@ const secondNoteUrl = new URL("../public/notes/r0-2.html", import.meta.url);
 const thirdNoteUrl = new URL("../public/notes/r0-3.html", import.meta.url);
 const fourthNoteUrl = new URL("../public/notes/r0-4.html", import.meta.url);
 const fifthNoteUrl = new URL("../public/notes/r0-5.html", import.meta.url);
+const sixthNoteUrl = new URL("../public/notes/r0-6.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -126,6 +127,23 @@ test("publishes and links the short-time critical-packet dynamics audit", async 
   assert.match(note, /不是 PDE 证明/);
 });
 
+test("publishes and links the fixed-injection leakage optimization", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-6\.html"/);
+  assert.match(note, /研究笔记 R0\.6/);
+  assert.match(note, /一阶频谱泄漏公式/);
+  assert.match(note, /C\^2=\\sqrt2 A\^2/);
+  assert.match(note, /32\.22030867/);
+  assert.match(note, /58\.24/);
+  assert.match(note, /6\.248/);
+  assert.match(note, /14\.1\\%/);
+  assert.match(note, /不是奇性轨道/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -138,13 +156,14 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
     readFile(thirdNoteUrl, "utf8"),
     readFile(fourthNoteUrl, "utf8"),
     readFile(fifthNoteUrl, "utf8"),
+    readFile(sixthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -176,6 +195,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(fifthNote, /我把 R0\.4/);
   assert.doesNotMatch(
     fifthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(sixthNote, /我把 R0\.5/);
+  assert.doesNotMatch(
+    sixthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

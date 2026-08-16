@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.6：定义临界频率包的法向频谱泄漏，解析优化一个固定注入的 2D3C 子族，并检查改良候选的短时 Galerkin 演化。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.6｜固定注入下的频谱泄漏优化">
+  <meta property="og:description" content="一个解析 2D3C 候选显著降低法向泄漏，并把有限维临界增长延长到更长的抛物时间；它仍不是 PDE 正则性或奇性证明。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.6｜固定注入下的频谱泄漏优化</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+      --bar: rgba(242, 237, 223, .97);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --red: #ee8b7c;
+        --green: #9fbea2;
+        --gold: #d9b567;
+        --line: rgba(238, 231, 216, .26);
+        --bar: rgba(23, 24, 22, .96);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: var(--bar);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: #27221d; color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: #f2eddf; }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      html, body, main, .layout, article { height: auto; margin-bottom: 0; padding-bottom: 0; }
+      body { background: white; color: black; font-size: 10pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 26px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 18px 0; padding: 18px; }
+      .proof { margin: 18px 0; padding: 15px 18px; }
+      th, td { padding: 9px 11px; }
+      .refs li { padding-top: 10px; padding-bottom: 10px; }
+      article > section:last-child { margin-bottom: 0; }
+      footer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-6.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.6 · 法向频谱泄漏</div>
+          <h1>固定注入下的频谱泄漏优化</h1>
+          <p class="lead">
+            我把 R0.5 的失相现象改写成一个一阶距离问题。在固定临界注入下，一个可解析的 2D3C 频率包显著降低法向泄漏，
+            并在有限维演化中维持更长的临界增长；增长最终仍然停止。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">笔记状态 · 子族命题与计算已复查</span>
+          <strong>改良候选，不是奇性轨道</strong>
+          <p>版本 v0.6 · 2026-08-16<br>目标域：\(\mathbb T^3_{2\pi}\)<br>对象：注入/泄漏权衡</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>目录</strong>
+        <ol>
+          <li><a href="#status">00 · 结论状态</a></li>
+          <li><a href="#position">01 · 文献位置</a></li>
+          <li><a href="#lemma">02 · 一阶泄漏公式</a></li>
+          <li><a href="#original">03 · 原剖面泄漏</a></li>
+          <li><a href="#variation">04 · 固定注入变分</a></li>
+          <li><a href="#dense">05 · 稠密包提升</a></li>
+          <li><a href="#dynamics">06 · 短时动力学</a></li>
+          <li><a href="#checks">07 · 复核与限制</a></li>
+          <li><a href="#result">08 · 结论边界</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这一步得到什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>法向速度等于一阶距离</strong>
+              <p>从有限频谱子空间出发，解离开该子空间的瞬时速度正是支撑外非线性范数。</p>
+            </div>
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>2D3C 子族的固定注入极小</strong>
+              <p>三参数问题可化为一元方程；较大根给出该对称子族内的最小泄漏。</p>
+            </div>
+            <div class="status-item">
+              <span>已计算</span>
+              <strong>稠密包泄漏降低约一个数量级</strong>
+              <p>在 \(N=120\) 时，逃逸/注入比从 58.24 降到 6.25，注入与初始临界范数保持不变。</p>
+            </div>
+            <div class="status-item">
+              <span>有限维观察</span>
+              <strong>增长延长但没有持续</strong>
+              <p>改良包到 \(\tau=0.05\) 仍有增长，到 \(\tau=0.1\) 前后已经换号并转为衰减。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>结果性质</strong>
+            一阶距离公式和对称子族极小是有限 Fourier 几何中的命题。全十二参数最优只经过多起点数值搜索；
+            Galerkin 轨道也没有给出完整 PDE 的统一误差。这里没有解决 Navier–Stokes 正则性问题。
+          </div>
+        </section>
+
+        <section id="position">
+          <div class="section-no">01 / Position in known mathematics</div>
+          <h2>精确有限模态动力学已有定性分类</h2>
+          <p>
+            Kishimoto 与 Yoneda 已刻画三维实值、有限 Fourier 支撑的 Euler 解：除平面型稳态流和 Beltrami 流外，
+            不存在其他有限模态 Euler 流。论文还讨论了黏性和 Coriolis 项存在时的相应分类。
+          </p>
+          <p>
+            这条定理说明：具有非零临界传递的有限包不可能成为一种新的精确有限模态 Euler 轨道。
+            R0.6 研究的是较弱而定量的问题：向量场在初始时刻离有限频谱子空间有多远，
+            以及能否在保持注入时让这个距离变小。
+          </p>
+          <div class="proof warning">
+            <strong>与既有定理的边界</strong>
+            下面的一阶公式不是对有限模态分类定理的替代，也没有给出分类定理的定量稳定版本。
+            它只为当前候选定义一个直接可算的近切指标。
+          </div>
+        </section>
+
+        <section id="lemma">
+          <div class="section-no">02 / Normal-leakage lemma</div>
+          <h2>把失相写成短时距离</h2>
+          <p>
+            令 \(S\subset\mathbb Z^3\setminus\{0\}\) 为有限对称集合，\(X_S\) 是真实、无散且 Fourier 支撑包含于 \(S\) 的线性空间。
+            记 \(\Pi_S\) 为 \(\dot H^{1/2}\) 正交投影，并写
+          </p>
+          <div class="equation">
+            \[
+              B(u,u)=\mathbb P[(u\cdot\nabla)u],\qquad
+              B_{\rm in}=\Pi_SB(u,u),\quad
+              B_{\rm out}=(I-\Pi_S)B(u,u).
+            \]
+          </div>
+          <div class="proof result">
+            <strong>一阶频谱泄漏公式</strong>
+            设光滑 Navier–Stokes 解满足 \(u(0)=u_0\in X_S\)。则
+            \[
+              \operatorname{dist}_{\dot H^{1/2}}(u(t),X_S)
+              =t\,\|B_{\rm out}(u_0,u_0)\|_{\dot H^{1/2}}+o(t),
+              \qquad t\downarrow0.
+            \]
+          </div>
+          <div class="proof">
+            <strong>证明</strong>
+            对光滑解使用 \(\dot H^{1/2}\) 中的一阶展开：
+            \[
+              u(t)=u_0+t[-\nu\Lambda^2u_0-B(u_0,u_0)]+o(t).
+            \]
+            Fourier 乘子 \(\Lambda^2\) 保持 \(X_S\)，所以法向投影消去初值和黏性项，只留下 \(-tB_{\rm out}+o(t)\)。
+            线性子空间的距离等于法向投影范数，结论随即得到。
+          </div>
+          <p>临界三线性量只看切向部分：</p>
+          <div class="equation">
+            \[
+              \mathfrak T(u)=\langle u,B(u,u)\rangle_{\dot H^{1/2}}
+              =\langle u,B_{\rm in}(u,u)\rangle_{\dot H^{1/2}}.
+            \]
+          </div>
+          <p>因此定义两个无量纲量</p>
+          <div class="equation">
+            \[
+              \Psi(u)=\frac{|\mathfrak T(u)|}
+              {\|u\|_{\dot H^{1/2}}\|B_{\rm out}(u,u)\|_{\dot H^{1/2}}},
+              \qquad
+              \Xi(u)=\Psi(u)^{-1},
+              \qquad
+              \Theta(u)=\frac{|\mathfrak T(u)|}
+              {\|u\|_{\dot H^{1/2}}\|B_{\rm in}(u,u)\|_{\dot H^{1/2}}}.
+            \]
+            <small>\(\Psi\) 是注入/逃逸比，\(\Xi\) 是逃逸/注入比，\(\Theta\) 是切向非线性与注入方向的对齐效率；三者在振幅缩放下不变。</small>
+          </div>
+        </section>
+
+        <section id="original">
+          <div class="section-no">03 / Leakage of the R0.4 profile</div>
+          <h2>原剖面的法向分量占主导</h2>
+          <p>
+            我对 R0.4 的 \(\delta=0.04\) 稠密包计算完整卷积，再按原支撑 \(S_N\) 分解。
+            表中的“泄漏占比”是 \(\|B_{\rm out}\|/\|B\|\)。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(N\)</th><th>输入模态</th><th>支撑外输出</th><th>泄漏占比</th><th>外/内范数</th><th>\(\Theta\)</th><th>\(\Xi\)</th></tr></thead>
+              <tbody>
+                <tr><td>30</td><td>42</td><td>374</td><td>0.88295</td><td>1.8807</td><td>0.03460</td><td>54.35</td></tr>
+                <tr><td>60</td><td>342</td><td>5,862</td><td>0.88881</td><td>1.9394</td><td>0.03320</td><td>58.41</td></tr>
+                <tr><td>80</td><td>882</td><td>14,418</td><td>0.88742</td><td>1.9251</td><td>0.03314</td><td>58.09</td></tr>
+                <tr><td>100</td><td>1,506</td><td>29,242</td><td>0.88899</td><td>1.9413</td><td>0.03332</td><td>58.27</td></tr>
+                <tr><td>120</td><td>2,766</td><td>53,314</td><td>0.88796</td><td>1.9306</td><td>0.03315</td><td>58.24</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            \(N^{-3}\|B_{\rm out}\|_{\dot H^{1/2}}\) 在后三个尺度稳定于约 \(2.9\times10^{-6}\)。
+            所以 R0.5 的快速失相不是一个随 \(N\) 自动消失的有限格点效应。
+          </p>
+        </section>
+
+        <section id="variation">
+          <div class="section-no">04 / Fixed-injection variation</div>
+          <h2>一个可以解析求解的 2D3C 子族</h2>
+          <p>
+            中心频率仍取 \(\kappa_1=(1,0,0)\)、\(\kappa_2=(0,1,0)\)、\(\kappa_3=(-1,-1,0)\)。
+            一般真实无散六模态场有十二个实振幅参数。多起点约束搜索提示，固定注入的低泄漏点落在以下 2D3C 子族：
+          </p>
+          <div class="equation">
+            \[
+              c_1=(0,A,-rA),\qquad
+              c_2=(A,0,-rA),\qquad
+              c_3=(0,0,-iC),
+              \qquad A,C,r&gt;0.
+            \]
+          </div>
+          <p>直接枚举六模态卷积得到</p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              E&=\|u\|_{\dot H^{1/2}}^2
+                =4A^2(1+r^2)+2\sqrt2\,C^2,\\
+              I&=|\mathfrak T(u)|
+                =4(\sqrt2-1)rA^2C,\\
+              L_{\rm out}^2&=\|B_{\rm out}(u,u)\|_{\dot H^{1/2}}^2
+                =4\sqrt5\,A^2C^2.
+            \end{aligned}
+            \]
+          </div>
+          <div class="proof result">
+            <strong>对称子族的固定注入极小</strong>
+            固定 \(E=1\) 和 \(I=I_0\)，若可行集非空，则泄漏极小点满足
+            \[
+              C^2=\sqrt2 A^2.
+            \]
+            令 \(t=r^2\)，则
+            \[
+              A^2=\frac1{4(t+2)},\qquad
+              I_0=\frac{(\sqrt2-1)2^{1/4}}2
+              \frac{\sqrt t}{(t+2)^{3/2}}.
+            \]
+            当方程有两个正根时，较大的根给出较小泄漏。
+          </div>
+          <div class="proof">
+            <strong>极小条件的推导</strong>
+            写 \(x=A^2\)、\(y=C^2\)、\(t=r^2\)，并令
+            \(K=I_0^2/[16(\sqrt2-1)^2]=tx^2y\)。则
+            \(L_{\rm out}^2=4\sqrt5K/(tx)\)，所以要最大化 \(tx\)。
+            能量约束写成
+            \[
+              4x+4tx+\frac{2\sqrt2K}{t x^2}=1.
+            \]
+            在最大可行的 \(tx\) 处，关于 \(x\) 的两项达到切触，给出 \(y=\sqrt2x\)。代回即得到一元方程。
+          </div>
+          <p>
+            取原中心场归一化后的 \(I_0=0.00698378373656\)。两个根为
+            \(t_-=0.00649520\) 与 \(t_+=32.22030867\)。大根给出
+          </p>
+          <div class="equation">
+            \[
+              r=5.67629357,\quad A=0.0854728220,\quad C=0.1016448881,
+              \quad \Xi=3.72044852.
+            \]
+          </div>
+          <p>
+            原中心振幅的 \(\Xi=53.1584\)。十二参数 SLSQP 使用解析梯度和 12 个独立起点，
+            找到同一目标值 \(\Xi=3.72044852\)，但这项数值一致性不是全十二参数的全局最优证明。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>保留的注入比例</th><th>\(L_{\rm out}^2\)</th><th>\(\Psi\)</th><th>\(\Xi\)</th></tr></thead>
+              <tbody>
+                <tr><td>原振幅</td><td>0.1378241</td><td>0.0188117</td><td>53.1584</td></tr>
+                <tr><td>1.00</td><td>0.000675106</td><td>0.268785</td><td>3.72045</td></tr>
+                <tr><td>0.75</td><td>0.000373810</td><td>0.270911</td><td>3.69125</td></tr>
+                <tr><td>0.50</td><td>0.000163620</td><td>0.272987</td><td>3.66318</td></tr>
+                <tr><td>0.25</td><td>0.0000403037</td><td>0.275016</td><td>3.63615</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="dense">
+          <div class="section-no">05 / Lifting back to dense packets</div>
+          <h2>改良在光滑稠密包中仍然存在</h2>
+          <p>
+            把大根候选缩放到原中心振幅的临界范数，得到
+          </p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              c_1^*&=(0,0.419967696,-2.383859932),\\
+              c_2^*&=(0.419967696,0,-2.383859932),\\
+              c_3^*&=(0,0,-0.499428572i).
+            \end{aligned}
+            \]
+          </div>
+          <p>
+            用这些振幅替换 R0.4 的六个 bump 中心，并保持同一 Leray 投影、\(\delta=0.04\) 与格点抽样。
+            在每个测试 \(N\) 上，输入 \(\dot H^{1/2}\) 范数和三线性量与原剖面在数值精度内相同。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(N\)</th><th>原泄漏占比</th><th>候选泄漏占比</th><th>原 \(\Xi\)</th><th>候选 \(\Xi\)</th></tr></thead>
+              <tbody>
+                <tr><td>30</td><td>0.88295</td><td>0.19455</td><td>54.35</td><td>4.071</td></tr>
+                <tr><td>60</td><td>0.88881</td><td>0.29128</td><td>58.41</td><td>6.514</td></tr>
+                <tr><td>80</td><td>0.88742</td><td>0.27244</td><td>58.09</td><td>6.069</td></tr>
+                <tr><td>100</td><td>0.88899</td><td>0.29387</td><td>58.27</td><td>6.555</td></tr>
+                <tr><td>120</td><td>0.88796</td><td>0.27991</td><td>58.24</td><td>6.248</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            候选没有使泄漏消失，但把尺度稳定的逃逸/注入比降低约 \(9.3\) 倍。
+            这说明 R0.5 原剖面的快速失相主要与振幅几何有关，而不是非零临界注入不可避免的同阶代价。
+          </p>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical-packet-leakage.mjs">查看稠密泄漏脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/triad_leakage_variation.py">查看解析梯度与变分脚本</a>。
+          </p>
+        </section>
+
+        <section id="dynamics">
+          <div class="section-no">06 / Dynamics of the improved packet</div>
+          <h2>相干增长延长到 \(\tau\approx0.05\)</h2>
+          <p>
+            为与 R0.5 对照，我仍使用 \(N=10,\delta=0.12\)、\(|k_j|\le15\) 和 \(48^3\) 去混叠网格。
+            两个未缩放剖面具有相同的初始 \(E_{1/2}\) 和 \(\mathfrak T\)，但候选的 \(\dot H^{3/2}\) 耗散较低。
+            每组都取自身黏性阈值的 \(1.2\) 倍。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>量</th><th>原剖面</th><th>改良候选</th></tr></thead>
+              <tbody>
+                <tr><td>初始 \(E_{1/2}\)</td><td>256.7980</td><td>256.7981</td></tr>
+                <tr><td>初始 \(\mathfrak T\)</td><td>−98.5059</td><td>−98.5059</td></tr>
+                <tr><td>初始 \(\|b\|_{\dot H^{3/2}}^2\)</td><td>40,748.3</td><td>26,455.9</td></tr>
+                <tr><td>临界幅度 \(\rho_c\)</td><td>41,366.4</td><td>26,857.1</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(\tau\)</th><th>原 \(E_{1/2}\)</th><th>候选 \(E_{1/2}\)</th><th>原 \(\mathfrak T\)</th><th>候选 \(\mathfrak T\)</th><th>候选支撑外</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>256.798</td><td>256.798</td><td>−98.506</td><td>−98.506</td><td>0%</td></tr>
+                <tr><td>0.005</td><td>256.798</td><td>258.350</td><td>−36.593</td><td>−164.699</td><td>0.015%</td></tr>
+                <tr><td>0.010</td><td>251.883</td><td>261.647</td><td>+49.288</td><td>−218.695</td><td>0.053%</td></tr>
+                <tr><td>0.025</td><td>236.324</td><td>276.874</td><td>−16.514</td><td>−292.133</td><td>0.238%</td></tr>
+                <tr><td>0.050</td><td>216.244</td><td>293.125</td><td>+7.998</td><td>−167.844</td><td>1.344%</td></tr>
+                <tr><td>0.100</td><td>188.342</td><td>232.426</td><td>−6.075</td><td>+140.802</td><td>8.150%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            候选的 \(E_{1/2}\) 到 \(\tau=0.05\) 增加约 \(14.1\%\)，且三线性量保持有利符号；
+            原剖面在 \(\tau=0.01\) 已首次换号。候选到 \(\tau=0.1\) 时也已换号，能量低于初值，
+            所以改良只是延长瞬时增长，没有产生持续级联。
+          </p>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/optimized_packet_dynamics.py">查看动力学比较脚本</a>。
+          </p>
+        </section>
+
+        <section id="checks">
+          <div class="section-no">07 / Verification and limitations</div>
+          <h2>哪些部分可证明，哪些仍是计算</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>解析梯度</span>
+              <strong>与中心差分一致</strong>
+              <p>能量、三线性量和泄漏平方的方向导数相对差均低于 \(2\times10^{-8}\)。</p>
+            </div>
+            <div class="status-item">
+              <span>多起点复算</span>
+              <strong>恢复同一子族值</strong>
+              <p>12 个独立起点的全参数 SLSQP 恢复 \(\Psi=0.268784797\) 和 \(L_{\rm out}^2=0.0006751063\)。</p>
+            </div>
+            <div class="status-item">
+              <span>动力学时间步</span>
+              <strong>\(\tau=0.05\) 稳定</strong>
+              <p>时间步减半后四项主指标的最大相对差为 \(4.7\times10^{-7}\)。</p>
+            </div>
+            <div class="status-item">
+              <span>网格与截断</span>
+              <strong>改良不是混叠现象</strong>
+              <p>网格嵌入差约机器精度；截断从 15 降到 13 的最大相对差为 \(3.6\times10^{-8}\)。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>尚未完成</strong>
+            全十二参数问题没有全局下界证明；稠密包只有有限 \(N\) 收敛数据；动力学只有有限 Galerkin 截断，
+            也没有给出随 \(N\) 和截断统一的 PDE 误差。尤其不能把 \(14.1\%\) 的短时增长外推到奇性形成。
+          </div>
+        </section>
+
+        <section id="result">
+          <div class="section-no">08 / What this changes</div>
+          <h2>泄漏可以降低，但不能同时消失</h2>
+          <div class="proof result">
+            <strong>本步结论</strong>
+            对当前近对角几何，保持临界注入时可以通过 2D3C 振幅排列显著降低一阶频谱泄漏，
+            并把有限维增长延长一个可分辨的抛物时间。原剖面的快速失相不是普适障碍。
+          </div>
+          <p>
+            解析候选靠近平面型结构：\(r\) 很大，而闭合模态只保留垂直分量。
+            当这个结构进一步趋向精确非相互作用极限时，注入公式也趋于零。
+            这与有限模态分类的定性图景相容，并提示存在一个“非零注入迫使正泄漏”的定量权衡。
+          </p>
+          <p>这项工作没有证明：</p>
+          <ul>
+            <li>\(\Xi\ge3.72044852\) 对全部六模态振幅成立；</li>
+            <li>同一常数适用于任意近对角频率包；</li>
+            <li>改良候选在 \(N\to\infty\) 的完整 Navier–Stokes 流中保持 \(O(1)\) 时间；</li>
+            <li>临界范数可以无限增长；</li>
+            <li>存在或不存在有限时奇性。</li>
+          </ul>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next check</div>
+          <h2>R0.7：全六模态泄漏下界与调制方程</h2>
+          <p>下一步把目前的子族命题推进到完整中心振幅空间，并把瞬时极小改为时间区间上的控制。</p>
+          <ol>
+            <li>利用空间平移、整体符号和振幅缩放消去冗余参数，把十二实参数降维。</li>
+            <li>尝试证明固定 \(E\) 与 \(|\mathfrak T|\) 时，\(L_{\rm out}\) 的全六模态正下界；先做符号消元，再考虑半代数/SOS 证书。</li>
+            <li>对大根 2D3C 候选推导切向调制 ODE 与法向线性化，解释 \(\tau\approx0.05\) 后换号的具体模态。</li>
+            <li>把目标从 \(t=0\) 的 \(\Xi\) 改为时间积分
+              \[
+                \mathcal G_T=\int_0^T[-\mathfrak T(u(\tau))-\nu\|u(\tau)\|_{\dot H^{3/2}}^2],d\tau,
+              \]
+              检查瞬时最优是否也是短时增长最优。
+            </li>
+            <li>只有在获得随 \(N\) 与 Galerkin 截断统一的估计后，才讨论完整 PDE 的含义。</li>
+          </ol>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              N. Kishimoto and T. Yoneda, “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,”
+              <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022).
+              <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；
+              <a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。
+            </li>
+            <li>
+              M. Núñez, “Invariant subspaces of the periodic Navier–Stokes and magnetohydrodynamics equations: Symmetries and inverse cascades,”
+              <em>Journal of Mathematical Physics</em> 41 (2000), 6193–6204.
+              <a href="https://doi.org/10.1063/1.1287920">DOI</a>。
+            </li>
+            <li>
+              H. Fujita and T. Kato, “On the Navier–Stokes initial value problem. I,”
+              <em>Archive for Rational Mechanics and Analysis</em> 16 (1964), 269–315.
+              <a href="https://doi.org/10.1007/BF00276188">DOI</a>。
+            </li>
+            <li>
+              T. Kato, “Strong \(L^p\)-solutions of the Navier–Stokes equation in \(\mathbb R^m\), with applications to weak solutions,”
+              <em>Mathematische Zeitschrift</em> 187 (1984), 471–480.
+              <a href="https://eudml.org/doc/173504">EuDML</a>。
+            </li>
+            <li>
+              F. Waleffe, “The nature of triad interactions in homogeneous turbulence,”
+              <em>Physics of Fluids A</em> 4 (1992), 350–363.
+              <a href="https://doi.org/10.1063/1.858309">DOI</a>。
+            </li>
+            <li>
+              S. A. Orszag, “Numerical Simulation of Incompressible Flows Within Simple Boundaries. I. Galerkin (Spectral) Representations,”
+              <em>Studies in Applied Mathematics</em> 50 (1971), 293–327.
+              <a href="https://doi.org/10.1002/sapm1971504293">DOI</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.6 · 固定注入下的频谱泄漏优化</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-5.html">上一篇 R0.5</a> · <a href="/notes/r0-6.pdf">PDF</a> · <a href="/">主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

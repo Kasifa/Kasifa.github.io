@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.12：对三门极化接力做完整双壳五阶 Fourier–Taylor 递推。完整频率路径改变下一壳系数的符号并占据主导，目标能量比例降至约 1.99%。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.12｜双壳五阶展开与完整频率回路">
+  <meta property="og:description" content="指定接力的第五阶系数为负；完整 Fourier 递推得到相反符号和约 759 倍幅值，但约 98% 的同阶临界能量位于目标频率之外。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.12｜双壳五阶展开与完整频率回路</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      section#comparison,section#heat { break-before:page; }
+      section#references { break-before:page; } .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-12.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.12 · 双壳短时动力学</div>
+        <h1>双壳五阶展开与完整频率回路</h1>
+        <p class="lead">
+          我把 R0.11 的三个有向中心门放回真实 Fourier 二次项，并保留到第五阶出现的全部频率。
+          指定的一维接力仍能在投影模型中精确出现，但完整递推在下一壳产生相反符号、约大
+          \(759\) 倍的系数。这个较大系数来自被删掉的频率回路；同阶临界能量约有 \(98\%\)
+          位于目标频率之外。因此，它不是原接力得到增强，而是原接力不再描述主导短时路径。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 有限阶递推可复核，PDE 余项未估计</span>
+        <strong>目标频率保留，指定机制失去主导</strong>
+        <p>版本 v0.12 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：双壳 Fourier–Taylor 系数</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#setup">01 · 双壳初值</a></li>
+          <li><a href="#scaling">02 · 时间与幅度</a></li>
+          <li><a href="#leakage">03 · 首阶泄漏</a></li>
+          <li><a href="#variation">04 · 极化变分</a></li>
+          <li><a href="#recurrence">05 · 五阶递推</a></li>
+          <li><a href="#leaves">06 · 六叶频率恒等式</a></li>
+          <li><a href="#comparison">07 · 完整与投影</a></li>
+          <li><a href="#heat">08 · 热时间顺序</a></li>
+          <li><a href="#value">09 · 结论的价值</a></li>
+          <li><a href="#next">10 · 下一步</a></li>
+          <li><a href="#reproduce">11 · 复现</a></li>
+          <li><a href="#references">12 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>第五阶到达目标，但不是沿预定线路到达</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>CALCULATED</span><strong>首阶泄漏有稳定极限</strong><p>R0.11 极化的非线性泄漏/目标比趋于 \(14\varepsilon^2+2\varepsilon^4\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>两个差频零点固定极化</strong><p>固定两个翼门和单位长度后，同时消去两个差频的候选只有 R0.11 的镜像选择。</p></div>
+            <div class="status-item"><span>CALCULATED</span><strong>完整第五阶改变符号</strong><p>指定接力系数趋于 \(-0.13778\varepsilon^2\)；完整系数在有限层稳定于 \(+104.53416\varepsilon^2\)。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>没有有限时间 PDE 控制</strong><p>第五阶 Taylor 余项、稠密包极限和逐壳重复都没有估计。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>本笔记的结论。</strong>
+            一维接力不是完整 Navier–Stokes 双壳动力学的低阶主导项。
+            外部频率路径会回到同一个下一壳波数，并在第五阶压倒指定路径；与此同时，绝大多数同阶能量仍留在目标之外。
+            所以后续不能只给中心门增加一个误差项，而要先分类这些替代路径的符号、极化和能量代价。
+          </div>
+          <p>
+            这里的“完整”只指：从给定有限 Fourier 初值出发，递推中不删除任何生成频率，并算到五阶。
+            它不指完整时间区间上的 PDE 解。我没有证明有限层数列的解析极限，也没有完成文献优先权检索。
+          </p>
+        </section>
+
+        <section id="setup">
+          <div class="section-no">01 / Two-shell initial polynomial</div>
+          <h2>旧壳双泵与新壳双催化</h2>
+          <p>
+            记 \(x=4^n\)。频率仍取自
+            \(M=I+\mathbf1\mathbf1^\top\) 生成的锥链。
+            旧壳放入 \(P_{n-1},Q_{n-1}\)，新壳预置 \(b_n,d_n\)。正频率初值为
+          </p>
+          <div class="equation">
+
+            \[
+              U_0(P_{n-1})=\widehat\pi_{n-1},\qquad
+              U_0(Q_{n-1})=\widehat\theta_{n-1},
+            \]
+            \[
+              U_0(b_n)=\varepsilon B_n,\qquad
+              U_0(d_n)=\varepsilon D_n,
+            \]
+          </div>
+          <p>
+            负频率系数取复共轭，因此场为实值；每个极化都在对应波数的正交平面内。
+            \(B_n,D_n\) 是 R0.11 中同时消去 \(a_n-b_n\) 与 \(a_n-d_n\) 中心差频的单位镜像极化。
+            本文主表取 \(\varepsilon=0.2\)。
+          </p>
+          <p>
+            二次项采用
+
+            \[
+              \mathcal B(U,V)_k
+              =i\mathbb P_k\!\sum_{p+q=k}(q\cdot U_p)V_q.
+            \]
+
+            程序对每一阶检查共轭对称和 \(k\cdot U_m(k)=0\)。第八层的最大残差分别为
+            \(2.7\times10^{-12}\) 与 \(1.2\times10^{-10}\)。
+          </p>
+        </section>
+
+        <section id="scaling">
+          <div class="section-no">02 / Scaling convention</div>
+          <h2>系数一模型对应很大的稀疏 Fourier 幅度</h2>
+          <p>
+            设 \(\tau=x^2t\)，并写物理 Fourier 系数为
+            \(\widehat u_k(t)=x^2U_k(\tau)\)。则真实 Navier–Stokes 方程变为
+          </p>
+          <div class="equation">
+            \[
+              \partial_\tau U_k
+              =-\frac{|k|^2}{x^2}U_k-\mathcal B(U,U)_k.
+            \]
+          </div>
+          <p>
+            因而本文的非线性强度 \(\gamma=1\) 是一个精确缩放，但它对应单个 Fourier 模态的物理幅度 \(x^2\)。
+            若只给稀疏单模态临界缩放 \(x\)，同一方程中的非线性强度是
+            \(\gamma=x^{-1}\)。这一区别不能省略：后面的第五阶产生量按 \(\gamma^5\) 缩放。
+          </p>
+          <div class="proof warning">
+            <strong>解释边界。</strong>
+            R0.10 的稠密包希望用配对重数补回稀疏模型缺少的强度。
+            目前还没有证明稠密包包络满足这里的 \(\gamma=1\) 双壳方程。
+            所以本文同时可读作“大幅度稀疏 Fourier 多项式的精确短时系数”与“尚未导出的稠密包有效模型测试”。
+          </div>
+        </section>
+
+        <section id="leakage">
+          <div class="section-no">03 / First nonlinear output</div>
+          <h2>小催化幅度只推迟泄漏，不会消去它</h2>
+          <p>
+            先排除热项，只看 \(\mathcal B(U_0,U_0)\)。以旧壳双泵产生的
+            \(\pm a_n\) 临界能量为分母，外部输出分成泵—催化项与催化—催化项。
+            两组输出支撑分离，因此没有三次交叉项：
+          </p>
+          <div class="equation">
+            \[
+              R_n(\varepsilon)
+              =\alpha_n\varepsilon^2+\beta_n\varepsilon^4,
+              \qquad
+              \alpha_n\longrightarrow14,\qquad
+              \beta_n\longrightarrow2.
+            \]
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>n</th><th>\(\alpha_n\)</th><th>\(\beta_n\)</th><th>\(R_n(0.2)\)</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>13.08647840</td><td>2.00583943</td><td>0.526667</td></tr>
+              <tr><td>4</td><td>13.99612558</td><td>2.00002289</td><td>0.563045</td></tr>
+              <tr><td>6</td><td>13.99998486</td><td>2.00000009</td><td>0.563199</td></tr>
+              <tr><td>8</td><td>13.99999994</td><td>2.00000000</td><td>0.563200</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            因此 \(\varepsilon=0.2\) 时，仅非线性首阶输出中的目标比例趋于
+            \(1/(1+0.5632)=0.6397134\)。取更小的 \(\varepsilon\) 可以提高这个比例，
+            但下一壳的首次产生量正比于 \(\varepsilon^2\)。这是一项直接的幅度—泄漏交换。
+          </p>
+        </section>
+
+        <section id="variation">
+          <div class="section-no">04 / Polarization variation</div>
+          <h2>系数 14 是两个差频同时为零的代价</h2>
+          <p>
+            我允许 \(B\in b_n^\perp\)、\(D\in d_n^\perp\) 在各自的实二维平面内变化，
+            固定两个未来翼门输出仍等于 \(h_n\)，再最小化泵—催化首阶泄漏。
+            这是四个实坐标上的正定二次型约束问题。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>额外条件</th><th>候选数</th><th>极限泄漏系数</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>不要求单位长度</td><td>1</td><td>7.94612066</td><td>两个催化长度趋于 0.86709740；两个差频都恢复。</td></tr>
+              <tr><td>单位长度，消去一个差频</td><td>2</td><td>10.25</td><td>另一个差频缺陷趋于 \(\sqrt{3/2}\)。</td></tr>
+              <tr><td>单位长度，消去两个差频</td><td>1</td><td>14</td><td>正是 R0.11 的镜像极化。</td></tr>
+              <tr><td>单位长度，不消去差频</td><td>1</td><td>16.5</td><td>两个差频缺陷都趋于 \(\sqrt{3/2}\)。</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            原因很简单。每个差频映射在二维无散平面上有一条核线；固定单位长度和翼门符号后，核线只留下一个候选。
+            两个平面分别这样固定，便得到唯一的双差频零点。
+          </p>
+          <div class="proof warning">
+            <strong>不能把 10.25 当作无条件改进。</strong>
+            选择较小的首阶泄漏后，一个差频门会以不退化强度重新出现。
+            在完整五阶递推中，这个候选的下一壳系数不再位于目标一维线内；线外缺陷除以
+            \(\varepsilon^2\) 在第八层约为 \(4.20476\)。
+          </div>
+        </section>
+
+        <section id="recurrence">
+          <div class="section-no">05 / Taylor recurrence</div>
+          <h2>不删频率的普通幂级数递推</h2>
+          <p>写</p>
+          <div class="equation">
+            \[
+              U(\tau)=\sum_{m\ge0}U_m\tau^m,
+              \qquad
+              (m+1)U_{m+1}
+              =LU_m-\gamma\!\sum_{r+s=m}\mathcal B(U_r,U_s),
+            \]
+            \[
+              (LU)_k=-\frac{|k|^2}{x^2}U_k.
+            \]
+          </div>
+          <p>
+            完整递推保留右端产生的每个非零频率。比较用的“接力递推”则在每一步投影到
+
+            \[
+              \{\pm P_{n-1},\pm Q_{n-1},\pm b_n,\pm d_n,
+              \pm a_n,\pm P_n,\pm Q_n,\pm a_{n+1}\}.
+            \]
+
+            两者使用相同初值、热乘子和二维 Leray 投影；差别只有是否删除外部频率。
+          </p>
+          <p>
+            目标首次出现的阶数与有向图一致：\(a_n\) 在一阶，\(P_n,Q_n\) 在二阶，
+            \(a_{n+1}\) 在五阶。但“首次阶数一致”并不意味着“产生路径一致”。
+          </p>
+        </section>
+
+        <section id="leaves">
+          <div class="section-no">06 / Six-leaf frequency identities</div>
+          <h2>第五阶目标有三类初始叶计数</h2>
+          <p>
+            五个二次节点连接六个初始叶。枚举所有带符号的六叶频率表示后，
+            \(a_{n+1}\) 只有以下三个净计数解；坐标顺序为
+            \((P_{n-1},Q_{n-1},b_n,d_n)\)：
+          </p>
+          <div class="equation">
+            \[
+              (1,3,2,0),\qquad(2,2,1,1),\qquad(3,1,0,2).
+            \]
+          </div>
+          <p>
+            中间一项是预定接力：两份 \(P_{n-1}\)、两份 \(Q_{n-1}\)、一份 \(b_n\)、一份 \(d_n\)。
+            另外两项只使用一种催化频率。三类都恰含两个催化叶，所以完整的第五阶目标系数严格正比于
+            \(\varepsilon^2\)。它们还都需要五个非线性节点，因此热算子不能进入这个首次目标系数。
+          </p>
+          <p>
+            这项整数恒等式解释了为什么减小 \(\varepsilon\) 不能改变完整路径与指定路径的相对大小；
+            两者都乘同一个 \(\varepsilon^2\)。
+          </p>
+        </section>
+
+        <section id="comparison">
+          <div class="section-no">07 / Full versus projected relay</div>
+          <h2>外部路径回到目标线，并反转第五阶符号</h2>
+          <p>
+            以 \(i\widehat\eta_n\) 为 \(a_{n+1}\) 的目标复方向。接力投影的第五阶标量有闭式公式
+          </p>
+          <div class="equation">
+            \[
+              D_n(\varepsilon)
+              =-\frac{g_n g_{n-1}^2h_n^2}{20}\,\varepsilon^2
+              \longrightarrow
+              -\frac{(3/2)^{5/2}}{20}\,\varepsilon^2
+              \approx-0.1377837980\,\varepsilon^2.
+            \]
+          </div>
+          <p>
+            完整递推得到 \(C_n\varepsilon^2\)。由于坐标 \(2\leftrightarrow3\) 的对称性，
+            它仍精确落在 \(i\widehat\eta_n\) 线上；但数值和符号完全不同。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>n</th><th>\(C_n\)</th><th>\(C_n/(D_n/\varepsilon^2)\)</th><th>五阶目标能量比例，\(\varepsilon=0.2\)</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>97.49292185</td><td>−714.6742</td><td>2.2190%</td></tr>
+              <tr><td>3</td><td>104.07378264</td><td>−755.8138</td><td>2.0032%</td></tr>
+              <tr><td>4</td><td>104.50530544</td><td>−758.5028</td><td>1.9876%</td></tr>
+              <tr><td>6</td><td>104.53404908</td><td>−758.6818</td><td>1.9866%</td></tr>
+              <tr><td>8</td><td>104.53416138</td><td>−758.6825</td><td>1.9866%</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            在 \(\varepsilon=0.2,n=8\) 时，接力投影给出 \(-0.0055113519\)，完整递推给出
+            \(+4.1813664551\)。有限层数值强烈稳定，但我尚未把 \(C_n\) 的极限写成解析闭式，
+            因而不把 \(104.5341618\) 标成已证明常数。
+          </p>
+          <h3>目标频率不是主要能量位置</h3>
+          <p>
+            第六层计算使用 \(10^{-8}\) 的零值裁剪。完整递推的支撑数为
+            \(8,24,68,156,300,508\)。目标能量比例为：
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Taylor 阶</th><th>指定目标</th><th>目标 \(\dot H^{1/2}\) 能量比例</th><th>外部/目标</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>\(\pm a_n\)</td><td>63.5423%</td><td>0.5738</td></tr>
+              <tr><td>2</td><td>\(\pm P_n,\pm Q_n\)</td><td>18.1812%</td><td>4.5002</td></tr>
+              <tr><td>5</td><td>\(\pm a_{n+1}\)</td><td>1.9866%</td><td>49.3374</td></tr>
+            </tbody>
+          </table></div>
+          <div class="proof warning">
+            <strong>解释。</strong>
+            完整路径确实产生很大的目标频率系数，但它同时产生更大的外部频率族。
+            这不是封闭级联，也没有显示临界范数增长。它只说明：删除外部频率会删除随后回到目标的主导相互作用树。
+          </div>
+        </section>
+
+        <section id="heat">
+          <div class="section-no">08 / Heat timing</div>
+          <h2>下一壳的热率是旧泵的 64 倍</h2>
+          <p>在 \(\tau=x^2t\) 中，各命名频率的热率趋于</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>频率</th><th>\(|k|^2/x^2\) 的极限</th></tr></thead>
+            <tbody>
+              <tr><td>\(P_{n-1},Q_{n-1}\)</td><td>\(1/12\)</td></tr>
+              <tr><td>\(a_n,b_n,d_n\)</td><td>\(1/3\)</td></tr>
+              <tr><td>\(P_n,Q_n\)</td><td>\(4/3\)</td></tr>
+              <tr><td>\(a_{n+1}\)</td><td>\(16/3\)</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            作为基线，我另外解了只保留三个前向门、但对每个门使用精确热半群的三角系统。
+            当 \(\varepsilon=0.2,\gamma=1\) 时，下一壳振幅在
+            \(\tau=2.83506286\) 达到最大值 \(0.00375296584\)。这个系统的振幅严格按
+            \(\gamma^5\) 缩放，最大时刻与 \(\gamma\) 无关。
+          </p>
+          <p>
+            因此，在稀疏单模态缩放 \(\gamma=x^{-1}\) 下，该基线的下一壳最大振幅按 \(x^{-5}\) 消失。
+            要让双壳机制在临界尺度上保留 \(O(1)\) 强度，稠密配对必须补回这一因子，同时还要控制完整递推显示的外部路径。
+          </p>
+          <div class="proof warning">
+            <strong>这不是完整轨道估计。</strong>
+            三角热系统主动删除了反向边和全部外部频率，只用于确定指定接力自身的时间尺度。
+            完整 Fourier 方程在 \(\tau\approx1\) 的 Taylor 余项没有估计，不能用五阶多项式替代真实解。
+          </div>
+        </section>
+
+        <section id="value">
+          <div class="section-no">09 / Research value</div>
+          <h2>这一步排除了什么，也留下了什么</h2>
+          <h3>已经排除</h3>
+          <ul>
+            <li>不能把 R0.11 的三个中心门当作完整双壳方程的主导低阶闭合。</li>
+            <li>不能只靠缩小催化幅度提高相对纯度；目标与替代第五阶路径都含两个催化叶。</li>
+            <li>不能把较大的完整目标系数直接解释为有效级联；同阶外部能量约为目标的 \(49.34\) 倍。</li>
+            <li>稀疏临界幅度下，指定接力的热归一化强度仍按 \(x^{-5}\) 消失。</li>
+          </ul>
+          <h3>仍值得保留</h3>
+          <ul>
+            <li>完整第五阶系数因对称性回到正确的一维极化线，说明外部路径并非纯随机噪声。</li>
+            <li>六叶计数只有三个类型，为解析分组和符号消去提供了有限清单。</li>
+            <li>极化变分把“首阶泄漏较小”与“差频消失”之间的代价量化为 \(10.25\) 对 \(14\)。</li>
+          </ul>
+          <p>
+            这些结果对千禧年问题的价值仍然是间接的：它们改善了一个候选频率级联机制的可证伪性，
+            没有提供奇性解、正则性估计或 Clay 命题的任何一方证明。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">10 / Next step</div>
+          <h2>R0.13：把第五阶树按三类叶计数完全分解</h2>
+          <p>下一步不立即增加壳数。我先处理已经出现的有限问题：</p>
+          <ol>
+            <li>把所有到达 \(a_{n+1}\) 的五阶二叉相互作用树，按三类六叶计数和中间频率轨道分组。</li>
+            <li>在 \(n\to\infty\) 的领先几何中求 \(C_n\) 的解析极限，并分别给出每组的符号。</li>
+            <li>对同阶外部频率建立极化分块与 \(\dot H^{1/2}\) 能量矩阵，寻找可证明的消去下界。</li>
+            <li>只有在目标/外部比能够改善后，才把候选重新提升为稠密包并估计包宽误差。</li>
+          </ol>
+          <p>
+            如果第三项给出严格正下界，这条接力路线会得到一个更强的有限阶障碍；
+            如果存在核方向，则会得到下一版可检验的极化候选。两种结果都比直接做长时间数值积分更有信息。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">11 / Reproduction</div>
+          <h2>脚本与数值口径</h2>
+          <p>
+            复现脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/two_shell_taylor.py"><code>research/two_shell_taylor.py</code></a>。
+            它生成双壳初值、首阶泄漏二次型、四个单位极化候选、完整与接力五阶系数、六叶整数解和精确指数热基线。
+          </p>
+          <div class="equation mono">
+            python3 research/two_shell_taylor.py --check
+          </div>
+          <p>
+            默认检查 \(n=2,\ldots,8\)，\(\varepsilon=0.2\)。
+            所有有限阶计算使用双精度；小于 \(10^{-8}\) 的系数被当作代数零裁剪。
+            页面中的“趋于”若未附解析公式，均只表示有限层表格稳定，不表示已证明收敛。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">12 / Primary sources</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">C. Fefferman, <em>Existence and Smoothness of the Navier–Stokes Equation</em></a>。Clay 正式问题说明；本文没有解决其中任何命题。</li>
+            <li><a href="https://doi.org/10.1063/1.858309">F. Waleffe, <em>The Nature of Triad Interactions in Homogeneous Turbulence</em></a>, Physics of Fluids A 4 (1992), 350–363。Fourier 螺旋三波作用的原始分析。</li>
+            <li><a href="https://www.ams.org/journals/jams/2016-29-03/S0894-0347-2015-00838-4/">T. Tao, <em>Finite Time Blowup for an Averaged Three-Dimensional Navier–Stokes Equation</em></a>, JAMS 29 (2016), 601–674。说明级联电路必须依赖真实非线性结构，而不能只依赖能量消去和一般双线性估计。</li>
+            <li><a href="https://doi.org/10.1016/0022-1236(89)90015-3">C. Foias &amp; R. Temam, <em>Gevrey Class Regularity for the Solutions of the Navier–Stokes Equations</em></a>, JFA 87 (1989), 359–369。强解空间解析性的经典来源；本文只计算形式有限阶系数，不使用其建立统一余项。</li>
+            <li><a href="/notes/r0-11.html">R0.11：三门极化接力与反向边障碍</a>。本笔记的频率、极化和门系数定义来自这里。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>Navier–Stokes 开放研究日志</strong>个人计算记录，不代表同行评议结论。</span>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-12.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

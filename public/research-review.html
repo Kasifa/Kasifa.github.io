@@ -1839,7 +1839,34 @@
               <a href="/notes/r0-11.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_relay.py">查看复现脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.12：</strong>保留每个频率的完整二维无散平面，计算前五个 Taylor/Picard 系数和门间热时间顺序。</p>
+            <p><strong style="color:var(--gold)">R0.12 已完成：</strong>完整五阶 Fourier 递推显示，外部频率路径会回到下一壳目标并压倒指定接力，但同阶约 98% 的临界能量仍位于目标之外。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.12 · 2026-08-16</p>
+            <h3>双壳五阶展开与完整频率回路</h3>
+            <p>
+              我从旧壳双泵和新壳双催化的八个有符号模态出发，不删除二次项生成的外部频率，
+              递推普通幂级数到第五阶。R0.11 极化的首阶非线性泄漏/目标比趋于
+              \(14\varepsilon^2+2\varepsilon^4\)。
+            </p>
+            <p>
+              只保留命名接力频率时，下一壳第五阶系数趋于
+              \(-0.1377837980\varepsilon^2\)。
+              完整递推却在有限层稳定于 \(+104.5341618\varepsilon^2\)：符号相反，幅值约大 759 倍。
+              六叶频率计数表明，另外两类相互作用树使用同样的两个催化叶，因此缩小催化幅度不能改变这项相对优势。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>较大的完整系数不等于封闭级联。
+              在 \(\varepsilon=0.2\) 的第五阶系数中，下一壳目标只占约 1.99% 的
+              \(\dot H^{1/2}\) 能量；Taylor 余项、稠密包极限和逐壳重复都没有控制。
+            </p>
+            <p>
+              <a href="/notes/r0-12.html"><strong>阅读 R0.12 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-12.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/two_shell_taylor.py">查看复现脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.13：</strong>把到达下一壳的五阶相互作用树按三类六叶计数完全分解，并求目标系数和同阶外部能量的解析极限。</p>
           </div>
         </section>
 

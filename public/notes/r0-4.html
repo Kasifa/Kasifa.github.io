@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.4：用连续频谱剖面的格点抽样构造稠密近对角 Fourier 频率包，并证明临界三线性比值不随尺度衰减。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.4｜稠密近对角频率包的尺度下界">
+  <meta property="og:description" content="一个标准的缩放与 Riemann 和构造表明：近对角临界三线性比值不具有统一的高频衰减因子。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.4｜稠密近对角频率包的尺度下界</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: rgba(242, 237, 223, .97);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: var(--ink); color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: var(--paper); }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      html, body, main, .layout, article { height: auto; margin-bottom: 0; padding-bottom: 0; }
+      body { background: white; color: black; font-size: 10pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 26px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 18px 0; padding: 18px; }
+      .proof { margin: 18px 0; padding: 15px 18px; }
+      th, td { padding: 9px 11px; }
+      .refs li { padding-top: 10px; padding-bottom: 10px; }
+      article > section:last-child { margin-bottom: 0; }
+      footer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-4.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.4 · 稠密频率包</div>
+          <h1>稠密近对角频率包的尺度下界</h1>
+          <p class="lead">
+            我把 R0.3 的单三元组扩展为含 \(O(N^3)\) 个模态的真实无散 Fourier 频率包。
+            一个标准的格点抽样论证表明：近对角临界三线性比值可以在高频极限保持正的常数量级。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">笔记状态 · 命题与代码已复查</span>
+          <strong>尺度下界，不是奇性构造</strong>
+          <p>版本 v0.4 · 2026-08-16<br>目标域：\(\mathbb T^3_{2\pi}\)<br>对象：临界三线性型</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>目录</strong>
+        <ol>
+          <li><a href="#status">00 · 结论状态</a></li>
+          <li><a href="#form">01 · 临界三线性型</a></li>
+          <li><a href="#proposition">02 · 稠密包命题</a></li>
+          <li><a href="#profile">03 · 非零剖面</a></li>
+          <li><a href="#sampling">04 · 格点抽样</a></li>
+          <li><a href="#limit">05 · 极限证明</a></li>
+          <li><a href="#consequence">06 · 排除的估计</a></li>
+          <li><a href="#computation">07 · 有限 \(N\) 检查</a></li>
+          <li><a href="#result">08 · 结论边界</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这份笔记得到什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>稠密近对角序列</strong>
+              <p>存在真实无散场 \(u_N\)，其活跃模态数为 \(O(N^3)\)，并全部位于固定相对宽度的高频环带。</p>
+            </div>
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>临界比值不衰减</strong>
+              <p>\(|\mathfrak T(u_N)|/(\|u_N\|_{\dot H^{1/2}}\|u_N\|_{\dot H^{3/2}}^2)\) 收敛到正常数。</p>
+            </div>
+            <div class="status-item">
+              <span>得到的排除</span>
+              <strong>没有统一的 \(N\)-增益</strong>
+              <p>只依赖“频率很高且彼此近对角”不能产生趋于零的改进常数。</p>
+            </div>
+            <div class="status-item">
+              <span>尚未解决</span>
+              <strong>动力学可持续性</strong>
+              <p>构造只描述一个时刻，没有证明 Navier–Stokes 演化会长期保持这种相位排列。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>说明</strong>
+            下面的命题是标准缩放、频谱局部化和 Riemann 和的组合。我没有把它写成新定理。
+            它证明常规临界三线性估计在尺度阶数上不能统一改进，但没有给出奇性、增长轨道或大数据先验界。
+          </div>
+        </section>
+
+        <section id="form">
+          <div class="section-no">01 / The critical trilinear form</div>
+          <h2>需要检验的量</h2>
+          <p>
+            在 \(\mathbb T^3_{2\pi}\) 上使用归一化 \(L^2\) 内积，并写
+            \(u(x)=\sum_{k\in\mathbb Z^3}\widehat u(k)e^{ik\cdot x}\)。
+            对真实无散场定义
+          </p>
+          <div class="equation">
+            \[
+              \mathfrak T(u)
+              =\operatorname{Re}\langle\Lambda u,(u\cdot\nabla)u\rangle
+              =\operatorname{Re}\!\sum_{k=p+q}
+              |k|\,\overline{\widehat u(k)}\cdot
+              i\,(q\cdot\widehat u(p))\widehat u(q).
+            \]
+          </div>
+          <p>标准 Sobolev 嵌入和插值给出</p>
+          <div class="equation">
+            \[
+              |\mathfrak T(u)|
+              \le \|\Lambda u\|_{L^3}\|u\|_{L^6}\|\nabla u\|_{L^2}
+              \le C\|u\|_{\dot H^{3/2}}\|u\|_{\dot H^1}^2
+              \le C\|u\|_{\dot H^{1/2}}\|u\|_{\dot H^{3/2}}^2.
+            \]
+          </div>
+          <p>
+            R0.2 已把远离对角线的部分压低。R0.3 表明单三元组的三个异号螺旋类仍保留 \(O(1)\) 核。
+            这里检查壳重数与现实条件加入后，是否会重新产生一个随 \(N\) 衰减的因子。
+          </p>
+        </section>
+
+        <section id="proposition">
+          <div class="section-no">02 / Dense-packet proposition</div>
+          <h2>格点抽样命题</h2>
+          <div class="proof result">
+            <strong>命题 R0.4</strong>
+            存在常数 \(0\lt c\lt C\lt2c\) 和一列真实、光滑、无散、零均值周期场 \(u_N\)，使得
+            \[
+              \operatorname{supp}\widehat u_N
+              \subset\{k\in\mathbb Z^3:cN\le|k|\le CN\},
+              \qquad
+              \#\operatorname{supp}\widehat u_N\asymp N^3,
+            \]
+            并且
+            \[
+              \lim_{N\to\infty}
+              \frac{|\mathfrak T(u_N)|}
+              {\|u_N\|_{\dot H^{1/2}}\|u_N\|_{\dot H^{3/2}}^2}
+              =R_*>0.
+            \]
+          </div>
+          <p>
+            因为 \(C/c\lt2\)，每个有贡献的三元组的三条边都在同一固定相对宽度的环带中。
+            所以这个序列只使用近对角相互作用，不借助远距离壳耦合。
+          </p>
+        </section>
+
+        <section id="profile">
+          <div class="section-no">03 / A nonzero continuous profile</div>
+          <h2>从一个非零三元组开始</h2>
+          <p>取闭合三元组和复振幅</p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              &\kappa_1=(1,0,0),\quad
+              \kappa_2=(0,1,0),\quad
+              \kappa_3=(-1,-1,0),\\
+              &c_1=(0,1,-1-i),\quad
+              c_2=(-1,0,-1),\quad
+              c_3=(-1-i,1+i,1).
+            \end{aligned}
+            \]
+            <small>\(\kappa_j\cdot c_j=0\)，且三条边长为 \(1,1,\sqrt2\)。</small>
+          </div>
+          <p>
+            加上负波数处的共轭系数后得到实场。直接代入三元组公式，三个模态的能量传递比为
+            \((2,-3,1)\)。因此 \(L^2\) 加权和为零，而临界加权和为
+          </p>
+          <div class="equation">
+            \[
+              2-3+\sqrt2=\sqrt2-1\ne0.
+            \]
+          </div>
+          <p>
+            令 \(\psi\) 是单位球内非负、径向、中心值为 \(1\) 的 \(C^\infty\) bump，
+            \(\mathbb P_\xi=I-\xi\otimes\xi/|\xi|^2\)。对小参数 \(\delta>0\) 定义连续频谱剖面
+          </p>
+          <div class="equation">
+            \[
+              a_\delta(\xi)=\sum_{j=1}^3
+              \left[
+                \psi\!\left(\frac{\xi-\kappa_j}{\delta}\right)\mathbb P_\xi c_j
+                \psi\!\left(\frac{\xi+\kappa_j}{\delta}\right)\mathbb P_\xi\overline{c_j}
+              \right].
+            \]
+          </div>
+          <p>
+            它满足 \(\xi\cdot a_\delta(\xi)=0\) 和
+            \(a_\delta(-\xi)=\overline{a_\delta(\xi)}\)。
+            若 \(\delta\lt(2-\sqrt2)/3\)，其支撑包含在
+            \(1-\delta\le|\xi|\le\sqrt2+\delta\)，且环带比小于 \(2\)。
+          </p>
+          <div class="proof">
+            <strong>为什么连续三线性型非零</strong>
+            当 \(\delta\) 足够小时，六个 bump 两两分离；能闭合的支撑组合只来自上述三元组及其共轭。
+            对每个组合作 \(\xi=\kappa_j+\delta X\)、\(\eta=\kappa_\ell+\delta Y\) 的变量代换。
+            被积函数中的投影、长度和振幅连续收敛到中心值，而
+            \(\int\!\!\int\psi(X)\psi(Y)\psi(X+Y)\,dX\,dY>0\)。
+            因此
+            \[
+              \delta^{-6}\mathfrak T_{\mathbb R^3}(a_\delta)
+              \longrightarrow C_0,\qquad C_0\ne0.
+            \]
+            这里 \(C_0\) 是正重叠积分与中心三元组临界传递 \(\sqrt2-1\) 的一个非零实数倍。
+            于是某个充分小的固定 \(\delta\) 满足
+            \(\mathfrak T_{\mathbb R^3}(a_\delta)\ne0\)。
+          </div>
+        </section>
+
+        <section id="sampling">
+          <div class="section-no">04 / Lattice sampling</div>
+          <h2>把连续剖面放到周期格点</h2>
+          <p>固定一个使连续三线性型非零的剖面 \(a=a_\delta\)，并定义</p>
+          <div class="equation">
+            \[
+              \widehat u_N(k)=N^{-3/2}a(k/N),\qquad k\in\mathbb Z^3.
+            \]
+          </div>
+          <p>
+            因为 \(a\) 有紧支撑，每个 \(u_N\) 只有有限个 Fourier 模态，所以是光滑周期场。
+            剖面的现实条件和无散条件逐格点传递给 \(u_N\)。
+            支撑体积为正，标准格点计数还给出
+          </p>
+          <div class="equation">
+            \[
+              \#\operatorname{supp}\widehat u_N
+              =|\operatorname{supp}a|N^3+o(N^3).
+            \]
+          </div>
+          <p>
+            因子 \(N^{-3/2}\) 把离散和写成通常的三维 Riemann 和。
+            它不改变最终三线性比值，但让各个缩放量直接收敛。
+          </p>
+        </section>
+
+        <section id="limit">
+          <div class="section-no">05 / Riemann-sum limit</div>
+          <h2>范数和三线性型具有同一临界阶</h2>
+          <p>记</p>
+          <div class="equation">
+            \[
+              A_s(a)^2=\int_{\mathbb R^3}|\xi|^{2s}|a(\xi)|^2\,d\xi.
+            \]
+          </div>
+          <p>直接代入离散范数得到</p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              N^{-2s}\|u_N\|_{\dot H^s(\mathbb T^3)}^2
+              &=N^{-3}\sum_{k\in\mathbb Z^3}
+                |k/N|^{2s}|a(k/N)|^2\\
+              &\longrightarrow A_s(a)^2,\qquad s=\tfrac12,\tfrac32.
+            \end{aligned}
+            \]
+          </div>
+          <p>连续频谱三线性型写成</p>
+          <div class="equation">
+            \[
+              \mathfrak T_{\mathbb R^3}(a)
+              =\operatorname{Re}\!\int_{\mathbb R^3}\!\!\int_{\mathbb R^3}
+              |\xi+\eta|\,\overline{a(\xi+\eta)}\cdot
+              i\,(\eta\cdot a(\xi))a(\eta)\,d\xi\,d\eta.
+            \]
+          </div>
+          <p>
+            离散三线性和含有两个独立格点。每一项有一个导数因子和一个 \(\Lambda\) 因子，
+            三个 Fourier 系数共同给出 \(N^{-9/2}\)。因此
+          </p>
+          <div class="equation">
+            \[
+              N^{-7/2}\mathfrak T(u_N)
+              =N^{-6}\sum_{p,q\in\mathbb Z^3}F(p/N,q/N)
+              \longrightarrow \mathfrak T_{\mathbb R^3}(a).
+            \]
+            <small>\(F\) 连续且有紧支撑，所以这是六维 Riemann 和。</small>
+          </div>
+          <p>把三个极限相除，得到</p>
+          <div class="equation">
+            \[
+              \frac{|\mathfrak T(u_N)|}
+              {\|u_N\|_{\dot H^{1/2}}\|u_N\|_{\dot H^{3/2}}^2}
+              \longrightarrow
+              \frac{|\mathfrak T_{\mathbb R^3}(a)|}
+              {A_{1/2}(a)A_{3/2}(a)^2}>0.
+            \]
+          </div>
+        </section>
+
+        <section id="consequence">
+          <div class="section-no">06 / Consequence for improved estimates</div>
+          <h2>哪一种增益被排除了</h2>
+          <div class="proof result">
+            <strong>直接推论</strong>
+            不存在只依赖高频尺度、且满足 \(\varepsilon_N\to0\) 的普适估计
+            \[
+              |\mathfrak T(u)|
+              \le\varepsilon_N
+              \|u\|_{\dot H^{1/2}}\|u\|_{\dot H^{3/2}}^2
+            \]
+            对所有支撑在 \(\{cN\le|k|\le CN\}\)、\(C/c\lt2\) 的真实无散场成立。
+          </div>
+          <p>
+            这并不排除依赖额外结构的改进，例如特定螺旋比例、相位随机性、角向正则性、
+            动力学时间平均或物理空间间歇性条件。它只说明“频率高”和“近对角”本身不够。
+          </p>
+        </section>
+
+        <section id="computation">
+          <div class="section-no">07 / Finite-N audit</div>
+          <h2>直接枚举所有有贡献的格点对</h2>
+          <p>
+            计算脚本取 \(\delta=0.04\)，使用
+            \(\psi(z)=\exp(1-(1-|z|^2)^{-1})\)（\(|z|\lt1\)）和上面的 Leray 投影。
+            它没有使用随机抽样或 FFT，而是直接枚举所有活跃模态及所有能闭合的有序格点对。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>\(N\)</th>
+                  <th>模态数</th>
+                  <th>闭合有序对</th>
+                  <th>\(N^{-7/2}\mathfrak T\)</th>
+                  <th>临界比值</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>30</td><td>42</td><td>228</td><td>\(-1.35327\times10^{-9}\)</td><td>\(2.90916\times10^{-5}\)</td></tr>
+                <tr><td>60</td><td>342</td><td>17,508</td><td>\(-1.66132\times10^{-9}\)</td><td>\(2.77871\times10^{-5}\)</td></tr>
+                <tr><td>80</td><td>882</td><td>121,260</td><td>\(-1.67913\times10^{-9}\)</td><td>\(2.89516\times10^{-5}\)</td></tr>
+                <tr><td>100</td><td>1,506</td><td>356,268</td><td>\(-1.64752\times10^{-9}\)</td><td>\(2.86362\times10^{-5}\)</td></tr>
+                <tr><td>120</td><td>2,766</td><td>1,201,404</td><td>\(-1.64622\times10^{-9}\)</td><td>\(2.85271\times10^{-5}\)</td></tr>
+                <tr><td>150</td><td>5,370</td><td>4,503,540</td><td>\(-1.64867\times10^{-9}\)</td><td>\(2.85932\times10^{-5}\)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>现实条件</span>
+              <strong>残差为零</strong>
+              <p>负波数系数由共轭对称精确生成。</p>
+            </div>
+            <div class="status-item">
+              <span>无散条件</span>
+              <strong>最大残差 \(4.0\times10^{-17}\)</strong>
+              <p>每个格点都单独通过 Leray 投影。</p>
+            </div>
+            <div class="status-item">
+              <span>\(L^2\) 能量</span>
+              <strong>三线性残差低于 \(3\times10^{-21}\)</strong>
+              <p>直接卷积仍复现能量抵消。</p>
+            </div>
+            <div class="status-item">
+              <span>支撑</span>
+              <strong>观测环带比低于 \(1.51\)</strong>
+              <p>全部贡献保持在近对角区域。</p>
+            </div>
+          </div>
+          <p>
+            理论模态密度为 \(8\pi\delta^3\approx0.00160850\)。
+            \(N=150\) 时观测到 \(5370/150^3\approx0.00159111\)。
+            有限 \(N\) 结果与 \(N^3\) 模态计数及正极限比值一致。
+          </p>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense-critical-packet.mjs">查看计算脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/tests/dense-critical-packet.test.mjs">查看回归测试</a>。
+          </p>
+        </section>
+
+        <section id="result">
+          <div class="section-no">08 / What this does and does not show</div>
+          <h2>结论到哪里为止</h2>
+          <div class="proof result">
+            <strong>本步结论</strong>
+            临界三线性估计的尺度阶数可以由纯近对角、真实、无散、稠密 Fourier 包保持。
+            因此，任何进一步改进都必须使用比静态频率支撑更强的结构。
+          </div>
+          <p>这项结果没有证明：</p>
+          <ul>
+            <li>上面的常数接近最佳常数；</li>
+            <li>Navier–Stokes 流会从一般初值自动形成该频率包；</li>
+            <li>这种相位排列能持续一个与尺度无关的物理时间；</li>
+            <li>非线性项能够持续压过黏性耗散；</li>
+            <li>存在有限时奇性。</li>
+          </ul>
+          <p>
+            特别是，命题只给出瞬时下界。热半群在时间 \(t\sim N^{-2}\) 上改变各个径向频率的相对权重；
+            非线性也会立即生成支撑外模态。下一步必须加入时间演化。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next check</div>
+          <h2>R0.5：相位排列能维持多久</h2>
+          <p>
+            下一步检查同一频率包在抛物缩放时间 \(\tau=N^2t\) 下的短时演化。
+            我会先分开研究线性热流和有限维 Galerkin 非线性，再比较临界三线性比值、耗散和新生模态。
+          </p>
+          <ol>
+            <li>计算 \(e^{-\nu|k|^2t}\widehat u_N(k)\) 下的极限剖面和临界比值 \(R_{\rm heat}(\tau)\)。</li>
+            <li>证明 \(R_{\rm heat}(0)=R_*>0\)，并给出其在小 \(\tau\) 上保持非零的定量区间。</li>
+            <li>对截断 Navier–Stokes ODE 使用保持现实、无散和能量恒等式的时间步进。</li>
+            <li>记录近对角相位相干、支撑外能量和非线性/黏性比值。</li>
+            <li>若相干只维持 \(o(N^{-2})\)，则静态饱和不能进入临界动力学；若维持 \(O(N^{-2})\)，再寻找解析稳定机制。</li>
+          </ol>
+          <div class="proof warning">
+            <strong>停止条件</strong>
+            Galerkin 数值不能替代完整 PDE 证明。任何观察到的增长都必须同时通过时间步长、截断半径、
+            能量恒等式和缩放收敛检查；否则只记录为数值伪影。
+          </div>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              H. Fujita and T. Kato, “On the Navier–Stokes initial value problem. I,”
+              <em>Archive for Rational Mechanics and Analysis</em> 16 (1964), 269–315.
+              <a href="https://doi.org/10.1007/BF00276188">DOI</a>。
+            </li>
+            <li>
+              T. Kato, “Strong \(L^p\)-solutions of the Navier–Stokes equation in \(\mathbb R^m\), with applications to weak solutions,”
+              <em>Mathematische Zeitschrift</em> 187 (1984), 471–480.
+              <a href="https://eudml.org/doc/173504">EuDML</a>。
+            </li>
+            <li>
+              F. Waleffe, “The nature of triad interactions in homogeneous turbulence,”
+              <em>Physics of Fluids A</em> 4 (1992), 350–363.
+              <a href="https://doi.org/10.1063/1.858309">DOI</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.4 · 稠密近对角频率包</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-3.html">上一篇 R0.3</a> · <a href="/notes/r0-4.pdf">PDF</a> · <a href="/">主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

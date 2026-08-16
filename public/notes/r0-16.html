@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.16：传播四个实极化参数的全部二阶导数，严格认证一个公共催化负曲率方向，并给出把第五阶外部/目标能量比降到 18.035985 的有限有理候选。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.16｜极化二阶鞍点与有限有理改进">
+  <meta property="og:description" content="二阶 Laurent 极点全部抵消；二维反对称降维失效；显式有理候选把目标能量比例提高到 5.2532%。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.16｜极化二阶鞍点与有限有理改进</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      section#references { break-before:page; } .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-16.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.16 · 极化二阶变分与有限候选</div>
+        <h1>极化二阶鞍点与有限有理改进</h1>
+        <p class="lead">
+          我把 R0.15 的一阶极化微分推进到完整二阶，并检查每一个 Laurent 极点。
+          结果显示，反对称角不是封闭的搜索空间：一个公共催化旋转方向在一阶上静止、在二阶上严格下降。
+          另一方面，一个显式有理偏振把第五阶外部/目标能量比降到 \(18.0359852682\ldots\)。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 二阶方向与有限点均为精确证书</span>
+        <strong>旧固定极化障碍继续下降</strong>
+        <p>版本 v0.16 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：第五阶纯非线性齐次项</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#jet">01 · 二阶微分树</a></li>
+          <li><a href="#hessian">02 · 联合 Hessian</a></li>
+          <li><a href="#curvature">03 · 公共催化负曲率</a></li>
+          <li><a href="#candidate">04 · 有理有限点</a></li>
+          <li><a href="#certificate">05 · 精确比较</a></li>
+          <li><a href="#meaning">06 · 结论含义</a></li>
+          <li><a href="#scope">07 · 边界</a></li>
+          <li><a href="#next">08 · 下一步</a></li>
+          <li><a href="#reproduce">09 · 复现</a></li>
+          <li><a href="#references">10 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>二阶正则性成立，二维降维失败，有限点严格改进</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>15 组 Laurent 极点全部抵消</strong><p>零阶、四个一阶和十个二阶微分在聚合后都具有有限极限。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>存在零梯度负曲率方向</strong><p>公共催化旋转的图坐标二阶导数严格为负。</p></div>
+            <div class="status-item"><span>CERTIFIED EXACTLY</span><strong>显式有理候选严格更好</strong><p>外部/目标比为 \(18.035985268234917\ldots\)，小于旧下界 \(45.739348\)。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>四角全局最优仍未知</strong><p>候选只在一条反对称有理路径上选取，不是全局最优性定理。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>本笔记的严格结论。</strong>
+            R0.15 的固定极化在完整实极化空间中不仅有非零一阶下降方向，还是一个带显式负曲率方向的鞍点。
+            此外，取本笔记第 4 节的有理参数，完整第五阶聚合给出
+            \[
+              \frac{X_\infty}{T_\infty}
+              =18.035985268234917\ldots&lt;45.739348,
+            \]
+            因而目标能量比例严格大于 \(5.253\%\)。
+          </div>
+          <p>
+            这些结论都属于一个有限第五阶 Fourier 相互作用模型。
+            它们没有处理热项、Taylor 余项、稠密频率包或完整 Navier–Stokes 演化。
+          </p>
+        </section>
+
+        <section id="jet">
+          <div class="section-no">01 / Second-order differentiated tree</div>
+          <h2>二阶导数直接穿过完整第五阶树</h2>
+          <p>
+            对每个正输入频率，仍使用 R0.15 的无散单位极化曲线
+          </p>
+          <div class="equation">
+            \[
+              p(t,\delta)=
+              \frac{N+tM}{|N|\sqrt{1+t^2\kappa}},\qquad
+              M=(\delta K)\times N,\quad \kappa=|\delta K|^2.
+            \]
+          </div>
+          <p>在 \(t=0\) 处，分子层面的两个导数是</p>
+          <div class="equation">
+            \[
+              p'(0):\ M,\qquad p''(0):\ -\kappa N.
+            \]
+          </div>
+          <p>
+            四个参数产生 15 个导数键：1 个基线、4 个一阶偏导和 10 个对称二阶偏导。
+            每个双线性节点都使用完整 Leibniz 公式；对角二阶项中的两个一阶导数乘积带系数 2。
+          </p>
+          <p>
+            计算结束后出现 326 个非零聚合频率。每个导数键的所有负 Laurent 次幂都精确为零。
+            因此 R0.15 的一阶方向确实来自可积的光滑极化曲线，二阶 Hessian 也不是由未消失奇项制造的假象。
+          </p>
+        </section>
+
+        <section id="hessian">
+          <div class="section-no">02 / Joint Hessian</div>
+          <h2>振幅方向严格凸，极化方向不定</h2>
+          <p>
+            在 R0.15 的代数振幅
+            \(x=\alpha=0.17451712822713492\ldots\) 处，振幅二阶导数为
+          </p>
+          <div class="equation">
+            \[
+              \partial_x^2(X_\infty/T_\infty)
+              =484.51038605958155\ldots&gt;0.
+            \]
+          </div>
+          <p>
+            按单位角次序 \((P,Q,B,D)\)，极化 Hessian 的小数显示为
+          </p>
+          <div class="equation">
+            \[
+            H_\theta\approx
+            \begin{pmatrix}
+            76.1530&amp;-31.8122&amp;78.7625&amp;-75.0076\\
+            -31.8122&amp;76.1530&amp;-75.0076&amp;78.7625\\
+            78.7625&amp;-75.0076&amp;118.0213&amp;-124.8742\\
+            -75.0076&amp;78.7625&amp;-124.8742&amp;118.0213
+            \end{pmatrix}.
+            \]
+          </div>
+          <p>
+            其数值特征值约为
+            \((-7.12684,7.51133,44.61475,343.34938)\)。
+            这些特征值只作为矩阵读数；下面的负性结论使用显式有理区间，而不依赖浮点对角化。
+          </p>
+          <p>
+            八个成对交换恒等式都由符号计算精确验证：两对梯度和、两对振幅混合导数和为零，
+            对角元和两类交叉元分别相等。因此对称与反对称扇区在二阶上精确分离。
+          </p>
+        </section>
+
+        <section id="curvature">
+          <div class="section-no">03 / A certified negative direction</div>
+          <h2>两个催化极化同向旋转时严格下降</h2>
+          <p>
+            取图坐标方向 \(v=(0,0,1,1)\)，即保持两个泵极化不动，让两个催化极化同向旋转。
+            成对交换恒等式首先给出
+          </p>
+          <div class="equation">
+            \[
+              \nabla_\theta(X_\infty/T_\infty)\cdot v=0,
+              \qquad \partial_x\nabla_\theta(X_\infty/T_\infty)\cdot v=0.
+            \]
+          </div>
+          <p>80 位有理根隔离和有理区间代入随后给出</p>
+          <div class="equation">
+            \[
+              v^T H_t v=-4.568599750231022\ldots&lt;0.
+            \]
+          </div>
+          <p>
+            区间上端仍严格小于零。第二个等式还说明，把振幅 \(x\) 在每个极化附近重新取最优值，
+            不会消去这一对称负曲率。作为对照，公共泵旋转方向的图坐标曲率是
+            \(7.390133748132258\ldots&gt;0\)。
+          </p>
+          <div class="proof result">
+            <strong>降维结论。</strong>
+            R0.15 的一阶梯度完全位于两组反对称角中，但完整局部几何并不位于该二维子空间。
+            只优化 \((t_P,-t_P,t_B,-t_B)\) 会漏掉公共催化旋转的负曲率方向，不能据此宣称局部或全局最优。
+          </div>
+        </section>
+
+        <section id="candidate">
+          <div class="section-no">04 / A finite rational candidate</div>
+          <h2>用有理圆锥参数走出一个可复核有限步</h2>
+          <p>
+            为避免把浮点搜索结果当作证书，我在反对称路径上使用两个有理圆锥参数：
+          </p>
+          <div class="equation">
+            \[
+            p=\frac{24m}{1-12m^2},\quad
+            1+\frac{p^2}{12}=u^2;
+            \qquad
+            q=\frac{6n}{1-3n^2},\quad
+            1+\frac{q^2}{3}=v^2.
+            \]
+          </div>
+          <p>我固定以下完全有理的数据：</p>
+          <div class="equation">
+            \[
+            m=\frac{28}{155},\quad n=\frac7{25},\quad
+            p=\frac{104160}{14617},\quad q=\frac{525}{239},
+            \]
+            \[
+            (t_P,t_Q,t_B,t_D)=(p,-p,q,-q),\qquad
+            x=\frac{5377}{5000}.
+            \]
+          </div>
+          <p>
+            相应的归一化因子也是有理数：
+            \(u=33433/14617\)、\(v=386/239\)。
+            这个点来自一条一维路径上的粗细网格搜索；我选择了分数较整洁的 \(s=2.24\)，
+            而不是把附近更小的浮点读数包装成最优点。
+          </p>
+        </section>
+
+        <section id="certificate">
+          <div class="section-no">05 / Exact finite comparison</div>
+          <h2>交叉相乘给出严格不等式</h2>
+          <p>
+            对上述有限极化重新计算全部第五阶带符号树。聚合后有 332 个非零频率，所有负 Laurent 次幂精确抵消。
+            目标能量和外部能量都是正有理数；程序保存完整分数的 SHA-256 摘要，并用整数交叉相乘证明比较符号。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>量</th><th>旧固定极化</th><th>有限有理候选</th></tr></thead>
+            <tbody>
+              <tr><td>外部/目标比</td><td>\(\ge45.739348\)</td><td>\(18.035985268234917\ldots\)</td></tr>
+              <tr><td>目标能量比例</td><td>\(2.1395248803\ldots\%\)</td><td>\(5.253208520121551\ldots\%\)</td></tr>
+              <tr><td>聚合频率数</td><td>306（基线）</td><td>332</td></tr>
+              <tr><td>未抵消负幂</td><td>0</td><td>0</td></tr>
+            </tbody>
+          </table></div>
+          <p>严格改进余量满足</p>
+          <div class="equation">
+            \[
+              \frac{11434837}{250000}
+              -\frac{X_\infty}{T_\infty}
+              =27.703362731765083\ldots&gt;27.7.
+            \]
+          </div>
+          <p>
+            目标比例约为旧固定极化最优值的 \(2.455\) 倍。
+            这足以否定“固定极化约 \(2.14\%\) 是稳定障碍”，但距离目标能量占主导仍很远。
+          </p>
+        </section>
+
+        <section id="meaning">
+          <div class="section-no">06 / Interpretation</div>
+          <h2>旧障碍被削弱，真正的 PDE 难点没有移动</h2>
+          <h3>已经确定</h3>
+          <ul>
+            <li>R0.15 的四角一阶变分可以继续到二阶，不存在残留 Laurent 极点。</li>
+            <li>原固定极化在公共催化方向上有严格负曲率。</li>
+            <li>两组反对称角不足以描述完整局部下降几何。</li>
+            <li>一个显式有限有理点把第五阶目标比例提高到 \(5.2532\%\)。</li>
+          </ul>
+          <h3>不能由此推出</h3>
+          <ul>
+            <li>该有理点是四角空间或联合振幅—极化空间的局部、全局最优；</li>
+            <li>第五阶目标能量能够压倒所有外部频率；</li>
+            <li>这个有限树在热耗散和高阶余项下仍保持同样比例；</li>
+            <li>存在 Navier–Stokes 奇性轨道，或 Clay 问题的任一正式命题已被推进为证明。</li>
+          </ul>
+        </section>
+
+        <section id="scope">
+          <div class="section-no">07 / Scope</div>
+          <h2>本笔记仍是有限阶机制检查</h2>
+          <div class="proof warning">
+            <strong>与千禧年问题的距离。</strong>
+            Clay 问题要求证明三维光滑无散初值的全局光滑性，或构造满足正式条件的有限时间失效。
+            本文只比较一个特定稀疏 Fourier 输入的第五阶纯非线性能量。
+            没有热半群估计、有限时间余项界、临界空间闭合、稠密包极限或逐壳重复，因此不是 PDE 正则性或奇性结果。
+          </div>
+          <p>
+            这一计算的价值是决定下一项该保留哪些有限维变量，并排除一个错误降维。
+            我尚未完成对这些具体有理参数和二阶证书组合的文献优先权检索，也不主张新定理的优先权。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">08 / Next step</div>
+          <h2>R0.17：保留四角，先做结构化全局搜索</h2>
+          <ol>
+            <li>用成对交换对称性把四角分成对称与反对称扇区，但不删除任何扇区。</li>
+            <li>用四个有理圆锥坐标重算有限第五阶能量，并对振幅变量做解析或区间消元。</li>
+            <li>搜索当前有理候选附近的公共催化方向，检查其一阶符号和新的联合 Hessian。</li>
+            <li>构造一个带有理盒覆盖的严格上界候选；若目标比例仍远小于主导，记录该机制的量化障碍。</li>
+            <li>只有有限阶比例继续显著改善，才把热项与 Taylor 余项重新加入。</li>
+          </ol>
+          <p>
+            R0.16 已经说明，沿一阶最速下降线继续做一维精调并不充分。
+            下一项的首要任务是查清有限候选在遗漏的两个对称角上是否仍可下降。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">09 / Reproduction</div>
+          <h2>两个精确脚本分别承担局部与有限证书</h2>
+          <p>
+            二阶变分脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_second_variation_audit.py"><code>research/polarization_second_variation_audit.py</code></a>。
+          </p>
+          <div class="equation mono">
+            python3 research/polarization_second_variation_audit.py --check
+          </div>
+          <p>
+            输出包含 15 组 Laurent 极点计数、振幅二阶导数、四乘四极化 Hessian、八个精确交换恒等式及公共催化负曲率区间。
+          </p>
+          <p>
+            有限候选脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_finite_candidate_audit.py"><code>research/polarization_finite_candidate_audit.py</code></a>。
+          </p>
+          <div class="equation mono">
+            python3 research/polarization_finite_candidate_audit.py --check
+          </div>
+          <p>
+            输出包含有理圆锥参数、332 个聚合频率、精确比值摘要、旧下界的严格改进余量和目标比例。
+            两个程序的符号结论均由有理运算给出；页面小数只用于阅读。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary sources</div>
+          <h2>原始文献与前序证书</h2>
+          <ol class="refs">
+            <li><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">C. Fefferman, <em>Existence and Smoothness of the Navier–Stokes Equation</em></a>。Clay 正式问题说明；本文没有解决其中任何命题。</li>
+            <li><a href="https://doi.org/10.1063/1.858309">F. Waleffe, <em>The Nature of Triad Interactions in Homogeneous Turbulence</em></a>, Physics of Fluids A 4 (1992), 350-363。Fourier 三波与极化相互作用的原始分析。</li>
+            <li><a href="https://link.springer.com/book/10.1007/978-3-662-05355-3">S. Basu, R. Pollack &amp; M.-F. Roy, <em>Algorithms in Real Algebraic Geometry</em></a>。Sturm 根隔离和半代数算法的系统参考。</li>
+            <li><a href="/notes/r0-15.html">R0.15：复振幅等号与极化一阶下降</a>。本文使用的代数振幅极小点、一阶梯度和极化图坐标来自这里。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>Navier–Stokes 开放研究日志</strong><br>个人计算记录，不代表同行评议结论。</span>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-16.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

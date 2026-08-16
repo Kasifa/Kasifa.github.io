@@ -1948,7 +1948,35 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/complex_phase_closure_audit.py">查看闭合脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_first_variation_audit.py">查看极化脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.16：</strong>沿两组反对称极化方向建立联合 Hessian 和严格改善点，再决定全局搜索能否降到二维。</p>
+            <p><strong style="color:var(--gold)">R0.16 已完成：</strong>二阶传播给出一个公共催化负曲率方向，说明反对称二维降维会漏项；显式有理极化把目标比例提高到 \(5.2532\%\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.16 · 2026-08-16</p>
+            <h3>极化二阶鞍点与有限有理改进</h3>
+            <p>
+              我把四个实极化参数的全部一阶、二阶导数传播到完整第五阶树。
+              15 组聚合 Laurent 系列的负幂全部精确抵消；振幅方向二阶导数为
+              \(484.5103860596\ldots&gt;0\)，而公共催化旋转方向的一阶导数为零、图坐标曲率为
+              \(-4.5685997502\ldots&lt;0\)。
+            </p>
+            <p>
+              因而只优化两组反对称角会漏掉一个严格下降方向。
+              我又取有理参数 \(m=28/155\)、\(n=7/25\)、\(x=5377/5000\)，
+              对 332 个聚合频率作精确比较，得到外部/目标比
+              \(18.035985268234917\ldots\)，目标能量比例为 \(5.2532085201\ldots\%\)。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>这个点只是严格改进候选，不是四角全局最优；
+              热项、Taylor 余项、稠密包与逐壳 PDE 迭代仍未包含。
+            </p>
+            <p>
+              <a href="/notes/r0-16.html"><strong>阅读 R0.16 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-16.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_second_variation_audit.py">查看二阶脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_finite_candidate_audit.py">查看有限候选脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.17：</strong>保留对称与反对称四角扇区，在有限有理候选附近做联合搜索和严格盒认证。</p>
           </div>
         </section>
 

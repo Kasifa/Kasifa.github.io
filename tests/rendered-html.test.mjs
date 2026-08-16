@@ -19,6 +19,7 @@ const thirteenthNoteUrl = new URL("../public/notes/r0-13.html", import.meta.url)
 const fourteenthNoteUrl = new URL("../public/notes/r0-14.html", import.meta.url);
 const fifteenthNoteUrl = new URL("../public/notes/r0-15.html", import.meta.url);
 const sixteenthNoteUrl = new URL("../public/notes/r0-16.html", import.meta.url);
+const seventeenthNoteUrl = new URL("../public/notes/r0-17.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -316,6 +317,22 @@ test("publishes and links the second polarization variation and finite candidate
   assert.match(note, /不是 PDE 正则性或奇性结果/);
 });
 
+test("publishes and links the decoupled candidate and positive joint Hessian", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(seventeenthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-17\.html"/);
+  assert.match(note, /研究笔记 R0\.17/);
+  assert.match(note, /15\.801443619697901/);
+  assert.match(note, /5\.951869509758118/);
+  assert.match(note, /0\.7297369691966722/);
+  assert.match(note, /五维联合 Hessian 严格正定/);
+  assert.match(note, /精细点的一阶导数仍非零/);
+  assert.match(note, /任何 Navier–Stokes 正则性或奇性结论/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -328,7 +345,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -346,6 +363,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(fourteenthNoteUrl, "utf8"),
     readFile(fifteenthNoteUrl, "utf8"),
     readFile(sixteenthNoteUrl, "utf8"),
+    readFile(seventeenthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -432,6 +450,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(sixteenthNote, /我把 R0\.15/);
   assert.doesNotMatch(
     sixteenthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(seventeenthNote, /我把 R0\.16/);
+  assert.doesNotMatch(
+    seventeenthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

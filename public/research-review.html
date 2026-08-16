@@ -1783,7 +1783,35 @@
               <a href="/notes/r0-9.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/cone_chain_duhamel.py">查看复现脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.10：</strong>把单链增厚为配对重数 \(m_N\asymp N^3\) 的临界稠密锥包，再检查投影核和复相位能否同向叠加。</p>
+            <p><strong style="color:var(--gold)">R0.10 已完成：</strong>一个四叶临界包达到 \(N^3\) 配对阈值，并把第一代输出集中到跨壳目标；中心映射的一维极化像同时给出新的迭代障碍。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.10 · 2026-08-16</p>
+            <h3>稠密跨壳包与极化像障碍</h3>
+            <p>
+              我把 R0.9 的第一条跨壳边增厚为四个三维球形频率包。
+              目标模态的输入配对重数满足
+              \(m_N/N^3\to(8\pi/3)\delta^3\)，正好达到稀疏估计留下的临界阈值。
+            </p>
+            <p>
+              对归一化输入，第一 Picard 目标能量的小包主项为
+              \(c_*\delta^3\)，其中
+              \(c_*=136\pi\sqrt6/688905\approx0.00151917\)；
+              非目标泄漏为 \(O(\delta^5)\)，所以相对泄漏是 \(O(\delta^2)\)。
+              在 \(\delta=0.12,N=48\) 的直接枚举中，目标占第一代输出的 98.817%。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>中心跨壳双线性映射的像只有
+              \(\operatorname{span}(1,-1,-1)\)，不能直接复制 R0.9 的输运极化；
+              第二 Picard 以后余项和多尺度迭代仍未控制。
+            </p>
+            <p>
+              <a href="/notes/r0-10.html"><strong>阅读 R0.10 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-10.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense_cone_first_picard.py">查看复现脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.11：</strong>计算极化兼容的三门蝶形复合，先判断中心网络是否存在非零极化循环，再考虑第二 Picard 余项。</p>
           </div>
         </section>
 

@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.10：把 R0.9 的稀疏跨壳边增厚为 N^3 配对重数的临界频率包，证明第一 Picard 目标下界与 O(delta^2) 相对泄漏，并识别一维极化像障碍。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.10｜稠密跨壳包与极化像障碍">
+  <meta property="og:description" content="N^3 配对重数解除稀疏 Duhamel 衰减，目标包取得尺度一致下界并占第一代能量的约 99%；但中心双线性映射只有一维极化像。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.10｜稠密跨壳包与极化像障碍</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .equation small { display:block; margin-top:9px; color:var(--muted); text-align:left; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.5pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-10.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.10 · 稠密跨壳第一代</div>
+        <h1>稠密跨壳包与极化像障碍</h1>
+        <p class="lead">
+          我把 R0.9 的单条跨壳边增厚为四个三维频率包。
+          每个目标模态接收 \(N^3\) 级输入对，归一化第一 Picard 目标能量不再随尺度消失，
+          而非目标泄漏只占 \(O(\delta^2)\) 的相对量。
+          但中心双线性映射的极化像只有一维，生成包不能直接复制原蝶形极化。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 连续极限与小包渐近已证明，有限 N 为直接计算</span>
+        <strong>尺度损失解除，迭代兼容仍失败</strong>
+        <p>版本 v0.10 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：四叶临界包与第一 Picard 输出</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#question">01 · 要补的缺口</a></li>
+          <li><a href="#center">02 · 中心跨壳门</a></li>
+          <li><a href="#packet">03 · 临界稠密包</a></li>
+          <li><a href="#limit">04 · Duhamel 极限</a></li>
+          <li><a href="#target">05 · 显式目标下界</a></li>
+          <li><a href="#leakage">06 · 泄漏阶数</a></li>
+          <li><a href="#polarization">07 · 一维极化像</a></li>
+          <li><a href="#audit">08 · 有限 N 复核</a></li>
+          <li><a href="#value">09 · 对原问题的价值</a></li>
+          <li><a href="#next">10 · 下一步</a></li>
+          <li><a href="#references">11 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>第一代可以保持临界尺度，但还不是级联</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>\(N^3\) 配对重数</strong><p>目标中心的有序输入对满足 \(m_N/N^3\to(8\pi/3)\delta^3\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>尺度一致目标下界</strong><p>固定临界输入能量后，目标第一 Picard 能量趋于正数；其小 \(\delta\) 主项已显式计算。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>相对泄漏 \(O(\delta^2)\)</strong><p>目标能量为 \(c_*\delta^3+O(\delta^4)\)，非目标能量为 \(O(\delta^5)\)。</p></div>
+            <div class="status-item"><span>PROVED LIMIT</span><strong>一维极化像障碍</strong><p>中心跨壳双线性映射的像是 \(\operatorname{span}(1,-1,-1)\)，不能直接复现输运极化。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>结论。</strong>
+            R0.9 的 \(m_N/N^3\) 上界阈值在这一显式构造中是可达到的。
+            稀疏链的 \(N^{-3}\) 损失被三维配对重数抵消，目标又可与其余第一代输出分离。
+            但是一个第一代门不是可迭代的多尺度电路；极化像不兼容已经阻止了最直接的自相似复制。
+          </div>
+          <p>
+            这里的证明是标准 Fourier 缩放、Riemann 和、中心核展开与球卷积计算的组合。
+            我没有完成文献优先权检索，因此不把它称为新的公开定理。
+            本笔记没有估计第二 Picard 以后余项，也没有证明有限时奇性或全局正则。
+          </p>
+        </section>
+
+        <section id="question">
+          <div class="section-no">01 / The missing threshold</div>
+          <h2>R0.4 与 R0.9 之间缺少一个因果下界</h2>
+          <p>
+            R0.4 已构造 \(O(N^3)\) 模态的稠密包，并证明瞬时临界三线性比值不随 \(N\) 衰减。
+            但它把输入和被配对的输出同时放在初始支撑内，只说明一个时刻的三线性型非零。
+          </p>
+          <p>
+            R0.9 从空目标模态开始计算第一 Picard 项，因而具有明确的“输入产生输出”含义。
+            它同时证明：若每个输出只有 \(m_N=o(N^3)\) 个输入对，固定临界能量时下一壳第一代必定趋于零。
+          </p>
+          <p>
+            本笔记检查最小的补充问题：让目标初始为零，把一个真实跨壳三元组增厚到 \(m_N\asymp N^3\)，
+            再问热积分后的目标 \(\dot H^{1/2}\) 能量能否保持正的尺度极限。
+          </p>
+        </section>
+
+        <section id="center">
+          <div class="section-no">02 / Central cross-shell gate</div>
+          <h2>从 R0.9 的第一条跨壳边出发</h2>
+          <p>取</p>
+          <div class="equation">\[
+            P=-c=(1,1,0),\qquad Q=-e=(1,0,1),\qquad
+            K=P+Q=(2,1,1)=Ma.
+          \]</div>
+          <p>选择中心极化</p>
+          <div class="equation">\[
+            A=i(0,0,1),\qquad B=i(0,1,0),
+            \qquad P\cdot A=Q\cdot B=0.
+          \]</div>
+          <p>记 \(\mathbb P_\xi=I-\xi\otimes\xi/|\xi|^2\)。两个有序输入在目标中心给出</p>
+          <div class="equation">\[
+            C=\mathbb P_K\,i\big[(Q\cdot A)B+(P\cdot B)A\big]
+            =\frac{2i}{3}(1,-1,-1),
+            \qquad |C|^2=\frac43.
+          \]</div>
+          <p>三个非目标中心的最低阶核同时消失：</p>
+          <div class="equation">\[
+            P\cdot A=0,\qquad Q\cdot B=0,
+          \]\[
+            \mathbb P_{P-Q}\,i\big[(-Q\cdot A)\overline B
+            +(P\cdot\overline B)A\big]=0.
+          \]</div>
+          <p>
+            前两式消去自作用中心 \(2P,2Q\)，最后一式消去差频中心 \(P-Q\)。
+            这使目标中心保留 \(O(1)\) 核，而非目标中心至少多一个包宽因子。
+          </p>
+        </section>
+
+        <section id="packet">
+          <div class="section-no">03 / Critical dense packet</div>
+          <h2>四个球形频率叶</h2>
+          <p>
+            令 \(\mathbf1_E\) 为集合 \(E\) 的示性函数。对 \(0<\delta<1/4\) 定义连续剖面
+          </p>
+          <div class="equation">\[
+          \begin{aligned}
+            a_\delta(\xi)=&
+            \mathbf1_{B(P,\delta)}(\xi)\mathbb P_\xi A+
+            \mathbf1_{B(Q,\delta)}(\xi)\mathbb P_\xi B\\
+            &+\mathbf1_{B(-P,\delta)}(\xi)\mathbb P_\xi\overline A+
+            \mathbf1_{B(-Q,\delta)}(\xi)\mathbb P_\xi\overline B .
+          \end{aligned}
+          \]</div>
+          <p>
+            四个球两两分离，且
+            \(\xi\cdot a_\delta(\xi)=0\)、
+            \(a_\delta(-\xi)=\overline{a_\delta(\xi)}\)。
+            对整数 \(N\) 取
+          </p>
+          <div class="equation">\[
+            \widehat u_{N,\delta}(k)=N^{-2}a_\delta(k/N),
+            \qquad k\in\mathbb Z^3.
+          \]</div>
+          <p>
+            \(N^{-2}\) 是 \(\dot H^{1/2}\) 的临界归一化：
+          </p>
+          <div class="equation">\[
+            E_{N,\delta}:=\|u_{N,\delta}\|_{\dot H^{1/2}}^2
+            =N^{-3}\sum_k |k/N|\,|a_\delta(k/N)|^2
+            \longrightarrow
+            E_\delta:=\int |\xi|\,|a_\delta(\xi)|^2\,d\xi.
+          \]</div>
+          <div class="proof">
+            <strong>目标中心的配对重数。</strong>
+            设 \(L_N=\#(\mathbb Z^3\cap B(0,\delta N))\)。
+            对 \(k=NK\)，每个 \(p=NP+r\) 与 \(q=NQ-r\) 闭合，交换次序再给一对。因此
+            \[
+              m_N(NK)=2L_N,\qquad
+              \frac{m_N(NK)}{N^3}\longrightarrow
+              2|B(0,\delta)|=\frac{8\pi}{3}\delta^3.
+            \]
+            这正好达到 R0.9 的 \(N^3\) 阈值。
+          </div>
+        </section>
+
+        <section id="limit">
+          <div class="section-no">04 / Duhamel Riemann limit</div>
+          <h2>第一 Picard 项有连续剖面极限</h2>
+          <p>粘性取 1，定义</p>
+          <div class="equation">\[
+            w_{N,\delta}(t)=
+            -\int_0^t e^{(t-s)\Delta}
+            \mathbb P\big[(e^{s\Delta}u_{N,\delta}\cdot\nabla)
+            e^{s\Delta}u_{N,\delta}\big]\,ds.
+          \]</div>
+          <p>在抛物时间 \(t=\tau/N^2\) 下，连续输出剖面是</p>
+          <div class="equation">\[
+          \begin{aligned}
+            W_\delta(\kappa,\tau)=
+            -\int_0^\tau&e^{-|\kappa|^2(\tau-\sigma)}
+            \mathbb P_\kappa
+            \int_{\mathbb R^3}
+            i\big((\kappa-\eta)\cdot a_\delta(\eta)\big)
+            a_\delta(\kappa-\eta)\\
+            &\times e^{-\sigma(|\eta|^2+|\kappa-\eta|^2)}
+            \,d\eta\,d\sigma .
+          \end{aligned}
+          \]</div>
+          <div class="proof">
+            <strong>命题 1：第一 Picard Riemann 极限。</strong>
+            在目标区
+            \(T_\delta=B(K,2\delta)\cup B(-K,2\delta)\) 上，
+            \[
+              N^2\widehat w_{N,\delta}(k,\tau/N^2)
+              \longrightarrow W_\delta(k/N,\tau)
+            \]
+            以对应的分片连续 Riemann 和成立，并且
+            \[
+              \|P_{NT_\delta}w_{N,\delta}(\tau/N^2)\|_{\dot H^{1/2}}^2
+              \longrightarrow
+              \int_{T_\delta}|\kappa|\,|W_\delta(\kappa,\tau)|^2\,d\kappa.
+            \]
+          </div>
+          <p>
+            每个卷积项含 \(N^{-3}\)：一个导数给 \(N\)，两个输入系数给 \(N^{-4}\)。
+            三维输入求和把它恢复到 \(O(1)\)，时间积分再给 \(N^{-2}\)。
+            输出 \(\dot H^{1/2}\) 和的 \(N^3\) 格点数、\(N\) 权重与 \(N^{-4}\) 系数平方恰好抵消。
+          </p>
+        </section>
+
+        <section id="target">
+          <div class="section-no">05 / Explicit target lower bound</div>
+          <h2>小包主项的常数可以算完</h2>
+          <p>先有输入能量展开</p>
+          <div class="equation">\[
+            E_\delta=
+            4\sqrt2\,|B(0,1)|\,\delta^3+O(\delta^4)
+            =\frac{16\sqrt2\pi}{3}\delta^3+O(\delta^4).
+          \]</div>
+          <p>中心热积分因子为</p>
+          <div class="equation">\[
+            \Phi(\tau)=\int_0^\tau e^{-6(\tau-\sigma)}e^{-4\sigma}\,d\sigma
+            =\frac{e^{-4\tau}-e^{-6\tau}}{2}.
+          \]</div>
+          <p>其最大值在</p>
+          <div class="equation">\[
+            \tau_*=\frac12\log\frac32,\qquad \Phi(\tau_*)=\frac{2}{27}.
+          \]</div>
+          <p>
+            记 \(\chi=\mathbf1_{B(0,1)}\)。两个单位球交叠体积为
+            \((\chi*\chi)(z)=\pi(4+r)(2-r)^2/12\)，其中 \(r=|z|\le2\)。
+            因而
+          </p>
+          <div class="equation">\[
+            J:=\int_{\mathbb R^3}(\chi*\chi)^2\,dz
+            =\frac{2176\pi^3}{2835},\qquad
+            \frac{J}{|B(0,1)|^2}=\frac{136\pi}{315}.
+          \]</div>
+          <div class="proof result">
+            <strong>命题 2：归一化目标能量的显式下界。</strong>
+            令 \(v_{N,\delta}=E_{N,\delta}^{-1/2}u_{N,\delta}\)，并令
+            \(w(v_{N,\delta})\) 表示其第一 Picard 项。则
+            \[
+            \boxed{
+              \lim_{\delta\downarrow0}\delta^{-3}
+              \lim_{N\to\infty}
+              \|P_{NT_\delta}w(v_{N,\delta})(\tau_*/N^2)\|_{\dot H^{1/2}}^2
+              =c_*,
+            }
+            \]
+            其中
+            \[
+              c_*=\frac{136\pi\sqrt6}{688905}
+              =0.0015191654312453548\ldots>0.
+            \]
+          </div>
+          <p>
+            证明中目标对 \(\pm K\) 的未归一化能量主项为
+            \(2\sqrt6\,|C|^2\Phi(\tau_*)^2J\delta^9\)。
+            除以 \(E_\delta^2\sim(4\sqrt2|B|)^2\delta^6\) 后得到 \(c_*\delta^3\)。
+            固定任意充分小的 \(\delta>0\)，这个极限是与 \(N\) 无关的正数。
+          </p>
+        </section>
+
+        <section id="leakage">
+          <div class="section-no">06 / Leakage order</div>
+          <h2>非目标输出比主项多损失两个包宽</h2>
+          <p>
+            四个输入叶的卷积中心只有
+            \(\pm K,\pm2P,\pm2Q,\pm(P-Q)\) 和 0。
+            除 \(\pm K\) 外，上一节的中心双线性核全部为零。
+          </p>
+          <div class="proof">
+            <strong>命题 3：小包泄漏估计。</strong>
+            设 \(L_\delta\) 是目标区 \(T_\delta\) 之外的连续第一 Picard 输出能量。
+            当 \(\delta\downarrow0\) 时，
+            \[
+              H_\delta^{\rm target}
+              =c_*\delta^3+O(\delta^4),\qquad
+              L_\delta=O(\delta^5),
+            \]
+            所以
+            \[
+              \frac{L_\delta}{H_\delta^{\rm target}}=O(\delta^2),
+              \qquad
+              \frac{H_\delta^{\rm target}}
+              {H_\delta^{\rm target}+L_\delta}=1-O(\delta^2).
+            \]
+          </div>
+          <p>
+            对非零泄漏中心，Leray 核、热因子和极化都光滑；中心值为零使卷积系数从
+            \(O(\delta^3)\) 降到 \(O(\delta^4)\)。
+            输出区域体积为 \(O(\delta^3)\)，归一化前能量为 \(O(\delta^{11})\)，
+            再除以 \(E_\delta^2=O(\delta^6)\) 得 \(O(\delta^5)\)。
+            零频附近还多一个 \(|\kappa|=O(\delta)\) 权重，不会变坏。
+          </p>
+        </section>
+
+        <section id="polarization">
+          <div class="section-no">07 / Rank-one polarization image</div>
+          <h2>目标能生成，但不能原样接到下一门</h2>
+          <p>
+            上面的下界没有解决目标极化是否适合作为下一层输入。
+            对任意中心无散极化写
+          </p>
+          <div class="equation">\[
+            A=(\alpha,-\alpha,\gamma)\in P^\perp,\qquad
+            B=(\beta,\zeta,-\beta)\in Q^\perp .
+          \]</div>
+          <div class="proof warning">
+            <strong>命题 4：中心跨壳映射的像只有一维。</strong>
+            直接代数化简得到
+            \[
+              \mathbb P_K\,i\big[(Q\cdot A)B+(P\cdot B)A\big]
+              =\frac{i}{3}
+              (4\alpha\beta+\beta\gamma+\alpha\zeta-2\gamma\zeta)
+              (1,-1,-1).
+            \]
+            因而无论怎样选择 \(A,B\)，输出极化都落在
+            \(\operatorname{span}(1,-1,-1)\)。
+          </div>
+          <p>
+            R0.9 把原蝶形 \(a\)-极化输运到 \(K=Ma\) 时得到
+            \((0,1,-1)\)。它与 \((1,-1,-1)\) 正交。
+            所以当前密集跨壳门虽然产生了尺度一致的目标包，却不能把目标直接识别为下一壳同型蝶形的 \(a\)-输入。
+          </p>
+          <p>
+            这不是数值误差，也不是所选 \(A,B\) 的局部缺陷；它是中心波数几何对整个双线性映射像空间的限制。
+            下一步必须增加中间门或改变波数网络。
+          </p>
+        </section>
+
+        <section id="audit">
+          <div class="section-no">08 / Finite-N audit</div>
+          <h2>直接枚举所有输入对</h2>
+          <p>
+            复现脚本
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense_cone_first_picard.py"><code>research/dense_cone_first_picard.py</code></a>
+            使用球形示性包，对每个有序格点对精确计算热积分和 Leray 投影。
+            下表固定 \(\delta=0.12\)、\(\tau=\tau_*\)。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>\(N\)</th><th>\(m_N/N^3\)</th><th>归一化目标能量</th><th>泄漏/目标</th><th>目标占比</th><th>目标/小包主项</th></tr></thead>
+            <tbody>
+              <tr><td>18</td><td>0.0113169</td><td>2.07798e-6</td><td>0.010146</td><td>98.996%</td><td>0.7916</td></tr>
+              <tr><td>24</td><td>0.0134549</td><td>2.44591e-6</td><td>0.011370</td><td>98.876%</td><td>0.9317</td></tr>
+              <tr><td>30</td><td>0.0132593</td><td>2.39632e-6</td><td>0.011285</td><td>98.884%</td><td>0.9128</td></tr>
+              <tr><td>36</td><td>0.0146176</td><td>2.61881e-6</td><td>0.012090</td><td>98.805%</td><td>0.9976</td></tr>
+              <tr><td>48</td><td>0.0144495</td><td>2.59600e-6</td><td>0.011970</td><td>98.817%</td><td>0.9889</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            理论重数极限为 \(0.01447645895\)，小包目标主项为 \(2.62512\times10^{-6}\)。
+            \(N=48\) 的两项分别达到 \(0.0144495\) 和 \(2.59600\times10^{-6}\)。
+          </p>
+          <p>第二张表让 \(\delta N\approx4.3\)，检查小包阶数。</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>\(\delta\)</th><th>\(N\)</th><th>目标/\(\delta^3\)</th><th>(泄漏/目标)/\(\delta^2\)</th><th>目标占比</th></tr></thead>
+            <tbody>
+              <tr><td>0.08</td><td>54</td><td>0.00152382</td><td>0.8323</td><td>99.470%</td></tr>
+              <tr><td>0.10</td><td>43</td><td>0.00154129</td><td>0.8439</td><td>99.163%</td></tr>
+              <tr><td>0.12</td><td>36</td><td>0.00151552</td><td>0.8396</td><td>98.805%</td></tr>
+              <tr><td>0.15</td><td>29</td><td>0.00147649</td><td>0.8328</td><td>98.161%</td></tr>
+              <tr><td>0.18</td><td>24</td><td>0.00149696</td><td>0.8492</td><td>97.322%</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            理论常数 \(c_*=0.00151916543\) 落在观测范围内；相对泄漏除以 \(\delta^2\) 保持在 0.83 到 0.85。
+            输入现实残差为零，输入与输出散度残差均低于 \(4\times10^{-15}\) 的代码阈值。
+            这些数字复核证明中的阶数，不替代 \(N\to\infty\) 或 \(\delta\to0\) 的解析论证。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">09 / Value for the open problem</div>
+          <h2>R0.9 的稀疏障碍在第一代层面是锋利的</h2>
+          <p>
+            本笔记第一次在这组研究笔记中同时满足三点：目标初始为空、热积分被完整保留、输出临界能量在 \(N\to\infty\) 时保持正值。
+            因此它比 R0.4 的瞬时三线性下界更接近真实的因果传递，也明确解释了 \(N^3\) 配对重数怎样抵消抛物尺度损失。
+          </p>
+          <p>
+            Bourgain-Pavlovic 的临界 Besov 反适定构造也依靠短时 Picard 分解和精心安排的 Fourier 相互作用，
+            但他们研究的是 \(\dot B^{-1,\infty}_\infty\) 范数膨胀；这里的量是能量型临界空间 \(\dot H^{1/2}\)，结论不能互相替代。
+          </p>
+          <p>
+            Tao 的平均化 Navier-Stokes 爆破解释了为何尺度间传递还需要一套可重复的二次门和误差控制。
+            当前结果只完成一个真实 Navier-Stokes 第一代门；一维极化像表明，下一层不能直接复制同一门。
+          </p>
+          <p>本笔记仍没有证明：</p>
+          <ul>
+            <li>目标包能在第二 Picard 时间窗内保持形状和相位；</li>
+            <li>存在与矩阵 \(M\) 相容的多门极化循环；</li>
+            <li>跨越任意多个尺度时目标/泄漏比保持一致；</li>
+            <li>第一 Picard 下界能压过完整非线性余项；</li>
+            <li>三维 Navier-Stokes 解发生有限时奇性。</li>
+          </ul>
+        </section>
+
+        <section id="next">
+          <div class="section-no">10 / Next check</div>
+          <h2>R0.11：极化兼容的三门蝶形电路</h2>
+          <ol>
+            <li>把中心网络写成三步映射：
+              \((P_j,Q_j)\to a_{j+1}\)、
+              \((a_{j+1},b_{j+1})\to P_{j+1}\)、
+              \((a_{j+1},d_{j+1})\to Q_{j+1}\)。</li>
+            <li>计算三个 Leray 双线性映射的像、核与复相位自由度，判断其复合是否存在非零极化循环。</li>
+            <li>若中心循环存在，再把三门同时增厚为稠密包，要求每门都有 \(N^3\) 配对重数和分离的输出支撑。</li>
+            <li>设计时间顺序，使前一门生成的包在热衰减前进入下一门，而不是同时触发所有反向边。</li>
+            <li>最后才估计第二 Picard 余项、跨门干扰和多尺度迭代常数。</li>
+          </ol>
+          <div class="proof warning">
+            <strong>停止条件。</strong>
+            如果三门复合的极化像为零、随尺度退化，或者所有非零循环都强制产生同阶反向包，
+            当前锥形蝶形网络应当停止。单个门的正下界不能用来掩盖电路不可迭代。
+          </div>
+        </section>
+
+        <section id="references">
+          <div class="section-no">11 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>J. Bourgain and N. Pavlovic, “Ill-posedness of the Navier-Stokes Equations in a Critical Space in 3D,” <em>Journal of Functional Analysis</em> 255 (2008), 2233-2247. <a href="https://doi.org/10.1016/j.jfa.2008.07.008">DOI</a>；<a href="https://arxiv.org/abs/0807.0882">作者预印本</a>。</li>
+            <li>T. Tao, “Finite Time Blowup for an Averaged Three-Dimensional Navier-Stokes Equation,” <em>Journal of the American Mathematical Society</em> 29 (2016), 601-674. <a href="https://doi.org/10.1090/jams/838">DOI</a>；<a href="https://arxiv.org/abs/1402.0290">作者预印本</a>。</li>
+            <li>N. Kishimoto and T. Yoneda, “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,” <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022). <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；<a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。</li>
+            <li>F. Waleffe, “The Nature of Triad Interactions in Homogeneous Turbulence,” <em>Physics of Fluids A</em> 4 (1992), 350-363. <a href="https://doi.org/10.1063/1.858309">DOI</a>；<a href="https://ntrs.nasa.gov/citations/19920038608">NASA 文献页</a>。</li>
+            <li>N. H. Katz and N. Pavlovic, “Finite Time Blow-up for a Dyadic Model of the Euler Equations,” <em>Transactions of the American Mathematical Society</em> 357 (2005), 695-708. <a href="https://doi.org/10.1090/S0002-9947-04-03532-9">DOI</a>；<a href="https://www.ams.org/journals/tran/2005-357-02/S0002-9947-04-03532-9/">AMS</a>。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>R0.10 · 稠密跨壳包与极化像障碍</strong><br>个人研究日志 · 2026-08-16</span>
+    <span><a href="/notes/r0-9.html">上一篇 R0.9</a> · <a href="/notes/r0-10.pdf">下载 PDF</a> · <a href="/">返回研究主页</a></span>
+  </div></footer>
+</body>
+</html>

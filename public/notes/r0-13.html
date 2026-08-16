@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.13：精确分解双壳第五阶相互作用树，并证明固定极化、等幅同相催化下纯六次齐次项的外部能量至少为目标能量的 45.739 倍。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.13｜第五阶树分解与外部能量下界">
+  <meta property="og:description" content="目标系数有精确闭式；在固定极化、等幅同相的一参数族中，目标至多占纯六次第五阶临界能量的 2.139525%。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.13｜第五阶树分解与外部能量下界</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      section#references { break-before:page; } .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-13.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.13 · 第五阶精确代数</div>
+        <h1>第五阶树分解与外部能量下界</h1>
+        <p class="lead">
+          我把 R0.12 的数值极限改写成精确 Laurent 递推，并按六叶计数和根节点阶数分解全部第五阶相互作用树。
+          下一壳目标系数等于 \(47797\sqrt6/1120\)，但在原来的固定极化、等幅同相催化族中，
+          纯六次齐次项的目标能量最多只占 \(2.139525\%\)。这是一个有限阶障碍，不是完整方程的正则性结论。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 精确有限阶结论，PDE 时间余项未估计</span>
+        <strong>目标系数变成定理，外部频率仍占主导</strong>
+        <p>版本 v0.13 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：第五阶纯非线性齐次项</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#question">01 · 有限问题</a></li>
+          <li><a href="#geometry">02 · 退化锥几何</a></li>
+          <li><a href="#recurrence">03 · Laurent 递推</a></li>
+          <li><a href="#leaves">04 · 三类六叶树</a></li>
+          <li><a href="#roots">05 · 根节点分裂</a></li>
+          <li><a href="#energy">06 · 外部能量</a></li>
+          <li><a href="#finite">07 · 有限层核对</a></li>
+          <li><a href="#scope">08 · 适用范围</a></li>
+          <li><a href="#value">09 · 研究价值</a></li>
+          <li><a href="#next">10 · 下一步</a></li>
+          <li><a href="#reproduce">11 · 复现</a></li>
+          <li><a href="#references">12 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>第五阶目标存在，但固定极化下不可能占据主能量</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>目标系数有精确闭式</strong><p>\(C_\infty=47797\sqrt6/1120=104.534161817685\ldots\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>负次幂全部抵消</strong><p>完整有符号 Fourier 聚合后，没有未消去的 Laurent 极点。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>固定族有严格能量障碍</strong><p>外部/目标至少为 \(45.7393489647\ldots\)，目标比例至多为 \(2.139525\%\)。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>完整 PDE 仍未进入</strong><p>热项、Taylor 余项、稠密包和逐壳迭代没有包含在定理中。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>精确结论。</strong>
+            对 R0.11 的固定四个极化，取两种催化模态为相同实幅 \(\varepsilon\) 和相同相位。
+            在 \(n\to\infty\) 的退化锥极限中，第五阶纯非线性、六次齐次系数满足
+            \[
+              \frac{E_{\mathrm{ext}}^{(5)}}{E_{\mathrm{tar}}^{(5)}}
+              \ge 45.739348964727\ldots,
+              \qquad
+              \frac{E_{\mathrm{tar}}^{(5)}}{E_{\mathrm{all}}^{(5)}}
+              \le 0.0213952488032\ldots .
+            \]
+            小数由一个明示六次多项式的唯一正根计算；唯一性和全局极小性由符号变化及端点行为给出。
+          </div>
+          <p>
+            这里的“证明”只覆盖一个完全列明的有限阶代数命题。它没有证明 Navier–Stokes 解爆破，
+            也没有证明全局正则性；它只把 R0.12 的浮点观察提升为固定极化族内的精确障碍。
+          </p>
+        </section>
+
+        <section id="question">
+          <div class="section-no">01 / Finite question</div>
+          <h2>R0.12 留下的三个可判定问题</h2>
+          <p>
+            R0.12 发现完整第五阶目标系数约为 \(104.53416\varepsilon^2\)，而预定接力只有
+            \(-0.13778\varepsilon^2\)。当时仍有三处不确定：
+          </p>
+          <ol>
+            <li>数值极限是否有闭式，还是有限层偶然稳定；</li>
+            <li>三类六叶计数各自贡献多少，主导项出现在树的什么位置；</li>
+            <li>调节共同催化幅度能否让目标频率在同阶能量中占主导。</li>
+          </ol>
+          <p>
+            这三问都只涉及给定初始 Fourier 多项式的第五阶系数，因此可以先于时间余项独立求解。
+          </p>
+        </section>
+
+        <section id="geometry">
+          <div class="section-no">02 / Degenerate-cone geometry</div>
+          <h2>用 \(\delta=4^{-n}\) 保留所有偏离共线的项</h2>
+          <p>
+            记 \(e=(1,1,1)\) 且 \(\delta=4^{-n}\)。把所有频率除以 \(4^n\) 后，四个正输入频率精确写成
+          </p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              P_{n-1}&=\frac{e}{6\delta}+\frac{(1,1,-2)}3,&
+              Q_{n-1}&=\frac{e}{6\delta}+\frac{(1,-2,1)}3,\\
+              b_n&=\frac{e}{3\delta}+\frac{(-1,2,-1)}3,&
+              d_n&=\frac{e}{3\delta}+\frac{(-1,-1,2)}3 .
+            \end{aligned}
+            \]
+          </div>
+          <p>
+            主方向都趋向 \(e\)，但 Leray 作用恰由横向的 \(O(1)\) 偏移决定。
+            因此不能先把几何替换成完全共线向量；我保留 \(\delta\) 的 Laurent 系数，完成递推后才取常数项。
+          </p>
+          <p>
+            四个单位极化的归一化因子分别含
+            \(\sqrt{1+8\delta^2}\) 或 \(\sqrt{1+2\delta^2}\)。
+            去掉这两个在 \(\delta=0\) 等于一的因子后，所有相互作用系数成为有限 Laurent 多项式；
+            六个初始叶的共同归一化常数为 \(1/216\)。
+          </p>
+        </section>
+
+        <section id="recurrence">
+          <div class="section-no">03 / Exact Laurent recurrence</div>
+          <h2>相位剥离后，递推完全落在有理数上</h2>
+          <p>
+            只看无热项的齐次六次部分。写普通 Taylor 系数为
+            \(U_m=(-i)^mR_m\)，则 \(R_m\) 满足实系数的有序 Leray 递推
+          </p>
+          <div class="equation">
+            \[
+              R_{m+1}(k)=\frac1{m+1}
+              \sum_{a+b=m}\mathbb P_k
+              \sum_{p+q=k}\bigl(q\cdot R_a(p)\bigr)R_b(q).
+            \]
+          </div>
+          <p>
+            第 \(m\) 阶只需保留 Laurent 指数窗
+            \(-m\le \ell\le5-m\)，因为每次剩余相互作用最多再降低一次指数。
+            这给出有限的精确算法。递推各中间项可以出现负幂，但把正负频率全部聚合后，
+            第五阶 306 个非零极限频率中未留下任何负次幂。
+          </p>
+          <div class="proof">
+            <strong>可复核点。</strong>
+            去掉零输出后，第 \(0,\ldots,5\) 阶分别有
+            \(24,84,258,684,1524\) 个带标签状态。叶标签和根节点阶数始终保留，
+            因而总系数、叶计数和根分裂由同一次递推给出，不依赖事后猜测路径。
+          </div>
+        </section>
+
+        <section id="leaves">
+          <div class="section-no">04 / Three six-leaf classes</div>
+          <h2>三类叶计数各自给出精确系数</h2>
+          <p>
+            坐标顺序取 \((P_{n-1},Q_{n-1},b_n,d_n)\)。
+            到达 \(a_{n+1}\) 的正频率第五阶树只有三种六叶净计数：
+          </p>
+          <div class="equation">
+            \[
+              (1,3,2,0),\qquad(2,2,1,1),\qquad(3,1,0,2).
+            \]
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>六叶计数</th><th>目标方向系数</th><th>数值</th><th>结构</th></tr></thead>
+            <tbody>
+              <tr><td>\((1,3,2,0)\)</td><td>\(\frac{1273}{1120}\sqrt6\)</td><td>2.7841075380</td><td>只含 \(b_n\) 的镜像侧类</td></tr>
+              <tr><td>\((2,2,1,1)\)</td><td>\(\frac{45251}{1120}\sqrt6\)</td><td>98.9659467417</td><td>同时含 \(b_n,d_n\) 的中心类</td></tr>
+              <tr><td>\((3,1,0,2)\)</td><td>\(\frac{1273}{1120}\sqrt6\)</td><td>2.7841075380</td><td>只含 \(d_n\) 的镜像侧类</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            单个侧类的向量不在目标一维线上；两侧互为坐标镜像，相加后横向分量消去。
+            中心类本身就在目标线上。三者相加得到
+          </p>
+          <div class="equation">
+            \[
+              C_\infty
+              =\left(\frac{1273+45251+1273}{1120}\right)\sqrt6
+              =\frac{47797\sqrt6}{1120}.
+            \]
+          </div>
+          <p>
+            预定有向接力的闭式则是
+            \(D_\infty=-9\sqrt6/160\)。所以完整系数与预定系数的比值恰为
+            \[
+              \frac{C_\infty}{D_\infty}=-\frac{47797}{63}
+              =-758.68253968\ldots .
+            \]
+            R0.12 的“相反符号、约 759 倍”由此变成精确等式。
+          </p>
+        </section>
+
+        <section id="roots">
+          <div class="section-no">05 / Root-order split</div>
+          <h2>主贡献来自一个初始叶作用于四阶子树</h2>
+          <p>
+            把根节点的左右子树 Taylor 阶数记为 \((a,b)\)，其中 \(a+b=4\)。
+            下表已把两种对称侧类相加；所有条目都省略共同因子 \(\sqrt6\)。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>根分裂 \((a,b)\)</th><th>两侧类合计</th><th>中心类</th><th>全部</th></tr></thead>
+            <tbody>
+              <tr><td>\((0,4)\)</td><td>\(2093/800\)</td><td>\(707/20\)</td><td>\(30373/800\)</td></tr>
+              <tr><td>\((1,3)\)</td><td>\(207/400\)</td><td>\(1851/400\)</td><td>\(1029/200\)</td></tr>
+              <tr><td>\((2,2)\)</td><td>\(17/200\)</td><td>\(1049/800\)</td><td>\(1117/800\)</td></tr>
+              <tr><td>\((3,1)\)</td><td>\(-21/80\)</td><td>\(-117/400\)</td><td>\(-111/200\)</td></tr>
+              <tr><td>\((4,0)\)</td><td>\(-153/224\)</td><td>\(-831/1400\)</td><td>\(-7149/5600\)</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            有序 Fourier 非线性不在左右子树交换下对称。
+            \((0,4)\) 一项远大于其镜像 \((4,0)\)，并承担总正系数的大部分。
+            所以主导机制不是一条均匀的五门链，而是初始叶对已经形成的四阶外部子树的一次强回馈。
+          </p>
+        </section>
+
+        <section id="energy">
+          <div class="section-no">06 / External-energy lower bound</div>
+          <h2>共同幅度不能把外部频率调掉</h2>
+          <p>
+            令两种正频率催化振幅都为 \(\varepsilon\)，负频率取共轭。
+            把第五阶六次齐次系数的极限 \(\dot H^{1/2}\) 能量记为 \(E_\infty\)。
+            精确聚合给出
+          </p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+            \frac{E_\infty}{\sqrt3}
+            ={}&\frac{69777}{3200}
+            +\frac{305080037}{39200}\varepsilon^2
+            +\frac{12206442914731}{12544000}\varepsilon^4\\
+            &+\frac{113164737228373}{25088000}\varepsilon^6
+            +\frac{29552031913871}{25088000}\varepsilon^8\\
+            &+\frac{36561930673}{1075200}\varepsilon^{10}
+            +\frac{69777}{1600}\varepsilon^{12}.
+            \end{aligned}
+            \]
+          </div>
+          <p>目标频率对的能量恰为</p>
+          <div class="equation">
+            \[
+              \frac{T_\infty}{\sqrt3}
+              =\frac{2284553209}{78400}\varepsilon^4,
+              \qquad 2284553209=47797^2.
+            \]
+          </div>
+          <p>
+            令 \(X_\infty=E_\infty-T_\infty\)，再置 \(z=\varepsilon^2\)。
+            \(X_\infty/T_\infty\) 的正驻点满足
+          </p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              0={}&4376413440z^6+2559335147110z^5+59104063827742z^4\\
+              &+113164737228373z^3-195251223680z-1094103360 .
+            \end{aligned}
+            \]
+          </div>
+          <p>
+            按降幂排列，系数只有一次符号变化，故 Descartes 符号法则给出唯一正根。
+            又因能量比在 \(z\to0^+\) 和 \(z\to\infty\) 时都趋于无穷，该根给出唯一全局极小：
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>量</th><th>值</th></tr></thead>
+            <tbody>
+              <tr><td>\(z_*\)</td><td>0.04362928205678372</td></tr>
+              <tr><td>\(\varepsilon_*=\sqrt{z_*}\)</td><td>0.2088762362184452</td></tr>
+              <tr><td>\(\min X_\infty/T_\infty\)</td><td>45.739348964727476</td></tr>
+              <tr><td>\(\max T_\infty/E_\infty\)</td><td>2.139524880320144%</td></tr>
+            </tbody>
+          </table></div>
+          <div class="proof warning">
+            <strong>固定极化障碍。</strong>
+            在这一等幅同相一参数族内，没有任何非零共同幅度能使目标第五阶能量超过
+            \(2.14\%\)。相反相位的等幅族更差：最佳目标比例约为 \(1.64649\%\)。
+            这并不排除改变两种振幅之比、复相位或极化本身；那些是下一步要处理的更大参数空间。
+          </div>
+        </section>
+
+        <section id="finite">
+          <div class="section-no">07 / Finite-level check</div>
+          <h2>精确极限与原始浮点递推相互独立地吻合</h2>
+          <p>
+            我保留 R0.12 的双精度 Fourier 递推作为独立核对，取
+            \(\varepsilon=0.2\)。极限公式给出外部/目标
+            \(45.7952564653\)，目标比例 \(2.1369687347\%\)。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>层 \(n\)</th><th>目标系数/\(\varepsilon^2\)</th><th>目标比例</th><th>外部/目标</th></tr></thead>
+            <tbody>
+              <tr><td>3</td><td>104.0737826373</td><td>2.15566319%</td><td>45.38943615</td></tr>
+              <tr><td>4</td><td>104.5053054413</td><td>2.13814268%</td><td>45.76956356</td></tr>
+              <tr><td>5</td><td>104.5323579703</td><td>2.13704068%</td><td>45.79368108</td></tr>
+              <tr><td>6</td><td>104.5340490760</td><td>2.13697286%</td><td>45.79516606</td></tr>
+              <tr><td>8</td><td>104.5341613771</td><td>2.13696872%</td><td>45.79525674</td></tr>
+              <tr><td>\(\infty\)</td><td>104.5341618177</td><td>2.13696873%</td><td>45.79525647</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            精确程序使用有理 Laurent 系数且不做零值裁剪；有限层程序使用原始单位极化和双精度向量。
+            两条计算路径在 \(n=8\) 已吻合到显示精度，降低了同一实现错误造成假闭式的风险。
+          </p>
+        </section>
+
+        <section id="scope">
+          <div class="section-no">08 / Scope</div>
+          <h2>下界覆盖什么，不覆盖什么</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>已包含</th><th>未包含</th></tr></thead>
+            <tbody>
+              <tr><td>全部正负 Fourier 输入及第五阶生成频率</td><td>第五阶以后以及完整 Taylor 余项</td></tr>
+              <tr><td>纯非线性、六次齐次第五阶系数</td><td>含热算子的较低非线性次数路径</td></tr>
+              <tr><td>R0.11 固定单位极化</td><td>极化的连续变分</td></tr>
+              <tr><td>两催化模态等幅、同相的实一参数族</td><td>不等幅、一般复相位与频率包</td></tr>
+              <tr><td>\(n\to\infty\) 退化锥的精确常数项</td><td>多壳重复和有限时间 PDE 控制</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            因此，\(45.7393\) 不是“所有候选机制”的普适下界，
+            更不是 Navier–Stokes 解的能量不等式。它是一个固定初始极化族的第五阶代数下界。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">09 / Research value</div>
+          <h2>这一步把候选机制的瓶颈定位得更精确</h2>
+          <p>
+            Fourier–Picard 树在临界或超临界问题中可能累积出显著效应；
+            Bourgain–Pavlović 的范数膨胀工作说明有限阶频率相互作用在粗糙临界拓扑中确实可能决定行为。
+            Tao 的 averaged Navier–Stokes 构造则说明，级联电路可以产生爆破，但把这种电路落实到原始
+            Navier–Stokes 二次项时，真实 Fourier–Leray 结构不能被忽略。
+          </p>
+          <p>
+            本文没有接近上述结果的结论强度。它的价值更窄：预定三门接力的系数不只是“不准确”，
+            而是被一种可精确分解的四阶子树回馈所支配；在当前固定极化族内，共同幅度调节无法修复同阶外部能量。
+            这排除了继续只调一个标量参数的路线，并把下一次搜索集中到振幅比、复相位和极化方向。
+          </p>
+          <div class="proof warning">
+            <strong>与千禧年问题的距离。</strong>
+            Clay 问题要求光滑初值的全局光滑性证明，或满足正式条件的有限时破裂构造。
+            本文既没有全局先验估计，也没有有限时奇性；它只是对一个候选级联局部模型作可证伪检查。
+          </div>
+        </section>
+
+        <section id="next">
+          <div class="section-no">10 / Next step</div>
+          <h2>R0.14：放开催化振幅比与复相位</h2>
+          <p>
+            精确程序已经得到一般实振幅 \(b,d\) 下含 41 项的同阶能量多项式。
+            下一步先不增加时间阶数，而处理这个有限维全局优化问题：
+          </p>
+          <ol>
+            <li>写出目标能量与外部能量关于两种实振幅的齐次分块，消去共同尺度；</li>
+            <li>证明对称点 \(b=d\) 是全局最优，或给出严格更好的非对称方向；</li>
+            <li>加入相对复相位，使用三角多项式或半正定方法给出可认证界；</li>
+            <li>若目标比例仍有严格小上界，再放开两种催化极化；若出现近核方向，再检查含热项的有限时间系数。</li>
+          </ol>
+          <p>
+            只有当更大参数空间给出明显改善，才值得重新提升为稠密频率包。
+            否则，R0.10–R0.13 这条三门接力路线应当停止，而不是用更长的数值积分掩盖固定阶障碍。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">11 / Reproduction</div>
+          <h2>精确脚本与检查入口</h2>
+          <p>
+            复现脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fifth_order_tree_audit.py"><code>research/fifth_order_tree_audit.py</code></a>。
+            它只使用 Python 标准库的 <code>Fraction</code> 做 Laurent 递推，同时调用 R0.12 的浮点程序作有限层核对。
+          </p>
+          <div class="equation mono">
+            python3 research/fifth_order_tree_audit.py --check
+          </div>
+          <p>
+            输出为 JSON，包含三类叶计数、五种根分裂、目标闭式、一般双振幅能量多项式、
+            等幅同相/反相极小值以及 \(n=3,\ldots,8\) 的有限层对照。
+            <code>--check</code> 还验证 Laurent 极点全消、目标系数求和、驻点多项式和两条实现的一致性。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">12 / Primary sources</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">C. Fefferman, <em>Existence and Smoothness of the Navier–Stokes Equation</em></a>。Clay 正式问题说明；本文没有解决其中任何命题。</li>
+            <li><a href="https://doi.org/10.1063/1.858309">F. Waleffe, <em>The Nature of Triad Interactions in Homogeneous Turbulence</em></a>, Physics of Fluids A 4 (1992), 350–363。Fourier 螺旋三波作用的原始分析。</li>
+            <li><a href="https://arxiv.org/abs/0807.0882">J. Bourgain &amp; N. Pavlović, <em>Ill-posedness of the Navier–Stokes Equations in a Critical Space in 3D</em></a>, JFA 255 (2008), 2233–2247。临界 Besov 空间中有限 Picard/Fourier 相互作用导致范数膨胀；不蕴含本文固定族的结论。</li>
+            <li><a href="https://www.ams.org/journals/jams/2016-29-03/S0894-0347-2015-00838-4/">T. Tao, <em>Finite Time Blowup for an Averaged Three-Dimensional Navier–Stokes Equation</em></a>, JAMS 29 (2016), 601–674。级联电路在 averaged 模型中的严格实现，以及原始非线性结构所造成的区别。</li>
+            <li><a href="/notes/r0-11.html">R0.11：三门极化接力与反向边障碍</a>。本文的频率和极化定义来自这里。</li>
+            <li><a href="/notes/r0-12.html">R0.12：双壳五阶展开与完整频率回路</a>。本文把其中的浮点极限与能量观察提升为精确有限阶结论。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>Navier–Stokes 开放研究日志</strong>个人计算记录，不代表同行评议结论。</span>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-13.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

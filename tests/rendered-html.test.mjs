@@ -15,6 +15,7 @@ const ninthNoteUrl = new URL("../public/notes/r0-9.html", import.meta.url);
 const tenthNoteUrl = new URL("../public/notes/r0-10.html", import.meta.url);
 const eleventhNoteUrl = new URL("../public/notes/r0-11.html", import.meta.url);
 const twelfthNoteUrl = new URL("../public/notes/r0-12.html", import.meta.url);
+const thirteenthNoteUrl = new URL("../public/notes/r0-13.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -248,6 +249,22 @@ test("publishes and links the full two-shell Taylor audit", async () => {
   assert.match(note, /Taylor 余项、稠密包极限和逐壳重复都没有估计/);
 });
 
+test("publishes and links the exact fifth-order tree audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(thirteenthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-13\.html"/);
+  assert.match(note, /研究笔记 R0\.13/);
+  assert.match(note, /47797\\sqrt6\/1120/);
+  assert.match(note, /45\.739348964727/);
+  assert.match(note, /2\.139524880320144%/);
+  assert.match(note, /根节点分裂/);
+  assert.match(note, /固定极化、等幅同相/);
+  assert.match(note, /热项、Taylor 余项、稠密包和逐壳迭代没有包含在定理中/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -260,7 +277,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -274,6 +291,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(tenthNoteUrl, "utf8"),
     readFile(eleventhNoteUrl, "utf8"),
     readFile(twelfthNoteUrl, "utf8"),
+    readFile(thirteenthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -340,6 +358,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(twelfthNote, /我把 R0\.11/);
   assert.doesNotMatch(
     twelfthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(thirteenthNote, /我把 R0\.12/);
+  assert.doesNotMatch(
+    thirteenthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

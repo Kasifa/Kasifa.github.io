@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.8：证明连通非共面三波网络至少需要五个无符号波数，构造最小蝶形网络，推导涡量拉伸与泄漏公式，并比较投影 ODE 和去混叠 Galerkin 演化。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.8｜最小非共面蝶形网络与三维拉伸">
+  <meta property="og:description" content="五个无符号波数实现最小连通非共面网络；闭式公式显示正涡量拉伸与严格泄漏并存，短时 Galerkin 中生成模态延长临界增长。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.8｜最小非共面蝶形网络与三维拉伸</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+      --bar: rgba(242, 237, 223, .97);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --red: #ee8b7c;
+        --green: #9fbea2;
+        --gold: #d9b567;
+        --line: rgba(238, 231, 216, .26);
+        --bar: rgba(23, 24, 22, .96);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: var(--bar);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .keep-block { break-inside: avoid; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 10px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .03em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: #27221d; color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: #f2eddf; }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @page { size: A4; margin: 12mm 14mm; }
+    @media print {
+      .bar, .toc { display: none; }
+      html, body, main, .layout, article { height: auto; margin-bottom: 0; padding-bottom: 0; }
+      body { background: white; color: black; font-size: 9.5pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      .hero-inner { padding-top: 8px; }
+      .stamp { margin-top: 22px; }
+      section { break-inside: auto; margin-bottom: 24px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 16px 0; padding: 15px; }
+      .proof { margin: 16px 0; padding: 13px 16px; }
+      th, td { padding: 7px 8px; }
+      .refs li { padding-top: 9px; padding-bottom: 9px; }
+      article > section:last-child { margin-bottom: 0; }
+      footer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-8.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.8 · 非共面三波网络</div>
+          <h1>最小非共面蝶形网络与三维拉伸</h1>
+          <p class="lead">
+            我把 R0.7 的共面六模态中心替换为两个只共享一个波数的三波网络。
+            五个无符号波数已经是连通非共面网络的最小规模。
+            一个四参数极化同时产生正涡量拉伸和严格频谱泄漏；在短时 Galerkin 计算中，生成模态延长了临界能量增长。
+          </p>
+        </div>
+        <div class="stamp">
+          <span class="state">笔记状态 · 两个代数命题已证明，动力学为有限维计算</span>
+          <strong>离开 2D3C，但没有关闭 PDE</strong>
+          <p>版本 v0.8 · 2026-08-16</p>
+          <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+          <p>对象：十模态蝶形网络与生成模态</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#minimal">01 · 最小性</a></li>
+          <li><a href="#coordinates">02 · 四参数极化</a></li>
+          <li><a href="#identities">03 · 闭式恒等式</a></li>
+          <li><a href="#candidate">04 · 对称候选</a></li>
+          <li><a href="#evolution">05 · Galerkin 演化</a></li>
+          <li><a href="#budget">06 · 生成模态预算</a></li>
+          <li><a href="#convergence">07 · 数值收敛</a></li>
+          <li><a href="#value">08 · 对原问题的价值</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这一轮得到的结论分成三层</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>五个无符号波数是最小规模</strong>
+              <p>连通三波网络若要张成三维，至少需要两个三波关系，并且第二个关系必须新增两个波数。</p>
+            </div>
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>传递与涡量拉伸精确同号关联</strong>
+              <p>在四参数极化中，\(\mathfrak S=-(\sqrt2+1)\mathfrak T\)，同时法向泄漏严格为正。</p>
+            </div>
+            <div class="status-item">
+              <span>已计算</span>
+              <strong>生成模态延长短时增长</strong>
+              <p>完整截断的峰值时间约为 0.05454；只保留初始十模态时约为 0.01569。</p>
+            </div>
+            <div class="status-item">
+              <span>仍然开放</span>
+              <strong>没有截断统一误差</strong>
+              <p>计算只覆盖固定短时间和有限频率。它不能推出完整 Navier-Stokes 解的长期增长或奇性。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>证据等级</strong>
+            频率网络的最小性和四参数闭式公式是有限代数命题。
+            峰值、累计拉伸和逐模态预算来自浮点 Fourier-Galerkin 计算。
+            本笔记没有证明候选最优，也没有给出随截断趋于无穷的一致估计。
+          </div>
+        </section>
+
+        <section id="minimal">
+          <div class="section-no">01 / Minimal connected triad cluster</div>
+          <h2>一个三波关系总是共面，两个关系至少需要五个顶点</h2>
+          <p>
+            把实值 Fourier 支撑中的一对 \(\{k,-k\}\) 看成一个无符号顶点。
+            三个不同顶点构成三波关系，是指可以选择符号使
+            \(\sigma_1k_1+\sigma_2k_2+\sigma_3k_3=0\)。
+            网络“连通”表示任意两个三波关系可以通过共享顶点连接。
+          </p>
+          <div class="proof result">
+            <strong>最小性命题</strong>
+            任何连通并张成 \(\mathbb R^3\) 的三波网络至少有五个无符号顶点。
+            这个下界可以达到。
+          </div>
+          <h3>证明</h3>
+          <p>
+            单个三波关系满足 \(k_3=-\sigma_3(\sigma_1k_1+\sigma_2k_2)\)，所以三个波数位于同一二维子空间。
+            要提高到三维至少需要第二个三波关系。若第二个关系与第一个共享两个顶点，它的三个波数仍在这两个共享波数张成的平面内；若不共享顶点，网络不连通。
+            因此第二个关系必须恰好共享一个顶点并新增两个顶点，总数至少为 \(3+2=5\)。
+          </p>
+          <p>下面的整数波数达到该下界：</p>
+          <div class="equation">
+            \[
+              a=(1,0,0),\quad b=(0,1,0),\quad c=(-1,-1,0),
+            \]
+            \[
+              d=(0,0,1),\quad e=(-1,0,-1),
+            \]
+            \[
+              a+b+c=0,\qquad a+d+e=0.
+            \]
+          </div>
+          <p>
+            两个三波平面分别是 \(xy\) 与 \(xz\)，只共享 \(a\)。五个波数的长度只有 \(1\) 和 \(\sqrt2\)，所以这个基准网络没有人为加入远距离尺度耦合。
+          </p>
+        </section>
+
+        <section id="coordinates">
+          <div class="section-no">02 / Four-real-parameter polarization</div>
+          <h2>一个对称极化已经包含水平涡量拉伸</h2>
+          <p>取四个实参数 \(A,B,C,D\)，定义正频率系数</p>
+          <div class="equation">
+            \[
+            \widehat u(a)=(0,A,B),\quad
+            \widehat u(b)=(A,0,B),\quad
+            \widehat u(c)=(0,0,-iC),
+            \]
+            \[
+            \widehat u(d)=(B,A,0),\quad
+            \widehat u(e)=(0,-iD,0),\quad
+            \widehat u(-k)=\overline{\widehat u(k)}.
+            \]
+          </div>
+          <p>
+            每个系数都垂直于对应波数，因此场实值且无散。
+            当 \(A,B,C,D\) 都非零时，两翼通过共享模态 \(a\) 耦合；该场依赖三个空间变量，不能旋转成 2D3C 场。
+          </p>
+          <div class="keep-block">
+            <p>采用归一化平均，记</p>
+            <div class="equation">
+              \[
+                E=\|u\|_{\dot H^{1/2}}^2,
+                \qquad
+                \mathfrak T=\langle u,B(u,u)\rangle_{\dot H^{1/2}},
+              \]
+              \[
+                \mathfrak S_j=\int_{\mathbb T^3}
+                \omega_j(\omega\cdot\nabla)u_j\,dx,
+                \qquad \mathfrak S=\sum_{j=1}^3\mathfrak S_j.
+              \]
+            </div>
+          </div>
+        </section>
+
+        <section id="identities">
+          <div class="section-no">03 / Closed identities</div>
+          <h2>正拉伸、临界传递与泄漏可以同时写成闭式</h2>
+          <div class="proof result">
+            <strong>能量、传递和拉伸</strong>
+            \[
+              E=6(A^2+B^2)+2\sqrt2(C^2+D^2),
+            \]
+            \[
+              \mathfrak T=4(\sqrt2-1)AB(C+D),
+            \]
+            \[
+              (\mathfrak S_1,\mathfrak S_2,\mathfrak S_3)
+              =-2AB(C+D,\ C,\ D).
+            \]
+            因而
+            \[
+              \boxed{\mathfrak S=-(\sqrt2+1)\mathfrak T}.
+            \]
+          </div>
+          <p>
+            所以 \(AB(C+D)<0\) 同时给出 \(\mathfrak T<0\) 和 \(\mathfrak S>0\)：
+            前者推动 \(\dot H^{1/2}\) 能量增长，后者推动涡量平方增长。
+            这是真正三维的拉伸项，不是 2D3C 中被动标量的替代量。
+          </p>
+          <div class="proof result">
+            <strong>外部非线性平方范数</strong>
+            置 \(F=\|B_{\rm out}(u,u)\|_{\dot H^{1/2}}^2\)，则
+            \[
+            \begin{aligned}
+            F={}&4\sqrt2(A^4+B^4)\\
+              &+\frac{4\sqrt3}{3}(A^2+B^2-AB)
+                \bigl(2C^2+2D^2-CD\bigr)\\
+              &+4\sqrt5(A^2C^2+B^2D^2)
+                +\frac{8\sqrt6}{3}C^2D^2.
+            \end{aligned}
+            \]
+          </div>
+          <p>
+            每一项都非负，并且
+            \(F\ge4\sqrt2(A^4+B^4)\)。非零传递要求 \(A,B\ne0\)，故必有 \(F>0\)。
+            这与 Kishimoto-Yoneda 的有限 Fourier 支撑分类一致：真正三维的非线性有限模态场不能作为精确封闭的 Navier-Stokes 演化长期存在。
+          </p>
+          <div class="proof">
+            <strong>独立计算核对</strong>
+            闭式公式与直接 Leray-Fourier 卷积在 1,000 个固定随机参数点上比较。
+            能量、\(\dot H^{3/2}\) 范数、传递、三个拉伸分量和泄漏的最大相对或绝对误差为
+            \(2.06\times10^{-15}\)。
+          </div>
+        </section>
+
+        <section id="candidate">
+          <div class="section-no">04 / Symmetric normalized candidate</div>
+          <h2>最简单的等幅选择已经给出正拉伸</h2>
+          <div class="equation">
+            \[
+              A=C=D=q,\qquad B=-q,
+              \qquad q=(12+4\sqrt2)^{-1/2}=0.2379815747\ldots
+            \]
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>量</th><th>数值</th><th>性质</th></tr></thead>
+              <tbody>
+                <tr><td>\(E\)</td><td>1</td><td>归一化</td></tr>
+                <tr><td>\(\|u\|_{\dot H^{3/2}}^2\)</td><td>1.3203772410</td><td>粘性半速率</td></tr>
+                <tr><td>\(\mathfrak T\)</td><td>-0.04466263105</td><td>临界能量有利符号</td></tr>
+                <tr><td>\(\mathfrak S\)</td><td>0.1078251296</td><td>总涡量拉伸为正</td></tr>
+                <tr><td>\(\mathfrak S_1+\mathfrak S_2\)</td><td>0.08086884721</td><td>占总拉伸 75%</td></tr>
+                <tr><td>\(F\)</td><td>0.1812869467</td><td>初始法向泄漏不小</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            在方程 \(u_t=\Delta u+\rho P(u\times\omega)\) 中，临界幅度为
+            \(\rho_c=29.56335554\)。计算取 \(\rho=1.2\rho_c=35.47602665\)，
+            因而初始 \(\dot H^{1/2}\) 非线性半速率恰为粘性半速率的 1.2 倍。
+            等价地，\(v=\rho u\) 满足标准粘性系数为 1 的方程。
+          </p>
+          <p>
+            一般四参数场生成十对代表性外部波数；这个等幅选择消去 \((0,1,-1)\) 一对，仍立即生成九对。
+            最大分量长度为 2，所以初始法向强迫在所有采用的截断中都被完整保留。
+          </p>
+        </section>
+
+        <section id="evolution">
+          <div class="section-no">05 / Dealiased Fourier-Galerkin evolution</div>
+          <h2>生成模态把增长区间延长了约 3.5 倍</h2>
+          <p>
+            参考计算使用分量截断 \(|k_j|\le7\)、\(28^3\) 网格、三分之二去混叠条件和 RK4 时间步 \(5\times10^{-4}\)。
+            我比较两个系统：一个保留截断内所有生成模态，另一个在每一步把状态投影回初始十模态。
+          </p>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>完整截断</span>
+              <strong>峰值时间 0.0545359</strong>
+              <p>\(E_{\max}=1.0969903\)，随后粘性半速率重新占优。</p>
+            </div>
+            <div class="status-item">
+              <span>十模态投影</span>
+              <strong>峰值时间 0.0156872</strong>
+              <p>\(E_{\max}=1.0046576\)，切掉生成模态后增长很快停止。</p>
+            </div>
+          </div>
+          <div class="proof result">
+            <strong>本次有限维观察</strong>
+            生成模态没有立即耗散掉有利几何，而是在短时间内接管了临界传递和大部分涡量拉伸。
+            这个方向与 R0.7 的共面切向模型不同；它值得继续做统一截断估计。
+          </div>
+          <div class="proof warning">
+            <strong>不能从峰值推出什么</strong>
+            9.7% 的临界能量增长不是爆破解，也不是高频无界增长。
+            到峰值时已有约 36% 的临界能量离开初始支撑，固定十模态近似已经失效；完整计算也只到有限截断和短时间。
+          </div>
+        </section>
+
+        <section id="budget">
+          <div class="section-no">06 / Target-mode budget</div>
+          <h2>初始支撑先换号，生成模态维持总传递</h2>
+          <p>
+            下表把无尺度非线性增长
+            \(G=\langle u,P(u\times\omega)\rangle_{\dot H^{1/2}}=-\mathfrak T\)
+            按目标波数分为初始支撑 \(G_0\) 与生成模态 \(G_1\)。
+            \(S\) 是总涡量拉伸，\(f_{\rm out}\) 是初始支撑外的临界能量比例。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>\(t\)</th><th>\(E\)</th><th>\(G_0\)</th><th>\(G_1\)</th><th>\(S\)</th><th>\(f_{\rm out}\)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0</td><td>1.000000</td><td>0.044663</td><td>0</td><td>0.107825</td><td>0%</td></tr>
+                <tr><td>0.005</td><td>1.004463</td><td>0.023965</td><td>0.032547</td><td>0.145523</td><td>0.57%</td></tr>
+                <tr><td>0.010</td><td>1.012149</td><td>0.002797</td><td>0.064576</td><td>0.182205</td><td>2.22%</td></tr>
+                <tr><td>0.025</td><td>1.047100</td><td>-0.049288</td><td>0.140898</td><td>0.281863</td><td>12.10%</td></tr>
+                <tr><td>0.050</td><td>1.095449</td><td>-0.072894</td><td>0.173622</td><td>0.397572</td><td>32.84%</td></tr>
+                <tr><td>0.0545</td><td>1.096992</td><td>-0.071825</td><td>0.170637</td><td>0.408852</td><td>36.03%</td></tr>
+                <tr><td>0.060</td><td>1.094646</td><td>-0.069849</td><td>0.165212</td><td>0.417217</td><td>39.58%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            初始支撑的 \(G_0\) 在 \(t=0.0106733\) 换号。
+            到 \(t=0.05\)，生成模态贡献的拉伸为 0.309771，初始支撑只贡献 0.087801。
+            同一时刻，带方程幅度 \(\rho\) 的累计水平拉伸
+            \(\rho\int_0^t(\mathfrak S_1+\mathfrak S_2)\,ds\) 为 0.327217。
+          </p>
+          <p>
+            这表明“小的离支撑能量”与“小的非线性贡献”仍然不是同一件事。
+            在 \(t=0.005\)，支撑外临界能量只有 0.57%，但生成模态已经承担约 57.6% 的有利 \(G\)。
+          </p>
+        </section>
+
+        <section id="convergence">
+          <div class="section-no">07 / Numerical checks</div>
+          <h2>时间步、截断和网格嵌入给出一致短时图景</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>比较</th><th>比较量中的最大相对差</th><th>解释</th></tr></thead>
+              <tbody>
+                <tr><td>时间步 \(5\times10^{-4}\) 对 \(2.5\times10^{-4}\)</td><td>\(9.47\times10^{-6}\)</td><td>最大值来自梯形累计量</td></tr>
+                <tr><td>分量截断 6 对 7</td><td>\(1.66\times10^{-3}\)</td><td>最大值来自终点总拉伸</td></tr>
+                <tr><td>分量截断 8 对 7</td><td>\(5.28\times10^{-4}\)</td><td>提高截断后差异继续缩小</td></tr>
+                <tr><td>同截断的 \(28^3\) 对 \(32^3\) 网格</td><td>\(7.99\times10^{-16}\)</td><td>去混叠嵌入达到机器精度一致</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            比较量包括终点 \(E\)、\(\dot H^{3/2}\) 范数、总传递、支撑外比例、累计传递、总拉伸、累计水平拉伸，以及峰值时间和峰值高度。
+            所有快照的无散、实值和 \(L^2\) 非线性反对称残差均低于 \(2\times10^{-12}\)。
+          </p>
+          <div class="proof warning">
+            <strong>收敛检查的边界</strong>
+            这些比较只支持 \(0\le t\le0.06\) 内的有限维数值稳定性。
+            它们没有给出 Galerkin 截断趋于无穷时的解析误差界，也没有控制更长时间的高频尾。
+          </div>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/noncoplanar_butterfly.py">查看闭式公式、逐模态预算和 Galerkin 自校验脚本</a>。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">08 / Value for the Millennium problem</div>
+          <h2>这一步找到了反馈种子，也暴露了必须控制的尾部</h2>
+          <p>
+            R0.7 排除了共面中心作为三维奇性机制的可能性。
+            R0.8 给出了最小非共面替代物，并在同一个显式模型中同时看到三件事：正水平涡量拉伸、正临界能量增长、以及不可避免的频谱外泄。
+            生成模态在短时内强化而不是立即破坏前两者，这是下一步最具体的线索。
+          </p>
+          <p>
+            但 Kishimoto-Yoneda 的分类说明，真正三维的精确有限 Fourier 支撑 Navier-Stokes 解不能靠非线性封闭演化；非线性有限网络必然只是瞬时骨架。
+            因此有价值的问题不是继续寻找“完全封闭的有限模态爆破系统”，而是证明生成尾在一段时间内保持某种带符号的锥形结构，同时得到截断统一控制。
+          </p>
+          <p>
+            Chemin-Gallagher-Paicu 的慢变量大数据定理也仍是必要边界。
+            当前蝶形网络在 \(k_3\) 方向并不慢，且垂直频率与水平频率同阶，所以不能直接放入他们的参数族；另一方面，单个低频网络本身光滑，必须研究它的多尺度复制后是否会进入已知全局正则邻域。
+          </p>
+          <p>本笔记仍没有证明：</p>
+          <ul>
+            <li>这个四参数候选在完整十模态极化空间中最优；</li>
+            <li>生成模态的有利符号在更长时间、更多尺度或更高截断下保持；</li>
+            <li>累计拉伸可以压过所有高频粘性耗散；</li>
+            <li>多尺度蝶形网络不属于已知的大数据全局正则类；</li>
+            <li>三维 Navier-Stokes 解全局正则或发生有限时奇性。</li>
+          </ul>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next check</div>
+          <h2>R0.9：从单个蝶形转向锥形多尺度网络</h2>
+          <ol>
+            <li>把四参数极化扩展到完整十个复极化参数，固定 \(E\) 后优化时间积分，而不是瞬时比值。</li>
+            <li>对生成波数按角锥和尺度壳分组，寻找可闭合的带符号传递不等式。</li>
+            <li>复制蝶形到相邻 dyadic 壳，检查共享模态是否形成向高频传播的有向超图。</li>
+            <li>把 Galerkin 观察改写为 Duhamel 估计，显式分离主网络、第一代生成模态和剩余尾。</li>
+            <li>逐项核对慢变量、近二维和小临界数据定理的假设，排除已经全局正则的参数区。</li>
+          </ol>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              N. Kishimoto and T. Yoneda,
+              “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,”
+              <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022).
+              <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；
+              <a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。
+              第 5 节还给出含粘性情形的有限模态分类。
+            </li>
+            <li>
+              F. Waleffe,
+              “The Nature of Triad Interactions in Homogeneous Turbulence,”
+              <em>Physics of Fluids A</em> 4 (1992), 350-363.
+              <a href="https://doi.org/10.1063/1.858309">DOI</a>。
+            </li>
+            <li>
+              S. Goto, Y. Saito and G. Kawahara,
+              “Hierarchy of Antiparallel Vortex Tubes in Spatially Periodic Turbulence at High Reynolds Numbers,”
+              <em>Physical Review Fluids</em> 2, 064603 (2017).
+              <a href="https://doi.org/10.1103/PhysRevFluids.2.064603">DOI</a>。
+            </li>
+            <li>
+              J.-Y. Chemin, I. Gallagher and M. Paicu,
+              “Global Regularity for Some Classes of Large Solutions to the Navier-Stokes Equations,”
+              <em>Annals of Mathematics</em> 173 (2011), 983-1012.
+              <a href="https://doi.org/10.4007/annals.2011.173.2.9">DOI</a>；
+              <a href="https://arxiv.org/abs/0807.1265">作者预印本</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.8 · 最小非共面蝶形网络与三维拉伸</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-8.pdf">下载 PDF</a> · <a href="/">返回研究主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

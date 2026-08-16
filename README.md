@@ -15,6 +15,7 @@
 - 第五份研究笔记：临界频率包的短时失相与频谱泄漏
 - 第六份研究笔记：固定注入下的频谱泄漏优化
 - 第七份研究笔记：全六模态泄漏下界与 2D3C 调制
+- 第八份研究笔记：最小非共面蝶形网络与三维拉伸
 - GitHub Pages 自动发布配置
 
 静态 HTML 主文件位于：
@@ -43,6 +44,7 @@ python3 research/optimized_packet_dynamics.py
 python3 research/six_mode_coercivity.py
 python3 research/six_mode_modulation.py
 python3 research/dense_packet_mode_budget.py
+python3 research/noncoplanar_butterfly.py
 ```
 
 ## GitHub Pages

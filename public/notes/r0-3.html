@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.3：精确计算近对角螺旋三元组的临界 H 半范数核、零点集与四类极值。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.3｜近对角螺旋核的精确极值">
+  <meta property="og:description" content="同号螺旋类的临界核恒为零；三个异号类保留非零的近对角极值。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.3｜近对角螺旋核的精确极值</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: rgba(242, 237, 223, .97);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: var(--ink); color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: var(--paper); }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      body { background: white; color: black; font-size: 10pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 26px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 18px 0; padding: 18px; }
+      .proof { margin: 18px 0; padding: 15px 18px; }
+      th, td { padding: 9px 11px; }
+      .refs li { padding-top: 10px; padding-bottom: 10px; }
+      footer { background: white; color: black; border-top-color: black; }
+      footer strong { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-3.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.3 · 精确极值</div>
+          <h1>近对角螺旋核的精确极值</h1>
+          <p class="lead">
+            我继续检查 R0.2 留下的近对角区域。单个三元组中，同号螺旋的临界加权传递恒为零；
+            三个异号类仍有非零极值。计算给出了完整零点集和解析最大值。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">笔记状态 · 推导与代码已复查</span>
+          <strong>有限维几何计算，不是正则性定理</strong>
+          <p>版本 v0.3 · 2026-08-16<br>目标域：近对角三元组<br>规范：Waleffe 螺旋基</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>目录</strong>
+        <ol>
+          <li><a href="#status">00 · 结论状态</a></li>
+          <li><a href="#convention">01 · 系数规范</a></li>
+          <li><a href="#kernel">02 · 临界核</a></li>
+          <li><a href="#classes">03 · 四类公式</a></li>
+          <li><a href="#homochiral">04 · 同号恒等式</a></li>
+          <li><a href="#first-maximum">05 · 第一类极值</a></li>
+          <li><a href="#shared-maximum">06 · 共同极值</a></li>
+          <li><a href="#computation">07 · 机器检查</a></li>
+          <li><a href="#result">08 · 结论边界</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这份笔记得到什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已复查</span>
+              <strong>侧长闭式公式</strong>
+              <p>Waleffe 几何系数只用三边长、三角形面积和三个螺旋符号表示。</p>
+            </div>
+            <div class="status-item">
+              <span>已复查</span>
+              <strong>四类精确极值</strong>
+              <p>固定整体符号后，四个螺旋类的零点集和全局最大值均可解析求出。</p>
+            </div>
+            <div class="status-item">
+              <span>得到的排除</span>
+              <strong>没有统一几何小因子</strong>
+              <p>三个异号类在紧的近对角区域保留 \(O(1)\) 临界核。</p>
+            </div>
+            <div class="status-item">
+              <span>尚未检查</span>
+              <strong>稠密频率包</strong>
+              <p>单个三元组没有编码壳重数，也没有检查许多三元组之间的相位兼容性。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>说明</strong>
+            这是对一个有限维核的精确计算，不是新定理，也不是 Navier–Stokes 正则性结果。
+            它只检验一种可能的机制：近对角三元组的几何是否对所有螺旋符号都自动给出小因子。答案是否定的。
+          </div>
+        </section>
+
+        <section id="convention">
+          <div class="section-no">01 / Waleffe convention</div>
+          <h2>先固定系数规范</h2>
+          <p>
+            设非退化 Fourier 三元组满足 \(k+p+q=0\)，记三边长为
+            \(K=|k|\)、\(P=|p|\)、\(Q=|q|\)，螺旋符号为 \(s_K,s_P,s_Q\in\{\pm1\}\)。
+            采用 \(\|h_s\|=\sqrt2\) 的 Waleffe 规范，三波方程中的几何系数为
+          </p>
+          <div class="equation">
+            \[
+              g_{kpq}=-\frac12(h_{s_P}^{*}\times h_{s_Q}^{*})\cdot h_{s_K}^{*},
+              \qquad
+              |g_{kpq}|=\frac{\Delta(K,P,Q)}{KPQ}
+              |s_KK+s_PP+s_QQ|.
+            \]
+            <small>\(\Delta(K,P,Q)\) 是边长 \(K,P,Q\) 的三角形面积。相位因子不影响下面的绝对值极值。</small>
+          </div>
+          <p>Heron 公式给出</p>
+          <div class="equation">
+            \[
+              16\Delta^2=(K+P+Q)(-K+P+Q)(K-P+Q)(K+P-Q).
+            \]
+          </div>
+          <p>
+            系数规范以 Waleffe 的原始工作为准，并与 Linkmann 等人写出的单三元组方程和侧长公式交叉核对。
+            不同文献若把螺旋基归一化为单位长度，常数会改变，但本笔记的零点和相对几何结论不变。
+          </p>
+        </section>
+
+        <section id="kernel">
+          <div class="section-no">02 / Critical transfer kernel</div>
+          <h2>只看 \(g\) 还不够</h2>
+          <p>
+            单三元组的三个模态能量变化率共享一个实标量 \(\Phi\)。在上述规范下，它们的比值是
+          </p>
+          <div class="equation">
+            \[
+              (T_K,T_P,T_Q)=\Phi\,(s_PP-s_QQ,\ s_QQ-s_KK,\ s_KK-s_PP).
+            \]
+          </div>
+          <p>
+            对 \(\dot H^{1/2}\) 的平方加权后，真正相关的侧长因子不是单独的 \(g\)，而是
+          </p>
+          <div class="equation">
+            \[
+              W_s=K(s_PP-s_QQ)+P(s_QQ-s_KK)+Q(s_KK-s_PP),
+              \qquad \mathcal C_s=|g_{kpq}W_s|.
+            \]
+            <small>在整体缩放下 \(W_s\) 是二次齐次的。下面固定 \(P=1\)，因此 \(\mathcal C_s\) 表示归一化后的临界几何核。</small>
+          </div>
+          <p>
+            为覆盖 R0.2 的近对角区域，令 \(x=K/P\)、\(y=Q/P\)，并按边长排序后考察紧域
+          </p>
+          <div class="equation">
+            \[
+              D=\{(x,y):\tfrac12\le x\le1,\ 1\le y\le1+x\}.
+            \]
+            <small>边界 \(y=1+x\) 是退化三角形；此处 \(\Delta=0\)。</small>
+          </div>
+        </section>
+
+        <section id="classes">
+          <div class="section-no">03 / Four helicity classes</div>
+          <h2>四类都可以写成显式公式</h2>
+          <p>
+            整体翻转三个符号不改变绝对值，所以固定 \(s_K=+\) 后只剩四类。下表中的
+            \(\Delta\) 表示 \(\Delta(x,1,y)\)。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>符号类</th><th>\(|g|\)</th><th>\(|W|\)</th><th>\(\mathcal C=|gW|\)</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>+++</code></td>
+                  <td>\(\frac{\Delta}{xy}(x+1+y)\)</td>
+                  <td>\(0\)</td>
+                  <td>\(0\)</td>
+                </tr>
+                <tr>
+                  <td><code>++−</code></td>
+                  <td>\(\frac{\Delta}{xy}(x+1-y)\)</td>
+                  <td>\(2y(1-x)\)</td>
+                  <td>\(\frac{2\Delta}{x}(x+1-y)(1-x)\)</td>
+                </tr>
+                <tr>
+                  <td><code>+−+</code></td>
+                  <td>\(\frac{\Delta}{xy}(x+y-1)\)</td>
+                  <td>\(2(y-x)\)</td>
+                  <td>\(\frac{2\Delta}{xy}(x+y-1)(y-x)\)</td>
+                </tr>
+                <tr>
+                  <td><code>+−−</code></td>
+                  <td>\(\frac{\Delta}{xy}(1+y-x)\)</td>
+                  <td>\(2x(y-1)\)</td>
+                  <td>\(\frac{2\Delta}{y}(1+y-x)(y-1)\)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>符号类</th><th>在 \(D\) 上的零点集</th><th>全局最大值</th><th>取到位置</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>+++</code></td><td>整个 \(D\)</td><td>\(0\)</td><td>任意点</td></tr>
+                <tr><td><code>++−</code></td><td>\(x=1\) 或 \(y=1+x\)</td><td>\(\sqrt{15}/16\approx0.2420614591\)</td><td>\((1/2,1)\)</td></tr>
+                <tr><td><code>+−+</code></td><td>\((1,1)\) 或 \(y=1+x\)</td><td>\(M_*\approx0.6354564735\)</td><td>\((1,r_*)\)</td></tr>
+                <tr><td><code>+−−</code></td><td>\(y=1\) 或 \(y=1+x\)</td><td>\(M_*\approx0.6354564735\)</td><td>\((1,r_*)\)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="homochiral">
+          <div class="section-no">04 / Homochiral identity</div>
+          <h2>同号类为什么恒为零</h2>
+          <p>
+            当三个符号相同，\(W_s\) 中六个二次项两两抵消，所以 \(W_s=0\)。
+            这不是 \(g\) 消失；它来自单三元组同时守恒能量和 helicity。
+            对正螺旋模态，helicity 的二次权重正好是 \(K\)，与 \(\dot H^{1/2}\) 平方的权重相同。
+          </p>
+          <div class="proof result">
+            <strong>精确恒等式</strong>
+            对每个非退化同号三元组，
+            \(K T_K+P T_P+Q T_Q=0\)。因此其临界单三元组核 \(\mathcal C_{+++}\) 在整个 \(D\) 上恒为零。
+          </div>
+          <p>
+            这个恒等式适用于同号螺旋子系统。完整 Navier–Stokes 同时包含异号类，不能由此推出完整系统的
+            \(\dot H^{1/2}\) 守恒或先验界。
+          </p>
+        </section>
+
+        <section id="first-maximum">
+          <div class="section-no">05 / The ++− maximum</div>
+          <h2>​<code>++−</code> 类的边界最大值</h2>
+          <p>令 \(t=x+1-y\in[0,x]\)。去掉只依赖 \(x\) 的正因子后，核平方中与 \(t\) 有关的部分是</p>
+          <div class="equation">
+            \[
+              (2x+2-t)(2-t)(2x-t)t^3.
+            \]
+          </div>
+          <p>
+            它在 \(0\le t\le x\) 上严格递增，所以固定 \(x\) 时最大值在 \(t=x\)，即 \(y=1\) 取得。
+            此时
+          </p>
+          <div class="proof">
+            <strong>单调性检查</strong>
+            若 \(F(t)=(2x+2-t)(2-t)(2x-t)t^3\)，则
+            \[
+              \frac{F'(t)}{F(t)}
+              =\frac3t-\frac1{2x+2-t}-\frac1{2-t}-\frac1{2x-t}>0.
+            \]
+            这里用到 \(0\lt t\le x\le1\)：后三个分母都不小于 \(t\)，且不可能同时等于 \(t\)。
+          </div>
+          <div class="equation">
+            \[
+              \mathcal C_{++-}(x,1)=\frac{x(1-x)}2\sqrt{4-x^2}.
+            \]
+          </div>
+          <p>
+            其对数导数为
+            \(\frac{1-2x}{x(1-x)}-\frac{x}{4-x^2}<0\)，所以在 \(1/2\le x<1\) 上严格递减。
+          </p>
+          <div class="proof result">
+            <strong>精确最大值</strong>
+            \[
+              \max_D\mathcal C_{++-}=\mathcal C_{++-}(1/2,1)=\frac{\sqrt{15}}{16}.
+            \]
+          </div>
+        </section>
+
+        <section id="shared-maximum">
+          <div class="section-no">06 / The shared heterochiral maximum</div>
+          <h2>另外两类有同一个内部边极值</h2>
+          <p>引入三个三角形亏量</p>
+          <div class="equation">
+            \[
+              a=x+1-y,\qquad b=x+y-1,\qquad c=1+y-x.
+            \]
+            <small>在 \(D\) 上，\(a+c=2\)、\(0\le a\le b\le c\)，且 \(a+b\ge1\)。</small>
+          </div>
+          <p>
+            固定 \(a\) 后，<code>+−+</code> 类的核平方中需要比较的 \(b\) 因子是
+            \(b^3(b+2)/[(a+b)^2(b+c)^2]\)。其对数导数为
+          </p>
+          <div class="equation">
+            \[
+              \frac3b+\frac1{b+2}-\frac2{b+a}-\frac2{b+c}>0.
+            \]
+            <small>通分后的分子为 \(2b^2+4b+4bac+6ac>0\)。</small>
+          </div>
+          <p>
+            <code>+−−</code> 类对应的导数
+            \(\frac1b+\frac1{b+2}+\frac2{b-a}-\frac2{b+c}\) 也为正。
+            这是因为 \(c\ge b\) 给出 \(1/b-2/(b+c)\ge0\)，剩余两项为正。
+            因此两类都在 \(b=c\)，即 \(x=1\) 处取到固定 \(a\) 的最大值。
+            两个问题随后归结为同一个一元函数：
+          </p>
+          <div class="equation">
+            \[
+              f(y)=\frac12y(y-1)\sqrt{4-y^2},\qquad 1\le y\le2.
+            \]
+          </div>
+          <p>
+            唯一的内部最大点 \(r_*\in(1,2)\) 满足
+            \(3r_*^3-2r_*^2-8r_*+4=0\)，数值为
+            \(r_*\approx1.7537162153241575\)。于是
+          </p>
+          <div class="proof">
+            <strong>根的唯一性</strong>
+            记 \(p(r)=3r^3-2r^2-8r+4\)。
+            在 \((1,2)\) 中，\(p'(r)=9r^2-4r-8\) 只有一个零点。
+            \(p\) 先下降后上升，而 \(p(1)=-3\)、\(p(2)=4\)，所以该区间内恰有一个根。
+          </div>
+          <div class="proof result">
+            <strong>共同最大值</strong>
+            \[
+              \max_D\mathcal C_{+-+}
+              =\max_D\mathcal C_{+--}
+              =M_*=\frac12r_*(r_*-1)\sqrt{4-r_*^2}
+              \approx0.6354564734866010.
+            \]
+          </div>
+        </section>
+
+        <section id="computation">
+          <div class="section-no">07 / Reproducible checks</div>
+          <h2>代码检查了哪些等式</h2>
+          <p>
+            计算脚本没有参与解析证明。它用显式复向量重新构造螺旋基，并把直接三重积与侧长闭式公式比较；
+            另用 \(600\times600\) 网格给解析最大值提供独立下界。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>检查项</th><th>结果</th><th>容差或下界</th></tr></thead>
+              <tbody>
+                <tr><td>波向量闭合 \(k+p+q=0\)</td><td>通过</td><td>双精度舍入量级</td></tr>
+                <tr><td>直接三重积 vs. 侧长公式</td><td>12 个样本全部通过</td><td>最大残差 \(4.45\times10^{-16}\)</td></tr>
+                <tr><td>根方程</td><td>\(r_*=1.7537162153241575\)</td><td>多项式残差低于 \(2\times10^{-14}\)</td></tr>
+                <tr><td><code>++−</code> 网格扫描</td><td>\(0.2420614591\)</td><td>命中精确边界点</td></tr>
+                <tr><td>共同最大值网格扫描</td><td>\(0.6354559911\)</td><td>低于解析值 \(4.83\times10^{-7}\)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/near-diagonal-helical-kernel.mjs">查看计算脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/tests/near-diagonal-helical-kernel.test.mjs">查看回归测试</a>。
+          </p>
+        </section>
+
+        <section id="result">
+          <div class="section-no">08 / What this rules out</div>
+          <h2>结论到哪里为止</h2>
+          <div class="proof result">
+            <strong>有限维结论</strong>
+            同号类有精确抵消，但三个异号类在近对角紧域上保留非零常数量级的最大值。
+            因此，不存在一个仅由单三元组几何产生、同时适用于全部螺旋符号类的统一小因子。
+          </div>
+          <p>这项计算排除的是一条很具体的路线。它没有证明下列更强陈述：</p>
+          <ul>
+            <li>没有其他临界估计；</li>
+            <li>完整三线性型一定达到常规 \(\dot H^{1/2}\) 估计的上界；</li>
+            <li>多个三元组之间不存在相位抵消；</li>
+            <li>Navier–Stokes 会出现奇性。</li>
+          </ul>
+          <p>
+            特别是，孤立三元组是稀疏的。它没有产生 Bernstein 不等式中一个频率壳所含格点数带来的重数。
+            因此，这个极值不能直接当作完整偏微分方程估计的尖锐性反例。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next check</div>
+          <h2>R0.4：稠密近对角频率包</h2>
+          <p>
+            下一步应把单三元组扩展为一个有限但稠密的 Fourier 频率包。
+            目标不是立即证明先验界，而是先回答常规临界三线性估计是否能被具有散度零约束的显式数据近似饱和。
+          </p>
+          <ol>
+            <li>选取同一 dyadic 壳内的格点集合，并列出所有闭合三元组。</li>
+            <li>对每个格点保留两个螺旋分量，写出完整有限维三线性型。</li>
+            <li>比较随机相位、相干相位和受现实条件约束的相位。</li>
+            <li>记录三线性型与 \(\|u\|_{\dot H^{1/2}}\|u\|_{\dot H^{3/2}}^2\) 的比值随壳半径的变化。</li>
+            <li>如果比值保持常数量级，再尝试解析构造；如果衰减，则定位来自符号、相位还是格点几何。</li>
+          </ol>
+          <div class="proof warning">
+            <strong>停止条件</strong>
+            如果数值优化只在违反现实条件、散度零条件或 Fourier 闭合时产生增益，该构造作废。
+            如果增益依赖浮点误差，则改用区间界或有理算术复核。
+          </div>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              F. Waleffe, “The nature of triad interactions in homogeneous turbulence,”
+              <em>Physics of Fluids A</em> 4 (1992), 350–363.
+              <a href="https://doi.org/10.1063/1.858309">DOI</a>。
+            </li>
+            <li>
+              M. Linkmann, A. Berera, M. McKay and J. Jäger,
+              “Helical mode interactions and spectral transfer processes in magnetohydrodynamic turbulence,”
+              <em>Journal of Fluid Mechanics</em> 791 (2016), 61–96.
+              <a href="https://www.pure.ed.ac.uk/ws/portalfiles/portal/76131391/bererapaper5.pdf">作者稿 PDF</a>。
+            </li>
+            <li>
+              A. Alexakis, “Helically decomposed turbulence,”
+              <em>Journal of Fluid Mechanics</em> 812 (2017), 752–770.
+              <a href="https://arxiv.org/abs/1606.02540">arXiv</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.3 · 近对角螺旋核</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-2.html">上一篇 R0.2</a> · <a href="/notes/r0-3.pdf">PDF</a> · <a href="/">主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

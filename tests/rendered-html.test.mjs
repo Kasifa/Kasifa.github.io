@@ -5,6 +5,7 @@ import test from "node:test";
 const siteUrl = new URL("../public/research-review.html", import.meta.url);
 const firstNoteUrl = new URL("../public/notes/r0-1.html", import.meta.url);
 const secondNoteUrl = new URL("../public/notes/r0-2.html", import.meta.url);
+const thirdNoteUrl = new URL("../public/notes/r0-3.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -75,6 +76,22 @@ test("publishes and links the dyadic-helical locality audit", async () => {
   assert.match(note, /不是新的定理/);
 });
 
+test("publishes and links the exact near-diagonal helical-kernel audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(thirdNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-3\.html"/);
+  assert.match(note, /研究笔记 R0\.3/);
+  assert.match(note, /\\mathcal C_s=\|g_\{kpq\}W_s\|/);
+  assert.match(note, /\\sqrt\{15\}\/16/);
+  assert.match(note, /0\.6354564734866010/);
+  assert.match(note, /同号类有精确抵消/);
+  assert.match(note, /不存在一个仅由单三元组几何产生/);
+  assert.match(note, /不是新定理/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -87,10 +104,11 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
+    readFile(thirdNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -108,5 +126,10 @@ test("uses a plain first-person research voice", async () => {
   assert.doesNotMatch(
     secondNote,
     /Research packet|AUDIT STATUS|我们|本轮|成果边界|研究判定|极值审计/,
+  );
+  assert.match(thirdNote, /我继续检查 R0\.2/);
+  assert.doesNotMatch(
+    thirdNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

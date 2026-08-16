@@ -2,7 +2,7 @@
 """Exact finite polarization improvement for the R0.15 quotient.
 
 The R0.15 angular gradient suggests opposite rotations inside each pump and
-catalyst pair.  This script chooses small rational chart parameters
+catalyst pair.  This script chooses finite rational chart parameters
 
     t_P = p,  t_Q = -p,  t_B = q,  t_D = -q,
 

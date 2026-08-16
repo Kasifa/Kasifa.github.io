@@ -1757,7 +1757,33 @@
               <a href="/notes/r0-8.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/noncoplanar_butterfly.py">查看复现脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.9：</strong>把单个蝶形复制到相邻尺度壳，检查锥形生成尾能否满足带符号的 Duhamel 估计。</p>
+            <p><strong style="color:var(--gold)">R0.9 已完成：</strong>精确相邻壳三波边可以构造，但归一化第一 Picard 临界能量按 \(4^{-5j}\) 衰减。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.9 · 2026-08-16</p>
+            <h3>精确锥链与稀疏 Duhamel 障碍</h3>
+            <p>
+              普通倍频只产生互不相连的蝶形副本。
+              我改用整数矩阵 \(M=I+\mathbf1\mathbf1^\top\)，得到精确相邻壳关系
+              \(c_j+e_j+a_{j+1}=0\)，并证明这条边连同每壳两条内部边就是完整三波超图。
+            </p>
+            <p>
+              把 R0.8 极化沿 \(M\) 输运并固定每壳 \(\dot H^{1/2}\) 能量后，
+              下一壳目标对的最大第一 Picard 能量满足
+              \(4^{5j}H_j\to81/(173056\sqrt3)\)。
+              一般的频率壳估计还给出 \(m_N/N^3\) 上界，其中 \(m_N\) 是每个输出的输入配对重数。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>这是第一 Picard 必要性检查。
+              第二代以后模态、稠密包的相位一致性和完整非线性余项都没有控制。
+            </p>
+            <p>
+              <a href="/notes/r0-9.html"><strong>阅读 R0.9 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-9.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/cone_chain_duhamel.py">查看复现脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.10：</strong>把单链增厚为配对重数 \(m_N\asymp N^3\) 的临界稠密锥包，再检查投影核和复相位能否同向叠加。</p>
           </div>
         </section>
 

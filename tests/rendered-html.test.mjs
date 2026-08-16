@@ -11,6 +11,7 @@ const fifthNoteUrl = new URL("../public/notes/r0-5.html", import.meta.url);
 const sixthNoteUrl = new URL("../public/notes/r0-6.html", import.meta.url);
 const seventhNoteUrl = new URL("../public/notes/r0-7.html", import.meta.url);
 const eighthNoteUrl = new URL("../public/notes/r0-8.html", import.meta.url);
+const ninthNoteUrl = new URL("../public/notes/r0-9.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -178,6 +179,23 @@ test("publishes and links the minimal non-coplanar butterfly note", async () => 
   assert.match(note, /没有给出 Galerkin 截断趋于无穷时的解析误差界/);
 });
 
+test("publishes and links the exact cone-chain Duhamel note", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(ninthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-9\.html"/);
+  assert.match(note, /研究笔记 R0\.9/);
+  assert.match(note, /c_j\+e_j\+a_\{j\+1\}=0/);
+  assert.match(note, /3J\+2/);
+  assert.match(note, /4\^\{5j\}H_j/);
+  assert.match(note, /81\/\(173056\\sqrt3\)/);
+  assert.match(note, /m_N\/N\^3/);
+  assert.match(note, /必要，不是充分/);
+  assert.match(note, /不是完整动力学近似/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -190,7 +208,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -200,6 +218,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(sixthNoteUrl, "utf8"),
     readFile(seventhNoteUrl, "utf8"),
     readFile(eighthNoteUrl, "utf8"),
+    readFile(ninthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -246,6 +265,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(eighthNote, /我把 R0\.7/);
   assert.doesNotMatch(
     eighthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(ninthNote, /我把 R0\.8/);
+  assert.doesNotMatch(
+    ninthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

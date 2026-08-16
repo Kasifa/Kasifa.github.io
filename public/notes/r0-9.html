@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.9：构造精确相邻尺度锥链，分类全部三波关系，计算第一 Picard Duhamel 项，并证明临界能量的一般稀疏度障碍。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.9｜精确锥链与稀疏 Duhamel 障碍">
+  <meta property="og:description" content="整数矩阵给出唯一的相邻壳三波边，但归一化第一 Picard 临界能量按 4^{-5j} 衰减；配对重数 N^3 是一般估计的自然阈值。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.9｜精确锥链与稀疏 Duhamel 障碍</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.5pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a><a href="#references">文献</a>
+        <a href="/notes/r0-9.pdf">PDF</a><a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.9 · 跨尺度 Duhamel 检查</div>
+          <h1>精确锥链与稀疏 Duhamel 障碍</h1>
+          <p class="lead">
+            我把 R0.8 的单个非共面蝶形放到多个尺度壳上。
+            普通倍频复制没有产生跨壳三波边；一个整数矩阵可以产生唯一的相邻壳边。
+            但是热半群把归一化第一 Picard 临界能量压到 \(4^{-5j}\) 量级。
+            一般估计进一步表明：稀疏频率链没有足够的配对重数来抵消粘性积分。
+          </p>
+        </div>
+        <div class="stamp">
+          <span class="state">笔记状态 · 三个代数命题已证明，数值只作复核</span>
+          <strong>链存在，但临界传递太弱</strong>
+          <p>版本 v0.9 · 2026-08-16</p>
+          <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+          <p>对象：锥形三波超图与第一 Picard 项</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#duhamel">01 · Duhamel 分解</a></li>
+          <li><a href="#naive">02 · 普通复制失败</a></li>
+          <li><a href="#chain">03 · 精确锥链</a></li>
+          <li><a href="#classification">04 · 全部三波边</a></li>
+          <li><a href="#polarization">05 · 极化输运</a></li>
+          <li><a href="#first-picard">06 · 第一 Picard 项</a></li>
+          <li><a href="#sparse">07 · 稀疏度障碍</a></li>
+          <li><a href="#audit">08 · 计算复核</a></li>
+          <li><a href="#value">09 · 对原问题的价值</a></li>
+          <li><a href="#next">10 · 下一步</a></li>
+          <li><a href="#references">11 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>本笔记得到什么，也没有得到什么</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>普通倍频复制不连接</strong><p>对倍率 2、3、4，任意两个不同尺度的 R0.8 蝶形之间都没有三波关系。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>一个精确相邻壳链</strong><p>整数矩阵 \(M=I+\mathbf1\mathbf1^\top\) 给出且只给出边 \(c_j+e_j+a_{j+1}=0\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>第一 Picard 精确衰减</strong><p>固定输入 \(\dot H^{1/2}\) 能量后，目标模态的最大能量满足 \(H_j\sim C4^{-5j}\)。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>非线性接力仍未建立</strong><p>没有控制第二代以后模态、相位反馈和完整解与第一 Picard 近似之间的余项。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>结论。</strong>
+            这次计算否定了“把一个有利蝶形逐壳复制即可形成临界级联”这一具体路线。
+            失败原因不是缺少精确三波几何，而是单个输出模态接收到的输入对太少。
+            下一步问题从“寻找一条链”变成“构造有 \(N^3\) 级配对重数且相位一致的稠密频率包”。
+          </div>
+          <p>
+            以下命题都是针对一个显式有限频率构造的代数推导。我没有完成文献优先权检索，因此不把它们称为新定理。
+            它们也不证明三维 Navier-Stokes 解发生有限时奇性或全局正则。
+          </p>
+        </section>
+
+        <section id="duhamel">
+          <div class="section-no">01 / Mild formulation</div>
+          <h2>把“短时有利”改写成 Duhamel 项</h2>
+          <p>
+            在 \(\mathbb T^3_{2\pi}\) 上写
+            \(\mathcal B(u,v)=\mathbb P[(u\cdot\nabla)v]\)，其中 \(\mathbb P\) 是 Leray 投影。
+            粘性系数先取 \(\nu=1\)。温和解形式是
+          </p>
+          <div class="equation">\[
+            u(t)=e^{t\Delta}u_0-\int_0^t e^{(t-s)\Delta}\mathcal B(u,u)(s)\,ds.
+          \]</div>
+          <p>令 \(v(t)=e^{t\Delta}u_0\)，第一 Picard 非线性项为</p>
+          <div class="equation">\[
+            w(t)=-\int_0^t e^{(t-s)\Delta}\mathcal B(v,v)(s)\,ds.
+          \]</div>
+          <p>
+            R0.8 只显示某些生成模态在有限维轨道早期有利。这里先问更弱但可精确回答的问题：
+            如果只让一个蝶形经过热流，它向下一壳产生的 \(w\) 有多大？
+          </p>
+          <div class="proof warning">
+            <strong>余项尚未控制。</strong>
+            写 \(u=v+w+r\) 后，\(r\) 包含 \(\mathcal B(v,w)\)、\(\mathcal B(w,v)\)、\(\mathcal B(w,w)\) 以及继续迭代的所有项。
+            本笔记没有证明 \(r\) 比 \(w\) 小，因此这里的结果是必要性检查，不是完整动力学近似。
+          </div>
+        </section>
+
+        <section id="naive">
+          <div class="section-no">02 / Failed dilation</div>
+          <h2>普通倍频只得到互不相连的副本</h2>
+          <p>R0.8 的五个无符号波数记为</p>
+          <div class="equation">\[
+            a=(1,0,0),\quad b=(0,1,0),\quad c=(-1,-1,0),\quad
+            d=(0,0,1),\quad e=(-1,0,-1),
+          \]\[
+            a+b+c=0,\qquad a+d+e=0.
+          \]</div>
+          <div class="proof">
+            <strong>命题 1：普通倍率的不同副本之间没有三波边。</strong>
+            固定任意实数 \(\lambda>1\)，考虑所有 \(\lambda^j a,\ldots,\lambda^j e\)。
+            五个基向量的十个三元子集中，只有 \((a,b,c)\) 和 \((a,d,e)\) 线性相关；两者的零空间都由 \((1,1,1)\) 张成。
+            因而带尺度的三波关系要求 \(\lambda^r=\lambda^s=\lambda^t\)，即 \(r=s=t\)。
+            截到第 \(J\) 壳时只有 \(2(J+1)\) 条壳内边，跨壳边为零。证毕。
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>倍率</th><th>最高壳 \(J\)</th><th>顶点</th><th>全部边</th><th>跨壳边</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>3</td><td>20</td><td>8</td><td>0</td></tr>
+              <tr><td>3</td><td>3</td><td>20</td><td>8</td><td>0</td></tr>
+              <tr><td>4</td><td>3</td><td>20</td><td>8</td><td>0</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            表中列出脚本对倍率 2、3、4 和 \(J\le3\) 的独立枚举复核。
+            上面的线性相关性证明覆盖任意 \(\lambda>1\) 和任意有限 \(J\)。
+            下面改用一个矩阵，直接产生需要的跨壳关系。
+          </p>
+        </section>
+
+        <section id="chain">
+          <div class="section-no">03 / Exact cone chain</div>
+          <h2>整数矩阵产生精确的相邻壳边</h2>
+          <div class="equation">\[
+            M=I+\mathbf1\mathbf1^\top=
+            \begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix},
+            \qquad k_j=M^jk.
+          \]</div>
+          <p>
+            \(M\) 在对角方向 \(\mathbf1=(1,1,1)\) 上的特征值为 4，在正交平面上的两个特征值为 1。
+            因此 \(M^jk\) 的对角分量按 \(4^j\) 增长，横向分量保持不变；五个波数逐壳收进对角锥。
+          </p>
+          <div class="proof">
+            <strong>精确接力恒等式。</strong>
+            直接计算 \(Ma=2a+b+d=(2,1,1)\)，而 \(-c-e=(2,1,1)\)。对等式作用 \(M^j\)，得到
+            \[
+              a_{j+1}=-c_j-e_j,\qquad c_j+e_j+a_{j+1}=0.
+            \]
+          </div>
+          <p>
+            这是一条“两个第 \(j\) 壳输入产生一个第 \(j+1\) 壳频率”的有向读法。
+            “有向”只描述频率生成关系，不表示真实能量不可逆地向高频流动；实际符号仍由极化、相位和当时振幅决定。
+          </p>
+        </section>
+
+        <section id="classification">
+          <div class="section-no">04 / Complete hypergraph</div>
+          <h2>这些就是全部三波边</h2>
+          <p>对整数波数 \(k\) 定义</p>
+          <div class="equation">\[
+            s(k)=k_1+k_2+k_3,\qquad \tau(k)=3k-s(k)\mathbf1.
+          \]\[
+            s(M^jk)=4^js(k),\qquad \tau(M^jk)=\tau(k).
+          \]</div>
+          <p>
+            五个基向量只有三种横向类型：
+            \(\tau(a)=(2,-1,-1)\)，
+            \(\tau(b)=\tau(e)=(-1,2,-1)\)，
+            \(\tau(c)=\tau(d)=(-1,-1,2)\)。三者之和为零。
+          </p>
+          <div class="proof">
+            <strong>命题 2：完整超图分类。</strong>
+            在第 \(0,\ldots,J\) 壳中，三波关系恰好是每壳内部两条
+            \(a_j+b_j+c_j=0\)、\(a_j+d_j+e_j=0\)，以及每对相邻壳之间一条
+            \(c_j+e_j+a_{j+1}=0\)。总边数为 \(2(J+1)+J=3J+2\)。
+          </div>
+          <div class="proof">
+            <strong>证明。</strong>
+            横向不变量迫使任意关系从三种 \(\tau\) 类型中各选一个，并带相同总符号。只剩
+            \[
+            \begin{aligned}
+              4^r+4^s-2\cdot4^t&=0,&
+              4^r-2\cdot4^s+4^t&=0,\\
+              4^r-2\cdot4^s-2\cdot4^t&=0,&
+              4^r+4^s+4^t&=0.
+            \end{aligned}
+            \]
+            前两式比较 2-adic 阶得 \(r=s=t\)。第三式若 \(s\ne t\)，两侧的 2-adic 阶一奇一偶；故 \(s=t\)，再得 \(r=s+1\)。最后一式不可能成立。证毕。
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>最高壳 \(J\)</th><th>顶点</th><th>全部边</th><th>跨壳边</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>10</td><td>5</td><td>1</td></tr>
+              <tr><td>2</td><td>15</td><td>8</td><td>2</td></tr>
+              <tr><td>3</td><td>20</td><td>11</td><td>3</td></tr>
+              <tr><td>4</td><td>25</td><td>14</td><td>4</td></tr>
+              <tr><td>5</td><td>30</td><td>17</td><td>5</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="polarization">
+          <div class="section-no">05 / Divergence-free transport</div>
+          <h2>沿矩阵链输运 R0.8 极化</h2>
+          <p>令 \(q=(12+4\sqrt2)^{-1/2}\)。R0.8 的归一化对称场 \(U_0\) 在正代表元上的系数是</p>
+          <div class="equation">\[
+          \begin{array}{lll}
+            \widehat U_0(a)=(0,q,-q),&
+            \widehat U_0(b)=(q,0,-q),&
+            \widehat U_0(c)=(0,0,-iq),\\
+            \widehat U_0(d)=(-q,q,0),&
+            \widehat U_0(e)=(0,-iq,0),&
+            \widehat U_0(-k)=\overline{\widehat U_0(k)}.
+          \end{array}
+          \]</div>
+          <p>定义 \(\widehat U_j(M^jk)=M^{-j}\widehat U_0(k)\)。因为 \(M\) 对称，</p>
+          <div class="equation">\[
+            (M^jk)\cdot(M^{-j}\widehat U_0(k))=k\cdot\widehat U_0(k)=0.
+          \]</div>
+          <p>所以每个系数仍满足不可压缩条件。其临界能量 \(E_j=\|U_j\|_{\dot H^{1/2}}^2\) 为</p>
+          <div class="equation">\[
+          E_j=12q^2\sqrt{\frac{x^2+2}{3}}
+          +4q^2\sqrt{\frac{4x^2+2}{3}}
+          \left(\frac23+\frac{1}{3x^2}\right),\qquad x=4^j,
+          \]\[
+            \frac{E_j}{x}\longrightarrow\frac{52q^2}{3\sqrt3}.
+          \]</div>
+          <p>后面使用 \(V_j=E_j^{-1/2}U_j\)，使每个输入壳的 \(\dot H^{1/2}\) 能量都等于 1。</p>
+        </section>
+
+        <section id="first-picard">
+          <div class="section-no">06 / Exact first generation</div>
+          <h2>热积分把跨壳种子压到 \(4^{-5j}\)</h2>
+          <p>
+            目标 \(a_{j+1}\) 只由有序输入对 \((-c_j,-e_j)\)、\((-e_j,-c_j)\) 产生。
+            初始投影非线性系数的平方范数为
+          </p>
+          <div class="equation">\[
+            R_j=q^4\left(\frac23+\frac{4}{3x^2}-\frac{12}{16x^2+2}\right),
+            \qquad x=4^j.
+          \]</div>
+          <p>
+            \(R_j\to\frac23q^4>0\)，所以锥角变窄没有直接消灭瞬时耦合。
+            关键损失来自热积分。令
+          </p>
+          <div class="equation">\[
+            K_j=|a_{j+1}|^2=\frac{16x^2+2}{3},\qquad
+            L_j=|c_j|^2+|e_j|^2=\frac{8x^2+4}{3}.
+          \]\[
+            \Phi_j(t)=\frac{e^{-L_jt}-e^{-K_jt}}{K_j-L_j},
+          \]\[
+            t_j^*=\frac{\log(K_j/L_j)}{K_j-L_j},\qquad
+            \max_t\Phi_j(t)=\frac{(L_j/K_j)^{L_j/(K_j-L_j)}}{K_j}.
+          \]</div>
+          <div class="proof">
+            <strong>命题 3：归一化第一 Picard 临界能量的精确渐近。</strong>
+            目标对 \(\pm a_{j+1}\) 的最大 \(\dot H^{1/2}\) 能量为
+            \[
+              H_j=2\sqrt{K_j}\,\frac{R_j}{E_j^2}
+              \left(\max_t\Phi_j(t)\right)^2,
+            \]
+            且
+            \[
+              \boxed{\lim_{j\to\infty}4^{5j}H_j
+              =\frac{81}{173056\sqrt3}
+              =0.000270232594098787\ldots}.
+            \]
+          </div>
+          <p>
+            证明把 \(R_j\to\frac23q^4\)、\(E_j/x\to52q^2/(3\sqrt3)\)、
+            \(\sqrt{K_j}/x\to4/\sqrt3\)、\(x^2\max\Phi_j\to3/32\) 代回上一式即可。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>\(j\)</th><th>\(|a_{j+1}|\)</th><th>\(E_j\)</th><th>\(t_j^*\)</th><th>\(H_j\)</th><th>\(4^{5j}H_j\)</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>2.44949</td><td>1.00000</td><td>2.0273e-1</td><td>1.14961e-4</td><td>1.14961e-4</td></tr>
+              <tr><td>1</td><td>9.27362</td><td>2.39525</td><td>1.5956e-2</td><td>2.42215e-7</td><td>2.48029e-4</td></tr>
+              <tr><td>2</td><td>36.9594</td><td>9.10100</td><td>1.0142e-3</td><td>2.56265e-10</td><td>2.68713e-4</td></tr>
+              <tr><td>3</td><td>147.804</td><td>36.2816</td><td>6.3455e-5</td><td>2.51585e-13</td><td>2.70137e-4</td></tr>
+              <tr><td>4</td><td>591.207</td><td>145.096</td><td>3.9662e-6</td><td>2.45770e-16</td><td>2.70227e-4</td></tr>
+              <tr><td>5</td><td>2364.83</td><td>580.375</td><td>2.4789e-7</td><td>2.40014e-19</td><td>2.70232e-4</td></tr>
+            </tbody>
+          </table></div>
+          <p>每升一壳，\(H_j\) 渐近缩小约 \(4^5=1024\) 倍。这条精确链无法在固定临界输入能量下提供尺度一致的第一代种子。</p>
+        </section>
+
+        <section id="sparse">
+          <div class="section-no">07 / Multiplicity barrier</div>
+          <h2>一般稀疏链也受 \(m_N/N^3\) 控制</h2>
+          <p>设输入支撑 \(S_N\) 与输出集合 \(O_N\) 满足</p>
+          <div class="equation">\[
+            c_0N\le|p|\le C_0N\ (p\in S_N),\qquad
+            c_1N\le|k|\le C_1N\ (k\in O_N),
+          \]\[
+            m_N=\max_{k\in O_N}\#\{(p,q)\in S_N^2:p+q=k\}.
+          \]</div>
+          <div class="proof">
+            <strong>稀疏第一 Picard 引理。</strong>
+            对
+            \[
+              w(t)=-\int_0^t e^{\nu(t-s)\Delta}
+              P_{O_N}\mathcal B(e^{\nu s\Delta}u_0,e^{\nu s\Delta}u_0)\,ds
+            \]
+            有一致于 \(t\ge0\) 的估计
+            \[
+              \boxed{\|w(t)\|_{\dot H^{1/2}}^2
+              \le\frac{C_1C_0^2}{\nu^2c_1^4c_0^2}
+              \frac{m_N}{N^3}\|u_0\|_{\dot H^{1/2}}^4.}
+            \]
+          </div>
+          <div class="proof">
+            <strong>证明。</strong>
+            Leray 投影不增大欧氏范数，热积分不超过 \((\nu|k|^2)^{-1}\)，所以
+            \[
+              |\widehat w(k,t)|\le\frac{C_0}{\nu c_1^2N}
+              \sum_{p+q=k}|\widehat u_0(p)|\,|\widehat u_0(q)|.
+            \]
+            再用
+            \[
+              \left(\sum_{p+q=k}a_pb_q\right)^2
+              \le m_N\sum_{p+q=k}a_p^2b_q^2,\qquad
+              \sum_{p\in S_N}|\widehat u_0(p)|^2
+              \le\frac{\|u_0\|_{\dot H^{1/2}}^2}{c_0N}.
+            \]
+            对 \(k\in O_N\) 求和时，每个有序对只对应一个和 \(k=p+q\)。合并即得结论。证毕。
+          </div>
+          <p>
+            当临界输入能量一致有界且 \(m_N=o(N^3)\) 时，下一可比尺度壳里的第一 Picard 临界能量必定趋于零。
+            有界度数的链远低于这个阈值。三维稠密频率包有机会达到 \(N^3\) 级候选输入对。
+          </p>
+          <div class="proof warning">
+            <strong>必要，不是充分。</strong>
+            \(m_N\gtrsim N^3\) 只表示这个上界不再自动趋于零。
+            它不保证 Leray 核、螺旋符号和复相位能够同向叠加，也不保证非线性余项可控。
+          </div>
+        </section>
+
+        <section id="audit">
+          <div class="section-no">08 / Computational check</div>
+          <h2>代码检查了哪些等式</h2>
+          <p>
+            复现脚本
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/cone_chain_duhamel.py"><code>research/cone_chain_duhamel.py</code></a>
+            检查了：
+          </p>
+          <ul>
+            <li>倍率 2、3、4，最高壳 \(J=1,2,3\) 的全部带符号三波枚举；</li>
+            <li>矩阵锥链到 \(J=5\) 的全部超图边，并与 \(3J+2\) 分类逐边比较；</li>
+            <li>\(j=0,\ldots,7\) 的直接 Fourier 卷积与 \(E_j,R_j\) 闭式公式比较；</li>
+            <li>每个目标系数的散度残差、第一 Picard 精确值和一般稀疏上界；</li>
+            <li>\(4^{5j}H_j\) 向 \(81/(173056\sqrt3)\) 的收敛。</li>
+          </ul>
+          <p>
+            双精度直接卷积在 \(j=7\) 的 \(R_j\) 相对误差小于 \(5\times10^{-13}\)；
+            能量闭式相对误差小于 \(2\times10^{-15}\)，散度残差小于 \(2\times10^{-13}\)。
+            这些误差只复核有限代数计算，不替代证明。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">09 / Value for the open problem</div>
+          <h2>这一步缩小了哪一类候选机制</h2>
+          <p>
+            Katz-Pavlovic 的 dyadic 模型说明，若把局部尺度传递压缩成合适的壳 ODE，可以出现有限时爆破。
+            Tao 对平均化 Navier-Stokes 双线性算子的结果进一步说明，仅靠能量消去和一般调和分析估计不足以推出真实方程的正则性；真实双线性结构必须被使用。
+          </p>
+          <p>
+            本笔记检查了“把一个有限三波门嵌入真实 Fourier 卷积”时首先遇到的结构损失。
+            真实热半群提供 \(N^{-2}\) 时间积分，固定临界能量又限制单模态振幅；若每个目标只有常数个输入对，尺度接力会迅速消失。
+          </p>
+          <p>
+            Kishimoto-Yoneda 已证明，三维 Euler 的真正有限 Fourier 支撑解若非平面，只能是静止 Beltrami 型。
+            因此持续拉伸必须生成新模态。本笔记补充的具体信息是：生成新模态还不够，生成机制必须在每一尺度具有足够大的组合重数。
+          </p>
+          <p>
+            Waleffe 的单三元组分析表明，能量传递方向依赖螺旋符号和三元组几何。
+            下一步不能只数 \(p+q=k\) 的解；还要在三维稠密包内控制投影核的符号与相位一致性。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">10 / Next check</div>
+          <h2>R0.10：把单链增厚为临界稠密锥包</h2>
+          <ol>
+            <li>在每个 \(M^j\) 中心周围放入宽度与尺度成比例的整数频率包，使单个输出的配对重数达到 \(m_N\asymp N^3\)。</li>
+            <li>把卷积重写为六维 Riemann 和，寻找投影核在正测度子域上的统一符号，而不是依赖单个三元组。</li>
+            <li>同时优化极化和复相位，计算相干主项与随机相位平方和之间的差别。</li>
+            <li>证明第一代目标包的 \(\dot H^{1/2}\) 下界，并估计同壳、反向壳和锥外泄漏。</li>
+            <li>只有在第一 Picard 下界尺度一致后，再估计 \(u-v-w\) 的第二 Picard 余项和可迭代时间窗。</li>
+          </ol>
+          <div class="proof warning">
+            <strong>停止条件。</strong>
+            如果 Leray 投影与相位约束迫使稠密主项低于 \(N^3\) 配对规模，或者锥外泄漏与目标主项同阶且符号不可控，这条构造路线应当停止，而不是继续增加数值截断。
+          </div>
+        </section>
+
+        <section id="references">
+          <div class="section-no">11 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>N. Kishimoto and T. Yoneda, “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,” <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022). <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；<a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。</li>
+            <li>F. Waleffe, “The Nature of Triad Interactions in Homogeneous Turbulence,” <em>Physics of Fluids A</em> 4 (1992), 350-363. <a href="https://doi.org/10.1063/1.858309">DOI</a>；<a href="https://ntrs.nasa.gov/citations/19920038608">NASA 文献页</a>。</li>
+            <li>N. H. Katz and N. Pavlovic, “Finite Time Blow-up for a Dyadic Model of the Euler Equations,” <em>Transactions of the American Mathematical Society</em> 357 (2005), 695-708. <a href="https://doi.org/10.1090/S0002-9947-04-03532-9">DOI</a>；<a href="https://www.ams.org/journals/tran/2005-357-02/S0002-9947-04-03532-9/">AMS</a>。</li>
+            <li>T. Tao, “Finite Time Blowup for an Averaged Three-Dimensional Navier-Stokes Equation,” <em>Journal of the American Mathematical Society</em> 29 (2016), 601-674. <a href="https://doi.org/10.1090/jams/838">DOI</a>；<a href="https://arxiv.org/abs/1402.0290">作者预印本</a>。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>R0.9 · 精确锥链与稀疏 Duhamel 障碍</strong><br>个人研究日志 · 2026-08-16</span>
+    <span><a href="/notes/r0-8.html">上一篇 R0.8</a> · <a href="/notes/r0-9.pdf">下载 PDF</a> · <a href="/">返回研究主页</a></span>
+  </div></footer>
+</body>
+</html>

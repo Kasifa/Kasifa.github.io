@@ -1893,7 +1893,35 @@
               <a href="/notes/r0-13.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fifth_order_tree_audit.py">查看精确脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.14：</strong>放开两种催化振幅之比与复相位，对 41 项精确能量多项式做可认证的全局优化。</p>
+            <p><strong style="color:var(--gold)">R0.14 已完成：</strong>实振幅全局最优是等幅同相；任意复振幅的外部/目标比被严格夹在 45.739348 与 45.739348964728 之间。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.14 · 2026-08-16</p>
+            <h3>双振幅全局优化与复相位 Bernstein 界</h3>
+            <p>
+              我把正负催化叶分开计数，并允许两种催化模态具有任意复振幅。
+              70 个复能量单项式只依赖一个相对相位，并可精确改写为三个不变量
+              \(x=|\beta+\delta|^2\)、\(y=|\beta-\delta|^2\) 和
+              \(0\le h\le xy\) 上的 50 项有理多项式。
+            </p>
+            <p>
+              在实边界 \(h=0\) 上，子结式消元与 Sturm 根隔离覆盖了全部边界和内部驻点：
+              等幅同相点是全局最优，外部/目标比为
+              \(45.73934896472748\ldots\)。
+              对一般复振幅，94 个精确 Bernstein 叶盒证明全局下界
+              \(45.739348\)，与该实可行点只差不到 \(10^{-6}\)。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>复参数夹逼尚未严格退化为等号；
+              结论仍只覆盖 R0.11 固定极化和第五阶纯非线性齐次项，不包含热项、Taylor 余项或完整 PDE。
+            </p>
+            <p>
+              <a href="/notes/r0-14.html"><strong>阅读 R0.14 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-14.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/two_amplitude_global_audit.py">查看认证脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.15：</strong>先用局部代数证书关闭复振幅的微小区间，再放开四个输入极化做半代数优化。</p>
           </div>
         </section>
 

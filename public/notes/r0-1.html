@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="研究笔记 R0.1：周期三维 Navier–Stokes 的 Leray 投影、临界缩放、能量演化与 Fourier 三波审计。">
+  <meta name="description" content="研究笔记 R0.1：周期三维 Navier–Stokes 的 Leray 投影、临界缩放、能量演化与 Fourier 三波算例。">
   <meta name="theme-color" content="#f2eddf">
   <meta property="og:title" content="R0.1｜周期三维 NS 的临界能量与 Fourier 三波结构">
   <meta property="og:description" content="从压力形式到 Leray 投影、临界缩放、三个能量层级与可复算 Fourier 三波。">
@@ -244,7 +244,7 @@
   <div class="topline"></div>
   <header class="bar">
     <div class="bar-inner">
-      <a class="brand" href="/">ν · Open research dossier</a>
+      <a class="brand" href="/">ν · 个人研究笔记</a>
       <nav aria-label="笔记导航">
         <a href="#conclusions">结论</a>
         <a href="#references">文献</a>
@@ -258,17 +258,17 @@
     <header class="hero">
       <div class="hero-inner">
         <div>
-          <div class="eyebrow">Research packet R0.1 · Baseline audit</div>
+          <div class="eyebrow">研究笔记 R0.1 · 基础检查</div>
           <h1>周期三维 NS 的临界能量与 Fourier 三波结构</h1>
           <p class="lead">
-            从压力形式到 Leray 投影、从精确缩放到三个能量层级，再到一个可复算的最小三波。
-            本笔记的职责不是宣布突破，而是建立以后每个候选估计必须通过的错误检测基线。
+            这份笔记整理了 Leray 投影、缩放、三个能量层级和一个可以复算的三波例子。
+            这里没有新定理；我只是先把后续估计会用到的基础计算写清楚。
           </p>
         </div>
         <aside class="stamp">
-          <span class="state">AUDIT STATUS · VERIFIED DRAFT</span>
-          <strong>基线结果，不是新定理</strong>
-          <p>版本 v0.1 · 2026-08-01<br>目标域：\(\mathbb T^3\)<br>外力：\(f\equiv0\)</p>
+          <span class="state">NOTE STATUS · CHECKED DRAFT</span>
+          <strong>计算笔记，不是新定理</strong>
+          <p>版本 v0.2 · 2026-08-16<br>目标域：\(\mathbb T^3\)<br>外力：\(f\equiv0\)</p>
         </aside>
       </div>
     </header>
@@ -293,43 +293,43 @@
       <article>
         <section id="status">
           <div class="section-no">00 / Scope and status</div>
-          <h2>本轮交付到哪里</h2>
+          <h2>这份笔记做了什么</h2>
           <div class="status-grid">
             <div class="status-item">
-              <span>Complete</span>
+              <span>已完成</span>
               <strong>压力形式 → Leray 形式</strong>
               <p>固定 Fourier 约定，逐步导出压力、投影和 Duhamel 公式。</p>
             </div>
             <div class="status-item">
-              <span>Complete</span>
+              <span>已完成</span>
               <strong>临界缩放表</strong>
               <p>列出 \(L^p\)、Sobolev、Besov、时空范数和涡量缩放。</p>
             </div>
             <div class="status-item">
-              <span>Complete</span>
+              <span>已完成</span>
               <strong>三个能量层级</strong>
               <p>定位 \(L^2\)、enstrophy、\(\dot H^{1/2}\) 中的闭合与失闭。</p>
             </div>
             <div class="status-item">
-              <span>Complete</span>
+              <span>已完成</span>
               <strong>Fourier 系数与对称性</strong>
               <p>核对实值、无散、零均值、Leray 自伴性和三波守恒。</p>
             </div>
             <div class="status-item">
-              <span>Complete · first test</span>
+              <span>已完成 · 第一个算例</span>
               <strong>最小三波反例</strong>
               <p>给出整数波数、复振幅和精确传递率 \((1,-4,3)\)。</p>
             </div>
             <div class="status-item">
-              <span>Open</span>
-              <strong>真正的多壳级联</strong>
-              <p>本轮只有瞬时、稀疏多壳压力测试；尚未构造闭合动力学级联。</p>
+              <span>未完成</span>
+              <strong>闭合的多壳级联</strong>
+              <p>目前只有瞬时的稀疏多壳测试，还没有构造闭合的动力学级联。</p>
             </div>
           </div>
           <div class="proof warning">
-            <strong>严格边界</strong>
+            <strong>适用范围</strong>
             下面所有恒等式均针对光滑解，因此积分分部和 Fourier 逐项运算合法。
-            将它们推广到弱解需要单独的逼近、紧性和能量不等式论证，本笔记不把这一步隐藏在“形式上显然”之中。
+            推广到弱解还需要逼近、紧性和能量不等式论证，这份笔记暂不处理这一步。
           </div>
         </section>
 
@@ -337,7 +337,7 @@
           <div class="section-no">01 / Conventions</div>
           <h2>固定域、内积与 Fourier 约定</h2>
           <p>
-            为消除 \(2\pi\) 因子，本文计算采用
+            为消除 \(2\pi\) 因子，下面的计算采用
             \(\mathbb T^3_{2\pi}=(\mathbb R/2\pi\mathbb Z)^3\)。
             这与 Clay 命题 B 使用的单位周期环面通过线性尺度变换等价；以后引用 Clay 命题时仍明确写出这一归一化差异。
           </p>
@@ -438,8 +438,8 @@
         </section>
 
         <section id="scaling">
-          <div class="section-no">03 / Scaling audit</div>
-          <h2>临界不是形容词，而是一张指数表</h2>
+          <div class="section-no">03 / Scaling check</div>
+          <h2>先把缩放指数列清楚</h2>
           <p>在 \(\mathbb R^3\) 上，若 \((u,p)\) 是解，则</p>
           <div class="equation">
             \[
@@ -448,7 +448,7 @@
             \]
           </div>
           <p>
-            也是相同黏性系数下的解。周期域本身不在此变换下保持不变，所以这里的缩放是高频局部结构的审计工具；
+            也是相同黏性系数下的解。周期域本身不在此变换下保持不变，所以这里的缩放只用来检查高频局部结构；
             不能把它误写成固定环面上的连续对称群。
           </p>
           <div class="table-wrap">
@@ -491,10 +491,10 @@
             </table>
           </div>
           <div class="proof result">
-            <strong>审计规则 S1</strong>
-            任一声称仅由基本能量控制临界范数的估计，都必须解释它如何跨越
+            <strong>检查 1</strong>
+            如果一个估计声称只由基本能量控制临界范数，就要说明它如何跨越
             \(\|u_\lambda\|_2=\lambda^{-1/2}\|u\|_2\) 与临界指数 \(0\) 之间的半阶缺口。
-            如果推导没有产生额外结构或尺度小因子，缩放已经提示它不可能闭合。
+            如果推导没有产生额外结构或尺度小因子，缩放表明它不能闭合。
           </div>
         </section>
 
@@ -567,10 +567,10 @@
             \]
           </div>
           <div class="proof result">
-            <strong>唯一不能闭合的临界项</strong>
+            <strong>目前没有闭合的临界项</strong>
             当 \(\|\Lambda^{1/2}u\|_2&lt;\nu/C\) 时，非线性可被黏性吸收，这解释小临界数据全局理论。
             对任意大数据，右端与耗散含有同一个 \(\dot H^{3/2}\) 因子，前面的临界范数未知且可能很大；
-            标准估计到此准确停止。
+            这个标准估计只能做到这里。
           </div>
         </section>
 
@@ -595,7 +595,7 @@
           <p>
             因 \(a\cdot\widehat u(a)=0\)，可将耦合因子改写为
             \(b\cdot\widehat u(a)=k\cdot\widehat u(a)\)。
-            这个角度因子是原始不可压缩核的第一处几何信息。
+            这个角度因子保留了不可压缩条件带来的一部分几何信息。
           </p>
 
           <h3>零和三波记号</h3>
@@ -627,8 +627,8 @@
         </section>
 
         <section id="triad">
-          <div class="section-no">06 / Explicit falsification test</div>
-          <h2>一个最小、可复算的非平凡三波</h2>
+          <div class="section-no">06 / Explicit example</div>
+          <h2>一个可以复算的三波例子</h2>
           <p>取波数</p>
           <div class="equation">
             \[
@@ -682,9 +682,9 @@
           </div>
           <p>缩放；选择相同相位可以让任意多个壳的符号一致。</p>
           <div class="proof warning">
-            <strong>不能夸大的地方</strong>
-            这是候选不等式的瞬时压力测试，不是一个封闭 Galerkin 系统，也不是持续级联解。
-            非线性会立即生成原支持集之外的新模；黏性和后续相位演化也尚未分析。
+            <strong>这个例子没有说明什么</strong>
+            这只是对候选不等式的瞬时检查，不是封闭的 Galerkin 系统，也不是持续级联解。
+            非线性会立即生成原支持集之外的新模；我还没有分析黏性和后续相位演化。
           </div>
           <p>
             可复现脚本：
@@ -694,45 +694,45 @@
         </section>
 
         <section id="conclusions">
-          <div class="section-no">07 / Falsified universal claims</div>
-          <h2>第一版“不可能成立”清单</h2>
+          <div class="section-no">07 / Claims ruled out by the example</div>
+          <h2>这个算例排除的几种说法</h2>
           <ol class="audit-list">
             <li>
-              <strong>错误命题：</strong>
+              <strong>待检验说法：</strong>
               原始非线性对 \(\dot H^{1/2}\) 能量总是耗散或总是增长。
-              <br><strong>否定：</strong>显式三波给出非零贡献，复共轭立即反号。
+              <br><strong>算例结果：</strong>显式三波给出非零贡献，复共轭后符号反转。
             </li>
             <li>
-              <strong>错误命题：</strong>
+              <strong>待检验说法：</strong>
               三波 \(L^2\) 能量守恒自动推出临界带权能量守恒。
-              <br><strong>否定：</strong>\((1,-4,3)\) 的无权和为零，而
+              <br><strong>算例结果：</strong>\((1,-4,3)\) 的无权和为零，而
               \(2(1-8+3\sqrt5)\ne0\)。
             </li>
             <li>
-              <strong>错误命题：</strong>
+              <strong>待检验说法：</strong>
               存在与振幅无关的统一常数 \(c&lt;1\)，使全部光滑场的临界三线性项都不超过
               \(c\nu\|\Lambda^{3/2}u\|_2^2\)。
-              <br><strong>否定：</strong>三线性项随振幅三次增长，耗散随振幅二次增长。
+              <br><strong>算例结果：</strong>三线性项随振幅三次增长，耗散随振幅二次增长。
             </li>
             <li>
-              <strong>不足路线：</strong>
+              <strong>目前不够的做法：</strong>
               只使用抽象能量抵消、双线性阶数和一般 Fourier 乘子估计。
-              <br><strong>审计理由：</strong>Tao 的 averaged Navier–Stokes 仍保留这类能量抵消，却可有限时爆破；
-              决定性正面论证必须使用原始核的更细结构。
+              <br><strong>原因：</strong>Tao 的 averaged Navier–Stokes 仍保留这类能量抵消，却可有限时爆破；
+              因此正面论证还需要用到原始核的更细结构。
             </li>
           </ol>
           <div class="proof result">
-            <strong>本轮真正得到的研究信息</strong>
+            <strong>目前能得到的结论</strong>
             若要寻找新的临界耗散机制，它不能是逐三波的定号性。
-            更可能的候选必须来自许多三波之间的成对抵消、相位不相容、角度退化、
+            可以继续检查许多三波之间的成对抵消、相位不相容、角度退化、
             局部/非局部相互作用的净效应，或这些结构与黏性时间尺度的联合约束。
           </div>
         </section>
 
         <section id="next">
           <div class="section-no">08 / Next packet</div>
-          <h2>下一步：把单三波升级为相互作用核图谱</h2>
-          <p>R0.2 将只做以下四件事：</p>
+          <h2>下一步：整理不同类型的三波相互作用</h2>
+          <p>我准备在 R0.2 做以下四件事：</p>
           <ol>
             <li>对 \(b(u,v,w)=\langle\mathbb P(u\cdot\nabla v),w\rangle\) 作完整 dyadic 分解。</li>
             <li>分别量化 low–high、high–low、high–high→low 与相近频率三波。</li>
@@ -740,14 +740,14 @@
             <li>检验“非局部三波成对近抵消”能否在临界频率包络中产生可求和缺陷因子。</li>
           </ol>
           <p>
-            通过标准不是得到漂亮公式，而是对每个候选估计同时给出：
-            精确假设、尺度指数、最坏三波、分离多壳测试和对 Tao averaged 非线性的区分点。
+            我会用以下几项检查每个候选估计：精确假设、尺度指数、最坏三波、
+            分离多壳测试，以及它与 Tao averaged 非线性的区别。
           </p>
         </section>
 
         <section id="references">
           <div class="section-no">09 / Primary references</div>
-          <h2>本轮使用的骨架文献</h2>
+          <h2>这份笔记用到的文献</h2>
           <ol class="refs">
             <li>
               C. L. Fefferman,
@@ -787,7 +787,7 @@
 
   <footer>
     <div>
-      <span><strong>Navier–Stokes 开放研究日志</strong>研究笔记 R0.1 · 可勘误、可复算、非突破声明</span>
+      <span><strong>Navier–Stokes 开放研究日志</strong>研究笔记 R0.1 · 基础计算，欢迎勘误</span>
       <span><a href="/">返回研究站</a> · <a href="/notes/r0-1.pdf">下载 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">查看版本记录</a></span>
     </div>
   </footer>

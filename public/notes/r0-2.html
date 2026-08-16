@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.2：三维 Navier–Stokes 临界 H 半范数中的 dyadic 非局部尾、螺旋三波传递与近对角障碍。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.2｜临界尺度局部性与螺旋三波">
+  <meta property="og:description" content="我整理了 low–high、high–low、high–high→low 的估计，并比较同号与异号螺旋三波。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.2｜临界尺度局部性与螺旋三波</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: rgba(242, 237, 223, .97);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Songti SC", "STSong", serif; color: var(--ink); }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; text-transform: uppercase; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; text-transform: uppercase; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .audit-list { padding: 0; list-style: none; counter-reset: audit; }
+    .audit-list li { position: relative; padding: 16px 12px 16px 54px; border-top: 1px solid var(--line); }
+    .audit-list li::before { counter-increment: audit; content: "R" counter(audit); position: absolute; left: 4px; color: var(--red); font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: var(--ink); color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: var(--paper); }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      body { background: white; color: black; font-size: 10.5pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 34px; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      footer { background: white; color: black; border-top-color: black; }
+      footer strong { color: black; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-2.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.2 · 局部性检查</div>
+          <h1>临界尺度局部性与螺旋三波</h1>
+          <p class="lead">
+            我把 R0.1 的单个 Fourier 三波扩展到 dyadic 分解。
+            计算中，远离对角线的相互作用有可求和的小因子；异号高频螺旋和近对角三波仍没有这样的增益。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">笔记状态 · 推导已复查</span>
+          <strong>局部性计算，不是正则性定理</strong>
+          <p>版本 v0.2 · 2026-08-16<br>目标域：\(\mathbb T^3\)<br>正则性：光滑零均值场</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>目录</strong>
+        <ol>
+          <li><a href="#status">00 · 结论状态</a></li>
+          <li><a href="#setup">01 · 临界包络</a></li>
+          <li><a href="#decomposition">02 · Dyadic 分解</a></li>
+          <li><a href="#low-high">03 · Low / high</a></li>
+          <li><a href="#high-high">04 · High–high→low</a></li>
+          <li><a href="#lemma">05 · 尾部命题</a></li>
+          <li><a href="#helical">06 · 螺旋三波</a></li>
+          <li><a href="#computation">07 · 计算检查</a></li>
+          <li><a href="#result">08 · 小结</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这份笔记做了什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已复查</span>
+              <strong>非局部 dyadic 尾</strong>
+              <p>尺度相隔 \(M\) 壳时，low–high / high–low 得到 \(2^{-2M}\)，high–high→low 得到 \(2^{-3M}\)。</p>
+            </div>
+            <div class="status-item">
+              <span>已复查</span>
+              <strong>螺旋传递比</strong>
+              <p>同号高频螺旋压低低模传递；异号高频螺旋没有这个因子。</p>
+            </div>
+            <div class="status-item">
+              <span>已有结果</span>
+              <strong>与已有局部性理论一致</strong>
+              <p>Littlewood–Paley 与粗粒化文献早已证明能量通量主要由相近尺度控制。</p>
+            </div>
+            <div class="status-item">
+              <span>尚未解决</span>
+              <strong>近对角临界项</strong>
+              <p>有限壳宽内仍只有 \(C\|u\|_{\dot H^{1/2}}\|u\|_{\dot H^{3/2}}^2\)。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>说明</strong>
+            这里的尾部估计是经典交换子、Bernstein 不等式与 Bony 分解的直接组合。
+            我写出逐项推导和计算脚本，方便复查。它不是新的定理，也没有闭合近对角临界项。
+            这些计算只说明：仅靠远距离三波抵消，还不足以得到大数据先验界。
+          </div>
+        </section>
+
+        <section id="setup">
+          <div class="section-no">01 / Critical envelopes</div>
+          <h2>把临界能量写成壳序列</h2>
+          <p>
+            在 \(\mathbb T^3_{2\pi}\) 上取标准光滑 Littlewood–Paley 分解
+            \(u=\sum_j u_j\)、\(u_j=\Delta_j u\)，记 \(\lambda_j=2^j\)。
+            零均值消除了齐次范数的零频问题；有限个最低壳只改变常数。
+          </p>
+          <div class="equation">
+            \[
+              a_j=\lambda_j^{1/2}\|u_j\|_2,
+              \qquad b_j=\lambda_j a_j=\lambda_j^{3/2}\|u_j\|_2,
+            \]
+            \[
+              A=\|a\|_{\ell^2}\simeq\|u\|_{\dot H^{1/2}},
+              \qquad B=\|b\|_{\ell^2}\simeq\|u\|_{\dot H^{3/2}}.
+            \]
+          </div>
+          <p>定义 Littlewood–Paley 版临界能量、耗散和非线性：</p>
+          <div class="equation">
+            \[
+              E_{1/2}^{LP}=\frac12\sum_j\lambda_j\|u_j\|_2^2,
+              \quad D_{3/2}^{LP}=\sum_j\lambda_j^3\|u_j\|_2^2,
+            \]
+            \[
+              \mathcal N_{1/2}(u)
+              =\sum_j\lambda_j\langle\Delta_j(u\cdot\nabla u),u_j\rangle.
+            \]
+          </div>
+          <p>对光滑 Navier–Stokes 解，Leray 投影的自伴性给出</p>
+          <div class="equation">
+            \[
+              \frac d{dt}E_{1/2}^{LP}+\nu D_{3/2}^{LP}
+              =-\mathcal N_{1/2}(u).
+            \]
+          </div>
+        </section>
+
+        <section id="decomposition">
+          <div class="section-no">02 / Bony interaction map</div>
+          <h2>三类远程相互作用与一个近对角核</h2>
+          <p>对乘积作 Bony 分解（省略只影响有限邻壳的端点记号）：</p>
+          <div class="equation">
+            \[
+              u\cdot\nabla u
+              =\sum_k S_{k-1}u\cdot\nabla u_k
+              +\sum_k u_k\cdot\nabla S_{k-1}u
+              +\sum_{|k-m|\le c}u_k\cdot\nabla u_m.
+            \]
+          </div>
+          <p>固定一个足够大的整数 \(M\)，把指标区分为：</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>区域</th><th>指标关系</th><th>结构来源</th><th>预期因子</th></tr></thead>
+              <tbody>
+                <tr><td>low–high</td><td>低频 \(r\le j-M\)，高频与输出 \(\simeq j\)</td><td>输运抵消后留下交换子</td><td>\(2^{-2(j-r)}\)</td></tr>
+                <tr><td>high–low</td><td>高频与输出 \(\simeq j\)，低频 \(r\le j-M\)</td><td>导数本来就落在低频</td><td>\(2^{-2(j-r)}\)</td></tr>
+                <tr><td>high–high→low</td><td>\(|k-m|\le c\)，输出 \(j\le k-M\)</td><td>无散性把导数移到低输出</td><td>\(2^{-3(k-j)}\)</td></tr>
+                <tr><td>near diagonal</td><td>所有相关壳相差少于 \(M+O(1)\)</td><td>没有尺度分离</td><td>无统一小因子</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="low-high">
+          <div class="section-no">03 / Low–high and high–low</div>
+          <h2>不可压缩输运产生两个壳阶的衰减</h2>
+          <h3>Low–high：主输运项精确消失</h3>
+          <p>
+            令 \(u_{\le j-M}=\sum_{r\le j-M}u_r\)，\(\widetilde u_j\) 是包住输出壳的有限邻壳和，
+            使 \(\Delta_j\widetilde u_j=u_j\)。于是
+          </p>
+          <div class="equation">
+            \[
+              \langle\Delta_j(u_{\le j-M}\cdot\nabla\widetilde u_j),u_j\rangle
+              =\langle[\Delta_j,u_{\le j-M}\cdot\nabla]\widetilde u_j,u_j\rangle,
+            \]
+            <small>因为 \(\langle u_{\le j-M}\cdot\nabla u_j,u_j\rangle=0\)。</small>
+          </div>
+          <p>标准交换子估计与 Bernstein 不等式为</p>
+          <div class="equation">
+            \[
+              \|[\Delta_j,v\cdot\nabla]w\|_2
+              \le C\lambda_j^{-1}\|\nabla v\|_\infty\|\nabla w\|_2,
+            \]
+            \[
+              \|\nabla u_r\|_\infty
+              \le C\lambda_r^{5/2}\|u_r\|_2=C\lambda_r^2a_r.
+            \]
+          </div>
+          <p>逐壳代入，并记 \(\widetilde b_j=\sum_{|h-j|\le c}b_h\)，得到</p>
+          <div class="equation">
+            \[
+              \lambda_j\big|\langle[\Delta_j,u_r\cdot\nabla]
+              \widetilde u_j,u_j\rangle\big|
+              \le C\,2^{-2(j-r)}a_r b_j\widetilde b_j.
+            \]
+          </div>
+
+          <h3>High–low：导数落在慢变量</h3>
+          <p>对 \(u_h\cdot\nabla u_r\) 直接使用同一个 Bernstein 因子：</p>
+          <div class="equation">
+            \[
+              \lambda_j|\langle\Delta_j(u_h\cdot\nabla u_r),u_j\rangle|
+              \le C\lambda_j\|u_h\|_2\|\nabla u_r\|_\infty\|u_j\|_2
+              \le C\,2^{-2(j-r)}a_r b_hb_j,
+            \]
+            <small>这里 \(|h-j|\le c\)，故 \(\lambda_h\simeq\lambda_j\)。</small>
+          </div>
+          <p>对低频指标用 Cauchy–Schwarz：</p>
+          <div class="equation">
+            \[
+              \sum_{r\le j-M}2^{-2(j-r)}a_r
+              \le\left(\sum_{n\ge M}2^{-4n}\right)^{1/2}A
+              \le C2^{-2M}A.
+            \]
+          </div>
+          <div class="proof">
+            <strong>Low / high 尾部</strong>
+            利用邻壳卷积在 \(\ell^2\) 上有界，两个远程部分均满足
+            \(|R_M^{LH}|+|R_M^{HL}|\le C2^{-2M}AB^2\)。
+          </div>
+        </section>
+
+        <section id="high-high">
+          <div class="section-no">04 / High–high to low</div>
+          <h2>把一个导数搬到低频输出</h2>
+          <p>
+            设 \(|k-m|\le c\) 且 \(j\le k-M\)。由于 \(\nabla\cdot u_k=0\)，
+            周期积分分部给出
+          </p>
+          <div class="equation">
+            \[
+              \langle u_k\cdot\nabla u_m,u_j\rangle
+              =-\langle u_k\cdot\nabla u_j,u_m\rangle.
+            \]
+          </div>
+          <p>现在导数只看见低输出；由 \(\|\nabla u_j\|_\infty\le C\lambda_j^2a_j\)，</p>
+          <div class="equation">
+            \[
+              \lambda_j|\langle\Delta_j(u_k\cdot\nabla u_m),u_j\rangle|
+              \le C\,2^{-3(k-j)}a_jb_kb_m.
+            \]
+          </div>
+          <p>再次对低指标作 Cauchy–Schwarz：</p>
+          <div class="equation">
+            \[
+              \sum_{j\le k-M}2^{-3(k-j)}a_j
+              \le\left(\sum_{n\ge M}2^{-6n}\right)^{1/2}A
+              \le C2^{-3M}A.
+            \]
+          </div>
+          <div class="proof">
+            <strong>High–high→low 尾部</strong>
+            有限邻壳求和后，
+            \(|R_M^{HH\to L}|\le C2^{-3M}AB^2\)。
+            这个三阶衰减并非相位平均，而是无散性与临界权重共同产生的确定性估计。
+          </div>
+        </section>
+
+        <section id="lemma">
+          <div class="section-no">05 / Remote-tail proposition</div>
+          <h2>合并命题：远离对角线的部分可吸收</h2>
+          <div class="proof result">
+            <strong>命题 R0.2-A（临界 dyadic 远程尾）</strong>
+            对标准光滑 Littlewood–Paley 分解，存在只依赖截断函数的 \(C,M_0\)，使任意
+            \(M\ge M_0\) 与任意光滑、零均值、无散 \(u\) 满足
+            \[
+              |R_M^{LH}|+|R_M^{HL}|+|R_M^{HH\to L}|
+              \le C\,2^{-2M}\|u\|_{\dot H^{1/2}}
+              \|u\|_{\dot H^{3/2}}^2.
+            \]
+            更细地，high–high→low 项可用 \(C2^{-3M}\) 代替 \(C2^{-2M}\)。
+          </div>
+          <p>
+            该命题可由上一节的逐块界经有限重叠和 \(\ell^2\) Cauchy–Schwarz 直接得到；
+            若只假设 \(u\in\dot H^{1/2}\cap\dot H^{3/2}\)，可用光滑逼近延拓。
+          </p>
+          <h3>为什么这仍然不闭合大数据</h3>
+          <p>将非线性写成 \(\mathcal N_{1/2}=R_M+N_M^{near}\)。远程尾虽小，但近对角部分仍只有</p>
+          <div class="equation">
+            \[
+              |N_M^{near}|\le C_M A B^2,
+            \]
+          </div>
+          <p>
+            且没有与 \(A\) 无关的统一小系数。选择更大的 \(M\) 可以压低远程尾，却同时把更多三波放进近对角集合；
+            它不能把 \(C A B^2\) 变成可由 \(\nu B^2\) 对任意大 \(A\) 吸收的估计。
+          </p>
+          <div class="proof warning">
+            <strong>这一步说明</strong>
+            非局部三波确实较小，但这还不能解决千禧年问题。
+            余下的困难在相近尺度的有限宽对角带，以及其中不同螺旋和相位类别的净效应。
+          </div>
+        </section>
+
+        <section id="helical">
+          <div class="section-no">06 / Helical triads</div>
+          <h2>两个守恒量把八类耦合分成两种非局部行为</h2>
+          <p>
+            对每个非零波数 \(\boldsymbol k\)，选取 curl 的单位本征向量
+            \(h_s(\boldsymbol k)\)，\(s\in\{+1,-1\}\)：
+          </p>
+          <div class="equation">
+            \[
+              i\boldsymbol k\times h_s(\boldsymbol k)
+              =s|\boldsymbol k|h_s(\boldsymbol k),
+              \qquad
+              \widehat u(\boldsymbol k)=\sum_{s=\pm1}u_s(\boldsymbol k)h_s(\boldsymbol k).
+            \]
+          </div>
+          <p>
+            一个零和三波 \(\boldsymbol k+\boldsymbol p+\boldsymbol q=0\) 有八种符号组合。
+            记 \(K=|\boldsymbol k|\le P=|\boldsymbol p|\le Q=|\boldsymbol q|\)，
+            对固定 \((s_K,s_P,s_Q)\)，Waleffe 的单三波方程把三个模能量率写成同一个实标量 \(\Phi\) 乘以
+          </p>
+          <div class="equation">
+            \[
+              (T_K,T_P,T_Q)=\Phi\bigl(
+              s_PP-s_QQ,\;s_QQ-s_KK,\;s_KK-s_PP
+              \bigr).
+            \]
+            <small>\(\Phi\) 含几何耦合系数与三振幅相位；它可以变号或为零。</small>
+          </div>
+          <p>系数向量逐项核对两个 Euler 不变量：</p>
+          <div class="equation">
+            \[
+              T_K+T_P+T_Q=0,
+              \qquad
+              s_KKT_K+s_PPT_P+s_QQT_Q=0.
+            \]
+          </div>
+
+          <h3>同号高频螺旋：低模传递受抑制</h3>
+          <p>
+            若 \(s_P=s_Q\)，三角闭合给出 \(|P-Q|\le K\)，故
+          </p>
+          <div class="equation">
+            \[
+              |T_K|\le |\Phi|K,
+              \qquad
+              \max(|T_P|,|T_Q|)\ge |\Phi|(P-K).
+            \]
+          </div>
+          <p>
+            当 \(K/P\to0\) 时，低模只接收至多 \(O(K/P)\) 比例；主要交换发生在两个相近高频腿之间。
+            这就是“非局部三波中的局部传递”。
+          </p>
+
+          <h3>异号高频螺旋：没有低模小因子</h3>
+          <p>若 \(s_P=-s_Q\)，则</p>
+          <div class="equation">
+            \[
+              |T_K|=|\Phi|(P+Q),
+            \]
+          </div>
+          <p>
+            与两个高频能量率同阶。仅靠能量与 helicity 守恒不能产生 \(K/P\) 抑制。
+            因而，不能假定所有非局部螺旋三波都会成对近抵消。
+          </p>
+          <div class="proof warning">
+            <strong>不要把单三波稳定性当作 PDE 定理</strong>
+            Waleffe 进一步用“instability assumption”讨论平均传递方向；那是湍流闭合中的动力学假设。
+            这里只使用单三波方程及其精确守恒比。我不由此推断完整 Navier–Stokes 解的级联方向。
+          </div>
+        </section>
+
+        <section id="computation">
+          <div class="section-no">07 / Calculation checks</div>
+          <h2>用整数三波族检查公式</h2>
+          <p>取真实整数三波</p>
+          <div class="equation">
+            \[
+              \boldsymbol k=(1,0,0),\quad
+              \boldsymbol p=(0,N,0),\quad
+              \boldsymbol q=(-1,-N,0),
+            \]
+            \[
+              K=1,\quad P=N,\quad Q=\sqrt{N^2+1}.
+            \]
+          </div>
+          <p>
+            对每个 \(N\)，脚本验证能量与 helicity 残差为机器零，并比较
+            \(|T_K|/\max(|T_P|,|T_Q|)\)：
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(N\)</th><th>同号高频螺旋</th><th>\(N^2\times\)同号比</th><th>异号高频螺旋</th></tr></thead>
+              <tbody>
+                <tr><td>8</td><td>0.00881556</td><td>0.564196</td><td>1.77243</td></tr>
+                <tr><td>32</td><td>0.000503655</td><td>0.515743</td><td>1.93895</td></tr>
+                <tr><td>128</td><td>0.0000307565</td><td>0.503914</td><td>1.98447</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            这一特定几何中 \(Q-P=1/(Q+P)\sim(2N)^{-1}\)，所以同号类甚至显示 \(N^{-2}\) 的相对抑制；
+            普遍三角界只保证 \(O(K/P)\)。异号类趋近常数量级，没有衰减。
+          </p>
+          <p>
+            同一脚本核对 dyadic \(\ell^2\) 尾：
+            \(\big(\sum_{n\ge M}2^{-4n}\big)^{1/2}\) 每增加一壳乘 \(1/4\)，
+            \(\big(\sum_{n\ge M}2^{-6n}\big)^{1/2}\) 每增加一壳乘 \(1/8\)。
+          </p>
+          <div class="proof">
+            <strong>复现入口</strong>
+            源码：<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dyadic-helical-audit.mjs">research/dyadic-helical-audit.mjs</a>；
+            自动测试：<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/tests/dyadic-helical-audit.test.mjs">tests/dyadic-helical-audit.test.mjs</a>。
+          </div>
+        </section>
+
+        <section id="result">
+          <div class="section-no">08 / Summary</div>
+          <h2>目前得到的结论</h2>
+          <ol class="audit-list">
+            <li>
+              <strong>非局部尾：</strong>临界 \(\dot H^{1/2}\) 三线性项的尺度分离部分确定性可求和；
+              分离 \(M\) 壳至少得到 \(2^{-2M}\) 小因子。
+            </li>
+            <li>
+              <strong>更细结构：</strong>high–high→low 由于无散积分分部得到 \(2^{-3M}\)，
+              比两个 paraproduct 尾更强。
+            </li>
+            <li>
+              <strong>螺旋分流：</strong>同号高频螺旋的低模能量率受 \(K/P\) 抑制；
+              异号高频螺旋并不受此抑制。
+            </li>
+            <li>
+              <strong>目前的限制：</strong>单靠非局部三波的成对抵消，无法得到适用于全部无散场的更强临界先验界。
+            </li>
+            <li>
+              <strong>剩余缺口：</strong>近对角区仍然没有小因子；必须研究相近尺度的精确几何系数、相位锁定、
+              helicity 类别之间的净抵消，或构造证明这些增益不存在的近极值场。
+            </li>
+          </ol>
+          <div class="proof result">
+            <strong>这一步留下什么</strong>
+            接下来可以把注意力放在有限宽的近对角带上。异号高频螺旋说明，普遍的非局部抵消估计并不成立。
+            这些计算没有给出大数据全局先验界，也没有证明 Clay 问题所要求的全局光滑性。
+          </div>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next step</div>
+          <h2>下一步：检查近对角螺旋核</h2>
+          <p>下一份笔记只看仍没有小因子的区域。我准备做四件事：</p>
+          <ol>
+            <li>写出四个非等价 helicity 符号类的精确几何耦合系数，固定归一化与相位约定。</li>
+            <li>在 \(K:P:Q\in[1/2,2]^3\) 且满足三角闭合的紧参数域上，定位耦合零点、退化角和最大值。</li>
+            <li>构造单壳/双壳无散三角多项式，数值搜索临界三线性比值的近极值器，再用区间界或符号代数复核。</li>
+            <li>判定是否存在超出标准 \(C A B^2\) 的确定性缺陷因子；若不存在，形成明确反例族并终止这条路线。</li>
+          </ol>
+          <p>
+            R0.3 需要得到一个对全部相位成立的严格上界，
+            或一个可复算的相位配置将该上界否定。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / References</div>
+          <h2>这份笔记用到的文献</h2>
+          <ol class="refs">
+            <li>
+              A. Cheskidov, P. Constantin, S. Friedlander, R. Shvydkoy,
+              <a href="https://arxiv.org/abs/0704.0759">Energy conservation and Onsager’s conjecture for the Euler equations</a>,
+              Nonlinearity 21 (2008), 1233–1252。Littlewood–Paley 能量通量局部性与卷积核界。
+            </li>
+            <li>
+              F. Waleffe,
+              <a href="https://doi.org/10.1063/1.858309">The nature of triad interactions in homogeneous turbulence</a>,
+              Physics of Fluids A 4 (1992), 350–363。螺旋基底、八类基本三波及传递分类。
+            </li>
+            <li>
+              G. L. Eyink and H. Aluie,
+              <a href="https://arxiv.org/abs/0909.2386">Localness of energy cascade in hydrodynamic turbulence, I: Smooth coarse-graining</a>,
+              Physics of Fluids 21 (2009), 115107。平滑粗粒化下非局部三波的严格上界。
+            </li>
+            <li>
+              H. Aluie and G. L. Eyink,
+              <a href="https://arxiv.org/abs/0909.2451">Localness of energy cascade in hydrodynamic turbulence, II: Sharp spectral filter</a>,
+              Physics of Fluids 21 (2009), 115108。锐谱滤波与对数频带传递的尺度局部性。
+            </li>
+            <li>
+              C. L. Fefferman,
+              <a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Existence and Smoothness of the Navier–Stokes Equation</a>,
+              Clay Mathematics Institute 正式问题说明。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>Navier–Stokes 个人研究日志</strong><br>研究笔记 R0.2 · 基础计算，欢迎勘误</span>
+      <span><a href="/notes/r0-1.html">← R0.1</a> · <a href="/notes/r0-2.pdf">下载 PDF</a> · <a href="/">返回主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

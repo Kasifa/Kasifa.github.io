@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadataBase = new URL(`${protocol}://${host}`);
   const title = "Navier–Stokes 开放研究日志";
   const description =
-    "三维不可压缩 Navier–Stokes 存在性与光滑性问题：研究综述、攻关计划与可复核研究笔记。";
+    "我整理的三维不可压缩 Navier–Stokes 研究综述、工作计划与计算笔记。";
 
   return {
     metadataBase,

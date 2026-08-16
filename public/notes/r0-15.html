@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.15：用局部凸性、横向 Bernstein 差商和外部有理盒覆盖，证明任意复催化振幅的全局最优点就是等幅同相点；再计算四个输入极化的精确一阶变分。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.15｜复振幅等号与极化一阶下降">
+  <meta property="og:description" content="复振幅全局极小值精确闭合；固定 R0.11 极化被证明不是第五阶能量比的驻点。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.15｜复振幅等号与极化一阶下降</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      section#references { break-before:page; } .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-15.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.15 · 复相位闭合与极化变分</div>
+        <h1>复振幅等号与极化一阶下降</h1>
+        <p class="lead">
+          我补上 R0.14 留下的局部代数证书，证明任意复催化振幅的全局最优点就是等幅同相点。
+          随后我把四个实输入极化分别沿无散切向量微分。固定 R0.11 极化不是第五阶外部/目标能量比的驻点，
+          因而下一步应优化极化，而不是继续调整振幅或相位。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 复振幅全局定理；极化为精确一阶变分</span>
+        <strong>标量自由度已经闭合</strong>
+        <p>版本 v0.15 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：第五阶纯非线性齐次项</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#gap">01 · R0.14 的间隙</a></li>
+          <li><a href="#minimum">02 · 代数极小点</a></li>
+          <li><a href="#split">03 · 区域分解</a></li>
+          <li><a href="#local">04 · 局部证书</a></li>
+          <li><a href="#exterior">05 · 外部证书</a></li>
+          <li><a href="#theorem">06 · 复振幅定理</a></li>
+          <li><a href="#polarization">07 · 极化坐标</a></li>
+          <li><a href="#derivative">08 · 微分树</a></li>
+          <li><a href="#gradient">09 · 一阶下降</a></li>
+          <li><a href="#scope">10 · 价值与边界</a></li>
+          <li><a href="#next">11 · 下一步</a></li>
+          <li><a href="#reproduce">12 · 复现</a></li>
+          <li><a href="#references">13 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>复振幅极小值已闭合，固定极化仍可下降</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>任意复振幅的全局极小已确定</strong><p>唯一极小轨道是等幅、同相和共同复相位。</p></div>
+            <div class="status-item"><span>CERTIFIED</span><strong>局部与外部证书恰好拼接</strong><p>局部凸性和差商覆盖一个有理盒，外部由 24 个 Bernstein 叶盒覆盖。</p></div>
+            <div class="status-item"><span>CALCULATED EXACTLY</span><strong>四个极化导数全部非零</strong><p>完整带符号第五阶树的一阶 Laurent 极点全部抵消。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>全极化最优值仍未知</strong><p>当前只证明固定极化不是驻点，还没有完成四角参数的全局优化。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>本笔记的严格结论。</strong>
+            对 R0.11 的固定四个极化、任意不全为零的两个复催化振幅，
+
+            \[
+              \frac{X_\infty}{T_\infty}\ge\lambda_*
+              =45.73934896472748\ldots,
+            \]
+
+            等号恰在 \(\beta=\delta\)、\(4|\beta|^2=\alpha\) 达到，其中
+            \(\alpha=0.17451712822713492\ldots\) 是一个显式六次多项式的唯一正根。
+            在这个极小点，四个单位角向极化导数全部严格非零，所以原固定极化不是完整极化空间中的局部极小点。
+          </div>
+          <p>
+            第一项是固定极化下的全局代数定理。第二项是该定理边界上的精确一阶变分。
+            两者都只涉及第五阶有限相互作用模型，不是 Navier–Stokes 方程的全局正则性或奇性结论。
+          </p>
+        </section>
+
+        <section id="gap">
+          <div class="section-no">01 / The remaining gap</div>
+          <h2>有理下界不能直接达到代数极小值</h2>
+          <p>
+            R0.14 把两个复振幅化为
+            \[
+              x=|\beta+\delta|^2,\qquad
+              y=|\beta-\delta|^2,\qquad
+              0\le h\le xy,
+            \]
+            并得到
+            \(45.739348\le X_\infty/T_\infty\le45.73934896472748\ldots\)。
+            左端是有理数，右端是代数数；把左端不断增加，只会使包含极小点的 Bernstein 盒出现负系数。
+          </p>
+          <p>
+            因而缺口不是多算几位小数，而是零点附近的结构问题。
+            我把单位立方体分成一个含极小点的小有理盒及其补集：补集使用略高于极小值的有理界，
+            小盒则直接使用代数极小值 \(\lambda_*\)。
+          </p>
+        </section>
+
+        <section id="minimum">
+          <div class="section-no">02 / Algebraic minimizer</div>
+          <h2>极小值由唯一正代数根定义</h2>
+          <p>在 \(y=h=0\) 上，令 \(\alpha\) 为下列多项式的唯一正根：</p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              0={}&amp;547051680\alpha^6+1279667573555\alpha^5
+              +118208127655484\alpha^4\\
+              &amp;+905317897826984\alpha^3
+              -24992156631040\alpha-560180920320.
+            \end{aligned}
+            \]
+          </div>
+          <p>精确极小值定义为</p>
+          <div class="equation">
+            \[
+              \lambda_*=
+              \frac{X_\infty(\alpha,0,0)}{T_\infty(\alpha,0,0)}.
+            \]
+          </div>
+          <p>
+            Sturm 隔离给出唯一正根。90 位有理隔离区间同时证明
+            \(\lambda_*&lt;45.739349\)，严格余量大于
+            \(3.527251566\times10^{-8}\)。
+          </p>
+          <p>
+            目标多项式关于 \(h\) 的系数是 \(408234177/62720>0\)。
+            它在 \(h=0\) 的二次型首系数为 \(2284553209/1254400>0\)，
+            矩阵行列式为
+            \(8126048145823191/24586240000>0\)。
+            所以除原点外 \(T_\infty>0\)，后面的比值比较没有除零问题。
+          </p>
+        </section>
+
+        <section id="split">
+          <div class="section-no">03 / Domain split</div>
+          <h2>一个局部盒加上完整补集</h2>
+          <p>仍取 R0.14 的紧化变量</p>
+          <div class="equation">
+            \[
+              x=\frac{z}{1-z}a,\qquad
+              y=\frac{z}{1-z}(1-a),\qquad
+              h=\left(\frac{z}{1-z}\right)^2a(1-a)s.
+            \]
+          </div>
+          <p>局部盒选择为</p>
+          <div class="equation">
+            \[
+              \frac{2433}{16384}\le z\le\frac{609}{4096},
+              \qquad \frac{1023}{1024}\le a\le1,
+              \qquad 0\le s\le1.
+            \]
+          </div>
+          <p>
+            代数极小点的紧化坐标是
+            \(z_*=\alpha/(1+\alpha)=0.14858627774169486\ldots\)，严格位于该盒内部。
+            这个盒在 \((x,y)\) 中被包含于
+            \[
+              0.17422579194591786\le x\le0.174648695153427,
+              \qquad 0\le y\le0.000170555366360769.
+            \]
+          </p>
+        </section>
+
+        <section id="local">
+          <div class="section-no">04 / Local algebraic certificate</div>
+          <h2>轴向严格凸，横向差商严格为正</h2>
+          <p>记 \(D=X_\infty-\lambda_*T_\infty\)，并写</p>
+          <div class="equation">
+            \[
+              D_0(x)=D(x,0,0),
+            \]
+            \[
+              D(x,y,xys)-D_0(x)=yJ(x,y,s).
+            \]
+          </div>
+          <p>
+            由 \(\lambda_*\) 的定义和驻点方程，
+            \(D_0(\alpha)=D_0'(\alpha)=0\)。
+            在上一节的整个 \(x\) 区间内，有理区间计算给出
+          </p>
+          <div class="equation">
+            \[
+              26745.922662824785
+              &lt;D_0''(x)&lt;26932.93182007326.
+            \]
+          </div>
+          <p>
+            所以 \(D_0\) 严格凸，并在 \(\alpha\) 取得唯一零点。
+            对横向多项式 \(J\)，把局部长方体映到单位立方体。
+            它的次数为 \((5,5,3)\)，在 \(\lambda_*\) 的两个有理隔离端点共检查 288 个 Bernstein 系数，得到
+          </p>
+          <div class="equation">
+            \[
+              J(x,y,s)\ge5420.19793447103>0.
+            \]
+          </div>
+          <p>
+            因而局部盒内 \(D=D_0+yJ\ge0\)。等号要求同时有
+            \(x=\alpha\) 和 \(y=0\)，此时约束自动给出 \(h=0\)。
+          </p>
+        </section>
+
+        <section id="exterior">
+          <div class="section-no">05 / Exterior Bernstein certificate</div>
+          <h2>补集上证明一个更强的有理界</h2>
+          <p>取</p>
+          <div class="equation">
+            \[
+              B=\frac{45739349}{1000000}=45.739349>\lambda_*,
+            \]
+          </div>
+          <p>并在单位立方体上定义</p>
+          <div class="equation">
+            \[
+              G_B=(1-z)^6\bigl(X_\infty-BT_\infty\bigr).
+            \]
+          </div>
+          <p>
+            \(G_B\) 仍是次数 \((6,6,3)\)、含 64 项的有理多项式。
+            自适应 de Casteljau 二分在深度 23 停止：24 个外部叶盒的全部 Bernstein 系数非负，
+            另有 1 个叶盒完全落入上一节已认证的局部盒。两类叶盒无缝覆盖整个单位立方体。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>证书量</th><th>结果</th></tr></thead>
+            <tbody>
+              <tr><td>外部有理界</td><td>45.739349</td></tr>
+              <tr><td>初始负 Bernstein 系数</td><td>37</td></tr>
+              <tr><td>外部非负叶盒</td><td>24</td></tr>
+              <tr><td>交给局部证书的叶盒</td><td>1</td></tr>
+              <tr><td>最大二分深度</td><td>23</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            在补集上 \(X_\infty/T_\infty\ge B>\lambda_*\)。
+            外部证书因此不仅排除更小值，也排除局部盒之外的等号。
+          </p>
+        </section>
+
+        <section id="theorem">
+          <div class="section-no">06 / Complex-amplitude theorem</div>
+          <h2>复振幅全局问题至此闭合</h2>
+          <div class="proof result">
+            <strong>定理（固定极化的复振幅全局极小）。</strong>
+            对任意不全为零的 \((\beta,\delta)\in\mathbb C^2\)，
+            R0.13 的第五阶纯非线性能量满足
+            \[
+              \frac{X_\infty(\beta,\delta)}{T_\infty(\beta,\delta)}
+              \ge\lambda_*=45.73934896472748\ldots .
+            \]
+            等号当且仅当 \(\beta=\delta\)、\(4|\beta|^2=\alpha\)，允许任意共同复相位。
+          </div>
+          <p>相应的最大目标能量比例是</p>
+          <div class="equation">
+            \[
+              \frac{1}{1+\lambda_*}
+              =0.021395248803201435\ldots
+              =2.1395248803201435\ldots\%.
+            \]
+          </div>
+          <p>
+            这把 R0.14 的不到百万分之一间隙收紧为精确等号。
+            它同时说明振幅比、相对符号和复相位都不是固定极化模型中的有效改进方向。
+          </p>
+        </section>
+
+        <section id="polarization">
+          <div class="section-no">07 / Polarization chart</div>
+          <h2>每个实无散极化只有一个角向切线</h2>
+          <p>
+            四个正输入频率依次记为旧壳泵 \(P,Q\) 和本壳催化 \(B,D\)。
+            对其中一个频率写
+            \(\bar K(\delta)=\delta K(\delta)\)，固定极化分子写为 \(N(\delta)\)，并定义
+          </p>
+          <div class="equation">
+            \[
+              M(\delta)=\bar K(\delta)\times N(\delta).
+            \]
+          </div>
+          <p>
+            \(N,M\) 都与 \(K\) 正交，且
+            \(N\cdot M=0\)、\(|M|^2=|\bar K|^2|N|^2\)。
+            因此一个精确的局部单位极化曲线是
+          </p>
+          <div class="equation">
+            \[
+              p(t,\delta)=
+              \frac{N+tM}{|N|\sqrt{1+t^2|\bar K|^2}}.
+            \]
+          </div>
+          <p>
+            在 \(t=0\) 的分子导数就是 \(M\)。泵极化的切向速度平方趋于 \(1/12\)，
+            催化极化的切向速度平方趋于 \(1/3\)。用这两个因子即可把 \(t\) 导数换成单位角导数。
+          </p>
+        </section>
+
+        <section id="derivative">
+          <div class="section-no">08 / Differentiated tree</div>
+          <h2>导数直接穿过完整第五阶树</h2>
+          <p>
+            我没有对四个角做有限差分。对每个双线性节点 \(\mathcal B(U,V)\)，导数按
+          </p>
+          <div class="equation">
+            \[
+              \partial_j\mathcal B(U,V)
+              =\mathcal B(\partial_jU,V)+\mathcal B(U,\partial_jV)
+            \]
+          </div>
+          <p>
+            传播到全部五层。基线有 306 个非零极限频率；微分会打开原来恰好为零的分量，
+            基线与四个导数合计出现 322 个非零极限频率。
+            五组聚合 Laurent 系列的所有负次幂都精确抵消。
+          </p>
+          <p>
+            随后分别形成总能量、目标能量及其四个导数，并在代数振幅 \(\alpha\) 的 80 位有理隔离区间上计算
+          </p>
+          <div class="equation">
+            \[
+              \partial_j\!\left(\frac XT\right)
+              =\frac{X_jT-XT_j}{T^2}.
+            \]
+          </div>
+          <p>每个分子都是次数 8 的有理多项式；区间不包含零，所以导数符号是严格结论。</p>
+        </section>
+
+        <section id="gradient">
+          <div class="section-no">09 / Certified first descent</div>
+          <h2>两对极化应向相反方向旋转</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>极化角</th><th>图坐标导数</th><th>单位角导数</th><th>符号</th></tr></thead>
+            <tbody>
+              <tr><td>泵 \(P\)</td><td>-10.19251592280536</td><td>-35.30791087050734</td><td>严格负</td></tr>
+              <tr><td>泵 \(Q\)</td><td>10.19251592280536</td><td>35.30791087050734</td><td>严格正</td></tr>
+              <tr><td>催化 \(B\)</td><td>-15.78002443406787</td><td>-27.33180406448388</td><td>严格负</td></tr>
+              <tr><td>催化 \(D\)</td><td>15.78002443406787</td><td>27.33180406448388</td><td>严格正</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            两个泵导数精确互为相反数，两个催化导数也精确互为相反数。
+            单位角梯度的范数约为 \(63.1454841371737\)。对应的单位最速下降方向是
+          </p>
+          <div class="equation">
+            \[
+              (0.5591517961,-0.5591517961,
+                0.4328386176,-0.4328386176).
+            \]
+          </div>
+          <div class="proof result">
+            <strong>局部结论。</strong>
+            固定 R0.11 极化不是第五阶 \(X_\infty/T_\infty\) 的驻点，更不是完整实极化空间中的局部极小点。
+            沿上式方向作足够小的角向扰动会严格降低该比值。
+          </div>
+          <p>
+            这不表示目标能量已经能够占优。它只说明“固定极化下最多约 2.14%”不是对极化扰动稳定的障碍，
+            下一阶段必须重新优化，而不能把 R0.15 的固定极化常数当作普适下界。
+          </p>
+        </section>
+
+        <section id="scope">
+          <div class="section-no">10 / Value and scope</div>
+          <h2>一个自由度关闭，另一个自由度被确认有效</h2>
+          <h3>本笔记已经确定</h3>
+          <ul>
+            <li>两个复催化振幅的全局优化有唯一对称极小轨道。</li>
+            <li>复相位不能改善固定极化的目标比例。</li>
+            <li>四个实极化方向中每一个都有非零一阶导数。</li>
+            <li>下降梯度只落在两组反对称旋转方向上。</li>
+          </ul>
+          <h3>本笔记没有确定</h3>
+          <ul>
+            <li>四角极化空间上的全局最优值，以及振幅重新优化后的联合最优值；</li>
+            <li>复极化自由度、热项、第五阶以后 Taylor 余项和有限时间误差；</li>
+            <li>稠密频率包、多壳重复及任何 Navier-Stokes PDE 的先验估计。</li>
+          </ul>
+          <div class="proof warning">
+            <strong>与千禧年问题的距离。</strong>
+            Clay 问题要求光滑解的全局存在，或构造满足正式条件的有限时间失效。
+            本文只对一个候选 Fourier 相互作用机制的有限阶系数做半代数分析。
+            我尚未完成关于这些特定代数常数和证书组合的文献优先权检索，也不主张新定理的优先权。
+          </div>
+        </section>
+
+        <section id="next">
+          <div class="section-no">11 / Next step</div>
+          <h2>R0.16：沿反对称极化方向做联合优化</h2>
+          <ol>
+            <li>计算四角极化与最优振幅的联合 Hessian，确认一阶下降后的曲率和可信步长。</li>
+            <li>先限制到两组反对称角，构造一个显式低于 \(45.7393489647\) 的有理或代数候选，并给出严格函数值区间。</li>
+            <li>再检查其余两个角是否在新点重新打开，决定能否把全局搜索降到二维。</li>
+            <li>只有目标比例出现实质提高，才恢复热项和有限时间 Taylor 余项；否则记录新的极化下界。</li>
+          </ol>
+          <p>
+            R0.15 已经给出方向，但还没有给出合适的有限步长。
+            因此下一项先做局部二阶控制和一个严格改善点，不直接声称全局极化优化完成。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">12 / Reproduction</div>
+          <h2>两个精确脚本分别承担闭合与变分</h2>
+          <p>
+            复振幅闭合脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/complex_phase_closure_audit.py"><code>research/complex_phase_closure_audit.py</code></a>。
+          </p>
+          <div class="equation mono">
+            python3 research/complex_phase_closure_audit.py --check
+          </div>
+          <p>
+            输出包含目标正性、\(\alpha\) 与 \(\lambda_*\) 的 Sturm 隔离摘要、局部二阶导数和差商界、
+            24+1 个覆盖叶盒及分区哈希。
+          </p>
+          <p>
+            极化一阶变分脚本：
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_first_variation_audit.py"><code>research/polarization_first_variation_audit.py</code></a>。
+          </p>
+          <div class="equation mono">
+            python3 research/polarization_first_variation_audit.py --check
+          </div>
+          <p>
+            它重算完整第五阶带符号树，核对五组 Laurent 极点、四个次数 8 的导数分子、
+            精确反对称结构和单位角最速下降方向。两个程序的所有符号判断均使用有理数；小数只用于阅读。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">13 / Primary sources</div>
+          <h2>原始文献与算法来源</h2>
+          <ol class="refs">
+            <li><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">C. Fefferman, <em>Existence and Smoothness of the Navier–Stokes Equation</em></a>。Clay 正式问题说明；本文没有解决其中任何命题。</li>
+            <li><a href="https://doi.org/10.1063/1.858309">F. Waleffe, <em>The Nature of Triad Interactions in Homogeneous Turbulence</em></a>, Physics of Fluids A 4 (1992), 350-363。Fourier 三波与极化相互作用的原始分析。</li>
+            <li><a href="https://doi.org/10.1007/3-540-16437-5_5">J. Garloff, <em>Convergent Bounds for the Range of Multivariate Polynomials</em></a>, Interval Mathematics 1985, LNCS 212, 37-56。多元 Bernstein 包围与细分收敛的来源。</li>
+            <li><a href="https://link.springer.com/book/10.1007/978-3-662-05355-3">S. Basu, R. Pollack &amp; M.-F. Roy, <em>Algorithms in Real Algebraic Geometry</em></a>。Sturm 根隔离和半代数算法的系统参考。</li>
+            <li><a href="/notes/r0-14.html">R0.14：双振幅全局优化与复相位 Bernstein 界</a>。本文关闭的数值间隙和三不变量参数化来自这里。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>Navier–Stokes 开放研究日志</strong><br>个人计算记录，不代表同行评议结论。</span>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-15.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

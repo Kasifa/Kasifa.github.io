@@ -17,6 +17,7 @@ const eleventhNoteUrl = new URL("../public/notes/r0-11.html", import.meta.url);
 const twelfthNoteUrl = new URL("../public/notes/r0-12.html", import.meta.url);
 const thirteenthNoteUrl = new URL("../public/notes/r0-13.html", import.meta.url);
 const fourteenthNoteUrl = new URL("../public/notes/r0-14.html", import.meta.url);
+const fifteenthNoteUrl = new URL("../public/notes/r0-15.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -282,6 +283,22 @@ test("publishes and links the certified two-amplitude audit", async () => {
   assert.match(note, /不是 Navier–Stokes 方程的全局估计/);
 });
 
+test("publishes and links the complex closure and polarization variation", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fifteenthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-15\.html"/);
+  assert.match(note, /研究笔记 R0\.15/);
+  assert.match(note, /45\.73934896472748/);
+  assert.match(note, /5420\.19793447103/);
+  assert.match(note, /24 个外部叶盒/);
+  assert.match(note, /-35\.30791087050734/);
+  assert.match(note, /固定 R0\.11 极化不是第五阶/);
+  assert.match(note, /不是 Navier–Stokes 方程的全局正则性或奇性结论/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -294,7 +311,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -310,6 +327,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(twelfthNoteUrl, "utf8"),
     readFile(thirteenthNoteUrl, "utf8"),
     readFile(fourteenthNoteUrl, "utf8"),
+    readFile(fifteenthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -386,6 +404,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(fourteenthNote, /我放开 R0\.13/);
   assert.doesNotMatch(
     fourteenthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(fifteenthNote, /我补上 R0\.14/);
+  assert.doesNotMatch(
+    fifteenthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

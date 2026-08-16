@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.7：证明全六模态临界传递对法向泄漏的显式强制性下界，识别中心模型的 2D3C 边界，并用切向调制方程解释短时换号。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.7｜全六模态泄漏下界与 2D3C 调制">
+  <meta property="og:description" content="全十二实参数满足显式正泄漏下界；解析候选是受约束局部极小的数值候选，但中心模型属于全局正则的 2D3C 类。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.7｜全六模态泄漏下界与 2D3C 调制</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+      --bar: rgba(242, 237, 223, .97);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --red: #ee8b7c;
+        --green: #9fbea2;
+        --gold: #d9b567;
+        --line: rgba(238, 231, 216, .26);
+        --bar: rgba(23, 24, 22, .96);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: var(--bar);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: #27221d; color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: #f2eddf; }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @page { size: A4; margin: 12mm 14mm; }
+    @media print {
+      .bar, .toc { display: none; }
+      html, body, main, .layout, article { height: auto; margin-bottom: 0; padding-bottom: 0; }
+      body { background: white; color: black; font-size: 10pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 26px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 18px 0; padding: 18px; }
+      .proof { margin: 18px 0; padding: 15px 18px; }
+      th, td { padding: 9px 11px; }
+      .refs li { padding-top: 10px; padding-bottom: 10px; }
+      article > section:last-child { margin-bottom: 0; }
+      footer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-7.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.7 · 六模态强制性</div>
+          <h1>全六模态泄漏下界与 2D3C 调制</h1>
+          <p class="lead">
+            我把 R0.6 的对称子族计算扩展到完整十二实参数空间。
+            非零临界传递确实强迫正的法向泄漏；但整个中心模型属于全局正则的 2D3C 类。
+            三变量切向方程已经解释短时增长为何在 \(\tau\approx0.07\) 换号。
+          </p>
+        </div>
+        <div class="stamp">
+          <span class="state">笔记状态 · 两个命题已证明，动力学为有限维计算</span>
+          <strong>得到下界，也划清边界</strong>
+          <p>版本 v0.7 · 2026-08-16</p>
+          <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+          <p>对象：六模态泄漏与近二维动力学</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#coordinates">01 · 六复振幅</a></li>
+          <li><a href="#squares">02 · 平方和公式</a></li>
+          <li><a href="#coercivity">03 · 强制性下界</a></li>
+          <li><a href="#hessian">04 · 局部 Hessian</a></li>
+          <li><a href="#twod3c">05 · 2D3C 边界</a></li>
+          <li><a href="#modulation">06 · 切向调制</a></li>
+          <li><a href="#dense">07 · 稠密包预算</a></li>
+          <li><a href="#value">08 · 对原问题的价值</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#references">10 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这一轮关闭了什么，又排除了什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>全十二参数的正泄漏下界</strong>
+              <p>临界传递不为零时，六模态法向泄漏有一个显式正下界，不再只是紧致性推论。</p>
+            </div>
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>中心模型属于全局正则类</strong>
+              <p>所有中心波数共面，完整 PDE 分裂成二维 Navier-Stokes 与被动标量方程。</p>
+            </div>
+            <div class="status-item">
+              <span>已计算</span>
+              <strong>候选在商空间上局部正定</strong>
+              <p>去掉两个平移方向后，约束 Hessian 的八个数值特征值全部为正。</p>
+            </div>
+            <div class="status-item">
+              <span>有限维观察</span>
+              <strong>换号来自切向标量振幅</strong>
+              <p>三变量 ODE 在 \(0.07013\) 换号；稠密 Galerkin 轨道在 \(0.06782\) 换号。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>结果性质</strong>
+            强制性不等式是完整六模态空间中的代数命题。Hessian、调制轨道和逐模态预算是浮点计算。
+            本笔记没有给出全参数全局极小，也没有给出完整 PDE 的统一误差。
+          </div>
+        </section>
+
+        <section id="coordinates">
+          <div class="section-no">01 / Six complex amplitudes</div>
+          <h2>十二实参数可以写成六个复振幅</h2>
+          <p>取中心波数</p>
+          <div class="equation">
+            \[
+              k_1=(1,0,0),\qquad k_2=(0,1,0),\qquad k_3=(-1,-1,0).
+            \]
+          </div>
+          <p>
+            实值和无散条件允许把正频率系数唯一写成
+          </p>
+          <div class="equation">
+            \[
+              \widehat u(k_1)=(0,\alpha,\zeta),\quad
+              \widehat u(k_2)=(\beta,0,\eta),\quad
+              \widehat u(k_3)=(\gamma,-\gamma,\theta),
+            \]
+            \[
+              \widehat u(-k_j)=\overline{\widehat u(k_j)}.
+            \]
+          </div>
+          <p>记</p>
+          <div class="equation">
+            \[
+              H=|\alpha|^2+|\beta|^2,\quad
+              V=|\zeta|^2+|\eta|^2,\quad
+              g=|\gamma|,\quad q=|\theta|^2.
+            \]
+            \[
+              E=\|u\|_{\dot H^{1/2}}^2
+              =2(H+V)+4\sqrt2\,g^2+2\sqrt2\,q.
+            \]
+          </div>
+          <p>
+            这个坐标系覆盖 R0.6 搜索的全部十二个实参数，不再预设
+            \(\alpha=\beta\)、\(\gamma=0\) 或任何相位关系。
+          </p>
+        </section>
+
+        <section id="squares">
+          <div class="section-no">02 / Exact square decomposition</div>
+          <h2>传递是一个三次量，泄漏是四项平方和</h2>
+          <p>定义三个复差量</p>
+          <div class="equation">
+            \[
+              d_0=\overline\beta\,\zeta-\alpha\overline\eta,\qquad
+              d_1=\beta\overline\theta-\overline\gamma\,\eta,\qquad
+              d_2=\gamma\overline\zeta+\overline\alpha\,\theta.
+            \]
+          </div>
+          <div class="proof result">
+            <strong>完整六模态闭式公式</strong>
+            \[
+              \mathfrak T(u)
+              =2(\sqrt2-1)\operatorname{Re}
+                \left[i\theta(\alpha\eta+\beta\zeta)\right],
+            \]
+            \[
+              F(u):=\|B_{\rm out}(u,u)\|_{\dot H^{1/2}}^2
+              =2\sqrt2\,|d_0|^2
+              +\frac{2}{\sqrt5}g^2H
+              +2\sqrt5\left(|d_1|^2+|d_2|^2\right).
+            \]
+          </div>
+          <p>
+            第一项来自 \(k_1-k_2\)；后两组来自
+            \(k_2-k_3\) 与 \(k_3-k_1\) 及其共轭频率。
+            这也是一个直接的平方和表示。
+          </p>
+          <div class="proof">
+            <strong>计算核对</strong>
+            闭式公式与直接 Leray-Fourier 卷积在 2,000 个固定随机样本上比较。
+            \(E\)、\(\mathfrak T\) 和 \(F\) 的最大相对差为
+            \(8.12\times10^{-15}\)。
+          </div>
+        </section>
+
+        <section id="coercivity">
+          <div class="section-no">03 / Quantitative coercivity</div>
+          <h2>非零临界传递显式强迫正泄漏</h2>
+          <p>置</p>
+          <div class="equation">
+            \[
+              c_1=\frac{1}{2\,5^{1/4}},\qquad
+              c_2=\frac{5^{1/8}}{2^{11/8}}.
+            \]
+          </div>
+          <div class="proof result">
+            <strong>六模态强制性不等式</strong>
+            对任意上述实值无散六模态场，
+            \[
+              |\mathfrak T(u)|
+              \le 2(\sqrt2-1)
+              \left[
+                c_1 E^{1/2}F^{1/2}
+                c_2 E F^{1/4}
+              \right].
+            \]
+          </div>
+
+          <h3>证明</h3>
+          <p>
+            空间平移可以分别调节 \(k_1\) 与 \(k_2\) 的相位，所以先令
+            \(\alpha,\beta\) 为实数；退化情形由连续性得到。
+            记
+          </p>
+          <div class="equation">
+            \[
+              S=\alpha\eta+\beta\zeta,\qquad
+              Q=|d_1|^2+|d_2|^2.
+            \]
+          </div>
+          <p>直接代数给出</p>
+          <div class="equation">
+            \[
+              \theta S
+              =\zeta\overline{d_1}+\eta d_2
+              -\gamma(\eta\overline\zeta-\zeta\overline\eta).
+            \]
+          </div>
+          <p>于是同时有</p>
+          <div class="equation">
+            \[
+              |\theta S|\le \sqrt{VQ}+gV,\qquad
+              |\theta S|\le \sqrt{qHV}.
+            \]
+          </div>
+          <p>
+            利用
+            \(\min(X+Y,Z)\le X+\sqrt{YZ}\)，再代入
+          </p>
+          <div class="equation">
+            \[
+              V\le\frac E2,\quad
+              q\le\frac{E}{2\sqrt2},\quad
+              Q\le\frac{F}{2\sqrt5},\quad
+              g^2H\le\frac{\sqrt5}{2}F,
+            \]
+          </div>
+          <p>即可得到所述常数。</p>
+
+          <h3>显式下界</h3>
+          <p>令</p>
+          <div class="equation">
+            \[
+              J=\frac{|\mathfrak T|}{2(\sqrt2-1)E^{3/2}},\qquad
+              y=\left(\frac{F}{E^2}\right)^{1/4}.
+            \]
+          </div>
+          <p>上式等价于 \(J\le c_1y^2+c_2y\)，因而</p>
+          <div class="equation">
+            \[
+              F\ge E^2
+              \left(
+                \frac{\sqrt{c_2^2+4c_1J}-c_2}{2c_1}
+              \right)^4.
+            \]
+          </div>
+          <p>
+            所以固定 \(E>0\) 与 \(|\mathfrak T|>0\) 时，完整六模态空间的
+            \(F\) 有显式正下界。对 R0.6 的 \(E=1\) 与注入值，
+            证书只给出
+            \(F\ge9.7253\times10^{-8}\)，而解析候选为
+            \(F=6.7511\times10^{-4}\)。约 \(6.94\times10^3\) 的间隙说明
+            这个证书远不锋利，不能证明候选是全局极小。
+          </p>
+        </section>
+
+        <section id="hessian">
+          <div class="section-no">04 / Constrained local audit</div>
+          <h2>解析候选在平移商空间上数值正定</h2>
+          <p>
+            取 R0.6 大根候选，固定 \(E=1\) 与
+            \(\mathfrak T=-0.00698378373656\)。
+            二阶自动微分给出的 KKT 梯度残差为
+            \(3.79\times10^{-18}\)。
+          </p>
+          <p>
+            约束切空间有十维。其中两个接近零的特征值
+            \(1.58\times10^{-16}\) 与 \(2.90\times10^{-16}\)
+            正好对应 \(x_1,x_2\) 平移。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>去掉平移后的编号</th><th>约束 Hessian 特征值</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>\(4.45143\times10^{-4}\)</td></tr>
+                <tr><td>2</td><td>\(3.74288\times10^{-3}\)</td></tr>
+                <tr><td>3</td><td>\(6.93551\times10^{-3}\)</td></tr>
+                <tr><td>4</td><td>\(1.41632\times10^{-1}\)</td></tr>
+                <tr><td>5-8</td><td>\(2.61599,\ 2.83734,\ 4.33986,\ 4.47293\)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="proof warning">
+            <strong>这里仍是计算结论</strong>
+            正特征值支持“候选是模平移的严格约束局部极小”。
+            当前没有区间算术或精确 Sylvester 证书，因此不把它写成已证明定理；
+            它也不蕴含全局最优。
+          </div>
+        </section>
+
+        <section id="twod3c">
+          <div class="section-no">05 / The 2D3C boundary</div>
+          <h2>整个中心六模态空间都不能产生三维奇性</h2>
+          <p>
+            三个中心波数及其所有非线性平面组合都满足 \(k_3=0\)。
+            因此对应速度与 \(x_3\) 无关，可以写成
+            \(u=(v_1,v_2,w)\)，其中 \(v=(v_1,v_2)\) 无散。
+          </p>
+          <div class="proof result">
+            <strong>2D3C 分裂</strong>
+            \[
+              \partial_t v+v\cdot\nabla_hv+\nabla_hp
+              =\nu\Delta_hv,\qquad \nabla_h\cdot v=0,
+            \]
+            \[
+              \partial_t w+v\cdot\nabla_hw
+              =\nu\Delta_hw.
+            \]
+          </div>
+          <p>
+            水平速度满足二维 Navier-Stokes，第三分量满足由 \(v\) 输运的线性
+            对流扩散方程。光滑周期初值因此产生全局光滑解。
+            频谱泄漏会离开原六模态支撑，但仍停留在 \(k_3=0\) 平面内；
+            它不会自行创造真正的三维反馈。
+          </p>
+          <div class="proof warning">
+            <strong>对 R0.6 的修正解释</strong>
+            R0.6 的全参数优化是在一个已知全局正则的不变类内部完成的。
+            它适合研究临界范数的瞬时增长与被动标量混合，
+            但中心模型本身不能成为 Navier-Stokes 奇性轨道。
+          </div>
+          <p>
+            稠密 bump 提升不同：球形频谱厚度包含 \(k_3\ne0\) 模态，
+            所以有限 \(N,\delta\) 的 Galerkin 初值是真正三维的。
+            这正是下一步必须单独量化的部分。
+          </p>
+        </section>
+
+        <section id="modulation">
+          <div class="section-no">06 / Tangential modulation</div>
+          <h2>三变量方程解释了增长与换号</h2>
+          <p>在解析子族中写</p>
+          <div class="equation">
+            \[
+              \alpha=\beta=A,\quad
+              \zeta=\eta=-Y,\quad
+              \gamma=0,\quad
+              \theta=-iC,\qquad A,Y,C>0.
+            \]
+          </div>
+          <p>
+            把 Navier-Stokes 向量场投影回原六模态支撑，得到精确不变的切向方程
+          </p>
+          <div class="proof result">
+            <strong>切向调制 ODE</strong>
+            \[
+              A'=-\nu A,\qquad
+              Y'=-\nu Y-\rho AC,\qquad
+              C'=-2\nu C+2\rho AY.
+            \]
+            \[
+              \mathfrak T=-4(\sqrt2-1)AYC.
+            \]
+          </div>
+          <p>
+            因此只要 \(A,C\) 保持正，临界传递换号就等价于 \(Y\) 换号。
+            这不是随机相位现象。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>\(\tau\)</th><th>\(E\)</th><th>\(\mathfrak T\)</th><th>\(Y\)</th><th>\(C\)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0</td><td>1.0000</td><td>−0.006984</td><td>0.48517</td><td>0.10164</td></tr>
+                <tr><td>0.025</td><td>1.0787</td><td>−0.021529</td><td>0.37446</td><td>0.41625</td></tr>
+                <tr><td>0.050</td><td>1.1566</td><td>−0.014330</td><td>0.17869</td><td>0.59533</td></tr>
+                <tr><td>0.100</td><td>0.9112</td><td>+0.014521</td><td>−0.23272</td><td>0.48695</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            这里取 \(\nu=1\)，并把振幅设为自身黏性阈值的 \(1.2\) 倍：
+            \(\rho_c=147.37318\)，\(\rho=176.84782\)。
+            \(Y\) 在 \(\tau=0.07013115\) 换号。
+            时间步从 \(10^{-5}\) 减半后，换号时间相对差为
+            \(1.64\times10^{-10}\)。
+          </p>
+          <p>
+            初始法向强迫只有
+            \(\pm(1,2,0)\) 与 \(\pm(2,1,0)\) 四个纯垂直模态，
+            每个系数为 \(-AC=-0.00868788\)。
+            这再次显示中心动力学主要是第三分量的标量混合。
+          </p>
+        </section>
+
+        <section id="dense">
+          <div class="section-no">07 / Dense-packet mode budget</div>
+          <h2>离平面模态延迟换号，但没有阻止换号</h2>
+          <p>
+            我对 R0.6 的 \(N=10,\delta=0.12\)、\(48^3\) 去混叠轨道逐模态分解
+            \(\mathfrak T\)。表中“离平面”指 \(k_3\ne0\)，“生成”指不在初始
+            bump 支撑内。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>\(\tau\)</th>
+                  <th>总传递</th>
+                  <th>平面内</th>
+                  <th>离平面</th>
+                  <th>离平面 \(E\) 占比</th>
+                  <th>生成模态传递</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>0</td><td>−98.506</td><td>−94.993</td><td>−3.512</td><td>1.987%</td><td>0</td></tr>
+                <tr><td>0.0500</td><td>−167.844</td><td>−70.183</td><td>−97.660</td><td>5.720%</td><td>−36.835</td></tr>
+                <tr><td>0.0675</td><td>−2.838</td><td>+112.041</td><td>−114.879</td><td>9.850%</td><td>−49.219</td></tr>
+                <tr><td>0.1000</td><td>+140.802</td><td>+188.771</td><td>−47.969</td><td>17.930%</td><td>−66.537</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            总传递在 \(\tau=0.06782090\) 换号；时间步减半给出
+            \(0.06781890\)，绝对差 \(2.00\times10^{-6}\)。
+            这个时间与切向 ODE 的 \(0.07013115\) 接近。
+          </p>
+          <ul>
+            <li>平面核心先转为不利符号；离平面模态仍保持有利符号，所以它们延迟了总换号。</li>
+            <li>在 \(\tau=0.05\)，离平面模态只占 5.72% 的临界能量，却承担约 58.2% 的有利传递。</li>
+            <li>到 \(\tau=0.1\)，生成模态仍给出负传递；净换号由原支撑的正传递主导。</li>
+            <li>\(\tau=0.05\) 时第三速度分量贡献 −167.102，两个水平分量合计仅 −0.742。</li>
+          </ul>
+          <div class="proof warning">
+            <strong>如何读这张表</strong>
+            小的离平面能量不等于小的非线性作用。另一方面，这次计算没有显示离平面耦合维持增长；
+            它只是部分抵消了平面核心的反转。表中分区是有限维恒等分解，不是 PDE 误差估计。
+          </div>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/six_mode_coercivity.py">查看强制性与 Hessian 脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/six_mode_modulation.py">查看调制脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense_packet_mode_budget.py">查看逐模态预算脚本</a>。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">08 / Value for the Millennium problem</div>
+          <h2>下界是确定进展，二维边界更重要</h2>
+          <div class="proof result">
+            <strong>本步结论</strong>
+            全六模态中，非零临界传递不可能在零法向泄漏下实现；
+            这一点现在有显式定量式。与此同时，共面六模态始终处于全局正则的 2D3C 类。
+            因此仅优化这个中心几何，不能接近三维奇性的核心反馈。
+          </div>
+          <p>
+            对原问题最有价值的不是把 \(F\) 再降低几个百分点，而是识别必须新增的机制：
+            非共面波数、水平涡量拉伸反馈，以及能在时间区间上抵抗切向标量换号的相位网络。
+          </p>
+          <p>这项工作仍没有证明：</p>
+          <ul>
+            <li>R0.6 候选是十二参数问题的全局极小；</li>
+            <li>显式下界在一般频率包上具有尺度统一常数；</li>
+            <li>稠密包属于已知慢变量大数据的全局正则定理；</li>
+            <li>离平面模态在 \(N\to\infty\) 中维持非零反馈；</li>
+            <li>三维 Navier-Stokes 解全局正则或发生有限时奇性。</li>
+          </ul>
+          <p>
+            Chemin-Gallagher-Paicu 对特定慢变量大初值证明了全局正则。
+            这说明“接近二维但很大”本身并不是奇性信号。
+            他们的定义域、准备条件和函数空间与当前周期稠密包不同，所以该定理不能直接套用；
+            R0.8 需要逐项检查是否存在重叠。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next check</div>
+          <h2>R0.8：最小非共面扩展与三维反馈</h2>
+          <p>下一步不再只优化共面六模态，而是寻找最小的真正三维闭合网络。</p>
+          <ol>
+            <li>加入至少一个 \(k_3\ne0\) 中心，枚举保持实值、无散和局部尺度比的最小共振超图。</li>
+            <li>把目标从瞬时 \(\mathfrak T/F^{1/2}\) 改为时间积分，并显式加入水平涡量拉伸贡献。</li>
+            <li>区分“离平面能量很小”和“离平面非线性很小”，建立适合频率锥的加权量。</li>
+            <li>核对候选是否落入慢变量或近二维大数据的已知全局正则类。</li>
+            <li>只有在获得随 \(N\)、锥宽和 Galerkin 截断统一的估计后，才讨论完整 PDE。</li>
+          </ol>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              N. Kishimoto and T. Yoneda, “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,”
+              <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022).
+              <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；
+              <a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。
+            </li>
+            <li>
+              M. Linkmann, M. Buzzicotti and L. Biferale,
+              “Non-universal behaviour of helical two-dimensional three-component turbulence,”
+              <em>European Physical Journal E</em> 41, 4 (2018).
+              <a href="https://doi.org/10.1140/epje/i2018-11612-1">DOI</a>；
+              <a href="https://arxiv.org/abs/1801.06091">作者预印本</a>。
+            </li>
+            <li>
+              L. Biferale, M. Buzzicotti and M. Linkmann,
+              “From two-dimensional to three-dimensional turbulence through two-dimensional three-component flows,”
+              <em>Physics of Fluids</em> 29, 111101 (2017).
+              <a href="https://doi.org/10.1063/1.4990082">DOI</a>；
+              <a href="https://arxiv.org/abs/1706.02371">作者预印本</a>。
+            </li>
+            <li>
+              J.-Y. Chemin, I. Gallagher and M. Paicu,
+              “Global regularity for some classes of large solutions to the Navier-Stokes equations,”
+              <em>Annals of Mathematics</em> 173 (2011), 983-1012.
+              <a href="https://doi.org/10.4007/annals.2011.173.2.9">DOI</a>；
+              <a href="https://arxiv.org/abs/0807.1265">作者预印本</a>。
+            </li>
+            <li>
+              M. Núñez, “Invariant subspaces of the periodic Navier-Stokes and magnetohydrodynamics equations: Symmetries and inverse cascades,”
+              <em>Journal of Mathematical Physics</em> 41 (2000), 6193-6204.
+              <a href="https://doi.org/10.1063/1.1287920">DOI</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.7 · 全六模态泄漏下界与 2D3C 调制</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-6.html">上一篇 R0.6</a> · <a href="/notes/r0-7.pdf">PDF</a> · <a href="/">主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

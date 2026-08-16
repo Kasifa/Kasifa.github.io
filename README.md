@@ -14,6 +14,7 @@
 - 第四份研究笔记：稠密近对角频率包的尺度下界
 - 第五份研究笔记：临界频率包的短时失相与频谱泄漏
 - 第六份研究笔记：固定注入下的频谱泄漏优化
+- 第七份研究笔记：全六模态泄漏下界与 2D3C 调制
 - GitHub Pages 自动发布配置
 
 静态 HTML 主文件位于：
@@ -39,6 +40,9 @@ python3 -m pip install -r requirements-research.txt
 python3 research/critical_packet_dynamics.py
 python3 research/triad_leakage_variation.py
 python3 research/optimized_packet_dynamics.py
+python3 research/six_mode_coercivity.py
+python3 research/six_mode_modulation.py
+python3 research/dense_packet_mode_budget.py
 ```
 
 ## GitHub Pages

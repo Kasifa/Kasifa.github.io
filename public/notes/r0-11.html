@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.11：构造差频消失、相位可重复且门系数不退化的三门极化接力，并证明等长三波门不能同时满足非零前向输出、差频消失和一维反向闭合。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.11｜三门极化接力与反向边障碍">
+  <meta property="og:description" content="三个一维 Leray 像可以首尾相接，系数趋于 sqrt(3/2)；但真实三波反向边产生同阶的一维线外分量。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.11｜三门极化接力与反向边障碍</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.5pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      section#references { break-before:page; } .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">文献</a>
+      <a href="/notes/r0-11.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.11 · 中心极化动力学</div>
+        <h1>三门极化接力与反向边障碍</h1>
+        <p class="lead">
+          我继续检查 R0.10 留下的一维极化像问题。
+          三个中心门确实可以首尾相接：目标差频消失，复相位逐壳重复，两个门系数都趋于
+          \(\sqrt{3/2}\)。但这些门不能作为彼此独立的单向线路。
+          真实的反向三波作用以同阶强度离开选定的一维极化线。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 中心代数已证明，浮点计算用于独立复核</span>
+        <strong>前向接力存在，一维动力学不闭合</strong>
+        <p>版本 v0.11 · 2026-08-16</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：等长三波门与反向极化缺陷</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#question">01 · 检查的问题</a></li>
+          <li><a href="#network">02 · 三门频率网络</a></li>
+          <li><a href="#rank-one">03 · 等长门引理</a></li>
+          <li><a href="#polarizations">04 · 极化选择</a></li>
+          <li><a href="#relay">05 · 精确前向接力</a></li>
+          <li><a href="#obstruction">06 · 一般反向障碍</a></li>
+          <li><a href="#defect">07 · 显式线外缺陷</a></li>
+          <li><a href="#audit">08 · 有限层复核</a></li>
+          <li><a href="#value">09 · 对原问题的价值</a></li>
+          <li><a href="#next">10 · 下一步</a></li>
+          <li><a href="#references">11 · 原始文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>一维像可以接力，但不能封闭真实三波动力学</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>三门前向接力</strong><p>\((P_n,Q_n)\to a_{n+1}\)、\((a_n,b_n)\to P_n\)、\((a_n,d_n)\to Q_n\) 的极化和相位可以逐壳重复。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>三个差频中心为零</strong><p>同一选择同时消去 \(P_n-Q_n\)、\(a_n-b_n\) 和 \(a_n-d_n\) 的中心核。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>门系数不退化</strong><p>翼门系数 \(h_n\) 与跨壳门系数 \(g_n\) 都趋于 \(\sqrt{3/2}\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>反向一维闭合不可能</strong><p>非零前向输出与差频消失成立时，生成模态的反向作用必定离开原输入极化线。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>结论。</strong>
+            R0.10 的一维像并不单独排除多门接力；三个像可以精确匹配，而且没有壳层系数损失。
+            但是这个匹配只适用于有向的中心产生式。
+            把生成模态放回真实 Navier-Stokes 二次项后，反向边产生同阶的新极化分量，所以一条极化线不足以承载迭代。
+          </div>
+          <p>
+            这里没有稠密包的时间顺序、热积分或第二 Picard 余项估计。
+            我也没有完成文献优先权检索，因此不把这些初等代数命题称为新的公开定理。
+            本笔记没有证明奇性或全局正则。
+          </p>
+        </section>
+
+        <section id="question">
+          <div class="section-no">01 / The question left by R0.10</div>
+          <h2>一维像能否组成非零循环</h2>
+          <p>
+            R0.10 证明第一条跨壳门
+            \((P_0,Q_0)\to a_1\) 的像只有
+            \(\operatorname{span}(1,-1,-1)\)。
+            这排除了把生成包直接当作 R0.9 输运极化的做法，但没有排除增加中间门。
+          </p>
+          <p>
+            本笔记把问题分成两层。第一层只问三个有向中心核能否首尾相接，并同时消去实值场带来的差频中心。
+            第二层把生成模态重新放入同一三波关系，检查反向作用是否仍留在选定的一维极化线上。
+          </p>
+        </section>
+
+        <section id="network">
+          <div class="section-no">02 / Three-gate frequency network</div>
+          <h2>矩阵链内有三个精确产生式</h2>
+          <p>仍取 \(M=I+\mathbf1\mathbf1^\top\)，并写</p>
+          <div class="equation">\[
+            a_n=M^ne_1,\qquad b_n=M^ne_2,\qquad d_n=M^ne_3,
+          \]\[
+            P_n=a_n+b_n=-c_n,\qquad Q_n=a_n+d_n=-e_n.
+          \]</div>
+          <p>R0.9 的跨壳恒等式和两条壳内恒等式给出</p>
+          <div class="equation">\[
+            P_n+Q_n=a_{n+1},\qquad
+            a_n+b_n=P_n,\qquad
+            a_n+d_n=Q_n.
+          \]</div>
+          <p>
+            因而一个候选接力可以先由 \(P_n,Q_n\) 产生 \(a_{n+1}\)，
+            再借助同壳的 \(b_{n+1},d_{n+1}\) 产生 \(P_{n+1},Q_{n+1}\)。
+            频率闭合本身没有缺口，问题全部落在 Leray 像、复相位和反向边上。
+          </p>
+        </section>
+
+        <section id="rank-one">
+          <div class="section-no">03 / Equal-length range lemma</div>
+          <h2>等长输入的中心像必为一维</h2>
+          <p>记对称 Fourier–Leray 核</p>
+          <div class="equation">\[
+            \mathcal C_{p,q}(U,V)
+            =i\mathbb P_{p+q}\big[(q\cdot U)V+(p\cdot V)U\big].
+          \]</div>
+          <div class="proof">
+            <strong>引理 1：等长门的一维像。</strong>
+            若 \(p,q\) 不平行且 \(|p|=|q|\)，则对所有
+            \(U\in p^\perp_\mathbb C\)、\(V\in q^\perp_\mathbb C\)，
+            \[
+              \mathcal C_{p,q}(U,V)\in
+              \operatorname{span}_\mathbb C(p\times q).
+            \]
+          </div>
+          <p>
+            旋转和缩放后可写
+            \(p=(c,s,0)\)、\(q=(c,-s,0)\)。令
+            \(n=(0,0,1)\)、
+            \(t_p=(-s,c,0)\)、\(t_q=(s,c,0)\)，并写
+          </p>
+          <div class="equation">\[
+            U=u\,t_p+x\,n,\qquad V=v\,t_q+y\,n.
+          \]</div>
+          <p>略去一个正的几何常数 \(\lambda\)，直接投影得到</p>
+          <div class="equation">\[
+            \mathcal C_{p,q}(U,V)=i\lambda(vx-uy)n.
+          \]</div>
+          <p>
+            平面内部分平行于 \(p+q\)，被 Leray 投影消去。这不仅解释 R0.10 的秩一计算，也同时覆盖后面两个壳内翼门。
+          </p>
+        </section>
+
+        <section id="polarizations">
+          <div class="section-no">04 / Phase-compatible polarizations</div>
+          <h2>坐标镜像同时处理两个翼门</h2>
+          <p>令 \(x=4^n\)。矩阵幂的三列为</p>
+          <div class="equation">\[
+          \begin{aligned}
+            a_n&=\tfrac13(x+2,x-1,x-1),\\
+            b_n&=\tfrac13(x-1,x+2,x-1),\\
+            d_n&=\tfrac13(x-1,x-1,x+2).
+          \end{aligned}
+          \]</div>
+          <p>定义三个强制像方向</p>
+          <div class="equation">\[
+          \begin{aligned}
+            \pi_n&=a_n\times b_n
+              =\tfrac13(1-x,1-x,2x+1),\\
+            \theta_n&=a_n\times d_n
+              =\tfrac13(x-1,-2x-1,x-1),\\
+            \eta_n&=P_n\times Q_n
+              =\tfrac13(4x-1,-2x-1,-2x-1).
+          \end{aligned}
+          \]</div>
+          <p>它们的范数满足</p>
+          <div class="equation">\[
+            |\pi_n|^2=|\theta_n|^2=\frac{2x^2+1}{3},\qquad
+            |\eta_n|^2=\frac{8x^2+1}{3}.
+          \]</div>
+          <p>
+            记 \(S_{12}\)、\(S_{13}\) 为交换相应坐标的矩阵。对 \(n\ge1\) 取单位实向量
+          </p>
+          <div class="equation">\[
+            A_n=\frac{\eta_{n-1}}{|\eta_{n-1}|},\qquad
+            B_n=-S_{12}A_n,\qquad D_n=S_{13}A_n,
+          \]\[
+            P_n^\circ=\frac{\pi_n}{{|\pi_n|}},\qquad
+            Q_n^\circ=\frac{\theta_n}{{|\theta_n|}}.
+          \]</div>
+          <p>
+            Fourier 相位取
+            \(\widehat u(a_n)=iA_n\)、
+            \(\widehat u(b_n)=B_n\)、
+            \(\widehat u(d_n)=D_n\)。
+            坐标交换把 \(a_n^\perp\) 等距映到 \(b_n^\perp,d_n^\perp\)，两个符号则统一目标方向。
+          </p>
+        </section>
+
+        <section id="relay">
+          <div class="section-no">05 / Exact forward relay</div>
+          <h2>目标非零、差频为零、相位逐壳重复</h2>
+          <div class="proof result">
+            <strong>命题 2：精确三门前向接力。</strong>
+            上述单位极化满足
+            \[
+              \mathcal C_{a_n,b_n}(iA_n,B_n)=h_nP_n^\circ,
+              \qquad
+              \mathcal C_{a_n,d_n}(iA_n,D_n)=h_nQ_n^\circ,
+            \]
+            \[
+              \mathcal C_{P_n,Q_n}(P_n^\circ,Q_n^\circ)
+              =ig_nA_{n+1},
+            \]
+            其中
+            \[
+              h_n=\frac{\sqrt3\,x}{\sqrt{2x^2+1}},\qquad
+              g_n=\frac{2\sqrt3\,x}{\sqrt{8x^2+1}}.
+            \]
+          </div>
+          <p>同一选择还给出三个精确消失：</p>
+          <div class="equation">\[
+            \mathcal C_{a_n,-b_n}(iA_n,\overline{B_n})=0,
+            \qquad
+            \mathcal C_{a_n,-d_n}(iA_n,\overline{D_n})=0,
+          \]\[
+            \mathcal C_{P_n,-Q_n}(P_n^\circ,\overline{Q_n^\circ})=0.
+          \]</div>
+          <p>并且</p>
+          <div class="equation">\[
+            h_n\longrightarrow\sqrt{\frac32},\qquad
+            g_n\longrightarrow\sqrt{\frac32}.
+          \]</div>
+          <p>
+            因而虚相位的 \(a_n\) 产生实相位的 \(P_n,Q_n\)，后两者又产生虚相位的 \(a_{n+1}\)。
+            三个有向中心门确实构成非零极化接力，且其几何系数没有随锥壳收窄而消失。
+          </p>
+        </section>
+
+        <section id="obstruction">
+          <div class="section-no">06 / Reverse-line obstruction</div>
+          <h2>差频消失与一维反向闭合不能并存</h2>
+          <p>
+            前一节只把每个三波关系按一个方向读取。真实二次项同时包含
+            \((p+q,-q)\to p\) 与 \((p+q,-p)\to q\) 的反向作用。
+          </p>
+          <div class="proof warning">
+            <strong>命题 3：等长门的一维反向障碍。</strong>
+            设 \(p,q\) 不平行、\(|p|=|q|\)。若
+            \[
+              \mathcal C_{p,q}(U,V)\ne0,
+              \qquad
+              \mathcal C_{p,-q}(U,\overline V)=0,
+            \]
+            则把前向输出的非零方向重新放入三波关系后，反向输出不可能同时留在
+            \(\operatorname{span}U\) 与 \(\operatorname{span}V\)。
+            实际上两个输入线都不能保持不变。
+          </div>
+          <p>
+            沿用引理 1 的坐标，差频核和两个反向核的标量部分分别是
+          </p>
+          <div class="equation">\[
+            u\overline y+\overline v x,\qquad
+            \overline v\,n,\qquad \overline u\,n.
+          \]</div>
+          <div class="proof">
+            <strong>证明。</strong>
+            前向非零且差频为零迫使 \(u,v\ne0\)。
+            第一个反向输出因此是非零的 \(n\) 方向。
+            若它属于 \(\operatorname{span}U\)，则 \(U\) 也必须平行 \(n\)，所以 \(u=0\)，矛盾。
+            交换 \(p,q\) 得到第二个输入线的相同结论。证毕。
+          </div>
+          <p>
+            这是中心代数层面的不相容，不依赖本笔记选择的坐标镜像。
+            所以任何“一个频率包只保留一条极化线”的等长门，只要同时要求前向非零和差频消失，就不能成为自治的三波子动力学。
+          </p>
+        </section>
+
+        <section id="defect">
+          <div class="section-no">07 / Explicit reverse defect</div>
+          <h2>当前接力的反向线外分量与前向门同阶</h2>
+          <p>对跨壳门，直接计算得到</p>
+          <div class="equation">\[
+            \mathcal C_{a_{n+1},-Q_n}(iA_{n+1},Q_n^\circ)
+              =h_nA_{n+1},
+          \]\[
+            \mathcal C_{a_{n+1},-P_n}(iA_{n+1},P_n^\circ)
+              =-h_nA_{n+1}.
+          \]</div>
+          <p>
+            但 \(P_n\) 的选定极化是 \(P_n^\circ\)，而不是 \(A_{n+1}\)。两者满足
+          </p>
+          <div class="equation">\[
+            A_{n+1}\cdot P_n^\circ
+            =-\sqrt{\frac{2x^2+1}{8x^2+1}}.
+          \]</div>
+          <div class="proof result">
+            <strong>显式线外缺陷。</strong>
+            反向输出到 \(P_n\) 后，垂直于原极化线的分量范数是
+            \[
+              d_n=h_n\sqrt{1-\frac{2x^2+1}{8x^2+1}}
+              =\frac{3\sqrt2\,x^2}
+              {\sqrt{(2x^2+1)(8x^2+1)}}.
+            \]
+            因而
+            \[
+              d_n\longrightarrow\frac{3}{2\sqrt2},\qquad
+              \frac{d_n}{g_n}\longrightarrow\frac{\sqrt3}{2}.
+            \]
+          </div>
+          <p>
+            这个缺陷没有尺度小因子。两个翼门回到共享 \(a_n\) 的线外部分因对称性恰好互相抵消，
+            但回到各自催化模态 \(b_n,d_n\) 的线外部分不能跨频率抵消，也趋于 \(3/(2\sqrt2)\)。
+            因此对称性减掉了一部分反向作用，却没有恢复一维闭合。
+          </p>
+        </section>
+
+        <section id="audit">
+          <div class="section-no">08 / Finite-shell audit</div>
+          <h2>直接 Leray 计算复核全部闭式</h2>
+          <p>
+            复现脚本
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_relay.py"><code>research/polarization_relay.py</code></a>
+            在每层直接计算三维向量、Leray 投影、三个差频核和全部反向核。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>\(n\)</th><th>\(h_n\)</th><th>\(g_n\)</th><th>跨壳反向线外</th><th>线外/\(g_n\)</th><th>催化模态线外</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>1.20604538</td><td>1.21998856</td><td>1.04040974</td><td>0.85280287</td><td>0.98473193</td></tr>
+              <tr><td>2</td><td>1.22355058</td><td>1.22444597</td><td>1.05936728</td><td>0.86518091</td><td>1.05551082</td></tr>
+              <tr><td>3</td><td>1.22467013</td><td>1.22472618</td><td>1.06057926</td><td>0.86597255</td><td>1.06033660</td></tr>
+              <tr><td>4</td><td>1.22474020</td><td>1.22474370</td><td>1.06065511</td><td>0.86602210</td><td>1.06063994</td></tr>
+              <tr><td>5</td><td>1.22474458</td><td>1.22474480</td><td>1.06065986</td><td>0.86602520</td><td>1.06065891</td></tr>
+              <tr><td>6</td><td>1.22474485</td><td>1.22474487</td><td>1.06066015</td><td>0.86602539</td><td>1.06066009</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            六层中的最大目标差频残差为 \(1.14\times10^{-13}\)，最大闭式核误差低于
+            \(2\times10^{-10}\)。另取 2,000 组固定随机复极化复核等长门引理，
+            一维像残差为 \(1.78\times10^{-15}\)，差频坐标公式残差为
+            \(3.56\times10^{-15}\)。
+            这些浮点数只复核代数恒等式，不替代上面的证明。
+          </p>
+        </section>
+
+        <section id="value">
+          <div class="section-no">09 / Value for the open problem</div>
+          <h2>真正的下一变量是二维极化状态，不是另一条一维线</h2>
+          <p>
+            正面结果是：R0.10 的秩一像没有让锥形网络立即终止。
+            三个中心像能够相接，差频中心可以同时消掉，复相位也没有循环矛盾；门系数还具有正的统一极限。
+            这排除了一个纯几何的退化原因。
+          </p>
+          <p>
+            负面结果更具体：真实 Navier-Stokes 门不是可单独调用的有向乘法器。
+            Waleffe 的螺旋三波分解精细描述单三波内的运动学耦合；本笔记检查的是额外的一维闭合要求，
+            并保留实值 Fourier 场带来的共轭差频和反向边。
+          </p>
+          <p>
+            Kishimoto-Yoneda 对有限 Fourier 支撑 Euler 流的分类表明，真正三维的有限模态非线性闭合受到严格限制。
+            本笔记的初等障碍与这一背景相容，但不是该分类定理的推论，也没有达到其一般性。
+          </p>
+          <p>
+            Tao 的平均化 Navier-Stokes 爆破模型可以通过设计后的二次算子组织局部级联门。
+            当前计算指出：若要把类似电路嵌回真实算子，就必须显式处理反向极化，而不能只保留前向中心系数和能量消去律。
+          </p>
+          <p>本笔记仍没有证明：</p>
+          <ul>
+            <li>两维极化状态存在稳定或近似不变的跨壳返回映射；</li>
+            <li>预置 \(b_n,d_n\) 包不会与旧壳输入产生同阶的额外输出；</li>
+            <li>热衰减能够分开三个门的触发时间；</li>
+            <li>第二 Picard 以后线外分量可以被完整余项控制；</li>
+            <li>三维 Navier-Stokes 解发生有限时奇性。</li>
+          </ul>
+        </section>
+
+        <section id="next">
+          <div class="section-no">10 / Next check</div>
+          <h2>R0.12：二维极化返回映射与时间顺序</h2>
+          <ol>
+            <li>在 \(P_n,Q_n,b_n,d_n\) 的完整二维无散平面内写出中心振幅方程，不再把每个模态压到一条极化线。</li>
+            <li>从只有旧壳泵和新壳催化种子的初值出发，计算前五个时间 Taylor/Picard 系数，定位前向目标与反向线外分量出现的准确阶数。</li>
+            <li>枚举所有同阶外部输出，特别检查旧壳泵与预置催化包之间的交叉卷积。</li>
+            <li>加入热因子，判断是否存在门间时间窗，使目标分量先于线外分量达到下一门所需幅度。</li>
+            <li>只有得到尺度一致的目标/干扰下界，才把三门增厚为稠密包。</li>
+          </ol>
+          <div class="proof warning">
+            <strong>停止条件。</strong>
+            如果二维返回映射没有非零循环，或线外分量在首次可用目标之前已经同阶，
+            当前矩阵锥形电路应停止。前向中心门的非零系数本身不足以支持多尺度迭代。
+          </div>
+        </section>
+
+        <section id="references">
+          <div class="section-no">11 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>F. Waleffe, “The Nature of Triad Interactions in Homogeneous Turbulence,” <em>Physics of Fluids A</em> 4 (1992), 350-363. <a href="https://doi.org/10.1063/1.858309">DOI</a>；<a href="https://ntrs.nasa.gov/citations/19920038608">NASA 文献页</a>。</li>
+            <li>N. Kishimoto and T. Yoneda, “Characterization of Three-Dimensional Euler Flows Supported on Finitely Many Fourier Modes,” <em>Journal of Mathematical Fluid Mechanics</em> 24, 74 (2022). <a href="https://doi.org/10.1007/s00021-022-00703-5">DOI</a>；<a href="https://arxiv.org/abs/2110.08039">作者预印本</a>。</li>
+            <li>T. Tao, “Finite Time Blowup for an Averaged Three-Dimensional Navier-Stokes Equation,” <em>Journal of the American Mathematical Society</em> 29 (2016), 601-674. <a href="https://doi.org/10.1090/jams/838">DOI</a>；<a href="https://arxiv.org/abs/1402.0290">作者预印本</a>。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <span><strong>R0.11 · 三门极化接力与反向边障碍</strong><br>个人研究日志 · 2026-08-16</span>
+    <span><a href="/notes/r0-10.html">上一篇 R0.10</a> · <a href="/notes/r0-11.pdf">下载 PDF</a> · <a href="/">返回研究主页</a></span>
+  </div></footer>
+</body>
+</html>

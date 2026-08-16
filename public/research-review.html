@@ -1811,7 +1811,35 @@
               <a href="/notes/r0-10.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense_cone_first_picard.py">查看复现脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.11：</strong>计算极化兼容的三门蝶形复合，先判断中心网络是否存在非零极化循环，再考虑第二 Picard 余项。</p>
+            <p><strong style="color:var(--gold)">R0.11 已完成：</strong>三个一维 Leray 像可以组成不退化的前向接力，但等长三波门无法同时保持差频消失和一维反向闭合。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.11 · 2026-08-16</p>
+            <h3>三门极化接力与反向边障碍</h3>
+            <p>
+              我把跨壳门和两个壳内翼门写成三个精确 Fourier–Leray 映射。
+              通过坐标镜像选择 \(b_n,d_n\) 的催化极化，三个前向目标都非零，
+              \(P_n-Q_n\)、\(a_n-b_n\)、\(a_n-d_n\) 三个差频中心则同时为零。
+            </p>
+            <p>
+              翼门系数
+              \(h_n=\sqrt3\,4^n/\sqrt{2\cdot16^n+1}\)
+              与跨壳门系数 \(g_n\) 都趋于 \(\sqrt{3/2}\)，
+              所以中心接力没有壳层退化。
+              但是生成模态的反向作用会离开原来的一维极化线；显式线外缺陷趋于
+              \(3/(2\sqrt2)\)，约为前向门的 \(86.6\%\)。
+            </p>
+            <p>
+              <strong>目前的限制：</strong>这是中心代数结果。
+              完整二维极化返回映射、预置催化包产生的外部输出、热时间顺序和第二 Picard 余项尚未控制。
+            </p>
+            <p>
+              <a href="/notes/r0-11.html"><strong>阅读 R0.11 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-11.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/polarization_relay.py">查看复现脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.12：</strong>保留每个频率的完整二维无散平面，计算前五个 Taylor/Picard 系数和门间热时间顺序。</p>
           </div>
         </section>
 

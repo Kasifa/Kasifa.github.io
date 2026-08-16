@@ -1088,7 +1088,6 @@
         <a href="#review">研究综述</a>
         <a href="#frontier">前沿边界</a>
         <a href="#plan">攻关计划</a>
-        <a href="#publish">公开发布</a>
         <button class="print-button" type="button" onclick="window.print()">打印 / PDF</button>
       </nav>
     </div>
@@ -1141,8 +1140,7 @@
           <li><a href="#strategy">05 · 路线选择</a></li>
           <li><a href="#plan">06 · 详细计划</a></li>
           <li><a href="#first-task">07 · 第一项任务</a></li>
-          <li><a href="#publish">08 · 公开发布</a></li>
-          <li><a href="#references">09 · 核心文献</a></li>
+          <li><a href="#references">08 · 核心文献</a></li>
         </ol>
         <div class="toc-note">
           <strong>证据标签</strong><br>
@@ -1605,66 +1603,8 @@
           </div>
         </section>
 
-        <section id="publish">
-          <span class="section-index">08 / Open publication</span>
-          <h2 class="section-title">用个人网页发布：GitHub Pages 是合适的第一选择</h2>
-          <p class="section-deck">
-            研究站点应当像实验记录本：每个版本可追踪、每个结论有状态、每个计算可复现，而不只是展示最终论文。
-          </p>
-
-          <h3>推荐结构</h3>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>页面/目录</th><th>内容</th><th>更新规则</th></tr></thead>
-              <tbody>
-                <tr><td><code>/</code></td><td>问题状态、研究地图、当前任务与最近更新。</td><td>每个里程碑更新。</td></tr>
-                <tr><td><code>/review</code></td><td>本综述及带版本的参考文献。</td><td>季度或重要结果出现时。</td></tr>
-                <tr><td><code>/notes</code></td><td>编号研究笔记 R0.1、R0.2……</td><td>只增补，不无痕覆盖。</td></tr>
-                <tr><td><code>/claims</code></td><td>定理、复现、猜想、数值证据、已否定命题。</td><td>状态变化必须写理由。</td></tr>
-                <tr><td><code>/code</code></td><td>符号计算、区间算法、测试与复现实验。</td><td>与对应笔记使用同一版本号。</td></tr>
-                <tr><td><code>/changelog</code></td><td>勘误、外部评论与逐项回应。</td><td>任何实质修改均记录。</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <h3>最简单的 GitHub Pages 发布方式</h3>
-          <ol>
-            <li>注册或使用现有 GitHub 账号。</li>
-            <li>创建名为 <code>你的用户名.github.io</code> 的公开仓库；这是个人主页地址。</li>
-            <li>把本项目中的 <code>research-review.html</code> 作为仓库根目录的 <code>index.html</code>。</li>
-            <li>在仓库 <strong>Settings → Pages</strong> 中选择从分支发布，或选择 GitHub Actions。</li>
-            <li>推送后访问 <code>https://你的用户名.github.io</code>；首次发布可能需要数分钟。</li>
-          </ol>
-          <p>
-            如果主页还要展示个人简介、论文和其他项目，可用 <code>你的用户名.github.io</code> 做总主页，
-            再把本研究放在单独仓库 <code>navier-stokes-research</code>，地址会是
-            <code>你的用户名.github.io/navier-stokes-research/</code>。
-          </p>
-          <div class="callout">
-            <strong>本站已按“单页静态 HTML”设计</strong>
-            <p>
-              无数据库、无登录、无服务器依赖，适合 GitHub Pages；MathJax 用于公式显示。
-              发布前只需补充作者姓名、联系方式、许可协议，并检查是否有不应公开的本地文件。
-              后续若研究日志增多，可升级为 Jekyll、Quarto、Astro 或 React 静态站点。
-            </p>
-          </div>
-
-          <h3>可信度设计</h3>
-          <ul>
-            <li><span class="tag verified">已验证</span>：同行评议结果或我们已完整复现的命题。</li>
-            <li><span class="tag preprint">预印本</span>：作者公开主张，但尚需同行评议或独立复核。</li>
-            <li><span class="tag open">开放</span>：猜想、研究目标或存在已知缺口的推导。</li>
-            <li>所有页面显示更新时间、版本号、假设、定义域、解类和源代码提交编号。</li>
-            <li>建议正文采用 CC BY 4.0，代码采用 MIT；正式选择许可前可暂不添加。</li>
-          </ul>
-          <p>
-            GitHub 官方支持从分支根目录、<code>/docs</code> 目录或 GitHub Actions 发布，也支持绑定自定义域名。
-            若未来购买域名，建议使用稳定的 <code>www</code> 子域并先在 GitHub 验证域名，防止域名接管。
-          </p>
-        </section>
-
         <section id="references">
-          <span class="section-index">09 / Selected sources</span>
+          <span class="section-index">08 / Selected sources</span>
           <h2 class="section-title">核心文献与一手来源</h2>
           <p class="section-deck">
             这不是完整书目，而是第一阶段必须精读和复现的骨架。链接优先指向正式问题、期刊或作者原稿。
@@ -1686,7 +1626,6 @@
             <li><a href="https://annals.math.princeton.edu/2022/196-1/p03">D. Albritton, E. Brué &amp; M. Colombo, <em>Non-uniqueness of Leray Solutions of the Forced Navier–Stokes Equations</em></a>，Annals of Mathematics 196 (2022)。</li>
             <li><a href="https://www.sciencedirect.com/science/article/pii/S0001870824001695">Z. Lei &amp; X. Ren, <em>Quantitative Partial Regularity and Applications</em></a>，Advances in Mathematics 445 (2024)。</li>
             <li><a href="https://arxiv.org/abs/2509.25116">T. Hou, Y. Wang &amp; C. Yang, <em>Nonuniqueness of Leray–Hopf Solutions to the Unforced 3D NSE</em></a>，2025/2026 预印本；需独立复核。</li>
-            <li><a href="https://docs.github.com/en/pages/quickstart">GitHub Docs, <em>Quickstart for GitHub Pages</em></a>，个人站点发布的官方说明。</li>
           </ol>
         </section>
       </article>

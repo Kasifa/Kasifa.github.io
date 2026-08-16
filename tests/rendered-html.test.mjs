@@ -14,7 +14,8 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.match(html, /研究综述：我们已经站在哪里/);
   assert.match(html, /详细研究计划/);
   assert.match(html, /第一项任务已经明确/);
-  assert.match(html, /GitHub Pages 是合适的第一选择/);
+  assert.match(html, /08 \/ Selected sources/);
+  assert.doesNotMatch(html, /id="publish"|href="#publish"|Open publication/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });
 

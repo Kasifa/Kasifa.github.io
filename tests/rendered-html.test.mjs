@@ -7,6 +7,7 @@ const firstNoteUrl = new URL("../public/notes/r0-1.html", import.meta.url);
 const secondNoteUrl = new URL("../public/notes/r0-2.html", import.meta.url);
 const thirdNoteUrl = new URL("../public/notes/r0-3.html", import.meta.url);
 const fourthNoteUrl = new URL("../public/notes/r0-4.html", import.meta.url);
+const fifthNoteUrl = new URL("../public/notes/r0-5.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -109,6 +110,22 @@ test("publishes and links the dense near-diagonal packet argument", async () => 
   assert.match(note, /不是奇性构造/);
 });
 
+test("publishes and links the short-time critical-packet dynamics audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fifthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-5\.html"/);
+  assert.match(note, /研究笔记 R0\.5/);
+  assert.match(note, /\\tau=N\^2t/);
+  assert.match(note, /热流同号引理/);
+  assert.match(note, /Fourier–Galerkin/);
+  assert.match(note, /83\.72%/);
+  assert.match(note, /时间步减半/);
+  assert.match(note, /不是 PDE 证明/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -121,12 +138,13 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
     readFile(thirdNoteUrl, "utf8"),
     readFile(fourthNoteUrl, "utf8"),
+    readFile(fifthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -153,6 +171,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(fourthNote, /我把 R0\.3/);
   assert.doesNotMatch(
     fourthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(fifthNote, /我把 R0\.4/);
+  assert.doesNotMatch(
+    fifthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

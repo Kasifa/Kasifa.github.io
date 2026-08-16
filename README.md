@@ -12,6 +12,7 @@
 - 第二份研究笔记：dyadic 非局部尾与螺旋三波
 - 第三份研究笔记：近对角螺旋核的零点集与精确极值
 - 第四份研究笔记：稠密近对角频率包的尺度下界
+- 第五份研究笔记：临界频率包的短时失相与频谱泄漏
 - GitHub Pages 自动发布配置
 
 静态 HTML 主文件位于：
@@ -28,6 +29,13 @@ public/research-review.html
 pnpm install
 pnpm dev
 pnpm test
+```
+
+R0.5 的 Fourier–Galerkin 动力学计算另外需要 Python 3 与 NumPy：
+
+```bash
+python3 -m pip install -r requirements-research.txt
+python3 research/critical_packet_dynamics.py
 ```
 
 ## GitHub Pages

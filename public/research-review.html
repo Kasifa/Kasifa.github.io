@@ -1112,7 +1112,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-16</strong>最近修订</span>
-            <span><strong>v0.4</strong>网页版本</span>
+            <span><strong>v0.5</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1124,7 +1124,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>近对角相位排列在抛物时间尺度上的可持续性。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>临界注入与非线性频谱泄漏之间是否存在定量障碍。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1665,7 +1665,29 @@
               <a href="/notes/r0-4.pdf">下载同版 PDF</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/dense-critical-packet.mjs">查看复现脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.5：</strong>在抛物时间 \(\tau=N^2t\) 上检查相位相干、耗散和支撑外模态的演化。</p>
+            <p><strong style="color:var(--gold)">R0.5 已完成：</strong>热流保持耦合，但有限维非线性迅速产生支撑外模态并破坏原相位排列。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.5 · 2026-08-16</p>
+            <h3>临界频率包的短时失相与频谱泄漏</h3>
+            <p>
+              我先把 R0.4 初值按临界幅度归一化。黏性耗散与三线性注入都在
+              \(\tau=N^2t\) 上出现。对热流剖面可以证明一个显式的同号区间；
+              \(N=60\) 到 \(120\) 的离散半幅下界稳定在 \(\tau\approx0.00798\)。
+            </p>
+            <p>
+              去混叠 Fourier–Galerkin 实验给出不同结果：阈值上方初值只短暂增加
+              \(\dot H^{1/2}\) 能量，三线性传递到 \(\tau=0.01\) 已经换号；
+              到 \(\tau=0.1\)，约 \(84\%\) 的临界能量位于初始支撑之外。
+            </p>
+            <p><strong>目前的限制：</strong>动力学计算使用粗频率包和有限截断。它排除了一个具体的近似封闭设想，但不是完整 PDE 的尺度极限，也不是奇性或正则性证明。</p>
+            <p>
+              <a href="/notes/r0-5.html"><strong>阅读 R0.5 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-5.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical_packet_dynamics.py">查看动力学脚本</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.6：</strong>把有用的临界注入与法向频谱泄漏写成一个可检验的变分比值。</p>
           </div>
         </section>
 
@@ -1705,7 +1727,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.4 · 2026-08-16<br>
+        综述 v0.5 · 2026-08-16<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.5：比较临界频率包在线性热流和去混叠 Fourier–Galerkin Navier–Stokes 演化中的短时相位保持与频谱泄漏。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta property="og:title" content="R0.5｜临界频率包的短时失相与频谱泄漏">
+  <meta property="og:description" content="热流保持非零三线性耦合，但有限维非线性迅速生成支撑外模态；当前频率包没有表现出持续的临界增长。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://kasifa.github.io/og-r0-2.png">
+  <title>R0.5｜临界频率包的短时失相与频谱泄漏</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --red: #8a302c;
+      --green: #435946;
+      --gold: #8a6b32;
+      --line: rgba(39, 34, 29, .3);
+      --width: 960px;
+      --bar: rgba(242, 237, 223, .97);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --red: #ee8b7c;
+        --green: #9fbea2;
+        --gold: #d9b567;
+        --line: rgba(238, 231, 216, .26);
+        --bar: rgba(23, 24, 22, .96);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--red); text-underline-offset: .2em; }
+    a:hover { color: var(--ink); }
+    code, .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { padding: .08em .28em; border-bottom: 1px solid var(--line); font-size: .88em; }
+    .topline { height: 5px; background: var(--ink); }
+    .bar {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 3px double var(--ink);
+      background: var(--bar);
+    }
+    .bar-inner {
+      width: min(calc(100% - 32px), var(--width));
+      min-height: 58px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--ink);
+      font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .bar nav { display: flex; gap: 18px; font: 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .hero { border-bottom: 3px double var(--ink); }
+    .hero-inner {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 70px 0 58px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
+      gap: 60px;
+      align-items: end;
+    }
+    .eyebrow, .section-no {
+      color: var(--red);
+      font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--ink); font-family: Georgia, "Songti SC", "STSong", serif; }
+    h1 {
+      margin: 12px 0 22px;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: 1.02;
+    }
+    .lead { max-width: 700px; margin: 0; color: var(--muted); font-size: 1.12rem; }
+    .stamp { padding: 22px; border: 3px double var(--ink); }
+    .stamp strong { display: block; margin: 8px 0; font-size: 1.35rem; font-weight: 500; }
+    .stamp p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stamp .state { display: block; color: var(--red); font: 700 12px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .layout {
+      width: min(calc(100% - 32px), var(--width));
+      margin: 0 auto;
+      padding: 62px 0 110px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 58px;
+    }
+    .toc { position: sticky; top: 88px; align-self: start; font: 12px/1.55 "SFMono-Regular", Consolas, monospace; }
+    .toc strong { display: block; margin-bottom: 10px; color: var(--red); letter-spacing: .1em; }
+    .toc ol { margin: 0; padding: 0; border-top: 1px solid var(--ink); list-style: none; }
+    .toc li { margin: 0; border-bottom: 1px solid var(--line); }
+    .toc a { display: block; padding: 9px 2px; color: var(--muted); text-decoration: none; }
+    .toc a:hover { color: var(--red); }
+    article { min-width: 0; }
+    section { scroll-margin-top: 86px; margin-bottom: 82px; }
+    h2 { margin: 8px 0 18px; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.14; }
+    h3 { margin: 36px 0 12px; font-size: 1.25rem; }
+    p { max-width: 760px; }
+    li + li { margin-top: .55rem; }
+    .equation {
+      overflow-x: auto;
+      margin: 24px 0;
+      padding: 22px;
+      border: 3px double var(--ink);
+      background: var(--paper-2);
+      text-align: center;
+    }
+    .equation small { display: block; margin-top: 9px; color: var(--muted); text-align: left; }
+    .proof { margin: 24px 0; padding: 19px 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 3px solid var(--red); }
+    .proof strong { display: block; margin-bottom: 7px; }
+    .warning { border-left-color: var(--gold); }
+    .result { border: 3px double var(--red); }
+    .status-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 26px 0; border-top: 1px solid var(--ink); }
+    .status-item { padding: 18px 20px; border-bottom: 1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right: 1px solid var(--line); }
+    .status-item span { display: block; color: var(--green); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; }
+    .status-item strong { display: block; margin: 4px 0; }
+    .status-item p { margin: 0; color: var(--muted); font-size: 14px; }
+    .table-wrap { overflow-x: auto; margin: 24px 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { border-bottom-color: var(--ink); font: 700 11px/1.4 "SFMono-Regular", Consolas, monospace; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: 0; }
+    .refs { margin: 0; padding: 0; list-style: none; counter-reset: refs; }
+    .refs li { position: relative; padding: 14px 8px 14px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+    .refs li::before { counter-increment: refs; content: "[" counter(refs) "]"; position: absolute; left: 3px; color: var(--red); font-family: monospace; }
+    footer { padding: 36px 20px; border-top: 4px solid var(--red); background: #27221d; color: #cfc5b3; }
+    footer div { width: min(100%, var(--width)); margin: 0 auto; display: flex; justify-content: space-between; gap: 28px; font-size: 13px; }
+    footer strong { color: #f2eddf; }
+    footer a { color: #d6b56d; }
+    @media (max-width: 760px) {
+      .bar nav a:not(:last-child) { display: none; }
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; padding: 52px 0 46px; }
+      .layout { grid-template-columns: 1fr; gap: 36px; padding-top: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+    }
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .status-item:nth-child(odd), .toc li:nth-child(odd) { border-right: 0; }
+      .toc ol { grid-template-columns: 1fr; }
+      .equation { padding: 18px 12px; }
+      footer div { flex-direction: column; }
+    }
+    @media print {
+      .bar, .toc { display: none; }
+      html, body, main, .layout, article { height: auto; margin-bottom: 0; padding-bottom: 0; }
+      body { background: white; color: black; font-size: 10pt; }
+      .hero-inner, .layout { display: block; width: 100%; padding: 20px 0; }
+      section { break-inside: auto; margin-bottom: 26px; }
+      h2, h3, .section-no { break-after: avoid; }
+      .equation, .proof, .status-item, table { break-inside: avoid; }
+      .equation { margin: 18px 0; padding: 18px; }
+      .proof { margin: 18px 0; padding: 15px 18px; }
+      th, td { padding: 9px 11px; }
+      .refs li { padding-top: 10px; padding-bottom: 10px; }
+      article > section:last-child { margin-bottom: 0; }
+      footer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/">ν · 个人研究笔记</a>
+      <nav aria-label="笔记导航">
+        <a href="#result">结论</a>
+        <a href="#references">文献</a>
+        <a href="/notes/r0-5.pdf">PDF</a>
+        <a href="/">返回主页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">研究笔记 R0.5 · 短时动力学</div>
+          <h1>临界频率包的短时失相与频谱泄漏</h1>
+          <p class="lead">
+            我把 R0.4 的静态频率包放到抛物时间 \(\tau=N^2t\) 上。
+            线性热流保留非零三线性耦合；有限维 Navier–Stokes 非线性却很快生成支撑外模态，原有相位排列没有维持持续增长。
+          </p>
+        </div>
+        <aside class="stamp">
+          <span class="state">笔记状态 · 引理、代码与误差检查已完成</span>
+          <strong>得到否定信号，不是 PDE 证明</strong>
+          <p>版本 v0.5 · 2026-08-16<br>目标域：\(\mathbb T^3_{2\pi}\)<br>对象：临界包的短时演化</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>目录</strong>
+        <ol>
+          <li><a href="#status">00 · 结论状态</a></li>
+          <li><a href="#scaling">01 · 临界归一化</a></li>
+          <li><a href="#heat-proof">02 · 热流引理</a></li>
+          <li><a href="#heat-data">03 · 热流计算</a></li>
+          <li><a href="#galerkin">04 · Galerkin 系统</a></li>
+          <li><a href="#dynamics">05 · 动力学结果</a></li>
+          <li><a href="#checks">06 · 误差与限制</a></li>
+          <li><a href="#result">07 · 结论边界</a></li>
+          <li><a href="#next">08 · 下一步</a></li>
+          <li><a href="#references">09 · 文献</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="status">
+          <div class="section-no">00 / Scope and status</div>
+          <h2>这一步得到什么</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>已证明</span>
+              <strong>热流短时保持同号</strong>
+              <p>连续三线性剖面在一个显式的小 \(\tau\) 区间内保持非零，证明只用紧支撑和指数差估计。</p>
+            </div>
+            <div class="status-item">
+              <span>已计算</span>
+              <strong>热流保持时间收敛</strong>
+              <p>对 \(N=60,80,100,120\) 的离散包，保守的半幅下界稳定在 \(0.00798\) 左右。</p>
+            </div>
+            <div class="status-item">
+              <span>有限维观察</span>
+              <strong>非线性迅速失相</strong>
+              <p>阈值上方的 Galerkin 解先有极短增长，随后传递换号并把临界能量送出初始支撑。</p>
+            </div>
+            <div class="status-item">
+              <span>尚未证明</span>
+              <strong>完整 PDE 的尺度极限</strong>
+              <p>动力学实验使用较粗频率包和有限截断，不能推出 \(N\to\infty\)、截断趋于无穷或奇性结论。</p>
+            </div>
+          </div>
+          <div class="proof warning">
+            <strong>结果性质</strong>
+            热流引理是一个初等连续性估计。Galerkin 部分是结构保持的有限维计算。
+            这里没有新正则性定理，也没有证明或反驳 Clay 问题。
+          </div>
+        </section>
+
+        <section id="scaling">
+          <div class="section-no">01 / Critical-amplitude normalization</div>
+          <h2>黏性与非线性在同一时间尺度出现</h2>
+          <p>R0.4 使用</p>
+          <div class="equation">
+            \[
+              \widehat u_N(k)=N^{-3/2}a(k/N),\qquad
+              \mathfrak T(u)=\operatorname{Re}\langle\Lambda u,(u\cdot\nabla)u\rangle.
+            \]
+          </div>
+          <p>为固定临界初值大小，令</p>
+          <div class="equation">
+            \[
+              v_N=\rho N^{-1/2}u_N,
+              \qquad \widehat v_N(k)=\rho N^{-2}a(k/N).
+            \]
+          </div>
+          <p>若 \(A_s(a)\) 和 \(\mathfrak T_{\mathbb R^3}(a)\) 采用 R0.4 的记号，则</p>
+          <div class="equation">
+            \[
+            \begin{aligned}
+              \|v_N\|_{\dot H^{1/2}}&\longrightarrow \rho A_{1/2}(a),\\
+              N^{-1}\|v_N\|_{\dot H^{3/2}}&\longrightarrow \rho A_{3/2}(a),\\
+              N^{-2}\mathfrak T(v_N)&\longrightarrow
+                \rho^3\mathfrak T_{\mathbb R^3}(a).
+            \end{aligned}
+            \]
+          </div>
+          <p>临界能量恒等式是</p>
+          <div class="equation">
+            \[
+              \frac12\frac{d}{dt}\|v\|_{\dot H^{1/2}}^2
+              +\nu\|v\|_{\dot H^{3/2}}^2=-\mathfrak T(v).
+            \]
+          </div>
+          <p>
+            当前剖面满足 \(\mathfrak T_{\mathbb R^3}(a)&lt;0\)。因此初始瞬时增长需要
+          </p>
+          <div class="equation">
+            \[
+              \rho&gt;\rho_c
+              :=\frac{\nu A_{3/2}(a)^2}{-\mathfrak T_{\mathbb R^3}(a)}.
+            \]
+            <small>黏性与非线性都按 \(N^2\) 缩放，所以自然时间是 \(\tau=N^2t\)。</small>
+          </div>
+          <p>
+            \(N=120\) 的离散估计给出 \(\rho_c\approx1.0580\times10^6\nu\)，对应
+            \(\|v_N\|_{\dot H^{1/2}}\approx3.5054\times10^4\nu\)。
+            这个阈值很大，说明选定剖面的有符号三线性量相对于绝对相互作用和耗散都很弱。
+          </p>
+        </section>
+
+        <section id="heat-proof">
+          <div class="section-no">02 / Heat-flow sign lemma</div>
+          <h2>线性热流不会立即消除耦合</h2>
+          <p>令</p>
+          <div class="equation">
+            \[
+              a_\tau(\xi)=e^{-\nu\tau|\xi|^2}a(\xi).
+            \]
+          </div>
+          <p>
+            把 \(\mathfrak T_{\mathbb R^3}(a)\) 的被积核记为 \(K(\xi,\eta)\)，并设
+            \(S(\xi,\eta)=|\xi|^2+|\eta|^2+|\xi+\eta|^2\)。则
+          </p>
+          <div class="equation">
+            \[
+              \mathfrak T_{\mathbb R^3}(a_\tau)
+              =\operatorname{Re}\!\iint e^{-\nu\tau S(\xi,\eta)}
+                K(\xi,\eta)\,d\xi\,d\eta.
+            \]
+          </div>
+          <div class="proof result">
+            <strong>热流同号引理</strong>
+            若 \(a\) 光滑、紧支撑于 \(\{|\xi|\le M\}\)，且
+            \(\mathfrak T_{\mathbb R^3}(a)\ne0\)，令
+            \[
+              L(a)=\iint |K(\xi,\eta)|\,d\xi\,d\eta.
+            \]
+            则
+            \[
+              |\mathfrak T(a_\tau)-\mathfrak T(a)|
+              \le 3\nu M^2L(a)\tau.
+            \]
+            特别地，当
+            \[
+              0\le\tau\le
+              \frac{|\mathfrak T(a)|}{6\nu M^2L(a)}
+            \]
+            时，\(|\mathfrak T(a_\tau)|\ge|\mathfrak T(a)|/2\)，符号不变。
+          </div>
+          <div class="proof">
+            <strong>证明</strong>
+            每个有贡献的三元组都满足三条频率位于 \(a\) 的支撑内，所以
+            \(S\le3M^2\)。再用
+            \(|e^{-x}-1|\le x\) 和三角不等式，即得上述估计。
+          </div>
+          <p>
+            这只证明某个非零区间存在。由于 \(L(a)\) 忽略全部相消，所得下界通常很保守。
+          </p>
+        </section>
+
+        <section id="heat-data">
+          <div class="section-no">03 / Sampled heat profile</div>
+          <h2>离散热流的尺度检查</h2>
+          <p>
+            对 R0.4 的 \(\delta=0.04\) 剖面，我逐个有序三元组计算热因子。
+            离散版本使用更尖锐的 Lipschitz 主项
+            \(\sum(S/N^2)|K_N|\)，而不是统一上界 \(3M^2\sum|K_N|\)。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(N\)</th><th>模态数</th><th>保证半幅的 \(\tau\)</th><th>\(\rho_{c,N}/\nu\)</th><th>阈值临界范数 / \(\nu\)</th></tr></thead>
+              <tbody>
+                <tr><td>60</td><td>342</td><td>0.00798525</td><td>1.07341×10⁶</td><td>35,987.9</td></tr>
+                <tr><td>80</td><td>882</td><td>0.00798295</td><td>1.04073×10⁶</td><td>34,540.4</td></tr>
+                <tr><td>100</td><td>1,506</td><td>0.00798329</td><td>1.05501×10⁶</td><td>34,920.8</td></tr>
+                <tr><td>120</td><td>2,766</td><td>0.00798332</td><td>1.05798×10⁶</td><td>35,054.4</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>在 \(N=120\) 时，实际热流保持远长于保守下界：</n+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(\tau\)</th><th>\(\mathfrak T(a_\tau)/\mathfrak T(a)\)</th><th>临界比值</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>1.000000</td><td>2.85271×10⁻⁵</td></tr>
+                <tr><td>0.05</td><td>0.818643</td><td>3.00383×10⁻⁵</td></tr>
+                <tr><td>0.10</td><td>0.670183</td><td>3.15267×10⁻⁵</td></tr>
+                <tr><td>0.25</td><td>0.367716</td><td>3.57115×10⁻⁵</td></tr>
+                <tr><td>0.50</td><td>0.135245</td><td>4.09189×10⁻⁵</td></tr>
+                <tr><td>1.00</td><td>0.0183075</td><td>4.13825×10⁻⁵</td></tr>
+                <tr><td>2.00</td><td>0.0003364</td><td>2.15975×10⁻⁵</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            三线性量在表中一直同号。临界比值先上升并不表示非线性增长；分子和分母都在热衰减，比例可以增加。
+          </p>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical-packet-heat.mjs">查看热流脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/tests/critical-packet-heat.test.mjs">查看回归测试</a>。
+          </p>
+        </section>
+
+        <section id="galerkin">
+          <div class="section-no">04 / Structure-preserving Galerkin system</div>
+          <h2>有限维非线性怎样计算</h2>
+          <p>
+            渐近热流继续使用 \(\delta=0.04\) 和最高 \(N=120\)。三维动力学计算改用同一六叶构造的粗格点成员
+            \(N=10,\delta=0.12\)，它有 42 个初始模态。这个替代只用于检查机制，不代表 R0.4 序列的 \(N\to\infty\) 动力学极限。
+          </p>
+          <p>写 \(\widehat v_k=\rho N^{-2}b_k\) 后，缩放方程为</p>
+          <div class="equation">
+            \[
+              \partial_\tau b_k
+              =-\nu|k/N|^2b_k
+              +\frac{\rho}{N^4}\mathbb P_k
+                \widehat{\,b\times(\nabla\times b)\,}_k.
+            \]
+            <small>恒等式 \((b\cdot\nabla)b=-b\times(\nabla\times b)+\nabla|b|^2/2\) 把非线性写成旋转形式。</small>
+          </div>
+          <ul>
+            <li>Galerkin 集合为对称分量截断 \(|k_j|\le15\)；</li>
+            <li>乘积在 \(48^3\) 网格上用 \(2/3\) 去混叠伪谱法计算，并在 \(64^3\) 网格上复核；</li>
+            <li>每次非线性计算后应用 Leray 投影，整步后恢复现实对称；</li>
+            <li>时间推进使用四阶 Runge–Kutta，主步长 \(\Delta\tau=0.00125\)；</li>
+            <li>主计算取 \(\rho=1.2\rho_c=49,639.6\)，对照取 \(\rho=0.5\rho_c=20,683.2\)。</li>
+          </ul>
+          <p>
+            旋转形式和正交投影使无黏非线性满足
+            \(\operatorname{Re}\sum_k\overline b_k\cdot\mathcal N_k(b)=0\)。
+            这项配对残差在全部记录时刻不超过 \(3.92\times10^{-13}\)。
+          </p>
+        </section>
+
+        <section id="dynamics">
+          <div class="section-no">05 / Short-time dynamics</div>
+          <h2>增长只维持了很短时间</h2>
+          <p>
+            表中 \(E_{1/2}=\|b\|_{\dot H^{1/2}}^2\)，\(Q\) 是非线性注入与黏性耗散之比；
+            “支撑外”是初始六叶支撑之外的 \(\dot H^{1/2}\) 能量比例；“热流对齐”是当前状态与纯热流状态的加权余弦。
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>\(\tau\)</th><th>\(E_{1/2}\)</th><th>\(\mathfrak T(b)\)</th><th>\(Q\)</th><th>支撑外</th><th>热流对齐</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>256.798</td><td>−98.506</td><td>1.200</td><td>0%</td><td>1.0000</td></tr>
+                <tr><td>0.00125</td><td>257.046</td><td>−103.401</td><td>1.248</td><td>0.27%</td><td>0.9963</td></tr>
+                <tr><td>0.00250</td><td>257.239</td><td>−91.686</td><td>1.097</td><td>0.99%</td><td>0.9857</td></tr>
+                <tr><td>0.00500</td><td>256.798</td><td>−36.593</td><td>0.434</td><td>2.96%</td><td>0.9483</td></tr>
+                <tr><td>0.01000</td><td>251.883</td><td>+49.288</td><td>−0.600</td><td>5.13%</td><td>0.8324</td></tr>
+                <tr><td>0.02500</td><td>236.324</td><td>−16.514</td><td>0.221</td><td>7.31%</td><td>0.4292</td></tr>
+                <tr><td>0.05000</td><td>216.244</td><td>+7.998</td><td>−0.118</td><td>21.88%</td><td>0.2199</td></tr>
+                <tr><td>0.10000</td><td>188.342</td><td>−6.075</td><td>0.095</td><td>83.72%</td><td>0.1508</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            \(E_{1/2}\) 先增加约 \(0.17\%\)，在 \(\tau\approx0.0025\) 后转为下降。
+            到 \(\tau=0.01\)，三线性量已换号，而纯热流在 \(\tau=0.1\) 仍保留约 \(67\%\) 的原传递。
+            因此这次失相来自非线性重排，不是热耗散单独造成的。
+          </p>
+          <p>
+            \(0.5\rho_c\) 对照组从一开始就耗散。它在 \(\tau=0.1\) 的支撑外比例为 \(14.18\%\)，
+            仍有明显频谱泄漏，但弱于阈值上方组的 \(83.72\%\)。
+          </p>
+          <div class="proof result">
+            <strong>有限维结论</strong>
+            当前频率包能饱和瞬时临界三线性尺度，却没有在这次 Galerkin 实验中维持同号传递。
+            “瞬时饱和”与“动力学相干”是两个不同条件。
+          </div>
+        </section>
+
+        <section id="checks">
+          <div class="section-no">06 / Numerical checks and limitations</div>
+          <h2>哪些数值结论稳定，哪些不稳定</h2>
+          <div class="status-grid">
+            <div class="status-item">
+              <span>时间步减半</span>
+              <strong>主量差异很小</strong>
+              <p>\(\Delta\tau\) 从 0.00125 减到 0.000625；终点四项指标的最大相对差为 \(6.71\times10^{-5}\)。</p>
+            </div>
+            <div class="status-item">
+              <span>网格嵌入</span>
+              <strong>去混叠实现一致</strong>
+              <p>固定 \(|k_j|\le15\)，\(48^3\) 与 \(64^3\) 的差异约为 \(10^{-14}\)。这只检查同一 ODE 的实现。</p>
+            </div>
+            <div class="status-item">
+              <span>截断敏感性</span>
+              <strong>整体失相稳定，瞬时传递不稳定</strong>
+              <p>把截断从 15 降到 13，终点能量、支撑外比例和对齐差异均低于 0.5%，但三线性量的符号改变。</p>
+            </div>
+            <div class="status-item">
+              <span>代数残差</span>
+              <strong>现实、无散与 L² 配对</strong>
+              <p>现实残差为 0，无散残差不超过 \(1.78\times10^{-15}\)，无黏 L² 配对残差不超过 \(3.92\times10^{-13}\)。</p>
+            </div>
+          </div>
+          <p>
+            截断 13 与 15 都显示约 \(84\%\) 的支撑外能量和约 \(0.151\) 的热流对齐，
+            所以“强泄漏与失相”在这两个截断上稳定；\(\tau=0.1\) 的三线性量较小且对截断敏感，不能据此判断其最终符号。
+          </p>
+          <div class="proof warning">
+            <strong>尚未完成的收敛</strong>
+            我没有证明 Galerkin 截断趋于无穷时的统一误差，也没有计算固定 \(\delta=0.04\) 下越来越大的 \(N\)。
+            因此，数值部分只能排查当前候选的有限维机制，不能代替 Navier–Stokes PDE 的解析估计。
+          </div>
+          <p>
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical_packet_dynamics.py">查看动力学脚本</a>；
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/requirements-research.txt">查看数值依赖</a>。
+          </p>
+        </section>
+
+        <section id="result">
+          <div class="section-no">07 / What this does and does not show</div>
+          <h2>R0.4 的障碍没有自动变成增长轨道</h2>
+          <div class="proof result">
+            <strong>本步结论</strong>
+            线性热流本身允许 R0.4 的临界耦合在 \(\tau=O(1)\) 上保持同号；真正破坏当前候选的是非线性产生的新模态和相位重排。
+            所以下一步若继续研究相干频率包，必须同时控制“有用传递”和“法向频谱泄漏”。
+          </div>
+          <p>这项工作没有证明：</p>
+          <ul>
+            <li>所有近对角频率包都会迅速失相；</li>
+            <li>R0.4 的 \(N\to\infty\) 序列具有同样的有限维时间曲线；</li>
+            <li>\(\dot H^{1/2}\) 范数对一般大初值有全局界；</li>
+            <li>有限时奇性不存在或存在；</li>
+            <li>Clay 问题已经取得解答。</li>
+          </ul>
+          <p>
+            目前能排除的是一个具体想法：仅把瞬时临界三线性比值做大，并不能保证相位排列在抛物时间上近似封闭。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">08 / Next check</div>
+          <h2>R0.6：把频谱泄漏写成变分障碍</h2>
+          <p>
+            下一步不继续盲目调大初值。我会把六叶包视为一个有限维参数流形 \(\mathcal M\)，
+            并把 Navier–Stokes 非线性分解为沿 \(T_a\mathcal M\) 的切向部分与正交的法向泄漏。
+          </p>
+          <ol>
+            <li>固定现实、无散和近对角支撑，定义切向投影 \(\Pi_{T_a\mathcal M}\)。</li>
+            <li>计算
+              \[
+                \mathcal L(a)=\|(I-\Pi_{T_a\mathcal M})\mathbb P(a\cdot\nabla a)\|,
+              \]
+              并与有用的 \(-\mathfrak T(a)\) 比较。
+            </li>
+            <li>在满足 \(\mathfrak T(a)&lt;0\) 的剖面中，研究 \(\mathcal L(a)/|\mathfrak T(a)|\) 的下界或近极小序列。</li>
+            <li>若该比值有正下界，这类相干包不能近似封闭；若比值可趋零，再尝试证明 \(\tau=O(1)\) 的调制稳定。</li>
+            <li>所有优化结果先用精确梯度、网格加密和独立起点检查，再决定是否写解析命题。</li>
+          </ol>
+          <p>
+            这个问题比继续观察单条数值轨道更具体：它直接问能产生临界注入的剖面，是否必然同时产生同阶的法向泄漏。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">09 / Primary references</div>
+          <h2>原始文献</h2>
+          <ol class="refs">
+            <li>
+              C. Fefferman, “Existence and Smoothness of the Navier–Stokes Equation,” Clay Mathematics Institute.
+              <a href="https://www.claymath.org/wp-content/uploads/2022/02/MPPc.pdf">正式问题说明</a>。
+            </li>
+            <li>
+              H. Fujita and T. Kato, “On the Navier–Stokes initial value problem. I,”
+              <em>Archive for Rational Mechanics and Analysis</em> 16 (1964), 269–315.
+              <a href="https://doi.org/10.1007/BF00276188">DOI</a>。
+            </li>
+            <li>
+              T. Kato, “Strong \(L^p\)-solutions of the Navier–Stokes equation in \(\mathbb R^m\), with applications to weak solutions,”
+              <em>Mathematische Zeitschrift</em> 187 (1984), 471–480.
+              <a href="https://eudml.org/doc/173504">EuDML</a>。
+            </li>
+            <li>
+              F. Waleffe, “The nature of triad interactions in homogeneous turbulence,”
+              <em>Physics of Fluids A</em> 4 (1992), 350–363.
+              <a href="https://doi.org/10.1063/1.858309">DOI</a>。
+            </li>
+            <li>
+              S. A. Orszag, “Numerical Simulation of Incompressible Flows Within Simple Boundaries. I. Galerkin (Spectral) Representations,”
+              <em>Studies in Applied Mathematics</em> 50 (1971), 293–327.
+              <a href="https://doi.org/10.1002/sapm1971504293">DOI</a>。
+            </li>
+            <li>
+              S. A. Orszag, “On the Elimination of Aliasing in Finite-Difference Schemes by Filtering High-Wavenumber Components,”
+              <em>Journal of the Atmospheric Sciences</em> 28 (1971), 1074.
+              <a href="https://journals.ametsoc.org/view/journals/atsc/28/6/1520-0469_1971_028_1074_oteoai_2_0_co_2.xml">期刊页面</a>。
+            </li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <span><strong>R0.5 · 临界频率包的短时失相与频谱泄漏</strong><br>个人研究日志 · 2026-08-16</span>
+      <span><a href="/notes/r0-4.html">上一篇 R0.4</a> · <a href="/notes/r0-5.pdf">PDF</a> · <a href="/">主页</a></span>
+    </div>
+  </footer>
+</body>
+</html>

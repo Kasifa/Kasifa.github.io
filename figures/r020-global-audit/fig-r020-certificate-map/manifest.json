@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r020-certificate-map",
+  "status": "formal",
+  "analyticalQuestion": "Where do the exact boundary-strip certificates lie in compact coordinates, and how does the certified interior maximum compare with every codimension-one boundary closure?",
+  "supportedClaim": "The two strips cover the only compact x-boundary degeneracies used by the global audit, and the 5.9518698677 percent interior maximum exceeds every certified boundary-closure maximum.",
+  "createdAt": "2026-08-17T18:35:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "e105bc28845764c07a35f67a37c5478d53af78e8",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python3.12 figures/r020-global-audit/fig-r020-certificate-map/plot.py",
+    "configuration": "source-summary.json",
+    "randomSeed": null,
+    "precision": "exact rational certificates; float64 plotting of certified decimal extracts",
+    "solver": "Fraction exact Bernstein 1.0; outward-rounded NumPy 2.3.5 global subdivision",
+    "tolerances": {
+      "interiorKrawczykRadius": "1e-6",
+      "globalMaximumDepth": 48
+    },
+    "wallTimeSeconds": 0.927,
+    "monitoring": {
+      "enabled": false,
+      "reportIntervalSeconds": null,
+      "progressLog": null,
+      "resourceLog": null,
+      "checkpointPattern": "research/certificates/r020/global-bernstein-depth*.json",
+      "trackedFields": []
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation; exact boundary eliminations additionally used DGX Spark",
+    "operatingSystem": "macOS 26.6 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used for plotted audit",
+    "memoryGiB": 36,
+    "processes": 8,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt"
+  },
+  "data": [
+    {
+      "path": "data.csv",
+      "format": "csv",
+      "schema": "One row per certified root, exact strip/core rectangle, or domain-closure maximum; compact coordinates are dimensionless and target fractions are percent.",
+      "bytes": 1312,
+      "sha256": "533f7d37a5656f0c863555ff4dbf1fff52c9e851f885b96bbec7fae914e94564"
+    },
+    {
+      "path": "source-summary.json",
+      "format": "json",
+      "schema": "Compact extraction of coordinate maps, exact strip ranges, global audit totals, and source commit.",
+      "bytes": 724,
+      "sha256": "0d48dd4e94080a95c56fee09bcfdb86cff57f624f4d92e522c733964795d8901"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r020",
+      "fileName": "interior-root-certificates.json",
+      "bytes": 9113,
+      "sha256": "cf98614a3e26dcf34f45c7ef2faba553bf507fdf2b08e9a76fd10fffb9dadf8e",
+      "extractionCommand": "read roots[].stationarySystemCertificate and roots[].objectiveAndHessian"
+    },
+    {
+      "location": "research/certificates/r020",
+      "fileName": "boundary-face-certificates.json",
+      "bytes": 15450,
+      "sha256": "80f65f9da5f349a5ac3870cc2f0f6b23fddc164e0275ad3d7804c97dd10b2077",
+      "extractionCommand": "take the largest targetFractionPercentAtCenter on each open face"
+    },
+    {
+      "location": "research/certificates/r020",
+      "fileName": "boundary-edge-certificates.json",
+      "bytes": 19683,
+      "sha256": "5dc5ec065844e9fd05abd7bfbe4cab227a64c1905a61b57ec65e0dfedbbcef5b",
+      "extractionCommand": "take targetFractionPercentMidpoint on all four exactly isolated edge maxima"
+    },
+    {
+      "location": "research/certificates/r020",
+      "fileName": "boundary-strips.json",
+      "bytes": 8167,
+      "sha256": "3242730d972161f2e6134857a64b6aa55f243bee12989f20eb3aa571b337ffea",
+      "extractionCommand": "convert physicalStrip and dyadicCoreCompactCube to u-v-w rectangles"
+    },
+    {
+      "location": "research/certificates/r020",
+      "fileName": "global-bernstein-depth3.json",
+      "bytes": 2162,
+      "sha256": "e470fa87bcd0e8ebd8f74c40bb47684af9ee50fbac2a6a67bd85812fae28de21",
+      "extractionCommand": "read complete, totals, and configuration from the independent 512-seed cross-check"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "outputs": [
+      {"path": "figure.pdf", "sha256": "f7bd017804b715e91c57907e157151c52c20ffecacbf204e5e057dd0924776f8"},
+      {"path": "figure.svg", "sha256": "5c09389bec2c5fb40f46b8cfa5b3924677d9d103f20d544af25f214e7edc9943"},
+      {"path": "figure.png", "dpi": 600, "sha256": "4af0c1654f12725567021443757fb708c93e6deaf3156cda51018e5df0ea5711"}
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "两个精确边界条带覆盖了全局审计中的退化线；所有边界闭包的目标能量比例都低于内部全局最大值。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF rendered at 254 dpi and inspected at 178 mm; 600 dpi PNG and grayscale conversion inspected; validate_data.py passed all 12 plotted rows."
+  }
+}

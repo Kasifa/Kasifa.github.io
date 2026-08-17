@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.20：用精确边界消元、Krawczyk 根盒与外向舍入 Bernstein 细分，完成所选第五阶有限模型正参数闭包的全局驻点分类。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.20｜正参数域的全局驻点分类">
+  <meta property="og:description" content="两个内部驻点、完整边界分类和零未决盒的全局排除；结论严格限定于所选第五阶有限模型。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-20-certificate-map.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.20｜正参数域的全局驻点分类</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    figure { margin:30px 0; padding:16px; border:3px double var(--ink); background:#f7f3e8; }
+    figure img { display:block; width:100%; height:auto; }
+    figcaption { margin-top:12px; color:#514a41; font-size:13px; line-height:1.55; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (prefers-color-scheme:dark) { figure { background:#f7f3e8; } }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; break-inside:avoid; }
+      .equation,.proof,.status-item,table,figure { break-inside:avoid; }
+      section#global,section#meaning,section#reproduce { break-before:page; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#meaning">边界</a>
+      <a href="/notes/r0-20.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.20 · 全局有限模型证书</div>
+        <h1>正参数域的全局驻点分类</h1>
+        <p class="lead">
+          我把 R0.19 的局部极值问题扩展到整个正参数闭包。
+          精确边界消元、两个有理 Krawczyk 根盒和外向舍入 Bernstein 细分共同证明：
+          所选第五阶有限模型恰有两个正内部驻点，其中第一个是唯一全局目标能量比例最大点，第二个是鞍点。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 计算机辅助有限模型定理</span>
+        <strong>全局分类已闭合</strong>
+        <p>版本 v0.20 · 2026-08-17</p>
+        <p>参数闭包：\([0,\infty]^3\)</p>
+        <p>对象：第五阶有限代数模型</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#quotient">01 · 商与紧化</a></li>
+          <li><a href="#stationary">02 · 驻点系统</a></li>
+          <li><a href="#roots">03 · 两个内部根</a></li>
+          <li><a href="#faces">04 · 面与边</a></li>
+          <li><a href="#degenerate">05 · 退化端</a></li>
+          <li><a href="#global">06 · 全局排除</a></li>
+          <li><a href="#theorem">07 · 有限模型定理</a></li>
+          <li><a href="#meaning">08 · 数学意义</a></li>
+          <li><a href="#next">09 · 下一步</a></li>
+          <li><a href="#reproduce">10 · 复现</a></li>
+          <li><a href="#references">11 · 资料</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>有限模型的局部缺口已经变成全局定理</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>恰有两个正内部驻点</strong><p>两个根盒各含唯一根；其余正内部由完整 Bernstein 细分排除。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>唯一全局最大点</strong><p>目标能量比例最大值为 \(5.9518698677219236\ldots\%\)。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>全部边界闭包更低</strong><p>最大边界值为 \(3.280940959752690\ldots\%\)，位于 \(q=0\) 面。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>PDE 桥梁没有建立</strong><p>Taylor 余项、热耗散、逐壳动力学和无限维稳定性仍未控制。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>本笔记的严格结论。</strong>
+            对 R0.18–R0.19 所定义的正三参数第五阶商，令
+            
+            \[
+              J(p,q,x)=\frac{T(p,q,x)}{T(p,q,x)+E(p,q,x)},
+              \qquad (p,q,x)\in(0,\infty)^3.
+            \]
+            
+            把 \(J\) 连续延拓到紧化闭包 \([0,\infty]^3\)。该闭包上存在唯一全局最大点；
+            它位于第 3 节第一个根盒内。正内部只有另一个驻点，且它是非退化鞍点。
+          </div>
+          <p>
+            这里的“严格”是指证书链中的有理代数、区间包含与外向舍入符号排除；
+            “有限模型”则是不可省略的限定。这个结论没有证明三维 Navier–Stokes 解的全局正则性或有限时奇性。
+          </p>
+        </section>
+
+        <section id="quotient">
+          <div class="section-no">01 / Quotient and compactification</div>
+          <h2>先把无界正八分体变成闭立方体</h2>
+          <p>
+            \(T\) 是目标频率能量，\(E\) 是模型中其余频率的能量。
+            R0.18 使用的外部/目标比 \(R=E/T\) 与这里的目标比例满足 \(J=1/(1+R)\)，
+            所以 \(R\) 的极小点就是 \(J\) 的极大点。为处理全部无穷端，我使用射影坐标
+          </p>
+          <div class="equation">
+            \[
+              u=\frac{p}{1+p},\qquad v=\frac{q}{1+q},\qquad w=\frac{x}{1+x}.
+            \]
+          </div>
+          <p>
+            正内部变成 \((u,v,w)\in(0,1)^3\)，而 \(p,q,x\) 的零端和无穷端成为闭立方体的面。
+            原始 Laurent 树聚合出 332 个频率，未抵消的 Laurent 单项式数为零。
+            \(T\) 含 169 项，\(T+E\) 含 1,027 项；其精确有理系数与摘要保存在证书包中。
+          </p>
+        </section>
+
+        <section id="stationary">
+          <div class="section-no">02 / Saturated stationary system</div>
+          <h2>候选搜索与完备性证明承担不同职责</h2>
+          <p>内部驻点由三个商导数分子给出：</p>
+          <div class="equation">
+            \[
+              F_p=T_p(T+E)-T(T+E)_p,
+              \quad F_q=T_q(T+E)-T(T+E)_q,
+              \quad F_x=T_x(T+E)-T(T+E)_x.
+            \]
+          </div>
+          <p>
+            原始三个多项式分别含 4,025、4,025 与 3,750 项。
+            我精确除去在正内部不产生孤立驻点的公共因子，再把所得饱和系统变换到 \((u,v,w)\) 立方体。
+            高精度 Newton/扫描只用于提出两个候选根；它不承担“没有漏根”的证明。
+          </p>
+          <div class="proof warning">
+            <strong>完备性的来源。</strong>
+            每个候选根由有理 Krawczyk 盒认证存在且唯一；根盒和两个退化边界条带以外的每个盒，
+            至少有一个驻点多项式的 Bernstein 系数区间严格同号。两条路径合并后才得到全域结论。
+          </div>
+        </section>
+
+        <section id="roots">
+          <div class="section-no">03 / Certified interior roots</div>
+          <h2>一个全局最大点，一个鞍点</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>根</th><th>\((p,q,x)\) 的盒中心</th><th>\(J\times100\)</th><th>区间分类</th></tr></thead>
+            <tbody>
+              <tr><td>I</td><td>\((6.3698786950,\ 5.6589870092,\ 2.6209043227)\)</td><td>5.9518698677219236%</td><td>严格局部最大</td></tr>
+              <tr><td>II</td><td>\((155.0927957316,\ 1.2333778723,\ 0.6155817636)\)</td><td>0.0358794063611%</td><td>非退化鞍点</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            两个盒的半径均为 \(10^{-6}\)。根 I 的最大 Krawczyk 包含比约为 \(0.002263\)，
+            根 II 约为 \(0.129179\)，都严格小于 1。
+            根 I 的商 Hessian 在整个盒上正定，所以 \(E/T\) 严格局部最小、\(J\) 严格局部最大；
+            根 II 的有理测试方向给出异号二次型，从而认证为鞍点。
+          </p>
+        </section>
+
+        <section id="faces">
+          <div class="section-no">04 / Faces and edges</div>
+          <h2>四个有限面用精确消元闭合</h2>
+          <p>
+            在 \(p=0,p=\infty,q=0,q=\infty\) 四个面上，我先计算精确 resultant，
+            再用 Sturm 根计数与有理单变量表示配对公共根。每个保留根由二维有理 Krawczyk 盒分类；
+            四条有限 \(p/q\) 边则各有且仅有一个正驻点，并且都是该开放边的严格全局最大点。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>边界闭包</th><th>面内局部最大值 \(J\times100\)</th><th>连同边后的闭包最大值</th></tr></thead>
+            <tbody>
+              <tr><td>\(p=0\)</td><td>2.4427995689693565%</td><td>2.9660367852185208%</td></tr>
+              <tr><td>\(p=\infty\)</td><td>0.0374984259240124%</td><td>0.0559828871761578%</td></tr>
+              <tr><td>\(q=0\)</td><td>3.280940959752690%; 0.0149438533628103%</td><td>3.280940959752690%</td></tr>
+              <tr><td>\(q=\infty\)</td><td>2.3290498657479093%; 0.0567652761464025%</td><td>2.9660367852185208%</td></tr>
+              <tr><td>\(x=0\) 或 \(x=\infty\)</td><td>0</td><td>0</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            最大边界值出现在 \(q=0\) 面，仍比内部根 I 低约 2.67093 个百分点。
+            这一步排除了“局部最优值被某个退化参数族超过”的可能。
+          </p>
+        </section>
+
+        <section id="degenerate">
+          <div class="section-no">05 / Degenerate x-boundaries</div>
+          <h2>两个退化点用加权放大与有限宽条带处理</h2>
+          <p>
+            直接在 \(x=0\) 和 \(x=\infty\) 上观察，驻点系统分别在 \((x,p)=(0,2)\) 与
+            \((x,q)=(\infty,3)\) 退化。仅知道边界极限的符号还不足以排除贴着边界进入内部的根，
+            因而我先作加权 blow-up，再把局部符号加强为显式条带：
+          </p>
+          <div class="equation">
+            \[
+              |p-2|\le\frac12,\quad 0&lt;x\le\frac18,\quad q\ge0
+              \quad\Longrightarrow\quad F_x&lt;0,
+            \]
+            \[
+              |q-3|\le\frac12,\quad x\ge4,\quad p\ge0
+              \quad\Longrightarrow\quad F_x&gt;0.
+            \]
+          </div>
+          <p>
+            两个严格符号均由有理张量 Bernstein 系数证明，且覆盖被全局立方体细分委托出去的两个 dyadic 核。
+            因此退化线附近也没有遗漏内部公共根。
+          </p>
+          <figure>
+            <img src="/figures/r0-20-certificate-map.svg" alt="R0.20 的两个精确边界条带、dyadic 核和内部与边界目标比例比较图">
+            <figcaption>
+              图 R0.20-1。左、中：紧坐标中的两个精确边界条带及全局细分使用的 dyadic 核；
+              右：内部全局最大值与五个余维一边界闭包的认证最大值。浅色填充、阴影与标记保证灰度可读。
+            </figcaption>
+          </figure>
+        </section>
+
+        <section id="global">
+          <div class="section-no">06 / Global Bernstein completion</div>
+          <h2>两次独立种子划分都以零未决盒结束</h2>
+          <p>
+            在紧立方体上，我为三个饱和驻点多项式预计算 Bernstein 张量，
+            对每个盒执行外向舍入符号测试；不能排除的盒沿最有信息的坐标二分。
+            根盒和第 5 节的两个条带作为已认证区域登记，不被浮点细分替代。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>全局运行</th><th>种子</th><th>访问盒</th><th>二分</th><th>最大深度</th><th>未决</th></tr></thead>
+            <tbody>
+              <tr><td>深度 2</td><td>64 / 64 完成</td><td>2,650</td><td>1,293</td><td>44, 32, 31</td><td>0</td></tr>
+              <tr><td>深度 3 交叉检查</td><td>512 / 512 完成</td><td>3,026</td><td>1,257</td><td>44, 32, 31</td><td>0</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            第一轮分别由三个方程排除 584、268、483 个叶盒；独立种子轮为 858、379、498 个。
+            两轮从不同初始划分到达相同的根盒、条带与零未决结论。
+            这不是通过密集采样“没有看见其他根”，而是对覆盖整个紧立方体的盒族逐盒给出符号证书。
+          </p>
+        </section>
+
+        <section id="theorem">
+          <div class="section-no">07 / Finite-model theorem</div>
+          <h2>紧致性把驻点分类与边界比较拼成全局结论</h2>
+          <div class="proof result">
+            <strong>计算机辅助定理（所选第五阶模型）。</strong>
+            \(J\) 在紧化闭包上连续。其正内部恰有两个驻点；根 I 为严格局部最大，根 II 为鞍点。
+            所有边界闭包的最大值不超过 \(3.280940959752690\ldots\%\)，而根 I 的值位于
+            \(5.9518698677219236\ldots\%\) 的认证区间内。因此根 I 是 \([0,\infty]^3\) 上
+            \(J\) 的唯一全局最大点。
+          </div>
+          <p>
+            证明的逻辑链是：精确商与饱和系统 → 内部 Krawczyk 盒 → 有限面的精确消元与根配对 →
+            退化 \(x\) 端的精确符号条带 → 全立方体外向舍入 Bernstein 排除 → 边界数值区间比较。
+            每一环的机器可读输出均有 SHA-256 清单。
+          </p>
+        </section>
+
+        <section id="meaning">
+          <div class="section-no">08 / Meaning and PDE gap</div>
+          <h2>这是实质性的模型结果，但离千禧年问题仍有结构性距离</h2>
+          <h3>它的价值</h3>
+          <ul>
+            <li>把 R0.18–R0.19 的一个局部候选升级为有完整边界处理的有限模型唯一全局最优点。</li>
+            <li>建立了可复用的证书链：精确稀疏代数、Krawczyk 根盒、resultant/RUR 边界分类与全局 Bernstein 排除。</li>
+            <li>给下一步 Taylor 余项估计提供了一个不再含参数寻优歧义的基点。</li>
+          </ul>
+          <h3>它没有给出的东西</h3>
+          <ul>
+            <li>第五阶截断没有自动控制第六阶及以上的非线性余项。</li>
+            <li>三参数极化族不等于所有散度自由初值，更不等于解轨道的无限维相空间。</li>
+            <li>目标频率比例的有限阶增长没有证明可以跨壳重复，也没有压倒粘性热衰减。</li>
+            <li>没有得到任何三维 Navier–Stokes 全局正则性、奇性形成或 Clay 问题结论。</li>
+          </ul>
+          <p>
+            因而，这一结果适合表述为“可独立复现的有限模型全局分类”，不适合表述为 PDE 进展定理。
+            它减少了机制探索中的一个自由度，但真正困难的无限维误差传播仍在前面。
+          </p>
+        </section>
+
+        <section id="next">
+          <div class="section-no">09 / Next</div>
+          <h2>下一步：把第五阶最优点放回带余项的短时 PDE 展开</h2>
+          <ol>
+            <li>在根 I 的认证盒上构造第六阶及更高阶 Duhamel 余项的显式范数上界，而不是只在盒中心估计。</li>
+            <li>把粘性热因子保留在每棵树的时间积分中，求出目标增长仍为正的严格时间窗。</li>
+            <li>对极化、振幅与相位的横向扰动给出统一稳定半径，明确哪些有限维限制仍是开放缺口。</li>
+            <li>只有单步含余项不等式闭合后，才研究尺度迭代、跨壳误差累积与可能的临界范数机制。</li>
+          </ol>
+          <p>
+            这一步以符号推导和高精度区间积分为主；若进入大量参数盒或三维谱验证，
+            我会使用 DGX 资源并持续记录进度、资源占用、检查点、原始数据及期刊级附图包。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">10 / Reproduction</div>
+          <h2>公开脚本、证书包与计算环境</h2>
+          <p>
+            全部机器可读证书位于
+            <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r020"><code>research/certificates/r020</code></a>；
+            <code>SHA256SUMS</code> 固定了本笔记使用的输入与输出。
+            正参数全局排除的主要复现命令是：
+          </p>
+          <div class="equation mono">
+            python3.12 research/positive_region_boundary_strip_audit.py --check --pretty<br>
+            python3.12 research/positive_region_bernstein_exclusion.py --seed-depth 2 --workers 8<br>
+            python3.12 research/positive_region_bernstein_exclusion.py --seed-depth 3 --workers 8
+          </div>
+          <p>
+            有限面消元使用固定镜像 <code>navier-stokes-r020-flint:py312-flint090</code>，
+            镜像 ID 以 <code>sha256:02b6a511…f013a5</code> 结尾；该部分在 DGX Spark 上运行。
+            全局细分使用本机 Python 3.12.13、NumPy 2.3.5 与 8 个进程。
+            正式附图包包含 CSV、来源摘要、绘图脚本、PDF/SVG/600 dpi PNG、caption、manifest 和独立数据校验器。
+          </p>
+          <p>
+            建议先运行证书包中的 SHA-256 校验，再重算根盒、边界与全局细分；
+            两个全局 JSON 应同时报告 <code>complete=true</code> 且未决盒为零。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">11 / Notes and sources</div>
+          <h2>资料</h2>
+          <ol class="refs">
+            <li><a href="/notes/r0-19.html">R0.19：完整五维 Hessian 的根盒证书</a>。本笔记从其严格局部极值出发，处理其余根与全部边界。</li>
+            <li><a href="/notes/r0-18.html">R0.18：三变量驻点的 Krawczyk 证书</a>。给出原始三变量商、精确驻点系统和第一个根盒。</li>
+            <li><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r020-global-audit/fig-r020-certificate-map">图 R0.20-1 的期刊附图包</a>。包含原始绘图数据、脚本、矢量图、位图与质量检查记录。</li>
+            <li>C. Fefferman, <a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Existence and Smoothness of the Navier–Stokes Equation</a>。用于核对 Clay 问题的正式范围。</li>
+            <li><a href="https://github.com/Kasifa/Kasifa.github.io">公开仓库与版本记录</a>。HTML、PDF、精确脚本、证书包和附图保持在同一仓库中。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <strong>Navier–Stokes 开放研究日志 · R0.20</strong>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-20.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

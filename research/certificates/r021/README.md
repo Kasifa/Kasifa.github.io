@@ -1,9 +1,23 @@
-# R0.21 certificate archive: first viscous corrections
+# R0.21 remainder certificate archive
 
-This directory contains the first machine-readable outputs for the R0.21
-finite-time remainder study.  The source state for both runs is commit
-`692c8f12dd05dc2a00b788b8a19bc56bde225ac3`, recorded as clean inside each
-JSON file.
+This directory contains machine-readable outputs for the R0.21 finite-time
+remainder study.  Each JSON file records its own clean source commit.
+
+## Cone-frequency cancellation certificate
+
+`cone-frequency-cancellation.json` comes from
+`research/cone_frequency_cancellation_audit.py` at clean source commit
+`3440e29c265e1289e0718b7cbd6c0ea39f264130`.  Exact rational arithmetic
+certifies that the eight signed input labels are the vertices of a linearly
+transformed cube.  Hence the exact `L`-leaf support has `(L + 1)^3` labels;
+after the zero Fourier mode is removed, even leaf counts have one fewer mode.
+The archived run verifies the support through 13 leaves and audits the
+diagonal/transverse frequency decomposition on 11,024 generated labels.
+
+The accompanying operator lemma proves that incompressibility and a
+longitudinal seminorm remove the apparent shell factor mode by mode,
+including charge-zero outputs.  This certificate does not yet close the
+infinite analytic sequence norm or the Taylor remainder.
 
 ## Exact certificate
 
@@ -42,6 +56,10 @@ Navier--Stokes regularity, singularity, or cascade statement.
 ## Reproduction
 
 ```sh
+PYTHONPATH=research python3.12 research/cone_frequency_cancellation_audit.py \
+  --check --pretty --progress --maximum-leaves 13 \
+  --output tmp/r021-cone-frequency-cancellation.json
+
 PYTHONPATH=research python3.12 research/viscous_target_taylor_audit.py \
   --check --pretty --progress --output tmp/r021-viscous-target-order7.json
 

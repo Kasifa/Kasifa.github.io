@@ -30,3 +30,9 @@ These rules apply to reader-facing text in `public/`, page metadata, research no
 - Record hardware, thread/process counts, precision, solver tolerances, and wall time in each experiment manifest.
 - Long simulations must expose progress rather than run as a silent process. Preserve a timestamped solver log and a resource log, report meaningful stage/step/residual/CFL/checkpoint/ETA information to the user, and record failures or restarts instead of overwriting them.
 - A DGX Spark is available for suitable workloads. Before requesting it, state why the workload benefits from the DGX, the expected runtime and storage, required software, and the data/code transfer plan.
+- In this local checkout, read `.codex/dgx.local.md` for the DGX endpoint when that ignored file exists. Never commit machine credentials or copy the password into scripts, logs, manifests, or shell history.
+- Before launching a DGX job, inspect current GPU processes, memory, disk space, and load. Do not interrupt or compete heavily with another user's workload without confirmation.
+- Prefer a pinned GPU container over changing the DGX host Python environment. Record the image tag and digest with the run.
+- Store each remote run under `~/dgx-jobs/<project>/runs/<run-id>/` with separate `config/`, `logs/`, `checkpoints/`, and `results/` directories. A run ID must be unique and stable across restarts.
+- Long DGX jobs must write periodic, versioned checkpoints. Write each checkpoint to a temporary path, validate it, then atomically rename it into place. On restart, load the newest valid checkpoint and append to the existing log rather than overwriting it.
+- Use a detached session or container for offline work, but keep the PID/container ID, launch command, source commit, input checksums, random seeds, and resume command in the run manifest.

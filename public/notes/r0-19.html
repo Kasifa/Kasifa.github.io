@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.19：在 R0.18 驻点根盒上认证共同转动二阶块，并由精确分块证明所选五变量第五阶模型的 Hessian 正定。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.19｜完整五维 Hessian 的根盒证书">
+  <meta property="og:description" content="共同转动块与反对称块在驻点处精确解耦；两个区间 Sylvester 下界证明所选五变量 Hessian 正定。">
+  <meta property="og:image" content="https://kasifa.github.io/og-r0-2.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.19｜完整五维 Hessian 的根盒证书</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      color-scheme:light dark;
+      --ink:#27221d; --muted:#675f55; --paper:#f2eddf; --paper2:#e9e1d1;
+      --red:#8a302c; --green:#435946; --gold:#8a6b32;
+      --line:rgba(39,34,29,.3); --bar:rgba(242,237,223,.97); --width:960px;
+    }
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --ink:#eee7d8; --muted:#bcb19e; --paper:#171816; --paper2:#22241f;
+        --red:#ee8b7c; --green:#9fbea2; --gold:#d9b567;
+        --line:rgba(238,231,216,.26); --bar:rgba(23,24,22,.96);
+      }
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Georgia,"Songti SC","STSong","Noto Serif CJK SC",serif;
+      font-size:17px; line-height:1.82; letter-spacing:.006em;
+    }
+    a { color:var(--red); text-underline-offset:.2em; }
+    a:hover { color:var(--ink); }
+    code,.mono { font-family:"SFMono-Regular",Consolas,monospace; }
+    code { padding:.08em .28em; border-bottom:1px solid var(--line); font-size:.88em; }
+    .topline { height:5px; background:var(--ink); }
+    .bar { position:sticky; z-index:10; top:0; border-bottom:3px double var(--ink); background:var(--bar); }
+    .bar-inner {
+      width:min(calc(100% - 32px),var(--width)); min-height:58px; margin:0 auto;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+    }
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status-item span,th {
+      font-family:"SFMono-Regular",Consolas,monospace;
+    }
+    .brand { color:var(--ink); font-size:12px; font-weight:700; letter-spacing:.04em; text-decoration:none; text-transform:uppercase; }
+    .bar nav { display:flex; gap:18px; font-size:12px; }
+    .hero { border-bottom:3px double var(--ink); }
+    .hero-inner {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:70px 0 58px;
+      display:grid; grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);
+      gap:60px; align-items:end;
+    }
+    .eyebrow,.section-no { color:var(--red); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    h1,h2,h3 { color:var(--ink); font-family:Georgia,"Songti SC","STSong",serif; }
+    h1 { margin:12px 0 22px; font-size:clamp(2.5rem,6vw,5rem); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    h2 { margin:8px 0 18px; font-size:clamp(1.9rem,4vw,3rem); font-weight:400; line-height:1.14; }
+    h3 { margin:36px 0 12px; font-size:1.25rem; }
+    .lead { max-width:700px; margin:0; color:var(--muted); font-size:1.12rem; }
+    .stamp { padding:22px; border:3px double var(--ink); }
+    .stamp strong { display:block; margin:8px 0; font-size:1.35rem; font-weight:500; }
+    .stamp p { margin:0; color:var(--muted); font-size:13px; }
+    .stamp .state { display:block; color:var(--red); font:700 12px/1.4 "SFMono-Regular",Consolas,monospace; }
+    .layout {
+      width:min(calc(100% - 32px),var(--width)); margin:0 auto; padding:62px 0 110px;
+      display:grid; grid-template-columns:176px minmax(0,1fr); gap:58px;
+    }
+    .toc { position:sticky; top:88px; align-self:start; font-size:12px; line-height:1.55; }
+    .toc strong { display:block; margin-bottom:10px; color:var(--red); letter-spacing:.1em; }
+    .toc ol { margin:0; padding:0; border-top:1px solid var(--ink); list-style:none; }
+    .toc li { margin:0; border-bottom:1px solid var(--line); }
+    .toc a { display:block; padding:9px 2px; color:var(--muted); text-decoration:none; }
+    article { min-width:0; }
+    section { scroll-margin-top:86px; margin-bottom:82px; }
+    p { max-width:760px; }
+    li+li { margin-top:.55rem; }
+    .equation { overflow-x:auto; margin:24px 0; padding:22px; border:3px double var(--ink); background:var(--paper2); text-align:center; }
+    .proof { margin:24px 0; padding:19px 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-left:3px solid var(--red); }
+    .proof strong { display:block; margin-bottom:7px; }
+    .warning { border-left-color:var(--gold); }
+    .result { border:3px double var(--red); }
+    .status-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:26px 0; border-top:1px solid var(--ink); }
+    .status-item { padding:18px 20px; border-bottom:1px solid var(--ink); }
+    .status-item:nth-child(odd) { border-right:1px solid var(--line); }
+    .status-item span { display:block; color:var(--green); font-size:11px; font-weight:700; }
+    .status-item strong { display:block; margin:4px 0; }
+    .status-item p { margin:0; color:var(--muted); font-size:14px; }
+    .table-wrap { overflow-x:auto; margin:24px 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th,td { padding:11px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { border-bottom-color:var(--ink); font-size:10px; letter-spacing:.03em; }
+    tr:last-child td { border-bottom:0; }
+    .refs { margin:0; padding:0; list-style:none; counter-reset:refs; }
+    .refs li { position:relative; padding:14px 8px 14px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+    .refs li::before { counter-increment:refs; content:"[" counter(refs) "]"; position:absolute; left:3px; color:var(--red); font-family:monospace; }
+    footer { padding:36px 20px; border-top:4px solid var(--red); background:#27221d; color:#cfc5b3; }
+    footer div { width:min(100%,var(--width)); margin:0 auto; display:flex; justify-content:space-between; gap:28px; font-size:13px; }
+    footer strong { color:#f2eddf; } footer a { color:#d6b56d; }
+    @media (max-width:760px) {
+      .bar nav a:not(:last-child) { display:none; }
+      .hero-inner { grid-template-columns:1fr; gap:34px; padding:52px 0 46px; }
+      .layout { grid-template-columns:1fr; gap:36px; padding-top:42px; }
+      .toc { position:static; }
+    }
+    @media (max-width:520px) {
+      body { font-size:16px; } .status-grid { grid-template-columns:1fr; }
+      .status-item:nth-child(odd) { border-right:0; } .equation { padding:18px 12px; }
+      footer div { flex-direction:column; }
+    }
+    @page { size:A4; margin:12mm 14mm; }
+    @media print {
+      .bar,.toc { display:none; }
+      html,body,main,.layout,article { height:auto; margin-bottom:0; padding-bottom:0; }
+      body { background:white; color:black; font-size:9.2pt; }
+      .hero-inner,.layout { display:block; width:100%; padding:20px 0; }
+      .hero-inner { padding-top:8px; } .stamp { margin-top:22px; }
+      section { break-inside:auto; margin-bottom:24px; }
+      h2,h3,.section-no { break-after:avoid; break-inside:avoid; }
+      .equation,.proof,.status-item,table { break-inside:avoid; }
+      section#common,section#full,section#reproduce { break-inside:avoid; }
+      section#meaning { break-before:page; }
+      .equation { margin:16px 0; padding:15px; } .proof { margin:16px 0; padding:13px 16px; }
+      th,td { padding:7px 8px; } .refs li { padding-top:9px; padding-bottom:9px; }
+      .refs li { break-inside:avoid; }
+      article>section:last-child { margin-bottom:0; } footer { display:none!important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav aria-label="笔记导航">
+      <a href="#result">结论</a><a href="#references">资料</a>
+      <a href="/notes/r0-19.pdf">PDF</a><a href="/">返回主页</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.19 · 完整局部二阶证书</div>
+        <h1>完整五维 Hessian 的根盒证书</h1>
+        <p class="lead">
+          我把 R0.18 尚未转移的两个共同转动方向写成锥形变量下的精确二阶 jet。
+          共同转动块在包含唯一驻点的有理盒上满足两个严格 Sylvester 下界；
+          它与 R0.18 的反对称三变量块精确解耦，所以所选五变量第五阶模型的 Hessian 在该点正定。
+        </p>
+      </div>
+      <div class="stamp">
+        <span class="state">笔记状态 · 所选五变量族的严格局部极小已证明</span>
+        <strong>横向二阶缺口已关闭</strong>
+        <p>版本 v0.19 · 2026-08-17</p>
+        <p>目标域：\(\mathbb T^3_{2\pi}\)</p>
+        <p>对象：第五阶有限代数模型</p>
+      </div>
+    </div></header>
+
+    <div class="layout">
+      <aside class="toc" aria-label="目录">
+        <strong>CONTENTS</strong>
+        <ol>
+          <li><a href="#result">00 · 结果边界</a></li>
+          <li><a href="#coordinates">01 · 锥形坐标</a></li>
+          <li><a href="#jets">02 · 二阶 jet</a></li>
+          <li><a href="#decoupling">03 · 精确分块</a></li>
+          <li><a href="#common">04 · 共同转动块</a></li>
+          <li><a href="#full">05 · 五维正定性</a></li>
+          <li><a href="#certificate">06 · 区间证书</a></li>
+          <li><a href="#meaning">07 · 含义与边界</a></li>
+          <li><a href="#next">08 · 下一步</a></li>
+          <li><a href="#reproduce">09 · 复现</a></li>
+          <li><a href="#references">10 · 资料</a></li>
+        </ol>
+      </aside>
+
+      <article>
+        <section id="result">
+          <div class="section-no">00 / Result boundary</div>
+          <h2>唯一反对称驻点也是五变量严格局部极小</h2>
+          <div class="status-grid">
+            <div class="status-item"><span>PROVED</span><strong>共同一阶导数恒为零</strong><p>总能量和目标能量的两个共同转动一阶 jet 都是零多项式。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>共同转动块正定</strong><p>根盒上的第一主子式与行列式都有严格正的有理下界。</p></div>
+            <div class="status-item"><span>PROVED</span><strong>所选五变量 Hessian 正定</strong><p>共同 \(2\times2\) 块与 R0.18 的反对称 \(3\times3\) 块精确直和。</p></div>
+            <div class="status-item"><span>OPEN</span><strong>全局有限模型与 PDE</strong><p>其他正参数根、边界族、Taylor 余项和逐壳动力学仍未关闭。</p></div>
+          </div>
+          <div class="proof result">
+            <strong>本笔记的严格结论。</strong>
+            令 \(R_5\) 为 R0.18 的第五阶外部/目标能量比，并把四个实极化图坐标写成
+            \[
+              (t_P,t_Q,t_B,t_D)=(p+a,-p+a,q+b,-q+b).
+            \]
+            R0.18 根盒中的唯一解 \(z_*=(p_*,q_*,x_*)\) 使
+            \((a,b,p,q,x)=(0,0,z_*)\) 成为完整五变量驻点。该点的五维 Hessian 正定，
+            因而它是 \(R_5\) 在这个实五变量族中的严格局部极小点。
+          </div>
+          <p>
+            这里的“完整五维”只指四个实极化图坐标与一个振幅比变量。
+            固定相位、成对等幅和第五阶截断仍是模型定义的一部分；结论不是无限维流场空间中的局部极小定理。
+          </p>
+        </section>
+
+        <section id="coordinates">
+          <div class="section-no">01 / Rational conic coordinates</div>
+          <h2>锥形参数消去归一化平方根</h2>
+          <p>在包含 R0.18 根盒的正图上取</p>
+          <div class="equation">
+            \[
+              p=\frac{24m}{1-12m^2},\qquad
+              q=\frac{6n}{1-3n^2}.
+            \]
+          </div>
+          <p>相应单位归一化成为有理函数：</p>
+          <div class="equation">
+            \[
+              \left(1+\frac{p^2}{12}\right)^{-1/2}
+              =\frac{1-12m^2}{1+12m^2},\qquad
+              \left(1+\frac{q^2}{3}\right)^{-1/2}
+              =\frac{1-3n^2}{1+3n^2}.
+            \]
+          </div>
+          <p>使用的有理盒是</p>
+          <div class="equation mono">
+            m = 0.1716124717231649792322098060756778843147 ± 10<sup>−31</sup><br>
+            n = 0.4270777907121979939963535079546579738415 ± 10<sup>−31</sup><br>
+            x = 2.62090432267919812131281111489559215 ± 10<sup>−30</sup>
+          </div>
+          <p>
+            两个锥形映射在此盒上严格递增。用有理端点直接代入后，所得 \(p,q\) 区间包含
+            R0.18 的半径 \(10^{-30}\) 根盒，因此 R0.18 的唯一驻点确实落在这里。
+          </p>
+        </section>
+
+        <section id="jets">
+          <div class="section-no">02 / Exact second jets</div>
+          <h2>六个导数指标一起传播到第五阶</h2>
+          <p>传播的多重指标是</p>
+          <div class="equation">
+            \[
+              (0,0),(1,0),(0,1),(2,0),(1,1),(0,2),
+            \]
+          </div>
+          <p>
+            分别对应基值、两个共同一阶导数和三个共同二阶导数。
+            先对每个带 \(\delta\) 的单位极化作微分，再进入完整有符号 Laurent 树；
+            这样不会把共同平移误当成反对称图内的切向变化。
+          </p>
+          <p>
+            若一个能量配对含 \(s\) 个催化叶，导数指标为 \((\alpha,\beta)\)，
+            则清分母后的共同因子是
+          </p>
+          <div class="equation">
+            \[
+              (1+12m^2)^{5(12-s)+2\alpha}
+              (1+3n^2)^{5s+2\beta}.
+            \]
+          </div>
+          <p>
+            这个因子只依赖叶数和导数指标，所以同一节点的加法可以保持为精确二元稀疏多项式。
+            聚合后共有 334 个被某个 jet 激活的频率；六组 jet 的全部负 Laurent 幂都逐项精确消失。
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>能量 jet</th><th>稀疏项数</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr><td>目标基值</td><td>3,321</td><td>精确有理多项式</td></tr>
+              <tr><td>外部基值</td><td>14,847</td><td>精确有理多项式</td></tr>
+              <tr><td>目标三个共同二阶 jet</td><td>11,443</td><td>精确有理多项式</td></tr>
+              <tr><td>外部三个共同二阶 jet</td><td>51,473</td><td>精确有理多项式</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="decoupling">
+          <div class="section-no">03 / Exact block decoupling</div>
+          <h2>混合块消失不是浮点近似</h2>
+          <p>以 \(T\) 表示目标能量分子、\(E\) 表示外部能量分子。精确传播给出恒等式</p>
+          <div class="equation">
+            \[
+              T_a=T_b=E_a=E_b=0
+              \quad\text{在整个反对称图 }(a,b)=(0,0)\text{ 上}.
+            \]
+          </div>
+          <p>
+            因而 \((R_5)_a=(R_5)_b=0\) 也是关于 \((p,q,x)\) 的恒等式。
+            再对 \(p,q,x\) 微分，得到共同方向与反对称—振幅方向之间的六个混合二阶导数全部为零。
+          </p>
+          <div class="proof">
+            <strong>分块形式。</strong>
+            在任一反对称点，按坐标 \((a,b\mid p,q,x)\) 排列，
+            \[
+              D^2R_5=
+              \begin{pmatrix}H_{\rm com}&amp;0\\0&amp;H_{\rm anti}\end{pmatrix}.
+            \]
+            这一步使用零多项式恒等式，而不是在一个十进制点上观察到很小的数。
+          </div>
+        </section>
+
+        <section id="common">
+          <div class="section-no">04 / Common-rotation block</div>
+          <h2>两个区间 Sylvester 下界都严格为正</h2>
+          <p>由于共同一阶导数恒为零，二阶商可以写成</p>
+          <div class="equation">
+            \[
+              H_{\rm com}=\frac1{T^2}
+              \begin{pmatrix}A&amp;B\\B&amp;C\end{pmatrix},
+              \quad
+              \begin{aligned}
+                A&amp;=E_{aa}T-ET_{aa},\\
+                B&amp;=E_{ab}T-ET_{ab},\\
+                C&amp;=E_{bb}T-ET_{bb}.
+              \end{aligned}
+            \]
+          </div>
+          <p>根盒中心的十进制显示值是</p>
+          <div class="equation">
+            \[
+              H_{\rm com}(c)\approx
+              \begin{pmatrix}
+                0.8956390641009896 &amp; -0.1029504851453479\\
+                -0.1029504851453479 &amp; 0.5692883344579973
+              \end{pmatrix},
+            \]
+            \[
+              \det H_{\rm com}(c)\approx0.4992780686859093.
+            \]
+          </div>
+          <p>精确有理区间运算在整个锥形根盒上给出</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Sylvester 量</th><th>严格下界</th><th>结论</th></tr></thead>
+            <tbody>
+              <tr><td>\((H_{\rm com})_{11}\)</td><td>&gt; 0.89563906410098</td><td>正</td></tr>
+              <tr><td>\(\det H_{\rm com}\)</td><td>&gt; 0.49927806868590</td><td>正</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            目标能量 \(T\) 在盒上保持正值。因此 Sylvester 判据证明
+            \(H_{\rm com}\) 在整个盒上正定，而不只是在中心正定。
+          </p>
+        </section>
+
+        <section id="full">
+          <div class="section-no">05 / Full five-variable Hessian</div>
+          <h2>两个正定块在唯一驻点处组成正定直和</h2>
+          <p>R0.18 已在同一个唯一根盒上证明</p>
+          <div class="equation">
+            \[
+              H_{\rm anti}(c)\approx
+              \begin{pmatrix}
+              2.2093856511 &amp; 0.0587009264 &amp; 0.5250754167\\
+              0.0587009264 &amp; 0.4944217362 &amp; -0.2286763835\\
+              0.5250754167 &amp; -0.2286763835 &amp; 0.9313260155
+              \end{pmatrix},
+            \]
+          </div>
+          <p>
+            并以区间严格对角占优证明 \(H_{\rm anti}(z_*)\) 正定。
+            第 3 节给出混合块为零，第 4 节给出 \(H_{\rm com}(z_*)\) 正定，所以
+          </p>
+          <div class="equation">
+            \[
+              D^2R_5(0,0,z_*)
+              =H_{\rm com}(z_*)\oplus H_{\rm anti}(z_*)\succ0.
+            \]
+          </div>
+          <p>
+            R0.18 的三个驻点方程为零，而本笔记的两个共同一阶导数恒为零；
+            因此这个 Hessian 确实位于五变量驻点，而不是位于邻近的非驻点。
+            标准二阶充分条件随后给出第 0 节的严格局部极小结论。
+          </p>
+        </section>
+
+        <section id="certificate">
+          <div class="section-no">06 / Factorized interval certificate</div>
+          <h2>保留分母结构，避免展开巨型三元多项式</h2>
+          <p>
+            直接把所有能量 jet 通分并展开成 \((m,n,x)\) 多项式会产生很大的中间对象。
+            本次证书保留第 2 节的正分母因子，只对每个原始二元稀疏多项式 \(P(m,n)\) 作
+          </p>
+          <div class="equation">
+            \[
+              P(B)\subset P(c)+[-1,1]
+              \left(\sup_B|P_m|\,r_m+\sup_B|P_n|\,r_n\right).
+            \]
+          </div>
+          <p>
+            导数上界由系数绝对值与正盒端点逐项得到；\(x\) 的幂、两个正分母和能量组合
+            再用有理区间四则运算包围。最后直接计算
+            \(A_{\min}/T_{\max}^2\) 与
+            \((A_{\min}C_{\min}-\max|B|^2)/T_{\max}^4\)。
+          </p>
+          <div class="proof warning">
+            <strong>证书范围。</strong>
+            区间半径很小，但“小”本身不是证明。这里每个端点、导数上界、分母界和最终符号都是有理数；
+            十进制只用于页面显示。脚本同时保存各能量 jet 与两个最终下界的 SHA-256 摘要。
+          </div>
+        </section>
+
+        <section id="meaning">
+          <div class="section-no">07 / Meaning and limits</div>
+          <h2>局部五维代数问题已经关闭，全局与 PDE 问题仍然分开</h2>
+          <h3>已经证明</h3>
+          <ul>
+            <li>R0.18 的唯一反对称驻点在两个共同转动方向上也是驻点。</li>
+            <li>该点在所选四个实极化图坐标与振幅比组成的五变量族中是严格局部极小。</li>
+            <li>结论来自根盒上的精确区间证书，不依赖邻近有理点的连续性猜测。</li>
+          </ul>
+          <h3>尚未证明</h3>
+          <ul>
+            <li>没有枚举正参数区域中的全部驻点，也没有比较边界退化族，因此没有有限模型的全局最优结论。</li>
+            <li>没有放开全部复相位、独立叶振幅或其他频率几何。</li>
+            <li>没有估计第五阶 Taylor 余项、粘性热项、稠密包近似误差或逐壳重复。</li>
+            <li>没有得到三维 Navier–Stokes 的正则性或有限时奇性结论。</li>
+          </ul>
+        </section>
+
+        <section id="next">
+          <div class="section-no">08 / Next</div>
+          <h2>下一步转向正参数区域的根与边界枚举</h2>
+          <ol>
+            <li>给 \((m,n,x)\) 选定明确的正参数紧区域，并列出所有分母奇异面与退化边界。</li>
+            <li>用高精度同伦或消元生成全部内部候选，再用有理 Krawczyk 盒逐个认证或排除。</li>
+            <li>按边界余维分层求驻点，比较目标比并检查无穷端的渐近族。</li>
+            <li>只有有限模型的全局比较稳定后，才开始第五阶余项与 PDE 动力学误差计划。</li>
+          </ol>
+          <p>
+            根枚举适合本机多进程精确/多精度计算，不需要 DGX。
+            进入大网格三维谱仿真、参数扫描或神经算子辅助探索时，再评估 DGX Spark；
+            所有正式仿真会保留进度、资源、检查点、原始数据与期刊级附图包。
+          </p>
+        </section>
+
+        <section id="reproduce">
+          <div class="section-no">09 / Reproduction</div>
+          <h2>复现命令、算术后端与运行信息</h2>
+          <p>
+            共同转动 jet、Laurent 聚合、能量二阶块和根盒区间证书位于
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/common_rotation_symbolic_hessian_audit.py"><code>research/common_rotation_symbolic_hessian_audit.py</code></a>。
+          </p>
+          <div class="equation mono">
+            python3 -m pip install -r requirements-research.txt<br>
+            python3 research/common_rotation_symbolic_hessian_audit.py --check --pretty --progress
+          </div>
+          <p>
+            本次验证使用 Python 3.12.13、SymPy 1.14.0 与 gmpy2 2.3.1；
+            <code>fractions.Fraction</code> 后端保留为较慢的独立精确路径。
+            运行主机为 Apple M5 Max（18 核 CPU、36 GiB 统一内存），算法本身为单进程精确稀疏代数。
+            GMP 路径墙钟时间为 11 小时 2 分 1.38 秒（39,721.38 秒）；
+            峰值常驻内存为 11.62 GiB（12,482,297,856 字节），运行期间没有使用交换空间。
+          </p>
+          <p>
+            R0.18 的三变量根盒与反对称 Hessian 证书位于
+            <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/antisymmetric_symbolic_quotient_audit.py"><code>research/antisymmetric_symbolic_quotient_audit.py</code></a>。
+            两个脚本的结论在第 5 节通过精确零混合块拼接。
+          </p>
+        </section>
+
+        <section id="references">
+          <div class="section-no">10 / Notes and sources</div>
+          <h2>资料</h2>
+          <ol class="refs">
+            <li><a href="/notes/r0-18.html">R0.18：三变量驻点的 Krawczyk 证书</a>。本笔记使用其唯一根盒与反对称 \(3\times3\) Hessian 证书。</li>
+            <li><a href="/notes/r0-17.html">R0.17：分离极化尺度与正定联合 Hessian</a>。共同转动块的邻近有理点数据用于独立数值核对。</li>
+            <li>C. Fefferman, <a href="https://www.claymath.org/wp-content/uploads/2022/05/MPPc.pdf">Existence and Smoothness of the Navier-Stokes Equation</a>。这里用于核对千禧年问题的正式范围。</li>
+            <li><a href="https://github.com/Kasifa/Kasifa.github.io">公开仓库与版本记录</a>。HTML、PDF、精确脚本与仿真附图规范保持在同一仓库中。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer><div>
+    <strong>Navier–Stokes 开放研究日志 · R0.19</strong>
+    <span><a href="/">研究综述</a> · <a href="/notes/r0-19.pdf">同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span>
+  </div></footer>
+</body>
+</html>

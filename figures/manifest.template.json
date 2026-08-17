@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "study-figure-id",
+  "status": "draft",
+  "analyticalQuestion": "What precise comparison does this figure answer?",
+  "supportedClaim": "One sentence, no broader than the plotted evidence.",
+  "createdAt": "YYYY-MM-DDTHH:MM:SS+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "FULL_COMMIT_SHA",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "simulation",
+    "command": "python3 research/example.py --config ...",
+    "configuration": "config.json",
+    "randomSeed": null,
+    "precision": "float64",
+    "solver": "name and version",
+    "tolerances": {},
+    "wallTimeSeconds": null,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 60,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": "checkpoints/state-*.npz",
+      "trackedFields": [
+        "step",
+        "physicalTime",
+        "residual",
+        "cfl",
+        "checkpoint",
+        "estimatedSecondsRemaining"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local-workstation-or-dgx-spark",
+    "operatingSystem": "",
+    "cpu": "",
+    "gpu": "",
+    "memoryGiB": null,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "",
+    "packagesLock": "requirements-research.txt"
+  },
+  "data": [
+    {
+      "path": "data.csv",
+      "format": "csv",
+      "schema": "Describe columns, units, and row grain.",
+      "bytes": null,
+      "sha256": ""
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Timestamped solver progress, numerical diagnostics, checkpoints, and ETA.",
+      "bytes": null,
+      "sha256": ""
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Wall time, CPU, resident memory, GPU utilization, GPU memory, and temperature when available.",
+      "bytes": null,
+      "sha256": ""
+    }
+  ],
+  "sourceData": [],
+  "figure": {
+    "script": "plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 85,
+    "outputs": [
+      {"path": "figure.pdf", "sha256": ""},
+      {"path": "figure.svg", "sha256": ""},
+      {"path": "figure.png", "dpi": 600, "sha256": ""}
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": ""
+  },
+  "qa": {
+    "status": "pending",
+    "finalSizeInspected": false,
+    "grayscaleInspected": false,
+    "labelsAndLegendsInspected": false,
+    "scalesAndUnitsInspected": false,
+    "dataCrossChecked": false,
+    "notes": ""
+  }
+}

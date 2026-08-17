@@ -38,6 +38,7 @@ import json
 import math
 from pathlib import Path
 import platform
+import subprocess
 import sys
 import time
 from typing import Iterable
@@ -74,6 +75,18 @@ def sha256(path: Path) -> str:
         for block in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(block)
     return digest.hexdigest()
+
+
+def git_source_state() -> dict[str, object]:
+    commit = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], text=True
+    ).strip()
+    dirty = bool(
+        subprocess.check_output(
+            ["git", "status", "--porcelain"], text=True
+        ).strip()
+    )
+    return {"commit": commit, "dirty": dirty}
 
 
 def compositions(total: int, length: int) -> Iterable[Degree]:
@@ -704,6 +717,7 @@ def audit(levels: list[int], show_progress: bool) -> dict[str, object]:
             "numpy": np.__version__,
             "platform": platform.platform(),
         },
+        "git": git_source_state(),
         "wallSeconds": time.perf_counter() - started,
     }
 

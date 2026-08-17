@@ -142,4 +142,3 @@ repeatable shell cascade.
 4. Run a finite-shell benchmark before attempting a shell-uniform proof.
 5. Publish a formal R0.21 note only after Gate C either closes or yields a
    precise obstruction.
-

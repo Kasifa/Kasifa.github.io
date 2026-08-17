@@ -133,6 +133,7 @@ def audit(
             "numpy": np.__version__,
             "platform": platform.platform(),
         },
+        "git": exact.git_source_state(),
         "wallSeconds": time.perf_counter() - started,
     }
 

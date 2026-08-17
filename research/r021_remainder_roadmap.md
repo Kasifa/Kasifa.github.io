@@ -62,8 +62,9 @@ A black-box Sobolev or Fourier-Wiener estimate bounds the derivative in the
 quadratic term by \(|K|=O(\delta^{-1})\).  Its certified time interval
 therefore shrinks with the shell level and cannot reach a fixed positive
 \(\tau\).  The computed coefficients do not show this growth: through order
-12 their Fourier \(\ell^1\) sizes converge as \(n\) increases.  The missing
-ingredient is the leading collinearity cancellation.  For nonzero charges
+12 their Fourier \(\ell^1\) sizes converge as \(n\) increases.  The first
+missing ingredient was the leading collinearity cancellation.  For nonzero
+charges
 \(c_1,c_2\), incompressibility rewrites
 
 \[
@@ -71,24 +72,34 @@ ingredient is the leading collinearity cancellation.  For nonzero charges
   =\left(\beta_2-\frac{c_2}{c_1}\beta_1\right)\cdot u_1,
 \]
 
-so the apparent \(\delta^{-1}\) loss disappears.  Charge-zero outputs need a
-separate invariant-subspace argument.  Proving a uniform version of this
-identity is the next analytic bottleneck.
+so the apparent \(\delta^{-1}\) loss disappears.
+
+The Gate A frequency audit now proves two additional exact facts.  First, in
+a rational charge-offset coordinate system the eight signed inputs are the
+vertices of a linearly transformed cube.  The exact \(L\)-leaf support has
+\((L+1)^3\) labels, with only the zero mode removed for even \(L\).  Second,
+a longitudinal seminorm closes the Leray projection estimate in both the
+charged and charge-zero output sectors without any negative power of
+\(\delta\).  The remaining analytic bottleneck is no longer modewise cone
+geometry; it is the convolution estimate in an infinite analytic sequence
+space, including the controlled loss of analytic radius.
 
 ## Proof sequence
 
 ### Gate A: cone-frequency algebra
 
-- Define a weighted sequence space for the charge-offset labels \((c,\beta)\).
-- Include the first longitudinal \(\delta\)-jet needed by incompressibility.
-- Prove that the charge-zero sector remains perpendicular to the common
-  diagonal direction.
-- Prove heat and Leray-bilinear bounds whose constants do not grow like
-  \(\delta^{-1}\).
+- [x] Identify the exact transformed-cube support and prove cubic support
+  growth.
+- [x] Include the longitudinal seminorm needed by incompressibility.
+- [x] Prove modewise heat and Leray-bilinear bounds with no negative power of
+  \(\delta\), including the charge-zero output sector.
+- [ ] Define the analytic sequence weights and prove the convolution bound
+  with a quantified radius loss.
 
-Failure condition: if the charge-zero sector produces an unavoidable
-\(\delta^{-1}\) factor, the present sparse cone family cannot support a
-shell-uniform Taylor argument.
+The proposed failure condition did not occur: the charge-zero sector does
+not force an unavoidable \(\delta^{-1}\) factor.  This does not yet prove a
+shell-uniform Taylor argument because the label multipliers still have to be
+summed in the weighted sequence norm.
 
 ### Gate B: a posteriori approximate solution
 
@@ -135,8 +146,8 @@ repeatable shell cascade.
 
 ## Immediate implementation tasks
 
-1. Turn the charge-offset cancellation into an exact operator lemma and unit
-   tests for all interactions generated through order 12.
+1. Prove the analytic-weight convolution estimate for the two-component
+   Euclidean/longitudinal mode norm.
 2. Produce a tagged order-12 approximate solution and exact residual schema.
 3. Implement the Morosi--Pizzocchero control ODE with interval arithmetic.
 4. Run a finite-shell benchmark before attempting a shell-uniform proof.

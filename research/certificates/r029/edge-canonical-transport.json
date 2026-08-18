@@ -1,0 +1,86 @@
+{
+  "checks": {
+    "aChargeSupport": {
+      "minimumAllowedCharge": -1,
+      "nonzeroCoefficients": 4761,
+      "passed": true,
+      "violations": []
+    },
+    "canonicalIdentities": {
+      "coefficientChecks": 14514,
+      "exactConvolutionInteractions": 16176149,
+      "firstFailure": null,
+      "maximumTotalDegree": 119,
+      "passed": true
+    }
+  },
+  "computation": {
+    "backend": "gmpy2.mpq (GMP GMP 6.3.0)",
+    "identityConvolutionInteractions": 16176149,
+    "recurrenceOrderedInteractions": 5484501,
+    "wallSeconds": 81.31625683400489
+  },
+  "digests": {
+    "a": "c2ebe0d0b58bd8ca63e287afe6824fc1c7c4108283cb2238ee11df2c33c4672b",
+    "expNegativeA": "a8a4b84d083e5e53e7aef1f79fbc8f770c2f0d55d07e94a9524ce9d176c6760c",
+    "u": "44dc0397627fad001d3e4fc9ee8561b094ba7e010718a27e204a97f1bd0e5df0",
+    "v": "5d64cf756a5e6202390d26581a5aa0b67782c460cb0ca7d669bf326fb3f80882"
+  },
+  "environment": {
+    "gmp": "GMP 6.3.0",
+    "gmpy2": "2.3.1",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.12.13"
+  },
+  "formalTheorem": {
+    "definitions": {
+      "U": "-12u",
+      "V": "-3v",
+      "bracket": "{f,g}=(Z d_Z f)(W d_W g)-(W d_W f)(Z d_Z g)"
+    },
+    "finiteChargeClosureObstruction": {
+      "aSupport": "a_(k,q)=0 for q<-1 and a_(0,-1)=1",
+      "chargeCoordinates": "R=Z^2W, Xi=Z^-1, L=3k-q",
+      "consequence": "no fixed finite upper set of charge sectors is closed; an invariant cone must control an infinite weighted charge ladder",
+      "transportRecurrence": "(3k-q-1)f_(k,q)=k f_(k,q+1)+lower-degree convolution terms"
+    },
+    "identities": {
+      "logCanonical": "{U,V}=UV",
+      "polynomial": "4 W u=Z v exp(-a)",
+      "ratio": "U/V=(Z/W) exp(-a)",
+      "sharpFactorization": "d=v(q+p Z exp(-a)/(4W))",
+      "transportHierarchy": "(L-m-n)(U^m V^n)={a,U^m V^n}"
+    }
+  },
+  "fractionSizes": {
+    "a": {
+      "maximumDenominatorDigits": 316,
+      "maximumNumeratorDigits": 282
+    },
+    "expNegativeA": {
+      "maximumDenominatorDigits": 323,
+      "maximumNumeratorDigits": 314
+    },
+    "u": {
+      "maximumDenominatorDigits": 317,
+      "maximumNumeratorDigits": 311
+    },
+    "v": {
+      "maximumDenominatorDigits": 319,
+      "maximumNumeratorDigits": 312
+    }
+  },
+  "git": {
+    "commit": "e4486837dd232228cafab39651eb41955621faab",
+    "dirty": false
+  },
+  "scope": {
+    "limitations": [
+      "the coefficient regression is finite, although the formal identities are all-order",
+      "the identities do not prove endpoint coefficient signs",
+      "no dominant-singularity or Navier-Stokes regularity theorem is claimed"
+    ],
+    "maximumCheckedTotalDegree": 119,
+    "result": "all-order log-canonical transport reduction with an exact finite coefficient regression"
+  }
+}

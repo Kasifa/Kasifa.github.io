@@ -545,6 +545,8 @@ test("publishes and links the all-order canonical transport reduction", async ()
   assert.match(note, /k f_\{k,q\+1\}/);
   assert.match(note, /有限扇区锥不闭合/);
   assert.match(note, /次数 119 的 GMP 计算只是独立回归，不是定理依据/);
+  assert.match(note, /16,176,149 次精确卷积相互作用/);
+  assert.match(note, /峰值常驻内存为 33\.422 MiB/);
   assert.match(note, /没有得到三维 Navier–Stokes 正则性或有限时奇性的结论/);
   assert.match(note, /r0-29-canonical-reduction\.svg/);
 });

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r029-canonical-reduction",
+  "status": "formal",
+  "analyticalQuestion": "What exact structure replaces a fixed finite charge-sector cone for the sharp negative-edge transport?",
+  "supportedClaim": "The normalized coordinates U=-12u and V=-3v obey the all-order formal identities {U,V}=UV and U/V=(Z/W) exp(-a), yielding the displayed exponential factorization. The transport equation in charge q contains k f_(k,q+1), so no fixed finite upper charge cutoff is algebraically closed. The degree-119 GMP run is an implementation regression, not the proof of these identities or an asymptotic theorem.",
+  "createdAt": "2026-08-18T18:11:45+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "e4486837dd232228cafab39651eb41955621faab",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python research/run_with_monitor.py --output /tmp/r029-resources.csv --interval 5 -- python research/edge_canonical_transport_audit.py --max-total-degree 119 --progress --progress-log /tmp/r029-progress.ndjson --check --pretty --output /tmp/r029-edge-canonical-transport.json",
+    "configuration": "maximumCheckedTotalDegree=119; four exact rational fields a,u,v,exp(-a)",
+    "randomSeed": null,
+    "precision": "exact GMP rational arithmetic",
+    "solver": "deterministic scalar formal-series recurrence; no iterative tolerance",
+    "tolerances": {
+      "coefficientIdentities": "none; exact equality of GMP rationals",
+      "chargeSupport": "none; exact integer charge indexing"
+    },
+    "wallTimeSeconds": 81.31625683400489,
+    "recurrenceOrderedInteractions": 5484501,
+    "identityConvolutionInteractions": 16176149,
+    "coefficientChecks": 14514,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 5,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": null,
+      "trackedFields": [
+        "completed formal degree",
+        "exact convolution interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 33.422
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0"
+  },
+  "data": [
+    {
+      "path": "identities.csv",
+      "format": "csv",
+      "schema": "Four all-order formal identities represented by the conceptual figure.",
+      "bytes": 253,
+      "sha256": "48103683e2959c6643421e784db8f41f281566f493d5769e3618045de91e5742"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, and completed exact-audit stage.",
+      "bytes": 2240,
+      "sha256": "5c9e94324cf4423fab562bbdbcf1da354e7e5d6d87935e8e219097204f4d2c0e"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Five-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 1463,
+      "sha256": "8d2826a5b1cc17f3e8287de5c4af1190c22956d533428475fdc294937c38abdf"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r029",
+      "fileName": "edge-canonical-transport.json",
+      "bytes": 2766,
+      "sha256": "35fa67ee2510aa4c70e85aadde070c81c170f3ad3a73b2199b5a444802d9e905",
+      "extractionCommand": "validate_data.py checks the theorem strings, degree-119 regression counts, exact support check, and clean source state"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python figures/r029-canonical-transport/fig-r029-canonical-reduction/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "198d383efbcef64900990141fc89d73c2ef2504085587b24d54e2a88e8c08f43"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "fac624c104b6f840082e2d831e8462c8aa0da23cd043256dffdef6eb85a288eb"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "95fe349453bb82324b6a3f6f5223a75db1b13df1c6a3f9f745b51a5dcfc70b77"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "固定有限电荷截断因精确的向上耦合而不闭合；右图给出尖锐输运的全阶对数辛约化与指数分解。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 72 mm; the 600 dpi PNG is 4204 by 1700 pixels. Color and Generic Gray renders were inspected at final layout. Arrow direction, dashed consequences, and box boundaries remain distinct in grayscale. validate_data.py passed the four theorem statements and the degree-119 exact audit."
+  }
+}

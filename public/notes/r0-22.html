@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.22：证明薄锥全空间解析范数具有尖锐的二阶半径损失。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.22｜解析半径二阶损失的尖锐障碍">
+  <meta property="og:description" content="壳层一致上界、达到二阶的精确模式族，以及当前证明路线的边界。">
+  <title>R0.22｜解析半径二阶损失的尖锐障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}
+    .bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#theorem">上界</a><a href="#sharp">尖锐族</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.22 · 方法障碍</div>
+        <h1>解析半径二阶损失<br>是尖锐的</h1>
+        <p class="lead">我完成了 R0.21 留下的全空间解析权卷积估计。结果不是预期的一阶损失，而是严格二阶；一个精确模式族达到这一阶数，普通热估计也不能在壳层上一致补偿。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 严格方法结论</span><strong>一阶主级数路线被排除</strong><p>版本 v0.22 · 2026-08-18</p><p>对象：全欧氏—纵向模式空间</p><p>结论：半径损失阶数恰为 2</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#lattice">01 · 锥格坐标</a></li><li><a href="#theorem">02 · 二阶上界</a></li><li><a href="#sharp">03 · 尖锐模式族</a></li><li><a href="#heat">04 · 热项</a></li><li><a href="#meaning">05 · 意义</a></li><li><a href="#next">06 · 下一步</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是对证明方法的否定结果</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>二阶上界</strong><p>常数与壳层参数无关。</p></div><div class="status"><span>PROVED</span><strong>二阶尖锐</strong><p>精确模式族达到非零二次极限。</p></div><div class="status"><span>FAILED ROUTE</span><strong>一阶解析主级数</strong><p>当前全空间范数不能支持。</p></div><div class="status"><span>OPEN</span><strong>生成系数子空间</strong><p>可能仍有额外结构抵消。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>本笔记证明全空间欧氏—纵向模式范数具有尖锐二阶解析半径损失。它没有证明所选初值的 Taylor 尾发散，也没有证明三维 Navier–Stokes 的全局正则性或有限时奇性。</div>
+        </section>
+        <section id="lattice"><div class="section-no">01 / Cone lattice</div><h2>立方体坐标把频率写成整数格</h2>
+          <p>使用 R0.21 的坐标 \(m\in\mathbb Z^3\)，三个分量具有相同奇偶性，并定义</p>
+          <div class="equation">\[r(m)=\|m\|_\infty,\qquad q(m)=\frac{3m_1-m_3}{12},\qquad |q(m)|\ge\frac16\quad(q\ne0).\]</div>
+          <p>横向偏移满足</p><div class="equation">\[|\beta(m)|^2=\frac{m_2^2+m_3^2}{2}\le r(m)^2.\]</div>
+          <p>沿用纵向半范数 \(L_\delta(v)=\delta^{-1}|(1,1,1)\cdot v|\)，并令 \(\mathcal N_\delta(v)=|v|+L_\delta(v)\)。</p>
+        </section>
+        <section id="theorem"><div class="section-no">02 / Upper bound</div><h2>壳层一致，但损失两个解析半径导数</h2>
+          <p>对有序相互作用 \(m=a+b\)，模式级估计是</p>
+          <div class="equation">\[\mathcal N_\delta(\mathcal B_m(u_a,v_b))\le(1+6r(m))r(b)\mathcal N_\delta(u_a)\mathcal N_\delta(v_b).\]</div>
+          <p>定义 \(\|u\|_{\rho,\delta}=\sum_m e^{\rho r(m)}\mathcal N_\delta(u_m)\)。若 \(\eta=\rho-\rho'&gt;0\)，则</p>
+          <div class="equation">\[\boxed{\|\mathcal B(u,v)\|_{\rho-\eta,\delta}\le\left(\frac1{e\eta}+\frac{24}{e^2\eta^2}\right)\|u\|_{\rho,\delta}\|v\|_{\rho,\delta}.}\]</div>
+          <p>这里没有负的 \(\delta\) 幂，但出现了 \(\eta^{-2}\)。</p>
+        </section>
+        <section id="sharp"><div class="section-no">03 / Sharp family</div><h2>两个同号电荷模式达到二阶增长</h2>
+          <p>对每个整数 \(N\ge2\)，取</p>
+          <div class="equation">\[a_N=(N,-3N,3N-2),\qquad b_N=(-N+1,-3N+1,-3N+1).\]</div>
+          <p>二者电荷均为 \(1/6\)，输出电荷为 \(1/3\)，并且解析半径没有任何余量：</p>
+          <div class="equation">\[r(a_N+b_N)=r(a_N)+r(b_N)=6N-1.\]</div>
+          <p>取 \(w_j=((1,1,1)\times\beta_j)/|(1,1,1)\times\beta_j|\)。两个输入范数都精确为 1，而混合行列式为</p>
+          <div class="equation">\[\beta(b_N)\cdot((1,1,1)\times\beta(a_N))=-(3N-1)^2.\]</div>
+          <p>令 \(\delta_N=4^{-N}\)，则</p>
+          <div class="equation">\[\lim_{N\to\infty}\frac{\mathcal N_{\delta_N}(\mathcal B(w_A,w_B))}{N^2}=\frac{27}{2},\qquad\lim_{N\to\infty}\frac{\mathcal N_{\delta_N}(\mathcal B(w_A,w_B)+\mathcal B(w_B,w_A))}{N^2}=27.\]</div>
+          <div class="proof warning"><strong>尖锐性。</strong>取 \(N\asymp\eta^{-1}\) 后，一阶解析半径估计不可能成立；任何统一上界至少需要 \(\eta^{-2}\) 阶。</div>
+        </section>
+        <section id="heat"><div class="section-no">04 / Heat</div><h2>普通无量纲热率没有提供二次增益</h2>
+          <p>热率为 \(3q^2+\delta^2|\beta|^2\)。沿上述 \(\delta_N\)，两个输入热率趋于 \(1/12\)，输出趋于 \(1/3\)，横向热率趋于零。因此它们不会随 \(N^2\) 增长，不能一致补偿尖锐损失。</p>
+          <div class="table-wrap"><table><thead><tr><th>参数 N</th><th>有序比值 / N²</th><th>对称比值 / N²</th></tr></thead><tbody><tr><td>21</td><td>13.06759</td><td>26.03579</td></tr><tr><td>55</td><td>13.33436</td><td>26.63038</td></tr><tr><td>89</td><td>13.39756</td><td>26.77137</td></tr><tr><td>严格极限</td><td>13.5</td><td>27</td></tr></tbody></table></div>
+        </section>
+        <section id="meaning"><div class="section-no">05 / Meaning</div><h2>这提高了判断质量，但降低了原路线成功概率</h2>
+          <p>R0.21 排除了显式 \(4^n\) 损失；R0.22 又证明，剩余标签增长在全空间里仍然达到二阶。继续机械增加 Taylor 阶数不会解决这个问题。</p>
+          <p>不过，尖锐极化 \(w_A,w_B\) 是为全空间反例专门选择的。当前尚未证明它们由原始八个极化经过真实 Taylor 递推产生。若实际生成子空间始终避开这些方向，仍可能得到更好的闭合。</p>
+        </section>
+        <section id="next"><div class="section-no">06 / Next</div><h2>下一步只检查真实生成子空间</h2>
+          <ol><li>追踪每个叶数和频率标签处真实 Taylor 系数的极化子空间。</li><li>检测尖锐标签族是否可达，以及相应极化投影是否为零或衰减。</li><li>检查两个有序根分裂与全部树历史聚合后是否抵消二阶项。</li><li>只有出现结构性改善后才恢复十二阶严格残差计划；否则把路线收束为障碍定理。</li></ol>
+        </section>
+        <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>证书与代码</h2>
+          <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r022"><code>research/certificates/r022</code></a>，干净源提交为 <code>d32f213…</code>。</p>
+          <div class="equation mono">PYTHONPATH=research python3.12 research/analytic_radius_loss_audit.py --check --pretty --progress<br>cd research/certificates/r022 &amp;&amp; shasum -a 256 -c SHA256SUMS</div>
+          <ol class="refs"><li><a href="/notes/r0-21.html">R0.21：带粘性低阶修正与薄锥抵消</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/analytic_radius_loss_lemma.md">R0.22 完整引理原稿</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/analytic_radius_loss_audit.py">精确审计程序</a>。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>Navier–Stokes 开放研究日志 · R0.22</strong><span><a href="/">研究综述</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span></div></footer>
+</body>
+</html>

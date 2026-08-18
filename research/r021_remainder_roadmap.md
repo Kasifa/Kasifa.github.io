@@ -250,10 +250,14 @@ repeatable shell cascade.
    alternating convergence, not decay.  This is finite evidence, not a
    singularity theorem.  The positive-edge first variation remains to be
    generated after the negative-edge asymptotic decision.
-7. Factor the negative-edge scalar equations into exact rational recurrences,
-   prove or refute the eventual parity sign, and obtain validated consecutive
-   coefficient-ratio bounds.  Use these bounds to locate the dominant
-   \(r\)-singularities with the charge-zero coupling included.
+7. [in progress] Factor the negative-edge scalar equations into exact rational
+   recurrences, prove or refute the eventual parity sign, and obtain validated
+   consecutive coefficient-ratio bounds.  R0.28 completes the radical-free
+   rationalization and certifies the parity sign on \(8\leq N\leq40\) and a
+   root-box ratio separation on \(18\leq N\leq40\).  These are finite
+   statements.  The remaining task is an all-\(N\) invariant cone or a later
+   interval counterexample, followed by a dominant-singularity theorem with
+   the charge-zero coupling included.
 8. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.

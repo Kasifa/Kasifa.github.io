@@ -30,6 +30,7 @@ const twentyFourthNoteUrl = new URL("../public/notes/r0-24.html", import.meta.ur
 const twentyFifthNoteUrl = new URL("../public/notes/r0-25.html", import.meta.url);
 const twentySixthNoteUrl = new URL("../public/notes/r0-26.html", import.meta.url);
 const twentySeventhNoteUrl = new URL("../public/notes/r0-27.html", import.meta.url);
+const twentyEighthNoteUrl = new URL("../public/notes/r0-28.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -512,6 +513,24 @@ test("publishes and links the scalar generating-equation audit", async () => {
   assert.match(note, /r0-27-endpoint-polarization\.svg/);
 });
 
+test("publishes and links the exact rational finite-ratio audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(twentyEighthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-28\.html"/);
+  assert.match(note, /研究笔记 R0\.28/);
+  assert.match(note, /d=pu\+qv/);
+  assert.match(note, /62214\.5105/);
+  assert.match(note, /\\rho\^D_N<\\rho\^A_N/);
+  assert.match(note, /1\.0294319301/);
+  assert.match(note, /1\.2221486618/);
+  assert.match(note, /有限窗口尚不能证明比值收敛/);
+  assert.match(note, /没有证明 \\\(\|\\sigma_\{B,N\}\|\\to1\\\)/);
+  assert.match(note, /r0-28-ratio-separation\.svg/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -524,7 +543,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -553,6 +572,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(twentyFifthNoteUrl, "utf8"),
     readFile(twentySixthNoteUrl, "utf8"),
     readFile(twentySeventhNoteUrl, "utf8"),
+    readFile(twentyEighthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -694,6 +714,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(twentySeventhNote, /我把 R0\.26/);
   assert.doesNotMatch(
     twentySeventhNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(twentyEighthNote, /我消去了负边缘递推中的根式/);
+  assert.doesNotMatch(
+    twentyEighthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.28：消去负边缘递推中的根式，以精确有理数认证 N≤40 的根盒符号与连续系数比分离。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.28｜有理化与有限比值分离">
+  <meta property="og:description" content="全阶有理递推、整个认证根盒上的有限符号定理，以及 N=18 至 40 的连续系数比分离。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-28-ratio-separation.png">
+  <title>R0.28｜有理化与有限比值分离</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#f2eddf}figcaption{margin-top:13px;color:var(--muted);font-size:13px}
+    .refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table,figure{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#rational">有理化</a><a href="#certificate">证书</a><a href="#ratios">比值</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.28 · 精确有理数</div>
+        <h1>根盒上的<br>有限比值分离</h1>
+        <p class="lead">我消去了负边缘递推中的根式与生成元，把端点写成三个有理数数组。整个认证根盒上，奇偶符号在 \(8\le N\le40\) 成立，尖锐系数比从 \(N=18\) 到 40 持续占优。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全阶恒等式 + 有限精确证书</span><strong>浮点疑问已排除，渐近定理仍未完成</strong><p>版本 v0.28 · 2026-08-18</p><p>最高叶数：119</p><p>算术：GMP 有理数</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#rational">01 · 无根号化</a></li><li><a href="#recurrence">02 · 有理递推</a></li><li><a href="#certificate">03 · 根盒符号</a></li><li><a href="#ratios">04 · 比值分离</a></li><li><a href="#meaning">05 · 严格含义</a></li><li><a href="#next">06 · 下一定理</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>有理化对全部阶成立，比值结论只到 \(N=40\)</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>全阶无根号递推</strong><p>已知叶单项式被完整提出，剩余三个数组全部属于 \(\mathbb Q\)。</p></div><div class="status"><span>PROVED</span><strong>尖锐系数线性分解</strong><p>对任意 \(p,q\)，尖锐数组精确写成 \(d=pu+qv\)。</p></div><div class="status"><span>CERTIFIED FINITE</span><strong>整个根盒上的符号与比值</strong><p>所有区间端点均由 GMP 有理数直接计算，不依赖浮点舍入。</p></div><div class="status"><span>OPEN</span><strong>最终符号与主导奇点</strong><p>有限窗口尚不能证明比值收敛，也不能定位真正的收敛半径。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>变量代换与有理递推是全阶恒等式。\(N\le40\) 的符号和连续比值是精确有限定理。这里没有证明 \(|\sigma_{B,N}|\to1\)，也没有得到三维 Navier–Stokes 正则性或有限时奇性的结论。</div>
+        </section>
+
+        <section id="rational"><div class="section-no">01 / Rationalization</div><h2>根式全部进入变量，不再进入系数</h2>
+          <p>R0.27 的首层为</p>
+          <div class="equation">\[A_1=-6\sqrt2z+3\sqrt2tw,\qquad S_1=\frac p{\sqrt2}z-\sqrt2qtw.\]</div>
+          <p>令</p>
+          <div class="equation">\[Z=-6z,\qquad W=3tw,\qquad A=\sqrt2\,a(Z,W),\qquad S=\sqrt2\,d(Z,W),\]</div>
+          <p>再把线性尖锐方程按根参数拆成</p>
+          <div class="equation">\[d=pu+qv,\qquad a_1=Z+W,\qquad u_1=-Z/12,\qquad v_1=-W/3.\]</div>
+          <p>于是 \(a,u,v\) 的全部系数都是有理数。生成元 \(t\) 只改变变量 \(W\) 的尺度，不再参与端点尖锐比。</p>
+          <p>取 \(R=Z^2W\)、\(\Xi=Z^{-1}\)，电荷一端点变成</p>
+          <div class="equation">\[a_N=[R^N\Xi]a,\qquad d_N(p,q)=[R^N\Xi]d=pu_N+qv_N.\]</div>
+          <p>端点尖锐坐标精确化为</p>
+          <div class="equation">\[\sigma_{B,N}=-\frac{d_N}{\sqrt{d_N^2+a_N^2/12}+\sqrt2(3N-1)|a_N|}.\]</div>
+          <p>这里的负号来自端点含有奇数个负泵叶。参数 \(x\) 与根式 \(t\) 已完全消失。</p>
+        </section>
+
+        <section id="recurrence"><div class="section-no">02 / Exact recurrence</div><h2>零电荷耦合被原样保留</h2>
+          <p>对根分裂，记 \(L=n+k\)、\(Q=3k-L\) 与 \(\Delta=n_1k_2-k_1n_2\)。有理数组满足</p>
+          <div class="equation">\[(L-1)a_{n,k}=\begin{cases}Q^{-1}\sum\Delta Q_2a_1a_2,&Q\ne0,\\L^{-1}\sum\Delta L_2a_1a_2,&Q=0,\end{cases}\]</div>
+          <div class="equation">\[(L-1)u_{n,k}=\sum\Delta a_1u_2,\qquad (L-1)v_{n,k}=\sum\Delta a_1v_2.\]</div>
+          <p>对应的生成方程为</p>
+          <div class="equation">\[(\mathcal L-1)a=(I-\Pi_0)\mathcal Q^{-1}\{a,\mathcal Qa\}+\Pi_0\mathcal L^{-1}\{a,\mathcal La\},\]</div>
+          <div class="equation">\[(\mathcal L-1)u=\{a,u\},\qquad(\mathcal L-1)v=\{a,v\}.\]</div>
+          <div class="proof warning"><strong>没有删掉共振切片。</strong>\(Q=0\) 仍使用独立的 \(\mathcal L^{-1}\) 项。因而本次简化不是忽略困难耦合后的近似模型。</div>
+        </section>
+
+        <section id="certificate"><div class="section-no">03 / Root-box certificate</div><h2>奇偶符号在整个认证盒上成立</h2>
+          <p>R0.20 给出中心 \((p_*,q_*)\) 与半径 \(10^{-6}\) 的认证盒。因为 \(u_N,v_N\) 都是有理数，下面的包含关系也是精确有理数区间：</p>
+          <div class="equation">\[d_N(p,q)\in d_N(p_*,q_*)\mathbin{\pm}10^{-6}(|u_N|+|v_N|).\]</div>
+          <p>GMP 计算到 \(N=40\)，即最高 119 叶，得到：</p>
+          <ol>
+            <li>\(a_N>0\) 对全部 \(1\le N\le40\) 成立。</li>
+            <li>对盒中每个 \((p,q)\) 和全部 \(8\le N\le40\)，有 \((-1)^{N+1}d_N(p,q)>0\)。</li>
+            <li>从 \(N=8\) 到 40，中心值相对根盒不确定度的最小倍数为 \(62214.5105\)。有限符号结论远离区间边界。</li>
+          </ol>
+          <p>用这些有理数重建的 \(\sigma_{B,N}\) 与 \(d_N/((3N-1)a_N)\)，在 \(N\le25\) 上与 R0.27 证书逐项一致。</p>
+        </section>
+
+        <section id="ratios"><div class="section-no">04 / Ratio separation</div><h2>尖锐数组在有限窗口内具有更小的半径代理</h2>
+          <p>定义</p>
+          <div class="equation">\[\rho^A_N=\left|\frac{a_{N-1}}{a_N}\right|,\qquad \rho^D_N=\left|\frac{d_{N-1}}{d_N}\right|,\qquad \Gamma_N=\frac{\rho^A_N}{\rho^D_N}.\]</div>
+          <p>对整个根盒和每个 \(18\le N\le40\)，精确区间都满足</p>
+          <div class="equation">\[\rho^D_N<\rho^A_N,\qquad \Gamma_N>1.\]</div>
+          <p>这段完整窗口中最小的下界是 \(\Gamma_{19}>1.0294319301\)。在更稳定的 \(N=29\) 至 40 尾段，统一区间为</p>
+          <div class="equation">\[0.9476601412\le\rho^A_N\le0.9515829735,\]</div>
+          <div class="equation">\[0.7490597436\le\rho^D_N\le0.7786147490,\qquad 1.2221486618\le\Gamma_N\le1.2697040505.\]</div>
+          <div class="table-wrap"><table><thead><tr><th>\(N\)</th><th>\(\rho^A_N\)</th><th>根盒 \(\rho^D_N\)</th><th>根盒 \(\Gamma_N\)</th></tr></thead><tbody>
+            <tr><td>18</td><td>0.961819600</td><td>[0.601415743, 0.601422719]</td><td>[1.599240551, 1.599259101]</td></tr>
+            <tr><td>19</td><td>0.960275087</td><td>[0.932809901, 0.932820384]</td><td>[1.029431930, 1.029443498]</td></tr>
+            <tr><td>25</td><td>0.954063379</td><td>[0.804582260, 0.804591294]</td><td>[1.185773928, 1.185787243]</td></tr>
+            <tr><td>30</td><td>0.951084191</td><td>[0.749059744, 0.749068183]</td><td>[1.269689747, 1.269704051]</td></tr>
+            <tr><td>35</td><td>0.949085365</td><td>[0.764359333, 0.764367932]</td><td>[1.241660365, 1.241674334]</td></tr>
+            <tr><td>40</td><td>0.947660141</td><td>[0.757364740, 0.757373265]</td><td>[1.251245833, 1.251259916]</td></tr>
+          </tbody></table></div>
+          <figure>
+            <img src="/figures/r0-28-ratio-separation.svg" alt="R0.28 根盒上的精确连续系数半径代理与相对增长因子">
+            <figcaption>图 R0.28-1。左图比较 \(\rho^A_N\) 与根盒 \(\rho^D_N\)；右图给出 \(\Gamma_N\) 的根盒区间，虚线为一。阴影标记 \(N=29\) 至 40 的紧尾段。区间是有限精确结果，不代表已经证明比值收敛。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Meaning</div><h2>这解释了 R0.27 的趋势，但还没有把趋势变成极限</h2>
+          <p>如果存在 \(\varepsilon>0\)，使 \(\Gamma_N\ge1+\varepsilon\) 对所有充分大的 \(N\) 成立，那么迭代立即给出</p>
+          <div class="equation">\[\left|\frac{d_N}{a_N}\right|\ge C(1+\varepsilon)^N,\]</div>
+          <p>继而由尖锐坐标公式得到 \(|\sigma_{B,N}|\to1\)。若奇偶符号也最终保持，则 \(\sigma_{B,N}\) 的符号为 \((-1)^N\)。</p>
+          <div class="proof warning"><strong>缺少的正是“对所有充分大的 \(N\)”这句话。</strong>当前证书只覆盖 \(N=18\) 至 40 的比值分离。有限表不能证明收敛半径，更不能排除更晚发生的反转。</div>
+          <p>本次结果能够严格排除三个疑问：R0.27 的趋势不是 MPFR 舍入造成的，不依赖根式生成元 \(t\)，也不是选取单个舍入参数点造成的。它还提示一个明确机制：尖锐系列看起来具有更近的负实奇点，而纵向系列看起来具有更远的正实奇点。后一句仍是待证明的解析解释。</p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.29</div><h2>下一步构造带奇偶扭转的无限维不变锥</h2>
+          <p>继续增加有限表的长度已经不是主要困难。下一项工作必须产生下面两种结果之一：</p>
+          <ol>
+            <li>构造包含零电荷切片及相邻电荷扇区的不变锥，证明 \(a_N>0\)、\((-1)^{N+1}d_N>0\) 与 \(\Gamma_N\ge1+\varepsilon\) 最终统一成立；</li>
+            <li>若锥不闭合，则用严格区间计算找到较晚的符号或比值反例。</li>
+          </ol>
+          <p>只有完成其中一项，才适合进入真正的主导奇点与系数转移分析。经典奇点分析说明如何从已证明的局部奇点展开得到系数渐近，但不会把有限比值表自动升级为定理。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility</div><h2>精确分数、进度记录与附图包</h2>
+          <p>正式证书保存 \(N=1\) 至 40 的全部 \(a_N,u_N,v_N,d_N\) 分数、根盒区间、连续比值、摘要界、R0.27 回归、软件环境和源提交。计算共处理 5,484,501 个有序标量相互作用。</p>
+          <div class="proof"><strong>复现命令。</strong><br><code>python research/edge_rational_asymptotic_audit.py --max-parameter 40 --tail-count 12 --progress --check --pretty --output research/certificates/r028/edge-rational-asymptotic.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_rational_asymptotic_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r028">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r028-edge-rational/fig-r028-ratio-separation">查看期刊附图包</a></p>
+          <h3>参考与前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-27.html">R0.27：标量生成方程与端点极化</a>。给出本笔记有理化的精确负边缘方程。</li>
+            <li><a href="https://algo.inria.fr/flajolet/Publications/AnaCombi/anacombi.html">Flajolet 与 Sedgewick, <em>Analytic Combinatorics</em></a>。一元奇点分析、系数增长与转移定理的系统参考。</li>
+            <li><a href="https://acsvproject.com/acsvbook/">Pemantle、Wilson 与 Melczer, <em>Analytic Combinatorics in Several Variables</em></a>。多变量系数渐近的参考框架。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.28 · 全阶恒等式与有限证书分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

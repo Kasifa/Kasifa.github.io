@@ -31,6 +31,7 @@ const twentyFifthNoteUrl = new URL("../public/notes/r0-25.html", import.meta.url
 const twentySixthNoteUrl = new URL("../public/notes/r0-26.html", import.meta.url);
 const twentySeventhNoteUrl = new URL("../public/notes/r0-27.html", import.meta.url);
 const twentyEighthNoteUrl = new URL("../public/notes/r0-28.html", import.meta.url);
+const twentyNinthNoteUrl = new URL("../public/notes/r0-29.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -531,6 +532,23 @@ test("publishes and links the exact rational finite-ratio audit", async () => {
   assert.match(note, /r0-28-ratio-separation\.svg/);
 });
 
+test("publishes and links the all-order canonical transport reduction", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(twentyNinthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-29\.html"/);
+  assert.match(note, /研究笔记 R0\.29/);
+  assert.match(note, /\\boxed\{\\\{U,V\\\}=UV\}/);
+  assert.match(note, /\\frac UV=\\frac ZW e\^\{-a\}/);
+  assert.match(note, /k f_\{k,q\+1\}/);
+  assert.match(note, /有限扇区锥不闭合/);
+  assert.match(note, /次数 119 的 GMP 计算只是独立回归，不是定理依据/);
+  assert.match(note, /没有得到三维 Navier–Stokes 正则性或有限时奇性的结论/);
+  assert.match(note, /r0-29-canonical-reduction\.svg/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -543,7 +561,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -573,6 +591,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(twentySixthNoteUrl, "utf8"),
     readFile(twentySeventhNoteUrl, "utf8"),
     readFile(twentyEighthNoteUrl, "utf8"),
+    readFile(twentyNinthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -719,6 +738,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(twentyEighthNote, /我消去了负边缘递推中的根式/);
   assert.doesNotMatch(
     twentyEighthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(twentyNinthNote, /我把两个尖锐输运数组/);
+  assert.doesNotMatch(
+    twentyNinthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

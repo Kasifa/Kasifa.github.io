@@ -250,15 +250,18 @@ repeatable shell cascade.
    alternating convergence, not decay.  This is finite evidence, not a
    singularity theorem.  The positive-edge first variation remains to be
    generated after the negative-edge asymptotic decision.
-7. [in progress] Factor the negative-edge scalar equations into exact rational
-   recurrences, prove or refute the eventual parity sign, and obtain validated
-   consecutive coefficient-ratio bounds.  R0.28 completes the radical-free
-   rationalization and certifies the parity sign on \(8\leq N\leq40\) and a
-   root-box ratio separation on \(18\leq N\leq40\).  These are finite
-   statements.  The remaining task is an all-\(N\) invariant cone or a later
-   interval counterexample, followed by a dominant-singularity theorem with
-   the charge-zero coupling included.
-8. Continue to a tagged order-12 residual only if the generated-subspace
+7. [x] Factor the negative-edge scalar equations into exact rational
+   recurrences and obtain validated finite consecutive coefficient-ratio
+   bounds.  R0.28 completes the radical-free rationalization and certifies the
+   parity sign on \(8\leq N\leq40\) and a root-box ratio separation on
+   \(18\leq N\leq40\).  These are finite statements, not an asymptotic theorem.
+8. [in progress] Use the R0.29 all-order log-canonical reduction
+   \(\{U,V\}=UV\), \(U/V=(Z/W)e^{-a}\), and the exact factorization through
+   \(a,\phi\).  The charge recurrence contains the unavoidable shift
+   \(k f_{k,q+1}\), so no fixed finite band of charge sectors closes.  R0.30
+   must either prove a weighted infinite-charge estimate or establish a
+   common analytic domain and dominant-singularity statement for \(a,\phi\).
+9. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.
 9. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only

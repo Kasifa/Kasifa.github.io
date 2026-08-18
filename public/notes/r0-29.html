@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.29：证明尖锐输运的对数辛坐标恒等式，并证明任何固定有限电荷截断都不能闭合。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.29｜典范输运与无限电荷阶梯">
+  <meta property="og:description" content="全阶对数辛恒等式、尖锐场指数分解，以及固定有限电荷截断不闭合定理。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-29-canonical-reduction.png">
+  <title>R0.29｜典范输运与无限电荷阶梯</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#canonical">典范坐标</a><a href="#factor">指数分解</a><a href="#ladder">电荷阶梯</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.29 · 全阶形式定理</div>
+        <h1>典范输运与<br>无限电荷阶梯</h1>
+        <p class="lead">我把两个尖锐输运数组化成一组对数辛坐标，并证明固定数量的电荷扇区不可能闭合。原来的有限扇区锥路线必须改成带权无限阶梯，或转向指数分解后的奇点分析。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全阶恒等式 + 精确有限回归</span><strong>输运已经正则化，端点渐近仍未证明</strong><p>版本 v0.29 · 2026-08-18</p><p>正式回归：总次数 119</p><p>算术：GMP 有理数</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#canonical">01 · 典范坐标</a></li><li><a href="#proof">02 · 乘积证明</a></li><li><a href="#ratio">03 · 比值恒等式</a></li><li><a href="#factor">04 · 指数分解</a></li><li><a href="#ladder">05 · 电荷阶梯</a></li><li><a href="#meaning">06 · 严格含义</a></li><li><a href="#next">07 · 下一定理</a></li><li><a href="#reproduce">08 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是全阶形式恒等式，不是端点渐近定理</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>对数辛坐标</strong><p>\(U=-12u\)、\(V=-3v\) 满足 \(\{U,V\}=UV\)。</p></div><div class="status"><span>PROVED</span><strong>尖锐场指数分解</strong><p>\(d\) 由 \(a\) 与一个零初值线性伸缩量 \(\phi\) 精确决定。</p></div><div class="status"><span>PROVED</span><strong>有限电荷截断不闭合</strong><p>任意固定上界都会遗漏递推必需的下一电荷扇区。</p></div><div class="status"><span>OPEN</span><strong>最终符号与主导奇点</strong><p>恒等式本身不决定高阶系数的符号或收敛半径。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>下面的代数恒等式对全部形式阶成立。次数 119 的 GMP 计算只是独立回归，不是定理依据。这里没有证明 \(\lvert\sigma_{B,N}\rvert\to1\)，也没有得到三维 Navier–Stokes 正则性或有限时奇性的结论。</div>
+        </section>
+
+        <section id="canonical"><div class="section-no">01 / Canonical coordinates</div><h2>两个输运数组组成对数辛坐标</h2>
+          <p>令 \(X=Z\partial_Z\)、\(Y=W\partial_W\)、\(\mathcal L=X+Y\)，并取</p>
+          <div class="equation">\[\{f,g\}=(Xf)(Yg)-(Yf)(Xg).\]</div>
+          <p>R0.28 的两个线性输运方程是</p>
+          <div class="equation">\[(\mathcal L-1)u=\{a,u\},\qquad(\mathcal L-1)v=\{a,v\}.\]</div>
+          <p>归一化 \(U=-12u\)、\(V=-3v\) 后，首层正好是 \(U_1=Z\)、\(V_1=W\)。全阶形式系列满足</p>
+          <div class="equation">\[\boxed{\{U,V\}=UV},\qquad\left\{\log U,\log V\right\}=1.\]</div>
+          <p>取对数前先提出首项 \(Z,W\)。因此 \((Z,W)\mapsto(U,V)\) 是近恒等的对数辛形式变换。</p>
+        </section>
+
+        <section id="proof"><div class="section-no">02 / Formal proof</div><h2>Jacobi 恒等式把证明降成唯一性</h2>
+          <p>由 Jacobi 恒等式和 \(\mathcal L\) 的导子性质，</p>
+          <div class="equation">\[(\mathcal L-2)\{U,V\}=\{a,\{U,V\}\}.\]</div>
+          <p>乘积 \(UV\) 满足完全相同的方程：</p>
+          <div class="equation">\[(\mathcal L-2)(UV)=\{a,UV\}.\]</div>
+          <p>两者的二次首项都是 \(ZW\)。在次数 \(n>2\) 上，未知项前的系数是 \(n-2\)，右侧只含更低次数。因此逐次唯一性给出 \(\{U,V\}=UV\)。</p>
+          <div class="proof"><strong>这不是有限计算归纳。</strong>计算只核对代码中的系数实现；证明使用形式次数上的唯一性，覆盖任意阶。</div>
+        </section>
+
+        <section id="ratio"><div class="section-no">03 / Ratio identity</div><h2>典范坐标之比只差一个 \(e^{-a}\)</h2>
+          <p>令 \(B=\log Z-\log W\)，则 \(\{B,F\}=\mathcal L F\)。输运方程和对数辛恒等式共同给出</p>
+          <div class="equation">\[\boxed{\frac UV=\frac ZW e^{-a}},\qquad\boxed{4Wu=Zv e^{-a}}.\]</div>
+          <p>这说明 \(u,v\) 并不是两组独立的无限数组。给定 \(a\) 和其中一个输运坐标，另一个由上式精确恢复。</p>
+        </section>
+
+        <section id="factor"><div class="section-no">04 / Exponential factorization</div><h2>尖锐场由一个伸缩量和两个指数决定</h2>
+          <p>定义零常数项系列</p>
+          <div class="equation">\[\phi=\frac12\log\frac{UV}{ZW}.\]</div>
+          <p>乘积与比值两条恒等式给出</p>
+          <div class="equation">\[U=Ze^{\phi-a/2},\qquad V=We^{\phi+a/2}.\]</div>
+          <p>于是整个尖锐场精确分解为</p>
+          <div class="equation">\[\boxed{d=-e^\phi\left(\frac{pZ}{12}e^{-a/2}+\frac{qW}{3}e^{a/2}\right)}.\]</div>
+          <p>伸缩量只满足一个零初值线性方程：</p>
+          <div class="equation">\[\boxed{\mathcal L\phi-\{a,\phi\}=\frac12(X-Y)a},\qquad\phi_0=0.\]</div>
+          <p>这把原来的 \(a,u,v\) 三数组描述改写为主动标量 \(a\) 加一个由 \(a\) 驱动的线性伸缩响应。</p>
+          <figure>
+            <img src="/figures/r0-29-canonical-reduction.svg" alt="R0.29 典范输运分解与无限电荷阶梯">
+            <figcaption>图 R0.29-1。左图给出使固定电荷截断失效的精确向上耦合；右图给出从 \(u,v\) 到对数辛坐标和尖锐场指数分解的全阶关系。虚线表示恒等式推论，不表示数值拟合。</figcaption>
+          </figure>
+        </section>
+
+        <section id="ladder"><div class="section-no">05 / Charge ladder</div><h2>任何固定数量的相邻扇区都不够</h2>
+          <p>在 \(R=Z^2W\)、\(\Xi=Z^{-1}\) 中写 \(f_{k,q}=[R^k\Xi^q]f\)。输运递推为</p>
+          <div class="equation">\[(3k-q-1)f_{k,q}=\sum_{\substack{i+j=k\\r+s=q}}(is-rj)a_{i,r}f_{j,s}.\]</div>
+          <p>主动系列满足 \(a_{k,q}=0\) 对 \(q<-1\)，且负电荷叶 \(a_{0,-1}=1\)。把这一叶单独提出，得到</p>
+          <div class="equation">\[\boxed{(3k-q-1)f_{k,q}=k f_{k,q+1}+\mathcal R_{k,q}}.\]</div>
+          <p>这里 \(\mathcal R_{k,q}\) 只含其余的低次数卷积项。</p>
+          <div class="proof warning"><strong>有限扇区锥不闭合。</strong>若把最高受控电荷固定为 \(Q\)，\(q=Q\) 的方程仍需要 \(f_{k,Q+1}\)。因此 R0.28 中“零电荷加若干相邻扇区”的想法必须改成带权无限电荷阶梯。</div>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Meaning</div><h2>这是一项结构约化，不是奇性结论</h2>
+          <p>结果精确积分了线性输运层：任意以齐次多项式 \(P_m(Z,W)\) 起始的输运解都等于 \(P_m(U,V)\)。困难现在集中到典范映射本身的解析域和系数符号。</p>
+          <p>这一约化排除了固定宽度电荷截断，也减少了一个独立输运未知量。但 \(e^{\phi\pm a/2}\) 的系数仍可能发生抵消；没有新的正性定理之前，不能从指数形式直接推出端点符号。</p>
+        </section>
+
+        <section id="next"><div class="section-no">07 / R0.30</div><h2>下一步比较带权阶梯与指数奇点两条路线</h2>
+          <ol>
+            <li>尝试权重 \(w_q\) 随电荷指数或阶乘增长，验证向上项 \(k f_{k,q+1}\) 与全部非线性卷积是否共同保持锥；</li>
+            <li>同时对 \(a,\phi\) 建立共同解析域，判断指数因子 \(e^{\phi\pm a/2}\) 的主导奇点是否可以严格定位。</li>
+          </ol>
+          <p>下一项成果必须给出第一个全阶加权估计或严格反例；只扩大有限回归次数不会解决不闭合问题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>证明、有限回归和图件分开保存</h2>
+          <p>正式证书以 GMP 有理数重建 \(e^{-a}\)，逐系数核对 \(\{u,v\}=uv\) 与 \(4Wu=Zv e^{-a}\) 到总次数 119，并保存字段摘要、分数位数、源提交、进度和资源记录。</p>
+          <div class="proof"><strong>复现命令。</strong><br><code>python research/edge_canonical_transport_audit.py --max-total-degree 119 --progress --check --pretty --output research/certificates/r029/edge-canonical-transport.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_canonical_transport_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r029">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r029-canonical-transport/fig-r029-canonical-reduction">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs"><li><a href="/notes/r0-28.html">R0.28：有理化与有限比值分离</a>。给出本笔记使用的精确有理递推和有限根盒证书。</li><li><a href="/notes/r0-27.html">R0.27：标量生成方程与端点极化</a>。给出负边缘标量输运方程。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.29 · 全阶形式证明与有限代码回归分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

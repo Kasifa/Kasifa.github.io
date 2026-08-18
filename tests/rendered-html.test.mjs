@@ -23,6 +23,7 @@ const seventeenthNoteUrl = new URL("../public/notes/r0-17.html", import.meta.url
 const eighteenthNoteUrl = new URL("../public/notes/r0-18.html", import.meta.url);
 const nineteenthNoteUrl = new URL("../public/notes/r0-19.html", import.meta.url);
 const twentiethNoteUrl = new URL("../public/notes/r0-20.html", import.meta.url);
+const twentyFirstNoteUrl = new URL("../public/notes/r0-21.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -390,6 +391,22 @@ test("publishes and links the positive-parameter global classification", async (
   assert.match(note, /src="\/figures\/r0-20-certificate-map\.svg"/);
 });
 
+test("publishes and links the viscous correction and cone cancellation progress", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(twentyFirstNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-21\.html"/);
+  assert.match(note, /R0\.21 中间进展/);
+  assert.match(note, /-2\.611276916335079/);
+  assert.match(note, /-2\.8144704386643693/);
+  assert.match(note, /\(L\+1\)\^3/);
+  assert.match(note, /11,024 个生成标签/);
+  assert.match(note, /模式级算子引理/);
+  assert.match(note, /没有证明三维 Navier–Stokes 解的全局正则性或有限时奇性/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -402,7 +419,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -424,6 +441,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(eighteenthNoteUrl, "utf8"),
     readFile(nineteenthNoteUrl, "utf8"),
     readFile(twentiethNoteUrl, "utf8"),
+    readFile(twentyFirstNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -530,6 +548,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(twentiethNote, /我把 R0\.19/);
   assert.doesNotMatch(
     twentiethNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(twentyFirstNote, /我把 R0\.20/);
+  assert.doesNotMatch(
+    twentyFirstNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

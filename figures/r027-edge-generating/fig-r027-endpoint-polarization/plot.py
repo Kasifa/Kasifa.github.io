@@ -70,9 +70,23 @@ def extract_rows(certificate: Path) -> list[dict[str, float | int]]:
 
 def write_data(rows: list[dict[str, float | int]]) -> None:
     with (PACKAGE / "data.csv").open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=list(rows[0]),
+            lineterminator="\n",
+        )
         writer.writeheader()
         writer.writerows(rows)
+
+
+def normalize_svg(path: Path) -> None:
+    """Keep generated SVGs free of backend-specific trailing whitespace."""
+
+    lines = path.read_text(encoding="utf-8").splitlines()
+    path.write_text(
+        "\n".join(line.rstrip() for line in lines) + "\n",
+        encoding="utf-8",
+    )
 
 
 def draw(rows: list[dict[str, float | int]]) -> None:
@@ -174,13 +188,17 @@ def draw(rows: list[dict[str, float | int]]) -> None:
         )
         figure.subplots_adjust(left=.075, right=.985, bottom=.19, top=.82, wspace=.28)
         for suffix in ("pdf", "svg", "png"):
-            figure.savefig(PACKAGE / f"figure.{suffix}")
+            output = PACKAGE / f"figure.{suffix}"
+            figure.savefig(output)
+            if suffix == "svg":
+                normalize_svg(output)
         public_figures = REPOSITORY / "public/figures"
         public_figures.mkdir(parents=True, exist_ok=True)
         for suffix in ("svg", "png"):
-            figure.savefig(
-                public_figures / f"r0-27-endpoint-polarization.{suffix}"
-            )
+            output = public_figures / f"r0-27-endpoint-polarization.{suffix}"
+            figure.savefig(output)
+            if suffix == "svg":
+                normalize_svg(output)
         plt.close(figure)
 
 

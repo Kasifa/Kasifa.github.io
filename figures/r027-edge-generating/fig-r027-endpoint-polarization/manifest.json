@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r027-endpoint-polarization",
+  "status": "formal",
+  "analyticalQuestion": "How does the normalized sharp coordinate on the exact negative-edge charge-one endpoint behave over the finite dual-precision window N=2,...,75?",
+  "supportedClaim": "After the parity twist, the computed endpoint coordinate approaches unit modulus over the finite window; its unit-modulus defect and inverse sharp-to-longitudinal ratio decay approximately exponentially on N=56,...,75. This is finite numerical evidence, not an asymptotic theorem.",
+  "createdAt": "2026-08-18T15:58:49+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "4d6cc6e0dff8da28998ff9cc9e777af795feafae",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python research/run_with_monitor.py --output /tmp/r027-resources.csv --interval 5 -- python research/edge_generating_function_audit.py --max-parameter 75 --precisions 160 224 --progress --progress-log /tmp/r027-progress.ndjson --check --pretty --output /tmp/r027-edge-generating-function.json",
+    "configuration": "maximumParameter=75; maximumLeafCount=225; precisionBits=160,224; scalePerLeaf=4",
+    "randomSeed": null,
+    "precision": "MPFR at 160 and 224 bits",
+    "solver": "deterministic exact-form scalar Taylor recurrence; no iterative tolerance",
+    "tolerances": {
+      "R026RegressionRelative": "2e-14",
+      "dualPrecisionRelative": "1e-34"
+    },
+    "wallTimeSeconds": 63.457054,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 5,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": null,
+      "trackedFields": [
+        "precision bits",
+        "completed leaf count",
+        "ordered scalar interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 36.266
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "numpy": "2.3.5",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "mpfr": "4.2.2"
+  },
+  "data": [
+    {
+      "path": "data.csv",
+      "format": "csv",
+      "schema": "One row for each N=2,...,75, containing sigma, parity-normalized sigma, unit-modulus defect, sharp-to-longitudinal ratio, its inverse, and the two-precision relative discrepancy. All quantities are dimensionless.",
+      "bytes": 10724,
+      "sha256": "11f3d16f26d0e500cfb5b853b16628ef6cd80dcd5d6e4311865c258dab0a22d4"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, precision stage, completed leaf count, and ordered scalar interaction count.",
+      "bytes": 3296,
+      "sha256": "c4403d7979574d3d487b4f90977d0c8008fa5ebebc51f5bfd1e9cfd049bf47ba"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Five-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 1173,
+      "sha256": "0caa8dcc69268ef2cd0cbe542c334ef30c38db4b02e766f3a8dccc905a3578de"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r027",
+      "fileName": "edge-generating-function.json",
+      "bytes": 152507,
+      "sha256": "656c95c6205ba4168a2508ed9fd90c83761563acfe22580dadbbbbda67ec20de",
+      "extractionCommand": "read runs[-1].endpoints and checks.precisionStability; plot.py writes the selected columns to data.csv"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python figures/r027-edge-generating/fig-r027-endpoint-polarization/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "40bfe96b5e26b0e28e35340dcab6706bed468a84856ba3991b87cdf67582a45b"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "00fd0e7abc62ba2cff515cb9fffabc2dfe3f531aea364d058fdcccdb4e136f47"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "9766c8d47e90df2224968cd7fd909cdbab107a5f5cbaa893094a25cc97efca40"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "奇偶归一化尖锐坐标在有限窗口中接近一；单位模缺口与逆尖锐纵向比在尾部近似指数下降，但这不是渐近定理。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 72 mm; the 600 dpi PNG is 4204 by 1700 pixels. Color and Generic Gray Gamma 2.2 renders were inspected at final layout. Solid-circle and dashed-square encodings remain distinct in grayscale. validate_data.py passed all 74 rows."
+  }
+}

@@ -176,7 +176,11 @@ def main() -> int:
     )
     interrupted = False
     with arguments.output.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=RESOURCE_FIELDS)
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=RESOURCE_FIELDS,
+            lineterminator="\n",
+        )
         writer.writeheader()
         while True:
             record_row(writer, stream, process.pid, started, "running")

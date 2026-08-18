@@ -183,7 +183,7 @@ def draw(rows: list[dict[str, float | int]]) -> None:
         figure.text(
             .01,
             .985,
-            "R0.28 exact GMP rational audit · full certified root box · N=18--40",
+            "R0.28 exact GMP rational audit · full certified root box · N=18–40",
             ha="left",
             va="top",
             fontsize=7.2,

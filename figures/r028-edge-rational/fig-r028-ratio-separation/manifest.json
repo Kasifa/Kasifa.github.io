@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r028-ratio-separation",
+  "status": "formal",
+  "analyticalQuestion": "Do the exact root-box intervals separate the sharp and in-plane consecutive coefficient-radius proxies on the certified finite window N=18,...,40?",
+  "supportedClaim": "For every point in the certified R0.20 root box, rhoD_N < rhoA_N and Gamma_N > 1 hold at each N=18,...,40. The smallest certified Gamma lower bound on this window is 1.02943193018722498. These are finite exact inequalities, not an asymptotic or dominant-singularity theorem.",
+  "createdAt": "2026-08-18T16:47:36+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "99d95354c367bd520a0bc4846bcb93459dd88338",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python research/run_with_monitor.py --output /tmp/r028-resources.csv --interval 5 -- python research/edge_rational_asymptotic_audit.py --max-parameter 40 --tail-count 12 --progress --progress-log /tmp/r028-progress.ndjson --check --pretty --output /tmp/r028-edge-rational-asymptotic.json",
+    "configuration": "maximumParameter=40; maximumLeafCount=119; rootBoxRadius=1e-6; tailCount=12",
+    "randomSeed": null,
+    "precision": "exact GMP rational arithmetic; 256-bit MPFR used only to print decimal summaries and sigma values",
+    "solver": "deterministic scalar Taylor recurrence; no iterative tolerance",
+    "tolerances": {
+      "intervalArithmetic": "none; every interval endpoint is rational",
+      "R027SigmaRegressionAbsolute": "2e-15",
+      "R027SharpOverLAlphaRegressionAbsolute": "2e-12"
+    },
+    "wallTimeSeconds": 28.930825375005952,
+    "orderedScalarInteractions": 5484501,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 5,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": null,
+      "trackedFields": [
+        "completed leaf count",
+        "ordered scalar interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 32.438
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0"
+  },
+  "data": [
+    {
+      "path": "data.csv",
+      "format": "csv",
+      "schema": "One row for each N=18,...,40 with rhoA, the exact root-box decimal enclosure of rhoD, and the exact root-box decimal enclosure of Gamma. All quantities are dimensionless.",
+      "bytes": 2284,
+      "sha256": "3930381d01c5a29faa930c96ab02022c25198aa90a798dfefffd1220dbebc00b"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, completed leaf count, and ordered scalar interaction count.",
+      "bytes": 2313,
+      "sha256": "703b504d6cf527fb833940cc5f2f4e15990bb2863b560cc4fbc47aed6376c72e"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Five-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 657,
+      "sha256": "0b3f25183945326d01abe74479756dd235b4d545060f6153d98d9c9dcc181e49"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r028",
+      "fileName": "edge-rational-asymptotic.json",
+      "bytes": 312624,
+      "sha256": "7d5e7511666bdd4612564d34c140c3c4ff4c6bba1c13f8f32b68fb8633796f98",
+      "extractionCommand": "read endpoints[N>=18].consecutiveRatios; plot.py writes the selected decimal enclosures to data.csv"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python figures/r028-edge-rational/fig-r028-ratio-separation/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "5f0449f0c0954e90ce9225826d3da9d10394263f9af876877161f4d3b1de51e5"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "cfc436f5963d2e8b0dde3c71908fb41e061a4d8cf3a348e0a12f46ca5115951f"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "7bb26199b82e8360960fac6d307b34dd1c044dfee0d6c9135b1c6a156085a6cc"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "根盒上每个 N=18 至 40 都有 rhoD_N < rhoA_N 与 Gamma_N > 1；阴影尾段只作有限精确摘要，不代表比值收敛。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 72 mm; the 600 dpi PNG is 4204 by 1700 pixels. Color and Generic Gray Gamma 2.2 renders were inspected at final layout. Solid-circle and dashed-square encodings remain distinct in grayscale. validate_data.py passed all 23 rows and reconstructed every exact separation inequality."
+  }
+}

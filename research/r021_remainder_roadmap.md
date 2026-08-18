@@ -166,6 +166,26 @@ than exact.  The missing theorem is now the all-\(N\) sharp-coordinate decay,
 and a positive coefficient majorant cannot prove it because it discards the
 signed root-split cancellation needed to lower-bound the full coefficient.
 
+R0.26 derives a smaller exact system and overturns the optimistic reading of
+that four-point table.  The \(b_N\) coefficient is an exact two-generator
+edge coefficient, while \(a_N\) is the sum of two first variations of the
+opposite edge.  The three-leaf endpoint increments give exact two-dimensional
+transfer-plus-remainder identities.  Their transfer matrices have limits
+
+\[
+ T_N^a\to\operatorname{diag}(-24t,-24t),\qquad
+ T_N^b\to\operatorname{diag}(-24t,16t),
+\]
+
+with \(24t=11.9010\ldots\), so the isolated transfer is expansive rather than
+contractive.  A 160/224-bit reduced recurrence through \(N=25\) finds
+\(\max N|\sigma|=18.8124\ldots\) at \(a_{21}\) and a generated gain of
+\(1620.26\ldots\) at \(N=25\).  This finite window does not disprove an
+all-\(N\) \(O(N^{-1})\) estimate, but it shows that the early small constant
+was transient and that the signed bulk remainder is not perturbative.  The
+next question is the dominant singularity of the exact edge and
+first-variation generating equations.
+
 ### Gate B: a posteriori approximate solution
 
 - Use the heat-inclusive Taylor polynomial through at least order 12 as the
@@ -218,17 +238,21 @@ repeatable shell cascade.
    generated coefficient.
 3. [x] Compute \(N=4\) and \(N=5\) as two-precision tests of the proposed
    \(N|\sigma|=O(1)\) normalization.
-4. Construct the three-leaf endpoint transfer system suggested by
+4. [x] Construct the three-leaf endpoint transfer system suggested by
    \(a_{N+1}-a_N=(1,-3,3)\) and
    \(b_{N+1}-b_N=(-1,-3,-3)\), with catalyst parity as a two-state variable.
-5. Bound the non-edge root splits in a signed norm strong enough to propagate
-   \(N|\sigma|\), or record the first companion family that prevents
-   contraction.
-6. Continue to a tagged order-12 residual only if the generated-subspace
+5. [x] Test the non-edge root splits in a signed norm: the isolated transfer
+   has limiting spectral radius \(24t>1\), and the bulk remainder supplies
+   most of the \(b_N\) coefficient, so the proposed contraction does not
+   close.
+6. Derive the bivariate generating equations for the exact edge recurrence
+   and its first variation.  Determine whether the dominant singularity gives
+   a nonzero endpoint sharp ratio or an explicit decay rate.
+7. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.
-7. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
+8. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
    after a shell-uniform residual norm has been identified.
-8. Run a finite-shell benchmark before attempting a shell-uniform proof.
-9. Publish a formal remainder note only after Gate C closes or yields a
+9. Run a finite-shell benchmark before attempting a shell-uniform proof.
+10. Publish a formal remainder note only after Gate C closes or yields a
    precise obstruction.

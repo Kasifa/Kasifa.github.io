@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.26：把两个尖锐端点族精确约化为边缘递推与一阶缺陷递推，构造三叶传递矩阵，并检验到 N=25。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.26｜三叶传递不收缩">
+  <meta property="og:description" content="精确边缘约化、二维传递极限，以及 160/224 位 MPFR 的 N=2 至 N=25 端点审计。">
+  <title>R0.26｜边缘约化与三叶传递</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}
+    .bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#reduction">约化</a><a href="#transfer">传递</a><a href="#window">窗口</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.26 · 边缘传递</div>
+        <h1>三叶传递<br>并不收缩</h1>
+        <p class="lead">我把两个尖锐端点族精确化为一条两生成元边缘和它的一阶缺陷。二维三叶传递的极限谱半径是 \(24t\approx11.90\)；扩展到 \(N=25\) 后，早期的小尖锐坐标不再持续。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确结构约化 + 有限高精度反证据</span><strong>原定小常数归纳不成立</strong><p>版本 v0.26 · 2026-08-18</p><p>最高叶数：75</p><p>算术：160 / 224 位 MPFR</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#reduction">01 · 边缘约化</a></li><li><a href="#recurrence">02 · 精确递推</a></li><li><a href="#transfer">03 · 三叶传递</a></li><li><a href="#window">04 · N=2 至 25</a></li><li><a href="#remainder">05 · 带符号余项</a></li><li><a href="#decision">06 · 路线判断</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>精确约化成立，衰减假设没有被证明</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>边缘与一阶缺陷闭包</strong><p>\(b_N\) 是精确边缘系数；\(a_N\) 是另一条边缘的两个一阶变分之和。</p></div><div class="status"><span>PROVED</span><strong>二维三叶传递恒等式</strong><p>端点递推可精确写成 \(U_{N+1}=T_NU_N+R_N\)。</p></div><div class="status"><span>COMPUTED</span><strong>\(N\le25\) 双精度审计</strong><p>两套 MPFR 结果的最大相对差低于 \(3.6\times10^{-43}\)。</p></div><div class="status"><span>NEGATIVE</span><strong>传递收缩失败</strong><p>\(\rho(T_N)\to24t\approx11.90>1\)，余项也不是小扰动。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>叶计数约化、递推和传递极限是一般 \(N\) 的代数结论。\(N=2\) 至 25 是有限计算，不能单独证明或否定 \(\sigma=O(N^{-1})\)。这里没有得到 Navier–Stokes 全局正则性或有限时奇性的结论。</div>
+        </section>
+        <section id="reduction"><div class="section-no">01 / Edge arithmetic</div><h2>两个端点其实比边界面更窄</h2>
+          <p>记四个边界叶为 \(P_+=(1,-1,1)\)、\(C_+=(1,-1,-1)\)、\(P_-=(-1,-1,-1)\)、\(C_-=(-1,-1,1)\)。叶计数的整数方程给出：</p>
+          <div class="equation">\[b_N:\quad(P_+,C_+,P_-,C_-)=(0,N,2N-1,0).\]</div>
+          <p>这是唯一非负解，所以 \(b_N\) 完全由 \(P_-,C_+\) 两个生成元产生，是一条真正的边缘递推。</p>
+          <div class="equation">\[a_N:\quad(2N,0,1,N-1)\quad\mathrm{or}\quad(2N-1,1,0,N).\]</div>
+          <p>每棵产生 \(a_N\) 的树恰有一个叶偏离 \(P_+,C_-\) 边缘。因此 \(a_N\) 是一个 \(P_-\) 缺陷和一个 \(C_+\) 缺陷的一阶变分之和。这两个结构对所有 \(N\) 都精确成立。</p>
+        </section>
+        <section id="recurrence"><div class="section-no">02 / Closed recurrences</div><h2>面递推降成边缘递推及其线性化</h2>
+          <p>令 \(E_{L,k}\) 表示 \(L\) 个边缘叶中有 \(k\) 个催化叶的系数，则</p>
+          <div class="equation">\[E_{L,k}=-\frac1{L-1}\sum_{\substack{L_1+L_2=L\\k_1+k_2=k}}\mathcal B(E_{L_1,k_1},E_{L_2,k_2}).\]</div>
+          <p>含一个固定缺陷的系数 \(V_{L,k}\) 满足线性化递推</p>
+          <div class="equation">\[V_{L,k}=-\frac1{L-1}\sum\left[\mathcal B(E,V)+\mathcal B(V,E)\right].\]</div>
+          <p>于是</p>
+          <div class="equation">\[U(b_N)=E^-_{3N-1,N},\qquad U(a_N)=V^{P_-}_{3N,N-1}+V^{C_+}_{3N,N}.\]</div>
+          <p>这个表示把每阶的二维面支持降成一个边缘卷积和两个线性化边缘卷积，并完整复现 R0.25 的 \(N=2\) 至 5 坐标。</p>
+        </section>
+        <section id="transfer"><div class="section-no">03 / Three-leaf transfer</div><h2>精确二维矩阵的谱半径大于一</h2>
+          <p>端点增量分别为 \(2P_++C_-\) 与 \(2P_-+C_+\)。把三种催化叶位置的一叶附着相加，可得</p>
+          <div class="equation">\[U_{N+1}=T_NU_N+R_N.\]</div>
+          <p>\(R_N\) 是后三次递推展开中至少出现一次非一叶根分裂的全部项之带符号和。在尖锐—纵向坐标中，直接展开给出</p>
+          <div class="equation">\[T_N^a\longrightarrow\begin{pmatrix}-24t&0\\0&-24t\end{pmatrix},\qquad T_N^b\longrightarrow\begin{pmatrix}-24t&0\\0&16t\end{pmatrix}.\]</div>
+          <div class="proof warning"><strong>负面结论。</strong>\(t=0.4958758920134925\ldots\)，所以两个极限谱半径都是 \(24t=11.9010214083238\ldots\)。孤立三叶传递不是收缩映射，不能按 R0.25 预想的方式传播小的 \(N|\sigma|\)。</div>
+        </section>
+        <section id="window"><div class="section-no">04 / Finite window</div><h2>早期小常数在中等 \(N\) 重新放大</h2>
+          <p>约化递推在 160 位和 224 位 MPFR 下计算到 75 叶。最大相对精度差为 \(3.57\times10^{-43}\)。</p>
+          <div class="table-wrap"><table><thead><tr><th>\(N\)</th><th>\(N|\sigma_A|\)</th><th>\(N|\sigma_B|\)</th><th>\(G_N\)</th><th>\(G_N/S_N\)</th></tr></thead><tbody>
+            <tr><td>2</td><td>0.0457835</td><td>0.144742</td><td>0.304560</td><td>0.00433464</td></tr>
+            <tr><td>5</td><td>0.145483</td><td>0.0642850</td><td>0.235806</td><td>0.000409433</td></tr>
+            <tr><td>8</td><td>0.108981</td><td>0.224192</td><td>0.833874</td><td>0.0005319</td></tr>
+            <tr><td>12</td><td>0.340673</td><td>0.383169</td><td>3.46027</td><td>0.0009490</td></tr>
+            <tr><td>15</td><td>1.28725</td><td>0.418857</td><td>14.8808</td><td>0.002578</td></tr>
+            <tr><td>17</td><td>3.33449</td><td>0.704672</td><td>63.5770</td><td>0.008523</td></tr>
+            <tr><td>19</td><td>8.08183</td><td>1.13566</td><td>245.569</td><td>0.026229</td></tr>
+            <tr><td>21</td><td>18.8124</td><td>1.77833</td><td>889.302</td><td>0.077453</td></tr>
+            <tr><td>23</td><td>16.0146</td><td>2.72116</td><td>1154.21</td><td>0.083535</td></tr>
+            <tr><td>25</td><td>15.0468</td><td>4.07317</td><td>1620.26</td><td>0.098988</td></tr>
+          </tbody></table></div>
+          <p>R0.25 的观测上限 0.214 在 \(N=8\) 首次被超过；\(N|\sigma|\) 在 \(N=15\) 首次超过一。到 \(N=21\)，\(|\sigma_A|=0.89582677\ldots\)，该归一化系数已经接近纯尖锐方向。有限表仍不能判定渐近阶，但它足以否定“早期小常数会平稳延续”的经验判断。</p>
+        </section>
+        <section id="remainder"><div class="section-no">05 / Signed remainder</div><h2>余项是主体，不是可忽略扰动</h2>
+          <p>在 \(b\)-族的 \(N=24\to25\) 转移中，三叶传递只贡献完整模态范数的 0.158225，余项贡献 0.841775，两者几乎同向。对 \(a\)-族，传递占比在窗口内约为 0.052 至 0.720，余项占比最高达到 1.447；\(N=20\to21\) 的符号抵消比降至 0.462。</p>
+          <p>所以“单个 Taylor 阶的一叶根分裂最大”并不意味着“三步端点传递主导”。真正决定极化比的是完整边缘卷积的体项、符号以及纵向分母增长。</p>
+        </section>
+        <section id="decision"><div class="section-no">06 / Decision</div><h2>下一步转向生成函数奇点，而不是盲目加点</h2>
+          <p>R0.25 的条件不等式仍然正确，但当前数据不再支持用小常数归纳证明 \(\sigma=O(N^{-1})\)。R0.27 将把边缘递推及其一阶变分写成双变量生成方程，并分析主导奇点和极化比。</p>
+          <ol><li>若端点尖锐比沿某个子序列趋向非零值，则该初值的生成子空间一半径机制失败。</li><li>若尖锐比仍衰减，奇点展开必须给出真实衰减率，并替代已经失败的传递收缩。</li><li>只有完成这个判断，才值得回到壳层一致的黏性余项。</li></ol>
+        </section>
+        <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>代码、证书与精度回归</h2>
+          <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r026"><code>research/certificates/r026</code></a>，记录端点窗口、两套精度、传递矩阵、带符号余项、R0.25 回归和运行环境。</p>
+          <div class="equation mono">PYTHONPATH=research python3.12 research/boundary_edge_transfer_audit.py --max-parameter 25 --precisions 160 224 --check --pretty --progress --output research/certificates/r026/boundary-edge-transfer.json<br>cd research/certificates/r026 &amp;&amp; shasum -a 256 -c SHA256SUMS</div>
+          <ol class="refs"><li><a href="/notes/r0-25.html">R0.25：边界面极化通道约化</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_note.md">R0.26 完整数学说明</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_audit.py">边缘传递审计程序</a>。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>Navier–Stokes 开放研究日志 · R0.26</strong><span><a href="/">研究综述</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span></div></footer>
+</body>
+</html>

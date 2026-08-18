@@ -103,7 +103,7 @@ When \(q_m\ne0\), define two unit modes
 and, for the sharp inputs where \(q_m=1/6\),
 
 \[
- L_m=left(
+ L_m=\left(
  \frac{\beta_m}{|\beta_m|(1+6|\beta_m|)},
  -\frac{6|\beta_m|}{1+6|\beta_m|}
  \right).

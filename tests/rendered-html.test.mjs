@@ -28,6 +28,7 @@ const twentySecondNoteUrl = new URL("../public/notes/r0-22.html", import.meta.ur
 const twentyThirdNoteUrl = new URL("../public/notes/r0-23.html", import.meta.url);
 const twentyFourthNoteUrl = new URL("../public/notes/r0-24.html", import.meta.url);
 const twentyFifthNoteUrl = new URL("../public/notes/r0-25.html", import.meta.url);
+const twentySixthNoteUrl = new URL("../public/notes/r0-26.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -476,6 +477,23 @@ test("publishes and links the boundary-face polarization-channel reduction", asy
   assert.match(note, /没有证明三维 Navier–Stokes 的全局正则性或有限时奇性/);
 });
 
+test("publishes and links the exact edge and three-leaf transfer audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(twentySixthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-26\.html"/);
+  assert.match(note, /研究笔记 R0\.26/);
+  assert.match(note, /\\\(b_N\\\) 完全由 \\\(P_-,C_\+\\\) 两个生成元产生/);
+  assert.match(note, /24t=11\.9010214083238/);
+  assert.match(note, /18\.8124/);
+  assert.match(note, /1620\.26/);
+  assert.match(note, /最大相对精度差为 \\\(3\.57\\times10\^\{-43\}\\\)/);
+  assert.match(note, /不能单独证明或否定 \\\(\\sigma=O\(N\^\{-1\}\)\\\)/);
+  assert.match(note, /没有得到 Navier–Stokes 全局正则性或有限时奇性的结论/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -488,7 +506,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -515,6 +533,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(twentyThirdNoteUrl, "utf8"),
     readFile(twentyFourthNoteUrl, "utf8"),
     readFile(twentyFifthNoteUrl, "utf8"),
+    readFile(twentySixthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -646,6 +665,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(twentyFifthNote, /我把边界系数分解为尖锐与纵向分量/);
   assert.doesNotMatch(
     twentyFifthNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(twentySixthNote, /我把两个尖锐端点族精确化为/);
+  assert.doesNotMatch(
+    twentySixthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

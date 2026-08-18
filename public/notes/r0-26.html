@@ -105,13 +105,13 @@
           <p>所以“单个 Taylor 阶的一叶根分裂最大”并不意味着“三步端点传递主导”。真正决定极化比的是完整边缘卷积的体项、符号以及纵向分母增长。</p>
         </section>
         <section id="decision"><div class="section-no">06 / Decision</div><h2>下一步转向生成函数奇点，而不是盲目加点</h2>
-          <p>R0.25 的条件不等式仍然正确，但当前数据不再支持用小常数归纳证明 \(\sigma=O(N^{-1})\)。R0.27 将把边缘递推及其一阶变分写成双变量生成方程，并分析主导奇点和极化比。</p>
+          <p>R0.25 的条件不等式仍然正确，但当前数据不再支持用小常数归纳证明 \(\sigma=O(N^{-1})\)。R0.27 已把负边缘递推写成双变量生成方程，并把电荷一端点扩展到 \(N=75\)。</p>
           <ol><li>若端点尖锐比沿某个子序列趋向非零值，则该初值的生成子空间一半径机制失败。</li><li>若尖锐比仍衰减，奇点展开必须给出真实衰减率，并替代已经失败的传递收缩。</li><li>只有完成这个判断，才值得回到壳层一致的黏性余项。</li></ol>
         </section>
         <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>代码、证书与精度回归</h2>
           <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r026"><code>research/certificates/r026</code></a>，记录端点窗口、两套精度、传递矩阵、带符号余项、R0.25 回归和运行环境。</p>
           <div class="equation mono">PYTHONPATH=research python3.12 research/boundary_edge_transfer_audit.py --max-parameter 25 --precisions 160 224 --check --pretty --progress --output research/certificates/r026/boundary-edge-transfer.json<br>cd research/certificates/r026 &amp;&amp; shasum -a 256 -c SHA256SUMS</div>
-          <ol class="refs"><li><a href="/notes/r0-25.html">R0.25：边界面极化通道约化</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_note.md">R0.26 完整数学说明</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_audit.py">边缘传递审计程序</a>。</li></ol>
+          <ol class="refs"><li><a href="/notes/r0-25.html">R0.25：边界面极化通道约化</a>。</li><li><a href="/notes/r0-27.html">R0.27：标量生成方程与固定电荷端点</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_note.md">R0.26 完整数学说明</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_audit.py">边缘传递审计程序</a>。</li></ol>
         </section>
       </article>
     </div>

@@ -245,14 +245,20 @@ repeatable shell cascade.
    has limiting spectral radius \(24t>1\), and the bulk remainder supplies
    most of the \(b_N\) coefficient, so the proposed contraction does not
    close.
-6. Derive the bivariate generating equations for the exact edge recurrence
-   and its first variation.  Determine whether the dominant singularity gives
-   a nonzero endpoint sharp ratio or an explicit decay rate.
-7. Continue to a tagged order-12 residual only if the generated-subspace
+6. [x] Derive the bivariate generating equations for the exact negative-edge
+   recurrence.  The charge-one probe through \(N=75\) is consistent with
+   alternating convergence, not decay.  This is finite evidence, not a
+   singularity theorem.  The positive-edge first variation remains to be
+   generated after the negative-edge asymptotic decision.
+7. Factor the negative-edge scalar equations into exact rational recurrences,
+   prove or refute the eventual parity sign, and obtain validated consecutive
+   coefficient-ratio bounds.  Use these bounds to locate the dominant
+   \(r\)-singularities with the charge-zero coupling included.
+8. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.
-8. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
+9. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
    after a shell-uniform residual norm has been identified.
-9. Run a finite-shell benchmark before attempting a shell-uniform proof.
-10. Publish a formal remainder note only after Gate C closes or yields a
+10. Run a finite-shell benchmark before attempting a shell-uniform proof.
+11. Publish a formal remainder note only after Gate C closes or yields a
    precise obstruction.

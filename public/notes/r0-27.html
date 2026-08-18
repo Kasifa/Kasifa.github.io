@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.27：把精确负边缘递推标量化为双变量生成方程，并以 160/224 位 MPFR 检验电荷一端点到 N=75。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.27｜电荷坐标与端点极化">
+  <meta property="og:description" content="精确标量生成方程、不可忽略的零电荷投影，以及 N=2 至 75 的双精度端点审计。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-27-endpoint-polarization.png">
+  <title>R0.27｜标量生成方程与端点极化</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#f2eddf}figcaption{margin-top:13px;color:var(--muted);font-size:13px}
+    .refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table,figure{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#equations">方程</a><a href="#coordinates">坐标</a><a href="#window">窗口</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.27 · 生成方程</div>
+        <h1>固定电荷下的<br>端点极化</h1>
+        <p class="lead">我把 R0.26 的负边缘递推精确降成两个标量生成方程。电荷一端点计算到 \(N=75\) 后，有限窗口显示 \(|\sigma_{B,N}|\) 接近一，而不是按 \(N^{-1}\) 变小。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确生成方程 + 有限高精度证据</span><strong>小极化路线出现明确障碍</strong><p>版本 v0.27 · 2026-08-18</p><p>最高叶数：225</p><p>算术：160 / 224 位 MPFR</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#scalar">01 · 两个标量</a></li><li><a href="#equations">02 · 生成方程</a></li><li><a href="#coordinates">03 · 电荷坐标</a></li><li><a href="#window">04 · N=2 至 75</a></li><li><a href="#meaning">05 · 路线判断</a></li><li><a href="#next">06 · 下一定理</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>方程是精确的，极限还没有证明</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>边缘标量闭包</strong><p>每个四分量系数由纵向标量 \(\alpha\) 与尖锐标量 \(s\) 唯一决定。</p></div><div class="status"><span>PROVED</span><strong>双变量生成方程</strong><p>完整递推等价于一个带零电荷投影的非线性方程和一个线性输运方程。</p></div><div class="status"><span>COMPUTED</span><strong>\(N\le75\) 双精度审计</strong><p>两套 MPFR 结果的最大相对差为 \(3.21\times10^{-43}\)。</p></div><div class="status"><span>OPEN</span><strong>主导奇点与极限</strong><p>有限表支持 \(|\sigma_{B,N}|\to1\)，但尚无严格的系数渐近定理。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>标量化、递推和生成方程对全部叶阶成立。\(N=2\) 至 75 是有限计算，只能提供强数值证据，不能证明极限。这里没有得到三维 Navier–Stokes 全局正则性或有限时奇性的结论。</div>
+        </section>
+
+        <section id="scalar"><div class="section-no">01 / Scalar edge</div><h2>共线几何把四分量递推压成两个数</h2>
+          <p>负边缘由 \(P_-=(-1,-1,-1)\) 与 \(C_+=(1,-1,-1)\) 生成。若分别使用 \(n,k\) 个叶，记</p>
+          <div class="equation">\[L=n+k,\qquad Q=2k-n=3k-L,\qquad \chi=Q/6.\]</div>
+          <p>标签为 \(m=(k-n,-L,-L)\)，全部偏移都平行于 \((-1,-1,2)\)。取尖锐方向 \(h=(1,-1,0)/\sqrt2\)，每个系数唯一写成</p>
+          <div class="equation">\[w=s h+\frac{3\chi\alpha}{\sqrt2}\frac{(-1,-1,2)}3,\qquad \ell=-\sqrt2L\alpha.\]</div>
+          <p>因此只需追踪 \(\alpha_{n,k}\) 与 \(s_{n,k}\)。R0.26 的端点满足</p>
+          <div class="equation">\[b_N:\qquad(n,k,L,Q)=(2N-1,N,3N-1,1).\]</div>
+          <p>把这组表示代回有序 Navier–Stokes 双线性项，可得到封闭的标量卷积。脚本用这套卷积完整复现了 R0.26 的 \(N=2\) 至 25 结果。</p>
+        </section>
+
+        <section id="equations"><div class="section-no">02 / Generating equations</div><h2>一个非线性方程加一个线性输运方程</h2>
+          <p>定义</p>
+          <div class="equation">\[A(z,w)=\sum\alpha_{n,k}z^nw^k,\qquad S(z,w)=\sum s_{n,k}z^nw^k.\]</div>
+          <p>再令 \(X=z\partial_z\)、\(Y=w\partial_w\)、\(\mathcal L=X+Y\)、\(\mathcal Q=2Y-X\)，以及</p>
+          <div class="equation">\[\{F,G\}=(XF)(YG)-(YF)(XG).\]</div>
+          <p>若 \(\Pi_0\) 投影到整数电荷 \(Q=0\) 的单项式，完整标量递推等价于</p>
+          <div class="equation">\[(\mathcal L-1)A=\frac1{\sqrt2}\left[(I-\Pi_0)\mathcal Q^{-1}\{A,\mathcal QA\}+\Pi_0\mathcal L^{-1}\{A,\mathcal LA\}\right],\]</div>
+          <div class="equation">\[(\mathcal L-1)S=\frac1{\sqrt2}\{A,S\}.\]</div>
+          <div class="proof warning"><strong>零电荷不是可忽略的技术点。</strong>递推每隔三个叶阶穿过 \(Q=0\)。这里不能把第一式中的 \(\mathcal Q^{-1}\) 形式延拓过去，必须使用单独的 \(\mathcal L^{-1}\) 投影项。后续奇点分析需要同时控制这条共振切片。</div>
+        </section>
+
+        <section id="coordinates"><div class="section-no">03 / Charge coordinates</div><h2>漂移端点变成固定 Laurent 电荷</h2>
+          <p>取电荷适配变量</p>
+          <div class="equation">\[r=z^2w,\qquad \xi=z^{-1},\qquad z^nw^k=r^k\xi^Q.\]</div>
+          <p>于是</p>
+          <div class="equation">\[\mathcal L=3r\partial_r-\xi\partial_\xi,\qquad \mathcal Q=\xi\partial_\xi,\]</div>
+          <div class="equation">\[\{F,G\}=(rF_r)(\xi G_\xi)-(\xi F_\xi)(rG_r).\]</div>
+          <p>原来在 \((n,k)\) 平面漂移的端点现在变成固定电荷抽取：</p>
+          <div class="equation">\[b_N=[r^N\xi^1](A,S).\]</div>
+          <p>这把下一步精确化为一个系数渐近问题：比较固定电荷一上 \(A\) 与 \(S\) 的主导奇点和增长率。</p>
+        </section>
+
+        <section id="window"><div class="section-no">04 / Finite window</div><h2>端点从小尖锐分量转向近乎纯尖锐</h2>
+          <p>在端点 \(Q=1\) 上，归一化尖锐坐标为</p>
+          <div class="equation">\[\sigma_{B,N}=\frac{s}{\sqrt{s^2+3(1/6)^2\alpha^2}+\sqrt2(3N-1)|\alpha|}.\]</div>
+          <p>160 位与 224 位 MPFR 计算覆盖 \(N=2,\ldots,75\)，即最高 225 叶。从 \(N=8\) 到 75，符号始终与 \((-1)^N\) 一致。</p>
+          <div class="table-wrap"><table><thead><tr><th>\(N\)</th><th>\(\sigma_{B,N}\)</th><th>\(N|\sigma_{B,N}|\)</th><th>\(s/(L\alpha)\)</th></tr></thead><tbody>
+            <tr><td>25</td><td>−0.162926737</td><td>4.07317</td><td>0.275266</td></tr><tr><td>35</td><td>−0.565151479</td><td>19.7803</td><td>1.83799</td></tr><tr><td>45</td><td>−0.903274817</td><td>40.6474</td><td>13.2067</td></tr><tr><td>55</td><td>−0.986080822</td><td>54.2344</td><td>100.188</td></tr><tr><td>65</td><td>−0.998211707</td><td>64.8838</td><td>789.403</td></tr><tr><td>70</td><td>+0.999369048</td><td>69.9558</td><td>−2239.98</td></tr><tr><td>71</td><td>−0.999488154</td><td>70.9637</td><td>2761.55</td></tr><tr><td>72</td><td>+0.999584883</td><td>71.9701</td><td>−3405.37</td></tr><tr><td>73</td><td>−0.999663412</td><td>72.9754</td><td>4200.21</td></tr><tr><td>74</td><td>+0.999727151</td><td>73.9798</td><td>−5181.72</td></tr><tr><td>75</td><td>−0.9997788687</td><td>74.9834</td><td>6393.94</td></tr>
+          </tbody></table></div>
+          <figure>
+            <img src="/figures/r0-27-endpoint-polarization.svg" alt="R0.27 负边缘端点的奇偶归一化尖锐坐标、单位模缺口与逆尖锐纵向比">
+            <figcaption>图 R0.27-1。左图给出 \((-1)^N\sigma_{B,N}\)；右图给出 \(1-|\sigma_{B,N}|\) 与 \(|L\alpha/s|\) 的对数尺度诊断。阴影只标记 \(N=56\) 至 75 的描述性拟合窗口，不代表已证明的渐近区间。</figcaption>
+          </figure>
+          <p>\(|\sigma|\) 首次超过 \(0.5,0.9,0.99,0.999\) 的位置分别是 \(N=34,45,57,68\)。最后二十点的对数线性拟合给出 \(|s/(L\alpha)|\) 每步约乘 \(1.2312\)，而 \(1-|\sigma|\) 每步约乘 \(0.8126\)。这些数字描述有限尾部，不是严格渐近常数。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Consequence</div><h2>R0.25 的充分条件仍对，但当前数据不支持它</h2>
+          <p>R0.25 证明：若两个端点尖锐坐标都是 \(O(N^{-1})\)，危险生成增益便一致有界。现在 \(b_N\) 一侧显示相反的有限行为：到 \(N=75\)，\(N|\sigma_{B,N}|=74.9834\)，且 \(|\sigma_{B,N}|\) 已接近一。</p>
+          <div class="proof warning"><strong>不能越过的逻辑边界。</strong>有限序列总能与某种更晚出现的衰减相容，所以这张表不能严格否定 \(O(N^{-1})\)。它能否定的是原有数值判断：\(N=2\) 至 5 的小常数不是稳定趋势。</div>
+          <p>下一项可检验的定理目标是</p>
+          <div class="equation">\[\liminf_{N\to\infty}|\sigma_{B,N}|>0,\qquad\text{或更强地}\qquad |\sigma_{B,N}|\to1.\]</div>
+          <p>证明任一命题，都会使这组初值上的“一半径小极化”证明路线失效。它不会证明 Navier–Stokes 爆破，而是给出一个严格的路线排除结果。</p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.28</div><h2>下一步先做精确符号与增长率界</h2>
+          <ol>
+            <li>提取已知叶单项式，把标量递推改写成精确有理数递推，消除 MPFR 舍入对符号问题的影响。</li>
+            <li>证明 \((-1)^N\) 扭转后的最终符号规律，或用区间证书给出反例。</li>
+            <li>对电荷一的 \(A,S\) 系数建立相邻增长率的严格上下界。</li>
+            <li>处理零电荷切片耦合后，再定位 \(r\) 平面的主导奇点并使用系数转移定理。</li>
+          </ol>
+          <p>经典奇点分析和多变量解析组合学提供了从奇点到系数渐近的成熟工具，但当前非线性方程并不能直接套用现成定理。零电荷投影和形式 PDE 必须先化成可验证的解析对象。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility</div><h2>数据、代码与图件</h2>
+          <p>正式证书保存全部 \(N=2\) 至 75 端点、零电荷射线、双精度差、尾部拟合、软件环境和源提交。内部使用每叶 \(4^{-1}\) 的指数缩放；\(\sigma\) 与 \(s/(L\alpha)\) 对该缩放不变。</p>
+          <div class="proof"><strong>复现命令。</strong><br><code>python research/edge_generating_function_audit.py --max-parameter 75 --precisions 160 224 --progress --check --pretty --output research/certificates/r027/edge-generating-function.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_generating_function_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r027">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r027-edge-generating/fig-r027-endpoint-polarization">查看期刊附图包</a></p>
+          <h3>参考与前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-26.html">R0.26：边缘约化与三叶传递</a>。给出本笔记所用的精确两生成元边缘。</li>
+            <li><a href="https://algo.inria.fr/flajolet/Publications/AnaCombi/anacombi.html">Flajolet 与 Sedgewick, <em>Analytic Combinatorics</em></a>。一元奇点分析与系数转移的系统参考。</li>
+            <li><a href="https://acsvproject.com/acsvbook/">Pemantle、Wilson 与 Melczer, <em>Analytic Combinatorics in Several Variables</em></a>。多变量系数渐近的参考框架。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.27 · 精确方程与有限证据分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

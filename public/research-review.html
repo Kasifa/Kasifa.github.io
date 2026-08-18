@@ -2237,7 +2237,36 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r026">查看机器可读证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_edge_transfer_audit.py">查看边缘传递审计脚本</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>推导边缘递推与一阶变分的双变量生成方程，定位主导奇点和端点极化比。</p>
+            <p><strong style="color:var(--gold)">R0.27 已完成：</strong>负边缘递推精确降成两个标量生成方程；电荷一端点扩展到 \(N=75\) 后，有限窗口显示 \(|\sigma_{B,N}|\) 接近一，而不是按 \(N^{-1}\) 变小。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.27 · 2026-08-18</p>
+            <h3>标量生成方程与固定电荷端点</h3>
+            <p>
+              我利用负边缘上全部偏移共线的几何，把每个四分量系数唯一写成纵向标量 \(\alpha\) 与尖锐标量 \(s\)。
+              两个标量递推进一步合成一个带零电荷投影的非线性生成方程，以及一个由它驱动的线性输运方程。
+            </p>
+            <p>
+              在变量 \(r=z^2w,\xi=z^{-1}\) 下，漂移端点变成固定 Laurent 电荷：\(b_N=[r^N\xi^1](A,S)\)。
+              160 位与 224 位 MPFR 计算扩展到 \(N=75\)，两套结果的最大相对差为 \(3.21\times10^{-43}\)。
+            </p>
+            <p>
+              从 \(N=8\) 到 75，\(\sigma_{B,N}\) 的符号始终与 \((-1)^N\) 一致；
+              到 \(N=75\)，\(|\sigma_{B,N}|=0.9997788687\)，且 \(N|\sigma_{B,N}|=74.9834\)。
+              这组有限数据支持尖锐坐标趋向单位模，而不是 R0.25 所需的 \(O(N^{-1})\) 衰减。
+            </p>
+            <p>
+              <strong>结论边界：</strong>标量化和生成方程是严格形式恒等式；\(N\le75\) 的趋势仍是有限高精度证据。
+              尚未证明主导奇点、最终符号或 \(|\sigma_{B,N}|\) 的极限，也没有得到 Navier–Stokes 正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-27.html"><strong>阅读 R0.27 研究笔记 →</strong></a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r027">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_generating_function_audit.py">查看标量审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r027-edge-generating/fig-r027-endpoint-polarization">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>把标量递推化成精确有理数形式，证明或否定最终奇偶符号，并建立电荷一系数的严格增长率界。</p>
           </div>
         </section>
 
@@ -2252,7 +2281,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.13 · 2026-08-18<br>
+        综述 v0.14 · 2026-08-18<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

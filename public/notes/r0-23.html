@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.23：精确检查真实 Taylor 系数第一次遇到 R0.22 尖锐标签族时的极化与相消。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.23｜尖锐方向确实出现，但首个增益很弱">
+  <meta property="og:description" content="二次域精确递推、N=2 首次相遇、有限壳层核对与下一步 N=3 判别。">
+  <title>R0.23｜真实生成系数的首次尖锐标签检查</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}
+    .bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#result">结果</a><a href="#meaning">意义</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.23 · 生成子空间</div>
+        <h1>尖锐方向出现了<br>但首个增益很弱</h1>
+        <p class="lead">我把 R0.22 的全空间反例放回真实八模态 Taylor 递推。\(N=2\) 的两个尖锐标签及其极化投影确实出现，没有精确选择律把它们排除；但归一化相互作用只达到专门尖锐极化的约 \(0.43\%\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 严格有限阶结论</span><strong>简单子空间逃逸被排除</strong><p>版本 v0.23 · 2026-08-18</p><p>根中心：R0.20 有理中心</p><p>最高阶：纯非线性 Taylor 10 阶</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#algebra">01 · 精确代数</a></li><li><a href="#result">02 · 首次相遇</a></li><li><a href="#size">03 · 增益大小</a></li><li><a href="#check">04 · 独立核对</a></li><li><a href="#meaning">05 · 意义</a></li><li><a href="#next">06 · 下一步</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>一个精确中心、一个首次相遇</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>尖锐标签可达</strong><p>最小时间阶分别为 5、4、10。</p></div><div class="status"><span>PROVED</span><strong>尖锐投影非零</strong><p>两个输入的精确代数投影都不为零。</p></div><div class="status"><span>MEASURED EXACTLY</span><strong>首个增益受抑</strong><p>实际/专门尖锐增益约为 0.00433464。</p></div><div class="status"><span>OPEN</span><strong>所有 \(N\) 的趋势</strong><p>一个参数值不能决定渐近阶。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>结论只覆盖 R0.20 有理根中心的纯非线性十阶系数。它不覆盖整个根盒，不包含热项，也没有证明三维 Navier–Stokes 的全局正则性或有限时奇性。</div>
+        </section>
+        <section id="algebra"><div class="section-no">01 / Exact algebra</div><h2>锥极限递推落在一个二次域中</h2>
+          <p>写 \(K_\delta(m)=\delta^{-1}q(m)d+\beta(m)\)，并把每个系数压缩为</p>
+          <div class="equation">\[w_m=\lim_{\delta\to0}u_{m,\delta},\qquad \ell_m=\lim_{\delta\to0}\delta^{-1}d\cdot u_{m,\delta}.\]</div>
+          <p>不可压缩条件变为 \(q(m)\ell_m+\beta(m)\cdot w_m=0\)。对 \(m=a+b\)，令 \(s=\beta(b)\cdot w_a+q(b)\ell_a\)。当 \(q(m)\ne0\) 时，</p>
+          <div class="equation">\[w_m^{\rm out}=s\,w_b,\qquad \ell_m^{\rm out}=-\frac{\beta(m)\cdot w_m^{\rm out}}{q(m)}.\]</div>
+          <p>R0.20 归一化只引入一个相对权重</p>
+          <div class="equation">\[t^2=\frac{x(1+p^2/12)}{4(1+q^2/3)}.\]</div>
+          <p>根中心的右端是正有理数且不是有理平方。因此所有递推系数唯一写成 \(A+Bt\)，非零判断使用精确有理数对 \((A,B)\)。</p>
+        </section>
+        <section id="result"><div class="section-no">02 / First encounter</div><h2>\(N=2\) 已经进入真实生成系数</h2>
+          <div class="equation">\[a=(2,-6,4),\qquad b=(-1,-5,-5),\qquad a+b=(1,-11,-1).\]</div>
+          <p>三个标签的最小叶数为 \(6,5,11\)，所以第一次分别出现在时间阶 \(5,4,10\)。完整有序递推到十阶后有 1720 个精确非零输出标签。</p>
+          <div class="table-wrap"><table><thead><tr><th>生成输入</th><th>与 R0.22 尖锐方向的余弦平方</th><th>纵向 jet</th><th>锥模式范数</th></tr></thead><tbody><tr><td>\(U_5(a)\)</td><td>0.298122</td><td>\(-2.52529\times10^5\)</td><td>\(2.63579\times10^5\)</td></tr><tr><td>\(U_4(b)\)</td><td>0.788361</td><td>\(7.17024\times10^3\)</td><td>\(7.80653\times10^3\)</td></tr></tbody></table></div>
+          <p>两个尖锐方向投影都精确非零，两个有序根相互作用之和也精确非零。因此，不能再假设真实生成子空间完全避开 R0.22 的极化方向。</p>
+        </section>
+        <section id="size"><div class="section-no">03 / Size</div><h2>方向出现，不等于复制全空间最坏增益</h2>
+          <p>实际生成对的对称算子增益为</p>
+          <div class="equation">\[\frac{\mathcal N_0(\mathcal B(U_5(a),U_4(b))+\mathcal B(U_4(b),U_5(a)))}{\mathcal N_0(U_5(a))\mathcal N_0(U_4(b))}=0.3045602145\ldots.\]</div>
+          <p>同一标签上，R0.22 专门选择的零纵向尖锐极化给出 \(70.2619267363\ldots\)。两者之比是 \(0.0043346408\ldots\)，即约 \(0.43\%\)。</p>
+          <p>这一根分裂只占完整十阶输出模式范数的约 \(4.57\times10^{-4}\)。它与完整输出横向方向的余弦平方为 \(0.97339\ldots\)，所以小份额主要来自幅值，而不是近乎正交的相消。</p>
+        </section>
+        <section id="check"><div class="section-no">04 / Independent check</div><h2>有限壳层递推收敛到精确锥极限</h2>
+          <p>我另外实现了不使用锥极限公式的有限-\(\delta\) Leray 递推，并在壳层 3、5、7 比较三个目标系数。壳层 7 的最大横向相对误差小于 \(8.3\times10^{-4}\)，最大纵向相对误差小于 \(1.6\times10^{-6}\)。</p>
+          <div class="proof"><strong>作用。</strong>这不是第二份证明，但它检查了频率映射、归一化、Leray 投影和时间阶因子是否与精确递推一致。</div>
+        </section>
+        <section id="meaning"><div class="section-no">05 / Meaning</div><h2>最简单的乐观解释失败，更细的抑制仍存在</h2>
+          <p>R0.22 后最直接的希望，是八个初始模态生成的系数始终与尖锐方向正交。R0.23 已排除这一点。</p>
+          <p>不过，实际系数携带很大的纵向 jet，而 R0.22 的最坏极化把纵向部分精确设为零。首次相遇的归一化增益因此低了两个数量级以上。现在不能宣称一阶解析闭合已经恢复，也不能宣称二阶障碍已经沿真实系数重现。</p>
+        </section>
+        <section id="next"><div class="section-no">06 / Next</div><h2>下一项判别是 \(N=3\)，不是继续堆十二阶图</h2>
+          <ol><li>计算 \(a_3,b_3\) 的 8 阶、7 阶系数以及 16 阶输出。</li><li>比较归一化增益与纵向/横向比是否开始随 \(N\) 增长。</li><li>改用 GMP 有理数、目标感知卷积和可恢复检查点；当前 Fraction 十阶精确运行约需五分钟，不能直接扩到十六阶。</li><li>保留有限壳层独立核对。只有出现可证明的可求和机制后，才返回带热十二阶余项。</li></ol>
+        </section>
+        <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>证书与代码</h2>
+          <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r023"><code>research/certificates/r023</code></a>。证书保存二次域基坐标、全部支持计数、精确零判断和有限壳层误差。</p>
+          <div class="equation mono">PYTHONPATH=research python3.12 research/generated_subspace_sharpness_audit.py --check --pretty --progress<br>cd research/certificates/r023 &amp;&amp; shasum -a 256 -c SHA256SUMS</div>
+          <ol class="refs"><li><a href="/notes/r0-22.html">R0.22：解析半径二阶损失的尖锐障碍</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/generated_subspace_sharpness_note.md">R0.23 完整数学说明</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/generated_subspace_sharpness_audit.py">精确审计程序</a>。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>Navier–Stokes 开放研究日志 · R0.23</strong><span><a href="/">研究综述</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span></div></footer>
+</body>
+</html>

@@ -141,6 +141,31 @@ sharp projections remain exactly nonzero, so the observed suppression is not
 an orthogonality selection rule.  These two points favor, but do not prove, a
 bounded or subquadratic generated gain.
 
+R0.25 identifies the precise polarization quantity behind that finite trend.
+Every charged boundary coefficient has a unique unit sharp--longitudinal
+decomposition
+
+\[
+  U/M(U)=\sigma S+\lambda L.
+\]
+
+On the R0.22 label pair, the four symmetrized channels \(SS,SL,LS,LL\)
+have sizes \(O(N^2),O(N),O(N),O(1)\).  An explicit elementary estimate gives
+
+\[
+ G_N\le44N^2|\sigma_A\sigma_B|
+ +7N(|\sigma_A\lambda_B|+|\lambda_A\sigma_B|)
+ +|\lambda_A\lambda_B|.
+\]
+
+Thus \(|\sigma_A|,|\sigma_B|=O(N^{-1})\) is sufficient for a uniformly
+bounded generated gain.  Two-precision MPFR probes through \(N=5\) are
+consistent with this scaling: all observed \(N|\sigma|\) are below 0.214 and
+all generated gains are below 0.422.  The new points are numerical rather
+than exact.  The missing theorem is now the all-\(N\) sharp-coordinate decay,
+and a positive coefficient majorant cannot prove it because it discards the
+signed root-split cancellation needed to lower-bound the full coefficient.
+
 ### Gate B: a posteriori approximate solution
 
 - Use the heat-inclusive Taylor polynomial through at least order 12 as the
@@ -186,19 +211,24 @@ repeatable shell cascade.
 
 ## Immediate implementation tasks
 
-1. Derive a quantitative recurrence inequality on the closed
-   \(m_2=-L\) boundary system.  Track catalyst parity, longitudinal dominance,
-   and the distribution of root splits.
-2. Try to prove that the actual generated gain is bounded or \(o(N^2)\).
-   Record the first term that prevents such an estimate if it fails.
-3. Compute \(N=4\), at orders 11, 10, and 22, only after the calculation tests
-   a specific proposed inequality rather than serving as an unexplained third
-   data point.
-4. Continue to a tagged order-12 residual only if the generated-subspace
+1. [x] Derive a quantitative polarization-channel inequality on the closed
+   \(m_2=-L\) boundary system, including catalyst parity and root splits.
+2. [x] Isolate the first unclosed term: the \(N^2\sigma_A\sigma_B\)
+   sharp--sharp channel and the missing signed lower bound for the complete
+   generated coefficient.
+3. [x] Compute \(N=4\) and \(N=5\) as two-precision tests of the proposed
+   \(N|\sigma|=O(1)\) normalization.
+4. Construct the three-leaf endpoint transfer system suggested by
+   \(a_{N+1}-a_N=(1,-3,3)\) and
+   \(b_{N+1}-b_N=(-1,-3,-3)\), with catalyst parity as a two-state variable.
+5. Bound the non-edge root splits in a signed norm strong enough to propagate
+   \(N|\sigma|\), or record the first companion family that prevents
+   contraction.
+6. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.
-5. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
+7. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
    after a shell-uniform residual norm has been identified.
-6. Run a finite-shell benchmark before attempting a shell-uniform proof.
-7. Publish a formal remainder note only after Gate C closes or yields a
+8. Run a finite-shell benchmark before attempting a shell-uniform proof.
+9. Publish a formal remainder note only after Gate C closes or yields a
    precise obstruction.

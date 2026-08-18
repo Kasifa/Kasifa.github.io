@@ -1,0 +1,32 @@
+.language-switcher {
+  position: fixed;
+  z-index: 10000;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  margin: 0;
+  padding: 9px 13px;
+  border: 1px solid var(--ink, currentColor);
+  border-radius: 999px;
+  background: var(--paper, Canvas);
+  color: var(--ink, CanvasText);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, .16);
+  font: 700 12px/1.2 "SFMono-Regular", Consolas, monospace;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.language-switcher:hover,
+.language-switcher:focus-visible {
+  color: var(--paper, Canvas);
+  background: var(--ink, CanvasText);
+  outline: none;
+}
+
+.pdf-language-label {
+  font-size: .82em;
+  white-space: nowrap;
+}
+
+@media print {
+  .language-switcher { display: none !important; }
+}

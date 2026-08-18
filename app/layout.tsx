@@ -33,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "zh_CN",
+      alternateLocale: ["en_US"],
       url: "/",
       title,
       description,
@@ -41,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/og.png",
           width: 1536,
           height: 1024,
-          alt: "Navier–Stokes 开放研究日志，R0.1 临界能量与 Fourier 三波结构",
+          alt: "Navier–Stokes 开放研究日志",
         },
       ],
     },

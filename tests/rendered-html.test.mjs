@@ -36,7 +36,7 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.match(html, /目前已经知道什么/);
   assert.match(html, /接下来的工作计划/);
   assert.match(html, /当前研究进展/);
-  assert.match(html, /08 \/ Selected sources/);
+  assert.doesNotMatch(html, /08 \/ Selected sources|id="references"/);
   assert.doesNotMatch(html, /id="publish"|href="#publish"|Open publication/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });

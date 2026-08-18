@@ -26,7 +26,6 @@ box, an all-N asymptotic estimate, or a Navier--Stokes regularity theorem.
 from __future__ import annotations
 
 import argparse
-from fractions import Fraction
 import hashlib
 import json
 import math
@@ -37,8 +36,17 @@ import sys
 import time
 from typing import Iterable
 
+try:
+    import gmpy2
 
-Rational = Fraction
+    Rational = gmpy2.mpq
+    RATIONAL_BACKEND = f"gmpy2.mpq (GMP {gmpy2.mp_version()})"
+except ImportError:
+    from fractions import Fraction
+
+    Rational = Fraction
+    RATIONAL_BACKEND = "fractions.Fraction"
+
 Label = tuple[int, int, int]
 RationalVector = tuple[Rational, Rational, Rational]
 Quadratic = tuple[Rational, Rational]
@@ -737,7 +745,7 @@ def audit(show_progress: bool = False) -> dict[str, object]:
         "environment": {
             "python": platform.python_version(),
             "platform": platform.platform(),
-            "arithmetic": "fractions.Fraction over a real quadratic field",
+            "arithmetic": f"{RATIONAL_BACKEND} over a real quadratic field",
         },
         "git": git_source_state(),
         "wallSeconds": time.perf_counter() - started,

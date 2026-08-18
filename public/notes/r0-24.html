@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.24：利用最小叶极端面选择律，精确计算 N=3 尖锐标签的 8、7、16 阶系数。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.24｜N=3 仍未复制全空间二次增益">
+  <meta property="og:description" content="闭合二维边界递推、GMP 十六阶证书，以及 N=2 到 N=3 的严格有限比较。">
+  <title>R0.24｜最小叶边界面上的 N=3 精确检查</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code,.mono{font-family:"SFMono-Regular",Consolas,monospace}code{font-size:.88em;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}
+    .bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span,th{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400;color:var(--ink)}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    .table-wrap{overflow-x:auto;margin:24px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left}th{border-bottom-color:var(--ink);font-size:10px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#selection">选择律</a><a href="#comparison">比较</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.24 · 最小叶边界面</div>
+        <h1>\(N=3\) 仍未复制<br>全空间二次增益</h1>
+        <p class="lead">我利用一个极端面选择律，把十六阶完整目标系数化为闭合二维递推。尖锐方向仍精确出现，但真实增益保持在 \(0.36156\)；相对全空间尖锐基准的比例继续下降。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 严格有限阶结论</span><strong>抑制证据增强，渐近仍开放</strong><p>版本 v0.24 · 2026-08-18</p><p>最高阶：纯非线性 Taylor 16 阶</p><p>算术：GMP 二次域精确有理数</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#selection">01 · 极端面选择律</a></li><li><a href="#exact">02 · 精确递推</a></li><li><a href="#n3">03 · N=3 结果</a></li><li><a href="#comparison">04 · 两点比较</a></li><li><a href="#check">05 · 独立核对</a></li><li><a href="#next">06 · 下一步</a></li><li><a href="#reproduce">07 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是第二个精确数据点，不是渐近定理</h2>
+          <div class="grid"><div class="status"><span>PROVED</span><strong>边界面递推闭合</strong><p>任何离开 \(m_2=-L\) 的历史都不能回到最小叶目标。</p></div><div class="status"><span>PROVED</span><strong>复现 R0.23</strong><p>三个 \(N=2\) 二次域系数逐项一致。</p></div><div class="status"><span>PROVED</span><strong>\(N=3\) 投影非零</strong><p>尖锐方向没有被选择律排除。</p></div><div class="status"><span>OPEN</span><strong>所有 \(N\) 的上界</strong><p>两个点不能证明有界或次二次增长。</p></div></div>
+          <div class="proof result"><strong>准确边界。</strong>结论位于 R0.20 有理根中心，只覆盖纯非线性最小叶系数。它不覆盖根盒、热项或无限 Taylor 尾，也没有证明三维 Navier–Stokes 的全局正则性或有限时奇性。</div>
+        </section>
+        <section id="selection"><div class="section-no">01 / Selection rule</div><h2>目标位于支持立方体的极端面</h2>
+          <p>任意 \(L\) 个立方体顶点之和满足 \(m_2\ge-L\)。R0.22 的 \(a_N,b_N,a_N+b_N\) 在各自最小叶数上都满足等号。</p>
+          <div class="equation">\[(a_N)_2=-3N,\qquad (b_N)_2=-(3N-1),\qquad (a_N+b_N)_2=-(6N-1).\]</div>
+          <p>等号迫使每个叶子的第二坐标都是 \(-1\)。树根若分成 \(L_1+L_2=L\)，两个子树也必须分别达到 \(-L_1,-L_2\)。因此 \(m_2=-L\) 构成逐阶闭合的二维递推面，面外历史不可能贡献目标。</p>
+          <p>十六阶的面容量是 \(18^2=324\)，精确聚合后有 320 个非零标签；全立方体容量则是 \(18^3=5832\)。</p>
+        </section>
+        <section id="exact"><div class="section-no">02 / Exact recurrence</div><h2>GMP、原子检查点和一次完整回归</h2>
+          <p>递推仍在 R0.23 的二次域 \(\mathbb Q(t)\) 中进行。程序使用 gmpy2 2.3.1 与 GMP 6.3.0；每完成一阶，就原子写入标签、二次域基坐标、根证书哈希和散度约束。</p>
+          <p>在计算 \(N=3\) 前，我把边界递推跑到十阶，并与完整 R0.23 证书比较。\(U_5(2,-6,4)\)、\(U_4(-1,-5,-5)\) 和 \(U_{10}(1,-11,-1)\) 的所有二次域基坐标完全一致。</p>
+        </section>
+        <section id="n3"><div class="section-no">03 / N=3</div><h2>8 阶、7 阶与 16 阶系数</h2>
+          <div class="equation">\[a_3=(3,-9,7),\qquad b_3=(-2,-8,-8),\qquad a_3+b_3=(1,-17,-1).\]</div>
+          <p>两个输入的尖锐方向投影、纵向 jet 以及对称根相互作用都精确非零。</p>
+          <div class="table-wrap"><table><thead><tr><th>生成输入</th><th>尖锐方向余弦平方</th><th>纵向/横向</th><th>锥模式范数</th></tr></thead><tbody><tr><td>\(U_8(a_3)\)</td><td>0.912044</td><td>12.4137</td><td>\(2.63609\times10^7\)</td></tr><tr><td>\(U_7(b_3)\)</td><td>0.610429</td><td>24.4618</td><td>\(4.79636\times10^5\)</td></tr></tbody></table></div>
+          <p>尖锐横向分量依然很明显，但两个模式范数仍由纵向 jet 主导。当前抑制不是来自逐渐正交。</p>
+        </section>
+        <section id="comparison"><div class="section-no">04 / Comparison</div><h2>真实增益略升，相对尖锐基准继续下降</h2>
+          <div class="table-wrap"><table><thead><tr><th>量</th><th>\(N=2\)</th><th>\(N=3\)</th><th>N3/N2</th></tr></thead><tbody><tr><td>真实对称增益 \(G_N\)</td><td>0.304560</td><td>0.361556</td><td>1.18714</td></tr><tr><td>R0.22 尖锐基准</td><td>70.2619</td><td>184.774</td><td>2.62979</td></tr><tr><td>真实/尖锐</td><td>0.00433464</td><td>0.00195675</td><td>0.451421</td></tr><tr><td>\(G_N/[r(a_N)r(b_N)]\)</td><td>0.0101520</td><td>0.00502161</td><td>0.494642</td></tr><tr><td>该根分裂占完整输出</td><td>\(4.57375\times10^{-4}\)</td><td>\(7.71697\times10^{-7}\)</td><td>0.00168723</td></tr></tbody></table></div>
+          <p>从 \(N=2\) 到 \(N=3\)，真实增益只增加约 \(18.7\%\)，半径乘积归一化后约减半。该根分裂在完整输出中的份额缩小约 593 倍。</p>
+          <p>根贡献与完整输出的横向余弦平方仍为 \(0.891409\ldots\)。份额变小主要是其他树历史的幅值层级，不是最终方向近乎正交。</p>
+        </section>
+        <section id="check"><div class="section-no">05 / Independent check</div><h2>有限壳层 7 收敛到十六阶锥极限</h2>
+          <p>独立有限-\(\delta\) Leray 递推在壳层 3、5、7 上逐级收敛。壳层 7 的三个 \(N=3\) 系数最大横向相对误差为 \(1.163\times10^{-3}\)，最大纵向相对误差为 \(6.513\times10^{-6}\)。</p>
+        </section>
+        <section id="next"><div class="section-no">06 / Next</div><h2>从第三个数据点转向边界系统估计</h2>
+          <p>当前两点支持“真实增益保持常数量级”的工作假设，但不能证明它。我下一步会先从二维边界递推提取可估计结构：催化奇偶分块、纵向主导项和根分裂权重。</p>
+          <ol><li>尝试证明 \(G_N\) 有界或至少为 \(o(N^2)\)。</li><li>识别完整输出远大于指定尖锐根分裂的组合原因。</li><li>只有形成具体递推不等式后才计算 \(N=4\)；其目标阶为 11、10、22。</li><li>若边界系统仍产生二次增长，则把该路线正式收束为生成子空间障碍。</li></ol>
+        </section>
+        <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>证书与代码</h2>
+          <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r024"><code>research/certificates/r024</code></a>，包含逐阶支持数、精确系数、回归结果、检查点元数据与有限壳层误差。</p>
+          <div class="equation mono">PYTHONPATH=research python3.12 research/boundary_face_sharpness_audit.py --check --pretty --progress --checkpoint-dir tmp/r024-checkpoints<br>cd research/certificates/r024 &amp;&amp; shasum -a 256 -c SHA256SUMS</div>
+          <ol class="refs"><li><a href="/notes/r0-23.html">R0.23：真实生成系数的首次尖锐标签检查</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_face_sharpness_note.md">R0.24 完整数学说明</a>。</li><li><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/boundary_face_sharpness_audit.py">GMP 精确审计程序</a>。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>Navier–Stokes 开放研究日志 · R0.24</strong><span><a href="/">研究综述</a> · <a href="https://github.com/Kasifa/Kasifa.github.io">GitHub</a></span></div></footer>
+</body>
+</html>

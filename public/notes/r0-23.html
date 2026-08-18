@@ -91,7 +91,9 @@
           <p>不过，实际系数携带很大的纵向 jet，而 R0.22 的最坏极化把纵向部分精确设为零。首次相遇的归一化增益因此低了两个数量级以上。现在不能宣称一阶解析闭合已经恢复，也不能宣称二阶障碍已经沿真实系数重现。</p>
         </section>
         <section id="next"><div class="section-no">06 / Next</div><h2>下一项判别是 \(N=3\)，不是继续堆十二阶图</h2>
-          <ol><li>计算 \(a_3,b_3\) 的 8 阶、7 阶系数以及 16 阶输出。</li><li>比较归一化增益与纵向/横向比是否开始随 \(N\) 增长。</li><li>改用 GMP 有理数、目标感知卷积和可恢复检查点；当前 Fraction 十阶精确运行约需五分钟，不能直接扩到十六阶。</li><li>保留有限壳层独立核对。只有出现可证明的可求和机制后，才返回带热十二阶余项。</li></ol>
+          <p>R0.24 已完成 \(N=3\) 的 8 阶、7 阶输入与 16 阶输出。极端面选择律把目标严格限制在闭合二维递推中；三个 R0.23 系数也得到逐项精确复现。</p>
+          <p>真实增益从 0.304560 增至 0.361556，但相对 R0.22 尖锐基准的比例从 0.00433464 降到 0.00195675。下一步转向二维边界系统的结构估计，而不是直接堆叠更多阶数。</p>
+          <p><a href="/notes/r0-24.html"><strong>继续阅读 R0.24 →</strong></a></p>
         </section>
         <section id="reproduce"><div class="section-no">07 / Reproduction</div><h2>证书与代码</h2>
           <p>机器证书位于 <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r023"><code>research/certificates/r023</code></a>。证书保存二次域基坐标、全部支持计数、精确零判断和有限壳层误差。</p>

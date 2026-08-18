@@ -124,6 +124,23 @@ about \(4.57\times10^{-4}\) of the complete order-ten mode norm.  These are
 exact center statements with a finite-shell convergence check, not all-label
 or root-box bounds.
 
+R0.24 extends the same test to \(N=3\).  The sharp labels saturate
+\(m_2=-L\) at their minimal leaf counts, so equality forces every contributing
+leaf and every child subtree onto the same boundary face.  This gives an exact
+closed two-dimensional recurrence.  Its order-ten coefficients reproduce the
+three full-field R0.23 coefficients exactly, and GMP arithmetic reaches the
+\(N=3\) input orders 8 and 7 and output order 16.
+
+The generated gain changes from \(0.3045602\ldots\) at \(N=2\) to
+\(0.3615556\ldots\) at \(N=3\), while the special R0.22 benchmark grows from
+\(70.2619\ldots\) to \(184.7738\ldots\).  Hence the generated-to-sharp ratio
+falls from \(0.00433464\ldots\) to \(0.00195675\ldots\), and the gain divided
+by the input radius product falls by about one half.  The selected root share
+of the complete output mode norm falls to \(7.72\times10^{-7}\).  Both input
+sharp projections remain exactly nonzero, so the observed suppression is not
+an orthogonality selection rule.  These two points favor, but do not prove, a
+bounded or subquadratic generated gain.
+
 ### Gate B: a posteriori approximate solution
 
 - Use the heat-inclusive Taylor polynomial through at least order 12 as the
@@ -169,18 +186,19 @@ repeatable shell cascade.
 
 ## Immediate implementation tasks
 
-1. Extend the generated-subspace audit from \(N=2\) to \(N=3\), reaching input
-   orders 8 and 7 and output order 16.  Use GMP-backed exact arithmetic,
-   target-aware convolution, checkpoints, and a finite-shell cross-check.
-2. Determine whether the normalized generated gain and the
-   longitudinal-to-transverse ratios show a structural trend.  One more data
-   point cannot prove an asymptotic theorem, but it can distinguish immediate
-   growth from the strong first-encounter suppression.
-3. Continue to a tagged order-12 residual only if the generated-subspace
+1. Derive a quantitative recurrence inequality on the closed
+   \(m_2=-L\) boundary system.  Track catalyst parity, longitudinal dominance,
+   and the distribution of root splits.
+2. Try to prove that the actual generated gain is bounded or \(o(N^2)\).
+   Record the first term that prevents such an estimate if it fails.
+3. Compute \(N=4\), at orders 11, 10, and 22, only after the calculation tests
+   a specific proposed inequality rather than serving as an unexplained third
+   data point.
+4. Continue to a tagged order-12 residual only if the generated-subspace
    evidence supplies a defensible one-radius mechanism or another summable
    cancellation.
-4. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
+5. Implement the Morosi--Pizzocchero control ODE with interval arithmetic only
    after a shell-uniform residual norm has been identified.
-5. Run a finite-shell benchmark before attempting a shell-uniform proof.
-6. Publish a formal remainder note only after Gate C closes or yields a
+6. Run a finite-shell benchmark before attempting a shell-uniform proof.
+7. Publish a formal remainder note only after Gate C closes or yields a
    precise obstruction.

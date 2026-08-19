@@ -139,7 +139,7 @@ def draw() -> None:
         domain_axis.legend(loc="lower right", frameon=False, fontsize=4.0)
         domain_axis.grid(color=GRID, linewidth=0.36)
 
-        gain_axis.set_title("(b) The whole family fits inside a narrow gain interval", loc="left", pad=5)
+        gain_axis.set_title("(b) Certified gain interval for the whole family", loc="left", pad=5)
         lower_gain, candidate_gain, upper_gain = gains
         gain_axis.hlines(1, lower_gain, upper_gain, color=BLUE, linewidth=5.0, alpha=0.26)
         gain_axis.hlines(1, lower_gain, upper_gain, color=BLUE, linewidth=0.9)
@@ -179,7 +179,7 @@ def draw() -> None:
         gain_axis.set_xlabel("radius gain over the complete affine upper [ppm]")
         gain_axis.grid(axis="x", color=GRID, linewidth=0.36)
 
-        cover_axis.set_title("(c) Exact 14-leaf continuous cover at r = 0.382629", loc="left", pad=5)
+        cover_axis.set_title("(c) Exact 14-leaf cover at r = 0.382629", loc="left", pad=5)
         for leaf in leaves:
             x_left = float(leaf["scaledALowerDecimal"])
             x_right = float(leaf["scaledAUpperDecimal"])

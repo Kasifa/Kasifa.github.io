@@ -28,7 +28,7 @@ import edge_short_continuation_audit as r036  # noqa: E402
 
 CERTIFICATE = RESEARCH / "certificates/r049/edge-charge-character-weight.json"
 EXPECTED_CERTIFICATE_SHA256 = (
-    "b60405d395a4b927ab674af8cec1aef8f3b42e4962fd7118425851e075a49e44"
+    "e36fce33f8a5edeb144cdbeda00a568b972d9a3a8ac0e96c04d7651e71a64578"
 )
 
 
@@ -57,7 +57,7 @@ def main() -> None:
     if sha256(CERTIFICATE) != EXPECTED_CERTIFICATE_SHA256:
         raise SystemExit("R0.49 certificate hash mismatch")
     certificate = json.loads(CERTIFICATE.read_text(encoding="utf-8"))
-    if not all(certificate["checks"].values()) or len(certificate["checks"]) != 31:
+    if not all(certificate["checks"].values()) or len(certificate["checks"]) != 32:
         raise SystemExit("R0.49 certificate checks are incomplete")
 
     theorem = certificate["thresholdTheorem"]

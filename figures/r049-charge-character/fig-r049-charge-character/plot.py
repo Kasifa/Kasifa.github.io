@@ -314,7 +314,7 @@ def draw() -> None:
         figure.text(
             0.145,
             0.075,
-            "Source: R0.49 exact certificate · 31/31 checks · 243 competitors · monitored 120.45 s · no floating-point decision",
+            "Source: R0.49 exact certificate · 32/32 checks · 243 competitors · monitored 120.58 s · no floating-point decision",
             ha="left",
             fontsize=4.35,
             color=MUTED,

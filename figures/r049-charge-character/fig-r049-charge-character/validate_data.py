@@ -14,7 +14,7 @@ PACKAGE = Path(__file__).resolve().parent
 ROOT = PACKAGE.parents[2]
 CERTIFICATE = ROOT / "research/certificates/r049/edge-charge-character-weight.json"
 EXPECTED_CERTIFICATE_SHA256 = (
-    "b60405d395a4b927ab674af8cec1aef8f3b42e4962fd7118425851e075a49e44"
+    "e36fce33f8a5edeb144cdbeda00a568b972d9a3a8ac0e96c04d7651e71a64578"
 )
 
 
@@ -30,7 +30,7 @@ def rows(name: str) -> list[dict[str, str]]:
 def main() -> None:
     assert sha256(CERTIFICATE) == EXPECTED_CERTIFICATE_SHA256
     certificate = json.loads(CERTIFICATE.read_text(encoding="utf-8"))
-    assert len(certificate["checks"]) == 31
+    assert len(certificate["checks"]) == 32
     assert all(certificate["checks"].values())
     theorem = certificate["thresholdTheorem"]
 
@@ -114,9 +114,9 @@ def main() -> None:
 
     progress = (PACKAGE / "progress.ndjson").read_text(encoding="utf-8").splitlines()
     assert len(progress) == 11
-    assert json.loads(progress[-1])["checks"] == 31
+    assert json.loads(progress[-1])["checks"] == 32
     resources = rows("resources.csv")
-    assert len(resources) == 807
+    assert len(resources) == 808
     assert resources[-1]["status"] == "exited:0"
 
     print(

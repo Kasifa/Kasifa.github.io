@@ -3,12 +3,12 @@
   "figureId": "fig-r049-charge-character",
   "status": "formal",
   "analyticalQuestion": "Does the exact multiplicative charge character omega_s=(4/5)^s move the true reduced-system threshold, which center charges create that threshold, and what geometric trade-off does the new anisotropic norm make?",
-  "supportedClaim": "For the reduced canonical edge generating system with ||f||_(r,c)=sum |f_mn| r^(m+n)c^(2n-m) and c=4/5, the true s=162,j=81 column has a globally unique positive threshold root satisfying 0.382618642388680778<r_*^(4/5)<0.382618642388680779. An exact 81-polynomial Sturm sequence independently counts one root in that interval. Across [0.382618,0.382619], an exact monotone sandwich keeps all 243 competing columns and sectors below the active column; the nearest is s=164 with a strict gap approximately 1.4157274652028842093e-4. Charges q=-1 and q=+1 provide approximately 50.508% and 38.299% of the active column. Relative to the upper endpoint of the R0.48 threshold, rho_Z grows by 26.88545%, rho_W shrinks by 35.03465%, and the fixed-charge R=Z^2W disk radius gains a strict lower factor 1.0459367903514846826. The polydiscs are not nested, and no optimality or three-dimensional Navier-Stokes claim is made.",
+  "supportedClaim": "For the reduced canonical edge generating system with ||f||_(r,c)=sum (m+n)|f_mn| r^(m+n)c^(2n-m) and c=4/5, the true s=162,j=81 column has a globally unique positive threshold root satisfying 0.382618642388680778<r_*^(4/5)<0.382618642388680779. An exact 81-polynomial Sturm sequence independently counts one root in that interval. Across [0.382618,0.382619], an exact monotone sandwich keeps all 243 competing columns and sectors below the active column; the nearest is s=164 with a strict gap approximately 1.4157274652028842093e-4. Charges q=-1 and q=+1 provide approximately 50.508% and 38.299% of the active column. Relative to the upper endpoint of the R0.48 threshold, rho_Z grows by 26.88545%, rho_W shrinks by 35.03465%, and the fixed-charge R=Z^2W disk radius gains a strict lower factor 1.0459367903514846826. The polydiscs are not nested, and no optimality or three-dimensional Navier-Stokes claim is made.",
   "createdAt": "2026-08-19T23:41:30+08:00",
   "git": {
     "repository": "Kasifa/Kasifa.github.io",
-    "sourceCommit": "fcc0fa908531aef0ca0f02bc58035085294704bb",
-    "certificateCommit": "76923f43e27a2b81eeb38b441411d90b1e8dbc6c",
+    "sourceCommit": "26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728",
+    "certificateCommit": "613f556852bffc32bee3913b7fabc78110e8983d",
     "dirtyAtCertifiedRun": false
   },
   "chartContract": {
@@ -28,7 +28,7 @@
   },
   "computation": {
     "kind": "exact-audit",
-    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r049/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_character_weight_audit.py --max-total-degree 80 --charge-character 4/5 --window-lower 382618/1000000 --window-upper 382619/1000000 --root-decimal-digits 18 --charge-cutoff 241 --ball-divisor 1000000 --source-commit fcc0fa908531aef0ca0f02bc58035085294704bb --progress --progress-log research/certificates/r049/progress.ndjson --check --pretty --output research/certificates/r049/edge-charge-character-weight.json",
+    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r049/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_character_weight_audit.py --max-total-degree 80 --charge-character 4/5 --window-lower 382618/1000000 --window-upper 382619/1000000 --root-decimal-digits 18 --charge-cutoff 241 --ball-divisor 1000000 --source-commit 26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728 --progress --progress-log research/certificates/r049/progress.ndjson --check --pretty --output research/certificates/r049/edge-charge-character-weight.json",
     "configuration": "charge support q>=-1; exact degree-80 center; multiplicative character c=4/5; active true column s=162,j=81; window [382618/1000000,382619/1000000]; exact 18-decimal root isolation; exact Sturm sequence; 243 full-window competitors; anisotropic Newton and canonical-stretch conjugacy checks",
     "randomSeed": null,
     "precision": "gmpy2.mpq/mpz exact rationals and integers backed by GMP 6.3.0; decimal fields and curve samples are display-only",
@@ -39,14 +39,14 @@
       "dominance": "strict exact rational inequalities for all 243 competitors",
       "figure": "no fitted parameter; every plotted value is extracted from or exactly reconstructed against the pinned certificate"
     },
-    "scientificWallTimeSeconds": 119.37781666699448,
-    "monitoredWallTimeSeconds": 120.450544,
+    "scientificWallTimeSeconds": 119.5301437080052,
+    "monitoredWallTimeSeconds": 120.581154,
     "monitoring": {
       "enabled": true,
       "reportIntervalSeconds": 0.125,
       "progressLog": "progress.ndjson",
       "resourceLog": "resources.csv",
-      "samples": 807,
+      "samples": 808,
       "trackedFields": [
         "formal-series recurrence",
         "charge-character covariance",
@@ -69,7 +69,7 @@
     "processes": 1,
     "threadsPerProcess": 1,
     "maximumObservedCpuPercent": 100.0,
-    "maximumObservedRssMiB": 164.953
+    "maximumObservedRssMiB": 158.906
   },
   "environment": {
     "python": "3.12.13",
@@ -117,24 +117,24 @@
     {
       "path": "progress.ndjson",
       "format": "ndjson",
-      "schema": "Append-only UTC timestamps, elapsed seconds, exact-audit stages, isolation parameters, root endpoints, competitor count, and successful 31-check completion status.",
-      "bytes": 1751,
-      "sha256": "76e6ffbde8b30313cb79314fe859bf8b660446b9d97ba6d47d3097ae0d0b923d"
+      "schema": "Append-only UTC timestamps, elapsed seconds, exact-audit stages, isolation parameters, root endpoints, competitor count, and successful 32-check completion status.",
+      "bytes": 1752,
+      "sha256": "af011df6cf4e2c2ba1cd614b61e575976c22062a2773016436c928487c3af0db"
     },
     {
       "path": "resources.csv",
       "format": "csv",
       "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
-      "bytes": 59848,
-      "sha256": "68825f6d2c4f2287f57affe471178678b28b7147f93d021807c8eac9e21f6878"
+      "bytes": 59911,
+      "sha256": "1e5c3bda60c78492b79bdb84b73de1997903a1a89a0c704c4041e01bae0148b1"
     }
   ],
   "sourceData": [
     {
       "location": "research/certificates/r049",
       "fileName": "edge-charge-character-weight.json",
-      "bytes": 5275804,
-      "sha256": "b60405d395a4b927ab674af8cec1aef8f3b42e4962fd7118425851e075a49e44",
+      "bytes": 5281414,
+      "sha256": "e36fce33f8a5edeb144cdbeda00a568b972d9a3a8ac0e96c04d7651e71a64578",
       "extractionCommand": "prepare_data.py pins the R0.49 certificate, reconstructs and hashes the charge-scaled degree-80 threshold polynomial, emits exact presentation samples, extracts all charge contributions and all 243 competitor records, derives exact geometry ratios, and copies monitoring logs; validate_data.py independently checks every table, source pin, ordering, sign, count, sum, geometry identity, and monitoring record"
     },
     {
@@ -154,16 +154,16 @@
     "outputs": [
       {
         "path": "figure.pdf",
-        "sha256": "b55c6e41330d3dcc5e6346358696037a6291c1c03abd3141217fb6ebe1dbf43a"
+        "sha256": "e2f5fdb7c926124d5623775d7afa5336f536900597ce0b243a8d9dfb099af3f8"
       },
       {
         "path": "figure.svg",
-        "sha256": "428dc1cbee0fb5775088008ba74b4fce2b6e7049d693a3d9467afc9576319b87"
+        "sha256": "f0349c0fd931519a14cfff04e7e5beb3ec060486c4e7115788b8857b9f33a017"
       },
       {
         "path": "figure.png",
         "dpi": 600,
-        "sha256": "a17fbd64e7c9e791a6b589615e18a102424a13e83a055ec94fca0b7b808f9d39"
+        "sha256": "c8b5e375fcadae832271453c344a26fe3b5ef8eebab8ff68bc4f0c2b2f57ec8b"
       }
     ]
   },

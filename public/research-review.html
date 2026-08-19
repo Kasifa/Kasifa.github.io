@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.37"></script>
+  <script defer src="/i18n-en.js?v=0.38"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.37</strong>网页版本</span>
+            <span><strong>v0.38</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -3307,7 +3307,64 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_product_affine_charge_weight_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r053-product-affine-witness/fig-r053-product-affine-witness">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.54：</strong>在完整 \(c&gt;0,\lambda,\mu\ge0\) 参数域上证明乘积仿射族的严格全局上下界；若相对增益仍低于 \(10^{-4}\)，停止继续增加荷权多项式次数，把主要计算转向完整三维 Fourier 相互作用到约化系统的尺度临界桥梁。</p>
+            <p><strong style="color:var(--gold)">R0.54 已完成：</strong>完整乘积仿射族的最优半径被压入 \(0.382628602237879637&lt;r_{\mathrm{prod}}^{\mathrm{opt}}&lt;0.382629\)。精确角色尾部与 14 叶连续覆盖排除了上端半径的全部参数；相对 R0.53 见证的剩余潜在改进小于约 \(1.0396\) ppm。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.54 · 2026-08-20</p>
+            <h3>完整乘积仿射族的全局窄区间</h3>
+            <p>
+              我把无界的 \((\lambda,\mu)\) 象限压缩为
+              \[
+              A=\alpha+\beta,\qquad B=\alpha\beta,
+              \qquad
+              0\le A\le2h,
+              \quad\max\{0,h(A-h)\}\le B\le A^2/4,
+              \]
+              其中 \(\alpha=\lambda/(1+162\lambda)\)、
+              \(\beta=\mu/(1+162\mu)\)、\(h=1/162\)。
+              这个紧半代数域完整保留有限参数与所有边界退化。
+            </p>
+            <p>
+              活跃约束和零荷约束对 \((A,B)\) 都是仿射函数。
+              精确矩符号把可行性化为三个必要不等式
+              \(H\le0\)、\(P\le0\)、\(Q\le0\)。在
+              \(r=0.382629\)、\(0.1337\le c\le0.803\) 上，
+              自适应张量 Bernstein 覆盖只需 14 个闭矩形：9 个由
+              \(H&gt;0\) 排除，1 个由 \(P&gt;0\) 排除，4 个由
+              \(Q&gt;0\) 排除。两个根矩形的精确叶质量都等于一。
+            </p>
+            <p>
+              区间外的 \(c\) 不是数值截断。左尾由零荷列的严格凸性与
+              负一阶对数导数排除，右尾由活跃矩的正一阶导数与正二阶矩排除。
+              合并 R0.53 下界后得到
+              \[
+              0.382628602237879637
+              &lt;r_{\mathrm{prod}}^{\mathrm{opt}}
+              &lt;0.382629.
+              \]
+            </p>
+            <p>
+              相对 R0.52 完整单仿射上界，乘积族的总增益严格位于
+              10.7949 与 11.8345 ppm 之间；即使完整优化，超过 R0.53
+              见证的剩余因子也小于 \(1.0000010395514554756\)。
+              这低于预设 \(10^{-4}\) 继续门槛约两个数量级，因此我停止
+              继续增加荷权多项式次数。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是次数 80 约化代数模型中的
+              全参数定理。它没有建立完整三维 Fourier 三元相互作用、
+              Leray 投影和尺度临界 PDE 范数到该生成系统的控制桥梁，
+              因而不是三维 Navier–Stokes 正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-54.html"><strong>阅读 R0.54 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-54.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r054">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_product_affine_family_global_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r054-product-affine-global/fig-r054-product-affine-global">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.55：</strong>从完整三维 Fourier 双线性项和 Leray 投影出发，构造尺度临界壳层量到当前约化生成系统的单向控制；逐类检查高—高到高、高—低到高和高—高到低相互作用。若统一常数发散，则保留显式频率反例并把失败机制写成障碍定理。</p>
           </div>
         </section>
 
@@ -3322,7 +3379,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.37 · 2026-08-20<br>
+        综述 v0.38 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

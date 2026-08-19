@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.54：我用精确不变量约化、角色尾部排除与 14 叶连续覆盖，给出完整乘积仿射荷权重族的严格全局上下界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.54｜完整乘积仿射族的全局窄区间">
+  <meta property="og:description" content="完整族的最优半径严格位于 0.382628602237879637 与 0.382629 之间；相对 R0.53 的剩余潜在改进小于约 1.0396 ppm。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-54-product-affine-global.png">
+  <title>R0.54｜完整乘积仿射族的全局窄区间</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:7px 0;padding:7px 9px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:5px 0}p:has(+ .equation){break-after:avoid-page}.refs li{padding-top:2px;padding-bottom:2px}#reproduce p{margin:3px 0}#reproduce .proof code{font-size:4.7pt;line-height:1.04}}</style>
+  <script defer src="/i18n-en.js?v=0.38"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#reduction">不变量约化</a><a href="#cover">连续覆盖</a><a href="#enclosure">全局区间</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.54 · 完整乘积仿射族</div>
+        <h1>完整三参数族&nbsp;<br>被压入严格窄区间</h1>
+        <p class="lead">R0.53 只给出一个固定有理见证。我现在把完整参数域 \(c&gt;0,\lambda,\mu\ge0\) 压缩为两个有界对称不变量，并用精确角色尾部定理与 14 叶自适应张量 Bernstein 覆盖证明：次数 80 的约化典范边系统中，完整乘积仿射族的最优半径严格位于 \(0.382628602237879637\) 与 \(0.382629\) 之间。即使把该族优化到最好，相对 R0.53 见证的剩余改进也小于约 \(1.0396\) ppm。这封闭了一个完整权重族，但没有建立三维 Navier–Stokes 正则性结论。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全参数域已认证</span><strong>14 个精确叶</strong><p>版本 v0.54 · 2026-08-20</p><p>正式检查：16 项全通过</p><p>区间宽：\(3.97762120363\times10^{-7}\)</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#reduction">01 · 精确不变量约化</a></li>
+        <li><a href="#necessary">02 · 三个必要不等式</a></li>
+        <li><a href="#tails">03 · 角色尾部</a></li>
+        <li><a href="#cover">04 · 14 叶连续覆盖</a></li>
+        <li><a href="#enclosure">05 · 全局窄区间</a></li>
+        <li><a href="#diagnostic">06 · 诊断候选</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 价值与停止条件</a></li>
+        <li><a href="#next">09 · R0.55 桥梁问题</a></li>
+        <li><a href="#reproduce">10 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里封闭一个完整权重族，不封闭三维 PDE</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · ALL PARAMETERS</span><strong>完整参数闭包</strong><p>\(c&gt;0,\lambda,\mu\ge0\) 的全部点与边界退化都被覆盖。</p></div>
+            <div class="status"><span>EXACT · CONTINUOUS COVER</span><strong>不是参数网格</strong><p>14 个闭矩形覆盖整个有界不变量域，每个矩形都有严格符号证书。</p></div>
+            <div class="status"><span>GLOBAL · TWO-SIDED</span><strong>严格上下界</strong><p>下界来自 R0.53 精确见证，上界排除完整乘积族。</p></div>
+            <div class="status"><span>STOP · DIMINISHING RETURN</span><strong>权重升级停止</strong><p>剩余潜在增益低于预设 \(10^{-4}\) 门槛约两个数量级。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>该定理属于次数 80 的有限精确中心与约化典范边生成系统。它没有证明区间中的诊断候选是精确全局最大点，没有控制完整三维 Fourier 三元相互作用与压力投影，也没有证明或反驳三维不可压 Navier–Stokes 全局正则性。</div>
+        </section>
+
+        <section id="reduction"><div class="section-no">01 / Exact invariant reduction</div><h2>无界的 \((\lambda,\mu)\) 象限变成紧的和—积区域</h2>
+          <p>对活跃输入荷 \(S=162\)，定义</p>
+          <div class="equation result">\[
+            \alpha=\frac{\lambda}{1+S\lambda},\qquad
+            \beta=\frac{\mu}{1+S\mu},\qquad
+            A=\alpha+\beta,\qquad B=\alpha\beta.
+          \]</div>
+          <p>令 \(h=1/S\)。由于 \(0\le\alpha,\beta\le h\)，完整闭包精确映射到</p>
+          <div class="equation result">\[
+            0\le A\le2h,
+            \qquad
+            \max\{0,h(A-h)\}\le B\le\frac{A^2}{4}.
+          \]</div>
+          <p>上边界 \(B=A^2/4\) 是对称线 \(\alpha=\beta\)，下边界则同时包含单因子退化与方形参数域的两条外边。这个变换没有丢失有限参数点；取闭包后也完整保留 \(\lambda\) 或 \(\mu\) 趋于无穷的边界。</p>
+          <p>在固定 \((r,c)\) 上，旧活跃列和零荷列对 \((A,B)\) 都是仿射函数：</p>
+          <div class="equation">\[
+            F=f_0+Af_1+Bf_2,
+            \qquad
+            G=g_0+Ag_1+Bg_2.
+          \]</div>
+          <p>新增的二次荷矩因此不再需要在两个原始斜率上做非线性搜索，而可沿紧区域的精确边界消元。</p>
+        </section>
+
+        <section id="necessary"><div class="section-no">02 / Necessary inequalities</div><h2>可行点必须同时通过 \(H\)、\(P\)、\(Q\) 三道检验</h2>
+          <p>精确二阶矩给出 \(f_2&gt;0\)。在角色区间 \(0.1337\le c\le0.803\) 上，张量 Bernstein 系数证明 \(g_2&lt;0\)。因此对固定 \((r,c,A)\)，活跃约束随 \(B\) 增长，零荷约束随 \(B\) 减小。</p>
+          <p>记 \(B_{\min}(A)=\max\{0,h(A-h)\}\)。任一可行点必须满足</p>
+          <div class="equation result">\[
+            \begin{aligned}
+            H(r,c,A)&amp;=F\bigl(r,c,A,B_{\min}(A)\bigr)\le0,\\
+            P(r,c,A)&amp;=G\left(r,c,A,\frac{A^2}{4}\right)\le0,\\
+            Q(r,c,A)&amp;=f_2G\left(r,c,A,-\frac{f_0+Af_1}{f_2}\right)\le0.
+            \end{aligned}
+          \]</div>
+          <p>\(H\) 排除活跃约束即使取最小 \(B\) 仍超界的点；\(P\) 排除零荷约束即使取最大 \(B\) 仍超界的点；\(Q\) 检验两个约束允许的 \(B\) 区间是否相交。三个条件只作必要性使用，因此任何一个严格为正就足以排除整块参数区域。</p>
+        </section>
+
+        <section id="tails"><div class="section-no">03 / Character tails</div><h2>紧角色区间之外由精确单调性排除</h2>
+          <p>左端 \(c_L=0.1337\) 处，无权零荷列满足</p>
+          <div class="equation result">\[
+            U_0(c_L)&gt;1.0005418736102262231,
+            \qquad
+            T_0(c_L)&lt;-0.94479666982550767059.
+          \]</div>
+          <p>其二阶对数角色导数是严格正的 \(q^2\) 矩。由凸性和一阶导数符号，全部 \(0&lt;c\le c_L\) 被排除。</p>
+          <p>右端 \(c_U=0.803\) 处，活跃零阶与一阶矩满足</p>
+          <div class="equation result">\[
+            M_0(c_U)&gt;1.0000443513376127801,
+            \qquad
+            M_1(c_U)&gt;0.0008286359729472594055.
+          \]</div>
+          <p>二阶矩 \(M_2\) 同样严格为正，因此全部 \(c\ge c_U\) 被排除。紧区间外不是数值截断，而是两个半无限区间的解析定理。</p>
+        </section>
+
+        <section id="cover"><div class="section-no">04 / Complete continuous cover</div><h2>14 个精确叶覆盖中间的全部连续参数域</h2>
+          <p>在上端半径</p>
+          <div class="equation result">\[
+            r_U=\frac{382629}{10^6}=0.382629
+          \]</div>
+          <p>上，把 \(A\le h\) 与 \(A\ge h\) 两个根矩形分别映射到单位方形。我对 \(H\)、\(P\)、\(Q\) 使用自适应张量 Bernstein 符号检验：若某个函数的全部 Bernstein 系数严格为正，整个矩形立即排除；否则只细分尚未认证的方向。</p>
+          <table><thead><tr><th>排除函数</th><th>叶数</th><th>含义</th></tr></thead><tbody>
+            <tr><td>\(H&gt;0\)</td><td>9</td><td>最小 \(B\) 也无法满足活跃约束</td></tr>
+            <tr><td>\(P&gt;0\)</td><td>1</td><td>最大 \(B\) 也无法满足零荷约束</td></tr>
+            <tr><td>\(Q&gt;0\)</td><td>4</td><td>两个允许的 \(B\) 区间不相交</td></tr>
+          </tbody></table>
+          <p>最深角色细分为 6 层，最深不变量细分为 5 层。两个根矩形上的精确二进质量和都等于一，叶集合摘要为 <code>449345d8d5daf02d549d75bc7c4eafe16b7d59dc8213c6e173df5a87a6253ef9</code>。因此没有漏盒，也没有以网格密度代替连续证明。</p>
+        </section>
+
+        <section id="enclosure"><div class="section-no">05 / Global enclosure</div><h2>完整乘积仿射族被夹在宽 \(3.98\times10^{-7}\) 的区间</h2>
+          <p>R0.53 的固定有理见证提供严格下界；R0.54 的尾部与连续覆盖提供严格上界：</p>
+          <div class="equation result">\[
+            0.382628602237879637
+            &lt;r_{\mathrm{prod}}^{\mathrm{opt}}
+            &lt;0.382629.
+          \]</div>
+          <p>区间宽度精确为 \(3.97762120363\times10^{-7}\)。相对 R0.52 完整单仿射族上界，完整乘积族的增益严格满足</p>
+          <div class="equation result">\[
+            1.0000107948905119688
+            &lt;\frac{r_{\mathrm{prod}}^{\mathrm{opt}}}{R_{\mathrm{aff}}}
+            &lt;1.0000118344531892886.
+          \]</div>
+          <p>更关键的停止量是完整族相对 R0.53 见证还能提高多少：</p>
+          <div class="equation result">\[
+            \frac{r_{\mathrm{prod}}^{\mathrm{opt}}}{r_{\mathrm{R0.53}}}
+            &lt;1.0000010395514554756.
+          \]</div>
+          <p>也就是说，即使精确找到完整族的最大点，剩余空间也小于约 \(1.0396\) ppm。</p>
+        </section>
+
+        <section id="diagnostic"><div class="section-no">06 / Diagnostic only</div><h2>100 位对称候选帮助理解几何，但不承担定理</h2>
+          <p>固定种子 54054 的 64 次 SLSQP 启动中，56 次收敛到记录的可行容差；其中 33 次进入对称乘积内部盆地，20 次进入单因子边界盆地。100 位对角求解给出</p>
+          <div class="equation">\[
+            \begin{aligned}
+            r&amp;\approx0.3826289125304728455618153157831342,\\
+            c&amp;\approx0.7928055385863995173795158615684136,\\
+            \lambda=\mu&amp;\approx0.3078617122304947851869880311579595.
+            \end{aligned}
+          \]</div>
+          <p>沿 \(\alpha=m+d,\beta=m-d\) 的反对称方向，隐式导数与二阶导数分别为</p>
+          <div class="equation result">\[
+            \frac{dr}{d(d^2)}\approx-20.2294483654601,
+            \qquad
+            \frac{d^2r}{dd^2}\approx-40.4588967309202.
+          \]</div>
+          <p>它提示对称点在反对称扰动下局部下降，但这仍是有限精度诊断；正式全局上界只依赖精确尾部与连续覆盖。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>不变量域、全局增益区间与完整覆盖统一归档</h2>
+          <figure>
+            <img src="/figures/r0-54-product-affine-global.svg" alt="R0.54 完整乘积仿射族的不变量域、严格增益区间和 14 叶连续覆盖">
+            <figcaption>图 R0.54-1。左图画出缩放不变量 \((SA,S^2B)\) 的精确可行域；201 个有理样本仅用于呈现边界。右上图给出完整族相对 R0.52 上界的严格增益区间，并把 100 位诊断点明确标成非证明。右下图画出 \(r=0.382629\) 时的全部 14 个连续覆盖叶，斜线、反斜线与点纹分别表示由 \(H\)、\(P\)、\(Q\) 排除。PDF、SVG、600 dpi PNG、完整叶数据、64 次诊断记录、验证脚本、监控、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-54-product-affine-global.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-54-product-affine-global.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value and stop rule</div><h2>主要价值是封闭完整方向，并量化继续微调权重的收益上限</h2>
+          <p>第一项价值是全域性。R0.53 只证明“存在一个更好的点”；R0.54 证明完整三参数族的最优值只能落在一个明确窄区间，并覆盖无界参数、边界退化和全部连续内部点。</p>
+          <p>第二项价值是方法性。和—积不变量把原始无界斜率象限压成紧半代数域，必要不等式再把三维可行性转为两个变量上的严格符号覆盖。这套结构可复用于其他次乘荷权，而不需要把浮点最优点包装成定理。</p>
+          <p>第三项价值是明确停止。预先约定的继续升级门槛是相对增益 \(10^{-4}\)；当前完整族相对 R0.53 的剩余因子小于 \(1.0396\times10^{-6}\)，低约两个数量级。继续增加荷权多项式次数不再是当前最有信息量的方向。</p>
+          <p>对 Clay 问题的直接价值仍然有限。当前定理没有处理任意三维 Fourier 模式的角向几何、Leray 压力投影、临界尺度不变性或从真实初值到单变量生成函数的双向常数。它提供的是一个可控的代数测试台，以及“权重优化已趋于饱和”的严格证据。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把全局封闭完整乘积族写成三维 Navier–Stokes 的部分正则性定理；不能把 \(r_{\mathrm{prod}}^{\mathrm{opt}}\) 解释成物理解寿命或爆破解除阈值；不能从 \(1.0396\) ppm 的剩余上限推出真实 PDE 的误差大小。</div>
+        </section>
+
+        <section id="next"><div class="section-no">09 / R0.55</div><h2>下一步不再升级权重，而是构造完整 Fourier 到约化系统的临界桥梁</h2>
+          <div class="proof"><strong>可证伪问题。</strong>是否存在一个对三维无散 Fourier 数据定义的尺度临界、旋转一致范数 \(X\)，以及显式常数 \(C_X\)，使完整 Navier–Stokes 双线性项经过 Leray 投影后能够被当前荷—次数生成系统逐层支配，同时保留粘性耗散与频率三角几何？若不存在，最小反例来自共线、近抵消还是高—高到低相互作用？</div>
+          <ol>
+            <li>从 Fourier 形式的双线性项出发，保留 Leray 投影矩阵，不先取各向同性绝对值；</li>
+            <li>定义候选临界壳层量，并严格检查 Navier–Stokes 缩放下是否保持不变；</li>
+            <li>把三元频率几何按高—高到高、高—低到高和高—高到低分类，分别求最坏常数；</li>
+            <li>尝试构造从壳层量到现有生成函数的单向支配；若常数发散，保留显式反例序列；</li>
+            <li>只有桥梁常数有限且方向正确，才把当前重启定理接到真实 PDE；否则把失败机制写成独立障碍定理。</li>
+          </ol>
+          <p>R0.55 的验收标准不是再提高第五或第六位小数，而是给出一个带完整定义、缩放检验和最坏频率构型的桥梁候选，或给出严格的不可行性证据。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility</div><h2>16 项精确检查、诊断记录与期刊图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r054/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_product_affine_family_global_audit.py --max-total-degree 80 --radius-upper 382629/1000000 --character-lower 1337/10000 --character-upper 803/1000 --max-cover-depth 80 --source-commit 543a394c51a9454496638eb1a9324775164b2eaa --progress --progress-log research/certificates/r054/progress.ndjson --check --pretty --output research/certificates/r054/edge-product-affine-family-global.json</code></div>
+          <p>正式源提交为 <code>543a394c51a9454496638eb1a9324775164b2eaa</code>，证书归档提交为 <code>a3da85c166eb72e739ea99a072aa7b4e8659742a</code>，最终附图源提交为 <code>d2b9a8ba31251d63010367a3995447d6874a2dff</code>，附图归档提交为 <code>e0c0518611527ca51038b1f57b5486a1621a4e31</code>。正式科学计算耗时 73.502364 秒；监控历时 73.638681 秒、采样 38 次，峰值 CPU 为 100.0%，峰值常驻内存为 303.531 MiB。没有使用 GPU、随机数或浮点符号判定，16 项精确检查全部通过。</p>
+          <p>诊断运行耗时 5.933023 秒；监控历时 6.165666 秒、采样 7 次。它使用固定种子和浮点优化，只用于定位，不进入正式上界。</p>
+          <p>成功证书 SHA-256 为 <code>130e954c3f8b711c28664f6f1d2aeb589942f69773ac9c839d98cc8f71b3006b</code>。</p>
+          <p><a href="/notes/r0-54.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_product_affine_family_global_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_product_affine_family_global_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r054">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r054-product-affine-global/fig-r054-product-affine-global">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-53.html">R0.53：固定乘积仿射见证</a>。提供本页严格下界。</li>
+            <li><a href="/notes/r0-52.html">R0.52：完整单仿射族的全局窄区间</a>。提供增益比较基准。</li>
+            <li><a href="/notes/r0-47.html">R0.47：精确荷—次数格点端点定理</a>。提供全阶扇区覆盖框架。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.54 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

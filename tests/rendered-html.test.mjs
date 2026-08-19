@@ -67,6 +67,8 @@ const fortyEighthNoteUrl = new URL("../public/notes/r0-48.html", import.meta.url
 const fortyEighthPdfUrl = new URL("../public/notes/r0-48.pdf", import.meta.url);
 const fortyNinthNoteUrl = new URL("../public/notes/r0-49.html", import.meta.url);
 const fortyNinthPdfUrl = new URL("../public/notes/r0-49.pdf", import.meta.url);
+const fiftiethNoteUrl = new URL("../public/notes/r0-50.html", import.meta.url);
+const fiftiethPdfUrl = new URL("../public/notes/r0-50.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -1028,6 +1030,36 @@ test("publishes and links the multiplicative charge-character threshold theorem"
   assert.match(note, /r0-49-charge-character\.svg/);
   assert.match(note, /不能声称已经证明或反驳三维 Navier–Stokes 正则性/);
   assert.ok(note.includes("我把荷 \\(s\\) 的权重改成精确乘法特征"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the global charge-character optimization theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftiethNoteUrl, "utf8"),
+    readFile(fiftiethPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-50\.html"/);
+  assert.match(home, /href="\/notes\/r0-50\.pdf"/);
+  assert.match(note, /研究笔记 R0\.50/);
+  assert.match(note, /href="\/notes\/r0-50\.pdf"/);
+  assert.match(note, /0\.8024563827/);
+  assert.match(note, /0\.382619813709565/);
+  assert.match(note, /1\.4580280493538903081\\times10\^\{-4\}/);
+  assert.match(note, /1\.0000030613272706956/);
+  assert.match(note, /1\.7828790986376003423\\times10\^\{-30\}/);
+  assert.match(note, /33 项精确检查全部通过/);
+  assert.match(note, /a9c469a96462e60655b0fea435177ececb8aef20/);
+  assert.match(note, /fc173a2108ef881d21d9d54046085f0d5daf5cc33ed50e024ca32ec867f7b79a/);
+  assert.match(note, /r0-50-charge-character-optimization\.svg/);
+  assert.match(note, /不能声称已经证明或反驳三维 Navier–Stokes 正则性/);
+  assert.ok(home.includes("我把 R0.49 固定的 \\(c=4/5\\) 放回完整乘法特征族"));
   assert.doesNotMatch(
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,

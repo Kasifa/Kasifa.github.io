@@ -24,6 +24,12 @@ FINAL_QA_KEYS = (
     "scalesAndUnitsInspected",
     "dataCrossChecked",
 )
+COMPUTATION_KINDS = {
+    "simulation",
+    "exact-audit",
+    "data-analysis",
+    "exact-audit plus high-precision presentation sampling",
+}
 
 
 def sha256(path: Path) -> str:
@@ -64,28 +70,67 @@ def validate(package: Path) -> dict[str, Any]:
     if not isinstance(git, dict):
         errors.append("manifest.git must be an object")
         git = {}
-    for key in ("repository", "commit", "dirty"):
-        require(git, key, "manifest.git", errors if final else warnings)
-    if final and not re.fullmatch(r"[0-9a-fA-F]{40}", str(git.get("commit", ""))):
-        errors.append("manifest.git.commit must be a full 40-character commit hash")
-    if final and git.get("dirty") is not False:
-        errors.append("manifest.git.dirty must be false for a formal figure")
+    require(git, "repository", "manifest.git", errors if final else warnings)
+    if "commit" in git or "dirty" in git:
+        commit = require(git, "commit", "manifest.git", errors if final else warnings)
+        dirty = require(git, "dirty", "manifest.git", errors if final else warnings)
+        if final and not re.fullmatch(r"[0-9a-fA-F]{40}", str(commit or "")):
+            errors.append("manifest.git.commit must be a full 40-character commit hash")
+        if final and dirty is not False:
+            errors.append("manifest.git.dirty must be false for a formal figure")
+    else:
+        source_commit = require(
+            git, "sourceCommit", "manifest.git", errors if final else warnings
+        )
+        certificate_commit = require(
+            git, "certificateCommit", "manifest.git", errors if final else warnings
+        )
+        dirty = require(
+            git, "dirtyAtCertifiedRun", "manifest.git", errors if final else warnings
+        )
+        if final:
+            for key, commit in (
+                ("sourceCommit", source_commit),
+                ("certificateCommit", certificate_commit),
+            ):
+                if not re.fullmatch(r"[0-9a-fA-F]{40}", str(commit or "")):
+                    errors.append(
+                        f"manifest.git.{key} must be a full 40-character commit hash"
+                    )
+            if dirty is not False:
+                errors.append(
+                    "manifest.git.dirtyAtCertifiedRun must be false for a formal figure"
+                )
 
     for relative in ("caption.md", "plot.py"):
         path = package / relative
         if not path.is_file():
             (errors if final else warnings).append(f"{relative} is missing")
 
-    simulation = manifest.get("simulation", {})
+    computation_key = "simulation" if "simulation" in manifest else "computation"
+    simulation = manifest.get(computation_key, {})
+    where = f"manifest.{computation_key}"
     if not isinstance(simulation, dict):
-        errors.append("manifest.simulation must be an object")
+        errors.append(f"{where} must be an object")
         simulation = {}
-    for key in ("kind", "command", "configuration", "precision", "solver", "wallTimeSeconds"):
-        require(simulation, key, "manifest.simulation", errors if final else warnings)
+    for key in ("kind", "configuration", "precision", "solver"):
+        require(simulation, key, where, errors if final else warnings)
+    command = simulation.get("command") or simulation.get("formalCommand")
+    if not command:
+        (errors if final else warnings).append(
+            f"{where}.command or {where}.formalCommand is required"
+        )
+    wall_time = simulation.get("wallTimeSeconds")
+    if wall_time is None:
+        wall_time = simulation.get("scientificWallTimeSeconds")
+    if wall_time in (None, ""):
+        (errors if final else warnings).append(
+            f"{where}.wallTimeSeconds or {where}.scientificWallTimeSeconds is required"
+        )
     simulation_kind = simulation.get("kind")
-    if simulation_kind not in {"simulation", "exact-audit", "data-analysis"}:
+    if simulation_kind not in COMPUTATION_KINDS:
         errors.append(
-            "manifest.simulation.kind must be simulation, exact-audit, or data-analysis"
+            f"{where}.kind must be one of {sorted(COMPUTATION_KINDS)}"
         )
 
     compute = manifest.get("compute", {})
@@ -126,7 +171,7 @@ def validate(package: Path) -> dict[str, Any]:
 
     monitoring = simulation.get("monitoring", {})
     if not isinstance(monitoring, dict):
-        errors.append("manifest.simulation.monitoring must be an object")
+        errors.append(f"{where}.monitoring must be an object")
         monitoring = {}
     if simulation_kind == "simulation":
         if final and monitoring.get("enabled") is not True:
@@ -134,23 +179,23 @@ def validate(package: Path) -> dict[str, Any]:
         interval = monitoring.get("reportIntervalSeconds")
         if not isinstance(interval, (int, float)) or interval <= 0:
             (errors if final else warnings).append(
-                "manifest.simulation.monitoring.reportIntervalSeconds must be positive"
+                f"{where}.monitoring.reportIntervalSeconds must be positive"
             )
         tracked = monitoring.get("trackedFields")
         if not isinstance(tracked, list) or not tracked:
             (errors if final else warnings).append(
-                "manifest.simulation.monitoring.trackedFields must not be empty"
+                f"{where}.monitoring.trackedFields must not be empty"
             )
         for key in ("progressLog", "resourceLog"):
             relative = require(
                 monitoring,
                 key,
-                "manifest.simulation.monitoring",
+                f"{where}.monitoring",
                 errors if final else warnings,
             )
             if relative and relative not in data_paths:
                 (errors if final else warnings).append(
-                    f"manifest.simulation.monitoring.{key} must also appear in manifest.data"
+                    f"{where}.monitoring.{key} must also appear in manifest.data"
                 )
 
     source_data = manifest.get("sourceData", [])

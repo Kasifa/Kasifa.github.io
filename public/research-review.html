@@ -3093,7 +3093,61 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_weight_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r049-charge-character/fig-r049-charge-character">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.50：</strong>把 \(r\) 与 \(c\) 同时保留为精确变量，认证最优参数区间和 243 个竞争不等式在二维有理矩形中的稳定性；若失败，则固定最先切换的活跃列或大荷边界。</p>
+            <p><strong style="color:var(--gold)">R0.50 已完成：</strong>乘法荷特征族的唯一全局最优参数已进入二维精确根盒；相对 \(c=4/5\) 的增益严格为正但只有约 3.061 ppm，243 个竞争输入在完整根盒内仍严格落后。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.50 · 2026-08-20</p>
+            <h3>乘法荷特征的唯一全局最优点与二维精确根盒</h3>
+            <p>
+              我把 R0.49 固定的 \(c=4/5\) 放回完整乘法特征族
+              \(\omega_s=c^s\)。真实 \(s=162,j=81\) 活跃列成为正
+              Laurent 多项式
+              \[
+              A(r,c)=\sum_{i,q}b_{iq}r^ic^q,\qquad b_{iq}&gt;0,
+              \]
+              其荷支撑从 \(-1\) 到 \(157\)。固定半径时，
+              \(A(r,e^t)\) 对 \(t=\log c\) 严格凸且两端趋于无穷；
+              固定 \(c\) 时，它对 \(r\) 严格递增。
+            </p>
+            <p>
+              四个完整边界的精确 Bernstein 符号与 Poincaré–Miranda
+              定理给出同时零点，并把它隔离在
+              \[
+              0.382619813709565&lt;r_*&lt;0.382619813709566,
+              \]
+              \[
+              0.8024563827&lt;c_*&lt;0.8024563828.
+              \]
+              严格凸性、强制性和半径单调性随后证明：这是整个
+              \(c&gt;0\) 上唯一的全局阈值最大值，不是采样网格上的局部峰值。
+            </p>
+            <p>
+              我还在完整二维根盒上构造逐系数荷上下包络。238 个其他固定正荷、
+              一个同荷非活跃端点、三个特殊荷扇区和无穷大荷扇区共同组成 243 个
+              竞争对象，全部留下严格正间隙。最近者仍为 \(s=164\)，间隙约
+              \(1.4580280494\times10^{-4}\)。
+            </p>
+            <p>
+              相对 R0.49 的上根端点，阈值半径的严格增益因子大于
+              \(1.0000030613272706956\)，即约 3.061 ppm；固定荷变量
+              \(R=Z^2W\) 的 \(r^3\) 圆盘增益因子大于
+              \(1.0000091840099272895\)。这说明 \(c=4/5\) 虽非精确最优，
+              但已经非常接近整个乘法族的最优值。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范边生成系统中一个完整
+              Banach 权重族的全局优化定理。当前仍没有建立到任意三维速度场、
+              尺度临界 PDE 范数或完整 Fourier 相互作用几何的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-50.html"><strong>阅读 R0.50 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-50.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r050">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_optimization_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r050-charge-character-optimization/fig-r050-charge-character-optimization">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.51：</strong>检验仍保持代数常数一的次乘权重 \(\omega_s=c^s(1+\lambda|s|)\)。先定位活跃列切换，再判断有理 \(\lambda&gt;0\) 能否带来明显大于 ppm 量级的严格增益；若不能，则给出精确负证书。</p>
           </div>
         </section>
 
@@ -3108,7 +3162,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.33 · 2026-08-20<br>
+        综述 v0.34 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

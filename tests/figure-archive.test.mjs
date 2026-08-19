@@ -62,6 +62,10 @@ const r049ManifestUrl = new URL(
   "../figures/r049-charge-character/fig-r049-charge-character/manifest.json",
   import.meta.url,
 );
+const r050ManifestUrl = new URL(
+  "../figures/r050-charge-character-optimization/fig-r050-charge-character-optimization/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -427,6 +431,37 @@ test("archives the formal R0.49 multiplicative charge-character figure", async (
   assert.equal(manifest.computation.monitoring.samples, 808);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 142);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.50 global charge-character optimization figure", async () => {
+  const manifest = JSON.parse(await readFile(r050ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r050-charge-character-optimization");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.sourceCommit,
+    "a9c469a96462e60655b0fea435177ececb8aef20",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "1430978ad7e4ac04f4b6f5daf04c641b05573edd",
+  );
+  assert.match(manifest.supportedClaim, /unique global active-column threshold maximum/);
+  assert.match(manifest.supportedClaim, /0\.8024563827/);
+  assert.match(manifest.supportedClaim, /all 243 competing columns/);
+  assert.match(manifest.supportedClaim, /1\.0000030613272706956/);
+  assert.equal(manifest.computation.kind, "exact-audit plus high-precision presentation sampling");
+  assert.equal(manifest.computation.monitoring.formalSamples, 70);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 112);
   assert.deepEqual(
     manifest.figure.outputs.map(({ path }) => path).sort(),
     ["figure.pdf", "figure.png", "figure.svg"],

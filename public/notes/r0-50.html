@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.50：我在完整乘法荷特征族中证明唯一全局最优参数，把最优荷参数隔离到宽度 10^-10、阈值半径隔离到宽度 10^-15，并在二维矩形上严格覆盖全部 243 个竞争输入。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.50｜乘法荷特征的全局精确优化">
+  <meta property="og:description" content="唯一全局最优参数 c* 位于 0.8024563827 与 0.8024563828 之间；相对 c=4/5 的阈值增益严格为正但只有约 3.061 ppm。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-50-charge-character-optimization.png">
+  <title>R0.50｜乘法荷特征的全局精确优化</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@media print{body{font-size:8.25pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}#next p{margin:5px 0}#next .equation,#next .proof{margin:8px 0;padding:8px 10px}#next li+li{margin-top:2px}#reproduce h2{font-size:1.65rem}#reproduce .proof{margin:6px 0;padding:5px 9px}#reproduce .proof code{font-size:5.6pt;line-height:1.12}#reproduce p{margin:4px 0;font-size:7.5pt}#reproduce h3{margin:5px 0 2px;font-size:.9rem}#reproduce .refs{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.refs li{padding:2px 4px 2px 34px;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#structure">全局结构</a><a href="#box">精确根盒</a><a href="#dominance">矩形主导</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.50 · 荷特征全局优化</div>
+        <h1>唯一最优<br>严格但微小</h1>
+        <p class="lead">R0.49 固定了简单有理值 \(c=4/5\)，但没有证明它最优。我把 \(c\) 保留为精确变量，把真实 \((s,j)=(162,81)\) 活跃列写成 \((r,c)\) 的正 Laurent 多项式。四个完整边界的 Bernstein 符号与 Poincaré–Miranda 定理给出二维精确根盒；严格凸性和半径单调性把盒内解提升为整个 \(c&gt;0\) 上的唯一全局最优点。243 个竞争输入在完整矩形内仍严格更小。最优增益确实存在，但相对 \(c=4/5\) 只有约 \(3.061\) ppm。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全局最优已认证</span><strong>c* ≈ 0.80245638275</strong><p>版本 v0.50 · 2026-08-20</p><p>正式检查：33 项全通过</p><p>阈值增益：&gt; 3.061 ppm</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#laurent">01 · 活跃 Laurent 多项式</a></li>
+        <li><a href="#structure">02 · 全局唯一性结构</a></li>
+        <li><a href="#box">03 · 四边精确符号盒</a></li>
+        <li><a href="#dominance">04 · 243 项矩形主导</a></li>
+        <li><a href="#restart">05 · 有理重启与增益</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#meaning">07 · 价值与局限</a></li>
+        <li><a href="#next">08 · R0.51 验收题</a></li>
+        <li><a href="#reproduce">09 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>我证明的是约化系统中一个完整权重族的全局优化定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · GLOBAL</span><strong>最优荷特征在 \(c&gt;0\) 上唯一</strong><p>不是局部采样最大值，而是严格凸性与精确存在性共同给出的全局结论。</p></div>
+            <div class="status"><span>EXACT · 2D BOX</span><strong>\((r_*,c_*)\) 同时进入有理根盒</strong><p>半径宽度 \(10^{-15}\)，荷参数宽度 \(10^{-10}\)。</p></div>
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>243 个竞争输入在完整矩形落后</strong><p>固定荷覆盖全部尾次数，大荷保持奇偶 Bernstein 证书。</p></div>
+            <div class="status"><span>CERTIFIED · RESTART</span><strong>简单有理点超过 R0.49 阈值</strong><p>\((r,c)=(0.382619,0.8024563827)\) 的固定点与典范场都闭合。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>这里优化的是约化典范边生成系统中的乘法权重族 \(\omega_s=c^s\)。它不是所有 Banach 范数中的最优解，没有建立到任意三维速度场的临界范数桥梁，也没有证明或反驳三维不可压 Navier–Stokes 全局正则性。</div>
+        </section>
+
+        <section id="laurent"><div class="section-no">01 / Active Laurent polynomial</div><h2>真实活跃列是 \((r,c)\) 的正 Laurent 多项式</h2>
+          <p>对中心单项式 \(Z^mW^n\)，定义总次数与荷</p>
+          <div class="equation">\[
+            i=m+n,\qquad q=2n-m.
+          \]</div>
+          <p>乘法荷特征范数为</p>
+          <div class="equation result">\[
+            \lVert f\rVert_{r,c}=\sum_{m+n&gt;0}(m+n)|f_{mn}|r^{m+n}c^{2n-m}.
+          \]</div>
+          <p>荷的可加性使输出/输入权重比恰为 \(c^q\)。因此真实输入 \((j,s)=(81,162)\) 的列值可写成</p>
+          <div class="equation result">\[
+            A(r,c)=\sum_{i,q}b_{iq}r^ic^q,\qquad b_{iq}&gt;0.
+          \]</div>
+          <table><thead><tr><th>有限精确对象</th><th>数量或范围</th></tr></thead><tbody>
+            <tr><td>次数 80 中心单项式</td><td>2161</td></tr>
+            <tr><td>非零活跃 Laurent 项</td><td>2160</td></tr>
+            <tr><td>不同中心荷</td><td>158，范围 \(-1\) 至 \(157\)</td></tr>
+            <tr><td>有序递推相互作用</td><td>1,113,168</td></tr>
+          </tbody></table>
+          <p>每个活跃次数都严格为正；荷支撑同时含 \(q=-1\) 和正荷。次数 80 中心摘要仍为 <code>056a0adba7f3cba41a6e9bd6d943a8f59be28f50f44c6035df1f68393ed26be7</code>。</p>
+        </section>
+
+        <section id="structure"><div class="section-no">02 / Global structure</div><h2>严格凸性把二维驻点变成唯一全局最大值</h2>
+          <p>令 \(t=\log c\) 及 \(F(r,t)=A(r,e^t)\)。因为所有次数与系数为正，固定 \(c\) 时</p>
+          <div class="equation">\[
+            \partial_rA(r,c)=\sum_{i,q}i b_{iq}r^{i-1}c^q&gt;0.
+          \]</div>
+          <p>所以每个 \(c&gt;0\) 都有唯一阈值根 \(r_*(c)\)。固定 \(r&gt;0\) 时</p>
+          <div class="equation result">\[
+            \partial_t^2F(r,t)=\sum_{i,q}q^2b_{iq}r^ie^{qt}&gt;0.
+          \]</div>
+          <p>因支撑含负荷与正荷，\(F\) 在 \(t\to\pm\infty\) 时都趋于无穷，故有唯一全局最小点。定义</p>
+          <div class="equation">\[
+            M(r)=\min_tF(r,t).
+          \]</div>
+          <p>若 \(r_2&gt;r_1&gt;0\)，则对每个 \(t\) 都有 \(F(r_2,t)&gt;F(r_1,t)\)，从而 \(M(r_2)&gt;M(r_1)\)。因此方程</p>
+          <div class="equation result">\[
+            A(r,c)=1,\qquad \partial_{\log c}A(r,c)=0
+          \]</div>
+          <p>至多有一个解。另一方面，\(r_*(c)\) 在 \(c\to0\) 或 \(c\to\infty\) 时趋于零，内部全局最大值必满足上面的驻点方程。只要精确证明一个解存在，它就是唯一全局最优点。</p>
+        </section>
+
+        <section id="box"><div class="section-no">03 / Exact sign box</div><h2>四个完整边界的 Bernstein 系数给出存在性</h2>
+          <p>因最低荷为 \(-1\)，我把方程改写为普通多项式</p>
+          <div class="equation">\[
+            P(r,c)=c[A(r,c)-1],\qquad Q(r,c)=c\,\partial_{\log c}A(r,c).
+          \]</div>
+          <p>认证矩形为</p>
+          <div class="equation result">\[
+            0.382619813709565&lt;r_*&lt;0.382619813709566,
+          \]</div>
+          <div class="equation result">\[
+            0.8024563827&lt;c_*&lt;0.8024563828.
+          \]</div>
+          <table><thead><tr><th>完整边界</th><th>要求符号</th><th>Bernstein 次数</th><th>最小带符号系数</th></tr></thead><tbody>
+            <tr><td>\(r=r_L\)</td><td>负</td><td>158</td><td>\(7.6002388027\times10^{-16}\)</td></tr>
+            <tr><td>\(r=r_U\)</td><td>正</td><td>158</td><td>\(3.0890673114\times10^{-15}\)</td></tr>
+            <tr><td>\(c=c_L\)</td><td>负</td><td>80</td><td>\(1.5530691795\times10^{-12}\)</td></tr>
+            <tr><td>\(c=c_U\)</td><td>正</td><td>80</td><td>\(1.1791231558\times10^{-10}\)</td></tr>
+          </tbody></table>
+          <p>表内都是严格正的完整 GMP 有理数的显示值。\(P\) 在两个半径边界异号，\(Q\) 在两个荷参数边界异号；Poincaré–Miranda 定理给出矩形内的同时零点。上一节的全局结构随后给出唯一性和全局最优性。没有使用浮点符号判定。</p>
+        </section>
+
+        <section id="dominance"><div class="section-no">04 / Rectangle dominance</div><h2>荷参数变化时，统一上下包络仍覆盖所有竞争输入</h2>
+          <p>在 \([c_L,c_U]\) 上，负荷项满足 \(c_U^{-1}\le c^{-1}\le c_L^{-1}\)；每个 \(q\ge0\) 则满足 \(c_L^q\le c^q\le c_U^q\)。我逐系数构造活跃列下包络与所有竞争列上包络，再用半径的非负系数单调性比较矩形左下与右上端。</p>
+          <table><thead><tr><th>竞争对象</th><th>数量</th><th>统一覆盖机制</th></tr></thead><tbody>
+            <tr><td>其他固定正荷</td><td>238</td><td>每个荷的全次数凸端点</td></tr>
+            <tr><td>\(s=162\) 非活跃端点</td><td>1</td><td>精确端点多项式</td></tr>
+            <tr><td>\(s=0,-1,1\)</td><td>3</td><td>精确扇区多项式</td></tr>
+            <tr><td>\(s\ge241\)</td><td>1 个无穷扇区</td><td>奇偶大荷 Bernstein 定理</td></tr>
+          </tbody></table>
+          <p>243 个严格间隙全部为正。最近者仍是固定 \(s=164\) 扇区：</p>
+          <div class="equation result">\[
+            C_{\rm active}^{\rm lower}(r_L)-C_{s=164}^{\rm upper}(r_U)
+            =1.4580280493538903081\times10^{-4}&gt;0.
+          \]</div>
+          <p>所以整个二维根盒中，诱导范数都由同一真实 \((s,j)=(162,81)\) 列给出。这里没有用有限荷扫描替代无穷大荷定理，也没有用尾次数网格替代全次数端点结论。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">05 / Restart and gain</div><h2>一个简单有理点已经严格超过 R0.49 阈值</h2>
+          <p>取 \((r,c)=(0.382619,0.8024563827)\)。该半径严格大于 R0.49 在 \(c=4/5\) 下的上根端点。此处真实尾列仍为 \(s=162\)，线性化界与收缩余量为</p>
+          <div class="equation">\[
+            L=0.99999609693061278829,\qquad 1-L=3.9030693872117144474\times10^{-6}.
+          \]</div>
+          <p>总次数加权残差范数为</p>
+          <div class="equation result">\[
+            \lVert R\rVert_{r,c}=1.7828790986376003423\times10^{-30}.
+          \]</div>
+          <p>球映射上界为 \(3.9030541533067749118\times10^{-12}\)，Lipschitz 上界为 \(0.99999609695403120461&lt;1\)。固定点与共轭典范场检查都闭合。</p>
+          <p>相对 R0.49 上根端点，精确保守增益为</p>
+          <div class="equation result">\[
+            \frac{r_L}{r_U^{(49)}}&gt;1.0000030613272706956,
+          \]</div>
+          <p>即阈值半径增加约 \(3.061\) ppm。固定荷变量 \(R=Z^2W\) 的圆盘半径等于 \(r^3\)，因此</p>
+          <div class="equation result">\[
+            \frac{r_L^3}{(r_U^{(49)})^3}&gt;1.0000091840099272895.
+          \]</div>
+          <p>这项增益严格但很小；\(c=4/5\) 已经极接近整个乘法特征族中的最优值。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Formal figure</div><h2>全局曲线、局部 ppm 增益与全部竞争间隙统一归档</h2>
+          <figure>
+            <img src="/figures/r0-50-charge-character-optimization.svg" alt="R0.50 乘法荷特征阈值的全局曲线、相对四分之五的局部 ppm 增益与 243 个竞争间隙">
+            <figcaption>图 R0.50-1。上图给出 \(0.45\le c\le1.40\) 上的全局阈值形状，并标出精确最优参数区间；左下用 ppm 放大 \(c=4/5\) 附近的微小增益；右下按严格间隙排序全部 243 个竞争输入。两条曲线共有 342 个 90 位展示采样点，最大方程残差小于 \(3.7\times10^{-91}\)，但不参与最优性证明。根盒、四边符号、唯一性和竞争间隙全部来自精确 GMP 证书。PDF、SVG、600 dpi PNG、源数据、绘图与独立验证脚本、监控日志、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value and limits</div><h2>这一结果封闭了乘法特征族，但没有跨过三维 PDE 桥梁</h2>
+          <p>R0.50 的价值不是多拿到几位小数，而是把 R0.49 的经验参数选择升级为完整全局定理：存在性由四边精确符号给出，唯一性由凸性与单调性给出，真实活跃列身份由二维矩形上的 243 项严格支配给出。</p>
+          <p>结果还给出一个否定性的方向判断：所有正乘法荷特征都已包含在 \(c^s\) 中，而 \(c=4/5\) 距全局最优只差约三百万分之一。继续只调 \(c\) 不可能带来实质性增益。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍有限。当前没有把任意散度为零三维初值嵌入这个二元约化系统，没有传播尺度临界 PDE 范数，也没有控制完整 Fourier 相互作用几何。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 \(r_*(c_*)\) 解释成 PDE 正则时间、奇性位置或临界雷诺数；不能声称已经在所有 Banach 范数中最优；不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.51</div><h2>下一步检验仍保持次乘性的仿射荷修正</h2>
+          <p>正乘法特征已经穷尽。下一个最小扩展是</p>
+          <div class="equation result">\[
+            \omega_s(c,\lambda)=c^s(1+\lambda|s|),\qquad c&gt;0,\quad\lambda\ge0.
+          \]</div>
+          <p>它仍保持代数常数一，因为</p>
+          <div class="equation">\[
+            1+\lambda|a+b|\le(1+\lambda|a|)(1+\lambda|b|).
+          \]</div>
+          <div class="proof"><strong>可证伪问题。</strong>是否存在有理 \(\lambda&gt;0\)，与 \(c\) 联合选择后给出明显更大的严格阈值，同时仍能对全部荷与全部尾次数建立统一精确证书？</div>
+          <ol>
+            <li>推导精确列比 \(c^q(1+\lambda|s+q|)/(1+\lambda|s|)\)；</li>
+            <li>在正式证明前定位最先发生的活跃列切换；</li>
+            <li>为 \((r,c,\lambda)\) 构造有理参数盒与统一竞争余量；</li>
+            <li>若 \(\lambda=0\) 已最优或竞争列先切换，给出精确负证书。</li>
+          </ol>
+          <p>正结果会说明非乘法但次乘的荷几何还能降低障碍；负结果会说明当前障碍对更宽权重族仍稳定。两种结果都与完整三维 PDE 结论分开。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>33 项证书、正式图包与受监控运行均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r050/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_charge_character_optimization_audit.py --max-total-degree 80 --radius-lower 382619813709565/1000000000000000 --radius-upper 382619813709566/1000000000000000 --character-lower 8024563827/10000000000 --character-upper 8024563828/10000000000 --restart-radius 382619/1000000 --ball-divisor 1000000 --charge-cutoff 241 --source-commit a9c469a96462e60655b0fea435177ececb8aef20 --progress --progress-log research/certificates/r050/progress.ndjson --check --pretty --output research/certificates/r050/edge-charge-character-optimization.json</code></div>
+          <p>正式源提交为 <code>a9c469a96462e60655b0fea435177ececb8aef20</code>，证书归档提交为 <code>1430978ad7e4ac04f4b6f5daf04c641b05573edd</code>。科学计算耗时 137.928040 秒；监控历时 138.1 秒、采样 70 次，峰值 CPU 为 100.0%，峰值常驻内存为 104.234 MiB。没有使用 GPU、随机数或浮点符号判定，33 项精确检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>fc173a2108ef881d21d9d54046085f0d5daf5cc33ed50e024ca32ec867f7b79a</code>。</p>
+          <p><a href="/notes/r0-50.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_optimization_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_optimization_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r050">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r050-charge-character-optimization/fig-r050-charge-character-optimization">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-49.html">R0.49：乘法荷特征与各向异性阈值</a>。固定 \(c=4/5\)，留下最优性问题。</li>
+            <li><a href="/notes/r0-47.html">R0.47：精确荷—次数格点端点定理</a>。提供全荷与全尾次数覆盖。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.50 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

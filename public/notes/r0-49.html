@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.49：我用乘法荷特征 omega_s=(4/5)^s 构造精确各向异性范数，隔离唯一阈值根，证明 243 个竞争对象的全窗口主导，并认证固定荷变量 R=Z^2W 的圆盘半径严格增加约 4.59%。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.49｜乘法荷特征与各向异性阈值增益">
+  <meta property="og:description" content="唯一根位于宽度 10^-18 的精确区间；各向异性双圆盘一伸一缩，固定荷 R 圆盘半径严格增加约 4.59%。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-49-charge-character.png">
+  <title>R0.49｜乘法荷特征与各向异性阈值增益</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@media print{body{font-size:8.25pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}#reproduce h2{font-size:1.65rem}#reproduce .proof{padding:6px 10px}#reproduce .proof code{font-size:6pt;line-height:1.18}#reproduce p{margin:5px 0;font-size:7.7pt}#reproduce h3{margin:7px 0 3px;font-size:.9rem}#reproduce .refs{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.refs li{padding:3px 4px 3px 34px;font-size:7.5pt}}</style>
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#norm">荷特征范数</a><a href="#root">阈值根</a><a href="#geometry">几何增益</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.49 · 乘法荷特征</div>
+        <h1>各向异性<br>固定荷增益</h1>
+        <p class="lead">R0.48 找到了旧范数的唯一锐阈值，但没有改变活跃列本身。我把荷 \(s\) 的权重改成精确乘法特征 \(\omega_s=(4/5)^s\)，并用代数共轭把新问题还原到普通次数加权 Wiener 范数。结果是：同一真实 \(s=162,j=81\) 列的唯一根向外移动，243 个竞争对象在整个窗口仍严格更小；双圆盘一个方向变大、另一个方向变小，但固定荷变量 \(R=Z^2W\) 的认证圆盘半径严格增加约 \(4.59\%\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 各向异性阈值已认证</span><strong>r* ≈ 0.3826186423886807785</strong><p>版本 v0.49 · 2026-08-19</p><p>正式检查：32 项全通过</p><p>固定荷增益：&gt; 4.5936%</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#norm">01 · 乘法荷特征范数</a></li>
+        <li><a href="#covariance">02 · 精确代数共轭</a></li>
+        <li><a href="#polynomial">03 · 活跃阈值多项式</a></li>
+        <li><a href="#root">04 · 根隔离与 Sturm</a></li>
+        <li><a href="#dominance">05 · 243 项全窗口主导</a></li>
+        <li><a href="#composition">06 · 活跃列荷组成</a></li>
+        <li><a href="#restart">07 · Newton 与典范场</a></li>
+        <li><a href="#geometry">08 · 固定荷几何增益</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与局限</a></li>
+        <li><a href="#next">11 · R0.50 验收题</a></li>
+        <li><a href="#reproduce">12 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>我证明的是约化生成系统中的各向异性 Banach 空间定理</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · ALGEBRA CONJUGACY</span><strong>荷权重是精确乘法特征</strong><p>\(S_c\) 与乘法、括号、Euler 场和非线性映射交换。</p></div>
+            <div class="status"><span>PROVED · UNIQUE ROOT</span><strong>新活跃多项式只有一个正根</strong><p>80 个非恒定系数全正，81 项 Sturm 序列独立计出一根。</p></div>
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>243 个竞争对象在整个窗口更小</strong><p>固定荷覆盖全部尾次数，大荷由奇偶 Bernstein 证书覆盖。</p></div>
+            <div class="status"><span>CERTIFIED · FIXED CHARGE</span><strong>\(R=Z^2W\) 圆盘半径严格增加</strong><p>保守增益因子大于 \(1.0459367903514846826\)。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>新双圆盘并不包含旧的各向同性双圆盘：\(Z\) 半径变大，\(W\) 半径变小。这里没有证明 \(c=4/5\) 最优，也没有覆盖任意三维速度场、完整 Fourier 几何或三维不可压 Navier–Stokes 全局正则性。</div>
+        </section>
+
+        <section id="norm"><div class="section-no">01 / Character norm</div><h2>荷权重 \(\omega_s=c^s\) 把各向异性写成精确相似变换</h2>
+          <p>对单项式 \(Z^mW^n\)，定义总次数和荷</p>
+          <div class="equation">\[
+            i=m+n,\qquad q=2n-m.
+          \]</div>
+          <p>在零常数项级数上，我使用一阶总次数加权范数</p>
+          <div class="equation result">\[
+            \lVert f\rVert_{r,c}=\sum_{m+n&gt;0}(m+n)|f_{mn}|r^{m+n}c^{2n-m},\qquad c=\frac45.
+          \]</div>
+          <p>这里的总次数因子不可省略。它决定了线性化列中的输出/输入次数比，也进入 Newton 残差范数。定义</p>
+          <div class="equation">\[
+            S_c(Z^mW^n)=c^{2n-m}Z^mW^n,
+          \]</div>
+          <p>便有精确等距关系</p>
+          <div class="equation result">\[
+            \lVert f\rVert_{r,c}=\lVert S_cf\rVert_{B_r}.
+          \]</div>
+          <p>等价双圆盘半径为</p>
+          <div class="equation">\[
+            \rho_Z=\frac r c,\qquad \rho_W=rc^2.
+          \]</div>
+        </section>
+
+        <section id="covariance"><div class="section-no">02 / Exact covariance</div><h2>荷的可加性让整个约化方程精确共轭</h2>
+          <p>荷在乘法和非零对数典范括号下相加；\(X,Y,\mathcal L\)、荷算子与荷投影在同一单项式基中对角。因此</p>
+          <div class="equation result">\[
+            S_c(fg)=(S_cf)(S_cg),\qquad S_c\Phi(f)=\Phi(S_cf).
+          \]</div>
+          <p>原固定点 \(p=Z+W+\Phi(p)\) 精确变为</p>
+          <div class="equation">\[
+            S_cp=S_c(Z+W)+\Phi(S_cp).
+          \]</div>
+          <p>中心荷为 \(q\) 的项把输入荷 \(s\) 送到 \(s+q\)，所以列中的荷权输出/输入比恰为</p>
+          <div class="equation result">\[
+            \frac{\omega_{s+q}}{\omega_s}=c^q.
+          \]</div>
+          <p>这一步没有引入放松不等式。审计脚本对次数 80 精确中心逐系数检查乘法、括号、\(X-Y\) 与 \(\Phi\) 的协变；全阶结论来自荷可加性与对角性。</p>
+        </section>
+
+        <section id="polynomial"><div class="section-no">03 / Active polynomial</div><h2>同一真实 \(s=162,j=81\) 列仍然主导</h2>
+          <p>在 \(c=4/5\) 下，R0.47 的固定荷端点定理把真实最低次数输入锁定为 \((j,s)=(81,162)\)。其列值是显式多项式</p>
+          <div class="equation result">\[
+            A_c(r)=C_{r,c}(81,162)=\sum_{i=1}^{80}\alpha_i(c)r^i,\qquad \alpha_i(c)&gt;0.
+          \]</div>
+          <p>令 \(P_c(r)=A_c(r)-1\)，则</p>
+          <div class="equation">\[
+            P_c'(r)=\sum_{i=1}^{80}i\alpha_i(c)r^{i-1}&gt;0\qquad(r&gt;0).
+          \]</div>
+          <p>所以正根全局唯一。两个规范摘要为：</p>
+          <table><thead><tr><th>对象</th><th>次数 / 系数数</th><th>SHA-256</th></tr></thead><tbody>
+            <tr><td>有理阈值多项式</td><td>80 / 81</td><td><code>3e2d58683a97c46290ae8d5ffc6b8beab38bb5763393aca4dcee5991cd7f5288</code></td></tr>
+            <tr><td>本原整数多项式</td><td>80 / 81</td><td><code>590f711be8e843317ddf776dbb52268ea6d45d6f85d73adb804ff3825393c357</code></td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="root"><div class="section-no">04 / Root and Sturm</div><h2>唯一正根被隔离到宽度 \(10^{-18}\) 的精确区间</h2>
+          <p>相邻百万分位两端的真实列值为</p>
+          <div class="equation">\[
+            A_c(0.382618)=0.99999692284203436108\ldots&lt;1,
+          \]</div>
+          <div class="equation">\[
+            A_c(0.382619)=1.0000017130264400588\ldots&gt;1.
+          \]</div>
+          <p>39 次精确十进制二分得到</p>
+          <div class="equation result">\[
+            \boxed{0.382618642388680778&lt;r_*^{(4/5)}&lt;0.382618642388680779.}
+          \]</div>
+          <p>两端 \(P_c\) 值分别严格为负和正。独立的 81 项 Sturm 序列次数从 80 降到 0，端点没有零值，变号数由 40 降到 39，因此区间恰含一根。系数正性同时证明这是整个正轴上的唯一根。</p>
+        </section>
+
+        <section id="dominance"><div class="section-no">05 / Full-window dominance</div><h2>右端竞争上界仍低于左端活跃值</h2>
+          <p>所有精确荷特征列都是 \(r\) 的非负系数幂级数，因此随半径不减。我在 \(I=[0.382618,0.382619]\) 上比较右端竞争上界和左端活跃值，覆盖：</p>
+          <table><thead><tr><th>竞争对象</th><th>数量</th><th>覆盖机制</th></tr></thead><tbody>
+            <tr><td>其他固定正荷</td><td>238</td><td>每个荷的两个全次数凸性端点</td></tr>
+            <tr><td>\(s=162\) 非活跃端点</td><td>1</td><td>精确端点多项式</td></tr>
+            <tr><td>\(s=0,-1,1\)</td><td>3</td><td>精确扇区多项式</td></tr>
+            <tr><td>\(s\ge241\)</td><td>1 个无穷扇区</td><td>奇偶有理分支与 Bernstein 符号证书</td></tr>
+          </tbody></table>
+          <p>最接近者仍是固定 \(s=164\) 扇区：</p>
+          <div class="equation result">\[
+            A_c(0.382618)-B_{164}(0.382619)
+            =1.4157274652028842093\times10^{-4}&gt;0.
+          \]</div>
+          <p>因此整个窗口的诱导范数都等于同一个真实列：根下小于一，根处等于一，根上大于一。固定荷记录覆盖所有允许尾次数；大荷记录覆盖无限荷分支，没有用尾次数网格替代定理。</p>
+        </section>
+
+        <section id="composition"><div class="section-no">06 / Charge composition</div><h2>\(q=-1\) 与 \(q=+1\) 提供约 \(88.8\%\) 的活跃列</h2>
+          <table><thead><tr><th>中心荷 \(q\)</th><th>精确贡献的显示值</th><th>活跃列占比</th></tr></thead><tbody>
+            <tr><td>\(-1\)</td><td>0.5050735065970958637</td><td>50.507506%</td></tr>
+            <tr><td>\(+1\)</td><td>0.38298788845471822301</td><td>38.298907%</td></tr>
+            <tr><td>\(0\)</td><td>0.063077736347251425027</td><td>6.307793%</td></tr>
+            <tr><td>\(+2\)</td><td>0.030188058573041966916</td><td>3.018815%</td></tr>
+            <tr><td>\(+3\)</td><td>0.017135220824103145879</td><td>1.713527%</td></tr>
+          </tbody></table>
+          <p>正式图表数据保留全部 158 个不同中心荷，只在显示时合并 \(q\ge4\)。这些数据解释了荷特征为何能移动阈值：因子 \(c^q\) 会重新平衡正荷与负荷贡献。它们不证明 \(c=4/5\) 是最优选择。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">07 / Newton and canonical fields</div><h2>修正后的总次数加权残差仍留下十二个数量级余量</h2>
+          <p>在 \(r=0.382618\)，收缩余量与球半径为</p>
+          <div class="equation">\[
+            \delta=3.0771579656389206393\times10^{-6},\qquad
+            \eta=\delta/10^6.
+          \]</div>
+          <p>精确一阶总次数加权残差范数为</p>
+          <div class="equation result">\[
+            \lVert R_c\rVert_{r,c}=1.6910402110013306773\times10^{-30}.
+          \]</div>
+          <p>它严格小于残差允许量 \(9.4688727387916242088\times10^{-18}\)。球映射上界为 \(3.0771484967661818494\times10^{-12}&lt;\eta\)，Lipschitz 上界为</p>
+          <div class="equation result">\[
+            0.99999692286049730887&lt;1.
+          \]</div>
+          <p>写正文时，我发现继承辅助函数曾把中心/残差记录成未乘总次数的诊断值。修正版源码明确重算次数加权范数，并在证书中保留但排除较小的未加权诊断。临界根和 243 项支配不依赖该记录；Newton 结论用的是上面的修正值。</p>
+          <p>荷缩放还与伸缩方程中的 \(\mathcal L,X-Y\)、括号及指数重构交换。伸缩算子界为 \(0.98796898781173256118&lt;1\)，所以约化固定点、伸缩场与典范场都在同一各向异性空间闭合。</p>
+        </section>
+
+        <section id="geometry"><div class="section-no">08 / Fixed-charge geometry</div><h2>双圆盘一伸一缩，固定荷 \(R\) 圆盘净增</h2>
+          <p>在目标点，两个半径是</p>
+          <div class="equation">\[
+            \rho_Z=0.4782725,\qquad \rho_W=0.24487552.
+          \]</div>
+          <p>所以新旧双圆盘不可比较，也不能声称各向同性半径整体变大。但固定荷展开以</p>
+          <div class="equation">\[
+            R=Z^2W
+          \]</div>
+          <p>为不变量，其圆盘半径满足</p>
+          <div class="equation result">\[
+            \rho_R=\rho_Z^2\rho_W=r^3=0.056013949016933032.
+          \]</div>
+          <p>用 R0.48 根区间的上端作保守旧参考，得到</p>
+          <div class="equation result">\[
+            \frac{0.382618^3}{(0.376932499290527341)^3}
+            =1.0459367903514846826\ldots&gt;1.
+          \]</div>
+          <p>这是两个认证方案之间超过 \(4.59\%\) 的固定荷圆盘半径增益，不是对完整三维 PDE 解析半径的结论，也不能把全部增益单独归因于 \(c\)：R0.48 还使用了不同的零荷/非零荷二块权重。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>阈值、荷组成、全部竞争间隙和几何取舍统一归档</h2>
+          <figure>
+            <img src="/figures/r0-49-charge-character.svg" alt="R0.49 乘法荷特征的阈值穿越、中心荷贡献、243 个竞争间隙与各向异性几何比较">
+            <figcaption>图 R0.49-1。左上显示活跃列在相邻百万分位窗口的有符号阈值余量，并标出唯一根与 40→39 的 Sturm 变号数；右上显示 158 个中心荷贡献的主要分组；左下按严格间隙排序全部 243 个竞争对象；右下把 \(Z\) 半径、\(W\) 半径与固定荷 \(R=Z^2W\) 圆盘相对 R0.48 的变化同时展示，明确双圆盘并不嵌套。PDF、SVG、600 dpi PNG、五张精确数据表、监控日志、图注、清单与 SHA-256 摘要一并归档；彩色、真实灰度和 PDF 渲染页均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and limits</div><h2>价值在于首次用代数兼容权重获得严格固定荷增益</h2>
+          <p>R0.49 的主要增量不是把小数从 0.3769 改成 0.3826，而是证明一种非平凡荷权重与约化非线性代数精确兼容，并在保持全部荷与尾次数覆盖时真正降低原活跃障碍。它还把“半径提高”拆成三个可核查量：\(Z\) 半径增加约 \(26.89\%\)，\(W\) 半径减少约 \(35.03\%\)，固定荷 \(R\) 圆盘净增约 \(4.59\%\)。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍有限。当前没有把任意散度为零三维初值嵌入这个二元约化系统，没有传播尺度临界 PDE 范数，也没有控制完整 Fourier 相互作用几何。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 \(r_*^{(4/5)}\) 解释成 PDE 正则时间、奇性位置或临界雷诺数；不能把新双圆盘说成旧双圆盘的超集；不能声称 \(c=4/5\) 最优；不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.50</div><h2>下一步把 \(c=4/5\) 从有根据的候选提升为二维精确优化定理</h2>
+          <p>R0.49 固定了一个简单有理候选，但没有证明最优。R0.50 的验收问题是：</p>
+          <div class="proof"><strong>可证伪问题。</strong>在乘法特征族 \(\omega_s=c^s\) 内，能否给出 \(c\) 的最优认证区间，同时在一个有理 \((r,c)\) 矩形上证明活跃列身份和全部 243 个竞争不等式稳定？</div>
+          <ol>
+            <li>把活跃列写成二元精确多项式或有理函数 \(A(r,c)\)，证明指定矩形内对 \(r\) 单调；</li>
+            <li>用区间 Bernstein、结果式或精确导数符号隔离候选最优 \(c\)；</li>
+            <li>对 243 个竞争记录建立统一的 \((r,c)\) 支配余量，而不是逐点扫描；</li>
+            <li>若活跃列切换或大荷证明失去一致性，给出精确负证书与最先失败的边界。</li>
+          </ol>
+          <p>正结果会把经验选值升级为精确两参数优化；负结果会指出乘法特征族的结构性限制。两种结果都与完整三维 PDE 结论保持分离。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility</div><h2>修正版源码、32 项证书、监控日志与正式图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r049/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_character_weight_audit.py --max-total-degree 80 --charge-character 4/5 --window-lower 382618/1000000 --window-upper 382619/1000000 --root-decimal-digits 18 --charge-cutoff 241 --ball-divisor 1000000 --source-commit 26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728 --progress --progress-log research/certificates/r049/progress.ndjson --check --pretty --output research/certificates/r049/edge-charge-character-weight.json</code></div>
+          <p>正式源提交为 <code>26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728</code>。科学计算耗时 119.530144 秒；监控历时 120.581154 秒、采样 808 次，峰值 CPU 为 100.0%，峰值常驻内存为 158.906 MiB。没有使用 GPU、随机数或浮点阈值判定，32 项精确检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>e36fce33f8a5edeb144cdbeda00a568b972d9a3a8ac0e96c04d7651e71a64578</code>。</p>
+          <p><a href="/notes/r0-49.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_weight_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_weight_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r049">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r049-charge-character/fig-r049-charge-character">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-47.html">R0.47：精确荷—次数格点端点定理</a>。提供全荷与全尾次数覆盖。</li>
+            <li><a href="/notes/r0-48.html">R0.48：唯一阈值根与全窗口主导</a>。固定旧范数的精确障碍与 243 个竞争基线。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.49 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

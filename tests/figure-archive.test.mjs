@@ -58,6 +58,10 @@ const r048ManifestUrl = new URL(
   "../figures/r048-threshold-root/fig-r048-threshold-root/manifest.json",
   import.meta.url,
 );
+const r049ManifestUrl = new URL(
+  "../figures/r049-charge-character/fig-r049-charge-character/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -399,4 +403,36 @@ test("archives the formal R0.48 exact threshold-root figure", async () => {
   assert.equal(manifest.qa.status, "passed");
   assert.equal(manifest.qa.grayscaleInspected, true);
   assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.49 multiplicative charge-character figure", async () => {
+  const manifest = JSON.parse(await readFile(r049ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r049-charge-character");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.sourceCommit,
+    "26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "613f556852bffc32bee3913b7fabc78110e8983d",
+  );
+  assert.match(manifest.supportedClaim, /globally unique positive threshold root/);
+  assert.match(manifest.supportedClaim, /0\.382618642388680778/);
+  assert.match(manifest.supportedClaim, /all 243 competing columns and sectors/);
+  assert.match(manifest.supportedClaim, /1\.0459367903514846826/);
+  assert.match(manifest.supportedClaim, /polydiscs are not nested/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.samples, 808);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 142);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
 });

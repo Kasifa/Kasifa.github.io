@@ -65,6 +65,8 @@ const fortySeventhNoteUrl = new URL("../public/notes/r0-47.html", import.meta.ur
 const fortySeventhPdfUrl = new URL("../public/notes/r0-47.pdf", import.meta.url);
 const fortyEighthNoteUrl = new URL("../public/notes/r0-48.html", import.meta.url);
 const fortyEighthPdfUrl = new URL("../public/notes/r0-48.pdf", import.meta.url);
+const fortyNinthNoteUrl = new URL("../public/notes/r0-49.html", import.meta.url);
+const fortyNinthPdfUrl = new URL("../public/notes/r0-49.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -1000,6 +1002,37 @@ test("publishes and links the exact threshold-root theorem", async () => {
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the multiplicative charge-character threshold theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortyNinthNoteUrl, "utf8"),
+    readFile(fortyNinthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-49\.html"/);
+  assert.match(home, /href="\/notes\/r0-49\.pdf"/);
+  assert.match(note, /研究笔记 R0\.49/);
+  assert.match(note, /href="\/notes\/r0-49\.pdf"/);
+  assert.match(note, /\\omega_s=\(4\/5\)\^s/);
+  assert.match(note, /\(m\+n\)\|f_\{mn\}\|r\^\{m\+n\}c\^\{2n-m\}/);
+  assert.match(note, /0\.382618642388680778/);
+  assert.match(note, /1\.4157274652028842093\\times10\^\{-4\}/);
+  assert.match(note, /1\.6910402110013306773\\times10\^\{-30\}/);
+  assert.match(note, /1\.0459367903514846826/);
+  assert.match(note, /32 项精确检查全部通过/);
+  assert.match(note, /26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728/);
+  assert.match(note, /e36fce33f8a5edeb144cdbeda00a568b972d9a3a8ac0e96c04d7651e71a64578/);
+  assert.match(note, /r0-49-charge-character\.svg/);
+  assert.match(note, /不能声称已经证明或反驳三维 Navier–Stokes 正则性/);
+  assert.ok(note.includes("我把荷 \\(s\\) 的权重改成精确乘法特征"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 

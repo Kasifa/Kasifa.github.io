@@ -3046,7 +3046,54 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_threshold_root_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r048-threshold-root/fig-r048-threshold-root">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.49：</strong>检验允许的荷分辨对角权重能否真正降低 \(s=162,j=81\) 障碍；若不能，则证明该权重类的无增益结论。</p>
+            <p><strong style="color:var(--gold)">R0.49 已完成：</strong>乘法荷特征 \(\omega_s=(4/5)^s\) 与约化非线性代数精确共轭；新阈值根向外移动，并给出严格固定荷圆盘增益。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.49 · 2026-08-19</p>
+            <h3>乘法荷特征、各向异性锐阈值与固定荷圆盘增益</h3>
+            <p>
+              我把荷 \(s\) 的权重取为乘法特征
+              \(\omega_s=c^s\)，并固定 \(c=4/5\)。荷的可加性给出精确
+              代数共轭：缩放 \(S_c[Z^mW^n]=c^{2n-m}Z^mW^n\)
+              与约化非线性映射交换。等价双圆盘半径为
+              \(\rho_Z=r/c\) 与 \(\rho_W=rc^2\)。
+            </p>
+            <p>
+              同一真实 \(s=162,j=81\) 列仍然主导。其唯一正根被隔离在
+              \[
+              0.382618642388680778&lt;r_*^{(4/5)}&lt;0.382618642388680779.
+              \]
+              243 个竞争对象在整个相邻百万分位窗口都严格更小；最近者仍为
+              \(s=164\)，严格间隙为
+              \(1.4157274652\times10^{-4}\)。
+            </p>
+            <p>
+              新旧双圆盘不嵌套：\(Z\) 半径增加，\(W\) 半径减少。
+              但固定荷变量 \(R=Z^2W\) 的认证圆盘半径满足
+              \(\rho_R=r^3\)，相对 R0.48 的保守增益因子大于
+              \(1.0459367903514846826\)。这是一项约化 Banach 空间几何结论，
+              不是完整三维 PDE 的解析半径结论。
+            </p>
+            <p>
+              正文复核还发现并修正了一个记录层问题：继承辅助函数曾保存未乘总次数的
+              中心与残差诊断。修正版 Newton 残差范数为
+              \(1.6910402110013306773\times10^{-30}\)，32 项精确检查全部通过；
+              阈值、支配与几何结论不依赖那条旧诊断。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这里没有证明 \(c=4/5\) 最优，
+              也没有建立到任意三维散度为零初值、尺度临界 PDE 范数或完整
+              Fourier 相互作用几何的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-49.html"><strong>阅读 R0.49 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-49.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r049">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_weight_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r049-charge-character/fig-r049-charge-character">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.50：</strong>把 \(r\) 与 \(c\) 同时保留为精确变量，认证最优参数区间和 243 个竞争不等式在二维有理矩形中的稳定性；若失败，则固定最先切换的活跃列或大荷边界。</p>
           </div>
         </section>
 
@@ -3061,7 +3108,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.32 · 2026-08-19<br>
+        综述 v0.33 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r050-charge-character-optimization",
+  "status": "formal",
+  "analyticalQuestion": "What is the global shape of the true active-column threshold across the multiplicative charge-character family, how much does exact optimization improve on c=4/5, and does the active column remain uniformly dominant near the optimum?",
+  "supportedClaim": "For the degree-80 reduced canonical edge generating system, the multiplicative family omega_s=c^s has a unique global active-column threshold maximum satisfying 0.8024563827<c_*<0.8024563828 and 0.382619813709565<r_*(c_*)<0.382619813709566. The strict lower threshold gain relative to c=4/5 is 1.0000030613272706956, and the corresponding fixed-charge r^3 gain is 1.0000091840099272895. Four exact complete-face Bernstein certificates and global convexity identify the unique optimum. Exact lower and upper charge envelopes keep all 243 competing columns below the true s=162,j=81 column on the complete isolating rectangle; the nearest competitor is s=164 with gap approximately 1.4580280493538903081e-4.",
+  "createdAt": "2026-08-20T00:44:45+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "a9c469a96462e60655b0fea435177ececb8aef20",
+    "certificateCommit": "1430978ad7e4ac04f4b6f5daf04c641b05573edd",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "global threshold-profile line, focused local-gain line, and ranked logarithmic competitor-gap curve",
+    "variants": [
+      "191 90-digit presentation samples of the reconstructed global active threshold on 0.45<=c<=1.40",
+      "151 90-digit presentation samples of the local gain on 0.795<=c<=0.810",
+      "all four formal complete-face Bernstein sign certificates",
+      "all 243 formal exact competitor gaps on the complete isolating rectangle"
+    ],
+    "takeaway": "The multiplicative family has one globally optimal charge character near 0.80245638275. Its improvement over c=4/5 is strict but only about 3.061 ppm in threshold radius, while complete rectangle dominance remains intact.",
+    "dataSufficiency": "The 342 numerical curve samples illustrate shape only and have equation residuals below 10^-78. The optimum box, existence, uniqueness, and competitor ordering come from the pinned exact GMP certificate. Every competitor record is retained.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Solid and dashed lines, open circle and filled diamond markers, direct labels, ordering, and logarithmic position preserve every distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 112 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "formalCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r050/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_charge_character_optimization_audit.py --max-total-degree 80 --radius-lower 382619813709565/1000000000000000 --radius-upper 382619813709566/1000000000000000 --character-lower 8024563827/10000000000 --character-upper 8024563828/10000000000 --restart-radius 382619/1000000 --ball-divisor 1000000 --charge-cutoff 241 --source-commit a9c469a96462e60655b0fea435177ececb8aef20 --progress --progress-log research/certificates/r050/progress.ndjson --check --pretty --output research/certificates/r050/edge-charge-character-optimization.json",
+    "samplingCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r050-charge-character-optimization/fig-r050-charge-character-optimization/figure-data-resources.csv --interval 1 -- tmp/r024-venv/bin/python figures/r050-charge-character-optimization/fig-r050-charge-character-optimization/prepare_data.py",
+    "configuration": "degree-80 exact center; true active input column s=162,j=81; exact rational optimum box of width 10^-15 in r and 10^-10 in c; four full-face exact Bernstein signs; 243 uniform rectangle competitors; 191 global and 151 local presentation samples",
+    "randomSeed": null,
+    "precision": "formal signs and dominance use gmpy2.mpq exact rationals over GMP 6.3.0; presentation curves use mpmath at 90 decimal digits",
+    "solver": "deterministic formal-series recurrence, exact Poincare-Miranda face certificates, exact all-order charge envelopes, exact anisotropic restart, and monotone Newton evaluation for presentation samples",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "optimumBox": "opposite strict exact signs on all four complete faces",
+      "dominance": "strict exact rational gaps for all 243 competitors",
+      "presentationSamples": "absolute active-column equation residual below 10^-78"
+    },
+    "scientificWallTimeSeconds": 137.92803991699475,
+    "monitoredWallTimeSeconds": 138.1,
+    "samplingWallTimeSeconds": 25.777073333010776,
+    "samplingMonitoredWallTimeSeconds": 25.877462,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 2,
+      "samplingReportIntervalSeconds": 1,
+      "formalProgressLog": "progress.ndjson",
+      "formalResourceLog": "resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 70,
+      "samplingSamples": 27
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 104.234,
+    "samplingMaximumObservedCpuPercent": 100.0,
+    "samplingMaximumObservedRssMiB": 60.734
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "mpmath": "1.3.0",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "global-threshold-profile.csv",
+      "format": "csv",
+      "schema": "191 90-digit presentation samples with exact rational character, threshold radius, absolute residual, Newton iteration count, and classification.",
+      "bytes": 43933,
+      "sha256": "f30a257a9905fae35cdb2d92b92f91aaddc741228512097ea9d28a9ca3866082"
+    },
+    {
+      "path": "local-threshold-profile.csv",
+      "format": "csv",
+      "schema": "151 90-digit local presentation samples with exact rational character, threshold radius, gain relative to c=4/5 in ppm, residual, iteration count, and classification.",
+      "bytes": 39250,
+      "sha256": "aea30598ca3f3eb5914707490f9e431a840ce123f60cddea04288e281fb3f147"
+    },
+    {
+      "path": "optimization-box.csv",
+      "format": "csv",
+      "schema": "All four exact complete-face sign certificates with face, variable, sign, Bernstein degree, exact minimum signed coefficient, display decimal, and coefficient digest.",
+      "bytes": 24521,
+      "sha256": "77fa3f5d213550cd8c0af5fcd89d0f290b52ca4d9ac48938e0545a1e40d33991"
+    },
+    {
+      "path": "competitor-gaps.csv",
+      "format": "csv",
+      "schema": "All 243 formal exact rectangle competitor gaps ranked from nearest to farthest, with exact values, display decimals, sector labels, and classification.",
+      "bytes": 1544375,
+      "sha256": "79f3e4922bf4fcfdae2aa44ed4d0de087f0bd7705527fb0f0a00dfad1c245205"
+    },
+    {
+      "path": "sampling-metadata.json",
+      "format": "json",
+      "schema": "Sampling precision, source-certificate hash, row counts, maximum residuals, wall time, and randomness declaration.",
+      "bytes": 398,
+      "sha256": "dd1b4a80d9fa36727c4331f9afea534c232cd1be606b06d2c69774b78cf411fc"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only formal-audit UTC timestamps, elapsed seconds, stages, and successful 33-check completion status.",
+      "bytes": 1012,
+      "sha256": "dfc0b975cf108a2f0e33ad67dd2c596b60e478c045678a37c84e91a4ab4675b5"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Pinned two-second formal-audit process-tree samples with elapsed time, status, CPU, RSS, and GPU fields.",
+      "bytes": 5310,
+      "sha256": "ec70720296eb7a9a0d3de47b95c7d326d0646a0538d227de5a6e3d573c21e23b"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "One-second process-tree samples for the high-precision figure-data generation run.",
+      "bytes": 2113,
+      "sha256": "dfff3d5414b7e09a6b8767277d5936c072fd64cad9ff2c41081ded39d8b2b27c"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r050",
+      "fileName": "edge-charge-character-optimization.json",
+      "bytes": 8209296,
+      "sha256": "fc173a2108ef881d21d9d54046085f0d5daf5cc33ed50e024ca32ec867f7b79a",
+      "extractionCommand": "prepare_data.py pins the certificate, reconstructs and hashes the degree-80 center, reconstructs the true active Laurent polynomial, emits high-precision presentation profiles, extracts all four face certificates and all 243 competitor gaps, and copies the monitored formal provenance; validate_data.py independently checks every count, interval width, sign, ordering, residual, source pin, and monitoring record"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/r050-mplconfig tmp/r024-venv/bin/python figures/r050-charge-character-optimization/fig-r050-charge-character-optimization/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 112,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "d2b67fbe71b3d96fb3c656faff256a03cb706da9cf4830c301e895a39cac245a"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "f1aae9aa192d4dac3e99d8fb60550aa334ce96333480c8cc32c0d83f6649c546"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2645",
+        "sha256": "91b2b926f2e32e2d2cbfa2b763558f6715d22a9028aadb7df6908510939d4858"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我把乘法电荷特征族的唯一全局最优点隔离在宽度为 10^-10 的精确 c 区间，并把临界半径隔离到宽度 10^-15；相对 c=4/5 的增益严格为正但只有约 3.061 ppm，完整矩形内的 243 个竞争输入仍全部严格落后。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 112 mm to rounding and the 600 dpi PNG is 4204 by 2645 pixels. The first visual pass found long lower-panel axis labels crowding the inter-panel space; the labels were shortened, the defining ppm formula was moved inside panel b, and the lower-panel spacing was increased before final export. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid and dashed lines, open circles, filled diamonds, direct labels, and logarithmic ordering remain distinct in grayscale. Titles, axes, annotations, exact intervals, scope statement, source footer, and blossom mark are unclipped. Three CID TrueType font resources are embedded and no Type3 fonts are present. PDF text extraction contains R0.50, the exact c interval, 243, and the reduced-system scope. validate_data.py independently checks all plotted and archived data against the pinned exact certificate."
+  }
+}

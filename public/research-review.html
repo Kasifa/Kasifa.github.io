@@ -2326,7 +2326,40 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_canonical_transport_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r029-canonical-transport/fig-r029-canonical-reduction">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>比较带权无限电荷范数与 \((a,\phi)\) 共同解析域两条路线；第一项硬目标是证明一个全阶加权估计，或构造严格反例。</p>
+            <p><strong style="color:var(--gold)">R0.30 已完成：</strong>整个无限电荷阶梯已被统一层范数控制；\(a,U,V\) 获得显式共同解析域，R0.29 的形式指数分解在更小圆盘中成为解析恒等式。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.30 · 2026-08-19</p>
+            <h3>全阶解析主控与共同解析域</h3>
+            <p>
+              我修正了对向上电荷耦合的增长判断：\(k f_{k,q+1}\) 会破坏固定有限截断，但求解递推后的实际系数是
+              \(k/(3k-q-1)\le1\)，所以它不妨碍无限带权估计。
+            </p>
+            <p>
+              对称化主动递推并使用精确支持 \(Q\ge-1\)，我得到
+              \(A_L\le\frac32\sum_{i+j=L}\min(i,j)A_iA_j\)；输运层满足相同类型的线性卷积界。
+              卷积常数的全阶手算界 \(H_L<32\) 使保守常数 \(K=96\) 关闭归纳。
+            </p>
+            <p>
+              因此 \(A_L\le2K^{L-1}/L^3\)，\(\|U_L\|_1,\|V_L\|_1\le K^{L-1}/L^3\)。
+              \(a,U,V\) 在半径 \(1/96\) 的多圆盘内绝对解析；在半径 \(1/192\) 内，\(U/Z\) 与 \(V/W\) 距离 1 不超过 \(1/8\)，所以对数、\(\phi\) 和指数分解都解析。
+            </p>
+            <p>
+              次数 119 的 GMP 回归处理 5,484,501 次精确递推相互作用，三个层范数的有限 \(L\) 次根约为 1.156、1.211、1.218。
+              这些数值只检查实现并描述有限增长；全阶证明不依赖它们。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是边缘约化系统的第一个显式共同解析域，不是三维 Navier–Stokes 正则性结论。
+              常数 96 很保守，最近奇点、真实收敛半径和端点系数渐近仍未解决。
+            </p>
+            <p>
+              <a href="/notes/r0-30.html"><strong>阅读 R0.30 研究笔记 →</strong></a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r030">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_analytic_majorant_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r030-analytic-majorant/fig-r030-analytic-domain">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>改进保守主控常数并对典范映射作解析延拓，寻找能够解释 R0.28 端点比值分离的候选奇点。</p>
           </div>
         </section>
 
@@ -2341,7 +2374,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.16 · 2026-08-18<br>
+        综述 v0.17 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

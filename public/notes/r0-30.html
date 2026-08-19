@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.30：对典范边缘系统建立全阶系数主控，证明共同解析域，并把 R0.29 的形式分解提升为解析恒等式。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.30｜全阶解析主控与共同解析域">
+  <meta property="og:description" content="无限电荷阶梯被整体层范数控制；a、U、V 获得显式解析域，对数辛分解在更小圆盘中成为解析恒等式。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-30-analytic-domain.png">
+  <title>R0.30｜全阶解析主控与共同解析域</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#estimate">层范数</a><a href="#domain">解析域</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.30 · 全阶解析定理</div>
+        <h1>全阶解析主控与<br>共同解析域</h1>
+        <p class="lead">我不再截断电荷阶梯，而是一次控制全部次数层。对称化消除了表面的电荷除法损失，并给出一个显式、保守、可手算验证的共同解析圆盘。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全阶证明 + 精确有限回归</span><strong>形式分解已提升为局部解析恒等式</strong><p>版本 v0.30 · 2026-08-19</p><p>解析半径：1/96 与 1/192</p><p>正式回归：总次数 119</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#correction">01 · 关键修正</a></li><li><a href="#estimate">02 · 对称化估计</a></li><li><a href="#kernel">03 · 卷积引理</a></li><li><a href="#theorem">04 · 全阶定理</a></li><li><a href="#domain">05 · 解析恒等式</a></li><li><a href="#finite">06 · 有限回归</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>本次得到什么，没有得到什么</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDERS</span><strong>统一层范数闭合</strong><p>主动场与两个归一化输运场满足显式的 \(L^{-3}\) 系数主控。</p></div>
+            <div class="status"><span>PROVED · ANALYTIC</span><strong>共同解析域</strong><p>\(a,U,V\) 在半径 \(1/96\) 的开多圆盘内绝对收敛。</p></div>
+            <div class="status"><span>PROVED · NONVANISHING</span><strong>对数与伸缩量解析</strong><p>在半径 \(1/192\) 内，\(U/Z\) 与 \(V/W\) 距离 1 不超过 \(1/8\)。</p></div>
+            <div class="status"><span>OPEN · SINGULARITY</span><strong>主导奇点仍未知</strong><p>常数 96 很保守；没有定位最近奇点，也没有证明端点渐近。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>这是 R0.28 两变量边缘约化系统的解析定理。它没有证明三维 Navier–Stokes 解的全局正则性或有限时奇性。</div>
+        </section>
+
+        <section id="correction"><div class="section-no">01 / Correction</div><h2>向上耦合不等于无界增长</h2>
+          <p>R0.29 的电荷递推含有精确叶项 \(k f_{k,q+1}\)，所以固定有限电荷上界确实不闭合。但求解当前系数时还要除以左侧的 \(3k-q-1\)。实际归一化系数是</p>
+          <div class="equation">\[\boxed{\frac{k}{3k-q-1}\le1}.\]</div>
+          <p>因此这条耦合排除了有限截断，却没有排除无限带权估计。正确问题不是截取多少个电荷扇区，而是整个电荷阶梯的绝对和能否在每个总次数上闭合。</p>
+        </section>
+
+        <section id="estimate"><div class="section-no">02 / Symmetrized estimate</div><h2>交换两个输入后，危险的电荷分母消失</h2>
+          <p>写总次数层范数</p>
+          <div class="equation">\[A_L=\sum_k|a_{L,k}|,\qquad F_L=\sum_k|f_{L,k}|.\]</div>
+          <p>两个输入电荷取为 \(Q_1,Q_2\ge-1\)，输出电荷 \(Q=Q_1+Q_2\)。把有序卷积项与交换项配对，非零输出电荷的分子从 \(Q_2\) 变为 \((Q_2-Q_1)/2\)。支持条件给出</p>
+          <div class="equation">\[|Q_2-Q_1|\le3|Q_1+Q_2|.\]</div>
+          <p>常数 3 只在一侧电荷为 \(-1\)、另一侧为 2 时取到。零电荷公式也可交换对称化，用 \(|j-i|\le L\) 控制。再用 \(|is-rj|\le ij\) 和 \(ij/(L-1)\le\min(i,j)\)，两种电荷情形统一为</p>
+          <div class="equation result">\[\boxed{A_L\le\frac32\sum_{i+j=L}\min(i,j)A_iA_j},\qquad\boxed{F_L\le\sum_{i+j=L}\min(i,j)A_iF_j}.\]</div>
+          <p>这两条不等式直接控制全部电荷，不再需要一个有限电荷锥。</p>
+        </section>
+
+        <section id="kernel"><div class="section-no">03 / Kernel lemma</div><h2>一个 \(L^{-3}\) 权重足以吸收卷积</h2>
+          <p>定义无量纲卷积常数</p>
+          <div class="equation">\[H_L=L^3\sum_{i+j=L}\frac{\min(i,j)}{i^3j^3}.\]</div>
+          <p>利用对称性和 \(L/(L-i)\le2\)（\(i\le L/2\)），可完全不依赖计算地得到</p>
+          <div class="equation">\[H_L\le16\sum_{i\ge1}\frac1{i^2}<32.\]</div>
+          <p>最后一步只用 \(1/i^2<1/[i(i-1)]\) 的望远镜级数。正式计算另外核对了 \(2\le L\le119\) 的精确有理值；该有限窗口的最大值是 \(H_2=8\)，但全阶证明只使用上界 32。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">04 / Majorant theorem</div><h2>保守常数 96 关闭全阶归纳</h2>
+          <p>取 \(K=96\)。因为 \(A_1=2\)，卷积不等式和 \(H_L<32\) 给出</p>
+          <div class="equation result">\[\boxed{A_L\le\frac{2K^{L-1}}{L^3}},\qquad\boxed{\|U_L\|_1,\|V_L\|_1\le\frac{K^{L-1}}{L^3}}\quad(L\ge1).\]</div>
+          <p>主动场归纳的右侧至多为 \(6K^{L-2}H_L/L^3<192K^{L-2}/L^3\)，正好被第一条主控吸收。输运场的常数更小，因此同一个 \(K\) 同时控制 \(U=-12u\) 与 \(V=-3v\)。</p>
+          <div class="proof"><strong>全阶性来自标量归纳。</strong>这里没有把次数 119 当作归纳终点；有限回归只核对程序算出的每层都落在已证明的主控之下。</div>
+        </section>
+
+        <section id="domain"><div class="section-no">05 / Analytic domains</div><h2>R0.29 的形式分解现在有了真实解析邻域</h2>
+          <p>若 \(\max(|Z|,|W|)<1/96\)，上述主控的绝对值级数收敛，所以 \(a,U,V\) 都是解析函数。输运方程保持主理想 \((Z)\) 与 \((W)\)，故可写 \(U=Z\widetilde U\)、\(V=W\widetilde V\)。</p>
+          <p>令 \(x=96r\)。当 \(r\le1/192\) 时，\(x\le1/2\)，并且</p>
+          <div class="equation">\[|\widetilde U-1|,\ |\widetilde V-1|\le\sum_{L\ge2}\frac{x^{L-1}}{L^3}\le\frac{x}{8(1-x)}\le\frac18.\]</div>
+          <p>两个商都不为零，所以可在该多圆盘内选择从原点连续延伸的解析对数。于是</p>
+          <div class="equation result">\[\phi=\frac12\left[\log(U/Z)+\log(V/W)\right]\]</div>
+          <p>在半径 \(1/192\) 内解析，且</p>
+          <div class="equation">\[U=Ze^{\phi-a/2},\qquad V=We^{\phi+a/2}\]</div>
+          <p>以及 R0.29 的尖锐场指数分解都成为解析恒等式，不再只是形式幂级数恒等式。</p>
+          <figure>
+            <img src="/figures/r0-30-analytic-domain.svg" alt="R0.30 卷积核与两个严格解析域">
+            <figcaption>图 R0.30-1。左图是次数 2 至 119 的精确有限核值；上方虚线 32 才是全阶证明使用的界。右图给出定理严格保证的两个嵌套解析域。图中没有把最近奇点画在边界上，因为目前尚未定位它。</figcaption>
+          </figure>
+        </section>
+
+        <section id="finite"><div class="section-no">06 / Exact regression</div><h2>有限计算支持“指数型”，但不能识别真实半径</h2>
+          <p>正式 GMP 回归达到总次数 119，处理 5,484,501 次有序递推相互作用。主动电荷支持、三个层主控和 \(U\) 可被 \(Z\) 整除、\(V\) 可被 \(W\) 整除的检查全部通过。</p>
+          <p>次数 119 的层范数 \(L\) 次根分别为</p>
+          <div class="equation">\[A_{119}^{1/119}=1.1556099601,\quad\|U_{119}\|_1^{1/119}=1.2111047428,\quad\|V_{119}\|_1^{1/119}=1.2175889882.\]</div>
+          <p>相隔三层的块增长率分别为 1.2083486620、1.2302353498、1.2316347913。这组有限数据没有显示阶乘增长，但也远不足以证明根极限存在。它与保守上界 96 之间的巨大距离说明，当前定理证明“存在一个非零解析域”，而不是估计真实收敛半径。</p>
+          <p>本次运行耗时 33.19 秒，单进程峰值 CPU 为 100%，峰值常驻内存为 32.250 MiB；两秒资源采样与逐阶段进度日志均已归档。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>这一步把结构约化推进到局部解析理论</h2>
+          <p>R0.29 只说明典范坐标和指数分解在形式级别成立。R0.30 排除了“形式级数可能零半径收敛”这一基础风险，并给出第一个覆盖全部电荷和全部次数的严格估计。后续可以合法地讨论解析延拓、零点、奇点簇和 Cauchy 系数提取。</p>
+          <p>它的价值主要是基础设施：无限电荷阶梯不再是一个未关闭的技术缺口，局部对数也不再只是形式记号。但定理所在的对象仍是边缘约化系统，且半径常数极不尖锐。它与千禧年问题之间还有多层结构桥梁，不能把这项结果表述成三维 NS 正则性的直接进展。</p>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.31</div><h2>下一步寻找真实奇点，而不是继续堆次数</h2>
+          <ol>
+            <li>利用精确核 \(H_L\) 和主动支持的稀疏性改进常数 96，区分证明损失来自哪里；</li>
+            <li>在典范坐标中构造可控的解析延拓路径，寻找 \(a\)、\(U/Z\)、\(V/W\) 的候选奇点或零点；</li>
+            <li>把候选奇点与 R0.28 的端点系数提取联系起来，判断有限比值分离是否由不同主导奇点造成。</li>
+          </ol>
+          <p>R0.31 的最低交付标准是一个严格改进的解析域，或一个带认证误差界的候选奇点定位；单独把精确递推从 119 扩到更高次数不算完成。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>证明、证书、日志和附图分别归档</h2>
+          <div class="proof"><strong>复现命令。</strong><br><code>python research/edge_analytic_majorant_audit.py --max-total-degree 119 --progress --check --pretty --output research/certificates/r030/edge-analytic-majorant.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_analytic_majorant_note.md">查看全阶证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_analytic_majorant_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r030">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r030-analytic-majorant/fig-r030-analytic-domain">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs"><li><a href="/notes/r0-29.html">R0.29：典范输运与无限电荷阶梯</a>。给出本笔记提升为解析恒等式的形式分解。</li><li><a href="/notes/r0-28.html">R0.28：有理化与有限比值分离</a>。给出本笔记使用的精确有理递推。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.30 · 全阶证明与有限精确回归分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

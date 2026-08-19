@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r030-analytic-domain",
+  "status": "formal",
+  "analyticalQuestion": "Can the full infinite charge ladder be controlled at all orders, and does the R0.29 formal factorization hold in a genuine analytic domain?",
+  "supportedClaim": "For K=96, the all-order coefficient bounds A_L <= 2 K^(L-1)/L^3 and ||U_L||_1,||V_L||_1 <= K^(L-1)/L^3 give absolute analyticity on max(|Z|,|W|)<1/96. On the radius-1/192 polydisc, |U/Z-1| and |V/W-1| are at most 1/8, so the logarithms, phi, and the R0.29 factorization are analytic. The degree-119 GMP run is an implementation regression and finite kernel diagnostic, not the proof or a singularity theorem.",
+  "createdAt": "2026-08-19T10:37:19+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "641db99147d30f51bfc70c8881a70743f6bd063d",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python research/run_with_monitor.py --output /tmp/r030-resources.csv --interval 2 -- python research/edge_analytic_majorant_audit.py --max-total-degree 119 --progress --progress-log /tmp/r030-progress.ndjson --check --pretty --output /tmp/r030-edge-analytic-majorant.json",
+    "configuration": "maximumCheckedTotalDegree=119; exact rational fields a,U=-12u,V=-3v; majorant constant K=96",
+    "randomSeed": null,
+    "precision": "exact GMP rational arithmetic",
+    "solver": "deterministic scalar formal-series recurrence; no iterative tolerance",
+    "tolerances": {
+      "layerMajorants": "none; exact comparison of GMP rationals",
+      "chargeSupport": "none; exact integer charge indexing",
+      "divisibility": "none; exact zero coefficients"
+    },
+    "wallTimeSeconds": 33.190647166004055,
+    "recurrenceOrderedInteractions": 5484501,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 2,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": null,
+      "trackedFields": [
+        "completed formal degree",
+        "ordered recurrence interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 32.250
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0"
+  },
+  "data": [
+    {
+      "path": "kernel.csv",
+      "format": "csv",
+      "schema": "Total degree, exact rational convolution constant H_L, and plotted decimal for degrees 2 through 119.",
+      "bytes": 20247,
+      "sha256": "81a21a6ff2c1adde2598a72fe52f34251a56032e4227a3eed8799c1abe887498"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, and completed exact-audit stage.",
+      "bytes": 2622,
+      "sha256": "155003b80a61dba9e31b1990837539f9d58088e7a76367715ff8a5129e776d8f"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Two-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 1459,
+      "sha256": "5e163dcd8f15cfad4c256c8dfb43d8bf509e224a373ed5b84874a5c8c7508902"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r030",
+      "fileName": "edge-analytic-majorant.json",
+      "bytes": 42617,
+      "sha256": "732f28188011b63fb6d95935b7d7e76a2513b07ebeac25fb1b7a5901d96990f4",
+      "extractionCommand": "prepare_data.py reconstructs exact H_L values; validate_data.py checks all 118 rows and the theorem contract"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python figures/r030-analytic-majorant/fig-r030-analytic-domain/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "0ed3d08aa76e1631670bed84aa48120d570a14659247ffdef146c6c8fa39136d"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "03067df6939ba7ec9da46efee484354d1fbd3f355174a6591efc458f1b935eb1"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "e04da819967b4e545f6a637c43cf70573465d8a4bb7be2e30c45fcd624a41947"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "无限电荷阶梯被统一层范数控制；a、U、V 在半径 1/96 内解析，对数与 phi 在半径 1/192 内解析。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 72 mm; the 600 dpi PNG is 4204 by 1700 pixels. Color and Generic Gray renders were inspected at final layout. Labels are unclipped and the two analytic domains remain distinct in grayscale. validate_data.py passed all 118 exact kernel rows and the theorem contract."
+  }
+}

@@ -232,7 +232,7 @@ def draw() -> None:
             color=MUTED,
         )
 
-        angular_axis.set_title("(c) Normal near-saturation angle", loc="left", pad=5)
+        angular_axis.set_title("(c) Angular persistence", loc="left", pad=5)
         angular_axis.fill_between(
             deltas,
             measures,
@@ -281,7 +281,7 @@ def draw() -> None:
         figure.text(
             0.075,
             0.235,
-            r"Exact kernel: $\mathcal K_{p,q}(a,b)=g_N a_t\,[b_n n+(\widehat q\cdot\widehat k)b_t t_k]$; only the normal channel attains one.",
+            r"Exact kernel: $\mathcal{K}_{p,q}(a,b)=g_N a_t\,[b_n n+(\widehat{q}\cdot\widehat{k})b_t t_k]$; only the normal channel attains one.",
             ha="left",
             va="top",
             fontsize=4.15,

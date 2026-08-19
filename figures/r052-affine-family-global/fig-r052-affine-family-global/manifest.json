@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r052-affine-family-global",
+  "status": "formal",
+  "analyticalQuestion": "How does the exact local active/zero balance yield a complete upper bound on the c>0, lambda>=0 affine family, how strong is the root-box contraction, and how far below one are every inactive finite-charge and all-order sector?",
+  "supportedClaim": "For the exact degree-80 reduced canonical edge generating system, the complete affine family omega_s=c^s(1+lambda|s|) has globally optimized threshold radius R_aff in the exact width-10^-40 interval 0.3826244718485988314760952288871012330925<R_aff<0.3826244718485988314760952288871012330926. An exact Krawczyk inclusion gives one local active/zero stationary root, exact KKT and second-order inequalities give strict local maximality, all 242 inactive sector envelopes are below one, and an eliminated degree-316 polynomial with an exact Descartes/Bernstein certificate excludes the complete parameter domain at the upper radius.",
+  "createdAt": "2026-08-20T02:44:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "formalSourceCommit": "e64ed23dcd86883e9690468b05f64304ee4ac816",
+    "certificateCommit": "6b80986e127651bb8a6719eb1e29e2fa78d24ae9",
+    "figureSourceCommit": "fa733c27bd817ce2fd605c735678c1624ef445fd",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "two-sided logarithmic eliminated-margin profile, logarithmic Krawczyk contraction lollipops, and ranked logarithmic inactive-sector gaps",
+    "variants": [
+      "80 exact-rational presentation samples of -c^2 E(r_U,c) at distances 10^-1 through 10^-40 on both sides of the relevant derivative root",
+      "three exact rational root-box widths paired with certificate-rendered exact Krawczyk image radii",
+      "all 242 formal exact inactive-sector gaps on the complete R0.52 root box"
+    ],
+    "takeaway": "The complete affine-family optimum is enclosed globally to width 10^-40. The local active/zero root contracts by roughly another forty orders under the Krawczyk map, and the nearest inactive sector remains more than 1.45e-4 below one.",
+    "dataSufficiency": "The 80 exact samples illustrate the eliminated local geometry but do not prove its sign. The global bound comes from three exact derivative-root sign boxes, Descartes' exact three-root upper bound, exact boundary monotonicity, and all 317 Bernstein coefficients on the complete local-maximum box. Every inactive sector record is retained from the pinned GMP certificate.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Dashed circles, solid squares, open squares, filled diamonds, direct labels, ordering, and logarithmic position preserve distinctions without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 112 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact audit plus exact-rational presentation sampling",
+    "formalCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r052/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_affine_family_kkt_audit.py --max-total-degree 80 --charge-cutoff 241 --source-commit e64ed23dcd86883e9690468b05f64304ee4ac816 --progress --progress-log research/certificates/r052/progress.ndjson --check --pretty --output research/certificates/r052/edge-affine-family-global.json",
+    "samplingCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r052-affine-family-global/fig-r052-affine-family-global/figure-data-resources.csv --interval 1 -- tmp/r024-venv/bin/python figures/r052-affine-family-global/fig-r052-affine-family-global/prepare_data.py",
+    "configuration": "degree-80 exact center; complete c>0, lambda>=0 affine family; active input s=162,j=81 and zero sector; three-dimensional rational root box of width 10^-40 in each coordinate; 242 inactive finite-charge and all-order sector records",
+    "randomSeed": null,
+    "precision": "formal signs, interval inclusions, KKT bounds, all-order dominance, Descartes count, and Bernstein coefficients use gmpy2.mpq exact rationals over GMP 6.3.0; the 100-digit root localization and compact plotted strings are diagnostic renderings only",
+    "solver": "deterministic formal-series recurrence, exact Krawczyk operator, exact interval KKT and second-order test, fixed-charge convex endpoints, exceptional-sector theorems, large-charge parity/Bernstein theorem, exact alpha elimination, Descartes root count, and complete-box Bernstein signs",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "rootBox": "strict Krawczyk interior inclusion in three rational intervals of width 10^-40",
+      "inactiveSectors": "strict exact rational upper-envelope gap for all 242 inactive records",
+      "globalUpper": "three exact sign-changing derivative-root boxes and 317 strictly negative Bernstein coefficients"
+    },
+    "scientificWallTimeSeconds": 242.30679462499393,
+    "monitoredWallTimeSeconds": 242.421306,
+    "samplingWallTimeSeconds": 24.34857750000083,
+    "samplingMonitoredWallTimeSeconds": 24.484569,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 2,
+      "samplingReportIntervalSeconds": 1,
+      "formalProgressLog": "research/certificates/r052/progress.ndjson",
+      "formalResourceLog": "research/certificates/r052/resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 121,
+      "samplingSamples": 25
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 148.156,
+    "samplingMaximumObservedCpuPercent": 100.0,
+    "samplingMaximumObservedRssMiB": 50.062
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "mpmath": "1.3.0",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "feasibility-profile.csv",
+      "format": "csv",
+      "schema": "80 exact-rational two-sided samples with exact distance, character, positive -c^2 E value, compact decimal, value digest, side, and classification.",
+      "bytes": 3151315,
+      "sha256": "78bce2e22747a9abd9400903dbf737d0580486864e9939219ae6e43125264f93"
+    },
+    {
+      "path": "krawczyk-contraction.csv",
+      "format": "csv",
+      "schema": "Three exact root-box widths with the decimal rendering and digest of each exact Krawczyk image radius.",
+      "bytes": 722,
+      "sha256": "b4ac540270f5c79a0efcee5a60d63749642abd291ca977bf34be709cb3c9e676"
+    },
+    {
+      "path": "inactive-gaps.csv",
+      "format": "csv",
+      "schema": "All 242 formal inactive root-box gaps ranked from nearest to farthest, with decimal rendering, exact-value digest, label, and classification.",
+      "bytes": 36959,
+      "sha256": "389cbcb8e60161bce94e4b39bc3f1c3370b8c4f4fa5122529283d8c2ce2d9c43"
+    },
+    {
+      "path": "sampling-metadata.json",
+      "format": "json",
+      "schema": "Exact arithmetic declaration, certificate pin, row counts, candidate character, radius, Descartes count, center digest, wall time, and randomness declaration.",
+      "bytes": 1070,
+      "sha256": "99962da03d61b32e94e0743941f78e95484c069829fd0d9228f7787243785cb4"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "One-second process-tree samples for the exact-rational figure-data generation run.",
+      "bytes": 1966,
+      "sha256": "f69924af07b606ec382d13fc2b03ba506f18f845d0ec84ca618aff871db57035"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r052",
+      "fileName": "edge-affine-family-global.json",
+      "bytes": 218605,
+      "sha256": "b79e59ec327bc02b64e23ad3f903b6d61860a075d59ff75a43d82f5684590def",
+      "extractionCommand": "prepare_data.py pins the exact certificate, reconstructs and hashes the degree-80 center and eliminated feasibility Laurent polynomial, emits 80 exact-rational profile rows, extracts all three Krawczyk contractions and all 242 inactive gaps, and validate_data.py checks exact sample positivity and hashes, ordering, counts, source pins, and monitored formal provenance"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "5a35799530a3180823bfe6c687c6fbdf93b4a215ffe256fd0cb2a882b31c5deb",
+    "command": "MPLCONFIGDIR=tmp/r052-mplconfig tmp/r024-venv/bin/python figures/r052-affine-family-global/fig-r052-affine-family-global/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 112,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "37af19ba8a21a0dcb927d122c66cb4dff5f3ad4b422ac2bab30d849ab035144a"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "2bcaeaee83c4c544a1cc40083939bcc6c7dc6ec155288a0b62c048e1d79452d0"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2645",
+        "sha256": "0bf2a6c713544aa39a2cd00db5860f725201a8111c2843286f09b7ffa7671bf6"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我把活跃列与零荷列的局部平衡化为精确三方程，再用消元、Descartes 正根计数和完整 Bernstein 符号把全参数域压进宽 10^-40 的全局半径区间；242 个非活跃扇区全部保持严格间隙。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 112 mm to rounding and the 600 dpi PNG is 4204 by 2645 pixels. The first visual pass found the lower x-axis label too close to the evidence footer and the upper-right legend obscuring the alpha marker; the grid bottom was raised and the legend was replaced by direct labels. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Dashed circles, solid squares, open squares, filled diamonds, direct labels, and logarithmic ordering remain distinguishable in grayscale. Titles, axes, annotations, root-box scale, scope statement, source footer, and research blossom are unclipped. The PDF contains three embedded Type0 DejaVu Serif font resources and extracted text contains R0.52, Krawczyk, 242, Descartes 3/3, 317 negative Bernstein coefficients, and the reduced-system scope. validate_data.py independently checks all archived rows and formal provenance."
+  }
+}

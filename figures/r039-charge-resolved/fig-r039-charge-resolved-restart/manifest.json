@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r039-charge-resolved-restart",
+  "status": "formal",
+  "analyticalQuestion": "Can retaining input charge in both the active-tail derivative and normalized transport operators certify a substantially larger common analytic radius, and which sufficient inequality becomes limiting?",
+  "supportedClaim": "For the degree-80 exact center in the active cone q>=-1, 242 fixed input-charge bounds plus one analytic sector covering every s>=241 give the all-order derivative bound 0.68960111886114510073 at r=397/2000. A charge-resolved normalized-transport bound, including the unknown correction, is 0.99941043095132664361<1. The reduced active and normalized transport fields are therefore absolutely analytic on the common isotropic polydisc of radius 397/2000. The old scalar tail and transport bounds fail there. At the nearby probe 199/1000, the present sufficient transport bound is 1.0025428645146803446>1.",
+  "createdAt": "2026-08-19T16:08:50+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "ed08ad45b3440a679d8132d7b3464dc21dd07fa5",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "logarithmic normalized radius ladder, ordered charge-column line families, and threshold lollipops",
+    "variants": [
+      "four-stage common and fixed-charge radius ladder normalized to R0.31",
+      "three congruence-class line families for all 242 finite input-charge bounds plus one analytic infinite-sector marker",
+      "six named exact proof gates and controls against threshold one"
+    ],
+    "takeaway": "Charge resolution raises the common certified radius from 59/500 to 397/2000 and closes the active tail with room to spare; the refined normalized-transport bound is now the binding gate and fails at the nearby 199/1000 control.",
+    "dataSufficiency": "Eight exact radius rows, 242 exact fixed-charge column bounds, one exact analytic large-charge-sector bound, six exact gate values, and four finite exact regression rows. The charge chart is an ordered discrete charge axis, not a time trend, and the infinite-sector diamond is an analytic closure rather than a sampled observation.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "R0.31 through R0.39 use circle, square, diamond, and plus markers; the three charge congruence classes use circle, square, and triangle markers with solid, dashed, and dotted lines; pass/fail gates use distinct marker shapes, open versus filled faces, and a dashed threshold.",
+    "finalSurface": "single double-column journal figure at 178 by 110 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r039/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_resolved_audit.py --max-total-degree 80 --target-radius 397/2000 --charge-cutoff 241 --failure-probe-radius 199/1000 --finite-column-degrees 81,82,160,241 --formula-regression-degree 10 --ball-divisor 1000000 --source-commit ed08ad45b3440a679d8132d7b3464dc21dd07fa5 --progress --progress-log research/certificates/r039/progress.ndjson --check --pretty --output research/certificates/r039/edge-charge-resolved.json",
+    "configuration": "active support cone q>=-1; one-total-degree weighted Wiener norm; exact degree-80 center; target r=397/2000; strict active correction tail above degree 80; individual input charges -1 through 240; analytic closure for all s>=241; exact finite columns at degrees 81, 82, 160, and 241; nearby transport-control radius 199/1000",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, exact charge-column upper bounds, analytic infinite-charge closure, rational contraction inequalities, charge-resolved transport estimate, and finite exact coefficient/column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against the pinned exact certificates"
+    },
+    "wallTimeSeconds": 33.75549545799731,
+    "scientificWallTimeSeconds": 33.75549545799731,
+    "monitoredWallTimeSeconds": 33.8,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 228,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "242 finite input-charge bounds",
+        "analytic large-charge closure",
+        "monomial coefficient regression",
+        "finite tail-column regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 41.656
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "R0.31, R0.37, R0.38, and R0.39 exact common and fixed-charge radii, normalized to R0.31.",
+      "bytes": 605,
+      "sha256": "2fbdd307f5da86080adb76212e0f761110f7a38e346789be2c563b74eee5308f"
+    },
+    {
+      "path": "charge-columns.csv",
+      "format": "csv",
+      "schema": "All 242 exact rational fixed input-charge bounds for -1<=s<=240, with minimum admissible tail degree and maximum-sector flag.",
+      "bytes": 290391,
+      "sha256": "9becc3e7c7f38112bd2d4f0f062b536ead1b8120a244f98bca80cebefcd29206"
+    },
+    {
+      "path": "large-charge-sector.csv",
+      "format": "csv",
+      "schema": "One exact analytic upper bound that covers every remaining input charge s>=241.",
+      "bytes": 1106,
+      "sha256": "efa50958a4585fb40293d6aefcd880d048b0ebef9336f2adf2f38863915d8913"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Six exact dimensionless old/new tail, ball, old/new transport, and nearby-control values against threshold one.",
+      "bytes": 8579,
+      "sha256": "013609a0b0ce35fce8fe00b588a6df28bedb7a91c72f00972c0e37580ed16e7c"
+    },
+    {
+      "path": "finite-column-regressions.csv",
+      "format": "csv",
+      "schema": "Exact maximum degree-81, 82, 160, and 241 tail-column ratios, charges, and column counts; finite regression only.",
+      "bytes": 4911,
+      "sha256": "ae6905c0289c35c626e47dfe2e8e12a08e74bdf859b1b62e43d0a04b42f7aed5"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, and successful completion status.",
+      "bytes": 1617,
+      "sha256": "74ed23d938e274236a59050c89be442040e33cd4555c8be276b0a724da09cf25"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 16845,
+      "sha256": "9797b46f05db9b230d941eda9a3cdef47885b308aa6b4f73f40478278ada167d"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r039",
+      "fileName": "edge-charge-resolved.json",
+      "bytes": 403137,
+      "sha256": "59b978c1c5384edb394adc76add0950b3c8e6666f6562dfc199584c22dd0e700",
+      "extractionCommand": "prepare_data.py extracts every plotted R0.39 radius, charge-column bound, large-charge closure, proof gate, and finite regression; validate_data.py pins the certificate hash and source commit, checks all 18 formal flags, compares every exact Fraction, and verifies the archived progress and resource records"
+    },
+    {
+      "location": "research/certificates/r038",
+      "fileName": "edge-tail-newton.json",
+      "bytes": 34150,
+      "sha256": "3eb320e8cef0289c7fa2fef00a38c3c66b6b4c5006375bf6386d784f6b95dbf4",
+      "extractionCommand": "prepare_data.py reads the pinned R0.37 radius retained in the R0.38 certificate for the four-stage radius ladder; validate_data.py separately pins and verifies the R0.38 certificate hash"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r039-charge-resolved/fig-r039-charge-resolved-restart/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 110,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "3d9b69dac0a59e05afc417d3e4fccb4d6d7202f6b921cd9f9e6130b652e5b2e9"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "664b425cf2263e7bd5de4e2fea7ca7e2d171ec1420ada2a085dc66ea66c79c39"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "fdeef40ef10336b27b69432844e36f3a49f33786d99f0b232f39be8f4bad42eb"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "荷分辨全阶界把共同解析半径从 59/500 提高到 397/2000。242 个有限荷列与一个无限荷扇区给出尾界 0.689601；精化输运界为 0.999410，而相邻 0.199 探针为 1.002543。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 110 mm to rounding and the 600 dpi PNG is 4204 by 2598 pixels. The color export, true grayscale conversion, and a 300 dpi Poppler render of the PDF were inspected after revising the radius labels and proof-gate labels. Marker shape, open versus filled faces, three line styles, and the dashed threshold preserve distinctions without color. Titles, axes, direct labels, congruence legend, threshold annotations, and four footer lines are unclipped. Three subsetted CID TrueType fonts are embedded with Unicode maps; Poppler extracted 1260 text bytes. validate_data.py independently checks every plotted value against the exact certificates."
+  }
+}

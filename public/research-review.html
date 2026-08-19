@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.23</strong>网页版本</span>
+            <span><strong>v0.24</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>建立荷分块的全阶正算子界，检验它能否继续扩大约化系统已认证的解析边界。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>建立输入斜率与荷联合分辨的输运正核，检验它能否越过 R0.39 的输运门槛。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2639,7 +2639,43 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_tail_newton_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r038-tail-newton/fig-r038-tail-restart">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.39：</strong>保留荷输入与荷输出之间的正核，不再把全部通道压成一个标量常数；用全阶加权谱半径界检验能否严格超过 \(59/500\)。</p>
+            <p><strong style="color:var(--gold)">R0.39 已完成：</strong>精确荷核闭合了 242 个有限扇区与全部无穷大荷扇区，共同解析半径提高到 \(397/2000\)；新的瓶颈已经转移到输运算子。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.39 · 2026-08-19</p>
+            <h3>荷分辨核、无穷扇区闭合与解析半径扩张</h3>
+            <p>
+              我保留中心单项式 \((i,q)\) 与尾部单项式 \((j,s)\) 的荷结构。
+              对非零输出荷，线性化系数精确化为
+              \[
+              \gamma_{i,q;j,s}=\frac{(is-qj)(s-q)}{3(s+q)(i+j-1)},
+              \]
+              输出荷为零时则使用消除表面奇性的另一有理式。由此不再丢失不同荷通道中的精确抵消。
+            </p>
+            <p>
+              输入荷 \(s=-1,0,\ldots,240\) 的 242 个扇区全部精确求界；
+              \(s\ge241\) 的无穷大荷扇区由 \(s/j\in[0,2]\) 的解析端点界统一闭合。
+              在 \(N=80\)、\(r_*=397/2000\) 上，R0.38 标量尾界为
+              \(2.0387665&gt;1\)，新荷分辨尾界为 \(0.6896011&lt;1\)。
+            </p>
+            <p>
+              完整精确残差约为 \(1.7707\times10^{-51}\)，球映射与 Lipschitz 条件严格通过。
+              精细输运界为 \(0.99941043&lt;1\)，而附近探针 \(199/1000\) 的输运界为
+              \(1.00254286&gt;1\)。因此共同半径相对 R0.38 增长约 1.6822 倍，固定荷半径增长约 4.7603 倍。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范生成系统中的全阶定理，覆盖全部次数与全部输入荷。
+              它没有建立该系统与完整三维 PDE 临界解之间的控制桥梁，也没有证明正则性或奇性。
+            </p>
+            <p>
+              <a href="/notes/r0-39.html"><strong>阅读 R0.39 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-39.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r039">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_resolved_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r039-charge-resolved/fig-r039-charge-resolved-restart">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.40：</strong>在荷分辨之外继续保留输入斜率，把已经成为瓶颈的输运端点最大化改成荷—斜率联合正核。</p>
           </div>
         </section>
 
@@ -2654,7 +2690,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.23 · 2026-08-19<br>
+        综述 v0.24 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

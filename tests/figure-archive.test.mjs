@@ -18,6 +18,10 @@ const r038ManifestUrl = new URL(
   "../figures/r038-tail-newton/fig-r038-tail-restart/manifest.json",
   import.meta.url,
 );
+const r039ManifestUrl = new URL(
+  "../figures/r039-charge-resolved/fig-r039-charge-resolved-restart/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -102,6 +106,31 @@ test("archives the formal R0.38 tail-aware restart figure", async () => {
   assert.equal(manifest.simulation.monitoring.samples, 253);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 104);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.39 charge-resolved restart figure", async () => {
+  const manifest = JSON.parse(await readFile(r039ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r039-charge-resolved-restart");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "ed08ad45b3440a679d8132d7b3464dc21dd07fa5",
+  );
+  assert.match(manifest.supportedClaim, /242 fixed input-charge bounds/);
+  assert.match(manifest.supportedClaim, /analytic sector covering every s>=241/);
+  assert.match(manifest.supportedClaim, /0\.99941043095132664361<1/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 228);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 110);
   assert.deepEqual(
     manifest.figure.outputs.map(({ path }) => path).sort(),
     ["figure.pdf", "figure.png", "figure.svg"],

@@ -201,14 +201,14 @@ def packet_regression(packet_size: int) -> dict[str, object]:
         if opposite != gaussian_vector_conjugate(value):
             raise AssertionError("support violates the Fourier reality condition")
 
-    contributing_pairs: list[tuple[IntVector, IntVector]] = []
+    contributing_pairs: set[tuple[IntVector, IntVector]] = set()
     total = zero
     for left_frequency, left_value in support.items():
         right_frequency = subtract(k, left_frequency)
         right_value = support.get(right_frequency)
         if right_value is None:
             continue
-        contributing_pairs.append((left_frequency, right_frequency))
+        contributing_pairs.add((left_frequency, right_frequency))
         total = gaussian_vector_add(
             total,
             ordered_unprojected(

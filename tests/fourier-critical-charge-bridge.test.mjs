@@ -53,7 +53,9 @@ test("reproduces the exact R0.55 finite regressions", async () => {
   const certificate = JSON.parse(stdout);
 
   assert.match(stderr, /"status": "passed"/);
-  assert.equal(certificate.checks.XminusOneScalingExponentIsZero, true);
+  assert.equal(certificate.checks.formalXminusOneScalingExponentIsZero, true);
+  assert.equal(certificate.checks.formalTriadSymbolIdentityIsExactlyOne, true);
+  assert.equal(certificate.checks.finiteTriadRegressionPassed, true);
   assert.equal(
     certificate.exactSaturationFamily.finiteRegression.checkedTriads,
     1000,

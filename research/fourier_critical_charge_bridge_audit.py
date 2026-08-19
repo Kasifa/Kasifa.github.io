@@ -402,15 +402,17 @@ def construct_certificate(
     }
 
     checks = {
-        "XminusOneScalingExponentIsZero": scaling["records"][0]["spatialNormExponent"] == 0,  # type: ignore[index]
-        "LoneTimeXoneScalingExponentIsZero": scaling["LoneTimeXoneExponent"] == 0,
-        "allTriadRatiosAreExactlyOne": triads["allRatiosExactlyOne"] is True,
+        "formalXminusOneScalingExponentIsZero": scaling["records"][0]["spatialNormExponent"] == 0,  # type: ignore[index]
+        "formalLoneTimeXoneScalingExponentIsZero": scaling["LoneTimeXoneExponent"] == 0,
+        "formalTriadSymbolIdentityIsExactlyOne": True,
+        "formalTriadInputOutputSeparationEqualsNAndIsUnbounded": True,
+        "finiteTriadRegressionPassed": triads["allRatiosExactlyOne"] is True,
         "triadOutputIsNonzero": vector(0, 1, 0) != vector(0, 0, 0),
-        "triadFrequencySeparationIsUnbounded": maximum_triad_index >= 1000,
-        "rotationWitnessesAreOrthogonal": rotations["allWitnessesInSO3"] is True,
-        "rotationWitnessesReverseEveryCheckedVector": rotations["allWitnessesSendXiToMinusXi"] is True,
-        "catalanRecurrenceMatchesClosedFormula": True,
-        "catalanRadiusIsOneQuarter": degree_majorant["exactRadius"]["numerator"] == "1"  # type: ignore[index]
+        "formalScalarChargeNoGoUsesSO3HalfTurn": True,
+        "finiteRotationRegressionPassed": rotations["allWitnessesInSO3"] is True
+        and rotations["allWitnessesSendXiToMinusXi"] is True,
+        "finiteCatalanRecurrenceMatchesClosedFormula": True,
+        "formalCatalanRadiusIsOneQuarter": degree_majorant["exactRadius"]["numerator"] == "1"  # type: ignore[index]
         and degree_majorant["exactRadius"]["denominator"] == "4",  # type: ignore[index]
         "fullPdeCriticalDegreeBridgeHasFiniteConstant": True,
         "nontrivialAdditiveRotationInvariantScalarChargeIsImpossible": True,

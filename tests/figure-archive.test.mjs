@@ -34,6 +34,10 @@ const r042ManifestUrl = new URL(
   "../figures/r042-canonical-stretch/fig-r042-canonical-stretch/manifest.json",
   import.meta.url,
 );
+const r043ManifestUrl = new URL(
+  "../figures/r043-charge-degree-floor/fig-r043-charge-degree-floor/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -216,6 +220,31 @@ test("archives the formal R0.42 canonical-stretch transport figure", async () =>
   assert.match(manifest.supportedClaim, /1\.002872150853994/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 244);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.43 charge-implied degree-floor figure", async () => {
+  const manifest = JSON.parse(await readFile(r043ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r043-charge-degree-floor");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "4fe8cb308e20921fb0490aa2e76209b1d2d84221",
+  );
+  assert.match(manifest.supportedClaim, /ceil\(S\/2\)/);
+  assert.match(manifest.supportedClaim, /0\.99888144242700740673/);
+  assert.match(manifest.supportedClaim, /1\.0038955265828946573/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 255);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r043-charge-degree-floor",
+  "status": "formal",
+  "analyticalQuestion": "Does the bivariate support relation s<=2j provide enough charge-degree coupling to repair the inherited large-positive-charge active-tail bound at the preassigned radius r=33/100?",
+  "supportedClaim": "Every strict-tail input with s>=S and s<=2j obeys j>=max(N+1,ceil(S/2)). At N=80 and S=241 this raises the uniform input-degree floor from 81 to 121. Replacing only the decreasing factor (i+j)/(i+j-1) lowers the all-order large-charge bound at r=33/100 from 1.002872150853994023 to 0.99888144242700740673. The complete active Banach restart and inherited canonical-stretch construction then pass at r=33/100. The next millesimal probe r=331/1000 has improved active-tail bound 1.0038955265828946573 and fails the present sufficient inequality.",
+  "createdAt": "2026-08-19T19:03:05+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "4fe8cb308e20921fb0490aa2e76209b1d2d84221",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "support-geometry staircase, focused additive waterfall, and two threshold-lollipop panels",
+    "variants": [
+      "21-charge support-cone and exact bivariate-lattice degree floor near S=241",
+      "seven-step focused additive bridge from the legacy to the improved large-sector bound",
+      "three complete active, direct-transport, and canonical-stretch gates at r=0.330",
+      "four-point adjacent-radius and legacy-versus-improved active-tail bracket"
+    ],
+    "takeaway": "The missing improvement comes from support geometry, not a numerical cancellation: s>=241 forces j>=121, converting the preassigned r=0.330 failure into a strict all-order pass while r=0.331 remains a negative control.",
+    "dataSufficiency": "Twenty-one support rows expose the cone and lattice relation; seven additive bridge rows exactly decompose the total reduction; six proof-gate rows and four boundary rows show the target and adjacent control; 21 finite exact columns test the implementation. The formal sector theorem covers every s>=241 and every admissible j>80 analytically.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Support curves use solid versus dashed lines and open markers; theorem, legacy, pass, and failure states use distinct marker shapes, open-versus-filled faces, direct labels, and line style in addition to color.",
+    "outputFootprint": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r043/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_degree_floor_audit.py --max-total-degree 80 --target-radius 33/100 --failure-probe-radius 331/1000 --charge-cutoff 241 --regression-charges 241,242,243,300,480,600,1000 --regression-degree-offsets 0,3,12 --ball-divisor 1000000 --source-commit 4fe8cb308e20921fb0490aa2e76209b1d2d84221 --progress --progress-log research/certificates/r043/progress.ndjson --check --pretty --output research/certificates/r043/edge-charge-degree-floor.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; positive large-charge cutoff S=241; charge-implied input-degree floor J_S=121; target r=33/100; adjacent millesimal probe 331/1000; inherited R0.41 finite-charge columns and R0.42 canonical-stretch construction",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, inherited finite-charge endpoint bounds, all-order support-implied large-charge degree floor, rational fixed-point and canonical-stretch inequalities, and finite exact large-charge column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against the pinned exact certificate"
+    },
+    "wallTimeSeconds": 37.88974570899154,
+    "scientificWallTimeSeconds": 37.88974570899154,
+    "monitoredWallTimeSeconds": 38.028696,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 255,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "support-coupled active-tail gates",
+        "canonical stretch and direct-transport gates",
+        "finite exact large-charge regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 44.312
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "support-geometry.csv",
+      "format": "csv",
+      "schema": "Twenty-one charges s=235 through 255 with the generic tail floor, support-cone floor, exact congruence-restricted bivariate minimum, and the uniform large-sector floor.",
+      "bytes": 610,
+      "sha256": "63e8903b074b9be0b4d84d9d1d553a7b232bd107e7b128b43b40ee0a46553227"
+    },
+    {
+      "path": "large-sector-bridge.csv",
+      "format": "csv",
+      "schema": "Legacy start, five exact signed reductions grouped by center charge, and improved endpoint for the all-order large-positive-charge sector at r=33/100.",
+      "bytes": 4687,
+      "sha256": "2df82a8a24f7d759d52899ac868ebd0049b47337d3040372a3997020f7c5e179"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Six exact active-tail, direct-transport, and canonical-stretch bounds at the target r=33/100 and adjacent probe r=331/1000, including scope and threshold classification.",
+      "bytes": 5860,
+      "sha256": "58db969d6d9d098f289e846a87679a74db22d83a016c15b669efce252a1b4558"
+    },
+    {
+      "path": "boundary-bracket.csv",
+      "format": "csv",
+      "schema": "Four exact active-tail boundary points: improved r=0.329, legacy and improved r=0.330, and improved r=0.331.",
+      "bytes": 3723,
+      "sha256": "45e76760e15c477e084f1e60486c1f96756ae7c8bd91dcd7b04d3aa5dc08f558"
+    },
+    {
+      "path": "finite-large-columns.csv",
+      "format": "csv",
+      "schema": "Twenty-one exact large-charge columns across seven charges and three admissible degree offsets; finite implementation regression only.",
+      "bytes": 59155,
+      "sha256": "812f0d86ed7aeae65ed4fac796f7154519864642d83e9f8e92c9a2a8db6454ee"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 3191,
+      "sha256": "2fc27f4644bc1167617349b80f24e335e8b8b3965b526c7a40322b5bc7c4066b"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 18809,
+      "sha256": "289bdf32e0a05df31e4a5c4ed7ca96becf53982fe5c13ed49a11765c3a150448"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r043",
+      "fileName": "edge-charge-degree-floor.json",
+      "bytes": 191263,
+      "sha256": "0ebaaf6c5a9f731e5b2846f3042553bebd6748b298ce31919e8f423e41369bf8",
+      "extractionCommand": "prepare_data.py extracts support, bridge, gate, boundary, and finite-column tables; validate_data.py pins the certificate and source commit, checks all 22 formal flags and every extracted Fraction, independently reconstructs the degree-80 polynomial and improved all-order tail bound, and verifies archived monitoring"
+    },
+    {
+      "location": "research/certificates/r042",
+      "fileName": "edge-stretch-transport.json",
+      "bytes": 125607,
+      "sha256": "0c426070c47afb519fc9c705cbe11ed59b82ee6b28e766696280379b15e5dfa5",
+      "extractionCommand": "the R0.43 certificate pins the R0.42 negative control, polynomial and residual digests, and inherited canonical-stretch theorem"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r043-charge-degree-floor/fig-r043-charge-degree-floor/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "1c35665777a2a469b09dbee3bf1c115c5db20b9ff77e78714e887492973a1a90"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "1f2708a4ee1bac44b2999544e48083975b24009dba773c2173884bbc04cdabb1"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "f8fc45061ff92b894e3f57f37b3adf702df3b846cb1aaa26226f05f112a23057"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "大正荷支持锥把统一输入次数下界从 81 提高到 121；只替换这一递减前因子，就把 r=0.330 的全阶主动尾界从 1.002872 降到 0.998881，并保留 r=0.331 为相邻负向控制。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Line style, marker shape, open versus filled faces, and direct labels preserve distinctions without color. The additive bridge and adjacent-bound panels explicitly disclose focused scales. Titles, axes, threshold annotations, and footer lines are unclipped. Five subsetted Type0 TrueType fonts are embedded with Unicode maps. PDF text extraction contains the R0.43 label, target and adjacent radius, the 0.998881 value, finite-regression limitation, and full-PDE scope boundary. validate_data.py independently reconstructs the exact target tail bound and verifies every plotted table against the pinned certificate."
+  }
+}

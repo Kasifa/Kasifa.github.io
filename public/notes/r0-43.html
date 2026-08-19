@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.43：大正荷支持锥把统一输入次数下界从 81 提高到 121，在约化典范边生成系统上认证共同半径 33/100。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.43｜大荷支持耦合">
+  <meta property="og:description" content="只替换由支持锥严格推出的次数前因子，0.330 的全阶主动尾界从 1.002872 降到 0.998881。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-43-charge-degree-floor.png">
+  <title>R0.43｜大荷支持耦合</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#failure">旧失败</a><a href="#theorem">次数下界</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.43 · 支持几何与全阶主动尾</div>
+        <h1>大荷支持<br>耦合</h1>
+        <p class="lead">R0.42 在 \(r=0.330\) 留下 1.002872 的大正荷主动尾失败。我把已知条件 \(s\ge241\) 与二元支持锥 \(s\le2j\) 同时使用，严格得到 \(j\ge121\)，不依赖符号抵消便把该界降到 0.998881。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 预定失败点已通过</span><strong>r* = 33/100</strong><p>版本 v0.43 · 2026-08-19</p><p>相对 R0.42：× 1.003040</p><p>正式检查：22 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#failure">01 · 继承失败</a></li>
+        <li><a href="#column">02 · 精确尾列</a></li>
+        <li><a href="#theorem">03 · 全阶次数下界</a></li>
+        <li><a href="#reduction">04 · 精确降幅</a></li>
+        <li><a href="#restart">05 · 0.330 重启</a></li>
+        <li><a href="#canonical">06 · 正则场重构</a></li>
+        <li><a href="#negative">07 · 0.331 负向控制</a></li>
+        <li><a href="#finite">08 · 有限精确回归</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与下一步</a></li>
+        <li><a href="#reproduce">11 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是约化典范边生成系统的全阶结论，不是三维正则性定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL LARGE CHARGES</span><strong>覆盖每个 \(s\ge241\)</strong><p>支持锥论证同时覆盖全部允许输入次数，没有荷截断或次数网格。</p></div>
+            <div class="status"><span>PROVED · POSITIVE BOUND</span><strong>不使用系数符号抵消</strong><p>八十阶中心的每一项都通过绝对值进入全阶算子界。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 \(33/100\)</strong><p>主动尾、球映射、伸缩逆与指数重构在同一半径闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>21 个大荷精确列</strong><p>有限计算只验证公式与实现，不承担无穷扇区证明。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论只适用于这里的主动支持锥、约化典范边生成系统和次数加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 解全局光滑，也没有构造有限时奇性；\(0.331\) 上充分不等式失败不代表那里存在奇点。</div>
+        </section>
+
+        <section id="failure"><div class="section-no">01 / Inherited failure</div><h2>0.330 的旧失败来自无穷大正荷扇区</h2>
+          <p>R0.42 已在共同半径 \(329/1000\) 构造主动场 \(a\)、零初值伸缩场 \(\phi\) 和正则场 \(U,V\)，并把下一千分位点 \(33/100\) 固定为验收点。该点的正则伸缩多项式诊断仍小于一，但继承的全阶主动尾界为</p>
+          <div class="equation result">\[
+            \boxed{Z_{80}^{\mathrm{old}}(0.330)=1.002872150853994023>1.}
+          \]</div>
+          <p>最大扇区是全部输入荷 \(s\ge241\)。旧证明已经用 \(s\) 控制荷比，却在次数前因子中只保留严格尾的通用条件 \(j>80\)。这两个条件被分开最大化，正是本阶段检查的松弛。</p>
+        </section>
+
+        <section id="column"><div class="section-no">02 / Exact tail column</div><h2>精确列因子同时含有次数、荷和共同斜率</h2>
+          <p>对中心单项式 \((i,q)\) 与严格尾输入 \((j,s)\)，约化主动映射的精确加权列因子为</p>
+          <div class="equation">\[
+            A_{i,q;j,s}=\frac{i+j}{i+j-1}
+            \left|i\frac{s}{j}-q\right|
+            \frac{|s-q|}{3|s+q|}.
+          \]</div>
+          <p>八十阶中心满足 \(1\le i\le80\) 与 \(-1\le q\le2i\)。在 \(s\ge241\) 上必有 \(s>q\)。对 \(q\ge0\)，</p>
+          <div class="equation">\[
+            \frac{s-q}{s+q}\le1,
+            \qquad
+            \left|i\frac{s}{j}-q\right|
+            \le\max\{q,|2i-q|\},
+            \quad0\le\frac{s}{j}\le2.
+          \]</div>
+          <p>对唯一负荷 \(q=-1\)，则有 \((s+1)/(s-1)\le242/240\) 和 \(|i(s/j)+1|\le2i+1\)。这些部分保持 R0.39 的原证明不变；新信息只进入递减的次数前因子。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / All-order degree floor</div><h2>支持锥把统一输入次数下界从 81 提高到 121</h2>
+          <p>每个二元输入单项式都满足 \(-j\le s\le2j\)。因此</p>
+          <div class="equation result">\[
+            \boxed{s\ge S,\ s\le2j
+            \quad\Longrightarrow\quad
+            j\ge\left\lceil\frac S2\right\rceil.}
+          \]</div>
+          <p>再与严格尾 \(j>N\) 合并，得到统一下界</p>
+          <div class="equation result">\[
+            \boxed{J_S=\max\left\{N+1,\left\lceil\frac S2\right\rceil\right\}.}
+          \]</div>
+          <p>取 \(N=80,S=241\) 后，\(J_S=121\)。由于 \((i+j)/(i+j-1)\) 随 \(j\) 递减，旧前因子和新前因子分别为</p>
+          <div class="equation">\[
+            \frac{i+81}{i+80}
+            \quad\longrightarrow\quad
+            \frac{i+121}{i+120}.
+          \]</div>
+          <div class="proof"><strong>全阶含义。</strong>论证覆盖每个整数 \(s\ge241\) 和每个满足二元支持的 \(j>80\)。格点同余 \(j+s\equiv0\pmod3\) 只会进一步抬高某些单荷的最小次数，因此无需把它作为统一定理的前提。</div>
+        </section>
+
+        <section id="reduction"><div class="section-no">04 / Exact reduction</div><h2>只替换一个严格前因子，旧失败转为新通过</h2>
+          <div class="equation result">\[
+            \boxed{
+            1.002872150853994023
+            \;\longrightarrow\;
+            0.99888144242700740673<1.}
+          \]</div>
+          <p>精确总降幅为 \(0.0039907084269866162868\)。按中心荷分组，\(q=-1,0,1,2,\ge3\) 的降幅分别约为 \(0.00138213,0.00015011,0.00137551,0.00099506,0.00008790\)。没有单个符号抵消项决定结论。</p>
+          <table><thead><tr><th>中心荷组</th><th>旧贡献</th><th>新贡献</th><th>降幅</th></tr></thead><tbody>
+            <tr><td>\(q=-1\)</td><td>0.343228632</td><td>0.341846502</td><td>0.001382130</td></tr>
+            <tr><td>\(q=0\)</td><td>0.038928247</td><td>0.038778132</td><td>0.000150115</td></tr>
+            <tr><td>\(q=1\)</td><td>0.349338373</td><td>0.347962867</td><td>0.001375506</td></tr>
+            <tr><td>\(q=2\)</td><td>0.248427286</td><td>0.247432231</td><td>0.000995055</td></tr>
+            <tr><td>\(q\ge3\)</td><td>0.022949613</td><td>0.022861711</td><td>0.000087903</td></tr>
+          </tbody></table>
+          <p>有限荷部分的最大列为 \(0.8512679706418797\)，仍显著低于改进后的无穷大荷扇区。新界没有把失败转移到另一个被隐藏的扇区。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">05 / Exact restart</div><h2>0.330 上的完整 Banach 重启严格闭合</h2>
+          <div class="equation result">\[
+            \boxed{r_*=\frac{33}{100}=0.330.}
+          \]</div>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>全阶主动尾界</td><td>0.9988814424270074</td><td>严格小于一</td></tr>
+            <tr><td>收缩余量</td><td>1.1185575730 × 10⁻³</td><td>正</td></tr>
+            <tr><td>尾球半径 \(\varepsilon\)</td><td>1.1185575730 × 10⁻⁹</td><td>余量除以一百万</td></tr>
+            <tr><td>完整残差</td><td>1.8355533903 × 10⁻³³</td><td>小于残差容许量</td></tr>
+            <tr><td>球映射上界</td><td>1.1173064057 × 10⁻⁹</td><td>小于 \(\varepsilon\)</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9988814491383528</td><td>严格小于一</td></tr>
+          </tbody></table>
+          <p>共同半径相对 R0.42 增长 \(330/329\approx1.00304\)，固定荷变量 \(R=Z^2W\) 的圆盘半径增长约 \(1.00915\)。数值增幅很小；真正的新内容是没有符号抵消的支持耦合定理。</p>
+        </section>
+
+        <section id="canonical"><div class="section-no">06 / Canonical fields</div><h2>正则伸缩逆与指数重构仍处于安全区间</h2>
+          <p>R0.42 已把旧直接输运逆替换为正则伸缩方程</p>
+          <div class="equation">\[
+            \mathcal L\phi-\{a,\phi\}=\tfrac12(X-Y)a,
+            \qquad
+            U=Ze^{\phi-a/2},\quad V=We^{\phi+a/2}.
+          \]</div>
+          <p>在新认证半径上，完整伸缩算子界为</p>
+          <div class="equation result">\[
+            \boxed{\|S_a\|\le0.7676483831886716<1.}
+          \]</div>
+          <p>于是 \(\|(I-S_a)^{-1}\|\le4.3038220\)，并有 \(\|\phi\|_{\mathcal B_r}\le1.5269665\)。旧直接一步输运界仍为 \(1.2914902>1\)，但它在正则分解以后已不是构造门槛。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">07 / Adjacent negative control</div><h2>下一千分位点 0.331 仍由同一大荷扇区阻断</h2>
+          <div class="equation result">\[
+            \boxed{Z_{80}^{\mathrm{floor}}(0.331)=1.0038955265828947>1.}
+          \]</div>
+          <p>该点的八十阶正则伸缩多项式诊断为 \(0.7719425331<1\)，但主动修正尚未认证，所以不能把它称为完整场的伸缩界。负向控制只说明当前充分不等式尚不足，不说明真实解析性在 \(0.331\) 丧失。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">08 / Finite exact regressions</div><h2>21 个有限列验证实现，不替代支持锥定理</h2>
+          <p>审计选择 \(s=241,242,243,300,480,600,1000\)，并对每个荷计算精确格点最小次数及其偏移 3、12，共 21 个 GMP 有理列。所有列都低于全阶大荷扇区界。</p>
+          <table><thead><tr><th>检查</th><th>规模</th><th>分类</th></tr></thead><tbody>
+            <tr><td>主动递推</td><td>1,113,168 个有序相互作用</td><td>有限精确实现</td></tr>
+            <tr><td>完整残差</td><td>6345 项，次数 81–160</td><td>有限精确多项式</td></tr>
+            <tr><td>大荷列</td><td>7 个荷 × 3 个次数</td><td>有限精确回归</td></tr>
+            <tr><td>支持锥覆盖</td><td>全部 \(s\ge241,j>80\)</td><td>形式全阶定理</td></tr>
+          </tbody></table>
+          <p>有限列负责发现索引、公式或代码错误；无穷覆盖来自 \(s\le2j\)、递减次数前因子和正的逐项荷界。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>支持几何、精确降幅、完整门槛和相邻边界统一归档</h2>
+          <figure>
+            <img src="/figures/r0-43-charge-degree-floor.svg" alt="R0.43 大正荷支持锥次数下界、精确大荷界降幅、0.330 完整证明门与 0.331 相邻负向控制">
+            <figcaption>图 R0.43-1。左上显示 \(s\le2j\) 给出的次数下界和真实二元格点最小次数；右上用聚焦瀑布图分解 1.002872 到 0.998881 的精确降幅；左下列出 0.330 的完整门槛；右下并列旧界、新界与相邻 0.331 控制。PDF、SVG、600 dpi PNG、源数据、清单和 SHA-256 摘要一并归档，彩色、真实灰度和 PDF 渲染页均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and next</div><h2>这是可复用的正全阶改进，但离完整 PDE 仍有明确断层</h2>
+          <p>R0.43 的价值不在于把 0.329 改写成 0.330，而在于找回一个此前被独立最大化丢失的确定性关联：大荷本身强制高次数。这个关联保持卷积支持和绝对值正性，适合写成可复用引理，也能清楚解释为何改进不是有限数据拟合。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍然有限。目前没有定理把这个约化生成系统的解析半径传递到完整三维速度场的尺度临界范数，也没有控制全部空间、螺旋和跨尺度相互作用，更没有排除能量集中。\(0.330\) 既不是真实解析边界，也不是物理正则时间。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把有限大荷列称为全阶证明，不能把 \(0.331\) 的充分界失败解释成奇性，不能把半径增量外推成 PDE 先验估计，也不能声称已证明或反驳三维 Navier–Stokes 正则性。</div>
+          <h3>R0.44：保留大荷列中的共同变量</h3>
+          <ol>
+            <li>固定 \(r=0.331\) 为首个验收点，保持本阶段的次数下界不变；</li>
+            <li>在完整正和中同时保留 \(x=s/j\) 与 \(y=1/s\)，不再分别最大化次数因子、荷比和绝对仿射因子；</li>
+            <li>先证明共同变量上的单调性、凸性或有限端点归约，再做有限精确回归；</li>
+            <li>若该结构不能恢复 0.003896 的缺口，先公开负结果，再考虑与正则分解兼容的各向异性权重。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility</div><h2>源提交、精确证书、资源监控与图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_charge_degree_floor_audit.py --max-total-degree 80 --target-radius 33/100 --failure-probe-radius 331/1000 --charge-cutoff 241 --regression-charges 241,242,243,300,480,600,1000 --regression-degree-offsets 0,3,12 --ball-divisor 1000000 --source-commit 4fe8cb308e20921fb0490aa2e76209b1d2d84221 --progress --check --pretty --output /tmp/r043.json</code></div>
+          <p>正式源提交为 <code>4fe8cb308e20921fb0490aa2e76209b1d2d84221</code>。成功计算耗时 37.889746 秒；监控历时 38.028696 秒、采样 255 次，峰值 CPU 为 100.0%，峰值常驻内存为 44.312 MiB。没有使用 GPU、随机种子或浮点判号，22 项正式检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>0ebaaf6c5a9f731e5b2846f3042553bebd6748b298ce31919e8f423e41369bf8</code>。</p>
+          <p><a href="/notes/r0-43.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_floor_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_floor_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r043">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r043-charge-degree-floor/fig-r043-charge-degree-floor">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-39.html">R0.39：荷分辨主动尾</a>。给出本阶段保留的无限大荷逐项界。</li>
+            <li><a href="/notes/r0-41.html">R0.41：次数分辨主动尾</a>。提供未改变的有限荷共同端点列。</li>
+            <li><a href="/notes/r0-42.html">R0.42：正则伸缩输运</a>。固定 0.330 验收点并提供正则场重构。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.43 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

@@ -1,0 +1,256 @@
+{
+  "chargeProjection": {
+    "circleAction": "gamma_theta(Z,W)=(exp(-i theta)Z,exp(2i theta)W)",
+    "contraction": "||Pi_q f||_rho <= ||f||_rho for every integer q",
+    "monomialRegression": [
+      {
+        "charge": 0,
+        "circleMultiplier": "exp(i*0*theta)",
+        "projectionRetainsExactlyCharge": 0,
+        "totalDegree": 0,
+        "wExponent": 0,
+        "zExponent": 0
+      },
+      {
+        "charge": -1,
+        "circleMultiplier": "exp(i*-1*theta)",
+        "projectionRetainsExactlyCharge": -1,
+        "totalDegree": 1,
+        "wExponent": 0,
+        "zExponent": 1
+      },
+      {
+        "charge": 2,
+        "circleMultiplier": "exp(i*2*theta)",
+        "projectionRetainsExactlyCharge": 2,
+        "totalDegree": 1,
+        "wExponent": 1,
+        "zExponent": 0
+      },
+      {
+        "charge": 0,
+        "circleMultiplier": "exp(i*0*theta)",
+        "projectionRetainsExactlyCharge": 0,
+        "totalDegree": 3,
+        "wExponent": 1,
+        "zExponent": 2
+      },
+      {
+        "charge": 1,
+        "circleMultiplier": "exp(i*1*theta)",
+        "projectionRetainsExactlyCharge": 1,
+        "totalDegree": 8,
+        "wExponent": 3,
+        "zExponent": 5
+      },
+      {
+        "charge": -4,
+        "circleMultiplier": "exp(i*-4*theta)",
+        "projectionRetainsExactlyCharge": -4,
+        "totalDegree": 10,
+        "wExponent": 2,
+        "zExponent": 8
+      }
+    ],
+    "projectionFormula": "Pi_q f=(1/(2*pi))*integral_0^(2*pi) exp(-i*q*theta)*f(gamma_theta(Z,W)) dtheta",
+    "wienerNorm": "||f||_(rho_Z,rho_W)=sum_(n,k>=0)|f_(n,k)|rho_Z^n rho_W^k"
+  },
+  "checks": {
+    "candidateOutsideR031FixedChargeDisc": true,
+    "candidateRequiresLargerBalancedRadius": true,
+    "chargeActionOnMonomials": true,
+    "halfRadiusConstant": true,
+    "halfRadiusDerivativeMaxima": true,
+    "pinnedInputHashes": true,
+    "sameRadiusFormula": true,
+    "sameRadiusWitnessGrows": true,
+    "translationCounterexamplesNonzero": true
+  },
+  "computation": {
+    "backend": "Python exact integers and Fraction arithmetic",
+    "randomSeed": null,
+    "wallSeconds": 0.006247666999999998
+  },
+  "environment": {
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.9.6"
+  },
+  "fixedChargeExtraction": {
+    "coefficientFormula": "F_q(R)=(1/(2*pi*i))*integral F(Xi^(-1),R*Xi^2)*Xi^(-q-1) dXi",
+    "contourCondition": "1/rho_Z < |Xi| < sqrt(rho_W/|R|); such a contour exists if and only if |R| < rho_Z^2*rho_W",
+    "isotropicBalance": {
+      "balancedXiRadius": "|R|^(-1/3)",
+      "minimizedQuantity": "min_|Xi| max(|Xi|^(-1),|R|*|Xi|^2)",
+      "minimumBivariateRadius": "|R|^(1/3)"
+    },
+    "r031": {
+      "bivariateRadius": "4/81",
+      "bivariateRadiusDecimal": "0.0493827160493827133",
+      "fixedChargeRadius": "64/531441",
+      "fixedChargeRadiusDecimal": "0.000120427291082170931"
+    },
+    "r032FiniteCandidate": {
+      "absoluteRLower": "10516903672050296/14033145797491531",
+      "absoluteRLowerDecimal": "0.74943307963993544",
+      "absoluteRToR031FixedChargeRatioLower": "698639225547260169567/112265166379932248",
+      "absoluteRToR031FixedChargeRatioLowerDecimal": "6223.11664495198329",
+      "absoluteRToR031FixedChargeRatioUpper": "11875668198252413855427/1908145502475925504",
+      "absoluteRToR031FixedChargeRatioUpperDecimal": "6223.67014614088384",
+      "absoluteRUpper": "22346164857909747/29814773476186336",
+      "absoluteRUpperDecimal": "0.749499736288725571",
+      "balancedRadiusLower": "454165656837551223522212810117/500000000000000000000000000000",
+      "balancedRadiusLowerDecimal": "0.908331313675102447",
+      "balancedRadiusUpper": "454179121354495612562605550431/500000000000000000000000000000",
+      "balancedRadiusUpperDecimal": "0.908358242708991237",
+      "balancedToR031RadiusRatioLower": "36787418203841649105299237619477/2000000000000000000000000000000",
+      "balancedToR031RadiusRatioLowerDecimal": "18.3937091019208232",
+      "balancedToR031RadiusRatioUpper": "36788508829714144617571049584911/2000000000000000000000000000000",
+      "balancedToR031RadiusRatioUpperDecimal": "18.3942544148570732",
+      "classification": "finite exact Pade candidate geometry only; no original-function singularity or continuation path is certified"
+    },
+    "substitution": "Z=Xi^(-1), W=R*Xi^2"
+  },
+  "git": {
+    "commit": "c95c74eb19c36962b55de887ee75654a12e3a833",
+    "dirty": false
+  },
+  "input": {
+    "r031": {
+      "commonPolydiscRadius": "max(|Z|,|W|)<4/81",
+      "majorantConstant": "K=81/4",
+      "path": "research/certificates/r031/edge-optimized-majorant.json",
+      "sha256": "32676dcefdf3c5285bdb18aab44bfdba385a84910d5e1d0df00f8ea9039ec395",
+      "sourceCommit": "dfdf19ae3706d376deae02b9ff804060bf37d626"
+    },
+    "r032": {
+      "classification": "finite exact diagnostic, not a singularity theorem",
+      "path": "research/certificates/r032/edge-singularity-candidates.json",
+      "sha256": "bd70ed05779631b729e89c269f82d287da361fdcea34e3c42703a712222f5575",
+      "sourceCommit": "a973bc77915181a27158a475e75008e8bdb18d4a",
+      "tailTransportClusterHull": {
+        "decimal": [
+          "-0.749499736288725516833737",
+          "-0.749433079639935448247912"
+        ],
+        "lower": "-22346164857909747/29814773476186336",
+        "upper": "-10516903672050296/14033145797491531",
+        "width": "27888812777255595772534897201/418395063110506246048753137920416"
+      }
+    }
+  },
+  "operatorScale": {
+    "activeFixedPointMap": "Phi(f)=(L-1)^(-1)[(I-Pi0)Q^(-1){f,Qf}+Pi0 L^(-1){f,Lf}]",
+    "halfRadiusBilinearBound": {
+      "lipschitzStatement": "||Phi(f)-Phi(g)||_(rho/2) <= (121/48)(||f||_rho+||g||_rho)||f-g||_rho",
+      "nonzeroChargePart": "33/16",
+      "statement": "||B(f,g)||_(rho_Z/2,rho_W/2) <= (121/48)||f||_rho||g||_rho, where Phi(f)=B(f,f)",
+      "total": "121/48",
+      "zeroChargeBracketBeforeLInverse": "11/8",
+      "zeroChargeLInverse": "1/3",
+      "zeroChargePart": "11/24"
+    },
+    "halfRadiusMultipliers": {
+      "sup_n_n2_over_2n": "9/8",
+      "sup_n_n_over_2n": "1/2",
+      "sup_nm_nm_over_2n2m": "1/4"
+    },
+    "sameRadiusUnboundedness": {
+      "exactOutputNorm": "||Phi(f_N)||_rho=3*N^2/(4*(2*N-1))",
+      "exactRegressionRange": "1 <= N <= 128",
+      "limit": "+infinity",
+      "samples": [
+        {
+          "N": 1,
+          "inputNorm": "1",
+          "outputNorm": "3/4",
+          "outputNormDecimal": "0.75"
+        },
+        {
+          "N": 2,
+          "inputNorm": "1",
+          "outputNorm": "1",
+          "outputNormDecimal": "1"
+        },
+        {
+          "N": 3,
+          "inputNorm": "1",
+          "outputNorm": "27/20",
+          "outputNormDecimal": "1.35000000000000009"
+        },
+        {
+          "N": 4,
+          "inputNorm": "1",
+          "outputNorm": "12/7",
+          "outputNormDecimal": "1.71428571428571419"
+        },
+        {
+          "N": 8,
+          "inputNorm": "1",
+          "outputNorm": "16/5",
+          "outputNormDecimal": "3.20000000000000018"
+        },
+        {
+          "N": 16,
+          "inputNorm": "1",
+          "outputNorm": "192/31",
+          "outputNormDecimal": "6.19354838709677402"
+        },
+        {
+          "N": 32,
+          "inputNorm": "1",
+          "outputNorm": "256/21",
+          "outputNormDecimal": "12.1904761904761898"
+        },
+        {
+          "N": 64,
+          "inputNorm": "1",
+          "outputNorm": "3072/127",
+          "outputNormDecimal": "24.1889763779527556"
+        },
+        {
+          "N": 128,
+          "inputNorm": "1",
+          "outputNorm": "4096/85",
+          "outputNormDecimal": "48.1882352941176464"
+        }
+      ],
+      "witness": "f_N=(rho_Z^(-N)Z^N+rho_W^(-N)W^N)/2, ||f_N||_rho=1"
+    }
+  },
+  "scope": {
+    "classification": "all-order algebraic and functional-analytic statements with a finite candidate-distance diagnostic",
+    "limitations": [
+      "the half-radius estimate is not yet a validated continuation chain",
+      "the estimate does not prove existence at a nonzero center",
+      "the R0.32 hull remains a finite Pade diagnostic rather than a singularity theorem",
+      "no singularity-free torus-saturated domain reaching R=-0.7495 has been constructed",
+      "the result concerns the reduced edge system rather than the full three-dimensional PDE",
+      "no Navier-Stokes regularity or blow-up conclusion is claimed"
+    ],
+    "result": "exact continuation-domain geometry, a translation obstruction, same-radius unboundedness, and a half-radius operator bound"
+  },
+  "translationObstruction": {
+    "conclusion": "the origin coefficient recurrence cannot be copied unchanged at a nonzero Taylor center",
+    "conjugatedEulerFields": {
+      "X_c": "(z_0+zeta)*partial_zeta",
+      "Y_c": "(w_0+omega)*partial_omega"
+    },
+    "conjugatedProjector": "Pi_q^c g=(1/(2*pi))*integral exp(-i*q*theta) g(exp(-i*theta)*(z_0+zeta)-z_0,exp(2i*theta)*(w_0+omega)-w_0) dtheta",
+    "orbitContainmentSufficientCondition": "an outer local polydisc with radii R_Z,R_W contains the affine circle orbit of every point in an inner polydisc r_Z,r_W if R_Z>r_Z+2|z_0| and R_W>r_W+2|w_0|",
+    "projectorCounterexamples": [
+      {
+        "condition": "z_0 != 0",
+        "field": "f(Z,W)=Z",
+        "localPi0AfterTau": "z_0",
+        "tauAfterGlobalPi0": "0"
+      },
+      {
+        "condition": "w_0 != 0",
+        "field": "f(Z,W)=W",
+        "localPi0AfterTau": "w_0",
+        "tauAfterGlobalPi0": "0"
+      }
+    ],
+    "recenter": "(tau_c f)(zeta,omega)=f(z_0+zeta,w_0+omega)"
+  }
+}

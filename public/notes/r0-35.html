@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.35：证明固定荷抽取的环面域、非零中心平移障碍、同半径算子不有界性，以及显式的外半径到半半径算子界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.35｜固定荷延拓几何与同半径障碍">
+  <meta property="og:description" content="普通局部 Taylor 圆盘链不能原样复用原点递推；正确的延拓需要荷轨道饱和域和解析尺度。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-35-continuation-scale.png">
+  <title>R0.35｜固定荷延拓几何与同半径障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#projection">荷投影</a><a href="#operator">算子障碍</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.35 · 解析延拓的结构条件</div>
+        <h1>固定荷延拓几何与<br>同半径障碍</h1>
+        <p class="lead">我先检查局部 Taylor 圆盘链是否写对了方程。结论是否定的：荷投影不与平移交换，原始非线性算子在同一 Wiener 半径上也不有界；半径缩小后可以恢复一个显式全阶界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 四项全阶命题已证明</span><strong>外半径 → 半半径</strong><p>版本 v0.35 · 2026-08-19</p><p>显式算子常数：121/48</p><p>正式检查：9 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#projection">01 · 荷投影</a></li><li><a href="#extraction">02 · 固定荷几何</a></li><li><a href="#translation">03 · 平移障碍</a></li><li><a href="#operator">04 · 同半径障碍</a></li><li><a href="#half">05 · 双半径界</a></li><li><a href="#figure">06 · 期刊附图</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现与文献</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>证明的是延拓架构，不是候选奇点</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>荷投影的 Fourier 公式</strong><p>投影由带权圆周作用给出，在原点 Wiener 范数中是压缩映射。</p></div>
+            <div class="status"><span>PROVED · EXACT DOMAIN</span><strong>|R| &lt; ρ<sub>Z</sub><sup>2</sup>ρ<sub>W</sub></strong><p>这是多圆盘中存在固定荷积分轮廓的充要条件。</p></div>
+            <div class="status"><span>PROVED · OBSTRUCTION</span><strong>不能原样平移递推</strong><p>荷零投影与 Euler 向量场在非零中心都改变形式。</p></div>
+            <div class="status"><span>PROVED · TWO RADII</span><strong>同半径发散，半半径有界</strong><p>显式见证排除朴素同半径估计；缩半径后常数为 121/48。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>R0.35 没有构造到达 \(R\approx-0.7495\) 的延拓链，没有证明该点是真实奇点，也没有给出三维 Navier–Stokes 正则性或奇性结论。</div>
+        </section>
+
+        <section id="projection"><div class="section-no">01 / Charge projection</div><h2>荷零投影是绕原点的全局圆周平均</h2>
+          <p>设 \(X=Z\partial_Z\)、\(Y=W\partial_W\)、\(\mathcal L=X+Y\)、\(\mathcal Q=2Y-X\)。单项式 \(Z^nW^k\) 的整数荷为 \(q=2k-n\)。取带权圆周作用</p>
+          <div class="equation">\[\gamma_\theta(Z,W)=(e^{-i\theta}Z,e^{2i\theta}W).\]</div>
+          <p>每个单项式在该作用下恰好乘以 \(e^{iq\theta}\)。因此荷 \(q\) 投影为</p>
+          <div class="equation result">\[\boxed{\Pi_qf(Z,W)=\frac1{2\pi}\int_0^{2\pi}e^{-iq\theta}f(e^{-i\theta}Z,e^{2i\theta}W)\,d\theta.}\]</div>
+          <p>在加权 Wiener 范数 \(\|f\|_\rho=\sum|f_{n,k}|\rho_Z^n\rho_W^k\) 中，\(\Pi_q\) 只是删除其他荷的系数，所以 \(\|\Pi_qf\|_\rho\le\|f\|_\rho\)。这一公式也说明投影需要整条荷圆周轨道，而不是单个局部点值。</p>
+        </section>
+
+        <section id="extraction"><div class="section-no">02 / Extraction geometry</div><h2>R0.31 的三次方半径来自精确轮廓几何</h2>
+          <p>取 \(R=Z^2W\)、\(\Xi=Z^{-1}\)，则 \(Z=\Xi^{-1}\)、\(W=R\Xi^2\)。固定荷级数可由 Cauchy 积分抽取：</p>
+          <div class="equation">\[F_q(R)=\frac1{2\pi i}\oint F(\Xi^{-1},R\Xi^2)\Xi^{-q-1}\,d\Xi.\]</div>
+          <p>若原级数在 \(|Z|&lt;\rho_Z,|W|&lt;\rho_W\) 绝对收敛，圆形 \(\Xi\) 轮廓存在当且仅当</p>
+          <div class="equation result">\[\frac1{\rho_Z}&lt;|\Xi|&lt;\sqrt{\frac{\rho_W}{|R|}}\quad\Longleftrightarrow\quad\boxed{|R|&lt;\rho_Z^2\rho_W}.\]</div>
+          <p>等半径时就是 \(|R|&lt;\rho^3\)。在固定 \(|R|\) 下，轮廓遇到的最小等向双变量半径为 \(|R|^{1/3}\)。R0.32 高阶有限候选需要的平衡半径落在 \([0.9083313136751,0.9083582427090]\)，是 R0.31 半径 \(4/81\) 的 18.3937 至 18.3943 倍；在 \(R\) 平面上则相差 6223 倍以上。</p>
+          <div class="proof warning"><strong>数字的含义。</strong>这些比值只量化现有证明域与有限 Padé 候选之间的距离。它们不证明中间没有奇性，也不把候选升级为原函数奇点。</div>
+        </section>
+
+        <section id="translation"><div class="section-no">03 / Translation obstruction</div><h2>普通局部 Taylor 重心会改写投影和向量场</h2>
+          <p>把函数重心到 \(c=(z_0,w_0)\)：\((\tau_cf)(\zeta,\omega)=f(z_0+\zeta,w_0+\omega)\)。若 \(f=Z\)，先作全局荷零投影得到零；先平移再对局部变量取荷零项却得到 \(z_0\)。对 \(f=W\) 同理得到 \(w_0\)。因此</p>
+          <div class="equation result">\[\boxed{\Pi_0^{\mathrm{local}}\tau_c\ne\tau_c\Pi_0\qquad(c\ne0).}\]</div>
+          <p>Euler 场也变成 \(X_c=(z_0+\zeta)\partial_\zeta\)、\(Y_c=(w_0+\omega)\partial_\omega\)。正确的重心投影必须沿仿射圆周轨道积分：</p>
+          <div class="equation">\[(\Pi_q^cg)(\zeta,\omega)=\frac1{2\pi}\int e^{-iq\theta}g(e^{-i\theta}(z_0+\zeta)-z_0,e^{2i\theta}(w_0+\omega)-w_0)\,d\theta.\]</div>
+          <p>一个很小的相邻圆盘通常不包含整条轨道。因此“在每个新中心原样复用原点递推”会验证错误的方程。可行程序必须携带这个共轭非局部算子，或者直接使用对荷圆周作用饱和的解析域。</p>
+        </section>
+
+        <section id="operator"><div class="section-no">04 / Same-radius obstruction</div><h2>原始非线性固定点算子在同一 Wiener 半径上不有界</h2>
+          <p>把主动标量方程写成二次固定点映射</p>
+          <div class="equation">\[\Phi(f)=(\mathcal L-1)^{-1}\!\left[(I-\Pi_0)\mathcal Q^{-1}\{f,\mathcal Qf\}+\Pi_0\mathcal L^{-1}\{f,\mathcal Lf\}\right].\]</div>
+          <p>对任意正半径，取单位范数见证</p>
+          <div class="equation">\[f_N=\frac12\left(\rho_Z^{-N}Z^N+\rho_W^{-N}W^N\right),\qquad\|f_N\|_\rho=1.\]</div>
+          <p>混合输出的荷为 \(N\)。精确计算全部乘子后得到</p>
+          <div class="equation result">\[\boxed{\|\Phi(f_N)\|_\rho=\frac{3N^2}{4(2N-1)}\longrightarrow\infty.}\]</div>
+          <p>所以 \(\Phi\) 在任何同半径 Wiener 单位球上都不有界。这排除了朴素的同空间 Banach 压缩证明，但不排除更强范数、解析空间尺度或能吸收导数的积分重写。</p>
+        </section>
+
+        <section id="half"><div class="section-no">05 / Two-radius estimate</div><h2>半径缩小一半后得到统一常数 121/48</h2>
+          <p>在内半径 \((\rho_Z/2,\rho_W/2)\) 上，精确离散极值为</p>
+          <div class="equation">\[\sup_n\frac n{2^n}=\frac12,\qquad\sup_n\frac{n^2}{2^n}=\frac98,\qquad\sup_{n,m}\frac{nm}{2^{n+m}}=\frac14.\]</div>
+          <p>它们控制一阶、二阶和混合 Euler 导数。非零荷支给出 \(33/16\)，荷零支在 \(\mathcal L^{-1}\) 的 \(1/3\) 因子后给出 \(11/24\)。若 \(B(f,g)\) 是 \(\Phi\) 的双线性极化，则</p>
+          <div class="equation result">\[\boxed{\|B(f,g)\|_{\rho/2}\le\left(\frac{33}{16}+\frac{11}{24}\right)\|f\|_\rho\|g\|_\rho=\frac{121}{48}\|f\|_\rho\|g\|_\rho.}\]</div>
+          <p>这是真正的全阶算子界，也是严格延拓所需的一个部件。它还不是延拓引理：一次求值损失一半半径，并且尚未构造重心方程的近似逆与尾部余项。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Formal figure</div><h2>附图同时显示域距离与算子半径损失</h2>
+          <figure>
+            <img src="/figures/r0-35-continuation-scale.svg" alt="R0.35 固定荷延拓距离与同半径算子障碍">
+            <figcaption>图 R0.35-1。左图给出固定荷模长对应的最小平衡双变量半径，标出 R0.31 认证边界与 R0.32 有限候选。右图给出单位见证在同半径范数中的精确发散；蓝色虚线是另一种较小半径范数中的全阶上界，不能当作金色曲线的同范数上界。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>结果否定了一种错误程序，并给出下一种程序的最低结构</h2>
+          <p>R0.35 的主要价值是方法判伪。若直接实现普通 Taylor 圆盘链，代码可能在每一步都通过区间检查，却因为错用了局部荷投影而证明了另一个方程。平移反例在一次计算前就排除了这条路线。同半径见证又说明，即使保留原点，原始二次映射也不能在单一 Wiener 半径中直接做压缩。</p>
+          <p>正面的进展是：荷圆周饱和域、固定荷轮廓条件和外到内半径界已经有精确公式。它们把 R0.36 的任务收窄为“构造带共轭投影的解析空间尺度”，或者“找到吸收二阶导数的平滑积分方程”。</p>
+          <p>对三维 Navier–Stokes 千禧年问题的直接价值仍然很小。当前结果只控制一个约化边缘生成方程的解析结构。即使以后证明该边缘级数在负实轴有奇点，还需要证明它决定完整 PDE 的真实动力学，并与临界范数、局部解延拓或有限时奇性建立可逆桥梁。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称 R0.32 候选已经得到认证，不能声称约化边缘奇点必然对应流体爆破，也不能把同半径方法障碍解释为方程本身奇性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.36</div><h2>先证明一个短的合法延拓步，再考虑长链</h2>
+          <ol>
+            <li>定义对 \(\gamma_\theta\) 饱和的外域、内域和共轭荷投影，并固定可计算范数；</li>
+            <li>选择解析空间尺度上的 Newton–Kantorovich 定理，或推导能吸收 Euler 二阶导数的平滑积分方程；</li>
+            <li>构造有限块近似逆，并给无穷尾部一个可机器检查的闭式上界；</li>
+            <li>只在 R0.31 已证明的多圆盘内认证第一小步，核对投影、余项、包含关系和重启可重复性；</li>
+            <li>第一步通过后再自适应扩展，任何圆周轨道离开已认证域时立即停止，不用 Padé 图填补缺口。</li>
+          </ol>
+          <p>R0.36 的最低成功标准是一条短、正确、可复现的包含证书。若双半径损失使第一步都无法闭合，这个失败本身也应被记录为明确的定量障碍。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>精确证书、监控日志与期刊附图包已经归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python3 research/edge_continuation_geometry_audit.py --source-commit c95c74eb19c36962b55de887ee75654a12e3a833 --progress --check --pretty --output /tmp/r035-continuation-geometry.json</code></div>
+          <p>正式源提交为 <code>c95c74eb19c36962b55de887ee75654a12e3a833</code>。R0.31 与 R0.32 输入证书的 SHA-256 分别为 <code>32676dce…ec395</code> 和 <code>bd70ed05…f5575</code>。本次精确审计耗时 0.00625 秒，没有随机种子或浮点判号。9 项正式检查全部通过。</p>
+          <p>R0.35 证书 SHA-256 为 <code>13d147790926f3f3d04ea8f6d93574e1c992dd2b30dc6e12c777e68868a4fede</code>。</p>
+          <p><a href="/notes/r0-35.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_continuation_geometry_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_continuation_geometry_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r035">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r035-continuation-geometry/fig-r035-continuation-scale">查看期刊附图包</a></p>
+          <h3>文献与前序记录</h3>
+          <ol class="refs">
+            <li><a href="https://acsvproject.com/acsvbook/">Pemantle、Wilson 与 Melczer，多变量解析组合学第二版手稿</a>。多变量 Cauchy 抽取与轮廓几何是第 2 节的标准背景；本文的带权荷轮廓直接从变量变换推导。</li>
+            <li><a href="https://arxiv.org/abs/1509.08648">Castelli、Gameiro 与 Lessard，Boussinesq 方程的严格数值</a>。该文展示了在几何加权 \(\ell^1\) 系数空间中使用 Newton–Kantorovich 与 radii polynomial 的完整范例。</li>
+            <li><a href="https://arxiv.org/abs/1704.03128">Breden 与 Lessard，非线性 ODE 的多项式插值和先验平滑</a>。其平滑 Picard 重写为 R0.36 的第二种选择提供方法参考；R0.35 没有调用该文定理。</li>
+            <li><a href="/notes/r0-31.html">R0.31：共同解析多圆盘</a>。提供 \(4/81\) 的全阶下界。</li>
+            <li><a href="/notes/r0-32.html">R0.32：固定荷有限奇点候选</a>。提供本页量化距离所用的精确候选包络。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.35 · 先写对延拓方程，再做长链</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

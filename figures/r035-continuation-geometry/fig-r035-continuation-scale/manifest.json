@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r035-continuation-scale",
+  "status": "formal",
+  "analyticalQuestion": "What analytic domain is required to extract a fixed charge, and can the nonlinear active equation be treated in a same-radius weighted Wiener algebra or copied unchanged to nonzero Taylor centers?",
+  "supportedClaim": "A fixed-charge contour exists inside a polydisc exactly when |R|<rho_Z^2 rho_W. The high-cut R0.32 finite candidate would require a balanced bivariate radius 18.3937 to 18.3943 times the R0.31 certified radius. The raw active fixed-point map is unbounded on the unit ball at one fixed Wiener radius, with exact witness output 3N^2/[4(2N-1)], while its bilinear polarization satisfies the valid outer-to-half-radius bound 121/48. The candidate comparison is finite diagnostic geometry and does not certify a singularity.",
+  "createdAt": "2026-08-19T13:20:54+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "c95c74eb19c36962b55de887ee75654a12e3a833",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "analytic-domain curve plus operator witness",
+    "variants": [
+      "log-log exact contour-geometry curve with certified and finite-diagnostic markers",
+      "linear exact witness growth with a separately styled smaller-radius bound"
+    ],
+    "takeaway": "Validated continuation cannot use equal-radius local Taylor balls with the origin recurrence; it needs charge-orbit geometry and an analytic scale with explicit radius loss.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "the R0.31 point is an open circle, the finite candidate is a filled interval marker, the same-radius witness is solid, and the outer-to-half-radius bound is dashed",
+    "finalSurface": "single journal figure at 178 by 84 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python3 research/run_with_monitor.py --output /tmp/r035-resources.csv --interval 0.02 -- python3 research/edge_continuation_geometry_audit.py --source-commit c95c74eb19c36962b55de887ee75654a12e3a833 --progress --progress-log /tmp/r035-progress.ndjson --check --pretty --output /tmp/r035-continuation-geometry.json",
+    "configuration": "pinned R0.31 and R0.32 certificates; exact charge-circle and translation identities; normalized two-monomial witnesses through N=128; exact half-radius derivative maxima; 30-digit rational cube-root enclosures",
+    "randomSeed": null,
+    "precision": "Python exact integers and Fraction arithmetic; decimal fields are display-only",
+    "solver": "deterministic symbolic coefficient and rational inequality audit",
+    "tolerances": {
+      "formalIdentities": "none; exact integer and rational arithmetic",
+      "cubeRootEnclosures": "exact rational brackets of width 10^-30",
+      "figure": "no fitted parameter; plotted curves use exact closed formulas and certified rational interval endpoints"
+    },
+    "wallTimeSeconds": 0.006247666999999998,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.02,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "trackedFields": [
+        "pinned input verification",
+        "charge projection",
+        "translation obstruction",
+        "same-radius witnesses",
+        "half-radius constants",
+        "fixed-charge contour geometry",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 0.0,
+    "maximumObservedRssMiB": 23.969
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "geometry.csv",
+      "format": "csv",
+      "schema": "Six exact rational intervals: the R0.31 bivariate and fixed-charge radii, R0.32 finite candidate modulus and balanced radius, and the two distance ratios.",
+      "bytes": 897,
+      "sha256": "7ec63f51dba7b5ac7d2e6d2583c5a3c13471b550371da61d3ade54787ccf3baa"
+    },
+    {
+      "path": "operator-witness.csv",
+      "format": "csv",
+      "schema": "Exact same-radius output and the same witness evaluated in the half-radius norm for every integer N from 1 through 128.",
+      "bytes": 13083,
+      "sha256": "2cad036a211721dfd931160df793e4b58fb9e04fd6a938affb1af8e4822b6897"
+    },
+    {
+      "path": "operator-constants.csv",
+      "format": "csv",
+      "schema": "Exact first, second, and mixed half-radius derivative multipliers and the resulting 121/48 bilinear bound.",
+      "bytes": 185,
+      "sha256": "2a9a6e2bd2acc96f3246f8ba05a4796907a2233c397cc2a5c15b60208241c3bd"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, and completion status.",
+      "bytes": 899,
+      "sha256": "2edbc042201739fa17fddca6ddd8c68c73d0de38d52cd036063237bbd111bce3"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.02-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 360,
+      "sha256": "8d1528933409964c0296cf72a6c8638091f1b4fc07c7c555da9f6ba9b095ac61"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r035",
+      "fileName": "edge-continuation-geometry.json",
+      "bytes": 9530,
+      "sha256": "13d147790926f3f3d04ea8f6d93574e1c992dd2b30dc6e12c777e68868a4fede",
+      "extractionCommand": "prepare_data.py extracts all plotted rational intervals and regenerates N=1 through 128 from the certified exact formula; validate_data.py pins the certificate hash and clean source commit, checks all nine formal flags, validates both cube-root brackets, and recomputes every displayed witness and operator constant"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=/tmp/r035-mpl tmp/r024-venv/bin/python figures/r035-continuation-geometry/fig-r035-continuation-scale/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 84,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "2dc798755628f3614947ec4802a8e03288425697598e70d9b8165adace8f66d8"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "808515deae3e4031338501e1af0a0cf94a762c81295197395c7ea298424e10f4"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "f37349109d2b412fd2586a2590a30a13990b3be5266bd830689c71ff140253a6"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "固定荷抽取在多圆盘内成立当且仅当 |R|<rho_Z^2 rho_W；R0.32 有限候选需要比 R0.31 认证半径大约 18.394 倍。原始非线性算子在同半径 Wiener 球上不有界，但在外半径到半半径之间有 121/48 的全阶界。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 84 mm and the 600 dpi PNG is 4204 by 1984 pixels. Color, true grayscale, and a 150 dpi PDF render were inspected. Solid versus dashed lines, open circles, and direct annotations retain the distinctions without color. All titles, axes, legends, markers, annotations, and footer lines are unclipped. Four subsetted TrueType fonts are embedded with ToUnicode maps; pypdf extracted 758 text characters. validate_data.py independently checks all plotted values against the exact certificate."
+  }
+}

@@ -215,7 +215,7 @@ def draw() -> None:
         gain_axis.set_xlim(0.55, 3.45)
         gain_axis.set_ylim(1, max(gain_y) * 2.3)
         gain_axis.set_xticks(gain_x, gain_labels)
-        gain_axis.set_ylabel("strict radius gain (ppm, log scale)")
+        gain_axis.set_ylabel("gain (ppm, log)")
         gain_axis.grid(axis="y", which="both", color=GRID, linewidth=0.40)
 
         gap_x = [int(row["rankByGap"]) for row in competitors]
@@ -253,18 +253,10 @@ def draw() -> None:
             color=GOLD,
             arrowprops={"arrowstyle": "-", "color": GOLD, "linewidth": 0.52},
         )
-        gap_axis.text(
-            238,
-            0.53,
-            "every exact gap > 0",
-            fontsize=4.2,
-            color=INK,
-            ha="right",
-        )
         gap_axis.set_xlim(1, 243)
         gap_axis.set_ylim(1e-5, 0.9)
         gap_axis.set_xlabel("competitor rank")
-        gap_axis.set_ylabel("exact competitor gap")
+        gap_axis.set_ylabel("gap (log)")
         gap_axis.grid(axis="y", which="both", color=GRID, linewidth=0.40)
 
         figure.text(

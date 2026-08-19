@@ -26,6 +26,10 @@ const r040ManifestUrl = new URL(
   "../figures/r040-slope-resolved/fig-r040-two-endpoint-transport/manifest.json",
   import.meta.url,
 );
+const r041ManifestUrl = new URL(
+  "../figures/r041-degree-resolved/fig-r041-degree-resolved-tail/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -160,6 +164,31 @@ test("archives the formal R0.40 exact two-endpoint transport figure", async () =
   assert.equal(manifest.simulation.monitoring.samples, 221);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 110);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.41 degree-resolved active-tail figure", async () => {
+  const manifest = JSON.parse(await readFile(r041ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r041-degree-resolved-tail");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "c851762902bb97dd3f3f2510b7321771e0a1ff03",
+  );
+  assert.match(manifest.supportedClaim, /complete center column is a convex function of x=s\/j/);
+  assert.match(manifest.supportedClaim, /0\.77854233161724448351/);
+  assert.match(manifest.supportedClaim, /1\.0003750451629852617/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 274);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(
     manifest.figure.outputs.map(({ path }) => path).sort(),
     ["figure.pdf", "figure.png", "figure.svg"],

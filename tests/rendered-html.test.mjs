@@ -49,6 +49,8 @@ const thirtyNinthNoteUrl = new URL("../public/notes/r0-39.html", import.meta.url
 const thirtyNinthPdfUrl = new URL("../public/notes/r0-39.pdf", import.meta.url);
 const fortiethNoteUrl = new URL("../public/notes/r0-40.html", import.meta.url);
 const fortiethPdfUrl = new URL("../public/notes/r0-40.pdf", import.meta.url);
+const fortyFirstNoteUrl = new URL("../public/notes/r0-41.html", import.meta.url);
+const fortyFirstPdfUrl = new URL("../public/notes/r0-41.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -789,6 +791,28 @@ test("publishes and links the exact two-endpoint transport theorem", async () =>
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 
+test("publishes and links the degree-resolved active-tail theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortyFirstNoteUrl, "utf8"),
+    readFile(fortyFirstPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-41\.html"/);
+  assert.match(home, /href="\/notes\/r0-41\.pdf"/);
+  assert.match(note, /研究笔记 R0\.41/);
+  assert.match(note, /href="\/notes\/r0-41\.pdf"/);
+  assert.match(note, /r_\*=\\frac\{9\}\{32\}/);
+  assert.match(note, /完整中心核关于/);
+  assert.match(note, /共同端点/);
+  assert.match(note, /0\.7785423316172445/);
+  assert.match(note, /1\.0003750451629853/);
+  assert.match(note, /c851762902bb97dd3f3f2510b7321771e0a1ff03/);
+  assert.match(note, /r0-41-degree-resolved-tail\.svg/);
+  assert.match(note, /不是完整三维方程的解答/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -801,7 +825,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote, thirtyFourthNote, thirtyFifthNote, thirtySixthNote, thirtySeventhNote, thirtyEighthNote, thirtyNinthNote, fortiethNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote, thirtyFourthNote, thirtyFifthNote, thirtySixthNote, thirtySeventhNote, thirtyEighthNote, thirtyNinthNote, fortiethNote, fortyFirstNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -843,6 +867,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(thirtyEighthNoteUrl, "utf8"),
     readFile(thirtyNinthNoteUrl, "utf8"),
     readFile(fortiethNoteUrl, "utf8"),
+    readFile(fortyFirstNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -1049,6 +1074,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(fortiethNote, /我不再对每个中心单项式分别选取最坏输入端点/);
   assert.doesNotMatch(
     fortiethNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(fortyFirstNote, /我保留固定输入荷下所有中心单项式共同看到的斜率/);
+  assert.doesNotMatch(
+    fortyFirstNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

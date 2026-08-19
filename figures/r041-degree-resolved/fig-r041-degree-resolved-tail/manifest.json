@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r041-degree-resolved-tail",
+  "status": "formal",
+  "analyticalQuestion": "Can the common input slope s/j be retained in the active-tail column so that an all-order convex endpoint theorem replaces the R0.39 termwise loss, certifies the old 0.257 failure probe, and identifies the next bottleneck?",
+  "supportedClaim": "For each fixed charge 2 through 240, the complete center column is a convex function of x=s/j, so every admissible degree is bounded by the common endpoints x=0 and x=s/J_s, followed by the uniform prefactor (J_s+1)/J_s. Together with the inherited exceptional-charge and large-charge proofs, this covers every charge and every degree above 80. The old 0.257 failure now passes with active-tail bound 0.68048588141014910513. At r=9/32, the all-order active-tail bound is 0.77854233161724448351 and the full two-endpoint transport bound is 0.99621120319950467993, certifying the reduced system. At 141/500=0.282, the active fixed point still passes but the present transport bound is 1.0003750451629852617.",
+  "createdAt": "2026-08-19T17:50:18+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "c851762902bb97dd3f3f2510b7321771e0a1ff03",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "logarithmic normalized radius ladder, all-charge sector curve, nonmonotone degree regression, and grouped threshold lollipops",
+    "variants": [
+      "six-stage common and fixed-charge radius ladder normalized to R0.31",
+      "all 242 finite-charge column bounds plus the analytic sector s>=241",
+      "twelve finite exact columns for charge s=162 against two all-order reference levels",
+      "eight exact legacy-tail, resolved-tail, and transport gates at three radii"
+    ],
+    "takeaway": "Retaining the common degree-charge slope turns the old 0.257 failure into an acceptance result and raises the common certified radius to 9/32; the adjacent 0.282 control fails only the current transport inequality.",
+    "dataSufficiency": "Twelve exact radius rows, 243 all-order charge-sector rows, twelve finite exact degree regressions, and eight exact proof gates. Every charge and every degree above 80 is covered analytically; the twelve displayed degree columns are implementation regressions rather than the theorem's scope.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "The radius stages use six marker shapes; finite, large, legacy, resolved-tail, and transport quantities use line style, marker shape, and open-versus-filled faces; every threshold is dashed.",
+    "finalSurface": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r041/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_degree_resolved_tail_audit.py --max-total-degree 80 --target-radius 9/32 --acceptance-radius 257/1000 --failure-probe-radius 141/500 --charge-cutoff 241 --finite-degrees 81,84,87,90,99,120,162,243,324,486,810,1620 --formula-regression-degree 10 --ball-divisor 1000000 --source-commit c851762902bb97dd3f3f2510b7321771e0a1ff03 --progress --progress-log research/certificates/r041/progress.ndjson --check --pretty --output research/certificates/r041/edge-degree-resolved-tail.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; target r=9/32; common-slope endpoint theorem for 2<=s<=240; inherited exceptional sectors s=-1,0,1 and analytic sector s>=241; strict active correction above degree 80; exact two-endpoint normalized transport; acceptance radius 257/1000; adjacent control 141/500",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, all-order convex common-endpoint reduction, uniform degree prefactor, inherited exceptional and analytic charge sectors, rational contraction inequalities, exact two-endpoint transport, and finite exact coefficient/column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against pinned exact certificates"
+    },
+    "wallTimeSeconds": 40.66915520800103,
+    "scientificWallTimeSeconds": 40.66915520800103,
+    "monitoredWallTimeSeconds": 40.779426,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 274,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "all-order common-endpoint tail theorem",
+        "all-charge sector maximum",
+        "rational fixed-point and transport gates",
+        "monomial coefficient regressions",
+        "multicharge and degree-column regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 53.938
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "R0.31, R0.37, R0.38, R0.39, R0.40, and R0.41 exact common and fixed-charge radii, normalized to R0.31.",
+      "bytes": 858,
+      "sha256": "354f359e131dd4bc3fe30f4d703b341943bb23670859377e47e38f89b290a973"
+    },
+    {
+      "path": "charge-columns.csv",
+      "format": "csv",
+      "schema": "All 242 finite-charge all-order column bounds from s=-1 through s=240 plus the analytic s>=241 sector, with exact values, minimum degree, proof class, and highlighting fields.",
+      "bytes": 232643,
+      "sha256": "1d4f000cccadd8942bbd21b801c9d6110d65628db92fd663581172bafdcf4311"
+    },
+    {
+      "path": "degree-columns.csv",
+      "format": "csv",
+      "schema": "Twelve exact rational charge-162 finite degree columns, with the common all-order sector bound and infinite-degree core endpoint; finite implementation regression only.",
+      "bytes": 31691,
+      "sha256": "c5238e520d06d84c7d68244eed1319672e908405fb44fabbe2ea596ed2777158"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Eight exact legacy-tail, degree-resolved-tail, and transport sufficient inequalities at radii 0.257, 0.28125, and 0.282 against threshold one.",
+      "bytes": 8211,
+      "sha256": "caa4209cf914b94bf93f6b5b39fe7c2a799636a34bc3da98b00d6440b5e01e2e"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 2350,
+      "sha256": "ee17d2603a716de1b093b22445e77f52dc5d92a63d22f2c262ee4060430a5929"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 20220,
+      "sha256": "67d683cd79f773b9fcfcffba62a302b9b67b65801eef80986ae8cd4e73a40459"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r041",
+      "fileName": "edge-degree-resolved-tail.json",
+      "bytes": 1059621,
+      "sha256": "1eb4bbe5f7e53e9eacf7f445b716194ab492603a7de35884549e9c7def640653",
+      "extractionCommand": "prepare_data.py extracts the complete R0.41 radius, charge, degree, and gate tables; validate_data.py pins the certificate hash and source commit, checks all 30 formal flags, compares every exact Fraction, independently reconstructs the twelve degree columns, and verifies archived progress and resource records"
+    },
+    {
+      "location": "research/certificates/r040",
+      "fileName": "edge-slope-resolved-transport.json",
+      "bytes": 346349,
+      "sha256": "cc6257637b42798e9fdf17ef66531bf263072057f38c130320ed108fb116fc3b",
+      "extractionCommand": "prepare_data.py reads the pinned R0.40 radius ladder and preassigned failure probe; validate_data.py separately pins and verifies the R0.40 certificate hash"
+    },
+    {
+      "location": "research/certificates/r039",
+      "fileName": "edge-charge-resolved.json",
+      "bytes": 403137,
+      "sha256": "59b978c1c5384edb394adc76add0950b3c8e6666f6562dfc199584c22dd0e700",
+      "extractionCommand": "prepare_data.py reads the pinned R0.39 and earlier radii for the six-stage ladder; validate_data.py separately pins and verifies the R0.39 certificate hash"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r041-degree-resolved/fig-r041-degree-resolved-tail/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "4b964fce7ca145e9134368842c92b4311f395bba5c84458c4a98274ab621aaa1"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "da3fc056eb47b9298cd85c2934e104f6cef6d2530b05bdf6e57acff0927f30da"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "210fa006d55711760961f8dfbacfa437a261a0c3b28bf88209e2d5324773b5b0"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "保留共同斜率 s/j 的凸端点全阶定理消除了旧主动尾损失：0.257 从失败转为通过，共同解析半径提高到 9/32。目标点尾界为 0.778542、输运界为 0.996211；相邻 0.282 仅由输运界失败。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export, a true grayscale conversion, and an independent 180 dpi Poppler render of the final PDF were inspected after widening the left margin and relocating the charge-162 minimum annotation. Marker shape, open versus filled faces, line style, and dashed thresholds preserve distinctions without color. Titles, axes, direct labels, threshold annotations, and four footer lines are unclipped. Three subsetted CID TrueType fonts are embedded with Unicode maps. validate_data.py independently checks every plotted value against pinned exact certificates and reconstructs all twelve displayed exact degree columns."
+  }
+}

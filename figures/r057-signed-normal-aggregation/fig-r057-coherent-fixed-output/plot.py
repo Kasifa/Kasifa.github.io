@@ -282,7 +282,7 @@ def draw() -> None:
         localization_axis.grid(color=GRID, linewidth=0.32, which="both")
         localization_axis.legend(loc="lower left", frameon=False, fontsize=3.65)
 
-        heat_axis.set_title("(c) Instantaneous heat equality ($L=64$)", loc="left", pad=5)
+        heat_axis.set_title("(c) Heat equality ($L=64$)", loc="left", pad=5)
         heat_axis.semilogy(
             scaled_times,
             output_response,

@@ -81,7 +81,7 @@ def draw() -> None:
             height_ratios=(1.00, 1.00),
             left=0.105,
             right=0.974,
-            bottom=0.245,
+            bottom=0.295,
             top=0.858,
             wspace=0.38,
             hspace=0.69,
@@ -104,7 +104,10 @@ def draw() -> None:
             loc="left",
             pad=5,
         )
-        for side, color, marker in (("left", BLUE, "o"), ("right", GOLD, "s")):
+        for side, color, marker, linestyle in (
+            ("left", BLUE, "o", (0, (4, 2))),
+            ("right", GOLD, "s", "-"),
+        ):
             selected = [row for row in feasibility if row["side"] == side]
             distance = [float(row["distanceDecimal"]) for row in selected]
             margin = [
@@ -116,6 +119,7 @@ def draw() -> None:
                 margin,
                 color=color,
                 linewidth=0.9,
+                linestyle=linestyle,
                 marker=marker,
                 markersize=2.2,
                 markerfacecolor="white",
@@ -199,7 +203,26 @@ def draw() -> None:
         contraction_axis.set_ylim(1e-82, 2e-38)
         contraction_axis.set_xticks(x_positions, [r"$r$", r"$c$", r"$\alpha$"])
         contraction_axis.set_ylabel("interval scale")
-        contraction_axis.legend(loc="upper right", frameon=False, fontsize=4.0)
+        contraction_axis.text(
+            0.03,
+            0.94,
+            r"open square: box width $=10^{-40}$",
+            transform=contraction_axis.transAxes,
+            ha="left",
+            va="top",
+            fontsize=4.0,
+            color=BLUE,
+        )
+        contraction_axis.text(
+            0.03,
+            0.86,
+            "filled diamond: Krawczyk radius",
+            transform=contraction_axis.transAxes,
+            ha="left",
+            va="top",
+            fontsize=4.0,
+            color=GOLD,
+        )
         contraction_axis.grid(axis="y", which="both", color=GRID, linewidth=0.36)
 
         gap_x = [int(row["rankByGap"]) for row in competitors]

@@ -8,6 +8,10 @@ from fractions import Fraction
 import hashlib
 import json
 from pathlib import Path
+import sys
+
+
+sys.set_int_max_str_digits(0)
 
 
 PACKAGE = Path(__file__).resolve().parent

@@ -51,7 +51,7 @@ Result:
 - largest Rudin--Shapiro polynomial: 4,194,304 coefficients;
 - scientific wall time: 25.760813 seconds;
 - monitored elapsed time: 25.873088 seconds;
-- monitor samples: 97;
+- monitor samples: 96;
 - peak CPU: 100.0%;
 - peak resident memory: 951.469 MiB;
 - GPU samples: none;

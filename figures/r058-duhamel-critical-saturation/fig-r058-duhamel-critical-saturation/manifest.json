@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r058-duhamel-critical-saturation",
+  "status": "formal",
+  "analyticalQuestion": "Does the exact heat denominator from the first Duhamel iterate produce a shell-decaying gain after normalization in critical data spaces?",
+  "supportedClaim": "For the coherent packet k=e_2, p_N=(N,0,0), q_N=(-N,1,0), the first Duhamel coefficient is exactly e^(-t) sum_N (1-e^(-2N^2t))/(2N^2). At t_L=log(2)/(2L^2) it is between 1/(32L) and 1/(2L). The normalized quotient decays in the fixed-output l2 block, Fourier X^-1, and homogeneous H^1/2 tests, but dyadic Rudin-Shapiro signs yield shell-uniform positive lower bounds in heat Besov and periodic BMO^-1 because the inputs flatten while matched products remain positive.",
+  "createdAt": "2026-08-20T07:55:27+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "07a165168bfb985a803647720130774e1cdd5207",
+    "certificateCommit": "1b3dda216a04eceff473f52e9af18d0223f8a8ce",
+    "formalSourceCommit": "35a817f00d8821e91f033764f6bd29fc1697ad56",
+    "dirtyAtCertifiedRun": false,
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "exact Duhamel coefficient, certified norm-scaling envelopes, and deterministic phase-flattening comparison",
+    "variants": [
+      "seventeen dyadic coefficient rows for L=2^j, 0<=j<=16",
+      "seventeen dyadic formal norm-envelope rows in five normalization classes",
+      "seventeen deterministic Rudin-Shapiro rows with oversampled unit-circle presentation maxima"
+    ],
+    "takeaway": "The time integral supplies a genuine N^-2 denominator, but negative critical regularity and deterministic phase flattening can consume the associated shell gain in heat-Besov and periodic BMO^-1 normalizations.",
+    "dataSufficiency": "The exact coefficient, rational envelopes, Rudin-Shapiro prefix bound, Abel estimate, and critical lower bounds are analytic all-index statements. The displayed exponentials, dyadic tables, and sampled unit-circle maxima are deterministic presentation data and not substitutes for the proof.",
+    "palettePolicy": "blue for the principal Duhamel and Rudin-Shapiro curves, gold for comparison scalings, red and green for Sobolev and critical heat classes, and neutral ink and grid",
+    "nonColorEncoding": "Solid, dashed, and dotted lines, open markers, shaded certified bands, direct annotations, and separate panels preserve distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "python3 research/run_with_monitor.py --output research/certificates/r058/resources.csv --interval 0.25 -- python3 research/duhamel_critical_saturation_audit.py --maximum-shell 4096 --maximum-rs-level 22 --source-commit 35a817f00d8821e91f033764f6bd29fc1697ad56 --progress --progress-log research/certificates/r058/progress.ndjson --check --pretty --output research/certificates/r058/duhamel-critical-saturation.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation/prepare_data.py --source-commit 07a165168bfb985a803647720130774e1cdd5207",
+    "configuration": "shells 1 through 4096 in the finite family regression; Rudin-Shapiro levels 0 through 22; seventeen plotted dyadic shells through 2^16; sixteenfold unit-circle oversampling for presentation maxima",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "The formal packet, recursion, Abel, and Q(sqrt(2)) sign checks use exact Python integers and Gaussian integers. Exponential values and FFT maxima are presentation data and do not control a formal decision.",
+    "solver": "direct termwise heat integration, rational monotonicity envelopes, exact Rudin-Shapiro recurrence, exact Abel summation identity, and analytic heat-extension norm bounds",
+    "tolerances": {
+      "formalIdentities": "none; exact integer and algebraic sign arithmetic",
+      "coefficientPresentation": "validate_data.py recomputes the formula with relative tolerance 2e-15 and absolute tolerance 1e-18",
+      "phasePresentation": "sampled maxima must remain below the exact sqrt(2) full-polynomial bound up to relative slack 1e-14"
+    },
+    "scientificWallTimeSeconds": 25.760812625,
+    "monitoredWallTimeSeconds": 25.873088,
+    "samplingWallTimeSeconds": 0.06425545900128782,
+    "samplingMonitoredWallTimeSeconds": 0.166697,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.25,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "formal-progress.ndjson",
+      "formalResourceLog": "formal-resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 96,
+      "samplingSamples": 3
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 951.469,
+    "samplingMaximumObservedCpuPercent": 12.9,
+    "samplingMaximumObservedRssMiB": 153.344
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "numpy": "2.3.5",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "duhamel-coefficient.csv",
+      "format": "csv",
+      "schema": "Seventeen dyadic rows with observation time, exact-formula presentation coefficient, scaled coefficient, and certified rational envelope.",
+      "bytes": 1509,
+      "sha256": "0ce18839ec61de058a255b19b61502c222573a2c8ba9b6a2bcfaf4011a9ceec6"
+    },
+    {
+      "path": "norm-envelopes.csv",
+      "format": "csv",
+      "schema": "Seventeen dyadic rows of formal lower and upper shell envelopes in the block, X^-1, and H^1/2 tests and uniform critical lower bounds.",
+      "bytes": 2838,
+      "sha256": "bc3b0a5d4180e406c8871a7259423d01b3ed807e34a0a545e48eed361615979c"
+    },
+    {
+      "path": "phase-flattening.csv",
+      "format": "csv",
+      "schema": "Seventeen Rudin-Shapiro levels with sampled unit-circle maximum, exact full-polynomial envelope, all-positive comparison, and sampling count.",
+      "bytes": 1325,
+      "sha256": "02a4c86f7c17776b0f0acc78843350fbeda6ac7d39c31581e5e3445c149f2daf"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned source and formal certificate hashes, row counts, presentation classification, environment, and sampling wall time.",
+      "bytes": 980,
+      "sha256": "3d345bdddfb3505c1c521ad8965f16d21e2caf25a5b9345eef66f87190c665cc"
+    },
+    {
+      "path": "formal-progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC timestamps, stages, elapsed seconds, and successful 24-check completion record.",
+      "bytes": 652,
+      "sha256": "bc35ae2f1fb0ef2a6aa372b6070c02669dd7959bc0237d9a07d0587b9ec99bb5"
+    },
+    {
+      "path": "formal-resources.csv",
+      "format": "csv",
+      "schema": "Quarter-second process-tree resource samples for the successful formal exact audit.",
+      "bytes": 7184,
+      "sha256": "46f360eba6d8ee52bf7bc3f3f009d374d4d71810001d791a618f92cc52c49b3d"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for deterministic figure-table preparation.",
+      "bytes": 362,
+      "sha256": "011541c24e2a703cbf0198c889ba80271c629feaa6083127b27091fbae5f6ea6"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r058",
+      "fileName": "duhamel-critical-saturation.json",
+      "bytes": 6531,
+      "sha256": "c04d2f00dd90ad16e885af573f00cde5f2ec3c3d499fdb5909952f4cec8512b2",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, reconstructs all presentation rows, and copies the successful progress and resource logs; validate_data.py independently checks every row and the pinned provenance."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "e189780f55fb245a564234c3b27215e51b6b9e4f9d1872fcbd39e1205c13f2e2",
+    "command": "MPLCONFIGDIR=tmp/r058-mplconfig tmp/r024-venv/bin/python figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "86ac88f38e77c17b5896f3077f39e825c6711355c87833512e5d71e5c881d1dc"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "798fc338ebd92c195f6168ccd4a37d7def68c4805cd193e762cbebfd49b10391"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "9e26810e0f46f8b0cdc934222ae6d1100cdd9236d198750d9ab815554470616d"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "完整 Duhamel 积分给出精确的 N^{-2} 热分母，并在固定块、X^{-1} 与 H^{1/2} 中产生壳衰减；但 Rudin--Shapiro 相位压平使热 Besov 与周期 BMO^{-1} 的归一化比值保持常数阶。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. Three preliminary render attempts exposed unsupported mathcal and unbraced square-root labels; the final source uses supported labels. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid, dashed, and dotted lines, open markers, shaded bands, and separate panels remain distinguishable in grayscale. Titles, axes, legends, theorem annotations, scope line, and research blossom are unclipped. Six CID TrueType resources embed font streams, and extracted PDF text contains the exact coefficient, five norm classes, formal counts, 24/24 checks, and the norm-inflation and regularity scope limitation. validate_data.py independently checks every archived table and pinned provenance."
+  }
+}

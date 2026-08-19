@@ -94,6 +94,10 @@ const r057ManifestUrl = new URL(
   "../figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output/manifest.json",
   import.meta.url,
 );
+const r058ManifestUrl = new URL(
+  "../figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -746,6 +750,41 @@ test("archives the formal R0.57 coherent fixed-output figure", async () => {
   assert.equal(manifest.computation.kind, "exact-audit");
   assert.equal(manifest.computation.monitoring.formalSamples, 23);
   assert.equal(manifest.computation.monitoring.samplingSamples, 2);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.58 Duhamel critical-saturation figure", async () => {
+  const manifest = JSON.parse(await readFile(r058ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r058-duhamel-critical-saturation");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "35a817f00d8821e91f033764f6bd29fc1697ad56",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "1b3dda216a04eceff473f52e9af18d0223f8a8ce",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "07a165168bfb985a803647720130774e1cdd5207",
+  );
+  assert.match(manifest.supportedClaim, /exactly e\^\(-t\) sum_N/);
+  assert.match(manifest.supportedClaim, /between 1\/\(32L\) and 1\/\(2L\)/);
+  assert.match(manifest.supportedClaim, /Rudin-Shapiro signs yield shell-uniform positive lower bounds/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.formalSamples, 96);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 3);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 105);
   assert.deepEqual(

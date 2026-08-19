@@ -76,7 +76,10 @@ def main() -> None:
     starts = rows("diagnostic-starts.csv")
     assert len(starts) == 64
     assert sum(row["success"] == "true" for row in starts) == diagnostic["multistart"]["convergedFeasibleRuns"] == 56
-    basin_counts = {name: sum(row["basin"] == name for row in starts) for name in diagnostic["multistart"]["basinCounts"]}
+    basin_counts = {
+        name: sum(row["success"] == "true" and row["basin"] == name for row in starts)
+        for name in diagnostic["multistart"]["basinCounts"]
+    }
     assert basin_counts == diagnostic["multistart"]["basinCounts"]
 
     metadata = json.loads((HERE / "figure-data-metadata.json").read_text(encoding="utf-8"))

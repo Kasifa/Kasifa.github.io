@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r054-product-affine-global",
+  "status": "formal",
+  "analyticalQuestion": "Can the complete product-affine charge-weight family materially improve the R0.53 witness in the degree-80 reduced edge model, and can the entire noncompact parameter family be enclosed without a parameter grid?",
+  "supportedClaim": "For the exact degree-80 reduced canonical edge generating system, the complete compactified product-affine family satisfies 0.382628602237879637 < r_prod^opt < 0.382629. Relative to the complete R0.52 affine-family upper bound, its gain is strictly between 10.7948905 and 11.8344532 ppm. Complete optimization can improve the R0.53 witness by a factor smaller than 1.0000010395514554756.",
+  "createdAt": "2026-08-20T04:47:25+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "d2b9a8ba31251d63010367a3995447d6874a2dff",
+    "certificateCommit": "a3da85c166eb72e739ea99a072aa7b4e8659742a",
+    "formalSourceCommit": "543a394c51a9454496638eb1a9324775164b2eaa",
+    "diagnosticSourceCommit": "4bc84a7bb24e8bd6a9b051208969b344c47b3ed6",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "exact compactified invariant domain, formal gain enclosure, and complete dyadic cover map",
+    "variants": [
+      "201 exact-rational presentation samples of the two invariant-domain boundaries",
+      "two formal exact gain endpoints and one separately classified 100-digit diagnostic point",
+      "all 14 formal exact continuous-cover leaves, encoded by excluding inequality H, P, or Q"
+    ],
+    "takeaway": "The entire product-affine family is globally enclosed inside a 3.97762120363e-7 radius interval. Its possible improvement above the fixed R0.53 witness is less than about 1.0396 ppm, so increasing this weight polynomial degree fails the predeclared 1e-4 continuation threshold.",
+    "dataSufficiency": "The boundary samples and 64 optimizer starts are not proof data. The theorem uses the pinned exact invariant reduction, exact character-tail theorems, and the complete 14-leaf GMP tensor-Bernstein certificate.",
+    "palettePolicy": "blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Solid and dashed boundaries, endpoint bars, diamond markers, and three distinct hatch patterns preserve every distinction in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 112 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "formalCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r054/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_product_affine_family_global_audit.py --max-total-degree 80 --radius-upper 382629/1000000 --character-lower 1337/10000 --character-upper 803/1000 --max-cover-depth 80 --source-commit 543a394c51a9454496638eb1a9324775164b2eaa --progress --progress-log research/certificates/r054/progress.ndjson --check --pretty --output research/certificates/r054/edge-product-affine-family-global.json",
+    "diagnosticCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r054/diagnostic-resources.csv --interval 1 -- tmp/r024-venv/bin/python research/edge_product_affine_family_diagnostic.py --starts 64 --digits 100 --seed 54054 --progress --output research/certificates/r054/product-family-diagnostic.json",
+    "samplingCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r054-product-affine-global/fig-r054-product-affine-global/figure-data-resources.csv --interval 1 -- tmp/r024-venv/bin/python figures/r054-product-affine-global/fig-r054-product-affine-global/prepare_data.py --source-commit d2b9a8ba31251d63010367a3995447d6874a2dff",
+    "configuration": "degree-80 exact center; S=162; compact invariants A=alpha+beta and B=alpha*beta; 0.1337<=c<=0.803 exact continuous cover at r=0.382629; exact character-tail exclusions outside that interval; 64-start diagnostic with seed 54054",
+    "randomSeed": 54054,
+    "precision": "Every theorem identity, sign, tail bound, dyadic mass, and Bernstein coefficient uses gmpy2.mpq exact rationals over GMP 6.3.0. The separately classified diagnostic uses SciPy binary floating point and mpmath at 100 decimal digits.",
+    "solver": "exact invariant elimination, exact log-character tail monotonicity, adaptive tensor-Bernstein subdivision with 14 terminal rectangles, deterministic 64-start SLSQP reconnaissance, and a 100-digit symmetric diagonal solve",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "continuousCover": "strict positive exact Bernstein coefficient on every terminal rectangle",
+      "diagnosticFeasibility": "as pinned in product-family-diagnostic.json; not used in the theorem"
+    },
+    "scientificWallTimeSeconds": 73.50236408298952,
+    "monitoredWallTimeSeconds": 73.638681,
+    "diagnosticWallTimeSeconds": 5.933022542,
+    "diagnosticMonitoredWallTimeSeconds": 6.165666,
+    "samplingWallTimeSeconds": 0.003450250020250678,
+    "samplingMonitoredWallTimeSeconds": 0.056823,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 2,
+      "diagnosticReportIntervalSeconds": 1,
+      "samplingReportIntervalSeconds": 1,
+      "formalProgressLog": "progress.ndjson",
+      "formalResourceLog": "resources.csv",
+      "diagnosticResourceLog": "diagnostic-resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 38,
+      "diagnosticSamples": 7,
+      "samplingSamples": 2
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 303.531,
+    "diagnosticMaximumObservedCpuPercent": 100.0,
+    "diagnosticMaximumObservedRssMiB": 78.453,
+    "samplingMaximumObservedCpuPercent": 0.0,
+    "samplingMaximumObservedRssMiB": 6.281
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "scipy": "1.16.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "invariant-domain.csv",
+      "format": "csv",
+      "schema": "201 exact-rational presentation samples of the complete scaled invariant-domain lower and upper boundaries.",
+      "bytes": 16715,
+      "sha256": "f5923f236411e5b54d52bc778f23801dec2813fd9dc92e7ab3f337ae5d889525"
+    },
+    {
+      "path": "cover-leaves.csv",
+      "format": "csv",
+      "schema": "All 14 exact dyadic cover rectangles with exact endpoints, depths, indices, excluding function, minimum Bernstein coefficient decimal, and coefficient digest.",
+      "bytes": 3112,
+      "sha256": "5ba3a7c6a77dc3c6ddba4bdb5a7684f687b28c3f52c5a4ec10516a63361487d4"
+    },
+    {
+      "path": "global-enclosure.csv",
+      "format": "csv",
+      "schema": "Formal lower and upper product-family radius and gain records plus one explicitly non-proof 100-digit diagnostic point.",
+      "bytes": 745,
+      "sha256": "adb4ee3e6044da0b996bf9ce9dd88ef7b1ebad8c8a7a1c9edc2cc0dfa7efd471"
+    },
+    {
+      "path": "diagnostic-starts.csv",
+      "format": "csv",
+      "schema": "All 64 deterministic floating-point optimizer records with success, margins, scaled parameters, basin, and non-proof classification.",
+      "bytes": 16310,
+      "sha256": "c792cb4dc233e0e2fcdc323d6d79326cbfc7a0b7050166c7ce265b0b8342d548"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned certificate hashes, figure source commit, row counts, exact cover digest, diagnostic seed, symmetric candidate, arithmetic declarations, and sampling wall time.",
+      "bytes": 1593,
+      "sha256": "e4fe943dacc09f81dc4e1c96d13b5dd63478f35e5e845a8b02843f3aa954234f"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC timestamps, stages, elapsed seconds, leaf count, and successful 16-check completion record.",
+      "bytes": 895,
+      "sha256": "ce8c09c2ede2b6ffa941b0d1fb547f4784210fe9ee1ee67b5248f5790104040f"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Two-second process-tree resource samples for the formal exact global audit.",
+      "bytes": 2957,
+      "sha256": "870dd7b2db72f6436e96350678836727085a2f707b397394c0ee195a69b18ca8"
+    },
+    {
+      "path": "diagnostic-resources.csv",
+      "format": "csv",
+      "schema": "One-second process-tree resource samples for the deterministic diagnostic run.",
+      "bytes": 651,
+      "sha256": "15df711859cced88bfc9a458d4e353e31fac5e7eae24a865ef18d7029a473da5"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for exact-rational figure-table preparation.",
+      "bytes": 289,
+      "sha256": "e6a6e56b4505f452ca37cc4de7dbbc501ce158123ffd471bf3bdd198bf590be8"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r054",
+      "fileName": "edge-product-affine-family-global.json",
+      "bytes": 28224,
+      "sha256": "130e954c3f8b711c28664f6f1d2aeb589942f69773ac9c839d98cc8f71b3006b",
+      "extractionCommand": "prepare_data.py pins the exact certificate hash, reconstructs all 14 dyadic leaves from exact indices, derives exact enclosure comparisons, and validate_data.py independently checks domain identities, exact cover masses, counts, signs, provenance, and monitoring."
+    },
+    {
+      "location": "research/certificates/r054",
+      "fileName": "product-family-diagnostic.json",
+      "bytes": 57285,
+      "sha256": "0553525f77aeffbe74eb64eda300d5673159022776aa15a6d963d5e7f45618bf",
+      "extractionCommand": "prepare_data.py pins the diagnostic hash and retains every optimizer record and the 100-digit candidate with an explicit non-proof classification; validate_data.py verifies all 64 records, 56 successful records, seed, and basin counts."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "2662087377b6130be4debb85a73c2f694dfd46c6f09854f4e548a3b87c8d48e9",
+    "command": "MPLCONFIGDIR=tmp/r054-mplconfig tmp/r024-venv/bin/python figures/r054-product-affine-global/fig-r054-product-affine-global/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 112,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "7cbcb62c2c819580c6c896f396eb46310fdcc047be7b8210135bde85a926b6ac"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "6bbd90aed3ef32f2af468339122e378321fe40762d39198dc359de44d0d87d7c"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2645",
+        "sha256": "8191b28db73c1fc7ecba8f6e79179c00aef43932a57d7272f24bc59297d88bbd"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我用精确不变量约化、角色尾部排除与 14 叶连续覆盖，把完整乘积仿射权族的最优半径夹在 0.382628602237879637 与 0.382629 之间，并证明其相对 R0.53 见证的剩余潜在改进小于约 1.0396 ppm。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 112 mm to rounding and the 600 dpi PNG is 4204 by 2645 pixels. The first color pass exposed a clipped panel-b title; the final source uses shorter panel titles. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Boundary line styles, endpoint bars, diamonds, and H/P/Q hatch patterns remain distinct in grayscale. Titles, axes, exact interval, diagnostic warnings, cover map, theorem line, proof line, scope line, and research blossom are unclipped. Three CID TrueType DejaVu Serif resources are embedded, no Type3 fonts are present, and the extracted PDF text contains the theorem endpoints, 14-leaf statement, 16/16 checks, not-proof warning, and Navier--Stokes scope limitation. validate_data.py independently checks every archived table and monitored provenance."
+  }
+}

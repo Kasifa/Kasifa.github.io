@@ -14,14 +14,14 @@ i=m+n,\qquad q=2n-m,
 and equip the reduced canonical edge generating system with
 
 \[
-\|f\|_{r,c}=\sum_{m,n}|f_{mn}|r^{m+n}c^{2n-m},
+\|f\|_{r,c}=\sum_{m+n>0}(m+n)|f_{mn}|r^{m+n}c^{2n-m},
 \qquad c=\frac45.
 \]
 
 The charge character `omega_s=c^s` is exactly multiplicative.  The scaling
 `S_c[Z^mW^n]=c^q Z^mW^n` is therefore an algebra automorphism, commutes with
 the nonlinear map, and conjugates this anisotropic norm to the ordinary
-Wiener norm.  Equivalently, the polyradii are
+one-total-derivative Wiener norm.  Equivalently, the polyradii are
 
 \[
 \rho_Z=\frac r c,\qquad \rho_W=rc^2.
@@ -51,7 +51,9 @@ approximately `0.00014157274652028842093`.
 At `r=0.382618`, the anisotropic Newton ball, Lipschitz gate, and conjugated
 canonical-stretch construction all close.  The stretch bound is
 `0.98796898781173256118`; the exact center residual norm is approximately
-`2.0661012546111132483e-32`.
+`1.6910402110013306773e-30`.  This residual includes the required total-degree
+factor; the certificate explicitly excludes the smaller unweighted diagnostic
+from the proof.
 
 The geometry must be read anisotropically.  At the certified target,
 `rho_Z=0.4782725` and `rho_W=0.24487552`, while
@@ -76,9 +78,9 @@ finite-time blow-up.
 
 ## Pinned inputs
 
-- source commit: `fcc0fa908531aef0ca0f02bc58035085294704bb`;
+- source commit: `26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728`;
 - source SHA-256:
-  `58375ba56eaf2ab78518f4d2a11bdd1eeb34fba26d494e4b20a815e38e6d299e`;
+  `971e7bde1972028aedcda96756a9d0c5e4e91a3b838317f9664c3e18f6a7e9bd`;
 - R0.48 input certificate SHA-256:
   `246bcfa6623b1050511554312c32e9973b42b620a20ff571a1b5f340041c9af0`;
 - charge-scaled degree-80 polynomial SHA-256:
@@ -105,7 +107,7 @@ PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py \
   --root-decimal-digits 18 \
   --charge-cutoff 241 \
   --ball-divisor 1000000 \
-  --source-commit fcc0fa908531aef0ca0f02bc58035085294704bb \
+  --source-commit 26ce6d7ffd636956fe7c95a2bbeb7e6ea6573728 \
   --progress \
   --progress-log research/certificates/r049/progress.ndjson \
   --check --pretty \
@@ -115,17 +117,17 @@ PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py \
 
 ## Successful-run summary
 
-- 31/31 exact checks passed;
+- 32/32 exact checks passed;
 - exact Sturm sequence length: 81;
 - exact root count in the isolated interval: 1;
 - exact bisection decisions: 39;
 - competitors covered: 243;
 - finite exact regression columns: 30, used only as implementation checks;
-- scientific wall time: 119.377817 seconds;
-- monitored wall time: 120.450544 seconds;
-- resource samples: 807;
+- scientific wall time: 119.530144 seconds;
+- monitored wall time: 120.581154 seconds;
+- resource samples: 808;
 - maximum observed CPU: 100.0%;
-- maximum observed resident memory: 164.953 MiB;
+- maximum observed resident memory: 158.906 MiB;
 - GPU: not used;
 - randomness: none;
 - threshold arithmetic: `gmpy2.mpq/mpz`, with no floating-point decision.

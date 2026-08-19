@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.44：在完整大正荷列中保留共同输入斜率 x=s/j，以凸性端点定理把约化典范边生成系统的认证半径推进到 37/100。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.44｜共同斜率端点定理">
+  <meta property="og:description" content="完整正和只需共同斜率的两个端点；0.370 严格通过，0.371 的下一瓶颈转为有限荷 s=-1。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-44-common-slope-tail.png">
+  <title>R0.44｜共同斜率端点定理</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#old-loss">旧松弛</a><a href="#theorem">端点定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.44 · 共同变量与全阶主动尾</div>
+        <h1>共同斜率<br>端点定理</h1>
+        <p class="lead">R0.43 把 \(r=0.331\) 的大正荷界留在 1.003896。我不再让中心项各自选择最坏输入斜率，而是保留同一尾列共享的 \(x=s/j\)。完整正和成为凸函数，只需两个端点；这一次不仅通过 0.331，还把共同认证半径推进到 0.370。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 共同半径已扩张</span><strong>r* = 37/100</strong><p>版本 v0.44 · 2026-08-19</p><p>相对 R0.43：× 1.121212</p><p>正式检查：34 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#old-loss">01 · 继承松弛</a></li>
+        <li><a href="#factor">02 · 精确共同变量</a></li>
+        <li><a href="#theorem">03 · 凸性端点定理</a></li>
+        <li><a href="#entry">04 · 0.331 入口恢复</a></li>
+        <li><a href="#restart">05 · 0.370 精确重启</a></li>
+        <li><a href="#canonical">06 · 正则场重构</a></li>
+        <li><a href="#negative">07 · 0.371 负向控制</a></li>
+        <li><a href="#finite">08 · 有限精确回归</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与局限</a></li>
+        <li><a href="#next">11 · R0.45 计划</a></li>
+        <li><a href="#reproduce">12 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里证明的是约化生成系统的全阶算子界</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL LARGE CHARGES</span><strong>覆盖每个 \(s\ge241\)</strong><p>端点论证同时覆盖全部允许输入次数，没有荷截断或次数网格。</p></div>
+            <div class="status"><span>PROVED · COMMON VARIABLE</span><strong>完整正和共享一个 \(x\)</strong><p>中心项不能各自选择不同的输入斜率，消除了 R0.43 的主要松弛。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 (37/100)</strong><p>主动尾、球映射、正则伸缩逆和指数重构在同一半径闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>1,313 个折点与 21 个列</strong><p>有限计算只验证公式和实现，不承担无穷扇区证明。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论只适用于主动支持锥、约化典范边生成系统和本文的次数加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 全局正则性，没有构造有限时奇性，也没有把 \(0.370\) 解释成真实 PDE 的时空解析半径。</div>
+        </section>
+
+        <section id="old-loss"><div class="section-no">01 / Inherited relaxation</div><h2>R0.43 的大荷界让每个中心项选择了不同的最坏斜率</h2>
+          <p>R0.43 用支持条件 \(s\le2j\) 把大正荷扇区的统一输入次数下界提高到 \(j\ge121\)，并在 \(r=0.330\) 闭合。到了入口点 \(r=0.331\)，旧充分界仍为</p>
+          <div class="equation result">\[
+            Z_{80}^{\mathrm{R0.43}}(0.331)=1.0038955265828946573>1.
+          \]</div>
+          <p>若把同一方法直接用到 \(r=0.370\)，大荷扇区达到 \(1.2153811722110079265\)。原因不是精确列本身变坏，而是绝对仿射因子 \(|i(s/j)-q|\) 被逐项独立最大化：一部分项选 \(x=0\)，另一部分选 \(x=2\)，但一个真实输入列只能有一个 \(x=s/j\)。</p>
+        </section>
+
+        <section id="factor"><div class="section-no">02 / Exact common variables</div><h2>精确列可写成两个共同变量 \(x=s/j\) 与 \(y=1/s\)</h2>
+          <p>中心次数与荷记为 \((i,q)\)，尾输入记为 \((j,s)\)。精确加权列贡献为</p>
+          <div class="equation">\[
+            \frac{i+j}{i+j-1}
+            \left|i\frac{s}{j}-q\right|
+            \frac{s-q}{3(s+q)}.
+          \]</div>
+          <p>令 \(x=s/j\)、\(y=1/s\)，它等于</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{1+ixy}{1+(i-1)xy}
+            |ix-q|\frac{1-qy}{3(1+qy)}.}
+          \]</div>
+          <p>由 \(s\ge241\)、\(s\le2j\) 与 \(j>80\)，共同定义域满足</p>
+          <div class="equation">\[
+            0\le x\le2,\qquad 0<y\le\frac1{241},
+            \qquad xy=\frac1j\le\frac1{121}.
+          \]</div>
+          <p>本阶段不需要在二维域上寻找内部极值。先对正的次数因子与荷比做统一上界，再把完整中心和保留为同一个 \(x\) 的函数，已经足以闭合目标。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Convex endpoint theorem</div><h2>完整大荷正和在共同斜率上是凸函数</h2>
+          <p>取 \(J=121\)，定义</p>
+          <div class="equation">\[
+            d_i=\frac{i+J}{i+J-1},\qquad
+            \beta_q=\begin{cases}242/240,&q=-1,\\1,&q\ge0,\end{cases}
+          \]</div>
+          <p>并把八十阶中心的全部项放在同一个正和中：</p>
+          <div class="equation result">\[
+            \boxed{H_r(x)=\sum_{i,q}|a_{i,q}|r^i d_i\beta_q\frac{|ix-q|}{3}.}
+          \]</div>
+          <p>每个 \(|ix-q|\) 都是凸函数，系数全部非负，所以 \(H_r\) 在 \([0,2]\) 上凸。于是</p>
+          <div class="equation result">\[
+            \boxed{\sup_{0\le x\le2}H_r(x)=\max\{H_r(0),H_r(2)\}.}
+          \]</div>
+          <div class="proof"><strong>全阶含义。</strong>次数因子满足 \((i+j)/(i+j-1)\le d_i\)；\(q=-1\) 的荷比不超过 \(242/240\)，\(q\ge0\) 的荷比不超过一。随后使用的是完整正和的凸性，而不是有限折点采样，也不使用系数符号抵消。因此结论覆盖每个 \(s\ge241\) 与每个允许的 \(j>80\)。</div>
+        </section>
+
+        <section id="entry"><div class="section-no">04 / Entry recovery</div><h2>旧负向控制 0.331 被严格恢复</h2>
+          <p>在 \(r=0.331\) 上，R0.43 的大荷界为 1.0038955266。共同斜率端点定理给出</p>
+          <div class="equation result">\[
+            \boxed{\max\{H_{0.331}(0),H_{0.331}(2)\}
+            =0.78111267115667101487.}
+          \]</div>
+          <p>此时完整主动尾的最大扇区已经转为有限荷 \(s=-1\)，其界为 \(0.85473326250594059615<1\)。因此 0.331 不只是局部大荷修复点，而是完整 Banach 重启的严格通过点。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">05 / Exact restart</div><h2>共同半径可一次推进到 0.370</h2>
+          <div class="equation result">\[
+            \boxed{r_* = \frac{37}{100}=0.370.}
+          \]</div>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>\(H_{0.370}(0)\)</td><td>0.5602559667178485</td><td>端点通过</td></tr>
+            <tr><td>\(H_{0.370}(2)\)</td><td>0.9662130057569357</td><td>大荷全阶通过</td></tr>
+            <tr><td>完整主动尾界</td><td>0.9970118412481986</td><td>最大扇区为 \(s=-1\)</td></tr>
+            <tr><td>收缩余量</td><td>2.9881587518 × 10⁻³</td><td>正</td></tr>
+            <tr><td>尾球半径 \(\varepsilon\)</td><td>2.9881587518 × 10⁻⁹</td><td>余量除以一百万</td></tr>
+            <tr><td>完整残差</td><td>2.1491366412 × 10⁻²⁹</td><td>小于残差容许量</td></tr>
+            <tr><td>球映射上界</td><td>2.9792296859 × 10⁻⁹</td><td>小于 \(\varepsilon\)</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9970118591771511</td><td>严格小于一</td></tr>
+          </tbody></table>
+          <p>半径相对 R0.43 增长 \(37/33\approx1.121212\)。固定荷变量 \(R=Z^2W\) 的圆盘半径按三次方增长约 \(1.409494\)。这是当前约化系统内部的认证增量，不能外推为完整 PDE 的先验增益。</p>
+        </section>
+
+        <section id="canonical"><div class="section-no">06 / Canonical fields</div><h2>正则伸缩逆和指数重构在同一半径闭合</h2>
+          <p>沿用 R0.42 的正则分解</p>
+          <div class="equation">\[
+            \mathcal L\phi-\{a,\phi\}=\tfrac12(X-Y)a,
+            \qquad U=Ze^{\phi-a/2},\quad V=We^{\phi+a/2}.
+          \]</div>
+          <p>在 \(r=0.370\) 上，完整伸缩算子界为</p>
+          <div class="equation result">\[
+            \boxed{\|S_a\|\le0.95518840332237634991<1.}
+          \]</div>
+          <p>因此 \(\|(I-S_a)^{-1}\|\le22.3156521\)，并有 \(\|\phi\|_{\mathcal B_r}\le9.0927496\)。旧直接一步输运诊断为 \(1.5770610053>1\)，但该量在正则分解后不是构造门槛；把它与实际证明门分开，是证书的一部分。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">07 / Adjacent negative control</div><h2>0.371 的失败来自有限荷 \(s=-1\)，不是大荷无穷扇区</h2>
+          <table><thead><tr><th>控制量</th><th>\(r=0.370\)</th><th>\(r=0.371\)</th></tr></thead><tbody>
+            <tr><td>共同斜率大荷界</td><td>0.9662130058</td><td>0.9714014422</td></tr>
+            <tr><td>有限 \(s=-1\) 界</td><td>0.9970118412</td><td>1.0008564924</td></tr>
+            <tr><td>正则伸缩界</td><td>0.9551884033</td><td>0.9603255925</td></tr>
+          </tbody></table>
+          <div class="equation result">\[
+            \boxed{Z_{s=-1}(0.371)=1.0008564924160487608>1.}
+          \]</div>
+          <p>这只是当前有限荷统一充分界失败，不表示 0.371 存在奇性。精确单列回归反而显示最低允许次数 \(j=82\) 时的真实列约为 0.997228，提示该失败仍可能来自把 \(j\) 统一压到粗端点后的松弛。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">08 / Finite exact regressions</div><h2>有限数据验证实现，证明仍来自解析端点归约</h2>
+          <table><thead><tr><th>检查</th><th>规模</th><th>分类</th></tr></thead><tbody>
+            <tr><td>主动递推</td><td>1,113,168 个有序相互作用</td><td>有限精确实现</td></tr>
+            <tr><td>完整残差</td><td>6,345 项，次数 81–160</td><td>有限精确多项式</td></tr>
+            <tr><td>共同斜率折点</td><td>1,313 个精确有理点</td><td>实现回归</td></tr>
+            <tr><td>大荷精确列</td><td>7 个荷 × 3 个次数</td><td>有限精确回归</td></tr>
+            <tr><td>大荷全覆盖</td><td>全部 \(s\ge241,j>80\)</td><td>形式全阶定理</td></tr>
+          </tbody></table>
+          <p>折点表精确重现 \(H_r(x)\) 的分段线性图像，并检查端点确为最大值；逻辑证明只使用“非负加权的绝对仿射函数之和为凸函数”这一解析事实。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>共同斜率、松弛降幅和下一瓶颈统一归档</h2>
+          <figure>
+            <img src="/figures/r0-44-common-slope-tail.svg" alt="R0.44 共同斜率凸包络、逐项斜率损失消除、三个半径控制和 0.370 完整证明门">
+            <figcaption>图 R0.44-1。左上显示 \(r=0.370\) 的完整共同斜率凸包络与两个解析端点；右上分解 R0.43 逐项独立最大化到共同端点的精确降幅；左下并列 0.331、0.370 与 0.371 的三个控制量；右下列出目标半径的完整门槛。PDF、SVG、600 dpi PNG、源数据、清单和 SHA-256 摘要一并归档，彩色、真实灰度和 PDF 渲染页均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and limits</div><h2>价值在于一个可复用的全阶相关性修复，而不是接近了 PDE 终点</h2>
+          <p>R0.44 的实质是恢复“一个真实输入列只有一个斜率”这一确定性相关性。它把一个看似二维的大荷优化化为正凸函数的两个端点，不依赖符号抵消，也不依赖有限采样。这种证明结构简洁、可移植，适合作为约化生成系统论文中的独立引理。</p>
+          <p>结果还给出了可证伪的瓶颈迁移：旧大荷扇区在 0.371 仍严格小于一，下一处失败明确落在有限荷 \(s=-1\)。这比仅仅提高一个数值半径更重要，因为下一阶段不必再改动已闭合的大荷定理。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值依然有限。当前没有定理把约化边生成系统的解析控制传递到完整三维速度场的尺度临界范数，没有覆盖所有空间、螺旋和跨尺度相互作用，也没有排除能量集中或证明全局延拓。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 1,313 个折点称为无穷证明，不能把 0.371 的充分界失败解释成奇性，不能把半径增长外推成 PDE 正则时间，也不能声称已证明或反驳三维 Navier–Stokes 正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.45</div><h2>下一步只处理有限荷 \(s=-1\) 的次数依赖</h2>
+          <p>0.371 上的继承统一界为 1.000856，但精确列随输入次数 \(j\) 已显示下降：\(j=82\) 时约 0.997228，\(j=85\) 时约 0.996699，\(j=100\) 时约 0.994529。下一阶段固定 \(r=0.371\) 为第一个验收点。</p>
+          <ol>
+            <li>把完整固定荷 \(s=-1\) 列写成共同变量 \(t=1/j\) 的精确函数；</li>
+            <li>证明允许域上的单调性、凸性或有限端点归约，保留所有中心项共享的 \(j\)；</li>
+            <li>用 GMP 在允许格点上做有限回归，但不让格点替代全阶证明；</li>
+            <li>若 0.371 仍不能闭合，公开精确失败余量并重新定位新的最大扇区。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility</div><h2>源提交、精确证书、资源监控与图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_common_slope_tail_audit.py --max-total-degree 80 --entry-radius 331/1000 --target-radius 37/100 --failure-probe-radius 371/1000 --charge-cutoff 241 --regression-charges 241,242,243,300,480,600,1000 --regression-degree-offsets 0,3,12 --ball-divisor 1000000 --source-commit aade631ea1a492d078f052776b443875d6a3dd73 --progress --check --pretty --output /tmp/r044.json</code></div>
+          <p>正式源提交为 <code>aade631ea1a492d078f052776b443875d6a3dd73</code>。科学计算耗时 44.516445 秒；监控历时 44.618455 秒、采样 300 次，峰值 CPU 为 100.0%，峰值常驻内存为 47.906 MiB。没有使用 GPU、随机种子或浮点判号，34 项正式检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>7966771f25305211907e11e1a7ab7b6d784b1a14e3db92b3cbec37b96382bb1f</code>。</p>
+          <p><a href="/notes/r0-44.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_common_slope_tail_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_common_slope_tail_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r044">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r044-common-slope-tail/fig-r044-common-slope-tail">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-41.html">R0.41：次数分辨主动尾</a>。给出固定荷共同斜率的先例。</li>
+            <li><a href="/notes/r0-42.html">R0.42：正则伸缩输运</a>。提供正则场重构和非直接输运门。</li>
+            <li><a href="/notes/r0-43.html">R0.43：大荷支持耦合</a>。提供 \(j\ge121\) 的统一次数下界。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.44 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

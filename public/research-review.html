@@ -2817,7 +2817,50 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_floor_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r043-charge-degree-floor/fig-r043-charge-degree-floor">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.44：</strong>固定 \(r=0.331\) 为验收点，在完整大正荷列中同时保留 \(x=s/j\) 与 \(y=1/s\)，先检验正和的共同变量单调性、凸性或有限端点归约；若不能恢复 0.003896 的缺口，先记录负结果，再考虑各向异性权重。</p>
+            <p><strong style="color:var(--gold)">R0.44 已完成：</strong>完整大正荷正和保留同一个 \(x=s/j\) 后成为凸函数，只需两个端点；共同半径从 0.330 推进到 0.370，下一失败转移到有限荷 \(s=-1\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.44 · 2026-08-19</p>
+            <h3>共同输入斜率、凸性端点定理与 0.370 精确重启</h3>
+            <p>
+              R0.43 在 \(r=0.331\) 留下的大正荷界为 \(1.0038955266&gt;1\)。
+              该界让每个中心项独立选择 \(x=s/j\in[0,2]\) 的最坏端点，
+              但一个真实尾输入列只能共享同一个 \(x\)。
+            </p>
+            <p>
+              我把完整正和写成
+              \[
+              H_r(x)=\sum_{i,q}|a_{i,q}|r^i d_i\beta_q\frac{|ix-q|}{3}.
+              \]
+              所有权重非负，所以 \(H_r\) 在 \([0,2]\) 上凸；
+              其全阶最大值严格等于 \(\max\{H_r(0),H_r(2)\}\)。
+              这覆盖每个 \(s\ge241\) 和允许的 \(j&gt;80\)，不依赖有限折点或符号抵消。
+            </p>
+            <p>
+              在 \(r=0.370\) 上，两个端点分别为 \(0.5602559667\) 与
+              \(0.9662130058\)，完整主动尾界为 \(0.9970118412&lt;1\)；
+              球映射、Lipschitz 与正则伸缩门均严格闭合，共同半径因此达到
+              \(37/100\)。
+            </p>
+            <p>
+              相邻 \(r=0.371\) 的大荷界仍为 \(0.9714014422&lt;1\)，
+              但继承的有限荷 \(s=-1\) 界为 \(1.0008564924&gt;1\)。
+              负向控制由此把下一处可处理瓶颈定位到固定荷列，而不是无穷大荷扇区。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范边生成系统中的全阶正算子定理。
+              1,313 个折点和 21 个精确列只验证实现；结论没有建立到完整三维 PDE
+              临界范数的控制桥梁，也没有证明正则性或奇性。
+            </p>
+            <p>
+              <a href="/notes/r0-44.html"><strong>阅读 R0.44 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-44.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r044">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_common_slope_tail_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r044-common-slope-tail/fig-r044-common-slope-tail">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.45：</strong>固定 \(r=0.371\) 为首个验收点，把有限荷 \(s=-1\) 的完整列保留为共同次数变量 \(t=1/j\) 的精确函数，证明单调性或端点归约；若仍失败，公开精确余量并重新定位最大扇区。</p>
           </div>
         </section>
 
@@ -2832,7 +2875,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.28 · 2026-08-19<br>
+        综述 v0.29 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

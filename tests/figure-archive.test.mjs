@@ -38,6 +38,10 @@ const r043ManifestUrl = new URL(
   "../figures/r043-charge-degree-floor/fig-r043-charge-degree-floor/manifest.json",
   import.meta.url,
 );
+const r044ManifestUrl = new URL(
+  "../figures/r044-common-slope-tail/fig-r044-common-slope-tail/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -245,6 +249,31 @@ test("archives the formal R0.43 charge-implied degree-floor figure", async () =>
   assert.match(manifest.supportedClaim, /1\.0038955265828946573/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 255);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.44 common-slope endpoint figure", async () => {
+  const manifest = JSON.parse(await readFile(r044ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r044-common-slope-tail");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "aade631ea1a492d078f052776b443875d6a3dd73",
+  );
+  assert.match(manifest.supportedClaim, /H_r\(x\)=sum/);
+  assert.match(manifest.supportedClaim, /0\.96621300575693572712/);
+  assert.match(manifest.supportedClaim, /1\.0008564924160487608/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 300);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(

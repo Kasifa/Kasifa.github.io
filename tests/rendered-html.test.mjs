@@ -55,6 +55,8 @@ const fortySecondNoteUrl = new URL("../public/notes/r0-42.html", import.meta.url
 const fortySecondPdfUrl = new URL("../public/notes/r0-42.pdf", import.meta.url);
 const fortyThirdNoteUrl = new URL("../public/notes/r0-43.html", import.meta.url);
 const fortyThirdPdfUrl = new URL("../public/notes/r0-43.pdf", import.meta.url);
+const fortyFourthNoteUrl = new URL("../public/notes/r0-44.html", import.meta.url);
+const fortyFourthPdfUrl = new URL("../public/notes/r0-44.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -857,6 +859,33 @@ test("publishes and links the charge-implied degree-floor theorem", async () => 
   assert.match(note, /4fe8cb308e20921fb0490aa2e76209b1d2d84221/);
   assert.match(note, /r0-43-charge-degree-floor\.svg/);
   assert.match(note, /不是三维正则性定理/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the common-slope endpoint theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortyFourthNoteUrl, "utf8"),
+    readFile(fortyFourthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-44\.html"/);
+  assert.match(home, /href="\/notes\/r0-44\.pdf"/);
+  assert.match(note, /研究笔记 R0\.44/);
+  assert.match(note, /href="\/notes\/r0-44\.pdf"/);
+  assert.match(note, /r_\* = \\frac\{37\}\{100\}/);
+  assert.match(note, /完整大荷正和在共同斜率上是凸函数/);
+  assert.match(note, /0\.9662130057569357/);
+  assert.match(note, /0\.9970118412481986/);
+  assert.match(note, /1\.0008564924160487608/);
+  assert.match(note, /aade631ea1a492d078f052776b443875d6a3dd73/);
+  assert.match(note, /r0-44-common-slope-tail\.svg/);
+  assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
+  assert.match(note, /我不再让中心项各自选择最坏输入斜率/);
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 

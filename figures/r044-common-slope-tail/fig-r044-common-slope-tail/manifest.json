@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r044-common-slope-tail",
+  "status": "formal",
+  "analyticalQuestion": "Does retaining the common input slope x=s/j across the complete positive large-charge column remove enough of the R0.43 termwise-maximization loss to close the reduced canonical restart at r=37/100, and which sector becomes the next bottleneck?",
+  "supportedClaim": "For every large positive input charge s>=241 and every admissible tail degree j>80, positive domination reduces the complete center column to H_r(x)=sum |a_iq| r^i d_i beta_q |i*x-q|/3 on the shared interval 0<=x<=2. Because H_r is convex, its all-order maximum is attained at x=0 or x=2. At r=37/100 the two endpoints are 0.56025596671784847152 and 0.96621300575693572712, the complete active-tail bound is 0.99701184124819861673, and all fixed-point and canonical-stretch gates pass. At r=371/1000 the large sector remains below one but the inherited finite s=-1 sufficient column reaches 1.0008564924160487608, identifying the next proof bottleneck.",
+  "createdAt": "2026-08-19T19:45:51+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "aade631ea1a492d078f052776b443875d6a3dd73",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "convex breakpoint envelope, focused additive waterfall, ordered exact-control line-dot panel, and threshold lollipop panel",
+    "variants": [
+      "1,313 exact rational breakpoint samples of the complete common-slope envelope on 0<=x<=2",
+      "five charge-group reductions from the R0.43 independent termwise maxima to the common-slope endpoint maximum",
+      "three exact controls at the entry r=0.331, target r=0.370, and adjacent probe r=0.371",
+      "five target-radius proof gates, including the obsolete direct-transport diagnostic"
+    ],
+    "takeaway": "Convexity of the complete positive sum replaces independent termwise slope maxima by two common endpoints, makes r=0.370 a strict pass, and moves the next failure at r=0.371 to the finite charge s=-1 column.",
+    "dataSufficiency": "The formal proof covers every s>=241 and every admissible j>80 analytically. The 1,313 exact breakpoints, 21 finite columns, five charge-group reductions, nine radius controls, and 34 certificate flags are implementation and presentation checks rather than substitutes for the all-order theorem.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Endpoint markers, open versus filled faces, circles, diamonds, squares, dashed threshold lines, solid versus dashed control lines, and direct labels preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r044/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_common_slope_tail_audit.py --max-total-degree 80 --entry-radius 331/1000 --target-radius 37/100 --failure-probe-radius 371/1000 --charge-cutoff 241 --regression-charges 241,242,243,300,480,600,1000 --regression-degree-offsets 0,3,12 --ball-divisor 1000000 --source-commit aade631ea1a492d078f052776b443875d6a3dd73 --progress --progress-log research/certificates/r044/progress.ndjson --check --pretty --output research/certificates/r044/edge-common-slope-tail.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; positive large-charge cutoff S=241; support-implied degree floor J_S=121; entry r=331/1000; target r=37/100; adjacent probe r=371/1000; complete common-slope endpoint theorem; inherited finite-charge columns and canonical-stretch construction",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, all-order positive common-slope convexity reduction, inherited finite-charge endpoint bounds, rational fixed-point and canonical-stretch inequalities, exact breakpoint regressions, and finite exact large-charge column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against the pinned exact certificate"
+    },
+    "wallTimeSeconds": 44.618455,
+    "scientificWallTimeSeconds": 44.5164445410046,
+    "monitoredWallTimeSeconds": 44.618455,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 300,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "common-slope endpoint gates",
+        "canonical stretch and direct-transport diagnostics",
+        "exact breakpoint and finite-column regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 47.906
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "common-slope-envelope.csv",
+      "format": "csv",
+      "schema": "1,313 exact rational breakpoints on 0<=x<=2 with the complete positive common-slope envelope at r=37/100; finite implementation regression only.",
+      "bytes": 1152680,
+      "sha256": "c8e754ddf2d5fb6376e4c86f324e2aeb59a0f3d115ae6c270b7b8db660a15226"
+    },
+    {
+      "path": "slope-loss-bridge.csv",
+      "format": "csv",
+      "schema": "R0.43 start, five exact additive center-charge group reductions, and the common-slope endpoint bound at r=37/100.",
+      "bytes": 7217,
+      "sha256": "bf7c95d7529d13cc53528ac9095bf4662df1e17321983cb2485944b875f2be61"
+    },
+    {
+      "path": "radius-controls.csv",
+      "format": "csv",
+      "schema": "Nine exact values for the common large sector, finite s=-1 or complete active tail, and canonical stretch at r=0.331, 0.370, and 0.371.",
+      "bytes": 9359,
+      "sha256": "1dec2eaf18a6bcbd3f98e7639cc66fc997492bf7537bbd1c5dcf72e4c9a60197"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Five exact target-radius fixed-point, mapping, Lipschitz, canonical-stretch, and obsolete direct-transport bounds with gate classifications.",
+      "bytes": 5776,
+      "sha256": "36eb741107a336642f5255b71ab26b119f122d8fcc262ef5e48966042f9f0a1e"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 3453,
+      "sha256": "e3226010b1117849b90bdb2f194fb51c943f2486a1721cd6e7ca9e3f2301eaf6"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 22125,
+      "sha256": "cb3a01fbb8d9bc31f767534a5ab193c84f17b8104cc460e7c1d54f842d04a1cd"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r044",
+      "fileName": "edge-common-slope-tail.json",
+      "bytes": 184988,
+      "sha256": "7966771f25305211907e11e1a7ab7b6d784b1a14e3db92b3cbec37b96382bb1f",
+      "extractionCommand": "prepare_data.py extracts breakpoint, bridge, control, and proof-gate tables; validate_data.py pins the R0.44 certificate and source commit, checks all 34 formal flags and every extracted Fraction, independently reconstructs the degree-80 polynomial, verifies the convex endpoint reduction and archived monitoring, and confirms finite checks are not cited as proof"
+    },
+    {
+      "location": "research/certificates/r043",
+      "fileName": "edge-charge-degree-floor.json",
+      "bytes": 191263,
+      "sha256": "0ebaaf6c5a9f731e5b2846f3042553bebd6748b298ce31919e8f423e41369bf8",
+      "extractionCommand": "the R0.44 certificate pins the R0.43 source certificate, polynomial and residual digests, finite-charge bounds, and inherited canonical-stretch construction"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r044-common-slope-tail/fig-r044-common-slope-tail/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "2b07ed37eff899f5fab40176815f8dca8bd770a4515ad4fcfb29ca76dda2d606"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "60b3f05d282bcd3f4274cba17e9e8c14ef88d478912075afeda5459923d3bfac"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "fdf93c42edbe3e9b7d8a052a951c328cec2b328c9cf09e62cbffdaad1cb94d93"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "把所有中心项保留在同一个输入斜率 x=s/j 下，完整正和成为区间 [0,2] 上的凸函数，只需两个端点即可完成全阶控制；r=0.370 严格通过，而 r=0.371 的下一处失败已转移到有限荷 s=-1。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Marker shape, open versus filled faces, threshold dashes, direct labels, and line style preserve distinctions without color. The additive bridge and proof-gate panels explicitly disclose focused scales. Titles, axes, annotations, legends, and footer lines are unclipped. Five subsetted Type0 fonts are embedded with Unicode maps. PDF text extraction contains the R0.44 label, 0.966213, r=0.370, r=0.371, reduced canonical scope, and finite-check limitation. validate_data.py independently reconstructs the degree-80 center and verifies every plotted table against the pinned exact certificate."
+  }
+}

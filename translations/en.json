@@ -41015,19 +41015,9 @@
     "en": "The binary support cone \\(s\\le2j\\) raises the uniform input degree floor in the \\(s\\ge241\\) sector from 81 to 121, turning the designated failure point \\(r=0.330\\) into a strict all-order pass."
   },
   {
-    "id": "r043_095",
-    "zh": "固定 \\(r=0.331\\) 为验收点，在完整大正荷列中同时保留 \\(x=s/j\\) 与 \\(y=1/s\\)，先检验正和的共同变量单调性、凸性或有限端点归约；若不能恢复 0.003896 的缺口，先记录负结果，再考虑各向异性权重。",
-    "en": "Fix \\(r=0.331\\) as the acceptance point and retain \\(x=s/j\\) and \\(y=1/s\\) simultaneously in the full large-positive-charge column. First test monotonicity, convexity, or finite-endpoint reduction of the positive sum in the common variables; if the 0.003896 gap cannot be recovered, record the negative result before considering anisotropic weights."
-  },
-  {
     "id": "r043_096",
     "zh": "每个二元输入单项式还满足 \\(s\\le2j\\)。因此 \\[ j\\ge\\max\\left\\{N+1,\\left\\lceil\\frac S2\\right\\rceil\\right\\}, \\] 在 \\(N=80,S=241\\) 上给出统一下界 \\(j\\ge121\\)。 只把旧前因子 \\((i+81)/(i+80)\\) 替换为 \\((i+121)/(i+120)\\)， 其余大荷逐项界与有限荷共同端点定理保持不变。",
     "en": "Every binary input monomial also satisfies \\(s\\le2j\\). Therefore \\[ j\\ge\\max\\left\\{N+1,\\left\\lceil\\frac S2\\right\\rceil\\right\\}, \\] for \\(N=80,S=241\\), this gives the uniform floor \\(j\\ge121\\). Only the old prefactor \\((i+81)/(i+80)\\) is replaced by \\((i+121)/(i+120)\\); the remaining termwise large-charge bounds and the common-endpoint theorem for finite charges are unchanged."
-  },
-  {
-    "id": "r043_097",
-    "zh": "下一步 R0.44：",
-    "en": "Next, R0.44:"
   },
   {
     "id": "r043_098",
@@ -41050,11 +41040,6 @@
     "en": "This is an all-order support theorem for the reduced canonical edge generating system, covering every \\(s\\ge241\\) and every allowed input degree. The 21 finite large-charge columns validate only the implementation; the result does not establish a control bridge to a critical norm of the full three-dimensional PDE and proves neither regularity nor singularity."
   },
   {
-    "id": "r043_102",
-    "zh": "综述 v0.28 · 2026-08-19",
-    "en": "Review v0.28 · 2026-08-19"
-  },
-  {
     "id": "r043_103",
     "zh": "R0.42 在 \\(r=0.330\\) 留下的主动尾界为 \\(1.0028721509>1\\)， 最大部分来自全部输入荷 \\(s\\ge241\\)。旧解析扇区已经使用荷条件控制荷比， 却在递减次数前因子中只保留通用严格尾条件 \\(j>80\\)。",
     "en": "At \\(r=0.330\\), R0.42 left an active-tail bound of \\(1.0028721509>1\\), with the largest contribution coming from all input charges \\(s\\ge241\\). The old analytic sector already used the charge condition to control the charge ratio, but retained only the generic strict-tail condition \\(j>80\\) in the decreasing degree prefactor."
@@ -41063,5 +41048,515 @@
     "id": "r043_104",
     "zh": "R0.43 已完成：",
     "en": "R0.43 is complete:"
+  },
+  {
+    "id": "r044_001",
+    "zh": "。给出固定荷共同斜率的先例。",
+    "en": ". It provides the precedent for a common slope at fixed charge."
+  },
+  {
+    "id": "r044_002",
+    "zh": "。科学计算耗时 44.516445 秒；监控历时 44.618455 秒、采样 300 次，峰值 CPU 为 100.0%，峰值常驻内存为 47.906 MiB。没有使用 GPU、随机种子或浮点判号，34 项正式检查全部通过。",
+    "en": ". The scientific computation took 44.516445 seconds; monitoring covered 44.618455 seconds with 300 samples, a peak CPU load of 100.0%, and a peak resident set of 47.906 MiB. No GPU, random seed, or floating-point sign decision was used, and all 34 formal checks passed."
+  },
+  {
+    "id": "r044_003",
+    "zh": "。提供 \\(j\\ge121\\) 的统一次数下界。",
+    "en": ". It provides the uniform degree floor \\(j\\ge121\\)."
+  },
+  {
+    "id": "r044_004",
+    "zh": "。提供正则场重构和非直接输运门。",
+    "en": ". It provides the regular-field reconstruction and the non-direct-transport gate."
+  },
+  {
+    "id": "r044_005",
+    "zh": "0.371 的失败来自有限荷 \\(s=-1\\)，不是大荷无穷扇区",
+    "en": "The failure at 0.371 comes from the finite charge \\(s=-1\\), not the infinite large-charge sector"
+  },
+  {
+    "id": "r044_006",
+    "zh": "0.371 上的继承统一界为 1.000856，但精确列随输入次数 \\(j\\) 已显示下降：\\(j=82\\) 时约 0.997228，\\(j=85\\) 时约 0.996699，\\(j=100\\) 时约 0.994529。下一阶段固定 \\(r=0.371\\) 为第一个验收点。",
+    "en": "At 0.371 the inherited uniform bound is 1.000856, but the exact column already decreases with input degree \\(j\\): about 0.997228 at \\(j=82\\), 0.996699 at \\(j=85\\), and 0.994529 at \\(j=100\\). The next stage fixes \\(r=0.371\\) as the first acceptance point."
+  },
+  {
+    "id": "r044_007",
+    "zh": "01 · 继承松弛",
+    "en": "01 · Inherited relaxation"
+  },
+  {
+    "id": "r044_008",
+    "zh": "02 · 精确共同变量",
+    "en": "02 · Exact common variables"
+  },
+  {
+    "id": "r044_009",
+    "zh": "03 · 凸性端点定理",
+    "en": "03 · Convex endpoint theorem"
+  },
+  {
+    "id": "r044_010",
+    "zh": "04 · 0.331 入口恢复",
+    "en": "04 · Recovering the 0.331 entry point"
+  },
+  {
+    "id": "r044_011",
+    "zh": "05 · 0.370 精确重启",
+    "en": "05 · Exact restart at 0.370"
+  },
+  {
+    "id": "r044_012",
+    "zh": "07 · 0.371 负向控制",
+    "en": "07 · Negative control at 0.371"
+  },
+  {
+    "id": "r044_013",
+    "zh": "1,313 个精确有理点",
+    "en": "1,313 exact rational points"
+  },
+  {
+    "id": "r044_014",
+    "zh": "1,313 个折点与 21 个列",
+    "en": "1,313 breakpoints and 21 columns"
+  },
+  {
+    "id": "r044_015",
+    "zh": "10 · 价值与局限",
+    "en": "10 · Value and limitations"
+  },
+  {
+    "id": "r044_016",
+    "zh": "11 · R0.45 计划",
+    "en": "11 · R0.45 plan"
+  },
+  {
+    "id": "r044_017",
+    "zh": "12 · 复现与归档",
+    "en": "12 · Reproduction and archive"
+  },
+  {
+    "id": "r044_018",
+    "zh": "6,345 项，次数 81–160",
+    "en": "6,345 terms, degrees 81–160"
+  },
+  {
+    "id": "r044_019",
+    "zh": "把完整固定荷 \\(s=-1\\) 列写成共同变量 \\(t=1/j\\) 的精确函数；",
+    "en": "Write the complete fixed-charge \\(s=-1\\) column as an exact function of the common variable \\(t=1/j\\);"
+  },
+  {
+    "id": "r044_020",
+    "zh": "版本 v0.44 · 2026-08-19",
+    "en": "Version v0.44 · 2026-08-19"
+  },
+  {
+    "id": "r044_021",
+    "zh": "半径相对 R0.43 增长 \\(37/33\\approx1.121212\\)。固定荷变量 \\(R=Z^2W\\) 的圆盘半径按三次方增长约 \\(1.409494\\)。这是当前约化系统内部的认证增量，不能外推为完整 PDE 的先验增益。",
+    "en": "The radius grows by \\(37/33\\approx1.121212\\) relative to R0.43. The disk radius for the fixed-charge variable \\(R=Z^2W\\) grows cubically, by about \\(1.409494\\). This is a certified gain internal to the present reduced system and cannot be extrapolated into an a priori gain for the full PDE."
+  },
+  {
+    "id": "r044_022",
+    "zh": "本阶段不需要在二维域上寻找内部极值。先对正的次数因子与荷比做统一上界，再把完整中心和保留为同一个 \\(x\\) 的函数，已经足以闭合目标。",
+    "en": "This stage does not need an interior extremum search on the two-dimensional domain. A uniform bound on the positive degree factor and charge ratio, followed by retaining the complete center sum as a function of the same \\(x\\), is already enough to close the target."
+  },
+  {
+    "id": "r044_023",
+    "zh": "并把八十阶中心的全部项放在同一个正和中：",
+    "en": "Place every term of the degree-80 center in the same positive sum:"
+  },
+  {
+    "id": "r044_024",
+    "zh": "不能把 1,313 个折点称为无穷证明，不能把 0.371 的充分界失败解释成奇性，不能把半径增长外推成 PDE 正则时间，也不能声称已证明或反驳三维 Navier–Stokes 正则性。",
+    "en": "The 1,313 breakpoints cannot be called an infinite-order proof; failure of the sufficient bound at 0.371 cannot be interpreted as a singularity; the radius gain cannot be extrapolated into a PDE regularity time; and the result cannot be claimed to prove or disprove three-dimensional Navier–Stokes regularity."
+  },
+  {
+    "id": "r044_025",
+    "zh": "此时完整主动尾的最大扇区已经转为有限荷 \\(s=-1\\)，其界为 \\(0.85473326250594059615<1\\)。因此 0.331 不只是局部大荷修复点，而是完整 Banach 重启的严格通过点。",
+    "en": "At this point the largest sector of the complete active tail has moved to the finite charge \\(s=-1\\), whose bound is \\(0.85473326250594059615<1\\). Thus 0.331 is not merely a local repair of the large-charge sector but a strict pass for the complete Banach restart."
+  },
+  {
+    "id": "r044_026",
+    "zh": "次数因子满足 \\((i+j)/(i+j-1)\\le d_i\\)；\\(q=-1\\) 的荷比不超过 \\(242/240\\)，\\(q\\ge0\\) 的荷比不超过一。随后使用的是完整正和的凸性，而不是有限折点采样，也不使用系数符号抵消。因此结论覆盖每个 \\(s\\ge241\\) 与每个允许的 \\(j>80\\)。",
+    "en": "The degree factor obeys \\((i+j)/(i+j-1)\\le d_i\\); the charge ratio for \\(q=-1\\) is at most \\(242/240\\), while for \\(q\\ge0\\) it is at most one. The argument then uses convexity of the complete positive sum, not finite breakpoint sampling or coefficient-sign cancellation. The result therefore covers every \\(s\\ge241\\) and every allowed \\(j>80\\)."
+  },
+  {
+    "id": "r044_027",
+    "zh": "大荷精确列",
+    "en": "Exact large-charge columns"
+  },
+  {
+    "id": "r044_028",
+    "zh": "大荷全覆盖",
+    "en": "Complete large-charge coverage"
+  },
+  {
+    "id": "r044_029",
+    "zh": "大荷全阶通过",
+    "en": "All-order large-charge pass"
+  },
+  {
+    "id": "r044_030",
+    "zh": "端点定理",
+    "en": "Endpoint theorem"
+  },
+  {
+    "id": "r044_031",
+    "zh": "端点论证同时覆盖全部允许输入次数，没有荷截断或次数网格。",
+    "en": "The endpoint argument simultaneously covers every allowed input degree, with no charge cutoff or degree grid."
+  },
+  {
+    "id": "r044_032",
+    "zh": "端点通过",
+    "en": "Endpoint pass"
+  },
+  {
+    "id": "r044_033",
+    "zh": "对三维 Navier–Stokes 千禧年问题，直接价值依然有限。当前没有定理把约化边生成系统的解析控制传递到完整三维速度场的尺度临界范数，没有覆盖所有空间、螺旋和跨尺度相互作用，也没有排除能量集中或证明全局延拓。",
+    "en": "The direct value for the three-dimensional Navier–Stokes Millennium Problem remains limited. No theorem presently transfers the analytic control of the reduced edge generating system to a scale-critical norm of the full three-dimensional velocity field; the construction does not cover all spatial, helical, and cross-scale interactions; and it neither rules out energy concentration nor proves global continuation."
+  },
+  {
+    "id": "r044_034",
+    "zh": "共同半径达到 (37/100)",
+    "en": "Common radius reaches (37/100)"
+  },
+  {
+    "id": "r044_035",
+    "zh": "共同半径可一次推进到 0.370",
+    "en": "The common radius advances directly to 0.370"
+  },
+  {
+    "id": "r044_036",
+    "zh": "共同斜率",
+    "en": "Common slope"
+  },
+  {
+    "id": "r044_037",
+    "zh": "共同斜率、松弛降幅和下一瓶颈统一归档",
+    "en": "Archiving the common slope, relaxation reduction, and next bottleneck together"
+  },
+  {
+    "id": "r044_038",
+    "zh": "共同斜率大荷界",
+    "en": "Common-slope large-charge bound"
+  },
+  {
+    "id": "r044_039",
+    "zh": "共同斜率折点",
+    "en": "Common-slope breakpoints"
+  },
+  {
+    "id": "r044_040",
+    "zh": "价值在于一个可复用的全阶相关性修复，而不是接近了 PDE 终点",
+    "en": "The value is a reusable all-order correlation repair, not proximity to the PDE endpoint"
+  },
+  {
+    "id": "r044_041",
+    "zh": "结果还给出了可证伪的瓶颈迁移：旧大荷扇区在 0.371 仍严格小于一，下一处失败明确落在有限荷 \\(s=-1\\)。这比仅仅提高一个数值半径更重要，因为下一阶段不必再改动已闭合的大荷定理。",
+    "en": "The result also gives a falsifiable bottleneck migration: the old large-charge sector remains strictly below one at 0.371, while the next failure lies explicitly in the finite charge \\(s=-1\\). This matters more than merely increasing a numerical radius because the next stage need not alter the large-charge theorem that is already closed."
+  },
+  {
+    "id": "r044_042",
+    "zh": "结论只适用于主动支持锥、约化典范边生成系统和本文的次数加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 全局正则性，没有构造有限时奇性，也没有把 \\(0.370\\) 解释成真实 PDE 的时空解析半径。",
+    "en": "The result applies only to the active support cone, the reduced canonical edge generating system, and the degree-weighted Wiener norm used here. It does not prove global regularity for three-dimensional incompressible Navier–Stokes, construct a finite-time singularity, or interpret \\(0.370\\) as a genuine space-time analyticity radius for the PDE."
+  },
+  {
+    "id": "r044_043",
+    "zh": "精确列可写成两个共同变量 \\(x=s/j\\) 与 \\(y=1/s\\)",
+    "en": "The exact column can be written in the two common variables \\(x=s/j\\) and \\(y=1/s\\)"
+  },
+  {
+    "id": "r044_044",
+    "zh": "旧负向控制 0.331 被严格恢复",
+    "en": "The former negative control at 0.331 is strictly recovered"
+  },
+  {
+    "id": "r044_045",
+    "zh": "旧松弛",
+    "en": "Old relaxation"
+  },
+  {
+    "id": "r044_046",
+    "zh": "控制量",
+    "en": "Control quantity"
+  },
+  {
+    "id": "r044_047",
+    "zh": "令 \\(x=s/j\\)、\\(y=1/s\\)，它等于",
+    "en": "With \\(x=s/j\\) and \\(y=1/s\\), it equals"
+  },
+  {
+    "id": "r044_048",
+    "zh": "每个 \\(|ix-q|\\) 都是凸函数，系数全部非负，所以 \\(H_r\\) 在 \\([0,2]\\) 上凸。于是",
+    "en": "Every \\(|ix-q|\\) is convex and all coefficients are nonnegative, so \\(H_r\\) is convex on \\([0,2]\\). Hence"
+  },
+  {
+    "id": "r044_049",
+    "zh": "取 \\(J=121\\)，定义",
+    "en": "Set \\(J=121\\) and define"
+  },
+  {
+    "id": "r044_050",
+    "zh": "若 0.371 仍不能闭合，公开精确失败余量并重新定位新的最大扇区。",
+    "en": "If 0.371 still cannot be closed, publish the exact failure margin and locate the new maximal sector."
+  },
+  {
+    "id": "r044_051",
+    "zh": "若把同一方法直接用到 \\(r=0.370\\)，大荷扇区达到 \\(1.2153811722110079265\\)。原因不是精确列本身变坏，而是绝对仿射因子 \\(|i(s/j)-q|\\) 被逐项独立最大化：一部分项选 \\(x=0\\)，另一部分选 \\(x=2\\)，但一个真实输入列只能有一个 \\(x=s/j\\)。",
+    "en": "If the same method is applied directly at \\(r=0.370\\), the large-charge sector reaches \\(1.2153811722110079265\\). The exact column itself has not deteriorated; rather, the absolute affine factor \\(|i(s/j)-q|\\) was maximized independently term by term. Some terms choose \\(x=0\\) and others choose \\(x=2\\), but a genuine input column can have only one \\(x=s/j\\)."
+  },
+  {
+    "id": "r044_052",
+    "zh": "实现回归",
+    "en": "Implementation regression"
+  },
+  {
+    "id": "r044_053",
+    "zh": "图 R0.44-1。左上显示 \\(r=0.370\\) 的完整共同斜率凸包络与两个解析端点；右上分解 R0.43 逐项独立最大化到共同端点的精确降幅；左下并列 0.331、0.370 与 0.371 的三个控制量；右下列出目标半径的完整门槛。PDF、SVG、600 dpi PNG、源数据、清单和 SHA-256 摘要一并归档，彩色、真实灰度和 PDF 渲染页均已检查。",
+    "en": "Figure R0.44-1. The upper left shows the complete common-slope convex envelope at \\(r=0.370\\) and its two analytic endpoints. The upper right decomposes the exact reduction from the R0.43 termwise independent maxima to the common endpoint. The lower left compares the three controls at 0.331, 0.370, and 0.371. The lower right lists the complete gates at the target radius. PDF, SVG, 600 dpi PNG, source data, manifest, and SHA-256 digest are archived together; the color export, true grayscale conversion, and rendered PDF page were all inspected."
+  },
+  {
+    "id": "r044_054",
+    "zh": "完整大荷正和在共同斜率上是凸函数",
+    "en": "The complete positive large-charge sum is convex in the common slope"
+  },
+  {
+    "id": "r044_055",
+    "zh": "完整正和共享一个 \\(x\\)",
+    "en": "The complete positive sum shares one \\(x\\)"
+  },
+  {
+    "id": "r044_056",
+    "zh": "完整正和只需共同斜率的两个端点；0.370 严格通过，0.371 的下一瓶颈转为有限荷 s=-1。",
+    "en": "The complete positive sum requires only the two endpoints of the common slope; 0.370 passes strictly, and the next bottleneck at 0.371 moves to the finite charge s=-1."
+  },
+  {
+    "id": "r044_057",
+    "zh": "完整主动尾界",
+    "en": "Complete active-tail bound"
+  },
+  {
+    "id": "r044_058",
+    "zh": "下一步只处理有限荷 \\(s=-1\\) 的次数依赖",
+    "en": "The next step treats only the degree dependence of the finite charge \\(s=-1\\)"
+  },
+  {
+    "id": "r044_059",
+    "zh": "相对 R0.43：× 1.121212",
+    "en": "Relative to R0.43: × 1.121212"
+  },
+  {
+    "id": "r044_060",
+    "zh": "沿用 R0.42 的正则分解",
+    "en": "Retain the regular decomposition from R0.42"
+  },
+  {
+    "id": "r044_061",
+    "zh": "研究笔记 R0.44 · 共同变量与全阶主动尾",
+    "en": "Research note R0.44 · Common variables and the all-order active tail"
+  },
+  {
+    "id": "r044_062",
+    "zh": "研究笔记 R0.44：在完整大正荷列中保留共同输入斜率 x=s/j，以凸性端点定理把约化典范边生成系统的认证半径推进到 37/100。",
+    "en": "Research note R0.44: retaining the common input slope x=s/j in the complete large-positive-charge column advances the certified radius of the reduced canonical edge generating system to 37/100 through a convex endpoint theorem."
+  },
+  {
+    "id": "r044_063",
+    "zh": "因此 \\(\\|(I-S_a)^{-1}\\|\\le22.3156521\\)，并有 \\(\\|\\phi\\|_{\\mathcal B_r}\\le9.0927496\\)。旧直接一步输运诊断为 \\(1.5770610053>1\\)，但该量在正则分解后不是构造门槛；把它与实际证明门分开，是证书的一部分。",
+    "en": "Consequently \\(\\|(I-S_a)^{-1}\\|\\le22.3156521\\) and \\(\\|\\phi\\|_{\\mathcal B_r}\\le9.0927496\\). The old direct one-step transport diagnostic is \\(1.5770610053>1\\), but after the regular decomposition it is not a construction gate; separating it from the actual proof gates is part of the certificate."
+  },
+  {
+    "id": "r044_064",
+    "zh": "用 GMP 在允许格点上做有限回归，但不让格点替代全阶证明；",
+    "en": "Run finite GMP regressions on the allowed lattice without letting the lattice replace the all-order proof;"
+  },
+  {
+    "id": "r044_065",
+    "zh": "由 \\(s\\ge241\\)、\\(s\\le2j\\) 与 \\(j>80\\)，共同定义域满足",
+    "en": "From \\(s\\ge241\\), \\(s\\le2j\\), and \\(j>80\\), the common domain obeys"
+  },
+  {
+    "id": "r044_066",
+    "zh": "有限 \\(s=-1\\) 界",
+    "en": "Finite \\(s=-1\\) bound"
+  },
+  {
+    "id": "r044_067",
+    "zh": "有限计算只验证公式和实现，不承担无穷扇区证明。",
+    "en": "Finite computation validates only the formula and implementation; it does not prove the infinite sector."
+  },
+  {
+    "id": "r044_068",
+    "zh": "有限数据验证实现，证明仍来自解析端点归约",
+    "en": "Finite data validate the implementation; the proof still comes from analytic endpoint reduction"
+  },
+  {
+    "id": "r044_069",
+    "zh": "在 \\(r=0.331\\) 上，R0.43 的大荷界为 1.0038955266。共同斜率端点定理给出",
+    "en": "At \\(r=0.331\\), the R0.43 large-charge bound is 1.0038955266. The common-slope endpoint theorem gives"
+  },
+  {
+    "id": "r044_070",
+    "zh": "在 \\(r=0.370\\) 上，完整伸缩算子界为",
+    "en": "At \\(r=0.370\\), the complete stretch-operator bound is"
+  },
+  {
+    "id": "r044_071",
+    "zh": "折点表精确重现 \\(H_r(x)\\) 的分段线性图像，并检查端点确为最大值；逻辑证明只使用“非负加权的绝对仿射函数之和为凸函数”这一解析事实。",
+    "en": "The breakpoint table exactly reproduces the piecewise-linear graph of \\(H_r(x)\\) and checks that the endpoints are maximal; the logical proof uses only the analytic fact that a nonnegatively weighted sum of absolute affine functions is convex."
+  },
+  {
+    "id": "r044_072",
+    "zh": "这里证明的是约化生成系统的全阶算子界",
+    "en": "The result proved here is an all-order operator bound for the reduced generating system"
+  },
+  {
+    "id": "r044_073",
+    "zh": "这只是当前有限荷统一充分界失败，不表示 0.371 存在奇性。精确单列回归反而显示最低允许次数 \\(j=82\\) 时的真实列约为 0.997228，提示该失败仍可能来自把 \\(j\\) 统一压到粗端点后的松弛。",
+    "en": "This is only a failure of the present uniform sufficient bound for a finite charge; it does not indicate a singularity at 0.371. Exact single-column regression instead gives about 0.997228 at the lowest allowed degree \\(j=82\\), suggesting that the failure may still come from uniformly collapsing \\(j\\) to a coarse endpoint."
+  },
+  {
+    "id": "r044_074",
+    "zh": "正式检查：34 项全通过",
+    "en": "Formal checks: all 34 passed"
+  },
+  {
+    "id": "r044_075",
+    "zh": "正则伸缩界",
+    "en": "Regular stretch bound"
+  },
+  {
+    "id": "r044_076",
+    "zh": "正则伸缩逆和指数重构在同一半径闭合",
+    "en": "The regular stretch inverse and exponential reconstruction close at the same radius"
+  },
+  {
+    "id": "r044_077",
+    "zh": "证明允许域上的单调性、凸性或有限端点归约，保留所有中心项共享的 \\(j\\)；",
+    "en": "Prove monotonicity, convexity, or a finite endpoint reduction on the allowed domain while retaining the \\(j\\) shared by all center terms;"
+  },
+  {
+    "id": "r044_078",
+    "zh": "中心次数与荷记为 \\((i,q)\\)，尾输入记为 \\((j,s)\\)。精确加权列贡献为",
+    "en": "Write the center degree and charge as \\((i,q)\\) and the tail input as \\((j,s)\\). The exact weighted column contribution is"
+  },
+  {
+    "id": "r044_079",
+    "zh": "中心项不能各自选择不同的输入斜率，消除了 R0.43 的主要松弛。",
+    "en": "Center terms cannot each choose a different input slope; this removes the main R0.43 relaxation."
+  },
+  {
+    "id": "r044_080",
+    "zh": "主动尾、球映射、正则伸缩逆和指数重构在同一半径闭合。",
+    "en": "The active tail, ball mapping, regular stretch inverse, and exponential reconstruction close at the same radius."
+  },
+  {
+    "id": "r044_081",
+    "zh": "状态 · 共同半径已扩张",
+    "en": "Status · Common radius expanded"
+  },
+  {
+    "id": "r044_082",
+    "zh": "最大扇区为 \\(s=-1\\)",
+    "en": "Maximal sector is \\(s=-1\\)"
+  },
+  {
+    "id": "r044_083",
+    "zh": "R0.43 把 \\(r=0.331\\) 的大正荷界留在 1.003896。我不再让中心项各自选择最坏输入斜率，而是保留同一尾列共享的 \\(x=s/j\\)。完整正和成为凸函数，只需两个端点；这一次不仅通过 0.331，还把共同认证半径推进到 0.370。",
+    "en": "R0.43 left the large-positive-charge bound at 1.003896 for \\(r=0.331\\). I no longer let the center terms choose their worst input slopes independently, but retain the \\(x=s/j\\) shared by one tail column. The complete positive sum becomes convex and needs only two endpoints; this not only passes 0.331 but advances the common certified radius to 0.370."
+  },
+  {
+    "id": "r044_084",
+    "zh": "R0.43 的大荷界让每个中心项选择了不同的最坏斜率",
+    "en": "The R0.43 large-charge bound let each center term choose a different worst slope"
+  },
+  {
+    "id": "r044_085",
+    "zh": "R0.43 用支持条件 \\(s\\le2j\\) 把大正荷扇区的统一输入次数下界提高到 \\(j\\ge121\\)，并在 \\(r=0.330\\) 闭合。到了入口点 \\(r=0.331\\)，旧充分界仍为",
+    "en": "R0.43 used the support condition \\(s\\le2j\\) to raise the uniform input-degree floor in the large-positive-charge sector to \\(j\\ge121\\), closing at \\(r=0.330\\). At the entry point \\(r=0.331\\), the old sufficient bound is still"
+  },
+  {
+    "id": "r044_086",
+    "zh": "R0.43：大荷支持耦合",
+    "en": "R0.43: large-charge support coupling"
+  },
+  {
+    "id": "r044_087",
+    "zh": "R0.44 的实质是恢复“一个真实输入列只有一个斜率”这一确定性相关性。它把一个看似二维的大荷优化化为正凸函数的两个端点，不依赖符号抵消，也不依赖有限采样。这种证明结构简洁、可移植，适合作为约化生成系统论文中的独立引理。",
+    "en": "The substance of R0.44 is restoring the deterministic correlation that a genuine input column has only one slope. It reduces an apparently two-dimensional large-charge optimization to the two endpoints of a positive convex function, without sign cancellation or finite sampling. This proof structure is concise and portable enough to serve as an independent lemma in a paper on the reduced generating system."
+  },
+  {
+    "id": "r044_088",
+    "zh": "R0.44 共同斜率凸包络、逐项斜率损失消除、三个半径控制和 0.370 完整证明门",
+    "en": "R0.44 common-slope convex envelope, removal of termwise slope loss, three radius controls, and complete proof gates at 0.370"
+  },
+  {
+    "id": "r044_089",
+    "zh": "R0.44｜共同斜率端点定理",
+    "en": "R0.44 | Common-slope endpoint theorem"
+  },
+  {
+    "id": "r044_090",
+    "zh": "共同输入斜率、凸性端点定理与 0.370 精确重启",
+    "en": "Common input slope, convex endpoint theorem, and exact restart at 0.370"
+  },
+  {
+    "id": "r044_091",
+    "zh": "固定 \\(r=0.371\\) 为首个验收点，把有限荷 \\(s=-1\\) 的完整列保留为共同次数变量 \\(t=1/j\\) 的精确函数，证明单调性或端点归约；若仍失败，公开精确余量并重新定位最大扇区。",
+    "en": "Fix \\(r=0.371\\) as the first acceptance point, retain the complete finite-charge \\(s=-1\\) column as an exact function of the common degree variable \\(t=1/j\\), and prove monotonicity or endpoint reduction. If it still fails, publish the exact margin and relocate the maximal sector."
+  },
+  {
+    "id": "r044_092",
+    "zh": "完整大正荷正和保留同一个 \\(x=s/j\\) 后成为凸函数，只需两个端点；共同半径从 0.330 推进到 0.370，下一失败转移到有限荷 \\(s=-1\\)。",
+    "en": "After retaining the same \\(x=s/j\\), the complete positive large-charge sum becomes convex and needs only two endpoints; the common radius advances from 0.330 to 0.370, and the next failure moves to the finite charge \\(s=-1\\)."
+  },
+  {
+    "id": "r044_093",
+    "zh": "我把完整正和写成 \\[ H_r(x)=\\sum_{i,q}|a_{i,q}|r^i d_i\\beta_q\\frac{|ix-q|}{3}. \\] 所有权重非负，所以 \\(H_r\\) 在 \\([0,2]\\) 上凸； 其全阶最大值严格等于 \\(\\max\\{H_r(0),H_r(2)\\}\\)。 这覆盖每个 \\(s\\ge241\\) 和允许的 \\(j>80\\)，不依赖有限折点或符号抵消。",
+    "en": "I write the complete positive sum as \\[ H_r(x)=\\sum_{i,q}|a_{i,q}|r^i d_i\\beta_q\\frac{|ix-q|}{3}. \\] All weights are nonnegative, so \\(H_r\\) is convex on \\([0,2]\\); its all-order maximum is exactly \\(\\max\\{H_r(0),H_r(2)\\}\\). This covers every \\(s\\ge241\\) and every allowed \\(j>80\\), without finite breakpoints or sign cancellation."
+  },
+  {
+    "id": "r044_094",
+    "zh": "下一步 R0.45：",
+    "en": "Next, R0.45:"
+  },
+  {
+    "id": "r044_095",
+    "zh": "相邻 \\(r=0.371\\) 的大荷界仍为 \\(0.9714014422<1\\)， 但继承的有限荷 \\(s=-1\\) 界为 \\(1.0008564924>1\\)。 负向控制由此把下一处可处理瓶颈定位到固定荷列，而不是无穷大荷扇区。",
+    "en": "At the adjacent radius \\(r=0.371\\), the large-charge bound remains \\(0.9714014422<1\\), but the inherited finite-charge \\(s=-1\\) bound is \\(1.0008564924>1\\). The negative control therefore locates the next tractable bottleneck in a fixed-charge column rather than in the infinite large-charge sector."
+  },
+  {
+    "id": "r044_096",
+    "zh": "研究笔记 R0.44 · 2026-08-19",
+    "en": "Research note R0.44 · 2026-08-19"
+  },
+  {
+    "id": "r044_097",
+    "zh": "阅读 R0.44 研究笔记 →",
+    "en": "Read research note R0.44 →"
+  },
+  {
+    "id": "r044_098",
+    "zh": "在 \\(r=0.370\\) 上，两个端点分别为 \\(0.5602559667\\) 与 \\(0.9662130058\\)，完整主动尾界为 \\(0.9970118412<1\\)； 球映射、Lipschitz 与正则伸缩门均严格闭合，共同半径因此达到 \\(37/100\\)。",
+    "en": "At \\(r=0.370\\), the two endpoints are \\(0.5602559667\\) and \\(0.9662130058\\), and the complete active-tail bound is \\(0.9970118412<1\\). The ball-mapping, Lipschitz, and regular-stretch gates all close strictly, so the common radius reaches \\(37/100\\)."
+  },
+  {
+    "id": "r044_099",
+    "zh": "这是约化典范边生成系统中的全阶正算子定理。 1,313 个折点和 21 个精确列只验证实现；结论没有建立到完整三维 PDE 临界范数的控制桥梁，也没有证明正则性或奇性。",
+    "en": "This is an all-order positive-operator theorem for the reduced canonical edge generating system. The 1,313 breakpoints and 21 exact columns validate only the implementation; the result establishes no control bridge to a critical norm of the full three-dimensional PDE and proves neither regularity nor singularity."
+  },
+  {
+    "id": "r044_100",
+    "zh": "综述 v0.29 · 2026-08-19",
+    "en": "Review v0.29 · 2026-08-19"
+  },
+  {
+    "id": "r044_101",
+    "zh": "R0.43 在 \\(r=0.331\\) 留下的大正荷界为 \\(1.0038955266>1\\)。 该界让每个中心项独立选择 \\(x=s/j\\in[0,2]\\) 的最坏端点， 但一个真实尾输入列只能共享同一个 \\(x\\)。",
+    "en": "At \\(r=0.331\\), R0.43 left a large-positive-charge bound of \\(1.0038955266>1\\). That bound let each center term independently choose the worst endpoint of \\(x=s/j\\in[0,2]\\), but a genuine tail-input column must share a single \\(x\\)."
+  },
+  {
+    "id": "r044_102",
+    "zh": "R0.44 已完成：",
+    "en": "R0.44 is complete:"
   }
 ]

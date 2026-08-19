@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r053-product-affine-witness",
+  "status": "formal",
+  "analyticalQuestion": "Does the product-affine charge weight c^s(1+lambda|s|)(1+mu|s|) strictly improve the globally optimized single-affine family, which input column becomes sharp, and do all remaining all-order competitors stay separated?",
+  "supportedClaim": "For the exact degree-80 reduced canonical edge generating system, the fixed rational product-affine weight with c=396403/500000 and lambda=mu=153931/500000 has a unique zero-charge threshold root in 0.382628602237879637<r_*<0.382628602237879638. Its root lower bound exceeds the complete R0.52 single-affine upper bound by a factor greater than 1.0000107948905119688, and the fixed restart radius 0.382628 exceeds that upper bound by a factor greater than 1.000009220924589906. All 281 non-sharp records remain strict; the nearest is (j,s)=(81,162), with gap greater than 1.4883451915609408904e-6.",
+  "createdAt": "2026-08-20T03:55:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "f1f2114fe9c72606b127fb38e6c45cd50b1749b2",
+    "certificateCommit": "66dc2ba8fc947e5f1ee9896d1d63f744d0660292",
+    "formalSourceCommit": "96d7d8c7d0a59e1b0b75d2580403cb5969d6ea6e",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "focused signed threshold profile, strict-gain lollipops, and ranked logarithmic competitor-gap curve",
+    "variants": [
+      "121 exact-rational presentation samples of the zero and (j,s)=(81,162) columns on 0.382624<=r<=0.382630",
+      "two formal exact lower gain factors relative to the complete R0.52 affine upper bound",
+      "all 281 formal exact competitor gaps at the R0.53 root-box right endpoint"
+    ],
+    "takeaway": "The zero-charge column becomes sharp for a simple symmetric product-affine witness. The witness raises the certified fixed restart by more than 9.2209 ppm and the isolated threshold by more than 10.7949 ppm beyond the complete single-affine family, while retaining strict separation from every competing record.",
+    "dataSufficiency": "The 121 exact samples display local threshold geometry but do not isolate the root. The formal claim comes from the pinned GMP Sturm certificate, exact fixed-charge endpoint bounds, exceptional-charge theorems, a parity/Bernstein large-charge theorem, exact restart inequalities, and all 281 retained competitor records.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Solid diamonds, dashed open circles, lollipop marker shapes, a square tail marker, direct labels, ordering, and logarithmic position preserve distinctions without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 112 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "formalCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r053/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_product_affine_charge_weight_audit.py --max-total-degree 80 --charge-cutoff 280 --source-commit 96d7d8c7d0a59e1b0b75d2580403cb5969d6ea6e --progress --progress-log research/certificates/r053/progress.ndjson --check --pretty --output research/certificates/r053/edge-product-affine-charge-weight.json",
+    "samplingCommand": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r053-product-affine-witness/fig-r053-product-affine-witness/figure-data-resources.csv --interval 1 -- tmp/r024-venv/bin/python figures/r053-product-affine-witness/fig-r053-product-affine-witness/prepare_data.py --source-commit f1f2114fe9c72606b127fb38e6c45cd50b1749b2",
+    "configuration": "degree-80 exact center; fixed c=396403/500000 and lambda=mu=153931/500000; zero-charge sharp column; former active input s=162,j=81; exact threshold box of width 10^-18; 278 fixed positive-charge competitors, two exceptional-charge records, and one infinite large-charge record",
+    "randomSeed": null,
+    "precision": "formal signs, the Sturm root count, all-order dominance, restart inequalities, and strict R0.52 comparisons use gmpy2.mpq exact rationals over GMP 6.3.0; plotted decimal strings are rounded only after exact evaluation",
+    "solver": "deterministic formal-series recurrence, exact Sturm chain, exact fixed-charge convex endpoints, exact s=1 and s=-1 theorems, coefficientwise squared-affine large-charge envelope, exact parity/Bernstein certificates, and an exact product-affine weighted fixed-point restart",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "rootBox": "strict opposite exact endpoint signs and exactly one Sturm root in width 10^-18",
+      "dominance": "strict exact rational gaps for all 281 competitor records",
+      "presentationSamples": "exact rational evaluations; no sampled value is used for a proof decision"
+    },
+    "scientificWallTimeSeconds": 143.26486016702256,
+    "monitoredWallTimeSeconds": 143.399436,
+    "samplingWallTimeSeconds": 3.5199793330102693,
+    "samplingMonitoredWallTimeSeconds": 3.631213,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 2,
+      "samplingReportIntervalSeconds": 1,
+      "formalProgressLog": "progress.ndjson",
+      "formalResourceLog": "resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 72,
+      "samplingSamples": 5
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 222.453,
+    "samplingMaximumObservedCpuPercent": 100.0,
+    "samplingMaximumObservedRssMiB": 45.297
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "threshold-profile.csv",
+      "format": "csv",
+      "schema": "121 exact-rational presentation samples with exact radius, zero-column deficit, former-active-column deficit, decimal renderings, root-side label, and non-proof classification.",
+      "bytes": 841363,
+      "sha256": "1c53bb695cecdc8fee523634694d26fc798891d8252f158db47708839b322646"
+    },
+    {
+      "path": "strict-gains.csv",
+      "format": "csv",
+      "schema": "Two formal exact gain factors and ppm renderings relative to the complete R0.52 affine upper bound.",
+      "bytes": 786,
+      "sha256": "cff2b1fd434c62c1d67061aacd21eeabd4b197bef32ccae6dfea8fbd01d5a016"
+    },
+    {
+      "path": "competitor-gaps.csv",
+      "format": "csv",
+      "schema": "All 281 formal exact competitor gaps ranked from nearest to farthest, with exact value, decimal rendering, digest, sector, and classification.",
+      "bytes": 1520864,
+      "sha256": "240ea70e76e21f4247856b81fc504eff6880b0f04ae9442d0ccbd382df23a851"
+    },
+    {
+      "path": "sampling-metadata.json",
+      "format": "json",
+      "schema": "Certificate hashes, figure source commit, center digest, exact sampling range, row counts, root box, R0.52 upper bound, arithmetic and randomness declarations, and wall time.",
+      "bytes": 6439,
+      "sha256": "c47ad4dc592da42bd4d5763485e612ba0fcb298b1310789f0c91b4e4cb28c887"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only formal-audit UTC timestamps, elapsed seconds, stages, and successful 28-check completion status.",
+      "bytes": 1222,
+      "sha256": "42dbb5bff1f1a2f36cd937d8213742ede07328156da41e4207d4514e562eecef"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Pinned two-second formal-audit process-tree samples with elapsed time, status, CPU, RSS, and GPU fields.",
+      "bytes": 5497,
+      "sha256": "b6f5571a45b164c22d0b7a2e9f221bd6c68782c362f78dce35c20cbeb195bb5c"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "One-second process-tree samples for the exact-rational figure-data generation run.",
+      "bytes": 506,
+      "sha256": "1c0f871ce0ea4c4fe7fc5e772477a80d7c2aa665868ad8ea35e59bcddd5c55f4"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r053",
+      "fileName": "edge-product-affine-charge-weight.json",
+      "bytes": 3341895,
+      "sha256": "5d6486dfcc6f2c016380a29698ed986213701b9441dd007d95acce4fc0ea67a5",
+      "extractionCommand": "prepare_data.py pins both the R0.52 and R0.53 certificate hashes, reconstructs and hashes the degree-80 center, evaluates the two leading columns at 121 exact radii, derives two exact strict gains, retains all 281 exact competitor gaps, and validate_data.py independently checks counts, monotonicity, signs near the certified root, exact gain identities, ordering, source pins, and monitored provenance"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "5b034acc4d1fdd2bf809f95839787eacddb5bf72b6fd00c5dd61c6752c505cb9",
+    "command": "MPLCONFIGDIR=tmp/r053-mplconfig tmp/r024-venv/bin/python figures/r053-product-affine-witness/fig-r053-product-affine-witness/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 112,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "70a6307a191a6c890d9936a72e4220a85484a0f11a3523a557191d712a7213e8"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "1a330e86180068211a4c9d407075952e2b57b04573a6c6ed1bf9e864b3f39efa"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2645",
+        "sha256": "de0422c130d3c08af8a4e13be7cf148787334fd8568ac6edd6783fbfa827765b"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我检验了一个简单有理乘积仿射权，并用精确 Sturm、全扇区与重启证书证明它严格越过完整单仿射族上界：固定重启增益超过 9.2209 ppm，阈值增益超过 10.7949 ppm，281 个竞争记录全部保持严格间隙。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 112 mm to rounding and the 600 dpi PNG is 4204 by 2645 pixels. The first color pass exposed crowded absolute-radius tick labels and an off-canvas large-charge annotation; the final source uses a clear relative-radius coordinate, a visible root line, and an inward tail label. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid diamonds, dashed open circles, distinct gain markers, the square tail marker, and logarithmic ordering remain distinguishable in grayscale. Titles, axes, annotations, exact parameters, scope statement, source footer, and research blossom are unclipped. Three CID TrueType DejaVu Serif resources are embedded and no Type3 fonts are present. Extracted PDF text contains the product-affine title, both strict gains, 281, s>=280, R0.53, and the Navier--Stokes scope limitation. validate_data.py independently checks every archived table and formal provenance."
+  }
+}

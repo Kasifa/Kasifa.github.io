@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.42：正则伸缩分解绕过精确的一步输运范数障碍，在约化典范边生成系统上认证共同半径 329/1000。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.42｜正则伸缩输运">
+  <meta property="og:description" content="输出次数精确消去后，一个凸两端点公式覆盖全部输入次数与荷；约化系统共同半径提高到 0.329。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-42-canonical-stretch.png">
+  <title>R0.42｜正则伸缩输运</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#barrier">旧障碍</a><a href="#theorem">伸缩定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.42 · 正则分解与全阶输运</div>
+        <h1>正则伸缩<br>输运</h1>
+        <p class="lead">旧一步输运范数在 \(r=0.282\) 已被已知八十阶多项式精确推过一。我改用 R0.29 的正则分解后，\(\mathcal L^{-1}\) 的输出次数与加权范数精确消去，一个凸两端点公式覆盖所有输入次数和荷。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 新半径已认证</span><strong>r* = 329/1000</strong><p>版本 v0.42 · 2026-08-19</p><p>相对 R0.41：× 1.169778</p><p>正式检查：26 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#barrier">01 · 精确旧障碍</a></li>
+        <li><a href="#factorization">02 · 正则分解</a></li>
+        <li><a href="#theorem">03 · 全阶伸缩定理</a></li>
+        <li><a href="#tail">04 · 未知主动修正</a></li>
+        <li><a href="#acceptance">05 · 0.282 验收</a></li>
+        <li><a href="#restart">06 · 0.329 重启</a></li>
+        <li><a href="#negative">07 · 0.330 负向控制</a></li>
+        <li><a href="#finite">08 · 有限精确回归</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与下一步</a></li>
+        <li><a href="#reproduce">11 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是约化典范边生成系统的全阶结论，不是三维正则性定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL INPUTS</span><strong>全部输入次数与荷</strong><p>连续斜率区间 \([-1,2]\) 的凸端点归约没有次数网格或荷截断。</p></div>
+            <div class="status"><span>PROVED · EXACT OPERATOR</span><strong>输出次数精确消去</strong><p>伸缩算子的列因子不再带输入次数前因子。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 \(329/1000\)</strong><p>主动尾、伸缩逆与指数重构均在同一开多圆盘闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>3055 + 990 项实现回归</strong><p>有限检查验证公式与实现，但不承担全阶证明。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论只适用于主动支持锥上的约化典范边生成系统和这里采用的加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 解全局光滑，也没有构造有限时奇性；\(0.330\) 上充分不等式失败不代表那里存在奇点。</div>
+        </section>
+
+        <section id="barrier"><div class="section-no">01 / Exact barrier</div><h2>旧输运门槛不是尾估计松弛，而是已知多项式的精确算子范数</h2>
+          <p>对中心单项式 \((i,q)\) 与输入单项式 \((j,s)\)，R0.40 的一步算子 \(T_a=(\mathcal L-1)^{-1}\{a,\cdot\}\) 有精确加权列因子</p>
+          <div class="equation">\[
+            \frac{i+j}{i+j-1}\frac{|i(s/j)-q|}{3}.
+          \]</div>
+          <p>在 R0.41 预先固定的验收点 \(r=141/500=0.282\) 和最坏端点 \(s/j=2\)，八十阶多项式中心单独给出</p>
+          <div class="equation result">\[
+            \boxed{1.0003748969281395>1.}
+          \]</div>
+          <p>未知主动修正只增加约 \(1.48235\times10^{-7}\)，完整旧界为 \(1.0003750451629853\)。因此继续压缩尾球不可能把同一算子、同一各向同性范数下的一步 Neumann 条件拉回一以下；必须改变等价逆问题，而不是继续修饰同一个界。</p>
+        </section>
+
+        <section id="factorization"><div class="section-no">02 / Canonical factorization</div><h2>两个输运场可由一个零初值伸缩场重构</h2>
+          <p>R0.29 的全阶形式恒等式给出 \(\{U,V\}=UV\) 和 \(U/V=(Z/W)e^{-a}\)。定义</p>
+          <div class="equation">\[
+            \phi=\frac12\log\frac{UV}{ZW},\qquad \phi_0=0.
+          \]</div>
+          <p>则两个归一化正则场满足</p>
+          <div class="equation result">\[
+            \boxed{U=Z e^{\phi-a/2},\qquad V=W e^{\phi+a/2}},
+          \]</div>
+          <p>而 \(\phi\) 只需解一个线性方程</p>
+          <div class="equation result">\[
+            \boxed{\mathcal L\phi-\{a,\phi\}=\tfrac12(X-Y)a.}
+          \]</div>
+          <p>新的逆问题是 \(I-S_a\)，其中 \(S_a=\mathcal L^{-1}\{a,\cdot\}\)。三角形式唯一性把这个解析解与 R0.29 的正则形式级数识别为同一对象；这里没有替换方程或引入经验闭合。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / All-order stretch theorem</div><h2>输出次数与范数权重精确抵消，完整列只剩共同斜率</h2>
+          <p>在零常数项次数加权 Wiener 空间中取</p>
+          <div class="equation">\[
+            \|f\|_{\mathcal B_r}=\sum_{j,s}j|f_{j,s}|r^j.
+          \]</div>
+          <p>单项式 Poisson 括号的系数为 \((is-qj)/3\)。除以输出次数 \(i+j\)，再乘输出权重 \(i+j\)，最后除以输入权重 \(j\)，得到精确列因子</p>
+          <div class="equation result">\[
+            \boxed{\frac{|is-qj|}{3j}=\frac{|i(s/j)-q|}{3}.}
+          \]</div>
+          <p>它不含任何额外的输入次数前因子。对多项式中心 \(p\)，令共同输入斜率 \(x=s/j\in[-1,2]\)，完整列为</p>
+          <div class="equation">\[
+            C_p(x;r)=\sum_{i,q}|p_{i,q}|r^i\frac{|ix-q|}{3}.
+          \]</div>
+          <p>这是绝对值仿射函数的正和，因此为凸函数；两个端点 \(x=-1,2\) 都由真实单项式达到。于是</p>
+          <div class="equation result">\[
+            \boxed{\|S_p\|=\max\{C_p(-1;r),C_p(2;r)\}.}
+          \]</div>
+          <div class="proof"><strong>全阶含义。</strong>公式同时覆盖每个 \(j\ge1\) 和每个允许荷 \(-j\le s\le2j\)。有限次数列只用于检查代码；定理来自连续斜率区间上的凸性和真实端点。</div>
+        </section>
+
+        <section id="tail"><div class="section-no">04 / Unknown active correction</div><h2>严格尾只增加两个显式端点常数</h2>
+          <p>写主动场 \(a=p+h\)，其中 \(h\) 只含 \(i>80\) 的次数，\(-1\le q\le2i\)，并满足 \(\|h\|_{\mathcal B_r}\le\varepsilon\)。在两个端点，尾部相对权重分别满足</p>
+          <div class="equation">\[
+            x=-1:\quad\frac{i+q}{3i}\le1,
+            \qquad
+            x=2:\quad\frac{2i-q}{3i}\le\frac{163}{243}.
+          \]</div>
+          <p>所以完整伸缩算子满足</p>
+          <div class="equation">\[
+            \|S_{p+h}\|\le\max\left\{C_p(-1;r)+\varepsilon,
+            C_p(2;r)+\frac{163}{243}\varepsilon\right\}=:S.
+          \]</div>
+          <p>方程右端的多项式精确范数为</p>
+          <div class="equation">\[
+            G_p(r)=\sum_{i,q}|p_{i,q}|r^i\frac{|i-2q|}{6},
+          \]</div>
+          <p>未知尾最多增加 \(\varepsilon/2\)。若 \(S<1\)，则</p>
+          <div class="equation result">\[
+            \boxed{\|\phi\|_{\mathcal B_r}\le\frac{G_p(r)+\varepsilon/2}{1-S}.}
+          \]</div>
+          <p>\(\phi\) 无需足够小才能指数化：零常数项的 \(\mathcal B_r\) 元素嵌入普通 Wiener 代数，其指数仍具有有限 Wiener 与次数加权范数。</p>
+        </section>
+
+        <section id="acceptance"><div class="section-no">05 / Preassigned acceptance</div><h2>0.282 从精确旧失败转为严格新通过</h2>
+          <table><thead><tr><th>r = 0.282 上的量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>八十阶旧直接列</td><td>1.0003748969281395</td><td>精确大于一</td></tr>
+            <tr><td>旧直接列加主动尾</td><td>1.0003750451629853</td><td>一步逆失败</td></tr>
+            <tr><td>新正则伸缩界</td><td>0.5817058427617202</td><td>严格小于一</td></tr>
+            <tr><td>伸缩逆范数上界</td><td>2.3906621278249255</td><td>有限</td></tr>
+            <tr><td>\(\phi\) 范数上界</td><td>0.7085442657621405</td><td>解析重构通过</td></tr>
+          </tbody></table>
+          <p>验收点在 R0.41 结束时已经公开固定。主动场与半径均未改变；变化只来自对同一正则对象采用等价的正则伸缩分解。这个对照排除了事后挑选容易点的解释。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">06 / Exact restart</div><h2>共同解析半径提高到 \(329/1000\)</h2>
+          <p>在定理固定后做精确千分位扫描：\(0.329\) 通过，下一点 \(0.330\) 失败继承的主动尾门。扫描只选择报告半径；选中点仍由全阶不等式认证。</p>
+          <div class="equation result">\[
+            \boxed{r_*=\frac{329}{1000}=0.329.}
+          \]</div>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>全阶主动尾界</td><td>0.9978571913592614</td><td>严格小于一；最坏为大荷扇区</td></tr>
+            <tr><td>尾球半径 \(\varepsilon\)</td><td>2.1428086407 × 10⁻⁹</td><td>正收缩余量除以一百万</td></tr>
+            <tr><td>完整残差</td><td>1.4319669386 × 10⁻³³</td><td>精确有限多项式</td></tr>
+            <tr><td>球映射上界</td><td>2.1382170256 × 10⁻⁹</td><td>小于 \(\varepsilon\)</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9978572042161132</td><td>严格小于一</td></tr>
+            <tr><td>旧直接输运界</td><td>1.2848914513187263</td><td>不可用于一步逆</td></tr>
+            <tr><td>新正则伸缩界</td><td>0.7633728925335545</td><td>严格小于一</td></tr>
+            <tr><td>伸缩逆范数上界</td><td>4.226058504906515</td><td>有限</td></tr>
+            <tr><td>\(\phi\) 范数上界</td><td>1.4940312839832562</td><td>指数重构有限</td></tr>
+          </tbody></table>
+          <p>共同半径相对 R0.41 增长 \(1316/1125\approx1.16978\)；固定荷变量 \(R=Z^2W\) 的圆盘半径增长其三次方 \(2279122496/1423828125\approx1.60070\)。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">07 / Adjacent negative control</div><h2>0.330 失败的是继承的大荷主动尾充分界</h2>
+          <p>在下一千分位点 \(r=33/100\)，八十阶多项式伸缩诊断仍为</p>
+          <div class="equation">\[0.7676483824383634<1,\]</div>
+          <p>但当前次数分辨主动尾定理给出</p>
+          <div class="equation result">\[
+            \boxed{1.0028721508539940>1.}
+          \]</div>
+          <p>因此 R0.42 把证明边界移回继承的大荷主动扇区 \(s\ge241\)。由于主动修正尚未在 \(0.330\) 认证，图中的伸缩值只代表已知八十阶多项式诊断，不能称为完整伸缩界。失败只属于当前充分不等式。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">08 / Finite exact regressions</div><h2>有限计算验证实现，不替代连续端点定理</h2>
+          <table><thead><tr><th>检查</th><th>规模</th><th>结果</th></tr></thead><tbody>
+            <tr><td>闭式伸缩系数</td><td>总次数 10 内 3055 对单项式</td><td>与 \(\mathcal L^{-1}\{a,\cdot\}\) 完全一致</td></tr>
+            <tr><td>完整输入列</td><td>\(j=1,2,5,20,81\)</td><td>均精确达到 \(x=2\) 端点</td></tr>
+            <tr><td>指数正则分解</td><td>输运总次数 30</td><td>930 个系数与 60 个整除检查全通过</td></tr>
+            <tr><td>主动递推</td><td>1,113,168 个有序相互作用</td><td>八十阶中心与 160 阶完整残差摘要匹配 R0.41</td></tr>
+          </tbody></table>
+          <p>形式恒等式、输出次数消去、凸端点归约、尾端点乘子以及 \(0.329\) 的 Banach 重启是全阶结论。上表和千分位扫描属于有限精确检查；最近复奇点的位置仍未知。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>半径增长、旧障碍、新证明门与相邻边界统一归档</h2>
+          <figure>
+            <img src="/figures/r0-42-canonical-stretch.svg" alt="R0.42 正则伸缩输运的半径阶梯、0.282 旧障碍分解、0.329 证明门与 0.330 相邻控制">
+            <figcaption>图 R0.42-1。左上给出七阶段共同半径与固定荷半径；右上把 0.282 的旧直接多项式和微小尾贡献与新伸缩分解并列；左下列出 0.329 的全部关键门；右下显示 0.329 与 0.330 的主动尾边界。PDF、SVG、600 dpi PNG、源数据、清单和 SHA-256 摘要一并归档，彩色与真实灰度最终尺寸均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and next</div><h2>结构价值高于半径数字；对千禧年问题的直接价值仍然有限</h2>
+          <p>R0.42 的核心进展不是把 \(0.28125\) 改成 \(0.329\)，而是确认旧障碍为精确算子范数后，通过已有正则恒等式改变逆问题。在新算子中，\(\mathcal L^{-1}\) 的输出次数与加权范数完全抵消，因而一个保持正性的凸两端点公式同时控制无穷多个输入次数和荷。它不是靠未经证明的符号抵消降低界。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍很小。尚无定理把这个约化典范边系统的解析半径传递到完整 PDE 的任意临界相互作用；当前结果也没有给出尺度临界先验估计、能量级联控制或奇性排除。准确定位应是：派生解析模型中的严格结构进展，而非完整问题的局部解答。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 \(0.329\) 称为真实解析边界，不能把 \(0.330\) 的充分界失败解释成奇性，不能把有限列或有限扫描称为全阶证明，也不能声称已证明或反驳三维 Navier–Stokes 正则性。</div>
+          <h3>R0.43：分解 \(s\ge241\) 的大荷主动扇区</h3>
+          <ol>
+            <li>固定 \(r=0.330\) 为首个验收点，分解 1.002872 的多项式、尾部与扇区来源；</li>
+            <li>保留大荷解析界中共同的荷比与次数变量，检查是否再次发生独立最大化；</li>
+            <li>先寻找保持卷积闭合和正性的全阶相关性估计，再做有限精确回归；</li>
+            <li>若相关性恢复不足，设计与正则分解兼容的正各向异性权重，并明确其 Banach 代数常数；</li>
+            <li>无论通过或失败，都保留预指定验收点、精确证书、资源监控与正式附图。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility</div><h2>源提交、失败尝试、成功证书、资源监控与图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_stretch_transport_audit.py --max-total-degree 80 --target-radius 329/1000 --acceptance-radius 141/500 --failure-probe-radius 33/100 --charge-cutoff 241 --finite-column-degrees 1,2,5,20,81 --formula-regression-degree 10 --factorization-degree 30 --ball-divisor 1000000 --source-commit 5ff24eae1cb9f73a1aac6965b07f0c1f12c62477 --progress --check --pretty --output /tmp/r042.json</code></div>
+          <p>正式源提交为 <code>5ff24eae1cb9f73a1aac6965b07f0c1f12c62477</code>。成功计算耗时 36.271151 秒；监控历时 36.405242 秒、采样 244 次，峰值 CPU 为 100.0%，峰值常驻内存为 45.641 MiB。没有使用 GPU、随机种子或浮点判号，26 项正式检查全部通过。</p>
+          <p>第一次正式启动在 13.98 秒时被停止，因为人工扩展的短提交号不正确；它没有生成证书，也没有到达数学阈值。其进度与资源日志被原样保留。成功证书 SHA-256 为 <code>0c426070c47afb519fc9c705cbe11ed59b82ee6b28e766696280379b15e5dfa5</code>。</p>
+          <p><a href="/notes/r0-42.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_stretch_transport_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_stretch_transport_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r042">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r042-canonical-stretch/fig-r042-canonical-stretch">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-29.html">R0.29：正则输运约化</a>。给出本阶段采用的全阶正则分解。</li>
+            <li><a href="/notes/r0-40.html">R0.40：精确两端点输运</a>。证明旧一步输运的全阶端点公式。</li>
+            <li><a href="/notes/r0-41.html">R0.41：次数分辨主动尾</a>。提供本阶段继承的全阶主动重启。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.42 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

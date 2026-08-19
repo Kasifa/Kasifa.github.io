@@ -1038,7 +1038,7 @@
 
     @media (max-width: 900px) {
       .hero-inner { gap: 38px; }
-      .page-shell { gap: 44px; }
+      .page-shell { grid-template-columns: 1fr; gap: 44px; }
       .toc li:nth-child(odd) { border-right-color: var(--line); }
     }
     @media (max-width: 620px) {
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.26</strong>网页版本</span>
+            <span><strong>v0.27</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>保留最坏 \(x=2\) 输运端点中的更多共同相关性，检验能否认证相邻半径 \(141/500=0.282\)。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>分解 \(r=0.330\) 上继承的大荷主动尾界，检验其中是否仍有可恢复的共同荷比相关性。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2741,7 +2741,45 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_degree_resolved_tail_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r041-degree-resolved/fig-r041-degree-resolved-tail">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.42：</strong>分解目标点最坏的 \(x=2\) 输运列，保留仍被独立最大化的共同变量，并把 \(141/500=0.282\) 固定为首个验收点。</p>
+            <p><strong style="color:var(--gold)">R0.42 已完成：</strong>正则伸缩分解绕过旧直接输运的精确范数障碍，全部输入次数与荷由一个无次数前因子的凸两端点公式覆盖，共同解析半径提高到 \(329/1000\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.42 · 2026-08-19</p>
+            <h3>正则伸缩输运、精确次数消去与共同解析半径扩张</h3>
+            <p>
+              R0.41 在 \(r=0.282\) 的旧一步输运界为 \(1.0003750452&gt;1\)。
+              其中八十阶已知多项式已经贡献 \(1.0003748969\)，未知主动尾只有约
+              \(1.48\times10^{-7}\)；因此旧障碍是精确算子范数，而不是尾估计松弛。
+            </p>
+            <p>
+              我改用 R0.29 的正则分解
+              \[
+              U=Z e^{\phi-a/2},\qquad V=W e^{\phi+a/2},
+              \]
+              其中 \(\mathcal L\phi-\{a,\phi\}=\tfrac12(X-Y)a\)。
+              对伸缩算子 \(S_a=\mathcal L^{-1}\{a,\cdot\}\)，输出次数除子与次数加权范数精确抵消，单项式列因子只剩 \(|i(s/j)-q|/3\)。
+            </p>
+            <p>
+              完整多项式列关于共同斜率 \(x=s/j\in[-1,2]\) 为凸函数，所以两个真实端点同时覆盖每个输入次数和荷；严格主动尾在端点只增加 \(1\) 与 \(163/243\) 两个解析乘子。
+              预定验收点 \(0.282\) 的新伸缩界为 \(0.5817058428&lt;1\)，在 \(r_*=329/1000\) 上则为 \(0.7633728925&lt;1\)。
+            </p>
+            <p>
+              同一半径上的全阶主动尾界为 \(0.9978571914&lt;1\)，球映射、Lipschitz 与指数重构均严格闭合。
+              下一千分位点 \(0.330\) 的当前主动尾充分界为 \(1.0028721509&gt;1\)，证明边界已移回继承的大荷主动扇区。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范边生成系统中覆盖全部输入次数与荷的全阶定理。
+              它没有建立该系统与完整三维 PDE 临界解之间的控制桥梁，也没有证明正则性或奇性。
+            </p>
+            <p>
+              <a href="/notes/r0-42.html"><strong>阅读 R0.42 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-42.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r042">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_stretch_transport_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r042-canonical-stretch/fig-r042-canonical-stretch">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.43：</strong>把 \(r=0.330\) 固定为首个验收点，分解 \(s\ge241\) 大荷主动扇区的 1.002872 超额，先检验共同荷比相关性；若不足，再研究保持卷积闭合与正则分解的正各向异性权重。</p>
           </div>
         </section>
 
@@ -2756,7 +2794,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.26 · 2026-08-19<br>
+        综述 v0.27 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

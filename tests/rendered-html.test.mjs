@@ -51,6 +51,8 @@ const fortiethNoteUrl = new URL("../public/notes/r0-40.html", import.meta.url);
 const fortiethPdfUrl = new URL("../public/notes/r0-40.pdf", import.meta.url);
 const fortyFirstNoteUrl = new URL("../public/notes/r0-41.html", import.meta.url);
 const fortyFirstPdfUrl = new URL("../public/notes/r0-41.pdf", import.meta.url);
+const fortySecondNoteUrl = new URL("../public/notes/r0-42.html", import.meta.url);
+const fortySecondPdfUrl = new URL("../public/notes/r0-42.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -813,6 +815,28 @@ test("publishes and links the degree-resolved active-tail theorem", async () => 
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 
+test("publishes and links the canonical-stretch transport theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortySecondNoteUrl, "utf8"),
+    readFile(fortySecondPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-42\.html"/);
+  assert.match(home, /href="\/notes\/r0-42\.pdf"/);
+  assert.match(note, /研究笔记 R0\.42/);
+  assert.match(note, /href="\/notes\/r0-42\.pdf"/);
+  assert.match(note, /r_\*=\\frac\{329\}\{1000\}/);
+  assert.match(note, /输出次数与范数权重精确抵消/);
+  assert.match(note, /0\.5817058427617202/);
+  assert.match(note, /0\.7633728925335545/);
+  assert.match(note, /1\.0028721508539940/);
+  assert.match(note, /5ff24eae1cb9f73a1aac6965b07f0c1f12c62477/);
+  assert.match(note, /r0-42-canonical-stretch\.svg/);
+  assert.match(note, /不是三维正则性定理/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -825,7 +849,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote, thirtyFourthNote, thirtyFifthNote, thirtySixthNote, thirtySeventhNote, thirtyEighthNote, thirtyNinthNote, fortiethNote, fortyFirstNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote, thirtyFourthNote, thirtyFifthNote, thirtySixthNote, thirtySeventhNote, thirtyEighthNote, thirtyNinthNote, fortiethNote, fortyFirstNote, fortySecondNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -868,6 +892,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(thirtyNinthNoteUrl, "utf8"),
     readFile(fortiethNoteUrl, "utf8"),
     readFile(fortyFirstNoteUrl, "utf8"),
+    readFile(fortySecondNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -1079,6 +1104,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(fortyFirstNote, /我保留固定输入荷下所有中心单项式共同看到的斜率/);
   assert.doesNotMatch(
     fortyFirstNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(fortySecondNote, /我改用 R0\.29 的正则分解/);
+  assert.doesNotMatch(
+    fortySecondNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

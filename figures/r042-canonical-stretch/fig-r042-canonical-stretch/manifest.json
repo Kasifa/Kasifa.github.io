@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r042-canonical-stretch",
+  "status": "formal",
+  "analyticalQuestion": "Can the R0.29 canonical factorization replace the exact R0.41 direct-transport norm barrier, certify the preassigned r=0.282 acceptance point, and raise the reduced-system common radius while retaining all input degrees and charges?",
+  "supportedClaim": "For the canonical stretch operator S_a=L^(-1){a,.}, the weighted monomial column factor is |i(s/j)-q|/3. The output-degree divisor cancels exactly, leaving no input-degree prefactor. Convexity on the genuine common slope interval [-1,2] therefore reduces every polynomial column to the two endpoints, while the active tail has exact endpoint multipliers 1 and 163/243. Combined with the R0.41 all-order active restart, this proves the reduced canonical fields at r=329/1000. The old direct transport norm is already 1.0003750451629853 at r=0.282, whereas the equivalent stretch bound is 0.5817058427617202. At r=0.330 the present active-tail sufficient inequality is 1.002872150853994 and fails; the degree-80 polynomial stretch remains only a diagnostic there.",
+  "createdAt": "2026-08-19T18:31:43+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "5ff24eae1cb9f73a1aac6965b07f0c1f12c62477",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "logarithmic normalized radius ladder and three focused threshold-lollipop panels",
+    "variants": [
+      "seven-stage common and fixed-charge radius ladder normalized to R0.31",
+      "four exact direct-versus-canonical polynomial and tail components at the preassigned r=0.282 acceptance point",
+      "nine exact active, fixed-point, direct-transport, stretch, and canonical-field proof gates at r=0.329",
+      "active-tail and polynomial-stretch boundary bracket at r=0.329 and r=0.330"
+    ],
+    "takeaway": "Canonical stretch removes the exact one-step direct-transport barrier: r=0.282 passes, and the reduced canonical fields are certified at r=0.329. The next millesimal point fails the inherited large-charge active-tail inequality rather than the displayed polynomial stretch diagnostic.",
+    "dataSufficiency": "Fourteen exact radius rows, nine proof gates, twelve endpoint components, and five finite exact complete columns. The theorem covers every input degree and charge through convex endpoint reduction and analytic tail multipliers; the five finite columns are implementation regressions only.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "The radius stages use distinct marker shapes; direct transport, canonical stretch, active tail, and thresholds use marker shape, line style, open-versus-filled faces, and explicit labels in addition to color.",
+    "finalSurface": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r042/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_stretch_transport_audit.py --max-total-degree 80 --target-radius 329/1000 --acceptance-radius 141/500 --failure-probe-radius 33/100 --charge-cutoff 241 --finite-column-degrees 1,2,5,20,81 --formula-regression-degree 10 --factorization-degree 30 --ball-divisor 1000000 --source-commit 5ff24eae1cb9f73a1aac6965b07f0c1f12c62477 --progress --progress-log research/certificates/r042/progress.ndjson --check --pretty --output research/certificates/r042/edge-stretch-transport.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; target r=329/1000; R0.41 all-order active restart; canonical factorization U=Z exp(phi-a/2), V=W exp(phi+a/2); complete two-endpoint stretch theorem on input slope [-1,2]; exact active-tail multipliers 1 and 163/243; acceptance radius 141/500; adjacent millesimal control 33/100",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, inherited all-order active-tail theorem, exact canonical coefficient and degree cancellation, all-order convex two-endpoint stretch reduction, rational fixed-point and exponential Banach-algebra inequalities, exact factorization regression, and finite exact complete-column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against pinned exact certificates"
+    },
+    "wallTimeSeconds": 36.27115066599799,
+    "scientificWallTimeSeconds": 36.27115066599799,
+    "monitoredWallTimeSeconds": 36.405242,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 244,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "all-order active-tail gates",
+        "canonical stretch endpoint theorem",
+        "rational fixed-point and canonical-field gates",
+        "closed coefficient and finite complete-column regressions",
+        "canonical exponential factorization",
+        "CPU percent",
+        "resident memory"
+      ]
+    },
+    "provenanceNote": "A first launch was interrupted after 13.98 seconds when a manually expanded short commit was found to be incorrect. It produced no certificate and reached no threshold. Its append-only progress and resource logs are preserved in research/certificates/r042; only the successful run above is used here."
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 45.641
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "R0.31 and R0.37 through R0.42 exact common and fixed-charge radii, normalized to R0.31.",
+      "bytes": 1018,
+      "sha256": "55049e4ee6dc4a9c1cfa40574de7831824c6c6f8f610e89178bbe9b12ecbf9a8"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Nine exact active-tail, fixed-point, direct-transport, canonical-stretch, and canonical-field sufficient inequalities at r=0.282, 0.329, and 0.330 against threshold one.",
+      "bytes": 8491,
+      "sha256": "50f1e7254d155a438d774f831b16249752174d46154d0ce0717934045f5f6650"
+    },
+    {
+      "path": "endpoint-decomposition.csv",
+      "format": "csv",
+      "schema": "Twelve exact polynomial, tail, and total endpoint components for direct transport and canonical stretch at r=0.282, together with target and adjacent-control boundary diagnostics.",
+      "bytes": 11347,
+      "sha256": "c20fb32afc07a44fd31058db0ff23f2f3bb1d9923a26c62b2f1f5691c581c094"
+    },
+    {
+      "path": "finite-columns.csv",
+      "format": "csv",
+      "schema": "Five exact complete polynomial stretch columns for input degrees 1, 2, 5, 20, and 81, including endpoint attainment; finite implementation regression only.",
+      "bytes": 9293,
+      "sha256": "0a473e37528e00b45674ebc48e65722d2c8d71f3e5355c9794a22058ee0cd456"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 4169,
+      "sha256": "b4f2282f7144bd03c0c1d0e58f3aa48e1f01137981274e5a555562a871de2038"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 18001,
+      "sha256": "b0cb49529dc0a835c18114c31392bdbd38a9b5af619811356c57aacc5777f310"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r042",
+      "fileName": "edge-stretch-transport.json",
+      "bytes": 125607,
+      "sha256": "0c426070c47afb519fc9c705cbe11ed59b82ee6b28e766696280379b15e5dfa5",
+      "extractionCommand": "prepare_data.py extracts the R0.42 radius, gate, endpoint, and finite-column tables; validate_data.py pins the certificate and source commit, checks all 26 formal flags, compares every exact Fraction, independently reconstructs the degree-80 polynomial endpoint columns, and verifies archived progress and resource records"
+    },
+    {
+      "location": "research/certificates/r041",
+      "fileName": "edge-degree-resolved-tail.json",
+      "bytes": 1059621,
+      "sha256": "1eb4bbe5f7e53e9eacf7f445b716194ab492603a7de35884549e9c7def640653",
+      "extractionCommand": "prepare_data.py reads the pinned R0.41 radius ladder and preassigned r=141/500 direct-transport failure; validate_data.py separately pins and verifies the R0.41 certificate hash"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r042-canonical-stretch/fig-r042-canonical-stretch/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "7698d1aea74ec916f3f14382847abe1202b128bc32ec88ec92995820a5de5e30"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "b64bcbee760da40aca1d0277b83347b49210e89ffec79cf53ef89259c5dbaf05"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "c7fb05f4579d5ae958b0873c0c7b380c9c42b1b10b236b89794c10b85f5c5cbc"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "正则伸缩分解消除了旧的一步输运范数障碍：r=0.282 的旧直接范数为 1.000375，但等价伸缩界为 0.581706；约化正则场在 r=0.329 获得全阶认证。相邻 0.330 失败的是继承的大荷主动尾充分不等式。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export and a true grayscale conversion were inspected after widening the left margin and relocating threshold labels. Marker shape, open versus filled faces, line style, and explicit value labels preserve distinctions without color. Titles, axes, labels, threshold annotations, and footer lines are unclipped. Five subsetted CID TrueType fonts are embedded with Unicode maps. PDF text extraction contains the R0.42 label, target radius, all three threshold values, canonical-stretch claim, and scope limitation. validate_data.py independently checks every plotted value against pinned exact certificates and reconstructs both degree-80 polynomial endpoint columns."
+  }
+}

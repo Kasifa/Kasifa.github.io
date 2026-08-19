@@ -30,6 +30,10 @@ const r041ManifestUrl = new URL(
   "../figures/r041-degree-resolved/fig-r041-degree-resolved-tail/manifest.json",
   import.meta.url,
 );
+const r042ManifestUrl = new URL(
+  "../figures/r042-canonical-stretch/fig-r042-canonical-stretch/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -187,6 +191,31 @@ test("archives the formal R0.41 degree-resolved active-tail figure", async () =>
   assert.match(manifest.supportedClaim, /1\.0003750451629852617/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 274);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.42 canonical-stretch transport figure", async () => {
+  const manifest = JSON.parse(await readFile(r042ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r042-canonical-stretch");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "5ff24eae1cb9f73a1aac6965b07f0c1f12c62477",
+  );
+  assert.match(manifest.supportedClaim, /no input-degree prefactor/);
+  assert.match(manifest.supportedClaim, /r=329\/1000/);
+  assert.match(manifest.supportedClaim, /1\.002872150853994/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 244);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(

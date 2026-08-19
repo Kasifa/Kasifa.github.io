@@ -3001,7 +3001,52 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_lattice_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.48：</strong>为活跃 \(s=162,j=81\) 列构造精确阈值多项式，用 Sturm 序列隔离唯一根，并在整个隔离区间上证明全部竞争扇区严格更小。</p>
+            <p><strong style="color:var(--gold)">R0.48 已完成：</strong>活跃列的唯一正根已被隔离到宽度 \(10^{-18}\) 的有理区间；整个相邻百万分位窗口内，243 个竞争对象均严格更小。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.48 · 2026-08-19</p>
+            <h3>唯一阈值根、精确 Sturm 计数与 243 个竞争对象的全窗口主导</h3>
+            <p>
+              R0.47 只给出相邻百万分位的通过点和失败点。R0.48 把真实
+              \(s=162,j=81\) 活跃列写成显式 80 次多项式
+              \[
+              A(r)=\sum_{i=1}^{80}\alpha_i r^i,\qquad \alpha_i&gt;0.
+              \]
+              因此 \(P(r)=A(r)-1\) 在正轴严格递增，正根全局唯一。
+            </p>
+            <p>
+              40 次精确有理二分把根隔离在
+              \[
+              0.376932499290527340&lt;r_*&lt;0.376932499290527341.
+              \]
+              独立的 81 项 Sturm 序列在两端的变号数由 40 降到 39，
+              且没有端点零值，所以该宽度 \(10^{-18}\) 的区间恰含一根。
+            </p>
+            <p>
+              每个加权列都是半径的非负系数多项式。我用右端竞争上界与左端
+              活跃值做单调夹逼，覆盖 238 个其他固定正荷、\(s=162\) 的一个
+              非活跃端点和另外四个穷尽扇区。最接近者为 \(s=164\)，仍留下
+              \(9.9933786489\times10^{-5}\) 的严格间隙。
+            </p>
+            <p>
+              因而整个 \([0.376932,0.376933]\) 上，诱导范数都等于同一个
+              活跃真实列：根下小于一，根处等于一，根上大于一。这是当前
+              二块加权 \(\ell^1\) 范数的局部锐阈值，不是 PDE 奇性或正则性定理。
+            </p>
+            <p>
+              <strong>结论边界：</strong>次数 80 中心是有限精确构造；根隔离、
+              Sturm 计数和 243 个间隙是精确证书。101 个曲线点只用于附图展示，
+              当前仍没有建立到任意三维速度场尺度临界范数的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-48.html"><strong>阅读 R0.48 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-48.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r048">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_threshold_root_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r048-threshold-root/fig-r048-threshold-root">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.49：</strong>检验允许的荷分辨对角权重能否真正降低 \(s=162,j=81\) 障碍；若不能，则证明该权重类的无增益结论。</p>
           </div>
         </section>
 

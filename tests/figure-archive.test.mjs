@@ -54,6 +54,10 @@ const r047ManifestUrl = new URL(
   "../figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice/manifest.json",
   import.meta.url,
 );
+const r048ManifestUrl = new URL(
+  "../figures/r048-threshold-root/fig-r048-threshold-root/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -361,6 +365,31 @@ test("archives the formal R0.47 charge-degree lattice figure", async () => {
   assert.match(manifest.supportedClaim, /1\.0000026584572409359/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 458);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 142);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.48 exact threshold-root figure", async () => {
+  const manifest = JSON.parse(await readFile(r048ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r048-threshold-root");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "fe65dcb365eca9d934c3ec6055c06d7a7c1a515c",
+  );
+  assert.match(manifest.supportedClaim, /globally unique positive root/);
+  assert.match(manifest.supportedClaim, /0\.376932499290527340/);
+  assert.match(manifest.supportedClaim, /243 competing columns and sectors/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 144);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 142);
   assert.deepEqual(

@@ -63,6 +63,8 @@ const fortySixthNoteUrl = new URL("../public/notes/r0-46.html", import.meta.url)
 const fortySixthPdfUrl = new URL("../public/notes/r0-46.pdf", import.meta.url);
 const fortySeventhNoteUrl = new URL("../public/notes/r0-47.html", import.meta.url);
 const fortySeventhPdfUrl = new URL("../public/notes/r0-47.pdf", import.meta.url);
+const fortyEighthNoteUrl = new URL("../public/notes/r0-48.html", import.meta.url);
+const fortyEighthPdfUrl = new URL("../public/notes/r0-48.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -966,6 +968,34 @@ test("publishes and links the exact charge-degree lattice endpoint theorem", asy
   assert.match(note, /r0-47-charge-degree-lattice\.svg/);
   assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
   assert.match(note, /我把真实格点约束一直保留到完整列和中/);
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the exact threshold-root theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortyEighthNoteUrl, "utf8"),
+    readFile(fortyEighthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-48\.html"/);
+  assert.match(home, /href="\/notes\/r0-48\.pdf"/);
+  assert.match(note, /研究笔记 R0\.48/);
+  assert.match(note, /href="\/notes\/r0-48\.pdf"/);
+  assert.ok(note.includes("243 个竞争对象在整个窗口更小"));
+  assert.match(note, /0\.376932499290527340/);
+  assert.match(note, /9\.9933786489298977945/);
+  assert.match(note, /P\(r\)\\to\+\\infty/);
+  assert.match(note, /\\omega_\{a\+b\}\\le\\omega_a\\omega_b/);
+  assert.doesNotMatch(note, /\(rge0\)|\(rin I\)|\(sge241\)|\(omega_/);
+  assert.match(note, /fe65dcb365eca9d934c3ec6055c06d7a7c1a515c/);
+  assert.match(note, /r0-48-threshold-root\.svg/);
+  assert.match(note, /这不是三维不可压 Navier–Stokes 正则性或奇性定理/);
+  assert.match(note, /我把真实活跃列写成 80 次正系数多项式/);
   assert.doesNotMatch(
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,

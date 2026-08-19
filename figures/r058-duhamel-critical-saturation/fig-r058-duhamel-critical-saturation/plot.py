@@ -140,7 +140,7 @@ def draw() -> None:
         norm_axis.set_title("(b) Certified bilinear scaling", loc="left", pad=5)
         norm_axis.loglog(shells, geometric_midpoint(block_lower, block_upper), color=GOLD, linewidth=1.0, label=r"block: $\Theta(L^{-2})$")
         norm_axis.fill_between(shells, block_lower, block_upper, color=PALE_GOLD, alpha=0.35, linewidth=0)
-        norm_axis.loglog(shells, geometric_midpoint(x_lower, x_upper), color=BLUE, linewidth=1.05, label=r"$\mathcal X^{-1}$: $\Theta(L^{-1})$")
+        norm_axis.loglog(shells, geometric_midpoint(x_lower, x_upper), color=BLUE, linewidth=1.05, label=r"$X^{-1}$: $\Theta(L^{-1})$")
         norm_axis.fill_between(shells, x_lower, x_upper, color=PALE_BLUE, alpha=0.32, linewidth=0)
         norm_axis.loglog(shells, geometric_midpoint(h_lower, h_upper), color=RED, linewidth=0.9, linestyle=(0, (4, 2)), label=r"$\dot H^{1/2}$: $\Theta(L^{-3})$")
         norm_axis.loglog(shells, heat_lower, color=GREEN, linewidth=1.0, label=r"heat $B^{-1}$: $\Omega(1)$")

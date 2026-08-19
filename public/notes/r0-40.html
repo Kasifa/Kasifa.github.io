@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.40：证明归一化输运算子的精确两端点全阶定理，并把约化典范系统的共同解析半径认证到 32/125。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.40｜精确两端点输运">
+  <meta property="og:description" content="凸性与次数单调性把全部输入斜率和次数归约到两个真实端点，使共同解析半径提高到 32/125。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-40-two-endpoint-transport.png">
+  <title>R0.40｜精确两端点输运</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure{break-inside:avoid}thead{display:table-header-group}tr,h2,h3{break-inside:avoid}.section-no,h2,h3{break-after:avoid}h2,h3{break-before:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#column">精确列</a><a href="#theorem">两端点定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.40 · 斜率与次数的精确归约</div>
+        <h1>精确两端点<br>输运</h1>
+        <p class="lead">我不再对每个中心单项式分别选取最坏输入端点。完整列和关于输入斜率是凸函数，因此全局最大值只需比较两个真实端点；输入次数的单调性又把每个端点的最大值降到一次输入。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 新半径已认证</span><strong>r* = 32/125</strong><p>版本 v0.40 · 2026-08-19</p><p>相对 R0.39：× 1.289673</p><p>正式检查：20 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#column">01 · 精确输运列</a></li><li><a href="#theorem">02 · 两端点全阶定理</a></li><li><a href="#tail">03 · 未知尾修正</a></li><li><a href="#restart">04 · 精确重启</a></li><li><a href="#negative">05 · 相邻负向控制</a></li><li><a href="#finite">06 · 有限回归</a></li><li><a href="#figure">07 · 期刊附图</a></li><li><a href="#meaning">08 · 价值与下一步</a></li><li><a href="#reproduce">09 · 复现与前序记录</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是约化边系统的全阶输运定理，不是完整三维方程的解答</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL SLOPES</span><strong>全部输入斜率归约到两端点</strong><p>凸性覆盖闭区间 \(s/j\in[-1,2]\)，没有斜率网格或截断。</p></div>
+            <div class="status"><span>PROVED · ALL DEGREES</span><strong>每个端点的最大值在 \(j=1\)</strong><p>次数因子严格递减，因此没有输入次数上限。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 \(32/125\)</strong><p>八十阶中心、完整残差和无穷尾球全部用精确有理数闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>3055 对实现回归</strong><p>有限回归只校验代码，不承担全阶结论。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论适用于主动支持锥上的约化典范生成系统，并使用各向同性加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 解全局光滑，也没有构造有限时奇性。</div>
+        </section>
+
+        <section id="column"><div class="section-no">01 / Exact transport column</div><h2>归一化输运的单项式列因子可以精确写出</h2>
+          <p>令中心单项式的总次数与荷为 \((i,q)\)，输入单项式为 \((j,s)\)。对归一化输运 \(T_a f=(L-1)^{-1}\{a,f\}\)，加权 Wiener 范数中的精确绝对列因子是</p>
+          <div class="equation result">\[\boxed{\frac{i+j}{i+j-1}\,\frac{\left|i\frac{s}{j}-q\right|}{3}.}\]</div>
+          <p>这个等式直接保留输入斜率 \(x=s/j\)，而不是先对每个中心项取 \(\max(i+q,2i-q)\)。R0.39 的逐项端点最大化把不同中心项允许选择不同端点，因而在求完整列和时产生了额外损失。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">02 / Two-endpoint theorem</div><h2>先求完整列和，再比较两个端点</h2>
+          <p>固定输入次数 \(j\) 后，完整多项式列和关于 \(x\in[-1,2]\) 是绝对值仿射函数之和，因此是凸函数。闭区间上的最大值必在真实端点 \(x=-1\) 或 \(x=2\) 取得。对任一端点，因子 \((i+j)/(i+j-1)\) 又随 \(j\) 递减，所以最大输入次数统一归约到 \(j=1\)。</p>
+          <p>若中心写成 \(p=\sum p_{i,q}Z^nW^k\)，则精确多项式诱导范数为</p>
+          <div class="equation result">\[
+          \boxed{\|T_p\|=\max\{P_-(r),P_+(r)\}},
+          \qquad
+          P_-(r)=\sum_{i,q}|p_{i,q}|r^i\frac{i+1}{i}\frac{i+q}{3},
+          \]
+          \[
+          P_+(r)=\sum_{i,q}|p_{i,q}|r^i\frac{i+1}{i}\frac{2i-q}{3}.
+          \]</div>
+          <div class="proof"><strong>全阶覆盖。</strong>这里先对每个固定输入列求完整中心和，再只比较两个共同端点。凸性覆盖所有允许荷与斜率，次数单调性覆盖所有 \(j\ge1\)；因此没有把有限端点采样或有限次数检查写成定理。</div>
+        </section>
+
+        <section id="tail"><div class="section-no">03 / Unknown strict tail</div><h2>未知严格尾部也保留端点差异</h2>
+          <p>八十阶中心之外的修正 \(h\) 支持在 \(i&gt;N=80\)。在 \(x=-1\) 端点，严格尾乘子是</p>
+          <div class="equation">\[\frac{N+2}{N+1}=\frac{82}{81}.\]</div>
+          <p>在 \(x=2\) 端点，荷锥 \(q\ge-1\) 给出更小的乘子</p>
+          <div class="equation">\[\frac{(N+2)(2N+3)}{3(N+1)^2}=\frac{13366}{19683}.\]</div>
+          <p>在目标半径上，两个未知尾贡献分别只有 \(5.6597096578\times10^{-9}\) 与 \(3.7964307581\times10^{-9}\)。把它们分别加到对应端点，而不是取一个共同最坏常数，得到完整输运界。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">04 / Exact restart</div><h2>共同解析半径严格提高到 \(32/125\)</h2>
+          <p>取 \(N=80\) 与目标半径</p>
+          <div class="equation result">\[\boxed{r_*=\frac{32}{125}=0.256.}\]</div>
+          <p>完整残差含 6345 个非零项，覆盖总次数 81 至 160。下面所有判定都由 GMP 有理数完成，十进制只用于阅读。</p>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>继承的主动尾界</td><td>0.9944093111916725</td><td>严格小于一</td></tr>
+            <tr><td>R0.39 逐项输运界</td><td>1.3859898382526180</td><td>大于一，旧证明失效</td></tr>
+            <tr><td>\(x=-1\) 完整输运界</td><td>0.8585562829196533</td><td>严格小于一</td></tr>
+            <tr><td>\(x=2\) 完整输运界</td><td>0.8621992110422389</td><td>严格小于一且为最坏端点</td></tr>
+            <tr><td>完整残差 \(Y\)</td><td>1.79684192831738 × 10⁻⁴²</td><td>精确有限多项式残差</td></tr>
+            <tr><td>球映射上界</td><td>5.55943310074331 × 10⁻⁹</td><td>小于球半径</td></tr>
+            <tr><td>球半径 ε</td><td>5.59068880832746 × 10⁻⁹</td><td>严格正余量除以一百万</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9944093447358054</td><td>严格小于一</td></tr>
+          </tbody></table>
+          <p>Banach 不动点定理因此给出唯一严格尾部修正。相对 R0.39，共同半径增益为 \(512/397\approx1.2896725441\)；固定荷半径按三次方放大，增益为 \(134217728/62570773\approx2.1450546567\)。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">05 / Adjacent negative control</div><h2>0.257 仍由主动尾界拒绝，输运已经不是瓶颈</h2>
+          <p>在预先指定的相邻探针 \(257/1000=0.257\) 上，精确多项式输运界仍只有</p>
+          <div class="equation">\[0.8672866879731421&lt;1.\]</div>
+          <p>但继承的主动尾充分界变为</p>
+          <div class="equation result">\[\boxed{1.0002561524370209&gt;1.}\]</div>
+          <p>所以当前证明不能认证 0.257。这个负向控制说明瓶颈已经从输运重新移到主动尾估计；它只标记现有充分条件的边界，不说明真实解析延拓在此终止。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">06 / Finite regressions</div><h2>有限列验证公式实现与次数单调性</h2>
+          <table><thead><tr><th>输入次数 \(j\)</th><th>最大精确列比</th><th>最坏输入荷</th><th>端点</th></tr></thead><tbody>
+            <tr><td>1</td><td>0.8621992072458082</td><td>2</td><td>\(x=2\)</td></tr>
+            <tr><td>2</td><td>0.6985807855110824</td><td>4</td><td>\(x=2\)</td></tr>
+            <tr><td>5</td><td>0.5851461318304242</td><td>10</td><td>\(x=2\)</td></tr>
+            <tr><td>20</td><td>0.5195473808678882</td><td>40</td><td>\(x=2\)</td></tr>
+            <tr><td>81</td><td>0.5015580490179573</td><td>162</td><td>\(x=2\)</td></tr>
+          </tbody></table>
+          <p>此外，我逐项比对了总次数不超过 10 的 3055 对非零与零像单项式，其中 187 对像为零；全部结果与原括号实现一致。R0.32 有限 Padé 候选到当前固定荷认证盘的距离下界仍约为 44.67；该候选继续只作有限诊断。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>半径增益、端点列和证明门槛统一归档</h2>
+          <figure>
+            <img src="/figures/r0-40-two-endpoint-transport.svg" alt="R0.40 精确两端点输运的半径阶梯、端点列和证明门槛">
+            <figcaption>图 R0.40-1。左图给出共同半径与固定荷半径的五阶段增益；右上图显示两个真实端点的精确输入次数列，并与 R0.39 逐项界比较；下图比较目标点和 0.257 相邻探针的证明门槛。实线、虚线、标记形状与空心实心编码保证灰度打印仍可辨认。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value and next</div><h2>核心价值是把输运损失从逐项上界改成精确诱导范数</h2>
+          <p>R0.40 的数学增量不是单纯把数值半径从 0.1985 改成 0.256。更重要的是，原来的“各中心项分别选择最坏端点再求和”被一个精确算子范数替代：全部输入斜率只需两个共同端点，全部输入次数由单调性一次闭合。该机制不依赖有限荷、斜率或次数截断。</p>
+          <p>对三维 Navier–Stokes 千禧年问题的直接价值仍然很小。约化边系统与完整 PDE 的临界解之间没有已经证明的控制桥梁；当前结果既不排除完整方程的奇性，也不建立全局正则性。它应被评价为约化生成方程中的严格泛函分析进展。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把有限列回归称为全阶证明，不能把 0.257 称为解析边界，不能把 R0.32 候选称为真奇点，也不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+          <h3>R0.41：最坏主动尾荷 \(s=162\) 的精确次数相关性</h3>
+          <ol>
+            <li>回到 R0.39 主动尾核，不再把固定输入荷的全部允许次数压成同一个上界；</li>
+            <li>保留 \(s=162\) 与同余条件 \(j+s\equiv0\pmod3\) 的精确次数结构；</li>
+            <li>寻找能与中心次数或输出荷相关联的正核，而不是逐项取独立最大值；</li>
+            <li>把 \(257/1000\) 固定为首个成功判据，并保留更近的有理失败探针；</li>
+            <li>若精确次数核仍不能越过一，发布可核验的障碍常数，再决定是否更换权重。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>源提交、机器证书、资源监控与期刊图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_slope_resolved_transport_audit.py --max-total-degree 80 --target-radius 32/125 --failure-probe-radius 257/1000 --charge-cutoff 241 --finite-column-degrees 1,2,5,20,81 --formula-regression-degree 10 --ball-divisor 1000000 --source-commit 413f1cbcb12a961129eacf2482eb9b705c9a2feb --progress --check --pretty --output /tmp/r040.json</code></div>
+          <p>正式源提交为 <code>413f1cbcb12a961129eacf2482eb9b705c9a2feb</code>。科学计算耗时 31.982544 秒；监控采样 221 次，峰值 CPU 为 100.0%，峰值常驻内存为 40.531 MiB。没有使用 GPU、随机种子或浮点判号。20 项正式检查全部通过。</p>
+          <p>R0.40 主证书 SHA-256 为 <code>cc6257637b42798e9fdf17ef66531bf263072057f38c130320ed108fb116fc3b</code>。</p>
+          <p><a href="/notes/r0-40.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_slope_resolved_transport_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_slope_resolved_transport_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r040">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r040-slope-resolved/fig-r040-two-endpoint-transport">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-37.html">R0.37：加权 Wiener 重启</a>。建立第一个同半径无穷维收缩。</li>
+            <li><a href="/notes/r0-38.html">R0.38：次数分离尾部重启</a>。证明严格尾部全阶界，并排除无效低阶预条件器。</li>
+            <li><a href="/notes/r0-39.html">R0.39：荷分辨重启</a>。闭合全部有限与无穷输入荷，并把输运识别为新瓶颈。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.40 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

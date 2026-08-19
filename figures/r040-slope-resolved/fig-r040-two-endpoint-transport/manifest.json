@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r040-two-endpoint-transport",
+  "status": "formal",
+  "analyticalQuestion": "Can the normalized transport operator be evaluated by an exact all-order maximum over the two admissible input-slope endpoints, and does that remove the R0.39 transport bottleneck?",
+  "supportedClaim": "For the degree-80 exact center and isotropic weighted Wiener norm, convexity reduces every admissible input slope to x=-1 or x=2, while the degree factor is monotone and reduces every input degree to j=1. The exact polynomial transport norm is therefore max(P_-,P_+). At r=32/125 the full endpoint bounds, including the unknown strict-tail correction, are 0.85855628291965332579 and 0.86219921104223892656. Together with the R0.39 all-order active-tail bound 0.99440931119167253866, this certifies the reduced active and normalized transport fields on the common isotropic polydisc of radius 32/125. At 257/1000 the polynomial transport remains below one but the present active-tail sufficient bound is 1.0002561524370209106.",
+  "createdAt": "2026-08-19T16:43:10+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "413f1cbcb12a961129eacf2482eb9b705c9a2feb",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "logarithmic normalized radius ladder, exact endpoint-column curves, and threshold lollipops",
+    "variants": [
+      "five-stage common and fixed-charge radius ladder normalized to R0.31",
+      "both exact endpoint columns for every input degree 1 through 81",
+      "six named target, previous-bound, and adjacent-control proof gates"
+    ],
+    "takeaway": "The exact two-endpoint theorem raises the common certified radius from 397/2000 to 32/125 and makes transport comfortably subcritical; at the nearby 257/1000 control, only the inherited active-tail sufficient bound fails.",
+    "dataSufficiency": "Ten exact radius rows, 162 exact endpoint columns, six exact proof gates, and five finite exact regression rows. Every input slope and every input degree is covered analytically; the finite columns are implementation regressions rather than the theorem's scope.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "R0.31 through R0.40 use circle, square, diamond, plus, and cross markers; the two endpoints use circle-solid and square-dashed encodings; proof gates use distinct markers, open versus filled faces, and a dashed threshold.",
+    "finalSurface": "single double-column journal figure at 178 by 110 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r040/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_slope_resolved_transport_audit.py --max-total-degree 80 --target-radius 32/125 --failure-probe-radius 257/1000 --charge-cutoff 241 --finite-column-degrees 1,2,5,20,81 --formula-regression-degree 10 --ball-divisor 1000000 --source-commit 413f1cbcb12a961129eacf2482eb9b705c9a2feb --progress --progress-log research/certificates/r040/progress.ndjson --check --pretty --output research/certificates/r040/edge-slope-resolved-transport.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; target r=32/125; strict active correction tail above degree 80; exact slope endpoints x=-1 and x=2; all input degrees reduced to j=1 by monotonicity; adjacent active-tail control radius 257/1000",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, exact closed transport coefficient, convex endpoint reduction, monotone input-degree reduction, rational contraction inequalities, and finite exact coefficient/column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted and independently checked against the pinned exact certificates"
+    },
+    "wallTimeSeconds": 31.982544375001453,
+    "scientificWallTimeSeconds": 31.982544375001453,
+    "monitoredWallTimeSeconds": 32.140599,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 221,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "closed transport coefficient formula",
+        "all-order convex slope reduction",
+        "all-order monotone degree reduction",
+        "monomial coefficient regressions",
+        "finite transport columns",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 40.531
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "R0.31, R0.37, R0.38, R0.39, and R0.40 exact common and fixed-charge radii, normalized to R0.31.",
+      "bytes": 745,
+      "sha256": "5035db520b3db92ccee60f9a6154b4d5e77f2a3773a600db876d760cf4f920bd"
+    },
+    {
+      "path": "endpoint-columns.csv",
+      "format": "csv",
+      "schema": "Both exact rational polynomial transport endpoint columns for every input degree 1 through 81, with endpoint charge, slope, maximum flag, and theorem-coverage fields.",
+      "bytes": 141962,
+      "sha256": "3c596ad3d35e59c47c753adc4cc6d4bfa101bc65f28bd35e46c52fbdb5585329"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Six exact target, previous-bound, endpoint, and adjacent-control values against threshold one.",
+      "bytes": 6404,
+      "sha256": "0a579b995bdcac1c420be479a7808df7038ac6ed36de68e1eaf417d163232540"
+    },
+    {
+      "path": "finite-column-regressions.csv",
+      "format": "csv",
+      "schema": "Exact maximum transport-column ratios at input degrees 1, 2, 5, 20, and 81; finite implementation regression only.",
+      "bytes": 4105,
+      "sha256": "a139bfc56b387d5d3d3e18e409ffdfc845074706ca4af3c3934686e7030f86bd"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, and successful completion status.",
+      "bytes": 1939,
+      "sha256": "3b9a6267f3e71556af80b547c4a5d7c0d2dd2ae852e2ca0085eddb4da9af936d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 16302,
+      "sha256": "cc5313818b9431673aa5528718506ea550b0d76d1085731cb42c4f5a98fa962c"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r040",
+      "fileName": "edge-slope-resolved-transport.json",
+      "bytes": 346349,
+      "sha256": "cc6257637b42798e9fdf17ef66531bf263072057f38c130320ed108fb116fc3b",
+      "extractionCommand": "prepare_data.py extracts the R0.40 radius, both endpoint-column families, all proof gates, and every finite regression; validate_data.py pins the certificate hash and source commit, checks all 20 formal flags, compares every exact Fraction, and verifies the archived progress and resource records"
+    },
+    {
+      "location": "research/certificates/r039",
+      "fileName": "edge-charge-resolved.json",
+      "bytes": 403137,
+      "sha256": "59b978c1c5384edb394adc76add0950b3c8e6666f6562dfc199584c22dd0e700",
+      "extractionCommand": "prepare_data.py reads the pinned R0.39 and earlier radii for the five-stage ladder and the inherited exact active-tail bound; validate_data.py separately pins and verifies the R0.39 certificate hash"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r040-slope-resolved/fig-r040-two-endpoint-transport/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 110,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "f9c9435fe0fbe6fe650ca98f8dfc014cbf704e4ee2495bad826186d886b40173"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "5e3e46e8c4a40c59d37320e5f01ba369cae8dad756cbe6406436d023c3e7097a"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "a40c95c7c4a2ce10963a46957ea381b5b0e71cb463e07aa426220dbb717c5a22"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "精确两端点全阶输运定理把共同解析半径从 397/2000 提高到 32/125。目标点完整输运界为 0.862199，继承的主动尾界为 0.994409；相邻 0.257 探针仅由主动尾界失败。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 110 mm to rounding and the 600 dpi PNG is 4204 by 2598 pixels. The final color export, a true grayscale conversion, and an independent 180 dpi Poppler render of the final PDF were inspected after moving the endpoint legend clear of the previous-bound annotation. Marker shape, open versus filled faces, solid versus dashed lines, and the dashed threshold preserve distinctions without color. Titles, axes, direct labels, legend, threshold annotations, and four footer lines are unclipped. Three subsetted CID TrueType fonts are embedded with Unicode maps. validate_data.py independently checks every plotted value against the exact certificates."
+  }
+}

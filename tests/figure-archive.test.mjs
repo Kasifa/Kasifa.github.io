@@ -22,6 +22,10 @@ const r039ManifestUrl = new URL(
   "../figures/r039-charge-resolved/fig-r039-charge-resolved-restart/manifest.json",
   import.meta.url,
 );
+const r040ManifestUrl = new URL(
+  "../figures/r040-slope-resolved/fig-r040-two-endpoint-transport/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -129,6 +133,31 @@ test("archives the formal R0.39 charge-resolved restart figure", async () => {
   assert.match(manifest.supportedClaim, /0\.99941043095132664361<1/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 228);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 110);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.40 exact two-endpoint transport figure", async () => {
+  const manifest = JSON.parse(await readFile(r040ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r040-two-endpoint-transport");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "413f1cbcb12a961129eacf2482eb9b705c9a2feb",
+  );
+  assert.match(manifest.supportedClaim, /convexity reduces every admissible input slope/);
+  assert.match(manifest.supportedClaim, /monotone and reduces every input degree to j=1/);
+  assert.match(manifest.supportedClaim, /0\.86219921104223892656/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 221);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 110);
   assert.deepEqual(

@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r037-radius-restart",
+  "status": "formal",
+  "analyticalQuestion": "Does the one-degree weighted Wiener restart certify a larger common analytic radius, and do every active, ball, residual, and transport inequality close with exact positive margin?",
+  "supportedClaim": "On the active support cone q>=-1, one total-degree weight gives the all-order bounds ||Phi(f)||<=3||f||^2 and ||D Phi(f)h||<=6||f||||h||. At radius 16/243, the exact degree-40 polynomial has weighted norm 0.15865694927073253935 and complete residual norm 2.999049187948959763e-46. The exact rational ball maps strictly into itself with Lipschitz upper bound 0.97597084781219761804. The canonical normalized transport fields extend on the same radius. The bivariate radius gain is 4/3 and the fixed-charge radius gain is 64/27.",
+  "createdAt": "2026-08-19T14:49:41+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "04e62468f383d5e07c572ffd89561ee46dc249b8",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "normalized comparison bars plus threshold lollipops and a logarithmic residual-scale dot plot",
+    "variants": [
+      "paired old-versus-new horizontal bars normalized to the R0.31 bivariate and fixed-charge radii",
+      "four dimensionless contraction checks against the common threshold one",
+      "two-scale logarithmic comparison of the exact residual and all-order allowance"
+    ],
+    "takeaway": "The weighted restart gives a genuine all-order radius gain, every contraction quantity is below threshold, and the exact residual is about 42 orders of magnitude below its allowance.",
+    "dataSufficiency": "Four exact radius rows, four exact contraction metrics, and two exact residual scales; the small row count is intentional because every point is a named theorem quantity rather than a sampled trend.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "R0.31 bars are open hatched and R0.37 bars are solid; contraction checks use diamond, square, circle, and triangle markers; the residual and allowance use circle and diamond markers; the threshold is dashed.",
+    "finalSurface": "single double-column journal figure at 178 by 98 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output <formal-dir>/resources.csv --interval 0.05 -- tmp/r024-venv/bin/python research/edge_weighted_restart_audit.py --max-total-degree 40 --pair-audit-degree 12 --jacobian-degree 12 --source-commit 04e62468f383d5e07c572ffd89561ee46dc249b8 --progress --progress-log <formal-dir>/progress.ndjson --check --pretty --output <formal-dir>/edge-weighted-restart.json",
+    "configuration": "R0.31 majorant K=81/4; support cone q>=-1; one-total-degree weighted Wiener norm; exact degree-40 restart at r=16/243; exhaustive admissible basis pairs through degree 12; exact degree-12 support-cone Jacobian block",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, exact support-pair audit, exact residual evaluation, rational contraction inequalities, and rational triangular matrix inversion",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted from the pinned exact certificate"
+    },
+    "wallTimeSeconds": 0.7659859999985201,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.05,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 14,
+      "trackedFields": [
+        "degree recurrence",
+        "support-pair audit",
+        "contraction inequalities",
+        "finite Jacobian inversion",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 94.2,
+    "maximumObservedRssMiB": 36.797
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "Old and new exact bivariate and fixed-charge radii, with normalization to the R0.31 value.",
+      "bytes": 298,
+      "sha256": "8ceb747d722d7a02d069e1432aec02dcb58356f389248cff5d03d5ef854d93ae"
+    },
+    {
+      "path": "contraction.csv",
+      "format": "csv",
+      "schema": "Four exact dimensionless active, ball, Lipschitz, and transport upper bounds with threshold one.",
+      "bytes": 2140,
+      "sha256": "e70910860c9188cefde180944a5bbbb5c04ce827fbb3b9a7f7fba3bf650470ea"
+    },
+    {
+      "path": "residual-scales.csv",
+      "format": "csv",
+      "schema": "The complete exact degree-40 polynomial residual norm and the all-order contraction allowance.",
+      "bytes": 1641,
+      "sha256": "00360aed0521afdfa2a463f2f583d3edda27cc1585578e0a5af126fd145905c4"
+    },
+    {
+      "path": "inverse-metadata.csv",
+      "format": "csv",
+      "schema": "Boundary infinite-inverse bound and degree-12 finite Jacobian dimension, norms, and exact matrix hashes.",
+      "bytes": 737,
+      "sha256": "ba9eec39d054524c9fa17e49b758abdb93624b6836938369709929d073cccff6"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, and completion status.",
+      "bytes": 970,
+      "sha256": "631092a2c8484f792fff7a6748783a792f5cefddae0b890501295b046c597f41"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.05-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 1151,
+      "sha256": "4ff62281bb9be216a7e3fabda4777839d26845fad95d670042919c37c3ffc32a"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r037",
+      "fileName": "edge-weighted-restart.json",
+      "bytes": 22211,
+      "sha256": "a4fe36192b80112c282b9388da65ffca625f7a84d0b64f294b24352f92870eda",
+      "extractionCommand": "prepare_data.py extracts every plotted radius, contraction, residual, and inverse value; validate_data.py pins the certificate hash and source commit, checks all thirteen formal flags, compares every exact Fraction, checks both radius gains, enforces every threshold, and verifies the finite matrix hashes"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=/tmp/r037-mpl tmp/r024-venv/bin/python figures/r037-weighted-restart/fig-r037-radius-restart/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 98,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "35327546b2dcc7ef315c4d792d1041b882cf3121dc40809fcdd34eaee71853ba"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "b42eba7561182f6fa6e34ebcda45ae08b3238892c9c1c2209f51679f3d481616"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "417b9e2b559f7e2016c8c855c32d6f3c1c30b98a48c91ad2139f14927bd41bd1"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "一阶总次数权重把支持锥上的二次算子变为同半径有界映射。四十阶精确重启把共同解析半径从 4/81 提高到 16/243；完整残差只占收缩余量约 2.08e-42。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is exactly 178 by 98 mm and the 600 dpi PNG is 4204 by 2314 pixels. The color export, true grayscale conversion, and a 200 dpi Poppler render of the PDF were inspected. Hatching, open versus solid bars, four marker shapes, and a dashed threshold preserve distinctions without color. Titles, axes, direct labels, legend, logarithmic scale, and three footer lines are unclipped. Three subsetted TrueType fonts are embedded through CIDFontType2 descendants with ToUnicode maps; pypdf extracted 858 text characters. validate_data.py independently checks every plotted value against the exact certificate."
+  }
+}

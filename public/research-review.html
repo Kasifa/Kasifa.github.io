@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.21</strong>网页版本</span>
+            <span><strong>v0.22</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>把域内短步的有限逆升级为无穷维重启证书，再判断能否严格越过现有解析边界。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>用低阶精确预条件器与无穷尾界组合，继续扩大约化系统已经严格越过的解析边界。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2564,7 +2564,44 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_short_continuation_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r036-short-continuation/fig-r036-short-step">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>把 42 维有限逆升级为带显式高阶 Neumann 尾界的无穷维逆，并在当前短步上先完成独立重启。</p>
+            <p><strong style="color:var(--gold)">R0.37 已完成：</strong>一阶加权 Wiener 空间吸收了同半径导数损失；无穷维 Neumann 逆与精确收缩球把共同解析半径严格提高到 \(16/243\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.37 · 2026-08-19</p>
+            <h3>加权 Wiener 重启与解析半径扩张</h3>
+            <p>
+              我在主动支持锥 \(q=2k-n\ge-1\) 上引入总次数加权范数
+              \[\|f\|_{\mathcal B_r}=\sum_{n,k\ge0}(n+k)|f_{n,k}|r^{n+k}.\]
+              荷对称化与 \((i+j)\min(i,j)\le2ij\) 给出同半径全阶界
+              \[\|\Phi(f)\|_{\mathcal B_r}\le3\|f\|_{\mathcal B_r}^2,\qquad
+              \|D\Phi(f)h\|_{\mathcal B_r}\le6\|f\|_{\mathcal B_r}\|h\|_{\mathcal B_r}.\]
+            </p>
+            <p>
+              在旧半径 \(4/81\) 上，R0.31 主控直接给出
+              \(\|D\Phi(a)\|&lt;80/81\)，所以 Jacobian 具有真正的无穷维 Neumann 逆。
+              把前 40 层精确系数与其后的解析尾界结合，边界上的逆范数上界进一步改善为约 \(3.306365\)。
+            </p>
+            <p>
+              在新半径
+              \[r_*=\frac{16}{243}=\frac43\frac4{81}\]
+              上，四十阶中心多项式的完整精确残差为
+              \(2.999049187948959763\times10^{-46}\)，线性化上界为 \(0.95194169562439524\)。
+              显式尾球的映射上界为 \(0.00386050865925092\)，Lipschitz 常数为 \(0.97597084781219762&lt;1\)。
+              因而 Banach 定理构造出同一典范形式解，固定荷解析下界同步提高 \(64/27\) 倍。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化边缘生成系统第一次真正扩大已证明解析域，不是有限系数外推。
+              它没有认证 R0.32 候选，也没有给出三维 Navier–Stokes 正则性或奇性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-37.html"><strong>阅读 R0.37 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-37.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r037">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_weighted_restart_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r037-weighted-restart/fig-r037-radius-restart">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.38：</strong>把 62 维精确逆作为低阶预条件器，与一阶加权无穷尾界组合，建立严格的 radii-polynomial 条件并搜索下一段可认证半径。</p>
           </div>
         </section>
 
@@ -2579,7 +2616,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.21 · 2026-08-19<br>
+        综述 v0.22 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

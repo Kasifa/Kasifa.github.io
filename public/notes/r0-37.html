@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.37：在支持锥上引入一阶总次数 Wiener 权重，证明无穷维 Jacobian 逆，并把约化典范系统的共同解析半径从 4/81 提高到 16/243。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.37｜加权 Wiener 重启与解析半径扩张">
+  <meta property="og:description" content="全阶算子界、无穷维 Neumann 逆与四十阶精确收缩共同认证 4/3 的解析半径增益。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-37-radius-restart.png">
+  <title>R0.37｜加权 Wiener 重启与解析半径扩张</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#space">加权空间</a><a href="#restart">精确重启</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.37 · 第一次全阶越过旧半径</div>
+        <h1>加权 Wiener 重启<br>与解析半径扩张</h1>
+        <p class="lead">我给 Wiener 范数增加一个总次数权重，使支持锥上的二次算子在同一半径有界。无穷维逆和四十阶精确收缩把约化系统的共同解析半径从 \(4/81\) 提高到 \(16/243\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 新解析半径已认证</span><strong>半径增益 4/3</strong><p>版本 v0.37 · 2026-08-19</p><p>固定荷半径增益：64/27</p><p>正式检查：13 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#space">01 · 加权空间</a></li><li><a href="#operator">02 · 全阶算子界</a></li><li><a href="#inverse">03 · 无穷维逆</a></li><li><a href="#restart">04 · 精确重启</a></li><li><a href="#transport">05 · 输运场</a></li><li><a href="#finite">06 · 有限与负向检查</a></li><li><a href="#figure">07 · 期刊附图</a></li><li><a href="#meaning">08 · 价值与下一步</a></li><li><a href="#reproduce">09 · 复现与前序记录</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这次得到新的全阶解析域，但对象仍是约化方程</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>同半径二次算子界</strong><p>一个总次数权重吸收 R0.35 发现的高阶导数损失。</p></div>
+            <div class="status"><span>PROVED · INFINITE DIMENSION</span><strong>Jacobian 的 Neumann 逆</strong><p>无穷维逆来自算子范数小于一，不依赖有限矩阵外推。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径提高到 16/243</strong><p>四十阶多项式的完整残差由精确有理收缩球闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>62 维逆与 4096 个基对</strong><p>这些只检查实现和低阶结构，不承担全阶证明。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>定理限制在主动支持锥 \(q\ge-1\)，并针对约化边缘生成系统。它没有认证 R0.32 的 Padé 候选，也没有给出三维 Navier–Stokes 方程的全局正则性或有限时奇性结论。</div>
+        </section>
+
+        <section id="space"><div class="section-no">01 / Weighted space</div><h2>一个总次数权重恰好补回丢失的导数</h2>
+          <p>对单项式 \(Z^nW^k\)，令总次数 \(L=n+k\)，荷 \(q=2k-n\)。在 \(q\ge-1\) 的支持锥上定义</p>
+          <div class="equation result">\[\boxed{\|f\|_{\mathcal B_r}=\sum_{n,k\ge0}(n+k)|f_{n,k}|r^{n+k}.}\]</div>
+          <p>这是一个完备的加权系数空间。两个荷为 \(-1\) 的因子看似会产生荷 \(-2\)，但其极化贡献因荷相等而精确抵消，所以非线性映射和导数都保持 \(q\ge-1\)。</p>
+          <div class="proof warning"><strong>该假设不能删去。</strong>锥外的低阶对 \(W^2,Z^3\) 满足 \(D\Phi(W^2)Z^3=(21/2)Z^3W^2\)，使候选混合常数三以精确比例 \(7/4\) 失败。</div>
+        </section>
+
+        <section id="operator"><div class="section-no">02 / All-order operator</div><h2>分次不等式在同一半径闭合</h2>
+          <p>设 \(A_i,H_j\) 分别是 \(f,h\) 的第 \(i,j\) 次齐次系数 \(\ell^1\) 范数。R0.30 的荷对称化对锥内任意输入给出</p>
+          <div class="equation">\[\|(D\Phi(f)h)_L\|_1\le\frac32\sum_{i+j=L}\min(i,j)(A_iH_j+H_iA_j).\]</div>
+          <p>利用 \((i+j)\min(i,j)\le2ij\)，乘以 \(Lr^L\) 并求和，得到两个全阶同半径估计：</p>
+          <div class="equation result">\[\boxed{\|\Phi(f)\|_{\mathcal B_r}\le3\|f\|_{\mathcal B_r}^2,\qquad \|D\Phi(f)h\|_{\mathcal B_r}\le6\|f\|_{\mathcal B_r}\|h\|_{\mathcal B_r}.}\]</div>
+          <p>R0.35 的无界性发生在不带次数权重的 Wiener 范数中。本页没有否定那个反例，而是明确更换了函数空间。</p>
+        </section>
+
+        <section id="inverse"><div class="section-no">03 / Infinite inverse</div><h2>旧半径上的无穷维 Jacobian 已经可逆</h2>
+          <p>R0.31 的主控常数为 \(K=81/4\)。当 \(r\le4/81\) 时，\(x=Kr\le1\)，从 \(\|a_L\|_1\le2K^{L-1}/L^3\) 得到</p>
+          <div class="equation">\[\|a\|_{\mathcal B_r}\le\frac2K\sum_{L\ge1}\frac{x^L}{L^2}&lt;\frac{40}{243}.\]</div>
+          <p>因此 \(\|D\Phi(a)\|&lt;80/81&lt;1\)，Neumann 级数在无穷维空间中收敛：</p>
+          <div class="equation result">\[\boxed{(I-D\Phi(a))^{-1}=\sum_{m\ge0}D\Phi(a)^m,\qquad \|(I-D\Phi(a))^{-1}\|\le81.}\]</div>
+          <p>再把前 40 层换成精确系数、只对其后使用全阶尾界，边界上的 Jacobian 上界改善为约 \(0.6975530527\)，逆上界改善为约 \(3.306364997\)。这一步补上了 R0.36 明确留下的无穷维逆缺口。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">04 / Exact restart</div><h2>四十阶多项式在 \(16/243\) 上形成严格收缩</h2>
+          <p>设 \(p_{40}\) 是精确递推到总次数 40 的多项式，\(F(p)=p-(Z+W)-\Phi(p)\)。递推使 40 次以下残差全部为零；完整残差位于 41 至 80 次。取</p>
+          <div class="equation result">\[\boxed{r_*=\frac{16}{243}=\frac43\frac4{81}.}\]</div>
+          <table><thead><tr><th>精确有理量</th><th>十进制视图</th><th>作用</th></tr></thead><tbody>
+            <tr><td>\(M=\|p_{40}\|\)</td><td>0.15865694927073254</td><td>中心多项式范数</td></tr>
+            <tr><td>\(Y=\|F(p_{40})\|\)</td><td>\(2.99904918794896\times10^{-46}\)</td><td>完整有限残差</td></tr>
+            <tr><td>\(Z=6M\)</td><td>0.95194169562439524</td><td>线性化上界</td></tr>
+            <tr><td>\(m=1-Z\)</td><td>0.04805830437560476</td><td>收缩正间隙</td></tr>
+          </tbody></table>
+          <p>在总次数严格大于 40 的闭尾空间中，令 \(\varepsilon=m/12\approx0.004004858697967064\)，并求解</p>
+          <div class="equation">\[h=-F(p_{40})+D\Phi(p_{40})h+\Phi(h).\]</div>
+          <p>该尾空间由映射保持。精确证书给出</p>
+          <div class="equation result">\[Y+Z\varepsilon+3\varepsilon^2&lt;\varepsilon,\qquad Z+6\varepsilon=\frac{1+Z}{2}\approx0.9759708478&lt;1.\]</div>
+          <p>可用残差余量为 \(m^2/16\approx1.4435\times10^{-4}\)，实际残差只占约 \(2.08\times10^{-42}\)。Banach 定理给出唯一修正 \(h\)；三角形式唯一性把它识别为同一个典范形式级数。</p>
+        </section>
+
+        <section id="transport"><div class="section-no">05 / Transport fields</div><h2>两个归一化输运场延伸到同一新半径</h2>
+          <p>归一化输运递推的线性算子记为 \(T_a\)。R0.30 分次估计在新范数中给出</p>
+          <div class="equation">\[\|T_af\|_{\mathcal B_r}\le2\|a\|_{\mathcal B_r}\|f\|_{\mathcal B_r}.\]</div>
+          <p>重启球给出 \(\|a\|\le M+\varepsilon\approx0.16266180796869960\)，所以 \(\|T_a\|\le0.32532361593739921&lt;1\)。Neumann 级数从一次种子构造出典范归一化 \(U,V\)。因此 \(a,U,V\) 在 \(r_*=16/243\) 上共同绝对解析。</p>
+          <div class="proof warning"><strong>未包含的结论。</strong>本证书没有证明 R0.29 的对数商在整个扩大后的多圆盘内仍不为零；共同解析性与对数分解的全域非零性是不同命题。</div>
+        </section>
+
+        <section id="finite"><div class="section-no">06 / Finite exact checks</div><h2>有限计算只检查实现，不替代算子定理</h2>
+          <ul>
+            <li>GMP 精确递推到总次数 40，处理 68,664 次有序相互作用；</li>
+            <li>总次数 12 以内的 4096 个锥内有序基对全部满足混合估计，常数三由两个基对取到；</li>
+            <li>16 个荷 \(-1\) 配对全部精确抵消；</li>
+            <li>锥外 \(W^2,Z^3\) 的 \(7/4\) 反例固定了适用范围；</li>
+            <li>完整残差含 1573 项，全部纳入精确加权范数；</li>
+            <li>总次数 2 至 12 的锥内 Jacobian 维数为 62，单位下三角逆在左右两侧精确通过。</li>
+          </ul>
+          <p>新半径上的有限导数与逆列范数分别约为 \(0.18831\) 和 \(1.19774\)。它们是低阶结构数据；无穷维结论来自前面的全阶不等式与收缩球。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>半径增益、收缩阈值和残差尺度同时归档</h2>
+          <figure>
+            <img src="/figures/r0-37-radius-restart.svg" alt="R0.37 加权 Wiener 重启的半径增益、收缩阈值与残差余量">
+            <figcaption>图 R0.37-1。左图分别把二变量半径和固定荷半径按 R0.31 值归一化；新值的增益为 \(4/3\) 与 \(64/27\)。右上四个收缩量都严格小于阈值一；右下显示完整残差与全阶余量相差约 42 个数量级。阴影、开口、线型和四种标记保证灰度打印仍可辨认。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value and next</div><h2>这是约化系统第一次真正扩大已证明解析域</h2>
+          <p>R0.36 只验证了已知域内的重心架构。R0.37 不同：Banach 收缩直接构造了 \(4/81\) 以外的同一典范形式解，所以 \(16/243\) 是新的全阶解析下界，而不是有限系数外推。固定荷解析下界因此提高 \(64/27\) 倍。</p>
+          <p>这对完整千禧年问题仍是间接成果。新固定荷半径与 R0.32 候选之间仍相差超过约 2625 倍；更重要的是，约化边缘生成系统尚未被证明足以控制完整三维 PDE 的临界动力学。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称 R0.32 候选是真奇点，不能声称已得到完整 Navier–Stokes 解的解析延拓，更不能把约化系统的半径增益表述为千禧年问题的解答。</div>
+          <h3>R0.38：低阶预条件与无穷尾部组合</h3>
+          <ol>
+            <li>把 62 维精确逆作为低模预条件器，而不是最终证据；</li>
+            <li>用一阶加权范数控制其余无穷尾部和低高耦合；</li>
+            <li>构造严格的近似逆误差与 radii-polynomial 条件；</li>
+            <li>搜索能在保持精确裕量的同时超过 \(16/243\) 的最大有理半径；</li>
+            <li>若预条件尾界不小于一，就把失败常数作为下一轮函数空间设计的障碍数据。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>精确证书、监控日志与期刊图包已归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_weighted_restart_audit.py --max-total-degree 40 --pair-audit-degree 12 --jacobian-degree 12 --source-commit 04e62468f383d5e07c572ffd89561ee46dc249b8 --progress --check --pretty --output /tmp/r037.json</code></div>
+          <p>正式源提交为 <code>04e62468f383d5e07c572ffd89561ee46dc249b8</code>。科学计算耗时 0.765986 秒，监控峰值 CPU 为 94.2%，峰值常驻内存为 36.797 MiB；没有使用 GPU、随机种子或浮点判号。13 项正式检查全部通过。</p>
+          <p>R0.37 证书 SHA-256 为 <code>a4fe36192b80112c282b9388da65ffca625f7a84d0b64f294b24352f92870eda</code>。</p>
+          <p><a href="/notes/r0-37.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_weighted_restart_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_weighted_restart_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r037">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r037-weighted-restart/fig-r037-radius-restart">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-30.html">R0.30：典范边缘系统的全阶解析主控</a>。提供主动场和输运场的齐次分次不等式。</li>
+            <li><a href="/notes/r0-31.html">R0.31：改进主控与共同解析域</a>。提供 \(K=81/4\) 的全阶系数主控与旧半径 \(4/81\)。</li>
+            <li><a href="/notes/r0-35.html">R0.35：固定荷延拓几何与同半径障碍</a>。证明普通 Wiener 范数中的同半径二次映射无界。</li>
+            <li><a href="/notes/r0-36.html">R0.36：解析域内的一步短延拓证书</a>。明确留下有限 Jacobian 不能替代无穷维逆的问题。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>严格区分全阶定理、有限精确检查与未解决问题</span><span>R0.37 · 2026-08-19<br><a href="/">返回研究综述</a></span></div></footer>
+</body>
+</html>

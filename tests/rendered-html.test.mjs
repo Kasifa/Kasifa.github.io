@@ -34,6 +34,7 @@ const twentyEighthNoteUrl = new URL("../public/notes/r0-28.html", import.meta.ur
 const twentyNinthNoteUrl = new URL("../public/notes/r0-29.html", import.meta.url);
 const thirtiethNoteUrl = new URL("../public/notes/r0-30.html", import.meta.url);
 const thirtyFirstNoteUrl = new URL("../public/notes/r0-31.html", import.meta.url);
+const thirtySecondNoteUrl = new URL("../public/notes/r0-32.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -592,6 +593,25 @@ test("publishes and links the improved all-order analytic domain", async () => {
   assert.match(note, /r0-31-improved-domain\.svg/);
 });
 
+test("publishes and links the fixed-charge singularity candidate audit", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(thirtySecondNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-32\.html"/);
+  assert.match(note, /研究笔记 R0\.32/);
+  assert.match(note, /F_q\(R\)=\[\\Xi\^q\]F\(R,\\Xi\)/);
+  assert.match(note, /\\frac\{64\}\{531441\}\\approx1\.20427/);
+  assert.match(note, /-0\.749701196287094659168546/);
+  assert.match(note, /全部严格小于 \\\(-1\/2\\\)/);
+  assert.match(note, /零点候选/);
+  assert.match(note, /13,518,749 次有序递推相互作用/);
+  assert.match(note, /有限有理逼近的精确根/);
+  assert.match(note, /不能从该有限诊断推出 Navier–Stokes 解的奇性/);
+  assert.match(note, /r0-32-candidate-cluster\.svg/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -604,7 +624,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -637,6 +657,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(twentyNinthNoteUrl, "utf8"),
     readFile(thirtiethNoteUrl, "utf8"),
     readFile(thirtyFirstNoteUrl, "utf8"),
+    readFile(thirtySecondNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -798,6 +819,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(thirtyFirstNote, /我把 R0\.30 的粗卷积上界/);
   assert.doesNotMatch(
     thirtyFirstNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(thirtySecondNote, /我先从两变量边缘生成函数/);
+  assert.doesNotMatch(
+    thirtySecondNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

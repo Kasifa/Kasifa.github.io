@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.32：定义典范固定荷级数，并用精确 D-log Padé 有理逼近认证约 -0.7495 的有限候选聚集。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.32｜固定荷级数与奇点候选">
+  <meta property="og:description" content="22 个输运 D-log Padé 逼近在约 -0.7495 聚集；这是一项有限精确诊断，不是真实奇点定理。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-32-candidate-cluster.png">
+  <title>R0.32｜固定荷级数与奇点候选</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}.proof code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#fixed-charge">固定荷</a><a href="#candidate">候选聚集</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.32 · 精确有限诊断</div>
+        <h1>固定荷级数与<br>奇点候选</h1>
+        <p class="lead">我先从两变量边缘生成函数中定义与次数—电荷分级相容的一变量对象，再对精确系数做多截断 D-log Padé 检查。输运级数出现约 \(-0.7495\) 的稳定候选聚集，但现有证书只属于有限有理逼近。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全阶小圆盘 + 有限精确候选</span><strong>输运候选约为 −0.7495</strong><p>版本 v0.32 · 2026-08-19</p><p>精确总次数：149</p><p>D-log Padé：33 个认证记录</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#fixed-charge">01 · 典范固定荷</a></li><li><a href="#radius">02 · 已证明圆盘</a></li><li><a href="#dlog">03 · D-log 方法</a></li><li><a href="#protocol">04 · 精确协议</a></li><li><a href="#candidate">05 · 候选聚集</a></li><li><a href="#zero">06 · 零点判别</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>一个严格小圆盘，加一个有限候选位置</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDERS</span><strong>固定荷级数的典范定义</strong><p>\(F_q(R)=[\Xi^q]F(R,\Xi)\)，其中 \(R=Z^2W\)、\(\Xi=Z^{-1}\)。</p></div>
+            <div class="status"><span>PROVED · ANALYTIC</span><strong>保证半径 \(64/531441\)</strong><p>每个固定荷 \(U_q,V_q\) 在该开圆盘中绝对解析。</p></div>
+            <div class="status"><span>CERTIFIED · FINITE</span><strong>22 个输运逼近聚集</strong><p>所有 U/V 认证极点都落在 \((-0.7500,-0.7493)\)。</p></div>
+            <div class="status"><span>OPEN · CONTINUATION</span><strong>真实奇点尚未证明</strong><p>缺少到候选位置的解析延拓、余项界与 Padé 收敛定理。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>精确根隔离证明的是有限 D-log Padé 分母的根，不是原固定荷级数的奇点。该边缘约化系统也不是完整三维 Navier–Stokes 方程。</div>
+        </section>
+
+        <section id="fixed-charge"><div class="section-no">01 / Canonical fixed charge</div><h2>一变量对象由分级决定，不由任意代入决定</h2>
+          <p>R0.28–R0.31 使用总次数 \(L\) 和电荷 \(q\) 描述边缘系数。令</p>
+          <div class="equation">
+            \[R=Z^2W,\qquad \Xi=Z^{-1}.\]
+          </div>
+          <p>则单项式 \(R^k\Xi^q=Z^{2k-q}W^k\) 的总次数恰为 \(3k-q\)。因此一个两变量形式级数的固定荷部分应定义为</p>
+          <div class="equation result">
+            \[\boxed{F_q(R)=[\Xi^q]F(R,\Xi)=\sum_{k\ge k_0}f_{k,q}R^k}.\]
+          </div>
+          <p>这一定义保留原递推的次数—电荷结构。它不同于任意选择 \(Z=W\) 或沿一条方便的数值直线代入。端点序列对应 \(q=1\)，所以本次研究对象是</p>
+          <div class="equation">
+            \[A_1(R)=\sum_N a_NR^N,\quad U_1(R)=\sum_Nu_NR^N,\quad V_1(R)=\sum_Nv_NR^N,\quad D_1=p_*U_1+q_*V_1.\]
+          </div>
+        </section>
+
+        <section id="radius"><div class="section-no">02 / Proved disc</div><h2>R0.31 给出固定荷级数的全阶收敛下界</h2>
+          <p>R0.31 已证明总次数层的输运范数满足 \(K=81/4\) 的全阶主控。固定 \(q\) 后，\(R^k\) 系数处于总次数 \(L=3k-q\)，因此</p>
+          <div class="equation">
+            \[|f_{k,q}|\le \frac{K^{3k-q-1}}{(3k-q)^3}.\]
+          </div>
+          <p>取 \(k\) 次根并使用根值判别，得到每个固定荷输运级数的严格解析圆盘：</p>
+          <div class="equation result">
+            \[\boxed{|R|&lt;K^{-3}=\left(\frac4{81}\right)^3=\frac{64}{531441}\approx1.20427\times10^{-4}.}\]
+          </div>
+          <p>这是一个全阶定理，但它离有限候选 \(|R|\approx0.7495\) 很远，二者相差约 6223 倍。这个差距不能靠多算几十项自动跨越。</p>
+        </section>
+
+        <section id="dlog"><div class="section-no">03 / D-log Padé</div><h2>极点位置与留数同时承担分类信息</h2>
+          <p>去掉固定荷级数的首个 \(R\) 因子，令 \(\widehat F(R)=F_1(R)/R\)，再计算对数导数</p>
+          <div class="equation">
+            \[G_F(R)=\frac{\widehat F'(R)}{\widehat F(R)}.\]
+          </div>
+          <p>若局部模型是 \(\widehat F=C(R)(1-R/R_*)^{-\gamma}\)，其中 \(C(R_*)\ne0\)，则 \(G_F\) 在 \(R_*\) 的留数为 \(-\gamma\)。相反，如果 \(\widehat F\) 在 \(R_*\) 有 \(m\) 重零点，则留数为 \(+m\)。因此只看分母根还不够，必须同时认证分子不为零、根为单根，并包围留数。</p>
+          <p><a href="https://dlmf.nist.gov/3.11.iv">DLMF 的 Padé 定义</a>给出有限有理逼近的标准框架；更强的极点收敛结论需要类似 <a href="https://doi.org/10.1006/jath.1997.3141">Stahl 理论</a>中的函数类与解析延拓假设。本次尚未验证这些假设。</p>
+        </section>
+
+        <section id="protocol"><div class="section-no">04 / Exact finite protocol</div><h2>多截断、精确隔根和双精度复核</h2>
+          <ol>
+            <li>用 GMP 有理数把边缘递推推进到总次数 149，得到端点参数 \(N\le50\) 的精确系数；</li>
+            <li>对每个偶数截断 \(30,32,\ldots,50\) 构造对角 \([m/m]\) D-log Padé 逼近，其中 \(m=(N-2)/2\)；</li>
+            <li>用精确 Sturm 计数隔离指定实窗口中的分母根，证明根唯一且简单，并用精确区间证明分子在根盒上不为零；</li>
+            <li>以 160 位和 256 位独立数值计算复核根位置，记录全部有理隔离区间与多项式摘要；</li>
+            <li>从最终检查点重启，比较端点系数、诊断、摘要和交互作用计数，确认结果逐项一致。</li>
+          </ol>
+          <p>正式运行处理 13,518,749 次有序递推相互作用，耗时 176.40 秒；峰值 CPU 为 100%，峰值常驻内存为 216.203 MiB。两秒资源记录、64 条进度事件和检查点摘要均已归档。</p>
+        </section>
+
+        <section id="candidate"><div class="section-no">05 / Candidate cluster</div><h2>U 与 V 的全部认证极点落入同一窄区间</h2>
+          <table>
+            <thead><tr><th>对象</th><th>截断</th><th>精确认证结果</th><th>有限解释</th></tr></thead>
+            <tbody>
+              <tr><td>U / V</td><td>30–50</td><td>\([-0.749701196287094659168546,\,-0.749433079639935448247912]\)</td><td>22 个唯一单实根的全截断包络</td></tr>
+              <tr><td>U / V</td><td>42–50</td><td>\([-0.749499736288725516833737,\,-0.749433079639935448247912]\)</td><td>尾部截断包络宽度小于 \(10^{-4}\)</td></tr>
+              <tr><td>U / V 留数</td><td>30–50</td><td>约 \(-0.56158\) 至 \(-0.52271\)</td><td>全部严格小于 \(-1/2\)</td></tr>
+              <tr><td>D 中心</td><td>30–50</td><td>\([-0.723572547478725707400298,\,-0.723406359607418709755021]\)</td><td>留数接近 \(+1\)，先判为零点候选</td></tr>
+            </tbody>
+          </table>
+          <figure>
+            <img src="/figures/r0-32-candidate-cluster.svg" alt="R0.32 固定荷输运 D-log Padé 候选极点与留数随截断阶的变化">
+            <figcaption>图 R0.32-1。左图放大 U/V 输运候选极点；阴影是 42–50 阶尾部包络，\(-3/4\) 只作为参考线。右图显示 U/V 留数为负，而 D 中更近的中心特征留数接近 \(+1\)。实心/空心、实线/虚线与三角标记在灰度打印中仍可区分。</figcaption>
+          </figure>
+          <div class="proof"><strong>有限证书的准确含义。</strong>每个表中区间都包住一个有限有理逼近的精确根，并排除了该根上的分子消去。连续截断的聚集是值得继续研究的证据，但还不能推出原级数在包络中存在奇点。</div>
+        </section>
+
+        <section id="zero"><div class="section-no">06 / The closer D feature</div><h2>更近不等于更主导：留数把 D 特征判为零点候选</h2>
+          <p>\(D_1=p_*U_1+q_*V_1\) 的对数导数在约 \(-0.723449\) 出现一个更靠近原点的稳定分母根。若只按距离排序，它似乎比输运候选更重要；但其留数接近 \(+1\)，正是一个简单零点的局部信号。</p>
+          <p>因此本次不把它写成“更近奇点”。更合理的有限分类是：\(D_1\) 可能因 U/V 组合发生一次零点，而 U 与 V 各自共享约 \(-0.7495\) 的分支型候选。这个解释仍需解析延拓后才能升级为定理。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>它把“增长率迹象”推进为可审计的候选，但尚未跨过解析延拓缺口</h2>
+          <p>R0.28 只看到有限系数比值分离；R0.32 首次给出了与原分级相容的一变量对象，并把候选位置、根的唯一性、简单性、无消去和留数符号放进同一个精确证书。U/V 两个独立输运级数在 11 个连续截断上落入同一窄区间，是比单一比值外推更强的有限证据。</p>
+          <p>它对当前边缘模型有真实价值：下一步有了明确的目标位置和应检验的分支指数范围。它对三维 Navier–Stokes 千禧年问题的价值仍然间接且很小：缺少完整 PDE 与该边缘级数之间的控制桥梁，也没有证明该候选对应有限时破裂或正则性障碍。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称收敛半径约为 0.7495，不能声称最近复奇点已定位，不能声称 D-log Padé 极点必然收敛，也不能从该有限诊断推出 Navier–Stokes 解的奇性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.33</div><h2>下一步寻找能把 Padé 诊断升级为定理的结构</h2>
+          <ol>
+            <li>检查反号变换 \(x=-R\) 后 U/V 系数是否满足可全阶证明的最终正性、对数凸性或矩序列条件；</li>
+            <li>若存在 Stieltjes 型表示，证明相应 D-log 有理逼近的极点与留数受到收敛定理控制；若不存在，就用精确反例尽早排除这条路线；</li>
+            <li>并行建立沿负实轴的解析延拓障碍清单：需要控制的两变量域、非消失条件和固定荷抽取交换步骤逐项写出；</li>
+            <li>只有得到覆盖候选位置的严格余项或延拓定理后，才讨论真实奇点位置与指数。</li>
+          </ol>
+          <p>R0.33 的最低交付不是再增加一个截断点，而是证明或否定一个足以约束 Padé 收敛的结构条件。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>源程序、机器证书、监控日志与期刊图包分别归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python research/edge_singularity_candidate_audit.py --max-total-degree 149 --minimum-cut 30 --cut-step 2 --checkpoint /tmp/r032-checkpoint.pkl.gz --checkpoint-interval 25 --progress --check --pretty --output /tmp/edge-singularity-candidates.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_singularity_candidate_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_singularity_candidate_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r032">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r032-singularity-candidates/fig-r032-candidate-cluster">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs"><li><a href="/notes/r0-31.html">R0.31：改进主控与统一解析域</a>。提供固定荷解析小圆盘的全阶输入。</li><li><a href="/notes/r0-28.html">R0.28：有理边缘渐近审计</a>。提供端点系数比值的有限先验迹象。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.32 · 全阶定理与有限候选分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

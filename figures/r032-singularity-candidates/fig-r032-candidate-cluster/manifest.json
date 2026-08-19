@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r032-candidate-cluster",
+  "status": "formal",
+  "analyticalQuestion": "What one-variable object is canonically selected by the edge grading, and do exact finite D-log Pade approximants show a stable candidate obstruction beyond the proved fixed-charge convergence disc?",
+  "supportedClaim": "For fixed charge q, the coefficient series F_q(R)=[Xi^q]F(R,Xi) is analytic for |R|<(4/81)^3 by the R0.31 all-order layer bound. For q=1, exact coefficients through endpoint parameter 50 give 22 U/V diagonal D-log Pade approximants whose unique simple real poles lie in the all-cut hull [-0.749701196287094659168546,-0.749433079639935448247912]; the cut-42-through-50 hull has width below 10^-4, and every transport residue is below -1/2. These are certified properties of finite rational approximants, not singularities of the original series. The closer D-center feature near -0.723449 has residue near +1 and is classified as a zero candidate.",
+  "createdAt": "2026-08-19T12:25:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "a973bc77915181a27158a475e75008e8bdb18d4a",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output /tmp/r032-formal-a973bc7/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_singularity_candidate_audit.py --max-total-degree 149 --minimum-cut 30 --cut-step 2 --checkpoint /tmp/r032-formal-a973bc7/checkpoint.pkl.gz --checkpoint-interval 25 --progress --progress-log /tmp/r032-formal-a973bc7/progress.ndjson --check --pretty --output /tmp/r032-formal-a973bc7/edge-singularity-candidates.json",
+    "configuration": "exact edge recurrence through total degree 149; charge-one endpoints through parameter 50; even coefficient cuts 30 through 50; diagonal D-log Pade approximants; exact real-root isolation and exact residue enclosures; independent 160-bit and 256-bit numerical checks",
+    "randomSeed": null,
+    "precision": "GMP exact rational coefficients and SymPy exact polynomial isolation; 160-bit and 256-bit numerical cross-checks",
+    "solver": "deterministic scalar formal-series recurrence, exact Pade linear systems, Sturm-based real-root isolation, and interval evaluation",
+    "tolerances": {
+      "formalCoefficients": "none; exact GMP rational arithmetic",
+      "rootIsolation": "exact rational intervals and Sturm counts",
+      "candidateCluster": "reported as the hull of exact isolating intervals, not a fitted confidence interval",
+      "crossPrecision": "independent 160-bit and 256-bit numerical agreement checked by the audit"
+    },
+    "wallTimeSeconds": 176.39524308299588,
+    "recurrenceOrderedInteractions": 13518749,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 2,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": "/tmp/r032-formal-a973bc7/checkpoint.pkl.gz",
+      "checkpointIntervalDegrees": 25,
+      "finalCheckpointBytes": 4730426,
+      "finalCheckpointSha256": "0e39f59b73dc80d190cc5fb4d662db975ca5e022538d92a02c57dcc1a34776ed",
+      "checkpointResumeVerified": true,
+      "trackedFields": [
+        "completed formal degree",
+        "completed approximant family and cut",
+        "ordered recurrence interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 216.203
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0"
+  },
+  "data": [
+    {
+      "path": "candidate-poles.csv",
+      "format": "csv",
+      "schema": "One row per U, V, or D-center D-log Pade approximant, including coefficient cut, exact isolating interval, decimal pole, exact residue enclosure, multiplicity and verification fields.",
+      "bytes": 504877,
+      "sha256": "e54c0b3e7d5b778ffc319b500ea2d7d2ac492fd3862362004138568ca9f25c81"
+    },
+    {
+      "path": "summary.csv",
+      "format": "csv",
+      "schema": "Exact guaranteed fixed-charge radius and exact rational hulls for all transport cuts, tail transport cuts, and D-center zero candidates.",
+      "bytes": 589,
+      "sha256": "588487d2f64b160176f311c86335879a5e2a755d2caafd22dab45a82e7e33414"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, completed formal degree or candidate-diagnostic stage, and interaction count.",
+      "bytes": 12209,
+      "sha256": "bba8843dd0d50f9c224b0a78fcdc6a7bec696f76330a7822cebdea7aab9a04ce"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Two-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 6757,
+      "sha256": "008376497ee729f415b0e25a7e48727d0126856a0b57b64bd72a6c7ca635fab5"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r032",
+      "fileName": "edge-singularity-candidates.json",
+      "bytes": 2649657,
+      "sha256": "bd70ed05779631b729e89c269f82d287da361fdcea34e3c42703a712222f5575",
+      "extractionCommand": "prepare_data.py extracts every exact approximant interval and residue enclosure into candidate-poles.csv and the exact cluster hulls into summary.csv; validate_data.py independently checks the row count, hulls, residue signs, and theorem boundary"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig tmp/r024-venv/bin/python figures/r032-singularity-candidates/fig-r032-candidate-cluster/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 74,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "9dcf7fb71bf823333642e770984ffc45a84339a96fd153d1c8a6c03c4d37b5ef"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "acee252f289857df966457216aeee2e6673bb470e9ece2e124fb95eddfc1916b"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "d9ffdb5b45eb5ec4fe5d168a3f5f47ce8e399c3dd45c4a503d43f07dbb88ea5e"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "固定荷 q=1 的 U/V 对角 D-log Pade 极点在连续截断下聚集于约 -0.7495，留数为负；D 中更近的约 -0.723449 特征留数接近 +1，因此先判为零点候选。所有结论仅属于有限有理逼近。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 74 mm; the 600 dpi PNG is 4204 by 1748 pixels. Color and grayscale renders were inspected at final layout. Filled solid U markers, open dashed V markers, and triangular D-center markers remain distinguishable in grayscale. Labels, legends, the tail hull, and the D-center zero annotation are unclipped. validate_data.py cross-checks all 33 plotted records. No figure element presents a finite Pade pole as a certified singularity of the underlying series."
+  }
+}

@@ -288,7 +288,7 @@ def draw() -> None:
             output_response,
             color=BLUE,
             linewidth=1.15,
-            label=r"$|\mathfrak B_k(U(t),V(t))|/|\mathfrak B_k(U,V)|$",
+            label=r"$|B_k(U(t),V(t))|/|B_k(U,V)|$",
         )
         heat_axis.semilogy(
             scaled_times[::5],
@@ -368,4 +368,3 @@ def draw() -> None:
 
 if __name__ == "__main__":
     draw()
-

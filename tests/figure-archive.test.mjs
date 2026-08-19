@@ -14,6 +14,10 @@ const monitorUrl = new URL(
   "../research/run_with_monitor.py",
   import.meta.url,
 );
+const r038ManifestUrl = new URL(
+  "../figures/r038-tail-newton/fig-r038-tail-restart/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -81,4 +85,28 @@ test("ships a process-tree resource monitor", async () => {
   assert.match(source, /nvidia-smi/);
   assert.match(source, /gpuMemoryUsedMiB/);
   assert.match(source, /record_row/);
+});
+
+test("archives the formal R0.38 tail-aware restart figure", async () => {
+  const manifest = JSON.parse(await readFile(r038ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r038-tail-restart");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "bc230622aeac611966c091c4beca734c783f65ac",
+  );
+  assert.match(manifest.supportedClaim, /Z_N=3\(M_N\+S_N\/\(N\+1\)\)/);
+  assert.match(manifest.supportedClaim, /low-block inverse is inert/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 253);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 104);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
 });

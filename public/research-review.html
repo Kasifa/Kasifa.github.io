@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.22</strong>网页版本</span>
+            <span><strong>v0.23</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>用低阶精确预条件器与无穷尾界组合，继续扩大约化系统已经严格越过的解析边界。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>建立荷分块的全阶正算子界，检验它能否继续扩大约化系统已认证的解析边界。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2601,7 +2601,45 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_weighted_restart_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r037-weighted-restart/fig-r037-radius-restart">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.38：</strong>把 62 维精确逆作为低阶预条件器，与一阶加权无穷尾界组合，建立严格的 radii-polynomial 条件并搜索下一段可认证半径。</p>
+            <p><strong style="color:var(--gold)">R0.38 已完成：</strong>62 维低阶逆被证明在认证尾空间上严格无作用；真正的增益来自次数分离后的全阶尾部界，共同解析半径提高到 \(59/500\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.38 · 2026-08-19</p>
+            <h3>次数分离、尾部重启与预条件负审计</h3>
+            <p>
+              我把度数不超过 \(N\) 的中心多项式 \(p_N\) 与次数严格大于 \(N\) 的修正 \(h\) 分开。
+              R0.37 的混合分层估计因此满足 \(\min(i,j)=i\)，并给出新的全阶尾部界
+              \[
+              \|D\Phi(p_N)h\|_{\mathcal B_r}\le
+              3\left(M_N(r)+\frac{S_N(r)}{N+1}\right)\|h\|_{\mathcal B_r}.
+              \]
+              这不是有限列范数外推，而是对全部严格高阶尾部成立。
+            </p>
+            <p>
+              在 \(N=80\)、\(r_*=59/500\) 上，新尾界为
+              \(0.99249599847994349&lt;1\)，旧全空间界却为
+              \(1.95368290392552397&gt;1\)。完整精确残差约
+              \(7.4633\times10^{-70}\)，只占收缩允许量约
+              \(2.12\times10^{-64}\)；球映射、Lipschitz 和输运界均严格小于一。
+            </p>
+            <p>
+              原计划的 62 维低阶逆在认证尾空间上等同于恒等映射，因此不改善缺陷算子。
+              这项严格负审计终止了该预条件架构。附近半径 \(19/160\) 的同一充分界为
+              \(1.0007181&gt;1\)，只标记当前方法边界，不是奇点证据。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范生成系统中的新全阶解析下界。
+              它没有认证 R0.32 候选，也没有给出三维 Navier–Stokes 正则性或有限时奇性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-38.html"><strong>阅读 R0.38 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-38.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r038">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_tail_newton_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r038-tail-newton/fig-r038-tail-restart">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.39：</strong>保留荷输入与荷输出之间的正核，不再把全部通道压成一个标量常数；用全阶加权谱半径界检验能否严格超过 \(59/500\)。</p>
           </div>
         </section>
 
@@ -2616,7 +2654,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.22 · 2026-08-19<br>
+        综述 v0.23 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

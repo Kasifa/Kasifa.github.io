@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.38：用严格次数分离建立全阶尾部线性化界，把约化典范系统的共同解析半径认证到 59/500，并证明 62 维低阶逆在该尾空间上严格无作用。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.38｜次数分离与尾部重启">
+  <meta property="og:description" content="全阶尾部界在旧全空间界失效处闭合；低阶预条件器的预期增益被严格否定。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-38-tail-restart.png">
+  <title>R0.38｜次数分离与尾部重启</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#theorem">尾部定理</a><a href="#restart">精确重启</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.38 · 预条件路线的严格审计</div>
+        <h1>次数分离<br>与尾部重启</h1>
+        <p class="lead">我把度数不超过 80 的精确多项式与严格高阶修正分开，得到比旧全空间估计更细的全阶尾部界，并把约化系统的共同解析半径认证到 \(59/500\)。同时，原计划使用的 62 维低阶逆被证明在该尾空间上严格无作用。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 新半径已认证</span><strong>\(r_*=59/500\)</strong><p>版本 v0.38 · 2026-08-19</p><p>相对 R0.37：× 1.792125</p><p>正式检查：17 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#setup">01 · 分次设置</a></li><li><a href="#theorem">02 · 尾部定理</a></li><li><a href="#preconditioner">03 · 预条件负审计</a></li><li><a href="#restart">04 · 精确重启</a></li><li><a href="#negative">05 · 负向控制</a></li><li><a href="#finite">06 · 有限回归</a></li><li><a href="#figure">07 · 期刊附图</a></li><li><a href="#meaning">08 · 价值与下一步</a></li><li><a href="#reproduce">09 · 复现与前序记录</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是新的全阶解析下界，也包含一次有价值的路线否定</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>严格尾部线性化界</strong><p>次数分离把 \(\min(i,j)\) 精确化为低阶次数 \(i\)。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 59/500</strong><p>八十阶完整残差和全阶尾球以精确有理数闭合。</p></div>
+            <div class="status"><span>PROVED · NEGATIVE AUDIT</span><strong>低阶逆对尾部无作用</strong><p>62 维预条件器不改变高阶缺陷算子，因此不产生半径增益。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>81 次尾列与候选差距</strong><p>这些只作回归诊断，不替代全阶算子定理。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论只针对主动支持锥上的约化典范生成系统。它证明一个局部解析分支在更大多圆盘中存在且唯一；它没有给出三维 Navier–Stokes 方程的全局正则性、有限时奇性或 R0.32 候选奇点认证。</div>
+        </section>
+
+        <section id="setup"><div class="section-no">01 / Degree separation</div><h2>低阶中心与严格高阶尾部不会混在同一层</h2>
+          <p>继续使用 R0.37 的主动支持锥 \(q=2k-n\ge-1\) 和加权 Wiener 范数</p>
+          <div class="equation result">\[\boxed{\|f\|_{\mathcal B_r}=\sum_{n,k\ge0}(n+k)|f_{n,k}|r^{n+k}.}\]</div>
+          <p>令 \(p_N\) 只含总次数 \(i\le N\) 的项，修正 \(h\) 只含总次数 \(j>N\) 的项。R0.37 的极化分层估计为</p>
+          <div class="equation">\[\|(D\Phi(f)h)_L\|_1\le\frac32\sum_{i+j=L}\min(i,j)(A_iH_j+H_iA_j).\]</div>
+          <p>在 \(p_N\) 与 \(h\) 的混合项中必有 \(i&lt;j\)，所以 \(\min(i,j)=i\)。交换两个极化和后，两项相等；这比把两边统一压成 \(6\|p_N\|\|h\|\) 保留了更多分次信息。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">02 / All-order tail theorem</div><h2>一个额外低阶矩控制全部无穷尾部</h2>
+          <p>记 \(A_i=\|(p_N)_i\|_1\)，并定义两个精确低阶矩</p>
+          <div class="equation">\[M_N(r)=\sum_{i\le N}iA_ir^i,\qquad S_N(r)=\sum_{i\le N}i^2A_ir^i.\]</div>
+          <p>因为 \(j\ge N+1\)，有 \((i+j)/j\le1+i/(N+1)\)。逐层乘以总次数权重并求和后得到：</p>
+          <div class="equation result">\[\boxed{\|D\Phi(p_N)h\|_{\mathcal B_r}\le Z_N(r)\|h\|_{\mathcal B_r},\qquad Z_N(r)=3\left(M_N(r)+\frac{S_N(r)}{N+1}\right).}\]</div>
+          <p>这是对所有严格高阶尾部的无穷维估计，不是从有限矩阵列范数外推。二次尾部仍满足 \(\|\Phi(h)\|\le3\|h\|^2\)。残差从 \(N+1\) 次开始，混合项保持在严格尾部，\(\Phi(h)\) 从 \(2N+2\) 次开始，所以收缩映射的尾空间严格不变。</p>
+        </section>
+
+        <section id="preconditioner"><div class="section-no">03 / Preconditioner audit</div><h2>62 维精确逆没有进入尾部收缩常数</h2>
+          <p>原计划是令 \(P_m\) 投影到次数不超过 \(m\) 的有限块，\(J=I-D\Phi(p_N)\)，再构造</p>
+          <div class="equation">\[\mathcal A_m=P_m(P_mJP_m)^{-1}P_m+(I-P_m).\]</div>
+          <p>对任意次数严格大于 \(N>m\) 的尾部 \(h\)，分次结构使 \(Jh\) 仍严格高于 \(N\)。因此 \(P_mJh=0\)，并且</p>
+          <div class="equation result">\[\boxed{\mathcal A_mJh=Jh,\qquad (I-\mathcal A_mJ)h=D\Phi(p_N)h.}\]</div>
+          <p>这说明有限块逆在认证尾空间上等同于恒等映射：它既没有改善缺陷算子，也没有提供 R0.38 的半径增益。次数 12 的块仍有 62 维，Jacobian 与逆的哈希和 R0.37 完全一致；它们只证明实现一致。</p>
+          <div class="proof warning"><strong>研究判断。</strong>“尝试了近似逆”本身没有价值；把它在目标空间上的作用精确化简，发现它严格无效，才足以终止这条具体架构，并避免用有限矩阵的好看数值掩盖无穷尾部。</div>
+        </section>
+
+        <section id="restart"><div class="section-no">04 / Exact restart</div><h2>八十阶多项式在 \(59/500\) 上形成严格收缩</h2>
+          <p>取 \(N=80\) 和目标半径</p>
+          <div class="equation result">\[\boxed{r_*=\frac{59}{500}=0.118.}\]</div>
+          <p>精确递推生成 2161 个多项式项，处理 1,113,168 次有序相互作用。完整残差含 6345 项，覆盖总次数 81 至 160，没有截掉残差尾端。</p>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>\(M_{80}\)</td><td>0.32561381732092066191</td><td>中心多项式加权范数</td></tr>
+            <tr><td>\(S_{80}\)</td><td>0.42267275596390072178</td><td>额外低阶矩</td></tr>
+            <tr><td>旧界 \(6M_{80}\)</td><td>1.9536829039255239715</td><td>大于一，旧证明失效</td></tr>
+            <tr><td>尾界 \(Z_{80}\)</td><td>0.99249599847994349395</td><td>小于一，正间隙约 0.007504</td></tr>
+            <tr><td>完整残差 \(Y\)</td><td>\(7.46330256499889\times10^{-70}\)</td><td>精确有限多项式残差</td></tr>
+            <tr><td>球映射比</td><td>0.9943723362913434</td><td>严格小于一</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9962479992399717</td><td>严格小于一</td></tr>
+            <tr><td>输运算子</td><td>0.6524783015618507</td><td>严格小于一</td></tr>
+          </tbody></table>
+          <p>取球半径 \(\varepsilon=(1-Z_{80})/12\)。精确有理不等式给出</p>
+          <div class="equation">\[Y+Z_{80}\varepsilon+3\varepsilon^2&lt;\varepsilon,\qquad Z_{80}+6\varepsilon=\frac{1+Z_{80}}2&lt;1.\]</div>
+          <p>完整残差只占允许量约 \(2.1206\times10^{-64}\)。Banach 定理因此构造出唯一严格尾部修正。相对 R0.37，二变量半径增益为 \(14337/8000=1.792125\)；相对 R0.31 为 \(4779/2000=2.3895\)。固定荷半径按三次方放大，相对 R0.31 的增益为 13.643352642375。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">05 / Negative control</div><h2>附近失败点标记的是方法边界，不是函数奇点</h2>
+          <p>在稍大的有理半径 \(19/160=0.11875\) 上，同一个充分尾部界变为</p>
+          <div class="equation result">\[\boxed{Z_{80}(19/160)=1.000718148591245445&gt;1.}\]</div>
+          <p>因此当前收缩判据不能越过该点。这是一个预先指定的负向控制：它证明代码没有把所有半径都判为成功，也量化了余量只有约千分之七。它不能反向推出 \(19/160\) 外不存在解析延拓，更不能说明那里有奇点。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">06 / Finite regression</div><h2>有限列扫描远低于全阶界，但不能替代它</h2>
+          <p>我对总次数恰为 81 的全部 55 个可允许基列做精确计算，共生成 118,070 个像项。最大加权列比为</p>
+          <div class="equation">\[\max_{\deg h=81}\frac{\|D\Phi(p_{80})h\|}{\|h\|}=0.16577696827316245.\]</div>
+          <p>这个数只有全阶上界的约 0.167 倍，说明标量尾界可能仍有较大改进空间；但它只覆盖一个次数层，不能认证所有 \(j&gt;80\)。同样，R0.32 固定荷候选与当前已证域的差距下界仍约为 456.13 倍，候选模长本身仍只是有限高阶诊断。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>半径阶梯、阈值判定与残差尺度同时归档</h2>
+          <figure>
+            <img src="/figures/r0-38-tail-restart.svg" alt="R0.38 次数分离尾部重启的半径阶梯、收缩阈值和残差尺度">
+            <figcaption>图 R0.38-1。左图比较 R0.31、R0.37 与 R0.38 的二变量及固定荷解析半径；右上显示旧全空间界失败，而新尾部界、球映射、Lipschitz 与输运界通过，附近探针失败；右下显示完整残差比允许量小约 64 个数量级。形状、空心与实心、线型保证灰度打印仍可辨认。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value and next</div><h2>价值在于一个可迁移的尾部机制，而不在于接近完整 PDE 结论</h2>
+          <p>R0.38 把已证明的约化系统解析域继续扩大，并首次明确展示：全空间算子范数大于一时，利用多项式中心与严格尾部的次数不对称仍可得到无穷维收缩。这一“低阶精确矩 + 全阶尾部定理”的结构可能迁移到其他三角型解析生成方程。</p>
+          <p>对三维 Navier–Stokes 千禧年问题的直接价值仍然很小。约化系统与完整 PDE 的临界动力学之间尚无控制桥梁；当前半径离有限候选仍远；局部解析分支存在也不等于真实流体解全局光滑。此次结果应被评价为约化模型中的严格数学进展，而不是原问题的局部解答。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称低阶 Newton 方法提高了半径，不能声称 \(19/160\) 是解析边界，不能声称 R0.32 候选是真奇点，也不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+          <h3>R0.39：荷分块的全阶正算子界</h3>
+          <ol>
+            <li>不再把全部荷通道压成一个标量常数，推导荷输入与荷输出之间的正核；</li>
+            <li>从 81 次精确列扫描提取候选权重，但只把它当作权重设计数据；</li>
+            <li>用显式正权 \(\omega_q\) 和 Collatz–Wielandt 型不等式证明所有次数层的统一上界；</li>
+            <li>把闭合后的谱半径界重新代入精确尾球，搜索严格大于 \(59/500\) 的有理半径；</li>
+            <li>若任意可控权重仍不能使界低于一，发布精确障碍常数并停止该范数路线。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>源提交、机器证书、监控记录与期刊图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_tail_newton_audit.py --max-total-degree 80 --target-radius 59/500 --low-block-degree 12 --tail-column-degree 81 --source-commit bc230622aeac611966c091c4beca734c783f65ac --progress --check --pretty --output /tmp/r038.json</code></div>
+          <p>正式源提交为 <code>bc230622aeac611966c091c4beca734c783f65ac</code>。科学计算耗时 30.290959 秒；监控采样 253 次，峰值 CPU 为 100.0%，峰值常驻内存为 45.281 MiB。没有使用 GPU、随机种子或浮点判号。17 项正式检查全部通过。</p>
+          <p>R0.38 证书 SHA-256 为 <code>3eb320e8cef0289c7fa2fef00a38c3c66b6b4c5006375bf6386d784f6b95dbf4</code>。</p>
+          <p><a href="/notes/r0-38.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_tail_newton_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_tail_newton_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r038">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r038-tail-newton/fig-r038-tail-restart">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-31.html">R0.31：改进主控与共同解析域</a>。给出 \(K=81/4\) 的全阶系数主控和旧半径 \(4/81\)。</li>
+            <li><a href="/notes/r0-32.html">R0.32：最近奇点候选定位</a>。候选仍是有限高阶诊断，不是奇点证书。</li>
+            <li><a href="/notes/r0-35.html">R0.35：固定荷延拓几何</a>。证明未加权同半径 Wiener 算子不有界。</li>
+            <li><a href="/notes/r0-37.html">R0.37：加权 Wiener 重启</a>。建立同半径全阶界并把共同半径提高到 \(16/243\)。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>严格区分全阶定理、有限精确检查与未解决问题</span><span>R0.38 · 2026-08-19<br><a href="/">返回研究综述</a></span></div></footer>
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r038-tail-restart",
+  "status": "formal",
+  "analyticalQuestion": "Can strict degree separation between a certified polynomial and its correction tail close a larger common analytic radius, why does the older full-space estimate fail there, and does the exact finite low-block inverse contribute to that gain?",
+  "supportedClaim": "For a degree-N polynomial p_N and a strict tail h in the active support cone q>=-1, the all-order estimate ||D Phi(p_N)h||_{B_r}<=Z_N(r)||h||_{B_r} holds with Z_N=3(M_N+S_N/(N+1)). At N=80 and r=59/500, Z_80=0.99249599847994349395<1, while the older full-space estimate is 1.9536829039255239715>1. The complete exact residual is 7.4633025649988919148e-70, the ball and transport inequalities close, and the same sufficient tail inequality is above one at the nearby probe 19/160. The exact 62-dimensional low-block inverse is inert on the certified strict tail by grading and contributes no radius gain.",
+  "createdAt": "2026-08-19T15:25:41+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "bc230622aeac611966c091c4beca734c783f65ac",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "logarithmic normalized radius ladder plus threshold lollipops and a logarithmic residual-scale dot plot",
+    "variants": [
+      "three-version bivariate and fixed-charge radius ladder normalized to R0.31",
+      "seven named theorem bounds, controls, and finite diagnostics against threshold one",
+      "two-scale logarithmic comparison of the complete exact residual and contraction allowance"
+    ],
+    "takeaway": "Degree separation, not the finite low-block inverse, raises the certified radius to 59/500: the tail bound closes just below one where the older all-order bound fails, and the residual is about 64 orders of magnitude below its allowance.",
+    "dataSufficiency": "Six exact radius values, seven exact bound or control values, two exact residual scales, and seven preconditioner metadata fields. Every point is a named theorem or audit quantity rather than a sampled trend.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "R0.31, R0.37, and R0.38 use circle, square, and diamond markers; the seven bound rows use distinct X, diamond, square, circle, triangle, plus, and inverted-triangle markers; open and filled faces and a dashed threshold preserve distinctions without color.",
+    "finalSurface": "single double-column journal figure at 178 by 104 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output <formal-dir>/resources.csv --interval 0.1 -- tmp/r024-venv/bin/python research/edge_tail_newton_audit.py --max-total-degree 80 --target-radius 59/500 --low-block-degree 12 --tail-column-degree 81 --source-commit bc230622aeac611966c091c4beca734c783f65ac --progress --progress-log <formal-dir>/progress.ndjson --check --pretty --output <formal-dir>/edge-tail-newton.json",
+    "configuration": "active support cone q>=-1; one-total-degree weighted Wiener norm; exact degree-80 polynomial; target r=59/500; strict correction tail above degree 80; exact degree-12 low Jacobian block; exact degree-81 tail-column regression; nearby negative-control radius 19/160",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, all-order tail contraction inequalities, rational finite-block inversion, exact grading audit, and exact tail-column regression",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every plotted value is extracted from the pinned exact certificate"
+    },
+    "wallTimeSeconds": 30.29095895800856,
+    "scientificWallTimeSeconds": 30.29095895800856,
+    "monitoredWallTimeSeconds": 30.38858,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.1,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 253,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "tail-aware inequalities",
+        "finite low-block inversion",
+        "degree-81 tail-column regression",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 45.281
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "radius-gain.csv",
+      "format": "csv",
+      "schema": "R0.31, R0.37, and R0.38 exact bivariate and fixed-charge radii, normalized to the R0.31 value.",
+      "bytes": 453,
+      "sha256": "f9feb4473b46076c86ab2a490cb8e87d1152f8f7d68e23c30511feaade26c594"
+    },
+    {
+      "path": "contraction.csv",
+      "format": "csv",
+      "schema": "Seven exact dimensionless theorem bounds, controls, and finite diagnostics with threshold one and classification.",
+      "bytes": 7813,
+      "sha256": "0c3ced287e074a403c164fdb571d8417592de8e586f4dd267f3e72e109871a65"
+    },
+    {
+      "path": "residual-scales.csv",
+      "format": "csv",
+      "schema": "The complete exact degree-80 polynomial residual norm and the all-order contraction allowance.",
+      "bytes": 3825,
+      "sha256": "bfe4c3e936128d3cdb58c7c552b6407c51050dcf99f812be75e44afcb84d137e"
+    },
+    {
+      "path": "preconditioner-metadata.csv",
+      "format": "csv",
+      "schema": "Finite low-block dimension and hashes, exact high-tail grading identities, finite tail-column count, and finite candidate-gap diagnostic.",
+      "bytes": 538,
+      "sha256": "f00595198b95f9fad67e68a9224b77899125a58539ef40ae8c9d7a6d44c1bd52"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, and completion status.",
+      "bytes": 1109,
+      "sha256": "9c61a000da9bf717119b99003645a2cb4d0432b79756c00d4df84bfed4870907"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.1-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 18635,
+      "sha256": "ef9c7ae7bcca0523d5ed4115eb36d93da8a25395f828dd6294721bfbb5535f58"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r038",
+      "fileName": "edge-tail-newton.json",
+      "bytes": 34150,
+      "sha256": "3eb320e8cef0289c7fa2fef00a38c3c66b6b4c5006375bf6386d784f6b95dbf4",
+      "extractionCommand": "prepare_data.py extracts every plotted radius, bound, residual, and preconditioner value; validate_data.py pins the certificate hash and source commit, checks all seventeen formal flags, compares every exact Fraction, enforces the positive and negative controls, verifies the grading identity and matrix hashes, and checks the archived progress and resource records"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=/tmp/r038-mpl tmp/r024-venv/bin/python figures/r038-tail-newton/fig-r038-tail-restart/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 104,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "4740063be52513143c0d1055045f74533e34bfadd7a9870f418296802589bbe0"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "7f187470798ffcad64afa276fab7b6bafad7881b881242c56ab308bf1749cd28"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "4d9b8429fc5a81af6a9cc70a1def4539583ab6d6ad98c2520f9824e14d7bced5"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "严格的次数分离把尾部线性化界压到 0.992496，在旧全空间界 1.953683 失效处把共同解析半径认证到 59/500。完整残差只占收缩余量约 2.12e-64；62 维低阶逆在认证尾空间上严格无作用。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 104 mm to rounding and the 600 dpi PNG is 4204 by 2456 pixels. The color export, true grayscale conversion, and a 300 dpi Poppler render of the PDF were inspected. Marker shape, open versus filled faces, and a dashed threshold preserve distinctions without color. Titles, axes, direct labels, three-version legend, logarithmic scales, and four footer lines are unclipped. Three subsetted CID TrueType fonts are embedded with Unicode maps; Poppler extracted 1097 text characters. validate_data.py independently checks every plotted value against the exact certificate."
+  }
+}

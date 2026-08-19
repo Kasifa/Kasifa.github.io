@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r045-fixed-negative-charge",
+  "status": "formal",
+  "analyticalQuestion": "Does the exact fixed-charge s=-1 column admit an all-order monotonic endpoint theorem strong enough to close the reduced canonical restart at r=371/1000, and does the adjacent millesimal probe fail in the exact induced column rather than only in a separated upper bound?",
+  "supportedClaim": "For s=-1, j>80, and j congruent to 1 modulo 3, the exact weighted column F_r(t), t=1/j, satisfies F'_r(t)>=3r-Qhat_r(1/82)>0 on 0<=t<=1/82. Its all-order maximum is therefore the true j=82 column. At r=371/1000 this column is 0.99722804122918895132 and every fixed-point and canonical-stretch gate passes. At r=372/1000 the same exact column is 1.0010616516434951437 and fails, while the common large-charge sector remains 0.97661386801873716684.",
+  "createdAt": "2026-08-19T20:20:22+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "8f7f9ec2b90b2d249b474ec4dbba50a71c807745",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "two exact rational-function curves, derivative-bound lollipops, ordered exact-control line-dot panel, and threshold lollipop panel",
+    "variants": [
+      "101 presentation samples at each of two adjacent radii on the continuous inverse-degree interval",
+      "three exact target-radius derivative components",
+      "three exact control series at three consecutive radii plus one inherited R0.44 comparison",
+      "five target-radius proof gates, including the obsolete direct-transport diagnostic"
+    ],
+    "takeaway": "A uniform positive derivative bound makes j=82 the exact all-order s=-1 endpoint, turns r=0.371 into a strict pass, and identifies r=0.372 as an exact induced-column failure of the current sufficient norm.",
+    "dataSufficiency": "The formal derivative argument covers every admissible j>80 analytically. The 202 plotted curve samples and five finite lattice regressions are implementation and presentation checks rather than substitutes for the all-order theorem.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Distinct marker shapes, open versus filled faces, solid versus dashed lines, a cross for the inherited comparison, direct labels, and threshold dashes preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r045/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_fixed_negative_charge_audit.py --max-total-degree 80 --entry-radius 37/100 --target-radius 371/1000 --failure-probe-radius 372/1000 --charge-cutoff 241 --regression-degree-offsets 0,3,6,18,918 --ball-divisor 1000000 --source-commit 8f7f9ec2b90b2d249b474ec4dbba50a71c807745 --progress --progress-log research/certificates/r045/progress.ndjson --check --pretty --output research/certificates/r045/edge-fixed-negative-charge.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; fixed input charge s=-1; minimum tail degree J=82; positive large-charge cutoff S=241; entry r=37/100; target r=371/1000; adjacent probe r=372/1000; exact derivative endpoint theorem; inherited common-slope large sector and canonical-stretch construction",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, all-order fixed-negative-charge derivative theorem, inherited finite-charge and common-slope bounds, rational fixed-point and canonical-stretch inequalities, and finite exact degree regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every endpoint, derivative component, control, and proof gate is extracted and checked against the pinned exact certificate"
+    },
+    "wallTimeSeconds": 35.747394,
+    "scientificWallTimeSeconds": 35.640977624992956,
+    "monitoredWallTimeSeconds": 35.747394,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 240,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "exact fixed-negative-charge endpoint gates",
+        "canonical stretch and direct-transport diagnostics",
+        "finite exact degree regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 42.766
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "negative-charge-curve.csv",
+      "format": "csv",
+      "schema": "202 exact rational presentation samples of F_r(t) at r=371/1000 and 372/1000, including the exact t=1/82 endpoints; not used as proof.",
+      "bytes": 271548,
+      "sha256": "19e54eeb7661e85bd9a4e8b92f9585cde3ccd573043f21cb197df420860d42ac"
+    },
+    {
+      "path": "derivative-certificate.csv",
+      "format": "csv",
+      "schema": "Nine exact values for the q=1 negative-derivative obstruction, q=2 seed lower bound, and certified positive margin at three consecutive radii.",
+      "bytes": 3978,
+      "sha256": "a15c48363c818c02ef69e6d7bcfd6c59ca8ee2a74c6d5aa2faa295558620a3c4"
+    },
+    {
+      "path": "radius-controls.csv",
+      "format": "csv",
+      "schema": "Ten exact controls for the s=-1 column, common large sector, canonical stretch, and inherited R0.44 comparison at r=0.370, 0.371, and 0.372.",
+      "bytes": 9729,
+      "sha256": "edef9a54703143d97f0ab41cf55fc7ad5045264549c683d29c9be60aa0d9f504"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Five exact target-radius fixed-point, mapping, Lipschitz, canonical-stretch, and obsolete direct-transport bounds with gate classifications.",
+      "bytes": 6549,
+      "sha256": "cddf708caacb205e8fb90bf44bf5f67ef4f4960500f5c8d474d81ef6b70ef6d5"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 3260,
+      "sha256": "a00e2bb978e608273ee45b656610df821b259d4304df720ca2b6d9509fe589b8"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 17710,
+      "sha256": "f3bd82f558c6e00ea5a4ff498a7c6f41ed3d80b169495335e61244a8f6a386b8"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r045",
+      "fileName": "edge-fixed-negative-charge.json",
+      "bytes": 187768,
+      "sha256": "abc588fb80a140cf78f0558119f50e7a15dce9b2d3fa5219a8b0f9456c8d0b7b",
+      "extractionCommand": "prepare_data.py pins the R0.45 certificate, reconstructs the degree-80 polynomial, extracts exact curves, derivative components, radius controls and proof gates, and copies monitoring logs; validate_data.py independently checks the source pin, all 33 formal flags, exact endpoint identities, derivative bridge, threshold bracket, finite-check classification, and monitoring counts"
+    },
+    {
+      "location": "research/certificates/r044",
+      "fileName": "edge-common-slope-tail.json",
+      "bytes": 184988,
+      "sha256": "7966771f25305211907e11e1a7ab7b6d784b1a14e3db92b3cbec37b96382bb1f",
+      "extractionCommand": "the R0.45 certificate pins the R0.44 input certificate, exact polynomial and residual digests, common-slope large sector, inherited finite-charge columns, and canonical-stretch construction"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r045-fixed-negative-charge/fig-r045-fixed-negative-charge/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "21dbb8a5991c4b86dae81a13e49df682cd48ea4f1841dfd0f0aaf253aefa8102"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "ac5106e5eed582fa385d7795bab207f20db464dfcfe87d53497ea30bac6a1cb5"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "6a58bd2fd90d45162d0ad5b3557979c901de83c2569dac112b18ab0a15a76618"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "把输入荷 s=-1 的完整精确列写成 t=1/j 的有理函数后，度一 q=2 种子项足以压过全部 q=1 负导数，使该列在 0 到 1/82 上严格递增；r=0.371 的真实端点为 0.997228，而 r=0.372 的同一真实列为 1.001062。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected after shortening the right-panel labels. Marker shape, open versus filled faces, solid versus dashed lines, a cross for the inherited comparison, direct labels, and threshold dashes preserve distinctions without color. Titles, axes, annotations, legends, and footer lines are unclipped. Seven font resources have embedded descriptors. PDF text extraction contains the R0.45 label, 0.997228, r=0.372, the reduced canonical scope, and the finite-sample limitation. validate_data.py independently checks every plotted table against the pinned exact certificate."
+  }
+}

@@ -42,6 +42,10 @@ const r044ManifestUrl = new URL(
   "../figures/r044-common-slope-tail/fig-r044-common-slope-tail/manifest.json",
   import.meta.url,
 );
+const r045ManifestUrl = new URL(
+  "../figures/r045-fixed-negative-charge/fig-r045-fixed-negative-charge/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -274,6 +278,31 @@ test("archives the formal R0.44 common-slope endpoint figure", async () => {
   assert.match(manifest.supportedClaim, /1\.0008564924160487608/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 300);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.45 fixed-negative-charge endpoint figure", async () => {
+  const manifest = JSON.parse(await readFile(r045ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r045-fixed-negative-charge");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "8f7f9ec2b90b2d249b474ec4dbba50a71c807745",
+  );
+  assert.match(manifest.supportedClaim, /F'_r\(t\)>=3r-Qhat_r/);
+  assert.match(manifest.supportedClaim, /0\.99722804122918895132/);
+  assert.match(manifest.supportedClaim, /1\.0010616516434951437/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 240);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(

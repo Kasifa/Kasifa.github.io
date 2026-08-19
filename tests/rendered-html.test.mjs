@@ -57,6 +57,8 @@ const fortyThirdNoteUrl = new URL("../public/notes/r0-43.html", import.meta.url)
 const fortyThirdPdfUrl = new URL("../public/notes/r0-43.pdf", import.meta.url);
 const fortyFourthNoteUrl = new URL("../public/notes/r0-44.html", import.meta.url);
 const fortyFourthPdfUrl = new URL("../public/notes/r0-44.pdf", import.meta.url);
+const fortyFifthNoteUrl = new URL("../public/notes/r0-45.html", import.meta.url);
+const fortyFifthPdfUrl = new URL("../public/notes/r0-45.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -882,6 +884,32 @@ test("publishes and links the common-slope endpoint theorem", async () => {
   assert.match(note, /r0-44-common-slope-tail\.svg/);
   assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
   assert.match(note, /我不再让中心项各自选择最坏输入斜率/);
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the exact fixed-negative-charge endpoint theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortyFifthNoteUrl, "utf8"),
+    readFile(fortyFifthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-45\.html"/);
+  assert.match(home, /href="\/notes\/r0-45\.pdf"/);
+  assert.match(note, /研究笔记 R0\.45/);
+  assert.match(note, /href="\/notes\/r0-45\.pdf"/);
+  assert.match(note, /r_\* = \\frac\{371\}\{1000\}/);
+  assert.ok(note.includes("一个度一 \\(q=2\\) 种子足以压过全部 \\(q=1\\) 负导数"));
+  assert.match(note, /0\.9972280412291890/);
+  assert.match(note, /1\.0010616516434951437/);
+  assert.match(note, /8f7f9ec2b90b2d249b474ec4dbba50a71c807745/);
+  assert.match(note, /r0-45-fixed-negative-charge\.svg/);
+  assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
+  assert.match(note, /我把完整列保留为共同变量/);
   assert.doesNotMatch(
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.46：在零荷与非零荷输出的二块加权范数中保留同一输入列的相关性，以五个全阶荷扇区把约化典范边生成系统的认证半径推进到 0.376。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.46｜相关二块加权列定理">
+  <meta property="og:description" content="κ=3/4 时，0.376 的完整相关尾界为 0.997706；0.377 仅被现有大正荷充分界挡住。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-46-two-block-weight.png">
+  <title>R0.46｜相关二块加权列定理</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>@media print{body{font-size:8.5pt}.refs li{padding-top:6px;padding-bottom:6px}}</style>
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#principle">相关列</a><a href="#theorem">全阶定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.46 · 二块权重与同列相关性</div>
+        <h1>相关二块<br>加权列</h1>
+        <p class="lead">R0.45 证明无权 \(s=-1\) 真实列在 \(r=0.372\) 已超过一。我把输出零荷通道与其余输出分成两块，但不分别取块上确界：每个输入列的两部分先按 \(\kappa=3/4\) 合并，再在输入列之间取最大值。这一相关列定理覆盖全部尾次数和荷，并把共同认证半径推进到 \(0.376\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 共同半径已扩张</span><strong>r* = 376/1000</strong><p>版本 v0.46 · 2026-08-19</p><p>相对 R0.45：× 1.013477</p><p>正式检查：31 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#principle">01 · 相关列原则</a></li>
+        <li><a href="#coarse">02 · 粗块矩阵为何失败</a></li>
+        <li><a href="#sectors">03 · 五个全阶扇区</a></li>
+        <li><a href="#theorem">04 · 0.376 定理</a></li>
+        <li><a href="#restart">05 · 加权固定点</a></li>
+        <li><a href="#negative">06 · 0.377 负向控制</a></li>
+        <li><a href="#finite">07 · 有限回归边界</a></li>
+        <li><a href="#figure">08 · 期刊附图</a></li>
+        <li><a href="#meaning">09 · 价值与局限</a></li>
+        <li><a href="#next">10 · R0.47 验收题</a></li>
+        <li><a href="#reproduce">11 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里证明的是约化生成系统的全阶二块列定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · CORRELATED COLUMNS</span><strong>先合并同一输入列的两块输出</strong><p>证明没有把来自不同输入列的块上确界拼成成功证书。</p></div>
+            <div class="status"><span>PROVED · ALL CHARGES</span><strong>五个扇区穷尽全部尾荷</strong><p>\(s=0,-1,1\)、有限正荷与大正荷都有解析覆盖。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 \(376/1000\)</strong><p>尾界、球映射、Lipschitz 与正则伸缩在同一半径闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>31 项正式检查全通过</strong><p>有限列只验证实现，不承担无穷证明。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>结论只适用于主动支持锥、约化典范边生成系统和本文定义的二块次数加权 Wiener 范数。它没有证明三维不可压 Navier–Stokes 全局正则性，没有构造有限时奇性，也没有证明 \(r=0.377\) 的精确算子失败。</div>
+        </section>
+
+        <section id="principle"><div class="section-no">01 / Correlated columns</div><h2>权重必须放进同一输入列，而不是放进分别最大化的块矩阵</h2>
+          <p>记 \(P_0\) 与 \(P_{\ne0}\) 为输出荷零和输出荷非零的投影。我采用</p>
+          <div class="equation result">\[
+            \|f\|_{r,\kappa}=\kappa\|P_0f\|_{B_r}+\|P_{\ne0}f\|_{B_r},
+            \qquad \kappa=\frac34.
+          \]</div>
+          <p>对输入次数与荷 \((j,s)\)，令 \(C_0(j,s)\) 与 \(C_{\ne0}(j,s)\) 是两块精确绝对列和。诱导列比为</p>
+          <div class="equation">\[
+            \mathcal C_{r,\kappa}(j,s)
+            =\frac{\kappa C_0(j,s)+C_{\ne0}(j,s)}{w(s)},
+            \qquad
+            w(s)=\begin{cases}\kappa,&s=0,\\1,&s\ne0.\end{cases}
+          \]</div>
+          <p>先在分子中合并同一个输入单项式产生的两块输出，然后才对 \((j,s)\) 取上确界。成功来自这一顺序；它保留了“零荷输出大时，同列的非零荷输出未必也达到各自最坏值”的相关信息。</p>
+        </section>
+
+        <section id="coarse"><div class="section-no">02 / Deliberately coarse matrix</div><h2>分别最大化的 \(2\times2\) 块矩阵在目标半径上确实失败</h2>
+          <p>若先把每个块入口分别对输入列取最大值，会得到</p>
+          <div class="equation">\[
+            M=\begin{pmatrix}0&B\\C&D\end{pmatrix}.
+          \]</div>
+          <p>在 \(r=0.376\) 上，Perron 根的显示值为 \(1.0753987917062369\)。判号本身不用开方：对非负矩阵 \(M\)，\(\rho(M)>1\) 等价于</p>
+          <div class="equation result">\[
+            D+BC-1=0.081256698459034414403>0.
+          \]</div>
+          <p>这不是成功定理的反例。矩阵把来自不同输入列的三个最坏块拼在一起，丢掉了同列相关性；它只是一条严格但刻意粗糙的负向诊断。</p>
+        </section>
+
+        <section id="sectors"><div class="section-no">03 / Exhaustive sectors</div><h2>五个不相交扇区覆盖每个 \(j&gt;80\) 的尾单项式</h2>
+          <table><thead><tr><th>输入荷扇区</th><th>全阶机制</th><th>\(r=0.376\) 的界</th></tr></thead><tbody>
+            <tr><td>\(s=0\)</td><td>零荷输出恒消失；非零荷列随 \(j\) 下降，端点 \(j=81\)</td><td>0.7667413988675551</td></tr>
+            <tr><td>\(s=-1\)</td><td>加权导数定理；真实端点 \(j=82\)</td><td>0.9806763653835553</td></tr>
+            <tr><td>\(s=1\)</td><td>\(q=-1\) 零荷输出乘 \(\kappa\) 的逐项全次数界</td><td>0.2029506566664059</td></tr>
+            <tr><td>\(2\le s&lt;241\)</td><td>继承固定荷共同斜率端点定理；最坏 \(s=162\)</td><td>0.9952048059022893</td></tr>
+            <tr><td>\(s\ge241\)</td><td>继承大正荷凸性端点定理；最坏 \(x=s/j=2\)</td><td>0.9977064756858320</td></tr>
+          </tbody></table>
+          <h3>\(s=-1\) 的关键余量</h3>
+          <p>令 \(t=1/j\in[0,1/82]\)。R0.45 已证明只有中心荷 \(q=1\) 可能产生负导数；这些项现在恰好落在输出零荷块，因而负导数乘上 \(\kappa\)。</p>
+          <div class="equation result">\[
+            G'_r(t)\ge3r-\kappa\widehat Q_r(1/82)
+            =1.128-0.13051418504647839798
+            =0.99748581495352160202>0.
+          \]</div>
+          <p>所以完整加权列在连续区间上严格递增，所有允许尾次数中的最大值是真实格点 \(j=82\)。端点的零荷与非零荷两部分分别为 0.1433020606342965 和 0.8731998199078329，合并后得到 0.9806763653835553。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">04 / Target theorem</div><h2>0.376 的完整相关尾界严格小于一</h2>
+          <div class="equation result">\[
+            \boxed{\|D\Phi(p_{80})\|_{0.376,3/4}
+            \le0.99770647568583198433<1.}
+          \]</div>
+          <p>五个扇区不相交且穷尽所有输入荷，逐扇区界都覆盖完整尾次数。取五个精确界的最大值得到上式，主动瓶颈是 \(s\ge241\) 的大正荷扇区。</p>
+          <p>同一半径的 R0.45 无权界为 \(1.0165018805421294014>1\)。因此半径增长不是来自更多有限采样，而是来自诱导范数结构的改变以及同列相关性的保留。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">05 / Weighted Banach restart</div><h2>等价范数把二块线性界接回完整固定点与正则场构造</h2>
+          <p>二块范数满足 \(\kappa\|h\|_{B_r}\le\|h\|_{r,\kappa}\le\|h\|_{B_r}\)，因此二次项常数可取</p>
+          <div class="equation">\[
+            \|\Phi(h)\|_{r,\kappa}
+            \le\frac3{\kappa^2}\|h\|_{r,\kappa}^2
+            =\frac{16}{3}\|h\|_{r,\kappa}^2.
+          \]</div>
+          <table><thead><tr><th>认证量</th><th>十进制视图</th><th>判定</th></tr></thead><tbody>
+            <tr><td>完整相关尾界</td><td>0.9977064756858320</td><td>严格小于一</td></tr>
+            <tr><td>收缩余量</td><td>2.2935243142 × 10⁻³</td><td>正</td></tr>
+            <tr><td>二块球半径</td><td>2.2935243142 × 10⁻⁹</td><td>按余量的百万分之一选取</td></tr>
+            <tr><td>完整残差</td><td>9.8011648772 × 10⁻³¹</td><td>小于残差容许量</td></tr>
+            <tr><td>球映射上界</td><td>2.2882640884 × 10⁻⁹</td><td>小于球半径</td></tr>
+            <tr><td>球 Lipschitz</td><td>0.9977065001500913</td><td>严格小于一</td></tr>
+            <tr><td>正则伸缩界</td><td>0.9863713711181437</td><td>严格小于一</td></tr>
+          </tbody></table>
+          <p>从二块球回到普通范数时使用 \(\|h\|_{B_r}\le\kappa^{-1}\|h\|_{r,\kappa}\)。R0.42 的正则场重构因此在同一半径继续闭合。旧直接输运诊断仍大于一，但它不是正则分解后的构造门。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">06 / Adjacent negative control</div><h2>0.377 只被现有大正荷充分界挡住</h2>
+          <div class="equation result">\[
+            Z_{s\ge241}^{\mathrm{current}}(0.377)
+            =1.0030411177094620525>1.
+          \]</div>
+          <p>当前二块固定点因此不能在 0.377 闭合；但同一半径的多项式正则伸缩界仍为 \(0.9916535448080785<1\)。失败位置已经从 R0.45 的 \(s=-1\) 转移到继承的大正荷统一界。</p>
+          <div class="proof warning"><strong>负向控制的精确含义。</strong>这里失败的是现有共同斜率大荷充分界，不是精确尾算子，不是所有等价块范数，也不是约化系统或三维 PDE 的奇性结论。</div>
+        </section>
+
+        <section id="finite"><div class="section-no">07 / Finite exact regressions</div><h2>24 个精确列只检查实现，五个解析扇区承担无穷覆盖</h2>
+          <p>审计在输入荷 \(-1,0,1,2,162,240,241,300\) 上各检查三个次数偏移，共 24 个精确列；每列都低于其解析扇区界。计算还重建 2,161 项八十阶中心和 6,345 项 81–160 阶残差。</p>
+          <p>这些有限结果不用于把次数或荷外推到无穷。\(s=0\) 与 \(s=-1\) 有端点/导数定理，\(s=1\) 有统一逐项界，有限正荷有固定荷端点定理，大正荷有共同斜率凸性定理。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Formal figure</div><h2>权重窗口、连续半径、五扇区和构造门统一归档</h2>
+          <figure>
+            <img src="/figures/r0-46-two-block-weight.svg" alt="R0.46 二块权重可行窗口、四个连续半径控制、五个全阶荷扇区和 0.376 构造门">
+            <figcaption>图 R0.46-1。左上显示 \(r=0.376\) 上权重 \(\kappa\) 的精确展示包络；右上分离 0.371、0.372、0.376、0.377 的相关尾、无权尾和正则伸缩控制；左下列出目标半径的五个穷尽扇区；右下对比粗块矩阵、无权列、相关尾、固定点和伸缩门。101 个权重点只是显式有理公式的展示采样，不代替全阶证明。PDF、SVG、600 dpi PNG、精确数据、监控日志、清单与 SHA-256 摘要一并归档，彩色、真实灰度和 PDF 渲染页均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">09 / Research value and limits</div><h2>真正的新意是“同列相关性”，而不是一个更好看的有限数值</h2>
+          <p>R0.46 给出一条可复用的算子估计原则：块权重若在同一输入列内部使用，可以保留输出之间的互补关系；若先分别取块上确界，再组装矩阵，这一信息会永久丢失。这里甚至出现清楚的分离：粗矩阵严格失败，而相关诱导列严格通过。</p>
+          <p>研究边界也发生了可检验的迁移。R0.45 的真实 \(s=-1\) 列在 0.372 阻断无权范数；二块范数一直闭合到 0.376，随后大正荷扇区成为新瓶颈。这给下一项数学工作指定了唯一优先对象。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍然有限。当前链条没有把约化二元生成系统的半径传递到完整速度场的尺度临界范数，也没有覆盖任意光滑初值和全部 Fourier 相互作用。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 24 个有限列称为无穷证明，不能把 0.377 的充分界失败解释成精确算子失败，不能把 0.376 外推成 PDE 正则时间，也不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / R0.47</div><h2>下一步保留荷—次数格点相关性，直接检验 0.377 的大荷端点</h2>
+          <p>现有大荷定理先用统一次数下界分离次数因子，再对 \(x=s/j\) 使用凸性。R0.47 将检验：若把精确荷—次数格点关系继续保留在次数因子中，能否把 \(r=0.377\) 的大荷界从 1.003041 压到一以下。</p>
+          <ol>
+            <li>覆盖每个整数 \(s\ge241\) 和每个允许的 \(j&gt;80\)，不设有限荷或次数上限；</li>
+            <li>保留共同解析变量，或给出等价的单调性/凸性定理；</li>
+            <li>所有门槛继续用 GMP 有理数判定；</li>
+            <li>把 \(s=162\) 与加权 \(s=-1\) 保留为独立控制；</li>
+            <li>若仍失败，公开最坏格点机制与精确失败余量。</li>
+          </ol>
+          <p>只有先解决 0.377，才选择下一相邻半径；当前四个半径不足以支持任何外推。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility</div><h2>源提交、31 项精确证书、资源监控与图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/edge_two_block_weight_audit.py --max-total-degree 80 --entry-radius 371/1000 --rescued-radius 372/1000 --target-radius 376/1000 --failure-probe-radius 377/1000 --zero-charge-weight 3/4 --charge-cutoff 241 --regression-charges=-1,0,1,2,162,240,241,300 --regression-degree-offsets 0,3,18 --ball-divisor 1000000 --source-commit a521a84f01b748e3c138ecb785c1b21907dc0e28 --progress --check --pretty --output /tmp/r046.json</code></div>
+          <p>正式源提交为 <code>a521a84f01b748e3c138ecb785c1b21907dc0e28</code>。科学计算耗时 39.158856 秒；监控历时 39.282190 秒、采样 264 次，峰值 CPU 为 100.0%，峰值常驻内存为 47.047 MiB。没有使用 GPU、随机种子或浮点判号，31 项正式检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>9310267b894c32b61034ec5e8f34b7d49144028830713a5e86b59d5be00109d1</code>。</p>
+          <p><a href="/notes/r0-46.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_two_block_weight_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_two_block_weight_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r046">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r046-two-block-weight/fig-r046-two-block-weight">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-42.html">R0.42：正则伸缩输运</a>。提供正则场重构与伸缩门。</li>
+            <li><a href="/notes/r0-44.html">R0.44：共同斜率端点</a>。提供大正荷无穷扇区的凸性端点定理。</li>
+            <li><a href="/notes/r0-45.html">R0.45：固定负荷精确端点</a>。定位无权 \(s=-1\) 列及其相邻失败。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.46 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

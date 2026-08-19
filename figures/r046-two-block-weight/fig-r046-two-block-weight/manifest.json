@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r046-two-block-weight",
+  "status": "formal",
+  "analyticalQuestion": "Does a charge-zero/nonzero-charge weighted norm preserve same-input-column output correlations strongly enough to close the reduced canonical restart beyond the exact unweighted s=-1 endpoint, and which charge sector becomes limiting afterward?",
+  "supportedClaim": "For the reduced canonical tail map with kappa=3/4, the output-block weight is applied within each input column before the supremum. Exact all-order bounds cover s=0, s=-1, s=1, 2<=s<241, and s>=241. At r=376/1000 the complete correlated tail bound is 0.99770647568583198433, the fixed-point and canonical-stretch gates pass, and the inherited large-charge sector is limiting. At r=377/1000 that inherited sufficient large-sector bound is 1.0030411177094620525, so the present certificate fails without implying failure of the exact operator or of another norm.",
+  "createdAt": "2026-08-19T21:08:08+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "a521a84f01b748e3c138ecb785c1b21907dc0e28",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "exact weight-envelope line chart, ordered radius line-dot comparison, target-sector lollipops, and focused construction-gate lollipops",
+    "variants": [
+      "101 presentation samples of four explicit rational weight-envelope formulas at the target radius",
+      "three exact controls at four consecutive radii",
+      "five exhaustive all-order sector bounds at the target radius",
+      "six target-radius proof and diagnostic gates, including the deliberately coarse block-matrix control"
+    ],
+    "takeaway": "Keeping the zero and nonzero outputs correlated inside each input column allows kappa=3/4 to certify r=0.376; the inherited large positive-charge sector, rather than s=-1, is then the active bottleneck.",
+    "dataSufficiency": "All threshold decisions are taken from the 31-check GMP certificate and all five charge sectors are covered analytically. The 101 weight samples and finite exact regressions validate the implementation and presentation but are not substitutes for the all-order theorem.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Marker shape, open versus filled faces, line style, direct labels, and threshold lines preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 140 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r046/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_two_block_weight_audit.py --max-total-degree 80 --entry-radius 371/1000 --rescued-radius 372/1000 --target-radius 376/1000 --failure-probe-radius 377/1000 --zero-charge-weight 3/4 --charge-cutoff 241 --regression-charges=-1,0,1,2,162,240,241,300 --regression-degree-offsets 0,3,18 --ball-divisor 1000000 --source-commit a521a84f01b748e3c138ecb785c1b21907dc0e28 --progress --progress-log research/certificates/r046/progress.ndjson --check --pretty --output research/certificates/r046/edge-two-block-weight.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; zero/nonzero output split with kappa=3/4; five exhaustive input-charge sectors; positive large-charge cutoff S=241; entry r=371/1000; rescued radius 372/1000; target r=376/1000; adjacent probe r=377/1000; correlated all-order column theorem; inherited fixed-charge and common-slope bounds; weighted fixed point and canonical stretch",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal and Perron fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, all-order correlated weighted-column estimates in five disjoint charge sectors, rational fixed-point and canonical-stretch inequalities, and finite exact column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every sector, radius control, and proof gate is extracted and checked against the pinned exact certificate"
+    },
+    "wallTimeSeconds": 39.28219,
+    "scientificWallTimeSeconds": 39.158855749992654,
+    "monitoredWallTimeSeconds": 39.28219,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 264,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "five all-order charge-sector bounds",
+        "weighted fixed-point and canonical-stretch gates",
+        "coarse block-matrix diagnostic",
+        "finite exact column regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 47.047
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "weight-envelope.csv",
+      "format": "csv",
+      "schema": "606 rows: 101 exact rational presentation samples for each of six target-radius weight-envelope and threshold series; not used as proof.",
+      "bytes": 598009,
+      "sha256": "568f8aeb64a2cdb118b85ed802d81f9b1cad1bdf356e2720806a0fab937bb5c8"
+    },
+    {
+      "path": "radius-controls.csv",
+      "format": "csv",
+      "schema": "Twelve exact correlated-tail, unweighted-tail, and canonical-stretch controls at r=0.371, 0.372, 0.376, and 0.377.",
+      "bytes": 11711,
+      "sha256": "15d3da5018b1022586e8c5334b6feb0995952061836c501090102282d7cc361c"
+    },
+    {
+      "path": "sector-bounds.csv",
+      "format": "csv",
+      "schema": "Five exact all-order target-radius bounds for s=0, s=-1, s=1, the maximizing finite positive charge s=162, and s>=241.",
+      "bytes": 4684,
+      "sha256": "fb13d7ebb8243875ce9cb62fd71ac57524b8596efcf489b25f467ac182ab9f78"
+    },
+    {
+      "path": "proof-gates.csv",
+      "format": "csv",
+      "schema": "Six exact target-radius construction and diagnostic gates; the coarse Perron display value is accompanied by an exact rational failure identity.",
+      "bytes": 5693,
+      "sha256": "cd5e891412146de353675d8db7e45aa22d5c1246c03ce149220974c0799e7d61"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, counts, target values, and successful completion status.",
+      "bytes": 3344,
+      "sha256": "e5fa036e363faf4430ea1d4d3a9b1f54aa94d17e4150b0ffbe17847dd044c02d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 19464,
+      "sha256": "2cd6949f2cf3259d6f1ac377526ca2fd4a057e9667e58686dc32b4743f3c1ae9"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r046",
+      "fileName": "edge-two-block-weight.json",
+      "bytes": 358621,
+      "sha256": "9310267b894c32b61034ec5e8f34b7d49144028830713a5e86b59d5be00109d1",
+      "extractionCommand": "prepare_data.py pins the R0.46 certificate, reconstructs the exact weight envelope, extracts every radius control, sector bound, and proof gate, and copies monitoring logs; validate_data.py independently checks the source pin, all 31 formal flags, exact target decisions, presentation sampling, and monitoring counts"
+    },
+    {
+      "location": "research/certificates/r045",
+      "fileName": "edge-fixed-negative-charge.json",
+      "bytes": 187768,
+      "sha256": "abc588fb80a140cf78f0558119f50e7a15dce9b2d3fa5219a8b0f9456c8d0b7b",
+      "extractionCommand": "the R0.46 certificate pins the R0.45 input certificate, exact polynomial and residual digests, inherited unweighted controls, fixed-charge sectors, common-slope sector, and canonical-stretch construction"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r046-two-block-weight/fig-r046-two-block-weight/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 140,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "32261a7fb34e1f49e61a89285c4bddd1ee8c306b199b5cb4800a40253b536272"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "96aa5251b8e0e3c89a4469d7d77f98a90bc714b4d34f7d145db8c2a328d96b68"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "eb5f87672ca9c5d90e1b9de05d8262f282667c0170f0d1c1d3582d25b7f0ca2c"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "把零荷输出和非零荷输出的权重先放回同一输入列，再取列上确界，kappa=3/4 时完整尾界在 r=0.376 为 0.997706；此时限制因素已从 s=-1 转移到 s>=241 的大正荷扇区。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 140 mm to rounding and the 600 dpi PNG is 4204 by 3307 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Marker shape, open versus filled faces, line style, direct labels, and threshold dashes preserve distinctions without color. Titles, axes, annotations, legends, numerical labels, footer statements, and the blossom mark are unclipped. Four Type0 font resources have embedded descriptors and no Type3 fonts are present. PDF text extraction contains R0.46, 0.997706, 0.377, the reduced canonical scope, and the sampled-weight limitation. validate_data.py independently checks every plotted table against the pinned exact certificate."
+  }
+}

@@ -59,6 +59,8 @@ const fortyFourthNoteUrl = new URL("../public/notes/r0-44.html", import.meta.url
 const fortyFourthPdfUrl = new URL("../public/notes/r0-44.pdf", import.meta.url);
 const fortyFifthNoteUrl = new URL("../public/notes/r0-45.html", import.meta.url);
 const fortyFifthPdfUrl = new URL("../public/notes/r0-45.pdf", import.meta.url);
+const fortySixthNoteUrl = new URL("../public/notes/r0-46.html", import.meta.url);
+const fortySixthPdfUrl = new URL("../public/notes/r0-46.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -910,6 +912,32 @@ test("publishes and links the exact fixed-negative-charge endpoint theorem", asy
   assert.match(note, /r0-45-fixed-negative-charge\.svg/);
   assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
   assert.match(note, /我把完整列保留为共同变量/);
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the correlated two-block weighted-column theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fortySixthNoteUrl, "utf8"),
+    readFile(fortySixthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-46\.html"/);
+  assert.match(home, /href="\/notes\/r0-46\.pdf"/);
+  assert.match(note, /研究笔记 R0\.46/);
+  assert.match(note, /href="\/notes\/r0-46\.pdf"/);
+  assert.match(note, /r\* = 376\/1000/);
+  assert.ok(note.includes("权重必须放进同一输入列"));
+  assert.match(note, /0\.99770647568583198433/);
+  assert.match(note, /1\.0030411177094620525/);
+  assert.match(note, /a521a84f01b748e3c138ecb785c1b21907dc0e28/);
+  assert.match(note, /r0-46-two-block-weight\.svg/);
+  assert.match(note, /没有证明三维不可压 Navier–Stokes 全局正则性/);
+  assert.match(note, /我把输出零荷通道与其余输出分成两块/);
   assert.doesNotMatch(
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,

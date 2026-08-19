@@ -46,6 +46,10 @@ const r045ManifestUrl = new URL(
   "../figures/r045-fixed-negative-charge/fig-r045-fixed-negative-charge/manifest.json",
   import.meta.url,
 );
+const r046ManifestUrl = new URL(
+  "../figures/r046-two-block-weight/fig-r046-two-block-weight/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -303,6 +307,31 @@ test("archives the formal R0.45 fixed-negative-charge endpoint figure", async ()
   assert.match(manifest.supportedClaim, /1\.0010616516434951437/);
   assert.equal(manifest.simulation.kind, "exact-audit");
   assert.equal(manifest.simulation.monitoring.samples, 240);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.46 correlated two-block figure", async () => {
+  const manifest = JSON.parse(await readFile(r046ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r046-two-block-weight");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "a521a84f01b748e3c138ecb785c1b21907dc0e28",
+  );
+  assert.match(manifest.supportedClaim, /kappa=3\/4/);
+  assert.match(manifest.supportedClaim, /0\.99770647568583198433/);
+  assert.match(manifest.supportedClaim, /1\.0030411177094620525/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 264);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
   assert.deepEqual(

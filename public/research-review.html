@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.30</strong>网页版本</span>
+            <span><strong>v0.31</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>检验例外输出零荷通道与其余主动尾的二块加权范数，固定 \(r=0.372\) 为首个验收点。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>保留大正荷扇区的荷—次数格点相关性，固定 \(r=0.377\) 为下一项全阶验收点。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2901,7 +2901,56 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_fixed_negative_charge_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r045-fixed-negative-charge/fig-r045-fixed-negative-charge">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.46：</strong>把例外输出零荷通道与其余主动尾分成两个块，精确推导块算子并固定 0.372 为首个验收点；若块谱半径不能严格小于一，公开最坏块与失败余量。</p>
+            <p><strong style="color:var(--gold)">R0.46 已完成：</strong>零荷与非零荷输出先在同一输入列中按 \(\kappa=3/4\) 合并，再取列上确界；共同半径推进到 0.376，下一失败转移到大正荷充分界。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.46 · 2026-08-19</p>
+            <h3>相关二块加权列、五扇区全阶定理与 0.376 重启</h3>
+            <p>
+              R0.45 在 \(r=0.372\) 的无权 \(s=-1\) 真实列上给出
+              \(1.0010616516&gt;1\)。我把输出荷零和输出荷非零分成两块，并采用
+              \[
+              \|f\|_{r,\kappa}
+              =\kappa\|P_0f\|_{B_r}+\|P_{\ne0}f\|_{B_r},
+              \qquad \kappa=\frac34.
+              \]
+            </p>
+            <p>
+              关键不是分别最大化各块后组装矩阵，而是先把同一个输入列的两块输出合并，
+              再对输入次数与荷取上确界。刻意粗糙的 \(2\times2\) 块矩阵在目标上
+              仍严格失败：\(D+BC-1=0.0812566985&gt;0\)；相关列却保留了被该矩阵
+              丢掉的互补信息。
+            </p>
+            <p>
+              \(s=0,-1,1\)、\(2\le s&lt;241\) 与 \(s\ge241\)
+              五个解析扇区穷尽全部尾单项式。在 \(r=0.376\) 上，五个界依次为
+              0.766741、0.980676、0.202951、0.995205 与 0.997706，
+              所以完整相关尾界为
+              \[
+              0.99770647568583198433&lt;1.
+              \]
+              球映射、Lipschitz 与正则伸缩门全部通过。
+            </p>
+            <p>
+              相邻 \(r=0.377\) 的继承大正荷共同斜率界为
+              \(1.0030411177&gt;1\)，而多项式正则伸缩仍为
+              \(0.9916535448&lt;1\)。下一瓶颈因此是大正荷扇区的现有充分界，
+              不是 \(s=-1\) 通道。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范边生成系统的全阶相关列定理。
+              24 个有限精确列只验证实现；0.377 的充分界失败不证明精确算子失败，
+              也没有建立到完整三维 PDE 临界范数的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-46.html"><strong>阅读 R0.46 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-46.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r046">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_two_block_weight_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r046-two-block-weight/fig-r046-two-block-weight">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.47：</strong>保留大正荷扇区的精确荷—次数格点关系，直接检验 \(r=0.377\)；若全阶界仍不能低于一，公开最坏机制与精确失败余量。</p>
           </div>
         </section>
 
@@ -2916,7 +2965,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.30 · 2026-08-19<br>
+        综述 v0.31 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

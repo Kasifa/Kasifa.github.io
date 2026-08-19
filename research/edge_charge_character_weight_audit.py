@@ -5,9 +5,10 @@ R0.48 identifies the unique sharp threshold of the current two-block norm.
 This audit changes the Banach space rather than tightening the same column
 estimate.  For a monomial Z^m W^n with degree i=m+n and charge q=2n-m, set
 
-    ||f||_(r,c) = sum |f_mn| r^(m+n) c^(2n-m),   c=4/5.
+    ||f||_(r,c) = sum (m+n)|f_mn| r^(m+n) c^(2n-m),   c=4/5.
 
-Equivalently this is the ordinary Wiener norm on the anisotropic polydisc
+Equivalently this is the one-total-derivative Wiener norm on the anisotropic
+polydisc
 
     rho_Z = r/c,   rho_W = r*c^2.
 
@@ -562,17 +563,62 @@ def build_payload(
         ball_divisor,
         Rational(1),
     )
-    restart["chosenAnisotropicBallRadius"] = restart.pop(
-        "chosenTwoBlockBallRadius"
+    unweighted_polynomial_diagnostic = rational(
+        restart.pop("twoBlockPolynomialNorm")["exact"]
     )
-    restart["anisotropicPolynomialNorm"] = restart.pop(
-        "twoBlockPolynomialNorm"
+    unweighted_residual_diagnostic = rational(
+        restart.pop("twoBlockResidualNorm")["exact"]
     )
-    restart["anisotropicResidualNorm"] = restart.pop("twoBlockResidualNorm")
-    restart["anisotropicCorrectionNormUpperBound"] = restart.pop(
-        "ordinaryCorrectionNormUpperBound"
+    anisotropic_polynomial_norm = r037.weighted_wiener_norm(
+        scaled_polynomial,
+        window_lower,
     )
+    anisotropic_residual_norm = r037.weighted_wiener_norm(
+        scaled_residual,
+        window_lower,
+    )
+    contraction_margin = 1 - lower_tail_value
+    ball_radius = contraction_margin / ball_divisor
+    quadratic_constant = Rational(3)
+    residual_allowance = (
+        contraction_margin * ball_radius
+        - quadratic_constant * ball_radius**2
+    )
+    mapping_upper = (
+        anisotropic_residual_norm
+        + lower_tail_value * ball_radius
+        + quadratic_constant * ball_radius**2
+    )
+    lipschitz_upper = (
+        lower_tail_value + 2 * quadratic_constant * ball_radius
+    )
+    fixed_point = (
+        contraction_margin > 0
+        and ball_radius > 0
+        and anisotropic_residual_norm < residual_allowance
+        and mapping_upper < ball_radius
+        and lipschitz_upper < 1
+    )
+    restart["chosenAnisotropicBallRadius"] = r037.rational_record(ball_radius)
+    restart["anisotropicPolynomialNorm"] = r037.rational_record(
+        anisotropic_polynomial_norm
+    )
+    restart["anisotropicResidualNorm"] = r037.rational_record(
+        anisotropic_residual_norm
+    )
+    restart["anisotropicCorrectionNormUpperBound"] = r037.rational_record(
+        ball_radius
+    )
+    restart["contractionMargin"] = r037.rational_record(contraction_margin)
+    restart["quadraticConstant"] = r037.rational_record(quadratic_constant)
+    restart["residualAllowance"] = r037.rational_record(residual_allowance)
+    restart["mappingUpperBound"] = r037.rational_record(mapping_upper)
+    restart["lipschitzUpperBound"] = r037.rational_record(lipschitz_upper)
+    restart["fixedPointPasses"] = fixed_point
+    restart["canonicalFieldsPass"] = fixed_point and restart["stretchPasses"]
     restart.pop("zeroChargeWeight")
+    restart.pop("chosenTwoBlockBallRadius")
+    restart.pop("ordinaryCorrectionNormUpperBound")
     restart["quadraticProof"] = (
         "S_c is a multiplicative algebra automorphism and the ordinary "
         "Wiener estimate ||Phi(h)||_(B_r)<=3||h||_(B_r)^2 therefore gives "
@@ -599,6 +645,19 @@ def build_payload(
         "exact anisotropic fixed-point and conjugated canonical-stretch "
         "certificate for the reduced generating system"
     )
+    restart["degreeWeightAudit"] = {
+        "definition": (
+            "||f||_(r,c)=sum_(m+n>0) "
+            "(m+n)|f_mn|r^(m+n)c^(2n-m)"
+        ),
+        "unweightedPolynomialDiagnosticExcludedFromProof": (
+            r037.rational_record(unweighted_polynomial_diagnostic)
+        ),
+        "unweightedResidualDiagnosticExcludedFromProof": (
+            r037.rational_record(unweighted_residual_diagnostic)
+        ),
+        "residualUsesTotalDegreeWeight": True,
+    }
 
     progress(show_progress, started, "checking finite exact regressions")
     regression = r047.finite_column_regression(
@@ -641,6 +700,10 @@ def build_payload(
         "chargeScalingPreservesBracketOnExactCenter": bracket_covariance,
         "chargeScalingCommutesWithXMinusYOnExactCenter": euler_covariance,
         "chargeScalingCommutesWithPhi": covariance_residual == scaled_residual,
+        "restartResidualUsesTotalDegreeWeight": (
+            anisotropic_residual_norm
+            >= Rational(maximum_degree + 1) * unweighted_residual_diagnostic
+        ),
         "polynomialDigestMatchesR048": polynomial_digest == pinned_digest,
         "newWindowIsAbovePreviousExactThreshold": (
             window_lower > previous_root_upper
@@ -721,7 +784,8 @@ def build_payload(
         "scope": {
             "system": "reduced canonical edge generating system",
             "norm": (
-                "||f||_(r,c)=sum |f_mn| r^(m+n)c^(2n-m), c=4/5"
+                "||f||_(r,c)=sum (m+n)|f_mn| "
+                "r^(m+n)c^(2n-m), c=4/5"
             ),
             "equivalentPolydisc": (
                 "rho_Z=r/c, rho_W=r*c^2, rho_Z^2*rho_W=r^3"

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -13,6 +14,14 @@ const auditUrl = new URL(
 );
 const noteUrl = new URL(
   "../research/duhamel_critical_saturation_note.md",
+  import.meta.url,
+);
+const certificateUrl = new URL(
+  "../research/certificates/r058/duhamel-critical-saturation.json",
+  import.meta.url,
+);
+const sumsUrl = new URL(
+  "../research/certificates/r058/SHA256SUMS",
   import.meta.url,
 );
 
@@ -71,4 +80,24 @@ test("reproduces the exact R0.58 integer regressions", async () => {
   assert.equal(certificate.computation.floatingPointDecisionUse, false);
   assert.equal(certificate.computation.randomness, false);
   assert.equal(certificate.scope.notClaimed.length, 5);
+});
+
+test("archives the pinned R0.58 certificate with valid hashes", async () => {
+  const [encoded, sums] = await Promise.all([
+    readFile(certificateUrl),
+    readFile(sumsUrl, "utf8"),
+  ]);
+  const certificate = JSON.parse(encoded.toString("utf8"));
+  const digest = createHash("sha256").update(encoded).digest("hex");
+
+  assert.equal(
+    certificate.git.sourceCommit,
+    "35a817f00d8821e91f033764f6bd29fc1697ad56",
+  );
+  assert.equal(certificate.checks.threeDimensionalNavierStokesRegularityNotClaimed, true);
+  assert.equal(certificate.finiteRegressions.duhamelFamily.modesChecked, 8390656);
+  assert.equal(certificate.finiteRegressions.rudinShapiro.maximumLength, 4194304);
+  assert.equal(certificate.computation.floatingPointDecisionUse, false);
+  assert.match(sums, new RegExp(`^${digest}  duhamel-critical-saturation\\.json$`, "m"));
+  assert.equal(digest, "c04d2f00dd90ad16e885af573f00cde5f2ec3c3d499fdb5909952f4cec8512b2");
 });

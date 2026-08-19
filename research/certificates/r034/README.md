@@ -81,4 +81,3 @@ python research/run_with_monitor.py \
 - Exact backend: Python `Fraction`, SymPy domain determinants, and independent
   `Fraction` Leibniz determinants for all four theorem witnesses.
 - All 8 formal checks passed.
-

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.55：我建立完整 Fourier--Leray 项的尺度临界标量次数上界，识别精确高--高到低饱和族，并证明旋转不变的卷积可加标量荷只能为零。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.55｜临界 Fourier 桥梁与标量荷障碍">
+  <meta property="og:description" content="临界次数主控具有有限常数；高--高到低族在任意尺度分离下精确饱和；可加且旋转不变的标量荷只能恒为零。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-55-critical-fourier-bridge.png">
+  <title>R0.55｜临界 Fourier 桥梁与标量荷障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:7px 0;padding:7px 9px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:5px 0}p:has(+ .equation){break-after:avoid-page}.refs li{padding-top:2px;padding-bottom:2px}#reproduce{margin-bottom:0}#reproduce p{margin:2px 0}#reproduce h3{margin-top:10px;margin-bottom:4px}#reproduce .refs{font-size:7.5pt}#reproduce .refs li{padding-top:1px;padding-bottom:1px}#reproduce .proof code{font-size:4.7pt;line-height:1.04}}</style>
+  <script defer src="/i18n-en.js?v=0.39"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#critical">临界估计</a><a href="#triad">饱和频率族</a><a href="#no-go">标量荷障碍</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.55 · 完整 PDE 接口</div>
+        <h1>临界标量桥梁有限，<br>旋转不变标量荷不可能非平凡</h1>
+        <p class="lead">我从完整三维 Fourier--Leray 双线性项出发，先建立 \(\mathcal X^{-1}\) 中的尺度临界热--Duhamel 上界，再逐类检查频率几何。一个显式高--高到低族在任意大的输入/输出尺度分离下仍精确饱和，因此不能从尺度分离本身取得额外小因子。另一方面，任意同时满足卷积可加性与旋转不变性的实标量荷都只能恒为零。这给出现有荷--次数生成系统的一项严格接口障碍，但没有证明三维 Navier--Stokes 全局正则性。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 一条桥梁成立，一条直接路线排除</span><strong>17 项检查全通过</strong><p>版本 v0.55 · 2026-08-20</p><p>精确三元组：200,000 个</p><p>精确旋转见证：15,624 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#scaling">01 · 临界缩放</a></li>
+        <li><a href="#critical">02 · Fourier--Leray 估计</a></li>
+        <li><a href="#classes">03 · 三类频率几何</a></li>
+        <li><a href="#triad">04 · 精确饱和族</a></li>
+        <li><a href="#majorant">05 · 标量次数主控</a></li>
+        <li><a href="#no-go">06 · 标量荷不可能性</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#next">09 · R0.56 方向</a></li>
+        <li><a href="#reproduce">10 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里得到临界上界与接口障碍，不得到大数据正则性</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL FREQUENCIES</span><strong>临界次数桥梁有限</strong><p>完整 Fourier--Leray 项在 \(\mathcal E_\nu\) 中有显式 \(1/\nu\) 双线性常数。</p></div>
+            <div class="status"><span>FORMAL · ALL INDICES</span><strong>高--高到低精确饱和</strong><p>一个整数频率族对每个 \(N\ge1\) 都达到归一化常数一。</p></div>
+            <div class="status"><span>FORMAL · NO REGULARITY ASSUMPTION</span><strong>标量荷不可能性</strong><p>卷积可加且 \(SO(3)\) 不变的实标量荷只能为零。</p></div>
+            <div class="status"><span>OPEN · DIRECTION RESOLVED</span><strong>更丰富状态仍开放</strong><p>向量荷、方向扇区、多标架上确界与壳--角--极化状态未被排除。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>临界估计属于经典小数据框架；本页没有把 R0.54 的约化生成半径与 \(\mathcal X^{-1}\) 初值大小建立可逆比较，也没有得到任意大数据的先验界。精确三元组与旋转循环是有限实现回归；全频率结论来自解析证明。</div>
+        </section>
+
+        <section id="scaling"><div class="section-no">01 / Critical scaling</div><h2>\(\mathcal X^{-1}\) 与时间积分耗散量同时保持尺度不变</h2>
+          <p>在 \(\mathbb R^3\) 上定义 Fourier--Lebesgue 型量</p>
+          <div class="equation result">\[
+            \|u\|_{\mathcal X^\sigma}
+            =\int_{\mathbb R^3}|\xi|^\sigma|\widehat u(\xi)|\,d\xi.
+          \]</div>
+          <p>在 \(\mathbb T^3\) 上把积分换成对非零整数频率的求和。Navier--Stokes 缩放</p>
+          <div class="equation">\[
+            u_\lambda(x,t)=\lambda u(\lambda x,\lambda^2t),
+            \qquad
+            \widehat u_\lambda(\xi,t)
+            =\lambda^{-2}\widehat u(\xi/\lambda,\lambda^2t)
+          \]</div>
+          <p>给出精确恒等式</p>
+          <div class="equation result">\[
+            \|u_\lambda(t)\|_{\mathcal X^\sigma}
+            =\lambda^{\sigma+1}
+            \|u(\lambda^2t)\|_{\mathcal X^\sigma}.
+          \]</div>
+          <p>因此 \(L_t^\infty\mathcal X^{-1}\) 和 \(L_t^1\mathcal X^1\) 都是尺度临界量。我使用</p>
+          <div class="equation">\[
+            \|u\|_{\mathcal E_\nu}
+            =\max\!\left\{
+              \|u\|_{L_t^\infty\mathcal X^{-1}},
+              \nu\|u\|_{L_t^1\mathcal X^1}
+            \right\}.
+          \]</div>
+        </section>
+
+        <section id="critical"><div class="section-no">02 / Fourier--Leray bound</div><h2>无散条件把导数频率改写成输出频率</h2>
+          <p>对有序双线性项，Fourier 系数写成</p>
+          <div class="equation">\[
+            \widehat{\mathcal B(u,v)}(k)
+            =iP_k\!\sum_{p+q=k}
+            \bigl(q\cdot\widehat u(p)\bigr)\widehat v(q),
+          \]</div>
+          <p>其中 \(P_k=I-k\otimes k/|k|^2\) 是 Leray 投影。由于 \(p\cdot\widehat u(p)=0\)，</p>
+          <div class="equation result">\[
+            q\cdot\widehat u(p)
+            =(k-p)\cdot\widehat u(p)
+            =k\cdot\widehat u(p).
+          \]</div>
+          <p>投影算子范数不超过一。乘以临界权 \(|k|^{-1}\) 并对全部三元组求和，得到</p>
+          <div class="equation result">\[
+            \|\mathcal B(u,v)\|_{\mathcal X^{-1}}
+            \le
+            \|u\|_{\mathcal X^0}
+            \|v\|_{\mathcal X^0}.
+          \]</div>
+          <p>再用 \(\|u\|_{\mathcal X^0}^2\le\|u\|_{\mathcal X^{-1}}\|u\|_{\mathcal X^1}\)、时间 Cauchy--Schwarz 与热半群积分，可得 Duhamel 映射 \(\mathcal T\) 的临界双线性界</p>
+          <div class="equation result">\[
+            \|\mathcal T(u,v)\|_{\mathcal E_\nu}
+            \le\nu^{-1}
+            \|u\|_{\mathcal E_\nu}
+            \|v\|_{\mathcal E_\nu}.
+          \]</div>
+          <p>这一步把完整 PDE 接到一个有限标量次数主控。它先对每个 Fourier 系数取绝对值，因此保留尺度与粘性，却丢失跨三元组的符号、相位和角向抵消。</p>
+        </section>
+
+        <section id="classes"><div class="section-no">03 / Frequency classes</div><h2>最危险的点态几何是近抵消的高--高到低</h2>
+          <table><thead><tr><th>频率类</th><th>几何</th><th>临界估计中的结果</th></tr></thead><tbody>
+            <tr><td>高--高到高</td><td>\(|p|\sim|q|\sim|k|\)</td><td>输出权与输入尺度同阶；没有自动的小参数。</td></tr>
+            <tr><td>高--低到高</td><td>一个输入远低于另一个，\(|k|\) 保持高频</td><td>可按输入角色细分，但统一绝对值上界仍是常数阶。</td></tr>
+            <tr><td>高--高到低</td><td>\(|p|\sim|q|\gg|k|\)，两个输入近抵消</td><td>无散恒等式消去 \(|k|^{-1}\)，点态常数可以精确达到一。</td></tr>
+          </tbody></table>
+          <p>这张分类表只讨论点态符号常数。它没有排除高--高到低区域在角向测度、相位平均、正交性或时间振荡中出现额外收益；这些正是 R0.56 要保留的变量。</p>
+        </section>
+
+        <section id="triad"><div class="section-no">04 / Exact saturation family</div><h2>输入/输出分离趋于无穷，归一化符号仍恒等于一</h2>
+          <p>对任意正整数 \(N\)，取</p>
+          <div class="equation result">\[
+            p_N=(N,0,0),\qquad
+            q_N=(-N,1,0),\qquad
+            k=p_N+q_N=(0,1,0),
+          \]</div>
+          <p>并选极化 \(a=e_2\)、\(b=e_3\)。输入满足 \(p_N\cdot a=0\)、\(q_N\cdot b=0\)，而</p>
+          <div class="equation result">\[
+            q_N\cdot a=1,
+            \qquad P_kb=b,
+            \qquad P_k[(q_N\cdot a)b]=b.
+          \]</div>
+          <p>于是每个 \(N\) 都有</p>
+          <div class="equation result">\[
+            \frac{|k|^{-1}|\mathcal B_k(a,b)|}{|a||b|}=1,
+            \qquad
+            \frac{\min\{|p_N|,|q_N|\}}{|k|}=N\longrightarrow\infty.
+          \]</div>
+          <p>这不是有限搜索得到的模式，而是全指标代数恒等式。归档的 200,000 个三元组只检查实现并固定回归摘要。</p>
+        </section>
+
+        <section id="majorant"><div class="section-no">05 / Scalar degree majorant</div><h2>标准二次主控的精确半径是 \(1/4\)，但它不是 R0.54 半径</h2>
+          <p>把线性热项归一化为 \(z\)，把双线性常数吸收到未知量后，次数主控满足</p>
+          <div class="equation result">\[
+            M=z+M^2,
+            \qquad
+            M(z)=\frac{1-\sqrt{1-4z}}{2}.
+          \]</div>
+          <p>因此 \([z^n]M=C_{n-1}\)，其中 \(C_j\) 是 Catalan 数，精确收敛半径为 \(1/4\)。归档审计把递推与闭式精确核对到次数 256。</p>
+          <div class="proof warning"><strong>不可比较的数值。</strong>这里的 \(1/4\) 来自临界 PDE 范数经过 \(1/\nu\) 归一化后的标准二次主控；R0.54 的约 \(0.382629\) 属于另一个荷--次数边缘生成系统。两者没有已证明的双向常数，不能把大小差解释成改进或退步。这个主控也不是 Lei--Lin 小数据阈值的尖锐重证。</div>
+        </section>
+
+        <section id="no-go"><div class="section-no">06 / Scalar-charge no-go</div><h2>可加性与完整旋转不变性不能同时保留非零标量荷</h2>
+          <p>设 \(\chi:\mathbb R^3\to\mathbb R\) 满足</p>
+          <div class="equation">\[
+            \chi(\xi+\eta)=\chi(\xi)+\chi(\eta),
+            \qquad
+            \chi(R\xi)=\chi(\xi)
+            \quad(R\in SO(3)).
+          \]</div>
+          <p>对任意 \(\xi\)，存在一个 \(SO(3)\) 中的半转把 \(\xi\) 送到 \(-\xi\)。旋转不变性给出 \(\chi(-\xi)=\chi(\xi)\)，可加性给出 \(\chi(-\xi)=-\chi(\xi)\)，所以</p>
+          <div class="equation result">\[
+            \chi(\xi)=0\qquad\text{对每个 }\xi\in\mathbb R^3.
+          \]</div>
+          <p>证明不需要连续性、可测性或有界性。在 \(\mathbb Z^3\) 上，只要求对保向立方旋转群不变，也可用三个坐标轴半转迫使三个基向量的荷都为零。</p>
+          <p>因此，若要把任意三维 Fourier 数据接到非平凡荷分解，就必须放弃“单个实标量、卷积严格可加、完整旋转不变”三项中的至少一项。方向协变向量荷、方向扇区包络或多个标架的上确界仍然可能成立。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>缩放、饱和三元组与接口判断统一归档</h2>
+          <figure>
+            <img src="/figures/r0-55-critical-fourier-bridge.svg" alt="R0.55 临界 Fourier 缩放、精确高--高到低饱和三元组与标量荷障碍">
+            <figcaption>图 R0.55-1。左图给出 \(\mathcal X^\sigma\) 的精确缩放指数并标出临界点 \(\sigma=-1\)。中图画出 \(N=4\) 的代表三元组；恒等式对每个正整数 \(N\) 成立。右图显示临界符号比恒等于一，输入/输出尺度分离等于 \(N\)。PDF、SVG、600 dpi PNG、数据、验证脚本、监控、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-55-critical-fourier-bridge.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-55-critical-fourier-bridge.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>价值在于澄清接口结构，离 Clay 结论仍很远</h2>
+          <p>第一项价值是把“是否能接到完整 PDE”拆成两个不同问题。尺度临界标量次数主控确实有有限常数；现有非平凡标量荷若同时要求卷积可加与旋转不变，则不可能直接扩展到任意 Fourier 数据。</p>
+          <p>第二项价值是定位最坏点态频率类。高--高到低的显式族证明，任何只依赖输入/输出尺度分离的改进因子都会失败。下一步必须保留角度、输出方向、Leray 极化或相位，而不能继续只调一个标量荷权。</p>
+          <p>对千禧年问题的直接价值目前仍低：没有大数据闭合、没有排除有限时奇性、没有从约化生成函数反推出真实速度场，也没有把临界小数据理论推进到任意数据。单独的标量荷不可能性证明很短，尚不足以构成高水平论文的核心结果；如果 R0.56 能建立方向分辨的有限核，或证明一大类协变接口仍必然发散，才可能形成更有分量的结构性成果。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 \(1/4\) 写成新的 Navier--Stokes 阈值；不能把 200,000 个精确三元组写成全指标证明；不能从标量荷障碍推出所有生成函数方法都失败；不能声称已经解决或接近解决三维 Navier--Stokes 正则性问题。</div>
+        </section>
+
+        <section id="next"><div class="section-no">09 / R0.56</div><h2>下一步保留壳、相对角、输出方向与 Leray 极化</h2>
+          <div class="proof"><strong>可证伪问题。</strong>是否存在一个旋转协变、尺度临界的方向分辨状态，使 Fourier--Leray 三元核在壳--角--极化指标上具有有限双线性常数，并能单向映射到现有次数生成系统？若不存在，能否给出对全部有限方向分箱、向量荷或多标架上确界都适用的发散序列？</div>
+          <ol>
+            <li>以 \(j_p,j_q,j_k\) 记录三个 dyadic 壳，以 \(\widehat p\cdot\widehat q\) 或 \(\widehat k\) 记录相对几何；</li>
+            <li>在每个几何单元中保留 Leray 投影后的两个横向极化分量，不先取各向同性绝对值；</li>
+            <li>先对精确高--高到低族计算方向分辨核，区分点态饱和与角向测度；</li>
+            <li>检验旋转协变性、Navier--Stokes 缩放、热耗散兼容性和双线性常数四项条件；</li>
+            <li>只有有限常数与正确方向的比较映射同时成立，才连接 R0.54；否则归档最小反例与失败假设。</li>
+          </ol>
+          <p>R0.56 的验收标准是一个定义完整、坐标无歧义、能处理高--高到低饱和族的方向分辨核定理或不可能性定理，不是再做一轮标量参数优化。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility and sources</div><h2>解析证明、有限精确回归与已发表基线分别固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r055/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/fourier_critical_charge_bridge_audit.py --max-triad-index 200000 --max-catalan-degree 256 --rotation-radius 12 --source-commit 640cf4ce9b97c2caa8d22f9159b4d0aa2e3a65a0 --progress --progress-log research/certificates/r055/progress.ndjson --check --pretty --output research/certificates/r055/fourier-critical-charge-bridge.json</code></div>
+          <p>正式源提交为 <code>640cf4ce9b97c2caa8d22f9159b4d0aa2e3a65a0</code>，证书归档提交为 <code>95e4b87ffd36dcd4443951d97f6268ac4eb04368</code>，最终附图源提交为 <code>56d51913ce43fce46d96323181d528103a8e072f</code>，附图归档提交为 <code>6f54c343ce20342929ea07381270fc604bfc7353</code>。</p>
+          <p>正式科学计算耗时 5.312455 秒；监控历时 5.384576 秒、采样 21 次，峰值 CPU 为 100.0%，峰值常驻内存为 40.000 MiB。没有使用 GPU、随机数或浮点符号判定，17 项检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>feacd0c47aa123d508f4889bfb1e6770c40da1fef6e438acc1aa9ecd99fc19ae</code>。</p>
+          <p><a href="/notes/r0-55.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fourier_critical_charge_bridge_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fourier_critical_charge_bridge_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r055">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge">查看期刊附图包</a></p>
+          <h3>已发表基线与前序记录</h3>
+          <ol class="refs">
+            <li>Z. Lei 与 F.-H. Lin，<a href="https://doi.org/10.1002/cpa.20361"><em>Global Mild Solutions of the Navier--Stokes Equations</em></a>，<em>Communications on Pure and Applied Mathematics</em> 64 (2011), 1297--1304；<a href="https://arxiv.org/abs/1203.2699">arXiv 版本</a>。这是 \(\mathcal X^{-1}\) 小数据框架的已发表来源，不是本页的新结果。</li>
+            <li><a href="/notes/r0-54.html">R0.54：完整乘积仿射族的全局窄区间</a>。提供待连接的约化生成系统。</li>
+            <li><a href="/notes/r0-2.html">R0.2：dyadic--helical 局部性审计</a>。记录早期高--高到低与螺旋几何检查。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier--Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.55 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

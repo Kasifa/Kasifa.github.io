@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.38"></script>
+  <script defer src="/i18n-en.js?v=0.39"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.38</strong>网页版本</span>
+            <span><strong>v0.39</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>检验活跃列—零荷双约束是否决定完整仿射权重族 \(\omega_s=c^s(1+\lambda|s|)\) 的全局最优阈值，并给出覆盖全部参数域的精确证书。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>构造保留壳层、相对角、输出方向与 Leray 极化的尺度临界 Fourier 核，检验它能否连接完整 PDE 与约化生成系统。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -3364,7 +3364,64 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_product_affine_family_global_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r054-product-affine-global/fig-r054-product-affine-global">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.55：</strong>从完整三维 Fourier 双线性项和 Leray 投影出发，构造尺度临界壳层量到当前约化生成系统的单向控制；逐类检查高—高到高、高—低到高和高—高到低相互作用。若统一常数发散，则保留显式频率反例并把失败机制写成障碍定理。</p>
+            <p><strong style="color:var(--gold)">R0.55 已完成：</strong>完整 Fourier--Leray 项有有限的尺度临界标量次数上界；一个显式高—高到低族在任意大的输入/输出尺度分离下仍精确饱和；卷积可加且旋转不变的实标量荷只能恒为零。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.55 · 2026-08-20</p>
+            <h3>临界 Fourier 桥梁与标量荷障碍</h3>
+            <p>
+              我在 \(\mathbb R^3\) 或 \(\mathbb T^3\) 上使用
+              \(\mathcal X^\sigma\) Fourier--Lebesgue 量。Navier--Stokes
+              缩放给出
+              \[
+              \|u_\lambda\|_{\mathcal X^\sigma}
+              =\lambda^{\sigma+1}\|u\|_{\mathcal X^\sigma},
+              \]
+              因而 \(L_t^\infty\mathcal X^{-1}\) 与
+              \(L_t^1\mathcal X^1\) 同时临界。
+            </p>
+            <p>
+              对有序 Fourier--Leray 双线性项，无散条件把
+              \(q\cdot\widehat u(p)\) 精确改写成
+              \(k\cdot\widehat u(p)\)。输出临界权 \(|k|^{-1}\)
+              随之消去，得到
+              \[
+              \|\mathcal T(u,v)\|_{\mathcal E_\nu}
+              \le\nu^{-1}\|u\|_{\mathcal E_\nu}
+              \|v\|_{\mathcal E_\nu}.
+              \]
+              标准次数主控 \(M=z+M^2\) 的精确半径为 \(1/4\)，但它与
+              R0.54 的约化半径没有已证明的数值可比性。
+            </p>
+            <p>
+              频率族
+              \(p_N=(N,0,0)\)、\(q_N=(-N,1,0)\)、
+              \(k=(0,1,0)\)，配合 \(a=e_2\)、\(b=e_3\)，满足
+              \(P_k[(q_N\cdot a)b]=b\)。对每个正整数 \(N\)，归一化
+              临界符号比精确等于一，而输入/输出尺度分离等于 \(N\)。
+              因此尺度分离本身不能提供统一的小因子。
+            </p>
+            <p>
+              另外，若实标量荷 \(\chi\) 同时满足卷积可加性与完整
+              \(SO(3)\) 不变性，则半转把 \(\xi\) 送到 \(-\xi\)，
+              迫使 \(\chi(-\xi)=\chi(\xi)=-\chi(\xi)\)，所以
+              \(\chi\equiv0\)。这个证明不需要连续性。
+            </p>
+            <p>
+              <strong>结论边界：</strong>临界估计属于经典小数据框架；
+              标量荷不可能性只排除一条直接接口。方向协变向量荷、方向扇区、
+              多标架上确界与壳—角—极化状态仍开放。这里没有任意大数据先验界，
+              也不是三维 Navier--Stokes 正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-55.html"><strong>阅读 R0.55 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-55.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r055">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fourier_critical_charge_bridge_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.56：</strong>把状态扩展为三个 dyadic 壳、相对角或输出方向以及 Leray 横向极化；先区分高—高到低的点态饱和与角向测度，再检验旋转协变性、临界缩放、热耗散兼容性和有限双线性常数。</p>
           </div>
         </section>
 
@@ -3379,7 +3436,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.38 · 2026-08-20<br>
+        综述 v0.39 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

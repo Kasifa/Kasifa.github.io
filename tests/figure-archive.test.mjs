@@ -86,6 +86,10 @@ const r055ManifestUrl = new URL(
   "../figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge/manifest.json",
   import.meta.url,
 );
+const r056ManifestUrl = new URL(
+  "../figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -667,6 +671,41 @@ test("archives the formal R0.55 critical Fourier bridge figure", async () => {
   assert.match(manifest.supportedClaim, /rotation-invariant scalar charge is zero/);
   assert.equal(manifest.computation.kind, "exact-audit");
   assert.equal(manifest.computation.monitoring.formalSamples, 21);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 2);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.56 Leray polarization-channel figure", async () => {
+  const manifest = JSON.parse(await readFile(r056ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r056-leray-polarization-channels");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "1b736121127e91727b8ab7ff1b2fd90c2ee873f6",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "ea2456f8d3665dbfad1f11ffb5740ab7f37e5e72",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "7c1db04fef67d58019c2e55cd42a9634875b023a",
+  );
+  assert.match(manifest.supportedClaim, /normal channel with gain g_N/);
+  assert.match(manifest.supportedClaim, /in-plane channel with g_T<=/);
+  assert.match(manifest.supportedClaim, /does not decay with shell ratio/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.formalSamples, 55);
   assert.equal(manifest.computation.monitoring.samplingSamples, 2);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 105);

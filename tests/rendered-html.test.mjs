@@ -1047,6 +1047,11 @@ test("publishes and links the global charge-character optimization theorem", asy
 
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
+  assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
+  assert.match(home, /<strong>v0\.34<\/strong>网页版本/);
+  assert.ok(
+    home.includes("检验次乘权重 \\(\\omega_s=c^s(1+\\lambda|s|)\\)"),
+  );
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
   assert.match(note, /0\.8024563827/);

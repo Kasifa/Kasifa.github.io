@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.35"></script>
+  <script defer src="/i18n-en.js?v=0.36"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.35</strong>网页版本</span>
+            <span><strong>v0.36</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -3202,7 +3202,61 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_affine_charge_weight_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r051-affine-charge-weight/fig-r051-affine-charge-weight">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.52：</strong>为活跃列—零荷双约束构造精确同时根盒，并尝试用单调分支、凸性或认证区间分支定界覆盖整个 \(c&gt;0,\lambda\ge0\) 参数域。若全局定理暂时不能闭合，则给出严格上下差距或精确反例。</p>
+            <p><strong style="color:var(--gold)">R0.52 已完成：</strong>完整仿射族的最优半径已被压入宽 \(10^{-40}\) 的有理区间。三维同时根由精确 Krawczyk 包含隔离，正 KKT 乘子与二阶条件确定严格局部极大类型，242 个非活跃对象全部保留严格间隙；消元后的 316 次多项式把整个 \(c&gt;0,\lambda\ge0\) 参数域排除在上端半径之外。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.52 · 2026-08-20</p>
+            <h3>完整仿射荷权重族的全局窄区间</h3>
+            <p>
+              我把 R0.51 的固定有理参数放回完整仿射权重族
+              \[
+              \omega_s(c,\lambda)=c^s(1+\lambda|s|),
+              \qquad c&gt;0,\quad\lambda\ge0.
+              \]
+              令 \(\alpha=\lambda/(1+162\lambda)\)，活跃列与零荷列连同
+              约束交线上的驻定条件化为三个精确多项式方程。
+            </p>
+            <p>
+              三维根盒的每个坐标宽度均为 \(10^{-40}\)。精确 Krawczyk
+              像严格落在盒内，因此盒中恰有一个同时根；两个 KKT 乘子为正，
+              LICQ 子式下界大于 \(261.21\)，临界切向曲率下界大于
+              \(1825.13\)，所以该根是严格约束局部最大点。除两个活跃约束外，
+              242 个有限或无穷扇区全部严格低于一。
+            </p>
+            <p>
+              在根盒上端半径消去 \(\alpha\) 后，可行性要求单变量函数
+              \(E(r_U,c)\ge0\)。其对数导数多项式只有三次 Descartes 变号，
+              三个严格变号根盒恰好穷尽全部正根；在唯一内部极值盒上，
+              \(c^2E\) 的 317 个 Bernstein 系数全部为负。结合两端解析排除，
+              得到
+              \[
+              \begin{aligned}
+              0.3826244718485988314760952288871012330925
+              &amp;&lt;R_{\mathrm{aff}},\\
+              R_{\mathrm{aff}}
+              &amp;&lt;0.3826244718485988314760952288871012330926.
+              \end{aligned}
+              \]
+            </p>
+            <p>
+              相对 R0.51 的固定有理权重，新增相对半径只有约
+              \(6.732\times10^{-12}\)。结果的主要价值不是数值增益，而是把
+              原先依赖采样的无界二参数问题封闭为有限、精确、可复核的全域证书。
+            </p>
+            <p>
+              <strong>结论边界：</strong>该区间没有证明盒内局部根就是精确实数
+              意义下唯一的全局最大点，也没有建立到任意三维无散速度场、尺度临界
+              PDE 范数或完整 Fourier 相互作用几何的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-52.html"><strong>阅读 R0.52 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-52.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r052">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_affine_family_kkt_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r052-affine-family-global/fig-r052-affine-family-global">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.53：</strong>检验双仿射积权 \(\omega_s=c^s(1+\lambda|s|)(1+\mu|s|)\) 能否严格越过 R0.52 上界；若不能，则寻找单调、凸性或消元结构，证明最优点退化到已封闭的低维边界。同时优先评估约化生成系统到完整三维 Fourier 相互作用的尺度临界桥梁，因为这比继续微调权重参数更接近核心 PDE 障碍。</p>
           </div>
         </section>
 
@@ -3217,7 +3271,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.35 · 2026-08-20<br>
+        综述 v0.36 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

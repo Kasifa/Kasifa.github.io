@@ -71,6 +71,8 @@ const fiftiethNoteUrl = new URL("../public/notes/r0-50.html", import.meta.url);
 const fiftiethPdfUrl = new URL("../public/notes/r0-50.pdf", import.meta.url);
 const fiftyFirstNoteUrl = new URL("../public/notes/r0-51.html", import.meta.url);
 const fiftyFirstPdfUrl = new URL("../public/notes/r0-51.pdf", import.meta.url);
+const fiftySecondNoteUrl = new URL("../public/notes/r0-52.html", import.meta.url);
+const fiftySecondPdfUrl = new URL("../public/notes/r0-52.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -1050,7 +1052,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.35<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1083,10 +1085,8 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.35<\/strong>网页版本/);
-  assert.ok(
-    home.includes("检验活跃列—零荷双约束是否决定完整仿射权重族"),
-  );
+  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
+  assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
   assert.match(note, /c_0=\\frac\{19939\}\{25000\}=0\.79756/);
@@ -1106,6 +1106,41 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
   assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the complete affine-family global enclosure", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftySecondNoteUrl, "utf8"),
+    readFile(fiftySecondPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-52\.html"/);
+  assert.match(home, /href="\/notes\/r0-52\.pdf"/);
+  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
+  assert.ok(home.includes("R0.52 已完成："));
+  assert.match(note, /研究笔记 R0\.52/);
+  assert.match(note, /href="\/notes\/r0-52\.pdf"/);
+  assert.match(note, /3826244718485988314760952288871012330925/);
+  assert.match(note, /3826244718485988314760952288871012330926/);
+  assert.match(note, /6\.8068\\times10\^\{-39\}/);
+  assert.match(note, /242 个非活跃对象全部低于一/);
+  assert.match(note, /22 项精确检查全部通过/);
+  assert.match(note, /e64ed23dcd86883e9690468b05f64304ee4ac816/);
+  assert.match(note, /b79e59ec327bc02b64e23ad3f903b6d61860a075d59ff75a43d82f5684590def/);
+  assert.match(note, /r0-52-affine-family-global\.svg/);
+  assert.match(note, /它没有证明区间中的局部 KKT 根就是精确实数意义下唯一的全局最大点/);
+  assert.ok(note.includes("我现在把 \\(c&gt;0,\\lambda\\ge0\\) 的完整二参数族"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(
+    note,
+    /\(lambd|\(alph|\(omeg|Ege0|Fle0|Gle0|[^\u005c]qquad|[^\u005c]times10/,
+  );
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 

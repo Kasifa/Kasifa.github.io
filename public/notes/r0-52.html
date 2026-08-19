@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.52：我把完整仿射荷权重族的全局最优半径压进宽 10^-40 的精确区间，并以 Krawczyk、KKT、Descartes 与 Bernstein 证书覆盖局部根、全部非活跃扇区和完整参数域。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.52｜完整仿射荷权重族的全局窄区间">
+  <meta property="og:description" content="活跃列与零荷列的同时根唯一落在三维有理盒中；消元后的 316 次多项式把整个 c&gt;0、lambda≥0 参数域排除在上端半径之外。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-52-affine-family-global.png">
+  <title>R0.52｜完整仿射荷权重族的全局窄区间</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:7px 0;padding:7px 9px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:5px 0}.refs li{padding-top:2px;padding-bottom:2px}#reproduce p{margin:3px 0}#reproduce .proof code{font-size:4.9pt;line-height:1.06}}</style>
+  <script defer src="/i18n-en.js?v=0.36"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#system">精确系统</a><a href="#global">全局排除</a><a href="#result">结论区间</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.52 · 完整仿射族</div>
+        <h1>两个活跃约束<br>锁定全参数域</h1>
+        <p class="lead">R0.51 只固定了一个有理仿射权重。我现在把 \(c&gt;0,\lambda\ge0\) 的完整二参数族化为活跃列与零荷列的精确同时根问题：Krawczyk 包含证明根盒中恰有一个根，KKT 与二阶条件证明它是严格局部最大点，242 个非活跃扇区全部保留严格间隙。再消去仿射参数后，一个 316 次 Laurent 清分母多项式把全局最优半径压进宽 \(10^{-40}\) 的有理区间。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全参数域已夹逼</span><strong>gap = 10<sup>−40</sup></strong><p>版本 v0.52 · 2026-08-20</p><p>正式检查：22 项全通过</p><p>非活跃扇区：242 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#weight">01 · 仿射紧化</a></li>
+        <li><a href="#system">02 · 三方程系统</a></li>
+        <li><a href="#root">03 · Krawczyk 根盒</a></li>
+        <li><a href="#maximum">04 · 严格局部极大</a></li>
+        <li><a href="#inactive">05 · 全部非活跃扇区</a></li>
+        <li><a href="#eliminate">06 · 消去仿射参数</a></li>
+        <li><a href="#global">07 · 全正轴符号</a></li>
+        <li><a href="#result">08 · 全局区间</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与局限</a></li>
+        <li><a href="#next">11 · R0.53 验收题</a></li>
+        <li><a href="#reproduce">12 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里给出完整仿射族的全局窄区间，不给出三维 PDE 结论</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · ROOT BOX</span><strong>三维同时根存在且唯一</strong><p>每个坐标盒宽 \(10^{-40}\)，Krawczyk 像严格落在内部。</p></div>
+            <div class="status"><span>EXACT · LOCAL TYPE</span><strong>根是严格约束局部最大点</strong><p>两个乘子为正，LICQ 与临界切向二次型均严格通过。</p></div>
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>242 个非活跃对象全部低于一</strong><p>有限正荷、特殊荷和无穷大荷奇偶支全部覆盖。</p></div>
+            <div class="status"><span>GLOBAL · WIDTH 10<sup>−40</sup></span><strong>完整二参数域获得上下界</strong><p>消元、Descartes 正根计数与完整 Bernstein 符号共同排除上端。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>该区间属于次数 80 的约化典范边生成系统。它没有证明区间中的局部 KKT 根就是精确实数意义下唯一的全局最大点，没有优化所有可能的 Banach 权重，也没有建立任意三维无散速度场的尺度临界估计，更没有证明或反驳三维不可压 Navier–Stokes 全局正则性。</div>
+        </section>
+
+        <section id="weight"><div class="section-no">01 / Compactified affine parameter</div><h2>一个变量替换把活跃列变成仿射多项式</h2>
+          <p>完整权重族仍为</p>
+          <div class="equation result">\[
+            \omega_s(c,\lambda)=c^s(1+\lambda|s|),
+            \qquad c&gt;0,\quad\lambda\ge0.
+          \]</div>
+          <p>三角不等式保证 \(\omega_{a+b}\le\omega_a\omega_b\)，所以代数常数始终为一。对活跃输入荷 \(s=162\)，定义</p>
+          <div class="equation result">\[
+            \alpha=\frac{\lambda}{1+162\lambda},
+            \qquad
+            \delta=1-162\alpha.
+          \]</div>
+          <p>于是 \(0\le\alpha&lt;1/162\)，且 \(\lambda=\alpha/\delta\)。中心荷满足 \(q\ge-1\)，所以活跃权重比精确化为</p>
+          <div class="equation">\[
+            \frac{1+\lambda|162+q|}{1+162\lambda}=1+\alpha q.
+          \]</div>
+          <p>该替换不是近似。它把 \(\lambda\in[0,\infty)\) 紧化为有限开区间，并使活跃约束对 \(\alpha\) 严格线性。</p>
+        </section>
+
+        <section id="system"><div class="section-no">02 / Exact stationary system</div><h2>活跃列、零荷列与驻定条件组成三个精确方程</h2>
+          <p>以活跃 Laurent 系数定义矩</p>
+          <div class="equation">\[
+            M_k(r,c)=\sum_{i,q}b_{iq}q^k r^ic^q,
+            \qquad k=0,1,2.
+          \]</div>
+          <p>活跃列为 \(B=M_0+\alpha M_1\)。零荷列写成</p>
+          <div class="equation">\[
+            Z=U_0+\frac{\alpha}{\delta}U_1,
+          \]</div>
+          <p>其中 \(T_0=\partial_{\log c}U_0\)，\(T_1=\partial_{\log c}U_1\)。乘以严格为正的清分母因子后，正式系统为</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            F&amp;=c(M_0+\alpha M_1-1),\\
+            G&amp;=c\{\delta(U_0-1)+\alpha U_1\},\\
+            H&amp;=c^2\{(M_1+\alpha M_2)U_1
+            -\delta^2M_1T_0-\alpha\delta M_1T_1\}.
+          \end{aligned}
+          \]</div>
+          <p>第三式满足</p>
+          <div class="equation">\[
+            H=c^2\delta^2
+            \bigl[(\partial_{\log c}B)(\partial_\alpha Z)
+            -(\partial_\alpha B)(\partial_{\log c}Z)\bigr].
+          \]</div>
+          <p>它正是双约束交线上半径驻定的坐标不变量，不使用数值差分。</p>
+        </section>
+
+        <section id="root"><div class="section-no">03 / Exact Krawczyk box</div><h2>同时根被隔离在三个宽 \(10^{-40}\) 的有理区间中</h2>
+          <div class="equation result">\[
+          \begin{aligned}
+          0.3826244718485988314760952288871012330925
+          &amp;&lt;r&lt;
+          0.3826244718485988314760952288871012330926,\\
+          0.7975595104326214175951774729017091063394
+          &amp;&lt;c&lt;
+          0.7975595104326214175951774729017091063395,\\
+          0.0061234500552300731923346973685049743915
+          &amp;&lt;\alpha&lt;
+          0.0061234500552300731923346973685049743916.
+          \end{aligned}
+          \]</div>
+          <p>对应 \(\lambda\) 的展示值为 \(0.76532688040616062505\ldots\)。100 位 <code>mpmath</code> 求根只用于定位。正式证明在有理中点构造精确 Jacobian \(J_0\)，再以 \(Y=J_0^{-1}\) 形成</p>
+          <div class="equation">\[
+            K(x_0,X)=x_0-Yf(x_0)+\{I-Y[J(X)]\}(X-x_0).
+          \]</div>
+          <p>三个 Krawczyk 像半径分别约为 \(3.0\times10^{-80}\)、\(7.2\times10^{-79}\) 与 \(3.0\times10^{-80}\)，全部严格小于输入盒半径。因而 \(F=G=H=0\) 在该盒中存在且只有一个根。</p>
+        </section>
+
+        <section id="maximum"><div class="section-no">04 / Strict local maximum</div><h2>正乘子与二阶条件排除鞍点</h2>
+          <p>把 \(F\le0,G\le0\) 视为两个活跃不等式。精确区间给出正乘子</p>
+          <div class="equation result">\[
+            \mu\approx0.2613978758364294,
+            \qquad
+            \nu\approx2.2256966715\times10^{-5}.
+          \]</div>
+          <p>LICQ 子式的下界大于 \(261.21\)。在一维临界切空间选择 \(\tau=(0,G_\alpha,-G_c)\)，得到</p>
+          <div class="equation result">\[
+            \tau^T\{\mu\nabla^2F+\nu\nabla^2G\}\tau&gt;1825.13.
+          \]</div>
+          <p>目标函数 \(r\) 的 Hessian 为零，所以 Lagrangian 在临界切向上严格负定。该唯一同时根因此是严格约束局部最大点，不是鞍点或极小点。</p>
+        </section>
+
+        <section id="inactive"><div class="section-no">05 / Inactive sectors</div><h2>零荷列成为第二个活跃约束，其余 242 个对象全部分离</h2>
+          <p>根盒中的两个活跃等式是 \((j,s)=(81,162)\) 与 \(s=0\)。对其余对象，我在完整 \((r,c,\lambda)\) 盒上逐项取严格上包络，再复用固定荷次数凸端点、特殊荷全次数定理与无穷大荷奇偶 Bernstein 定理。</p>
+          <table><thead><tr><th>覆盖对象</th><th>数量</th><th>结果</th></tr></thead><tbody>
+            <tr><td>固定正荷 \(2\le s&lt;241\)</td><td>239</td><td>全部严格小于一</td></tr>
+            <tr><td>\(s=1\) 与 \(s=-1\)</td><td>2</td><td>全次数上界严格小于一</td></tr>
+            <tr><td>全部 \(s\ge241\)</td><td>1 个无穷分支记录</td><td>奇偶两支完整区间通过</td></tr>
+          </tbody></table>
+          <p>最近非活跃对象为</p>
+          <div class="equation result">\[
+            (j,s)=(82,164),\qquad
+            \text{gap}&gt;1.4527650997576197\times10^{-4}.
+          \]</div>
+          <p>R0.51 的最近者 \(s=0\) 已被提升为活跃约束；新的最近非活跃间隙反而更大。</p>
+        </section>
+
+        <section id="eliminate"><div class="section-no">06 / Eliminate alpha</div><h2>全局可行性可降为一个变量 \(c\) 的必要不等式</h2>
+          <p>在根盒右端 \(r=r_U\)，R0.50 的全局乘法定理和半径严格单调性给出 \(M_0(r_U,c)&gt;1\) 对所有 \(c&gt;0\) 成立。若某个仿射参数仍可行，则必有</p>
+          <div class="equation">\[
+            M_1&lt;0,\qquad U_0&lt;1.
+          \]</div>
+          <p>活跃不等式要求</p>
+          <div class="equation">\[
+            \alpha\ge\frac{M_0-1}{-M_1},
+          \]</div>
+          <p>零荷不等式要求</p>
+          <div class="equation">\[
+            \alpha\le\frac{1-U_0}{U_1+162(1-U_0)}.
+          \]</div>
+          <p>消去 \(\alpha\) 后，可行性必须满足</p>
+          <div class="equation result">\[
+            E(r,c)=(-M_1)(1-U_0)
+            -(M_0-1)\{U_1+162(1-U_0)\}\ge0.
+          \]</div>
+          <p>固定 \(r=r_U\) 并乘 \(c^2\) 后，\(E\) 成为 316 次普通多项式。这一步把整个二维无界域压缩为一条正实轴上的符号问题。</p>
+        </section>
+
+        <section id="global"><div class="section-no">07 / Global positive-axis sign</div><h2>三次 Descartes 变号与三个根盒穷尽全部正根</h2>
+          <p>定义 \(Q(c)=c^2\partial_{\log c}E(r_U,c)\)。其非零系数序列恰有三次符号变化，所以 Descartes 规则给出正根数至多为三。证书同时构造三个互不相交的严格变号盒：</p>
+          <div class="equation">\[
+          \begin{aligned}
+            c_1&amp;\approx0.20925968950998153142,\\
+            c_2&amp;\approx0.79755951043262141760,\\
+            c_3&amp;\approx1.2390430393144776592.
+          \end{aligned}
+          \]</div>
+          <p>三个盒已给出至少三个不同正根。因此正根总数恰为三，且全部为单根；\(E\) 的单调次序被固定为“降、升、降、升”。</p>
+          <p>在 \(c_L=0.1337\) 左侧，零荷基值已大于一；在 \(c_U=0.803\) 右侧，\(M_1&gt;0\) 使活跃约束不可能成立。中间区间的最大值只能出现在端点或 \(c_2\) 盒。两个端点的 \(c^2E\) 都严格为负；在完整 \(c_2\) 盒上，317 个 Bernstein 系数全部为负，最大者仍满足</p>
+          <div class="equation result">\[
+            \max_k\beta_k&lt;-6.8068\times10^{-39}.
+          \]</div>
+          <p>所以 \(E(r_U,c)&lt;0\) 对每个 \(c&gt;0\) 成立，与必要条件 \(E\ge0\) 矛盾。上端半径及全部更大半径均不可行。</p>
+        </section>
+
+        <section id="result"><div class="section-no">08 / Global enclosure</div><h2>完整仿射族的最优半径被压进宽 \(10^{-40}\) 的区间</h2>
+          <div class="equation result">\[
+          \frac{3826244718485988314760952288871012330925}{10^{40}}
+          &lt;R_{\mathrm{aff}}&lt;
+          \frac{3826244718485988314760952288871012330926}{10^{40}}.
+          \]</div>
+          <p>下界来自同时根的存在：在该根处两个活跃列等于一、全部非活跃扇区小于一，因此略小于根的半径可行。上界来自完整参数域消元定理。相对 R0.51 固定有理权根上界，保守增益因子大于</p>
+          <div class="equation">\[
+            1.0000000000067320092.
+          \]</div>
+          <p>新增相对半径仅约 \(6.732\times10^{-12}\)。数值改进几乎可以忽略；重要之处是原来依赖采样的二参数问题已经变为完整域上的严格上下界。</p>
+          <div class="proof"><strong>仍保留的一条逻辑缝隙。</strong>宽 \(10^{-40}\) 的全局区间足以排除任何有意义的数值改进，但它本身没有证明局部 KKT 根与全局最大点作为精确实数完全相同，也没有排除同一窄区间内存在另一个全局最大点。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>消元裕量、区间收缩与全部非活跃间隙统一归档</h2>
+          <figure>
+            <img src="/figures/r0-52-affine-family-global.svg" alt="R0.52 完整仿射荷权重族的消元裕量、Krawczyk 收缩和 242 个非活跃全阶扇区间隙">
+            <figcaption>图 R0.52-1。左上图以精确有理展示样本画出 \(c_2\) 两侧的 \(-c^2E(r_U,c)\)，虚线对应完整根盒 Bernstein 证书的保守正裕量；右上图比较三个宽 \(10^{-40}\) 的输入盒与约 \(10^{-79}\) 的 Krawczyk 像半径；下图排列全部 242 个非活跃扇区间隙。展示样本不承担全局证明，正式结论来自三根 Descartes 计数、完整 317 个 Bernstein 系数、精确 KKT 与全阶扇区证书。PDF、SVG、600 dpi PNG、精确样本、验证脚本、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-52-affine-family-global.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-52-affine-family-global.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and limits</div><h2>该结果封闭一个约化模型内的问题，但没有缩短最关键的 PDE 距离</h2>
+          <p>第一项价值是方法上的：无界二参数优化没有依赖密集网格，而是通过紧化、精确同时根、消元、正根计数和 Bernstein 符号成为有限可核验证书。</p>
+          <p>第二项价值是结构上的：活跃 \(s=162\) 列与零荷列确实共同决定极窄边界；这不是浮点曲线偶然相交。正 KKT 乘子和二阶条件还确认该点的局部极大类型。</p>
+          <p>第三项价值是否定性的：完整仿射族只比 R0.51 的简单有理选择多出约 \(6.7\times10^{-12}\) 的相对半径。继续微调 \((c,\lambda)\) 不会产生有意义的新尺度。</p>
+          <p>对千禧年问题的直接价值仍然有限。当前对象是一个约化二元生成系统和一个次数 80 精确中心；它没有覆盖完整 Fourier 相互作用几何，也没有建立与三维临界空间之间的双向范数控制。\(R_{\mathrm{aff}}\) 不能解释成正则时间、奇性位置、临界雷诺数或真实流体阈值。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把“完整仿射族已全局夹逼”写成“Navier–Stokes 已接近解决”；不能把消元多项式的三个正根解释成流体奇性机制；不能把有限中心的全阶尾扇区定理外推为任意三维初值的全局正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.53</div><h2>下一步检验更丰富但仍保持代数常数一的双仿射积权</h2>
+          <div class="proof"><strong>可证伪问题。</strong>三参数族
+          \[
+            \omega_s=c^s(1+\lambda|s|)(1+\mu|s|),
+            \qquad c&gt;0,\quad\lambda,\mu\ge0,
+          \]
+          是否能严格越过 R0.52 上界，还是其最优点必退化到 \(\lambda=0\)、\(\mu=0\) 或 \(\lambda=\mu\) 的低维边界？</div>
+          <ol>
+            <li>先证明该积权对全部整数荷保持次乘代数常数一，并推导正荷列的精确有理压缩；</li>
+            <li>用高精度探索识别可能的新活跃约束，但不把浮点候选写成结论；</li>
+            <li>若存在严格改进，给出简单有理反例先推翻 R0.52 的族边界，再构造全阶证书；</li>
+            <li>若没有改进，优先寻找单调、凸性或消元结构，证明最优点退化到已封闭的仿射族。</li>
+          </ol>
+          <p>该问题仍只检验约化模型中的权重自由度。与此同时，另一条更重要但更困难的路线是寻找从完整三维 Fourier 相互作用到当前生成系统的尺度临界桥梁；没有这条桥梁，继续增加权重参数的 PDE 价值会迅速下降。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility</div><h2>22 项精确检查、正式图包与受监控运行均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r052/resources.csv --interval 2 -- tmp/r024-venv/bin/python research/edge_affine_family_kkt_audit.py --max-total-degree 80 --charge-cutoff 241 --source-commit e64ed23dcd86883e9690468b05f64304ee4ac816 --progress --progress-log research/certificates/r052/progress.ndjson --check --pretty --output research/certificates/r052/edge-affine-family-global.json</code></div>
+          <p>正式源提交为 <code>e64ed23dcd86883e9690468b05f64304ee4ac816</code>，证书归档提交为 <code>6b80986e127651bb8a6719eb1e29e2fa78d24ae9</code>，最终附图源提交为 <code>fa733c27bd817ce2fd605c735678c1624ef445fd</code>，附图归档提交为 <code>9ffa613912eea565266887bda6c2c8bc1d0cb1fa</code>。科学计算耗时 242.306795 秒；监控历时 242.421306 秒、采样 121 次，峰值 CPU 为 100.0%，峰值常驻内存为 148.156 MiB。没有使用 GPU、随机数或浮点符号判定，22 项精确检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>b79e59ec327bc02b64e23ad3f903b6d61860a075d59ff75a43d82f5684590def</code>。</p>
+          <p><a href="/notes/r0-52.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_affine_family_global_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_affine_family_kkt_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r052">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r052-affine-family-global/fig-r052-affine-family-global">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-51.html">R0.51：固定仿射荷权重越过乘法最优边界</a>。给出严格反例并发现零荷约束切换。</li>
+            <li><a href="/notes/r0-50.html">R0.50：乘法荷特征的全局精确优化</a>。提供 \(M_0&gt;1\) 的全域基线。</li>
+            <li><a href="/notes/r0-47.html">R0.47：精确荷—次数格点端点定理</a>。提供固定荷与无穷大荷全阶覆盖。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.52 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

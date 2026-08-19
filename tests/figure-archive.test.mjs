@@ -74,6 +74,10 @@ const r052ManifestUrl = new URL(
   "../figures/r052-affine-family-global/fig-r052-affine-family-global/manifest.json",
   import.meta.url,
 );
+const r053ManifestUrl = new URL(
+  "../figures/r053-product-affine-witness/fig-r053-product-affine-witness/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -542,6 +546,45 @@ test("archives the formal R0.52 complete affine-family global figure", async () 
   );
   assert.equal(manifest.computation.monitoring.formalSamples, 121);
   assert.equal(manifest.computation.monitoring.samplingSamples, 25);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 112);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.53 rational product-affine witness figure", async () => {
+  const manifest = JSON.parse(await readFile(r053ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r053-product-affine-witness");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "96d7d8c7d0a59e1b0b75d2580403cb5969d6ea6e",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "66dc2ba8fc947e5f1ee9896d1d63f744d0660292",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "f1f2114fe9c72606b127fb38e6c45cd50b1749b2",
+  );
+  assert.match(manifest.supportedClaim, /fixed rational product-affine weight/);
+  assert.match(manifest.supportedClaim, /0\.382628602237879637/);
+  assert.match(manifest.supportedClaim, /All 281 non-sharp records/);
+  assert.match(manifest.supportedClaim, /1\.0000107948905119688/);
+  assert.equal(
+    manifest.computation.kind,
+    "exact-audit plus high-precision presentation sampling",
+  );
+  assert.equal(manifest.computation.monitoring.formalSamples, 72);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 5);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 112);
   assert.deepEqual(

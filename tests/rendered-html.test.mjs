@@ -73,6 +73,8 @@ const fiftyFirstNoteUrl = new URL("../public/notes/r0-51.html", import.meta.url)
 const fiftyFirstPdfUrl = new URL("../public/notes/r0-51.pdf", import.meta.url);
 const fiftySecondNoteUrl = new URL("../public/notes/r0-52.html", import.meta.url);
 const fiftySecondPdfUrl = new URL("../public/notes/r0-52.pdf", import.meta.url);
+const fiftyThirdNoteUrl = new URL("../public/notes/r0-53.html", import.meta.url);
+const fiftyThirdPdfUrl = new URL("../public/notes/r0-53.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -1052,7 +1054,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.37<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1085,7 +1087,7 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.37<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
@@ -1118,7 +1120,7 @@ test("publishes and links the complete affine-family global enclosure", async ()
 
   assert.match(home, /href="\/notes\/r0-52\.html"/);
   assert.match(home, /href="\/notes\/r0-52\.pdf"/);
-  assert.match(home, /<strong>v0\.36<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.37<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.52/);
   assert.match(note, /href="\/notes\/r0-52\.pdf"/);
@@ -1140,6 +1142,45 @@ test("publishes and links the complete affine-family global enclosure", async ()
   assert.doesNotMatch(
     note,
     /\(lambd|\(alph|\(omeg|Ege0|Fle0|Gle0|[^\u005c]qquad|[^\u005c]times10/,
+  );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the rational product-affine witness", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftyThirdNoteUrl, "utf8"),
+    readFile(fiftyThirdPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-53\.html"/);
+  assert.match(home, /href="\/notes\/r0-53\.pdf"/);
+  assert.match(home, /<strong>v0\.37<\/strong>网页版本/);
+  assert.ok(home.includes("R0.53 已完成："));
+  assert.match(home, /R0\.53 已完成：<\/strong>&nbsp;简单有理乘积仿射权/);
+  assert.match(note, /研究笔记 R0\.53/);
+  assert.match(note, /第二个仿射因子&nbsp;<br>产生严格增益/);
+  assert.match(note, /href="\/notes\/r0-53\.pdf"/);
+  assert.match(note, /c=\\frac\{396403\}\{500000\}=0\.792806/);
+  assert.match(note, /\\lambda=\\mu=\\frac\{153931\}\{500000\}=0\.307862/);
+  assert.match(note, /0\.382628602237879637/);
+  assert.match(note, /1\.4883451915609408904\\times10\^\{-6\}/);
+  assert.match(note, /1\.0000107948905119688/);
+  assert.match(note, /7\.5271302784558830723\\times10\^\{-31\}/);
+  assert.match(note, /28 项精确检查全部通过/);
+  assert.match(note, /96d7d8c7d0a59e1b0b75d2580403cb5969d6ea6e/);
+  assert.match(note, /5d6486dfcc6f2c016380a29698ed986213701b9441dd007d95acce4fc0ea67a5/);
+  assert.match(note, /r0-53-product-affine-witness\.svg/);
+  assert.match(note, /没有证明这个有理点是完整三参数乘积族的全局最优点/);
+  assert.ok(note.includes("我现在给出一个分母仅为 \\(5\\times10^5\\)"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(
+    note,
+    /\(lambd|\(alph|\(bet|\(omeg|[^\u005c]qquad|[^\u005c]times10/,
   );
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });

@@ -1,0 +1,161 @@
+{
+  "checks": {
+    "bourgainPavlovicCoherencePriorArtAcknowledged": true,
+    "finiteChecksAreNotUsedAsProofs": true,
+    "finiteFamilyRegressionPassed": true,
+    "finitePacketRegressionPassed": true,
+    "finiteSignedCoefficientRegressionPassed": true,
+    "formalAllIndexPacketIsDivergenceFree": true,
+    "formalAllIndexPacketIsRealValued": true,
+    "formalEveryExchangedContributionVanishes": true,
+    "formalEveryForwardNormalContributionHasSamePhase": true,
+    "formalFixedOutputL2UpperBound": true,
+    "formalInstantaneousHeatEvolutionPreservesEquality": true,
+    "formalNoCrossCollisionsAtFixedOutput": true,
+    "formalNoShellOrCapDecayingConstant": true,
+    "formalPacketLiesInOneDyadicShell": true,
+    "formalPacketLiesInShrinkingAntipodalCaps": true,
+    "formalSharpConstantEqualsOne": true,
+    "formalSingleModeEnergyInputSaturates": true,
+    "largeDataClosureNotClaimed": true,
+    "threeDimensionalNavierStokesRegularityNotClaimed": true,
+    "timeIntegratedDuhamelEstimateNotClaimed": true
+  },
+  "computation": {
+    "createdUtc": "2026-08-19T22:59:55.999821+00:00",
+    "exactBackend": "Python integers and Gaussian-integer pairs",
+    "floatingPointDecisionUse": false,
+    "gpu": false,
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.12.13",
+    "randomness": false,
+    "wallSeconds": 5.745230208005523
+  },
+  "equalityPacket": {
+    "classification": "formal all-index real divergence-free construction",
+    "exchangeIdentity": "p_N dot e_3=0",
+    "frequencies": "p_N=(N,0,0), q_N=(-N,1,0), N=L,...,2L-1",
+    "localization": "one dyadic shell with scale ratio <=1/L and cap tangent <=1/L",
+    "output": "k=e_2",
+    "outputIdentity": "B_k(U,V)=(sum_N c_N^2)e_3",
+    "polarizations": "U_(p_N)=c_N e_2, V_(q_N)=c_N e_3"
+  },
+  "finiteRegressions": {
+    "allIndexFamily": {
+      "classification": "finite exact regression of the all-index identities",
+      "forwardContributionSum": [
+        0,
+        0,
+        1000000
+      ],
+      "heatExponentOffset": "|q_N|^2-|p_N|^2=1",
+      "indicesChecked": 1000000,
+      "recordsSha256": "f706b138bd107593929e60ea616bcc9f828fdd293ce8c58da88b786d473b8e08",
+      "reverseContributionSum": [
+        0,
+        0,
+        0
+      ]
+    },
+    "coherentPacket": {
+      "classification": "finite exact regression of one all-index packet",
+      "contributingPairDigestSha256": "a4f2eacbb02611fff4583c285254af9cc377421bc2897248e5e8d59374ce5b90",
+      "fixedOutputNormRatioSquared": {
+        "denominator": "1",
+        "numerator": "1"
+      },
+      "forwardUnitNormalContributions": 200000,
+      "leftBlockMassSquared": 200000,
+      "normalizedOutput": [
+        "0",
+        "0",
+        "200000"
+      ],
+      "orderedPairsAtOutput": 400000,
+      "outputNormSquared": 40000000000,
+      "packetSize": 200000,
+      "reverseZeroContributions": 200000,
+      "rightBlockMassSquared": 200000,
+      "rightCapTangentUpperBound": "1/200000",
+      "scaleRatioUpperBound": "1/200000",
+      "shell": "[200000,400000)",
+      "singleModeEnergyInput": 200000,
+      "supportModesIncludingRealityAndOutputPair": 800002
+    },
+    "signedCoefficients": {
+      "cauchyDefect": "666659999866670000003750483335500000000",
+      "classification": "finite exact signed and equality regressions",
+      "coefficientsChecked": 100000,
+      "leftMassSquared": "333338333350000",
+      "proportionalSequenceRatioSquared": {
+        "denominator": "1",
+        "numerator": "1"
+      },
+      "rightMassSquared": "1999950000999990000130000",
+      "signedPairing": "-499997500000000"
+    }
+  },
+  "fixedOutputOperator": {
+    "classification": "formal exact all-frequency theorem",
+    "definition": "B_k(U,V)=|k|^-1 P_k sum_(p+q=k) (q dot U_p)V_q",
+    "keyIdentity": "q dot U_p=k dot U_p because p dot U_p=0",
+    "sharpNorm": {
+      "denominator": "1",
+      "numerator": "1"
+    },
+    "upperBound": "|B_k(U,V)|<=||U||_2||V||_2"
+  },
+  "git": {
+    "head": "001a40b166d20c912e78fca4d565c3e2eadd3203",
+    "sourceCommit": "001a40b166d20c912e78fca4d565c3e2eadd3203",
+    "worktreeStatusAtRun": [
+      "?? research/certificates/r057/progress.ndjson",
+      "?? research/certificates/r057/resources.csv"
+    ]
+  },
+  "instantaneousHeatEvolution": {
+    "classification": "formal exact identity for every t>=0; not a Duhamel estimate",
+    "identity": "B_k(e^(nu t Delta)U,e^(nu t Delta)V)=e^(-nu t)(sum_N c_N^2 e^(-2 nu N^2 t))e_3",
+    "normProduct": "e^(-nu t) sum_N c_N^2 e^(-2 nu N^2 t)",
+    "sharpRatio": {
+      "denominator": "1",
+      "numerator": "1"
+    }
+  },
+  "literatureBoundary": {
+    "bourgainPavlovic": "https://arxiv.org/abs/0807.0882",
+    "cheskidovDai": "https://arxiv.org/abs/1212.3801",
+    "classification": "prior art acknowledged; only the exact R0.56-channel no-go statement is recorded here",
+    "mechanism": "coherent high-frequency pairs generating a common low mode are classical"
+  },
+  "researchDecision": {
+    "exchangeSymmetrization": "fails to improve the constant because every reverse term is zero",
+    "instantaneousHeatOrganization": "fails to improve the fixed-output norm ratio",
+    "nextRequiredStructure": [
+      "the exact time-integrated Duhamel denominator",
+      "a norm coupling multiple outputs",
+      "a global critical spacetime or depletion constraint excluding coherent packets"
+    ],
+    "notEnoughForRegularity": true,
+    "signedFixedOutputSquareFunctionDecay": "fails by an exact coherent equality packet",
+    "standaloneNovelty": "limited; the coherence mechanism is classical"
+  },
+  "schemaVersion": "1.0",
+  "scope": {
+    "notClaimed": [
+      "novelty of the classical high-to-low coherence mechanism",
+      "a bound for the time-integrated Duhamel operator",
+      "a multi-output critical spacetime estimate",
+      "large-data global regularity or exclusion of finite-time singularity",
+      "a solution of the three-dimensional Navier-Stokes millennium problem"
+    ],
+    "system": "three-dimensional incompressible Navier-Stokes fixed-output Fourier-Leray interaction",
+    "theorems": [
+      "sharp fixed-output l2 x l2 operator norm one",
+      "one-shell shrinking-cap real divergence-free coherent equality packet",
+      "no shell- or cap-decaying constant from signed fixed-output aggregation alone",
+      "persistence of equality under exchange symmetrization and instantaneous heat evolution",
+      "exact single-mode nonlinear energy-input saturation"
+    ]
+  }
+}

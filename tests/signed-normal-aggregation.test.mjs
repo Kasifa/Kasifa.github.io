@@ -122,7 +122,7 @@ test("archives the pinned R0.57 certificate with valid hashes", async () => {
     assert.ok(match, `invalid SHA256SUMS line: ${line}`);
     return { expected: match[1], file: match[2] };
   });
-  assert.equal(entries.length, 4);
+  assert.equal(entries.length, 6);
   for (const entry of entries) {
     const payload = await readFile(new URL(entry.file, certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");

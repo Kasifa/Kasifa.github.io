@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r034-tail-background-obstruction",
+  "status": "formal",
+  "analyticalQuestion": "Can subtracting an arbitrary bounded-degree real polynomial make B_U, B_V, H_U, or H_V a nonnegative-measure Markov/Stieltjes series, and what exact tail witnesses remain untouched by every such subtraction?",
+  "supportedClaim": "No through the certified degrees. Exact negative tail Gram determinants exclude every real polynomial background of degree at most 43 for B_U, 44 for B_V, 46 for H_U, and 45 for H_V. The four class exclusions are universal over the polynomial coefficients. The assertion that these are the largest negative tail starts found is only exhaustive inside the displayed 50/49-coefficient window; zero cells do not establish that a higher-degree background exists.",
+  "createdAt": "2026-08-19T12:51:36+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "11cb3c386814a4d725944251a2d46faef0f5c53c",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "comparison plus matrix",
+    "variants": [
+      "horizontal bar with direct exact-threshold labels",
+      "categorical heatmap with printed counts and outlined theorem cells"
+    ],
+    "takeaway": "Polynomial subtraction cannot repair the positive-measure representation through the four displayed degrees because an untouched exact tail Gram determinant is negative.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "U/V pairs use solid versus hatched bars; every scan cell prints xk, 0, or n/a; theorem witnesses have a black outline",
+    "finalSurface": "single journal figure at 178 by 86 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output /tmp/r034-formal/resources.csv --interval 0.02 -- tmp/r024-venv/bin/python research/edge_polynomial_background_audit.py --minimum-tail-start 40 --progress --progress-log /tmp/r034-formal/progress.ndjson --check --pretty --output /tmp/r034-formal/edge-polynomial-background.json",
+    "configuration": "pinned R0.32 and R0.33 certificates; 50 exact B_U and B_V coefficients; 49 exact H_U and H_V coefficients; every tail principal minor representable with monomial index zero and tail start at least 40",
+    "randomSeed": null,
+    "precision": "Python Fraction and SymPy exact rational determinants; four theorem witnesses independently recomputed by the Fraction Leibniz formula; decimals are display-only",
+    "solver": "deterministic exact tail principal-minor enumeration",
+    "tolerances": {
+      "formalCoefficients": "none; exact rational arithmetic",
+      "determinantSigns": "none; exact rational comparison with zero",
+      "figure": "categorical sign/count display; no fitted cutoff and no continuous color scale"
+    },
+    "wallTimeSeconds": 0.0722059999970952,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.02,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "trackedFields": [
+        "pinned input verification",
+        "sequence name and coefficient count",
+        "maximum negative tail shift",
+        "excluded background degree",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 47.7,
+    "maximumObservedRssMiB": 77.812
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "sympy": "1.14.0"
+  },
+  "data": [
+    {
+      "path": "thresholds.csv",
+      "format": "csv",
+      "schema": "Four exact universal degree exclusions with sequence family, witness tail shift, witness order, monomial indices, and determinant digest.",
+      "bytes": 462,
+      "sha256": "f7e5ce8da12bdc25610498576e285a7fa5287184a08a5e4eecd21f0a073233e3"
+    },
+    {
+      "path": "tail-search.csv",
+      "format": "csv",
+      "schema": "Forty displayed sequence-by-shift cells for s=40 through 49, including availability, number of principal minors tested, exact negative count, negative orders, and theorem-witness marker.",
+      "bytes": 910,
+      "sha256": "d9fabceb2c50ee30049843b3862d7de1b4a8194bc10fb32384d0f0549adb15a5"
+    },
+    {
+      "path": "witnesses.csv",
+      "format": "csv",
+      "schema": "Four exact negative theorem witnesses with complete canonical rational determinants, digit counts, display decimals, monomial indices, and SHA-256 digests.",
+      "bytes": 6178,
+      "sha256": "07ee18e0bdc08a768a8d0b319ee3c20f62de7b6ef27cdb973c4a6092a0ede1a8"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, and stage-specific thresholds.",
+      "bytes": 1569,
+      "sha256": "3056cd6f4faaee4aa5b346f783a57a04f3a63ae825cb019e04441f1465bcc662"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.02-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 720,
+      "sha256": "5de7742c717cbaafa2d7df0c3c38d8cd5f1bd98e22b2bef63b61f911fd99b0f1"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r034",
+      "fileName": "edge-polynomial-background.json",
+      "bytes": 545745,
+      "sha256": "3f4cce27aa106e9a6c772fdb8e7a77f57c671dea1b578f7ba106674508fac03c",
+      "extractionCommand": "prepare_data.py extracts the four degree thresholds, exact theorem witnesses, and all displayed tail-search cells; validate_data.py checks the clean source commit, both pinned input hashes, all formal checks, exact determinant digests, digit counts, row coverage, counts, and witness locations"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig tmp/r024-venv/bin/python figures/r034-polynomial-background/fig-r034-tail-background-obstruction/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "d03b78bf72512944912fafe680bb38722f4a8cda14c69d2966dd3b3fff4d0200"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "50b691588ca8112635345242b8976525bca708f040e3b2718e1f2aba4af056d8"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "5d25663196c16d27428c391b1a8f17d217550a0d0a9dc5e135bf51cb70b29c99"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "精确负尾部 Gram 行列式对任意多项式系数成立，因此 B_U、B_V、H_U、H_V 的正测度 Stieltjes 背景修复分别在 43、44、46、45 次以内被统一排除；更高尾部的零单元只是有限窗口诊断。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 86 mm and the 600 dpi PNG is 4204 by 2031 pixels. Color and true grayscale PDF renders were inspected after one spacing revision. Solid versus hatched bars distinguish U and V without color. Every matrix cell prints xk, 0, or n/a, and theorem cells have black outlines. All titles, exact threshold labels, witness annotations, axes, and two footer lines are unclipped. Four subsetted TrueType fonts are embedded with Unicode maps. Poppler text extraction recovered every visible label. validate_data.py cross-checks all plotted source rows against the exact certificate."
+  }
+}

@@ -36,6 +36,7 @@ const thirtiethNoteUrl = new URL("../public/notes/r0-30.html", import.meta.url);
 const thirtyFirstNoteUrl = new URL("../public/notes/r0-31.html", import.meta.url);
 const thirtySecondNoteUrl = new URL("../public/notes/r0-32.html", import.meta.url);
 const thirtyThirdNoteUrl = new URL("../public/notes/r0-33.html", import.meta.url);
+const thirtyFourthNoteUrl = new URL("../public/notes/r0-34.html", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -631,6 +632,26 @@ test("publishes and links the exact positive-measure obstruction", async () => {
   assert.match(note, /r0-33-hankel-obstruction\.svg/);
 });
 
+test("publishes and links the bounded-degree polynomial-background obstruction", async () => {
+  const [home, note] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(thirtyFourthNoteUrl, "utf8"),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-34\.html"/);
+  assert.match(note, /研究笔记 R0\.34/);
+  assert.match(note, /\\deg P_d\\le d/);
+  assert.match(note, /\\\(d\\le43\\\)/);
+  assert.match(note, /\\\(d\\le44\\\)/);
+  assert.match(note, /\\\(d\\le46\\\)/);
+  assert.match(note, /216 个精确有理行列式/);
+  assert.match(note, /其中 67 个为负/);
+  assert.match(note, /任意实系数都失败/);
+  assert.match(note, /不能声称无限解析背景不存在/);
+  assert.match(note, /11cb3c386814a4d725944251a2d46faef0f5c53c/);
+  assert.match(note, /r0-34-tail-background-obstruction\.svg/);
+});
+
 test("follows the operating system light and dark color scheme", async () => {
   const html = await readFile(siteUrl, "utf8");
 
@@ -643,7 +664,7 @@ test("follows the operating system light and dark color scheme", async () => {
 });
 
 test("uses a plain first-person research voice", async () => {
-  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote] = await Promise.all([
+  const [home, firstNote, secondNote, thirdNote, fourthNote, fifthNote, sixthNote, seventhNote, eighthNote, ninthNote, tenthNote, eleventhNote, twelfthNote, thirteenthNote, fourteenthNote, fifteenthNote, sixteenthNote, seventeenthNote, eighteenthNote, nineteenthNote, twentiethNote, twentyFirstNote, twentySecondNote, twentyThirdNote, twentyFourthNote, twentyFifthNote, twentySixthNote, twentySeventhNote, twentyEighthNote, twentyNinthNote, thirtiethNote, thirtyFirstNote, thirtySecondNote, thirtyThirdNote, thirtyFourthNote] = await Promise.all([
     readFile(siteUrl, "utf8"),
     readFile(firstNoteUrl, "utf8"),
     readFile(secondNoteUrl, "utf8"),
@@ -678,6 +699,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(thirtyFirstNoteUrl, "utf8"),
     readFile(thirtySecondNoteUrl, "utf8"),
     readFile(thirtyThirdNoteUrl, "utf8"),
+    readFile(thirtyFourthNoteUrl, "utf8"),
   ]);
 
   assert.match(home, /这是我整理的/);
@@ -849,6 +871,11 @@ test("uses a plain first-person research voice", async () => {
   assert.match(thirtyThirdNote, /我检查了 R0\.32/);
   assert.doesNotMatch(
     thirtyThirdNote,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.match(thirtyFourthNote, /我允许背景多项式/);
+  assert.doesNotMatch(
+    thirtyFourthNote,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
   );
 });

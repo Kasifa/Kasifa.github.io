@@ -2456,7 +2456,39 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_moment_structure_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r033-moment-obstruction/fig-r033-hankel-obstruction">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>先检验受低阶递推独立约束的最小解析背景扣除；若低阶矩条件仍失败，就终止正测度路线并转向带显式余项的解析延拓链。</p>
+            <p><strong style="color:var(--gold)">R0.34 已完成：</strong>任意实系数多项式背景分别到 43、44、46、45 次仍不能修复四个序列的正测度矩条件；无限解析背景仍未排除。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.34 · 2026-08-19</p>
+            <h3>有限次多项式背景的精确排除</h3>
+            <p>
+              我检查
+              \[C(x)=P_d(x)+\int_{[0,\infty)}\frac{d\mu(t)}{1-xt},\qquad \mu\ge0,\]
+              其中 \(C\) 依次取 \(B_U,B_V,H_U,H_V\)，而 \(P_d\) 的实系数完全任意。
+              当尾起点 \(s&gt;d\) 时，多项式不能改变矩阵
+              \((c_{s+i_\alpha+i_\beta})\)。非负测度却要求该矩阵半正定。
+            </p>
+            <p>
+              精确有理计算在 \(s=44,45,47,46\) 找到四个负尾部 Gram 行列式，
+              因而统一排除 \(B_U,B_V,H_U,H_V\) 的全部 43、44、46、45 次及以下实多项式背景。
+              四个见证都用独立的 Fraction Leibniz 行列式复算。
+            </p>
+            <p>
+              机器证书在现有 50/49 项系数窗口内枚举 216 个相关尾部主子式，其中 67 个为负。
+              这证明表中次数范围内的全称排除；“更晚没有负见证”仍只是一项有限窗口事实，不能反过来证明更高次背景存在。
+            </p>
+            <p>
+              <strong>结论边界：</strong>R0.34 关闭有限 Taylor 头部修复路线，但不排除能改变全部尾系数的无限解析背景，
+              不判定约 \(-0.7495\) 的候选，也没有三维 Navier–Stokes 正则性或奇性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-34.html"><strong>阅读 R0.34 研究笔记 →</strong></a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r034">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_polynomial_background_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r034-polynomial-background/fig-r034-tail-background-obstruction">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>把固定荷抽取和荷阶梯写成加权序列空间上的算子系统，再建立带显式范数条件与余项界的局部解析延拓引理。</p>
           </div>
         </section>
 

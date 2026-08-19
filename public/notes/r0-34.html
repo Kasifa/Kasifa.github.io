@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.34：精确负尾部 Gram 行列式统一排除四类有限次多项式 Stieltjes 背景，并严格区分定理与有限系数窗口。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.34｜有限次多项式背景的精确排除">
+  <meta property="og:description" content="任意实系数多项式背景分别到 43、44、46、45 次仍不能修复正测度表示；无限解析背景仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-34-tail-background-obstruction.png">
+  <title>R0.34｜有限次多项式背景的精确排除</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#class">背景类</a><a href="#theorem">精确定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.34 · 有限维背景类排除</div>
+        <h1>有限次多项式背景的<br>精确排除</h1>
+        <p class="lead">我允许背景多项式的实系数任意选择，再检查剩余级数能否来自非负测度。四个精确负尾部 Gram 行列式给出统一否定；无限解析背景仍未处理。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 四类背景已排除</span><strong>最高到 46 次</strong><p>版本 v0.34 · 2026-08-19</p><p>尾部主子式：216 个</p><p>正式检查：8 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#class">01 · 背景类</a></li><li><a href="#gram">02 · 尾部 Gram 条件</a></li><li><a href="#theorem">03 · 精确定理</a></li><li><a href="#proof">04 · 证明结构</a></li><li><a href="#finite">05 · 有限窗口</a></li><li><a href="#figure">06 · 期刊附图</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>定理对背景系数全称成立，次数阈值来自有限窗口</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · UNIVERSAL</span><strong>任意实系数都失败</strong><p>每个已列次数范围内，不需要选择或拟合背景系数。</p></div>
+            <div class="status"><span>EXACT · FOUR WITNESSES</span><strong>四个负尾部行列式</strong><p>见证完全位于多项式次数之后，背景无法改动。</p></div>
+            <div class="status"><span>CERTIFIED · FINITE WINDOW</span><strong>50/49 项内的最大阈值</strong><p>更高尾部未见负值只是一项有限精确诊断。</p></div>
+            <div class="status"><span>OPEN · INFINITE BACKGROUND</span><strong>无限解析背景仍开放</strong><p>它能改变每个尾系数，必须另加半径或范数约束。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>R0.34 排除四个对象的有限次实多项式加正测度 Markov/Stieltjes 表示，次数分别不超过 43、44、46、45。它不排除无限解析背景，不证明更高次背景存在，也不判定 R0.32 的奇点候选。</div>
+        </section>
+
+        <section id="class"><div class="section-no">01 / Background class</div><h2>把“扣除背景”写成一个可证伪的函数类</h2>
+          <p>对 \(C\in\{B_U,B_V,H_U,H_V\}\)，我检查</p>
+          <div class="equation result">
+            \[C(x)=P_d(x)+M(x),\qquad M(x)=\int_{[0,\infty)}\frac{d\mu(t)}{1-xt},\qquad \mu\ge0,\qquad \deg P_d\le d.\]
+          </div>
+          <p>\(P_d\) 可以有任意实系数；没有符号、大小或插值约束。若 \(M(x)=\sum_{n\ge0}m_nx^n\)，则多项式只能改变前 \(d+1\) 项：</p>
+          <div class="equation">
+            \[m_n=c_n\qquad(n&gt;d),\qquad C(x)=\sum_{n\ge0}c_nx^n.\]
+          </div>
+          <p>这条尾部不变性使整类背景能被一个位于 \(d\) 之后的精确反例同时排除。</p>
+        </section>
+
+        <section id="gram"><div class="section-no">02 / Tail Gram condition</div><h2>非负测度要求每个移位尾块半正定</h2>
+          <p>取整数 \(s&gt;d\) 和有限单项式指标集 \(I=\{i_0,\ldots,i_{r-1}\}\)。若正测度表示存在，则</p>
+          <div class="equation">
+            \[G^{(s,I)}_{\alpha\beta}=m_{s+i_\alpha+i_\beta}=\int t^s t^{i_\alpha}t^{i_\beta}\,d\mu(t).\]
+          </div>
+          <p>因为 \(t^s\ge0\)，对任意实向量 \(a\) 都有</p>
+          <div class="equation">
+            \[a^\mathsf T G^{(s,I)}a=\int t^s\!\left(\sum_\alpha a_\alpha t^{i_\alpha}\right)^2d\mu(t)\ge0.\]
+          </div>
+          <p>所以 \(G^{(s,I)}\) 必须半正定。另一方面，\(s&gt;d\) 使矩阵的每个元素都等于 \(C\) 的原始精确系数。只要找到一个负行列式，就能一次排除该次数范围内的全部背景系数。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Exact theorem</div><h2>四个背景类分别被排除到 43、44、46、45 次</h2>
+          <table>
+            <thead><tr><th>序列 \(C\)</th><th>统一排除的次数</th><th>尾起点 \(s\)</th><th>指标集 \(I\)</th><th>矩阵阶数</th></tr></thead>
+            <tbody>
+              <tr><td>\(B_U\)</td><td>\(d\le43\)</td><td>44</td><td>\(\{0,1,2\}\)</td><td>3</td></tr>
+              <tr><td>\(B_V\)</td><td>\(d\le44\)</td><td>45</td><td>\(\{0,1,2\}\)</td><td>3</td></tr>
+              <tr><td>\(H_U\)</td><td>\(d\le46\)</td><td>47</td><td>\(\{0\}\)</td><td>1</td></tr>
+              <tr><td>\(H_V\)</td><td>\(d\le45\)</td><td>46</td><td>\(\{0,1\}\)</td><td>2</td></tr>
+            </tbody>
+          </table>
+          <div class="proof"><strong>定理。</strong>对表中每个 \(C\) 和每个满足所列次数上界的实多项式 \(P_d\)，形式级数 \(C-P_d\) 都不是 \([0,\infty)\) 上非负测度的 Stieltjes 矩生成函数。</div>
+          <p>四个行列式都是约分后的精确有理数。前两个分子分别有 918、941 位，直接排在正文会妨碍阅读，因此机器证书保存完整分数，正文用规范分数字符串的 SHA-256 固定它们：</p>
+          <table>
+            <thead><tr><th>序列</th><th>行列式十进制显示</th><th>精确分数字符串 SHA-256</th></tr></thead>
+            <tbody>
+              <tr><td>\(B_U\)</td><td>\(-3.2028594980\times10^4\)</td><td><code>c8fb036d…88a3e2a</code></td></tr>
+              <tr><td>\(B_V\)</td><td>\(-6.4385216263\times10^5\)</td><td><code>516aaee2…782ccb</code></td></tr>
+              <tr><td>\(H_U\)</td><td>\(-1.6766441134\times10^9\)</td><td><code>0f9c04e0…dad8b66</code></td></tr>
+              <tr><td>\(H_V\)</td><td>\(-2.0212306346\times10^7\)</td><td><code>815da2c0…8680ae</code></td></tr>
+            </tbody>
+          </table>
+          <p>十进制只用于显示，判号完全使用有理数。每个定理见证还用 Python <code>Fraction</code> 的 Leibniz 公式独立复算。</p>
+        </section>
+
+        <section id="proof"><div class="section-no">04 / Proof structure</div><h2>证明只需要尾部不变性和一个负 Gram 行列式</h2>
+          <p>以 \(B_U\) 为例。若 \(d\le43\)，取 \(s=44\) 和 \(I=\{0,1,2\}\)。必要矩阵是</p>
+          <div class="equation result">
+            \[G_U=\begin{pmatrix}b^U_{44}&amp;b^U_{45}&amp;b^U_{46}\\b^U_{45}&amp;b^U_{46}&amp;b^U_{47}\\b^U_{46}&amp;b^U_{47}&amp;b^U_{48}\end{pmatrix},\qquad \det G_U&lt;0.\]
+          </div>
+          <p>所有下标都大于 \(d\)，所以任何 \(P_d\) 都不能改变这个矩阵。非负测度却要求它半正定，矛盾。\(B_V\) 使用 \(s=45\) 的同型三阶矩阵；\(H_U\) 直接由负系数 \(h^U_{47}\) 排除；\(H_V\) 使用</p>
+          <div class="equation">
+            \[\det\begin{pmatrix}h^V_{46}&amp;h^V_{47}\\h^V_{47}&amp;h^V_{48}\end{pmatrix}=h^V_{46}h^V_{48}-(h^V_{47})^2&lt;0.\]
+          </div>
+          <p>四个论证都对背景系数作全称量化。这里没有从有限样本外推行列式符号；一个已经确定的有限负主子式本身就足以否定整类表示。</p>
+        </section>
+
+        <section id="finite"><div class="section-no">05 / Finite window</div><h2>“最大阈值”只表示当前系数窗内没有更晚的负见证</h2>
+          <p>审计枚举了尾起点 \(40\le s\le49\) 内能由现有系数形成的全部相关主子式。指标集统一包含零；任何不包含零的指标集都可整体平移为更晚的尾起点。四个序列共检查 216 个精确有理行列式，其中 67 个为负。</p>
+          <p>在现有窗口内，负见证最晚出现在 \(s=44,45,47,46\)。更晚的已测试主子式没有负值，但这不证明 \(B_U\) 的 44 次背景可行，也不证明其他序列的下一次数可行。若以后得到更多精确系数，仍可能出现更晚的负尾块。</p>
+          <div class="proof warning"><strong>不能倒置有限诊断。</strong>“没有在当前窗口找到反例”不等于“存在正测度”。存在性需要全部矩条件或另一条完备定理。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Formal figure</div><h2>附图把统一次数结论和有限尾部扫描分开</h2>
+          <figure>
+            <img src="/figures/r0-34-tail-background-obstruction.svg" alt="R0.34 多项式背景统一排除次数与尾部 Hankel 主子式扫描">
+            <figcaption>图 R0.34-1。左图给出任意实系数背景被统一排除的最大次数，并标注尾起点和矩阵阶数。右图列出 40 至 49 的尾部扫描：叉号后的数字是负主子式个数，零表示已测试项中没有负值，n/a 表示系数不足，黑框是四个定理见证。右侧蓝色零格只属于有限窗口诊断。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>这个结果关闭了“删掉有限 Taylor 头部即可修复”的解释</h2>
+          <p>R0.33 只否定直接正测度表示，因此一个自然补救是先减去解析背景。R0.34 说明：如果背景只是有限次多项式，那么即使给它四十多个完全自由的实系数，也无法修复四个候选序列的矩正性。这个结论排除的是整个有限维背景类，不是某次拟合失败。</p>
+          <p>它对当前边缘模型有明确的方法价值：继续增加有限 Taylor 背景参数没有理论收益。下一项工作应给无限背景加入可检验的解析约束，或者直接构造带显式余项界的延拓链。</p>
+          <p>它对三维 Navier–Stokes 千禧年问题的直接价值仍然很小。这里研究的是一个边缘形式级数的表示类别；尚未建立从该级数的解析延拓到完整三维 PDE 临界范数、弱解唯一性或有限时奇性的控制桥梁。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称全部 Padé 路线已失败，不能声称约 \(-0.7495\) 的候选是真实奇点或伪影，不能声称无限解析背景不存在，也不能从这四个尾部行列式推出三维 Navier–Stokes 正则性或爆破解。</div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.35</div><h2>下一步转向有范数控制的解析延拓</h2>
+          <ol>
+            <li>把固定荷抽取与荷阶梯写成加权序列空间上的显式算子系统；</li>
+            <li>选择能控制卷积、荷平移和参数导数的权重，并证明算子在该空间内闭合；</li>
+            <li>建立一个可检查的局部延拓引理：给定圆盘内系数界和边界余量，认证相邻圆盘；</li>
+            <li>先用精确有理或区间算法验证短链，再判断是否有可能沿负实轴接近 R0.32 候选；</li>
+            <li>在延拓链真正覆盖候选位置之前，不作原函数奇点判断。</li>
+          </ol>
+          <p>R0.35 的最低交付不是新的 Padé 图，而是一个有明确空间、范数、域和余项条件的延拓命题，以及它能否被现有系数证书触发的判断。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>干净源提交、完整有理证书、监控日志和附图包均已归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python research/edge_polynomial_background_audit.py --minimum-tail-start 40 --progress --check --pretty --output /tmp/r034-polynomial-background.json</code></div>
+          <p>正式源提交为 <code>11cb3c386814a4d725944251a2d46faef0f5c53c</code>。R0.32 与 R0.33 输入证书的固定 SHA-256 分别为 <code>bd70ed05…f5575</code> 和 <code>ccbf8ab0…923967</code>。本次精确计算耗时 0.0722 秒，监控峰值 CPU 47.7%，峰值常驻内存 77.812 MiB；没有随机种子或浮点判号。</p>
+          <p>R0.34 证书本身的 SHA-256 为 <code>3f4cce27aa106e9a6c772fdb8e7a77f57c671dea1b578f7ba106674508fac03c</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_polynomial_background_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_polynomial_background_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r034">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r034-polynomial-background/fig-r034-tail-background-obstruction">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-32.html">R0.32：固定荷级数与奇点候选</a>。提供本次检验的 50 项精确输运系数。</li>
+            <li><a href="/notes/r0-33.html">R0.33：正测度 Padé 路线的精确障碍</a>。给出直接表示的四个低阶负 Hankel 见证。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.34 · 排除有限次背景，不外推无限解析背景</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

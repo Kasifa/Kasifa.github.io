@@ -90,6 +90,10 @@ const r056ManifestUrl = new URL(
   "../figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels/manifest.json",
   import.meta.url,
 );
+const r057ManifestUrl = new URL(
+  "../figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -706,6 +710,41 @@ test("archives the formal R0.56 Leray polarization-channel figure", async () => 
   assert.match(manifest.supportedClaim, /does not decay with shell ratio/);
   assert.equal(manifest.computation.kind, "exact-audit");
   assert.equal(manifest.computation.monitoring.formalSamples, 55);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 2);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.57 coherent fixed-output figure", async () => {
+  const manifest = JSON.parse(await readFile(r057ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r057-coherent-fixed-output");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "001a40b166d20c912e78fca4d565c3e2eadd3203",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "40aaadafb24fe3e254704bc81a78fe5c53bb6c65",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "763553ac0245e73a9f37e9416cda9eda196f594f",
+  );
+  assert.match(manifest.supportedClaim, /every exchanged term vanishes/);
+  assert.match(manifest.supportedClaim, /fixed-output l2 x l2 norm ratio is exactly one/);
+  assert.match(manifest.supportedClaim, /heat semigroup.*preserves that equality/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.formalSamples, 23);
   assert.equal(manifest.computation.monitoring.samplingSamples, 2);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 105);

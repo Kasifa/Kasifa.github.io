@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r057-coherent-fixed-output",
+  "status": "formal",
+  "analyticalQuestion": "Can scale separation, antipodal cap localization, exchange symmetrization, or instantaneous heat evolution reduce the sharp fixed-output normal-channel constant below one?",
+  "supportedClaim": "For k=e_2, p_N=(N,0,0), q_N=(-N,1,0), U_(p_N)=c_N e_2, and V_(q_N)=c_N e_3, every forward interaction contributes c_N^2 e_3 and every exchanged term vanishes. The packet remains in one dyadic shell with scale ratio and cap aperture tending to zero, but its fixed-output l2 x l2 norm ratio is exactly one. Applying the heat semigroup to both blocks at the same time preserves that equality.",
+  "createdAt": "2026-08-20T07:04:55+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "763553ac0245e73a9f37e9416cda9eda196f594f",
+    "certificateCommit": "40aaadafb24fe3e254704bc81a78fe5c53bb6c65",
+    "formalSourceCommit": "001a40b166d20c912e78fca4d565c3e2eadd3203",
+    "dirtyAtCertifiedRun": false,
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "exact frequency-lattice geometry, ordered localization comparison, and instantaneous heat-response equality",
+    "variants": [
+      "eight exact integer packet rows for the L=8 geometry schematic",
+      "nineteen dyadic localization rows for L=2^j, 0<=j<=18",
+      "eighty-one deterministic heat-response rows for L=64 and 0<=nu L^2 t<=4"
+    ],
+    "takeaway": "The packet becomes arbitrarily separated and angularly concentrated while the fixed-output ratio stays one; the heat-evolved output and block-norm product remain identical at every sampled time because of an analytic equality.",
+    "dataSufficiency": "The fixed-output bound, equality packet, shell and cap localization, exchange cancellation failure, and heat identity are analytic all-index statements. The displayed rows and formal integer audit are deterministic implementation regressions and presentation data, not substitutes for those proofs.",
+    "palettePolicy": "hard two-root cap: blue for the equality channel, gold for shrinking geometric parameters, and neutral ink and grid",
+    "nonColorEncoding": "Solid, dashed, and dotted lines, open circle and square markers, a diamond output marker, direct annotations, and separate panels preserve distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r057/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/signed_normal_aggregation_audit.py --packet-size 200000 --max-family-index 1000000 --source-commit 001a40b166d20c912e78fca4d565c3e2eadd3203 --progress --progress-log research/certificates/r057/progress.ndjson --check --pretty --output research/certificates/r057/signed-normal-aggregation.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output/prepare_data.py --source-commit 763553ac0245e73a9f37e9416cda9eda196f594f",
+    "configuration": "200000-pair formal packet; 1000000 all-index family regressions; L=8 geometry; nineteen dyadic L values through 2^18; L=64 heat response at 81 scaled-time values",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "The formal packet, support, collision, norm, and energy checks use exact Python integers and Gaussian-integer pairs. Localization ratios are exact integer fractions. Heat decimals are presentation values computed from the analytic exponential identity and are not used for formal decisions.",
+    "solver": "formal fixed-output Cauchy--Schwarz bound, explicit all-index equality construction, exact Fourier-support collision audit, and direct heat-semigroup exponent identity",
+    "tolerances": {
+      "formalIdentities": "none; exact integer arithmetic",
+      "heatPresentation": "validate_data.py recomputes the analytic formula with relative tolerance 2e-15 and absolute tolerance 2e-17"
+    },
+    "scientificWallTimeSeconds": 5.745230208005523,
+    "monitoredWallTimeSeconds": 5.796003,
+    "samplingWallTimeSeconds": 0.009913917019730434,
+    "samplingMonitoredWallTimeSeconds": 0.079459,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.25,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "formal-progress.ndjson",
+      "formalResourceLog": "formal-resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 23,
+      "samplingSamples": 2
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 434.328,
+    "samplingMaximumObservedCpuPercent": 0.0,
+    "samplingMaximumObservedRssMiB": 3.422
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "packet-geometry.csv",
+      "format": "csv",
+      "schema": "Eight exact integer rows for p_N, q_N, k, the unit forward normal contribution, and the zero reverse contribution.",
+      "bytes": 245,
+      "sha256": "4bdf2ae3cec820e98ad1a3f511cfee5a334b3420d8754986f551caab905d00f3"
+    },
+    {
+      "path": "localization.csv",
+      "format": "csv",
+      "schema": "Nineteen dyadic rows with exact shell-ratio and cap-tangent fractions, cap-angle presentation decimals, exact norm ratio one, and ordered-pair counts.",
+      "bytes": 1458,
+      "sha256": "23622c86952a109c1af31a7749e6fa3cedb11af07406ba2a21ea88fc170072b5"
+    },
+    {
+      "path": "heat-response.csv",
+      "format": "csv",
+      "schema": "Eighty-one deterministic rows of scaled time, physical time at nu=1, normalized output, identical block-norm product, and exact norm ratio metadata.",
+      "bytes": 7237,
+      "sha256": "f3af6ff5f6c3972144439ad8743b976a1788b446c5a363ef740e5a257fbc20b7"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned source and formal certificate hashes, row counts, heat formula classification, arithmetic declarations, environment, and sampling wall time.",
+      "bytes": 1084,
+      "sha256": "06cf28f022b153d8378077e50c075793259dec05abaf9321ecd03f8e16f2380a"
+    },
+    {
+      "path": "formal-progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC timestamps, stages, finite bounds, elapsed seconds, and successful 20-check completion record.",
+      "bytes": 695,
+      "sha256": "761802b85de0e6c5cee78c4ecb6ec2ec8bb58874c434cd510b968cd8196e4a73"
+    },
+    {
+      "path": "formal-resources.csv",
+      "format": "csv",
+      "schema": "Quarter-second process-tree resource samples for the successful formal exact audit.",
+      "bytes": 1830,
+      "sha256": "eaa1e57da24a4bf682bdd858786b8aa7b5aabbde0b484005b7bd0aa69a91caed"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for deterministic figure-table preparation.",
+      "bytes": 289,
+      "sha256": "9d54da10a3c9c95c5f850c42b9cd45d91210c8397d5fcbb02332a0e0d5d21e53"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r057",
+      "fileName": "signed-normal-aggregation.json",
+      "bytes": 6456,
+      "sha256": "84bdf17eea9967a3ad9e4150b0b9ef2457bfcc2f984b4b437dff588d2df413c8",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, reconstructs the presentation rows, and copies the successful progress and resource logs; validate_data.py independently checks every row and the pinned provenance."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "51febd3763fc1fb189abe387aea56229c93b4de72c7d15231cbcff37a33a93d8",
+    "command": "MPLCONFIGDIR=tmp/r057-mplconfig tmp/r024-venv/bin/python figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "05d3408a3cad71233cac08cbae29dd79c5ff0fdd4949b64e1aae736f067caaa3"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "43d9e30a16fcaa5636264727d8e76296dc86d9d9385c77ced0fb90b47d4c1174"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "cc9d04e47cab743fa5d576cf94b926e63c0167434f735157164e0b3a1afe4b2b"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我构造了一个实值无散的单壳相干频率包：尺度比和角帽孔径同时趋于零，但固定低频输出的法向通道仍精确达到常数一；交换项逐个为零，瞬时热演化后等号仍保持。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The first PDF render exposed an unsupported mathfrak label; a second visual pass exposed a clipped panel-c title. The final source replaces the unsupported token and shortens that title. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid, dashed, and dotted lines, open markers, direct annotations, and separate panels remain distinguishable in grayscale. Titles, axes, legends, theorem annotations, scope line, and research blossom are unclipped. Four Type0 CID TrueType resources embed FontFile2 streams, and extracted PDF text contains the formal counts, 20/20 checks, exact ratio annotation, and Duhamel scope limitation. validate_data.py independently checks every archived table and pinned provenance."
+  }
+}

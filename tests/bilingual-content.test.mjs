@@ -33,7 +33,7 @@ test("every research page loads the shared language controls before MathJax", as
   for (const file of files) {
     const html = await readFile(file, "utf8");
     assert.match(html, /href="\/bilingual\.css"/);
-    assert.match(html, /src="\/i18n-en\.js"/);
+    assert.match(html, /src="\/i18n-en\.js(?:\?[^"]*)?"/);
     assert.match(html, /src="\/bilingual\.js"/);
     assert.ok(
       html.indexOf('src="/bilingual.js"') < html.indexOf("mathjax@3"),

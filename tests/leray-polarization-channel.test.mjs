@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { promisify } from "node:util";
 import test from "node:test";
@@ -14,6 +15,7 @@ const noteUrl = new URL(
   import.meta.url,
 );
 const projectRoot = new URL("..", import.meta.url);
+const certificateRoot = new URL("../research/certificates/r056/", import.meta.url);
 
 test("states the exact R0.56 polarization theorem with its prior-art boundary", async () => {
   const [audit, note] = await Promise.all([
@@ -94,4 +96,39 @@ test("reproduces the exact R0.56 channel regressions", async () => {
     "passes exactly with two output channels",
   );
   assert.equal(certificate.researchDecision.notEnoughForRegularity, true);
+});
+
+test("archives the pinned R0.56 certificate with valid hashes", async () => {
+  const [certificateText, sumsText] = await Promise.all([
+    readFile(new URL("leray-polarization-channels.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+
+  assert.equal(
+    certificate.git.sourceCommit,
+    "1b736121127e91727b8ab7ff1b2fd90c2ee873f6",
+  );
+  assert.equal(
+    certificate.finiteRegressions.exhaustiveCube
+      .noncollinearOrderedTriadsChecked,
+    1764912,
+  );
+  assert.equal(
+    certificate.finiteRegressions.allIndexFamilies.familiesChecked,
+    400000,
+  );
+  assert.equal(Object.values(certificate.checks).every(Boolean), true);
+
+  const entries = sumsText.trim().split("\n").map((line) => {
+    const match = line.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, `invalid SHA256SUMS line: ${line}`);
+    return { expected: match[1], file: match[2] };
+  });
+  assert.equal(entries.length, 4);
+  for (const entry of entries) {
+    const payload = await readFile(new URL(entry.file, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.expected, `${entry.file} hash mismatch`);
+  }
 });

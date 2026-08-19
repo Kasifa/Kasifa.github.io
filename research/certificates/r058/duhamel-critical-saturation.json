@@ -1,0 +1,162 @@
+{
+  "checks": {
+    "bourgainPavlovicNormInflationPriorArtAcknowledged": true,
+    "coiculescuPalasekLargeCriticalDataNonuniquenessAcknowledged": true,
+    "euclideanCompactSupportConstructionNotClaimed": true,
+    "finiteChecksAreNotUsedAsProofs": true,
+    "finiteDuhamelFamilyRegressionPassed": true,
+    "finiteRudinShapiroRegressionPassed": true,
+    "formalBlockRatioIsThetaLMinusTwo": true,
+    "formalCoefficientBetweenOneOver32LAndOneOver2L": true,
+    "formalDuhamelDenominatorIsTwoNSquared": true,
+    "formalExactDuhamelCoefficientDerived": true,
+    "formalHOneHalfRatioIsThetaLMinusThree": true,
+    "formalHeatBesovRatioHasUniformPositiveLowerBound": true,
+    "formalObservationTimeIsParabolic": true,
+    "formalPeriodicBmoMinusOneRatioHasUniformPositiveLowerBound": true,
+    "formalRudinShapiroPrefixBound": true,
+    "formalScaledCoefficientHasPositiveRiemannLimit": true,
+    "formalWeightedAbelBound": true,
+    "formalXMinusOneRatioIsThetaLMinusOne": true,
+    "higherPicardRemainderControlNotClaimed": true,
+    "kochTataruBilinearUnboundednessNotClaimed": true,
+    "kochTataruSmallDataBoundaryAcknowledged": true,
+    "largeDataRegularityNotClaimed": true,
+    "normInflationNotClaimed": true,
+    "threeDimensionalNavierStokesRegularityNotClaimed": true
+  },
+  "computation": {
+    "createdUtc": "2026-08-19T23:46:26.241662+00:00",
+    "exactBackend": "Python integers, Gaussian integers, and exact Q(sqrt(2)) sign tests",
+    "floatingPointDecisionUse": false,
+    "gpu": false,
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.9.6",
+    "randomness": false,
+    "wallSeconds": 25.760812625
+  },
+  "exactDuhamel": {
+    "classification": "formal exact identity and all-index inequalities",
+    "coefficient": "d_L(t)=e^(-t) sum_N (1-e^(-2N^2t))/(2N^2)",
+    "lowerBound": "1/(32L)",
+    "observationTime": "t_L=log(2)/(2L^2)",
+    "packet": "k=e_2, p_N=(N,0,0), q_N=(-N,1,0), N=L,...,2L-1",
+    "scaledLimit": "(1/2) integral_1^2 (1-2^(-x^2))/x^2 dx",
+    "upperBound": "1/(2L)"
+  },
+  "finiteRegressions": {
+    "duhamelFamily": {
+      "classification": "finite integer regression; exponential inequalities are formal monotonicity arguments",
+      "exactCoefficient": "e^(-t_L) sum_(N=L)^(2L-1) (1-e^(-2N^2t_L))/(2N^2)",
+      "lowerBoundIngredients": [
+        "e^(-t_L)>=1/2",
+        "1-e^(-2N^2t_L)>=1/2",
+        "1/(2N^2)>1/(8L^2)",
+        "there are L terms"
+      ],
+      "modesChecked": 8390656,
+      "observationTime": "t_L=log(2)/(2L^2)",
+      "rationalLowerBound": "1/(32L)",
+      "rationalUpperBound": "1/(2L)",
+      "recordsSha256": "ebcf1fd49a913243d1ccbc8795b009ee6926cdde85a57709a2d640e70e357209",
+      "shellsChecked": 4096
+    },
+    "rudinShapiro": {
+      "abelIdentityAtGaussianPointPassed": true,
+      "allCoefficientsAreSigns": true,
+      "classification": "finite exact integer regression of the formal recursion and Abel identity",
+      "levelsChecked": 23,
+      "maximumLength": 4194304,
+      "maximumLevel": 22,
+      "maximumPrefixModulusSquaredAtZEqualsI": 8380420,
+      "prefixEnvelope": "M_m<=1+sum_(h=1)^m 2^(h/2)<=(2+sqrt(2))*sqrt(L)",
+      "recordsSha256": "e071493d04998c44ad1f7bd3a8af7eb60dc0a2a4f8542d0075a322000ff6e2da",
+      "recursionPassed": true
+    }
+  },
+  "git": {
+    "head": "35a817f00d8821e91f033764f6bd29fc1697ad56",
+    "sourceCommit": "35a817f00d8821e91f033764f6bd29fc1697ad56",
+    "worktreeStatusAtRun": [
+      "?? research/certificates/r058/"
+    ]
+  },
+  "literatureBoundary": {
+    "bourgainPavlovic": "https://arxiv.org/abs/0807.0882",
+    "cheskidovDai": "https://arxiv.org/abs/1212.3801",
+    "coiculescuPalasek": "https://arxiv.org/abs/2503.14699",
+    "germainSecondIterate": "https://arxiv.org/abs/0806.4525",
+    "kochTataru": "https://math.berkeley.edu/~tataru/papers/nas.pdf",
+    "rudinShapiroBound": "https://arxiv.org/abs/1909.08777"
+  },
+  "normComparison": {
+    "classification": "formal all-index rational and symbolic envelopes",
+    "criticalSaturationSpaces": [
+      "heatBesov",
+      "periodicBmoMinusOne"
+    ],
+    "envelopes": {
+      "fixedOutputL2": {
+        "lower": "1/32",
+        "power": -2,
+        "upper": "1/2"
+      },
+      "fourierXMinusOne": {
+        "lower": "1/64",
+        "power": -1,
+        "upper": "1"
+      },
+      "heatBesov": {
+        "lower": "sqrt(e)/(32*sqrt(2)*(2+sqrt(2))^2)",
+        "power": 0
+      },
+      "homogeneousHOneHalf": {
+        "lower": "1/(64*sqrt(2))",
+        "power": -3,
+        "upper": "1/(2*sqrt(2))"
+      },
+      "periodicBmoMinusOne": {
+        "c0": "sqrt(2)*cos(1/4)*sqrt(1-exp(-1/8))",
+        "lower": "c_0/(64*(2+sqrt(2))^2)",
+        "power": 0
+      }
+    },
+    "shellGainSpaces": [
+      "fixedOutputL2",
+      "fourierXMinusOne",
+      "homogeneousHOneHalf"
+    ]
+  },
+  "phaseFlattening": {
+    "classification": "formal all-level recurrence and Abel summation theorem",
+    "matchedProduct": "a_n^2=1, so the common low output remains coherent",
+    "prefixConstant": "C_RS=2+sqrt(2)",
+    "sequence": "dyadic Rudin-Shapiro coefficients a_n in {+1,-1}",
+    "weightedHeatBound": "sup_x |sum a_n exp(-(L+n)^2 s) exp(i n x)|<=C_RS sqrt(L) exp(-L^2s)"
+  },
+  "researchDecision": {
+    "criticalHeatNorms": "saturated after deterministic phase flattening",
+    "directClayValue": "low; this is an obstruction lemma, not an arbitrary-data estimate",
+    "heatDenominator": "genuine and shell-decaying in l2, X^-1, and H^1/2 tests",
+    "nextTest": "multi-output coherence under one flattened sign sequence",
+    "ruledOutStrategy": "a shell-decaying improvement based only on heat denominators and frequency separation",
+    "standaloneNovelty": "limited-to-moderate pending broader literature review"
+  },
+  "schemaVersion": "1.0",
+  "scope": {
+    "notClaimed": [
+      "norm inflation or ill-posedness in BMO^-1",
+      "unboundedness of the Koch-Tataru bilinear map",
+      "control of higher Picard iterates or the nonlinear remainder",
+      "an R^3 compactly supported smooth-data construction",
+      "large-data global regularity or a solution of the Millennium problem"
+    ],
+    "system": "first Navier-Stokes Duhamel iterate of a real periodic coherent packet",
+    "theorems": [
+      "exact all-index Duhamel coefficient with a two-N-squared denominator",
+      "rational one-over-L coefficient envelope at parabolic observation time",
+      "shell gains in fixed-output l2, Fourier X^-1, and homogeneous H^1/2",
+      "Rudin-Shapiro critical saturation in heat Besov and periodic BMO^-1"
+    ]
+  }
+}

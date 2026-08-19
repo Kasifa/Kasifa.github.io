@@ -361,7 +361,14 @@ class DiagnosticModel:
             }
             records.append(record)
             if progress and (index == 1 or index % 8 == 0 or index == len(initial_points)):
-                best = max(records, key=lambda item: item["radius"])
+                converged = [
+                    item
+                    for item in records
+                    if item["success"]
+                    and item["activeMargin"] >= -5e-10
+                    and item["zeroMargin"] >= -5e-10
+                ]
+                best = max(converged or records, key=lambda item: item["radius"])
                 print(
                     f"[R0.54 diagnostic] start {index}/{len(initial_points)}; "
                     f"best r={best['radius']:.16f}; "

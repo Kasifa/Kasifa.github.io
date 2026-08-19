@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r049-charge-character",
+  "status": "formal",
+  "analyticalQuestion": "Does the exact multiplicative charge character omega_s=(4/5)^s move the true reduced-system threshold, which center charges create that threshold, and what geometric trade-off does the new anisotropic norm make?",
+  "supportedClaim": "For the reduced canonical edge generating system with ||f||_(r,c)=sum |f_mn| r^(m+n)c^(2n-m) and c=4/5, the true s=162,j=81 column has a globally unique positive threshold root satisfying 0.382618642388680778<r_*^(4/5)<0.382618642388680779. An exact 81-polynomial Sturm sequence independently counts one root in that interval. Across [0.382618,0.382619], an exact monotone sandwich keeps all 243 competing columns and sectors below the active column; the nearest is s=164 with a strict gap approximately 1.4157274652028842093e-4. Charges q=-1 and q=+1 provide approximately 50.508% and 38.299% of the active column. Relative to the upper endpoint of the R0.48 threshold, rho_Z grows by 26.88545%, rho_W shrinks by 35.03465%, and the fixed-charge R=Z^2W disk radius gains a strict lower factor 1.0459367903514846826. The polydiscs are not nested, and no optimality or three-dimensional Navier-Stokes claim is made.",
+  "createdAt": "2026-08-19T23:41:30+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "fcc0fa908531aef0ca0f02bc58035085294704bb",
+    "certificateCommit": "76923f43e27a2b81eeb38b441411d90b1e8dbc6c",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "focused threshold-crossing line, compact charge-contribution bars, ranked logarithmic dominance-gap curve, and signed geometry lollipops",
+    "variants": [
+      "101 exact rational presentation samples of the weighted active-column threshold polynomial",
+      "all 158 exact center-charge contribution records, with only q>=4 aggregated visually",
+      "all 243 formal full-window monotone-sandwich competitor gaps",
+      "three exact geometry ratios normalized by the R0.48 upper root endpoint"
+    ],
+    "takeaway": "The multiplicative character c=4/5 yields a strictly larger certified fixed-charge R disk, while trading a larger Z polyradius for a smaller W polyradius; the new sharp local threshold remains a true single-column crossing with full-window dominance.",
+    "dataSufficiency": "Curve sampling is presentation-only. Root existence and uniqueness follow from exact coefficient positivity and an 81-polynomial exact Sturm sequence. Contribution and competitor panels retain every exact source record. Geometry ratios are exact rational comparisons to the pinned R0.48 upper root endpoint.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Marker shape, open versus filled faces, signed position, line style, direct labels, ordering, and threshold references preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 142 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r049/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_character_weight_audit.py --max-total-degree 80 --charge-character 4/5 --window-lower 382618/1000000 --window-upper 382619/1000000 --root-decimal-digits 18 --charge-cutoff 241 --ball-divisor 1000000 --source-commit fcc0fa908531aef0ca0f02bc58035085294704bb --progress --progress-log research/certificates/r049/progress.ndjson --check --pretty --output research/certificates/r049/edge-charge-character-weight.json",
+    "configuration": "charge support q>=-1; exact degree-80 center; multiplicative character c=4/5; active true column s=162,j=81; window [382618/1000000,382619/1000000]; exact 18-decimal root isolation; exact Sturm sequence; 243 full-window competitors; anisotropic Newton and canonical-stretch conjugacy checks",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq/mpz exact rationals and integers backed by GMP 6.3.0; decimal fields and curve samples are display-only",
+    "solver": "deterministic formal-series recurrence, exact charge scaling, exact active-column polynomial, primitive integer threshold polynomial, exact rational bisection, exact Euclidean Sturm sequence, exhaustive monotone-sandwich comparison, and exact Newton restart",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "rootIsolation": "adjacent decimal rationals at scale 10^18 with strict exact opposite signs",
+      "dominance": "strict exact rational inequalities for all 243 competitors",
+      "figure": "no fitted parameter; every plotted value is extracted from or exactly reconstructed against the pinned certificate"
+    },
+    "scientificWallTimeSeconds": 119.37781666699448,
+    "monitoredWallTimeSeconds": 120.450544,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 807,
+      "trackedFields": [
+        "formal-series recurrence",
+        "charge-character covariance",
+        "active threshold polynomial",
+        "18-digit exact root isolation",
+        "81-polynomial exact Sturm sequence",
+        "243-competitor full-window dominance",
+        "anisotropic Newton restart",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 164.953
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "threshold-curve.csv",
+      "format": "csv",
+      "schema": "101 exact rational presentation samples of P_c(r)=C_(r,4/5)(81,162)-1 across [0.382618,0.382619], with exact radii, margins, display decimals, signs, and normalized window positions.",
+      "bytes": 221352,
+      "sha256": "c56fa4fda187627d84d758714da26f960740c22e9f4285f36a243a9cf3bb65c9"
+    },
+    {
+      "path": "root-endpoints.csv",
+      "format": "csv",
+      "schema": "Two adjacent exact decimal root-isolation endpoints with exact polynomial values, Sturm variation counts, and endpoint-zero counts.",
+      "bytes": 7576,
+      "sha256": "5583f0ea8f09af194aeca134caa4709f35a18780787091a0b0d02fd60ceb2cf7"
+    },
+    {
+      "path": "charge-contributions.csv",
+      "format": "csv",
+      "schema": "All 158 distinct center-charge contributions to the exact active s=162,j=81 column at r=0.382618, with exact values, exact shares, term counts, output charges, and display groups.",
+      "bytes": 471886,
+      "sha256": "ca05d130f14807855a3c1763258a8e9cbc83b15c35016675ec1bf4e775740460"
+    },
+    {
+      "path": "competitor-gaps.csv",
+      "format": "csv",
+      "schema": "All 243 formal full-window competitors ranked by exact gap below the active left-endpoint lower bound, with exact right-endpoint upper bounds and gaps.",
+      "bytes": 899743,
+      "sha256": "b26084a83a64e23a4a9a0a7b94bf4d22e3f6b9712617086db17fa2de08e67787"
+    },
+    {
+      "path": "anisotropic-geometry.csv",
+      "format": "csv",
+      "schema": "Three exact ratios and percent changes for rho_Z, rho_W, and the fixed-charge R=Z^2W disk, normalized by the R0.48 upper root endpoint.",
+      "bytes": 1092,
+      "sha256": "8ebd280f91ea5cc8a8e008bb043cfa2ae1e5104257094286c1fc2ced378d6445"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamps, elapsed seconds, exact-audit stages, isolation parameters, root endpoints, competitor count, and successful 31-check completion status.",
+      "bytes": 1751,
+      "sha256": "76e6ffbde8b30313cb79314fe859bf8b660446b9d97ba6d47d3097ae0d0b923d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 59848,
+      "sha256": "68825f6d2c4f2287f57affe471178678b28b7147f93d021807c8eac9e21f6878"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r049",
+      "fileName": "edge-charge-character-weight.json",
+      "bytes": 5275804,
+      "sha256": "b60405d395a4b927ab674af8cec1aef8f3b42e4962fd7118425851e075a49e44",
+      "extractionCommand": "prepare_data.py pins the R0.49 certificate, reconstructs and hashes the charge-scaled degree-80 threshold polynomial, emits exact presentation samples, extracts all charge contributions and all 243 competitor records, derives exact geometry ratios, and copies monitoring logs; validate_data.py independently checks every table, source pin, ordering, sign, count, sum, geometry identity, and monitoring record"
+    },
+    {
+      "location": "research/certificates/r048",
+      "fileName": "edge-charge-threshold-root.json",
+      "bytes": 1063441,
+      "sha256": "246bcfa6623b1050511554312c32e9973b42b620a20ff571a1b5f340041c9af0",
+      "extractionCommand": "the R0.49 certificate pins the R0.48 certificate and its exact upper root endpoint, which is used only as the conservative normalization reference for the geometry comparison"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/r049-mplconfig tmp/r024-venv/bin/python figures/r049-charge-character/fig-r049-charge-character/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 142,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "b55c6e41330d3dcc5e6346358696037a6291c1c03abd3141217fb6ebe1dbf43a"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "428dc1cbee0fb5775088008ba74b4fce2b6e7049d693a3d9467afc9576319b87"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "a17fbd64e7c9e791a6b589615e18a102424a13e83a055ec94fca0b7b808f9d39"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我用乘法电荷特征 c=4/5 把加权临界根隔离在宽度为 10^-18 的精确区间，并证明 243 个竞争列在整个窗口内严格落后；新的双圆盘一伸一缩，但固定荷变量 R=Z^2W 的认证圆盘半径严格增加约 4.59%。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 142 mm to rounding and the 600 dpi PNG is 4204 by 3354 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected after removing a redundant panel-b annotation and moving the negative panel-d label away from the tick label. Marker shape, open versus filled faces, signed position, line style, ordering, direct labels, and threshold dashes preserve distinctions without color. Titles, axes, annotations, numerical labels, footer statements, and the blossom mark are unclipped. Six CID TrueType font resources are embedded through FontFile2 and no Type3 fonts are present. PDF text extraction contains R0.49, the exact root display, 243, and the reduced-system scope. validate_data.py independently checks every plotted table against the pinned exact certificate."
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r048-threshold-root",
+  "status": "formal",
+  "analyticalQuestion": "Where exactly does the active induced column cross one, is that root unique, and do all other charge sectors stay strictly below it throughout the adjacent millionth window?",
+  "supportedClaim": "For the reduced canonical edge generating system with kappa=3/4, the active true column C_r(81,162) defines a degree-80 threshold polynomial P(r)=C_r(81,162)-1 with 80 strictly positive nonconstant coefficients. Its globally unique positive root satisfies 0.376932499290527340<r_*<0.376932499290527341. An exact 81-polynomial Sturm sequence independently counts one root in that interval. Across [0.376932,0.376933], an exact monotone sandwich keeps all 243 competing columns and sectors below the active column; the nearest competitor is s=164 with a strict gap of approximately 9.9933786489298977945e-05. Hence the current induced two-block weighted-l1 norm is below one, equal to one, and above one below, at, and above r_* within this window, without implying a PDE singularity or a result on three-dimensional Navier-Stokes regularity.",
+  "createdAt": "2026-08-19T22:45:28+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "fe65dcb365eca9d934c3ec6055c06d7a7c1a515c",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "focused threshold-crossing line, exact signed endpoint lollipops with Sturm labels, ranked logarithmic dominance-gap curve, and focused horizontal sandwich lollipops",
+    "variants": [
+      "101 exact rational presentation samples of the active-column threshold polynomial on the full millionth window",
+      "two exact width-10^-18 root-bracket endpoints with polynomial signs and Sturm variation counts",
+      "all 243 formal competitor gaps ranked on a logarithmic axis",
+      "the active left-endpoint bound and seven nearest right-endpoint competitor bounds on a focused parts-per-million scale"
+    ],
+    "takeaway": "The degree-80 active-column polynomial has one positive root in a width-10^-18 rational interval, while every competing column stays strictly below it throughout the full adjacent-millionth window.",
+    "dataSufficiency": "The 101 curve points are presentation samples only. Root existence and uniqueness follow from exact coefficient positivity and an 81-polynomial exact Sturm sequence. The dominance plots contain all 243 exact monotone-sandwich competitor records, with the seven nearest records shown separately at final print scale.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Marker shape, open versus filled faces, line style, direct labels, ordering, threshold references, and signed vertical direction preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 142 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r048/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_threshold_root_audit.py --max-total-degree 80 --window-lower 376932/1000000 --window-upper 376933/1000000 --root-decimal-digits 18 --zero-charge-weight 3/4 --charge-cutoff 241 --source-commit fe65dcb365eca9d934c3ec6055c06d7a7c1a515c --progress --progress-log research/certificates/r048/progress.ndjson --check --pretty --output research/certificates/r048/edge-charge-threshold-root.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; zero/nonzero output split with kappa=3/4; active true column s=162,j=81; window [376932/1000000,376933/1000000]; 18-digit exact decimal bisection; exact Sturm sequence; 243 full-window competitor records; monotone-sandwich comparison",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq/mpz exact rationals and integers backed by GMP 6.3.0; decimal fields and curve samples are display-only",
+    "solver": "deterministic formal-series recurrence, exact active-column construction, primitive integer threshold polynomial, exact rational bisection, exact Euclidean Sturm sequence, and exhaustive monotone-sandwich competitor comparison",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "rootIsolation": "adjacent decimal rationals at scale 10^18 with strict exact opposite signs",
+      "dominance": "strict exact rational inequalities for all 243 competitors",
+      "figure": "no fitted parameter; every curve point, root endpoint, variation count, gap, and leader is extracted from or exactly reconstructed against the pinned certificate"
+    },
+    "wallTimeSeconds": 21.287027,
+    "scientificWallTimeSeconds": 21.17243283300195,
+    "monitoredWallTimeSeconds": 21.287027,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 144,
+      "trackedFields": [
+        "formal-series recurrence",
+        "active threshold polynomial",
+        "18-digit exact root isolation",
+        "81-polynomial exact Sturm sequence",
+        "243-competitor full-window dominance",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 109.875
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "threshold-curve.csv",
+      "format": "csv",
+      "schema": "101 exact rational presentation samples of P(r)=C_r(81,162)-1 across [0.376932,0.376933], with exact radii, exact margins, display decimals, signs, and window positions.",
+      "bytes": 201726,
+      "sha256": "8b2487b094132b6f97127043c2304021a17940689e69dd283c7e84f929d37d2f"
+    },
+    {
+      "path": "root-endpoints.csv",
+      "format": "csv",
+      "schema": "Two adjacent exact decimal root-isolation endpoints, including exact polynomial values, display-scaled signed values, 81-term Sturm sign strings, variation counts, and zero counts.",
+      "bytes": 7271,
+      "sha256": "c732714a6e25628a6925f0e51ab40ae1dd1d642b76ea0d68ce63fb352cf11ee4"
+    },
+    {
+      "path": "competitor-gaps.csv",
+      "format": "csv",
+      "schema": "All 243 formal full-window monotone-sandwich competitors ranked by exact gap below the active left-endpoint lower bound, with exact upper bounds and exact gaps.",
+      "bytes": 812346,
+      "sha256": "781fbceac7a204925d3c9aaedcafeb006848488e9a2685ab5cc100a5e01e8476"
+    },
+    {
+      "path": "sandwich-leaders.csv",
+      "format": "csv",
+      "schema": "The exact active left-endpoint bound and the seven nearest exact right-endpoint competitor upper bounds, with distances below one in display parts per million.",
+      "bytes": 13741,
+      "sha256": "6e57cba01b05a251bbb59f364e771672106b6fa5d87785842cb44a9a189bf7f3"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, isolation parameters, root endpoints, competitor count, nearest competitor, and successful 22-check completion status.",
+      "bytes": 1179,
+      "sha256": "b105254cf433c307c44a4104eb55f7bd2aa16e89e419a68c2ca1e18d54affeca"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 10665,
+      "sha256": "9d7a019b31c2ba80ae476302537a3153fa63ee7bf3da238d6d8b1437239df460"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r048",
+      "fileName": "edge-charge-threshold-root.json",
+      "bytes": 1063441,
+      "sha256": "246bcfa6623b1050511554312c32e9973b42b620a20ff571a1b5f340041c9af0",
+      "extractionCommand": "prepare_data.py pins the R0.48 certificate, reconstructs and hashes the active degree-80 threshold polynomial, emits exact presentation samples, extracts exact root/Sturm endpoints and all 243 competitor records, and copies monitoring logs; validate_data.py independently checks every table, source pin, ordering, sign, count, and monitoring record"
+    },
+    {
+      "location": "research/certificates/r047",
+      "fileName": "edge-charge-degree-lattice.json",
+      "bytes": 4381040,
+      "sha256": "e45bc20ddeab9efde83dafefc84514df0260f8831c102c4621f0fdcd43dea6c9",
+      "extractionCommand": "the R0.48 certificate pins R0.47 and inherits its exact degree-80 center, fixed-charge all-degree endpoints, exhaustive charge-sector coverage, and adjacent-millionth controls"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r048-threshold-root/fig-r048-threshold-root/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 142,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "774953ccaebac79e035b8ee17d1cdef601d1323a3a8e8750fb5172d5a5ff1046"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "25bf1175aae2583f60d09d1fb5000c347442e5dbfeb505378b4e749a63d5e88e"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "16e72cfd8b227bb66842bb01a408fb9dc9d370e3a3f117950d4646ca2766561e"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我把活跃列的临界点隔离在宽度为 10^-18 的有理区间内，并用精确 Sturm 序列计出唯一根；整个相邻百万分位窗口内，243 个竞争列都严格低于活跃列。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 142 mm to rounding and the 600 dpi PNG is 4204 by 3354 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected after shortening the panel-d labels and lowering the footer. Marker shape, open versus filled faces, signed vertical direction, line style, ordering, direct labels, and threshold dashes preserve distinctions without color. Titles, axes, annotations, root labels, numerical labels, footer statements, and the blossom mark are unclipped. Five CID TrueType font resources are embedded through FontFile2 and no Type3 fonts are present. PDF text extraction contains R0.48, the exact root bracket, 243 exact competitors, and the reduced-system scope. validate_data.py independently checks every plotted table against the pinned exact certificate."
+  }
+}

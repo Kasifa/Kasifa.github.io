@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.57：我构造一个实值无散的相干 Fourier 频率包，证明固定低频输出上的有符号法向聚合仍精确达到常数一。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.57｜相干频率包与固定输出障碍">
+  <meta property="og:description" content="尺度分离、收缩角帽、交换对称化与瞬时热演化都不能压低固定输出的尖锐常数一。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-57-coherent-fixed-output.png">
+  <title>R0.57｜相干频率包与固定输出障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}.figure-print{display:none}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:7px 0;padding:7px 9px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:5px 0}p:has(+ .equation){break-after:avoid-page}.refs li{padding-top:2px;padding-bottom:2px}.figure-screen{display:none}.figure-print{display:block}#reproduce{margin-bottom:0}#reproduce p{margin:2px 0}#reproduce h3{margin-top:10px;margin-bottom:4px}#reproduce .refs{font-size:7.5pt}#reproduce .refs li{padding-top:1px;padding-bottom:1px}#reproduce .proof code{font-size:4.35pt;line-height:1.04}}</style>
+  <script defer src="/i18n-en.js?v=0.41"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#operator">尖锐上界</a><a href="#packet">相干频率包</a><a href="#heat">热演化</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.57 · 固定输出有符号聚合</div>
+        <h1>频率包越来越集中，<br>固定低频输出仍精确达到常数一</h1>
+        <p class="lead">我把 R0.56 留下的法向通道按固定输出频率求和，并构造了一个对每个整数 \(L\ge1\) 都成立的实值无散 Fourier 多项式。它包含 \(L\) 个高频对，全部落在同一 dyadic 壳和两个收缩的反向角帽内，却相干地送入同一个低频法向。每个交换项都精确为零，固定输出的 \(\ell^2\times\ell^2\) 比值等于一；对两个输入同时施加热半群后，这个瞬时等号仍对所有时间成立。这个结果严格排除一条估计路线，但不是三维 Navier--Stokes 正则性证明。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全指标相干反例已证明</span><strong>20 项检查全通过</strong><p>版本 v0.57 · 2026-08-20</p><p>正式频率对：200,000 个</p><p>全指标实例：1,000,000 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#operator">01 · 固定输出算子</a></li>
+        <li><a href="#packet">02 · 全指标频率包</a></li>
+        <li><a href="#reality">03 · 实值与交换项</a></li>
+        <li><a href="#nogo">04 · 衰减不可能性</a></li>
+        <li><a href="#heat">05 · 瞬时热演化</a></li>
+        <li><a href="#energy">06 · 单模能量输入</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#next">09 · R0.58 方向</a></li>
+        <li><a href="#reproduce">10 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里排除固定输出的统一衰减，不排除时间积分或多输出结构</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · SHARP</span><strong>固定输出范数恰为一</strong><p>归一化有序 Fourier--Leray 算子的 \(\ell^2\times\ell^2\) 上界为一，显式频率包达到等号。</p></div>
+            <div class="status"><span>FORMAL · NO-GO</span><strong>壳比与角帽不产生衰减</strong><p>尺度比和角帽孔径同时趋于零时，尖锐比值仍恒等于一。</p></div>
+            <div class="status"><span>FINITE · EXACT</span><strong>20 万对精确实现回归</strong><p>400,000 个有序输出配对和 1,000,000 个全指标实例均用整数审计。</p></div>
+            <div class="status"><span>OPEN · DUHAMEL</span><strong>时间积分仍未判断</strong><p>Duhamel 分母、多输出耦合与全局临界时空范数尚未进入本定理。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>共享同一低频输出的高频对相干叠加，是 Bourgain--Pavlović 范数膨胀构造等工作中的经典机制。我不把这种机制本身称为新发现。本页的新信息更窄：它与 R0.56 法向通道的精确对齐、尖锐固定输出范数、实值无散的单壳收缩角帽等号族，以及由此得到的估计类不可能性。有限审计只验证实现，不替代全指标证明。</div>
+        </section>
+
+        <section id="operator"><div class="section-no">01 / Fixed-output operator</div><h2>无散条件把导数方向精确换成输出方向</h2>
+          <p>固定非零输出 \(k\)，对有限支撑的无散 Fourier 序列 \(U,V\) 定义</p>
+          <div class="equation">\[
+            \mathfrak B_k(U,V)
+            =\frac1{|k|}P_k\sum_{p+q=k}(q\cdot U_p)V_q.
+          \]</div>
+          <p>因为 \(q=k-p\) 且 \(p\cdot U_p=0\)，所以</p>
+          <div class="equation result">\[
+            q\cdot U_p=k\cdot U_p.
+          \]</div>
+          <p>Leray 投影是正交压缩。逐项估计后只需一次 Cauchy--Schwarz：</p>
+          <div class="equation result">\[
+            |\mathfrak B_k(U,V)|
+            \le\sum_{p+q=k}|U_p||V_q|
+            \le\left(\sum_{p+q=k}|U_p|^2\right)^{1/2}
+            \left(\sum_{p+q=k}|V_q|^2\right)^{1/2}.
+          \]</div>
+          <p>因此固定输出的 \(\ell^2\times\ell^2\) 算子范数至多为一。下面的多频率包让投影、逐项模长和 Cauchy--Schwarz 三步同时取等号，所以常数一是精确值。</p>
+        </section>
+
+        <section id="packet"><div class="section-no">02 / Coherent packet</div><h2>每个 \(L\) 都给出一个同壳、同输出、同相位的等号族</h2>
+          <p>固定 \(k=e_2=(0,1,0)\)。对 \(N=L,\ldots,2L-1\)，取</p>
+          <div class="equation">\[
+            p_N=(N,0,0),\qquad q_N=(-N,1,0)=k-p_N.
+          \]</div>
+          <p>再取实系数 \(c_N\)，并令</p>
+          <div class="equation">\[
+            U_{p_N}=c_Ne_2,\qquad V_{q_N}=c_Ne_3.
+          \]</div>
+          <p>两个输入分别垂直于自己的频率，而且</p>
+          <div class="equation result">\[
+            q_N\cdot U_{p_N}=c_N,\qquad P_ke_3=e_3.
+          \]</div>
+          <p>所以所有输出都沿同一个 \(e_3\) 方向且同相：</p>
+          <div class="equation result">\[
+            \boxed{\mathfrak B_k(U,V)
+            =\left(\sum_{N=L}^{2L-1}c_N^2\right)e_3.}
+          \]</div>
+          <p>另一方面，两块的 \(\ell^2\) 范数乘积恰好也是 \(\sum c_N^2\)。这不是有限截断观察，而是对所有整数 \(L\ge1\) 和任意实系数序列成立的解析恒等式。</p>
+          <p>局部化同时变强：</p>
+          <div class="equation result">\[
+            L\le|p_N|,|q_N|&lt;2L,\qquad
+            \frac{|k|}{\min(|p_N|,|q_N|)}\le\frac1L,
+            \qquad
+            \angle(\widehat q_N,-e_1)\le\arctan(1/L).
+          \]</div>
+          <p>两个输入都在同一个 dyadic 壳内。第一块精确落在 \(e_1\) 方向，第二块落在向 \(-e_1\) 收缩的角帽内；但尖锐比值没有下降。</p>
+        </section>
+
+        <section id="reality"><div class="section-no">03 / Reality and exchange</div><h2>加入共轭伙伴后仍没有额外碰撞，交换项逐个为零</h2>
+          <p>把两块放进同一个 Fourier 场 \(\widehat w\)，并规定 \(\widehat w(-m)=\overline{\widehat w(m)}\)。由于原系数为实数，得到实值、无散的三角多项式。</p>
+          <p>支撑的第二坐标只可能是 \(0,1,0,-1\)。一个支撑对若要相加为 \(k\)，必须使用一个第二坐标为零的模和一个第二坐标为一的模；第一坐标方程随后强制它正好是同一指标的 \(p_N+q_N=k\)。因此不存在跨指标碰撞。</p>
+          <p>交换次序时，系数为</p>
+          <div class="equation result">\[
+            p_N\cdot\widehat w(q_N)
+            =p_N\cdot(c_Ne_3)=0.
+          \]</div>
+          <p>所以对完整自相互作用而言，正向项全部保留，反向项逐个消失。交换反对称结构在这个允许的数据族上没有产生任何抵消。</p>
+        </section>
+
+        <section id="nogo"><div class="section-no">04 / No-go theorem</div><h2>只依赖壳比、角帽和两块 \(\ell^2\) 质量的常数不能小于一</h2>
+          <p>假设一条固定输出法向估计写成</p>
+          <div class="equation">\[
+            |\mathfrak B_k(U,V)|
+            \le C(\rho,\theta)\|U\|_{2,k}\|V\|_{2,k},
+          \]</div>
+          <p>其中两个输入在同一高频壳，尺度比不超过 \(\rho\)，并落在孔径不超过 \(\theta\) 的反向角帽内。把上面的频率包代入，立刻得到</p>
+          <div class="equation result">\[
+            \boxed{C(1/L,\arctan(1/L))\ge1\qquad(L=1,2,\ldots).}
+          \]</div>
+          <p>因此沿 \((\rho,\theta)\to(0,0)\) 的这条序列，常数不仅不能趋于零，甚至不能严格小于一。这并不是说相位永远不会抵消；它说明仅仅“保留符号再求和”不能对所有实值无散数据强迫抵消。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">05 / Instantaneous heat flow</div><h2>分别演化两个输入后，瞬时固定输出比值仍恒等于一</h2>
+          <p>令 \(U(t)=e^{\nu t\Delta}U\)、\(V(t)=e^{\nu t\Delta}V\)。因为</p>
+          <div class="equation">\[
+            |p_N|^2=N^2,\qquad |q_N|^2=N^2+1,
+          \]</div>
+          <p>固定输出变成</p>
+          <div class="equation result">\[
+            \mathfrak B_k(U(t),V(t))
+            =e^{-\nu t}\left(\sum_{N=L}^{2L-1}
+            c_N^2e^{-2\nu N^2t}\right)e_3.
+          \]</div>
+          <p>两个时间依赖块范数的乘积恰好是右边同一个标量。因此对每个 \(t\ge0\)，瞬时比值仍然为一。</p>
+          <div class="proof warning"><strong>不能外推的部分。</strong>这里把热演化后的两个输入在同一时刻送入固定输出估计。真正的 mild 解还要对历史时间做 Duhamel 积分；积分核带有额外的频率分母。这个更强的算子尚未在本页估计，不能从瞬时等号直接判定其成败。</div>
+        </section>
+
+        <section id="energy"><div class="section-no">06 / Single-mode energy input</div><h2>选择输出相位后，单个低模的瞬时能量输入也达到等号</h2>
+          <p>再加入</p>
+          <div class="equation">\[
+            \widehat w(k)=-iCe_3,\qquad
+            \widehat w(-k)=iCe_3,\qquad C&gt;0.
+          \]</div>
+          <p>它们保持实值与无散，也不引入新的 \(p+q=k\) 配对。按 Fourier 非线性约定</p>
+          <div class="equation">\[
+            \partial_t\widehat w(k)\big|_{\mathrm{nl}}
+            =-iP_k\sum_{p+q=k}(q\cdot\widehat w(p))\widehat w(q),
+          \]</div>
+          <p>模式 \(k\) 的瞬时能量输入为</p>
+          <div class="equation result">\[
+            \operatorname{Re}\!\left[
+            \overline{\widehat w(k)}\cdot
+            \partial_t\widehat w(k)\big|_{\mathrm{nl}}\right]
+            =C\sum_{N=L}^{2L-1}c_N^2.
+          \]</div>
+          <p>它精确达到输出幅值和两个块范数的乘积。共轭模式 \(-k\) 给出相同输入。完整 Euler 非线性仍守恒总动能；其他输出模承担平衡的负转移，所以这里没有矛盾。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Formal figure</div><h2>频率几何、局部化极限和热等号统一归档</h2>
+          <figure>
+            <img class="figure-screen" src="/figures/r0-57-coherent-fixed-output.svg" alt="R0.57 相干固定输出频率包、局部化极限与瞬时热演化等号">
+            <img class="figure-print" src="/figures/r0-57-coherent-fixed-output.png" alt="R0.57 相干固定输出频率包、局部化极限与瞬时热演化等号">
+            <figcaption>图 R0.57-1。左图显示一个同壳频率包及共享低频输出；中图显示壳比和角帽孔径趋于零时固定输出比值仍为一；右图显示热演化后的输出与块范数乘积完全重合。PDF、SVG、600 dpi PNG、数据、图源、验证脚本、监控、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-57-coherent-fixed-output.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-57-coherent-fixed-output.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>它是一条清晰的不可能性定理，但独立新颖性和 Clay 价值仍有限</h2>
+          <p>第一项价值是完成了 R0.56 提出的可证伪测试。固定输出、交换符号、单壳与细角帽看起来都可能带来平方函数增益；现在有一个全指标、实值、无散的相干族同时击穿这些希望。后续不应再把精力放在只依赖这几项信息的 Schur 或 \(TT^*\) 常数优化上。</p>
+          <p>第二项价值是把时间结构的边界画清楚。瞬时热演化仍保持等号，所以任何有效改进必须真正使用 Duhamel 时间积分、多个输出之间的几何，或排除这种相干包的全局临界约束，而不是只在单时刻给输入乘热权。</p>
+          <p>它目前还不足以成为高水平论文的核心定理。高频对相干地产生同一低模是经典范数膨胀机制；本页的贡献主要是把该机制精确嵌入 R0.56 通道，并给出尖锐算子范数和明确的不可能性范围。对 Clay 问题的直接推进仍低：没有新的任意大初值先验界，没有排除有限时奇性，也没有扩大已知正则类。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把 200,000 对有限审计写成全指标证明；全指标证明来自显式公式。不能从固定输出失败推出所有平方函数方法失败；多输出和时空结构仍开放。不能把单模正能量输入误写成总能量增长。不能声称已经解决、接近解决或显著推进三维 Navier--Stokes 全局正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">09 / R0.58</div><h2>下一步直接计算时间积分 Duhamel 算子的精确核</h2>
+          <div class="proof"><strong>可证伪问题。</strong>对同一个相干频率包，完整热 Duhamel 输出
+            \[
+              \int_0^t e^{-\nu|k|^2(t-s)}
+              P_k\sum_{p+q=k}(q\cdot U_p(s))V_q(s)\,ds
+            \]
+            是否在适当的临界时空归一化后仍保持常数阶？若出现频率分母，它能否在所有壳和输出上可求和；若振幅选择抵消分母，能否给出新的相干反例？
+          </div>
+          <ol>
+            <li>对 R0.57 频率包逐项积分，写出精确 Duhamel 系数，不先取上界；</li>
+            <li>分别在 \(\mathcal X^{-1}\)、Koch--Tataru 型时空尺度和 dyadic 能量通量尺度上计算归一化；</li>
+            <li>优化系数 \(c_N\) 与观察时间 \(t\sim L^{-2}\)，判断热分母能否被临界振幅抵消；</li>
+            <li>若单输出仍饱和，再检查多个低输出能否同时相干，以及总能量守恒如何强制回流；</li>
+            <li>只有得到全壳可求和估计或全指标反例，才进入 R0.59。</li>
+          </ol>
+          <p>R0.58 的验收标准是一条带明确输入、输出、时间范数和尖锐尺度的 Duhamel 定理或反例，不是展示几条衰减曲线。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility and sources</div><h2>全指标证明、有限精确回归、失败重启与期刊图分别固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r057/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/signed_normal_aggregation_audit.py --packet-size 200000 --max-family-index 1000000 --source-commit 001a40b166d20c912e78fca4d565c3e2eadd3203 --progress --progress-log research/certificates/r057/progress.ndjson --check --pretty --output research/certificates/r057/signed-normal-aggregation.json</code></div>
+          <p>最终正式源提交为 <code>001a40b166d20c912e78fca4d565c3e2eadd3203</code>，证书归档提交为 <code>40aaadafb24fe3e254704bc81a78fe5c53bb6c65</code>，最终附图源提交为 <code>763553ac0245e73a9f37e9416cda9eda196f594f</code>，附图归档提交为 <code>59bcb7d204c5edb3600f55474f6e8867b29ff7f5</code>。</p>
+          <p>成功科学审计耗时 5.745230 秒；监控历时 5.796003 秒、采样 23 次，峰值 CPU 为 100.0%，峰值常驻内存为 434.328 MiB。没有使用 GPU、随机数或浮点数学判定，20 项检查全部通过。</p>
+          <p>第一次正式实现因配对存在性使用线性列表查找而退化为 \(O(L^2)\)，在 36.657777 秒时被我中止。失败资源与阶段日志均保留；改用集合后，数学算法不变，预期查找复杂度降为线性。成功证书 SHA-256 为 <code>84bdf17eea9967a3ad9e4150b0b9ef2457bfcc2f984b4b437dff588d2df413c8</code>。</p>
+          <p><a href="/notes/r0-57.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/signed_normal_aggregation_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/signed_normal_aggregation_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r057">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r057-signed-normal-aggregation/fig-r057-coherent-fixed-output">查看期刊附图包</a></p>
+          <h3>经典机制与已发表基线</h3>
+          <ol class="refs">
+            <li>J. Bourgain 与 N. Pavlović，<a href="https://arxiv.org/abs/0807.0882"><em>Ill-posedness of the Navier--Stokes equations in a critical space in 3D</em></a>，<em>Journal of Functional Analysis</em> 255 (2008), 2233--2247。其范数膨胀构造使用高频对相干地产生共同低模。</li>
+            <li>A. Cheskidov 与 M. Dai，<a href="https://arxiv.org/abs/1212.3801"><em>Norm inflation for generalized Navier--Stokes equations</em></a>，<em>Indiana University Mathematics Journal</em> 63 (2014), 869--884。该工作发展了高到低频率转移的相关构造。</li>
+            <li>H. Koch 与 D. Tataru，<a href="https://doi.org/10.1006/aima.2000.1937"><em>Well-posedness for the Navier--Stokes equations</em></a>，<em>Advances in Mathematics</em> 157 (2001), 22--35。R0.58 将用其临界时空组织作为一个比较尺度。</li>
+            <li><a href="/notes/r0-56.html">R0.56：Leray 极化通道与法向障碍</a>。提供本页聚合的法向通道及其点态常数一。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier--Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.57 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

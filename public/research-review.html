@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.31</strong>网页版本</span>
+            <span><strong>v0.32</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>保留大正荷扇区的荷—次数格点相关性，固定 \(r=0.377\) 为下一项全阶验收点。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>精确隔离 \(s=162,j=81\) 活跃列的唯一阈值根，并证明全部竞争扇区在该根附近仍严格更小。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2950,7 +2950,58 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_two_block_weight_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r046-two-block-weight/fig-r046-two-block-weight">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.47：</strong>保留大正荷扇区的精确荷—次数格点关系，直接检验 \(r=0.377\)；若全阶界仍不能低于一，公开最坏机制与精确失败余量。</p>
+            <p><strong style="color:var(--gold)">R0.47 已完成：</strong>精确荷—次数格点把大正荷界压回一以下，共同半径推进到 0.376932；相邻百万分位 0.376933 在真实 \(s=162,j=81\) 列上超过一。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.47 · 2026-08-19</p>
+            <h3>精确荷—次数格点、奇偶有理分支与 0.376932 重启</h3>
+            <p>
+              R0.46 在 \(r=0.377\) 留下的大正荷充分界为
+              \(1.0030411177&gt;1\)，但它分别最大化次数因子、荷比和共同斜率。
+              一个真实输入单项式不能独立选择这些最坏值。
+            </p>
+            <p>
+              我为每个固定正荷 \(s\) 保留其最低允许次数 \(J_s\)，把精确的
+              \(d_i(J_s)=(i+J_s)/(i+J_s-1)\) 留在完整正和中。
+              余下部分关于共同斜率 \(x=s/j\) 凸，所以每个固定荷的全部
+              \(j\ge J_s\) 只需两个端点。有限枚举的 239 项因此是 239 个
+              全次数定理，不是尾次数网格。
+            </p>
+            <p>
+              对 \(s\ge241\)，最低次数格点恰分成偶数
+              \(J_s=s/2\) 与奇数 \(J_s=(s+3)/2\) 两支。令 \(y=1/s\)
+              后，两支都是精确有理函数。偶数支导数与奇数支负导数各有 319 个
+              318 次 Bernstein 系数，并且在完整区间内全部严格为正；没有做区间细分。
+            </p>
+            <p>
+              在 \(r=0.376932\) 上，大荷界降为 \(0.9971370846&lt;1\)，
+              真正瓶颈变成 \(s=162,j=81\)：
+              \[
+              0.9999973490826196656&lt;1.
+              \]
+              球映射、Lipschitz 与正则伸缩门全部通过，共同半径达到
+              \(94233/250000\)。
+            </p>
+            <p>
+              相邻 \(r=0.376933\) 的同一真实列为
+              \(1.0000026584572409359&gt;1\)，而大荷与伸缩仍通过。
+              这证明当前诱导二块加权 \(\ell^1\) 充分判据确实失败，但不证明
+              奇性、解析延拓失败或其他范数失败。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是约化典范边生成系统的全阶格点端点定理。
+              30 个有限精确列只验证实现；当前没有建立到完整三维 PDE 临界范数的
+              控制桥梁，也没有证明正则性或奇性。
+            </p>
+            <p>
+              <a href="/notes/r0-47.html"><strong>阅读 R0.47 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-47.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r047">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_lattice_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.48：</strong>为活跃 \(s=162,j=81\) 列构造精确阈值多项式，用 Sturm 序列隔离唯一根，并在整个隔离区间上证明全部竞争扇区严格更小。</p>
           </div>
         </section>
 
@@ -2965,7 +3016,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.31 · 2026-08-19<br>
+        综述 v0.32 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

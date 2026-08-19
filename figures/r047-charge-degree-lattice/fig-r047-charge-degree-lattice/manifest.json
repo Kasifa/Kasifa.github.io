@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r047-charge-degree-lattice",
+  "status": "formal",
+  "analyticalQuestion": "Does preserving the exact charge-degree lattice remove the apparent large-positive-charge failure near r=0.377, and which genuine input column becomes limiting afterward?",
+  "supportedClaim": "For the reduced canonical edge generating system with kappa=3/4, retaining each exact i-dependent minimum-degree factor inside the complete convex endpoint sum gives 239 fixed-charge all-degree theorems for 2<=s<241. Exact even and odd rational functions of y=1/s, together with degree-318 strict Bernstein derivative-sign certificates on their full intervals, cover every s>=241. At r=94233/250000 the complete tail bound is 0.9999973490826196656 and the fixed-point and canonical-stretch gates pass. At r=376933/1000000 the true s=162,j=81 column is 1.0000026584572409359, so this specific induced two-block weighted-l1 sufficient inequality fails without implying a singularity or failure of another norm.",
+  "createdAt": "2026-08-19T21:52:33+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "709ecb5f20b7321079ba114a57bf20b77ca7646a",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "ordered fixed-charge line with a highlighted maximum, exact rational parity-branch lines, focused radius line-dot comparison, and exhaustive sector lollipops",
+    "variants": [
+      "239 fixed positive-charge all-degree endpoint bounds at the target radius",
+      "81 exact rational presentation samples on each continuous parity interval",
+      "three exact controls at the entry, target, and adjacent millionth probe radii",
+      "five exhaustive all-order input-charge sectors at the target radius"
+    ],
+    "takeaway": "The exact lattice theorem lowers the large-charge sector below one, after which the genuine s=162,j=81 fixed-charge endpoint becomes active; it passes at r=0.376932 and fails at r=0.376933 in the present norm.",
+    "dataSufficiency": "All 239 fixed positive-charge points are exact all-degree endpoint theorems. The 162 parity-curve points are presentation samples of explicit rational functions; two full-interval degree-318 Bernstein sign certificates, not the samples, prove the infinite-branch bounds. All threshold decisions come from the 39-check GMP certificate.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "Marker shape, open versus filled faces, line style, direct labels, and threshold lines preserve every logical distinction without color.",
+    "outputFootprint": "single double-column journal figure at 178 by 142 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final aspect ratio"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "PYTHONPATH=research tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r047/resources.csv --interval 0.125 -- tmp/r024-venv/bin/python research/edge_charge_degree_lattice_audit.py --max-total-degree 80 --entry-radius 376/1000 --target-radius 376932/1000000 --failure-probe-radius 376933/1000000 --zero-charge-weight 3/4 --charge-cutoff 241 --regression-charges=-1,0,1,2,162,164,240,241,242,300 --regression-degree-offsets 0,3,18 --ball-divisor 1000000 --source-commit 709ecb5f20b7321079ba114a57bf20b77ca7646a --progress --progress-log research/certificates/r047/progress.ndjson --check --pretty --output research/certificates/r047/edge-charge-degree-lattice.json",
+    "configuration": "active support cone q>=-1; isotropic one-total-degree weighted Wiener norm; exact degree-80 center; zero/nonzero output split with kappa=3/4; five exhaustive input-charge sectors; fixed positive charges 2<=s<241; exact even and odd minimum-degree lattice branches for every s>=241; entry r=376/1000; target r=376932/1000000; adjacent probe r=376933/1000000; exact Bernstein derivative signs; weighted fixed point and canonical stretch",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series recurrence, complete exact residual evaluation, 239 fixed-charge convex endpoint theorems, exact large-charge parity rational functions, full-interval Bernstein derivative certificates, rational fixed-point and canonical-stretch inequalities, and finite exact column regressions",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "contraction": "strict exact rational inequalities with no floating-point decision",
+      "figure": "no fitted parameter; every fixed charge, parity endpoint, radius control, and sector bound is extracted or reconstructed from the pinned exact certificate"
+    },
+    "wallTimeSeconds": 68.516376,
+    "scientificWallTimeSeconds": 68.38346170799923,
+    "monitoredWallTimeSeconds": 68.516376,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.125,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 458,
+      "trackedFields": [
+        "formal-series recurrence",
+        "complete residual",
+        "239 fixed positive-charge all-degree endpoints",
+        "two continuous large-charge parity derivative signs",
+        "weighted fixed-point and canonical-stretch gates",
+        "adjacent-millionth exact failing column",
+        "finite exact column regressions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "Darwin 25.6.0 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 56.625
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "fixed-charge-bounds.csv",
+      "format": "csv",
+      "schema": "239 exact all-degree fixed positive-charge endpoint records for every 2<=s<241, including exact endpoints, minimum tail degree, active endpoint, and threshold classification.",
+      "bytes": 1047285,
+      "sha256": "e95fdac5ec7251128d5ff7daa608f2230c955670a177c297a0c8569460a41cbe"
+    },
+    {
+      "path": "parity-endpoints.csv",
+      "format": "csv",
+      "schema": "162 exact rational presentation samples: 81 on each complete y interval for the even and odd large-charge lattice endpoint functions; not used as the continuous sign proof.",
+      "bytes": 343555,
+      "sha256": "b35589db109b25d25fce4f0855bc6f5db7d588b8ec61e02394d35e8f5e952de8"
+    },
+    {
+      "path": "radius-controls.csv",
+      "format": "csv",
+      "schema": "Nine exact lattice-sharp tail, old separated-tail, and canonical-stretch controls at r=0.376, r=0.376932, and r=0.376933.",
+      "bytes": 12153,
+      "sha256": "77cfa0c9070685596532e684bf903448322810cb01bc9f32c91b0424c970d0ef"
+    },
+    {
+      "path": "sector-bounds.csv",
+      "format": "csv",
+      "schema": "Five exact all-order target-radius bounds for s=0, s=-1, s=1, the maximizing fixed positive charge s=162, and every s>=241.",
+      "bytes": 7349,
+      "sha256": "a0d28a797ca8709864399f9f1d09b902d40e16e769a4668585f0d297caef4700"
+    },
+    {
+      "path": "derivative-certificates.csv",
+      "format": "csv",
+      "schema": "Two full-interval exact derivative-sign certificates, each with 319 strictly positive signed Bernstein coefficients of degree 318 and no subdivision.",
+      "bytes": 2818,
+      "sha256": "94acb307c700de598358cb4ce94c0fd53689d301eb9bdf8315255ea8fe7a3f33"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, radii, target values, and successful 39-check completion status.",
+      "bytes": 4443,
+      "sha256": "51fdedc932c7dd933fbbeeddf557323480a29b6fcacde1448bcadc5fb0c4034d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.125-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 33722,
+      "sha256": "1b27513c589449df3a4a8f441a51f13b41b7cd8e31eb59e6dc1b4055f62b419c"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r047",
+      "fileName": "edge-charge-degree-lattice.json",
+      "bytes": 4381040,
+      "sha256": "e45bc20ddeab9efde83dafefc84514df0260f8831c102c4621f0fdcd43dea6c9",
+      "extractionCommand": "prepare_data.py pins the R0.47 certificate, extracts all 239 fixed-charge theorems and every control and sector, reconstructs the pinned degree-80 polynomial, evaluates exact rational parity samples, and copies monitoring logs; validate_data.py independently checks all tables, signs, extrema, source pins, and monitoring counts"
+    },
+    {
+      "location": "research/certificates/r046",
+      "fileName": "edge-two-block-weight.json",
+      "bytes": 358621,
+      "sha256": "9310267b894c32b61034ec5e8f34b7d49144028830713a5e86b59d5be00109d1",
+      "extractionCommand": "the R0.47 certificate pins the R0.46 input certificate and inherits its exact degree-80 polynomial, complete residual, exceptional charge sectors, two-block norm, and canonical-stretch construction"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=<temporary-dir> tmp/r024-venv/bin/python figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 142,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "5181c8d6d7ee7934f6b5578ffc0af2beba7f1ca4578c391c4d26d8b2cf44284b"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "325b76984d09615946fd7dc770fa142578c36cd00ea035ec7b0690fa8b87bbe4"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "86214d86d722505cd254a0254d72fbfc8cc3cd05759002cf7de922032e36d037"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我保留精确荷—次数格点关系后，把大正荷扇区压到一以下，并把真实瓶颈定位为 s=162,j=81；它在 r=0.376932 通过，在相邻百万分位 r=0.376933 越过一。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 142 mm to rounding and the 600 dpi PNG is 4204 by 3354 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Marker shape, open versus filled faces, line style, direct labels, and threshold dashes preserve distinctions without color. Titles, axes, annotations, legends, numerical labels, footer statements, and the blossom mark are unclipped. Four CID TrueType font resources are embedded and no Type3 fonts are present. PDF text extraction contains R0.47, 0.9999973491, 0.376933, and the reduced canonical scope. validate_data.py independently checks every plotted table against the pinned exact certificate."
+  }
+}

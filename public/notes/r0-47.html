@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.47：我保留精确荷—次数格点关系，用固定荷凸性端点和奇偶有理分支的 Bernstein 符号证书，把约化典范边生成系统的共同认证半径推进到 0.376932。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.47｜精确荷—次数格点端点定理">
+  <meta property="og:description" content="0.376932 的完整尾界为 0.9999973491；相邻百万分位 0.376933 在真实 s=162,j=81 列上超过一。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-47-charge-degree-lattice.png">
+  <title>R0.47｜精确荷—次数格点端点定理</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>@media print{body{font-size:8.5pt}.refs li{padding-top:6px;padding-bottom:6px}}</style>
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#fixed">固定荷</a><a href="#parity">奇偶分支</a><a href="#theorem">全阶定理</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.47 · 精确荷—次数格点</div>
+        <h1>格点相关<br>端点定理</h1>
+        <p class="lead">R0.46 在 \(r=0.377\) 留下 \(1.003041&gt;1\) 的大正荷充分界，但该估计把次数因子、荷比和共同斜率分别取坏。我把真实格点约束一直保留到完整列和中：239 个固定正荷各自覆盖全部次数，两个精确有理分支覆盖全部大荷。共同认证半径由此推进到 \(0.376932\)，真实瓶颈转移到 \(s=162,j=81\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 格点定理已认证</span><strong>r* = 94233/250000</strong><p>版本 v0.47 · 2026-08-19</p><p>相对 R0.46：× 1.002479</p><p>正式检查：39 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#formula">01 · 精确列公式</a></li>
+        <li><a href="#fixed">02 · 固定荷端点</a></li>
+        <li><a href="#parity">03 · 大荷奇偶分支</a></li>
+        <li><a href="#bernstein">04 · Bernstein 证书</a></li>
+        <li><a href="#theorem">05 · 0.376932 定理</a></li>
+        <li><a href="#restart">06 · 固定点与伸缩</a></li>
+        <li><a href="#negative">07 · 相邻负向控制</a></li>
+        <li><a href="#finite">08 · 有限计算边界</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 价值与局限</a></li>
+        <li><a href="#next">11 · R0.48 验收题</a></li>
+        <li><a href="#reproduce">12 · 复现与归档</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>我证明的是约化生成系统的全阶格点端点定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · FIXED CHARGES</span><strong>239 个固定荷各自覆盖全部次数</strong><p>有限枚举对象是荷定理，不是尾次数网格。</p></div>
+            <div class="status"><span>PROVED · INFINITE BRANCHES</span><strong>两个有理分支覆盖每个 \(s\ge241\)</strong><p>奇偶导数在完整连续区间上精确判号。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT RESTART</span><strong>共同半径达到 \(0.376932\)</strong><p>尾界、球映射、Lipschitz 与正则伸缩同时闭合。</p></div>
+            <div class="status"><span>FALSIFIED · ADJACENT PROBE</span><strong>\(0.376933\) 的真实列超过一</strong><p>失败对象明确为当前二块加权 \(\ell^1\) 范数。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>我的结论只适用于主动支持锥、约化典范边生成系统和本文的诱导二块次数加权范数。它没有证明三维不可压 Navier–Stokes 全局正则性，没有构造有限时奇性，也没有排除其他范数或非线性构造。</div>
+        </section>
+
+        <section id="formula"><div class="section-no">01 / Exact column</div><h2>真实输入荷与最低次数受同一个整数格点约束</h2>
+          <p>对中心单项式的次数与荷 \((i,q)\)，以及尾输入的次数与荷 \((j,s)\)，正荷列中一个中心项的精确贡献为</p>
+          <div class="equation">\[
+            c_{i,q}(r)
+            \frac{i+j}{i+j-1}
+            \frac{s-q}{3(s+q)}
+            \left|i\frac{s}{j}-q\right|,
+            \qquad c_{i,q}(r)=|a_{i,q}|r^i.
+          \]</div>
+          <p>次数与荷并不独立。若输入单项式为 \(Z^mW^n\)，则</p>
+          <div class="equation result">\[
+            m=\frac{2j-s}{3},\qquad n=\frac{j+s}{3}.
+          \]</div>
+          <p>因此 \(m,n\) 的非负整数性和 \(j&gt;80\) 共同决定每个荷的最低次数 \(J_s\)。R0.46 的大荷界先把这层关系拆开，再分别取坏；我在本轮不再丢弃这项相关性。</p>
+        </section>
+
+        <section id="fixed"><div class="section-no">02 / Fixed-charge theorem</div><h2>每个固定正荷只需两个共同斜率端点</h2>
+          <p>对每个中心次数 \(i\)，次数因子</p>
+          <div class="equation">\[
+            d_i(j)=\frac{i+j}{i+j-1}.
+          \]</div>
+          <p>随 \(j\) 下降，所以 \(j\ge J_s\) 时 \(d_i(j)\le d_i(J_s)\)。我把 \(d_i(J_s)\) 保留在完整正和内部，再令 \(x=s/j\)，得到</p>
+          <div class="equation">\[
+            H_{r,s}(x)=\sum_{i,q}c_{i,q}(r)d_i(J_s)
+            \frac{s-q}{3(s+q)}|ix-q|.
+          \]</div>
+          <p>这是非负权绝对仿射函数之和，因而在 \(0\le x\le s/J_s\) 上凸。于是</p>
+          <div class="equation result">\[
+            \sup_{j\ge J_s}\mathcal C_r(j,s)
+            \le \max\left\{H_{r,s}(0),H_{r,s}\!\left(\frac{s}{J_s}\right)\right\}.
+          \]</div>
+          <p>我对 \(2\le s&lt;241\) 的 239 个荷逐一精确计算这两个端点。每条记录都覆盖该荷的全部允许次数。目标半径的最大值出现在真实最低次数格点</p>
+          <div class="equation result">\[
+            (s,j)=(162,81),\qquad
+            \mathcal C_r(81,162)=0.9999973490826196656.
+          \]</div>
+        </section>
+
+        <section id="parity"><div class="section-no">03 / Parity branches</div><h2>全部大正荷恰好分成两个精确有理函数</h2>
+          <p>当 \(s\ge241\) 时，最低次数具有闭式：</p>
+          <div class="equation result">\[
+            J_s=\begin{cases}
+              s/2,&s\text{ even},\\
+              (s+3)/2,&s\text{ odd}.
+            \end{cases}
+          \]</div>
+          <p>令 \(y=1/s\)。偶数支的最低次数端点是</p>
+          <div class="equation">\[
+            E_{\mathrm e}(y)=\sum_{i,q}c_{i,q}(r)
+            \frac{1+2iy}{1+2(i-1)y}
+            \frac{1-qy}{1+qy}\frac{|2i-q|}{3}.
+          \]</div>
+          <p>奇数支满足 \(x=2/(1+3y)\)。把绝对值分支写成</p>
+          <div class="equation">\[
+            A_{i,q}(y)=\begin{cases}
+              2i-q-3qy,&q<2i,\\
+              6iy,&q=2i.
+            \end{cases}
+          \]</div>
+          <p>便得到</p>
+          <div class="equation">\[
+            E_{\mathrm o}(y)=\sum_{i,q}c_{i,q}(r)
+            \frac{1+(2i+3)y}{1+(2i+1)y}
+            \frac{1-qy}{1+qy}\frac{A_{i,q}(y)}{3(1+3y)}.
+          \]</div>
+          <p>两个分母在对应区间内都严格为正。图中的曲线采样只负责展示形状，下一节的连续区间符号证书才承担无穷证明。</p>
+        </section>
+
+        <section id="bernstein"><div class="section-no">04 / Bernstein signs</div><h2>两个 318 次导数分子都在一个完整区间内判号</h2>
+          <p>我把每个有理函数的正分母清除，再把导数分子转换到完整区间的 Bernstein 基。没有做区间细分。</p>
+          <table><thead><tr><th>分支</th><th>连续区间</th><th>精确符号证书</th><th>结论</th></tr></thead><tbody>
+            <tr><td>偶数支</td><td>\(0\le y\le1/242\)</td><td>\(E'_{\mathrm e}\) 的 319 个 Bernstein 系数全正；最小值 1.4232222955</td><td>最大值在 \(s=242,j=121\)</td></tr>
+            <tr><td>奇数支</td><td>\(0\le y\le1/241\)</td><td>\(-E'_{\mathrm o}\) 的 319 个 Bernstein 系数全正；最小值 0.9925929588</td><td>全部有限奇数荷由 \(y=0\) 极限控制</td></tr>
+          </tbody></table>
+          <div class="equation result">\[
+            \sup_{s\ge241}\mathcal C_r(J_s,s)
+            =E_{\mathrm e}(1/242)
+            =0.99713708460906863273.
+          \]</div>
+          <p>奇数支的上界是 \(E_{\mathrm o}(0)=0.99129357597248957141\)。因此 R0.46 在 \(0.377\) 出现的大荷失败确实来自分离取坏，而不是真实格点分支本身。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">05 / All-order theorem</div><h2>\(0.376932\) 的五个穷尽扇区全部严格小于一</h2>
+          <table><thead><tr><th>输入荷扇区</th><th>全阶机制</th><th>精确界的显示值</th></tr></thead><tbody>
+            <tr><td>\(s=0\)</td><td>继承零荷端点</td><td>0.7695852492280843</td></tr>
+            <tr><td>\(s=-1\)</td><td>继承加权导数端点</td><td>0.9841134549386826</td></tr>
+            <tr><td>\(s=1\)</td><td>继承统一逐项界</td><td>0.2036019754694702</td></tr>
+            <tr><td>\(2\le s&lt;241\)</td><td>239 个固定荷凸性端点；最坏 \(s=162,j=81\)</td><td>0.9999973490826197</td></tr>
+            <tr><td>\(s\ge241\)</td><td>奇偶有理分支与 Bernstein 判号；最坏 \(s=242,j=121\)</td><td>0.9971370846090686</td></tr>
+          </tbody></table>
+          <div class="equation result">\[
+            \boxed{\|D\Phi(p_{80})\|_{r,3/4}\le0.9999973490826196656<1.}
+          \]</div>
+          <p>旧的 R0.46 分离界在同一半径为 \(1.0026775745912701679&gt;1\)。因此这次改变了精确门槛判定，而不只是把一个已经通过的数写得更小。</p>
+        </section>
+
+        <section id="restart"><div class="section-no">06 / Construction gates</div><h2>固定点与正则伸缩在同一半径闭合</h2>
+          <p>尾界给出的精确收缩余量是</p>
+          <div class="equation">\[
+            \delta=2.6509173803344006173\times10^{-6}.
+          \]</div>
+          <p>我继续采用球除数 \(10^6\)，得到 \(\rho=2.6509173803344006173\times10^{-12}\)。其余门为</p>
+          <div class="equation result">\[
+            \begin{aligned}
+            \|R_{80}\|_{r,3/4}&=1.2005979364487601672\times10^{-30},\\
+            \text{ball mapping}&=2.6509103530089225287\times10^{-12}<\rho,\\
+            \text{Lipschitz}&=0.99999734911089611766<1,\\
+            \text{regular stretch}&=0.99129357597486048791<1.
+            \end{aligned}
+          \]</div>
+          <p>所以约化固定点与继承的正则典范场在 \(r=0.376932\) 共同成立。直接输运诊断仍为 \(1.6312284446&gt;1\)，但正则分解以后它不是构造门。</p>
+        </section>
+
+        <section id="negative"><div class="section-no">07 / Adjacent negative control</div><h2>\(0.376933\) 在同一个真实 \(s=162,j=81\) 列上失败</h2>
+          <p>把半径只增加一个百万分位，大荷格点界和正则伸缩仍然通过；但固定荷端点变为</p>
+          <div class="equation result">\[
+            \boxed{\mathcal C_{0.376933}(81,162)=1.0000026584572409359>1.}
+          \]</div>
+          <p>完整尾上确界恰好等于该真实列，而不是某条统一本领不足的粗界。因此当前诱导二块加权 \(\ell^1\) 范数的障碍被夹在</p>
+          <div class="equation">\[
+            0.376932\lt r_{\mathrm{barrier}}\lt0.376933.
+          \]</div>
+          <div class="proof warning"><strong>负向结论的边界。</strong>我只证明当前充分收缩判据在该列上失败。我没有证明约化解奇异，没有证明解析延拓不存在，也没有证明其他等价或各向异性范数失败。</div>
+        </section>
+
+        <section id="finite"><div class="section-no">08 / Finite computation</div><h2>30 个精确列只做实现回归，不替代无穷证明</h2>
+          <p>审计重建 2,161 个中心系数和 6,345 个完整残差系数，并检查十个输入荷、三个允许次数偏移组成的 30 个真实列。每个列都低于对应解析扇区界。</p>
+          <p>我没有用这些有限列外推到全部次数或荷。固定荷由凸性端点覆盖；大荷由两个连续有理分支的 Bernstein 导数证书覆盖。39 项门槛全部用 GMP 有理数判定，没有浮点判号、随机性、尾次数网格或大荷网格。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Formal figure</div><h2>固定荷形状、奇偶分支、半径控制与五扇区统一归档</h2>
+          <figure>
+            <img src="/figures/r0-47-charge-degree-lattice.svg" alt="R0.47 的 239 个固定荷全次数界、两个大荷奇偶有理分支、三个半径控制和五个穷尽荷扇区">
+            <figcaption>图 R0.47-1。左上列出 239 个固定正荷全次数端点并标出 \(s=162,j=81\)；右上显示两个大荷有理分支，曲线点只作展示，连续证明来自每支 319 个同号 Bernstein 系数；左下比较旧分离界、格点锐化尾界与正则伸缩在 0.376、0.376932、0.376933 的表现；右下列出目标半径的五个穷尽扇区。PDF、SVG、600 dpi PNG、精确数据、监控日志、清单与 SHA-256 摘要一并归档，彩色、真实灰度和 PDF 渲染页均已检查。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value and limits</div><h2>新意是把离散格点约束变成可认证的连续有理分支</h2>
+          <p>R0.47 给出一条可复用的算子估计原则：输入参数与最低次数若被整数格点耦合，先分离它们的最坏值可能制造假障碍；保留格点关系后，无穷整数族可以化成少数有理分支，再用完整区间的多项式正性证书处理。</p>
+          <p>研究边界也被真实列重新定位。R0.46 的大荷失败是估计伪影；修正以后，\(s=162,j=81\) 成为实际瓶颈，而且相邻百万分位在当前范数中确实超过一。这说明下一步不能再靠收紧同一标量列公式取得实质推进。</p>
+          <p>对三维 Navier–Stokes 千禧年问题，直接价值仍然有限。当前链条没有把约化二元生成系统的解析半径传递到完整速度场的尺度临界范数，也没有覆盖任意光滑初值和全部 Fourier 几何。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>我不能把 30 个有限列称为无穷证明，不能把 \(0.376933\) 的范数失败解释成奇性，不能把半径增长外推成 PDE 正则时间，也不能声称已经证明或反驳三维 Navier–Stokes 正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.48</div><h2>下一步先精确隔离当前范数的唯一阈值根</h2>
+          <p>活跃的 \(s=162,j=81\) 列是 \(r\) 的有限正系数有理多项式。R0.48 将用 Sturm 序列或等价的精确有理根隔离，把百万分位夹逼升级为当前范数的锐阈值定理，并同时证明全部竞争扇区在该根附近仍严格更小。</p>
+          <ol>
+            <li>构造 \(s=162,j=81\) 的精确阈值多项式，并证明 \((0.376932,0.376933)\) 内只有一个根；</li>
+            <li>在整个隔离区间上控制其余 238 个固定正荷和另外四个扇区；</li>
+            <li>判根与比较只用精确有理区间或 Sturm 算术；</li>
+            <li>公开根区间、竞争列间隙、源哈希、资源监控与负向控制；</li>
+            <li>当前范数锐边界闭合后，再检验荷乘法型各向异性权重，而不继续微调同一列上界。</li>
+          </ol>
+          <p>这一步不会自动增加半径，但会把“十进制选择”与“范数的数学锐障碍”严格分开，为下一种范数设计提供可信基线。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility</div><h2>源提交、39 项精确证书、资源监控与图包均已固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>PYTHONPATH=research tmp/r024-venv/bin/python research/edge_charge_degree_lattice_audit.py --max-total-degree 80 --entry-radius 376/1000 --target-radius 376932/1000000 --failure-probe-radius 376933/1000000 --zero-charge-weight 3/4 --charge-cutoff 241 --regression-charges=-1,0,1,2,162,164,240,241,242,300 --regression-degree-offsets 0,3,18 --ball-divisor 1000000 --source-commit 709ecb5f20b7321079ba114a57bf20b77ca7646a --progress --check --pretty --output /tmp/r047.json</code></div>
+          <p>正式源提交为 <code>709ecb5f20b7321079ba114a57bf20b77ca7646a</code>。科学计算耗时 68.383462 秒；监控历时 68.516376 秒、采样 458 次，峰值 CPU 为 100.0%，峰值常驻内存为 56.625 MiB。没有使用 GPU、随机种子或浮点判号，39 项正式检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>e45bc20ddeab9efde83dafefc84514df0260f8831c102c4621f0fdcd43dea6c9</code>。</p>
+          <p><a href="/notes/r0-47.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_lattice_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_degree_lattice_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r047">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-41.html">R0.41：次数分辨主动尾</a>。提供固定荷凸性端点框架。</li>
+            <li><a href="/notes/r0-44.html">R0.44：共同斜率端点</a>。提供大正荷共同变量的第一版全阶定理。</li>
+            <li><a href="/notes/r0-46.html">R0.46：相关二块加权列</a>。提供当前范数和五扇区结构。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.47 · 2026-08-19<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>
+

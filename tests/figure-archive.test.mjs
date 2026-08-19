@@ -50,6 +50,10 @@ const r046ManifestUrl = new URL(
   "../figures/r046-two-block-weight/fig-r046-two-block-weight/manifest.json",
   import.meta.url,
 );
+const r047ManifestUrl = new URL(
+  "../figures/r047-charge-degree-lattice/fig-r047-charge-degree-lattice/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -334,6 +338,31 @@ test("archives the formal R0.46 correlated two-block figure", async () => {
   assert.equal(manifest.simulation.monitoring.samples, 264);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 140);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+});
+
+test("archives the formal R0.47 charge-degree lattice figure", async () => {
+  const manifest = JSON.parse(await readFile(r047ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r047-charge-degree-lattice");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "709ecb5f20b7321079ba114a57bf20b77ca7646a",
+  );
+  assert.match(manifest.supportedClaim, /239 fixed-charge all-degree theorems/);
+  assert.match(manifest.supportedClaim, /0\.9999973490826196656/);
+  assert.match(manifest.supportedClaim, /1\.0000026584572409359/);
+  assert.equal(manifest.simulation.kind, "exact-audit");
+  assert.equal(manifest.simulation.monitoring.samples, 458);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 142);
   assert.deepEqual(
     manifest.figure.outputs.map(({ path }) => path).sort(),
     ["figure.pdf", "figure.png", "figure.svg"],

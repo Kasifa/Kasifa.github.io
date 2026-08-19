@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.33：四个精确负 Hankel 主子式排除了直接的正测度 Stieltjes/Markov Padé 证明路线。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.33｜正测度 Padé 路线的精确障碍">
+  <meta property="og:description" content="低阶精确反例排除四个直接 Stieltjes/Markov 表示；候选奇点本身仍未判定。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-33-hankel-obstruction.png">
+  <title>R0.33｜正测度 Padé 路线的精确障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}.proof code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#condition">矩条件</a><a href="#theorem">精确反例</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.33 · 全阶类排除</div>
+        <h1>正测度 Padé 路线的<br>精确障碍</h1>
+        <p class="lead">我检查了 R0.32 候选最自然的 Stieltjes/Markov 证明机制。四个低阶有理 Hankel 反例严格排除直接正测度表示；候选奇点本身仍未判定。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 一条证明路线已排除</span><strong>四个精确负主子式</strong><p>版本 v0.33 · 2026-08-19</p><p>固定荷系数：50 项</p><p>Hankel 诊断：到 12 阶</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#transform">01 · 反号级数</a></li><li><a href="#condition">02 · 矩条件</a></li><li><a href="#theorem">03 · 精确定理</a></li><li><a href="#finite">04 · 有限诊断</a></li><li><a href="#figure">05 · 期刊附图</a></li><li><a href="#meaning">06 · 价值判断</a></li><li><a href="#next">07 · 下一步</a></li><li><a href="#reproduce">08 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>结果是函数类排除，不是奇点排除</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDERS</span><strong>四个直接表示不可能</strong><p>\(B_U,B_V,H_U,H_V\) 都不是正测度的直接矩生成函数。</p></div>
+            <div class="status"><span>EXACT · LOW ORDER</span><strong>负主子式不可修复</strong><p>反例只用前几个精确系数，后续系数不能改变它们。</p></div>
+            <div class="status"><span>CERTIFIED · FINITE</span><strong>到 12 阶的符号表</strong><p>其余 Turán 与 Hankel 符号用于描述有限结构。</p></div>
+            <div class="status"><span>OPEN · CANDIDATE</span><strong>\(-0.7495\) 仍未判定</strong><p>该位置可能真实，也可能是有限 Padé 伪影。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>R0.33 只排除直接的非负测度 Markov/Stieltjes 表示。它不排除变换后的表示、解析背景扣除、符号或复测度，也不证明 Padé 候选收敛或发散。</div>
+        </section>
+
+        <section id="transform"><div class="section-no">01 / Sign transform</div><h2>先把负实轴候选移到正轴</h2>
+          <p>R0.32 的固定荷级数以 \(R\) 为变量。去掉首个 \(R\) 因子，并令 \(x=-R\)：</p>
+          <div class="equation">
+            \[B_U(x)=\widehat U_1(-x),\qquad B_V(x)=-\widehat V_1(-x),\qquad \widehat F_1(R)=F_1(R)/R.\]
+          </div>
+          <p>前几项为</p>
+          <div class="equation">
+            \[B_U=\frac1{12}+\frac{13}{72}x+\frac{1055}{6048}x^2+\frac{180989}{777600}x^3+\cdots,\]
+            \[B_V=\frac13+\frac1{18}x+\frac{811}{3024}x^2+\frac{414727}{2721600}x^3+\cdots.\]
+          </div>
+          <p>现有 50 项系数全部为正。这只是有限精确事实，不能替代全阶正性证明。D-log 对象写成</p>
+          <div class="equation">
+            \[H_U(x)=\frac{B_U'(x)}{B_U(x)},\qquad H_V(x)=\frac{B_V'(x)}{B_V(x)}.\]
+          </div>
+        </section>
+
+        <section id="condition"><div class="section-no">02 / Moment condition</div><h2>正测度同时要求普通和移位 Hankel 半正定</h2>
+          <p>本页采用 Markov 生成函数约定：</p>
+          <div class="equation result">
+            \[M(x)=\int_{[0,\infty)}\frac{d\mu(t)}{1-xt}=\sum_{n\ge0}m_nx^n,\qquad \mu\ge0.\]
+          </div>
+          <p>此时 \(m_n=\int t^n\,d\mu(t)\)。对任意有限实向量 \(c\)，有</p>
+          <div class="equation">
+            \[\sum_{i,j}c_ic_jm_{i+j}=\int\!\left(\sum_ic_it^i\right)^2d\mu(t)\ge0,\]
+            \[\sum_{i,j}c_ic_jm_{i+j+1}=\int\!t\left(\sum_ic_it^i\right)^2d\mu(t)\ge0.\]
+          </div>
+          <p>因此普通矩阵 \(\mathcal H_r^{(0)}=(m_{i+j})\) 与移位矩阵 \(\mathcal H_r^{(1)}=(m_{i+j+1})\) 都必须半正定。这个必要条件来自矩问题的 Gram 形式；可参见 <a href="https://dlmf.nist.gov/18.40.ii">NIST DLMF 的经典矩问题条目</a>和 Sokal 等人的 <a href="https://www.combinatorics.org/ojs/index.php/eljc/article/download/v27i4p20/pdf/">Stieltjes moment sequences</a>。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Exact theorem</div><h2>四个精确负主子式排除四个直接表示</h2>
+          <table>
+            <thead><tr><th>序列</th><th>必要矩阵</th><th>精确负行列式</th><th>结论</th></tr></thead>
+            <tbody>
+              <tr><td>\(B_U\)</td><td>普通 2 阶</td><td>\(-437/24192\)</td><td>不是 Stieltjes 矩序列</td></tr>
+              <tr><td>\(B_V\)</td><td>移位 2 阶</td><td>\(-43522897/685843200\)</td><td>不是 Stieltjes 矩序列</td></tr>
+              <tr><td>\(H_U\)</td><td>移位 1 阶</td><td>\(-32/63\)</td><td>不是 Stieltjes 矩序列</td></tr>
+              <tr><td>\(H_V\)</td><td>普通 2 阶</td><td>\(-29699111/12700800\)</td><td>不是 Stieltjes 矩序列</td></tr>
+            </tbody>
+          </table>
+          <p>例如，\(B_U\) 的首个普通 Hankel 行列式为</p>
+          <div class="equation result">
+            \[\det\begin{pmatrix}1/12&13/72\\13/72&1055/6048\end{pmatrix}=\boxed{-\frac{437}{24192}}&lt;0.\]
+          </div>
+          <p>\(H_U\) 的形式除法从</p>
+          <div class="equation">
+            \[H_U(x)=\frac{13}{6}-\frac{32}{63}x+\frac{249191}{50400}x^2+\cdots\]
+          </div>
+          <p>开始，所以移位 1 阶矩阵已经是负数。\(H_V\) 的前三项虽然都为正，但普通 2 阶行列式仍为负。</p>
+          <div class="proof"><strong>为何这是全阶排除。</strong>若无限正测度存在，每一个有限主矩阵都必须半正定。表中的矩阵完全由已固定的前几个精确系数组成，任何更高阶系数都不能修改它们。因此“直接正测度表示不存在”不是有限截断猜测。</div>
+        </section>
+
+        <section id="finite"><div class="section-no">04 / Finite diagnostics</div><h2>更长的符号表说明反例并非孤立，但不扩大定理</h2>
+          <p>机器证书还精确计算了两个输运序列各 48 个局部 Turán 小行列式</p>
+          <div class="equation">
+            \[\Delta_n=b_{n-1}b_{n+1}-b_n^2.\]
+          </div>
+          <p>\(B_U\) 有 13 个负值，\(B_V\) 有 20 个负值。普通和移位 Hankel 行列式对 \(B_U,B_V,H_U,H_V\) 全部推进到 12 阶，共 96 项。现有 49 个 \(H_U\) 系数交替变号，49 个 \(H_V\) 系数都为正。</p>
+          <p>这些数字帮助判断结构是否反复出现；它们仍是有限诊断。全阶定理只依赖上一节的四个负主子式。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Formal figure</div><h2>期刊图把定理见证与有限符号表分开</h2>
+          <figure>
+            <img src="/figures/r0-33-hankel-obstruction.svg" alt="R0.33 局部 Turán 条件和普通、移位 Hankel 行列式符号表">
+            <figcaption>图 R0.33-1。左图用叉号标出两个输运序列的精确负 Turán 小行列式；右图列出四个序列到 12 阶的普通与移位 Hankel 行列式符号。黑框圈出的四格是全阶类排除定理的见证，其余格只属于有限精确诊断。符号和外框使灰度打印仍能辨认。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Research value</div><h2>这是一项有用的负结果：节省错误证明路线</h2>
+          <p>R0.32 留下三类可能的桥梁，其中最便宜的一类是证明正测度 Stieltjes/Markov 结构，再调用相应 Padé 收敛理论。R0.33 现在严格证明：最直接的四个候选对象都不满足必要矩条件。这阻止我把“系数多数为正”和“Padé 极点聚集”误写成 Stieltjes 收敛定理。</p>
+          <p>对当前边缘模型，这个结果有明确的方法价值：一条自然路线已被彻底排除，后续资源应转向更细的变换或解析延拓。对三维 Navier–Stokes 千禧年问题的价值仍然间接且很小，因为边缘级数尚未与完整 PDE 的临界正则性建立控制桥梁。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称约 \(-0.7495\) 的候选是假的，不能声称所有 Padé 收敛机制都失败，不能声称真实收敛半径已经确定，也不能从本次矩条件反例推出 Navier–Stokes 解的正则性或有限时奇性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / R0.34</div><h2>先检查最小解析背景扣除，失败后再转向延拓链</h2>
+          <ol>
+            <li>定义受低阶递推独立约束的最小背景项，不允许用高阶 Padé 极点反向拟合；</li>
+            <li>逐个检查扣除后序列的普通和移位 Hankel 必要条件，低阶负见证出现即停止；</li>
+            <li>若仍失败，终止正测度路线，转而构造沿负实轴的分段解析延拓与显式余项界；</li>
+            <li>任何新变换都要说明它与原固定荷函数的奇点位置如何对应，避免只改变有限拟合外观。</li>
+          </ol>
+          <p>R0.34 的最低交付是一份可证伪的背景扣除分类，而不是增加更多未经定理控制的 Padé 截断。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>源提交、固定输入哈希、机器证书和附图包均已归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python research/edge_moment_structure_audit.py --maximum-hankel-order 12 --progress --check --pretty --output /tmp/r033-edge-moment-structure.json</code></div>
+          <p>审计脚本固定读取 R0.32 证书，其 SHA-256 为 <code>bd70ed05779631b729e89c269f82d287da361fdcea34e3c42703a712222f5575</code>。正式源提交为 <code>c717fc1e8ae16bedc88f639ca35bebe38de51801</code>。计算耗时 0.0672 秒，监控峰值 CPU 45.9%，峰值常驻内存 70.016 MiB；没有随机种子或浮点判号。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_moment_structure_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_moment_structure_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r033">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r033-moment-obstruction/fig-r033-hankel-obstruction">查看期刊附图包</a></p>
+          <h3>前序记录与来源</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-32.html">R0.32：固定荷级数与奇点候选</a>。提供本次检验的精确系数与 Padé 候选。</li>
+            <li><a href="https://dlmf.nist.gov/18.40.ii">NIST DLMF §18.40(ii)</a>。经典矩问题的定义与判据入口。</li>
+            <li>A. D. Sokal 等，<a href="https://www.combinatorics.org/ojs/index.php/eljc/article/download/v27i4p20/pdf/">Stieltjes moment sequences</a>，<em>Electronic Journal of Combinatorics</em> 27(4), 2020, P4.20。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.33 · 排除一条证明路线，不改写候选结论</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

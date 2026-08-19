@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r033-hankel-obstruction",
+  "status": "formal",
+  "analyticalQuestion": "Do the sign-transformed charge-one transport series or their logarithmic derivatives satisfy the positive-semidefinite Hankel conditions needed for a direct nonnegative-measure Markov/Stieltjes representation?",
+  "supportedClaim": "No. Exact rational principal minors give four negative witnesses: -437/24192 for the ordinary order-2 B_U matrix, -43522897/685843200 for the shifted order-2 B_V matrix, -32/63 for the shifted order-1 H_U matrix, and -29699111/12700800 for the ordinary order-2 H_V matrix. Each witness excludes the corresponding direct nonnegative-measure moment representation for the infinite exact formal series. The remaining coefficient, Turan, and order-12 Hankel signs are finite exact diagnostics and do not establish or refute the R0.32 singularity candidate.",
+  "createdAt": "2026-08-19T12:24:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "c717fc1e8ae16bedc88f639ca35bebe38de51801",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "tmp/r024-venv/bin/python research/run_with_monitor.py --output /tmp/r033-formal-c717fc1/resources.csv --interval 0.02 -- tmp/r024-venv/bin/python research/edge_moment_structure_audit.py --maximum-hankel-order 12 --progress --progress-log /tmp/r033-formal-c717fc1/progress.ndjson --check --pretty --output /tmp/r033-formal-c717fc1/edge-moment-structure.json",
+    "configuration": "pinned R0.32 certificate with 50 exact charge-one endpoints; sign transformation x=-R; exact logarithmic-derivative coefficients through index 48; all local Turan minors through index 48; ordinary and shifted leading Hankel determinants through order 12",
+    "randomSeed": null,
+    "precision": "Python Fraction and SymPy exact rational determinants; decimals are display-only fields",
+    "solver": "deterministic exact formal-series division and exact domain-matrix determinants",
+    "tolerances": {
+      "formalCoefficients": "none; exact rational arithmetic",
+      "determinantSigns": "none; exact rational comparison with zero",
+      "figure": "categorical sign display; no fitted threshold or numerical color scale"
+    },
+    "wallTimeSeconds": 0.06715641700429842,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.02,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "trackedFields": [
+        "pinned input verification",
+        "sequence construction",
+        "exact witness completion",
+        "Turan and Hankel record counts",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 45.9,
+    "maximumObservedRssMiB": 70.016
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "sympy": "1.14.0"
+  },
+  "data": [
+    {
+      "path": "turan.csv",
+      "format": "csv",
+      "schema": "One row for each exact local Turan minor of B_U and B_V at indices 1 through 48, including exact minor, sign, normalized rational value, and display decimal.",
+      "bytes": 114151,
+      "sha256": "2813bbfdfbc7194f4bc155fe6da4576f4e0a6992019cd0b24e376932724eea17"
+    },
+    {
+      "path": "hankel-signs.csv",
+      "format": "csv",
+      "schema": "Exact ordinary and shifted leading Hankel determinants and their signs for B_U, B_V, H_U, and H_V at orders 1 through 12.",
+      "bytes": 49498,
+      "sha256": "f4d69b3f5b18e10152de46d8142a64294ac69cfda43ddfbf2dd56cd2ae88cbca"
+    },
+    {
+      "path": "witnesses.csv",
+      "format": "csv",
+      "schema": "The four exact negative principal minors used in the all-order class-exclusion theorem.",
+      "bytes": 265,
+      "sha256": "c797cabc702af7b0882ef1f2ac24a6dd0b72fa8abba8537c8d48ba2f9df76ccf"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, and stage-specific record counts.",
+      "bytes": 1071,
+      "sha256": "414d4d20e8572dc2de5696dcc7fe7fef57fbb91f4f033fac0e056a4f94311695"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.02-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 718,
+      "sha256": "7fd3ca7a9e3299a23697f85e0504a4444d7577d92deaec4ed7df4f3ce2bea056"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r033",
+      "fileName": "edge-moment-structure.json",
+      "bytes": 202136,
+      "sha256": "ccbf8ab05615378f6d4b9824e86b679b6d0df2882cbc6e563b063b8769292367",
+      "extractionCommand": "prepare_data.py extracts every exact Turan record, leading Hankel determinant sign, and theorem witness; validate_data.py independently checks row coverage, exact witness fractions, determinant signs, failure counts, source commit, and pinned input hash"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig tmp/r024-venv/bin/python figures/r033-moment-obstruction/fig-r033-hankel-obstruction/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "0bbd92406d5532508af2984494889639107b96d73550c7cef8c24ce2838e4d79"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "03e08bcd4da83d3ea8629b86ab208e6e497659911e9e4220056cdae02164ec0d"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "1e91bcdc540c821619773b6a57f02ba52f2428eee1532b00d9244a775dd36be0"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "反号后的两个输运序列及其对数导数都出现精确负 Hankel 主子式，因此直接的正测度 Stieltjes/Markov 表示被严格排除；其余到 12 阶的符号表只是有限精确诊断。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 86 mm; the 600 dpi PNG is 4204 by 2031 pixels. Color and grayscale renders were inspected after one layout revision. Panel (a) distinguishes nonnegative and negative conditions by open circle/square versus cross markers, not color alone. Panel (b) prints plus/minus signs in every cell and outlines the four theorem witnesses, so the logical classification survives grayscale. Titles, annotations, matrix labels, axis labels, and the bottom theorem note are unclipped. validate_data.py cross-checks all 196 plotted exact records."
+  }
+}

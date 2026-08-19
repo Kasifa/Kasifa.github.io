@@ -42,7 +42,12 @@ def main() -> None:
     assert all(left > right for left, right in zip(zero, zero[1:]))
     assert all(left > right for left, right in zip(active, active[1:]))
     assert zero[0] > 0 > zero[-1]
-    assert active[-1] > 0
+    root_lower = Fraction(certificate["input"]["rootBox"][0]["exact"])
+    root_upper = Fraction(certificate["input"]["rootBox"][1]["exact"])
+    left_index = max(index for index, radius in enumerate(radii) if radius < root_lower)
+    right_index = min(index for index, radius in enumerate(radii) if radius > root_upper)
+    assert active[left_index] > 0
+    assert active[right_index] > 0
     assert all(abs(float(row["zeroDeficitPpmDecimal"]) / float(value) - 1) < 1e-12 for row, value in zip(profile, zero) if value)
 
     gains = rows("strict-gains.csv")

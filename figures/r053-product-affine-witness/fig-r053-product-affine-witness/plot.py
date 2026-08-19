@@ -42,7 +42,8 @@ def draw() -> None:
     profile = rows("threshold-profile.csv")
     gains = rows("strict-gains.csv")
     competitors = rows("competitor-gaps.csv")
-    x = [float(row["radiusDecimal"]) for row in profile]
+    radius_origin = 0.382624
+    x = [(float(row["radiusDecimal"]) - radius_origin) * 1_000_000 for row in profile]
     zero = [float(row["zeroDeficitPpmDecimal"]) for row in profile]
     active = [float(row["active162DeficitPpmDecimal"]) for row in profile]
 
@@ -60,14 +61,15 @@ def draw() -> None:
         threshold_axis.plot(x, zero, color=GOLD, linewidth=1.0, marker="D", markersize=2.2, markevery=12, label=r"zero charge $s=0$")
         threshold_axis.plot(x, active, color=BLUE, linewidth=0.9, linestyle=(0, (4, 2)), marker="o", markerfacecolor="white", markeredgewidth=0.45, markersize=2.2, markevery=12, label=r"old active $(j,s)=(81,162)$")
         threshold_axis.axhline(0, color=INK, linewidth=0.58)
-        threshold_axis.axvspan(0.382628602237879637, 0.382628602237879638, color=PALE_GOLD, alpha=0.95, linewidth=0)
-        threshold_axis.axvline(0.38262447184859883148, color=MUTED, linewidth=0.62, linestyle=(0, (2, 2)))
-        threshold_axis.annotate("R0.52 global upper", xy=(0.3826244718485988, zero[10]), xytext=(0.38262505, max(zero) * 0.72), fontsize=4.0, color=MUTED, arrowprops={"arrowstyle": "-", "color": MUTED, "linewidth": 0.45})
-        threshold_axis.annotate(r"$r_*\in[\,0.382628602237879637,$" + "\n" + r"$0.382628602237879638\,]$", xy=(0.3826286022378796375, 0), xytext=(0.3826262, min(zero) * 0.72), fontsize=3.9, color=GOLD, arrowprops={"arrowstyle": "-", "color": GOLD, "linewidth": 0.48})
+        root_x = (0.3826286022378796375 - radius_origin) * 1_000_000
+        old_x = (0.38262447184859883148 - radius_origin) * 1_000_000
+        threshold_axis.axvline(root_x, color=GOLD, alpha=0.38, linewidth=2.2)
+        threshold_axis.axvline(old_x, color=MUTED, linewidth=0.62, linestyle=(0, (2, 2)))
+        threshold_axis.annotate("R0.52 global upper", xy=(old_x, zero[10]), xytext=(1.05, max(zero) * 0.72), fontsize=4.0, color=MUTED, arrowprops={"arrowstyle": "-", "color": MUTED, "linewidth": 0.45})
+        threshold_axis.annotate(r"$r_*\in[\,0.382628602237879637,$" + "\n" + r"$0.382628602237879638\,]$", xy=(root_x, 0), xytext=(2.15, min(zero) * 0.72), fontsize=3.9, color=GOLD, arrowprops={"arrowstyle": "-", "color": GOLD, "linewidth": 0.48})
         threshold_axis.set_xlim(min(x), max(x))
-        threshold_axis.set_xlabel(r"radius $r$")
+        threshold_axis.set_xlabel(r"$10^6(r-0.382624)$")
         threshold_axis.set_ylabel(r"$10^6(1-\mathrm{column})$ [ppm]")
-        threshold_axis.ticklabel_format(axis="x", style="plain", useOffset=True)
         threshold_axis.legend(loc="upper right", frameon=False, fontsize=4.0)
         threshold_axis.grid(axis="y", color=GRID, linewidth=0.36)
 
@@ -95,15 +97,15 @@ def draw() -> None:
         tail_index = next(i for i, row in enumerate(competitors) if row["label"] == "s>=280")
         gap_axis.scatter([ranks[tail_index]], [gaps[tail_index]], marker="s", s=22, facecolor="white", edgecolor=INK, linewidth=0.75, zorder=6)
         gap_axis.annotate(r"nearest: $(j,s)=(81,162)$" + "\n" + r"gap $>1.488345\times10^{-6}$", xy=(ranks[0], gaps[0]), xytext=(38, 7.0e-6), fontsize=4.1, color=GOLD, arrowprops={"arrowstyle": "-", "color": GOLD, "linewidth": 0.5})
-        gap_axis.annotate(r"all $s\geq280$", xy=(ranks[tail_index], gaps[tail_index]), xytext=(ranks[tail_index] - 55, gaps[tail_index] * 4), fontsize=4.0, color=INK, arrowprops={"arrowstyle": "-", "color": INK, "linewidth": 0.45})
+        gap_axis.annotate(r"all $s\geq280$", xy=(ranks[tail_index], gaps[tail_index]), xytext=(ranks[tail_index] + 28, gaps[tail_index] * 4), fontsize=4.0, color=INK, arrowprops={"arrowstyle": "-", "color": INK, "linewidth": 0.45})
         gap_axis.set_xlim(1, 281)
         gap_axis.set_ylim(1e-6, 1.0)
         gap_axis.set_xlabel("competitor rank")
-        gap_axis.set_ylabel("gap below zero equality (log)")
+        gap_axis.set_ylabel("gap below equality (log)")
         gap_axis.grid(axis="y", which="both", color=GRID, linewidth=0.38)
 
-        figure.text(0.105, 0.171, r"Display: 121 exact rational threshold samples, two exact gain factors, and all 281 certified competitor gaps.  Proof: GMP Sturm isolation, fixed-charge endpoints, special-sector arguments, and parity/Bernstein tail bounds.", ha="left", va="top", fontsize=4.25, color=INK)
-        figure.text(0.105, 0.123, r"Scope: one fixed rational product-affine weight in the reduced degree-80 edge system.  This disproves degeneration to the complete single-affine boundary; it does not globally optimize the product-affine family or settle three-dimensional Navier--Stokes regularity.", ha="left", va="top", fontsize=4.25, color=INK)
+        figure.text(0.105, 0.171, r"Display: 121 exact rational samples, two exact gain factors, and all 281 competitor gaps.  Proof: GMP Sturm, exact sector endpoints, and parity/Bernstein tail bounds.", ha="left", va="top", fontsize=4.25, color=INK)
+        figure.text(0.105, 0.123, r"Scope: one fixed rational product-affine weight in the reduced degree-80 edge system.  No global product-family optimization or three-dimensional Navier--Stokes claim.", ha="left", va="top", fontsize=4.25, color=INK)
         figure.text(0.105, 0.075, "Source: R0.53 exact certificate · 28/28 checks · 281 inactive records · monitored 143.4 s · no floating-point sign decision", ha="left", fontsize=4.25, color=MUTED)
         add_blossom(figure)
         figure.savefig(HERE / "figure.pdf", metadata={"CreationDate": None})

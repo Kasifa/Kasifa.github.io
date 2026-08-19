@@ -82,6 +82,10 @@ const r054ManifestUrl = new URL(
   "../figures/r054-product-affine-global/fig-r054-product-affine-global/manifest.json",
   import.meta.url,
 );
+const r055ManifestUrl = new URL(
+  "../figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -631,6 +635,41 @@ test("archives the formal R0.54 complete product-affine family figure", async ()
   assert.equal(manifest.computation.monitoring.samplingSamples, 2);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 112);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.55 critical Fourier bridge figure", async () => {
+  const manifest = JSON.parse(await readFile(r055ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r055-critical-fourier-bridge");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "640cf4ce9b97c2caa8d22f9159b4d0aa2e3a65a0",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "95e4b87ffd36dcd4443951d97f6268ac4eb04368",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "56d51913ce43fce46d96323181d528103a8e072f",
+  );
+  assert.match(manifest.supportedClaim, /high--high-to-low/);
+  assert.match(manifest.supportedClaim, /ratio one for every positive integer N/);
+  assert.match(manifest.supportedClaim, /rotation-invariant scalar charge is zero/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.formalSamples, 21);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 2);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
   assert.deepEqual(
     manifest.figure.outputs.map(({ path }) => path).sort(),
     ["figure.pdf", "figure.png", "figure.svg"],

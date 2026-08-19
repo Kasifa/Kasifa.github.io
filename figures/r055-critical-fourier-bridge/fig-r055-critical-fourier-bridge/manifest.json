@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r055-critical-fourier-bridge",
+  "status": "formal",
+  "analyticalQuestion": "Which part of the full Fourier--Leray equation admits a scale-critical scalar upper bound, which frequency class saturates it, and can the existing nontrivial scalar charge be extended to arbitrary data without selecting a frame?",
+  "supportedClaim": "The full Fourier--Leray term has a finite scale-critical heat-Duhamel bound in E_nu; the exact high--high-to-low family has normalized critical symbol ratio one for every positive integer N despite unbounded input/output separation; and every convolution-additive, rotation-invariant scalar charge is zero.",
+  "createdAt": "2026-08-20T05:28:01+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "56d51913ce43fce46d96323181d528103a8e072f",
+    "certificateCommit": "95e4b87ffd36dcd4443951d97f6268ac4eb04368",
+    "formalSourceCommit": "640cf4ce9b97c2caa8d22f9159b4d0aa2e3a65a0",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "exact scaling line, frequency-triad geometry, and dual-axis all-index identity",
+    "variants": [
+      "81 exact-rational presentation samples of the Fourier scaling exponent",
+      "one representative exact high--high-to-low triad with the all-index symbolic identity",
+      "256 exact presentation rows comparing constant critical ratio with unbounded scale separation"
+    ],
+    "takeaway": "Critical scalar degree control is finite, but high--high-to-low interactions remove any gain from scale separation and a nontrivial additive scalar charge cannot also be rotation invariant.",
+    "dataSufficiency": "The all-frequency scaling, bilinear, saturation, and charge no-go statements are analytic theorems. The plotted rows and the 200,000-triad, 15,624-rotation, degree-256 Catalan audit are exact deterministic regressions, not substitutes for the proofs.",
+    "palettePolicy": "blue and gold plus neutral ink, gray, and one restrained red theorem line",
+    "nonColorEncoding": "Solid versus dashed lines, open diamond markers, direct labels, and separate axes preserve the distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r055/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/fourier_critical_charge_bridge_audit.py --max-triad-index 200000 --max-catalan-degree 256 --rotation-radius 12 --source-commit 640cf4ce9b97c2caa8d22f9159b4d0aa2e3a65a0 --progress --progress-log research/certificates/r055/progress.ndjson --check --pretty --output research/certificates/r055/fourier-critical-charge-bridge.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge/prepare_data.py --source-commit 56d51913ce43fce46d96323181d528103a8e072f",
+    "configuration": "maximum triad index 200000; maximum Catalan degree 256; exact rational SO(3) half-turn witnesses for all nonzero integer vectors in the coordinate cube of radius 12; 81 scaling and 256 triad presentation rows",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "Every theorem regression and sign decision uses Python integers and fractions.Fraction exact rationals. Decimal fields are presentation values and are not used for formal decisions.",
+    "solver": "formal change-of-variables and Fourier--Leray derivations, exact all-index triad identity, exact rational half-turn construction, and exact Catalan recurrence regression",
+    "tolerances": {
+      "formalIdentities": "none; exact integer or rational arithmetic",
+      "figureRows": "exact identities cross-checked independently by validate_data.py"
+    },
+    "scientificWallTimeSeconds": 5.312454667000566,
+    "monitoredWallTimeSeconds": 5.384576,
+    "samplingWallTimeSeconds": 0.002829750010278076,
+    "samplingMonitoredWallTimeSeconds": 0.044284,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.25,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "progress.ndjson",
+      "formalResourceLog": "resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 21,
+      "samplingSamples": 2
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 40.0,
+    "samplingMaximumObservedCpuPercent": 0.0,
+    "samplingMaximumObservedRssMiB": 6.141
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "critical-scaling.csv",
+      "format": "csv",
+      "schema": "81 exact-rational presentation samples with sigma, spatial scaling exponent sigma+1, decimal render values, and classification.",
+      "bytes": 7265,
+      "sha256": "98af1b640eb46829e671c8bbd525d4ca105364aec80ecbfa84329b51fe5e4f4a"
+    },
+    {
+      "path": "triad-saturation.csv",
+      "format": "csv",
+      "schema": "256 exact all-index presentation rows with input/output squared frequencies, critical symbol ratio one, scale separation N, and classification.",
+      "bytes": 19325,
+      "sha256": "1dccedb50c8c925b1fa92ecbf7e3c549071bcc17e78459e9e38832f97a3a71b3"
+    },
+    {
+      "path": "bridge-decisions.csv",
+      "format": "csv",
+      "schema": "Three theorem-classified bridge decisions: finite scalar degree majorant, scalar-charge no-go under two axioms, and the open direction-resolved alternative.",
+      "bytes": 429,
+      "sha256": "1ac65df1b0171a51a813a5d87c4355a67614b42c5d3371ad6b28fc6f012f7415"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned source and certificate hashes, row counts, exact regression digests, theorem classifications, arithmetic declarations, and sampling wall time.",
+      "bytes": 1229,
+      "sha256": "470b6a769509a7476d749f1a7c0fa13aac2d1d046705637ea8287908bd74d366"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC timestamps, stages, finite bounds, elapsed seconds, and successful 17-check completion record.",
+      "bytes": 833,
+      "sha256": "dd077b7ade7c952406f33038c547dae0c0102bd776f277747c890f520d1cbe04"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Quarter-second process-tree resource samples for the formal exact audit.",
+      "bytes": 1661,
+      "sha256": "6f70d80f76f3fb273edde71f125653bb44a488f2c5f69522c8077fa26eea8002"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for exact-rational figure-table preparation.",
+      "bytes": 289,
+      "sha256": "3704a0267e44c83f166ca93dfda25a4418e118126111526a3dd7b3f496660c46"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r055",
+      "fileName": "fourier-critical-charge-bridge.json",
+      "bytes": 10597,
+      "sha256": "feacd0c47aa123d508f4889bfb1e6770c40da1fef6e438acc1aa9ecd99fc19ae",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, reconstructs exact presentation rows, and copies the progress and resource logs; validate_data.py independently checks row identities, counts, classifications, digests, provenance, and monitoring."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "710edfb8b2637c103d638f666a351d43ef9ba47adc075d50858c9761c87be3f9",
+    "command": "MPLCONFIGDIR=tmp/r055-mplconfig tmp/r024-venv/bin/python figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "c53f1cae11b5d0d0e925e2198c8309721cd18663b20a2579de81c7d7fa826fdd"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "ef48a7761f047dd41b9e66b8ec13dc454fe994c3822f43df0311700d55598a4a"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "37455638f3aa5b4b1060ed974155087681ec6dc61cface701c41b7e710d7acff"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我把完整 Fourier--Leray 方程接到尺度临界标量次数上界，并给出一个精确高--高到低频族，证明频率分离不提供额外小因子；同时，卷积可加且旋转不变的标量荷只能恒为零。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The first color pass exposed a literal dollar sign in the panel-a formula and a collision in panel b; the final source uses two independent math-text rows and removes the redundant colliding note. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid versus dashed lines, direct labels, open diamonds, and separate axes remain distinct in grayscale. Titles, axes, triad arrows, theorem lines, scope line, and research blossom are unclipped. Five CID TrueType DejaVu Serif resources are embedded, no Type3 fonts are present, and extracted PDF text contains the 200,000-triad statement, bridge decision, 17/17 checks, scalar-charge no-go, and Navier--Stokes scope limitation. validate_data.py independently checks every archived table and monitored provenance."
+  }
+}

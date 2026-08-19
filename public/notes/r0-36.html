@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.36：在 R0.31 解析域内证明共轭双半径算子定理，并认证一条带全阶尾界的非零中心短延拓步。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.36｜解析域内的一步短延拓证书">
+  <meta property="og:description" content="正确共轭荷投影、严格轨道包含、四十阶精确重构与全阶尾界共同闭合第一条短延拓证书。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-36-short-step.png">
+  <title>R0.36｜解析域内的一步短延拓证书</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    table{width:100%;margin:28px 0;border-collapse:collapse;font-size:14px}th,td{padding:11px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-family:"SFMono-Regular",Consolas,monospace;font-size:11px}td:first-child{font-weight:700}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}table{display:block;width:100%;max-width:100%;overflow-x:auto;font-size:12px}article code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure,table{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#theorem">算子定理</a><a href="#step">短步几何</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.36 · 合法重心的第一步</div>
+        <h1>解析域内的一步<br>短延拓证书</h1>
+        <p class="lead">我把 R0.35 的半径损失写成可平移的全阶定理，再用精确有理数选择一个非零中心。四十阶多项式负责计算，R0.31 主控负责覆盖全部未计算阶数。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 一条域内短步已认证</span><strong>共轭后半径比 1/2</strong><p>版本 v0.36 · 2026-08-19</p><p>全阶算子常数：121/48</p><p>正式检查：12 项全通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#translation">01 · 平移范数</a></li><li><a href="#theorem">02 · 共轭定理</a></li><li><a href="#step">03 · 精确短步</a></li><li><a href="#tail">04 · 全阶尾界</a></li><li><a href="#finite">05 · 有限检查</a></li><li><a href="#figure">06 · 期刊附图</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现与文献</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这是一次架构认证，不是独立越界延拓</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDER</span><strong>共轭双半径算子界</strong><p>平移后的非线性映射由原点算子共轭得到，自动保留正确的全局荷投影。</p></div>
+            <div class="status"><span>PROVED · EXACT GEOMETRY</span><strong>外圆盘与荷轨道严格包含</strong><p>所有半径和正间隙都是精确有理数，没有浮点判号。</p></div>
+            <div class="status"><span>CERTIFIED · ALL ORDER TAIL</span><strong>四十阶以后全部覆盖</strong><p>有限多项式外的无限尾部由 R0.31 系数主控闭合。</p></div>
+            <div class="status"><span>CHECKED · FINITE EXACT</span><strong>42 维逆只作回归</strong><p>双侧精确逆验证结构实现，但不是无穷维 Newton 逆。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>这条短步完全位于 R0.31 已证明的多圆盘内。它没有越过旧边界，没有到达 R0.32 的有限 Padé 候选，也没有给出三维 Navier–Stokes 正则性或奇性结论。</div>
+        </section>
+
+        <section id="translation"><div class="section-no">01 / Translation</div><h2>二项式定理给出无截断的平移范数界</h2>
+          <p>对中心 \(c=(c_Z,c_W)\)，定义 \((\tau_cf)(\zeta,\omega)=f(c_Z+\zeta,c_W+\omega)\)。在加权 Wiener 代数中，每个二项式展开的绝对系数和恰好重组为增大的半径，因此逐分量有</p>
+          <div class="equation result">\[\boxed{\|\tau_cf\|_r\le\|f\|_{|c|+r},\qquad \|\tau_c^{-1}g\|_S\le\|g\|_{|c|+S}.}\]</div>
+          <p>这里没有 Taylor 阶数限制。R0.35 已说明局部荷投影不能直接照搬；现在把完整算子共轭回原点，避免重新定义一个错误的局部方程。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">02 / Conjugated theorem</div><h2>正确重心后得到一般双半径常数</h2>
+          <p>设 \(\Phi_c=\tau_c\Phi\tau_c^{-1}\)。局部外半径记为 \(\mathsf R\)，内半径记为 \(\mathsf r\)，并定义</p>
+          <div class="equation">\[S_i=\mathsf R_i-|c_i|,\qquad s_i=\mathsf r_i+|c_i|,\qquad \lambda=\max_i\frac{s_i}{S_i}&lt;1.\]</div>
+          <p>取 \(M_j(\lambda)=\sup_{n\ge0}n^j\lambda^n\)。R0.35 的原点估计与两次平移范数界合成后，得到全阶 Lipschitz 定理</p>
+          <div class="equation result">\[\boxed{\|\Phi_c(f)-\Phi_c(g)\|_{\mathsf r}\le C(\lambda)(\|f\|_{\mathsf R}+\|g\|_{\mathsf R})\|f-g\|_{\mathsf R},}\]
+            \[C(\lambda)=\frac{11}{3}M_1(\lambda)\bigl(M_2(\lambda)+M_1(\lambda)^2\bigr).\]</div>
+          <p>非零荷支贡献 \(3M_1(M_2+M_1^2)\)，荷零支贡献 \((2/3)M_1(M_2+M_1^2)\)。这一定理控制全部形式阶，不依赖四十阶计算。</p>
+        </section>
+
+        <section id="step"><div class="section-no">03 / Exact short step</div><h2>沿负固定荷方向选择一个有正间隙的中心</h2>
+          <p>取 R0.31 公共半径 \(\rho_*=4/81\)，并设</p>
+          <div class="equation">\[\delta=\rho_*/7=4/567,\qquad c=(\delta,-\delta),\qquad \mathsf r=\delta,\quad\mathsf R=5\delta.\]</div>
+          <table><thead><tr><th>检查对象</th><th>精确范围</th><th>正间隙</th></tr></thead><tbody>
+            <tr><td>外局部圆盘到原点</td><td>\(|c|+\mathsf R=6\rho_*/7\)</td><td>\(\rho_*/7\)</td></tr>
+            <tr><td>内圆盘的仿射荷轨道</td><td>\(\mathsf r+2|c|=3\rho_*/7\)</td><td>\(2\rho_*/7\)</td></tr>
+            <tr><td>共轭后的两半径</td><td>\(s=2\rho_*/7,\ S=4\rho_*/7\)</td><td>\(s/S=1/2\)</td></tr>
+          </tbody></table>
+          <p>所以 \(C(1/2)=121/48\)。中心的固定荷坐标为</p>
+          <div class="equation result">\[\boxed{R_{\rm ch}=Z^2W=-\delta^3=-\frac{64}{182284263}.}\]</div>
+          <p>其模长只是 R0.31 固定荷半径的 \(1/343\)。方向与负实候选一致，但距离被刻意压得很短，用于先验证程序结构。</p>
+        </section>
+
+        <section id="tail"><div class="section-no">04 / All-order enclosure</div><h2>有限多项式由全阶主控包住</h2>
+          <p>R0.31 已证明分次系数满足 \(\|a_L\|_1\le2K^{L-1}/L^3\)，其中 \(K=81/4\)。对 \(0&lt;x&lt;1\)，定义</p>
+          <div class="equation">\[E_N(x)=\frac2K\frac{x^{N+1}}{(N+1)^3(1-x)}.\]</div>
+          <p>设 \(p_N=\tau_c\sum_{L=1}^Na_L\)。几何级数直接给出两个全阶包含：</p>
+          <div class="equation">\[\|\tau_ca-p_N\|_{\mathsf R}\le E_N(6/7),\qquad \|\tau_ca-p_N\|_{\mathsf r}\le E_N(2/7).\]</div>
+          <p>又有 \(\|\tau_ca\|_{\mathsf R}\le16/27\)。于是局部残差 \(F_c(p)=p-\tau_ca_1-\Phi_c(p)\) 满足</p>
+          <div class="equation result">\[\boxed{\|F_c(p_N)\|_{\mathsf r}\le E_N(2/7)+\frac{121}{48}\left(\frac{32}{27}+E_N(6/7)\right)E_N(6/7).}\]</div>
+          <table><thead><tr><th>N = 40 的量</th><th>认证值</th><th>证据类别</th></tr></thead><tbody>
+            <tr><td>外半径尾界</td><td>\(1.8052321653651680135\times10^{-8}\)</td><td>全阶上界</td></tr>
+            <tr><td>内半径包含半径</td><td>\(9.899006633275135561\times10^{-29}\)</td><td>全阶包含</td></tr>
+            <tr><td>局部残差上界</td><td>\(5.3934097613896530405\times10^{-8}\)</td><td>全阶上界</td></tr>
+            <tr><td>有限多项式精确残差</td><td>\(2.4183515589182331105\times10^{-75}\)</td><td>有限精确诊断</td></tr>
+          </tbody></table>
+          <div class="proof warning"><strong>不能混淆的数字。</strong>\(10^{-75}\) 只属于有限平移多项式；覆盖未计算阶数的是 \(10^{-8}\) 量级的全阶上界。前者不能替代后者。</div>
+        </section>
+
+        <section id="finite"><div class="section-no">05 / Finite exact checks</div><h2>GMP 回归检查算子实现与小块逆</h2>
+          <p>正式运行用 GMP 有理数重构到总次数 40，共处理 68,664 次有序递推相互作用；平移后多项式有 769 个非零系数。审计精确核对原点递推、平移逆、共轭 Euler 场、括号、五个荷投影和两条路径得到的非线性残差。</p>
+          <p>在原点总次数 2 至 8 的扰动空间上，投影 Jacobian \(J_8\) 的维数为 42，是单位下三角矩阵。前代构造的逆在左右两侧都精确通过，并给出</p>
+          <div class="equation">\[\|J_8^{-1}\|_1=\frac{35183}{350}\approx100.522857.\]</div>
+          <p>Jacobian 与逆矩阵的 SHA-256 分别为 <code>94680253…b5b3</code> 和 <code>b3d495f3…de19</code>。这些检查说明有限实现内部一致；它们没有控制无穷尾部，也没有构成 R0.31 外的 Newton–Kantorovich 定理。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Formal figure</div><h2>几何包含与证书尺度分开呈现</h2>
+          <figure>
+            <img src="/figures/r0-36-short-step.svg" alt="R0.36 轨道安全短延拓几何与认证尺度">
+            <figcaption>图 R0.36-1。左图把全部半径按 \(\rho_*=4/81\) 归一化，显示外局部圆盘、内圆盘及其仿射荷轨道都具有严格正间隙。右图用虚线和蓝色标记表示全阶证书，用实线和金色圆点表示有限精确残差；形状与线型在灰度打印时仍保留分类。</figcaption>
+          </figure>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>这一步把“方程写对”推进到“第一步可认证”</h2>
+          <p>R0.35 只给出正确延拓程序的必要结构。R0.36 首次把这些结构合成一个完整实例：正确共轭投影、轨道安全外域、显式半径损失、有限精确中心多项式和覆盖全部未计算阶数的尾界同时成立。这说明解析尺度路线至少能在已知域内启动，不是形式上的空架构。</p>
+          <p>价值仍有明确上限。R0.31 已经保证最终包含球中的精确解存在，所以这一步验证的是重心与认证机制，而不是新的解析域。对三维 Navier–Stokes 千禧年问题的直接贡献仍然很小：对象是约化边缘生成方程，尚未证明它与完整 PDE 的临界动力学具有可逆联系。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能声称已经跨越 R0.31 边界，不能声称 42 维逆是无穷维逆，不能声称 R0.32 候选得到认证，也不能从本证书推出全局正则性或有限时奇性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.37</div><h2>下一步必须把有限逆升级为无穷维逆界</h2>
+          <ol>
+            <li>在嵌套 Wiener 解析尺度上定义无穷维线性化 \(I-D\Phi_c(p_N)\) 及其块分解；</li>
+            <li>保留 \(J_8^{-1}\) 作为低阶核心，为高阶块构造显式对角主部与 Neumann 尾界；</li>
+            <li>把低高耦合、投影、两次 Euler 导数和半径损失写成可机器检查的算子矩阵上界；</li>
+            <li>形成 radii-polynomial 或等价 Newton 包含条件，先在本短步上独立重证 R0.31 解；</li>
+            <li>只有无穷维条件闭合后，才把中心向外移动到使局部内圆盘首次越过 \(\rho_*\) 的位置。</li>
+          </ol>
+          <p>R0.37 的最低成功标准是一个真正独立的无穷维重启证书。若 Neumann 尾界不小于一，结果应记录为定量障碍，而不是用更高有限截断代替。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>正式证书、过程监控与期刊附图包已经归档</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/edge_short_continuation_audit.py --max-total-degree 40 --jacobian-degree 8 --source-commit e8685f41005a3149ebff91e9f4d537b02dbacb00 --progress --check --pretty --output /tmp/r036.json</code></div>
+          <p>正式源提交为 <code>e8685f41005a3149ebff91e9f4d537b02dbacb00</code>。计算耗时 14.5704 秒，监控峰值 CPU 为 100%，峰值常驻内存为 37.656 MiB；没有使用 GPU、随机种子或浮点判号。12 项正式检查全部通过。</p>
+          <p>R0.36 证书 SHA-256 为 <code>dfe0395df8b9654f235207c71dda5a0de8a70a54908b76b92dca00ad83c38e48</code>。</p>
+          <p><a href="/notes/r0-36.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_short_continuation_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_short_continuation_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r036">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r036-short-continuation/fig-r036-short-step">查看期刊附图包</a></p>
+          <h3>文献与前序记录</h3>
+          <ol class="refs">
+            <li><a href="/notes/r0-31.html">R0.31：典范边缘系统的改进公共解析域</a>。本笔记使用其中的全阶系数主控与半径 \(\rho_*=4/81\)。</li>
+            <li><a href="/notes/r0-35.html">R0.35：固定荷延拓几何与同半径障碍</a>。本笔记使用其中的共轭荷投影结构与 \(121/48\) 双半径常数。</li>
+            <li><a href="https://arxiv.org/abs/1509.08648">Castelli、Gameiro 与 Lessard，Rigorous numerics for ill-posed PDEs: periodic orbits in the Boussinesq equation</a>。其 radii-polynomial 工作流是后续无穷维逆阶段的参考；本笔记没有调用该文定理。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>严格区分全阶定理、有限精确检查与未解决问题</span><span>R0.36 · 2026-08-19<br><a href="/">返回研究综述</a></span></div></footer>
+</body>
+</html>

@@ -267,7 +267,7 @@ the exact solution identity and (2.7) imply
  \boxed{
  \|F_c(p_N)\|_{\mathsf r}
  \le
- E_N(2/7)
+ E_N(2/7)+
  \frac{121}{48}
  \left(\frac{32}{27}+E_N(6/7)\right)E_N(6/7).
  }

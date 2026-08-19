@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r036-short-step",
+  "status": "formal",
+  "analyticalQuestion": "Can the R0.31 all-order analytic solution be recentered by one explicit nonzero short step while preserving strict orbit geometry, controlling every omitted degree, and separating the infinite-dimensional enclosure from finite exact regression checks?",
+  "supportedClaim": "For rho*=4/81, centre c=(rho*/7,-rho*/7), inner radius r=rho*/7, and outer radius R=5rho*/7, the outer local bidisc and the affine orbit of the inner bidisc lie strictly inside the R0.31 domain. Translation conjugacy reduces the nonlinear Lipschitz estimate to the origin with radius ratio 1/2 and constant 121/48. A degree-40 exact GMP reconstruction plus the R0.31 all-order coefficient majorant gives outer-tail bound 1.8052321653651680135e-08, inner inclusion radius 9.899006633275135561e-29, and all-order residual upper bound 5.3934097613896530405e-08. The 42-dimensional exact Jacobian inverse is finite regression evidence only.",
+  "createdAt": "2026-08-19T14:09:19+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "e8685f41005a3149ebff91e9f4d537b02dbacb00",
+    "dirty": false
+  },
+  "chartContract": {
+    "family": "normalized complex-disc geometry plus logarithmic enclosure-scale dot plot",
+    "variants": [
+      "nested exact discs and an affine-orbit envelope normalized by the R0.31 radius",
+      "logarithmic all-order bounds and finite exact residual with explicit evidence classes"
+    ],
+    "takeaway": "One orbit-safe recentering step is certified strictly inside the R0.31 domain; the all-order tail closes the finite computation, while the finite inverse remains only a regression check.",
+    "palettePolicy": "hard two-root cap: blue and gold plus neutral ink and gray",
+    "nonColorEncoding": "domain and orbit boundaries are dashed, local discs are solid, the four enclosure scales use diamond, triangle, square, and circle markers, and the finite diagnostic is solid rather than dashed",
+    "finalSurface": "single journal figure at 178 by 84 millimetres, with PDF, SVG, and 600 dpi PNG exports"
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python3 research/run_with_monitor.py --output <formal-dir>/resources.csv --interval 0.2 -- tmp/r024-venv/bin/python research/edge_short_continuation_audit.py --max-total-degree 40 --jacobian-degree 8 --source-commit e8685f41005a3149ebff91e9f4d537b02dbacb00 --progress --progress-log <formal-dir>/progress.ndjson --check --pretty --output <formal-dir>/edge-short-continuation.json",
+    "configuration": "R0.31 all-order majorant K=81/4; degree-40 GMP recurrence reconstruction; centre delta=4/567; local radii r=delta and R=5delta; degree-eight projected Jacobian and exact two-sided inverse",
+    "randomSeed": null,
+    "precision": "gmpy2.mpq exact rationals backed by GMP 6.3.0; decimal fields are display-only",
+    "solver": "deterministic formal-series reconstruction, binomial translation, exact projector and bracket audit, and rational matrix inversion",
+    "tolerances": {
+      "formalIdentities": "none; exact rational arithmetic",
+      "allOrderTail": "closed-form rational majorant with no floating-point decision",
+      "figure": "no fitted parameter; all plotted values are extracted from the pinned exact certificate"
+    },
+    "wallTimeSeconds": 14.57044104099623,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.2,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "samples": 68,
+      "trackedFields": [
+        "degree reconstruction",
+        "translation inverse",
+        "Euler-field conjugacy",
+        "charge projectors",
+        "all-order tail enclosure",
+        "finite Jacobian inversion",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 37.656
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "geometry.csv",
+      "format": "csv",
+      "schema": "Ten exact short-step radii, extents, and strict margins, including normalization by rho*=4/81.",
+      "bytes": 598,
+      "sha256": "9a773bedc4cc971c810e92188f2b194af7f24b2d06af6b02948384823b0f6537"
+    },
+    {
+      "path": "certificate-scales.csv",
+      "format": "csv",
+      "schema": "Four exact positive scales with all-order upper-bound, all-order inclusion, or finite exact classifications.",
+      "bytes": 1418,
+      "sha256": "eff2934babf33c23a77a30c2d6fd1de1e1565389ca93b626472b76f74396fb4d"
+    },
+    {
+      "path": "jacobian.csv",
+      "format": "csv",
+      "schema": "Degree-eight finite Jacobian dimension, sparsity, inverse norm, and exact matrix hashes.",
+      "bytes": 317,
+      "sha256": "295be7a48c68e0b3c3a0225c7f047bd38e797f8bb1ddfd89ef59cf33be53ed90"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, exact-audit stage, and completion status.",
+      "bytes": 958,
+      "sha256": "81f93d578d06ce11a157f5563b988d8b2ce75656b2cb6474f2373455e6931630"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "0.2-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 5097,
+      "sha256": "e05b59ba3df0d6c7585ac85b4996d8acdaa7fa9300ac95178132ee3b4f903de9"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r036",
+      "fileName": "edge-short-continuation.json",
+      "bytes": 13462,
+      "sha256": "dfe0395df8b9654f235207c71dda5a0de8a70a54908b76b92dca00ad83c38e48",
+      "extractionCommand": "prepare_data.py extracts every plotted geometry and scale value; validate_data.py pins the certificate hash and clean source commit, checks all twelve formal flags, verifies the exact normalized geometry, compares every scale as a Fraction, and checks the 42-dimensional finite inverse metadata"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=/tmp/r036-mpl tmp/r024-venv/bin/python figures/r036-short-continuation/fig-r036-short-step/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 84,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "010df0769eb02b5a12fcefeb6fbadfed34855a5169540b3748e464371bd16794"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "28519408d6f303eafae98d67fb015945b58dbad2b624e73fd307ffc968cc741a"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "9abb0359f0b8dfcff8655677a601e94e3d4004767281816f78bc8a30467a58c8"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "在 R0.31 半径内，中心 c=(rho*/7,-rho*/7)、内半径 rho*/7 与外半径 5rho*/7 给出严格的轨道安全一步延拓。四十阶精确重构由全阶尾界闭合；42 维逆仅是有限回归检查。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is exactly 178 by 84 mm and the 600 dpi PNG is 4204 by 1984 pixels. Color, true grayscale, and a 150 dpi Poppler render of the PDF were inspected. Solid versus dashed boundaries and diamond, triangle, square, and circle markers retain the evidence classes without color. Titles, axes, legends, annotations, scale labels, and both footer lines are unclipped. Four subsetted TrueType fonts are embedded through CIDFontType2 descendants with ToUnicode maps; pypdf extracted 842 text characters. validate_data.py independently checks every plotted value against the exact certificate."
+  }
+}

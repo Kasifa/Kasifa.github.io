@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-19</strong>最近修订</span>
-            <span><strong>v0.19</strong>网页版本</span>
+            <span><strong>v0.21</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>固定荷边缘级数的解析延拓，以及约 \(-0.7495\) 的有限 Padé 候选能否被升级为真实奇点定理。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>把域内短步的有限逆升级为无穷维重启证书，再判断能否严格越过现有解析边界。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -2527,7 +2527,44 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_continuation_geometry_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r035-continuation-geometry/fig-r035-continuation-scale">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>在荷轨道饱和的解析空间尺度上构造第一条短延拓证书，先在 R0.31 已证明的多圆盘内核对共轭投影、近似逆和无穷尾部界。</p>
+            <p><strong style="color:var(--gold)">R0.36 已完成：</strong>第一条非零中心短延拓证书已在 R0.31 域内闭合；共轭投影、轨道包含、双半径算子界与全阶尾界同时通过。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.36 · 2026-08-19</p>
+            <h3>解析域内的一步短延拓证书</h3>
+            <p>
+              我令 \(\rho_*=4/81\)、\(\delta=\rho_*/7\)，选择中心
+              \(c=(\delta,-\delta)\)、内半径 \(\mathsf r=\delta\) 和外半径 \(\mathsf R=5\delta\)。
+              外局部圆盘离原点最远为 \(6\rho_*/7\)，内圆盘的仿射荷轨道最远为 \(3\rho_*/7\)，
+              因而两项包含都有精确正间隙。
+            </p>
+            <p>
+              把完整非线性映射写成 \(\Phi_c=\tau_c\Phi\tau_c^{-1}\) 后，
+              共轭半径为 \(s=2\rho_*/7\)、\(S=4\rho_*/7\)，比值恰为 \(1/2\)。
+              一般全阶常数为
+              \[C(\lambda)=\frac{11}{3}M_1(\lambda)\bigl(M_2(\lambda)+M_1(\lambda)^2\bigr),\]
+              本步因此仍取 \(C(1/2)=121/48\)。
+            </p>
+            <p>
+              四十阶 GMP 重构处理 68,664 次有序相互作用。R0.31 全阶系数主控给出外尾界
+              \(1.8052322\times10^{-8}\)、内包含半径 \(9.8990066\times10^{-29}\) 与残差上界
+              \(5.3934098\times10^{-8}\)。有限多项式的精确残差约 \(2.4184\times10^{-75}\)，
+              但这个更小数值没有被当作无穷尾界。
+            </p>
+            <p>
+              低阶 \(42\) 维 Jacobian 具有精确双侧逆，\(\|J_8^{-1}\|_1=35183/350\)。
+              <strong>结论边界：</strong>这只是有限回归检查，不是无穷维逆；整条短步仍在 R0.31 已证明的多圆盘内，
+              没有到达 R0.32 候选，也没有三维 Navier–Stokes 正则性或奇性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-36.html"><strong>阅读 R0.36 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-36.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r036">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_short_continuation_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r036-short-continuation/fig-r036-short-step">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>把 42 维有限逆升级为带显式高阶 Neumann 尾界的无穷维逆，并在当前短步上先完成独立重启。</p>
           </div>
         </section>
 
@@ -2542,7 +2579,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.20 · 2026-08-19<br>
+        综述 v0.21 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

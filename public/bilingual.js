@@ -80,7 +80,7 @@
     button.addEventListener("click", () => {
       try { localStorage.setItem(storageKey, target); } catch {}
       const url = new URL(location.href);
-      url.searchParams.delete("lang");
+      url.searchParams.set("lang", target);
       location.replace(url.href);
     });
     document.body.append(button);

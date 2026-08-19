@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.31：用精确有限核与解析尾界改进全阶主控，将典范边缘系统的共同解析半径提高到 4/81。">
+  <meta name="theme-color" content="#f2eddf">
+  <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="R0.31｜改进主控与统一解析域">
+  <meta property="og:description" content="卷积核在全部次数上降到 27/4；a、U、V、对数与指数分解共享半径 4/81。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-31-improved-domain.png">
+  <title>R0.31｜改进主控与统一解析域</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{color-scheme:light dark;--ink:#27221d;--muted:#675f55;--paper:#f2eddf;--paper2:#e9e1d1;--red:#8a302c;--green:#435946;--gold:#8a6b32;--line:rgba(39,34,29,.3);--bar:rgba(242,237,223,.97);--width:960px}
+    @media(prefers-color-scheme:dark){:root{--ink:#eee7d8;--muted:#bcb19e;--paper:#171816;--paper2:#22241f;--red:#ee8b7c;--green:#9fbea2;--gold:#d9b567;--line:rgba(238,231,216,.26);--bar:rgba(23,24,22,.96)}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Songti SC","STSong",serif;font-size:17px;line-height:1.82}
+    a{color:var(--red);text-underline-offset:.2em}a:hover{color:var(--ink)}code{font:88% "SFMono-Regular",Consolas,monospace;border-bottom:1px solid var(--line)}
+    .topline{height:5px;background:var(--ink)}.bar{position:sticky;z-index:10;top:0;border-bottom:3px double var(--ink);background:var(--bar)}.bar-inner{width:min(calc(100% - 32px),var(--width));min-height:58px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand,.bar nav,.eyebrow,.section-no,.toc,.status span{font-family:"SFMono-Regular",Consolas,monospace}.brand{color:var(--ink);font-size:12px;font-weight:700;text-decoration:none}.bar nav{display:flex;gap:18px;font-size:12px}
+    .hero{border-bottom:3px double var(--ink)}.hero-inner{width:min(calc(100% - 32px),var(--width));margin:auto;padding:70px 0 58px;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.55fr);gap:60px;align-items:end}
+    .eyebrow,.section-no{color:var(--red);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1,h2,h3{font-weight:400}h1{margin:12px 0 22px;font-size:clamp(2.5rem,6vw,5rem);letter-spacing:-.045em;line-height:1.02}h2{margin:8px 0 18px;font-size:clamp(1.9rem,4vw,3rem);line-height:1.14}h3{margin:34px 0 12px;font-size:1.25rem}.lead{margin:0;color:var(--muted);font-size:1.12rem}
+    .stamp{padding:22px;border:3px double var(--ink)}.stamp .state{display:block;color:var(--red);font:700 12px/1.4 "SFMono-Regular",Consolas,monospace}.stamp strong{display:block;margin:8px 0;font-size:1.35rem;font-weight:500}.stamp p{margin:0;color:var(--muted);font-size:13px}
+    .layout{width:min(calc(100% - 32px),var(--width));margin:auto;padding:62px 0 110px;display:grid;grid-template-columns:176px minmax(0,1fr);gap:58px}.toc{position:sticky;top:88px;align-self:start;font-size:12px}.toc strong{display:block;margin-bottom:10px;color:var(--red)}.toc ol{margin:0;padding:0;border-top:1px solid var(--ink);list-style:none}.toc li{border-bottom:1px solid var(--line)}.toc a{display:block;padding:9px 2px;color:var(--muted);text-decoration:none}
+    article{min-width:0}section{scroll-margin-top:86px;margin-bottom:76px}p{max-width:760px}li+li{margin-top:.55rem}.equation{overflow-x:auto;margin:24px 0;padding:22px;border:3px double var(--ink);background:var(--paper2);text-align:center}.proof{margin:24px 0;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--red)}.warning{border-left-color:var(--gold)}.result{border:3px double var(--red)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:26px 0;border-top:1px solid var(--ink)}.status{padding:18px 20px;border-bottom:1px solid var(--ink)}.status:nth-child(odd){border-right:1px solid var(--line)}.status span{display:block;color:var(--green);font-size:11px;font-weight:700}.status strong{display:block;margin:4px 0}.status p{margin:0;color:var(--muted);font-size:14px}
+    figure{margin:30px 0;padding:18px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}figure img{display:block;width:100%;height:auto;background:#fff}figcaption{margin-top:13px;color:var(--muted);font-size:13px}.refs{margin:0;padding:0;list-style:none;counter-reset:refs}.refs li{position:relative;padding:14px 8px 14px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}.refs li:before{counter-increment:refs;content:"[" counter(refs) "]";position:absolute;left:3px;color:var(--red);font-family:monospace}
+    footer{padding:36px 20px;border-top:4px solid var(--red);background:#27221d;color:#cfc5b3}footer div{width:min(100%,var(--width));margin:auto;display:flex;justify-content:space-between;gap:28px;font-size:13px}footer strong{color:#f2eddf}footer a{color:#d6b56d}
+    @media(max-width:760px){.bar nav a:not(:last-child){display:none}.hero-inner{grid-template-columns:1fr;gap:34px;padding:52px 0 46px}.layout{grid-template-columns:1fr;gap:36px;padding-top:42px}.toc{position:static}}
+    @media(max-width:520px){body{font-size:16px}.grid{grid-template-columns:1fr}.status:nth-child(odd){border-right:0}.equation{padding:18px 12px}footer div{flex-direction:column}}
+    @page{size:A4;margin:12mm 14mm}@media print{.bar,.toc{display:none}body{background:white;color:black;font-size:9.2pt}.hero-inner,.layout{display:block;width:100%;padding:20px 0}.stamp{margin-top:22px}section{margin-bottom:24px}.equation,.proof,.status,figure{break-inside:avoid}footer{display:none!important}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#kernel">核估计</a><a href="#theorem">解析域</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.31 · 改进全阶定理</div>
+        <h1>改进主控与<br>统一解析域</h1>
+        <p class="lead">我把 R0.30 的粗卷积上界拆成精确有限段与解析尾段，将主控常数从 96 降到 \(81/4\)。由此，主动场、输运场、对数与指数分解共享同一个显式解析多圆盘。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全阶证明 + 精确有限证书</span><strong>共同保证半径提高到 4/81</strong><p>版本 v0.31 · 2026-08-19</p><p>有限核验：总次数 2–296</p><p>正式回归：总次数 119</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li><li><a href="#loss">01 · 损失来源</a></li><li><a href="#kernel">02 · 分段核估计</a></li><li><a href="#certificate">03 · 全阶证书</a></li><li><a href="#theorem">04 · 改进主控</a></li><li><a href="#logs">05 · 统一解析域</a></li><li><a href="#finite">06 · 有限回归</a></li><li><a href="#meaning">07 · 价值判断</a></li><li><a href="#next">08 · 下一步</a></li><li><a href="#reproduce">09 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>严格扩大解析域，但仍未定位真实奇点</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED · ALL ORDERS</span><strong>卷积核上界改进</strong><p>\(H_2=8\)，且每个 \(L\ge3\) 都满足 \(H_L\le27/4\)。</p></div>
+            <div class="status"><span>PROVED · ANALYTIC</span><strong>共同半径 \(4/81\)</strong><p>\(a,U,V\) 在该开多圆盘中绝对解析。</p></div>
+            <div class="status"><span>PROVED · NONVANISHING</span><strong>不再缩小对数域</strong><p>\(U/Z\)、\(V/W\)、\(\phi\) 与指数分解共享同一解析域。</p></div>
+            <div class="status"><span>OPEN · CONTINUATION</span><strong>最近奇点仍未知</strong><p>\(4/81\) 是保证下界，不是实际收敛半径。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>这是 R0.28 两变量边缘约化系统的解析定理。它没有证明三维 Navier–Stokes 解的全局正则性或有限时奇性。</div>
+        </section>
+
+        <section id="loss"><div class="section-no">01 / Where the constant was lost</div><h2>R0.30 的常数 32 来自一次统一粗估</h2>
+          <p>R0.30 已经把全部电荷层压缩到两个标量卷积不等式：</p>
+          <div class="equation">\[A_L\le\frac32\sum_{i+j=L}\min(i,j)A_iA_j,\qquad F_L\le\sum_{i+j=L}\min(i,j)A_iF_j.\]</div>
+          <p>需要控制的无量纲核是</p>
+          <div class="equation">\[H_L=L^3\sum_{i+j=L}\frac{\min(i,j)}{i^3j^3}.\]</div>
+          <p>旧证明对整个半区统一使用 \(L/(L-i)\le2\)，因此只得到 \(H_L<32\)。这一步保证了非零解析半径，却丢掉了靠近端点时 \(L/(L-i)\) 实际接近 1 的信息。</p>
+        </section>
+
+        <section id="kernel"><div class="section-no">02 / Split kernel estimate</div><h2>把端点区与中间区分开估计</h2>
+          <p>由对称性，即使把偶数次数的中点重复计数，也有</p>
+          <div class="equation">\[H_L\le2\sum_{1\le i\le L/2}\frac1{i^2}\left(\frac L{L-i}\right)^3.\]</div>
+          <p>我在 \(i=L/10\) 处分段。第一段满足 \(L/(L-i)\le10/9\)。同时，凸性中点估计给出一个完全有理的 \(\zeta(2)\) 上界：</p>
+          <div class="equation">\[\sum_{n=1}^{\infty}\frac1{n^2}<\sum_{n=1}^{5}\frac1{n^2}+\frac2{11}=\frac{65159}{39600}<\frac53.\]</div>
+          <p>第二段满足 \(i^{-2}<100/L^2\)、\(L/(L-i)\le2\)，且至多含 \(2L/5+1\) 个整数。合并后得到</p>
+          <div class="equation result">\[\boxed{H_L<\frac{10000}{2187}+\frac{640}{L}+\frac{1600}{L^2}}.\]</div>
+          <p>右侧随 \(L>0\) 严格下降；在 \(L=297\) 时已经等于 \(1785040/264627<27/4\)。因此 297 阶以后不需要继续逐项计算。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">03 / Finite plus analytic certificate</div><h2>有限精确段和无限尾段各自承担明确责任</h2>
+          <p>我用 GMP 有理数逐项核验 \(3\le L\le296\)。这段的最大值是</p>
+          <div class="equation">\[\boxed{H_3=\frac{27}{4}},\]</div>
+          <p>而例外首项是 \(H_2=8\)。结合上一节对 \(L\ge297\) 的解析界，得到真正的全阶陈述：</p>
+          <div class="equation result">\[\boxed{H_2=8,\qquad H_L\le\frac{27}{4}\quad(L\ge3).}\]</div>
+          <div class="proof"><strong>逻辑分界。</strong>“2–296 阶全部通过”本身不是全阶证明；全阶性来自有限精确覆盖与 297 阶以后单调解析尾界的拼接。</div>
+        </section>
+
+        <section id="theorem"><div class="section-no">04 / Improved majorant</div><h2>常数 \(K=81/4\) 关闭新的归纳</h2>
+          <p>先直接核对 \(A_2=3<81/16\)。对 \(L\ge3\)，令 \(K=81/4\)，卷积不等式给出</p>
+          <div class="equation">\[A_L\le\frac{6K^{L-2}}{L^3}H_L\le\frac{81K^{L-2}}{2L^3}=\frac{2K^{L-1}}{L^3}.\]</div>
+          <p>输运递推有更多余量，因为包括 \(L=2\) 在内都有 \(2H_L\le16&lt;K\)。因此</p>
+          <div class="equation result">\[\boxed{A_L\le\frac{2(81/4)^{L-1}}{L^3}},\qquad\boxed{\|U_L\|_1,\|V_L\|_1\le\frac{(81/4)^{L-1}}{L^3}}\quad(L\ge1).\]</div>
+          <p>\(a,U,V\) 因而在</p>
+          <div class="equation result">\[\boxed{\max(|Z|,|W|)<\frac4{81}}\]</div>
+          <p>内绝对解析。与 R0.30 的 \(1/96\) 相比，保证半径严格扩大 \(128/27\approx4.7407\) 倍。</p>
+        </section>
+
+        <section id="logs"><div class="section-no">05 / One common domain</div><h2>对数和指数分解也占据整个新多圆盘</h2>
+          <p>由主理想不变性，\(U=Z\widetilde U\)、\(V=W\widetilde V\)。令 \(x=(81/4)r<1\)，则</p>
+          <div class="equation">\[|\widetilde U-1|,\ |\widetilde V-1|\le\sum_{L\ge2}\frac{x^{L-1}}{L^3}<\sum_{L\ge2}\frac1{L(L-1)}=1.\]</div>
+          <p>两个商在整个开多圆盘内都不为零，所以 \(\log(U/Z)\)、\(\log(V/W)\)、</p>
+          <div class="equation">\[\phi=\frac12[\log(U/Z)+\log(V/W)]\]</div>
+          <p>以及 R0.29 的指数分解都在同一半径 \(4/81\) 内解析。相对 R0.30 为对数单独给出的 \(1/192\)，这一保证扩大 \(256/27\approx9.4815\) 倍。</p>
+          <figure>
+            <img src="/figures/r0-31-improved-domain.svg" alt="R0.31 精确卷积核、解析尾界与改进保证半径">
+            <figcaption>图 R0.31-1。左图用实线表示 2–296 阶精确有理核，用虚线表示 297 阶以后的解析上界；右图比较 R0.30 与 R0.31 的严格保证半径。图中没有把 \(4/81\) 标成真实奇点位置，因为目前没有这样的定理。</figcaption>
+          </figure>
+        </section>
+
+        <section id="finite"><div class="section-no">06 / Exact recurrence regression</div><h2>119 阶计算只检查实现，不承担全阶证明</h2>
+          <p>正式 GMP 回归仍达到总次数 119，处理 5,484,501 次有序递推相互作用。主动电荷支持、改进层主控、\(U\) 被 \(Z\) 整除以及 \(V\) 被 \(W\) 整除的检查全部通过。</p>
+          <p>次数 119 的层范数 \(L\) 次根仍为</p>
+          <div class="equation">\[A_{119}^{1/119}=1.1556099601,\quad\|U_{119}\|_1^{1/119}=1.2111047428,\quad\|V_{119}\|_1^{1/119}=1.2175889882.\]</div>
+          <p>本次运行耗时 29.09 秒，单进程峰值 CPU 为 100%，峰值常驻内存为 32.188 MiB；两秒资源采样与逐阶段进度日志均已归档。新的保证增长常数 \(20.25\) 仍远大于有限层根值约 1.2，说明它依然是存在性下界，而非真实半径估计。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>这是一项真实的定理改进，但不是千禧年问题的直接解答</h2>
+          <p>R0.31 达到了上一笔记设定的最低交付标准：不是简单增加递推次数，而是严格扩大了全阶解析域。更重要的是，证明把有限计算与无限尾估计拼接成一个可复核证书，避免把有限曲线外推成定理。</p>
+          <p>它的直接价值在于边缘约化系统的局部解析基础更牢、更宽，后续可以从更大的安全域出发做解析延拓和零点排除。它对三维 Navier–Stokes 千禧年问题的价值仍是间接的：还缺少把该边缘机制提升到完整 PDE、控制其余模态和黏性误差的桥梁。</p>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.32</div><h2>下一步转向带认证误差的奇点候选定位</h2>
+          <ol>
+            <li>选取与 R0.28 端点抽取相容的一变量解析切片，而不是任意画 Padé 极点；</li>
+            <li>用两个独立精度和多个截断阶寻找稳定候选，再用区间算术认证局部零点或极点盒；</li>
+            <li>证明候选与原二变量函数的解析延拓相容，并检查它是否真正控制固定电荷端点系数。</li>
+          </ol>
+          <p>R0.32 只有在给出误差包围、稳定性检查和明确的解析延拓路径后，才会把某个位置称为“候选奇点”；单独的有限比值拟合仍只算诊断。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>证明、证书、日志和附图分别归档</h2>
+          <div class="proof"><strong>复现命令。</strong><br><code>python research/edge_optimized_majorant_audit.py --max-total-degree 119 --progress --check --pretty --output research/certificates/r031/edge-optimized-majorant.json</code></div>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_optimized_majorant_note.md">查看全阶证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_optimized_majorant_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r031">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r031-optimized-majorant/fig-r031-improved-domain">查看期刊附图包</a></p>
+          <h3>前序记录</h3>
+          <ol class="refs"><li><a href="/notes/r0-30.html">R0.30：全阶解析主控与共同解析域</a>。给出本笔记改进的层范数框架。</li><li><a href="/notes/r0-29.html">R0.29：对数辛输运与无限电荷阶梯</a>。给出本笔记使用的典范分解。</li></ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier–Stokes 开放研究日志</strong><br>R0.31 · 有限精确段与解析尾段分开记录</span><span><a href="/">返回研究主页</a><br><a href="#boundary">回到页首</a></span></div></footer>
+</body>
+</html>

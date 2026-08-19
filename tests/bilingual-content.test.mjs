@@ -65,6 +65,7 @@ test("language selection follows the browser once and persists across pages", as
   assert.match(runtime, /navigator\.language/);
   assert.match(runtime, /localStorage\.getItem\(storageKey\)/);
   assert.match(runtime, /localStorage\.setItem\(storageKey, target\)/);
+  assert.match(runtime, /url\.searchParams\.set\("lang", target\)/);
   assert.match(runtime, /document\.documentElement\.lang/);
   assert.match(runtime, /location\.replace/);
   assert.match(runtime, /Chinese PDF/);

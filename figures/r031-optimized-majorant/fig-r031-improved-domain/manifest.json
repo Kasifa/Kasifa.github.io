@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r031-improved-domain",
+  "status": "formal",
+  "analyticalQuestion": "Can the R0.30 convolution majorant be tightened at all orders, and can the canonical logarithms be proved analytic on the full improved polydisc?",
+  "supportedClaim": "The exact finite range and analytic tail prove H_2=8 and H_L<=27/4 for every L>=3. With K=81/4, the layer bounds give absolute analyticity of a,U,V on max(|Z|,|W|)<4/81. The quotient tails are less than one throughout the same open polydisc, so the logarithms, phi, and the R0.29 exponential factorization are analytic there as well. The degree-119 GMP run is an implementation regression, not the all-order proof or a singularity theorem.",
+  "createdAt": "2026-08-19T11:02:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "commit": "dfdf19ae3706d376deae02b9ff804060bf37d626",
+    "dirty": false
+  },
+  "simulation": {
+    "kind": "exact-audit",
+    "command": "python research/run_with_monitor.py --output /tmp/r031-resources.csv --interval 2 -- python research/edge_optimized_majorant_audit.py --max-total-degree 119 --progress --progress-log /tmp/r031-progress.ndjson --check --pretty --output /tmp/r031-edge-optimized-majorant.json",
+    "configuration": "finite exact kernel degrees 2 through 296; analytic tail from degree 297; exact recurrence through degree 119; majorant K=81/4",
+    "randomSeed": null,
+    "precision": "exact GMP rational arithmetic",
+    "solver": "deterministic kernel summation and scalar formal-series recurrence; no iterative tolerance",
+    "tolerances": {
+      "kernel": "none; exact comparison of GMP rationals",
+      "layerMajorants": "none; exact comparison of GMP rationals",
+      "chargeSupport": "none; exact integer charge indexing",
+      "divisibility": "none; exact zero coefficients"
+    },
+    "wallTimeSeconds": 29.09497133300465,
+    "recurrenceOrderedInteractions": 5484501,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 2,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "checkpointPattern": null,
+      "trackedFields": [
+        "completed formal degree",
+        "ordered recurrence interactions",
+        "CPU percent",
+        "resident memory"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "maximumObservedCpuPercent": 100.0,
+    "maximumObservedRssMiB": 32.188
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0"
+  },
+  "data": [
+    {
+      "path": "kernel.csv",
+      "format": "csv",
+      "schema": "Total degree, exact rational H_L, and decimal rendering for degrees 2 through 296.",
+      "bytes": 119149,
+      "sha256": "3faf160034d28c0bf210fc87bb6b585eef714403bae239d6fad5758c8b499f75"
+    },
+    {
+      "path": "tail-bound.csv",
+      "format": "csv",
+      "schema": "Degree, exact rational analytic upper bound, and decimal rendering for degrees 297 through 800.",
+      "bytes": 20513,
+      "sha256": "2076a7c17ca20c84645385f107fbadd4451e756c33eee1a7e2c1db677f7f04bf"
+    },
+    {
+      "path": "domains.csv",
+      "format": "csv",
+      "schema": "Compared R0.30 and R0.31 exact guaranteed radii and their exact improvement factors.",
+      "bytes": 117,
+      "sha256": "b7408a0f1394487e232ca9d11d3a96f319bfc491cff0876acff8be0332ded90d"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Append-only UTC timestamp, elapsed seconds, and completed exact-audit stage.",
+      "bytes": 2758,
+      "sha256": "024502fe878b4bcb0012d834f2d237394941d681eb3f65b7f4b59d9a764b240d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Two-second process-tree samples with UTC timestamp, elapsed seconds, status, process count, CPU percent, RSS MiB, and GPU fields.",
+      "bytes": 1315,
+      "sha256": "41e9718eaec9359fa05daa90f3397b7c230f3d547db42e6b152292b440d1a1d8"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r031",
+      "fileName": "edge-optimized-majorant.json",
+      "bytes": 241551,
+      "sha256": "32676dcefdf3c5285bdb18aab44bfdba385a84910d5e1d0df00f8ea9039ec395",
+      "extractionCommand": "prepare_data.py extracts the exact kernel records and constructs the analytic-tail and domain comparison tables; validate_data.py checks all rows independently"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "command": "MPLCONFIGDIR=tmp/mplconfig python figures/r031-optimized-majorant/fig-r031-improved-domain/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "748bca1d47af572cb62b8da2bc96268542f6540eb87ca3be5d6be6617554fb51"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "b93536cf63ea8d2204bca4920395bee8a0b9d05673e5898d409d0090dce18f2e"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "sha256": "7a0d4f1cc5c52e78d4243ebab2f622df9fc88ec6cfe3fa6a28914417d1f56e33"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "精确有限核与解析尾界共同把全阶常数降到 81/4；a、U、V、对数与指数分解共享半径 4/81。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "notes": "PDF page size is 178 by 72 mm; the 600 dpi PNG is 4204 by 1700 pixels. Color and Generic Gray renders were inspected at final layout. Solid versus dashed curves and light versus dark bars remain distinct in grayscale. Labels are unclipped. validate_data.py passed all 295 exact kernel rows, 504 analytic-tail rows, and the theorem contract."
+  }
+}

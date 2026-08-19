@@ -2359,7 +2359,40 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_analytic_majorant_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r030-analytic-majorant/fig-r030-analytic-domain">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步：</strong>改进保守主控常数并对典范映射作解析延拓，寻找能够解释 R0.28 端点比值分离的候选奇点。</p>
+            <p><strong style="color:var(--gold)">R0.31 已完成：</strong>全阶主控常数从 96 降到 \(81/4\)，并且对数与指数分解不再需要更小的辅助圆盘。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.31 · 2026-08-19</p>
+            <h3>改进主控与统一解析域</h3>
+            <p>
+              我把 R0.30 的卷积核分成精确有限段和解析尾段。GMP 有理数覆盖 \(3\le L\le296\)，最大值是 \(H_3=27/4\)；
+              对 \(L\ge297\)，递减上界 \(10000/2187+640/L+1600/L^2\) 已严格低于 \(27/4\)。
+            </p>
+            <p>
+              因此 \(H_2=8\)、\(H_L\le27/4\)（\(L\ge3\)）在全部次数成立。直接核对 \(A_2=3\) 后，
+              新常数 \(K=81/4\) 关闭归纳，得到 \(A_L\le2K^{L-1}/L^3\) 以及
+              \(\|U_L\|_1,\|V_L\|_1\le K^{L-1}/L^3\)。
+            </p>
+            <p>
+              \(a,U,V\) 的共同保证半径提高到 \(4/81\)，是 R0.30 的 \(128/27\) 倍。
+              商级数尾和在同一开多圆盘内小于 1，所以 \(\log(U/Z)\)、\(\log(V/W)\)、\(\phi\) 与指数分解也共享半径 \(4/81\)。
+            </p>
+            <p>
+              正式 119 阶 GMP 回归处理 5,484,501 次精确相互作用，峰值 CPU 为 100%，峰值常驻内存为 32.188 MiB。
+              它只检查实现；全阶性来自 2–296 阶精确覆盖与 297 阶以后解析尾界的拼接。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是边缘约化系统的严格解析域改进，不是实际奇点定位，也不是三维 Navier–Stokes 正则性结论。
+              \(4/81\) 仍只是保证下界。
+            </p>
+            <p>
+              <a href="/notes/r0-31.html"><strong>阅读 R0.31 研究笔记 →</strong></a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r031">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_optimized_majorant_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r031-optimized-majorant/fig-r031-improved-domain">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>为与端点抽取相容的解析切片建立带误差包围的奇点候选定位，而不是继续堆积有限次数。</p>
           </div>
         </section>
 
@@ -2374,7 +2407,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.17 · 2026-08-19<br>
+        综述 v0.18 · 2026-08-19<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

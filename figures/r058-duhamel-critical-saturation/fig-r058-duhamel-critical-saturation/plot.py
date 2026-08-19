@@ -167,7 +167,7 @@ def draw() -> None:
             linewidth=1.0,
             label="Rudin–Shapiro (sampled)",
         )
-        flattening_axis.axhline(math.sqrt(2), color=INK, linestyle=(0, (1, 2)), linewidth=0.8, label=r"exact bound $\sqrt2$")
+        flattening_axis.axhline(math.sqrt(2), color=INK, linestyle=(0, (1, 2)), linewidth=0.8, label=r"exact bound $\sqrt{2}$")
         flattening_axis.loglog(flattening_shells, positive_values, color=GOLD, linestyle=(0, (4, 2)), linewidth=0.95, label="all-positive phases")
         flattening_axis.text(
             0.05,
@@ -182,7 +182,7 @@ def draw() -> None:
         flattening_axis.set_xlim(1, 2**16)
         flattening_axis.set_ylim(0.8, 400)
         flattening_axis.set_xlabel(r"number of phases $L=2^m$")
-        flattening_axis.set_ylabel(r"$\sup_{|z|=1}|P_m(z)|/\sqrt L$")
+        flattening_axis.set_ylabel(r"$\sup_{|z|=1}|P_m(z)|/\sqrt{L}$")
         flattening_axis.grid(color=GRID, linewidth=0.32, which="both")
         flattening_axis.legend(loc="upper left", frameon=False, fontsize=3.45)
 

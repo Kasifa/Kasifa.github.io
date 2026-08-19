@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r056-leray-polarization-channels",
+  "status": "formal",
+  "analyticalQuestion": "After resolving one Fourier--Leray triad into its two transverse output polarizations, which channel retains the critical high--high-to-low constant and which channel has a strict separated-cell gap?",
+  "supportedClaim": "The ordered normalized Fourier--Leray kernel has an exact normal channel with gain g_N=sqrt(1-mu^2), independent of shell separation and capable of attaining one, and an in-plane channel with g_T<=(1+rho)/2<1 when |k|/|p|<=rho<1; the sharp separated in-plane limit is one half, while the normal near-saturation solid-angle fraction sqrt(2 delta-delta^2) does not decay with shell ratio.",
+  "createdAt": "2026-08-20T06:15:59+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "7c1db04fef67d58019c2e55cd42a9634875b023a",
+    "certificateCommit": "ea2456f8d3665dbfad1f11ffb5740ab7f37e5e72",
+    "formalSourceCommit": "1b736121127e91727b8ab7ff1b2fd90c2ee873f6",
+    "dirtyAtCertifiedRun": false
+  },
+  "chartContract": {
+    "family": "fixed-shell-ratio channel profile, two exact all-index integer-family asymptotics, and an exact angular-persistence curve",
+    "variants": [
+      "801 exact-rational channel-profile rows at epsilon=1/8",
+      "512 exact presentation rows from each of two all-index integer families",
+      "401 exact-rational near-saturation solid-angle rows"
+    ],
+    "takeaway": "The planar polarization improves under scale separation, but the normal polarization retains the critical constant on a shell-independent positive angular set.",
+    "dataSufficiency": "The frame identities, channel norms, equality cases, separated-cell bound, sharp limit, symmetrized formula, and angular law are analytic statements. The plotted rows and the exhaustive integer audit are deterministic exact regressions, not substitutes for those proofs.",
+    "palettePolicy": "blue for the surviving normal channel, gold for the improved planar channel, neutral ink and grid, and one restrained red theorem-bound line",
+    "nonColorEncoding": "Solid, dashed, and dotted lines, open diamond markers, direct annotations, and panel-specific axes preserve distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r056/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/leray_polarization_channel_audit.py --cube-radius 5 --max-family-index 200000 --source-commit 1b736121127e91727b8ab7ff1b2fd90c2ee873f6 --progress --progress-log research/certificates/r056/progress.ndjson --check --pretty --output research/certificates/r056/leray-polarization-channels.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels/prepare_data.py --source-commit 7c1db04fef67d58019c2e55cd42a9634875b023a",
+    "configuration": "coordinate cube radius 5; maximum family index 200000 for each of two exact families; 4096 direct ordered and 4096 symmetrized projection regressions; 801 profile, 512 family, and 401 angular presentation rows",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "Every theorem regression and sign decision uses Python integers and fractions.Fraction exact rationals. Decimal fields are presentation values and are not used for formal decisions.",
+    "solver": "formal rotation-covariant transverse-frame derivation, exact bilinear channel norm calculation, exact equality and high--high-to-low asymptotics, direct rational Leray-projection regression, and exhaustive integer-triad audit",
+    "tolerances": {
+      "formalIdentities": "none; exact integer or rational arithmetic",
+      "figureRows": "exact identities cross-checked independently by validate_data.py"
+    },
+    "scientificWallTimeSeconds": 14.488240707985824,
+    "monitoredWallTimeSeconds": 14.582162,
+    "samplingWallTimeSeconds": 0.009390582999913022,
+    "samplingMonitoredWallTimeSeconds": 0.077504,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.25,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "progress.ndjson",
+      "formalResourceLog": "resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 55,
+      "samplingSamples": 2
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 23.625,
+    "samplingMaximumObservedCpuPercent": 0.0,
+    "samplingMaximumObservedRssMiB": 5.516
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "gmp": "6.3.0",
+    "gmpy2": "2.3.1",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "channel-profile.csv",
+      "format": "csv",
+      "schema": "801 exact-rational squared-gain rows at epsilon=1/8 with mu, normal and planar gains, decimals for rendering, and theorem-bound metadata.",
+      "bytes": 115344,
+      "sha256": "933b01985af7295a9bb3ebb23fb9b50183af91e419a237646170d681cde2bb02"
+    },
+    {
+      "path": "channel-families.csv",
+      "format": "csv",
+      "schema": "512 exact rows containing the saturation-family normal and planar gains and the half-limit-family planar gain.",
+      "bytes": 69821,
+      "sha256": "5a07b374bb9b855d27264301ca2ef61f45bbaea3c3ff899b3f52f873f3e7013a"
+    },
+    {
+      "path": "angular-persistence.csv",
+      "format": "csv",
+      "schema": "401 exact-rational rows for delta and the squared normalized near-saturation solid-angle fraction 2 delta-delta^2.",
+      "bytes": 39567,
+      "sha256": "1e3a229a5cad6916744ea164fefcbf8dea245e35e007374b9dbbd9442f766f3f"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned source and certificate hashes, row counts, theorem classifications, exact regression digests, arithmetic declarations, and sampling wall time.",
+      "bytes": 1073,
+      "sha256": "9f45832f3373c840ae2aee5d4beec318d79f33aa82e58b7c1df0449596589b81"
+    },
+    {
+      "path": "progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC timestamps, stages, finite bounds, elapsed seconds, and successful 21-check completion record.",
+      "bytes": 513,
+      "sha256": "2352e5cbbbee5e472ca2dc23f9f9f275628fec929ca1c8b2b652f42c3644b99d"
+    },
+    {
+      "path": "resources.csv",
+      "format": "csv",
+      "schema": "Quarter-second process-tree resource samples for the formal exact audit.",
+      "bytes": 4144,
+      "sha256": "e4d2144140bd4be2619d8a828e48104ead91dd17aa2f2ff78fc8a252f35d2f7e"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for exact-rational figure-table preparation.",
+      "bytes": 289,
+      "sha256": "125e76aad39a2593b3e405d968cd89f60c4cdd88f0ed49f3050bcd0025f11c80"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r056",
+      "fileName": "leray-polarization-channels.json",
+      "bytes": 17209,
+      "sha256": "ff0b68729476dfc2d8e53d1483c7a29b383914a5dd8ba761502c57534858fafe",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, reconstructs exact presentation rows, and copies the progress and resource logs; validate_data.py independently checks all rows, classifications, digests, provenance, and monitoring."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "66d0bb8e57580dfa9401a03d6381769085cb539b8278ec627716828a8120b480",
+    "command": "MPLCONFIGDIR=tmp/r056-mplconfig tmp/r024-venv/bin/python figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "a41c2d3f48a814016a10a4057af2db90ffefb59f9051140adba733c92febdaa2"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "725d16c3e4ed3b4721f2c204e619477a6caf112bce455f77cf319a97e9cdf550"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "dc5f46e2690684a6bd4653d43f08dad6dab8e20b234a66dfbb9e60820de786ed"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "我把一个 Fourier--Leray 三元相互作用精确分解为两个横向输出极化：面外法向通道保持临界常数一且不随频率分离衰减，面内通道则有严格的分离壳间隙及尖锐的二分之一极限。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The first render exposed an unsupported math-text token and the first visual pass exposed a clipped panel-c title; the final source fixes both. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid versus dashed versus dotted lines, open diamond markers, direct annotations, and separate axes remain distinguishable in grayscale. Titles, axes, legends, theorem lines, scope line, and research blossom are unclipped. Six CID TrueType or STIX resources are embedded, no Type3 fonts are present, and extracted PDF text contains the exact-audit counts, 21/21 checks, separated-cell theorem, angular-persistence title, and Navier--Stokes scope limitation. validate_data.py independently checks every archived table and monitored provenance."
+  }
+}

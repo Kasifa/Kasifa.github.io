@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.34"></script>
+  <script defer src="/i18n-en.js?v=0.35"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.34</strong>网页版本</span>
+            <span><strong>v0.35</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>检验次乘权重 \(\omega_s=c^s(1+\lambda|s|)\) 能否在保持代数常数一与全荷证书的同时，给出明显大于 ppm 量级的严格阈值增益。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>检验活跃列—零荷双约束是否决定完整仿射权重族 \(\omega_s=c^s(1+\lambda|s|)\) 的全局最优阈值，并给出覆盖全部参数域的精确证书。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -3147,7 +3147,62 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_charge_character_optimization_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r050-charge-character-optimization/fig-r050-charge-character-optimization">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.51：</strong>检验仍保持代数常数一的次乘权重 \(\omega_s=c^s(1+\lambda|s|)\)。先定位活跃列切换，再判断有理 \(\lambda&gt;0\) 能否带来明显大于 ppm 量级的严格增益；若不能，则给出精确负证书。</p>
+            <p><strong style="color:var(--gold)">R0.51 已完成：</strong>固定仿射权重 \(c=0.79756,\lambda=0.7653\) 保持代数常数一，并把阈值严格提高到 \(0.382624471846022&lt;r_*&lt;0.382624471846023\)。相对 R0.50 的半径增益大于 12.174 ppm；最近竞争者切换为零荷扇区。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.51 · 2026-08-20</p>
+            <h3>仿射荷权重越过乘法全局最优边界</h3>
+            <p>
+              我把乘法荷特征扩展为非乘法但次乘的权重
+              \[
+              \omega_s(c,\lambda)=c^s(1+\lambda|s|).
+              \]
+              三角不等式给出
+              \(\omega_{a+b}\le\omega_a\omega_b\)，所以代数常数仍为一。
+              对正输入荷 \(s\ge2\)，列比精确压缩成
+              \[
+              \frac{\omega_{s+q}}{\omega_s}
+              =c^q\left(1+\frac{\lambda q}{1+\lambda s}\right).
+              \]
+            </p>
+            <p>
+              浮点探针显示旧 \(s=162,j=81\) 活跃列会与零荷扇区相遇。
+              正式证明只固定邻近有理参数
+              \(c=19939/25000\)、\(\lambda=7653/10000\)，不把探针当成
+              二参数全局最优证书。固定范数的唯一锐根被隔离在
+              \[
+              0.382624471846022&lt;r_*&lt;0.382624471846023.
+              \]
+              81 项 Sturm 链的端点变号数为 40 与 39。
+            </p>
+            <p>
+              243 个竞争对象与所有大荷、全尾次数扇区都严格落后。
+              最近者已从 \(s=164\) 切换为 \(s=0\)，严格间隙为
+              \(1.7808194822375234792\times10^{-5}\)。全部 \(s\ge241\)
+              的统一上界为 \(0.99813502986433707146\)，负一荷扇区也由
+              正导数余量完成全次数端点证明。
+            </p>
+            <p>
+              相对 R0.50 的全局最优乘法阈值，半径增益因子严格大于
+              \(1.0000121743210599539\)，约 12.174 ppm；固定荷变量
+              \(R=Z^2W\) 的 \(r^3\) 圆盘增益因子大于
+              \(1.0000365234078239459\)。这说明更宽的次乘权重确有作用，
+              同时也把下一瓶颈明确定位到零荷约束。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这里没有证明所选参数是完整
+              \((c,\lambda)\) 族的全局最优点，也没有建立到任意三维
+              速度场尺度临界范数或完整 Fourier 几何的控制桥梁。
+            </p>
+            <p>
+              <a href="/notes/r0-51.html"><strong>阅读 R0.51 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-51.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r051">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/edge_affine_charge_weight_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r051-affine-charge-weight/fig-r051-affine-charge-weight">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.52：</strong>为活跃列—零荷双约束构造精确同时根盒，并尝试用单调分支、凸性或认证区间分支定界覆盖整个 \(c&gt;0,\lambda\ge0\) 参数域。若全局定理暂时不能闭合，则给出严格上下差距或精确反例。</p>
           </div>
         </section>
 
@@ -3162,7 +3217,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.34 · 2026-08-20<br>
+        综述 v0.35 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -69,6 +69,8 @@ const fortyNinthNoteUrl = new URL("../public/notes/r0-49.html", import.meta.url)
 const fortyNinthPdfUrl = new URL("../public/notes/r0-49.pdf", import.meta.url);
 const fiftiethNoteUrl = new URL("../public/notes/r0-50.html", import.meta.url);
 const fiftiethPdfUrl = new URL("../public/notes/r0-50.pdf", import.meta.url);
+const fiftyFirstNoteUrl = new URL("../public/notes/r0-51.html", import.meta.url);
+const fiftyFirstPdfUrl = new URL("../public/notes/r0-51.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -1048,10 +1050,8 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.34<\/strong>网页版本/);
-  assert.ok(
-    home.includes("检验次乘权重 \\(\\omega_s=c^s(1+\\lambda|s|)\\)"),
-  );
+  assert.match(home, /<strong>v0\.35<\/strong>网页版本/);
+  assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
   assert.match(note, /0\.8024563827/);
@@ -1065,6 +1065,42 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(note, /r0-50-charge-character-optimization\.svg/);
   assert.match(note, /不能声称已经证明或反驳三维 Navier–Stokes 正则性/);
   assert.ok(home.includes("我把 R0.49 固定的 \\(c=4/5\\) 放回完整乘法特征族"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes and links the fixed affine charge-weight threshold theorem", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftyFirstNoteUrl, "utf8"),
+    readFile(fiftyFirstPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-51\.html"/);
+  assert.match(home, /href="\/notes\/r0-51\.pdf"/);
+  assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
+  assert.match(home, /<strong>v0\.35<\/strong>网页版本/);
+  assert.ok(
+    home.includes("检验活跃列—零荷双约束是否决定完整仿射权重族"),
+  );
+  assert.match(note, /研究笔记 R0\.51/);
+  assert.match(note, /href="\/notes\/r0-51\.pdf"/);
+  assert.match(note, /c_0=\\frac\{19939\}\{25000\}=0\.79756/);
+  assert.match(note, /\\lambda_0=\\frac\{7653\}\{10000\}=0\.7653/);
+  assert.match(note, /0\.382624471846022/);
+  assert.match(note, /1\.7808194822375234792\\times10\^\{-5\}/);
+  assert.match(note, /1\.0000121743210599539/);
+  assert.match(note, /2\.7403915410748708982\\times10\^\{-31\}/);
+  assert.match(note, /26 项精确检查全部通过/);
+  assert.match(note, /a53fdea63631977e4bb18f56da91e4e32e1a70c3/);
+  assert.match(note, /db72d40ee304d1a6ce5dd96d9f5971e78037675e79c837e409c5691bb8aa582f/);
+  assert.match(note, /r0-51-affine-charge-weight\.svg/);
+  assert.match(note, /不能声称已经证明或反驳三维 Navier–Stokes 正则性/);
+  assert.ok(note.includes("我把权重扩展为 \\(\\omega_s=c^s(1+\\lambda|s|)\\)"));
   assert.doesNotMatch(
     note,
     /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,

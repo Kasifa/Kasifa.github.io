@@ -66,6 +66,10 @@ const r050ManifestUrl = new URL(
   "../figures/r050-charge-character-optimization/fig-r050-charge-character-optimization/manifest.json",
   import.meta.url,
 );
+const r051ManifestUrl = new URL(
+  "../figures/r051-affine-charge-weight/fig-r051-affine-charge-weight/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -460,6 +464,41 @@ test("archives the formal R0.50 global charge-character optimization figure", as
   assert.match(manifest.supportedClaim, /1\.0000030613272706956/);
   assert.equal(manifest.computation.kind, "exact-audit plus high-precision presentation sampling");
   assert.equal(manifest.computation.monitoring.formalSamples, 70);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 112);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.51 affine charge-weight figure", async () => {
+  const manifest = JSON.parse(await readFile(r051ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r051-affine-charge-weight");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.sourceCommit,
+    "a2110aedb3f5a9a903120fa2caad5fa3f82a34b2",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "7e42dae84dc83f4b4e8977cc57c2974f37e6dc34",
+  );
+  assert.match(manifest.supportedClaim, /fixed weight omega_s=c\^s/);
+  assert.match(manifest.supportedClaim, /0\.382624471846022/);
+  assert.match(manifest.supportedClaim, /All 243 non-active competitors/);
+  assert.match(manifest.supportedClaim, /1\.0000121743210599539/);
+  assert.match(manifest.supportedClaim, /nearest is s=0/);
+  assert.equal(
+    manifest.computation.kind,
+    "exact-audit plus high-precision presentation sampling",
+  );
+  assert.equal(manifest.computation.monitoring.formalSamples, 64);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 112);
   assert.deepEqual(

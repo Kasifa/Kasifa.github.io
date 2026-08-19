@@ -86,8 +86,8 @@ def draw() -> None:
             3,
             left=0.075,
             right=0.963,
-            bottom=0.315,
-            top=0.835,
+            bottom=0.365,
+            top=0.825,
             width_ratios=(0.95, 1.05, 1.2),
             wspace=0.42,
         )
@@ -119,7 +119,7 @@ def draw() -> None:
             zorder=5,
         )
         scaling_axis.annotate(
-            r"$\mathcal X^{-1}$ is critical",
+            r"$\mathcal{X}^{-1}$ is critical",
             xy=(-1, 0),
             xytext=(-1.7, 1.0),
             fontsize=4.3,
@@ -129,9 +129,16 @@ def draw() -> None:
         scaling_axis.text(
             0.05,
             0.94,
-            r"$\|u_\lambda\|_{\mathcal X^\sigma}"
-            "\n"
-            r"=\lambda^{\sigma+1}\|u\|_{\mathcal X^\sigma}$",
+            r"$\|u_\lambda\|_{\mathcal{X}^\sigma}$",
+            transform=scaling_axis.transAxes,
+            va="top",
+            fontsize=4.2,
+            color=INK,
+        )
+        scaling_axis.text(
+            0.05,
+            0.865,
+            r"$=\lambda^{\sigma+1}\|u\|_{\mathcal{X}^\sigma}$",
             transform=scaling_axis.transAxes,
             va="top",
             fontsize=4.2,
@@ -143,7 +150,7 @@ def draw() -> None:
         scaling_axis.set_ylabel(r"scaling exponent $\sigma+1$")
         scaling_axis.grid(color=GRID, linewidth=0.34)
 
-        geometry_axis.set_title("(b) One exact near-cancelling triad", loc="left", pad=5)
+        geometry_axis.set_title("(b) Exact cancelling triad", loc="left", pad=5)
         origin = (0.0, 0.0)
         left_tip = (4.0, 0.0)
         output_tip = (0.0, 1.0)
@@ -187,17 +194,10 @@ def draw() -> None:
             fontsize=4.2,
             color=INK,
         )
-        geometry_axis.text(
-            0.05,
-            0.06,
-            "Representative N = 4\nidentity holds for every N >= 1",
-            transform=geometry_axis.transAxes,
-            fontsize=3.9,
-            color=MUTED,
-        )
         geometry_axis.set_xlim(-0.62, 4.55)
         geometry_axis.set_ylim(-0.48, 1.58)
         geometry_axis.set_aspect("equal", adjustable="box")
+        geometry_axis.set_anchor("N")
         geometry_axis.set_xlabel(r"frequency coordinate $\xi_1$")
         geometry_axis.set_ylabel(r"frequency coordinate $\xi_2$")
         geometry_axis.grid(color=GRID, linewidth=0.34)
@@ -235,7 +235,7 @@ def draw() -> None:
         ratio_axis.set_ylim(0.955, 1.045)
         separation_axis.set_ylim(1, 256)
         ratio_axis.set_xlabel(r"integer family index $N$")
-        ratio_axis.set_ylabel(r"$|k|^{-1}|\mathscr B_k|/(|a||b|)$", color=BLUE)
+        ratio_axis.set_ylabel(r"$|k|^{-1}|\mathcal{B}_k|/(|a||b|)$", color=BLUE)
         separation_axis.set_ylabel("minimum input/output separation", color=GOLD)
         ratio_axis.tick_params(axis="y", colors=BLUE)
         separation_axis.tick_params(axis="y", colors=GOLD)
@@ -279,7 +279,7 @@ def draw() -> None:
         figure.text(
             0.075,
             0.168,
-            r"Critical bound: $\|\mathcal T(u,v)\|_{\mathcal E_\nu}\leq\nu^{-1}\|u\|_{\mathcal E_\nu}\|v\|_{\mathcal E_\nu}$."
+            r"Critical bound: $\|\mathcal{T}(u,v)\|_{\mathcal{E}_\nu}\leq\nu^{-1}\|u\|_{\mathcal{E}_\nu}\|v\|_{\mathcal{E}_\nu}$."
             "  The exact high–high-to-low family shows that scale separation supplies no extra small factor.",
             ha="left",
             va="top",

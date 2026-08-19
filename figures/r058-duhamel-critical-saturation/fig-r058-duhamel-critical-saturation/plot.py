@@ -172,7 +172,7 @@ def draw() -> None:
         flattening_axis.text(
             0.05,
             0.08,
-            r"input: $O(\sqrt L)$" + "\n" + r"matched output: $a_n^2=1$",
+            r"input: $O(\sqrt{L})$" + "\n" + r"matched output: $a_n^2=1$",
             transform=flattening_axis.transAxes,
             ha="left",
             va="bottom",

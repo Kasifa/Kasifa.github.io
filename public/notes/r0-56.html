@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.56：我把一个 Fourier--Leray 三元相互作用精确分解为两个横向极化通道，证明面内通道有严格分离壳间隙，而法向通道仍保持临界常数一。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.56｜Leray 极化通道与法向障碍">
+  <meta property="og:description" content="面内通道具有尖锐的二分之一分离极限；法向通道在正角向平均下仍无壳衰减。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-56-leray-polarization-channels.png">
+  <title>R0.56｜Leray 极化通道与法向障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:7px 0;padding:7px 9px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:5px 0}p:has(+ .equation){break-after:avoid-page}.refs li{padding-top:2px;padding-bottom:2px}#reproduce{margin-bottom:0}#reproduce p{margin:2px 0}#reproduce h3{margin-top:10px;margin-bottom:4px}#reproduce .refs{font-size:7.5pt}#reproduce .refs li{padding-top:1px;padding-bottom:1px}#reproduce .proof code{font-size:4.45pt;line-height:1.04}}</style>
+  <script defer src="/i18n-en.js?v=0.40"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#frame">协变标架</a><a href="#channels">精确通道</a><a href="#separated">分离壳</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.56 · 方向分辨接口</div>
+        <h1>面内极化出现严格间隙，<br>法向极化仍保持临界常数一</h1>
+        <p class="lead">我在每个非共线 Fourier 三元组上建立旋转协变的横向标架，并把有序 Fourier--Leray 核精确分解为法向与面内两个输出通道。面内增益在高—高到低的分离壳中严格小于一，尖锐极限为 \(1/2\)；法向增益却与壳比无关，可以精确达到一，而且在对称化后仍有饱和族。这个结果把 R0.55 的点态饱和定位到唯一的极化方向，但还没有给出大数据闭合或三维 Navier--Stokes 正则性证明。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确两通道结构已证明</span><strong>21 项检查全通过</strong><p>版本 v0.56 · 2026-08-20</p><p>整数三元组：1,764,912 个</p><p>全指标族实例：400,000 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#frame">01 · 旋转协变标架</a></li>
+        <li><a href="#channels">02 · 精确两通道公式</a></li>
+        <li><a href="#norms">03 · 增益与等号条件</a></li>
+        <li><a href="#separated">04 · 高—高到低间隙</a></li>
+        <li><a href="#families">05 · 两个全指标族</a></li>
+        <li><a href="#angular">06 · 角向持续性</a></li>
+        <li><a href="#symmetric">07 · 对称化核</a></li>
+        <li><a href="#figure">08 · 期刊附图</a></li>
+        <li><a href="#meaning">09 · 研究价值</a></li>
+        <li><a href="#next">10 · R0.57 方向</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里得到点态极化定理，不得到大数据范数闭合</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL TRIADS</span><strong>精确两通道恒等式</strong><p>每个非零非共线有序三元组都分解为两个横向输出极化。</p></div>
+            <div class="status"><span>FORMAL · SHARP</span><strong>面内分离壳间隙</strong><p>当 \(|k|/|p|\le\rho&lt;1\) 时，\(g_T\le(1+\rho)/2&lt;1\)，分离极限 \(1/2\) 尖锐。</p></div>
+            <div class="status"><span>FORMAL · OBSTRUCTION</span><strong>法向通道保持常数一</strong><p>\(g_N\) 与壳比无关，点态饱和在对称化核中仍然存在。</p></div>
+            <div class="status"><span>OPEN · SIGNED SUM</span><strong>跨三元组聚合仍开放</strong><p>相位、反对称性、正交性和时间振荡尚未进入闭合估计。</p></div>
+          </div>
+          <div class="proof warning"><strong>范围声明。</strong>Craya--Herring 标架、螺旋模态和三元相互作用分解是经典先行工作；本页不把横向标架本身作为新发现。新推导集中在这个临界归一化核的两个精确增益、等号条件、分离壳间隙、尖锐族及其对正角向包络的限制。有限整数审计只验证实现，不替代全频率解析证明。</div>
+        </section>
+
+        <section id="frame"><div class="section-no">01 / Covariant frame</div><h2>三元平面给出一个不依赖坐标轴的横向标架</h2>
+          <p>令 \(p,q,k=p+q\) 非零且 \(p\times q\ne0\)。定义</p>
+          <div class="equation result">\[
+            n=\frac{p\times q}{|p\times q|},\qquad
+            t_p=n\times\widehat p,\quad
+            t_q=n\times\widehat q,\quad
+            t_k=n\times\widehat k.
+          \]</div>
+          <p>\((n,t_p)\)、\((n,t_q)\)、\((n,t_k)\) 分别是 \(p^\perp\)、\(q^\perp\)、\(k^\perp\) 的正交标架。对任意 \(R\in SO(3)\)，整个标架随 \(R\) 一起变换，因此公式没有固定坐标轴偏好。</p>
+          <p>把两个无散输入极化写成</p>
+          <div class="equation">\[
+            a=a_n n+a_t t_p,\qquad
+            b=b_n n+b_t t_q.
+          \]</div>
+          <p>法向分量沿 \(n\)，面内分量则在三元平面内并垂直于各自频率。</p>
+        </section>
+
+        <section id="channels"><div class="section-no">02 / Exact channels</div><h2>归一化有序核只有两个横向输出分量</h2>
+          <p>考虑 R0.55 中的临界有序核</p>
+          <div class="equation">\[
+            \mathcal K_{p,q}(a,b)
+            =|k|^{-1}P_k\!\left[(q\cdot a)b\right].
+          \]</div>
+          <p>由于 \(q\cdot n=0\) 且 \(q\cdot t_p=|p\times q|/|p|\)，再把 \(t_q\) 投影到 \(k^\perp\)，得到精确恒等式</p>
+          <div class="equation result">\[
+            \mathcal K_{p,q}(a,b)
+            =g_N a_t\left[b_n n+c_q b_t t_k\right],
+            \qquad
+            g_N=\frac{|p\times q|}{|p||k|},
+            \quad c_q=\widehat q\cdot\widehat k.
+          \]</div>
+          <p>因此输出的法向通道系数是 \(g_Na_tb_n\)，面内通道系数是 \(g_Nc_qa_tb_t\)。这一步没有三角不等式，两个通道是精确正交分量。</p>
+        </section>
+
+        <section id="norms"><div class="section-no">03 / Gains and equality</div><h2>法向增益是精确算子范数，面内增益严格更小</h2>
+          <p>有序双线性核的法向与面内增益分别为</p>
+          <div class="equation result">\[
+            g_N=\frac{|p\times q|}{|p||k|}
+            =\sin\angle(p,k),
+            \qquad
+            g_T=g_N|c_q|
+            =\frac{|p\times q|\,|q\cdot k|}{|p||q||k|^2}.
+          \]</div>
+          <p>\(g_N\le1\)，而且这正是整个有序核的双线性算子范数。等号当且仅当 \(p\cdot k=0\)；取 \(a=t_p\)、\(b=n\) 即达到等号。非共线时 \(|c_q|&lt;1\)，所以 \(g_T&lt;g_N\)。</p>
+          <div class="proof"><strong>结构含义。</strong>R0.55 的常数一并不是平均分布在两个 Leray 极化上。它全部集中在“第一输入取三元平面内极化、第二输入取三元平面法向极化、输出仍沿法向”的通道。</div>
+        </section>
+
+        <section id="separated"><div class="section-no">04 / High--high to low</div><h2>面内通道获得严格间隙，法向通道完全不感知壳分离</h2>
+          <p>令</p>
+          <div class="equation">\[
+            \varepsilon=\frac{|k|}{|p|},\qquad
+            \mu=\widehat p\cdot\widehat k,\qquad q=k-p.
+          \]</div>
+          <p>直接代入可得</p>
+          <div class="equation result">\[
+            g_N=\sqrt{1-\mu^2},\qquad
+            g_T=\frac{\sqrt{1-\mu^2}\,|\varepsilon-\mu|}
+            {\sqrt{1+\varepsilon^2-2\varepsilon\mu}}.
+          \]</div>
+          <p>关键区别是 \(g_N\) 精确地与 \(\varepsilon\) 无关。对面内通道，令 \(A=\sqrt{1-\mu^2}\)、\(B=|\varepsilon-\mu|\)，则</p>
+          <div class="equation result">\[
+            g_T=\frac{AB}{\sqrt{A^2+B^2}}
+            \le\frac{|q|}{2|p|}
+            \le\frac{1+\varepsilon}{2}.
+          \]</div>
+          <p>所以只要 \(\varepsilon\le\rho&lt;1\)，就有统一严格间隙 \(g_T\le(1+\rho)/2&lt;1\)。当 \(\varepsilon\to0\) 时，上确界趋于 \(1/2\)，而不是趋于零。</p>
+        </section>
+
+        <section id="families"><div class="section-no">05 / Exact families</div><h2>一个族保持法向饱和，另一个族证明二分之一极限尖锐</h2>
+          <p>R0.55 的全指标族</p>
+          <div class="equation">\[
+            p_N=(N,0,0),\qquad q_N=(-N,1,0),\qquad k=(0,1,0)
+          \]</div>
+          <p>满足</p>
+          <div class="equation result">\[
+            g_N^2=1,\qquad g_T^2=\frac{1}{N^2+1}.
+          \]</div>
+          <p>它说明法向通道在任意大的输入/输出分离下仍精确饱和，而同一几何中的面内通道趋于零。</p>
+          <p>再取</p>
+          <div class="equation">\[
+            p_N=(N,N,0),\qquad q_N=(-N-1,-N,0),\qquad k=(-1,0,0).
+          \]</div>
+          <p>则</p>
+          <div class="equation result">\[
+            g_N^2=\frac12,\qquad
+            g_T^2=\frac{(N+1)^2}{2(2N^2+2N+1)}
+            \longrightarrow\frac14.
+          \]</div>
+          <p>因此面内增益的分离极限 \(1/2\) 不能再降低。</p>
+        </section>
+
+        <section id="angular"><div class="section-no">06 / Angular persistence</div><h2>法向近饱和区域具有与壳比无关的正立体角</h2>
+          <p>在固定输出方向 \(\widehat k\) 后，以球面归一化测度平均输入方向 \(\widehat p\)。对任意 \(s&gt;-2\)，</p>
+          <div class="equation result">\[
+            \langle g_N^s\rangle_{S^2}
+            =\frac{\sqrt\pi\,\Gamma(1+s/2)}
+            {2\Gamma(3/2+s/2)}.
+          \]</div>
+          <p>特别地，\(\langle g_N\rangle=\pi/4\)，\(\langle g_N^2\rangle=2/3\)。更直接地，</p>
+          <div class="equation result">\[
+            \frac{|\{\widehat p:g_N\ge1-\delta\}|}{|S^2|}
+            =\sqrt{2\delta-\delta^2}.
+          \]</div>
+          <p>这个比例对 \(\varepsilon=|k|/|p|\) 完全不变。例如 \(\delta=0.1\) 时，近饱和方向占约 \(43.6\%\)。所以任何只对 \(g_N\) 做正的角向包络或 \(L^s\) 平均的方案，都不能产生壳衰减。</p>
+        </section>
+
+        <section id="symmetric"><div class="section-no">07 / Symmetrized kernel</div><h2>交换两个输入会产生差结构，但不会消灭饱和族</h2>
+          <p>对对称化核</p>
+          <div class="equation">\[
+            \mathcal S_{p,q}(a,b)=|k|^{-1}P_k
+            \left[(q\cdot a)b+(p\cdot b)a\right],
+          \]</div>
+          <p>令 \(g_p=|p\times q|/(|p||k|)\)、\(g_q=|p\times q|/(|q||k|)\)，以及 \(c_p=\widehat p\cdot\widehat k\)，可得</p>
+          <div class="equation result">\[
+            \mathcal S_{p,q}(a,b)
+            =(g_pa_tb_n-g_qa_nb_t)n
+            +a_tb_t(g_pc_q-g_qc_p)t_k.
+          \]</div>
+          <p>法向系数确实出现反对称差，这为后续有符号求和留下了入口；但在 R0.55 饱和族上取 \(a=t_p\)、\(b=n\)，交换项为零，原来的法向常数一仍然保留。因此“先对称化再取绝对值”仍不足以闭合。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Formal figure</div><h2>通道剖面、尖锐整数族与角向障碍统一归档</h2>
+          <figure>
+            <img src="/figures/r0-56-leray-polarization-channels.svg" alt="R0.56 Leray 极化通道、两个精确整数族与法向近饱和角向测度">
+            <figcaption>图 R0.56-1。左图在 \(|k|/|p|=1/8\) 上比较法向与面内增益；中图给出法向饱和族和尖锐二分之一极限族；右图给出法向近饱和方向的精确球面测度。PDF、SVG、600 dpi PNG、精确数据、验证脚本、监控、清单和哈希一并归档；彩色、真灰度与 PDF 渲染均已检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-56-leray-polarization-channels.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-56-leray-polarization-channels.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">09 / Research value</div><h2>它精确缩小了障碍，但尚不是高水平论文的核心定理</h2>
+          <p>第一项价值是把 R0.55 的常数一从“整个 Leray 投影”缩小到一个明确的法向极化通道。面内通道确实出现严格间隙，而且尖锐常数和等号族都可解析确定；后续工作不再需要对两个极化一视同仁。</p>
+          <p>第二项价值是否定一大类自然但无效的下一步：正角向平均、正包络或仅依赖壳比的权重都无法压低法向通道。若要取得真正的额外小因子，必须在取绝对值之前利用交换反对称、跨三元组正交性、相位或时间非共振。</p>
+          <p>对 Clay 问题的直接价值仍然有限。这里没有构造控制任意大初值的临界范数，没有证明法向通道在所有时间上发生抵消，也没有排除相干频率包把这个通道累积成常数阶。横向标架本身属于经典工具；单独的两通道点态公式更接近一条严谨的结构性引理。只有当它进一步导出新的平方函数估计、能量通量界，或一类广泛闭合策略的不可能性定理时，才可能成为更高水平成果的核心。</p>
+          <div class="proof warning"><strong>当前不能声称的内容。</strong>不能把面内通道的 \(1/2\) 写成完整非线性项的收缩常数；不能把 1,764,912 个整数三元组写成全频率证明；不能从正角向平均失败推出所有角向方法失败；不能声称已经解决、接近解决或显著推进三维 Navier--Stokes 全局正则性。</div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / R0.57</div><h2>下一步检验法向通道能否在有符号聚合中获得平方函数增益</h2>
+          <div class="proof"><strong>可证伪问题。</strong>在固定输出壳与角帽分解下，保留对称化法向系数 \(g_pa_tb_n-g_qa_nb_t\) 的符号，是否能建立相对于正 Schur 主控更强的 \(L^2\) 平方函数或能量通量估计，并在高—高到低区给出随壳分离衰减的常数？若不能，能否构造一个实值、无散、相位相干的有限频率包，使法向通道在所有交换配对后仍保持常数阶？</div>
+          <ol>
+            <li>把固定输出 \(k\) 的法向通道写成带交换反对称的双线性矩阵，而不是逐项取绝对值；</li>
+            <li>按 dyadic 输入壳和球面角帽建立离散 \(TT^*\) 或平方函数候选，先证明精确缩放与旋转协变性；</li>
+            <li>对单三元组饱和族、共享输出的多三元组簇和真实共轭对称频率包分别求最坏常数；</li>
+            <li>若出现壳衰减，证明它可与热耗散和临界时间范数相容；若不出现，归档最小相干反例；</li>
+            <li>只有全角帽覆盖、无穷壳求和和实值无散约束同时成立，才把结果接回完整 PDE。</li>
+          </ol>
+          <p>R0.57 的验收标准不是观察到数值抵消，而是一条带明确函数空间、常数和壳求和的解析估计，或者一个对相应估计类具有全指标证明的相干反例。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>解析证明、有限精确回归、期刊图与经典先行工作分别固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>tmp/r024-venv/bin/python research/run_with_monitor.py --output research/certificates/r056/resources.csv --interval 0.25 -- tmp/r024-venv/bin/python research/leray_polarization_channel_audit.py --cube-radius 5 --max-family-index 200000 --source-commit 1b736121127e91727b8ab7ff1b2fd90c2ee873f6 --progress --progress-log research/certificates/r056/progress.ndjson --check --pretty --output research/certificates/r056/leray-polarization-channels.json</code></div>
+          <p>正式源提交为 <code>1b736121127e91727b8ab7ff1b2fd90c2ee873f6</code>，证书归档提交为 <code>ea2456f8d3665dbfad1f11ffb5740ab7f37e5e72</code>，最终附图源提交为 <code>7c1db04fef67d58019c2e55cd42a9634875b023a</code>，附图归档提交为 <code>2d90b9f6bb79881ae0f8812fa0ee016c8c63001c</code>。</p>
+          <p>正式科学计算耗时 14.488241 秒；监控历时 14.582162 秒、采样 55 次，峰值 CPU 为 100.0%，峰值常驻内存为 23.625 MiB。没有使用 GPU、随机数或浮点符号判定，21 项检查全部通过。</p>
+          <p>成功证书 SHA-256 为 <code>ff0b68729476dfc2d8e53d1483c7a29b383914a5dd8ba761502c57534858fafe</code>。</p>
+          <p><a href="/notes/r0-56.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/leray_polarization_channel_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/leray_polarization_channel_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r056">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels">查看期刊附图包</a></p>
+          <h3>经典几何与已发表基线</h3>
+          <ol class="refs">
+            <li>F. Waleffe，<a href="https://doi.org/10.1063/1.858309"><em>The nature of triad interactions in homogeneous turbulence</em></a>，<em>Physics of Fluids A</em> 4 (1992), 350--363。螺旋模态的三元相互作用分解属于经典先行工作。</li>
+            <li>C. Cambon 等，<a href="https://doi.org/10.1016/j.crme.2017.05.004"><em>Craya--Herring frame and wave--vortex decomposition</em></a>，<em>Comptes Rendus Mécanique</em> 345 (2017), 563--580。该综述记录了此类旋转协变标架的历史与用途。</li>
+            <li>Z. Lei 与 F.-H. Lin，<a href="https://doi.org/10.1002/cpa.20361"><em>Global Mild Solutions of the Navier--Stokes Equations</em></a>，<em>Communications on Pure and Applied Mathematics</em> 64 (2011), 1297--1304。R0.55 使用的 \(\mathcal X^{-1}\) 小数据框架来自这条已发表基线。</li>
+            <li><a href="/notes/r0-55.html">R0.55：临界 Fourier 桥梁与标量荷障碍</a>。提供本页所分解的临界核与精确饱和族。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier--Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.56 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

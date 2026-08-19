@@ -96,6 +96,8 @@ def preserve_edge_punctuation(source: str, translation: str) -> str:
         expected = trailing.group(0).translate(PUNCTUATION_MAP)
         if not translation.endswith(expected):
             translation = translation.rstrip("，。；：！？,.;:!?") + expected
+    else:
+        translation = translation.rstrip("，。；：！？,.;:!?")
     return translation
 
 

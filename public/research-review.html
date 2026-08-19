@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.39"></script>
+  <script defer src="/i18n-en.js?v=0.40"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.39</strong>网页版本</span>
+            <span><strong>v0.40</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>构造保留壳层、相对角、输出方向与 Leray 极化的尺度临界 Fourier 核，检验它能否连接完整 PDE 与约化生成系统。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>保留对称化法向通道的符号，检验跨三元组平方函数、正交性或相位结构能否产生真正的壳衰减。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -3421,7 +3421,71 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/fourier_critical_charge_bridge_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r055-critical-fourier-bridge/fig-r055-critical-fourier-bridge">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.56：</strong>把状态扩展为三个 dyadic 壳、相对角或输出方向以及 Leray 横向极化；先区分高—高到低的点态饱和与角向测度，再检验旋转协变性、临界缩放、热耗散兼容性和有限双线性常数。</p>
+            <p><strong style="color:var(--gold)">R0.56 已完成：</strong>有序临界核精确分解为法向与面内两个 Leray 输出通道。面内通道在分离壳中有严格间隙和尖锐的二分之一极限；法向通道与壳比无关，在正角向平均和对称化后仍保留常数一障碍。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.56 · 2026-08-20</p>
+            <h3>Leray 极化通道与法向障碍</h3>
+            <p>
+              对非零非共线三元组 \(p+q=k\)，我使用旋转协变标架
+              \[
+              n=\frac{p\times q}{|p\times q|},\qquad
+              t_p=n\times\widehat p,\quad
+              t_q=n\times\widehat q,\quad
+              t_k=n\times\widehat k.
+              \]
+              若 \(a=a_nn+a_tt_p\)、\(b=b_nn+b_tt_q\)，归一化有序核满足精确恒等式
+              \[
+              \mathcal K_{p,q}(a,b)
+              =g_Na_t\bigl[b_nn+c_qb_tt_k\bigr],
+              \quad
+              g_N=\frac{|p\times q|}{|p||k|},
+              \quad c_q=\widehat q\cdot\widehat k.
+              \]
+            </p>
+            <p>
+              法向增益 \(g_N=\sin\angle(p,k)\) 是整个有序核的精确算子范数，
+              当且仅当 \(p\cdot k=0\) 时达到一。面内增益为
+              \(g_T=g_N|c_q|&lt;g_N\)。令
+              \(\varepsilon=|k|/|p|\)、\(\mu=\widehat p\cdot\widehat k\)，则
+              \[
+              g_N=\sqrt{1-\mu^2},\qquad
+              g_T=\frac{\sqrt{1-\mu^2}|\varepsilon-\mu|}
+              {\sqrt{1+\varepsilon^2-2\varepsilon\mu}}.
+              \]
+            </p>
+            <p>
+              因而 \(g_N\) 精确地与壳比无关；若
+              \(\varepsilon\le\rho&lt;1\)，则
+              \(g_T\le(1+\rho)/2&lt;1\)。整数族
+              \(p_N=(N,N,0)\)、\(q_N=(-N-1,-N,0)\)、\(k=(-1,0,0)\)
+              证明分离极限 \(1/2\) 尖锐。另一方面，R0.55 的饱和族仍满足
+              \(g_N=1\)，而且在交换对称化后不消失。
+            </p>
+            <p>
+              法向近饱和方向的归一化球面测度为
+              \[
+              \frac{|\{\widehat p:g_N\ge1-\delta\}|}{|S^2|}
+              =\sqrt{2\delta-\delta^2},
+              \]
+              同样与壳分离无关。这严格排除了只对法向增益做正角向包络或
+              \(L^s\) 平均来获得壳衰减的路线。
+            </p>
+            <p>
+              <strong>结论边界：</strong>Craya--Herring 标架和螺旋三元分解是经典先行工作；
+              当前新信息是这个临界核的精确通道增益、等号条件、分离壳间隙与尖锐族。
+              结果仍是点态三元结构引理，不是大数据范数闭合，也不是三维
+              Navier--Stokes 正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-56.html"><strong>阅读 R0.56 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-56.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r056">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/leray_polarization_channel_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r056-leray-polarization-channels/fig-r056-leray-polarization-channels">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.57：</strong>在取绝对值之前保留对称化法向系数的符号，检验固定输出壳与角帽上的 \(TT^*\)、平方函数或能量通量估计能否产生壳衰减；若不能，就构造满足实值与无散约束的相干有限频率包作为全指标反例。</p>
           </div>
         </section>
 
@@ -3436,7 +3500,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.39 · 2026-08-20<br>
+        综述 v0.40 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

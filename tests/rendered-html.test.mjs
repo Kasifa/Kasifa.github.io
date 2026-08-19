@@ -79,6 +79,8 @@ const fiftyFourthNoteUrl = new URL("../public/notes/r0-54.html", import.meta.url
 const fiftyFourthPdfUrl = new URL("../public/notes/r0-54.pdf", import.meta.url);
 const fiftyFifthNoteUrl = new URL("../public/notes/r0-55.html", import.meta.url);
 const fiftyFifthPdfUrl = new URL("../public/notes/r0-55.pdf", import.meta.url);
+const fiftySixthNoteUrl = new URL("../public/notes/r0-56.html", import.meta.url);
+const fiftySixthPdfUrl = new URL("../public/notes/r0-56.pdf", import.meta.url);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -92,6 +94,48 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.doesNotMatch(html, /08 \/ Selected sources|id="references"/);
   assert.doesNotMatch(html, /id="publish"|href="#publish"|Open publication/);
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
+});
+
+test("publishes and links the Leray polarization-channel theorem and normal obstruction", async () => {
+  const [home, note, pdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftySixthNoteUrl, "utf8"),
+    readFile(fiftySixthPdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-56\.html"/);
+  assert.match(home, /href="\/notes\/r0-56\.pdf"/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
+  assert.ok(home.includes("R0.56 已完成："));
+  assert.ok(home.includes("下一步 R0.57："));
+  assert.match(note, /研究笔记 R0\.56/);
+  assert.match(note, /href="\/notes\/r0-56\.pdf"/);
+  assert.match(note, /精确两通道结构已证明/);
+  assert.ok(note.includes("g_N=\\frac{|p\\times q|}{|p||k|}"));
+  assert.ok(note.includes("g_T\\le(1+\\rho)/2&lt;1"));
+  assert.ok(note.includes("\\langle g_N\\rangle=\\pi/4"));
+  assert.match(note, /1,764,912 个/);
+  assert.match(note, /400,000 个/);
+  assert.match(note, /21 项检查全部通过/);
+  assert.match(
+    note,
+    /ff0b68729476dfc2d8e53d1483c7a29b383914a5dd8ba761502c57534858fafe/,
+  );
+  assert.match(note, /r0-56-leray-polarization-channels\.svg/);
+  assert.match(note, /R0\.57 的验收标准不是观察到数值抵消/);
+  assert.match(note, /更接近一条严谨的结构性引理/);
+  assert.match(note, /不能声称已经解决、接近解决或显著推进/);
+  assert.ok(note.includes("我在每个非共线 Fourier 三元组上建立"));
+  assert.doesNotMatch(
+    note,
+    /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(
+    note,
+    /\(lambd|\(alph|\(bet|\(omeg|[^\u005c]qquad|[^\u005c]times10/,
+  );
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });
 
 test("keeps all in-page navigation targets resolvable", async () => {
@@ -1058,7 +1102,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.39<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1129,7 +1173,7 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.39<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
@@ -1162,7 +1206,7 @@ test("publishes and links the complete affine-family global enclosure", async ()
 
   assert.match(home, /href="\/notes\/r0-52\.html"/);
   assert.match(home, /href="\/notes\/r0-52\.pdf"/);
-  assert.match(home, /<strong>v0\.39<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.52/);
   assert.match(note, /href="\/notes\/r0-52\.pdf"/);
@@ -1197,7 +1241,7 @@ test("publishes and links the rational product-affine witness", async () => {
 
   assert.match(home, /href="\/notes\/r0-53\.html"/);
   assert.match(home, /href="\/notes\/r0-53\.pdf"/);
-  assert.match(home, /<strong>v0\.39<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
   assert.ok(home.includes("R0.53 已完成："));
   assert.match(home, /R0\.53 已完成：<\/strong>&nbsp;简单有理乘积仿射权/);
   assert.match(note, /研究笔记 R0\.53/);
@@ -1236,7 +1280,7 @@ test("publishes and links the complete product-affine global enclosure", async (
 
   assert.match(home, /href="\/notes\/r0-54\.html"/);
   assert.match(home, /href="\/notes\/r0-54\.pdf"/);
-  assert.match(home, /<strong>v0\.39<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.40<\/strong>网页版本/);
   assert.ok(home.includes("R0.54 已完成："));
   assert.match(home, /R0\.54 已完成：<\/strong>完整乘积仿射族/);
   assert.match(note, /研究笔记 R0\.54/);

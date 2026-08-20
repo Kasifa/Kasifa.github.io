@@ -2,8 +2,8 @@
 
 ## 1. Result
 
-Let (E_{m per}=BMO^{-1}_{\rm per}), and let (X_T) be a periodic
-Koch--Tataru path space on a fixed interval ([0,T]).  Write
+Let \(E_{\rm per}=BMO^{-1}_{\rm per}\), and let \(X_T\) be a periodic
+Koch--Tataru path space on a fixed interval \([0,T]\).  Write
 
 \[
  Sf=e^{t\Delta}f,
@@ -14,7 +14,7 @@ Koch--Tataru path space on a fixed interval ([0,T]).  Write
 \tag{1.1}
 \]
 
-and fix admissible constants (C_H,C_B>0) for
+and fix admissible constants \(C_H,C_B>0\) for
 
 \[
  \|Sf\|_{X_T}\le C_H\|f\|_{E_{\rm per}},
@@ -24,7 +24,7 @@ and fix admissible constants (C_H,C_B>0) for
 \tag{1.2}
 \]
 
-Let (v\in X_T) be a reference mild solution with initial datum (w_0),
+Let \(v\in X_T\) be a reference mild solution with initial datum \(w_0\),
 
 \[
  v=Sw_0+\mathcal B(v,v),
@@ -64,8 +64,8 @@ Put
 \tag{1.7}
 \]
 
-If (chi_r<1), then the Navier--Stokes mild equation with initial datum
-(w_0+U_r(0)) has a unique solution (u_r=v+z_r) in the closed local
+If \(\chi_r<1\), then the Navier--Stokes mild equation with initial datum
+\(w_0+U_r(0)\) has a unique solution \(u_r=v+z_r\) in the closed local
 branch
 
 \[
@@ -90,11 +90,11 @@ Moreover,
 Thus the complete nonlinear solution branch converges to the reference path
 at the same certified geometric rate as the added packet.  No Picard term is
 discarded: the proof absorbs the full perturbation self-interaction
-(\mathcal B(z_r,z_r)).
+\(\mathcal B(z_r,z_r)\).
 
 This is a conditional stability theorem, not a global regularity theorem.
-The condition (M_T<\infty) is precisely the missing large-reference gate.
-It need not follow from the single scalar statement (|v|_{X_T}<\infty)
+The condition \(M_T<\infty\) is precisely the missing large-reference gate.
+It need not follow from the single scalar statement \(\|v\|_{X_T}<\infty\)
 without a separate localization or linearized well-posedness argument in the
 chosen endpoint space.
 
@@ -109,7 +109,7 @@ The two mild equations are
 \tag{2.1}
 \]
 
-Substituting (u_r=v+z_r) and subtracting gives the exact identity
+Substituting \(u_r=v+z_r\) and subtracting gives the exact identity
 
 \[
  \boxed{
@@ -117,7 +117,7 @@ Substituting (u_r=v+z_r) and subtracting gives the exact identity
 \tag{2.2}
 \]
 
-If (L_v:=(I-\mathcal A_v)^{-1}), then (2.2) is equivalent to
+If \(L_v:=(I-\mathcal A_v)^{-1}\), then (2.2) is equivalent to
 
 \[
  z_r=\Phi_r(z_r),
@@ -134,7 +134,7 @@ The estimate (1.2) and the resolvent hypothesis imply
 \tag{2.4}
 \]
 
-and, for (z,y) in a radius-(R) ball,
+and, for \(z,y\) in a radius-\(R\) ball,
 
 \[
  \|\Phi_r(z)-\Phi_r(y)\|_{X_T}
@@ -146,16 +146,16 @@ These are estimates for the exact nonlinear map.
 
 ## 3. The smaller quadratic root closes the nonlinear map
 
-The self-map inequality in a radius-(R) ball is
+The self-map inequality in a radius-\(R\) ball is
 
 \[
  M_TC_BR^2-R+M_TC_H\delta_r\le0.
 \tag{3.1}
 \]
 
-Its discriminant is (1-\chi_r).  When (chi_r<1), the smaller root is
-exactly the value (R_-(r)) in (1.8), and equality holds in (3.1) at
-(R=R_-(r)).  The Lipschitz factor on this ball is
+Its discriminant is \(1-\chi_r\).  When \(\chi_r<1\), the smaller root is
+exactly the value \(R_-(r)\) in (1.8), and equality holds in (3.1) at
+\(R=R_-(r)\).  The Lipschitz factor on this ball is
 
 \[
  q_r=2M_TC_BR_-(r)=1-\sqrt{1-\chi_r}<1.
@@ -163,7 +163,7 @@ exactly the value (R_-(r)) in (1.8), and equality holds in (3.1) at
 \]
 
 Banach's fixed-point theorem therefore gives a unique fixed point in the
-closed (R_-(r))-ball.  Rationalizing the numerator yields
+closed \(R_-(r)\)-ball.  Rationalizing the numerator yields
 
 \[
  R_-(r)
@@ -171,7 +171,7 @@ closed (R_-(r))-ball.  Rationalizing the numerator yields
 \tag{3.3}
 \]
 
-Since (0<\sqrt{1-\chi_r}<1),
+Since \(0<\sqrt{1-\chi_r}<1\),
 
 \[
  M_TC_H\delta_r<R_-(r)<2M_TC_H\delta_r.
@@ -179,11 +179,11 @@ Since (0<\sqrt{1-\chi_r}<1),
 \]
 
 The nonlinear amplification relative to the resolvent-linear scale is thus
-between one and two.  It cannot change the geometric exponent (ho^r).
+between one and two.  It cannot change the geometric exponent \(\rho^r\).
 
 ## 4. An explicit sufficient condition for small reference paths
 
-The general theorem deliberately keeps (M_T) as a reference-dependent
+The general theorem deliberately keeps \(M_T\) as a reference-dependent
 quantity.  A simple sufficient condition follows directly from (1.2):
 
 \[
@@ -212,7 +212,7 @@ Consequently the fully explicit condition
 \tag{4.4}
 \]
 
-is sufficient for (1.9), with (M_T) replaced by (1/(1-a_T)).  This
+is sufficient for (1.9), with \(M_T\) replaced by \(1/(1-a_T)\).  This
 corollary covers small reference paths.  It does not turn an arbitrary
 order-one reference solution into a small one.
 
@@ -222,12 +222,12 @@ R0.69C left open the quadratic perturbation term.  R0.69D now closes that
 term on every reference interval satisfying (1.5).  The conclusion has
 three direct consequences for the canonical deep packet.
 
-1. The large physical Fourier coefficients of (U_r(0)) do not create a
+1. The large physical Fourier coefficients of \(U_r(0)\) do not create a
    separate nearby nonlinear branch while the reference resolvent is stable.
 2. Every interaction containing any number of reference factors and any
    number of perturbation factors is included in the fixed point.
 3. The perturbation converges in the scaling-critical path norm at
-   (O(\rho^r)); nonlinear feedback changes only a bounded prefactor.
+   \(O(\rho^r)\); nonlinear feedback changes only a bounded prefactor.
 
 This is stronger than the R0.69C linearized statement, but it remains local
 in solution space and conditional on one order-one operator associated with
@@ -235,13 +235,13 @@ the reference path.
 
 ## 6. The exact obstruction exposed by the theorem
 
-Suppose a common interval ([0,T]) and a fixed reference solution (v) are
-given.  If the nearby solution branch generated by (U_r(0)	o0) fails to
-converge locally to (v), then at least one of the hypotheses used above
+Suppose a common interval \([0,T]\) and a fixed reference solution \(v\) are
+given.  If the nearby solution branch generated by \(U_r(0)\to0\) fails to
+converge locally to \(v\), then at least one of the hypotheses used above
 must fail:
 
-1. (I-\mathcal A_v) is not boundedly invertible in (X_T);
-2. the candidate solutions leave the local uniqueness ball around (v);
+1. \(I-\mathcal A_v\) is not boundedly invertible in \(X_T\);
+2. the candidate solutions leave the local uniqueness ball around \(v\);
 3. the endpoint heat or bilinear estimates are unavailable in the selected
    function-space realization; or
 4. the reference solution itself does not persist on the interval.
@@ -255,7 +255,7 @@ condition number
 \tag{6.1}
 \]
 
-with value (+\infty) when the inverse does not exist.  The packet is
+with value \(+\infty\) when the inverse does not exist.  The packet is
 provably irrelevant whenever
 
 \[
@@ -264,22 +264,22 @@ provably irrelevant whenever
 \]
 
 Therefore this packet can approach an order-one nonlinear obstruction only
-along intervals where (mathfrak M_v(T)) grows at least on the scale
-(ho^{-r/2}), or where the common reference interval disappears.  This is
+along intervals where \(\mathfrak M_v(T)\) grows at least on the scale
+\(\rho^{-r/2}\), or where the common reference interval disappears.  This is
 a conditional necessary scaling, not evidence that such growth occurs.
 
 ## 7. Hard boundary and next problem
 
-The theorem proves neither that (mathfrak M_v(T)) remains finite up to an
+The theorem proves neither that \(\mathfrak M_v(T)\) remains finite up to an
 arbitrary time nor that it diverges at a singular time.  Bounded critical
 path norm and bounded critical linearized resolvent are distinct statements
 unless their equivalence is proved in the exact endpoint framework.  The
-argument also selects the unique branch close to (v); it does not rule out
+argument also selects the unique branch close to \(v\); it does not rule out
 distant mild solutions in a class where unconditional uniqueness is absent.
 
 The next falsifiable problem is now independent of the special packet
 geometry: construct a restart/localization theorem for the periodic
-Koch--Tataru space that bounds (mathfrak M_v(T)) by explicitly measurable
+Koch--Tataru space that bounds \(\mathfrak M_v(T)\) by explicitly measurable
 regular-interval data of a smooth reference solution.  A successful bound
 would upgrade (1.9) from a resolvent-conditional statement to a continuation
 statement on every certified regular interval.  Failure must identify the
@@ -295,6 +295,5 @@ solution of the Navier--Stokes Millennium problem.
    <https://math.berkeley.edu/~tataru/papers/nas.pdf>.
 2. P. Germain, N. Pavlovi\'c, and G. Staffilani, *Regularity of solutions to
    the Navier--Stokes equations evolving from small data in
-   (BMO^{-1})*, International Mathematics Research Notices 2007,
+   \(BMO^{-1}\)*, International Mathematics Research Notices 2007,
    rnm087, <https://arxiv.org/abs/math/0609781>.
-

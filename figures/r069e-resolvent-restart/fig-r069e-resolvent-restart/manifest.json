@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r069e-resolvent-restart",
+  "status": "formal",
+  "createdAt": "2026-08-21T06:25:00+08:00",
+  "analyticalQuestion": "How do the local inverse gates and causal time-slab gluing control the critical linearized resolvent on a regular interval?",
+  "supportedClaim": "Strict diagonal gates make the finite lower-triangular Volterra system invertible, with an explicit inverse row-sum majorant.",
+  "claimBoundary": "exact Banach-space Volterra gluing theorem for the critical linearization on a finite regular interval; not a continuation through a singular time or a global regularity theorem",
+  "git": {
+    "sourceCommit": "2d49cf91a29c2a2ecd19edbe97356a924b958917",
+    "certificateCommit": "58b586872721f7b3e774338c209b2b6837249331",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "critical-resolvent-restart.json",
+      "location": "research/certificates/r069e/critical-resolvent-restart.json",
+      "bytes": 8748,
+      "sha256": "25992a1119ebf3089a2b4b2231aba524a064e9188f4eb0b31ee5bb1b88a4a009",
+      "extractionCommand": "python3 plot.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "two-block-surface.csv",
+      "bytes": 450400,
+      "sha256": "2fe488e5a7a1a7faaa2d6cc05bf4c32e2b348b0da83ba1abeaa61a7e94d6ff01",
+      "format": "csv",
+      "schema": "a, b, exact inverse factor, base-10 logarithm"
+    },
+    {
+      "path": "equal-slab-gluing.csv",
+      "bytes": 21568,
+      "sha256": "d4edfaacac4c0e8058737bbb2346056d402b979ceca971d59557487ae030d4a2",
+      "format": "csv",
+      "schema": "eta scenario, slab count, exact high-precision inverse row sum"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 718,
+      "sha256": "e27df54e671d94e4940604d42a8f849df7e31e96022cba74630c4ea769e5d772",
+      "format": "json",
+      "schema": "pinned certificate and theorem metadata"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 437,
+      "sha256": "c0dfb127841fd0ce1c32ff57abbd869afabfe3c094cb07249409e4e3f3ace087",
+      "format": "json",
+      "schema": "eight figure-data validation checks"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "e467609853b8d5c32355bd7323ddf09293cce36429aead2e0d1995804bd8a725",
+      "format": "csv",
+      "schema": "data extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "58364ad68d399406e7b1853292005bed53ec9b15bec4709aa4a13f8e7cd21694",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "configuration": "96 by 96 two-block grid and four eta scenarios through 64 slabs",
+    "precision": "IEEE binary64 for the contour grid; mpmath 80 decimal digits for slab recurrence",
+    "solver": "exact two-block formula and causal Toeplitz forward substitution",
+    "command": "python3 plot.py",
+    "scientificWallTimeSeconds": 0.514107
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS-26.6.1-arm64-arm-64bit",
+    "cpu": "Apple M5 Max",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "mpmath": "1.3.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 92,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 56850,
+        "sha256": "f3a6216df6f81ac5319edf9b76c563c296573db46c20f4223e12edc4cfc7a44d"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 156266,
+        "sha256": "fba206a1e4dfab76ab944d1c2f66bdc78b5f4f3af9627fd89ed26f522cbec9b5"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 521934,
+        "sha256": "3d6fbccb30c0410593f612191ea79ce2ce5f8e1aa34ee8297464cb75f8109fed",
+        "dpi": 600,
+        "pixels": "4204 by 2173"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "two-parameter contour plus finite-slab condition-number curves",
+    "takeaway": "diagonal local invertibility suffices for every finite causal gluing system, even when conditioning accumulates",
+    "nonColorEncoding": "contour labels, distinct line styles, markers, and formula callouts",
+    "outputFootprint": "double-column 178 by 92 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The final-size color and grayscale renders were inspected; contours, line styles, markers, and formulas remain legible without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

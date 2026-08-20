@@ -75,7 +75,7 @@ test("archives the source-locked R0.69G certificate", async () => {
     "ae328c0b02905bf48d12468ea11bbd27e3664959",
   );
   assert.match(readme, /14 checks, all passed/);
-  assert.match(readme, /arbitrary nonnegative magnitude weights/i);
+  assert.match(readme, /arbitrary nonnegative\s+magnitude weights/i);
   assert.match(readme, /does not[\s\S]*solve the Millennium problem/i);
 
   const records = sumsText.trim().split("\n");

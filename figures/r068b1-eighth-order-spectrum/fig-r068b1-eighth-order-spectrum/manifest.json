@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r068b1-eighth-order-spectrum",
+  "status": "formal",
+  "createdAt": "2026-08-21T00:25:00+08:00",
+  "analyticalQuestion": "What exact spectrum and reachable projection control the zero-time eighth-order seven-carrier target on the repeated-0100 packet?",
+  "supportedClaim": "The 1,792-state transfer has exact cycle ranks 204, 148, 148; its reachable scalar has one dominant root near 6438.80687 and a strictly negative dominant projection coefficient.",
+  "claimBoundary": "This is a fixed-order zero-time algebraic theorem. The complete heat-weighted seven-simplex, the full Picard series, singularity, global regularity, and the Millennium problem remain open.",
+  "git": {
+    "sourceCommit": "3ddf6d30965837311c0b659d5fb21e41c3b80f14",
+    "certificateCommit": "0e5387192f6ed2b796da4212ef3bf3220eed6e4c",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "eighth-order-cycle-audit.json",
+      "location": "research/certificates/r068b1/eighth-order-cycle-audit.json",
+      "bytes": 107422,
+      "sha256": "00d60f5abd080f90c551126f388e005df4ead5bd556308f8a63c5972766d483b",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "rank-collapse.csv",
+      "bytes": 206,
+      "sha256": "2c7a3d095296fc31661cb8bcb46cac196ed6cbc8a154bda2a084c899da54208b",
+      "format": "csv",
+      "schema": "ambient and exact cycle ranks"
+    },
+    {
+      "path": "spectral-blocks.csv",
+      "bytes": 316,
+      "sha256": "fe8bf71e278435b43feb588d6ecd7a68bb1bbcd961fc6f4f67b0235132a7a994",
+      "format": "csv",
+      "schema": "exact image characteristic blocks and spectral roles"
+    },
+    {
+      "path": "reachable-sequence.csv",
+      "bytes": 16778,
+      "sha256": "00375af7346df2d0ffe9e658890fe152a7cb4e8142405a878aea92884a218bf2",
+      "format": "csv",
+      "schema": "82 exact integer values and dominant-root normalization"
+    },
+    {
+      "path": "certified-scales.csv",
+      "bytes": 351,
+      "sha256": "03ed5072d071cf88120e1ffbe5087d226943b956486a99af533813028a569993",
+      "format": "csv",
+      "schema": "strict root, projection, remainder, and probe-rate bounds"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 760,
+      "sha256": "8e47f943b688c8ad7928cb9c6a7340ec92cb5463b4702a02cdae685ecf5e675f",
+      "format": "json",
+      "schema": "pinned certificate and provenance"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "509e57e6540022e43ab905761dc4d7c7dec7148d0dbead3a15861cfdaf2eac6d",
+      "format": "csv",
+      "schema": "deterministic extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "66ad02c2631ed7f5382f7ce535941b7e618770d8dfe62b45dcd3a659c2c846f2",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit",
+    "configuration": "1,792 states, repeated 0100 cycle, exact image restriction, degree-33 reachable recurrence",
+    "precision": "exact integer and rational linear algebra, modular cross-checks, exact Schur transforms; decimals are display only",
+    "solver": "SciPy sparse transfer construction, SymPy DomainMatrix exact ranks and characteristic polynomial, GMP-backed integers",
+    "command": "python research/eighth_order_cycle_audit.py --source-commit 3ddf6d30965837311c0b659d5fb21e41c3b80f14 --max-direct-level 6 --sequence-terms 82 --progress --output research/certificates/r068b1/eighth-order-cycle-audit.json",
+    "wallTimeSeconds": 228.5643471670046,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 5,
+      "trackedFields": [
+        "wallSeconds",
+        "processTreeRssMiB",
+        "cpuPercent",
+        "gpuMemoryMiB",
+        "status"
+      ],
+      "resourceLog": "research/certificates/r068b1/resources.csv",
+      "peakRssMiB": 649.312,
+      "samples": 47
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 18
+  },
+  "environment": {
+    "python": "3.12.13",
+    "matplotlib": "3.11.1",
+    "packagesLock": "research/requirements-r068b.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 44126,
+        "sha256": "0be9d8035424480e01a916a03976ed18a1c2421765ff31733fe977c294feec6c"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 151783,
+        "sha256": "781dbec872d79f4286e81a43b38de7f0d385c7f4c848d4083d81c666ff360ca3"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 434424,
+        "sha256": "8ad9828f8f95fe4e60325c95fa72689bd085419fb2c5184aa6e0b8daf1ca8b00",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "rank collapse, exact factor-dimension strip, and normalized recurrence convergence",
+    "takeaway": "the zero-time eighth-order target has one reachable dominant root with a strictly negative projection",
+    "nonColorEncoding": "hatches, factor boundaries, direct labels, marker shapes, zero line, and interval endpoints",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The 600 dpi PNG, grayscale conversion, and Poppler-rendered PDF were inspected at final size; hatches retain all factor distinctions without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

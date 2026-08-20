@@ -1,8 +1,12 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { promisify } from "node:util";
 import test from "node:test";
 
+const execFileAsync = promisify(execFile);
+const repository = new URL("..", import.meta.url).pathname;
 const noteUrl = new URL(
   "../research/eighth_order_cycle_note.md",
   import.meta.url,
@@ -17,6 +21,10 @@ const requirementsUrl = new URL(
 );
 const certificateRoot = new URL(
   "../research/certificates/r068b1/",
+  import.meta.url,
+);
+const figureRoot = new URL(
+  "../figures/r068b1-eighth-order-spectrum/fig-r068b1-eighth-order-spectrum/",
   import.meta.url,
 );
 
@@ -126,4 +134,29 @@ test("locks the formal R0.68B-1 certificate and monitored resources", async () =
   ]) {
     assert.equal(sha256(buffer), expected.get(name));
   }
+});
+
+test("archives a formal journal figure for the R0.68B-1 spectrum", async () => {
+  const python = process.env.CODEX_PYTHON || "python3";
+  const validator = new URL("../research/validate_figure_package.py", import.meta.url);
+  const { stdout } = await execFileAsync(
+    python,
+    [validator.pathname, figureRoot.pathname],
+    { cwd: repository },
+  );
+  const validation = JSON.parse(stdout);
+  assert.deepEqual(validation.errors, []);
+  assert.deepEqual(validation.warnings, []);
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r068b1-eighth-order-spectrum");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.equal(manifest.figure.outputs.at(-1).dpi, 600);
+  assert.equal(manifest.figure.outputs.at(-1).pixels, "4204 by 2480");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.match(manifest.supportedClaim, /strictly negative/);
+  assert.match(manifest.claimBoundary, /heat-weighted seven-simplex/);
 });

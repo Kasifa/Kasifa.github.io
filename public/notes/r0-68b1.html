@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.68B-1：严格求出 1792 态八阶零时间循环的像空间谱、可达递推、唯一主根和非零负主投影。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.68B-1｜八阶零时间循环的精确谱与可达主投影">
+  <meta property="og:description" content="八阶 1792 态传输的稳定像为 148 维；唯一可达主根约为 6438.80687，主投影严格为负。完整七单形热核仍未完成。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-68b1-eighth-order-spectrum.png">
+  <title>R0.68B-1｜八阶零时间循环的精确谱与可达主投影</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.56">
+  <script defer src="/i18n-en.js?v=0.56"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#transfer">1792 态</a><a href="#spectrum">精确谱</a><a href="#reachable">可达性</a><a href="#scaling">临界缩放</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.68B-1 · 八阶零时间精确谱</div>
+        <h1>八阶代数分支已经闭合<br>热核仍是最后有限关口</h1>
+        <p class="lead">七载频约束 \(A+B+C+D-E-F-G=Q\) 精确闭合为 1792 态传输。四位周期 \(0100\) 的稳定像为 148 维；可达标量具有唯一主根 \(\nu=256\lambda\) 和严格非零的负主投影。这完成了八阶障碍的零时间一半，但尚未计算全部 35 种时间次序的七单形热权。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.68B-1 证书已完成</span><strong>17 项正式检查全通过</strong><p>版本 v0.68B-1 · 2026-08-21</p><p>直接状态：1792</p><p>稳定像维数：148</p><p>热七单形：尚未闭合</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#path">01 · 八阶路径</a></li>
+        <li><a href="#transfer">02 · 1792 态传输</a></li>
+        <li><a href="#spectrum">03 · 精确像空间谱</a></li>
+        <li><a href="#reachable">04 · 可达主投影</a></li>
+        <li><a href="#scaling">05 · 临界缩放</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#value">07 · 研究价值</a></li>
+        <li><a href="#next">08 · R0.68B-2</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>零时间谱和主投影已经严格确定，但这不是完整八阶热定理</h2>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · EXACT</span><strong>1792 态闭合</strong><p>逐状态直接卷积与数字传输一致。</p></div>
+            <div class="status"><span>STABLE IMAGE</span><strong>148 维</strong><p>\(W_8^2\) 与 \(W_8^3\) 的秩完全相同。</p></div>
+            <div class="status"><span>REACHABLE ROOT</span><strong>\(\nu&gt;6438\)</strong><p>唯一最大模谱值确实出现在目标标量中。</p></div>
+            <div class="status"><span>FINITE · OPEN</span><strong>七单形热核</strong><p>35 种时间次序与六个自由载频仍需严格配对。</p></div>
+          </div>
+        </section>
+
+        <section id="path"><div class="section-no">01 / Complete path formula</div><h2>壳分离强迫四个正载频和三个负载频，共有 35 种时间次序</h2>
+          <p>八阶目标路径从 \(-Q\) 出发，依次加入七个剪切载频并回到第一频率零。频率分离给出唯一符号型</p>
+          <div class="equation result">\[
+            \boxed{A+B+C+D-E-F-G=Q},\qquad {7\choose4}=35.
+          \]</div>
+          <p>固定一条有序路径后，令 \(k_0=-Q\)、\(k_j=-Q+\sum_{\ell=1}^jp_\ell\)；完整七单形核是</p>
+          <div class="equation">\[
+            K_T^{(7)}(\alpha_0,\ldots,\alpha_7)
+            =\int_{\substack{\tau_j\ge0\\\tau_0+\cdots+\tau_7=T}}
+            e^{-\sum_{j=0}^7\alpha_j\tau_j}\,d\tau_0\cdots d\tau_6.
+          \]</div>
+          <p>七次 Duhamel 积分给出完整八阶 Fourier 系数和相对二阶的交替相位：</p>
+          <div class="equation result">\[
+            \widehat G_8(0,m,t_H)=im^7e^{-m^2t_H}H^{-14}S_{8,m},
+          \]</div>
+          <div class="equation result">\[
+            \frac{A^8\widehat G_8}{A^2\widehat G_2}
+            =-\frac{\varepsilon^6}{L^6}R_{8,L,M,m},\qquad
+            R_{8,L,M,m}=\frac{L^6m^6}{H^9}\frac{S_{8,m}}{S_{2,m}}.
+          \]</div>
+        </section>
+
+        <section id="transfer"><div class="section-no">02 / Exact transfer</div><h2>七个载频符号、目标符号和七个进位组成 1792 个直接状态</h2>
+          <p>每个二进制层上，七个载频各有一个 Rudin--Shapiro 符号态，进位只能落在 \(\{-3,-2,-1,0,1,2,3\}\)。连同目标符号两态，得到</p>
+          <div class="equation result">\[
+            \boxed{2\times128\times7=1792\ \text{states}.}
+          \]</div>
+          <p>若下一目标位为 \(b\)，载频位为 \(\boldsymbol\varepsilon\)，则子进位和转移符号分别是</p>
+          <div class="equation">\[
+            k'=2k+b-(\varepsilon_1+\varepsilon_2+\varepsilon_3+\varepsilon_4-\varepsilon_5-\varepsilon_6-\varepsilon_7),
+          \]</div>
+          <div class="equation">\[
+            (-1)^{sb+\boldsymbol\sigma\cdot\boldsymbol\varepsilon}.
+          \]</div>
+          <p>两个数字矩阵各有 114,688 个非零元，精确有理秩均为 448。证书在前六个二进制层上，将七重直接卷积与传输结果在全部 1792 个状态中逐项核对。</p>
+        </section>
+
+        <section id="spectrum"><div class="section-no">03 / Exact image spectrum</div><h2>四位循环先降到 204 维像，再稳定在 148 维</h2>
+          <div class="equation result">\[
+            \boxed{\operatorname{rank}W_8=204,\qquad
+            \operatorname{rank}W_8^2=\operatorname{rank}W_8^3=148.}
+          \]</div>
+          <p>在 \(\operatorname{im}W_8\) 上，204 次特征多项式精确分解为</p>
+          <div class="equation result">\[
+            \boxed{\chi_{\rm im}(x)=x^{56}(x-4096)^{14}
+            q_{4,256}(x)^{14}q_{10,16}(x)^6q_{18}(x).}
+          \]</div>
+          <p>其中 \(q_{4,256}(x)=256^4p(x/256)\) 复现 R0.66 的四阶因子，\(q_{10,16}(x)=16^{10}q_{10}(x/16)\) 复现 R0.67A 的六阶因子，\(q_{18}\) 是新的十八次整数因子。204 个像空间系数逐个匹配分解；其规范 JSON 的 SHA-256 为 <code>2a1ac6b6b2c0fc5b6939492425fd13709592b9eea14cae3d24a24f2bd248d75d</code>。</p>
+          <p>十步和十八步精确 Schur 变换分别把 \(q_{10,16}\) 与 \(q_{18}\) 的全部根压入 \(|x|&lt;4800\)。四阶因子的唯一大根满足</p>
+          <div class="equation result">\[
+            \boxed{6438.806869529984&lt;\nu&lt;6438.806869530010,\qquad \nu=256\lambda.}
+          \]</div>
+          <p>由于 \(4096&lt;4800&lt;\nu\)，\(\nu\) 是唯一最大模谱值。</p>
+        </section>
+
+        <section id="reachable"><div class="section-no">04 / Reachability</div><h2>主根不是特征多项式中的幽灵因子，而是真正到达目标标量</h2>
+          <p>令 \(v_0\) 在进位零的全部符号态取一，\(\ell\) 选择目标零状态，则 \(Y_{8,r}=\ell W_8^rv_0\)。一次瞬态后，完整向量满足精确 33 次递推</p>
+          <div class="equation result">\[
+            P_{33}(W_8)W_8v_0=0,\qquad
+            P_{33}(x)=(x-4096)q_{4,256}(x)q_{10,16}(x)q_{18}(x),
+          \]</div>
+          <p>而 \(P_{33}(W_8)v_0\ne0\)。生成函数分子与 \(P_{33}\) 的最大公因子精确为 1，所以没有任何因子被目标函数消去。由有理根区间上的留数公式得到</p>
+          <div class="equation result">\[
+            \boxed{Y_{8,r}=C_{8,0}\nu^r+O(4800^r),}
+          \]</div>
+          <div class="equation result">\[
+            \boxed{-0.02612679363405570&lt;C_{8,0}&lt;-0.02612679362708268.}
+          \]</div>
+          <p>因此主投影严格非零且严格为负；这一符号完全来自整数多项式与有理区间，不依赖浮点根求解。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">05 / Critical scaling</div><h2>零时间八阶相关本身超越空间阈值，但临界振幅把形式比率压回收缩区</h2>
+          <p>未加权相关满足 \(|Y_{8,r}|/M_r^3\to\infty\)，因为 \(M_r^3=4096^r&lt;\nu^r\)。但在四阶临界振幅 \(\varepsilon_r^2=(16/\lambda)^r\) 下，八阶形式比率的块速率严格为</p>
+          <div class="equation result">\[
+            \left(\frac{16}{\lambda}\right)^{3r}
+            \left(\frac{256\lambda}{4096}\right)^r
+            =\left(\frac{256}{\lambda^2}\right)^r
+            &lt;\left(\frac{256}{625}\right)^r
+            &lt;\left(\frac{41}{100}\right)^r.
+          \]</div>
+          <div class="proof"><strong>不能跨越的边界。</strong>&nbsp;这个收缩率只属于零时间代数分支。完整 \(S_{8,m}\) 把 35 种时间次序与六个自由载频位置耦合起来；在完成七单形热投影之前，不能把上式写成八阶热系数定理。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>秩塌缩、精确因子维数和可达标量换号已保存为期刊双栏附图</h2>
+          <figure><img src="/figures/r0-68b1-eighth-order-spectrum.svg" alt="R0.68B-1 八阶零时间循环的精确秩塌缩、像空间因子与严格负可达主投影期刊附图"><figcaption>图 R0.68B-1。左上为 1792、204、148、148 的精确秩序列；右上将像空间的全部 204 维分配给五个精确因子；下图显示归一化可达标量从第 10 个周期起严格为负，并收敛到严格负的主投影区间。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-68b1-eighth-order-spectrum.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-68b1-eighth-order-spectrum.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="value"><div class="section-no">07 / Research value</div><h2>剩余八阶问题已从“可能存在什么谱”缩小为“热核是否保留这个主投影”</h2>
+          <div class="proof"><strong>真正推进之处。</strong>&nbsp;R0.68A 已排除十阶及以上尾部失控；R0.68B-1 又证明八阶零时间分支具有唯一、可达、严格非零的主谱投影。下一步不再需要搜索主根或猜测可达性，只需证明完整七单形热权与该主分布的配对不被余项消去，或严格发现一个反向热分支。</div>
+          <p>这对当前周期包的完整目标渐近具有决定性价值，但对 Clay 问题的直接价值仍然有限：平行剪切不变类本身全局光滑。即使 R0.68B-2 完成，也只是把一个显式临界包的完整 Picard 目标渐近闭合；之后仍必须引入破坏剪切不变性的真正三维扰动，并控制所有方向的临界范数。</p>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.68B-2</div><h2>下一步固定为完整七单形热投影，不再做零时间谱侦察</h2>
+          <div class="proof"><strong>验收路线。</strong>&nbsp;第一，向全部 35 个 \((4,3)\)-shuffle 插入精确七单形核；第二，把 1792 态传输提升到主热投影所需的有限仿射矩；第三，严格证明有限主系数非零，或识别抵消它的热谱分支；第四，用全局解析导数界把余项压到有限主投影之下。</div>
+          <p>只有这四项全部通过，才能把八阶热项与 R0.68A 的无限尾定理合并，决定该周期剪切包的完整目标渐近。计算过程将继续记录进度、CPU/内存资源、检查点、原始数据和期刊附图包。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>源推导、正式证书和期刊附图各自锁定</h2>
+          <p>数学与精确审计源提交为 <code>3ddf6d30965837311c0b659d5fb21e41c3b80f14</code>；正式证书提交为 <code>0e5387192f6ed2b796da4212ef3bf3220eed6e4c</code>；期刊附图提交为 <code>9b18c20</code>。正式 JSON 与标准输出逐字节一致，证书 SHA-256 为 <code>00d60f5abd080f90c551126f388e005df4ead5bd556308f8a63c5972766d483b</code>。</p>
+          <p>正式审计历时 228.56 秒；五秒一次的独立监控记录了 47 个样本，进程树峰值常驻内存 649.312 MiB，最终状态为 <code>exited:0</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_cycle_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_cycle_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b1">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b1-eighth-order-spectrum/fig-r068b1-eighth-order-spectrum">查看期刊附图包</a></p>
+          <p>声明边界：本文证明的是全局光滑平行剪切不变类中一个周期包的固定八阶零时间代数定理；没有求出完整八阶热渐近，没有控制一般三维扰动，没有证明范数膨胀、奇异性或一般三维全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.68B-1 · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

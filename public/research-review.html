@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.54"></script>
+  <script defer src="/i18n-en.js?v=0.56"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -3901,7 +3901,7 @@
             <p>
               <strong>结论边界：</strong>这是未加权零时间相关的固定六阶定理。
               R0.67B 已完成质量与四个一次矩的提升和严格 resolvent；
-              R0.67C-1 已严格证明第一周期的完整热系数为正；R0.67C-2 进一步证明渐近主热投影严格为负；R0.68A 已把十阶及以上目标尾联合闭合，只剩八阶热项未决。
+              R0.67C-1 已严格证明第一周期的完整热系数为正；R0.67C-2 进一步证明渐近主热投影严格为负；R0.68A 已把十阶及以上目标尾联合闭合；R0.68B-1 已求出八阶零时间精确谱，完整八阶热投影仍未决。
             </p>
             <p>
               <a href="/notes/r0-67.html"><strong>阅读 R0.67A 研究笔记 →</strong></a><br>
@@ -4024,7 +4024,8 @@
             <p>
               <strong>结论边界：</strong>&nbsp;这是一个固定六阶、固定周期目标族的
               渐近投影定理。R0.68A 已严格控制全部十阶及以上目标尾，
-              但八阶热项和真正三维扰动仍未控制；当前平行剪切类本身全局光滑。
+              R0.68B-1 已闭合八阶零时间谱，但完整八阶热投影和真正三维
+              扰动仍未控制；当前平行剪切类本身全局光滑。
             </p>
             <p>
               <a href="/notes/r0-67c2.html"><strong>阅读 R0.67C-2 研究笔记 →</strong></a><br>
@@ -4033,7 +4034,7 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_dominant_projection_audit.py">查看审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067c2-dominant-heat/fig-r067c2-dominant-heat">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.68：</strong>&nbsp;<strong style="color:var(--gold)">R0.68A 已完成：</strong>&nbsp;Dyson 阶乘界与九阶目标缺口证明全部十阶及以上项联合几何衰减；全阶目标问题只剩一个八阶有限关口。</p>
+            <p><strong style="color:var(--gold)">R0.68B-1 已完成：</strong>&nbsp;R0.68A 的无限尾定理之后，八阶零时间 1792 态谱与可达主投影也已精确闭合；下一步是完整七单形热投影。</p>
           </div>
 
           <div class="task-one" id="r068a" style="margin-top:2rem">
@@ -4070,7 +4071,56 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/all_order_tail_reduction_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068a-all-order-tail/fig-r068a-all-order-tail">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.68B：</strong>&nbsp;严格求出 1792 态八阶传输的像空间谱、可达分量和完整七单形热投影；这是决定该周期包完整目标渐近的最后有限阶计算。</p>
+            <p><strong style="color:var(--gold)">R0.68B-1 已完成：</strong>&nbsp;1792 态八阶传输的像空间谱、可达递推和严格负主投影已经精确闭合；下一步只剩完整七单形热投影。</p>
+          </div>
+
+          <div class="task-one" id="r068b1" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.68B-1 · 2026-08-21</p>
+            <h3>八阶零时间循环的精确谱与可达主投影</h3>
+            <p>
+              七载频约束唯一写成
+              \(A+B+C+D-E-F-G=Q\)。七个 Rudin--Shapiro 符号态、
+              目标符号两态和七个进位构成
+              \(2\times128\times7=1792\) 个直接状态。四位周期
+              \(0100\) 的精确秩满足
+              \[
+                \operatorname{rank}W_8=204,\qquad
+                \operatorname{rank}W_8^2=\operatorname{rank}W_8^3=148.
+              \]
+            </p>
+            <p>
+              204 维像空间的特征多项式精确分解为
+              \[
+                \chi_{\rm im}(x)=x^{56}(x-4096)^{14}
+                q_{4,256}(x)^{14}q_{10,16}(x)^6q_{18}(x).
+              \]
+              完整向量在一次瞬态后满足 33 次精确递推；生成函数无因子消去。
+              因而可达标量具有严格渐近
+              \[
+                Y_{8,r}=C_{8,0}\nu^r+O(4800^r),
+                \qquad 6438.806869529984&lt;\nu&lt;6438.806869530010,
+              \]
+              且
+              \[
+                -0.02612679363405570
+                &lt;C_{8,0}
+                &lt;-0.02612679362708268.
+              \]
+            </p>
+            <p>
+              在四阶临界振幅上，零时间八阶形式比率的块速率严格小于
+              \(256/625&lt;41/100\)。
+              <strong>结论边界：</strong>&nbsp;这仍是固定八阶的零时间代数定理；
+              完整 35 种时间次序的七单形热权尚未配对，不能把它写成八阶热系数定理。
+            </p>
+            <p>
+              <a href="/notes/r0-68b1.html"><strong>阅读 R0.68B-1 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-68b1-eighth-order-spectrum.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b1">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_cycle_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b1-eighth-order-spectrum/fig-r068b1-eighth-order-spectrum">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.68B-2：</strong>&nbsp;把精确七单形核插入全部 35 种时间次序，完成有限矩提升、主热投影和严格解析余项；这是与 R0.68A 无限尾定理合并前的最后有限关口。</p>
           </div>
         </section>
 
@@ -4085,7 +4135,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.55 · 2026-08-20<br>
+        综述 v0.56 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

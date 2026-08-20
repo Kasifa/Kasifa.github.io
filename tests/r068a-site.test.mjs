@@ -18,9 +18,9 @@ test("publishes the rigorous R0.68A all-order tail reduction", async () => {
     readFile(homePath, "utf8"),
     readFile(translationsPath, "utf8"),
   ]);
-  assert.ok(home.includes("R0.68A 已完成："));
-  assert.ok(home.includes("下一步 R0.68B："));
-  assert.ok(home.includes("综述 v0.55 · 2026-08-20"));
+  assert.ok(home.includes("R0.68B-1 已完成："));
+  assert.ok(home.includes("下一步 R0.68B-2："));
+  assert.ok(home.includes("综述 v0.56 · 2026-08-21"));
   assert.match(home, /href="\/notes\/r0-68a\.html"/);
   assert.match(home, /id="r068a"/);
   assert.match(note, /note-retro\.css\?v=0\.56/);
@@ -40,7 +40,7 @@ test("publishes the rigorous R0.68A all-order tail reduction", async () => {
   assert.doesNotMatch(note, /SOURCE_COMMIT|CERTIFICATE_COMMIT|FIGURE_COMMIT/);
   assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
   assert.match(translations, /all-order target tail reduces to one eighth-order gate/i);
-  assert.match(translations, /joint geometric decay of every term of order at least ten/i);
+  assert.match(translations, /every order at least ten is jointly closed/i);
 });
 
 test("publishes byte-exact mirrors of the formal R0.68A figure", async () => {

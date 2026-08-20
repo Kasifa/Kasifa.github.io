@@ -1,0 +1,80 @@
+{
+  "boundary": [
+    "The result is linearized and omits the perturbation self-interaction B(w,w).",
+    "It does not prove global regularity for order-one transverse perturbations.",
+    "It does not prove instability, norm inflation, or finite-time singularity.",
+    "It is not a solution of the Navier-Stokes Millennium problem."
+  ],
+  "checks": {
+    "carrierIsDivergenceFree": true,
+    "carrierSeedAndTargetCloseExactly": true,
+    "exactHeatDenominatorIsTwoRSquared": true,
+    "linearizedDifferenceRateMatchesBaseRate": true,
+    "matrixGapDeterminantMatches": true,
+    "matrixGapLeadingMinorMatches": true,
+    "matrixGapSecondMinorIsSPositive": true,
+    "neumannResolventClosesWhenKappaBelowOne": true,
+    "normalPolarizationColumnMatches": true,
+    "pinnedR069BCertificateHashMatches": true,
+    "r069BGeometricCriticalDecayPassed": true,
+    "sidebandBasisIsOrthonormal": true,
+    "sidebandBasisVectorBIsDivergenceFree": true,
+    "sidebandBasisVectorNIsDivergenceFree": true,
+    "stretchPolarizationColumnMatches": true,
+    "targetBasisIsOrthonormal": true,
+    "uniformCriticalRatioSquareGapIsDQuartic": true,
+    "verticalFrequencyIsPreservedByBaseSupport": true
+  },
+  "classification": "exact transverse Fourier-Leray sideband reduction plus abstract critical-path-space linearized stability; not a nonlinear large-data theorem or a Navier-Stokes singularity result",
+  "criticalPropagator": {
+    "asymptoticDecision": "the full linearized propagator converges to free heat in critical operator norm at O(rho^r)",
+    "baseBound": "delta_r <= C_0 rho^r, C_0=6+4sqrt(2)",
+    "dataSpace": "E_per=BMO^-1_per",
+    "differenceFromHeat": "||w-Sw_0||_X <= C_H*kappa_r/(1-kappa_r) ||w_0||_E",
+    "externalBounds": [
+      "||S f||_X <= C_H ||f||_E",
+      "||B(a,b)||_X <= C_B ||a||_X ||b||_X"
+    ],
+    "linearizedBound": "||w||_X <= C_H/(1-kappa_r) ||w_0||_E",
+    "pathSpace": "periodic Koch-Tataru X_per",
+    "smallnessParameter": "kappa_r=4 C_B C_H C_0 rho^r"
+  },
+  "decision": {
+    "closedGate": "no order-one critical amplification can arise from the full linearized non-normal propagator around the deep R0.69A packet",
+    "nextGate": "compare nonlinear solutions from w_0+U_r(0) and w_0 on any interval where the order-one reference solution has finite critical path norm"
+  },
+  "externalTheoremBoundary": {
+    "input": "the periodic Koch-Tataru heat and bilinear estimates are analytical inputs and their universal constants remain symbolic",
+    "notAuditedHere": "the functional-analytic proof of the periodic endpoint estimates"
+  },
+  "provenance": {
+    "gmpy2": "2.3.1",
+    "inputCertificates": {
+      "r069b": {
+        "path": "research/certificates/r069b/transverse-critical-smallness.json",
+        "sha256": "53ebc36d199ca2b379270c85a842978aab086f7f77d5e4b4f6c32e944c15ce45"
+      }
+    },
+    "python": "3.12.13",
+    "sourceCommit": "55b89d43ca854e33c10e63f64974fc479f56ceaa",
+    "sympy": "1.14.0"
+  },
+  "schemaVersion": "1.0",
+  "sideband": {
+    "carrier": "p=(R,0,0), polarization e2",
+    "formulas": {
+      "domainBasis": "n=(0,-s,m)/d; b=(d,Rm/d,Rs/d)/Q",
+      "heatDenominator": "|p|^2+|q|^2-|k|^2=2R^2",
+      "heatKernelMaximum": "(d^2+2R^2)^-1*(d^2/(d^2+2R^2))^(d^2/(2R^2))",
+      "matrix": "[[m*d/Q,0],[-R*s/Q,m]]",
+      "matrixGap": "d^2 I-T^*T=[[ (R^2 m^2+d^2 s^2)/Q^2, Rsm/Q ],[ Rsm/Q, s^2 ]]",
+      "matrixGapDeterminant": "d^2*s^4/Q^2",
+      "scales": "d^2=m^2+s^2; Q^2=R^2+d^2",
+      "singleCarrierCriticalGain": "at most |A|*Q/(d^2+2R^2) <= |A|/(2R)"
+    },
+    "invariant": "base modes have k3=0, so every linearized k3=s plane is invariant",
+    "seed": "q=(-R,m,s), s nonzero",
+    "target": "k=(0,m,s)"
+  },
+  "status": "passed"
+}

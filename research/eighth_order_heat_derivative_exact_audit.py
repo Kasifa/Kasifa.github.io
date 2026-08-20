@@ -425,7 +425,7 @@ def main() -> None:
         },
         "provenance": {
             "sourceCommit": arguments.source_commit,
-            "exactBackend": f"gmpy2 {gmpy2.version()} / GMP {gmpy2.mp_version()}",
+            "exactBackend": f"gmpy2 {gmpy2.version()} / {gmpy2.mp_version()}",
         },
         "runtime": {
             "elapsedSeconds": time.perf_counter() - started,

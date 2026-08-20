@@ -71,10 +71,10 @@ def draw() -> None:
             2,
             left=0.078,
             right=0.963,
-            bottom=0.145,
+            bottom=0.235,
             top=0.79,
-            height_ratios=(1.25, 0.9),
-            hspace=0.55,
+            height_ratios=(1.2, 0.82),
+            hspace=0.62,
             wspace=0.31,
         )
         profile_axis = figure.add_subplot(grid[0, :])
@@ -92,7 +92,7 @@ def draw() -> None:
         figure.text(
             0.078,
             0.892,
-            r"All-index theorem: $|R_{L,M,m}|\leq 7.8343\,(m/M)^2\sqrt M$  ·  "
+            r"All-index theorem: $|R_{L,M,m}|\leq 7.8343\,(m/M)^2\sqrt{M}$  ·  "
             "finite extension: 4,042 triples and 27.082 billion ordered paths",
             ha="left",
             va="center",

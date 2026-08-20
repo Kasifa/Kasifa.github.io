@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="R0.00–R0.60 阶段回顾：严格区分已经证明的结构结果、精确计算、被排除的路线与仍未解决的 Navier–Stokes 问题。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.00–R0.60｜六十轮之后，真正留下了什么">
+  <meta property="og:description" content="一份不把路线排除写成突破、不把有限计算写成定理的阶段研究账本。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-60-invariant-shear-picard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>R0.00–R0.60｜阶段研究回顾</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>
+    [hidden]{display:none!important}.ledger{margin:28px 0;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+    .ledger-row{display:grid;grid-template-columns:150px minmax(0,1fr) 130px;gap:18px;padding:15px 8px;border-top:1px solid var(--line);align-items:start}
+    .ledger-row:first-child{border-top:0}.ledger-row strong{font-weight:600}.ledger-row span{color:var(--muted);font-size:14px}.ledger-row em{color:var(--red);font:700 11px/1.5 "SFMono-Regular",Consolas,monospace;text-align:right;text-transform:uppercase}
+    .decision{counter-reset:decision;margin:24px 0;padding:0;list-style:none}.decision li{position:relative;margin:0;padding:15px 12px 15px 56px;border-top:1px solid var(--line)}
+    .decision li::before{counter-increment:decision;content:"0" counter(decision);position:absolute;left:8px;color:var(--red);font:700 12px/1.6 "SFMono-Regular",Consolas,monospace}
+    .milestones{display:flex;flex-wrap:wrap;gap:9px;margin:24px 0}.milestones a{padding:7px 10px;border:1px solid var(--line);font:700 11px/1.3 "SFMono-Regular",Consolas,monospace;text-decoration:none}
+    .verdict{font-size:1.12rem}.small{color:var(--muted);font-size:14px}
+    @media(max-width:680px){.ledger-row{grid-template-columns:1fr;gap:4px}.ledger-row em{text-align:left}.bar nav a:nth-child(n+3){display:none}}
+    @media print{.language-switcher{display:none!important}.ledger-row{grid-template-columns:110px minmax(0,1fr) 95px;padding:8px 4px}.decision li{padding-top:8px;padding-bottom:8px}}
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <button id="language-switcher" class="language-switcher" type="button">English</button>
+
+  <div class="lang-page" data-recap-language="zh">
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+      <nav><a href="#zh-boundary">结论边界</a><a href="#zh-ledger">阶段账本</a><a href="#zh-value">价值判断</a><a href="#zh-next">下一步</a><a href="/">返回主页</a></nav>
+    </div></header>
+    <main>
+      <header class="hero"><div class="hero-inner">
+        <div>
+          <div class="eyebrow">阶段回顾 · R0.00–R0.60 · 2026-08-20</div>
+          <h1>六十轮之后，<br>真正留下了什么</h1>
+          <p class="lead">我没有解决三维 Navier–Stokes 千禧年问题，也没有得到任意大数据的全局先验估计或有限时奇点。真正留下来的是一张更精确的障碍地图：哪些临界传递确实可以饱和，哪些有限维接力会被外部能量压倒，哪些解析主级数可以严格闭合，以及为什么最新的高频包最终落入全局光滑的剪切类。这份回顾只记录能够被证明、复算或明确证伪的部分。</p>
+        </div>
+        <div class="stamp"><span class="state">状态 · 阶段审计完成</span><strong>原问题仍未解决</strong><p>五条研究主线</p><p>四类证据分层</p><p>下一检查点：R0.61</p></div>
+      </div></header>
+      <div class="layout">
+        <aside class="toc"><strong>RECAP</strong><ol>
+          <li><a href="#zh-boundary">00 · 先说没有得到什么</a></li>
+          <li><a href="#zh-ledger">01 · 五阶段研究账本</a></li>
+          <li><a href="#zh-results">02 · 已经留下的结果</a></li>
+          <li><a href="#zh-closed">03 · 已关闭的路线</a></li>
+          <li><a href="#zh-value">04 · 对 Clay 问题的价值</a></li>
+          <li><a href="#zh-paper">05 · 论文价值判断</a></li>
+          <li><a href="#zh-next">06 · R0.61 决策树</a></li>
+          <li><a href="#zh-records">07 · 里程碑与档案</a></li>
+        </ol></aside>
+        <article>
+          <section id="zh-boundary"><div class="section-no">00 / Boundary first</div><h2>先把最重要的否定句写在最前面</h2>
+            <div class="grid">
+              <div class="status"><span>OPEN · CLAY PROBLEM</span><strong>没有解决</strong><p>尚无任意光滑无散初值的全局正则证明，也没有构造有限时破裂。</p></div>
+              <div class="status"><span>OPEN · A PRIORI CONTROL</span><strong>没有一般大数据估计</strong><p>现有闭合只发生在特殊频率模型、形式递推或对称剪切类中。</p></div>
+              <div class="status"><span>PROVED · STRUCTURE</span><strong>得到多项精确结构定理</strong><p>包括临界核障碍、支撑排除、解析域和不变剪切约化。</p></div>
+              <div class="status"><span>CERTIFIED · COMPUTATION</span><strong>有限计算可复现</strong><p>精确有理数、区间证明、资源日志和哈希只支持其声明范围。</p></div>
+            </div>
+            <p class="verdict">因此，这不是“距离解决只差一步”的记录，而是一项把错误直觉逐层削掉的长期研究。负面结果只有在关闭了一个清晰、此前可信的机制时才有价值；计算结果只有在与解析定理的边界分开时才可信。</p>
+          </section>
+
+          <section id="zh-ledger"><div class="section-no">01 / Five-stage ledger</div><h2>研究路线经历了五次实质转向</h2>
+            <div class="ledger">
+              <div class="ledger-row"><strong>R0.00–R0.08</strong><span>从能量恒等式、临界缩放和 Fourier--Leray 三波核出发，构造近对角频率包、短时泄漏模型与最小非共面网络。结论是：临界大小的瞬时传递可以发生，但相位和支撑结构极易失稳。</span><em>geometry</em></div>
+              <div class="ledger-row"><strong>R0.09–R0.20</strong><span>尝试有限壳接力、五阶树与振幅—极化优化。目标通道可以被显著增强，但完整同阶外部能量仍占主导；局部最优不等于跨尺度级联，更不等于奇点。</span><em>finite cascade</em></div>
+              <div class="ledger-row"><strong>R0.21–R0.37</strong><span>转向解析主级数与尖锐边缘递推。有限电荷截断被证明不闭合；随后用无限电荷阶梯、显式主控函数和加权 Wiener 范数建立严格解析域与短延拓。</span><em>majorant</em></div>
+              <div class="ledger-row"><strong>R0.38–R0.54</strong><span>用尾部分离、荷—次数格点、端点凸性和乘积仿射权逐步优化同一约化系统的认证半径，最终把完整乘积仿射族压到严格窄区间。所得是约化递推的解析控制，不是一般三维解的正则性。</span><em>certified radius</em></div>
+              <div class="ledger-row"><strong>R0.55–R0.60</strong><span>重新回到完整 Fourier--Leray 算子：标量荷不能制造壳衰减，法向极化通道可达到常数一，Duhamel 热分母仍允许临界饱和，多输出也不能自动恢复衰减；最后发现 R0.59 构造严格属于全局正则剪切类。</span><em>full operator</em></div>
+            </div>
+            <p>这五段不是一条不断接近奇点的直线。每次转向都源于上一阶段出现了一个可以严格表达的障碍：外部能量、导数损失、无限电荷尾、临界通道饱和，或隐藏的对称不变类。</p>
+          </section>
+
+          <section id="zh-results"><div class="section-no">02 / What survives</div><h2>真正可以保留下来的，是四组可审计成果</h2>
+            <h3>一、完整 Fourier--Leray 核的临界障碍</h3>
+            <p>R0.55–R0.59 给出一条连贯结论：尺度分离本身不产生统一小因子；面内通道可以衰减，而法向通道保留常数一障碍；即使加入有符号聚合、热积分、Rudin--Shapiro 相位压平和多目标平方函数，某些临界范数仍可保持饱和。这些结果告诉我，任何正则性机制都必须使用比“高频输入所以低频输出必然小”更深的结构。</p>
+            <h3>二、有限级联模型的完整外部能量账本</h3>
+            <p>R0.09–R0.20 没有产生自维持级联，却把失败原因从数值印象变成精确比值、全局优化和 Hessian 证书。目标输出可以优化，但非目标树与外部模态不能忽略。这个结论为以后设计有限维候选设置了更高的验收门槛。</p>
+            <h3>三、无限荷解析主级数的严格闭合</h3>
+            <p>R0.29–R0.54 建立了从非闭合有限电荷带到无限阶梯解析域、短延拓、精确尾界和权重优化的完整计算链。这里最可靠的贡献是证明工程：形式恒等式、全阶定理与有限回归分别归档；但它是否足以形成独立数学论文，仍取决于与真实 Navier--Stokes 系数系统的联系和现有文献的新颖性核查。</p>
+            <h3>四、R0.59 候选的完整非线性结构判定</h3>
+            <p>R0.60 证明该高频包保持 (u=(0,F(x_1,t),G(x_1,x_2,t))) 的平行剪切结构，完整 Picard 森林塌缩为单链，三次目标投影严格消失，三、五、七、九阶均不能触及目标平面。更重要的是，每个固定光滑频率包在该类内全局光滑，所以它不是候选奇点。</p>
+          </section>
+
+          <section id="zh-closed"><div class="section-no">03 / Routes closed</div><h2>被排除的路线本身构成了研究地图</h2>
+            <table><thead><tr><th>原先可能的机制</th><th>现在的判定</th><th>关闭原因</th></tr></thead><tbody>
+              <tr><td>有限壳三波接力自然形成级联</td><td>未成立</td><td>高阶外部树和非目标能量压倒指定通道。</td></tr>
+              <tr><td>固定有限电荷带可闭合全阶递推</td><td>严格排除</td><td>典范输运恒等式必然把电荷推向更高层。</td></tr>
+              <tr><td>尺度分离自动给 Fourier--Leray 小因子</td><td>严格排除</td><td>法向极化通道在任意壳比下保持常数阶。</td></tr>
+              <tr><td>热分母、多输出或平方函数恢复统一衰减</td><td>反例排除</td><td>相干包在临界热 Besov 与周期 (BMO^{-1}) 中继续饱和。</td></tr>
+              <tr><td>R0.59 三次回返可能启动非线性目标增长</td><td>严格排除</td><td>剪切单链的载频算术给出 (3H/4) 以上的三次间隙。</td></tr>
+              <tr><td>R0.59 高频包可能成为奇点候选</td><td>严格排除</td><td>完整动力学处在全局光滑的平行剪切不变类中。</td></tr>
+            </tbody></table>
+            <p class="small">“严格排除”只针对表中写明的机制和假设，不外推为对所有可能奇点机制的否定。</p>
+          </section>
+
+          <section id="zh-value"><div class="section-no">04 / Value assessment</div><h2>对数学研究有价值；对 Clay 问题的直接推进仍低</h2>
+            <div class="proof"><strong>我的当前判断。</strong>如果把“价值”理解为接近证明任意三维解全局正则或构造有限时奇点，那么现阶段价值偏低。如果把价值理解为找到精确障碍、证明若干自然方案不可能、建立可复算的临界反例族，并把下一次计算缩到唯一可证伪对象，那么价值是中等且真实的。</div>
+            <p>最重要的进步不是某个更大的数值增益，而是研究标准发生了变化：不再把第一 Picard 项当成完整解，不再把支撑可达当成系数非零，不再把有限阶回归当成全阶定理，也不再把特殊对称类的光滑性误写成一般三维结论。</p>
+            <p>距离 Clay 问题仍缺少核心桥梁：一个在真正三维、破坏剪切对称的演化中可持续的机制，以及能够控制全部高阶余项的临界或超临界估计。现有结果没有提供这座桥。</p>
+          </section>
+
+          <section id="zh-paper"><div class="section-no">05 / Publication value</div><h2>最可能形成论文的不是“解题宣言”，而是两个边界清楚的专题</h2>
+            <div class="grid">
+              <div class="status"><span>CANDIDATE A · STRONGER</span><strong>临界 Fourier--Leray 障碍族</strong><p>把 R0.55–R0.60 统一为核分解、相干饱和、热积分、多输出与剪切边界的一组定理。投稿前必须完成系统文献查重。</p></div>
+              <div class="status"><span>CANDIDATE B · CONDITIONAL</span><strong>精确解析主级数与权重优化</strong><p>把 R0.29–R0.54 写成约化输运系统的全阶解析论文；前提是明确其独立数学对象和对 Navier--Stokes 的非装饰性联系。</p></div>
+              <div class="status"><span>SUPPLEMENT · REPRODUCIBILITY</span><strong>机器可核验附录</strong><p>精确有理数、区间证书、资源日志、图包和哈希适合作为论文附录与数据仓库，不单独替代数学新颖性。</p></div>
+              <div class="status"><span>NOT READY</span><strong>千禧年问题主张</strong><p>没有依据。当前任何“解决”“重大突破”或“接近奇点”的表述都会超过证据。</p></div>
+            </div>
+          </section>
+
+          <section id="zh-next"><div class="section-no">06 / R0.61 decision tree</div><h2>下一步只有一个对象：四次目标系数</h2>
+            <p>R0.60 已证明三次目标严格为零。令 (t_H=(\log2)/(2H^2))，R0.61 将沿唯一 Picard 链精确计算 (Pi_0G_4(t_H))，并与 R0.59 的二次目标比较。需要判断的不是“数值看起来大不大”，而是是否存在独立于 (M) 的 (C\varepsilon^2/L^2) 型相对上界。</p>
+            <ol class="decision">
+              <li><strong>若得到统一衰减：</strong>剪切频率包路线将被更深地关闭，研究优先级转向破坏不变类的真正三维扰动。</li>
+              <li><strong>若得到随 (M) 增长的严格下界：</strong>继续证明五阶以上余项在同一时间尺度可控；没有余项定理，就仍不能升级为完整非线性结论。</li>
+              <li><strong>若完整路径再次精确抵消：</strong>提出更高阶对称或守恒律，并优先证明结构定理，而不是继续盲目枚举。</li>
+            </ol>
+            <div class="proof warning"><strong>停止条件。</strong>无论出现哪一条分支，只有当结果改变对一般三维扰动的判断时，这条路线才继续保有对 Clay 问题的优先级。</div>
+          </section>
+
+          <section id="zh-records"><div class="section-no">07 / Milestones and records</div><h2>关键里程碑与可复现档案</h2>
+            <div class="milestones">
+              <a href="/notes/r0-20.html">R0.20 · 有限模型全局优化</a><a href="/notes/r0-29.html">R0.29 · 典范输运</a><a href="/notes/r0-37.html">R0.37 · 加权重启</a><a href="/notes/r0-48.html">R0.48 · 阈值根</a><a href="/notes/r0-54.html">R0.54 · 乘积仿射全局界</a><a href="/notes/r0-55.html">R0.55 · 临界 Fourier 桥</a><a href="/notes/r0-58.html">R0.58 · Duhamel 饱和</a><a href="/notes/r0-60.html">R0.60 · 不变剪切链</a>
+            </div>
+            <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">研究源文件</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures">期刊附图包</a> · <a href="/figures/r0-60-invariant-shear-picard.pdf">R0.60 矢量附图</a></p>
+            <p class="small">本页是阶段性研究判断，不是论文摘要。相邻文献的新颖性核查尚未完成，因此“论文候选”不等于“已具备投稿结论”。</p>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer><div><span><strong>三维 Navier–Stokes 存在性与光滑性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>RECAP · R0.00–R0.60 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+  </div>
+
+  <div class="lang-page" data-recap-language="en" hidden>
+    <header class="bar"><div class="bar-inner">
+      <a class="brand" href="/">ν · Personal 3D Navier–Stokes Research Notes</a>
+      <nav><a href="#en-boundary">Boundary</a><a href="#en-ledger">Research ledger</a><a href="#en-value">Assessment</a><a href="#en-next">Next step</a><a href="/">Home</a></nav>
+    </div></header>
+    <main>
+      <header class="hero"><div class="hero-inner">
+        <div>
+          <div class="eyebrow">Stage recap · R0.00–R0.60 · 20 August 2026</div>
+          <h1>After sixty rounds,<br>what actually remains?</h1>
+          <p class="lead">I have not solved the three-dimensional Navier–Stokes Millennium Problem. I have neither obtained a global a priori estimate for arbitrary large data nor constructed a finite-time singularity. What remains is a sharper obstruction map: which critical transfers really saturate, which finite-dimensional relays are overwhelmed by exterior energy, which analytic majorants close rigorously, and why the latest high-frequency packet ultimately lies in a globally regular shear class. This recap records only statements that can be proved, recomputed, or clearly falsified.</p>
+        </div>
+        <div class="stamp"><span class="state">Status · stage audit complete</span><strong>The original problem remains open</strong><p>Five research threads</p><p>Four evidence levels</p><p>Next checkpoint: R0.61</p></div>
+      </div></header>
+      <div class="layout">
+        <aside class="toc"><strong>RECAP</strong><ol>
+          <li><a href="#en-boundary">00 · What I did not obtain</a></li><li><a href="#en-ledger">01 · Five-stage ledger</a></li><li><a href="#en-results">02 · Results that survive</a></li><li><a href="#en-closed">03 · Routes now closed</a></li><li><a href="#en-value">04 · Value for the Clay problem</a></li><li><a href="#en-paper">05 · Publication assessment</a></li><li><a href="#en-next">06 · R0.61 decision tree</a></li><li><a href="#en-records">07 · Milestones and records</a></li>
+        </ol></aside>
+        <article>
+          <section id="en-boundary"><div class="section-no">00 / Boundary first</div><h2>The most important negative statement comes first</h2>
+            <div class="grid">
+              <div class="status"><span>OPEN · CLAY PROBLEM</span><strong>Not solved</strong><p>There is no proof of global regularity for arbitrary smooth divergence-free data and no construction of finite-time breakdown.</p></div>
+              <div class="status"><span>OPEN · A PRIORI CONTROL</span><strong>No general large-data estimate</strong><p>Closure has occurred only in special frequency models, formal recurrences, or a symmetric shear class.</p></div>
+              <div class="status"><span>PROVED · STRUCTURE</span><strong>Several exact structural theorems</strong><p>These include critical-kernel obstructions, support exclusions, analytic domains, and invariant-shear reduction.</p></div>
+              <div class="status"><span>CERTIFIED · COMPUTATION</span><strong>Finite computations are reproducible</strong><p>Exact rationals, interval proofs, resource logs, and hashes support only their stated scope.</p></div>
+            </div>
+            <p class="verdict">This is therefore not a record of being “one step from a solution.” It is a long-term attempt to remove false intuitions one layer at a time. A negative result matters only when it closes a clear and previously plausible mechanism; a computation is trustworthy only when its boundary is kept separate from the analytic theorem.</p>
+          </section>
+
+          <section id="en-ledger"><div class="section-no">01 / Five-stage ledger</div><h2>The programme changed direction five times</h2>
+            <div class="ledger">
+              <div class="ledger-row"><strong>R0.00–R0.08</strong><span>I began with the energy identity, critical scaling, and Fourier–Leray triad kernel, then built near-diagonal packets, short-time leakage models, and minimal non-coplanar networks. Critical-size instantaneous transfer is possible, but phase and support coherence are fragile.</span><em>geometry</em></div>
+              <div class="ledger-row"><strong>R0.09–R0.20</strong><span>I tested finite-shell relays, fifth-order trees, and amplitude–polarisation optimisation. The target channel can be strengthened, but full same-order exterior energy remains dominant. A local optimum is not a cascade and is not a singularity.</span><em>finite cascade</em></div>
+              <div class="ledger-row"><strong>R0.21–R0.37</strong><span>I moved to analytic majorants and sharp edge recurrences. A finite charge cutoff was proved not to close. An infinite charge ladder, explicit majorants, and weighted Wiener norms then produced rigorous analytic domains and a short continuation step.</span><em>majorant</em></div>
+              <div class="ledger-row"><strong>R0.38–R0.54</strong><span>Tail separation, charge–degree lattices, endpoint convexity, and product-affine weights progressively improved the certified radius of the same reduced system. This controls a reduced recurrence, not the regularity of general three-dimensional solutions.</span><em>certified radius</em></div>
+              <div class="ledger-row"><strong>R0.55–R0.60</strong><span>I returned to the full Fourier–Leray operator. Scalar charges do not create shell decay; the normal polarisation channel attains the constant-one obstruction; Duhamel heat denominators and multiple outputs still permit critical saturation; the R0.59 packet was finally shown to lie in a globally regular shear class.</span><em>full operator</em></div>
+            </div>
+            <p>These stages do not form a straight line towards a singularity. Each turn was forced by a precisely stated obstruction in the previous phase: exterior energy, derivative loss, an infinite charge tail, critical-channel saturation, or a hidden invariant symmetry.</p>
+          </section>
+
+          <section id="en-results"><div class="section-no">02 / What survives</div><h2>Four auditable groups of results remain</h2>
+            <h3>1. Critical obstructions in the full Fourier–Leray kernel</h3><p>R0.55–R0.59 form a coherent conclusion. Scale separation alone supplies no uniform small factor. The in-plane channel may decay, while the normal channel retains a constant-one obstruction. Signed aggregation, heat integration, Rudin–Shapiro phase flattening, and multi-target square functions can all leave selected critical norms saturated. Any regularity mechanism must therefore use more than the slogan that high-frequency input should produce a small low-frequency output.</p>
+            <h3>2. A complete exterior-energy ledger for finite cascade models</h3><p>R0.09–R0.20 did not produce a self-sustaining cascade. They did turn the failure into exact ratios, global optimisation, and Hessian certificates. The target can be optimised, but non-target trees and exterior modes cannot be neglected. Future finite-dimensional candidates must meet this stronger acceptance test.</p>
+            <h3>3. Rigorous closure of an infinite-charge analytic majorant</h3><p>R0.29–R0.54 give a complete computational chain from the failure of a finite charge band to infinite-ladder analytic domains, continuation, exact tail bounds, and weight optimisation. Its most reliable contribution is proof engineering: formal identities, all-order theorems, and finite regression are archived separately. Independent publication still depends on the connection to the genuine Navier–Stokes coefficient system and on a novelty review.</p>
+            <h3>4. A full nonlinear classification of the R0.59 candidate</h3><p>R0.60 proves that the packet preserves the plane-parallel form (u=(0,F(x_1,t),G(x_1,x_2,t))). The full Picard forest collapses to a single chain; cubic target projection vanishes exactly; and orders three, five, seven, and nine cannot reach the target plane. More importantly, every fixed smooth packet is globally smooth in this class, so it is not a singularity candidate.</p>
+          </section>
+
+          <section id="en-closed"><div class="section-no">03 / Routes closed</div><h2>The excluded mechanisms now form a research map</h2>
+            <table><thead><tr><th>Initially plausible mechanism</th><th>Current verdict</th><th>Reason</th></tr></thead><tbody>
+              <tr><td>A finite-shell triad relay naturally creates a cascade</td><td>Not established</td><td>Higher exterior trees and non-target energy overwhelm the prescribed channel.</td></tr>
+              <tr><td>A fixed finite charge band closes the full recurrence</td><td>Ruled out exactly</td><td>The canonical transport identity necessarily drives charge to higher levels.</td></tr>
+              <tr><td>Scale separation creates a Fourier–Leray small factor</td><td>Ruled out exactly</td><td>The normal polarisation channel remains of constant size at arbitrary shell ratio.</td></tr>
+              <tr><td>Heat denominators, multiple outputs, or square functions restore decay</td><td>Ruled out by explicit packets</td><td>Coherent packets remain saturated in critical heat-Besov and periodic (BMO^{-1}) norms.</td></tr>
+              <tr><td>A cubic return from R0.59 starts nonlinear target growth</td><td>Ruled out exactly</td><td>Carrier arithmetic in the shear chain gives a cubic gap greater than (3H/4).</td></tr>
+              <tr><td>The R0.59 packet is a possible singularity candidate</td><td>Ruled out exactly</td><td>The full dynamics lie in a globally regular plane-parallel invariant class.</td></tr>
+            </tbody></table>
+            <p class="small">“Ruled out exactly” refers only to the stated mechanism and hypotheses. It is not a statement about all possible singularity mechanisms.</p>
+          </section>
+
+          <section id="en-value"><div class="section-no">04 / Value assessment</div><h2>Mathematically useful; still low in direct value for the Clay problem</h2>
+            <div class="proof"><strong>My present assessment.</strong> If value means proximity to global regularity for arbitrary three-dimensional data or to a finite-time singularity, the present value is low. If it means identifying exact obstructions, proving several natural schemes impossible, building reproducible critical counterexample families, and reducing the next computation to one falsifiable object, the value is moderate and real.</div>
+            <p>The main improvement is not a larger numerical gain but a change in research standards. I no longer treat the first Picard term as the full solution, support accessibility as a nonzero coefficient, finite-order regression as an all-order theorem, or smoothness in a symmetric class as a general three-dimensional conclusion.</p>
+            <p>The central bridge to the Clay problem is still missing: a persistent mechanism in genuinely three-dimensional evolution that breaks shear symmetry, together with a critical or supercritical estimate controlling all higher-order remainders. None of the current results supplies that bridge.</p>
+          </section>
+
+          <section id="en-paper"><div class="section-no">05 / Publication value</div><h2>The plausible papers are bounded technical studies, not a solution claim</h2>
+            <div class="grid">
+              <div class="status"><span>CANDIDATE A · STRONGER</span><strong>A family of critical Fourier–Leray obstructions</strong><p>Unify R0.55–R0.60 as kernel decomposition, coherent saturation, heat integration, multiple outputs, and the shear boundary. A systematic novelty review is required before submission.</p></div>
+              <div class="status"><span>CANDIDATE B · CONDITIONAL</span><strong>Exact analytic majorants and weight optimisation</strong><p>Present R0.29–R0.54 as an all-order analysis of the reduced transport system, provided its independent mathematical object and non-decorative link to Navier–Stokes are made explicit.</p></div>
+              <div class="status"><span>SUPPLEMENT · REPRODUCIBILITY</span><strong>Machine-verifiable appendices</strong><p>Exact rational arithmetic, interval certificates, resource logs, figure packages, and hashes are strong supplementary materials, but they do not replace mathematical novelty.</p></div>
+              <div class="status"><span>NOT READY</span><strong>A Millennium Problem claim</strong><p>There is no basis for it. Any statement of a solution, major breakthrough, or proximity to a singularity would exceed the evidence.</p></div>
+            </div>
+          </section>
+
+          <section id="en-next"><div class="section-no">06 / R0.61 decision tree</div><h2>The next object is unique: the quartic target coefficient</h2>
+            <p>R0.60 proves that the cubic target is exactly zero. At (t_H=(\log2)/(2H^2)), R0.61 will compute (Pi_0G_4(t_H)) along the unique Picard chain and compare it with the R0.59 quadratic target. The question is not whether a numerical sample looks large, but whether there is a relative bound of the form (C\varepsilon^2/L^2) independent of (M).</p>
+            <ol class="decision">
+              <li><strong>If uniform decay holds:</strong> the shear-packet route is closed more deeply, and priority moves to genuinely three-dimensional perturbations that break the invariant class.</li>
+              <li><strong>If a rigorous lower bound grows with (M):</strong> the next task is to control every remainder of order five and above on the same time scale. Without a remainder theorem, there is still no full nonlinear conclusion.</li>
+              <li><strong>If the full path sum cancels again:</strong> formulate and prove a higher-order symmetry or conservation law instead of continuing blind enumeration.</li>
+            </ol>
+            <div class="proof warning"><strong>Stopping rule.</strong> Whichever branch occurs, this route retains priority for the Clay problem only if it changes the assessment of genuinely three-dimensional perturbations.</div>
+          </section>
+
+          <section id="en-records"><div class="section-no">07 / Milestones and records</div><h2>Selected milestones and reproducible archives</h2>
+            <div class="milestones">
+              <a href="/notes/r0-20.html?lang=en">R0.20 · global finite-model optimum</a><a href="/notes/r0-29.html?lang=en">R0.29 · canonical transport</a><a href="/notes/r0-37.html?lang=en">R0.37 · weighted restart</a><a href="/notes/r0-48.html?lang=en">R0.48 · threshold root</a><a href="/notes/r0-54.html?lang=en">R0.54 · product-affine enclosure</a><a href="/notes/r0-55.html?lang=en">R0.55 · critical Fourier bridge</a><a href="/notes/r0-58.html?lang=en">R0.58 · Duhamel saturation</a><a href="/notes/r0-60.html?lang=en">R0.60 · invariant shear chain</a>
+            </div>
+            <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">Research sources</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates">Machine-readable certificates</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures">Journal figure packages</a> · <a href="/figures/r0-60-invariant-shear-picard.pdf">R0.60 vector figure</a></p>
+            <p class="small">This page is a stage assessment, not a paper abstract. The neighbouring-literature novelty review is unfinished, so “paper candidate” does not mean “submission-ready result.”</p>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer><div><span><strong>Existence and Smoothness of the 3D Navier–Stokes Equations</strong><br>Proofs, finite computations, and conjectures are recorded separately.</span><span>RECAP · R0.00–R0.60 · 20 August 2026<br><a href="/?lang=en">Back to the research home page</a></span></div></footer>
+  </div>
+
+  <script>
+    (()=>{
+      const key="navier-stokes-language-v1";
+      const requested=new URLSearchParams(location.search).get("lang");
+      let language=requested==="zh"||requested==="en"?requested:null;
+      if(!language){try{const saved=localStorage.getItem(key);if(saved==="zh"||saved==="en")language=saved}catch{}}
+      if(!language)language=navigator.language.toLowerCase().startsWith("zh")?"zh":"en";
+      const button=document.getElementById("language-switcher");
+      const apply=(value)=>{
+        document.documentElement.lang=value==="en"?"en":"zh-CN";
+        document.documentElement.dataset.language=value;
+        document.title=value==="en"?"R0.00–R0.60 | Stage Research Recap":"R0.00–R0.60｜阶段研究回顾";
+        for(const page of document.querySelectorAll("[data-recap-language]"))page.hidden=page.dataset.recapLanguage!==value;
+        button.textContent=value==="zh"?"English":"中文";
+        button.lang=value==="zh"?"en":"zh-CN";
+        button.setAttribute("aria-label",value==="zh"?"Switch to English":"切换为中文");
+      };
+      apply(language);
+      button.addEventListener("click",()=>{
+        const next=document.documentElement.dataset.language==="zh"?"en":"zh";
+        try{localStorage.setItem(key,next)}catch{}
+        const url=new URL(location.href);url.searchParams.set("lang",next);location.replace(url.href);
+      });
+    })();
+  </script>
+</body>
+</html>

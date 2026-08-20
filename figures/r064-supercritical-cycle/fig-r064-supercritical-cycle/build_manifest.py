@@ -98,12 +98,23 @@ def main() -> None:
             "monitoring": {
                 "enabled": True,
                 "reportIntervalSeconds": 0.1,
-                "resourceLogs": ["figure-data-attempt1-resources.csv", "figure-data-resources.csv", "plot-resources.csv"],
+                "resourceLogs": [
+                    "figure-data-attempt1-resources.csv",
+                    "figure-data-attempt2-resources.csv",
+                    "plot-attempt1-resources.csv",
+                    "figure-data-resources.csv",
+                    "plot-resources.csv"
+                ],
                 "failedAttempts": [
                     {
                         "stage": "figure-data validation",
                         "log": "figure-data-attempt1-resources.csv",
                         "reason": "The initial r<=30 display window ended at block growth 21.14 and did not yet show the slow convergence toward the exact dominant root; the recurrence window was extended without changing the certified transfer data."
+                    },
+                    {
+                        "stage": "figure source normalization",
+                        "logs": ["figure-data-attempt2-resources.csv", "plot-attempt1-resources.csv"],
+                        "reason": "The first successful r<=120 render emitted a Python invalid-escape SyntaxWarning in one TeX label. The string literal was normalized and both data provenance and outputs were regenerated from the final source commit."
                     }
                 ]
             },

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.68B-2d/e：严格封闭全部 4,368 个十一阶混合导数与 1,792 个主根质量坐标。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.68B-2d/e｜严格导数与主根质量证书">
+  <meta property="og:description" content="GMP 有理证书封闭十一阶混合导数；33 次精确递推与四次根二分封闭主根质量。最终热符号仍待矩提升、热系数和缺陷预解式的严格包络。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-68b2de-strict-components.png">
+  <title>R0.68B-2d/e｜严格导数与主根质量证书</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.58">
+  <script defer src="/i18n-en.js?v=0.58"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#scan">完整扫描</a><a href="#derivative">严格导数</a><a href="#mass">严格质量</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.68B-2d/e · 两个严格分量</div>
+        <h1>十一阶导数全封闭<br>主根质量区间封闭</h1>
+        <p class="lead">我先遍历六变量总阶十一的全部 4,368 个多重指标，再用 GMP 有理数和 120 项时间区间把导数上界严格化。随后用 33 次精确递推和 192 次四次根二分，封闭 1,792 个主根质量坐标。这两项不再依赖 binary64 猜测；但最终热符号还需要十阶矩提升、热系数与缺陷预解式的严格包络。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.68B-2e 完成</span><strong>两个分量严格</strong><p>版本 v0.68B-2e · 2026-08-21</p><p>混合导数：4,368</p><p>质量坐标：1,792</p><p>最终热符号：尚未完成</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 证据边界</a></li>
+        <li><a href="#scan">01 · 完整混合扫描</a></li>
+        <li><a href="#derivative">02 · GMP 导数证书</a></li>
+        <li><a href="#mass">03 · 主根质量证书</a></li>
+        <li><a href="#budget">04 · 剩余符号预算</a></li>
+        <li><a href="#figure">05 · 期刊附图</a></li>
+        <li><a href="#next">06 · 下一步</a></li>
+        <li><a href="#reproduce">07 · 复现与哈希</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Evidence boundary</div><h2>本轮严格封闭两个分量，不把分量证书改写成最终符号定理</h2>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · EXACT</span><strong>全部混合导数</strong><p>4,368 个多重指标逐项进入有理区间比较。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT</span><strong>全部主根质量</strong><p>1,792 个坐标由精确递推与根区间推出。</p></div>
+            <div class="status"><span>DIAGNOSTIC</span><strong>正保护间隙</strong><p>当前 \(2.8732\times10^{-9}\) 间隙仍来自 binary64 组合。</p></div>
+            <div class="status"><span>OPEN · FINITE</span><strong>最终热符号</strong><p>矩提升、热系数、缺陷与预解式尚待合并。</p></div>
+          </div>
+        </section>
+
+        <section id="scan"><div class="section-no">01 / Complete mixed scan</div><h2>不能预先假定纯偏导控制；完整混合扫描是必要步骤</h2>
+          <p>六变量总阶十一共有 \({16\choose5}=4{,}368\) 个多重指标。消去七单形变量后，每个时间次序使用</p>
+          <div class="equation result">\[
+            \sum_{k=0}^{11}\frac{T^{k+7}}{(k+7)!}
+            h_k(F_1,\ldots,F_7)
+          \]</div>
+          <p>的有限表达式计算。正式受监控扫描显示，全指标最大值出现在 \((0,0,0,11,0,0)\)，为 \(2.56632663673508\times10^{-6}\)。因此这个样本中最大值恰好是纯偏导；关键不是事先假定它，而是完成全部 4,368 项后才知道。</p>
+          <p>该轮 binary64 扫描历时 132.51 秒，峰值采样内存约 1,828 MiB。它确定了严格审计的目标与数量级，但没有被当作证明。</p>
+        </section>
+
+        <section id="derivative"><div class="section-no">02 / Exact derivative certificate</div><h2>120 项时间区间把最大十一阶导数严格压到 \(2.567\times10^{-6}\) 以下</h2>
+          <p>GMP 审计在全部 35 个时间次序和全部 4,368 个多重指标上执行有理运算。时间常数用 120 项区间封闭，区间宽度为 \(4.8185\times10^{-118}\)。最终严格得到</p>
+          <div class="equation result">\[
+            \boxed{\max_{|\alpha|=11}|\partial^\alpha H|
+            &lt;2.567\times10^{-6}.}
+          \]</div>
+          <p>最大有理上端点的十进制显示为 \(2.566326636735080655209837298880261917219\times10^{-6}\)，最大指标仍是 \((0,0,0,11,0,0)\)。全部逐项区间向量的 SHA-256 为 <code>2b742828cfa00097b2ea1dc2203cae4da8c30164d9422a734bd12da8d6a468ee</code>。</p>
+          <p>正式运行历时 137.84 秒，峰值采样内存约 200 MiB。这里闭合的是导数分量，不是导数与矩缺陷乘积的最终上界。</p>
+        </section>
+
+        <section id="mass"><div class="section-no">03 / Exact dominant mass</div><h2>精确递推取代幂迭代，主根与 1,792 个质量坐标都得到有理包络</h2>
+          <p>四位周期传输的可达向量满足 33 次精确递推。对控制主根的四次多项式作 192 次有理二分，根区间宽度为 \(4.0783\times10^{-69}\)。再把根区间代回递推，得到全部质量坐标的区间；最宽坐标也只有 \(2.1769\times10^{-69}\)。</p>
+          <div class="equation result">\[
+            \boxed{C_{8,0}\in I,\qquad
+            I\subset(-\infty,0),\qquad
+            C_{8,0}\approx-0.02612679363056960676.}
+          \]</div>
+          <p>这严格证明主质量观测量为负，并消除了幂迭代的收敛误差。区间向量 SHA-256 为 <code>bf424dfb3c9ce85d1e47d2270b329f6cb4af51e32e665663949d6c53cf6f0e53</code>；正式运行历时 7.01 秒，峰值采样内存约 178 MiB。</p>
+        </section>
+
+        <section id="budget"><div class="section-no">04 / Remaining sign budget</div><h2>当前数值保护间隙约占主信号的 19.25%，不能用任意安全系数替代包络</h2>
+          <p>组合计算给出的主信号、现有修正和剩余间隙分别为</p>
+          <div class="equation result">\[
+            1.4923824318477604\times10^{-8},\qquad
+            1.2050613021440095\times10^{-8},\qquad
+            2.873211297037509\times10^{-9}.
+          \]</div>
+          <p>这些数值说明严格化仍有可能，但余量并不宽。下一轮必须对剩余算子逐层做定向区间传播；这里的正间隙只作计算诊断，不构成严格符号证书。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>严格分量与诊断预算在同一张附图中分面呈现</h2>
+          <figure><img src="/figures/r0-68b2de-strict-components.svg" alt="R0.68B-2d/e 十一阶导数、主根质量与数值符号预算期刊附图"><figcaption>图 R0.68B-2d/e。左图给出六个纯十一阶导数严格上界与全指标最大值；中图给出根区间和质量区间相对目标门槛多出的十进制位数；右图仅记录 binary64 符号预算，明确不属于严格证书。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-68b2de-strict-components.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-68b2de-strict-components.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">06 / Next enclosure</div><h2>R0.68B-2f：严格封闭十阶矩提升、热系数和缺陷预解式</h2>
+          <p>下一阶段按依赖顺序处理三项：先对 1,792 态的十阶三角矩系统做定向区间传播；再把严格热系数与十一阶导数证书接入；最后合并同位移符号缺陷和主根预解式。</p>
+          <div class="proof"><strong>判定标准。</strong>&nbsp;只有当所有区间误差之和严格小于 \(2.873211297037509\times10^{-9}\) 的保护尺度，并且最终区间完全落在目标半轴，才把数值符号升级为定理。若包络越过零，就返回定位最松的算子块，而不修改判定标准。</div>
+          <p>周期算子的简单精确范数界给出 \(\|C\|_2\le\sqrt{2024341504}\approx44992.68\)，因而次数 \(d\ge1\) 的预解式可从 \(16^d\nu_- -44992.68\) 得到严格分母。实现上将优先使用 MPFR 定向舍入的稀疏区间引擎，并继续保存进度、资源日志和可复现证书。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility</div><h2>源代码、正式证书、资源日志与期刊附图分别归档</h2>
+          <p>严格导数源提交为 <code>516768bc5dbdbb557e156af5e7141ca2374327c3</code>，证书提交为 <code>201aaf97a931d4f2143207941904c5f53d469962</code>，归档 JSON SHA-256 为 <code>f3fb38c23c872f15d10a2f332f242ab249233709fb4cb2a7cc1012bf42822f88</code>。</p>
+          <p>严格质量源提交为 <code>b80c0f197e91da00673e1b4fd04f0801fe51be2d</code>，证书提交为 <code>c24abb94584f7b9e76b28191f5b1c6426c41dbb5</code>，归档 JSON SHA-256 为 <code>d079ba1b0c59beaf3e97b0ba4021bb14abdc131ba61317a11bc0c64e38a9cc7a</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_heat_derivative_exact_note.md">查看严格导数说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2d-exact">查看严格导数证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_dominant_mass_exact_note.md">查看严格质量说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2e-exact">查看严格质量证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b2de-strict-components/fig-r068b2de-strict-components">查看期刊附图包</a></p>
+          <p>声明边界：本页证明固定平行剪切构造中的两个有限维分量。它没有证明最终八阶热投影符号，没有控制一般三维扰动、奇异性或全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.68B-2d/e · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

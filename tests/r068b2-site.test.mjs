@@ -21,7 +21,7 @@ test("publishes R0.68B-2 with exact and pilot evidence kept separate", async () 
   assert.match(home, /id="r068b2"/);
   assert.match(home, /href="\/notes\/r0-68b2\.html"/);
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.57 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.58 · 2026-08-21"));
   assert.match(note, /note-retro\.css\?v=0\.57/);
   assert.match(note, /i18n-en\.js\?v=0\.57/);
   assert.ok(note.includes("273,823,760"));

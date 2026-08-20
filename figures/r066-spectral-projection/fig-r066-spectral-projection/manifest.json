@@ -1,0 +1,173 @@
+{
+  "analyticalQuestion": "Does the complete heat-weighted coefficient for the explicit 0100 periodic packet have a nonzero projection onto the dominant affine-block eigenmode?",
+  "caption": {
+    "chineseSiteSummary": "R0.66 \u7528\u7cbe\u786e\u4eff\u5c04\u5206\u652f\u3001\u8c31\u6295\u5f71\u548c\u4e25\u683c\u5411\u5916\u8bef\u5dee\u754c\u8bc1\u660e\u4e86\u4e00\u4e2a\u663e\u5f0f\u56db\u6b21\u5305\u6ee1\u8db3 S_r=C_*lambda^r+O(r16^r)\uff0c\u4e14 C_*<0\uff1b\u8be5\u7ed3\u8bba\u4e0d\u63a7\u5236\u66f4\u9ad8 Picard \u9636\u6216\u5b8c\u6574\u6e29\u548c\u89e3\u3002",
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "dataSufficiency": "Twenty-four consecutive complete finite coefficients, one exact degree-48 cycle-100 polynomial interval, 21 passing spectral checks, and three disjoint outward errors.",
+    "family": "one ordered-axis convergence diagnostic and two focused horizontal comparisons",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size",
+    "nonColorEncoding": "open circles versus filled squares and a diamond, zero rules, interval whiskers, direct annotations, and a shaded certified band",
+    "outputFootprint": "double-column journal figure at 178 by 108 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "palettePolicy": "hard two-root cap: blue/open markers for finite or structural values, rust/filled markers for the negative theorem, and neutral references",
+    "takeaway": "The normalized complete finite coefficients enter a negative band, while the complete outward dominant-coefficient interval stays strictly below zero.",
+    "variants": [
+      "signed complete finite coefficient normalized by lambda^r on a symmetric-log scale",
+      "cycle-100 polynomial interval versus the complete dominant-coefficient interval",
+      "logarithmic outward-error budget versus certified distance to zero"
+    ]
+  },
+  "computation": {
+    "command": "python3 research/quartic_weighted_cycle_finite_iterate.py --profile publication --cycles 100 --order 24 --output research/certificates/r066/exact-finite-iterate.json && python3 research/quartic_weighted_cycle_spectral_audit.py --profile publication --finite-input research/certificates/r066/exact-finite-iterate.json --output research/certificates/r066/spectral-audit.json",
+    "configuration": "48 sign/carry states, 12,288 exact affine branches, bivariate integer moments through total degree 48 at cycle 100, order-24 rational heat expansion, and strict decimal spectral/resolvent enclosures",
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "monitoring": {
+      "enabled": true,
+      "failedAttempts": [],
+      "reportIntervalSeconds": 0.1,
+      "resourceLogs": [
+        "research/certificates/r066/exact-finite-iterate.stderr.log",
+        "research/certificates/r066/spectral-audit.stderr.log",
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ]
+    },
+    "precision": "Python integers and Fractions for finite endpoints; 80-digit Decimal arithmetic with directed outward rounding for spectral and error bounds; display values only in the plotted CSV files",
+    "randomSeed": "not applicable; no randomness",
+    "solver": "exact affine-branch aggregation, characteristic-polynomial isolation, left/right dominant eigenprojection, weighted zero-mass Kantorovich contraction, and a Neumann-resolvent tail bound",
+    "wallTimeSeconds": 670.3110481249796
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "host": "local Mac workstation",
+    "maximumObservedFinalPlotRssMiB": 163.891,
+    "maximumObservedFormalAuditRssMiB": 538.09375,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-20T19:57:27+08:00",
+  "data": [
+    {
+      "bytes": 4023,
+      "format": "csv",
+      "path": "cycle-normalized.csv",
+      "schema": "24 complete finite quartic coefficients normalized by the midpoint of the certified dominant-root interval",
+      "sha256": "bd97709e29068089d7c75b2d561ec668d2fcc016dc48d1a38732897f0026724c"
+    },
+    {
+      "bytes": 375,
+      "format": "csv",
+      "path": "coefficient-intervals.csv",
+      "schema": "cycle-100 degree-48 polynomial interval and complete outward dominant-coefficient interval",
+      "sha256": "2ef6a9103370baa3c61d14a119f005a6ff18460c37fb8ec27314f1d6b8ae58c6"
+    },
+    {
+      "bytes": 395,
+      "format": "csv",
+      "path": "error-budget.csv",
+      "schema": "three independent outward errors, their sum, and the certified distance of the dominant coefficient from zero",
+      "sha256": "94e80855019941593460d3d8e21c0773da1c9561c99ccf35e66ab84b19bf648e"
+    },
+    {
+      "bytes": 1023,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "pinned source and certificate commits, certificate hashes, theorem intervals, environment, and extraction time",
+      "sha256": "d43ea142d9ac506807ce8858ceed85a63037593854053d54667c03fccbd2fab8"
+    },
+    {
+      "bytes": 54,
+      "format": "csv",
+      "path": "figure-data-resources.csv",
+      "schema": "elapsed time, resident memory, and exit status for deterministic figure-data extraction",
+      "sha256": "bf1436c8ee83843356ad305587f984b285d75f91fd88ba2261f35c5bfb57cf01"
+    },
+    {
+      "bytes": 55,
+      "format": "csv",
+      "path": "plot-resources.csv",
+      "schema": "elapsed time, resident memory, and exit status for final journal rendering",
+      "sha256": "993920131a9f3f9ba0cf761889704d475d94a13e198979690e18dbb2874a10e0"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r066-mplconfig python3 figures/r066-spectral-projection/fig-r066-spectral-projection/plot.py",
+    "heightMillimetres": 108,
+    "outputs": [
+      {
+        "bytes": 30979,
+        "path": "figure.pdf",
+        "sha256": "e31ce7e0f25834d323c914f9cdcfa58e49027dfc5e76576b2a74167504743f82"
+      },
+      {
+        "bytes": 91379,
+        "path": "figure.svg",
+        "sha256": "c4c83381ea26e6b1f4279c8b24c34869b9a5a13f9a7f3fac764f836d5db862e3"
+      },
+      {
+        "bytes": 471572,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2551",
+        "sha256": "333ede09aaa472e15a171f24a0959d397d73f3e5307dbfc8b8a2cb45272f320a"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "scriptSha256": "4ea9d36ff9268a3e19292a2aa7da3431e9ca300bbd5efcccb1fea418f78730f8",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r066-spectral-projection",
+  "git": {
+    "certificateCommit": "76e98d31ebb32d125902a443eaf12c2d3a9fc89b",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "8fd5beb96cf6617fdd29ae9b8d1ad7b335fc9b75"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "notes": "The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected at 178 by 108 mm. The sign change, negative coefficient interval, zero rule, error separation, and higher-order claim boundary remain legible.",
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 193686,
+      "extractionCommand": "python3 figures/r066-spectral-projection/fig-r066-spectral-projection/prepare_data.py",
+      "fileName": "weighted-cycle-audit.json",
+      "location": "research/certificates/r065/weighted-cycle-audit.json",
+      "sha256": "6fc8b439b6aea1848fd86e45ed948bcbe5e8515c5558509da072287d6477911f"
+    },
+    {
+      "bytes": 48018,
+      "extractionCommand": "python3 figures/r066-spectral-projection/fig-r066-spectral-projection/prepare_data.py",
+      "fileName": "exact-finite-iterate.json",
+      "location": "research/certificates/r066/exact-finite-iterate.json",
+      "sha256": "7ef26fbd29a996ad6a74b1db79ef05625170aa66cea7bf76dc1e06f0870bac3b"
+    },
+    {
+      "bytes": 156184,
+      "extractionCommand": "python3 figures/r066-spectral-projection/fig-r066-spectral-projection/prepare_data.py",
+      "fileName": "spectral-audit.json",
+      "location": "research/certificates/r066/spectral-audit.json",
+      "sha256": "a6f66c8bea8806fee3716b8d6611a2e0720e29969d94d991672cf3626ba8bcb2"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Exact affine-branch arithmetic and strict outward intervals prove S_r=C_* lambda^r+O(r 16^r), where 25.1515893341015<lambda<25.1515893341016 and -2.304456798896e-5<C_*<-2.286527505484e-5. Therefore |S_r|/16^r tends to infinity for this explicit quartic packet. Higher Picard orders and the full mild solution are not controlled."
+}

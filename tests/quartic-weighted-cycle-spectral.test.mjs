@@ -22,6 +22,10 @@ const spectralAuditUrl = new URL(
   import.meta.url,
 );
 const certificateRoot = new URL("../research/certificates/r066/", import.meta.url);
+const figureRoot = new URL(
+  "../figures/r066-spectral-projection/fig-r066-spectral-projection/",
+  import.meta.url,
+);
 
 test("states the R0.66 nonzero spectral projection and exact claim boundary", async () => {
   const [note, finiteAudit, spectralAudit] = await Promise.all([
@@ -125,4 +129,30 @@ test("archives the R0.66 asymptotic certificate with valid hashes", async () => 
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, entry.expected, entry.file + " hash mismatch");
   }
+});
+
+test("archives a formal journal figure for the R0.66 theorem", async () => {
+  const python = process.env.CODEX_PYTHON || "python3";
+  const validator = new URL("../research/validate_figure_package.py", import.meta.url);
+  const { stdout } = await execFileAsync(
+    python,
+    [validator.pathname, figureRoot.pathname],
+    { cwd: repository },
+  );
+  const validation = JSON.parse(stdout);
+  assert.deepEqual(validation.errors, []);
+
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r066-spectral-projection");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 108);
+  assert.equal(manifest.figure.outputs.length, 3);
+  assert.equal(manifest.figure.outputs.at(-1).dpi, 600);
+  assert.equal(manifest.figure.outputs.at(-1).pixels, "4204 by 2551");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.match(manifest.supportedClaim, /S_r=C_\* lambda\^r\+O\(r 16\^r\)/);
+  assert.match(manifest.supportedClaim, /Higher Picard orders/);
 });

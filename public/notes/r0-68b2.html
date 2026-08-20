@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.68B-2：严格证明首个八阶七单形热块为正，并完成六变量八次中心 jet 的 1792 态数值主投影。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.68B-2｜八阶首热块与完整八次主 jet">
+  <meta property="og:description" content="M=16 的完整八阶七单形热和严格为正；渐近主热 jet 数值稳定在负值。缺陷预解式和九阶导数界仍待严格闭合。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-68b2-eighth-order-heat.png">
+  <title>R0.68B-2｜八阶首热块与完整八次主 jet</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.57">
+  <script defer src="/i18n-en.js?v=0.57"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#finite">首热块</a><a href="#compression">精确压缩</a><a href="#jet">八次 jet</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.68B-2 · 八阶热核进展</div>
+        <h1>首个完整热块严格为正<br>渐近八次主 jet 数值为负</h1>
+        <p class="lead">我把全部 35 种时间次序和七单形核加入八阶计算。第一周期的 273,823,760 条有序路径被精确压缩为最多 105,499 个后缀状态，得到严格正的有理区间。随后完成六变量、1792 态、3003 通道的八次中心 jet；主热配对稳定在约 \(-1.4923824320\times10^{-8}\)。后一个结果仍是数值侦察，尚缺缺陷预解式与九阶导数的严格界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.68B-2 进行中</span><strong>首块严格 · 主 jet 数值</strong><p>版本 v0.68B-2 · 2026-08-21</p><p>精确路径：273,823,760</p><p>jet 坐标：5,381,376</p><p>最终符号证书：尚未完成</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 证据边界</a></li>
+        <li><a href="#finite">01 · 首周期热和</a></li>
+        <li><a href="#compression">02 · 后缀状态压缩</a></li>
+        <li><a href="#jet">03 · 八次中心 jet</a></li>
+        <li><a href="#convergence">04 · 次数收敛</a></li>
+        <li><a href="#figure">05 · 期刊附图</a></li>
+        <li><a href="#value">06 · 研究价值</a></li>
+        <li><a href="#next">07 · 最后两道界</a></li>
+        <li><a href="#reproduce">08 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Evidence boundary</div><h2>这一页同时记录一个严格结论和一个尚待外推界的数值结论</h2>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · EXACT</span><strong>首热块为正</strong><p>完整 35 次序与 Taylor 尾都在有理数中控制。</p></div>
+            <div class="status"><span>FINITE SCALE</span><strong>\(M=16\)</strong><p>有限正号不能外推成渐近主投影符号。</p></div>
+            <div class="status"><span>NUMERICAL · PILOT</span><strong>\(B_8&lt;0\)</strong><p>八次主 jet 已稳定，但仍是 binary64 结果。</p></div>
+            <div class="status"><span>OPEN · FINITE</span><strong>两道余项界</strong><p>零八次 jet 缺陷预解式与全局九阶导数。</p></div>
+          </div>
+        </section>
+
+        <section id="finite"><div class="section-no">01 / Exact first block</div><h2>第一周期的完整八阶七单形热和严格落在正区间</h2>
+          <p>取 \(M=16\)、\(H=64\)、\(q=2\)、\(Q=66\)。独立一维卷积给出 7,823,536 个有效标号载频组；乘上 \({7\choose4}=35\) 个符号次序后，共有 273,823,760 条有序路径。</p>
+          <p>七个非零热率的核展开为</p>
+          <div class="equation">\[
+            K_T^{(7)}=
+            \sum_{n=0}^{\infty}
+            \frac{(-1)^nh_n(\alpha_0,\ldots,\alpha_6)T^{n+7}}{(n+7)!},
+            \qquad T=\frac{\log2}{2}.
+          \]</div>
+          <p>审计精确求和到 44 次，并用 \(\max H^2\alpha_j=114888\) 给出绝对尾界。最终得到</p>
+          <div class="equation result">\[
+            \boxed{0.0074150893675487776
+            &lt;S_{8,q}^{(M=16)}
+            &lt;0.0074150893936092571.}
+          \]</div>
+          <p>遗漏尾严格小于 \(1.304\times10^{-11}\)。十项检查全部通过，正式运行历时 19.17 秒，独立资源日志的峰值采样内存约 789 MiB。</p>
+        </section>
+
+        <section id="compression"><div class="section-no">02 / Exact suffix compression</div><h2>后缀频率和与平方和把 2.74 亿条路径压缩为十万量级状态</h2>
+          <p>从路径末端反向选择载频。对每个后缀只保留正载频计数 \(p\)、带号后缀和 \(s\) 与平方和 \(u\)。由于终点频率为零，下一个整数热率完全由</p>
+          <div class="equation result">\[
+            \boxed{\beta=s^2+u=H^2\alpha}
+          \]</div>
+          <p>决定。因此相同 \((p,s,u)\) 的路径可以在选下一载频前精确合并。七层状态数依次为</p>
+          <div class="equation">\[
+            32,\ 528,\ 5796,\ 38804,\ 105499,\ 84553,\ 4178.
+          \]</div>
+          <p>零次 Taylor 系数为 \(35\times11896=416360\)，独立复现 R0.68B-1 的首周期零时间质量。这同时核对了目标符号、端点约束、35 种次序和热率归一化。</p>
+        </section>
+
+        <section id="jet"><div class="section-no">03 / Degree-eight heat jet</div><h2>六个自由载频坐标需要每态 3003 个八次矩通道</h2>
+          <p>渐近极限中，第七个载频坐标由前六个和 \(\theta=2/15\) 决定。保留总次数不超过八的中心矩，每态通道数与总坐标数分别是</p>
+          <div class="equation result">\[
+            {8+6\choose6}=3003,
+            \qquad 3003\times1792=5{,}381{,}376.
+          \]</div>
+          <p>我没有为 128 个载频位型分别建立稠密平移矩阵。对每个平移多指标，只记录其非零坐标支撑；一位上只需 \(2^6=64\) 个带符号子集传输矩阵。子集零矩阵与原 1792 态数字传输逐项一致。</p>
+          <p>次数 \(d\ge1\) 的新矩由</p>
+          <div class="equation">\[
+            (16^d\nu I-W)m_d=b_d
+          \]</div>
+          <p>的快速 Neumann 展开求出。全部八层的相对线性残差低于 \(4.3\times10^{-16}\)，完整八次运行约 19 秒，峰值采样内存约 696 MiB。</p>
+        </section>
+
+        <section id="convergence"><div class="section-no">04 / Degree convergence</div><h2>完整 35 次序主热配对在八次截断下稳定为负</h2>
+          <p>从零次到八次的累计配对为</p>
+          <div class="equation">\[
+          \begin{array}{c|rrrrrrrrr}
+          d&0&1&2&3&4&5&6&7&8\\ \hline
+          10^8B_d&-1.39323&-1.55460&-1.49756&-1.49234&-1.49236&-1.492381&-1.49238241&-1.492382436&-1.492382432
+          \end{array}
+          \]</div>
+          <div class="equation result">\[
+            \boxed{B_{8,\mathrm{pilot}}=-1.4923824320396173\times10^{-8}.}
+          \]</div>
+          <p>七次到八次的修正约为 \(4.27\times10^{-17}\)；48 与 64 阶热 Taylor 系数的最大差约 \(1.3\times10^{-26}\)。这些数值强烈支持非零负配对，但浮点收敛本身不能替代严格余项界。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>精确首块与数值主 jet 的证据类别在同一附图中明确分开</h2>
+          <figure><img src="/figures/r0-68b2-eighth-order-heat.svg" alt="R0.68B-2 八阶首周期精确热区间与八次主热 jet 收敛期刊附图"><figcaption>图 R0.68B-2。上左是精确后缀状态压缩，上右是首周期严格正区间，下图是完整主热 jet 的次数收敛。上两图属于严格证书；下图明确标记为 binary64 侦察。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-68b2-eighth-order-heat.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-68b2-eighth-order-heat.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="value"><div class="section-no">06 / Research value</div><h2>现在已经知道信号在哪里，剩余工作变成两项可检验的不等式</h2>
+          <div class="proof"><strong>本轮推进。</strong>&nbsp;首周期热核的符号、路径约定和归一化已经严格校准；六变量八次矩提升也已在完整 35 次序上跑通。渐近主配对的数值量级约为 \(1.49\times10^{-8}\)，给出了余项必须压低的明确门槛。</div>
+          <p>这仍只关乎一个平行剪切周期包的固定八阶系数。即使下一步证成严格负号，也只是与 R0.68A 的无限尾定理合并，闭合该包的目标渐近；它不会自动推广到破坏剪切不变性的三维扰动，更不是 Clay 问题的解答。</p>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Remaining bounds</div><h2>下一步先计算零八次 jet 缺陷，再做全局九阶导数主界</h2>
+          <p>自然的八次中心 jet 余项在一个四位块上的绝对尺度是</p>
+          <div class="equation result">\[
+            \boxed{\frac{16^6}{16^9}=\frac1{4096}.}
+          \]</div>
+          <div class="proof"><strong>固定顺序。</strong>&nbsp;第一，把落在同一六维仿射位移的符号分支先合并，再取绝对值并解主根预解式；第二，对完整 35 个七单形热核的九阶空间偏导逐项展开和积分；第三，只有当两者乘积严格小于主 jet 的保护下界时，才写出渐近八阶热投影的符号定理。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>严格首块、数值 jet 与混合证据附图分别归档</h2>
+          <p>首周期审计源提交为 <code>01cb3082bc9b51ea4430fa25f2b20c774f950e6b</code>，正式证书提交为 <code>ccd31ce7fc83bf0134b9f0bcdb47fa476af9bf61</code>，证书 SHA-256 为 <code>611ed4737a95836e7fd09e6f7f49f90c3b951d7952cb56aff4b95003e1955b3c</code>。</p>
+          <p>八次 jet 源提交为 <code>28b71fd450a1f806ffec6423dbf1e51c5a66dba1</code>，受监控归档提交为 <code>32f6ba3353ebf9875b8d9a337ded05ae7b0934e1</code>，归档 JSON 的 SHA-256 为 <code>1001348ab6a7930ecf0b083f2cd135c3dbfaa62ffa991b5ccfdcc88e2ff226a2</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_heat_one_cycle_note.md">查看首周期数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2a">查看首周期证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/eighth_order_heat_jet_pilot_note.md">查看八次 jet 说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2b-pilot">查看 jet 归档</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b2-eighth-order-heat/fig-r068b2-eighth-order-heat">查看期刊附图包</a></p>
+          <p>声明边界：首周期正号是严格有限尺度结论；八次主 jet 的负号是受监控、可复现的数值结果，但尚不是定理。本文没有控制一般三维扰动、奇异性或全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.68B-2 · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

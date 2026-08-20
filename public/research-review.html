@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.56"></script>
+  <script defer src="/i18n-en.js?v=0.57"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4122,6 +4122,49 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.68B-2：</strong>&nbsp;把精确七单形核插入全部 35 种时间次序，完成有限矩提升、主热投影和严格解析余项；这是与 R0.68A 无限尾定理合并前的最后有限关口。</p>
           </div>
+
+          <div class="task-one" id="r068b2" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.68B-2 · 2026-08-21</p>
+            <h3>首个完整八阶热块与六变量八次主 jet</h3>
+            <p>
+              在 \(M=16\) 的第一周期，7,823,536 个有效载频组与
+              35 种时间次序产生 273,823,760 条有序路径。精确后缀
+              动态规划把它们压缩为最多 105,499 个状态，并在 44 次
+              有理 Taylor 审计中得到
+              \[
+                0.0074150893675487776
+                &lt;S_{8,q}^{(M=16)}
+                &lt;0.0074150893936092571.
+              \]
+              绝对尾小于 \(1.304\times10^{-11}\)，所以这个有限热块严格为正。
+            </p>
+            <p>
+              渐近极限使用六个自由载频坐标。八次中心矩每态有
+              \({14\choose6}=3003\) 个通道，总计 5,381,376 个矩坐标。
+              64 个带符号子集传输矩阵完成全部 1792 态仿射提升；
+              完整 35 次序的 binary64 主热配对稳定在
+              \[
+                B_{8,\mathrm{pilot}}
+                =-1.4923824320396173\times10^{-8}.
+              \]
+              七次到八次的修正约 \(4.27\times10^{-17}\)，但这个负号
+              仍是数值侦察，不是严格渐近定理。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;首周期正号已经严格闭合；
+              八次主 jet 已完整计算并归档，但还需把零八次 jet 缺陷的
+              预解式修正与完整热函数的九阶导数乘积压到主信号之下。
+              当前平行剪切类本身全局光滑，不能推出一般三维正则性。
+            </p>
+            <p>
+              <a href="/notes/r0-68b2.html"><strong>阅读 R0.68B-2 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-68b2-eighth-order-heat.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2a">查看首周期证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2b-pilot">查看八次 jet 归档</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b2-eighth-order-heat/fig-r068b2-eighth-order-heat">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.68B-2c：</strong>&nbsp;严格计算同位移符号聚合后的零八次 jet 缺陷、主根预解式和全局九阶热导数界，决定数值负信号能否升级为严格定理。</p>
+          </div>
         </section>
 
       </article>
@@ -4135,7 +4178,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.56 · 2026-08-21<br>
+        综述 v0.57 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

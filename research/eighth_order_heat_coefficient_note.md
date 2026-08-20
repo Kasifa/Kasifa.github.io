@@ -4,7 +4,7 @@
 
 For the fixed reachable dominant component of the 1,792-state eighth-order
 construction, the complete centred Taylor jet through spatial degree ten has
-a strictly negative heat pairing.  The source-unlocked audit run gives centre
+a strictly negative heat pairing.  The source-locked formal run gives centre
 
 \[
  -1.49238243184751323\times10^{-8}

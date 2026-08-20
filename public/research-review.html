@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.63"></script>
+  <script defer src="/i18n-en.js?v=0.64"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1116,7 +1116,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-21</strong>最近修订</span>
-            <span><strong>v0.63</strong>网页版本</span>
+            <span><strong>v0.64</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -4420,6 +4420,56 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69E：</strong>&nbsp;构造周期 Koch–Tataru 临界路径空间的时间重启、端点迹与局部逆拼接定理，在每个认证光滑参考区间上给出可计算的 \(\mathfrak M_v(T)\) 上界；若端点结构不足，则精确定位失效的迹或局部化估计。</p>
           </div>
+
+          <div class="task-one" id="r069e" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69E · 2026-08-21</p>
+            <h3>固定光滑参考区间上的临界线性化预解已经证明有限</h3>
+            <p>
+              我把 \(X_T\) 改写成一个首段 \(X_\tau\) 临界块和一个
+              正时间加权 \(L^\infty\) 块。两个范数在有限区间上等价，
+              而参考线性化算子在这个分解中恰好是下三角 Volterra 算子。
+              定义
+
+              \[
+                a=2C_B\|v\|_{X_\tau},\qquad
+                b_\lambda=2C_S
+                \sup_{\tau\le t\le T}\|v(t)\|_\infty
+                \sqrt{\frac{\pi}{\lambda}}.
+              \]
+
+              若 \(a,b_\lambda&lt;1\)，则
+
+              \[
+                \mathfrak M_v(T)
+                \le
+                \frac{
+                  1+\sqrt{27}
+                  +e^{\lambda(T-\tau)}
+                  \left(\sqrt{T/\tau}+\min\{1,\sqrt T\}/\sqrt\tau\right)
+                }{(1-a)(1-b_\lambda)}.
+              \]
+            </p>
+            <p>
+              对光滑有界参考解，
+              \(\|v\|_{X_\tau}\le2\sqrt\tau\|v\|_\infty\)。
+              因而先减小 \(\tau\)，再增大 \(\lambda\)，两个严格门槛
+              总能满足。强 \(BMO^{-1}\) 内点迹不再是必要假设；
+              全部过去到未来的耦合由有限下三角前代递推求和。
+              18 项形式检查与 16 组高精度矩阵交叉核对全部通过。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;这证明的是固定正则区间内
+              的预解有限性。显式条件数可以很大，并没有在参考解逼近
+              潜在奇性端点时给出一致控制。
+            </p>
+            <p>
+              <a href="/notes/r0-69e.html"><strong>阅读 R0.69E 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69e-resolvent-restart.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069e">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069e-resolvent-restart/fig-r069e-resolvent-restart">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69F：</strong>&nbsp;优化 \(\tau,\lambda\) 与时间片分区，把 \(\mathfrak M_v(T_r)\gtrsim\rho^{-r/2}\) 转换成逼近候选奇性端点时某个明确、尺度一致的参考量发散下界；若只重述经典 Leray 或 Serrin 条件，则记录后停止该分支。</p>
+          </div>
         </section>
 
       </article>
@@ -4433,8 +4483,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.63 · 2026-08-21<br>
-        上次综述 v0.62 · 2026-08-21<br>
+        综述 v0.64 · 2026-08-21<br>
+        上次综述 v0.63 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

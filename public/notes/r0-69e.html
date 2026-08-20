@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69E：用首段 Koch–Tataru 临界块、正时间有界块与下三角 Volterra 拼接，证明每个固定光滑参考区间上的临界线性化预解有限。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69E｜正时间预解拼接">
+  <meta property="og:description" content="强 BMO^{-1} 端点迹不是必需条件；正时间 L∞ 控制与因果下三角结构给出显式预解上界。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69e-resolvent-restart.png">
+  <title>R0.69E｜正时间预解拼接</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.64">
+  <style>.hero h1{font-size:clamp(2.35rem,5vw,4.1rem)}</style>
+  <script defer src="/i18n-en.js?v=0.64"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#space">混合空间</a><a href="#blocks">两块逆</a><a href="#partition">有限拼接</a><a href="#trace">端点迹</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69E · 临界线性化预解的正时间拼接</div>
+        <h1>端点迹不是关口，<br>因果下三角结构给出全区间逆</h1>
+        <p class="lead">我把区间分成一个从零时刻出发的 Koch–Tataru 临界块和一个正时间 \(L^\infty\) 块。原临界范数与这个混合范数在有限区间上等价，而线性化算子在其中恰好是两块下三角 Volterra 算子。只要两个对角块分别小于一，全部过去到未来的耦合都可由前代递推求和。因此，每条固定光滑参考轨道在每个紧正则区间上都有有限的临界线性化预解。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69E 完成</span><strong>正时间预解拼接</strong><p>版本 v0.69E · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>有限块交叉核对：16 组</p><p>结论范围：固定正则区间</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#space">01 · 混合空间</a></li>
+        <li><a href="#blocks">02 · 两块逆</a></li>
+        <li><a href="#partition">03 · 有限时间片</a></li>
+        <li><a href="#trace">04 · 端点与重启</a></li>
+        <li><a href="#decision">05 · 已完成判定</a></li>
+        <li><a href="#meaning">06 · 对总问题的意义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · 下一关</a></li>
+        <li><a href="#reproduce">09 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified result</div><h2>每个固定光滑参考区间上的临界线性化预解都有限</h2>
+          <p>记 \(X_T\) 为周期 Koch–Tataru 路径空间，\(C_B\) 为双线性常数，\(C_S\) 为周期 Oseen 导数核的 \(L^1\) 常数：</p>
+          <div class="equation">\[
+            \|\mathcal B(a,b)\|_{X_T}\le C_B\|a\|_{X_T}\|b\|_{X_T},\qquad
+            \|e^{s\Delta}\mathbb P\nabla\!\cdot F\|_\infty
+            \le C_Ss^{-1/2}\|F\|_\infty.
+          \]</div>
+          <p>对参考路径 \(v\in X_T\)，选 \(0&lt;\tau&lt;\min\{T,1\}\)，并定义</p>
+          <div class="equation">\[
+            a=2C_B\|v\|_{X_\tau},\qquad
+            V_\tau=\sup_{\tau\le t\le T}\|v(t)\|_\infty,\qquad
+            b_\lambda=2C_SV_\tau\sqrt{\frac{\pi}{\lambda}}.
+          \]</div>
+          <p>若 \(a&lt;1\) 且 \(b_\lambda&lt;1\)，则</p>
+          <div class="equation result">\[
+            \boxed{
+            I-\mathcal A_v:X_T\to X_T\ \text{有界可逆},\qquad
+            \mathfrak M_v(T)\le
+            \frac{\Gamma(\tau,T,\lambda)}{(1-a)(1-b_\lambda)},}
+          \]</div>
+          <p>其中</p>
+          <div class="equation">\[
+            \Gamma(\tau,T,\lambda)=1+\sqrt{27}
+            +e^{\lambda(T-\tau)}
+            \left(\sqrt{\frac T\tau}+\frac{\min\{1,\sqrt T\}}{\sqrt\tau}\right).
+          \]</div>
+          <p>若 \(v\) 在 \([0,T]\) 上有界，则 \(\|v\|_{X_\tau}\le2\sqrt\tau\|v\|_\infty\)。先减小 \(\tau\)，再增大 \(\lambda\)，两个严格门槛总能同时满足。由此得到光滑参考轨道的结论。</p>
+          <div class="grid">
+            <div class="status"><span>EXACT · SPACE</span><strong>有限区间范数等价</strong><p>首段临界块和正时间有界块覆盖同一组路径。</p></div>
+            <div class="status"><span>EXACT · OPERATOR</span><strong>两块下三角</strong><p>未来不会反馈到过去，非对角块无需小。</p></div>
+            <div class="status"><span>CERTIFIED · INVERSE</span><strong>显式预解界</strong><p>逆的最大行和是两个对角余量的乘积倒数。</p></div>
+            <div class="status"><span>BOUNDARY · TIME</span><strong>只到正则区间末端</strong><p>没有穿越潜在奇性时刻。</p></div>
+          </div>
+        </section>
+
+        <section id="space"><div class="section-no">01 / Hybrid critical space</div><h2>零时刻保留临界结构，正时间直接使用原范数已有的 \(L^\infty\) 控制</h2>
+          <p>定义带 Bielecki 权重的混合范数</p>
+          <div class="equation">\[
+            \|u\|_{\mathfrak X_{\tau,\lambda}}
+            =\max\left\{\|u\|_{X_\tau},
+            \sqrt\tau\sup_{\tau\le t\le T}
+            e^{-\lambda(t-\tau)}\|u(t)\|_\infty\right\}.
+          \]</div>
+          <p>原空间与混合空间满足</p>
+          <div class="equation result">\[
+            \boxed{\|u\|_{\mathfrak X_{\tau,\lambda}}
+            \le\|u\|_{X_T}
+            \le\Gamma(\tau,T,\lambda)
+            \|u\|_{\mathfrak X_{\tau,\lambda}}.}
+          \]</div>
+          <p>大 Carleson 球的早期部分可由半径 \(\sqrt\tau\) 的小球覆盖；一个方便的体积比上界是 \(27\)。晚期部分由 \(L^\infty\) 直接控制。这一步解释了为什么不必在每个内点重新建立完整的临界端点空间。</p>
+        </section>
+
+        <section id="blocks"><div class="section-no">02 / Exact two-block inverse</div><h2>线性化算子恰好化成下三角矩阵</h2>
+          <p>按 \((0,\tau)\) 和 \([\tau,T]\) 切分输入输出，因果性给出</p>
+          <div class="equation">\[
+            \mathcal A_v=
+            \begin{pmatrix}A_{00}&0\\A_{10}&A_{11}\end{pmatrix}.
+          \]</div>
+          <p>早期对角块满足 \(\|A_{00}\|\le a\)。早期强迫在 \(\tau\) 后只剩自由热流：</p>
+          <div class="equation">\[
+            A_{10}z_0(t)=e^{(t-\tau)\Delta}(A_{00}z_0)(\tau).
+          \]</div>
+          <p>晚期对角块由 Gamma 半积分控制：</p>
+          <div class="equation">\[
+            \|A_{11}\|\le
+            2C_SV_\tau\int_0^\infty r^{-1/2}e^{-\lambda r}\,dr
+            =2C_SV_\tau\sqrt{\frac\pi\lambda}=b_\lambda.
+          \]</div>
+          <p>于是标量主矩阵及其逆为</p>
+          <div class="equation result">\[
+            L=\begin{pmatrix}a&0\\a&b_\lambda\end{pmatrix},\qquad
+            (I-L)^{-1}=
+            \begin{pmatrix}
+              \frac1{1-a}&0\\
+              \frac{a}{(1-a)(1-b_\lambda)}&\frac1{1-b_\lambda}
+            \end{pmatrix}.
+          \]</div>
+          <p>最大行和精确等于 \(1/[(1-a)(1-b_\lambda)]\)。跨块耦合可以很大；只要两个对角块有逆，有限下三角结构就能把它完整求和。</p>
+        </section>
+
+        <section id="partition"><div class="section-no">03 / Finite time-slab certificate</div><h2>逐时间片版本给出可直接计算的前代递推</h2>
+          <p>令 \(\tau=t_0&lt;t_1&lt;\cdots&lt;t_N=T\)，\(h_i=t_i-t_{i-1}\)。晚期对角门槛为</p>
+          <div class="equation">\[
+            \eta_i=4C_SV_\tau\sqrt{h_i}&lt;1.
+          \]</div>
+          <p>对 \(1\le j&lt;i\)，过去时间片到当前时间片的精确主系数是</p>
+          <div class="equation">\[
+            \ell_{ij}=4C_SV_\tau
+            \left(\sqrt{t_{i-1}-t_{j-1}}-\sqrt{t_{i-1}-t_j}\right).
+          \]</div>
+          <p>整个系统满足 \(Z\le(I-L_\Pi)^{-1}F\)。若所有对角门槛严格小于一，则有限矩阵的逆可由前代递推逐行计算，不要求总行和小于一。</p>
+          <p>等步长时，令 \(\eta=4C_SV_\tau\sqrt h\)，则</p>
+          <div class="equation">\[
+            \ell_0=\eta,\qquad
+            \ell_k=\eta(\sqrt k-\sqrt{k-1}),\qquad
+            \sum_{k=0}^{m}\ell_k=\eta(1+\sqrt m).
+          \]</div>
+          <p>最后一个伸缩和说明：粗糙的全局 Neumann 行和会随时间片数增长，但有限因果系统仍然可逆。增长反映条件数恶化，不等于存在性丢失。</p>
+        </section>
+
+        <section id="trace"><div class="section-no">04 / Endpoint trace and restart</div><h2>真正非线性应用在正时间具有 \(L^\infty\) 端点，强 \(BMO^{-1}\) 迹不再承担拼接任务</h2>
+          <p>对一般 \(X_T\) 输入，定理本身不假设强时间迹。对热流加 Duhamel 项这类正时间连续输入，逆保持 \(L^\infty\) 连续性，并有精确重启恒等式</p>
+          <div class="equation">\[
+            \begin{aligned}
+            z(t)=&\ e^{(t-t_i)\Delta}z(t_i)
+            +f(t)-e^{(t-t_i)\Delta}f(t_i)\\
+            &-\int_{t_i}^t e^{(t-s)\Delta}\mathbb P\nabla\!\cdot
+            (v\otimes z+z\otimes v)(s)\,ds.
+            \end{aligned}
+          \]</div>
+          <p>近期文献证明 Koch–Tataru mild 解在 \(BMO^{-1}\) 中弱星连续；本证明没有把弱星连续误写成强范数迹，而是使用原路径范数从任意正时间起已经提供的 \(L^\infty\) 控制。</p>
+        </section>
+
+        <section id="decision"><div class="section-no">05 / Decision</div><h2>R0.69D 的参考预解条件在固定光滑区间上已经解除</h2>
+          <p>R0.69D 需要假设 \(M_T=\|(I-\mathcal A_v)^{-1}\|&lt;\infty\)。R0.69E 现在从可测量的参考幅度和两个局部门槛构造出 \(M_T^{\rm cert}\)。因此，对每个固定光滑参考区间，R0.69D 的完整非线性结论变成可直接应用的定理：</p>
+          <div class="equation result">\[
+            4C_BC_HC_0(M_T^{\rm cert})^2\rho^r&lt;1
+            \Longrightarrow
+            \|u_r-v\|_{X_T}
+            \le2M_T^{\rm cert}C_HC_0\rho^r.
+          \]</div>
+          <div class="proof"><strong>严格判定。</strong>&nbsp;R0.69A–E 的深数据包在任何固定正则参考区间上都不能制造阶一邻近轨道偏离。若仍要接近奇性机制，唯一剩余位置是参考区间逼近潜在奇性端点时，参考幅度或拼接条件数失去控制。</div>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Value for the main problem</div><h2>它解决的是“正则区间内的稳定性”，不是“正则区间能否永远延伸”</h2>
+          <p>这项结果把一个含糊的端点迹疑问排除了：固定正则区间内不存在独立的临界预解障碍。对千禧年问题，真正未解决的部分仍是防止光滑参考解在有限时失去控制。</p>
+          <p>显式上界可能非常大，而且含有 \(e^{\lambda(T-\tau)}\)。这不影响有限性证明，却意味着它尚不能在潜在奇性端点附近提供统一控制。下一步必须研究条件数恶化与尺度不变参考量之间的定量关系，而不是继续增加当前数据包的 Fourier 层数。</p>
+          <p>因此，本结果是一个严格的局部延拓接口和路线排除结论，不是全局正则性证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图显示两个对角门槛与有限时间片条件数的累积</h2>
+          <figure><img src="/figures/r0-69e-resolvent-restart.svg" alt="R0.69E 两块预解因子与有限等步长时间片的条件数增长"><figcaption>图 R0.69E。左图给出严格区域 \(0\le a,b&lt;1\) 内两块逆最大行和 \(1/[(1-a)(1-b)]\) 的十进制对数等高线。右图对 \(\eta=0.2,0.4,0.6,0.8\) 展示等步长因果矩阵通过高精度前代递推得到的有限逆最大行和。每个有限系统在 \(\eta&lt;1\) 时都有逆，但条件数可随时间片数迅速增长。图中的数值是无量纲情景，不是对通用 Koch–Tataru 或 Stokes 常数的数值指定；线型与标记保证灰度打印可区分。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69e-resolvent-restart.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69e-resolvent-restart.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / Next continuation gate</div><h2>R0.69F 将量化预解条件数接近潜在奇性端点时必须如何恶化</h2>
+          <p>下一步将把 R0.69E 的 \(\tau,\lambda\) 和时间片分区作为可优化变量，推导 \(M_T^{\rm cert}\) 相对于参考 \(L^\infty\) 尺度、剩余时间和临界延拓量的最小上界。</p>
+          <div class="proof"><strong>R0.69F 的通过标准。</strong>&nbsp;若 \(T_r\) 随数据包深度逼近一个候选端点，并且邻近轨道仍出现阶一偏离，则必须从 \(\mathfrak M_v(T_r)\gtrsim\rho^{-r/2}\) 推出至少一个明确、尺度一致的参考量发散下界。若所得下界只重述经典 Leray 或 Serrin 条件而没有新增约束，也要明确记录并停止这条优化分支。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>2d49cf91a29c2a2ecd19edbe97356a924b958917</code>，形式证书提交为 <code>58b586872721f7b3e774338c209b2b6837249331</code>，附图提交为 <code>245eabe72ce4104d8231fbb7d0b4ef218250649f</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>6d943ff398a50a7b4bc1a7631110f46d50d6509b04b152cb60a57c0d155f5872</code>，形式证书 SHA-256 为 <code>25992a1119ebf3089a2b4b2231aba524a064e9188f4eb0b31ee5bb1b88a4a009</code>。SymPy 1.14.0 与 mpmath 1.3.0 完成 18 项检查；16 个有限矩阵节点使用 80 位精度把直接求逆与前代递推交叉核对，全部通过。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>f3a6216df6f81ac5319edf9b76c563c296573db46c20f4223e12edc4cfc7a44d</code>、<code>fba206a1e4dfab76ab944d1c2f66bdc78b5f4f3af9627fd89ed26f522cbec9b5</code> 与 <code>3d6fbccb30c0410593f612191ea79ce2ce5f8e1aa34ee8297464cb75f8109fed</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069e">查看 R0.69E 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical_resolvent_restart_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069e-resolvent-restart/fig-r069e-resolvent-restart">查看期刊附图包</a></p>
+          <p>主要分析输入：<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru（2001）</a> · <a href="https://arxiv.org/abs/1310.3783">Auscher–Frey（2013）</a> · <a href="https://doi.org/10.1137/24M1719487">Hou（2025）</a>。</p>
+          <p>声明边界：本页证明固定光滑参考区间上的临界线性化预解有限。它没有给出接近潜在奇性时刻的一致上界，没有证明参考 \(L^\infty\) 幅度保持有限，没有把弱星 \(BMO^{-1}\) 连续性提升为强迹，没有延拓解穿过奇性端点，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69E · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

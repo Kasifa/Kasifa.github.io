@@ -28,7 +28,7 @@ test("publishes the exact R0.67A theorem with its open heat boundary", async () 
   assert.match(home, /href="\/notes\/r0-67\.html"/);
   assert.ok(home.includes("R0.67A 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.63 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.64 · 2026-08-21"));
 
   assert.match(note, /研究笔记 R0\.67A/);
   assert.match(note, /14 项证书检查全通过/);

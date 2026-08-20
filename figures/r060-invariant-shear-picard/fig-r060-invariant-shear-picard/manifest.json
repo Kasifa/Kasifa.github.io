@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r060-invariant-shear-picard",
+  "status": "formal",
+  "analyticalQuestion": "Which homogeneous Picard orders can return the R0.59 packet to the target plane xi_1=0, and where does the first nonlinear energy compensation occur?",
+  "supportedClaim": "The R0.59 packet stays in the exact invariant class u=(0,F(x_1,t),G(x_1,x_2,t)). Its full Picard forest collapses to one chain. The cubic target projection vanishes with a strict gap greater than 3H/4; odd orders three through nine miss xi_1=0; quartic order is the first possible target correction; and order eleven has an explicit zero-support path for N=LM>=5 without any claim that the complete coefficient is nonzero.",
+  "createdAt": "2026-08-20T11:06:35+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "ffaa745636bf20084ff3e3ee2df0e0b655c3ab8b",
+    "certificateCommit": "ac67dd76630215fd3f49fedc9b261445e1cbb7ad",
+    "formalSourceCommit": "db3e7eb9071f67c041a96863f9afc43bbca50aec",
+    "dirtyAtCertifiedRun": false,
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "invariant-chain schematic, exact normalized support-gap curves, and categorical Picard event map",
+    "variants": [
+      "70 exact-formula support-gap rows for orders 3, 5, 7, 9, and 11 across 14 carrier counts",
+      "11 exact Picard support and fourth-order energy events",
+      "one-chain recurrence and exact order-four energy identity"
+    ],
+    "takeaway": "Cubic target return is impossible, but cubic high-frequency backtracking is essential to the first nonlinear energy compensation; the first possible target correction is quartic.",
+    "dataSufficiency": "The invariant reduction, recurrence, interval inequalities, explicit support paths, and energy identity are analytic statements. The plotted values evaluate exact integer formulas and do not replace the proof.",
+    "palettePolicy": "blue for the linear chain and cubic gap, gold for target events, red for cubic return, and neutral ink and grid",
+    "nonColorEncoding": "Solid, dashed, dotted, and dash-dot lines; open circle, square, triangle, diamond, cross, and star markers; direct annotations; and separate panels preserve distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "python3 research/run_with_monitor.py --output research/certificates/r060/resources.csv --interval 0.10 -- python3 research/invariant_shear_picard_audit.py --maximum-level 12 --maximum-exhaustive-level 3 --maximum-order 11 --maximum-energy-level 3 --source-commit db3e7eb9071f67c041a96863f9afc43bbca50aec --progress --progress-log research/certificates/r060/progress.ndjson --check --pretty --output research/certificates/r060/invariant-shear-picard.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard/prepare_data.py --source-commit ffaa745636bf20084ff3e3ee2df0e0b655c3ab8b",
+    "configuration": "all-index carrier interval proof; finite exact support regression through Picard order 11; finite exact energy regression through dyadic level 3; 70 support-gap and 11 event rows for presentation",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "The formal support arithmetic uses Python integers and the energy regression uses Gaussian integers. Presentation ratios are exact integer quotients converted to binary floating point only for plotting; they do not control a formal decision.",
+    "solver": "exact invariant-subspace reduction, one-chain Fourier support propagation, carrier-interval inequalities, explicit support paths, and periodic integration by parts",
+    "tolerances": {
+      "formalIdentities": "none; exact integer and symbolic arithmetic",
+      "presentationRatios": "validate_data.py recomputes each rational ratio with relative tolerance 1e-15"
+    },
+    "scientificWallTimeSeconds": 0.737199042,
+    "monitoredWallTimeSeconds": 0.795783,
+    "samplingWallTimeSeconds": 0.0012330829922575504,
+    "samplingMonitoredWallTimeSeconds": 0.1,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.1,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "formal-progress.ndjson",
+      "formalResourceLog": "formal-resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 8,
+      "samplingSamples": 2
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 90.7,
+    "formalMaximumObservedRssMiB": 18.891,
+    "samplingMaximumObservedCpuPercent": 0.0,
+    "samplingMaximumObservedRssMiB": 6.266
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "support-gaps.csv",
+      "format": "csv",
+      "schema": "70 exact-formula rows with N, H=4N, Picard order, integer support gap, normalized gap, target status, and classification.",
+      "bytes": 4253,
+      "sha256": "386f2b02e87b42c33764b85ca12f9061036345cae2783b1f6d560fe8e7c4a0f1"
+    },
+    {
+      "path": "picard-events.csv",
+      "format": "csv",
+      "schema": "11 exact target-plane, original-support, and fourth-order energy events with explicit paths or terms.",
+      "bytes": 428,
+      "sha256": "0c0cbcccb63a3b95da83b552114b8e09116c01bdd5cff9278a2cfa252519b8c8"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned figure source, formal certificate hash and source commit, row counts, environment, and sampling wall time.",
+      "bytes": 887,
+      "sha256": "b37da360d7ca19afcf7b3e2f4777e50acdd3aebe01f0c11135378c13da0262fa"
+    },
+    {
+      "path": "formal-progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC stages and successful 24-check completion record.",
+      "bytes": 865,
+      "sha256": "6bfcbad277463533244c36cebefef9aba0303f3ef98e5349375a6e1dff7467c2"
+    },
+    {
+      "path": "formal-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for the successful source-locked formal audit.",
+      "bytes": 720,
+      "sha256": "8f7e069c802886f181a218046461cc57a2778a4ca25e3d603a55d350a9b802df"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for deterministic presentation-table preparation.",
+      "bytes": 289,
+      "sha256": "cad64c7ba730c7863394bf4ddf18993f2a5ed148606311242569885c79106aa0"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r060",
+      "fileName": "invariant-shear-picard.json",
+      "bytes": 6805,
+      "sha256": "681fd7c5e2a6aef645f4bbff8e63733e62a002c608cb138856a17747489263b2",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, evaluates every exact presentation row, and copies the successful progress and resource logs; validate_data.py independently checks every row and the pinned provenance."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "5e778be5263f874a1b0e5771e41abdb48615553f8e91132c05b08a0b21d2584f",
+    "command": "MPLCONFIGDIR=tmp/r060-mplconfig tmp/r024-venv/bin/python figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "992e3aa69faa9af06da50f77ca80d9a9a8d94d922698ecb1d4feae5ba4bab734"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "03bbd6b369bd808a02c001331534dc70216a2bc8d47791619a7fe956a4d68643"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "0fcbef4bb9512068ea654ee88828527df4bbdf58a8a618c2b7e646f7b15e6af7"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "R0.59 高频包的完整 Picard 森林塌缩为单条剪切链；三次目标回返严格不可能，四次项是第一次可能的低频修正，而三次高频回返参与精确的四阶能量补偿。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The first visual pass exposed overlapping panel titles; the second exposed missing excluded-order cross markers. Both were corrected before the final source lock ffaa745636bf20084ff3e3ee2df0e0b655c3ab8b. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Three Type0 font resources resolve to embedded CIDFontType2 descendants with FontFile2 streams. Extracted PDF text contains all three panel titles, the exact energy identity, formal counts, and the arbitrary-data scope limitation. validate_data.py independently checks every archived table and pinned provenance."
+  }
+}

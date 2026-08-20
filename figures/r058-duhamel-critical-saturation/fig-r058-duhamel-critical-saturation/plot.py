@@ -152,7 +152,7 @@ def draw() -> None:
         norm_axis.grid(color=GRID, linewidth=0.32, which="both")
         norm_axis.legend(loc="lower left", frameon=False, fontsize=3.25)
 
-        flattening_axis.set_title("(c) Deterministic phase flattening", loc="left", pad=5)
+        flattening_axis.set_title("(c) Phase flattening", loc="left", pad=5)
         flattening_shells = [int(row["L"]) for row in flattening]
         rs_values = [float(row["sampledRudinShapiroOverSqrtL"]) for row in flattening]
         positive_values = [float(row["allPositiveMaximumOverSqrtL"]) for row in flattening]

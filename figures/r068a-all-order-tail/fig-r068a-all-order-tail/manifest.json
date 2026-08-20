@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r068a-all-order-tail",
+  "status": "formal",
+  "createdAt": "2026-08-20T23:24:00+08:00",
+  "analyticalQuestion": "After retaining orders through eight, does the complete periodic target tail contract at quartic-critical amplitude?",
+  "supportedClaim": "The sum of every target term of order at least ten is less than (1/30000)(43/64)^r times the quadratic target coefficient.",
+  "claimBoundary": "The eighth-order heat term remains open, and the theorem is restricted to the globally smooth invariant-shear packet.",
+  "git": {
+    "sourceCommit": "95fcc835b63b1ef3abdea9038d49ad08b951e9fd",
+    "certificateCommit": "f13b8fcd56ccc932f2ea6e411af0766d44ca4a18",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "all-order-tail-reduction-audit.json",
+      "location": "research/certificates/r068a/all-order-tail-reduction-audit.json",
+      "bytes": 2680,
+      "sha256": "f6d94a8be1d1c1394311b745bdac82db64cc43ab198e36ca209997975f21f50a",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "tail-bounds.csv",
+      "bytes": 944,
+      "sha256": "39441c324e53b359d880c87408d5a073b24c48f9e2fa3b2a0823c3aaaecfa3a9",
+      "format": "csv",
+      "schema": "seventeen four-bit tail bounds"
+    },
+    {
+      "path": "contraction-rates.csv",
+      "bytes": 298,
+      "sha256": "657460473855e31edc68e5a50fddb080c55a53b04bdd7b17b9553d4030be8e0e",
+      "format": "csv",
+      "schema": "certified and probe contraction factors"
+    },
+    {
+      "path": "order-status.csv",
+      "bytes": 164,
+      "sha256": "bdc9d49354cc6ba17f86607d292282dbbf9b9fe0a0912e9f2ac3ad0c5e305b78",
+      "format": "csv",
+      "schema": "finite-order reduction status"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 620,
+      "sha256": "2e66335243ab46761ccbb0f723fee2e07122bc4810a95857de4b31c38d25feae",
+      "format": "json",
+      "schema": "pinned certificates and provenance"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "a0f6c985d49faf0f0fee0fcc618a44ee13670e51f8698ec85b71016e16037005",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact analytic audit",
+    "configuration": "sectorwise Dyson chain, p>=9 exponential tail, periodic target m_r=(2M_r+13)/15",
+    "precision": "rational and Q(sqrt(2)) comparisons; decimals are display only",
+    "command": "python3 research/all_order_tail_reduction_audit.py --output research/certificates/r068a/all-order-tail-reduction-audit.json --progress"
+  },
+  "environment": {
+    "python": "3.12",
+    "matplotlib": "3.10.5"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 100,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 24806,
+        "sha256": "e26d22830097e7a5ae458d3f22d18c0f0f3db5db53c5af63b42869e588a7318a"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 69210,
+        "sha256": "9aac28299235d43142b56b55914c628283b25e9840da61a5cf254944b3a61483"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 406644,
+        "sha256": "b4d16c352b1642a714737b08e24996ff7002ba7e37be04b6476a400d802498b5",
+        "dpi": 600,
+        "pixels": "4204 by 2362"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "highlighted geometric line, contraction comparison, and order-status strip",
+    "takeaway": "the infinite target tail is closed jointly and order eight is the only finite gate",
+    "nonColorEncoding": "solid versus dashed lines, filled versus open markers, direct labels, and an open diamond",
+    "outputFootprint": "double-column 178 by 100 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The PNG and Poppler-rendered PDF were inspected; the open eighth-order gate is not encoded by color alone."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

@@ -3753,7 +3753,35 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_correlation_reduction_audit.py">查看整数审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r062-quartic-correlation/fig-r062-quartic-correlation">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.63：</strong>保留三单形时间积分，在每个时间层建立两状态 Rudin--Shapiro 递推，争取从 \(O(\sqrt M)\) 中提取缺失的 \(M^{-1/2}\)。</p>
+            <p><strong style="color:var(--gold)">R0.63 已完成：</strong>四次热核路径和已在每个时间层精确化为加权多项式系数。两态符号递推的三次乘积闭合在八态；加入目标符号后是十六态并传递进位。所需一致界现在被准确化为非自治提升算子的积分范数问题。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.63 · 2026-08-20</p>
+            <h3>时间分层因式分解与提升 Rudin--Shapiro 递推</h3>
+            <p>
+              保留三单形时间积分后，三个载频顺序都能逐项写成独立高斯权的
+              三次多项式系数。底层 \(P,Q\) 两态递推因此精确提升为八个三次
+              \(P/Q\) 状态；再乘目标符号后，自然得到十六态与进位闭合系统。
+            </p>
+            <p>
+              27 个时间层比较的最大相对残差为 \(1.11\times10^{-15}\)，
+              八态整数递推在前 10 个二进制层级与直接卷积完全一致。
+              六个未加权相关最坏目标延伸到 \(M=131072\) 和约 289.78 亿条路径，
+              仍保持 \(S_{4,m}/M&lt;0.02\)，但消去条件数已达到 \(5.06\times10^4\)。
+            </p>
+            <p>
+              <strong>结论边界：</strong>时间层因式分解和提升递推是全指标代数
+              恒等式；六个压力测试只是有限证据。当前仍未证明
+              \(|S_{4,m}|\le CL^2M\)，也没有进入一般三维流。
+            </p>
+            <p>
+              <a href="/notes/r0-63.html"><strong>阅读 R0.63 研究笔记 →</strong></a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r063">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_time_layer_transfer_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r063-time-layer-transfer/fig-r063-time-layer-transfer">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.64：</strong>对带高斯半块限制和进位的十六态算子，构造尺度因子不超过 \(2\) 的公共范数；若不存在，则输出显式超临界进位循环。</p>
           </div>
         </section>
 
@@ -3768,7 +3796,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.46 · 2026-08-20<br>
+        综述 v0.47 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

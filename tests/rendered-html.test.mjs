@@ -149,6 +149,19 @@ const sixtySecondFigurePdfUrl = new URL(
   "../public/figures/r0-62-quartic-correlation.pdf",
   import.meta.url,
 );
+const sixtyThirdNoteUrl = new URL("../public/notes/r0-63.html", import.meta.url);
+const sixtyThirdFigureSvgUrl = new URL(
+  "../public/figures/r0-63-time-layer-transfer.svg",
+  import.meta.url,
+);
+const sixtyThirdFigurePngUrl = new URL(
+  "../public/figures/r0-63-time-layer-transfer.png",
+  import.meta.url,
+);
+const sixtyThirdFigurePdfUrl = new URL(
+  "../public/figures/r0-63-time-layer-transfer.pdf",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -347,8 +360,9 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.ok(home.includes("R0.60 已完成："));
   assert.ok(home.includes("R0.61 已完成："));
   assert.ok(home.includes("R0.62 已完成："));
-  assert.ok(home.includes("下一步 R0.63："));
-  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
+  assert.ok(home.includes("R0.63 已完成："));
+  assert.ok(home.includes("下一步 R0.64："));
+  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -392,8 +406,9 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.match(home, /href="\/notes\/r0-61\.pdf"/);
   assert.ok(home.includes("R0.61 已完成："));
   assert.ok(home.includes("R0.62 已完成："));
-  assert.ok(home.includes("下一步 R0.63："));
-  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
+  assert.ok(home.includes("R0.63 已完成："));
+  assert.ok(home.includes("下一步 R0.64："));
+  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -434,8 +449,9 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.match(home, /href="\/notes\/r0-62\.html"/);
   assert.match(home, /href="\/notes\/r0-62\.pdf"/);
   assert.ok(home.includes("R0.62 已完成："));
-  assert.ok(home.includes("下一步 R0.63："));
-  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
+  assert.ok(home.includes("R0.63 已完成："));
+  assert.ok(home.includes("下一步 R0.64："));
+  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.62/);
   assert.match(note, /4 项整数检查全通过/);
   assert.match(note, /新增完整目标：3,584 个/);
@@ -464,6 +480,52 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.match(
     figureSvg,
     /Heat-weighted quartic profiles and the unweighted correlation gap/,
+  );
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes the R0.63 time-layer factorization and lifted transfer boundary", async () => {
+  const [home, note, figureSvg, figurePng, figurePdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixtyThirdNoteUrl, "utf8"),
+    readFile(sixtyThirdFigureSvgUrl, "utf8"),
+    readFile(sixtyThirdFigurePngUrl),
+    readFile(sixtyThirdFigurePdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-63\.html"/);
+  assert.ok(home.includes("R0.63 已完成："));
+  assert.ok(home.includes("下一步 R0.64："));
+  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
+  assert.match(note, /研究笔记 R0\.63/);
+  assert.match(note, /4 项审计检查全通过/);
+  assert.match(note, /时间层比较：27 项/);
+  assert.match(note, /整数递推：10 层/);
+  assert.match(note, /28,977,859,974 条路径/);
+  assert.ok(note.includes("S_{4,m}=\\int_{\\Delta_T}"));
+  assert.ok(note.includes("C_{n+1}^{\\boldsymbol\\sigma}(q)"));
+  assert.ok(
+    note.includes(
+      "(-1)^{\\boldsymbol\\sigma\\cdot\\boldsymbol\\varepsilon}",
+    ),
+  );
+  assert.match(note, /十六态才闭合目标/);
+  assert.ok(note.includes("0.0190323022"));
+  assert.ok(note.includes("5.06\\times10^4"));
+  assert.ok(note.includes("没有证明 \\(|S_{4,m}|\\le CL^2M\\)"));
+  assert.match(note, /没有解决三维 Navier--Stokes 千禧年问题/);
+  assert.match(note, /r0-63-time-layer-transfer\.svg/);
+  assert.match(note, /r0-63-time-layer-transfer\.png/);
+  assert.match(note, /r0-63-time-layer-transfer\.pdf/);
+  assert.match(note, /54898a2ba78e48ac075f6613ae6af5d77ce4f28d/);
+  assert.match(note, /89de4b0/);
+  assert.match(note, /f77ff9e/);
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
+  assert.match(
+    figureSvg,
+    /The quartic transfer closes only after a lifted state system/,
   );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
   assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");

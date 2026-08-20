@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.63：把四次热核路径和精确化为分层加权相关，并识别真正闭合的八态与十六态递推。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.63｜时间分层因式分解与提升递推">
+  <meta property="og:description" content="两态符号递推并不闭合四次目标；精确闭合需要八态三次乘积、十六态目标符号系统与进位。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-63-time-layer-transfer.png">
+  <title>R0.63｜时间分层因式分解与提升递推</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.47"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#factor">时间分层</a><a href="#lift">提升递推</a><a href="#evidence">压力测试</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.63 · 四次热相关的闭合状态</div>
+        <h1>两态生成符号；<br>十六态才闭合目标</h1>
+        <p class="lead">我把三重 Duhamel 核保留为时间单形积分，逐个时间层重写四次路径和。结果纠正了 R0.62 的下一步表述：底层 Rudin--Shapiro 递推只有 \(P,Q\) 两态，但三次载频乘积需要八态，乘上目标符号后自然成为十六态，并同时传递进位。所需 \(O(L^2M)\) 上界现在被准确化为一个非自治提升算子的积分范数问题。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确闭合结构已证明</span><strong>4 项审计检查全通过</strong><p>版本 v0.63 · 2026-08-20</p><p>时间层比较：27 项</p><p>整数递推：10 层</p><p>最大压力测试：28,977,859,974 条路径</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#factor">01 · 时间层因式分解</a></li>
+        <li><a href="#lift">02 · 八态与十六态</a></li>
+        <li><a href="#evidence">03 · 敌对目标压力测试</a></li>
+        <li><a href="#figure">04 · 期刊附图</a></li>
+        <li><a href="#next">05 · R0.64 任务</a></li>
+        <li><a href="#reproduce">06 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>证明了正确的递推对象，还没有证明它的临界范数</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL LAYERS</span><strong>时间层因式分解</strong><p>三个时间顺序逐项化为加权多项式系数。</p></div>
+            <div class="status"><span>FORMAL · EXACT LIFT</span><strong>2 → 8 → 16 态</strong><p>符号生成、三次乘积、目标符号依次提升。</p></div>
+            <div class="status"><span>OPEN · OPERATOR NORM</span><strong>\(O(L^2M)\) 未证明</strong><p>还需公共范数或超临界进位循环。</p></div>
+            <div class="status"><span>OPEN · CLAY PROBLEM</span><strong>原问题没有解决</strong><p>当前构造仍在全局光滑剪切类。</p></div>
+          </div>
+        </section>
+
+        <section id="factor"><div class="section-no">01 / Time-layer factorization</div><h2>先交换时间积分与符号求和，热核不再是黑箱四指标乘子</h2>
+          <p>对固定目标载频 \(Q\)，令 \(\mathcal C_Q(u,v,w)\) 表示关系 \(A+B-C=Q\) 上的加权三次相关。把三个 Duhamel 时间间隔记为 \(\tau_0,\tau_1,\tau_2\)，则完整四次和精确满足</p>
+          <div class="equation result">\[
+            \boxed{S_{4,m}=\int_{\Delta_T}\sum_{Q\in J_m}e^{-\tau_0x_Q^2}
+            \sum_{j=1}^3\mathcal C_Q\bigl(u^{(j)},v^{(j)},w^{(j)}\bigr)\,d\tau.}
+          \]</div>
+          <p>三组权重分别对应 \((A,B,-C)\)、\((A,-C,B)\)、\((-C,A,B)\)。每组权重都分离为 \(A,B,C\) 的高斯因子；等式逐路径成立，没有使用估计或数值积分。</p>
+        </section>
+
+        <section id="lift"><div class="section-no">02 / Lifted transfer</div><h2>两态递推的三次乘积精确提升为八态 Walsh--Hadamard 传输</h2>
+          <p>令 \(R_{0,n}=P_n\)、\(R_{1,n}=Q_n\)。对任意三个权重和 \(\boldsymbol\sigma\in\{0,1\}^3\)，相应三次系数满足</p>
+          <div class="equation result">\[
+            \boxed{C_{n+1}^{\boldsymbol\sigma}(q)=
+            \sum_{\boldsymbol\varepsilon\in\{0,1\}^3}
+            (-1)^{\boldsymbol\sigma\cdot\boldsymbol\varepsilon}
+            C_n^{\boldsymbol\varepsilon}
+            \!\left(q-M(\varepsilon_1+\varepsilon_2-\varepsilon_3)\right).}
+          \]</div>
+          <p>这里省略的参数只是三个权重在对应半块上的限制。八个符号构成八阶 Walsh--Hadamard 矩阵；位移取 \(-1,0,1,2\)。再乘目标的 \(P/Q\) 符号位后，闭合系统自然扩展为十六态。由于高斯权在每个半块的限制随层级变化，最终传输是非自治的。</p>
+        </section>
+
+        <section id="evidence"><div class="section-no">03 / Hostile probes</div><h2>未加权相关最坏的六个目标仍未显示 \(S_{4,m}/M\) 增长</h2>
+          <table><thead><tr><th>\(M\)</th><th>目标 \(m\)</th><th>\(S_{4,m}/M\)</th><th>消去条件数</th></tr></thead><tbody>
+            <tr><td>4096</td><td>292</td><td>0.0106986336</td><td>1804</td></tr>
+            <tr><td>8192</td><td>7643</td><td>0.0105185691</td><td>3395</td></tr>
+            <tr><td>16384</td><td>2388</td><td>0.0064320974</td><td>13164</td></tr>
+            <tr><td>32768</td><td>30583</td><td>0.0096879188</td><td>14735</td></tr>
+            <tr><td>65536</td><td>5291</td><td>0.0190323022</td><td>16445</td></tr>
+            <tr><td>131072</td><td>122331</td><td>0.0112788561</td><td>50625</td></tr>
+          </tbody></table>
+          <p>这些目标专门选在普通未加权外层相关最大的地方。热核加权后的 \(S_{4,m}/M\) 仍处于 \(10^{-2}\) 量级，但消去条件数已升到 \(5.06\times10^4\)。因此表中行为只是支持性压力测试，不能代替区间证书或全指标算子范数。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">04 / Journal figure</div><h2>精确状态闭合、有限尺度行为与数值边界同时保存</h2>
+          <figure>
+            <img src="/figures/r0-63-time-layer-transfer.svg" alt="R0.63 四次热相关的提升状态系统与压力测试">
+            <figcaption>图 R0.63-1。左侧是精确的两态、八态、十六态加进位层级；右上是六个敌对目标的 \(S_{4,m}/M\)；右下显示不断上升的消去条件数。PDF、SVG、600 dpi PNG、两张展示表、资源日志、图源、清单和哈希均已归档，并完成彩色、真灰度和 PDF 最终尺寸检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-63-time-layer-transfer.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-63-time-layer-transfer.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="next"><div class="section-no">05 / R0.64</div><h2>下一步直接计算提升算子的公共范数或超临界循环</h2>
+          <div class="proof"><strong>判定任务。</strong>对带高斯半块限制与进位的十六态算子，构造除以 \(2\) 后不扩张的公共范数；若不存在，则输出一个谱半径大于 \(2\) 的显式进位循环。</div>
+          <p>前一种结果将证明 \(|S_{4,m}|\le CL^2M\)，从而消去 R0.62 剩余的 \(\sqrt M\)。后一种结果将否定这个频率包上的一致四次猜想，并准确给出增长机制。两种结论都有研究价值，所以后续无需再做路线选择。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">06 / Reproducibility and sources</div><h2>数学说明、精确审计、六个原始扫描与正式附图均已固定</h2>
+          <p>精确推导提交为 <code>54898a2ba78e48ac075f6613ae6af5d77ce4f28d</code>，扫描证书提交为 <code>89de4b0</code>，正式附图提交为 <code>f77ff9e</code>。审计在 27 个时间层样例上的最大相对残差为 \(1.11\times10^{-15}\)，并在前 10 个二进制层级逐项复现八态整数递推。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_time_layer_transfer_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r063">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_time_layer_transfer_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r063-time-layer-transfer/fig-r063-time-layer-transfer">查看期刊附图包</a></p>
+          <p>声明边界：没有证明 \(|S_{4,m}|\le CL^2M\)，没有证明全指标正性，没有控制完整偶数阶余项，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.63 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

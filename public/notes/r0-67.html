@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.67A：精确证明显式五载频零时间六阶目标具有严格负的可达主谱投影，并给出完整路径公式与机器证书。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.67A｜零时间六阶循环的精确谱定理">
+  <meta property="og:description" content="可达六阶标量满足 Y_r=C_{6,0}mu^r+O(300^r)，其中 C_{6,0}&lt;0、mu&gt;400；完整热核投影仍待证明。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-67-sixth-order-cycle.png">
+  <title>R0.67A｜零时间六阶循环的精确谱定理</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.51"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#theorem">六阶定理</a><a href="#spectrum">精确谱</a><a href="#scale">振幅尺度</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.67A · 五载频零时间循环</div>
+        <h1>六阶可达主模态<br>精确闭合且严格非零</h1>
+        <p class="lead">完整六阶目标路径必须满足 \(A+B+C-D-E=Q\)。其最小直接闭合是 320 态整数传输；对四位周期 \(0100\)，可达标量满足 \(Y_r=C_{6,0}\mu^r+O(300^r)\)，其中 \(402.425429345624&lt;\mu&lt;402.4254293456256\) 且 \(C_{6,0}&lt;-0.013\)。这是零时间固定阶定理，不是完整五单形热核定理。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.67A 精确证书已完成</span><strong>14 项证书检查全通过</strong><p>版本 v0.67A · 2026-08-20</p><p>直接状态：320</p><p>像空间维数：36</p><p>直接卷积：7 层全状态</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#paths">01 · 完整路径</a></li>
+        <li><a href="#transfer">02 · 三百二十态</a></li>
+        <li><a href="#spectrum">03 · 四位循环谱</a></li>
+        <li><a href="#theorem">04 · 可达渐近</a></li>
+        <li><a href="#remainder">05 · 余项尺度</a></li>
+        <li><a href="#scale">06 · 振幅比较</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · R0.67B 任务</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>证明了零时间五载频相关的主谱增长，没有证明完整热加权六阶项</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · PATHS</span><strong>三正两负共十种次序</strong><p>全部六阶目标路径被一个符号方程覆盖。</p></div>
+            <div class="status"><span>EXACT · TRANSFER</span><strong>320 态直接闭合</strong><p>目标符号、五个系数符号与五个进位联合传输。</p></div>
+            <div class="status"><span>CERTIFIED · REACHABLE</span><strong>\(C_{6,0}&lt;-0.013\)</strong><p>目标标量对主根的投影严格非零。</p></div>
+            <div class="status"><span>OPEN · HEAT</span><strong>五单形投影未认证</strong><p>时间热率使状态变成连续仿射测度系统。</p></div>
+          </div>
+        </section>
+
+        <section id="paths"><div class="section-no">01 / Complete path formula</div><h2>几何约束强迫每条六阶返回路径恰有三个正载频和两个负载频</h2>
+          <p>沿 R0.61 的频率壳，六阶路径从 \(-Q\) 出发并依次加入五个剪切载频。最终第一频率回到零当且仅当</p>
+          <div class="equation result">\[
+            \boxed{A+B+C-D-E=Q,\qquad A,B,C,D,E\in I_N.}
+          \]</div>
+          <p>四个或五个正载频已经过大，至多两个正载频又不能到达正目标，因此三正两负是唯一可能。五个符号位置共有 \({5\choose2}=10\) 种时间次序。</p>
+          <p>对每个次序令 \(k_j\) 为第 \(j\) 步的部分频率，并定义六个无量纲热率</p>
+          <div class="equation">\[
+            \alpha_j=\frac{k_j^2+\sum_{\ell=j+1}^{5}p_\ell^2}{H^2}
+            \quad(0\le j\le4),\qquad \alpha_5=0.
+          \]</div>
+          <p>用含重根情形的五单形核 \(K_T^{(5)}=-[\alpha_0,\ldots,\alpha_5]e^{-Tx}\) 求和，得到完整热路径公式</p>
+          <div class="equation result">\[
+            \boxed{\widehat G_6(0,m,t_H)
+            =-im^5e^{-m^2t_H}H^{-10}S_{6,m}.}
+          \]</div>
+          <p>若振幅写成 \(A=\varepsilon\sqrt H\)，则相对二次项的精确归一化是</p>
+          <div class="equation result">\[
+            \frac{A^6\widehat G_6}{A^2\widehat G_2}
+            =\frac{\varepsilon^4}{L^4}R_{6,L,M,m},\qquad
+            R_{6,L,M,m}=\frac{L^4m^4}{H^6}\frac{S_{6,m}}{S_{2,m}}.
+          \]</div>
+        </section>
+
+        <section id="transfer"><div class="section-no">02 / Exact 320-state transfer</div><h2>五个 Rudin--Shapiro 符号态和五个进位给出最小直接闭合</h2>
+          <p>一个二进制层上的状态是</p>
+          <div class="equation result">\[
+            (s,\boldsymbol\sigma,k)\in
+            \{0,1\}\times\{0,1\}^5\times\{-2,-1,0,1,2\},
+            \qquad 2\times32\times5=320.
+          \]</div>
+          <p>若目标下一位为 \(b\)，五个载频下一位为 \(\boldsymbol\varepsilon\)，子进位满足</p>
+          <div class="equation">\[
+            k'=2k+b-(\varepsilon_1+\varepsilon_2+\varepsilon_3
+            -\varepsilon_4-\varepsilon_5),
+          \]</div>
+          <p>而带符号转移系数为 \((-1)^{sb+\boldsymbol\sigma\cdot\boldsymbol\varepsilon}\)。两个数字矩阵在模 \(1000003\) 与 \(1000033\) 下的秩都严格等于 80。直接五重卷积在全部 320 个状态上核对到第七个二进制层，每个整数完全一致。</p>
+        </section>
+
+        <section id="spectrum"><div class="section-no">03 / Exact cycle spectrum</div><h2>四位周期的三百二十维矩阵被精确压缩到三十六维像空间</h2>
+          <p>令 \(W_6\) 为按最低位到最高位读取 \(0100\) 的四步乘积。两组独立模素数都给出</p>
+          <div class="equation">\[
+            \operatorname{rank}W_6=36,
+            \qquad \operatorname{rank}W_6^2
+            =\operatorname{rank}W_6^3=31.
+          \]</div>
+          <p>在精确三十六维像空间上，特征多项式分解为</p>
+          <div class="equation result">\[
+            \boxed{\chi_{\rm im}(x)=x^5(x-256)^5q_4(x)^4q_{10}(x),}
+          \]</div>
+          <div class="equation">\[
+            q_4(x)=x^4-400x^3-30720x^2
+            +13303808x-536870912.
+          \]</div>
+          <p>\(q_4\) 的四个实根分别落在 \((-208,-192)\)、\((48,64)\)、\((128,144)\)、\((400,416)\)。对十次因子连续执行十次严格 Schur 变换，证明其全部复根满足 \(|z|&lt;300\)。因此 \(q_4\) 在 \((400,416)\) 中的根 \(\mu\) 是唯一主根，并且</p>
+          <div class="equation result">\[
+            \boxed{402.425429345624&lt;\mu&lt;402.4254293456256,\qquad
+            \mu=16\lambda.}
+          \]</div>
+        </section>
+
+        <section id="theorem"><div class="section-no">04 / Reachable asymptotic</div><h2>目标初态的生成函数没有消去主根，主系数严格为负</h2>
+          <p>固定</p>
+          <div class="equation">\[
+            M_r=16^r,\qquad q_r=2\frac{16^r-1}{15},
+          \]</div>
+          <p>并定义未加权五载频目标标量</p>
+          <div class="equation">\[
+            Y_r=a_{4r}^0(q_r)
+            \sum_{A+B+C-D-E=q_r}
+            a_{4r}^0(A)a_{4r}^0(B)a_{4r}^0(C)a_{4r}^0(D)a_{4r}^0(E).
+          \]</div>
+          <p>从进位零初态到目标状态的标量生成函数在一次暂态之后具有分母 \((x-256)q_4(x)q_{10}(x)\)，分子与分母的精确最大公因式为 1。主极点因而可达，且严格区间投影给出</p>
+          <div class="equation result">\[
+            \boxed{Y_r=C_{6,0}\mu^r+O(300^r),}
+          \]</div>
+          <div class="equation result">\[
+            -0.013063396815425&lt;C_{6,0}&lt;-0.013063396815144.
+          \]</div>
+          <p>特别地，\(M_r^2=256^r\) 而 \(\mu&gt;400\)，所以</p>
+          <div class="equation result">\[
+            \boxed{\frac{|Y_r|}{M_r^2}\longrightarrow\infty.}
+          \]</div>
+        </section>
+
+        <section id="remainder"><div class="section-no">05 / Conditional remainder scale</div><h2>绝对值转移给出二阶空间正则性的候选余项尺度，但矩提升仍待完成</h2>
+          <p>对五个进位聚合全部分支绝对值，得到正矩阵 \(A_{\rm abs}\)。精确正权</p>
+          <div class="equation">\[
+            w=(16,83441,631131,471851,28561)
+          \]</div>
+          <p>满足</p>
+          <div class="equation result">\[
+            \boxed{A_{\rm abs}w=65536w.}
+          \]</div>
+          <p>五载频约束留下四个自由空间坐标，每个四位块把它们收缩 \(1/16\)。如果带符号余项逐分量消去质量和四个一次矩，那么在加权 \((C^{1,1})^*\) 范数中出现条件尺度</p>
+          <div class="equation result">\[
+            \frac{65536}{16^2}=256&lt;\mu.
+          \]</div>
+          <p>这里的“如果”不能删除。R0.67B 仍须构造质量与四个一次矩的精确提升，证明余项确实落在零仿射子空间，再建立对应 resolvent 界。当前结果只是完成了绝对转移与谱间隙这一半。</p>
+        </section>
+
+        <section id="scale"><div class="section-no">06 / Amplitude comparison</div><h2>零时间固定六阶项没有在四次临界振幅上形成同量级抵消</h2>
+          <p>R0.66 的四次主根是 \(\lambda\)，本页六阶主根满足 \(\mu=16\lambda\)。因此相对于各自临界基数，二者具有同一个超额块比</p>
+          <div class="equation">\[
+            \frac{\mu}{256}=\frac{\lambda}{16}>1.
+          \]</div>
+          <p>若选择 \(\varepsilon_r^2\asymp(16/\lambda)^r\)，使孤立四次反馈保持 \(O(1)\)，那么零时间六阶反馈还多一个因子</p>
+          <div class="equation result">\[
+            \left(\frac{16}{\lambda}\right)^r\longrightarrow0.
+          \]</div>
+          <p>这说明这个固定六阶零时间主模态本身不会在该振幅尺度上抵消四次主模态。它不是完整解结论：真实热核会改变谱投影系数，八次及更高阶的组合也尚未统一求和。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>可达渐近、谱分离和条件余项尺度已按期刊双栏尺寸保存</h2>
+          <figure>
+            <img src="/figures/r0-67-sixth-order-cycle.svg" alt="R0.67A 零时间六阶可达标量、精确谱分离与条件余项尺度">
+            <figcaption>图 R0.67A-1。左图显示精确 \(Y_r/\mu^r\) 在第 11 个周期变号并趋近严格负的主系数区间；右上图同时给出四个四次根区间、十次因子的半径 300 Schur 圆盘以及条件零仿射尺度 256；右下图显示 \(|Y_r|/256^r\) 的精确增长。PDF、SVG、600 dpi PNG、数据、资源日志、图源与清单均已归档，并完成彩色、真灰度和 PDF 最终尺寸检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-67-sixth-order-cycle.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-67-sixth-order-cycle.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.67B</div><h2>下一步把零时间谱定理升级为完整五单形热投影定理</h2>
+          <div class="proof"><strong>明确的三个门槛。</strong>第一，构造质量加四个一次矩的有限维提升，并证明所有连续分支保持零仿射子空间；第二，在加权 \((C^{1,1})^*\) 范数中建立主根之外的严格 resolvent；第三，用向外区间把完整十种时间次序的五单形热泛函与主特征分布配对，判定其 \(\mu\)-投影是否非零。</div>
+          <p>只有第三步得到严格不含零的区间，才可把 R0.67A 的零时间渐近替换成完整热加权六阶渐近。随后才有资格进入全部偶数阶生成函数；在此之前不宣称高阶余项已经控制。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility</div><h2>数学推导、正式证书和期刊附图分别固定</h2>
+          <p>数学说明与精确审计脚本提交为 <code>8da878e5f7b07fd4e58f039d8abee458cd3eb122</code>，正式证书提交为 <code>03aaf0af31b74207b9d9a068e4331424a5e84957</code>，期刊附图包提交为 <code>765c13ac5456325e08bdac3c2e0aa8b0db54f469</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_cycle_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r067">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_cycle_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067-sixth-order-cycle/fig-r067-sixth-order-cycle">查看期刊附图包</a></p>
+          <p>声明边界：证明了一个显式包上的零时间六阶五载频相关定理；没有证明完整热加权六阶主投影非零，没有控制全部偶数阶 Picard 级数，没有推出范数膨胀、奇异性或全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.67A · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

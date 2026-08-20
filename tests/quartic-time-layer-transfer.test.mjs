@@ -18,6 +18,10 @@ const auditUrl = new URL(
   import.meta.url,
 );
 const certificateRoot = new URL("../research/certificates/r063/", import.meta.url);
+const figureRoot = new URL(
+  "../figures/r063-time-layer-transfer/fig-r063-time-layer-transfer/",
+  import.meta.url,
+);
 const probeNames = [
   "m4096-t292.json",
   "m8192-t7643.json",
@@ -97,5 +101,30 @@ test("archives the R0.63 transfer certificate with valid hashes", async () => {
     const payload = await readFile(new URL(entry.file, certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, entry.expected, entry.file + " hash mismatch");
+  }
+});
+
+test("archives the formal R0.63 lifted-transfer figure", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r063-time-layer-transfer");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 96);
+  assert.equal(manifest.figure.outputs.length, 3);
+  assert.match(manifest.supportedClaim, /sixteen target-signed states/);
+  assert.match(manifest.supportedClaim, /integrated operator norm remains open/i);
+
+  for (const entry of [...manifest.data, ...manifest.figure.outputs]) {
+    const payload = await readFile(new URL(entry.path, figureRoot));
+    assert.equal(payload.length, entry.bytes, entry.path + " byte mismatch");
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.sha256, entry.path + " hash mismatch");
+  }
+  for (const name of ["figure-data-resources.csv", "plot-resources.csv"]) {
+    const text = await readFile(new URL(name, figureRoot), "utf8");
+    assert.match(text, /exited:0/);
   }
 });

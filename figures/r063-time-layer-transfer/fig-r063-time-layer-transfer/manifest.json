@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r063-time-layer-transfer",
+  "status": "formal",
+  "analyticalQuestion": "What finite state system closes the heat-weighted quartic correlation, and do hostile finite targets already contradict the desired O(M) scale?",
+  "supportedClaim": "The exact two-state Rudin--Shapiro generator lifts to eight cubic states and sixteen target-signed states with carries. Six heat-weighted hostile-target probes through M=131072 remain at S4/M scale 10^-2, while a cancellation condition reaching 5.06e4 keeps those probes strictly in the category of finite evidence. The integrated operator norm remains open.",
+  "createdAt": "2026-08-20T17:40:16+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "figureSourceCommit": "e1e155c86ae32b94d432996c6440c6152c10df3b",
+    "certificateCommit": "89de4b0",
+    "formalReductionCommit": "54898a2ba78e48ac075f6613ae6af5d77ce4f28d",
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "transfer diagram plus two quantitative diagnostic panels",
+    "variants": [
+      "exact 2-to-8-to-16 state closure diagram with carry shifts",
+      "six heat-weighted hostile-target S4/M observations",
+      "six numerical cancellation-condition observations"
+    ],
+    "takeaway": "The base two-state recursion does not close the quartic target by itself. The correct object is a non-autonomous target-signed lift, and finite hostile targets do not yet contradict O(M).",
+    "dataSufficiency": "The exact audit checks 27 time-layer identities and ten dyadic integer lift levels. The six stress tests reach M=131072 and 28,977,859,974 ordered paths.",
+    "palettePolicy": "blue for exact transfer structure, rust for conditioning, neutral ink, and one gold boundary annotation",
+    "nonColorEncoding": "boxes and arrows, open circle and square markers, solid and dashed lines, direct labels, and explicit logarithmic axes",
+    "outputFootprint": "double-column journal figure at 178 by 96 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size"
+  },
+  "computation": {
+    "kind": "exact algebraic transfer regression plus deterministic long-double path scans",
+    "auditCommand": "python3 research/quartic_time_layer_transfer_audit.py --output research/certificates/r063/time-layer-transfer-audit.json --max-lift-level 10 --probe [six archived probe files]",
+    "samplingCommand": "python3 figures/r063-time-layer-transfer/fig-r063-time-layer-transfer/prepare_data.py --source-commit e1e155c86ae32b94d432996c6440c6152c10df3b",
+    "configuration": "27 small-box time-layer comparisons, exact cubic lift through M=1024, and six hostile target scans from M=4096 through M=131072",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "exact Python integers for the cubic lift; double exponentials for the algebraic layer regression; C++ long double with compensated sums for the hostile probes",
+    "tolerances": {
+      "timeLayerRelativeResidual": "below 5e-14; observed 1.11e-15",
+      "presentationS4OverM": "strictly between zero and 0.02",
+      "sourceHashes": "exact SHA-256 match"
+    },
+    "largestProbeWallTimeSeconds": 52.412331416,
+    "samplingWallTimeSeconds": 0.020683374983491376,
+    "finalPlotWallTimeSeconds": 7.905549,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.1,
+      "resourceLogs": [
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ],
+      "failedAttempts": []
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "quarticThreadsPerTarget": 18,
+    "maximumObservedFinalPlotRssMiB": 180.297
+  },
+  "environment": {
+    "python": "3.12.13",
+    "matplotlib": "3.11.1",
+    "compiler": "Apple clang C++20",
+    "packagesLock": "requirements-research.txt"
+  },
+  "data": [
+    {
+      "path": "hostile-target-probes.csv",
+      "format": "csv",
+      "schema": "six finite probes with M, target, S4/M, normalized ratio, cancellation condition, ordered path count, wall time, and classification",
+      "bytes": 1125,
+      "sha256": "c6cc2834c811ed0974ea6480ddba41a1715ff560e9ec75e4c4f07d86b291974c"
+    },
+    {
+      "path": "cubic-lift-growth.csv",
+      "format": "csv",
+      "schema": "ten exact dyadic levels with target-window maximum, maximizing exponent, and maximum divided by M",
+      "bytes": 230,
+      "sha256": "48b74d00a794432a30bf13c8c9c6ecdbb427e89773c1e619e53c431cc3c91c7e"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "source commit and hash, row counts, finite maxima, environment, and sampling wall time",
+      "bytes": 1110,
+      "sha256": "734ab123cbf0a0aacc81091982230d377069aed0850674f590ea660b81ed9b16"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "7837eb9145170f5f62b8468e04ca66747ea38cb9c865439fd1f03bc455d211f5",
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r063-mplconfig python3 figures/r063-time-layer-transfer/fig-r063-time-layer-transfer/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 96,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 29569,
+        "sha256": "daff3adf8544e2313cb7372ced5db48cb8ea38923324b8eda351a4b9dc90950c"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 54548,
+        "sha256": "9fd89a57fd5b6d275cf8babf20aef8f01207c3f22e99cd98251967cfdb51e7d6"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 409190,
+        "dpi": 600,
+        "pixels": "4204 by 2267",
+        "sha256": "13a1aac74da437170a56f32a69249400318f5fa4f230ff449a617390820361eb"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "R0.63 把两态 Rudin--Shapiro 生成递推精确提升为八态三次、十六态目标符号系统；六个最坏目标压力测试仍在 S4/M 的 10^-2 量级，但算子范数尚未证明。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 96 mm to rounding and the 600 dpi PNG is 4204 by 2267 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected. The transfer hierarchy, open markers, line patterns, logarithmic axes, and finite-evidence boundary remain legible. Three embedded CID TrueType font resources were found, and Poppler extracted 999 bytes of text including the title."
+  }
+}

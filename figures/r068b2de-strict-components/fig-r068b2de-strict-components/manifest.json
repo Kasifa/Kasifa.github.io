@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r068b2de-strict-components",
+  "status": "formal",
+  "createdAt": "2026-08-21T02:20:00+08:00",
+  "analyticalQuestion": "Which degree-ten eighth-order heat sign components are now strict, and what combined inequality remains numerical?",
+  "supportedClaim": "All 4,368 eleventh-order derivative majorants and all 1,792 dominant mass coordinates have exact rational certificates.",
+  "claimBoundary": "The displayed positive sign gap still uses binary64 moment, heat, defect, and resolvent quantities. It is not a final heat-sign theorem and makes no Navier-Stokes regularity claim.",
+  "git": {
+    "sourceCommit": "516768bc5dbdbb557e156af5e7141ca2374327c3",
+    "certificateCommit": "c24abb94584f7b9e76b28191f5b1c6426c41dbb5",
+    "dirtyAtCertifiedRun": false,
+    "derivativeSourceCommit": "516768bc5dbdbb557e156af5e7141ca2374327c3",
+    "derivativeArchiveCommit": "201aaf97a931d4f2143207941904c5f53d469962",
+    "massSourceCommit": "b80c0f197e91da00673e1b4fd04f0801fe51be2d",
+    "massArchiveCommit": "c24abb94584f7b9e76b28191f5b1c6426c41dbb5",
+    "pilotSourceCommit": "11c46ce8c111a3433767b0d4cfc623d125f131fa",
+    "pilotArchiveCommit": "2c4e90d128f3e51bfefb93bf0e5c94f25a2059a8",
+    "repository": "Kasifa/Kasifa.github.io"
+  },
+  "sourceData": [
+    {
+      "fileName": "eighth-order-heat-derivative-exact.json",
+      "location": "research/certificates/r068b2d-exact/eighth-order-heat-derivative-exact.json",
+      "bytes": 361246,
+      "sha256": "f3fb38c23c872f15d10a2f332f242ab249233709fb4cb2a7cc1012bf42822f88",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "eighth-order-dominant-mass-exact.json",
+      "location": "research/certificates/r068b2e-exact/eighth-order-dominant-mass-exact.json",
+      "bytes": 32976,
+      "sha256": "d079ba1b0c59beaf3e97b0ba4021bb14abdc131ba61317a11bc0c64e38a9cc7a",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "eighth-order-heat-defect-pilot.json",
+      "location": "research/certificates/r068b2c2-pilot/eighth-order-heat-defect-pilot.json",
+      "bytes": 756902,
+      "sha256": "3539fdec6428bded0261ed5bef2e50a8423830f1736009605fdb95791e93d6a0",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "derivative-bounds.csv",
+      "bytes": 513,
+      "sha256": "85098168484bd92782748ad8ef1409fc8fdf38bc01a5564e55d6afc8f27811b2",
+      "format": "csv",
+      "schema": "pure coordinate, exact upper bound, scaled upper, and global-maximum flag"
+    },
+    {
+      "path": "interval-margins.csv",
+      "bytes": 183,
+      "sha256": "11e889db3d027cd8eb8c59b93e514d242b1b49cf43b9b1e6c32008665b840f6a",
+      "format": "csv",
+      "schema": "certified width, declared gate, and decimal-order margin"
+    },
+    {
+      "path": "pilot-budget.csv",
+      "bytes": 334,
+      "sha256": "752c6a1c5781ebd5dfa651795bd8193323283980c40b4a1fbc18fe32b9cf5c10",
+      "format": "csv",
+      "schema": "sign-budget component, magnitude, scaled magnitude, and evidence class"
+    },
+    {
+      "path": "certified-summary.csv",
+      "bytes": 403,
+      "sha256": "6d5b75993c0498c21ecbcac14ac99ec6959e002ac9d2591b5708f6a15a04abf8",
+      "format": "csv",
+      "schema": "certificate counts, exact-vector hashes, and pilot budget summary"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 977,
+      "sha256": "dbd400bacffb94fdf0fbb6f24b8b65079a8db3da823e802a7399e37cf576695c",
+      "format": "json",
+      "schema": "pinned certificate paths, hashes, and source commits"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "d3715dd37536b140014b9a0049b7d5d4e9f40bf7300473585d310ea1ce2eaf22",
+      "format": "csv",
+      "schema": "deterministic data-extraction resource record"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "20d50059ebaea54560d63c8b11c14b315836005ceb093d4ff784ffac1f8c5cea",
+      "format": "csv",
+      "schema": "deterministic rendering resource record"
+    }
+  ],
+  "computation": {
+    "kind": "data-analysis",
+    "configuration": "Exact GMP derivative majorant, exact rational dominant-mass residue intervals, and binary64 degree-ten sign-budget diagnostic",
+    "precision": "Exact rational panels (a,b); binary64 mixed-evidence panel (c)",
+    "solver": "GMP complete homogeneous polynomials, exact degree-33 reachable residue intervals, and archived degree-ten defect pilot",
+    "command": "python3 prepare_data.py && python3 validate_data.py && python3 plot.py && python3 build_manifest.py",
+    "wallTimeSeconds": 277.35943837603554
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 18
+  },
+  "environment": {
+    "python": "3.12.13",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 41783,
+        "sha256": "1ff0906ca1c9ac1a090e963d6b3d7f81e131d3b2191ab621420ee16e7f27c903"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 112486,
+        "sha256": "fc37fe1b559b782540bef902986a02aee3b11876cf536af78bb40a32f978a764"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 344833,
+        "sha256": "60d1ee37cf325bd03011a30570a05c49d0b3ecf2e326cdc8fbc28c4528da85a6",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "benchmark bars, interval margins, and sign-budget comparison",
+    "takeaway": "the derivative and dominant-mass gates are strict; the combined sign gap remains numerical",
+    "nonColorEncoding": "hatching, direct labels, benchmark lines, and explicit evidence classes",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The PNG, SVG, and PDF were inspected at final size; hatching and direct labels preserve evidence classes without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

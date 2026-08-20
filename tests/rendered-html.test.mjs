@@ -126,7 +126,9 @@ test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
 
   assert.match(html, /<html lang="zh-CN">/);
-  assert.match(html, /Navier–Stokes 开放研究日志/);
+  assert.match(html, /三维 Navier–Stokes 全局正则性问题/);
+  assert.doesNotMatch(html, /三维 Navier–Stokes 存在性与光滑性问题/);
+  assert.doesNotMatch(html, /Navier–Stokes 开放研究日志/);
   assert.match(html, /这个问题要求证明什么/);
   assert.match(html, /目前已经知道什么/);
   assert.match(html, /接下来的工作计划/);
@@ -1576,7 +1578,7 @@ test("uses a plain first-person research voice", async () => {
     readFile(fortyThirdNoteUrl, "utf8"),
   ]);
 
-  assert.match(home, /这是我整理的/);
+  assert.match(home, /这里记录我对三维不可压缩 Navier–Stokes 全局正则性问题/);
   assert.match(home, /我目前/);
   assert.doesNotMatch(
     home,

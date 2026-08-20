@@ -777,7 +777,7 @@ test("archives the formal R0.58 Duhamel critical-saturation figure", async () =>
   );
   assert.equal(
     manifest.git.sourceCommit,
-    "07a165168bfb985a803647720130774e1cdd5207",
+    "1860b1397be4e1ae4d74238d4b9d156a1d51fbb3",
   );
   assert.match(manifest.supportedClaim, /exactly e\^\(-t\) sum_N/);
   assert.match(manifest.supportedClaim, /between 1\/\(32L\) and 1\/\(2L\)/);

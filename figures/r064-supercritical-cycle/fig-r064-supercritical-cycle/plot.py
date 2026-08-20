@@ -100,7 +100,7 @@ def draw() -> None:
         transfer_axis.text(
             0.5,
             0.065,
-            "Consequence: no common full-state norm with\n$\|T_0\|,\|T_1\|\leq2$ at zero heat time",
+            "Consequence: no common full-state norm with\n" r"$\|T_0\|,\|T_1\|\leq2$ at zero heat time",
             ha="center",
             va="center",
             fontsize=3.75,

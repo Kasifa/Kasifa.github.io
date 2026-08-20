@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69A：在四次临界振幅下，严格组装一个周期目标 Fourier 系数的完整 Picard 级数；四次修正保留严格正极限，六次、八次与十次以上全部消失。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69A｜一个周期目标系数的完整 Picard 渐近">
+  <meta property="og:description" content="源锁定证书证明一个不变剪切目标系数的非零四次分支不被全部高阶项抵消，并明确给出对三维 Navier–Stokes 问题的边界。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69a-full-picard-closure.png">
+  <title>R0.69A｜一个周期目标系数的完整 Picard 渐近</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.60">
+  <style>.hero h1{font-size:clamp(2.5rem,5.4vw,4.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.60"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#quadratic">二次项</a><a href="#quartic">四次项</a><a href="#orders">其余阶</a><a href="#assembly">组装</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69A · 全 Picard 阶目标系数定理</div>
+        <h1>一个周期目标系数的<br>完整非线性渐近已经闭合</h1>
+        <p class="lead">我把二次基准、四次主分支、六次与八次渐近以及十次以上的统一尾界放进同一个源锁定证书。所选目标系数的完整非线性值严格高于其二次近似；没有任何 Picard 阶留在这个命题之外。这个结论仍位于一个全局光滑的不变剪切类内，因而不是奇性构造，也不是一般三维正则性定理。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69A 完成</span><strong>完整目标级数闭合</strong><p>版本 v0.69A · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>完整极限：严格大于 1</p><p>下一关：三维横向扰动</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 完整结论</a></li>
+        <li><a href="#family">01 · 周期族与尺度</a></li>
+        <li><a href="#quadratic">02 · 二次极限</a></li>
+        <li><a href="#quartic">03 · 四次修正</a></li>
+        <li><a href="#orders">04 · 六、八与高阶</a></li>
+        <li><a href="#assembly">05 · 全阶组装</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 价值与硬边界</a></li>
+        <li><a href="#reproduce">08 · 复现与哈希</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Complete result</div><h2>四次谱分支在完整 Picard 求和后仍严格存在</h2>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\widehat G(0,m_r,t_r)}
+            {A_r^2\widehat G_2(0,m_r,t_r)}
+            \longrightarrow
+            1-\frac{C_*}{3600D_*}>1.}
+          \]</div>
+          <p>256 位定向舍入和精确有理审计把极限封闭在</p>
+          <div class="equation result">\[
+            1.00000002593745353460841221206765949
+            &lt; R_\infty &lt;
+            1.00000002614083626831957219265349857.
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · QUADRATIC</span><strong>正基准极限</strong><p>无量纲二次因子 \(D_*\) 严格为正。</p></div>
+            <div class="status"><span>CERTIFIED · QUARTIC</span><strong>非零正修正</strong><p>归一化四次项极限严格位于零右侧。</p></div>
+            <div class="status"><span>CERTIFIED · REMAINDER</span><strong>其余阶全部消失</strong><p>六次、八次和全部十次以上项逐类闭合。</p></div>
+            <div class="status"><span>OPEN · TRANSVERSE 3D</span><strong>横向扰动未决</strong><p>本定理不控制任意三维扰动或临界范数。</p></div>
+          </div>
+        </section>
+
+        <section id="family"><div class="section-no">01 / Periodic family and scaling</div><h2>四位块周期和四次临界振幅固定了唯一比较尺度</h2>
+          <p>令</p>
+          <div class="equation">\[
+            M_r=16^r,\qquad q_r=\frac{2(16^r-1)}{15},\qquad
+            m_r=q_r+1,\qquad H_r=4M_r.
+          \]</div>
+          <p>取 \(\lambda\in(25,26)\) 为 R0.66 的四次主根，并选择</p>
+          <div class="equation">\[
+            \varepsilon_r^2=\left(\frac{16}{\lambda}\right)^r,
+            \qquad A_r=\varepsilon_r\sqrt{H_r},\qquad
+            t_r=\frac{\log2}{2H_r^2}.
+          \]</div>
+          <p>这个振幅恰好使四次项与二次目标处在同一极限尺度，同时保留黏性时间窗。目标是正 \(m_r\) 扇区中的 \((0,m_r)\) Fourier 系数。</p>
+        </section>
+
+        <section id="quadratic"><div class="section-no">02 / Quadratic limit</div><h2>二次载波给出严格正的归一化分母</h2>
+          <p>二次目标只含载波 \(Q_r=H_r+m_r-1\)。由于 \(m_r/H_r\to1/30\) 且 \(Q_r/H_r\to31/30\)，精确二次公式收敛到</p>
+          <div class="equation result">\[
+            D_*=\frac{1-2^{-(31/30)^2}}{2(31/30)^2}
+            =0.244876209013250943997879930046857\ldots>0.
+          \]</div>
+          <p>形式审计用 256 位 MPFR 分别向下和向上舍入。分母与零严格分离，因此后续比值没有隐藏的除零或符号歧义。</p>
+        </section>
+
+        <section id="quartic"><div class="section-no">03 / Quartic correction</div><h2>四次主根的负系数转化为严格正的相对修正</h2>
+          <p>R0.66 已证明 \(S_{4,m_r}=C_*\lambda^r+O(r16^r)\) 且 \(C_*&lt;0\)。精确比值为</p>
+          <div class="equation">\[
+            \frac{A_r^4\widehat G_4}{A_r^2\widehat G_2}
+            =-\varepsilon_r^2\frac{m_r^2}{H_r^3}
+            \frac{S_{4,m_r}}{S_{2,m_r}}.
+          \]</div>
+          <p>又因为 \(M_rm_r^2/H_r^3\to1/3600\)，四次修正收敛到 \(-C_*/(3600D_*)\)。证书给出严格区间</p>
+          <div class="equation result">\[
+            2.5937453534608412212\times10^{-8}
+            &lt; -\frac{C_*}{3600D_*} &lt;
+            2.6140836268319572193\times10^{-8}.
+          \]</div>
+          <p>这个数很小，但它与零严格分离。数学作用不是展示大效应，而是排除“全部高阶项恰好抹去四次分支”这一可能性。</p>
+        </section>
+
+        <section id="orders"><div class="section-no">04 / Remaining orders</div><h2>六次、八次与十次以上分别由三个严格收缩率控制</h2>
+          <p>R0.60 的奇偶结构使三、五、七、九次目标系数精确为零。六次主热根为 \(16\lambda\)，在当前振幅下相对二次项的每块收缩率满足</p>
+          <div class="equation">\[
+            \rho_6\le\frac{16}{\lambda}&lt;0.636143.
+          \]</div>
+          <p>八次质量算子的主根为 \(\nu=256\lambda\)，其有限补谱半径严格小于 4800；十阶中心 jet 的完整缺陷和预解式把有限主特征向量提升为全仿射块算子的特征分布。完整七单形热观测的配对严格为负，因此</p>
+          <div class="equation">\[
+            \nu^{-r}S_{8,m_r}\longrightarrow C_{8,\mathrm{heat}}&lt;0,
+            \qquad \rho_8\le\frac{256}{\lambda^2}&lt;0.404678.
+          \]</div>
+          <p>R0.68A 的符号无关尾界同时覆盖全部 \(n\ge10\)：</p>
+          <div class="equation result">\[
+            \frac{\left|\sum_{n\ge10}A_r^n\widehat G_n(0,m_r,t_r)\right|}
+            {|A_r^2\widehat G_2(0,m_r,t_r)|}
+            &lt;\frac1{30000}\left(\frac{43}{64}\right)^r.
+          \]</div>
+        </section>
+
+        <section id="assembly"><div class="section-no">05 / All-order assembly</div><h2>没有未计算的 Picard 阶残留在这个目标系数定理中</h2>
+          <p>二次项给出归一化基准 1；四次项收敛到严格正常数；六次项、八次项与全部十次以上项分别以小于 1 的块率趋于零；三、五、七、九次项精确为零。因此完整级数的极限就是二次基准加四次修正。</p>
+          <div class="proof"><strong>逻辑闭合。</strong>&nbsp;R0.68B-2h 解决了 R0.68A 留下的最后一个有限阶缺口。R0.69A 不是把有限计算外推到无限阶，而是把每一类 Picard 阶分派给一个已经证明的恒等式、渐近定理或统一尾界，再做源锁定组装。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>严格极限区间和三类收缩率来自同一份形式证书</h2>
+          <figure><img src="/figures/r0-69a-full-picard-closure.svg" alt="R0.69A 完整 Picard 级数的严格四次修正区间、六八高阶块收缩率与速率包络"><figcaption>图 R0.69A。左上给出 \(10^8(R_\infty-1)\) 的严格区间，左下比较六次、八次和十次以上的每块收缩率，右图显示对应的单位前因子几何包络。颜色之外还使用线型、标记形状和直接数值标签。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69a-full-picard-closure.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69a-full-picard-closure.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Value and hard boundary</div><h2>不变剪切路线已经得到完整系数定理；下一关必须离开不变类</h2>
+          <p>这项结果的直接价值，是首次把当前构造的一个目标 Fourier 系数从二次项一直闭合到完整 Picard 和。它证明非零四次谱分支不是有限截断伪象，也展示了有限维精确谱、受保护高阶矩、解析尾界和区间算术可以怎样拼成一个无限阶结论。</p>
+          <p>它对千禧年问题的价值仍是间接的。当前速度场满足</p>
+          <div class="equation">\[
+            \partial_tF-\partial_1^2F=0,\qquad
+            \partial_tG-\Delta_{12}G+F\partial_2G=0.
+          \]</div>
+          <p>对每个固定数据包，这是带光滑系数的线性抛物方程，解全局光滑。因此，仅在这个不变类内继续增加系数定理，不可能单独产生 Navier–Stokes 奇性，也不能证明任意三维数据的全局正则性。</p>
+          <div class="proof"><strong>下一道判定门。</strong>&nbsp;加入真正依赖三个空间变量的横向扰动 \(w\)，从精确扰动方程出发，先计算基流的时间积分 Lipschitz 代价能否在 \(r\to\infty\) 时保持一致；再尝试在缩放临界空间中建立线性演化与双线性闭合。若该代价不一致，就把增长机制定位到标准延拓判据；若一致，则得到一条可量化的三维稳定定理。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>源、形式证书、资源日志和期刊附图各自绑定</h2>
+          <p>定理源提交为 <code>9ca36bcadb43a5e43e84fdd779cd22959cfc6518</code>，形式证书提交为 <code>df2c1051227f6316c2584350e1788ef52f7e1d2c</code>。审计脚本 SHA-256 为 <code>acee1c943e9f947bfb22c670ce30825bd4484b4cc5833627398f4f3aa93b139b</code>。</p>
+          <p>形式证书 SHA-256 为 <code>d9a6a086b1bd10d6047b3a95aed20ff868c0351df738fe3ef6ad1dccc0de3ecb</code>，18 项逻辑检查全部通过。证书输入分别锁定 R0.66 四次谱、R0.67C-2 六次热投影、R0.68A 全阶尾和 R0.68B-1/2h 八次谱与完整热系数。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069a">查看 R0.69A 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/full_picard_target_closure_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069a-full-picard-closure/fig-r069a-full-picard-closure">查看期刊附图包</a></p>
+          <p>声明边界：本页严格闭合一个周期族、一个目标 Fourier 系数的完整 Picard 渐近。它不控制一般解的临界范数，不构造有限时奇性，不证明任意三维初值的全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.69A · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

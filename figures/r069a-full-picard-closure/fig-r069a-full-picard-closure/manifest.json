@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r069a-full-picard-closure",
+  "status": "formal",
+  "createdAt": "2026-08-21T04:30:00+08:00",
+  "analyticalQuestion": "Does the nonzero quartic target branch survive the complete Picard series at quartic-critical amplitude?",
+  "supportedClaim": "The complete normalized target coefficient converges to a strictly greater-than-one interval, while orders six, eight, and at least ten vanish.",
+  "claimBoundary": "complete target Picard-series asymptotic for one periodic family inside the globally smooth invariant-shear class; not a three-dimensional Navier-Stokes singularity or regularity theorem",
+  "git": {
+    "sourceCommit": "9ca36bcadb43a5e43e84fdd779cd22959cfc6518",
+    "certificateCommit": "df2c1051227f6316c2584350e1788ef52f7e1d2c",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "full-picard-target-closure.json",
+      "location": "research/certificates/r069a/full-picard-target-closure.json",
+      "bytes": 4705,
+      "sha256": "d9a6a086b1bd10d6047b3a95aed20ff868c0351df738fe3ef6ad1dccc0de3ecb",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "limit-interval.csv",
+      "bytes": 420,
+      "sha256": "4aeb105219bd55551b5c89a5bae12104ce4d79b972c43fc6fbc5f4637c5b11b4",
+      "format": "csv",
+      "schema": "strict quartic correction and full normalized limit intervals"
+    },
+    {
+      "path": "decay-rates.csv",
+      "bytes": 235,
+      "sha256": "618b3db37bf5909b757dea595b5abdbc80f1000327ae025f0eb3f85b30bd90b0",
+      "format": "csv",
+      "schema": "sixth, eighth, and all-order-tail contraction rates"
+    },
+    {
+      "path": "rate-envelopes.csv",
+      "bytes": 1679,
+      "sha256": "0c1af9b441397feacc1ddc0d19660d878b8f278b8f927402c92e872187f93886",
+      "format": "csv",
+      "schema": "twenty-one four-bit rate envelopes"
+    },
+    {
+      "path": "order-status.csv",
+      "bytes": 223,
+      "sha256": "9f1acf894df6de475e438cda3690a823f011179c5894f7d24d5d5ce4aabe7afc",
+      "format": "csv",
+      "schema": "complete Picard-order closure status"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 497,
+      "sha256": "4cb7da1bccc6f5304502a21ba0b99c84b62c5f79a8f0126f1f70d2f02543e57f",
+      "format": "json",
+      "schema": "pinned certificate and provenance"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "90ca81b779e7a4d12a3b554115ecf5f0f472e1b3a05fa676c3394e0e84193089",
+      "format": "csv",
+      "schema": "data extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "8b125b5981c4e628753d139db524a5bcf9e6c26294d8fe8937e24dc59d95e7a5",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "configuration": "periodic 0100 target, quartic-critical amplitude, all Picard orders",
+    "precision": "exact rational inputs plus 256-bit directed MPFR enclosure of the quadratic limit",
+    "solver": "GMP exact rationals and directed-rounding MPFR interval arithmetic",
+    "command": "python3 prepare_data.py && python3 validate_data.py && python3 plot.py && python3 build_manifest.py",
+    "scientificWallTimeSeconds": 0.088489
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6 (Darwin 25.6.0, arm64)",
+    "cpu": "Apple M5 Max",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "gmpy2": "2.3.1",
+    "mpfr": "4.2.2",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 103,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 32410,
+        "sha256": "15a86b5ca461ffd7ecf03b4c6e380f127f9c17cd4f68a4f679311d39eea00742"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 95617,
+        "sha256": "6f9ca857e45fa544996765101e2c5535c42dceda4d542944e16a2c162f705e21"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 454818,
+        "sha256": "ce75d4a5156142f1a25de3f43fe49274dd59a73a163e6775c1adc9fc744a6630",
+        "dpi": 600,
+        "pixels": "4204 by 2433"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "strict interval, contraction-rate comparison, and logarithmic rate envelopes",
+    "takeaway": "the quartic branch survives the complete Picard sum and every remaining order vanishes at the selected amplitude",
+    "nonColorEncoding": "distinct marker shapes, line styles, direct numeric labels, and an interval bar",
+    "outputFootprint": "double-column 178 by 103 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The PNG and grayscale PDF render were inspected at final size; line styles and markers preserve meaning without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

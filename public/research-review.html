@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.49"></script>
+  <script defer src="/i18n-en.js?v=0.50"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -3839,7 +3839,42 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_weighted_cycle_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r065-weighted-cycle/fig-r065-weighted-cycle">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.66：</strong>构造解析循环传输并分离 \(\lambda=25.1515893341\ldots\) 的谱投影，严格判定完整单形泛函在该特征方向上的系数是否为零。</p>
+            <p><strong style="color:var(--gold)">R0.66 已完成：</strong>固定四位仿射传输的主谱投影严格非零；完整热加权四次系数满足 \(S_r=C_*\lambda^r+O(r16^r)\)，其中 \(C_*&lt;-2\times10^{-5}\)。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.66 · 2026-08-20</p>
+            <h3>完整热加权周期包的非零主谱投影</h3>
+            <p>
+              归一化两个自由卷积指标以后，每个 \(0100\) 周期成为同一个
+              四十八态仿射测度算子。12,288 条精确分支的质量矩阵具有唯一主根
+              \(25.1515893341015&lt;\lambda&lt;25.1515893341016\)。
+            </p>
+            <p>
+              正进位权 \((4,277,169)\) 与每条空间分支的 \(1/16\) 收缩给出
+              零质量 Kantorovich 界 \(\|\mathcal P\zeta\|_{KR,w}\le16
+              \|\zeta\|_{KR,w}\)。把完整单形热泛函与主特征分布配对后，
+              严格认证
+              \[
+                S_r=C_*\lambda^r+O(r16^r),\qquad
+                -2.30446\times10^{-5}&lt;C_*&lt;-2.28652\times10^{-5}.
+              \]
+              因而 \(|S_r|/16^r\to\infty\)，该显式包上的统一 \(O(M)\)
+              四次估计失败。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是一个四次 Picard 系数的渐近定理。
+              它没有控制六次及更高阶项或完整温和解，没有证明范数膨胀、
+              有限时爆破或一般三维全局正则性。
+            </p>
+            <p>
+              <a href="/notes/r0-66.html"><strong>阅读 R0.66 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-66-spectral-projection.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r066">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_weighted_cycle_spectral_audit.py">查看谱审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r066-spectral-projection/fig-r066-spectral-projection">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.67：</strong>计算目标低模的完整六次反馈，判定它是否携带可抵消四次主模态的谱投影，并建立进入完整偶数阶生成函数前的第一个严格余项门槛。</p>
           </div>
         </section>
 
@@ -3854,7 +3889,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.49 · 2026-08-20<br>
+        综述 v0.50 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

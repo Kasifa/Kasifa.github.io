@@ -188,6 +188,19 @@ const sixtyFifthFigurePdfUrl = new URL(
   "../public/figures/r0-65-weighted-cycle.pdf",
   import.meta.url,
 );
+const sixtySixthNoteUrl = new URL("../public/notes/r0-66.html", import.meta.url);
+const sixtySixthFigureSvgUrl = new URL(
+  "../public/figures/r0-66-spectral-projection.svg",
+  import.meta.url,
+);
+const sixtySixthFigurePngUrl = new URL(
+  "../public/figures/r0-66-spectral-projection.png",
+  import.meta.url,
+);
+const sixtySixthFigurePdfUrl = new URL(
+  "../public/figures/r0-66-spectral-projection.pdf",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -389,8 +402,8 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -437,8 +450,8 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -482,8 +495,8 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.62/);
   assert.match(note, /4 项整数检查全通过/);
   assert.match(note, /新增完整目标：3,584 个/);
@@ -530,8 +543,8 @@ test("publishes the R0.63 time-layer factorization and lifted transfer boundary"
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.63/);
   assert.match(note, /4 项审计检查全通过/);
   assert.match(note, /时间层比较：27 项/);
@@ -577,8 +590,8 @@ test("publishes the R0.64 exact reachable supercritical cycle", async () => {
   assert.match(home, /href="\/notes\/r0-64\.html"/);
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.64/);
   assert.match(note, /9 项审计检查全通过/);
   assert.match(note, /状态维数：48/);
@@ -618,8 +631,8 @@ test("publishes the R0.65 exact-moment heat-weighted cycle enclosures", async ()
 
   assert.match(home, /href="\/notes\/r0-65\.html"/);
   assert.ok(home.includes("R0.65 已完成："));
-  assert.ok(home.includes("下一步 R0.66："));
-  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.65/);
   assert.match(note, /11 项审计检查全通过/);
   assert.match(note, /最高总次数：96/);
@@ -643,6 +656,48 @@ test("publishes the R0.65 exact-moment heat-weighted cycle enclosures", async ()
   assert.match(
     figureSvg,
     /Heat-weighted periodic target through 24 four-bit cycles/,
+  );
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes the R0.66 nonzero dominant spectral projection", async () => {
+  const [home, note, figureSvg, figurePng, figurePdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixtySixthNoteUrl, "utf8"),
+    readFile(sixtySixthFigureSvgUrl, "utf8"),
+    readFile(sixtySixthFigurePngUrl),
+    readFile(sixtySixthFigurePdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-66\.html"/);
+  assert.ok(home.includes("R0.66 已完成："));
+  assert.ok(home.includes("下一步 R0.67："));
+  assert.ok(home.includes("综述 v0.50 · 2026-08-20"));
+  assert.match(note, /研究笔记 R0\.66/);
+  assert.match(note, /26 项正式检查全通过/);
+  assert.match(note, /仿射分支：12,288 条/);
+  assert.ok(note.includes("r_0=100"));
+  assert.ok(note.includes("S_r=C_*\\lambda^r+O(r16^r)"));
+  assert.ok(note.includes("25.1515893341015&lt;\\lambda&lt;25.1515893341016"));
+  assert.ok(note.includes("C_*&lt;-2\\times10^{-5}"));
+  assert.ok(note.includes("\\frac{|S_r|}{M_r}\\longrightarrow\\infty"));
+  assert.ok(note.includes("Aw=256w"));
+  assert.ok(note.includes("\\|\\mathcal P\\zeta\\|_{KR,w}"));
+  assert.ok(note.includes("总误差与零点的距离相差超过 \\(255\\) 倍"));
+  assert.match(note, /下一步计算首个六次反馈/);
+  assert.match(note, /没有解决三维 Navier--Stokes 千禧年问题/);
+  assert.match(note, /r0-66-spectral-projection\.svg/);
+  assert.match(note, /r0-66-spectral-projection\.png/);
+  assert.match(note, /r0-66-spectral-projection\.pdf/);
+  assert.match(note, /0dc5a9b3e0bef25a08fe7c882bff2cb7e38448a0/);
+  assert.match(note, /76e98d31ebb32d125902a443eaf12c2d3a9fc89b/);
+  assert.match(note, /e1cf47fe92e259160184cb147d32c090c94c36c2/);
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
+  assert.match(
+    figureSvg,
+    /Dominant heat-weighted spectral coefficient is strictly negative/,
   );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
   assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");

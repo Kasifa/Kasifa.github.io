@@ -12,8 +12,8 @@ test("publishes R0.69F with the exact no-go theorem and boundary", async () => {
   ]);
   assert.match(home, /id="r069f"/);
   assert.match(home, /\/notes\/r0-69f\.html/);
-  assert.match(home, /综述 v0\.66 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.66/);
+  assert.match(home, /综述 v0\.67 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.67/);
   assert.match(home, /下一步 R0\.69G/);
   assert.ok(note.includes("G(x)=E_{1/2}(x)"));
   assert.ok(note.includes("e^{x^2}\\operatorname{erfc}(-x)"));

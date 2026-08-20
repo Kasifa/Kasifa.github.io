@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.66"></script>
+  <script defer src="/i18n-en.js?v=0.67"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1116,7 +1116,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-21</strong>最近修订</span>
-            <span><strong>v0.66</strong>网页版本</span>
+            <span><strong>v0.67</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -4557,6 +4557,40 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69H：</strong>&nbsp;从应变矩阵方程出发，推导压力 Hessian 在主拉伸方向上的精确非局部表示，检查压力补偿能否形成尺度不变且不退化为绝对值 Calderón–Zygmund 上界的有符号预算。</p>
           </div>
+
+          <div class="task-one" id="r069h" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69H · 2026-08-21</p>
+            <h3>局部速度梯度不能决定主方向压力 Hessian 的符号</h3>
+            <p>
+              我从精确应变方程推导了最大应变特征值预算，并构造两族光滑周期无散速度场。它们在原点具有共同的局部数据
+
+              \[
+                S(0)=\operatorname{diag}(1,-1,0),\qquad \omega(0)=0,
+              \]
+
+              但压力响应严格为
+
+              \[
+                H_{11}^{-}(0)=-1-\frac{54}{85}t^2,
+                \qquad
+                H_{11}^{+}(0)=-1+\frac{54}{85}t^2.
+              \]
+            </p>
+            <p>
+              当 \(t^2&gt;85/54\) 时，两者符号相反。因而，不存在只读取局部
+              \((S,\omega)\) 的普适压力符号规则；压力补偿若能用于正则性论证，必须保留真正的非局部或积分信息。15 项形式检查全部通过。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;显式见证是二维流函数嵌入，因此本身全局光滑。结果只排除局部逐点闭合，不排除压力的全局正交、局部化预算或跨尺度机制，也不给出正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-69h.html"><strong>阅读 R0.69H 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69h-pressure-obstruction.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069h">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069h-pressure-obstruction/fig-r069h-pressure-obstruction">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69I：</strong>&nbsp;局部化恒等式 \(\int_{\mathbb T^3}S:\nabla^2p\,dx=0\)，完整推导空间权重引入的边界项与交换子，检验是否存在尺度不变的局部应变预算。</p>
+          </div>
         </section>
 
       </article>
@@ -4570,8 +4604,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.66 · 2026-08-21<br>
-        上次综述 v0.65 · 2026-08-21<br>
+        综述 v0.67 · 2026-08-21<br>
+        上次综述 v0.66 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

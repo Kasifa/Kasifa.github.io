@@ -13,8 +13,8 @@ test("publishes R0.69G with the exact positive-weight barrier", async () => {
 
   assert.match(home, /id="r069g"/);
   assert.match(home, /\/notes\/r0-69g\.html/);
-  assert.match(home, /综述 v0\.66 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.66/);
+  assert.match(home, /综述 v0\.67 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.67/);
   assert.match(home, /下一步 R0\.69H/);
   assert.ok(note.includes("\\sup_{\\substack{g\\ge0\\\\ \\int_Ag=1}}"));
   assert.ok(note.includes("=\\|K_{x,t}\\|_{L^\\infty(A)}"));

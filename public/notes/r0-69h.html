@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69H：推导主应变特征值的精确压力预算，并以两个同局部速度梯度的周期无散场证明压力 Hessian 符号不能由局部应变与涡量决定。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69H｜压力 Hessian 的逐点符号障碍">
+  <meta property="og:description" content="两个光滑周期无散速度场具有相同的局部应变与涡量，却产生相反的主方向压力 Hessian 符号。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69h-pressure-obstruction.png">
+  <title>R0.69H｜压力 Hessian 的逐点符号障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.67">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.67"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#equations">精确方程</a><a href="#budget">特征值预算</a><a href="#obstruction">障碍</a><a href="#witness">显式见证</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69H · 压力 Hessian 的非局部性</div>
+        <h1>相同的局部速度梯度，<br>可以对应相反的压力符号</h1>
+        <p class="lead">我推导了最大应变特征值的精确演化式，并用两个光滑周期无散速度场做出严格反例：它们在同一点具有完全相同的应变与涡量，但主拉伸方向上的压力 Hessian 分量符号相反。因此，压力补偿不能由局部 ((S,\omega)) 数据逐点闭合；仍可能有用的通道只能是非局部或积分结构。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69H 完成</span><strong>严格逐点障碍</strong><p>版本 v0.69H · 2026-08-21</p><p>形式检查：15 / 15 通过</p><p>显式周期族：2 个</p><p>符号阈值：\(t^2=85/54\)</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#equations">01 · 应变与压力方程</a></li>
+        <li><a href="#budget">02 · 主特征值预算</a></li>
+        <li><a href="#obstruction">03 · 平均零仍不足</a></li>
+        <li><a href="#witness">04 · 显式无散见证</a></li>
+        <li><a href="#literature">05 · 文献边界</a></li>
+        <li><a href="#meaning">06 · 对总问题的意义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · 下一分支</a></li>
+        <li><a href="#reproduce">09 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified pointwise no-go</div><h2>局部应变与涡量不能决定主方向压力 Hessian 的符号</h2>
+          <p>存在两族光滑、周期、无散速度场，在原点同时满足</p>
+          <div class="equation">\[
+            S(0)=\operatorname{diag}(1,-1,0),\qquad \omega(0)=0,
+          \]</div>
+          <p>但它们的主方向压力分量严格为</p>
+          <div class="equation result">\[
+            \boxed{H_{11}^{-}(0)=-1-\frac{54}{85}t^2,\qquad
+            H_{11}^{+}(0)=-1+\frac{54}{85}t^2.}
+          \]</div>
+          <p>当 \(t^2&gt;85/54\) 时，两者符号相反。因此不存在只读取局部
+          \((S,\omega)\) 的普适逐点符号规则，也不存在逐点闭合式
+          \(H_{11}=F(S,\omega)\) 能同时描述这两个场。</p>
+          <div class="grid">
+            <div class="status"><span>EXACT · EQUATION</span><strong>应变矩阵预算</strong><p>压力、涡量旋转与特征向量扩散全部保留。</p></div>
+            <div class="status"><span>EXACT · FOURIER</span><strong>周期压力乘子</strong><p>每个非零模态使用 \(-k_i k_j/|k|^2\)。</p></div>
+            <div class="status"><span>CERTIFIED · WITNESS</span><strong>两个同局部场</strong><p>共同速度梯度，压力响应严格异号。</p></div>
+            <div class="status"><span>DECISION · NEGATIVE</span><strong>停止逐点闭合分支</strong><p>转向局部化的积分正交结构。</p></div>
+          </div>
+        </section>
+
+        <section id="equations"><div class="section-no">01 / Exact strain and pressure equations</div><h2>压力 Hessian 是二次速度梯度源的非局部变换</h2>
+          <p>令 \(A=\nabla u\)、\(S=(A+A^T)/2\)。精确应变方程是</p>
+          <div class="equation result">\[
+            \boxed{(\partial_t+u\cdot\nabla-\Delta)S+S^2
+            +\frac14\omega\otimes\omega-\frac14|\omega|^2I+\nabla^2p=0.}
+          \]</div>
+          <p>压力源满足</p>
+          <div class="equation">\[
+            -\Delta p=q,\qquad q=\operatorname{tr}(A^2)=|S|^2-\frac12|\omega|^2,qquad
+            \int_{\mathbb T^3}q\,dx=0.
+          \]</div>
+          <p>对每个非零 Fourier 模态，</p>
+          <div class="equation">\[
+            \widehat H_{ij}(k)=-\frac{k_i k_j}{|k|^2}\widehat q(k).
+          \]</div>
+          <p>在局部坐标中，奇异部分是迹为零的四极核：</p>
+          <div class="equation">\[
+            H_{ij}(x)=-\frac13\delta_{ij}q(x)
+            +\frac1{4\pi}\operatorname{p.v.}\!\int
+            \chi(z)\frac{3\widehat z_i\widehat z_j-\delta_{ij}}{|z|^3}q(x+z)\,dz
+            +(\mathcal R_\chi q)_{ij}(x).
+          \]</div>
+        </section>
+
+        <section id="budget"><div class="section-no">02 / Principal-eigenvalue budget</div><h2>最大应变特征值的压力通道没有逐点固定符号</h2>
+          <p>若最大特征值 \(\lambda_1\) 单重，单位特征向量为 \(e_1\)，则</p>
+          <div class="equation result">\[
+            \boxed{(\partial_t+u\cdot\nabla-\Delta)\lambda_1
+            =-\lambda_1^2+\frac14|\omega\times e_1|^2
+            -e_1^THe_1-\Gamma_1,}
+          \]</div>
+          <p>其中</p>
+          <div class="equation">\[
+            \Gamma_1=2\sum_{a=1}^3\sum_{j=2}^3
+            \frac{|e_j^T(\partial_aS)e_1|^2}{\lambda_1-\lambda_j}\ge0.
+          \]</div>
+          <p>因此 \(-\Gamma_1\) 对最大特征值有利，但压力项的符号不能由该点的速度梯度决定。把各向异性压力 Hessian 直接替换为局部函数，会丢掉决定符号的信息。</p>
+        </section>
+
+        <section id="obstruction"><div class="section-no">03 / Mean-zero source is insufficient</div><h2>压力源平均为零，并不会强迫四极核取得小常数</h2>
+          <p>对任意 \(K\in L^\infty(A)\)，精确对偶关系为</p>
+          <div class="equation result">\[
+            \boxed{\sup_{\substack{\int_Ag=0\\ \|g\|_{L^1(A)}=1}}
+            \left|\int_AKg\right|=
+            \frac12\left(\operatorname*{ess\,sup}_AK-
+            \operatorname*{ess\,inf}_AK\right).}
+          \]</div>
+          <p>固定方向 \(e\) 后，角四极核
+          \(Q_e(\theta)=3(e\cdot\theta)^2-1\) 的球面平均为零，但值域仍是
+          \([-1,2]\)。平均零源可以把正负质量分别放到核的极大与极小区域，恢复一半完整振幅。</p>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;纯对偶论证没有声称每个平均零标量都来自速度梯度。下面的两个显式无散场专门补上这一实现性缺口，但只针对逐点符号命题。</div>
+        </section>
+
+        <section id="witness"><div class="section-no">04 / Exact divergence-free witnesses</div><h2>交换两个频率就能保持局部梯度、翻转远场压力响应</h2>
+          <p>用二维流函数嵌入三维：</p>
+          <div class="equation">\[
+            u_\psi=(-\partial_y\psi,\partial_x\psi,0),\qquad
+            \psi_0=-\sin x\sin y,
+          \]</div>
+          <p>并令</p>
+          <div class="equation result">\[
+            \boxed{\psi_t^-=\psi_0+t(1-\cos x)(1-\cos2y),\qquad
+            \psi_t^+=\psi_0+t(1-\cos2x)(1-\cos y).}
+          \]</div>
+          <p>两个扰动的全部二阶导数在原点都为零，所以局部速度梯度保持相同。对
+          \(q=-2\det\nabla^2\psi\) 做精确 Fourier 展开后，基底贡献是 \(-1\)，交叉项为零，两个远场二次贡献分别是
+          \(\mp54t^2/85\)。这直接给出异号公式。</p>
+          <p>这两个见证本身是二维嵌入，因此全局光滑。它们的用途只是隔离局部数据缺失的非局部压力信息，不是奇性候选。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">05 / Literature boundary</div><h2>全局应变相消已知；这里新增的是显式逐点不可能性见证</h2>
+          <p>应变方程及其全局结构不是新结果。Miller 使用应变公式与全局恒等式
+          \(\frac d{dt}\|S\|_2^2=-2\|\nabla S\|_2^2-4\int\det S\)，得到只涉及中间应变特征值正部的临界正则性准则。</p>
+          <p>湍流文献也长期把各向异性压力 Hessian 视为非局部闭合问题，并分析它对速度梯度自放大的统计抵消。统计相关性不能提供这里所需的确定性逐点符号。</p>
+          <p>R0.69H 的具体贡献是：给出周期域内完全显式、可审计的同局部数据见证，并据此关闭只依赖 \((S,\omega)\) 的逐点压力符号路线。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Value for the main problem</div><h2>它排除了一条自然但信息不足的路线，尚未产生正则性增益</h2>
+          <p>这个结果的直接价值是防止把压力 Hessian 的统计抑制误写成确定性逐点控制。局部速度梯度连符号都不足以确定，因此继续寻找
+          \(e_1^THe_1\) 的局部闭合没有研究收益。</p>
+          <p>另一方面，压力项在全局应变能量中存在精确正交消失。这说明压力仍可能通过积分、局部化和跨尺度通量发挥作用。下一步将检查这种全局消失能否在尺度不变的局部预算中留下可控交换子。</p>
+          <p>本页没有证明奇性存在或不存在，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图把同局部数据与相反压力响应放在同一证据链上</h2>
+          <figure><img src="/figures/r0-69h-pressure-obstruction.svg" alt="R0.69H 两个同局部速度梯度场的相反压力 Hessian 响应"><figcaption>图 R0.69H。左图给出两个精确响应
+          \(H_{11}^{\mp}(0)=-1\mp(54/85)t^2\)，空心点为形式证书节点，竖线是
+          \(t=\sqrt{85/54}\) 的精确变号阈值。右图分解 \(t=2\) 时的共同基底
+          \(-1\)、零交叉项与远场贡献 \(\mp216/85\)，总值分别为
+          \(-301/85\) 和 \(131/85\)。颜色之外还使用实虚线、不同标记和纹理，适合灰度印刷。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69h-pressure-obstruction.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69h-pressure-obstruction.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / Next integrated channel</div><h2>R0.69I 局部化全局压力—应变正交恒等式</h2>
+          <p>周期域上有精确恒等式</p>
+          <div class="equation result">\[
+            \boxed{\int_{\mathbb T^3}S:\nabla^2p\,dx=0.}
+          \]</div>
+          <div class="proof"><strong>R0.69I 的通过标准。</strong>&nbsp;加入空间权重，逐项推导压力项产生的边界与交换子；再检查它们是否可由尺度不变的局部应变预算控制。若局部化只留下与原压力同阶、无符号可控量的交换子，就记录严格障碍并转向下一条结构通道。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>86ac684e2a2564f56d42d9c216918ed659652846</code>，形式证书提交为 <code>33ca9d4f8f2893cc12828895e36ac0e787077af0</code>，最终附图提交为 <code>95d5ec470e3f5c01983b4e03ffda8d14f5a9cf07</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>6016b07e163e9bbac9e88948bc4c7acc65036ed983a84afe37e5802579e1d847</code>，形式证书 SHA-256 为 <code>a988bd4d3fb1e7286dfa1facd9de0867fb37c8044af3b5e95a44be8878340653</code>。15 项检查全部通过；监控运行约 0.3 秒，峰值常驻内存约 66.5 MiB，本任务为 CPU 精确代数审计。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>d0e4e43c8ddce6d6eb3b3cb5f3d62bc7a3a3de800ebecae3bcb6759dfeb0bfed</code>、<code>db6d6f97e38fa1eaaa5a3e4cffc94dd559e24ce619bd97343cc8854bf8a247af</code> 与 <code>ff56994227961affcc5b53b4d57188706abe2e05aad6362a54491043024cb8cb</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069h">查看 R0.69H 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/pressure_hessian_pointwise_obstruction_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069h-pressure-obstruction/fig-r069h-pressure-obstruction">查看期刊附图包</a></p>
+          <p>主要文献：<a href="https://doi.org/10.1007/s00205-019-01419-z">Miller（2020）</a> · <a href="https://arxiv.org/abs/1106.1046">Chevillard 等（2011）</a> · <a href="https://arxiv.org/abs/1401.3351">Wilczek–Meneveau（2014）</a>。</p>
+          <p>声明边界：本页证明的是局部 \((S,\omega)\) 数据不能决定主方向压力 Hessian 的符号。它不排除非局部或积分压力机制，不给出 Navier–Stokes 正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69H · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

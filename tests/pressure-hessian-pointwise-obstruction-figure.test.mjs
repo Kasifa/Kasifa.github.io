@@ -47,6 +47,19 @@ test("archives the formal R0.69H pressure-obstruction figure", async () => {
     const payload = await readFile(new URL(output.path, figureRoot));
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, output.sha256, output.path + " hash mismatch");
+
+    const extension = output.path.split(".").at(-1);
+    const publicPayload = await readFile(
+      new URL(
+        `../public/figures/r0-69h-pressure-obstruction.${extension}`,
+        import.meta.url,
+      ),
+    );
+    assert.deepEqual(
+      publicPayload,
+      payload,
+      output.path + " public mirror mismatch",
+    );
   }
 });
 

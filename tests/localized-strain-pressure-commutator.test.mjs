@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -50,4 +51,34 @@ test("reproduces the exact R0.69I Fourier and scaling audit", () => {
   assert.deepEqual(new Set(Object.values(result.scalingDegrees)), new Set([3]));
   assert.deepEqual(result.weight.pressureMode, [0, 0, 1]);
   assert.deepEqual(result.weight.betchovMode, [1, 0, 0]);
+});
+
+test("archives the source-locked R0.69I certificate", async () => {
+  const certificateRoot = new URL(
+    "../research/certificates/r069i/",
+    import.meta.url,
+  );
+  const [certificateText, sumsText, readme, resources] = await Promise.all([
+    readFile(new URL("localized-strain-pressure-commutator.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("resources.csv", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 14);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "b03985d6d2fd1f55ba5d600cb75859efb694876b",
+  );
+  assert.match(readme, /bare cutoff localization/i);
+  assert.match(resources, /exited:0/);
+
+  for (const line of sumsText.trim().split("\n")) {
+    const [expected, fileName] = line.trim().split(/\s+/, 2);
+    const payload = await readFile(new URL(fileName, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, expected, fileName + " hash mismatch");
+  }
 });

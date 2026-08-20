@@ -55,7 +55,7 @@ def add_blossom(figure) -> None:
 
 
 def chain_panel(axis) -> None:
-    axis.set_title("(a) The Picard forest is one ordered chain", loc="left", pad=5)
+    axis.set_title("(a) Picard forest collapses to one chain", loc="left", pad=5, fontsize=5.2)
     axis.set_xlim(0, 1)
     axis.set_ylim(0, 1)
     axis.axis("off")
@@ -137,7 +137,7 @@ def draw() -> None:
         )
         chain_panel(chain_axis)
 
-        gap_axis.set_title("(b) Exact odd-order distance to $\\xi_1=0$", loc="left", pad=5)
+        gap_axis.set_title("(b) Odd-order distance to $\\xi_1=0$", loc="left", pad=5, fontsize=5.2)
         styles = {
             3: (BLUE, "o", "-"),
             5: (GOLD, "s", (0, (4, 2))),
@@ -169,7 +169,7 @@ def draw() -> None:
             arrowprops={"arrowstyle": "->", "color": MUTED, "linewidth": 0.45},
         )
         gap_axis.axhline(0.75, color=BLUE, linewidth=0.45, alpha=0.45)
-        gap_axis.text(1.1, 0.765, r"cubic gap $>3H/4$", fontsize=3.3, color=BLUE, va="bottom")
+        gap_axis.text(1.1, 0.73, r"cubic gap $>3H/4$", fontsize=3.3, color=BLUE, va="bottom")
         gap_axis.set_xlim(1, 4096)
         gap_axis.set_ylim(-0.035, 1.06)
         gap_axis.set_xlabel(r"carrier count $N=LM$ (log scale)")
@@ -177,7 +177,7 @@ def draw() -> None:
         gap_axis.grid(color=GRID, linewidth=0.32)
         gap_axis.legend(loc="upper right", frameon=False, fontsize=3.35)
 
-        event_axis.set_title("(c) Target return and order-$A^4$ energy", loc="left", pad=5)
+        event_axis.set_title("(c) Target return and $A^4$ energy", loc="left", pad=5, fontsize=5.2)
         lane_y = {"A^4 energy": 0, "original V support": 1, "target plane": 2}
         status_style = {
             "initial": (BLUE, "o", PALE_BLUE),
@@ -204,9 +204,9 @@ def draw() -> None:
                 linewidth=0.75,
                 zorder=3,
             )
-        event_axis.text(2.0, 2.14, "quadratic target", ha="center", fontsize=3.2, color=GOLD)
+        event_axis.text(2.0, 2.14, "quadratic target", ha="right", fontsize=3.2, color=GOLD)
         event_axis.text(3.0, 1.14, "cubic return", ha="center", fontsize=3.2, color=RED)
-        event_axis.text(4.0, 2.14, "first correction", ha="center", fontsize=3.2, color=GOLD)
+        event_axis.text(4.0, 2.14, "first correction", ha="left", fontsize=3.2, color=GOLD)
         event_axis.text(11.0, 2.14, "support only", ha="center", fontsize=3.2, color=GOLD)
         event_axis.text(2.5, -0.27, r"$\|G_2\|^2$  and  $2\langle G_1,G_3\rangle$", ha="center", fontsize=3.45, color=MUTED)
         event_axis.set_xlim(0.5, 11.5)
@@ -259,4 +259,3 @@ def draw() -> None:
 
 if __name__ == "__main__":
     draw()
-

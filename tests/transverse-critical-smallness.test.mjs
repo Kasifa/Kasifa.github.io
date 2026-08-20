@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -10,6 +11,10 @@ const noteUrl = new URL(
 );
 const auditUrl = new URL(
   "../research/transverse_critical_smallness_audit.py",
+  import.meta.url,
+);
+const certificateRoot = new URL(
+  "../research/certificates/r069b/",
   import.meta.url,
 );
 
@@ -54,4 +59,39 @@ test("reproduces the source-bound R0.69B interval audit", () => {
   assert.match(payload.criticalNormBound.rho.upper, /^0\.797585545290329/);
   assert.match(payload.perturbationEquation.criticalBallCondition, /eta_KT_per/);
   assert.match(payload.boundary.at(-1), /not a solution/i);
+});
+
+test("archives the source-locked R0.69B certificate", async () => {
+  const [certificateText, readme, sumsText] = await Promise.all([
+    readFile(new URL("transverse-critical-smallness.json", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.values(certificate.checks).every(Boolean), true);
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "3342fb092b454df34255b82e142bfd796e5e522d",
+  );
+  assert.equal(
+    certificate.criticalNormBound.firstDepthStrictlyBelow["1e-6"],
+    72,
+  );
+  assert.notEqual(
+    certificate.criticalNormBound.rho.lower,
+    certificate.criticalNormBound.rho.upper,
+  );
+  assert.match(readme, /assigns no\s+numerical value/i);
+  assert.match(readme, /not a solution of the\s+Navier--Stokes Millennium problem/i);
+
+  const records = sumsText.trim().split("\n");
+  assert.equal(records.length, 3);
+  for (const record of records) {
+    const match = record.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "malformed SHA256SUMS line: " + record);
+    const payload = await readFile(new URL(match[2], certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, match[1], match[2] + " hash mismatch");
+  }
 });

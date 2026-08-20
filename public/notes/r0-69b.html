@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69B：周期不变剪切数据包的临界范数上界几何衰减，因此充分深的数据包周围存在半径不缩小的三维横向全局正则球。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69B｜横向扰动的临界小数据门">
+  <meta property="og:description" content="严格区间审计把趋零的临界横向奇性路径排除；常数量级扰动、非正规增长与奇性仍未解决。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69b-transverse-smallness.png">
+  <title>R0.69B｜横向扰动的临界小数据门</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.61">
+  <style>.hero h1{font-size:clamp(2.45rem,5.2vw,4.25rem)}</style>
+  <script defer src="/i18n-en.js?v=0.61"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#equation">扰动方程</a><a href="#bound">临界界</a><a href="#ball">正则球</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69B · 三维横向稳定性的第一道临界门</div>
+        <h1>临界小数据门排除了<br>趋零的横向奇性路径</h1>
+        <p class="lead">R0.69A 数据包的物理 Fourier 振幅指数增长，但周期 \(BMO^{-1}\) 上界反而几何衰减。结合标准小数据定理，充分深的数据包周围存在一个半径不随深度缩小的真正三维全局正则球。这个结果排除了一条自然但过弱的奇性路线；常数量级临界扰动仍然完全开放。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69B 完成</span><strong>横向临界小数据门</strong><p>版本 v0.69B · 2026-08-21</p><p>形式检查：13 / 13 通过</p><p>收缩率：\(\rho&lt;0.797586\)</p><p>下一关：常数量级横向边带</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#equation">01 · 精确扰动方程</a></li>
+        <li><a href="#bound">02 · 临界范数界</a></li>
+        <li><a href="#scales">03 · 两种相反尺度</a></li>
+        <li><a href="#ball">04 · 固定横向正则球</a></li>
+        <li><a href="#thresholds">05 · 阈值深度</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 价值与下一关</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified result</div><h2>充分深的数据包加上一个固定临界扰动球仍然全局正则</h2>
+          <p>令 \(U_r\) 为 R0.69A 的周期不变剪切解。源锁定区间审计证明</p>
+          <div class="equation result">\[
+            \boxed{
+            \|U_r(0)\|_{BMO^{-1}_{\rm per}}
+            \le (6+4\sqrt{2})\rho^r,}
+            \qquad
+            0.7975855452903290&lt;\rho&lt;0.7975855452903292.
+          \]</div>
+          <p>若 \(\eta_{\rm KT}^{\rm per}&gt;0\) 是周期 Koch–Tataru 小数据定理的一个允许阈值，则充分条件为</p>
+          <div class="equation result">\[
+            \boxed{
+            (6+4\sqrt{2})\rho^r
+            +\|w_{0,r}\|_{BMO^{-1}_{\rm per}}
+            &lt;\eta_{\rm KT}^{\rm per}.}
+          \]</div>
+          <p>因此，对任意固定 \(\theta\in(0,1)\)，当 \(r\) 足够大时，所有满足 \(\|w_{0,r}\|_{BMO^{-1}_{\rm per}}&lt;(1-\theta)\eta_{\rm KT}^{\rm per}\) 的无散、真正三维扰动都产生全局正则总解。</p>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · PACKET</span><strong>临界上界几何衰减</strong><p>精确主根区间给出 \(\rho&lt;1\)。</p></div>
+            <div class="status"><span>EXTERNAL · THEOREM</span><strong>小数据全局解</strong><p>使用标准 Koch–Tataru 型固定点定理。</p></div>
+            <div class="status"><span>CLOSED · VANISHING ROUTE</span><strong>趋零扰动不能致奇</strong><p>总初值最终落入临界小数据球。</p></div>
+            <div class="status"><span>OPEN · ORDER ONE</span><strong>常数量级仍未决</strong><p>非正规增长和大数据机制尚未控制。</p></div>
+          </div>
+        </section>
+
+        <section id="equation"><div class="section-no">01 / Exact transverse equation</div><h2>横向耦合精确地出现在 \((w\cdot\nabla)U_r\) 中</h2>
+          <p>写 \(u=U_r+w\)、\(p=P_r+q\)。从总方程减去基流方程得到</p>
+          <div class="equation result">\[
+            \boxed{
+            \begin{aligned}
+            \partial_tw-\Delta w
+            +(U_r\cdot\nabla)w
+            +(w\cdot\nabla)U_r
+            +(w\cdot\nabla)w+\nabla q&amp;=0,\\
+            \nabla\cdot w&amp;=0.
+            \end{aligned}}
+          \]</div>
+          <p>这里没有省略任何项。正是 \((w\cdot\nabla)U_r\) 破坏了 R0.60–R0.69A 使用的三角标量约化。对光滑 \(w\)，不可压缩性给出精确能量恒等式</p>
+          <div class="equation">\[
+            \frac12\frac{d}{dt}\|w(t)\|_2^2+\|\nabla w(t)\|_2^2
+            =-\int_{\mathbb T^3}w_i\,\partial_i(U_r)_j\,w_j\,dx.
+          \]</div>
+          <p>由此得到的 Lipschitz–Gronwall 界是超临界的。我保留这个恒等式作为后续线性化计算的基准，但不把它误写成尺度一致的横向稳定性证明。</p>
+        </section>
+
+        <section id="bound"><div class="section-no">02 / Critical norm bound</div><h2>R0.59 的热–Carleson 包络在当前振幅下恰好留下 \(\varepsilon_r\)</h2>
+          <p>R0.59 对张量 Rudin–Shapiro 数据包证明</p>
+          <div class="equation">\[
+            \|u_0\|_{BMO^{-1}_{\rm per}}
+            \le\frac{\sqrt{2}\,C_TA}{\sqrt H},
+            \qquad C_T=(1+\sqrt{2})(2+\sqrt{2})=4+3\sqrt{2}.
+          \]</div>
+          <p>R0.69A 使用 \(H_r=4M_r\) 与 \(A_r=\varepsilon_r\sqrt{H_r}\)。直接代入给出</p>
+          <div class="equation">\[
+            \|U_r(0)\|_{BMO^{-1}_{\rm per}}
+            \le\sqrt{2}C_T\varepsilon_r
+            =(6+4\sqrt{2})\varepsilon_r.
+          \]</div>
+          <p>又因 \(\varepsilon_r^2=(16/\lambda)^r\) 且 R0.66 证明</p>
+          <div class="equation">\[
+            \lambda\ge\lambda_-=
+            \frac{50303178668203}{2000000000000},
+            \qquad
+            \varepsilon_r\le
+            \left(\frac{16}{\lambda_-}\right)^{r/2}=\rho^r.
+          \]</div>
+          <p>这一步只使用已证明的全指标包络与精确有理根端点，没有从有限 \(r\) 的数值图形外推渐近结论。</p>
+        </section>
+
+        <section id="scales"><div class="section-no">03 / Opposite scales</div><h2>物理 Fourier 振幅增长，并不妨碍缩放临界范数趋零</h2>
+          <p>每个载波的物理振幅为</p>
+          <div class="equation">\[
+            A_r=\varepsilon_r\sqrt{H_r}
+            =2\left(\frac{16}{\sqrt\lambda}\right)^r.
+          \]</div>
+          <p>因为 \(25&lt;\lambda&lt;26\)，这个量指数增长；同时，频率规模 \(H_r=4\cdot16^r\) 增长得更快，热–Carleson 归一化保留的只是 \(\varepsilon_r\)。所以“Fourier 系数很大”与“临界数据很小”在这里同时成立，不存在矛盾。</p>
+          <div class="proof"><strong>判定意义。</strong>&nbsp;若横向扰动本身也在 \(BMO^{-1}_{\rm per}\) 中趋零，那么总初值的临界范数趋零。标准小数据理论随后直接给出全局正则性；单独观察物理振幅增长不能绕过这道门。</div>
+        </section>
+
+        <section id="ball"><div class="section-no">04 / Fixed critical ball</div><h2>扰动球的允许半径趋向一个正数，而不是随高频缩小</h2>
+          <p>临界范数的三角不等式给出</p>
+          <div class="equation">\[
+            \|U_r(0)+w_{0,r}\|_{BMO^{-1}_{\rm per}}
+            \le (6+4\sqrt{2})\rho^r
+            +\|w_{0,r}\|_{BMO^{-1}_{\rm per}}.
+          \]</div>
+          <p>令基流只占小数据预算的比例 \(\theta\)。当 \((6+4\sqrt{2})\rho^r\le\theta\eta_{\rm KT}^{\rm per}\) 时，允许的扰动半径至少为 \((1-\theta)\eta_{\rm KT}^{\rm per}\)，与 \(r\) 无关。形式上，一个充分深度为</p>
+          <div class="equation">\[
+            r\ge\left\lceil
+            \frac{\log((6+4\sqrt{2})/(\theta\eta_{\rm KT}^{\rm per}))}
+            {-\log\rho}
+            \right\rceil.
+          \]</div>
+          <p>这个公式保持符号形式。小数据定理通常只断言阈值存在；本页没有给 \(\eta_{\rm KT}^{\rm per}\) 指定数值，也没有把图中的参考预算误当作该阈值。</p>
+          <p>这里使用的外部分析输入是 Koch 与 Tataru 的 \(BMO^{-1}\) 小数据理论及其周期核估计版本；高阶正则性可参见 Germain、Pavlović 与 Staffilani，稳定性背景可参见 Auscher、Dubois 与 Tchamitchian。</p>
+        </section>
+
+        <section id="thresholds"><div class="section-no">05 / Certified depths</div><h2>参考预算的首次穿越深度可以精确审计</h2>
+          <p>对纯粹的数据包上界 \((6+4\sqrt{2})\rho^r\)，证书逐项向上舍入，并给出以下首次严格穿越：</p>
+          <div class="grid">
+            <div class="status"><span>BUDGET · 1</span><strong>\(r=11\)</strong><p>首次严格小于 \(1\)。</p></div>
+            <div class="status"><span>BUDGET · 10⁻¹</span><strong>\(r=22\)</strong><p>首次严格小于 \(0.1\)。</p></div>
+            <div class="status"><span>BUDGET · 10⁻²</span><strong>\(r=32\)</strong><p>首次严格小于 \(0.01\)。</p></div>
+            <div class="status"><span>BUDGET · 10⁻³</span><strong>\(r=42\)</strong><p>首次严格小于 \(0.001\)。</p></div>
+          </div>
+          <p>这些数值只说明几何上界下降的速度。它们不是 \(\eta_{\rm KT}^{\rm per}\) 的估计，也不能给出实际小数据定理的最早可用 \(r\)。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>增长的物理振幅与衰减的临界包络来自同一组锁定数据</h2>
+          <figure><img src="/figures/r0-69b-transverse-smallness.svg" alt="R0.69B 物理 Fourier 振幅下界、周期 BMO 负一次范数上界和参考预算首次穿越深度"><figcaption>图 R0.69B。左图比较物理 Fourier 振幅的严格下界与周期 \(BMO^{-1}\) 上界；右图给出目标预算 \(\tau\) 所需的最小数据包深度。图中明确保留未知的 \(\eta_{\rm KT}^{\rm per}\)，没有替它指定数值。线型、标记和直接标签保证灰度打印仍可区分。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69b-transverse-smallness.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69b-transverse-smallness.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Value and next gate</div><h2>这一步关闭了小扰动路线，并把问题推进到常数量级临界边带</h2>
+          <p>R0.69A 只说明基流所在的不变剪切类全局光滑。R0.69B 更进一步：对充分深的同一数据包，整个真正三维的临界小球也在全局正则侧。这排除了“加入一个在临界拓扑中趋零的横向扰动，就可能触发奇性”的路线。</p>
+          <p>它对千禧年问题的价值是一个严格的否定筛选，而不是正面解答。结果来自已知小数据定理与当前数据包估计的结合，不是新的任意大数据定理。它既没有证明常数量级扰动失稳，也没有证明这样的扰动保持正则。</p>
+          <div class="proof"><strong>下一道可证伪问题。</strong>&nbsp;选择满足 \(\|w_{0,r}\|_{BMO^{-1}_{\rm per}}\not\to0\) 的无散三维 Fourier 边带，使 \((w\cdot\nabla)U_r\) 非平凡耦合。先精确写出线性化模系统与 Leray 投影，再计算非正规传播在缩放临界范数中的增益。只有当增长触及标准临界延拓判据，而不只是 \(L^2\) 瞬态，才对千禧年问题产生新的约束。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>源提交、输入证书、定向区间和期刊附图已经分别锁定</h2>
+          <p>数学源提交为 <code>3342fb092b454df34255b82e142bfd796e5e522d</code>，形式证书提交为 <code>e2584235220dcc4a5721b21b6eb997d88698e2c8</code>。审计脚本 SHA-256 为 <code>12c2c64b2ec6d1f0c664005d875c4dbb2347a9891bbedc9c45ae18b05c306336</code>。</p>
+          <p>形式证书 SHA-256 为 <code>53ebc36d199ca2b379270c85a842978aab086f7f77d5e4b4f6c32e944c15ce45</code>。它锁定 R0.59 与 R0.66 的输入哈希，使用 256 位 GMP/MPFR 定向舍入，13 项检查全部通过。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069b">查看 R0.69B 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/transverse_critical_smallness_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069b-transverse-smallness/fig-r069b-transverse-smallness">查看期刊附图包</a></p>
+          <p>主要文献：<a href="https://doi.org/10.1006/aima.2000.1937">Koch–Tataru（2001）</a> · <a href="https://arxiv.org/abs/math/0609781">Germain–Pavlović–Staffilani（2007）</a> · <a href="https://doi.org/10.1016/j.matpur.2004.01.003">Auscher–Dubois–Tchamitchian（2004）</a>。</p>
+          <p>声明边界：本页证明的是一个明确周期族的临界小数据门。它不计算通用小数据阈值，不控制常数量级横向扰动，不证明有限时奇性或任意三维数据的全局正则性，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69B · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

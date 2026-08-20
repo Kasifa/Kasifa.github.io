@@ -1115,8 +1115,8 @@
             我目前只讨论 Clay 正式表述中的原始方程。修正模型、数值现象和条件结果会单独标明，不把它们写成原问题的解答。
           </p>
           <div class="status-meta">
-            <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.45</strong>网页版本</span>
+            <span><strong>2026-08-21</strong>最近修订</span>
+            <span><strong>v0.61</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1128,7 +1128,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>精确计算不变剪切单链的四次目标系数，检验它相对 R0.59 二次目标是否具有独立于 \(M\) 的统一衰减。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>构造临界范数为常数量级的三维横向边带，并审计线性化非正规传播是否达到标准临界延拓判据。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -4285,6 +4285,48 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69B：</strong>&nbsp;离开不变剪切类，加入真正三维的横向扰动，先推导精确扰动方程与能量恒等式，再审计时间积分 Lipschitz 代价是否在周期深度上尺度一致。</p>
           </div>
+
+          <div class="task-one" id="r069b" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69B · 2026-08-21</p>
+            <h3>临界小数据门排除了趋零的横向奇性路径</h3>
+            <p>
+              R0.59 的周期热–Carleson 估计与 R0.66 的主根区间给出
+
+              \[
+                \|U_r(0)\|_{BMO^{-1}_{\rm per}}
+                \le (6+4\sqrt{2})\rho^r,
+                \qquad \rho&lt;0.797586.
+              \]
+              虽然每个物理 Fourier 振幅随 \(r\) 指数增长，这个缩放临界
+              上界却几何衰减。13 项源锁定检查全部通过。
+            </p>
+            <p>
+              设 \(\eta_{\rm KT}^{\rm per}\) 是周期 Koch–Tataru 小数据
+              定理的一个允许阈值。对充分大的 \(r\)，所有满足
+
+              \[
+                (6+4\sqrt{2})\rho^r+
+                \|w_{0,r}\|_{BMO^{-1}_{\rm per}}
+                &lt;\eta_{\rm KT}^{\rm per}
+              \]
+              的真正三维横向扰动都产生全局正则解。允许扰动球的半径不随
+              \(r\) 缩小，因此任何仍未排除的奇性路径必须付出常数量级的
+              临界范数代价。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;这是已知小数据定理在一个明确
+              周期数据包上的严格应用，不是新的大数据正则性定理。证书没有
+              给 \(\eta_{\rm KT}^{\rm per}\) 指定数值，也不控制常数量级横向
+              扰动的非正规增长、失稳或奇性。
+            </p>
+            <p>
+              <a href="/notes/r0-69b.html"><strong>阅读 R0.69B 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69b-transverse-smallness.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069b">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069b-transverse-smallness/fig-r069b-transverse-smallness">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69C：</strong>&nbsp;选取临界范数不趋零、并通过 \((w\cdot\nabla)U_r\) 非平凡耦合的三维 Fourier 边带；先求线性化非正规传播子的尺度律，再判断增长是否触及缩放临界延拓判据。</p>
+          </div>
         </section>
 
       </article>
@@ -4298,7 +4340,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.60 · 2026-08-21<br>
+        综述 v0.61 · 2026-08-21<br>
+        上次综述 v0.60 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

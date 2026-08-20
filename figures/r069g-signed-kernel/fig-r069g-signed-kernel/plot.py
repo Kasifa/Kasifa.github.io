@@ -57,6 +57,17 @@ def write_csv(name: str, fields: list[str], rows: list[dict[str, object]]) -> No
         writer.writerows(rows)
 
 
+def normalize_svg(path: Path) -> None:
+    path.write_text(
+        "\n".join(
+            line.rstrip()
+            for line in path.read_text(encoding="utf-8").splitlines()
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def prepare_data() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict[str, object]]:
     if sha256(CERTIFICATE) != CERTIFICATE_SHA:
         raise RuntimeError("the pinned R0.69G certificate hash does not match")
@@ -312,6 +323,7 @@ def render(
     )
     figure.savefig(HERE / "figure.png", dpi=600)
     plt.close(figure)
+    normalize_svg(HERE / "figure.svg")
 
 
 def build_manifest(elapsed: float) -> None:

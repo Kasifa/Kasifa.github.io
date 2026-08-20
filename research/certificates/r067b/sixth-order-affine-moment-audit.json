@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "classification": "exact finite mass-plus-four-first-moment lift and strict spectral separation for the R0.67 sixth-order zero-time cycle; not a sign certificate for the complete heat-weighted five-simplex projection",
+  "checks": {
+    "cycleMassMatchesR067AExactly": true,
+    "allFourFirstMomentCouplingsAreNonzero": true,
+    "directMassAndFourMomentsMatchThroughDeclaredLevel": true,
+    "normalizedMomentLiftHasExactOneOverSixteenDiagonal": true,
+    "massPlusFirstMomentSubspaceIsInvariant": true,
+    "zeroMassZeroFirstMomentSubspaceIsInvariant": true,
+    "degreeTenMassRootsAreStrictlyInsideRadius300": true,
+    "firstMomentSpectrumIsBelow26": true,
+    "finiteLiftNonDominantSpectrumIsBelow300": true,
+    "absoluteCarryWeightIsExact": true,
+    "zeroAffineC11RemainderScaleIs256": true,
+    "zeroAffineRemainderScaleIsBelowDominantRoot": true,
+    "dominantMassRootIsSeparatedFromFirstMomentSpectrum": true
+  },
+  "stateSpace": {
+    "states": 320,
+    "freeSpatialCoordinates": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "finiteLiftDimension": 1600,
+    "cycleWordLeastSignificantBitFirst": [
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  "exactLift": {
+    "massEquation": "m' = W m",
+    "firstMomentEquation": "ell'_j = (W ell_j + E_j m)/16",
+    "massMatrixSha256": "536cddd41f0b230b424eb9eeb68fa6b2c54b7f638d7d78a8db390a5c75330796",
+    "massMatrixNonzeros": 20808,
+    "shiftMatrices": {
+      "A": {
+        "sha256": "7b0da1bf689415f353952213a3700fc5c423960d7af960898844e0640ffa5c3a",
+        "nonzeros": 20542,
+        "maximumAbsoluteEntry": 2306,
+        "weightedRowNorm": {
+          "numerator": "3805021875",
+          "denominator": "28561",
+          "decimal": "133224.392528"
+        }
+      },
+      "B": {
+        "sha256": "395c5d12784a24279ad72947b4d0448a5bc616ad3054b5bfdc08e2274a668ae8",
+        "nonzeros": 20542,
+        "maximumAbsoluteEntry": 2306,
+        "weightedRowNorm": {
+          "numerator": "3805021875",
+          "denominator": "28561",
+          "decimal": "133224.392528"
+        }
+      },
+      "C": {
+        "sha256": "e66efdbb7fce3e0251b8651dc5b912858be73f5a26a80d490bbb3085647a5679",
+        "nonzeros": 20542,
+        "maximumAbsoluteEntry": 2306,
+        "weightedRowNorm": {
+          "numerator": "3805021875",
+          "denominator": "28561",
+          "decimal": "133224.392528"
+        }
+      },
+      "D": {
+        "sha256": "e7c387f17ebedf4611999a6df27102751494bdd08261590c17bc1cae98f9f271",
+        "nonzeros": 20898,
+        "maximumAbsoluteEntry": 2118,
+        "weightedRowNorm": {
+          "numerator": "15645103",
+          "denominator": "16",
+          "decimal": "977818.9375"
+        }
+      }
+    },
+    "weightedMassRowNorm": {
+      "numerator": "65536",
+      "denominator": "1",
+      "decimal": "65536"
+    },
+    "canonicalMomentLift": "J(m,ell)=(m-sum_j ell_j) delta_0 + sum_j ell_j delta_{e_j}, state by state",
+    "defectProperty": "P J - J L annihilates constants and all four affine coordinates"
+  },
+  "spectralSeparation": {
+    "dominantMassRootLower": "50303178668203/125000000000",
+    "dominantMassRootUpper": "31439486667627/78125000000",
+    "otherMassSpectrumAbsoluteUpper": 300,
+    "firstMomentSpectrumAbsoluteUpper": "26",
+    "zeroAffineC11RemainderScale": 256,
+    "strictOrdering": "26 < 256 < 300 < mu"
+  },
+  "directConvolutionAudit": [
+    {
+      "level": 1,
+      "M": 2,
+      "target": 0,
+      "maximumAbsoluteMass": 10,
+      "maximumAbsoluteFirstMoment": 6
+    },
+    {
+      "level": 2,
+      "M": 4,
+      "target": 2,
+      "maximumAbsoluteMass": 37,
+      "maximumAbsoluteFirstMoment": 72
+    },
+    {
+      "level": 3,
+      "M": 8,
+      "target": 2,
+      "maximumAbsoluteMass": 160,
+      "maximumAbsoluteFirstMoment": 750
+    },
+    {
+      "level": 4,
+      "M": 16,
+      "target": 2,
+      "maximumAbsoluteMass": 500,
+      "maximumAbsoluteFirstMoment": 3472
+    },
+    {
+      "level": 5,
+      "M": 32,
+      "target": 2,
+      "maximumAbsoluteMass": 3194,
+      "maximumAbsoluteFirstMoment": 45022
+    },
+    {
+      "level": 6,
+      "M": 64,
+      "target": 34,
+      "maximumAbsoluteMass": 6142,
+      "maximumAbsoluteFirstMoment": 331330
+    },
+    {
+      "level": 7,
+      "M": 128,
+      "target": 34,
+      "maximumAbsoluteMass": 51034,
+      "maximumAbsoluteFirstMoment": 3785734
+    }
+  ],
+  "degreeTenSchurTransformsAtRadius300": [
+    {
+      "degree": 10,
+      "leadingAbs": "5904900000000000000000000",
+      "constantAbs": "495756246980944199680",
+      "strictSchurInequality": true,
+      "coefficientSha256": "4c36c0ff5244a0eaebc4443a1cc18b59a9efb9af990bb523573c7622e70ac061"
+    },
+    {
+      "degree": 9,
+      "leadingAbs": "5073939066529527711008130441781551716",
+      "constantAbs": "54274065493524480000000000000000000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "92e7319b5d1ab57fef55ba4e671fc15ad97a6abf3ebd66bc7f8534ad850dec61"
+    },
+    {
+      "degree": 8,
+      "leadingAbs": "6435477994167334912612758342181186872318887075121691838460399149195636164",
+      "constantAbs": "260015584870767681879978346647652744138987875299152465920000000000000000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "0104406167c1f4b57725b1f54113b2dff04139155a5b85a9dd17ddd05c67d2db"
+    },
+    {
+      "degree": 7,
+      "leadingAbs": "8149047193291853898061502744873008492212181556744145014487027652482145330626164626100661418596914446921464356",
+      "constantAbs": "229308952192572641736625365652553375685612883648957946773397401385861647164132535353827858983680000000000000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "c667b301c6ecbf3de197991f49b5cebbe453c302266897d810493e793b9b2936"
+    },
+    {
+      "degree": 6,
+      "leadingAbs": "10310716254966785806362230648978472362286791927888301017383609644226378314440119704214468191633295574675003716268789265733231127969180595166158724",
+      "constantAbs": "1657298880161842116469808651648936182398360925030644701152569659050403818185317231722575235244511915277858059606545064012748175906954400000000000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "e9c770517dad04a852f921cfd361592fcf264811c423f89ea0b3d88d9337ab69"
+    },
+    {
+      "degree": 5,
+      "leadingAbs": "12708753263510705708133901532714442060942400134903836086935794391460188324045245105616228922350040891989714975396817771809691349483851806689512288887855036589108197992032484967642596",
+      "constantAbs": "1748455085137908431763365969940381470374127514424922657061018249175966995553041282744693918988205274487027132521888381704702141341544092254735037603492789929628335994944991500000000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "eabe49bf76ee78cae173bb8c61229f9698c55ef4993c3cdb5db05cdad1d86c2c"
+    },
+    {
+      "degree": 4,
+      "leadingAbs": "15368022008337173339744188459173721007177808943586134373220569400416549626290943092391243359428849569950663451830882384511956888872763145924077964021364993027429678859549146103525117821118799152607927935017527844623684",
+      "constantAbs": "320119824033753645012710352707391486262272935329214701085214905883248592913674920665875222226639326059158139056447205307285927396713486221285015963970847461633581527463605030118072936723612424936031089148085387500000",
+      "strictSchurInequality": true,
+      "coefficientSha256": "d9e73a863d9730fe4b11cd2e0444cdbf4bd6cd485e9ba795b3626abd7f34cc15"
+    },
+    {
+      "degree": 3,
+      "leadingAbs": "18575671338652034690355219037859631745416417512119555587921518445107424170441134402140634926759380233046783952805096824059582191492600194887150516258734131259602079351619018992137284547659910608088315522503319383307826085704024106714702395150453901110436",
+      "constantAbs": "1676108138836039361213927525942605341641390767125556015761535394198438167170733334205149354469994138683748802604868709413545245649922008018264020316735082084542595449472543956795547857967437670072001517473106724293280057868980377770163981411612856828125",
+      "strictSchurInequality": true,
+      "coefficientSha256": "ffabf462548c94ab7f02f4a31dadfcda2204029047f80857dc3e66fb8d6ffe8e"
+    },
+    {
+      "degree": 2,
+      "leadingAbs": "89080098142201308100801878519444056202425853214040470380800305825414080001492257612901056322785305993801852305135082024703691558398268534685013475216678646495964068860771998379887110980411131747891619509623134319701778672532128517487664190624711722570387867962427891019840241771959051542551",
+      "constantAbs": "39773195146034325994399281065809685885946704081158789355342685762255477416174548013857865287845074165884286328683058258889106164920367826674971661199891878946403747134637335291152752422123840617061102357028559010812507996155396178819069114032985920077110337874696714268459805584717464288375",
+      "strictSchurInequality": true,
+      "coefficientSha256": "8e2a2f99028a4e9719a6770df0bae24ba963e72fc9fbf405f4fcc365fa90b2bd"
+    },
+    {
+      "degree": 1,
+      "leadingAbs": "33067374161577115428035525547998496344187189785517434832227327282439996550477187765146731987635172725379552257144455762922347556277044808965802899142206866121069147",
+      "constantAbs": "32891150342699693093531148710924613621134935785467677277338034911600218125413267064327431949414140787717477757237633182380157260662362292308987940848739370063836765",
+      "strictSchurInequality": true,
+      "coefficientSha256": "7177ac651f7d7b57e2b53668af3b423272f9f64b823ff744e9e9d14d8b142712"
+    }
+  ],
+  "limitations": [
+    "No explicit C^{1,1}-dual norm bound for the finite-lift defect is certified here.",
+    "The dominant eigen-distribution has not yet been paired with the complete heat observable.",
+    "No statement is made about all higher Picard orders, norm inflation, singularity, or global regularity."
+  ],
+  "provenance": {
+    "sourceCommit": "d0347369ae6ba564d4275d0cd720ba1cd4b91615",
+    "r067aCertificate": "research/certificates/r067/sixth-order-cycle-audit.json",
+    "r067aCertificateSha256": "b3d02a759f56e43aa9b6df63fad45a6b64a89b012fbc65be3f4a644123b3f8ef"
+  },
+  "runtime": {
+    "elapsedSeconds": 1.9975777920044493,
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}

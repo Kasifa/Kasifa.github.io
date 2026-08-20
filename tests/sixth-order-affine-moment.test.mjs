@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -16,6 +17,11 @@ const auditUrl = new URL(
   "../research/sixth_order_affine_moment_audit.py",
   import.meta.url,
 );
+const certificateRoot = new URL("../research/certificates/r067b/", import.meta.url);
+
+function sha256(buffer) {
+  return createHash("sha256").update(buffer).digest("hex");
+}
 
 test("states the exact R0.67B affine lift and strict resolvent boundary", async () => {
   const [note, audit] = await Promise.all([
@@ -63,4 +69,41 @@ test("reproduces the exact R0.67B mass-plus-four-first-moment lift", async () =>
   assert.equal(certificate.spectralSeparation.zeroAffineC11RemainderScale, 256);
   assert.equal(certificate.spectralSeparation.strictOrdering, "26 < 256 < 300 < mu");
   assert.equal(certificate.directConvolutionAudit.length, 4);
+});
+
+test("locks the formal R0.67B certificate and monitored resources", async () => {
+  const [jsonBuffer, stdoutBuffer, stderrBuffer, resourcesBuffer, checksumText] =
+    await Promise.all([
+      readFile(new URL("sixth-order-affine-moment-audit.json", certificateRoot)),
+      readFile(new URL("sixth-order-affine-moment-audit.stdout.log", certificateRoot)),
+      readFile(new URL("sixth-order-affine-moment-audit.stderr.log", certificateRoot)),
+      readFile(new URL("resources.csv", certificateRoot)),
+      readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+    ]);
+  const certificate = JSON.parse(jsonBuffer.toString("utf8"));
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.values(certificate.checks).every(Boolean), true);
+  assert.equal(certificate.directConvolutionAudit.length, 7);
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "d0347369ae6ba564d4275d0cd720ba1cd4b91615",
+  );
+  assert.deepEqual(jsonBuffer, stdoutBuffer);
+  assert.match(stderrBuffer.toString("utf8"), /maximum resident set size/);
+  assert.match(stderrBuffer.toString("utf8"), /\b0\s+swaps/);
+  assert.match(resourcesBuffer.toString("utf8"), /exited:0/);
+
+  const expected = new Map(
+    checksumText
+      .trim()
+      .split("\n")
+      .map((line) => {
+        const [digest, name] = line.trim().split(/\s+/);
+        return [name, digest];
+      }),
+  );
+  assert.equal(sha256(jsonBuffer), expected.get("sixth-order-affine-moment-audit.json"));
+  assert.equal(sha256(stdoutBuffer), expected.get("sixth-order-affine-moment-audit.stdout.log"));
+  assert.equal(sha256(stderrBuffer), expected.get("sixth-order-affine-moment-audit.stderr.log"));
+  assert.equal(sha256(resourcesBuffer), expected.get("resources.csv"));
 });

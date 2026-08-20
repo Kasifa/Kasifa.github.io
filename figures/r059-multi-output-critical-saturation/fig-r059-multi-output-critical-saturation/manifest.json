@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r059-multi-output-critical-saturation",
+  "status": "formal",
+  "analyticalQuestion": "Does a growing structured low-frequency output set force a square-function defect after one high shell is flattened in critical heat norms?",
+  "supportedClaim": "For dyadic L and M with H=4LM, one real divergence-free tensor Rudin--Shapiro packet supported in H<=|xi|<2H has M coherent target outputs in the complete first Navier--Stokes Picard iterate. Its heat-Besov and periodic BMO^-1 input norms are O(H^-1/2), while the total first-iterate output is Omega(H^-1), uniformly in the separation H/M=4L and the output count M.",
+  "createdAt": "2026-08-20T09:31:06+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "2fdc90e29bfd02680ca3a0652ffb5aa50a1b2d0c",
+    "certificateCommit": "f935d72f88a39f25f1dd891de0fac7b64ac2bcc2",
+    "formalSourceCommit": "f80788625f97a3038c492a6697832a7653bb8b82",
+    "dirtyAtCertifiedRun": false,
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "exact target-coefficient profiles, two-parameter total-output heat witness, and deterministic tensor phase-flattening comparison",
+    "variants": [
+      "1,024 exact-formula profile rows for M=256 and four dyadic separation parameters",
+      "121 two-parameter heat-witness rows for 0<=log2 L,log2 M<=10",
+      "11 tensor Rudin--Shapiro rows through LM=2^20 with sampled product maxima"
+    ],
+    "takeaway": "Output multiplicity and isotropic critical square functions do not force an extra shell factor in the complete first Picard iterate; one tensor sign array flattens both inputs while all matched products remain positive.",
+    "dataSufficiency": "The exact coefficient identity, all-index envelopes, tensor-prefix theorem, projection contraction, and critical lower bounds are analytic statements. The plotted exponentials and FFT maxima are deterministic presentation data and not substitutes for the proof.",
+    "palettePolicy": "blue for the principal tensor and coefficient curves, gold for positive-phase comparison and certified regions, green and red for parameter variants, and neutral ink and grid",
+    "nonColorEncoding": "Solid, dashed, and dotted lines, open markers, a certified band, direct annotations, and separate panels preserve distinctions in grayscale.",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "exact-audit",
+    "formalCommand": "python3 research/run_with_monitor.py --output research/certificates/r059/resources.csv --interval 0.25 -- python3 research/multi_output_critical_saturation_audit.py --maximum-level 10 --maximum-exhaustive-level 6 --maximum-prefix-level 10 --source-commit f80788625f97a3038c492a6697832a7653bb8b82 --progress --progress-log research/certificates/r059/progress.ndjson --check --pretty --output research/certificates/r059/multi-output-critical-saturation.json",
+    "samplingCommand": "tmp/r024-venv/bin/python research/run_with_monitor.py --output figures/r059-multi-output-critical-saturation/fig-r059-multi-output-critical-saturation/figure-data-resources.csv --interval 0.1 -- tmp/r024-venv/bin/python figures/r059-multi-output-critical-saturation/fig-r059-multi-output-critical-saturation/prepare_data.py --source-commit 2fdc90e29bfd02680ca3a0652ffb5aa50a1b2d0c",
+    "configuration": "dyadic L and M through level 10 in the packet and prefix regressions; exhaustive ordered positive interactions through level 6; 1,024 profile rows, 121 heat-witness rows, and 11 tensor-flattening rows for presentation",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "The formal packet, frequency support, Gaussian-integer prefix, and Abel checks use exact Python integers. Exponential values and FFT maxima are presentation data and do not control a formal decision.",
+    "solver": "direct termwise heat integration, exact integer frequency enumeration, tensor Rudin--Shapiro factorization, exact Abel identities, projection contraction, and analytic heat-extension norm bounds",
+    "tolerances": {
+      "formalIdentities": "none; exact integer and symbolic arithmetic",
+      "coefficientPresentation": "validate_data.py recomputes the formulas with relative tolerance 2e-15 and absolute tolerance 1e-20",
+      "phasePresentation": "sampled tensor maxima must remain below the exact full-tensor bound up to relative slack 1e-14"
+    },
+    "scientificWallTimeSeconds": 72.990615542,
+    "monitoredWallTimeSeconds": 73.048608,
+    "samplingWallTimeSeconds": 0.4953537090041209,
+    "samplingMonitoredWallTimeSeconds": 0.599969,
+    "monitoring": {
+      "enabled": true,
+      "formalReportIntervalSeconds": 0.25,
+      "samplingReportIntervalSeconds": 0.1,
+      "formalProgressLog": "formal-progress.ndjson",
+      "formalResourceLog": "formal-resources.csv",
+      "samplingResourceLog": "figure-data-resources.csv",
+      "formalSamples": 271,
+      "samplingSamples": 6
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "formalMaximumObservedCpuPercent": 100.0,
+    "formalMaximumObservedRssMiB": 1112.469,
+    "samplingMaximumObservedCpuPercent": 76.6,
+    "samplingMaximumObservedRssMiB": 32.094
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements-research.txt",
+    "numpy": "2.3.5",
+    "matplotlib": "3.11.1"
+  },
+  "data": [
+    {
+      "path": "target-profiles.csv",
+      "format": "csv",
+      "schema": "1,024 rows with dyadic L, fixed M=256, exact-formula target coefficient, scaled coefficient, and certified envelope.",
+      "bytes": 127954,
+      "sha256": "4dde6435d612f389fc54b72f14f81d1dc2c5aef0f2c5a5c8fee1e60a7aaee450"
+    },
+    {
+      "path": "multi-output-witness.csv",
+      "format": "csv",
+      "schema": "121 dyadic L by M rows with the explicit total-output heat witness and certified scaled heat-Besov and periodic BMO^-1 lower bounds.",
+      "bytes": 17305,
+      "sha256": "756caccc2df3bf5832894dc97df61da30dc4b4898a217e3c3fcab75a037fe48a"
+    },
+    {
+      "path": "tensor-flattening.csv",
+      "format": "csv",
+      "schema": "11 tensor Rudin--Shapiro levels with sampled product maximum, exact full-tensor bound, formal prefix bound, and all-positive comparison.",
+      "bytes": 844,
+      "sha256": "09ad44c9f37b862375289716994d6af70e4948065c9abf07dcff4fef725393d0"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned figure source, formal certificate hash and source commit, row counts, constants, environment, and sampling wall time.",
+      "bytes": 1229,
+      "sha256": "942a0b91bc81db99fdda7d74583087eecd23955beca6c91f202f4e5b2a8b0ec1"
+    },
+    {
+      "path": "formal-progress.ndjson",
+      "format": "ndjson",
+      "schema": "Pinned append-only exact-audit UTC stages and successful 24-check completion record.",
+      "bytes": 874,
+      "sha256": "ba9af250c77fad209615ee3aa3ddb8c0149492c42ff35fa1138bf6be630f66b3"
+    },
+    {
+      "path": "formal-resources.csv",
+      "format": "csv",
+      "schema": "Quarter-second process-tree resource samples for the successful source-locked formal audit.",
+      "bytes": 20262,
+      "sha256": "c9c193198872ddf22d953db18d93912e86f435de6f15d6f64d88ae3022234021"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for deterministic presentation-table preparation.",
+      "bytes": 576,
+      "sha256": "b4c105570ccd73f81c30041af80f0df86610d61c8f71086e367417ab4f4f38b4"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r059",
+      "fileName": "multi-output-critical-saturation.json",
+      "bytes": 7742,
+      "sha256": "88774c0d5647f46700ed499409754f4207fdcef5a0193e5a337e7887eb3c6dce",
+      "extractionCommand": "prepare_data.py pins the formal certificate hash and source commit, reconstructs every presentation row, and copies the successful progress and resource logs; validate_data.py independently checks every row and the pinned provenance."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "72034f501d0c4df311131d967b6369cf35be614ac109eb0c4c9b4279168f300b",
+    "command": "MPLCONFIGDIR=tmp/r059-mplconfig tmp/r024-venv/bin/python figures/r059-multi-output-critical-saturation/fig-r059-multi-output-critical-saturation/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "216d3e8e089a50d00c3abb62187c899b8df84aacfd4fd00db0836d81e86f0069"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "fc28c03ca178368dfaf6e2c13c843e98e6865208efc6e08f4b95d56c0af5ac34"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "28ad1080d7de63d48a2bb4400c1c19f6773973dba450cd6a102dfba7325ec44e"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "一个张量 Rudin--Shapiro 高频壳可同时维持 M 个相干低频输出；总第一 Picard 输出在热 Besov 与周期 BMO^-1 中仍按 H^-1 缩放，与输入范数平方同阶。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The first visual pass exposed a middle-panel legend overlapping the collapsed curves and a right-panel annotation overlapping the tensor curve; both were corrected at source commit 2fdc90e29bfd02680ca3a0652ffb5aa50a1b2d0c. The revised color export, true grayscale conversion, and Poppler-rendered PDF page were inspected. Solid, dashed, and dotted lines, open markers, a certified band, and separate panels remain distinguishable in grayscale. Titles, axes, legends, formulas, scope line, and research blossom are unclipped. Five font descriptors contain embedded font streams, and extracted PDF text contains the three panel titles, exact target formula, formal counts, and the norm-inflation and regularity scope limitation. validate_data.py independently checks every archived table and pinned provenance."
+  }
+}

@@ -35,7 +35,7 @@ def main() -> None:
 
     assert metadata["certificateSha256"] == sha256(CERTIFICATE)
     assert len(spectrum) == 5
-    assert len(reachable) == 31
+    assert len(reachable) == 121
     assert sum(int(row["multiplicity"]) for row in spectrum) == 6
     assert 25 < max(float(row["eigenvalueDisplayOnly"]) for row in spectrum) < 26
     assert [int(row["y"]) for row in reachable[:16]] == report["reachableTargetFamily"]["initialValuesR0ThroughR15"]
@@ -44,7 +44,7 @@ def main() -> None:
         int(row["target"]) == 2 * (16 ** int(row["r"]) - 1) // 15
         for row in reachable
     )
-    assert float(reachable[-1]["observedBlockGrowth"]) > 24
+    assert 24 < float(reachable[-1]["observedBlockGrowth"]) < 25
     print(
         json.dumps(
             {
@@ -60,4 +60,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

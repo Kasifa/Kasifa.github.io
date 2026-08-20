@@ -148,7 +148,7 @@ def draw() -> None:
         )
         growth_axis.axhline(16, color=INK, linewidth=0.7, linestyle=(0, (3, 2)), label=r"threshold $16$")
         growth_axis.axhline(dominant, color=RUST, linewidth=0.7, linestyle=(0, (5, 2)), label=r"$\lambda$")
-        growth_axis.set_xlim(1, 30)
+        growth_axis.set_xlim(1, 120)
         growth_axis.set_ylim(0, 29)
         growth_axis.set_xlabel(r"cycle count $r$ ($M=16^r$)")
         growth_axis.set_ylabel(r"$|y_r|^{1/r}$")
@@ -173,4 +173,3 @@ def draw() -> None:
 
 if __name__ == "__main__":
     draw()
-

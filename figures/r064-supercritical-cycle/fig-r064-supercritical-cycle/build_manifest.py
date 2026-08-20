@@ -56,7 +56,7 @@ def main() -> None:
 
     data = [
         asset(HERE / "cycle-spectrum.csv", "six nonzero eigenvalues with exact root intervals and multiplicities", "csv"),
-        asset(HERE / "reachable-cycle.csv", "exact reachable sequence through r=30, including M, target, y_r, sign, and block growth", "csv"),
+        asset(HERE / "reachable-cycle.csv", "exact reachable sequence through r=120, including M, target, y_r, sign, and block growth", "csv"),
         asset(HERE / "figure-data-metadata.json", "source certificate hash, row counts, exact polynomial, environment, and sampling time", "json"),
     ]
     outputs = [
@@ -79,7 +79,7 @@ def main() -> None:
         },
         "chartContract": {
             "family": "state-reduction diagram plus exact spectrum and reachable-growth diagnostics",
-            "variants": ["48-state to rank-six cycle reduction", "six exact nonzero eigenvalues", "reachable target-cycle block growth through r=30"],
+            "variants": ["48-state to rank-six cycle reduction", "six exact nonzero eigenvalues", "reachable target-cycle block growth through r=120"],
             "takeaway": "The zero-time full-state transfer is supercritical on an explicit reachable four-bit cycle, so the remaining proof route must retain heat weighting and simplex integration before taking a norm.",
             "dataSufficiency": "The audit compares all forty-eight states with direct convolution through ten dyadic levels, derives the exact image characteristic polynomial, and extends the certified scalar recurrence to thirty cycles.",
             "palettePolicy": "blue for exact state structure, rust for the supercritical root, neutral ink for the threshold",
@@ -90,12 +90,23 @@ def main() -> None:
         "computation": {
             "kind": "exact-audit",
             "command": "python3 research/quartic_supercritical_cycle_audit.py --output research/certificates/r064/supercritical-cycle-audit.json --max-direct-level 10",
-            "configuration": "two exact 48 by 48 digit matrices, four-bit word 0100, rank-six image restriction, ten direct dyadic convolution levels, and thirty recurrence cycles",
+            "configuration": "two exact 48 by 48 digit matrices, four-bit word 0100, rank-six image restriction, ten direct dyadic convolution levels, and one hundred twenty recurrence cycles",
             "precision": "Python integers and Fractions for every certified claim; floating roots only for display",
             "solver": "exact finite linear algebra, polynomial determinant, direct convolution, and scalar recurrence",
             "wallTimeSeconds": metadata["samplingWallSeconds"] + elapsed(HERE / "plot-resources.csv"),
             "randomSeed": "not applicable; no randomness",
-            "monitoring": {"enabled": True, "reportIntervalSeconds": 0.1, "resourceLogs": ["figure-data-resources.csv", "plot-resources.csv"], "failedAttempts": []},
+            "monitoring": {
+                "enabled": True,
+                "reportIntervalSeconds": 0.1,
+                "resourceLogs": ["figure-data-attempt1-resources.csv", "figure-data-resources.csv", "plot-resources.csv"],
+                "failedAttempts": [
+                    {
+                        "stage": "figure-data validation",
+                        "log": "figure-data-attempt1-resources.csv",
+                        "reason": "The initial r<=30 display window ended at block growth 21.14 and did not yet show the slow convergence toward the exact dominant root; the recurrence window was extended without changing the certified transfer data."
+                    }
+                ]
+            },
         },
         "compute": {
             "host": "local Mac workstation",
@@ -137,4 +148,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -82,7 +82,7 @@ def main() -> None:
 
     values = [int(value) for value in report["reachableTargetFamily"]["initialValuesR0ThroughR15"]]
     recurrence = [int(value) for value in report["reachableTargetFamily"]["recurrenceFromR6"]["coefficients"]]
-    while len(values) <= 30:
+    while len(values) <= 120:
         values.append(
             sum(recurrence[lag] * values[-1 - lag] for lag in range(len(recurrence)))
         )
@@ -143,4 +143,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

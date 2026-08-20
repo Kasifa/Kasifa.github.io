@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "classification": "complete target Picard-series asymptotic for one periodic family inside the globally smooth invariant-shear class; not a three-dimensional Navier-Stokes singularity or regularity theorem",
+  "checks": {
+    "upstreamStatusesPassed": true,
+    "pinnedQuarticCertificateHashMatches": true,
+    "pinnedSixthCertificateHashMatches": true,
+    "pinnedTailCertificateHashMatches": true,
+    "pinnedEighthCertificateHashMatches": true,
+    "pinnedEighthSpectrumCertificateHashMatches": true,
+    "quarticCoefficientIsStrictlyNegative": true,
+    "sixthDominantHeatProjectionIsStrictlyNegative": true,
+    "eighthDominantHeatProjectionIsStrictlyNegative": true,
+    "eighthDominantRootStrictlyExceedsComplement": true,
+    "eighthZeroJetRemainderIsStrictlyContractive": true,
+    "quadraticLimitIntervalIsStrictlyPositive": true,
+    "quarticCorrectionLimitIsStrictlyPositive": true,
+    "sixthCriticalRateIsContractive": true,
+    "eighthCriticalRateIsContractive": true,
+    "allOrderTailRateIsContractive": true,
+    "completeTargetLimitStrictlyExceedsOne": true,
+    "invariantShearClassIsExplicitlyNotASingularityClaim": true
+  },
+  "family": {
+    "M_r": "16^r",
+    "q_r": "2(16^r-1)/15",
+    "m_r": "q_r+1=(2M_r+13)/15",
+    "H_r": "4M_r",
+    "epsilonSquared": "(16/lambda)^r",
+    "amplitude": "A_r=epsilon_r*sqrt(H_r)",
+    "observationTime": "t_r=log(2)/(2H_r^2)"
+  },
+  "asymptoticAssembly": {
+    "normalizedTarget": "Ghat(0,m_r,t_r)/(A_r^2 Ghat_2(0,m_r,t_r))",
+    "quadraticLimit": "1",
+    "quarticLimit": "-C_*/(3600 D_*)",
+    "sixthLimit": "0",
+    "eighthLimit": "0",
+    "ordersAtLeastTenLimit": "0",
+    "D_*": "(1-2^(-(31/30)^2))/(2(31/30)^2)",
+    "completeLimit": "1-C_*/(3600 D_*)"
+  },
+  "certifiedIntervals": {
+    "quadraticDimensionlessLimit": {
+      "lower": "0.24487620901325094399787993004685747455151796732243",
+      "upper": "0.24487620901325094399787993004685747455151796732243"
+    },
+    "positiveQuarticCorrection": {
+      "lower": "2.5937453534608412212067659494829142669246594802315e-08",
+      "upper": "2.6140836268319572192653498568600593256584887565142e-08"
+    },
+    "completeNormalizedTargetLimit": {
+      "lower": "1.0000000259374535346084122120676594948291426692466",
+      "upper": "1.0000000261408362683195721926534985686005932565849"
+    }
+  },
+  "decayRates": {
+    "sixthUpperFromLambdaLower": {
+      "exact": "32000000000000/50303178668203",
+      "decimal": "6.361427020560715961e-01"
+    },
+    "eighthUpperFromLambdaLower": {
+      "exact": "1024000000000000000000000000/2530409784125153344763249209",
+      "decimal": "4.046775373791999253e-01"
+    },
+    "ordersAtLeastTen": {
+      "exact": "43/64",
+      "decimal": "6.718750000000000000e-01"
+    }
+  },
+  "eighthOrderAsymptoticLemma": {
+    "dominantRoot": "nu=256 lambda",
+    "finiteComplementRadiusUpper": 4800,
+    "zeroDegreeTenJetRemainderContraction": 9.5367431640625e-07,
+    "correctedCoefficient": {
+      "lower": -2.6974437339913214e-08,
+      "upper": -2.8732112970370476e-09
+    },
+    "conclusion": "S_8,r/nu^r converges to a strictly negative limit"
+  },
+  "provenance": {
+    "sourceCommit": "9ca36bcadb43a5e43e84fdd779cd22959cfc6518",
+    "python": "3.12.13",
+    "gmpy2": "2.3.1",
+    "mpfr": "MPFR 4.2.2",
+    "inputCertificates": {
+      "quartic": {
+        "path": "research/certificates/r066/spectral-audit.json",
+        "sha256": "a6f66c8bea8806fee3716b8d6611a2e0720e29969d94d991672cf3626ba8bcb2"
+      },
+      "sixth": {
+        "path": "research/certificates/r067c2/sixth-order-heat-dominant-projection-audit.json",
+        "sha256": "740a90d543104aeed3848a4196776ae0b16b714d08c5966db735a7eb63e81af5"
+      },
+      "tail": {
+        "path": "research/certificates/r068a/all-order-tail-reduction-audit.json",
+        "sha256": "f6d94a8be1d1c1394311b745bdac82db64cc43ab198e36ca209997975f21f50a"
+      },
+      "eighth": {
+        "path": "research/certificates/r068b2h-corrected-heat/defect-sign.json",
+        "sha256": "c79f78816ae780074b90c7eb098d0b804253e1a449cbd0e0b8e60861de0f5bca"
+      },
+      "eighthSpectrum": {
+        "path": "research/certificates/r068b1/eighth-order-cycle-audit.json",
+        "sha256": "00d60f5abd080f90c551126f388e005df4ead5bd556308f8a63c5972766d483b"
+      }
+    }
+  },
+  "boundary": [
+    "The packet is an exactly invariant parallel-shear solution and is globally smooth.",
+    "The theorem closes one target Fourier coefficient, not a critical norm of arbitrary solutions.",
+    "It proves neither finite-time singularity nor global regularity for general three-dimensional data.",
+    "It is not a solution of the Navier-Stokes Millennium problem."
+  ]
+}

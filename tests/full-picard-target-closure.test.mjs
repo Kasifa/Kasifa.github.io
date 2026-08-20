@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -14,6 +15,10 @@ const auditUrl = new URL(
 );
 const noteUrl = new URL(
   "../research/full_picard_target_closure_note.md",
+  import.meta.url,
+);
+const certificateRoot = new URL(
+  "../research/certificates/r069a/",
   import.meta.url,
 );
 
@@ -56,4 +61,34 @@ test("reproduces the source-bound full Picard assembly", async () => {
     "S_8,r/nu^r converges to a strictly negative limit",
   );
   assert.match(result.classification, /globally smooth invariant-shear class/);
+});
+
+test("archives the source-locked R0.69A certificate", async () => {
+  const [certificateText, readme, sumsText] = await Promise.all([
+    readFile(new URL("full-picard-target-closure.json", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.values(certificate.checks).every(Boolean), true);
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "9ca36bcadb43a5e43e84fdd779cd22959cfc6518",
+  );
+  assert.ok(
+    Number(certificate.certifiedIntervals.completeNormalizedTargetLimit.lower) > 1,
+  );
+  assert.match(readme, /closes every Picard order for one target Fourier coefficient/);
+  assert.match(readme, /not a solution of\s+the Navier--Stokes Millennium problem/);
+
+  const records = sumsText.trim().split("\n");
+  assert.equal(records.length, 3);
+  for (const record of records) {
+    const match = record.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, `malformed SHA256SUMS line: ${record}`);
+    const payload = await readFile(new URL(match[2], certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, match[1], `${match[2]} hash mismatch`);
+  }
 });

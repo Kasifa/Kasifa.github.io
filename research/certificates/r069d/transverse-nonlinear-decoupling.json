@@ -1,0 +1,87 @@
+{
+  "boundary": [
+    "Finite critical path norm is not asserted to imply the resolvent hypothesis.",
+    "Uniqueness is proved only in the explicit local ball around the reference path.",
+    "No arbitrary-time bound for the reference resolvent is proved.",
+    "No finite-time singularity or norm inflation is constructed.",
+    "This is not a solution of the Navier-Stokes Millennium problem."
+  ],
+  "checks": {
+    "amplificationAboveLinearScaleFactorizesPositively": true,
+    "amplificationBelowTwoFactorizesPositively": true,
+    "amplificationRatioIsTwoOverOnePlusRoot": true,
+    "banachFixedPointAppliesUnderStrictChiBound": true,
+    "coarseRadiusTwoMCHDeltaIsValid": true,
+    "contractionFactorEqualsOneMinusSqrtDiscriminant": true,
+    "contractionGapIsPositiveDiscriminantRoot": true,
+    "discriminantParameterizationIsExact": true,
+    "finitePathNormAloneIsNotPromotedToResolventBound": true,
+    "millenniumProblemClaimIsExplicitlyExcluded": true,
+    "nonlinearDifferenceKeepsRhoExponent": true,
+    "pinnedR069BCertificateHashMatches": true,
+    "pinnedR069CCertificateHashMatches": true,
+    "smallReferenceResolventSubstitutionMatches": true,
+    "smallerRootEqualsRationalizedForm": true,
+    "smallerRootSaturatesSelfMapMajorant": true,
+    "upstreamCriticalPacketDecayPassed": true,
+    "upstreamFullLinearizedGatePassed": true
+  },
+  "classification": "exact Banach-space nonlinear perturbation theorem around a boundedly invertible critical linearization; not an unconditional large-data continuation or Navier-Stokes regularity theorem",
+  "decision": {
+    "closedGate": "the full nonlinear nearby branch differs from a resolvent-stable reference path by O(rho^r), including B(z,z)",
+    "remainingGate": "control the reference critical resolvent on certified regular intervals, or identify the exact endpoint localization loss"
+  },
+  "externalTheoremBoundary": {
+    "inputs": [
+      "||S f||_X <= C_H ||f||_E",
+      "||B(a,b)||_X <= C_B ||a||_X ||b||_X",
+      "bounded invertibility of I-A_v on the selected interval",
+      "Banach fixed-point theorem"
+    ],
+    "notAuditedHere": [
+      "the endpoint Koch-Tataru heat and bilinear estimates",
+      "a restart theorem implying the reference resolvent hypothesis",
+      "existence or regularity of an arbitrary large reference path"
+    ]
+  },
+  "majorant": {
+    "amplificationWindow": "1 <= R_-/(M_T C_H delta_r) < 2 for 0 <= chi_r < 1",
+    "formulas": {
+      "contractionFactor": "q_r=1-sqrt(1-chi_r)",
+      "differenceEquation": "z=S U_r(0)+A_v z+B(z,z)",
+      "discriminantParameter": "chi_r=4 C_B M_T^2 C_H delta_r",
+      "geometricEnvelope": "R_- <= 2 M_T C_H C_0 rho^r",
+      "rationalizedRoot": "R_-=2 M_T C_H delta_r/(1+sqrt(1-chi_r))",
+      "referenceLinearization": "A_v z=B(v,z)+B(z,v)",
+      "referenceResolvent": "M_T=||(I-A_v)^-1||",
+      "smallerRoot": "R_-=(1-sqrt(1-chi_r))/(2 C_B M_T)"
+    },
+    "localUniqueness": "unique fixed point in the closed X_T ball of radius R_-",
+    "selfMapMajorant": "M_T C_B R^2-R+M_T C_H delta_r <= 0",
+    "strictHypothesis": "0 <= chi_r < 1"
+  },
+  "provenance": {
+    "gmpy2": "2.3.1",
+    "inputCertificates": {
+      "r069b": {
+        "path": "research/certificates/r069b/transverse-critical-smallness.json",
+        "sha256": "53ebc36d199ca2b379270c85a842978aab086f7f77d5e4b4f6c32e944c15ce45"
+      },
+      "r069c": {
+        "path": "research/certificates/r069c/transverse-sideband-linear.json",
+        "sha256": "e67e5ed445bd2ef413f283a0f4a47ca29c864bc5ec79d04afbce350eff0b009a"
+      }
+    },
+    "python": "3.12.13",
+    "sourceCommit": "d6e085404bb78e23ec2ea14d541e2841a01ed7bb",
+    "sympy": "1.14.0"
+  },
+  "referenceGate": {
+    "hypothesis": "I-A_v is boundedly invertible on X_T with inverse norm M_T",
+    "necessaryPacketDepthCondition": "4 C_B C_H C_0 M_T^2 rho^r<1",
+    "operator": "A_v z=B(v,z)+B(z,v)",
+    "smallReferenceSufficientCondition": "a_T=2 C_B ||v||_X<1 implies M_T<=1/(1-a_T)"
+  },
+  "schemaVersion": "1.0",
+  "status": "passed"
+}

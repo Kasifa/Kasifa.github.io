@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Can sign changes of the vorticity-direction kernel provide a uniform annular gain without controlling vorticity magnitude?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "signed angular map plus magnitude-bias response",
+    "nonColorEncoding": "signed contour styles, explicit plus/minus labels, exact line, and open quadrature markers",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "direction-only signed cancellation is destroyed by positive magnitude selection"
+  },
+  "claimBoundary": "structural no-go for direction-only uniform cancellation; no Navier-Stokes regularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "181 by 241 angular grid and 96 bias samples",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 presentation sampling from exact formulas",
+    "solver": "closed angular kernel and linear magnitude-bias response",
+    "wallTimeSeconds": 0.555535959021654
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 160.28125,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS-26.6.1-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T07:10:00+08:00",
+  "data": [
+    {
+      "bytes": 2121952,
+      "path": "angular-kernel.csv",
+      "schema": "azimuthOverPi, mu, D, sign",
+      "sha256": "b35a9918d74918d8e51091eb55a0bb9e0f95e4ac76b017ae64d7b2324647faaf"
+    },
+    {
+      "bytes": 2458,
+      "path": "bias-response.csv",
+      "schema": "eta, exactWeightedMean",
+      "sha256": "42841ed29ffd8cfe74ad3fdf0863e8c5015532eca94a015a045e50c5a5af5aec"
+    },
+    {
+      "bytes": 128,
+      "path": "certified-bias-nodes.csv",
+      "schema": "eta, quadratureWeightedMean",
+      "sha256": "71a83e9ed928cc0f26bb6953defcebe5e25a53377d756a5e4a70b9baacdbefd4"
+    },
+    {
+      "bytes": 679,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and grid metadata",
+      "sha256": "9029e5c010b69d3a18c93504c53021467e93feaf2606c4a2b58e26c717d2de04"
+    },
+    {
+      "bytes": 461,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "ee5b236567e935013123da9caf8895961360f0b8a4ed9cb161df3e8cab123365"
+    },
+    {
+      "bytes": 60,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "802e5ab27f58c59b155305856dd465f984dcea7274c298aef35ae8660133d6e7"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 120440,
+        "path": "figure.pdf",
+        "sha256": "d8c4f9fefb1400b78282a6904fa6a2de6dc28a29a27f33061a456e280f8a2707"
+      },
+      {
+        "bytes": 438283,
+        "path": "figure.svg",
+        "sha256": "e0e165db53c59f50cd1e46ac902836b29e7ff9604c3ebc8c2adc6c286f1c7b3e"
+      },
+      {
+        "bytes": 537336,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "d66dc6ebc74db47051eb817ea72da0494d45be98b15fc8e104f2f7894f43c976"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069g-signed-kernel",
+  "git": {
+    "certificateCommit": "fed7a927c5732ba92e9ca70bff0edf43a463a7aa",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "ae328c0b02905bf48d12468ea11bbd27e3664959"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 4123,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "signed-vorticity-kernel-robustness.json",
+      "location": "research/certificates/r069g/signed-vorticity-kernel-robustness.json",
+      "sha256": "9731713f62632dddfd2da71280c1543c889c5d69e841cd9950c7641614493af8"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "uniform angular averaging cancels in the two-lobe model, but any positive magnitude bias selects a sign lobe; the general positive-weight supremum equals the L-infinity norm of the kernel"
+}

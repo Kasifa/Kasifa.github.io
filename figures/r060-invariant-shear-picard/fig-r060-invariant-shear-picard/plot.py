@@ -194,16 +194,18 @@ def draw() -> None:
             order = int(row["order"])
             y_value = lane_y[row["lane"]]
             edge, marker, face = status_style[row["status"]]
-            event_axis.scatter(
-                [order],
-                [y_value],
-                marker=marker,
-                s=20,
-                edgecolor=edge,
-                facecolor=face,
-                linewidth=0.75,
-                zorder=3,
-            )
+            marker_arguments = {
+                "marker": marker,
+                "s": 20,
+                "linewidth": 0.75,
+                "zorder": 3,
+            }
+            if marker == "x":
+                marker_arguments["color"] = edge
+            else:
+                marker_arguments["edgecolor"] = edge
+                marker_arguments["facecolor"] = face
+            event_axis.scatter([order], [y_value], **marker_arguments)
         event_axis.text(2.0, 2.14, "quadratic target", ha="right", fontsize=3.2, color=GOLD)
         event_axis.text(3.0, 1.14, "cubic return", ha="center", fontsize=3.2, color=RED)
         event_axis.text(4.0, 2.14, "first correction", ha="left", fontsize=3.2, color=GOLD)

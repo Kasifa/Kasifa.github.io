@@ -1,0 +1,74 @@
+{
+  "checks": {
+    "criticalTailBlockRateBelowFortyThreeSixtyFourths": true,
+    "dysonParameterIsKappaEpsilonOverL": true,
+    "expTwoThirdsUpperLessThanTwo": true,
+    "kappaLessThanFiveEighths": true,
+    "kappaLessThanTwoThirds": true,
+    "ninthOrderTargetGapIsFour": true,
+    "quarticRootLowerBoundIsStrictlySupercritical": true,
+    "simpleBlockRateIsStrictlyContractive": true,
+    "tailPrefactorBelowOneOverThirtyThousand": true,
+    "tensorHeatConstantSimplifies": true
+  },
+  "classification": "rigorous all-order target-tail reduction inside the globally smooth invariant-shear packet; not a Navier--Stokes singularity or global regularity theorem",
+  "constants": {
+    "C_T": "4+3*sqrt(2)",
+    "coarseTailPrefactor": {
+      "decimal": "3.007588299513651433e-05",
+      "denominator": 1623497637888,
+      "numerator": 48828125
+    },
+    "criticalTailBlockRateUsingLambdaGreaterThan25": {
+      "decimal": "6.710886400000000140e-01",
+      "denominator": 390625,
+      "numerator": 262144
+    },
+    "expTwoThirdsUpper": {
+      "decimal": "1.947734041054675957e+00",
+      "denominator": 20854283512275238150125,
+      "numerator": 40618597898663748522007
+    },
+    "kappa": {
+      "decimal": "6.035533905932737309e-01",
+      "exact": "(1+sqrt(2))/4",
+      "strictUpper": "5/8"
+    },
+    "oneMinusExpMinusT": "1-1/sqrt(2)",
+    "simpleCriticalTailBlockRate": {
+      "decimal": "6.718750000000000000e-01",
+      "denominator": 64,
+      "numerator": 43
+    },
+    "simpleTailPrefactor": {
+      "decimal": "3.333333333333333493e-05",
+      "denominator": 30000,
+      "numerator": 1
+    }
+  },
+  "proofDependencies": [
+    "R0.58 tensor Rudin--Shapiro prefix and Abel heat envelope",
+    "R0.60 invariant-shear chain and ninth-order target gap",
+    "R0.61 exact positive quadratic coefficient",
+    "R0.66 certified dominant quartic root lambda>25"
+  ],
+  "runtime": {
+    "python": "3.12.13",
+    "seconds": 0.0001793749979697168
+  },
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "support": {
+    "carrierBalanceGap": "H-4D=4",
+    "firstTermInCertifiedTail": "n=10 (nine U interactions)",
+    "ninthOrderTargetProjection": "zero"
+  },
+  "theorem": {
+    "certifiedRatio": "tail(n>=10)/quadratic < (1/30000)*(43/64)^r",
+    "dysonParameter": "Theta_m(t_H)<=kappa*epsilon/L, kappa=(1+sqrt(2))/4",
+    "periodicTarget": "L=1, M_r=16^r, m_r=(2*M_r+13)/15, epsilon_r^2=(16/lambda)^r",
+    "quadraticLowerBound": "|A^2 Ghat_2(0,m,t_H)|>A^2*exp(-m^2*t_H)*4*m*L/(25*H^2)",
+    "remainingFiniteObstruction": "the complete eighth-order target term",
+    "sectorTail": "|sum_{n>=10} A^n Ghat_n(0,m,t_H)| <=A*sqrt(L)*exp(-m^2*t_H)*exp(Theta)*Theta^9/9!"
+  }
+}

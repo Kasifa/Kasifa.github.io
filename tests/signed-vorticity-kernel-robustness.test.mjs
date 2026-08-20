@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -10,6 +11,10 @@ const noteUrl = new URL(
 );
 const auditUrl = new URL(
   "../research/signed_vorticity_kernel_robustness_audit.py",
+  import.meta.url,
+);
+const certificateRoot = new URL(
+  "../research/certificates/r069g/",
   import.meta.url,
 );
 
@@ -50,4 +55,36 @@ test("reproduces the R0.69G symbolic Fourier and angular audit", () => {
   assert.equal(payload.angularAudit.magnitudeBiasScenarios.length, 4);
   assert.match(payload.decision.closedBranch, /direction-only/i);
   assert.match(payload.decision.nextBranch, /pressure-Hessian/i);
+});
+
+test("archives the source-locked R0.69G certificate", async () => {
+  const [certificateText, readme, sumsText] = await Promise.all([
+    readFile(
+      new URL("signed-vorticity-kernel-robustness.json", certificateRoot),
+      "utf8",
+    ),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 14);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "ae328c0b02905bf48d12468ea11bbd27e3664959",
+  );
+  assert.match(readme, /14 checks, all passed/);
+  assert.match(readme, /arbitrary nonnegative magnitude weights/i);
+  assert.match(readme, /does not[\s\S]*solve the Millennium problem/i);
+
+  const records = sumsText.trim().split("\n");
+  assert.equal(records.length, 3);
+  for (const record of records) {
+    const match = record.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "malformed SHA256SUMS line: " + record);
+    const payload = await readFile(new URL(match[2], certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, match[1], match[2] + " hash mismatch");
+  }
 });

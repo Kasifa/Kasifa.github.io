@@ -1,0 +1,115 @@
+{
+  "angularAudit": {
+    "absoluteMean": "0.14151917577262815",
+    "exactAbsoluteMean": "0.14151413174496874",
+    "exactSupremum": "0.33343481750184895",
+    "finiteSelectorKernel": [
+      -0.91,
+      -0.2,
+      0.0,
+      0.34,
+      0.87
+    ],
+    "finiteSelectorSupremum": 0.91,
+    "magnitudeBiasScenarios": [
+      {
+        "eta": 0.0,
+        "expectedWeightedMean": "0",
+        "matches": true,
+        "observedWeightedMean": "-1.9875988646818756e-34"
+      },
+      {
+        "eta": 0.25,
+        "expectedWeightedMean": "0.035378532936242185",
+        "matches": true,
+        "observedWeightedMean": "0.035379793943157031"
+      },
+      {
+        "eta": 0.5,
+        "expectedWeightedMean": "0.07075706587248437",
+        "matches": true,
+        "observedWeightedMean": "0.070759587886314076"
+      },
+      {
+        "eta": 0.9,
+        "expectedWeightedMean": "0.12736271857047188",
+        "matches": true,
+        "observedWeightedMean": "0.12736725819536535"
+      }
+    ],
+    "sampledSupremum": "0.33339893667045589",
+    "tiltRadians": 0.73,
+    "uniformSignedMean": "-1.9875988646818756e-34"
+  },
+  "checks": {
+    "absoluteAngularMeanMatchesClosedForm": true,
+    "allMagnitudeBiasesMatchClosedForm": true,
+    "antisymmetricTraceTermVanishes": true,
+    "butterflyIsDivergenceFree": true,
+    "constantDirectionKernelVanishes": true,
+    "exampleHasNonzeroSignedStretching": true,
+    "finitePositiveSelectorRecoversInfinityNorm": true,
+    "hessianContractionEqualsGeometricKernel": true,
+    "periodicGreenMultiplierMatchesDirectStrain": true,
+    "physicalStretchingDensityIsReal": true,
+    "sampledSupremumApproachesExactHalfSine": true,
+    "trapezoidalStretchingMatchesExactFourierAverage": true,
+    "twoLobeModelKernelIsExact": true,
+    "uniformAngularAverageCancels": true
+  },
+  "classification": "rigorous structural no-go for direction-only signed annular averaging; not a Navier-Stokes regularity theorem",
+  "decision": {
+    "closedBranch": "direction-only signed annular averaging",
+    "nextBranch": "pressure-Hessian signed compensation",
+    "reason": "nonnegative vorticity magnitude can select a sign lobe and recover the full L-infinity size of the angular kernel"
+  },
+  "formulas": {
+    "localGeometricKernel": "D(e1,e2,e3)=(e1 dot e3)(e1 dot (e2 cross e3))",
+    "periodicStretching": "alpha=xi_i xi_l epsilon_ijk PV integral partial_lj G(z) omega_k(x+z) dz",
+    "robustnessDuality": "sup_{g>=0, integral g=1}|integral K g|=||K||_infinity",
+    "twoLobeModel": "D=-sin(phi) e_y e_z"
+  },
+  "literatureBoundary": {
+    "publishedInputs": [
+      "Constantin-Fefferman 1993 vorticity direction criterion",
+      "Beirao da Veiga-Berselli 2002 half-Holder coherence",
+      "Grujic 2009 space-time localization"
+    ],
+    "unvalidatedPreprints": [
+      "arXiv:2606.27560",
+      "arXiv:2607.08866"
+    ]
+  },
+  "periodicFourierAudit": {
+    "divergenceResidual": "0",
+    "expectedStretchingAverage": "-4.2000000000000002",
+    "gridSize": 16,
+    "imaginaryStretchingResidual": "0",
+    "modeCount": 10,
+    "multiplierResidual": "0",
+    "stretchingAverage": "-4.2000000000000002"
+  },
+  "provenance": {
+    "numpy": "2.5.2",
+    "python": "3.12.13",
+    "sourceCommit": "ae328c0b02905bf48d12468ea11bbd27e3664959",
+    "sourceFiles": {
+      "research/signed_vorticity_kernel_robustness_audit.py": "c01d2884f8d5056125b5562ab1e8cffbbe558d506c49299e4b1b9a158b4f69c1",
+      "research/signed_vorticity_kernel_robustness_note.md": "9afa38d9b830638c0dd3dd751c6dbd10456dc94b3b7d70829c9cc91888536859"
+    },
+    "sympy": "1.14.0"
+  },
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "study": "R0.69G",
+  "theorem": {
+    "doesNotEliminate": [
+      "magnitude-direction coupled criteria",
+      "divergence-free realizability constraints",
+      "filtered commutator estimates",
+      "pressure-Hessian compensation"
+    ],
+    "robustnessIdentity": "sup_{g>=0, integral_A g=1}|integral_A K g|=||K||_L_infinity(A)",
+    "scope": "eliminates only estimates that use direction-dependent sign cancellation uniformly over arbitrary nonnegative magnitude weights"
+  }
+}

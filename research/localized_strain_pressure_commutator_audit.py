@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import sympy as sp
@@ -150,7 +152,11 @@ def choose_active_mode(field: Field, excluded: set[Mode] | None = None) -> Mode:
     return min(candidates, key=lambda mode: (sum(abs(entry) for entry in mode), mode))
 
 
-def audit() -> dict[str, object]:
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def audit(source_commit: str | None = None) -> dict[str, object]:
     velocity = build_velocity()
     gradient = [[derivative(velocity[row], column) for column in range(3)] for row in range(3)]
     divergence = trace(gradient)
@@ -253,6 +259,20 @@ def audit() -> dict[str, object]:
         "allLocalizedTermsHaveScalingDegreeThree": set(scaling_terms.values()) == {3},
         "weightUsesTwoNonconstantModes": pressure_mode != ZERO and betchov_mode != ZERO,
     }
+    if source_commit is not None:
+        head_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        checks["sourceCommitHasFortyHexCharacters"] = (
+            len(source_commit) == 40 and all(character in "0123456789abcdef" for character in source_commit)
+        )
+        checks["sourceCommitMatchesHead"] = source_commit == head_commit
+
+    script_path = Path(__file__).resolve()
+    note_path = script_path.with_name("localized_strain_pressure_commutator_note.md")
 
     return {
         "schemaVersion": "1.0",
@@ -282,6 +302,13 @@ def audit() -> dict[str, object]:
             "pressureSourceModes": len(q),
             "pressureHessianModes": sum(len(hessian[row][column]) for row in range(3) for column in range(3)),
         },
+        "provenance": {
+            "sourceCommit": source_commit,
+            "auditScript": str(script_path.relative_to(script_path.parents[1])),
+            "auditScriptSha256": sha256(script_path),
+            "researchNote": str(note_path.relative_to(note_path.parents[1])),
+            "researchNoteSha256": sha256(note_path),
+        },
         "checks": checks,
     }
 
@@ -289,8 +316,9 @@ def audit() -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--source-commit")
     args = parser.parse_args()
-    result = audit()
+    result = audit(args.source_commit)
     rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

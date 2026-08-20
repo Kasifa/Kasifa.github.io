@@ -63,12 +63,13 @@ by \(1+2^{-88}\).  Subtractions used as resolvent denominators receive an
 explicit downward error allowance.  The residual absolute bound and the
 degree-one squared norm are also inflated before division.
 
-The pre-lock corrected pilot reached raw degree ten with maximum radius about
-\(7.92\times10^{-22}\), and centering enlarged the maximum to about
-\(1.89\times10^{-20}\).  These figures justify the route but are not the
-archived certificate.  A source-locked formal run must report every degree,
-bind the generated sparse payload by SHA-256, validate finiteness and
-nonnegative radii, and hash the four binary128 output arrays.
+The source-locked formal run enclosed all \(14{,}350{,}336\) raw coordinates.
+Its degree-ten raw maximum radius is at most
+\(7.91179658125257438\times10^{-22}\), and centering enlarges the maximum to
+at most \(1.88584884046089302\times10^{-20}\).  The run bound its 410-file
+sparse payload by SHA-256, validated finiteness and nonnegative radii, and
+hashed the four binary128 output arrays.  An independent streaming scan then
+rechecked every stored value.
 
 ## Boundary
 

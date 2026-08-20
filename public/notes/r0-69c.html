@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69C：真正三维的横向伸长通过 Leray 投影后仍形成非正规边带，但完整线性化传播子在临界路径空间中以几何速度趋向自由热流。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69C｜横向边带与临界线性稳定性">
+  <meta property="og:description" content="精确边带矩阵、热分母与完整 Neumann 级数共同排除深数据包的线性临界失稳路线；阶一非线性仍然开放。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69c-transverse-linear.png">
+  <title>R0.69C｜横向边带与临界线性稳定性</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.62">
+  <style>.hero h1{font-size:clamp(2.35rem,5vw,4.1rem)}</style>
+  <script defer src="/i18n-en.js?v=0.62"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#fourier">模系统</a><a href="#matrix">边带矩阵</a><a href="#heat">热分母</a><a href="#propagator">传播子</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69C · 三维横向边带的线性关口</div>
+        <h1>伸长项仍然存在，<br>临界线性增益却趋于零</h1>
+        <p class="lead">固定非零竖直频率的 Fourier 平面是完整线性化方程的精确不变边带。横向伸长通过 Leray 投影后形成真正的非正规矩阵，但一个载波支付精确的 \(1/(2R^2)\) 热分母；把全部载波和全部重复相互作用恢复以后，线性化传播子与自由热流的临界算子差仍只有 \(O(\rho^r)\)。这关闭了当前数据包的线性失稳路线，把下一关压缩到阶一扰动自身的非线性。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69C 完成</span><strong>横向线性失稳门关闭</strong><p>版本 v0.69C · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>精确热分母：\(2R^2\)</p><p>下一关：阶一非线性比较</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#fourier">01 · 精确模系统</a></li>
+        <li><a href="#matrix">02 · 非正规矩阵</a></li>
+        <li><a href="#heat">03 · 热分母</a></li>
+        <li><a href="#propagator">04 · 完整传播子</a></li>
+        <li><a href="#meaning">05 · 判定意义</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 下一关</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified result</div><h2>完整线性化传播子在临界算子范数中趋向自由热流</h2>
+          <p>记 \(E_{\rm per}=BMO^{-1}_{\rm per}\)，\(X_{\rm per}\) 为周期 Koch–Tataru 路径空间，并固定标准热映射与双线性估计中的常数 \(C_H,C_B&gt;0\)。R0.69B 已证明</p>
+          <div class="equation">\[
+            \delta_r:=\|U_r(0)\|_{E_{\rm per}}
+            \le C_0\rho^r,\qquad
+            C_0=6+4\sqrt2,\qquad \rho&lt;0.797586.
+          \]</div>
+          <p>若 \(\kappa_r:=4C_BC_HC_0\rho^r&lt;1\)，则对任意无散 \(w_0\in E_{\rm per}\)，完整线性化方程有唯一全局路径空间解，并满足</p>
+          <div class="equation result">\[
+            \boxed{
+            \|w\|_{X_{\rm per}}
+            \le\frac{C_H}{1-\kappa_r}\|w_0\|_{E_{\rm per}},\qquad
+            \|w-e^{t\Delta}w_0\|_{X_{\rm per}}
+            \le\frac{C_H\kappa_r}{1-\kappa_r}\|w_0\|_{E_{\rm per}}.}
+          \]</div>
+          <p>这里允许 \(\|w_0\|_{E_{\rm per}}\) 为常数量级；需要小的是基流，而不是线性算子作用的向量。因此所有重复线性化相互作用的总和都无法产生随 \(r\) 增长的临界放大。</p>
+          <div class="grid">
+            <div class="status"><span>EXACT · SIDEBAND</span><strong>\(k_3=s\ne0\) 不变</strong><p>基流所有 Fourier 模都满足第三频率为零。</p></div>
+            <div class="status"><span>EXACT · SYMBOL</span><strong>伸长项非零</strong><p>Leray 投影没有抹去横向非正规耦合。</p></div>
+            <div class="status"><span>CERTIFIED · RESOLVENT</span><strong>算子差 \(O(\rho^r)\)</strong><p>Neumann 级数包含全部线性化相互作用。</p></div>
+            <div class="status"><span>OPEN · NONLINEAR</span><strong>\(\mathcal B(w,w)\) 未控制</strong><p>阶一扰动不属于线性稳定性结论。</p></div>
+          </div>
+        </section>
+
+        <section id="fourier"><div class="section-no">01 / Exact Fourier system</div><h2>每个非零竖直频率平面都是完整线性化方程的不变子空间</h2>
+          <p>对 \(P_k=I-k\otimes k/|k|^2\)，线性化方程的 Fourier 系数精确满足</p>
+          <div class="equation result">\[
+            \boxed{
+            \partial_t\widehat w(k)+|k|^2\widehat w(k)
+            =-iP_k\sum_{\ell}
+            \left[
+            (\widehat U(\ell)\cdot(k-\ell))\widehat w(k-\ell)
+            +(\widehat w(k-\ell)\cdot\ell)\widehat U(\ell)
+            \right].}
+          \]</div>
+          <p>R0.69A 基流只含 \(\ell_3=0\) 的模式，所以卷积保持 \(k_3\)。选择任意固定 \(s\ne0\)，平面 \(\{k:k_3=s\}\) 就是一个真正三维且精确封闭的横向边带。这不是 Galerkin 截断，也不是近似守恒。</p>
+        </section>
+
+        <section id="matrix"><div class="section-no">02 / Non-normal symbol</div><h2>压力没有消掉伸长，但精确矩阵不超过目标导数尺度</h2>
+          <p>取一个剪切载波、一个横向种子及其目标频率</p>
+          <div class="equation">\[
+            p=(R,0,0),\qquad q=(-R,m,s),\qquad
+            k=p+q=(0,m,s).
+          \]</div>
+          <p>令 \(d=\sqrt{m^2+s^2}\)、\(Q=\sqrt{R^2+d^2}\)。在精确无散输入基与输出基中，基础输运加横向伸长的完整 Fourier–Leray 符号是</p>
+          <div class="equation result">\[
+            \boxed{
+            [\mathscr T_{R,m,s}]
+            =\begin{pmatrix}
+            md/Q&amp;0\\
+            -Rs/Q&amp;m
+            \end{pmatrix}.}
+          \]</div>
+          <p>当 \(s\ne0\) 时，非对角元 \(-Rs/Q\) 非零，所以这确实是横向非正规伸长，而不是对称类中的假耦合。不过</p>
+          <div class="equation">\[
+            d^2I-T^*T=
+            \begin{pmatrix}
+            (R^2m^2+d^2s^2)/Q^2&amp;Rsm/Q\\
+            Rsm/Q&amp;s^2
+            \end{pmatrix},
+            \qquad
+            \det(d^2I-T^*T)=\frac{d^2s^4}{Q^2}\ge0.
+          \]</div>
+          <p>两个主子式均非负，因此</p>
+          <div class="equation result">\[
+            \boxed{\|\mathscr T_{R,m,s}\|_{\ell^2\to\ell^2}\le d=|k|.}
+          \]</div>
+          <p>结论很具体：非正规性存在，但它没有制造超过目标 Fourier 导数尺度的额外因子。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">03 / Exact heat denominator</div><h2>单个载波的临界增益至多为 \(|A|/(2R)\)</h2>
+          <p>若载波和种子的初始系数分别为 \(Ae_2\) 与 \(B\beta\)，第一次线性化 Duhamel 响应为</p>
+          <div class="equation">\[
+            \widehat D^{(1)}(k,t)
+            =-iABe^{-d^2t}
+            \frac{1-e^{-2R^2t}}{2R^2}
+            \mathscr T_{R,m,s}\beta.
+          \]</div>
+          <p>分母来自无近似恒等式</p>
+          <div class="equation">\[
+            |p|^2+|q|^2-|k|^2
+            =R^2+(R^2+d^2)-d^2=2R^2.
+          \]</div>
+          <p>以单模临界代理 \(|\widehat f(\xi)|/|\xi|\) 测量输入与输出，并对所有时间取上确界，得到对任意横向频率 \(s\) 一致的界</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\sup_t|\widehat D^{(1)}(k,t)|/|k|}
+            {|B|/|q|}
+            \le\frac{|A|Q}{d^2+2R^2}
+            \le\frac{|A|}{2R}.}
+          \]</div>
+          <p>最后一步等价于 \((d^2+2R^2)^2-4R^2Q^2=d^4\ge0\)。对 R0.69A 载波 \(A_r=\varepsilon_r\sqrt{H_r}\)、\(R\ge H_r\)，单载波临界增益至多为 \(\varepsilon_r/(2\sqrt{H_r})\)，比完整数据包的临界尺度衰减得更快。</p>
+        </section>
+
+        <section id="propagator"><div class="section-no">04 / Complete propagator</div><h2>Neumann 级数把所有载波和所有重复相互作用一次性求和</h2>
+          <p>把线性化双线性算子写成</p>
+          <div class="equation">\[
+            K_rw=\mathcal B(U_r,w)+\mathcal B(w,U_r).
+          \]</div>
+          <p>标准 Koch–Tataru 估计与基流小数据界给出</p>
+          <div class="equation">\[
+            \|U_r\|_{X_{\rm per}}\le2C_HC_0\rho^r,\qquad
+            \|K_r\|_{X_{\rm per}\to X_{\rm per}}
+            \le4C_BC_HC_0\rho^r=\kappa_r.
+          \]</div>
+          <p>当 \(\kappa_r&lt;1\) 时，\(I-K_r\) 可逆，且</p>
+          <div class="equation">\[
+            w=(I-K_r)^{-1}e^{t\Delta}w_0,\qquad
+            \|(I-K_r)^{-1}-I\|\le\frac{\kappa_r}{1-\kappa_r}.
+          \]</div>
+          <p>这一步不是只算第一 Picard 项：逆算子的 Neumann 级数已经包含任意次数、任意载波次序的线性化相互作用。单载波计算解释机制；传播子估计关闭全部线性级联。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Decision</div><h2>大物理振幅没有转化成隐藏的线性临界不稳定性</h2>
+          <p>R0.69A 的单个 Fourier 系数随深度增长，容易让人猜测横向扰动会被巨大梯度线性放大。R0.69C 说明这种猜测在缩放临界拓扑中是错的：频率增长同时缩短了热时间，完整数据包又在 \(BMO^{-1}_{\rm per}\) 中几何变小，最终使线性化传播子趋向自由热流。</p>
+          <p>对千禧年问题的价值仍是严格筛选，而不是正面解答。它排除了当前明确数据包上的一整类线性非正规奇性机制；它没有说明任意阶一扰动会正则，也没有说明会失稳。</p>
+          <div class="proof"><strong>关闭的路线。</strong>&nbsp;不能再把“高频物理系数很大”或“伸长矩阵非正规”单独当作候选奇性证据。若增长没有在缩放临界路径范数中留下阶一效应，它就不足以触及标准延拓障碍。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>附图同时展示非正规符号上限与两种临界衰减尺度</h2>
+          <figure><img src="/figures/r0-69c-transverse-linear.svg" alt="R0.69C 横向非正规 Fourier–Leray 符号与临界线性增益包络"><figcaption>图 R0.69C。左图给出四种 \(m/R\) 下精确符号比 \(\|\mathscr T\|/|k|\)，伸长项非零但所有曲线不超过一；右图比较完整数据包临界上界与更快衰减的单载波增益上界。通用 Koch–Tataru 常数保持符号形式，没有被替换成数值阈值。线型和标记保证灰度打印可区分。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69c-transverse-linear.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69c-transverse-linear.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next nonlinear gate</div><h2>下一步比较 \(w_0+U_r(0)\) 与 \(w_0\) 的真正非线性解</h2>
+          <p>精确扰动方程仍含 \(\mathcal B(w,w)\)。当 \(\|w_0\|_{E_{\rm per}}\) 为阶一时，这一项不能由当前小参数吸收，所以 R0.69C 不能推出总解全局正则。</p>
+          <p>下一道可证伪问题是条件非线性稳定性：固定一个光滑阶一横向初值 \(w_0\)，在从 \(w_0\) 出发的参考解具有有限临界路径范数的任意时间区间上，比较从 \(w_0+U_r(0)\) 出发的解。目标是证明两者差以 \(O(\rho^r)\) 收敛，常数只依赖参考解在该区间的临界大小。</p>
+          <div class="proof"><strong>R0.69D 的判定。</strong>&nbsp;若条件比较界闭合，深不变数据包在参考解存在期间连非线性动力学也渐近无关；若失败，必须定位一个明确的阶一非线性共振或临界端点损失，而不能再归因于线性非正规瞬态。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>数学源、符号证书与期刊附图分别锁定</h2>
+          <p>数学源提交为 <code>55b89d43ca854e33c10e63f64974fc479f56ceaa</code>，形式证书提交为 <code>8715f4aab57361fef04a60ce2b144cada4291495</code>。审计脚本 SHA-256 为 <code>3a1acb517642f595f0db40038ae6d1c68cc3b00d20210d326ac203f40ead1135</code>。</p>
+          <p>形式证书 SHA-256 为 <code>e67e5ed445bd2ef413f283a0f4a47ca29c864bc5ec79d04afbce350eff0b009a</code>。SymPy 1.14.0 对边带几何、矩阵恒等式、半正定余量、热分母与临界比值完成 18 项精确检查，全部通过。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069c">查看 R0.69C 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/transverse_sideband_linear_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069c-transverse-linear/fig-r069c-transverse-linear">查看期刊附图包</a></p>
+          <p>主要分析输入：<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru（2001）</a> · <a href="https://arxiv.org/abs/math/0609781">Germain–Pavlović–Staffilani（2007）</a>。</p>
+          <p>声明边界：本页证明的是一个明确小临界基流族的完整线性化稳定性。它没有控制阶一扰动的自相互作用，没有证明大数据全局正则、范数膨胀或有限时奇性，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69C · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

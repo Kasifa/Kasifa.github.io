@@ -37,14 +37,14 @@ def sha256(path: Path) -> str:
 def directed_sqrt(value: mpq) -> tuple[mpfr, mpfr]:
     lower_context = gmpy2.context(precision=256, round=gmpy2.RoundDown)
     upper_context = gmpy2.context(precision=256, round=gmpy2.RoundUp)
-    with gmpy2.local_context(lower_context):
+    with gmpy2.context(lower_context):
         lower = gmpy2.sqrt(mpfr(value))
-    with gmpy2.local_context(upper_context):
+    with gmpy2.context(upper_context):
         upper = gmpy2.sqrt(mpfr(value))
     return lower, upper
 
 
-def decimal(value: mpfr, digits: int = 50) -> str:
+def decimal(value: mpfr, digits: int = 78) -> str:
     return f"{value:.{digits}g}"
 
 
@@ -76,11 +76,11 @@ def build_payload(source_commit: str) -> dict[str, object]:
     ratio_squared = mpq(16) / LAMBDA_LOWER
     rho_lower, rho_upper = directed_sqrt(ratio_squared)
     sqrt2_lower, sqrt2_upper = directed_sqrt(mpq(2))
-    with gmpy2.local_context(
+    with gmpy2.context(
         gmpy2.context(precision=256, round=gmpy2.RoundDown)
     ):
         k_lower = mpfr(6) + mpfr(4) * sqrt2_lower
-    with gmpy2.local_context(
+    with gmpy2.context(
         gmpy2.context(precision=256, round=gmpy2.RoundUp)
     ):
         k_upper = mpfr(6) + mpfr(4) * sqrt2_upper
@@ -246,4 +246,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -19,8 +19,8 @@ The output is still exploratory:
 * dominant moments and heat coefficients use binary64 arithmetic;
 * the observable defect is aggregated exactly at the combinatorial level,
   but its coefficients come from the binary64 moment lift;
-* the eleventh-derivative majorant is complete only for the six pure
-  multiindices, not for all 4,368 mixed multiindices.
+* the eleventh-derivative majorant covers all 4,368 multiindices, but is
+  evaluated in binary64 rather than outward-rounded interval arithmetic.
 
 It is therefore not a sign theorem and not a Navier--Stokes regularity result.
 """
@@ -652,6 +652,177 @@ def pure_derivative_majorants(
     }
 
 
+def truncated_poly_multiply(
+    left: Poly, right: Poly, maximum_degree: int
+) -> Poly:
+    output: collections.defaultdict[tuple[int, ...], float] = (
+        collections.defaultdict(float)
+    )
+    for left_alpha, left_value in left.items():
+        left_degree = sum(left_alpha)
+        for right_alpha, right_value in right.items():
+            if left_degree + sum(right_alpha) > maximum_degree:
+                continue
+            output[
+                tuple(
+                    left_alpha[index] + right_alpha[index]
+                    for index in range(VARIABLES)
+                )
+            ] += left_value * right_value
+    return dict(output)
+
+
+def all_derivative_majorants(
+    derivative_order: int,
+    time_value: float,
+    report_progress: bool,
+    started: float,
+) -> tuple[dict[tuple[int, ...], float], dict[str, object]]:
+    """Bound all mixed derivatives after eliminating the simplex variables.
+
+    If F_j(z) is the positive Hermite majorant contributed by the j-th heat
+    rate, exact simplex integration gives
+
+        sum_k T^(k+7)/(k+7)! h_k(F_1,...,F_7).
+
+    Thus no thirteen-variable space-time polynomial is required.
+    """
+    zero = (0,) * VARIABLES
+    total: collections.defaultdict[tuple[int, ...], float] = (
+        collections.defaultdict(float)
+    )
+    records = []
+    wordwise_maxima = []
+    expected_count = math.comb(derivative_order + VARIABLES - 1, VARIABLES - 1)
+    for word_index, word in enumerate(jet.shuffle_words()):
+        rates = rate_polynomials(word)
+        rate_majorants: list[Poly] = []
+        for rate in rates:
+            first = [
+                poly_cube_supremum(poly_derivative(rate, coordinate))
+                for coordinate in range(VARIABLES)
+            ]
+            second = [
+                [
+                    poly_cube_supremum(
+                        poly_derivative(
+                            poly_derivative(rate, left_coordinate),
+                            right_coordinate,
+                        )
+                    )
+                    for right_coordinate in range(VARIABLES)
+                ]
+                for left_coordinate in range(VARIABLES)
+            ]
+            majorant: Poly = {}
+            for coordinate, value in enumerate(first):
+                if value:
+                    alpha = [0] * VARIABLES
+                    alpha[coordinate] = 1
+                    majorant[tuple(alpha)] = value
+            for left_coordinate in range(VARIABLES):
+                for right_coordinate in range(left_coordinate, VARIABLES):
+                    value = second[left_coordinate][right_coordinate]
+                    if not value:
+                        continue
+                    alpha = [0] * VARIABLES
+                    alpha[left_coordinate] += 1
+                    alpha[right_coordinate] += 1
+                    majorant[tuple(alpha)] = value * (
+                        0.5 if left_coordinate == right_coordinate else 1.0
+                    )
+            rate_majorants.append(majorant)
+
+        homogeneous: list[Poly] = [
+            {} for _ in range(derivative_order + 1)
+        ]
+        homogeneous[0] = {zero: 1.0}
+        for majorant in rate_majorants:
+            updated: list[Poly] = [
+                {} for _ in range(derivative_order + 1)
+            ]
+            updated[0] = homogeneous[0]
+            for order in range(1, derivative_order + 1):
+                updated[order] = poly_add(
+                    homogeneous[order],
+                    truncated_poly_multiply(
+                        majorant, updated[order - 1], derivative_order
+                    ),
+                )
+            homogeneous = updated
+
+        word_values: collections.defaultdict[tuple[int, ...], float] = (
+            collections.defaultdict(float)
+        )
+        for order, value in enumerate(homogeneous):
+            scalar = time_value ** (order + 7) / math.factorial(order + 7)
+            for alpha, coefficient in value.items():
+                if sum(alpha) != derivative_order:
+                    continue
+                word_values[alpha] += (
+                    scalar
+                    * coefficient
+                    * math.prod(math.factorial(exponent) for exponent in alpha)
+                )
+        if len(word_values) != expected_count:
+            raise AssertionError(
+                f"shuffle {word_index + 1} has {len(word_values)} derivative "
+                f"channels rather than {expected_count}"
+            )
+        for alpha, value in word_values.items():
+            total[alpha] += value
+        maximum_alpha = max(word_values, key=word_values.get)
+        maximum = word_values[maximum_alpha]
+        wordwise_maxima.append(maximum)
+        records.append(
+            {
+                "word": list(word),
+                "maximum": maximum,
+                "maximumMultiindex": list(maximum_alpha),
+                "multiindexCount": len(word_values),
+            }
+        )
+        progress(
+            report_progress,
+            started,
+            "all derivative majorants",
+            shuffle=f"{word_index + 1}/{len(jet.shuffle_words())}",
+            multiindices=len(word_values),
+            maximum=f"{maximum:.12e}",
+        )
+
+    maximum_alpha = max(total, key=total.get)
+    pure = [
+        total[
+            tuple(
+                derivative_order if coordinate == selected else 0
+                for coordinate in range(VARIABLES)
+            )
+        ]
+        for selected in range(VARIABLES)
+    ]
+    return dict(total), {
+        "derivativeOrder": derivative_order,
+        "multiindexCount": len(total),
+        "allMultiindexBounds": [
+            {"multiindex": list(alpha), "upper": total[alpha]}
+            for alpha in sorted(total)
+        ],
+        "maximumBound": total[maximum_alpha],
+        "maximumMultiindex": list(maximum_alpha),
+        "pureMultiindexBounds": pure,
+        "sumOfWordwiseMaxima": sum(wordwise_maxima),
+        "perShuffle": records,
+        "scope": "all pure and mixed derivative multiindices",
+        "method": (
+            "Form the positive quadratic Hermite majorants F_j(z), eliminate "
+            "the seven simplex variables exactly through complete homogeneous "
+            "polynomials h_k(F_1,...,F_7), and retain every spatial multiindex "
+            "of total degree eleven."
+        ),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
@@ -737,8 +908,8 @@ def main() -> None:
         started,
     )
 
-    progress(arguments.progress, started, "bounding pure next derivatives")
-    pure_bounds, derivative_metadata = pure_derivative_majorants(
+    progress(arguments.progress, started, "bounding all next derivatives")
+    derivative_bounds, derivative_metadata = all_derivative_majorants(
         arguments.max_degree + 1,
         time_value,
         arguments.progress,
@@ -757,12 +928,12 @@ def main() -> None:
         / (1 - resolvent_ratio)
     )
     required_derivative = abs(heat_jet) / resolvent_observable
-    pure_correction = (
-        resolvent_observable * derivative_metadata["maximumPureBound"]
+    derivative_correction = (
+        resolvent_observable * derivative_metadata["maximumBound"]
     )
-    wordwise_pure_correction = (
+    wordwise_derivative_correction = (
         resolvent_observable
-        * derivative_metadata["sumOfWordwisePureMaxima"]
+        * derivative_metadata["sumOfWordwiseMaxima"]
     )
 
     full_run = (
@@ -789,11 +960,20 @@ def main() -> None:
         "degreeTenHeatJetAgreesWithDegreeEightPilot": (
             not full_run or abs(heat_jet + 1.4923824320396173e-8) < 3.0e-18
         ),
-        "pureDerivativeBoundIsBelowRequiredThreshold": (
-            derivative_metadata["maximumPureBound"] < required_derivative
+        "allDerivativeMultiindicesArePresent": (
+            len(derivative_bounds)
+            == math.comb(arguments.max_degree + VARIABLES, VARIABLES - 1)
         ),
-        "wordwisePureMaximumSumIsBelowRequiredThreshold": (
-            derivative_metadata["sumOfWordwisePureMaxima"] < required_derivative
+        "allDerivativeBoundIsBelowRequiredThreshold": (
+            derivative_metadata["maximumBound"] < required_derivative
+        ),
+        "wordwiseMaximumSumIsBelowRequiredThreshold": (
+            derivative_metadata["sumOfWordwiseMaxima"] < required_derivative
+        ),
+        "worstDerivativeIsPureFourthCoordinate": (
+            not full_run
+            or derivative_metadata["maximumMultiindex"]
+            == [0, 0, 0, 11, 0, 0]
         ),
     }
     if not all(checks.values()):
@@ -803,9 +983,9 @@ def main() -> None:
         "schemaVersion": "1.0",
         "status": "exploratory-passed",
         "classification": (
-            "binary64 degree-ten shift-defect and pure-eleventh-derivative "
-            "pilot for the dominant eighth-order heat projection; all mixed "
-            "eleventh derivatives remain uncertified"
+            "binary64 degree-ten shift-defect and complete all-multiindex "
+            "eleventh-derivative pilot for the dominant eighth-order heat "
+            "projection; outward-rounded certification remains open"
         ),
         "checks": {key: bool(value) for key, value in checks.items()},
         "parameters": {
@@ -844,19 +1024,18 @@ def main() -> None:
             "ratioToDominantRoot": resolvent_ratio,
             "observableUpper": resolvent_observable,
         },
-        "pureDerivativeMajorants": derivative_metadata,
+        "derivativeMajorants": derivative_metadata,
         "gapDiagnostics": {
             "requiredGlobalDerivativeUpper": required_derivative,
-            "pureCorrectionUpper": pure_correction,
-            "wordwisePureMaximumCorrectionUpper": wordwise_pure_correction,
+            "allDerivativeCorrectionUpper": derivative_correction,
+            "wordwiseMaximumCorrectionUpper": wordwise_derivative_correction,
             "heatJetMagnitude": abs(heat_jet),
         },
         "limitations": [
             "The moment lift and heat coefficients use binary64 arithmetic.",
             "The observable defect is not yet enclosed by outward-rounded interval arithmetic.",
-            "Only the six pure eleventh derivatives are bounded completely.",
-            "All 4,368 mixed eleventh-derivative multiindices remain to be certified or dominated analytically.",
-            "No strict sign theorem is claimed.",
+            "All 4,368 derivative multiindices are present, but their binary64 bounds are not outward-rounded.",
+            "No strict sign theorem is claimed until moment, defect, and derivative guards are certified.",
             "No claim is made about all Picard orders or general 3D Navier-Stokes regularity.",
         ],
         "provenance": {"sourceCommit": arguments.source_commit},

@@ -20,7 +20,7 @@ function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
 }
 
-test("states the degree-ten defect improvement and its open mixed-derivative gate", async () => {
+test("states the degree-ten defect improvement and complete mixed-derivative scan", async () => {
   const [note, audit] = await Promise.all([
     readFile(noteUrl, "utf8"),
     readFile(auditUrl, "utf8"),
@@ -35,7 +35,8 @@ test("states the degree-ten defect improvement and its open mixed-derivative gat
   assert.match(note, /not yet a theorem/i);
   assert.match(note, /does not solve the Navier--Stokes Millennium problem/i);
   assert.match(audit, /fourteen-component/);
-  assert.match(audit, /mixed[\s\S]*derivatives remain uncertified/);
+  assert.match(audit, /all 4,368 multiindices/);
+  assert.match(note, /max_\{\|\\alpha\|=11\}/);
 });
 
 test("locks the monitored degree-ten defect pilot archive", async () => {

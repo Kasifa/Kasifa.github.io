@@ -9,9 +9,9 @@ compression of the six-dimensional affine shifts.
 
 The new calculation is promising but is **not yet a theorem**.  It proves an
 exact carry-weight identity and an exact signature-reduction formula, then
-uses binary64 dominant moments inside that formula.  It also bounds all six
-pure eleventh derivatives, but it does not yet certify all \(4368\) mixed
-eleventh-derivative multiindices.
+uses binary64 dominant moments inside that formula.  A second audit now
+covers all \(4368\) pure and mixed eleventh-derivative multiindices; outward
+rounding is still missing.
 
 ## 2. Why the degree-eight remainder is not enough
 
@@ -146,7 +146,7 @@ Thus a global eleventh-derivative bound below
 
 would protect the negative heat-jet signal.
 
-## 6. Pure eleventh derivatives
+## 6. All eleventh derivatives
 
 For every shuffle and spatial coordinate I bounded the affine first
 derivative of each quadratic heat rate on all \(2^6\) cube vertices.  The
@@ -175,8 +175,33 @@ which is below the required \(3.1782124\times10^{-6}\) threshold.  Even the
 sum of the per-shuffle pure maxima is only
 \(2.8100085712\times10^{-6}\).
 
-Several mixed indices selected from the coarser majorant were also evaluated
-with the full seven-time polynomial:
+The seven simplex variables can in fact be eliminated before the spatial
+scan.  If
+
+\[
+ F_j(z)=L_j\cdot z+\frac12z^\mathsf TQ_jz,
+\]
+
+then exact simplex integration gives
+
+\[
+ \sum_{k=0}^{11}\frac{T^{k+7}}{(k+7)!}
+ h_k(F_1,\ldots,F_7).
+\]
+
+Expanding this six-variable polynomial through total degree eleven evaluates
+all \(4368\) multiindices for every one of the \(35\) shuffles.  The global
+maximum is still the pure fourth-coordinate derivative:
+
+\[
+ \boxed{
+ \max_{|\alpha|=11}\|\partial^\alpha K\|_\infty
+ =2.56632663673508\times10^{-6},
+ \qquad
+ \alpha=(0,0,0,11,0,0).}
+\]
+
+Representative mixed values are
 
 \[
 \begin{aligned}
@@ -186,21 +211,14 @@ with the full seven-time polynomial:
 \end{aligned}
 \]
 
-These checks support, but do not prove, that the pure fourth-coordinate
-derivative is globally worst.
+Thus the mixed-derivative gate is closed at the binary64 majorant level.
 
 ## 7. The remaining finite gate
 
-There are now two acceptable ways to finish R0.68B-2c:
-
-1. prove a domination lemma showing that every mixed eleventh Hermite
-   majorant is bounded by the per-shuffle pure maximum; or
-2. evaluate all \(4368\) mixed multiindices with an outward-rounded
-   seven-simplex polynomial audit.
-
-Only after that step, and after replacing the binary64 moment/defect values by
-guarded enclosures, can the degree-ten heat projection be stated with a strict
-sign.
+The remaining task is now narrower: replace the binary64 moment, defect and
+all-derivative values by outward-rounded guarded enclosures.  Only after those
+guards are independently checked can the degree-ten heat projection be
+stated with a strict sign.
 
 This calculation concerns one fixed eighth-order coefficient in a globally
 smooth parallel-shear invariant class.  It does not control general

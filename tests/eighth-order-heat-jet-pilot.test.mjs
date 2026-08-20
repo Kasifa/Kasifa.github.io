@@ -21,6 +21,10 @@ const archiveRoot = new URL(
   "../research/certificates/r068b2b-pilot/",
   import.meta.url,
 );
+const figureRoot = new URL(
+  "../figures/r068b2-eighth-order-heat/fig-r068b2-eighth-order-heat/",
+  import.meta.url,
+);
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -107,4 +111,30 @@ test("locks the monitored degree-eight pilot archive", async () => {
   ]) {
     assert.equal(sha256(buffer), expected.get(name));
   }
+});
+
+test("archives a mixed-evidence journal figure with an explicit boundary", async () => {
+  const python = process.env.CODEX_PYTHON || "python3";
+  const validator = new URL("../research/validate_figure_package.py", import.meta.url);
+  const { stdout } = await execFileAsync(
+    python,
+    [validator.pathname, figureRoot.pathname],
+    { cwd: repository },
+  );
+  const validation = JSON.parse(stdout);
+  assert.deepEqual(validation.errors, []);
+  assert.deepEqual(validation.warnings, []);
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r068b2-eighth-order-heat");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.outputs.at(-1).dpi, 600);
+  assert.equal(manifest.figure.outputs.at(-1).pixels, "4204 by 2480");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.match(manifest.supportedClaim, /strictly positive/);
+  assert.match(manifest.supportedClaim, /binary64 signal/);
+  assert.match(manifest.claimBoundary, /exploratory/);
+  assert.match(manifest.claimBoundary, /ninth derivative/);
 });

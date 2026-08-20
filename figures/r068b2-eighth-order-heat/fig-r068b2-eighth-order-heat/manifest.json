@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r068b2-eighth-order-heat",
+  "status": "formal",
+  "createdAt": "2026-08-21T01:10:00+08:00",
+  "analyticalQuestion": "What is already rigorous, and what numerical signal remains to be bounded, in the complete eighth-order heat projection?",
+  "supportedClaim": "The complete M=16 seven-simplex heat sum is strictly positive, while the full reachable degree-eight dominant heat jet is a stable negative binary64 signal near -1.4923824320e-8.",
+  "claimBoundary": "The first-cycle interval is exact. The degree-eight dominant pairing is exploratory until the zero-eight-jet defect resolvent and the global ninth derivative are bounded. No Navier-Stokes regularity claim is made.",
+  "git": {
+    "sourceCommit": "28b71fd450a1f806ffec6423dbf1e51c5a66dba1",
+    "certificateCommit": "32f6ba3353ebf9875b8d9a337ded05ae7b0934e1",
+    "dirtyAtCertifiedRun": false,
+    "oneCycleSourceCommit": "01cb3082bc9b51ea4430fa25f2b20c774f950e6b",
+    "oneCycleArchiveCommit": "ccd31ce7fc83bf0134b9f0bcdb47fa476af9bf61",
+    "jetPilotSourceCommit": "28b71fd450a1f806ffec6423dbf1e51c5a66dba1",
+    "jetPilotArchiveCommit": "32f6ba3353ebf9875b8d9a337ded05ae7b0934e1",
+    "repository": "Kasifa/Kasifa.github.io"
+  },
+  "sourceData": [
+    {
+      "fileName": "eighth-order-heat-one-cycle-audit.json",
+      "location": "research/certificates/r068b2a/eighth-order-heat-one-cycle-audit.json",
+      "bytes": 142433,
+      "sha256": "611ed4737a95836e7fd09e6f7f49f90c3b951d7952cb56aff4b95003e1955b3c",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "eighth-order-heat-jet-pilot.json",
+      "location": "research/certificates/r068b2b-pilot/eighth-order-heat-jet-pilot.json",
+      "bytes": 6530,
+      "sha256": "1001348ab6a7930ecf0b083f2cd135c3dbfaa62ffa991b5ccfdcc88e2ff226a2",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "state-compression.csv",
+      "bytes": 125,
+      "sha256": "1ae18f03fed35bb1316ea533911dc2344a71fab790497634fbde15959a03a9b8",
+      "format": "csv",
+      "schema": "exact suffix depth, retained states, and transitions"
+    },
+    {
+      "path": "jet-convergence.csv",
+      "bytes": 920,
+      "sha256": "fade213d520bfea0d4b6fb0944506ae765205bb76b87ac9adb80f4c3362a7153",
+      "format": "csv",
+      "schema": "binary64 cumulative heat pairing and increments by degree"
+    },
+    {
+      "path": "moment-residuals.csv",
+      "bytes": 347,
+      "sha256": "7774f75aceee27c629a183210e782da64dd5fde3b46d488b56f9eb5add785a22",
+      "format": "csv",
+      "schema": "channels, Neumann terms, and relative residual by degree"
+    },
+    {
+      "path": "certified-summary.csv",
+      "bytes": 394,
+      "sha256": "e0bc66569985f2f2f6dc74adbb914d3b4832bc2f775df096944426189fb0f84f",
+      "format": "csv",
+      "schema": "exact first-cycle interval and degree-eight pilot summary"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 651,
+      "sha256": "ab8807eb98e298522ea053ae9d126a63a30d153ece3895fab275061347477b3a",
+      "format": "json",
+      "schema": "pinned archive provenance"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "ef235dc59d173ec47179789d5655d11d707942f85711414de19cef267d13b592",
+      "format": "csv",
+      "schema": "deterministic extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "496666d3a7a0276f72aa73cc5deeb9eb54e722fdd854fef377b662755f99b345",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "data-analysis",
+    "configuration": "Exact M=16 seven-simplex audit plus six-variable degree-eight dominant heat-jet convergence analysis",
+    "precision": "Exact integer and rational first-cycle enclosure; binary64 affine moments and heat-jet pairing with two-order cross-check",
+    "solver": "Exact suffix-state dynamic program, SciPy sparse subset transfers, Neumann moment solves, and truncated heat Taylor algebra",
+    "command": "python3 prepare_data.py && python3 validate_data.py && python3 plot.py && python3 build_manifest.py",
+    "wallTimeSeconds": 38.13698866701452,
+    "oneCycle": {
+      "kind": "exact rational Taylor audit",
+      "configuration": "M=16, 7,823,536 labelled tuples, 35 shuffles, Taylor order 44",
+      "wallTimeSeconds": 19.169860291993245,
+      "peakRssMiB": 789.172
+    },
+    "jetPilot": {
+      "kind": "binary64 sparse affine-moment convergence pilot",
+      "configuration": "1,792 states, six variables, degree eight, 3,003 channels per state, 35 shuffles",
+      "wallTimeSeconds": 18.967128375021275,
+      "peakRssMiB": 695.875
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 18
+  },
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scipy": "1.18.0",
+    "matplotlib": "3.11.1",
+    "packagesLock": "research/requirements-r068b.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 31285,
+        "sha256": "6bd2a8bf7999e50b8dc9772b8e74d23bb0422f51bcadae327f496198ec9dcaa7"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 76375,
+        "sha256": "018180193ab895e5af963a6119624f9ce775831db6eb59f0a750cabe5c7d00e9"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 410217,
+        "sha256": "eb31394e15fb35c6cd379f39752db54923882e56a7da3d8c8b52e79cf35a0825",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "exact state compression, exact interval, and jet-degree convergence",
+    "takeaway": "the finite block is rigorously positive and the dominant degree-eight jet is stably negative but not yet certified",
+    "nonColorEncoding": "marker shapes, line styles, direct labels, zero lines, and explicit evidence labels",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The 600 dpi PNG, grayscale conversion, and Poppler-rendered PDF were inspected at final size; marker shapes and line styles preserve the distinctions without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

@@ -127,7 +127,8 @@ def draw() -> None:
         profile_axis.legend(loc="lower right", frameon=False, fontsize=3.35)
 
         witness_axis.set_title("(b) Total heat witness scales as $H^{-1}$", loc="left", pad=5)
-        for color, length in zip(colors, (1, 4, 16, 64)):
+        witness_lengths = (1, 4, 16, 64)
+        for index, (color, length) in enumerate(zip(colors, witness_lengths)):
             selected = [row for row in witnesses if int(row["L"]) == length]
             witness_axis.semilogx(
                 [int(row["M"]) for row in selected],
@@ -139,7 +140,7 @@ def draw() -> None:
                 markerfacecolor="white",
                 markeredgewidth=0.5,
                 linewidth=0.9,
-                label=rf"$L={length}$",
+                label=(r"$L=1,4,16,64$ (collapse)" if index == len(witness_lengths) - 1 else "_nolegend_"),
             )
         heat_lower = float(witnesses[0]["certifiedScaledHeatLower"])
         bmo_lower = float(witnesses[0]["certifiedScaledBmoLower"])
@@ -164,7 +165,14 @@ def draw() -> None:
         witness_axis.set_xlabel(r"number of coherent outputs $M$")
         witness_axis.set_ylabel(r"scaled output witness $H\,W$")
         witness_axis.grid(color=GRID, linewidth=0.32, which="both")
-        witness_axis.legend(loc="upper right", frameon=False, fontsize=3.05)
+        witness_axis.legend(
+            loc="upper right",
+            frameon=True,
+            facecolor="white",
+            edgecolor="none",
+            framealpha=0.88,
+            fontsize=3.05,
+        )
 
         flattening_axis.set_title("(c) Tensor phase flattening", loc="left", pad=5)
         phases = [int(row["totalPhases"]) for row in flattening]
@@ -191,21 +199,29 @@ def draw() -> None:
             label="all-positive phases",
         )
         flattening_axis.text(
-            0.05,
-            0.08,
+            0.95,
+            0.61,
             r"input: $O(\sqrt{LM})$" + "\n" + r"all $M$ matches: $c_{r,n}^2=1$",
             transform=flattening_axis.transAxes,
-            ha="left",
-            va="bottom",
+            ha="right",
+            va="center",
             fontsize=3.85,
             color=INK,
+            bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.84, "pad": 1.2},
         )
         flattening_axis.set_xlim(1, 2**20)
         flattening_axis.set_ylim(0.8, 2e3)
         flattening_axis.set_xlabel(r"number of high-frequency phases $LM$")
         flattening_axis.set_ylabel(r"spatial maximum divided by $\sqrt{LM}$")
         flattening_axis.grid(color=GRID, linewidth=0.32, which="both")
-        flattening_axis.legend(loc="upper left", frameon=False, fontsize=3.15)
+        flattening_axis.legend(
+            loc="upper left",
+            frameon=True,
+            facecolor="white",
+            edgecolor="none",
+            framealpha=0.88,
+            fontsize=3.15,
+        )
 
         figure.text(
             0.07,

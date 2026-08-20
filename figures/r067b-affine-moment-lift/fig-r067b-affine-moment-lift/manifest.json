@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r067b-affine-moment-lift",
+  "status": "formal",
+  "createdAt": "2026-08-20T21:10:00+08:00",
+  "analyticalQuestion": "Does lifting mass and all four free first moments isolate the sixth-order dominant root from the infinite-dimensional spatial remainder?",
+  "supportedClaim": "Exact arithmetic constructs a 1600-dimensional affine lift, verifies all four first moments directly through seven binary levels, and proves the strict hierarchy 26<256<300<mu. The complete heat-weighted five-simplex projection sign is not certified.",
+  "claimBoundary": "No complete heat projection, all-order Picard control, norm inflation, singularity, global regularity, or Millennium-problem claim.",
+  "git": {
+    "sourceCommit": "d0347369ae6ba564d4275d0cd720ba1cd4b91615",
+    "certificateCommit": "74d09579d5cf859dab79840528abaa43a1f56f1d",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "sixth-order-affine-moment-audit.json",
+      "location": "research/certificates/r067b/sixth-order-affine-moment-audit.json",
+      "bytes": 10254,
+      "sha256": "6ca1af103c763d7ed6fa6296765bba891c4c080bc596d6679a9539fb9e94e1e0",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "direct-levels.csv",
+      "bytes": 253,
+      "sha256": "0c5b1a8b889526febaf8691ac39821f02c57d69824cb9d7898fa1fa2290ff975",
+      "format": "csv",
+      "schema": "seven exact direct mass and first-moment checks"
+    },
+    {
+      "path": "spectral-scales.csv",
+      "bytes": 234,
+      "sha256": "733a515a7680f527add8d9901f12c884e0a10c5642616c77bde44d359bf05a49",
+      "format": "csv",
+      "schema": "four certified spectral and remainder scales"
+    },
+    {
+      "path": "lift-blocks.csv",
+      "bytes": 150,
+      "sha256": "8f79edfe51adbddc1a71fc145881281f1ac4f55c05176848afe88cad738e4377",
+      "format": "csv",
+      "schema": "nine nonzero blocks of the finite affine lift"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 666,
+      "sha256": "5ffb6729a5151f9f1ecd650de06f091a4156e642587084b5d488c140367a9555",
+      "format": "json",
+      "schema": "pinned certificate, commits, checks, and claim boundary"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "11855ca0ebd37b933545f822e7df8979986478de67e26c83034e587ae8b7e799",
+      "format": "csv",
+      "schema": "deterministic extraction resource record"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "fd85dccbae9a480f5cab1dbd18bb6bdbaeeebefe1d3538a720ab0bdcd3db4ef1",
+      "format": "csv",
+      "schema": "final rendering resource record"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit",
+    "configuration": "320 sign/carry states, four free first moments, seven direct binary levels",
+    "precision": "Python integers and Fractions for proof fields; binary64 only for plotted positions",
+    "solver": "exact digit moment transfer, direct five-polynomial convolution, and exact spectral enclosures",
+    "command": "python3 research/sixth_order_affine_moment_audit.py --max-direct-level 7 --progress --output research/certificates/r067b/sixth-order-affine-moment-audit.json",
+    "wallTimeSeconds": 2.04
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 35678,
+        "sha256": "9837d3bcb3f588b9330fbba3ec30231eefce98460ee47a886552abd937cf7a1c"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 103968,
+        "sha256": "60a2ad0ad5133f8fd9a3d63fc30a76f29fd011e39b5648963762cf84aecda04b"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 450481,
+        "sha256": "71ce37794114d532323771cd9479c1faba2c24666a0234005f05631e5fabc194",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "one direct-audit panel, one spectral-threshold panel, and one block-lift schematic",
+    "takeaway": "the exact affine lift leaves a 256-scale remainder strictly below mu",
+    "nonColorEncoding": "marker shapes, direct labels, block positions, and interval shading",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "pdfFontsEmbedded": true,
+    "notes": "Color PNG, true grayscale conversion, and Poppler-rendered PDF were inspected at final size; the heat-projection boundary remains legible."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

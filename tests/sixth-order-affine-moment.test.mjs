@@ -18,6 +18,10 @@ const auditUrl = new URL(
   import.meta.url,
 );
 const certificateRoot = new URL("../research/certificates/r067b/", import.meta.url);
+const figureRoot = new URL(
+  "../figures/r067b-affine-moment-lift/fig-r067b-affine-moment-lift/",
+  import.meta.url,
+);
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -106,4 +110,30 @@ test("locks the formal R0.67B certificate and monitored resources", async () => 
   assert.equal(sha256(stdoutBuffer), expected.get("sixth-order-affine-moment-audit.stdout.log"));
   assert.equal(sha256(stderrBuffer), expected.get("sixth-order-affine-moment-audit.stderr.log"));
   assert.equal(sha256(resourcesBuffer), expected.get("resources.csv"));
+});
+
+test("archives a formal journal figure for the R0.67B affine lift", async () => {
+  const python = process.env.CODEX_PYTHON || "python3";
+  const validator = new URL("../research/validate_figure_package.py", import.meta.url);
+  const { stdout } = await execFileAsync(
+    python,
+    [validator.pathname, figureRoot.pathname],
+    { cwd: repository },
+  );
+  const validation = JSON.parse(stdout);
+  assert.deepEqual(validation.errors, []);
+  assert.deepEqual(validation.warnings, []);
+
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r067b-affine-moment-lift");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.equal(manifest.figure.outputs.at(-1).dpi, 600);
+  assert.equal(manifest.figure.outputs.at(-1).pixels, "4204 by 2480");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.match(manifest.supportedClaim, /26<256<300<mu/);
+  assert.match(manifest.supportedClaim, /complete heat-weighted five-simplex projection sign is not certified/);
 });

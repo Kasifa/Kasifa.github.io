@@ -5,7 +5,7 @@
 For the fixed reachable dominant component of the 1,792-state eighth-order
 parallel-shear construction, the degree-ten heat jet remains strictly
 negative after the complete spatial Taylor defect and resolvent correction
-are added.  The source-unlocked guarded run gives
+are added.  The source-locked guarded run gives
 
 \[
  B_{10}\in
@@ -19,7 +19,7 @@ and a correction magnitude at most
  1.20506130214380835\times10^{-8}.
 \]
 
-Consequently the corrected interval is
+Consequently the source-locked corrected interval is
 
 \[
  \boxed{
@@ -65,7 +65,7 @@ The block contraction is exactly \(16^{-5}\).  Combining the leading
 observable term with the geometric weighted tail gives
 
 \[
- Z_{\mathrm{obs}}le0.004695666112388973.
+ Z_{\mathrm{obs}}\le0.004695666112388973.
 \]
 
 The previously certified all-multiindex derivative majorant is

@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.53"></script>
+  <script defer src="/i18n-en.js?v=0.54"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1051,6 +1051,7 @@
       .phase { padding: 68px 0 24px; }
       .phase::before { top: 20px; left: 0; }
       .task-one { padding: 24px 20px; }
+      .task-one mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; font-size: .66em !important; }
     }
     @media print {
       :root {
@@ -3900,7 +3901,7 @@
             <p>
               <strong>结论边界：</strong>这是未加权零时间相关的固定六阶定理。
               R0.67B 已完成质量与四个一次矩的提升和严格 resolvent；
-              R0.67C-1 已严格证明第一周期的完整热系数为正，但渐近主投影和全部偶数阶级数仍未证明。
+              R0.67C-1 已严格证明第一周期的完整热系数为正；R0.67C-2 进一步证明渐近主热投影严格为负，但全部偶数阶级数仍未控制。
             </p>
             <p>
               <a href="/notes/r0-67.html"><strong>阅读 R0.67A 研究笔记 →</strong></a><br>
@@ -3909,7 +3910,7 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_cycle_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067-sixth-order-cycle/fig-r067-sixth-order-cycle">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">R0.67B 已完成：</strong>质量与四个一次矩构成 1600 维精确块三角提升；零仿射余项的 \((C^{1,1})^*\) 尺度为 \(256&lt;\mu\)，严格 resolvent 已建立。R0.67C-1 进一步完成第一周期完整热核的严格校准。</p>
+            <p><strong style="color:var(--gold)">R0.67B 已完成：</strong>质量与四个一次矩构成 1600 维精确块三角提升；零仿射余项的 \((C^{1,1})^*\) 尺度为 \(256&lt;\mu\)，严格 resolvent 已建立。R0.67C-1 完成第一周期热核校准，R0.67C-2 已严格判定渐近主热投影为负。</p>
           </div>
 
           <div class="task-one" style="margin-top:2rem">
@@ -3986,7 +3987,53 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_one_cycle_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067c1-one-cycle-heat/fig-r067c1-one-cycle-heat">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.67C-2：</strong>计算规范五原子提升上的有限主谱项，以显式 \((\mu-256)^{-1}\) resolvent 预算控制无穷维修正，并严格判定 \(\rho_v(F_{2/15})\) 是否非零。</p>
+            <p><strong style="color:var(--gold)">R0.67C-2 已完成：</strong>六阶中心 jet 与全局七阶导数界把渐近主热投影压入严格负区间；第一周期正号与渐近负号共同给出有限尺度换号。</p>
+          </div>
+
+          <div class="task-one" id="r067c2" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.67C-2 · 2026-08-20</p>
+            <h3>完整六阶热核的渐近主投影严格为负</h3>
+            <p>
+              在四维载频立方体中心保留全部六次中心矩。每态共有
+              \({10\choose4}=210\) 个通道，320 态系统因此提升为
+              67,200 维三角 jet。质量主向量由精确 Chinese-remainder
+              投影隔离，六阶有限主项落在
+              \[
+                -9.70\times10^{-7}
+                &lt;B_6
+                &lt;-9.48\times10^{-7}.
+              \]
+            </p>
+            <p>
+              相同仿射位移上的符号路径先合并，再对缺陷取绝对值。
+              零六次 jet 的余项尺度精确降为 \(65536/16^7=1/4096\)。
+              十种时间次序的七阶偏导在五单形上逐项积分，完整原始上界
+              为 \(5.1612521669\times10^{-5}\)，证书采用更宽的
+              \(6\times10^{-5}\) 保护值。
+            </p>
+            <p>
+              最终 resolvent 修正小于 \(7.455\times10^{-7}\)，故
+              \[
+                -1.715485437712\times10^{-6}
+                &lt;C_{6,\mathrm{heat}}
+                &lt;-2.025145622883\times10^{-7}.
+              \]
+              完整热积分没有消去六阶主谱，并保留 \(\mu/256&gt;1\) 的
+              超临界块比。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;这是一个固定六阶、固定周期目标族的
+              渐近投影定理。全部偶数阶 Picard 级数、跨阶抵消和真正三维
+              扰动仍未控制；当前平行剪切类本身全局光滑。
+            </p>
+            <p>
+              <a href="/notes/r0-67c2.html"><strong>阅读 R0.67C-2 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-67c2-dominant-heat.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r067c2">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_dominant_projection_audit.py">查看审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067c2-dominant-heat/fig-r067c2-dominant-heat">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.68：</strong>&nbsp;构造与四阶和六阶主谱相容的全偶数阶生成函数，寻找可求和的统一 majorant/minorant，并严格测试跨阶抵消。</p>
           </div>
         </section>
 
@@ -4001,7 +4048,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.53 · 2026-08-20<br>
+        综述 v0.54 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

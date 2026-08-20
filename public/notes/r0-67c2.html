@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.67C-2：以六阶中心 jet、符号位移缺陷和全局七阶导数界证明完整六阶热核的渐近主投影严格为负。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.67C-2｜完整六阶热核的渐近主投影严格为负">
+  <meta property="og:description" content="67,200 维中心矩提升和完整十种热次序给出与零严格分离的负区间；全阶 Picard 和与三维正则性仍未解决。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-67c2-dominant-heat.png">
+  <title>R0.67C-2｜完整六阶热核的渐近主投影严格为负</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.54">
+  <script defer src="/i18n-en.js?v=0.54"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#jet">六阶 jet</a><a href="#derivative">导数证书</a><a href="#certificate">严格区间</a><a href="#value">研究价值</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.67C-2 · 完整六阶热投影</div>
+        <h1>渐近主投影严格为负<br>热积分抵消漏洞已经关闭</h1>
+        <p class="lead">对周期目标 \(M_r=16^r,\ q_r=2(16^r-1)/15\)，把 320 态传输提升到每态 210 个中心矩，并保留全部十种时间次序。六阶 jet 主项与 \(C^{6,1}\) resolvent 的保护预算给出 \(-1.71549\times10^{-6}&lt;C_{6,\mathrm{heat}}&lt;-2.02514\times10^{-7}\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.67C-2 证书已完成</span><strong>14 项正式检查全通过</strong><p>版本 v0.67C-2 · 2026-08-20</p><p>有限 jet 维数：67,200</p><p>余项尺度：1/4096</p><p>十种热次序：全部解析包络</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#observable">01 · 极限热核</a></li>
+        <li><a href="#jet">02 · 六阶中心 jet</a></li>
+        <li><a href="#defect">03 · 符号位移缺陷</a></li>
+        <li><a href="#derivative">04 · 七阶导数界</a></li>
+        <li><a href="#certificate">05 · 严格负区间</a></li>
+        <li><a href="#asymptotic">06 · 渐近含义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#value">08 · 研究价值</a></li>
+        <li><a href="#next">09 · R0.68</a></li>
+        <li><a href="#reproduce">10 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>完整热积分不再消去六阶主谱，但这仍然不是全阶非线性定理</h2>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · SIGN</span><strong>\(C_{6,\mathrm{heat}}&lt;0\)</strong><p>保护区间的上端点仍严格小于零。</p></div>
+            <div class="status"><span>COMPLETE · HEAT</span><strong>十种五单形次序</strong><p>没有用零时间核或单一时间排列替代。</p></div>
+            <div class="status"><span>FINITE · ORDER</span><strong>只控制第六阶</strong><p>没有对全部偶数阶级数求和。</p></div>
+            <div class="status"><span>BOUNDARY</span><strong>不是正则性证明</strong><p>构造仍在全局光滑的平行剪切不变类中。</p></div>
+          </div>
+        </section>
+
+        <section id="observable"><div class="section-no">01 / Limiting observable</div><h2>周期目标收敛到 \(\theta_\infty=2/15\)，十种路径共享完整五单形时间积分</h2>
+          <p>重复最低位在先的四比特字 \(0100\)，则</p>
+          <div class="equation">\[
+            M_r=16^r,\qquad q_r=\frac{2(16^r-1)}{15},
+            \qquad\theta_r=\frac{q_r}{M_r}\to\frac2{15}.
+          \]</div>
+          <p>三个正载频和两个负载频共有十种保序 shuffle。对每个次序，中间频率与剩余载频平方和共同形成五个非零热率 \(r_0,\ldots,r_4\)。在 \(T=\log2/2\) 上，极限观测量是</p>
+          <div class="equation result">\[
+            F_{2/15}(x)=\sum_{\rm 10\ shuffles}
+            \int_{\substack{\tau_j\ge0\\\sum\tau_j\le T}}
+            e^{-\sum_{j=0}^4r_j(x)\tau_j}\,d\tau .
+          \]</div>
+        </section>
+
+        <section id="jet"><div class="section-no">02 / Degree-six jet</div><h2>把展开中心放在四维立方体中心后，210 个矩通道同时关闭到六次</h2>
+          <p>取 \(c=(1/2,1/2,1/2,1/2)\)，保留全部中心矩 \(\widehat M_\alpha=\int(x-c)^\alpha d\nu\)，其中 \(|\alpha|\le6\)。每态通道数为 \({10\choose4}=210\)，总有限维数为 \(320\times210=67{,}200\)。</p>
+          <div class="equation">\[
+            (J_6\widehat M)_i(f)=
+            \sum_{|\alpha|\le6}
+            \frac{\widehat M_{\alpha,i}}{\alpha!}\partial^\alpha f(c).
+          \]</div>
+          <p>质量主向量通过精确 Chinese-remainder 投影隔离；各次数矩方程按三角结构求解。六阶 jet 与完整热核的原始配对为 \(-9.58938389367\times10^{-7}\)，最终只采用更宽的保护区间</p>
+          <div class="equation result">\[
+            -9.70\times10^{-7}&lt;B_6&lt;-9.48\times10^{-7}.
+          \]</div>
+        </section>
+
+        <section id="defect"><div class="section-no">03 / Signed-shift defect</div><h2>所有落到同一仿射位移的路径先合并符号，再取绝对值</h2>
+          <p>四比特分支为 \(x\mapsto(x+e)/16\)，其中 \(e\in\{0,\ldots,15\}^4\)。缺陷 \(R_6=\mathcal PJ_6-J_6L_6\) 消去全部六次以下多项式。按相同位移聚合以后，观测状态的原始缺陷预算为 \(4.86056342224\)，加权最大值为 \(8.8474298122\times10^{-5}\)。证书只使用</p>
+          <div class="equation">\[
+            b_{\rm obs}&lt;5,\qquad \|b\|_w&lt;10^{-4}.
+          \]</div>
+          <p>七阶 Taylor 余项每周期缩小 \(16^{-7}\)，结合路径绝对权 \(65536\) 得到</p>
+          <div class="equation result">\[
+            \boxed{\|\mathcal P\zeta\|_{(C^{6,1})^*,w}
+            \le\frac{65536}{16^7}\|\zeta\|
+            =\frac1{4096}\|\zeta\|.}
+          \]</div>
+        </section>
+
+        <section id="derivative"><div class="section-no">04 / Global derivative bound</div><h2>七阶偏导在时间单形上逐项积分，不依赖空间采样</h2>
+          <p>令 \(g(x,\tau)=\sum_jr_j(x)\tau_j\)，并写 \(\partial^\gamma e^{-g}=e^{-g}P_\gamma\)。因为 \(r_j\) 都是二次多项式，递推</p>
+          <div class="equation">\[
+            P_{\gamma+e_i}=\partial_iP_\gamma-(\partial_i g)P_\gamma
+          \]</div>
+          <p>生成全部七阶偏导多项式。每个绝对时间单项式使用 \(\int_{\Delta_5(T)}\tau^\beta d\tau=T^{|\beta|+5}\beta!/(|\beta|+5)!\) 积分。十种次序的完整原始上界是 \(5.16125216688\times10^{-5}\)，最终采用保护值</p>
+          <div class="equation result">\[
+            \boxed{L_7&lt;6\times10^{-5}.}
+          \]</div>
+        </section>
+
+        <section id="certificate"><div class="section-no">05 / Certified interval</div><h2>resolvent 修正的最坏幅度仍不足以把六阶主项推过零</h2>
+          <p>保留 resolvent 的第零项逐状态估计，只对后续尾项使用加权范数，可得观测状态预算 \(Z_{\rm obs}&lt;0.012425\)。于是</p>
+          <div class="equation">\[
+            |\eta(F_{2/15})|
+            &lt;0.012425\cdot6\times10^{-5}
+            &lt;7.455\times10^{-7}.
+          \]</div>
+          <div class="equation result">\[
+            \boxed{
+            -1.715485437712\times10^{-6}
+            &lt;C_{6,\mathrm{heat}}
+            &lt;-2.025145622883\times10^{-7}.}
+          \]</div>
+          <p>严格上端点离零仍有 \(2.025\times10^{-7}\) 的余量。结论使用的是保护数字，不是更紧的浮点参考值。</p>
+        </section>
+
+        <section id="asymptotic"><div class="section-no">06 / Asymptotic meaning</div><h2>第一周期为正而渐近主投影为负，意味着有限尺度上必有换号</h2>
+          <p>有限矩补空间的谱半径小于 300，R0.67B 零仿射余项尺度为 256，两者都小于 \(\mu\)。同时 \(\theta_r-2/15=-2/(15M_r)\)。因此</p>
+          <div class="equation result">\[
+            \mu^{-r}\mathcal S_{6,r}^{\rm heat}
+            \longrightarrow C_{6,\mathrm{heat}}&lt;0,
+            \qquad\frac{\mu}{256}&gt;1.
+          \]</div>
+          <p>R0.67C-1 的 \(M=16\) 正号没有被推翻；它与本页的负渐近系数共同说明：完整六阶热相关在某个有限周期以后改变符号。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>负区间、导数安全预算和谱尺度分离已按期刊双栏尺寸保存</h2>
+          <figure><img src="/figures/r0-67c2-dominant-heat.svg" alt="R0.67C-2 完整六阶热核渐近主投影严格负号期刊附图"><figcaption>图 R0.67C-2。左图分解六阶 jet、resolvent 修正和最终负区间；右上比较原始七阶导数界、保护值与触零阈值；右下展示 \(1/4096&lt;256&lt;300&lt;\mu\) 的尺度分离。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-67c2-dominant-heat.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-67c2-dominant-heat.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="value"><div class="section-no">08 / Research value</div><h2>六阶完整热投影已经关闭，但通往千禧年问题还隔着两个结构性障碍</h2>
+          <div class="proof"><strong>真正的新信息。</strong>&nbsp;R0.67A 的零时间主谱增长不是被五单形时间积分偶然消去；完整十种时间次序仍留下严格非零、严格负的主投影，并保留 \(\mu/256&gt;1\) 的超临界块比。</div>
+          <p>这仍不足以推出解的增长或奇性。第一，单个六阶项必须放回全部偶数阶 Picard 级数中，处理可能的跨阶抵消与组合增长；第二，当前频率包严格保持在可全局求解的平行剪切类中。任何与一般三维正则性真正相关的机制都必须同时解决这两点。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / R0.68</div><h2>下一步转向全偶数阶生成函数，而不是继续放大一个孤立六阶系数</h2>
+          <div class="proof"><strong>固定路线。</strong>&nbsp;构造与四阶根 \(\lambda\)、六阶根 \(\mu=16\lambda\) 相容的全偶数阶主谱生成函数；分离组合计数、热单形导数和振幅幂；寻找一个统一可求和的 majorant/minorant，并检查是否存在不被高阶抵消的振幅窗口。</div>
+          <p>如果全阶界在平行剪切类内闭合，则这条路线的正确结论是“高阶可求和而不会产生奇性”；随后必须引入真正三维扰动。若全阶界不能闭合，失败项将明确指出需要研究的跨阶共振，而不是直接被解释为爆破。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility</div><h2>源代码、正式证书、资源日志和期刊附图分别锁定</h2>
+          <p>数学与审计源提交为 ed153f5919f040c7fc16b169685b05fc574f3d17；正式证书提交为 cd4124a4c781ba6593635d23aab425515a2ee155；期刊附图包提交为 e7828299d5df0ab2fc01fa32605e5c5cf8af95c0。最终审计连续报告十种 shuffle，0 次交换。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_dominant_projection_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_dominant_projection_audit.py">查看审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r067c2">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067c2-dominant-heat/fig-r067c2-dominant-heat">查看期刊附图包</a></p>
+          <p>声明边界：本文只证明一个周期目标族的固定六阶完整热投影严格为负；没有控制完整偶数阶级数，没有证明范数膨胀、奇异性或一般三维全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.67C-2 · 2026-08-20<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

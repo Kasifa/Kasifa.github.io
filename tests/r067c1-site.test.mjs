@@ -19,8 +19,8 @@ test("publishes the exact finite R0.67C-1 sign with its asymptotic boundary", as
     readFile(translationsPath, "utf8"),
   ]);
   assert.ok(home.includes("R0.67C-1 已完成："));
-  assert.ok(home.includes("下一步 R0.67C-2："));
-  assert.ok(home.includes("综述 v0.53 · 2026-08-20"));
+  assert.ok(home.includes("下一步 R0.68："));
+  assert.ok(home.includes("综述 v0.54 · 2026-08-20"));
   assert.match(home, /href="\/notes\/r0-67c1\.html"/);
   assert.match(note, /34,690 个有效载频元组/);
   assert.match(note, /346,900 条有序带符号路径/);

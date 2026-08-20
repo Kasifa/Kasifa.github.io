@@ -1,0 +1,94 @@
+{
+  "boundary": [
+    "The result does not provide a numerical Koch-Tataru threshold.",
+    "It controls only perturbations whose total critical norm is small.",
+    "It does not prove instability or singularity for order-one perturbations.",
+    "It is not a solution of the Navier-Stokes Millennium problem."
+  ],
+  "checks": {
+    "bmoConstantIsStrictlyPositive": true,
+    "criticalContractionRateIsStrictlyBelowOne": true,
+    "hundredthThresholdFirstCrossingIsThirtyTwo": true,
+    "lambdaLowerExceedsSixteen": true,
+    "oneThresholdFirstCrossingIsEleven": true,
+    "pinnedR059CertificateHashMatches": true,
+    "pinnedR066CertificateHashMatches": true,
+    "r059ConstantMatchesTensorPrefixFormula": true,
+    "r059PeriodicBmoBoundIsFormal": true,
+    "r066DominantRootLowerBoundIsCertified": true,
+    "tenthThresholdFirstCrossingIsTwentyTwo": true,
+    "thousandthThresholdFirstCrossingIsFortyTwo": true,
+    "thresholdDepthsAreStrictlyIncreasing": true
+  },
+  "classification": "source-bound critical-smallness and transverse-stability reduction for the R0.69A periodic packet; not a singularity or general three-dimensional regularity theorem",
+  "criticalNormBound": {
+    "C_T": "4+3sqrt(2)",
+    "bound": "||U_r(0)|| <= (6+4sqrt(2))*rho^r",
+    "firstDepthStrictlyBelow": {
+      "1": 11,
+      "1e-1": 22,
+      "1e-2": 32,
+      "1e-3": 42,
+      "1e-6": 72
+    },
+    "lambdaLower": {
+      "decimal": "25.1515893341015015494122053496539592742919921875",
+      "exact": "50303178668203/2000000000000"
+    },
+    "norm": "periodic heat-Carleson BMO^-1",
+    "prefactor": "6+4sqrt(2)",
+    "prefactorInterval": {
+      "lower": "11.6568542494923801952067548968387923142786875015077922927067189519629299138483",
+      "upper": "11.6568542494923801952067548968387923142786875015077922927067189519629299138485"
+    },
+    "r059Formula": "sqrt(2)*C_T*A_r/sqrt(H_r)",
+    "rho": {
+      "definition": "sqrt(16/lambdaLower)",
+      "lower": "0.797585545290329122174702313114339826274409796057677426041169770592431104427896",
+      "upper": "0.797585545290329122174702313114339826274409796057677426041169770592431104427904"
+    },
+    "rhoSquared": {
+      "decimal": "0.63614270205607159613947487741825170814990997314453125",
+      "exact": "32000000000000/50303178668203"
+    }
+  },
+  "decision": {
+    "closedGate": "all sufficiently deep packets and all transverse perturbations inside a fixed critical small-data ball are globally regular",
+    "nextGate": "construct an order-one critical transverse sideband and test the linearized non-normal propagator in a scaling-critical norm"
+  },
+  "externalTheoremBoundary": {
+    "notAuditedHere": "the external functional-analytic proof of the Koch-Tataru theorem",
+    "threshold": "eta_KT_per is existential; this audit assigns no numerical value",
+    "use": "the standard periodic Koch-Tataru small-data fixed-point theorem turns the certified packet bound into a global regularity ball"
+  },
+  "packetFamily": {
+    "H_r": "4M_r",
+    "M_r": "16^r",
+    "amplitude": "A_r=epsilon_r*sqrt(H_r)",
+    "epsilonSquared": "(16/lambda)^r",
+    "physicalAmplitudeBehavior": "A_r grows exponentially"
+  },
+  "perturbationEquation": {
+    "criticalBallCondition": "(6+4sqrt(2))*rho^r+||w_0,r||_BMO^-1<eta_KT_per",
+    "energyIdentity": "(1/2)d||w||_2^2/dt+||grad w||_2^2=-integral w_i partial_i U_j w_j",
+    "equation": "w_t-Delta w+(U dot grad)w+(w dot grad)U+(w dot grad)w+grad q=0, div w=0"
+  },
+  "provenance": {
+    "gmpy2": "2.3.1",
+    "inputCertificates": {
+      "r059": {
+        "path": "research/certificates/r059/multi-output-critical-saturation.json",
+        "sha256": "88774c0d5647f46700ed499409754f4207fdcef5a0193e5a337e7887eb3c6dce"
+      },
+      "r066": {
+        "path": "research/certificates/r066/spectral-audit.json",
+        "sha256": "a6f66c8bea8806fee3716b8d6611a2e0720e29969d94d991672cf3626ba8bcb2"
+      }
+    },
+    "mpfr": "MPFR 4.2.2",
+    "python": "3.12.13",
+    "sourceCommit": "3342fb092b454df34255b82e142bfd796e5e522d"
+  },
+  "schemaVersion": "1.0",
+  "status": "passed"
+}

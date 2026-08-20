@@ -172,7 +172,7 @@ def draw() -> None:
         ratio_axis.yaxis.set_major_locator(FixedLocator([8, 16, 25.151589334101537, 50, 100]))
         ratio_axis.yaxis.set_major_formatter(FixedFormatter(["8", "16", "25.15", "50", "100"]))
         ratio_axis.grid(color=GRID, linewidth=0.3, which="major")
-        ratio_axis.text(2.0, 16.7, "extensive threshold 16", fontsize=3.25, color=INK)
+        ratio_axis.text(22.8, 15.35, "extensive threshold 16", ha="right", fontsize=3.25, color=INK)
         ratio_axis.text(2.0, 26.4, r"zero-time $\lambda=25.151589\ldots$", fontsize=3.25, color=RUST)
         ratio_axis.text(
             19.5,

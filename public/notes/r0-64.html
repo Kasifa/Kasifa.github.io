@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.64：构造精确的四十八态零时间传输，并给出可达的四位超临界循环。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.64｜零时间提升传输的超临界循环">
+  <meta property="og:description" content="四位循环 0100 的精确特征值超过因子二阈值，排除完整零时间状态空间上的逐层公共范数。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-64-supercritical-cycle.png">
+  <title>R0.64｜零时间提升传输的超临界循环</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.48"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#transfer">四十八态</a><a href="#cycle">超临界循环</a><a href="#reachable">可达目标</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.64 · 零时间公共范数的判定</div>
+        <h1>四位循环超过阈值；<br>逐层压缩路线被排除</h1>
+        <p class="lead">我把 R0.63 的十六个目标符号状态与三个系数进位合并成精确的四十八态整数传输。按最低位到最高位读取目标字 \(0100\)，四步乘积出现实特征值 \(\lambda=25.151589\ldots>16=2^4\)。因此完整零时间状态空间不存在每层因子不超过 \(2\) 的公共范数。这个结论淘汰一种证明策略，但没有否定先保留高斯热权和时间积分的 \(O(L^2M)\) 猜想。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确超临界循环已证明</span><strong>9 项审计检查全通过</strong><p>版本 v0.64 · 2026-08-20</p><p>状态维数：48</p><p>直接卷积：10 层</p><p>正式递推展示：120 个循环</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#transfer">01 · 四十八态递推</a></li>
+        <li><a href="#cycle">02 · 精确超临界循环</a></li>
+        <li><a href="#reachable">03 · 可达目标族</a></li>
+        <li><a href="#meaning">04 · 对证明路线的含义</a></li>
+        <li><a href="#figure">05 · 期刊附图</a></li>
+        <li><a href="#next">06 · R0.65 任务</a></li>
+        <li><a href="#reproduce">07 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>严格排除了逐层公共范数，没有排除热积分后的临界估计</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · EXACT TRANSFER</span><strong>48 态整数递推</strong><p>目标符号、三次状态与三个进位完全闭合。</p></div>
+            <div class="status"><span>FORMAL · SUPERCRITICAL</span><strong>\(\lambda>2^4\)</strong><p>四位循环的实特征值位于 \((25,26)\)。</p></div>
+            <div class="status"><span>REJECTED · POINTWISE NORM</span><strong>统一因子二不可行</strong><p>完整零时间状态空间不能逐层收缩。</p></div>
+            <div class="status"><span>OPEN · INTEGRATED PROBLEM</span><strong>\(O(L^2M)\) 仍未判定</strong><p>高斯权、单形积分与可达投影仍可能提供衰减。</p></div>
+          </div>
+        </section>
+
+        <section id="transfer"><div class="section-no">01 / Forty-eight-state transfer</div><h2>十六个符号状态乘上三个进位，得到真正闭合的零时间系统</h2>
+          <p>令 \(a_n^s(q)\) 是 \(R_{s,n}\) 的第 \(q\) 个系数，令 \(C_n^{\boldsymbol\sigma}\) 是 R0.63 的八个三次系数。对 \(k\in\{-1,0,1\}\)，定义</p>
+          <div class="equation result">\[
+            X_n^{s,\boldsymbol\sigma,k}(q)
+            =a_n^s(q)C_n^{\boldsymbol\sigma}(q+k2^n).
+          \]</div>
+          <p>若下一目标位为 \(b\in\{0,1\}\)，则四十八个状态精确满足</p>
+          <div class="equation result">\[
+            \boxed{X_{n+1}^{s,\boldsymbol\sigma,k}(b2^n+q)
+            =\sum_{\boldsymbol\varepsilon\in\{0,1\}^3}
+            (-1)^{sb+\boldsymbol\sigma\cdot\boldsymbol\varepsilon}
+            X_n^{b,\boldsymbol\varepsilon,
+            2k+b-(\varepsilon_1+\varepsilon_2-\varepsilon_3)}(q).}
+          \]</div>
+          <p>最后一个指标不在 \(\{-1,0,1\}\) 时，相应项为零。这个公式定义两个 \(48\times48\) 整数矩阵 \(T_0,T_1\)；两者的精确秩均为 \(12\)。</p>
+        </section>
+
+        <section id="cycle"><div class="section-no">02 / Exact supercritical cycle</div><h2>循环 \(0100\) 的四步乘积有一个严格超过 \(16\) 的实特征值</h2>
+          <p>按最低位到最高位读取 \(\omega=(0,1,0,0)\)，令 \(W=T_0T_0T_1T_0\)。精确像空间只有六维，完整特征多项式为</p>
+          <div class="equation result">\[
+            \boxed{\det(xI-W)=x^{42}(x-16)^2
+            \bigl(x^4-25x^3-120x^2+3248x-8192\bigr).}
+          \]</div>
+          <p>四次因子在 \((25,26)\) 内有实根 \(\lambda=25.1515893341\ldots\)。由于 \(\lambda>16=2^4\)，若某个公共向量范数满足 \(\|T_0\|,\|T_1\|\le2\)，则应有 \(\rho(W)\le16\)，与精确特征值矛盾。</p>
+        </section>
+
+        <section id="reachable"><div class="section-no">03 / Reachable targets</div><h2>超临界模态不是虚假的算子方向，它由真实目标系数到达并观测</h2>
+          <p>取</p>
+          <div class="equation">\[
+            M_r=16^r,\qquad q_r=2\frac{16^r-1}{15}.
+          \]</div>
+          <p>\(q_r\) 的二进制位恰好是 \(r\) 个从低到高的 \(0100\)。相应目标符号三次相关 \(y_r\) 从</p>
+          <div class="proof">1，22，274，5666，77474，1399138，19990306，……</div>
+          <p>开始，并从 \(r\ge6\) 起满足精确递推</p>
+          <div class="equation result">\[
+            y_r=41y_{r-1}-280y_{r-2}-5168y_{r-3}
+            +60160y_{r-4}-131072y_{r-5}.
+          \]</div>
+          <p>生成函数的分子与分母互素，主导极点没有被初值或最终投影消去。因此 \(|y_r|\asymp\lambda^r=M_r^{\log_{16}\lambda}\)，其中 \(\log_{16}\lambda=1.1631444155\ldots>1\)。这给出了未加权三次相关超线性增长的显式目标族。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">04 / Meaning</div><h2>结果淘汰的是先逐层取范数的路线，不是先积分再估计的路线</h2>
+          <p>在每个固定有限层级，带高斯权的系数在时间变量趋于零时连续回到这里的整数传输。所以任何覆盖闭时间单形、先把每层完整状态统一压到 \(2\)、再做时间积分的论证都不可能成立。</p>
+          <p>尚未使用的结构有三项：高斯半块限制随层级变化；三个时间变量在单形积分中耦合；Navier--Stokes 系数只取一个特定初值和最终泛函。下一步必须直接研究这个可达标量积分，不能再用完整点态算子范数替代它。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>状态降维、精确谱与可达增长在同一张正式附图中保存</h2>
+          <figure>
+            <img src="/figures/r0-64-supercritical-cycle.svg" alt="R0.64 零时间四十八态传输的超临界循环">
+            <figcaption>图 R0.64-1。左侧给出四十八态、四位乘积和六维像空间；右上是六个非零特征值与四层阈值 \(16\)；右下用精确递推展示可达目标序列的慢收敛。PDF、SVG、600 dpi PNG、两张数据表、两次重启日志、最终资源日志、图源、清单和哈希均已归档，并完成彩色、真灰度和 PDF 最终尺寸检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-64-supercritical-cycle.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-64-supercritical-cycle.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.65</div><h2>下一步沿显式循环直接计算高斯加权的可达标量积分</h2>
+          <div class="proof"><strong>判定任务。</strong>固定 \(M_r=16^r\)、\(q_r=2(16^r-1)/15\)，对完整三时间单形构造可认证的上下包络，测定每四层的热加权增长因子是否低于 \(16\)。</div>
+          <p>若增长因子严格低于 \(16\)，就转向积分后可达空间的一致界；若仍高于 \(16\)，则 \(|S_{4,m}|\le CL^2M\) 对这一频率包为假。这个判定直接处理 R0.64 留下的唯一有效分支。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility and sources</div><h2>整数矩阵、像空间特征多项式、直接卷积与正式附图均已固定</h2>
+          <p>精确推导提交为 <code>245e53c18100ac05b4143571d1160d4bf6339c20</code>，机器证书提交为 <code>d854e72d4348cefae6294a03d874058e0d7d9832</code>，正式附图提交为 <code>8e22415</code>。审计逐项检查四十八个状态，在前 10 个二进制层级与直接整数卷积完全一致；所有特征多项式、秩、递推和多项式最大公因子均使用整数或有理数运算。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_supercritical_cycle_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r064">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_supercritical_cycle_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r064-supercritical-cycle/fig-r064-supercritical-cycle">查看期刊附图包</a></p>
+          <p>声明边界：没有证明或否定 \(|S_{4,m}|\le CL^2M\)，没有控制完整偶数阶余项，没有构造奇点，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.64 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

@@ -162,6 +162,19 @@ const sixtyThirdFigurePdfUrl = new URL(
   "../public/figures/r0-63-time-layer-transfer.pdf",
   import.meta.url,
 );
+const sixtyFourthNoteUrl = new URL("../public/notes/r0-64.html", import.meta.url);
+const sixtyFourthFigureSvgUrl = new URL(
+  "../public/figures/r0-64-supercritical-cycle.svg",
+  import.meta.url,
+);
+const sixtyFourthFigurePngUrl = new URL(
+  "../public/figures/r0-64-supercritical-cycle.png",
+  import.meta.url,
+);
+const sixtyFourthFigurePdfUrl = new URL(
+  "../public/figures/r0-64-supercritical-cycle.pdf",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -361,8 +374,9 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.ok(home.includes("R0.61 已完成："));
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
-  assert.ok(home.includes("下一步 R0.64："));
-  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
+  assert.ok(home.includes("R0.64 已完成："));
+  assert.ok(home.includes("下一步 R0.65："));
+  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -407,8 +421,9 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.ok(home.includes("R0.61 已完成："));
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
-  assert.ok(home.includes("下一步 R0.64："));
-  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
+  assert.ok(home.includes("R0.64 已完成："));
+  assert.ok(home.includes("下一步 R0.65："));
+  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -450,8 +465,9 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.match(home, /href="\/notes\/r0-62\.pdf"/);
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
-  assert.ok(home.includes("下一步 R0.64："));
-  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
+  assert.ok(home.includes("R0.64 已完成："));
+  assert.ok(home.includes("下一步 R0.65："));
+  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.62/);
   assert.match(note, /4 项整数检查全通过/);
   assert.match(note, /新增完整目标：3,584 个/);
@@ -496,8 +512,9 @@ test("publishes the R0.63 time-layer factorization and lifted transfer boundary"
 
   assert.match(home, /href="\/notes\/r0-63\.html"/);
   assert.ok(home.includes("R0.63 已完成："));
-  assert.ok(home.includes("下一步 R0.64："));
-  assert.ok(home.includes("综述 v0.47 · 2026-08-20"));
+  assert.ok(home.includes("R0.64 已完成："));
+  assert.ok(home.includes("下一步 R0.65："));
+  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.63/);
   assert.match(note, /4 项审计检查全通过/);
   assert.match(note, /时间层比较：27 项/);
@@ -526,6 +543,47 @@ test("publishes the R0.63 time-layer factorization and lifted transfer boundary"
   assert.match(
     figureSvg,
     /The quartic transfer closes only after a lifted state system/,
+  );
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes the R0.64 exact reachable supercritical cycle", async () => {
+  const [home, note, figureSvg, figurePng, figurePdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixtyFourthNoteUrl, "utf8"),
+    readFile(sixtyFourthFigureSvgUrl, "utf8"),
+    readFile(sixtyFourthFigurePngUrl),
+    readFile(sixtyFourthFigurePdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-64\.html"/);
+  assert.ok(home.includes("R0.64 已完成："));
+  assert.ok(home.includes("下一步 R0.65："));
+  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.match(note, /研究笔记 R0\.64/);
+  assert.match(note, /9 项审计检查全通过/);
+  assert.match(note, /状态维数：48/);
+  assert.match(note, /直接卷积：10 层/);
+  assert.ok(note.includes("x^{42}(x-16)^2"));
+  assert.ok(note.includes("\\lambda=25.1515893341\\ldots"));
+  assert.ok(note.includes("\\rho(W)\\le16"));
+  assert.ok(note.includes("q_r=2\\frac{16^r-1}{15}"));
+  assert.ok(note.includes("\\log_{16}\\lambda=1.1631444155\\ldots>1"));
+  assert.match(note, /逐层公共范数/);
+  assert.match(note, /没有证明或否定/);
+  assert.match(note, /没有解决三维 Navier--Stokes 千禧年问题/);
+  assert.match(note, /r0-64-supercritical-cycle\.svg/);
+  assert.match(note, /r0-64-supercritical-cycle\.png/);
+  assert.match(note, /r0-64-supercritical-cycle\.pdf/);
+  assert.match(note, /245e53c18100ac05b4143571d1160d4bf6339c20/);
+  assert.match(note, /d854e72d4348cefae6294a03d874058e0d7d9832/);
+  assert.match(note, /8e22415/);
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
+  assert.match(
+    figureSvg,
+    /A zero-time digit cycle exceeds the factor-two threshold/,
   );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
   assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");

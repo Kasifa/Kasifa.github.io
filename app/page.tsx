@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <iframe
       src="/research-review.html"
-      title="Navier–Stokes 开放研究日志"
+      title="三维 Navier–Stokes 全局正则性问题"
       style={{
         display: "block",
         width: "100%",

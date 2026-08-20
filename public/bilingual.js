@@ -112,8 +112,8 @@
     try {
       const parentTitle =
         language === "en"
-          ? "Navier–Stokes Open Research Log"
-          : "Navier–Stokes 开放研究日志";
+          ? "The 3D Navier–Stokes Global Regularity Problem"
+          : "三维 Navier–Stokes 全局正则性问题";
       window.parent.document.title = parentTitle;
       window.parent.document.documentElement.lang =
         language === "en" ? "en" : "zh-CN";

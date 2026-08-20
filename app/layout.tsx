@@ -18,9 +18,9 @@ export async function generateMetadata(): Promise<Metadata> {
     .split(",")[0]
     .trim();
   const metadataBase = new URL(`${protocol}://${host}`);
-  const title = "Navier–Stokes 开放研究日志";
+  const title = "三维 Navier–Stokes 全局正则性问题";
   const description =
-    "我整理的三维不可压缩 Navier–Stokes 研究综述、工作计划与计算笔记。";
+    "我记录对三维不可压缩 Navier–Stokes 全局正则性问题的梳理、计算和未解决步骤。";
 
   return {
     metadataBase,
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/og.png",
           width: 1536,
           height: 1024,
-          alt: "Navier–Stokes 开放研究日志",
+          alt: "三维 Navier–Stokes 全局正则性问题",
         },
       ],
     },

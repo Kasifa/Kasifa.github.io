@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r069b-transverse-smallness",
+  "status": "formal",
+  "createdAt": "2026-08-21T05:05:00+08:00",
+  "analyticalQuestion": "Can the R0.69A periodic packet support a singularity mechanism through transverse perturbations that vanish in a scale-critical topology?",
+  "supportedClaim": "The packet's periodic BMO^-1 upper bound decays geometrically, so sufficiently deep packets plus a fixed critical ball of transverse perturbations lie in the standard small-data regime.",
+  "claimBoundary": "source-bound critical-smallness and transverse-stability reduction for the R0.69A periodic packet; not a singularity or general three-dimensional regularity theorem",
+  "git": {
+    "sourceCommit": "3342fb092b454df34255b82e142bfd796e5e522d",
+    "certificateCommit": "e2584235220dcc4a5721b21b6eb997d88698e2c8",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "spectral-audit.json",
+      "location": "research/certificates/r066/spectral-audit.json",
+      "bytes": 156184,
+      "sha256": "a6f66c8bea8806fee3716b8d6611a2e0720e29969d94d991672cf3626ba8bcb2",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "transverse-critical-smallness.json",
+      "location": "research/certificates/r069b/transverse-critical-smallness.json",
+      "bytes": 4065,
+      "sha256": "53ebc36d199ca2b379270c85a842978aab086f7f77d5e4b4f6c32e944c15ce45",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "scale-separation.csv",
+      "bytes": 6769,
+      "sha256": "8d08a62f46bc9d07868acac597731c5ad6fb2199d2b28eb5ad9c2ce80074bc81",
+      "format": "csv",
+      "schema": "depth, physical-amplitude lower bound, critical-norm upper envelope"
+    },
+    {
+      "path": "decision-depth.csv",
+      "bytes": 5032,
+      "sha256": "7cc854d77bebd2c70e5314f090d99b6ff155e3dd9c183e1f4da60bc45045a85c",
+      "format": "csv",
+      "schema": "target budget and first sufficient packet depth"
+    },
+    {
+      "path": "certified-crossings.csv",
+      "bytes": 68,
+      "sha256": "ab43e2385be6c24a23989cb9a4792a0f796c4f6a814a01f35d7a6a77039780c5",
+      "format": "csv",
+      "schema": "five exact certificate threshold crossings"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 989,
+      "sha256": "72dcac8fdb66bf9f8907229176ab812ff77faa85623e4f9cf1e6fbae25bcbe84",
+      "format": "json",
+      "schema": "pinned certificates and directed interval metadata"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "991b463e9acb72564958b02a2b4678dfaf126aaee88c337ae028748c3d7862f5",
+      "format": "csv",
+      "schema": "data extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "82641ef1c7c5eaa8668f2e3c69583c1438de14e282cc2c87b62844e404eda1fc",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact certificate extraction plus directed high-precision presentation sampling",
+    "configuration": "R0.69A packet family for depths 0 through 50 and target budgets 1 through 1e-6",
+    "precision": "exact rational inputs and 256-bit directed MPFR arithmetic",
+    "solver": "GMP exact rationals and directed-rounding MPFR interval arithmetic",
+    "command": "python3 prepare_data.py && python3 validate_data.py && python3 plot.py && python3 build_manifest.py",
+    "scientificWallTimeSeconds": 0.549423
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS-26.6.1-arm64-arm-64bit",
+    "cpu": "Apple M5 Max",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "gmpy2": "2.3.1",
+    "mpfr": "MPFR 4.2.2",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 92,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 35935,
+        "sha256": "3b87ee66ba4ad8fe08c5b476d6a70de37f509c3a2f3b399a33f477e8f956a24c"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 113557,
+        "sha256": "f7ee3d6063afde1091ac9a198680a97d1056eb339d318c2120e0c1a23fb261de"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 430194,
+        "sha256": "d2b204e7d89db5269b8a26c704c4a5785a931f9964d646cf2fa7973027cb16c0",
+        "dpi": 600,
+        "pixels": "4204 by 2173"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "logarithmic scale comparison and decision-depth curve",
+    "takeaway": "vanishing critical perturbations keep the total data in the global small-data regime; any unresolved singularity route must carry order-one critical size",
+    "nonColorEncoding": "solid and dashed lines, distinct markers, direct labels, and a shaded envelope",
+    "outputFootprint": "double-column 178 by 92 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The PNG and grayscale render were inspected at final size; line styles and markers preserve meaning without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

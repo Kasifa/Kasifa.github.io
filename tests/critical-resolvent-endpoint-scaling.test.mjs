@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -10,6 +11,10 @@ const noteUrl = new URL(
 );
 const auditUrl = new URL(
   "../research/critical_resolvent_endpoint_scaling_audit.py",
+  import.meta.url,
+);
+const certificateRoot = new URL(
+  "../research/certificates/r069f/",
   import.meta.url,
 );
 
@@ -61,4 +66,36 @@ test("reproduces the R0.69F exact and high-precision audit", () => {
   );
   assert.match(payload.decision.closedBranch, /cannot improve/i);
   assert.match(payload.decision.comparison, /classical/i);
+});
+
+test("archives the source-locked R0.69F certificate", async () => {
+  const [certificateText, readme, sumsText] = await Promise.all([
+    readFile(
+      new URL("critical-resolvent-endpoint-scaling.json", certificateRoot),
+      "utf8",
+    ),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 22);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "c3f3d94620f6852e48e07525cc81f2c94ee1511d",
+  );
+  assert.match(readme, /22 checks, all passed/);
+  assert.match(readme, /classical local continuation/i);
+  assert.match(readme, /not[\s\S]*solve the Navier--Stokes Millennium/i);
+
+  const records = sumsText.trim().split("\n");
+  assert.equal(records.length, 3);
+  for (const record of records) {
+    const match = record.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "malformed SHA256SUMS line: " + record);
+    const payload = await readFile(new URL(match[2], certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, match[1], match[2] + " hash mismatch");
+  }
 });

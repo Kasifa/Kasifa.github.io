@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r069f-endpoint-scaling",
+  "status": "formal",
+  "createdAt": "2026-08-21T06:45:00+08:00",
+  "analyticalQuestion": "Can optimizing the positive-time resolvent produce an endpoint blow-up rate beyond classical continuation theory?",
+  "supportedClaim": "The exact scalar gain and the optimized Bielecki certificate share the exponent A=4 pi C_S^2 V^2 h; packet-gate failure therefore forces only a type-I shell threshold.",
+  "claimBoundary": "exact scalar fractional-Volterra endpoint majorant and a certified negative result: optimization yields no criterion stronger than classical L-infinity continuation",
+  "git": {
+    "sourceCommit": "c3f3d94620f6852e48e07525cc81f2c94ee1511d",
+    "certificateCommit": "53aa9dfc5a58264df349e219c5a3cfe97c80dbe8",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "critical-resolvent-endpoint-scaling.json",
+      "location": "research/certificates/r069f/critical-resolvent-endpoint-scaling.json",
+      "bytes": 10038,
+      "sha256": "96e66ff755aa0cc57379ac6582b72c149f7bf290ce44a3de8a9777162dfcc9e3",
+      "extractionCommand": "python3 plot.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "gain-comparison.csv",
+      "bytes": 72154,
+      "sha256": "de2653aedd8ae462c7f936fc2dda2e97966149393d1351c76b371745f76b4d8c",
+      "format": "csv",
+      "schema": "A, exact log gain, optimized Bielecki log gain, asymptotic"
+    },
+    {
+      "path": "shell-threshold.csv",
+      "bytes": 18380,
+      "sha256": "2d291e1263f81602247abb1ecdaf22ab88d1016a87ac63ab08ce938bbe36fdbb",
+      "format": "csv",
+      "schema": "x, phi(x), certified packet log rate, threshold flag"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 843,
+      "sha256": "a2e648974b2bc799c5e7b2e34e4f3ce3664567f264e2c9008ee15bd4c6eec2db",
+      "format": "json",
+      "schema": "pinned certificate and theorem metadata"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 441,
+      "sha256": "fe60b4f5f2e198fd77cf35a314f21060b20d7a51ea843a3a03ea8ed9c7e6b6cf",
+      "format": "json",
+      "schema": "eight figure-data validation checks"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "bdc62538244aa80758c94ae499341d784b38992855a72d6bdc0a3689f0f1f246",
+      "format": "csv",
+      "schema": "data extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "0a7aceaa5ada3efcf241a35a284dbc78dc2871b0813f15811a7eec7c8b4771f8",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "configuration": "241 logarithmic amplitude samples and 241 shell-threshold samples",
+    "precision": "mpmath 100 decimal digits",
+    "solver": "bisection for the unique Bielecki cubic root and closed Mittag-Leffler complementary-error-function identity",
+    "command": "python3 plot.py",
+    "scientificWallTimeSeconds": 0.779786
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS-26.6.1-arm64-arm-64bit",
+    "cpu": "Apple M5 Max",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "mpmath": "1.3.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 92,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 35226,
+        "sha256": "6bb463cbae1c3917d59d65e199d5ed4003e28741a36df350c9e439be283cb93f"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 91679,
+        "sha256": "c3f483c835970f6f6411b82830074dc2b775b59525d11e42f89997d1224a26f1"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 416517,
+        "sha256": "77bc7e4ec0ca277a10926139e7ec9a55cb30028aa1501b2f24fc6b39985e1b0f",
+        "dpi": 600,
+        "pixels": "4204 by 2173"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "log-amplitude comparison plus exact shell threshold",
+    "takeaway": "scalar endpoint-resolvent optimization cannot improve the classical type-I scale",
+    "nonColorEncoding": "distinct line styles, direct threshold lines, marker, and formula callout",
+    "outputFootprint": "double-column 178 by 92 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The final-size color and grayscale renders were inspected; line styles, threshold marker, formulas, and claim boundary remain legible without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

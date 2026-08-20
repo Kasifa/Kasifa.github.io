@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r061-quartic-target",
+  "status": "formal",
+  "analyticalQuestion": "After the exact normalization A^4 G4/(A^2 G2)=-(epsilon^2/L^2)R_{L,M,m}, does the complete quartic target coefficient show growth with the number M of coherent outputs on the archived deterministic scan?",
+  "supportedClaim": "Every one of the 461 distinct archived ratios is positive, so every observed quartic target opposes the quadratic target. The largest observed ratio is 0.0013286562612066827, and the edge-target families show no numerical growth with M up to the scanned endpoint M=8192. These are finite observations, not all-index positivity or boundedness theorems.",
+  "createdAt": "2026-08-20T16:25:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "737a9e5645c3f4b07b0ea695f0c216eb1c14808f",
+    "certificateCommit": "044dea434aba9448c2bfcf1f999992f9b96e3e5b",
+    "formalSourceCommit": "895543f44b3c83c777014eefc9594f95b3b9d829",
+    "dirtyAtCertifiedRun": false,
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "highlighted multi-series line figure",
+    "variants": [
+      "416 complete target-profile observations in four parameter families on a logarithmic response scale",
+      "48 distinct edge-target observations across dyadic scaling families",
+      "one directly annotated observed maximum and one high-precision reliability statement"
+    ],
+    "takeaway": "The archived quartic target is always opposite in phase to the quadratic target, remains small after L^-2 normalization, and exhibits no observed M-growth; the uniform theorem is still open.",
+    "dataSufficiency": "The certificate contains 464 evaluations including three duplicates, 461 distinct triples, 49 distinct parameter pairs, and 7,494,536,238 ordered quartic paths. Panel (a) displays all 416 targets in four representative families. Panel (b) displays all 48 distinct baseline and extended edge pairs.",
+    "palettePolicy": "restrained blue, gold, rust, and olive roots plus neutral ink",
+    "nonColorEncoding": "solid, dashed, dotted, and dash-dot lines; open circle, square, triangle, diamond, and filled-plus markers; direct maximum annotation; and separate panels",
+    "outputFootprint": "single double-column journal figure at 178 by 105 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF page at final size"
+  },
+  "computation": {
+    "kind": "data-analysis",
+    "formalCommand": "python3 research/quartic_target_audit.py --summary research/certificates/r061/scaling-summary.json --summary research/certificates/r061/extended-summary.json --summary research/certificates/r061/all-targets-summary.json --high-precision research/certificates/r061/high-precision.json --source-commit 895543f44b3c83c777014eefc9594f95b3b9d829 --check --pretty --output research/certificates/r061/quartic-target-exploration.json",
+    "samplingCommand": "python3 figures/r061-quartic-target/fig-r061-quartic-target/prepare_data.py --source-commit 737a9e5645c3f4b07b0ea695f0c216eb1c14808f",
+    "configuration": "three deterministic long-double scan families: 30 baseline edge pairs, 18 extended edge pairs through M=8192, and 416 individual targets in four complete families; the observed maximum was recomputed at 60 decimal digits",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "C++ long double with compensated signed and absolute sums, stable confluent divided differences, and an independent mpmath 60-decimal recomputation at the observed maximum",
+    "solver": "complete ordered enumeration of every quartic target path A+B-C=Q, with analytic repeated-rate derivatives in the three-simplex heat kernel",
+    "tolerances": {
+      "duplicateRuns": "relative discrepancy below 1e-15",
+      "highPrecisionComparison": "relative discrepancy below 1e-12",
+      "presentationTables": "validate_data.py recomputes target fractions and checks the pinned maximum at relative tolerance 1e-15"
+    },
+    "scientificWallTimeSeconds": 26.61,
+    "monitoredWallTimeSeconds": 27.35,
+    "samplingWallTimeSeconds": 0.020823,
+    "plotWallTimeSeconds": 8.31,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.1,
+      "progressLogs": [
+        "research/certificates/r061/scaling-progress.ndjson",
+        "research/certificates/r061/extended-progress.ndjson",
+        "research/certificates/r061/all-targets-progress.ndjson",
+        "research/certificates/r061/high-precision-progress.ndjson"
+      ],
+      "resourceLogs": [
+        "research/certificates/r061/scaling-resources.csv",
+        "research/certificates/r061/extended-resources.csv",
+        "research/certificates/r061/all-targets-resources.csv",
+        "research/certificates/r061/high-precision-resources.csv",
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 16,
+    "maximumObservedCpuPercent": 1591.3,
+    "maximumObservedRssMiB": 265.719,
+    "plotMaximumObservedCpuPercent": 100.6,
+    "plotMaximumObservedRssMiB": 181.125
+  },
+  "environment": {
+    "python": "3.12.13 for sweeps and 3.9.6 for the aggregate audit",
+    "packagesLock": "requirements-research.txt",
+    "matplotlib": "3.11.1",
+    "mpmath": "1.3.0",
+    "compiler": "Apple clang C++20"
+  },
+  "data": [
+    {
+      "path": "target-profiles.csv",
+      "format": "csv",
+      "schema": "416 finite observations with L, M, target, normalized target position, normalized signed ratio, cancellation condition, ordered path count, and classification.",
+      "bytes": 40931,
+      "sha256": "dc3287a4f85cc14e0d3ee1846faa46803d0470ee110db7875055ee38a1d4d1a4"
+    },
+    {
+      "path": "edge-scaling.csv",
+      "format": "csv",
+      "schema": "48 distinct edge-target observations with L, M, target, normalized signed ratio, cancellation condition, ordered path count, and classification.",
+      "bytes": 4651,
+      "sha256": "4d1f7e436feb3b4db55f33ef3b1a1e5a153aaf5cc2b0a1355eae9911ddc7ae97"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "Pinned certificate source, hashes of all four finite source tables, row counts, observed maximum, high-precision comparison, environment, and sampling wall time.",
+      "bytes": 1809,
+      "sha256": "8bb6903f995fd663cc00f6ee44ed5befd004ad90cc8c8105155d63782aeee1de"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for deterministic presentation-table preparation.",
+      "bytes": 289,
+      "sha256": "c0bd2d545394dc48b57e4285962e1b070f198332bf0b278bb810405f413a5b9f"
+    },
+    {
+      "path": "plot-resources.csv",
+      "format": "csv",
+      "schema": "Process-tree resource samples for the final journal figure render.",
+      "bytes": 5183,
+      "sha256": "54d883017a41edb135e98a0da8819788b27f3f7720d0759e15163c640178c4f0"
+    }
+  ],
+  "sourceData": [
+    {
+      "location": "research/certificates/r061",
+      "fileName": "quartic-target-exploration.json",
+      "bytes": 2944,
+      "sha256": "a80f9e943dfc47849368d4be5a2853bd9c5de998f0f8d3127a9a2a8b23f7afd8",
+      "extractionCommand": "prepare_data.py pins the aggregate audit and independently selects every complete-profile and edge-target presentation row."
+    },
+    {
+      "location": "research/certificates/r061",
+      "fileName": "all-targets-summary.json",
+      "bytes": 468502,
+      "sha256": "9c7862672d02a32479ebc0aa0c36d39604c34d9f5f52f706f6b72cd8b5ee4421",
+      "extractionCommand": "prepare_data.py copies all 416 result records into target-profiles.csv and recomputes each normalized target position."
+    },
+    {
+      "location": "research/certificates/r061",
+      "fileName": "scaling-summary.json",
+      "bytes": 34320,
+      "sha256": "1f1450c6079df48d6760af7758e24036bd3514c2269c95f6661fb4c4e3c561fc",
+      "extractionCommand": "prepare_data.py selects all 30 baseline edge records and merges them into edge-scaling.csv."
+    },
+    {
+      "location": "research/certificates/r061",
+      "fileName": "extended-summary.json",
+      "bytes": 21089,
+      "sha256": "2aaa2295b2714a5a868a7b40e094dc37f9ee1f3af5ac79b31ad724a0df38dc97",
+      "extractionCommand": "prepare_data.py selects all 18 extended edge records and merges them into edge-scaling.csv."
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "0e25a9ab52b3d91af1e6641d1e72d0373f794fede3a3ed4544165b2f627d8202",
+    "command": "MPLCONFIGDIR=tmp/r061-mplconfig python3 figures/r061-quartic-target/fig-r061-quartic-target/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "sha256": "92088ef7d0e9ce3256457d43d40174a38ee72d14b7a43ee43aa7be86159477cb"
+      },
+      {
+        "path": "figure.svg",
+        "sha256": "ad59b34e1f45f66a68ac7747bb435129a6e52acf1c599cf59783254164f042c7"
+      },
+      {
+        "path": "figure.png",
+        "dpi": 600,
+        "pixels": "4204 by 2480",
+        "sha256": "0de2cc8ace0f5c4e91b57df09acd15e6abf8dad7bb0fbfe7cfb737965f09b409"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "R0.61 给出完整四次目标系数公式；461 个不同参数三元组、约 74.95 亿条有序路径全部显示四次项与二次目标反相，观测最大归一化比值约为 0.001329，但一致界仍待证明。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 105 mm to rounding and the 600 dpi PNG is 4204 by 2480 pixels. The color export, true grayscale conversion, and Poppler-rendered PDF page were inspected at final size. Distinct line styles and markers remain distinguishable in grayscale. The logarithmic profile scale, observed-maximum annotation, finite-evidence subtitle, and next-theorem boundary are legible and do not collide. Four Type0 font resources resolve to embedded descendants with font streams. Extracted PDF text contains the figure title and 1,109 characters. validate_data.py independently checks all 464 presentation rows against the pinned finite certificate."
+  }
+}

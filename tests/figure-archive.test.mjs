@@ -102,6 +102,10 @@ const r060ManifestUrl = new URL(
   "../figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard/manifest.json",
   import.meta.url,
 );
+const r061ManifestUrl = new URL(
+  "../figures/r061-quartic-target/fig-r061-quartic-target/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -824,6 +828,40 @@ test("archives the formal R0.60 invariant-shear Picard figure", async () => {
   assert.equal(manifest.computation.kind, "exact-audit");
   assert.equal(manifest.computation.monitoring.formalSamples, 8);
   assert.equal(manifest.computation.monitoring.samplingSamples, 2);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.61 finite quartic-target figure", async () => {
+  const manifest = JSON.parse(await readFile(r061ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r061-quartic-target");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "895543f44b3c83c777014eefc9594f95b3b9d829",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "044dea434aba9448c2bfcf1f999992f9b96e3e5b",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "737a9e5645c3f4b07b0ea695f0c216eb1c14808f",
+  );
+  assert.match(manifest.supportedClaim, /461 distinct archived ratios/);
+  assert.match(manifest.supportedClaim, /finite observations/);
+  assert.match(manifest.supportedClaim, /not all-index/);
+  assert.equal(manifest.computation.kind, "data-analysis");
+  assert.equal(manifest.compute.maximumObservedCpuPercent, 1591.3);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 105);
   assert.deepEqual(

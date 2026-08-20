@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -14,6 +15,7 @@ const highPrecisionUrl = new URL(
   "../research/quartic_target_high_precision.py",
   import.meta.url,
 );
+const certificateRoot = new URL("../research/certificates/r061/", import.meta.url);
 
 test("states the exact R0.61 quartic formula and its numerical boundary", async () => {
   const [note, scanner, highPrecision] = await Promise.all([
@@ -88,4 +90,41 @@ test("reproduces a small complete quartic target scan", async (t) => {
     Math.abs(result.normalizedSignedRatio - 0.0007328372347447609) < 5e-18,
   );
   assert.match(result.classification, /not a proof/);
+});
+
+test("archives the source-locked finite R0.61 exploration", async () => {
+  const [auditText, highText, sumsText] = await Promise.all([
+    readFile(new URL("quartic-target-exploration.json", certificateRoot), "utf8"),
+    readFile(new URL("high-precision.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const audit = JSON.parse(auditText);
+  const high = JSON.parse(highText);
+
+  assert.equal(audit.status, "passed");
+  assert.equal(Object.values(audit.checks).every(Boolean), true);
+  assert.equal(audit.git.sourceCommit, "895543f44b3c83c777014eefc9594f95b3b9d829");
+  assert.equal(audit.coverage.evaluationsIncludingDuplicates, 464);
+  assert.equal(audit.coverage.distinctParameterTargetTriples, 461);
+  assert.equal(audit.coverage.distinctParameterPairs, 49);
+  assert.equal(audit.coverage.orderedQuarticPathsAcrossDistinctTriples, 7494536238);
+  assert.equal(
+    audit.observations.maximumNormalizedSignedRatio.value,
+    0.0013286562612066827,
+  );
+  assert.equal(high.decimalPrecision, 60);
+  assert.equal(high.orderedQuarticPaths, 399300);
+  assert.match(audit.classification, /not all-index theorems/);
+
+  const entries = sumsText.trim().split("\n").map((line) => {
+    const match = line.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "Malformed SHA256SUMS line: " + line);
+    return { expected: match[1], file: match[2] };
+  });
+  assert.equal(entries.length, 15);
+  for (const entry of entries) {
+    const payload = await readFile(new URL(entry.file, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.expected, entry.file + " hash mismatch");
+  }
 });

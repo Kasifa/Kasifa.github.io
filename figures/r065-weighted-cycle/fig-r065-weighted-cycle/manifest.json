@@ -1,0 +1,119 @@
+{
+  "analyticalQuestion": "What happens to the complete heat-integrated quartic scalar along the explicit 0100 target cycle through r=24?",
+  "caption": {
+    "chineseSiteSummary": "R0.65 \u7528\u7cbe\u786e\u77e9\u548c\u6709\u7406\u4f59\u9879\u8ba4\u8bc1\u4e86\u70ed\u52a0\u6743\u5468\u671f\u65cf\u5728 r=14 \u53d8\u53f7\u3001\u968f\u540e\u5341\u4e2a\u56db\u5c42\u5757\u7edd\u5bf9\u589e\u957f\u5747\u8d85\u8fc7 16\uff1b\u6709\u9650\u8bc1\u4e66\u4e0d\u7b49\u4e8e\u6e10\u8fd1\u5b9a\u7406\u3002",
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "dataSufficiency": "Twenty-four consecutive cycle counts, twenty-three ratio intervals, exact integer moments through degree 96, an order-48 rational Taylor enclosure, and four direct-path cross-checks.",
+    "family": "two coordinated ordered-axis diagnostics",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size",
+    "nonColorEncoding": "open circles versus filled squares, zero and dashed threshold rules, direct annotations, and a shaded certified run",
+    "outputFootprint": "double-column journal figure at 178 by 96 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "palettePolicy": "hard two-root cap: blue for positive/structural data, rust for negative/supercritical emphasis, neutral references",
+    "takeaway": "The heat-integrated scalar changes phase and exhibits a ten-block certified supercritical run, while the finite inference boundary remains explicit.",
+    "variants": [
+      "signed normalized coefficient on a symmetric-log scale",
+      "absolute four-level block ratio on a logarithmic scale with two exact references"
+    ]
+  },
+  "computation": {
+    "command": "python3 research/quartic_weighted_cycle_audit.py --profile publication --max-r 24 --order 48 --time-series-terms 120 --output research/certificates/r065/weighted-cycle-audit.json",
+    "configuration": "48 sign/carry states, bivariate raw moments through total degree 96, target word 0100 repeated 24 times, order-48 simplex series, and exact rational time and remainder bounds",
+    "kind": "exact-audit",
+    "monitoring": {
+      "enabled": true,
+      "failedAttempts": [],
+      "reportIntervalSeconds": 0.1,
+      "resourceLogs": [
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ]
+    },
+    "precision": "Python integers and Fractions for certified endpoints; decimal values only for display",
+    "randomSeed": "not applicable; no randomness",
+    "solver": "exact binomial moment transport, complete-homogeneous rate polynomials, and rational interval evaluation",
+    "wallTimeSeconds": 0.6667195409931094
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "host": "local Mac workstation",
+    "maximumObservedFinalPlotRssMiB": 158.844,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-20T18:57:16+08:00",
+  "data": [
+    {
+      "bytes": 14762,
+      "format": "csv",
+      "path": "cycle-enclosures.csv",
+      "schema": "24 exact finite-scale intervals with signs, normalized coefficients, Taylor tails, and 23 certified block-ratio intervals",
+      "sha256": "f37e80169afc83886fcf2c663a77b318a228f9c35ffb3fb316cbed6f8280c02b"
+    },
+    {
+      "bytes": 957,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "pinned source and certificate commits, certificate hash, final interval summary, environment, and extraction time",
+      "sha256": "ea89c34bf59cf448792f5a3cdd2ece96ee6f61b53ccb7cc5ecc14f1258c0a0c7"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r065-mplconfig python3 figures/r065-weighted-cycle/fig-r065-weighted-cycle/plot.py",
+    "heightMillimetres": 96,
+    "outputs": [
+      {
+        "bytes": 30044,
+        "path": "figure.pdf",
+        "sha256": "4dd0844f99c8fecfb80f85926ada68783313389d8d7b1d42bb64bb0ebc0f8419"
+      },
+      {
+        "bytes": 83695,
+        "path": "figure.svg",
+        "sha256": "8559e6b70f5d167ba5f7b1d1c03942766e3baf2245ef12cef7ada4099c5e9857"
+      },
+      {
+        "bytes": 416917,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2267",
+        "sha256": "a09f902a0a049e73aae8cd181836bddd4248b11086508bd6b1ee1ff2605d8038"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "scriptSha256": "dc19ba24f8ea43aa1c1473da6ea98d6f55fcf27dcd72c2e0ee7e395c7d557b1f",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r065-weighted-cycle",
+  "git": {
+    "certificateCommit": "8e2a6eb43bf3536fb4d66d4f72047a9cbfc7cf8d",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "5001f4c9a554b6b83172ae66e90a7cab9e163875"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "notes": "The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected at 178 by 96 mm. Sign markers, threshold lines, annotations, and the finite inference boundary remain legible.",
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [],
+  "status": "formal",
+  "supportedClaim": "Exact integer moments and rational simplex enclosures certify that the sign changes at r=14; all ten block transitions r=15 through r=24 have absolute growth above 16; the final ratio lies in (25.29,25.30). This finite certificate does not prove asymptotic growth or failure of a uniform quartic estimate."
+}

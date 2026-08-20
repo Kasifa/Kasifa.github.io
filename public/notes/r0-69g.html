@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69G：恢复周期 Biot–Savart 有符号拉伸核，并证明仅依赖方向的环带相消对非负涡量模长集中不稳健。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69G｜有符号涡量核的模长耦合障碍">
+  <meta property="og:description" content="角核可以在方向上精确相消，但非负涡量模长能够选择符号瓣；有用条件必须耦合方向与模长。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69g-signed-kernel.png">
+  <title>R0.69G｜有符号涡量核的模长耦合障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.66">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.66"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#kernel">有符号核</a><a href="#barrier">稳健性障碍</a><a href="#literature">文献边界</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69G · 有符号涡量拉伸几何</div>
+        <h1>方向上的相消，<br>会被模长集中立即破坏</h1>
+        <p class="lead">我恢复了周期 Biot–Savart 表示中的有符号方向核，并检查了最直接的环带相消方案。结论是严格的负结果：只要涡量模长仍可作为非负权重集中在某个符号瓣，方向核的正负振荡就不能提供一致增益。下一步必须控制模长—方向的真实耦合，而不是只控制方向图样。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69G 完成</span><strong>严格结构障碍</strong><p>版本 v0.69G · 2026-08-21</p><p>形式检查：14 / 14 通过</p><p>周期 Fourier 模态：10 个</p><p>模长偏置节点：4 组</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#kernel">01 · 周期有符号核</a></li>
+        <li><a href="#barrier">02 · 模长耦合障碍</a></li>
+        <li><a href="#model">03 · 四瓣模型</a></li>
+        <li><a href="#literature">04 · 文献边界</a></li>
+        <li><a href="#meaning">05 · 对总问题的意义</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 下一分支</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified structural no-go</div><h2>仅依赖方向的有符号环带平均不能一致压低拉伸核</h2>
+          <p>固定一个不接触原点的环带 \(A\)，冻结 \((x,t)\)，并令</p>
+          <div class="equation">\[
+            K_{x,t}(z)=
+            \frac{D(\widehat z,\xi(x+z,t),\xi(x,t))}{|z|^3}.
+          \]</div>
+          <p>对所有非负单位质量权重，严格恒等式是</p>
+          <div class="equation result">\[
+            \boxed{
+            \sup_{\substack{g\ge0\\ \int_Ag=1}}
+            \left|\int_AK_{x,t}(z)g(z)\,dz\right|
+            =\|K_{x,t}\|_{L^\infty(A)}.}
+          \]</div>
+          <p>因此，角核即使有强烈的正负相消，只要模长权重能够偏向一个符号瓣，最坏情形仍恢复核的完整上确界。任何真正有用的条件都必须控制实际配对 \((\xi,|\omega|)\)，或利用
+          \(\nabla\cdot(|\omega|\xi)=0\) 与动力学施加的耦合。</p>
+          <div class="grid">
+            <div class="status"><span>EXACT · TORUS</span><strong>周期 Green–Hessian 表示</strong><p>傅里叶乘子与直接应变逐模态一致。</p></div>
+            <div class="status"><span>EXACT · DUALITY</span><strong>正权重上确界</strong><p>符号变化本身不给一致常数改进。</p></div>
+            <div class="status"><span>CERTIFIED · MODEL</span><strong>四瓣角核</strong><p>均匀模长相消，偏置模长立即产生拉伸。</p></div>
+            <div class="status"><span>DECISION · NEGATIVE</span><strong>停止仅依赖方向的分支</strong><p>转向自动耦合模长与几何的量。</p></div>
+          </div>
+        </section>
+
+        <section id="kernel"><div class="section-no">01 / Periodic signed kernel</div><h2>周期局部奇性正是 Constantin 的方向几何因子</h2>
+          <p>在 \(|\omega(x)|>0\) 的位置，记
+          \(\xi=\omega/|\omega|\)、\(S=(\nabla u+(\nabla u)^T)/2\)、
+          \(\alpha=\xi\cdot S\xi\)。若平均为零的周期 Green 函数满足
+          \(-\Delta G=\delta_0-(2\pi)^{-3}\)，则</p>
+          <div class="equation result">\[
+            \boxed{
+            \alpha(x)=\xi_i(x)\xi_\ell(x)\varepsilon_{ijk}
+            \operatorname{p.v.}\!\int_{\mathbb T^3}
+            \partial_{\ell j}G(z)\,\omega_k(x+z)\,dz.}
+          \]</div>
+          <p>在小于注入半径的球内，\(G(z)=(4\pi|z|)^{-1}+H(z)\)，其中 \(H\) 光滑。取局部截断
+          \(\chi\) 后，</p>
+          <div class="equation">\[
+            \alpha(x)=\frac{3}{4\pi}\operatorname{p.v.}\!\int
+            \chi(z)D(\widehat z,\xi(x+z),\xi(x))
+            \frac{|\omega(x+z)|}{|z|^3}\,dz
+            +\mathcal R_\chi\omega(x),
+          \]</div>
+          <p>其中</p>
+          <div class="equation result">\[
+            \boxed{D(e_1,e_2,e_3)=
+            (e_1\cdot e_3)\bigl(e_1\cdot(e_2\times e_3)\bigr),}
+          \]</div>
+          <p>且光滑余项满足
+          \(|\mathcal R_\chi\omega(x)|\le C_\chi\|\omega\|_{L^1}\)。这一步是已知几何拉伸公式在周期域的局部写法，不主张新颖性。</p>
+        </section>
+
+        <section id="barrier"><div class="section-no">02 / Positive-weight robustness</div><h2>证明只需要 \(L^1_+\) 与 \(L^\infty\) 的对偶端点</h2>
+          <p>对任意 \(K\in L^\infty(A)\) 和 \(g\ge0\)、
+          \(\int_Ag=1\)，</p>
+          <div class="equation">\[
+            \left|\int_AKg\right|
+            \le\int_A|K|g\le\|K\|_\infty.
+          \]</div>
+          <p>反方向上，在 \(K\) 接近其正上确界或负下确界的正测度集合上取归一化示性函数，就能任意逼近
+          \(\|K\|_\infty\)。这证明了上面的等式。</p>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这个论证没有说明每个选择权重都能实现为光滑散度为零的涡量，更没有说明它能出现在 Navier–Stokes 解上。它排除的是一种证明架构：只读取方向核，同时把模长当作任意非负权重，却仍希望从符号振荡得到一致增益。</div>
+        </section>
+
+        <section id="model"><div class="section-no">03 / Four-lobe model</div><h2>均匀平均为零，不等于对实际模长稳健</h2>
+          <p>固定
+          \(\xi(x)=e_3\)、
+          \(\xi(x+z)=(\sin\varphi,0,\cos\varphi)\)。单位球面上的核为</p>
+          <div class="equation">\[
+            D=-\sin\varphi\,\widehat z_2\widehat z_3,
+            \qquad
+            \|D\|_\infty=\frac{|\sin\varphi|}{2},
+            \qquad
+            \frac1{4\pi}\int_{\mathbb S^2}|D|\,d\sigma
+            =\frac{2|\sin\varphi|}{3\pi}.
+          \]</div>
+          <p>均匀角平均恰好为零。可是对
+          \(g_\eta=1+\eta\operatorname{sgn}D\)、\(0\le\eta&lt;1\)，</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\int_{\mathbb S^2}Dg_\eta\,d\sigma}
+            {\int_{\mathbb S^2}g_\eta\,d\sigma}
+            =\eta\frac{2|\sin\varphi|}{3\pi}.}
+          \]</div>
+          <p>任意正偏置都会把精确相消变成正的有符号平均。正式附图把四个符号瓣与这条线性响应放在同一张图中。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">04 / Literature boundary</div><h2>取绝对值会回到经典方向相干；环带与交换子已有近期预印本</h2>
+          <p>经典估计
+          \(|D(e_1,e_2,e_3)|\le|\sin\angle(e_2,e_3)|\) 导向 Constantin–Fefferman 的方向相干机制。后续工作把空间正则度降到 \(1/2\)-Hölder，并把条件局部化到任意小的抛物柱。因此，只给方向场加逐点模连续条件会重述已知正则性准则。</p>
+          <p>2026 年还有两篇与这里很接近的 arXiv 预印本：一篇研究对数加权 BMO 交换子，另一篇研究滤波拉伸、环带重分配与条件 Carleson 闭合。本页没有独立验证它们的全部证明，也不把它们当作已审稿定理。今后若再次进入交换子或环带打包，必须逐条比较。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Value for the main problem</div><h2>结果没有给出正则性，但把缺失信息定位得更准确</h2>
+          <p>R0.69F 表明无符号标量预解只能恢复经典尺度；R0.69G 进一步表明，单独恢复方向符号仍不够。需要保留的是方向和模长怎样由散度约束、输运、扩散与压力共同耦合。</p>
+          <p>这缩小了下一步：不再尝试仅依赖方向的环带平均，而是检查应变方程中的压力 Hessian 是否对主拉伸方向提供可量化的非局部补偿。</p>
+          <p>本页没有证明奇性存在或不存在，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>附图显示“相消”怎样被非负模长选择破坏</h2>
+          <figure><img src="/figures/r0-69g-signed-kernel.svg" alt="R0.69G 有符号涡量方向核与模长偏置响应"><figcaption>图 R0.69G。左图是
+          \(D=-\sin(0.73)\widehat z_2\widehat z_3\) 的四瓣角核：均匀球面平均为零，实线、虚线与正负号保证灰度打印可区分。右图给出模长偏置
+          \(g_\eta=1+\eta\operatorname{sgn}D\) 后的精确响应
+          \(\eta 2\sin(0.73)/(3\pi)\)；空心点是证书中的球面积分节点。仅依赖方向的相消不对非负模长集中稳健。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69g-signed-kernel.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69g-signed-kernel.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next signed channel</div><h2>R0.69H 转向压力 Hessian 与主应变方向</h2>
+          <p>应变满足</p>
+          <div class="equation">\[
+            (\partial_t+u\cdot\nabla-\Delta)S
+            +S^2+\Omega^2+\nabla^2p=0.
+          \]</div>
+          <div class="proof"><strong>R0.69H 的通过标准。</strong>&nbsp;推导压力 Hessian 在主拉伸方向上的精确非局部表示，分离局部自放大、涡量旋转与压力补偿，并寻找一个尺度不变、不是现有 Beale–Kato–Majda 或方向相干条件改写的有符号预算。若压力项只能用绝对值 Calderón–Zygmund 上界控制，则记录负结果并继续。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>ae328c0b02905bf48d12468ea11bbd27e3664959</code>，形式证书提交为 <code>fed7a927c5732ba92e9ca70bff0edf43a463a7aa</code>，最终附图提交为 <code>afd9a66af784dbfd2d4bb950a2f16dfc471a8b6c</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>c01d2884f8d5056125b5562ab1e8cffbbe558d506c49299e4b1b9a158b4f69c1</code>，形式证书 SHA-256 为 <code>9731713f62632dddfd2da71280c1543c889c5d69e841cd9950c7641614493af8</code>。14 项检查全部通过；监控运行约 0.3 秒，峰值常驻内存约 76.4 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>d8c4f9fefb1400b78282a6904fa6a2de6dc28a29a27f33061a456e280f8a2707</code>、<code>8a4c7ca19224f6eb06c9a8b29b1ff54eb3cbc28e7156b73428a458315f6722a4</code> 与 <code>d66dc6ebc74db47051eb817ea72da0494d45be98b15fc8e104f2f7894f43c976</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069g">查看 R0.69G 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/signed_vorticity_kernel_robustness_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069g-signed-kernel/fig-r069g-signed-kernel">查看期刊附图包</a></p>
+          <p>主要文献：<a href="https://iumj.org/article/3627/">Constantin–Fefferman（1993）</a> · <a href="https://doi.org/10.1007/s00220-008-0726-8">Grujić（2009）</a> · <a href="https://arxiv.org/abs/2606.27560">Yu（2026，预印本）</a> · <a href="https://arxiv.org/abs/2607.08866">Grujić（2026，预印本）</a>。</p>
+          <p>声明边界：本页证明的是任意非负权重下、仅依赖方向的稳健性障碍，并在一个有限 Fourier 场上验证周期乘子。它不证明任意选择权重可由散度为零的涡量实现，不验证两篇 2026 预印本的完整证明，不给出 Navier–Stokes 正则性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69G · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

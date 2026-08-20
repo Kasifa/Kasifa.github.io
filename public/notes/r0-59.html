@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.59：一个张量 Rudin--Shapiro 高频壳可以在完整第一 Navier--Stokes Picard 迭代中同时维持随尺度增长的相干低频集合。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.59｜多输出临界饱和">
+  <meta property="og:description" content="多输出数量和各向同性平方函数仍不自动产生额外壳衰减；这是第一迭代障碍，不是范数膨胀或正则性证明。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-59-multi-output-critical-saturation.png">
+  <title>R0.59｜多输出临界饱和</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}.figure-print{display:none}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:7.55pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:5px 0;padding:5px 7px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:3px 0}.refs li{padding:3px 4px 3px 35px;font-size:7pt;line-height:1.28}.figure-screen{display:none}.figure-print{display:block}#figure figure{width:95%;margin:5px auto;padding:4px 0}#figure figcaption{margin-top:4px;font-size:6.8pt;line-height:1.28}#reproduce{margin-bottom:0}#reproduce .proof code{font-size:3.8pt;line-height:1.0}}</style>
+  <script defer src="/i18n-en.js?v=0.43"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#packet">频率包</a><a href="#coefficient">精确系数</a><a href="#critical">临界饱和</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.59 · 结构化低频集合</div>
+        <h1>一个压平高频壳，<br>可以同时维持越来越多的相干低频</h1>
+        <p class="lead">我把 R0.58 的单低模构造扩展为一个双参数、单壳、实值无散的张量 Rudin--Shapiro 频率包。对任意 dyadic \(L,M\)，令 \(H=4LM\)：输入全部位于 \([H,2H)\)，高低分离为 \(H/M=4L\)，目标低频数为 \(M\)。同一符号阵列把输入热峰值压到 \(O(\sqrt{LM})\)，却在每个目标模上平方为正。完整第一 Navier--Stokes Picard 输出在热 \(\dot B^{-1}_{\infty,\infty}\) 与周期 \(BMO^{-1}\) 中仍与输入范数平方同阶。这关闭了“多输出自动带来平方函数缺陷”的最小逃生路线，但不控制高阶余项。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全指标多输出定理已证明</span><strong>24 项检查全通过</strong><p>版本 v0.59 · 2026-08-20</p><p>频率实例：4,190,209 个</p><p>交叉配对：29,822,521 个</p><p>张量前缀：16,760,836 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#packet">01 · 单壳频率包</a></li>
+        <li><a href="#quadratic">02 · 完整二次项</a></li>
+        <li><a href="#coefficient">03 · 多输出系数</a></li>
+        <li><a href="#flattening">04 · 张量相位压平</a></li>
+        <li><a href="#projection">05 · 输出投影</a></li>
+        <li><a href="#critical">06 · 两种临界饱和</a></li>
+        <li><a href="#energy">07 · 能量账本</a></li>
+        <li><a href="#figure">08 · 期刊附图</a></li>
+        <li><a href="#meaning">09 · 研究价值</a></li>
+        <li><a href="#next">10 · R0.60 方向</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里排除多输出必然增益，不推出完整非线性行为</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL INDEX</span><strong>双参数定理已闭合</strong><p>\(L,M\) 可独立增长，目标输出数和高低分离可同时趋于无穷。</p></div>
+            <div class="status"><span>FORMAL · FULL QUADRATIC</span><strong>不是人工截取交叉项</strong><p>一个初值的完整第一 Picard 二次项恰好只剩所需通道。</p></div>
+            <div class="status"><span>FORMAL · SATURATED</span><strong>两种临界热范数均饱和</strong><p>归一化比值具有与 \(H,L,M\) 无关的严格正下界。</p></div>
+            <div class="status"><span>OPEN · REMAINDER</span><strong>三阶及更高项仍开放</strong><p>第一输出是否主导真实解，尚无统一余项估计。</p></div>
+          </div>
+          <p>本页仍与 Koch--Tataru 小 \(BMO^{-1}\) 数据适定性相容：把初值归一化为大小 \(\varepsilon\) 后，第一非线性输出只是 \(O(\varepsilon^2)\)。常数阶饱和排除的是额外趋零壳因子，不是临界双线性有界性本身。</p>
+        </section>
+
+        <section id="packet"><div class="section-no">01 / One-shell packet</div><h2>把一个高壳切成 \(M\) 个长度为 \(L\) 的符号块</h2>
+          <p>令 \(L,M\) 为 dyadic 正整数，\(H=4LM\)。取两组 Rudin--Shapiro 符号 \(a_n,b_r\)，并令 \(c_{r,n}=b_ra_n\)。对 \(0\le r&lt;M\)、\(0\le n&lt;L\)，定义</p>
+          <div class="equation">\[
+            R_{r,n}=H+rL+n,\qquad p_{r,n}=(R_{r,n},0,0),\qquad
+            q_{r,n}=(-R_{r,n},r+1,0).
+          \]</div>
+          <p>在 \(p_{r,n}\) 放置 \(Ac_{r,n}e_2\)，在 \(q_{r,n}\) 放置 \(Ac_{r,n}e_3\)，再加入共轭伙伴。所得 \(u_0=U+V\) 实值、光滑且无散，并满足</p>
+          <div class="equation result">\[
+            \boxed{H\le |\xi|&lt;2H,\qquad |K_M|=M,\qquad H/M=4L.}
+          \]</div>
+          <p>因此目标数量 \(M\) 与分离因子 \(4L\) 可以同时增长，而输入仍位于一个高频壳。</p>
+        </section>
+
+        <section id="quadratic"><div class="section-no">02 / Complete quadratic term</div><h2>极化使完整第一 Picard 项精确退化为一个通道</h2>
+          <div class="equation result">\[
+            U\cdot\nabla U=V\cdot\nabla V=V\cdot\nabla U=0,
+            \qquad (u_0\cdot\nabla)u_0=(U\cdot\nabla)V.
+          \]</div>
+          <p>这些恒等式在热演化后仍成立，所以这里分析的是一个初值的完整第一非线性输出。对目标 \(k_m=(0,m,0)\)，方程 \(p_{r',n'}+q_{r,n}=k_m\) 强迫 \(R_{r',n'}=R_{r,n}\)，从而只保留唯一对角匹配；交换方向的系数则逐项为零。</p>
+        </section>
+
+        <section id="coefficient"><div class="section-no">03 / Exact coefficients</div><h2>全部 \(M\) 个目标输出都有同一物理相位</h2>
+          <p>在 \(t_H=(\log2)/(2H^2)\)，目标频率 \(k_m\) 的正侧 Fourier 系数为 \(-iA^2d_m(t_H)e_3\)，其中</p>
+          <div class="equation result">\[
+            \boxed{d_m(t)=m e^{-m^2t}\sum_{n=0}^{L-1}
+            \frac{1-e^{-2R_{m-1,n}^2t}}{2R_{m-1,n}^2}.}
+          \]</div>
+          <p>热分母仍是精确恒等式，而且对每个 \(1\le m\le M\) 都有</p>
+          <div class="equation result">\[
+            \boxed{\frac{2mL}{25H^2}&lt;d_m(t_H)\le\frac{mL}{2H^2}.}
+          \]</div>
+          <p>若 \(\Pi_0\) 表示对 \(x_1\) 平均，实值目标输出正好是</p>
+          <div class="equation">\[
+            \Pi_0\mathcal D_{t_H}(u_0,u_0)
+            =2A^2\sum_{m=1}^M d_m(t_H)\sin(mx_2)e_3.
+          \]</div>
+        </section>
+
+        <section id="flattening"><div class="section-no">04 / Tensor flattening</div><h2>一个张量符号序列同时压平两个输入</h2>
+          <p>按连续载频 \(R_{r,n}\) 排列 \(c_{r,n}\)。任意终止于第 \(J\) 块内部的二维前缀可分解为一个完整 \(L\) 多项式乘一个 \(M\) 前缀，再加一个 \(L\) 前缀。Rudin--Shapiro 前缀界因此给出</p>
+          <div class="equation result">\[
+            \boxed{\sup_{\text{tensor prefixes}}|S|
+            \le C_T\sqrt{LM},\qquad C_T=(1+\sqrt2)(2+\sqrt2).}
+          \]</div>
+          <p>对递减热权做 Abel 求和，得到</p>
+          <div class="equation result">\[
+            \boxed{\|e^{s\Delta}u_0\|_\infty
+            \le4C_TA\sqrt{LM}\,e^{-H^2s}.}
+          \]</div>
+          <p>压平作用覆盖整个 \(LM\) 阵列；与此同时，每个目标模的匹配乘积都是 \(c_{r,n}^2=1\)，所以 \(M\) 个输出没有符号损失。</p>
+        </section>
+
+        <section id="projection"><div class="section-no">05 / Projection</div><h2>杂散频率不能抵消目标下界</h2>
+          <p>\(\Pi_0\) 是 \(x_1\) 平移的条件期望，与热流交换，并在 \(L^\infty\) 中压缩。因此它在热 \(\mathcal B^{-1}\) 中也是压缩映射。对周期 heat--Carleson \(BMO^{-1}\)，Jensen 不等式把投影后球平均控制为原场在平移球上的平均，仍有</p>
+          <div class="equation result">\[
+            \boxed{\|\Pi_0f\|_{\mathcal B^{-1}}\le\|f\|_{\mathcal B^{-1}},
+            \qquad \|\Pi_0f\|_{BMO^{-1}_{\rm per}}\le\|f\|_{BMO^{-1}_{\rm per}}.}
+          \]</div>
+          <p>所以目标投影的下界就是完整第一 Picard 输出的下界，而不是由投影人为制造的信号。</p>
+        </section>
+
+        <section id="critical"><div class="section-no">06 / Critical saturation</div><h2>输出数量增长后，两个临界比值仍不随壳消失</h2>
+          <p>输入满足</p>
+          <div class="equation">\[
+            \|u_0\|_{\mathcal B^{-1}}\le\frac{\sqrt{2/e}C_TA}{\sqrt H},
+            \qquad
+            \|u_0\|_{BMO^{-1}_{\rm per}}\le\frac{\sqrt2C_TA}{\sqrt H}.
+          \]</div>
+          <p>在额外热时间 \(1/(4M^2)\) 和空间点 \(x_2=1/(2M)\) 评估目标和，并在半径 \(1/(8M)\) 的球上建立同号下界，分别得到</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\|\mathcal D_{t_H}(u_0,u_0)\|_{\mathcal B^{-1}}}
+            {\|u_0\|_{\mathcal B^{-1}}^2}
+            \ge\frac{e^{3/4}}{1200C_T^2},\quad
+            \frac{\|\mathcal D_{t_H}(u_0,u_0)\|_{BMO^{-1}_{\rm per}}}
+            {\|u_0\|_{BMO^{-1}_{\rm per}}^2}
+            \ge\frac{e^{-1/64}}{6400C_T^2}.}
+          \]</div>
+          <p>两个常数都独立于高壳 \(H\)、高低分离 \(L\) 和输出数量 \(M\)。因此仅靠输出多重性、频率分离和各向同性第一迭代临界范数，不能得到额外壳衰减。</p>
+        </section>
+
+        <section id="energy"><div class="section-no">07 / Energy bookkeeping</div><h2>线性项与第一非线性项在 \(L^2\) 中精确正交</h2>
+          <p>二次输出的第一频率坐标满足 \(|\xi_1|&lt;H/4\) 或 \(|\xi_1|\ge2H\)，而线性热流仍位于 \(H\le|\xi_1|&lt;5H/4\)。所以</p>
+          <div class="equation result">\[
+            \boxed{\langle e^{t_H\Delta}u_0,
+            \mathcal D_{t_H}(u_0,u_0)\rangle_{L^2}=0.}
+          \]</div>
+          <p>第一输出的正 \(L^2\) 能量是 Picard 展开中的四次项；完整能量恒等式必须由线性项与更高 Picard 项的相互作用及耗散共同补偿。这说明能量守恒没有否定当前构造，但也明确要求下一步单独处理高阶余项。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Formal figure</div><h2>目标轮廓、双参数塌缩与张量相位压平统一归档</h2>
+          <figure>
+            <img class="figure-screen" src="/figures/r0-59-multi-output-critical-saturation.svg" alt="R0.59 多输出临界饱和的目标系数、热见证量与张量相位压平">
+            <img class="figure-print" src="/figures/r0-59-multi-output-critical-saturation.png" alt="R0.59 多输出临界饱和的目标系数、热见证量与张量相位压平">
+            <figcaption>图 R0.59-1。左图显示全部目标系数为正并落在全指标包络内；中图显示所有目标模之和的热见证量在不同 \(L,M\) 下统一按 \(H^{-1}\) 缩放；右图比较张量 Rudin--Shapiro 与全正相位的空间峰值。PDF、SVG、600 dpi PNG、展示数据、图源、验证脚本、监控、清单和哈希全部归档，并完成彩色、真灰度和 PDF 渲染检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-59-multi-output-critical-saturation.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-59-multi-output-critical-saturation.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">09 / Research value</div><h2>它关闭一类自然策略，但对 Clay 问题的直接价值仍低</h2>
+          <p>R0.59 比 R0.58 更强：输出集合随尺度增长，构造属于一个完整初值的完整第一二次项，杂散模通过范数压缩投影被严格处理，并且能量支撑关系已查清。以后不能再把“单输出例外”或“多输出平方函数自动恢复壳增益”当作未经检验的补救。</p>
+          <p>但这里仍没有任意大光滑有限能量数据的先验界，没有证明第一输出压过三阶及更高项，也没有 \(\mathbb R^3\) 紧支版本。对 Clay 问题的直接价值仍低；它的作用是排除一类过强估计并精确定位下一处必须解决的非线性障碍。</p>
+          <p>独立论文价值暂评为中等候选：单壳、增长输出集、完整第一 Picard 项和周期 \(BMO^{-1}\) 的组合比单模引理更完整，但高到低相干转移与第二迭代分析已有深厚先例。定向检索没有发现完全相同的表述，不等于新颖性证明；正式投稿前仍需更广的系统文献核查。</p>
+        </section>
+
+        <section id="next"><div class="section-no">10 / R0.60</div><h2>下一步直接检验三阶共振与高阶 Picard 余项</h2>
+          <div class="proof"><strong>可证伪问题。</strong>把 R0.59 初值归一化为固定小临界大小后，能否在 \(0\le t\le t_H\) 上对三阶及所有更高 Picard 项建立独立于 \(L,M\) 的总余项界，使第一相干低频输出保持可辨识；若不能，能否显式找出一个三阶共振族，证明第一迭代主导在何处失效？</div>
+          <ol>
+            <li>枚举第三阶树形频率通道，先区分能回流到 \(K_M\) 的共振与远离目标集的非共振项；</li>
+            <li>逐项写出双时间积分分母，并按 \(H,L,M\) 做全指标缩放分类；</li>
+            <li>先证明三阶目标投影的上界或构造同阶下界，再决定是否值得进入全 Picard 级数；</li>
+            <li>同步检查四次能量账本中 \(2\langle u_1,u_3\rangle+\|u_2\|_2^2\) 的补偿结构；</li>
+            <li>只有获得统一余项界，才讨论范数膨胀、解映射行为或更接近完整动力学的结论。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>证明、精确审计、失败锁定记录与期刊图分别固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python3 research/run_with_monitor.py --output research/certificates/r059/resources.csv --interval 0.25 -- python3 research/multi_output_critical_saturation_audit.py --maximum-level 10 --maximum-exhaustive-level 6 --maximum-prefix-level 10 --source-commit f80788625f97a3038c492a6697832a7653bb8b82 --progress --progress-log research/certificates/r059/progress.ndjson --check --pretty --output research/certificates/r059/multi-output-critical-saturation.json</code></div>
+          <p>正式数学源提交为 <code>f80788625f97a3038c492a6697832a7653bb8b82</code>，证书提交为 <code>f935d72f88a39f25f1dd891de0fac7b64ac2bcc2</code>，最终附图源提交为 <code>2fdc90e29bfd02680ca3a0652ffb5aa50a1b2d0c</code>，附图归档提交为 <code>61c9afb8842f963afd6913ce381628b0706ecdff</code>。</p>
+          <p>成功科学审计耗时 72.990616 秒；监控历时 73.048608 秒、采样 271 次，峰值 CPU 为 100.0%，峰值常驻内存为 1,112.469 MiB。没有使用 GPU、随机数或浮点数学判定，24 项检查全部通过。证书 SHA-256 为 <code>88774c0d5647f46700ed499409754f4207fdcef5a0193e5a337e7887eb3c6dce</code>。另有一次全部数学检查通过但提交哈希锁定失败的运行，其监控日志被如实保留，未冒充成功证书。</p>
+          <p><a href="/notes/r0-59.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/multi_output_critical_saturation_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/multi_output_critical_saturation_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r059">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r059-multi-output-critical-saturation/fig-r059-multi-output-critical-saturation">查看期刊附图包</a></p>
+          <h3>已发表基线与方法边界</h3>
+          <ol class="refs">
+            <li>H. Koch 与 D. Tataru，<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf"><em>Well-posedness for the Navier--Stokes equations</em></a>，<em>Advances in Mathematics</em> 157 (2001), 22--35。给出小 \(BMO^{-1}\) 初值的全局适定性与临界 heat--Carleson 组织。</li>
+            <li>J. Bourgain 与 N. Pavlović，<a href="https://arxiv.org/abs/0807.0882"><em>Ill-posedness of the Navier--Stokes equations in a critical space in 3D</em></a>，<em>Journal of Functional Analysis</em> 255 (2008), 2233--2247。给出 \(\dot B^{-1}_{\infty,\infty}\) 的高到低范数膨胀机制。</li>
+            <li>P. Germain，<a href="https://arxiv.org/abs/0806.4525"><em>The second iterate for the Navier--Stokes equation</em></a>，<em>Journal of Functional Analysis</em> 255 (2008), 2248--2264。系统研究第二迭代的有界性边界。</li>
+            <li>M. P. Coiculescu 与 S. Palasek，<a href="https://arxiv.org/abs/2503.14699"><em>Non-uniqueness of smooth solutions of the Navier--Stokes equations from critical data</em></a>，<em>Inventiones Mathematicae</em> 244 (2026), 165--219。证明某些大 \(BMO^{-1}\) 临界数据的全局非唯一性；它不解决光滑有限能量初值的 Clay 问题。</li>
+            <li>P. Balister，<a href="https://arxiv.org/abs/1909.08777"><em>Bounds on Rudin--Shapiro polynomials of arbitrary degree</em></a>，<em>Journal of Fourier Analysis and Applications</em> 26 (2020), Article 68。提供 Rudin--Shapiro 任意次数界的现代背景；本页的 dyadic 张量前缀界为自包含推导。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier--Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.59 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

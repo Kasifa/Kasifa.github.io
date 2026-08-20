@@ -101,6 +101,16 @@ const fiftyEighthFigurePngUrl = new URL(
   "../public/figures/r0-58-duhamel-critical-saturation.png",
   import.meta.url,
 );
+const fiftyNinthNoteUrl = new URL("../public/notes/r0-59.html", import.meta.url);
+const fiftyNinthPdfUrl = new URL("../public/notes/r0-59.pdf", import.meta.url);
+const fiftyNinthFigureSvgUrl = new URL(
+  "../public/figures/r0-59-multi-output-critical-saturation.svg",
+  import.meta.url,
+);
+const fiftyNinthFigurePngUrl = new URL(
+  "../public/figures/r0-59-multi-output-critical-saturation.png",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -125,7 +135,7 @@ test("publishes and links the Leray polarization-channel theorem and normal obst
 
   assert.match(home, /href="\/notes\/r0-56\.html"/);
   assert.match(home, /href="\/notes\/r0-56\.pdf"/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.56 已完成："));
   assert.ok(home.includes("R0.57 已完成："));
   assert.match(note, /研究笔记 R0\.56/);
@@ -211,7 +221,7 @@ test("publishes the exact R0.58 Duhamel denominator and critical saturation", as
   assert.match(home, /href="\/notes\/r0-58\.html"/);
   assert.match(home, /href="\/notes\/r0-58\.pdf"/);
   assert.ok(home.includes("R0.58 已完成："));
-  assert.ok(home.includes("下一步 R0.59："));
+  assert.ok(home.includes("R0.59 已完成："));
   assert.match(note, /研究笔记 R0\.58/);
   assert.match(note, /全指标 Duhamel 定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -236,6 +246,49 @@ test("publishes the exact R0.58 Duhamel denominator and critical saturation", as
   assert.match(
     figureSvg,
     /Exact Duhamel denominator: shell gain versus critical saturation/,
+  );
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+});
+
+test("publishes the R0.59 growing multi-output critical-saturation theorem", async () => {
+  const [home, note, pdf, figureSvg, figurePng] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftyNinthNoteUrl, "utf8"),
+    readFile(fiftyNinthPdfUrl),
+    readFile(fiftyNinthFigureSvgUrl, "utf8"),
+    readFile(fiftyNinthFigurePngUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-59\.html"/);
+  assert.match(home, /href="\/notes\/r0-59\.pdf"/);
+  assert.ok(home.includes("R0.59 已完成："));
+  assert.ok(home.includes("下一步 R0.60："));
+  assert.match(note, /研究笔记 R0\.59/);
+  assert.match(note, /全指标多输出定理已证明/);
+  assert.match(note, /24 项检查全通过/);
+  assert.match(note, /频率实例：4,190,209 个/);
+  assert.match(note, /交叉配对：29,822,521 个/);
+  assert.match(note, /张量前缀：16,760,836 个/);
+  assert.ok(note.includes("H=4LM"));
+  assert.ok(note.includes("H/M=4L"));
+  assert.ok(note.includes("U\\cdot\\nabla U=V\\cdot\\nabla V=V\\cdot\\nabla U=0"));
+  assert.ok(note.includes("d_m(t)=m e^{-m^2t}\\sum_{n=0}^{L-1}"));
+  assert.ok(note.includes("\\frac{2mL}{25H^2}&lt;d_m(t_H)"));
+  assert.ok(note.includes("C_T=(1+\\sqrt2)(2+\\sqrt2)"));
+  assert.ok(note.includes("线性项与第一非线性项在 \\(L^2\\) 中精确正交"));
+  assert.match(note, /下一步直接检验三阶共振与高阶 Picard 余项/);
+  assert.match(note, /r0-59-multi-output-critical-saturation\.svg/);
+  assert.match(note, /r0-59-multi-output-critical-saturation\.png/);
+  assert.match(
+    note,
+    /88774c0d5647f46700ed499409754f4207fdcef5a0193e5a337e7887eb3c6dce/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /\(Pi_0\)|\(mathcal|\(dot B|\(sqrt\{/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+  assert.match(
+    figureSvg,
+    /One flattened high shell sustains a growing coherent output set/,
   );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
 });
@@ -1204,7 +1257,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1275,7 +1328,7 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
@@ -1308,7 +1361,7 @@ test("publishes and links the complete affine-family global enclosure", async ()
 
   assert.match(home, /href="\/notes\/r0-52\.html"/);
   assert.match(home, /href="\/notes\/r0-52\.pdf"/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.52/);
   assert.match(note, /href="\/notes\/r0-52\.pdf"/);
@@ -1343,7 +1396,7 @@ test("publishes and links the rational product-affine witness", async () => {
 
   assert.match(home, /href="\/notes\/r0-53\.html"/);
   assert.match(home, /href="\/notes\/r0-53\.pdf"/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.53 已完成："));
   assert.match(home, /R0\.53 已完成：<\/strong>&nbsp;简单有理乘积仿射权/);
   assert.match(note, /研究笔记 R0\.53/);
@@ -1382,7 +1435,7 @@ test("publishes and links the complete product-affine global enclosure", async (
 
   assert.match(home, /href="\/notes\/r0-54\.html"/);
   assert.match(home, /href="\/notes\/r0-54\.pdf"/);
-  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.43<\/strong>网页版本/);
   assert.ok(home.includes("R0.54 已完成："));
   assert.match(home, /R0\.54 已完成：<\/strong>完整乘积仿射族/);
   assert.match(note, /研究笔记 R0\.54/);

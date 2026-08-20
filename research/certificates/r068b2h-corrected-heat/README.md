@@ -20,10 +20,11 @@ fixed reachable dominant component in the R0.68B eighth-order construction.
 - Derivative correction upper bound: `1.20506130214380835e-08`
 - Corrected dominant-heat interval:
   `[-2.69744373399132142e-08, -2.87321129703704757e-09]`
-- Runtime: 16.407 s (16.47 s including `/usr/bin/time`)
-- Average CPU utilization: 1,779%
-- Peak resident set size: 475,148 KiB
-- Host: NVIDIA DGX Spark, `aarch64`, GCC 13.3.0, 20 CPU cores
+- Runtime: 17.045 s (17.11 s including `/usr/bin/time`)
+- Average CPU utilization: 1,687%
+- Peak resident set size: 474,984 KiB
+- Host: NVIDIA DGX Spark, `aarch64`, GCC 13.3.0, 18 OpenMP threads
+  on 20 logical CPU cores
 
 The source-unlocked audit and source-locked formal run agree after removing
 only the source-commit and elapsed-time fields.  The independent verifier

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r067c1-one-cycle-heat",
+  "status": "formal",
+  "createdAt": "2026-08-20T22:00:00+08:00",
+  "analyticalQuestion": "Does the complete five-simplex sixth-order heat observable have a rigorously nonzero sign at the first stationary four-bit cycle?",
+  "supportedClaim": "Exact enumeration of 34,690 valid carrier tuples and all ten time orders, combined with a degree-32 rational Taylor enclosure, proves that the complete M=16 sixth-order heat coefficient is strictly positive.",
+  "claimBoundary": "The dominant asymptotic heat projection, all-order Picard control, singularity, global regularity, and any Millennium-problem claim remain open.",
+  "git": {
+    "sourceCommit": "b898179036990a352a6b73e04f2a733905f9dc32",
+    "certificateCommit": "bc7c318781afccc72ba6ff3fe034c9e72ee0f18c",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "sixth-order-heat-one-cycle-audit.json",
+      "location": "research/certificates/r067c1/sixth-order-heat-one-cycle-audit.json",
+      "bytes": 88221,
+      "sha256": "db9e9d01b3b89b2a4d4825087b7e037391bb6a6c514b9961d295ad71247ff5df",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "enumeration-by-a.csv",
+      "bytes": 194,
+      "sha256": "b023e1157133b3ae63b552ce00f6500f0ab45c0921fb141a32d23f96822ff5c2",
+      "format": "csv",
+      "schema": "sixteen exact carrier-A slices"
+    },
+    {
+      "path": "partial-sums.csv",
+      "bytes": 967,
+      "sha256": "a8cf8b933238c0c7a5d6158689a4cdd698fa879ae30879e6cd3da312f199ebf7",
+      "format": "csv",
+      "schema": "degree-zero through degree-32 Taylor partial sums"
+    },
+    {
+      "path": "certificate-scales.csv",
+      "bytes": 301,
+      "sha256": "beba824288b58c4e95f88b1c3d6406679057e1cc3961f58c6d866f9aae93cbce",
+      "format": "csv",
+      "schema": "strict coefficient interval, tail bound, and separation ratio"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 641,
+      "sha256": "3d5b0331ee82b185e883d85a2cc3f51fefcdef6dd66810e8317e365dcc095b02",
+      "format": "json",
+      "schema": "pinned certificate, commits, checks, and claim boundary"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "b0809e43f94bf971aa9db60d50b6eeea76a44e993b3116acdce022fd18ed12dc",
+      "format": "csv",
+      "schema": "deterministic extraction resource record"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "6d0df92254a4ccd38b3ab732169b1888f9f5f822bf8f847d5b1feaacd00b65c6",
+      "format": "csv",
+      "schema": "final rendering resource record"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit",
+    "configuration": "M=16, q=2, 34,690 valid tuples, ten time orders, Taylor degree 32",
+    "precision": "Python integers and Fractions for proof fields; binary64 only for plotted positions",
+    "solver": "direct signed carrier enumeration, complete homogeneous recurrence, and exact rational tail majorant",
+    "command": "python3 research/sixth_order_heat_one_cycle_audit.py --output research/certificates/r067c1/sixth-order-heat-one-cycle-audit.json --order 32 --progress",
+    "wallTimeSeconds": 3.35
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 34410,
+        "sha256": "c4978c9dc9bfdc1cdd132168e5e10d4415bbdfd7709bba58cb160dd4e8d3e780"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 82309,
+        "sha256": "6dd530e70635c656a51bebbceb564ad321ce08079441207ca54ebd72fe4b0c7a"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 485774,
+        "sha256": "ddf9ac29f6360907fe25adaa2d61c91577dc5776a0b1b02f6d31aff965d41655",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "one enumeration panel, one convergence panel, and one logarithmic certificate panel",
+    "takeaway": "the complete first-cycle heat coefficient is positive with a tail ten orders smaller",
+    "nonColorEncoding": "bar versus diamond, open-circle convergence markers, direct labels, and logarithmic positions",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "pdfFontsEmbedded": true,
+    "notes": "Color PNG, true grayscale conversion, and Poppler-rendered PDF were inspected at final size; the finite-scale boundary remains legible."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

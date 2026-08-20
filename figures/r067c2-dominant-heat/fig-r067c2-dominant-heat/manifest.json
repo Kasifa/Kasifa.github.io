@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r067c2-dominant-heat",
+  "status": "formal",
+  "createdAt": "2026-08-20T23:30:00+08:00",
+  "analyticalQuestion": "Does the dominant complete sixth-order five-simplex heat projection have a strict sign?",
+  "supportedClaim": "A 67,200-dimensional degree-six centred jet, signed-shift defect aggregation, and global seventh-derivative majorant give a strict negative interval for the dominant complete sixth-order heat projection.",
+  "claimBoundary": "Only one fixed sixth-order periodic projection is controlled; all Picard orders, norm inflation, singularity, global regularity, and the Millennium problem remain open.",
+  "git": {
+    "sourceCommit": "ed153f5919f040c7fc16b169685b05fc574f3d17",
+    "certificateCommit": "cd4124a4c781ba6593635d23aab425515a2ee155",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "sixth-order-heat-dominant-projection-audit.json",
+      "location": "research/certificates/r067c2/sixth-order-heat-dominant-projection-audit.json",
+      "bytes": 9051,
+      "sha256": "740a90d543104aeed3848a4196776ae0b16b714d08c5966db735a7eb63e81af5",
+      "extractionCommand": "python3 prepare_data.py --certificate-commit cd4124a4c781ba6593635d23aab425515a2ee155"
+    }
+  ],
+  "data": [
+    {
+      "path": "projection-intervals.csv",
+      "bytes": 281,
+      "sha256": "ad541de9ebc74120cdca26cd9e6a7fd93f821fc10510c3d6ed5a387ec4d7d0c4",
+      "format": "csv",
+      "schema": "guarded jet, correction, and complete projection intervals"
+    },
+    {
+      "path": "derivative-budget.csv",
+      "bytes": 195,
+      "sha256": "c81db0f5e2e5b33baaf6c1779c640b20d512138b1b1eb3596045dd8f160f6eab",
+      "format": "csv",
+      "schema": "raw, guarded, and zero-contact derivative levels"
+    },
+    {
+      "path": "spectral-scales.csv",
+      "bytes": 208,
+      "sha256": "bd2655f9c0a007110205d55e31cd6af77520a54608ece2ad5726b1b4d9828f42",
+      "format": "csv",
+      "schema": "degree-six, affine, finite, and dominant scales"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 619,
+      "sha256": "65c33bd5e729af5ba16bee26edeee5b92483d57964136b3e7e5d8749a6f55d2b",
+      "format": "json",
+      "schema": "pinned certificate and provenance"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "f88e9260ca0843531da6652640c7e5c0f89f22880a98e32e5c2e8fc49693b02b",
+      "format": "csv",
+      "schema": "deterministic extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "bdcc940e713d5e128c2651576737602612b213f8b1ea70bef52795b7521f101d",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-audit",
+    "configuration": "320 states, 210 centred moments per state, ten heat shuffles, seventh derivative majorant",
+    "precision": "exact integer combinatorics and root bracket with guarded binary64 analytic-numerical enclosures",
+    "solver": "exact CRT mass projector, triangular moment solves, signed shift collision, and simplex monomial integration",
+    "command": "python3 research/sixth_order_heat_dominant_projection_audit.py --output research/certificates/r067c2/sixth-order-heat-dominant-projection-audit.json --progress",
+    "wallTimeSeconds": 598.9645940830233
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 27487,
+        "sha256": "0f9657afa7555d3bf379fe0f4c88666877827dbd52c6a425f6dd692de554d571"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 53720,
+        "sha256": "5373421e6aaae7bb4ffd8f8e00e5f9c20f695732db34245c15eeb6f5ae921cca"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 323434,
+        "sha256": "14d5fe5e6617c68215ed34096dcda7fa8dd31820e5f7528d462046c960d517a2",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "guarded interval, derivative budget, and logarithmic spectral scale panels",
+    "takeaway": "the complete dominant sixth-order heat projection stays strictly negative after the full resolvent correction",
+    "nonColorEncoding": "interval endpoints, distinct marker shapes, zero line, direct values, and logarithmic positions",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "pdfFontsEmbedded": true,
+    "notes": "Color, grayscale, and Poppler-rendered PDF were inspected at final size; the strict negative endpoint is legible."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

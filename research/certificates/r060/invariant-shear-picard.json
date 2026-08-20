@@ -1,0 +1,173 @@
+{
+  "checks": {
+    "arbitraryThreeDimensionalDataEstimateNotClaimed": true,
+    "finiteChecksAreNotUsedAsProofs": true,
+    "finiteEnergyCancellationRegressionPassed": true,
+    "finiteIntervalRegressionPassed": true,
+    "finiteSupportRegressionPassed": true,
+    "formalCubicBacktrackingReturnsToOriginalVSupport": true,
+    "formalCubicSupportGapExceedsThreeQuartersH": true,
+    "formalCubicTargetProjectionVanishes": true,
+    "formalEveryHigherTermIsE3Polarized": true,
+    "formalFourthOrderEnergyCoefficientIdentity": true,
+    "formalFullSystemReducesToHeatPlusLinearAdvectionDiffusion": true,
+    "formalInvariantShearSubspace": true,
+    "formalOddOrdersThreeFiveSevenNineMissLowPlane": true,
+    "formalOrderElevenSupportWitness": true,
+    "formalPacketClassIsGloballySmooth": true,
+    "formalPicardForestCollapsesToOneChain": true,
+    "formalPressureIsSpatiallyConstant": true,
+    "formalQuarticTargetPathIsAdmissible": true,
+    "formalSecondFrequencyIsConserved": true,
+    "fullHigherRemainderControlNotClaimed": true,
+    "largeDataRegularityNotClaimed": true,
+    "normInflationNotClaimed": true,
+    "threeDimensionalNavierStokesRegularityNotClaimed": true,
+    "uniformQuarticBoundNotClaimed": true
+  },
+  "computation": {
+    "createdUtc": "2026-08-20T02:41:58.653989+00:00",
+    "exactBackend": "Python integers and Gaussian integers",
+    "floatingPointDecisionUse": false,
+    "gpu": false,
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.9.6",
+    "randomness": false,
+    "wallSeconds": 0.737199042
+  },
+  "energyBookkeeping": {
+    "classification": "formal coefficient identity",
+    "identity": "d_t(2<G1,G3>+||G2||_2^2)+2(2<grad G1,grad G3>+||grad G2||_2^2)=0",
+    "mechanism": "quadratic energy is compensated first by cubic high-frequency return and dissipation, not by linear-quadratic overlap"
+  },
+  "finiteRegressions": {
+    "energyCancellation": {
+      "FourierModesChecked": 4564,
+      "GaussianIntegerCancellationPassed": true,
+      "classification": "finite exact Gaussian-integer regression of periodic integration by parts",
+      "convolutionPairsChecked": 323216,
+      "identity": "<G1,F*d2G2>+<G2,F*d2G1>=0",
+      "maximumDyadicLevel": 3,
+      "parameterPairsChecked": 16,
+      "recordsSha256": "1ede41f19749582552e3e0d8ded27ae07487dbefee2769ae13e9951f323edadc"
+    },
+    "intervals": {
+      "carrierPositionsCoveredByFormula": 67092481,
+      "classification": "finite exact integer regression of the all-index interval proof",
+      "cubicGap": "|xi_1|>=H-(LM-1)>3H/4",
+      "maximumDyadicLevel": 12,
+      "minimumIntegerGaps": {
+        "3": 4,
+        "5": 4,
+        "7": 4,
+        "9": 4
+      },
+      "oddOrdersExcluded": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "orderElevenWitness": "-(H+N-5)+5(H+N-1)-5H=0 for N=LM>=5",
+      "orderElevenWitnessesChecked": 163,
+      "parameterPairsChecked": 169,
+      "recordsSha256": "f3ac6083e9ac0667ca8d241a69430c46957a970637fc577617625c4df6aa1832"
+    },
+    "supports": {
+      "classification": "finite exhaustive support regression; the theorem is the interval proof",
+      "cubicOriginalVReturnsChecked": 225,
+      "maximumDyadicLevel": 3,
+      "maximumPicardOrder": 11,
+      "oddOrdersExcluded": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "orderElevenTargetWitnessesChecked": 10,
+      "parameterPairsChecked": 16,
+      "positiveTargetSectorsChecked": 60,
+      "quarticTargetSectorsChecked": 60,
+      "recordsSha256": "6f8085fd95609882a2a43ad1a5b529c265090331fab8ef0e38dba95b8e8684f7",
+      "stateTransitionsChecked": 32771750,
+      "supportStatesRecorded": 539155
+    }
+  },
+  "git": {
+    "head": "db3e7eb9071f67c041a96863f9afc43bbca50aec",
+    "sourceCommit": "db3e7eb9071f67c041a96863f9afc43bbca50aec",
+    "worktreeStatusAtRun": [
+      "?? research/certificates/r060/"
+    ]
+  },
+  "invariantReduction": {
+    "classification": "formal exact invariant-subspace reduction",
+    "globalSmoothnessBoundary": "for each fixed smooth packet the G equation is linear parabolic; this is symmetry-specific and not an arbitrary-data estimate",
+    "structure": {
+      "conservedFrequency": "the x_2 Fourier frequency m is fixed along the chain",
+      "nonlinearity": "(u dot grad)u=F*d_2G*e_3",
+      "picardChain": "(d_t-Delta_12)G_n=-F_1*d_2G_(n-1)",
+      "polarization": "u^[n] parallel e_3 for every n>=2",
+      "pressure": "spatially constant",
+      "reducedSystem": [
+        "d_tF-d_1^2F=0",
+        "d_tG-Delta_12G+F*d_2G=0"
+      ],
+      "velocityClass": "u=(0,F(x_1,t),G(x_1,x_2,t))"
+    }
+  },
+  "literatureBoundary": {
+    "classification": "the invariant plane-parallel reduction is classical; the packet-specific Picard support theorem is the result audited here",
+    "planeParallelReduction": "https://doi.org/10.2140/apde.2008.1.35"
+  },
+  "packet": {
+    "carrierInterval": "I_N={H,...,H+D}",
+    "classification": "formal all-index support representation",
+    "parameters": "dyadic L,M; N=LM; H=4N; D=N-1",
+    "positiveTargetSector": "xi_1=-Q+sum_(j=1)^(n-1) sigma_j P_j"
+  },
+  "researchDecision": {
+    "cubicTargetQuestion": "negative: the cubic term has zero low-plane projection",
+    "directClayValue": "low; the result sharpens an estimate obstruction inside a globally regular symmetry class",
+    "firstTargetCorrection": "quartic G_4",
+    "globalDynamicsOfPacket": "globally smooth invariant shear evolution",
+    "nextTest": "compute Pi_0 G_4(t_H) exactly and test an epsilon^2/L^2 relative bound against possible M growth"
+  },
+  "schemaVersion": "1.0",
+  "scope": {
+    "notClaimed": [
+      "a uniform quartic or full higher-order remainder bound",
+      "dominance of the R0.59 quadratic target output",
+      "norm inflation or unboundedness of a critical solution map",
+      "an estimate for arbitrary three-dimensional data",
+      "large-data regularity or a solution of the Millennium problem"
+    ],
+    "system": "full periodic Navier-Stokes evolution of the R0.59 packet",
+    "theorems": [
+      "exact invariant shear reduction to heat plus linear advection-diffusion",
+      "one-chain homogeneous Picard recurrence",
+      "strict cubic target gap and no odd low-plane return through order nine",
+      "order-eleven support witness",
+      "exact fourth-order energy coefficient identity"
+    ]
+  },
+  "supportTheorem": {
+    "classification": "formal all-index interval theorem and explicit paths",
+    "cubicGap": "|xi_1|>=H-D=3N+1>3H/4",
+    "cubicHighReturn": "-Q+P-P=-Q",
+    "oddOrderGaps": {
+      "3": "H-D=3N+1",
+      "5": "H-2D=2N+2",
+      "7": "H-3D=N+3",
+      "9": "H-4D=4"
+    },
+    "oddOrdersExcluded": [
+      3,
+      5,
+      7,
+      9
+    ],
+    "orderElevenWitness": "-(H+N-5)+5(H+N-1)-5H=0 for N>=5",
+    "quarticTargetPath": "-Q+Q+P-P=0"
+  }
+}

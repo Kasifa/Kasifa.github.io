@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r062-quartic-correlation",
+  "status": "formal",
+  "analyticalQuestion": "Does the proved O(sqrt(M)) all-index ceiling describe the observed heat-weighted quartic target, and why does an ordinary unweighted Rudin--Shapiro correlation not prove the desired uniform bound?",
+  "supportedClaim": "The 3,840 complete L=1 heat-weighted target values through M=2048 remain at scale 10^-3 and show no numerical square-root growth. An ordinary outer three-carry correlation divided by M grows along selected dyadic levels through M=1,048,576, so the simplex heat weight cannot be replaced by its supremum in the next uniform-bound argument. The all-index bound itself is proved in the mathematical note, not by this figure.",
+  "createdAt": "2026-08-20T17:11:00+08:00",
+  "git": {
+    "repository": "Kasifa/Kasifa.github.io",
+    "figureSourceCommit": "2df1c8967514ec31fe3ae53f74f71721a848b102",
+    "certificateCommit": "db6203643c5aa371bfa50af6f62128db60f5219b",
+    "formalTheoremCommit": "f7159fe6e089af6207c18d6aee3ea081a2b8508f",
+    "trackedFilesCleanAtSampling": true,
+    "generatedFilesUntrackedAtSampling": true
+  },
+  "chartContract": {
+    "family": "three-panel research line figure",
+    "variants": [
+      "3,840 complete heat-weighted target observations on a logarithmic response scale",
+      "four full-profile maxima against one finite reference line",
+      "13 dyadic unweighted convolution diagnostics through M=1,048,576"
+    ],
+    "takeaway": "The observed heat-weighted target remains small while the ordinary unweighted correlation does not supply a uniform bound; the next lemma must preserve the smooth heat weights and time ordering.",
+    "dataSufficiency": "Four complete target families contain 3,840 observations. The unweighted diagnostic contains 13 dyadic levels from 2^8 through 2^20. The extended finite certificate contains 4,042 distinct triples and 27,082,065,198 ordered paths.",
+    "palettePolicy": "hard two-root cap: blue for heat-weighted data and rust for unweighted data, with neutral ink and one gold reference",
+    "nonColorEncoding": "separate panels, solid and patterned lines, open circle square triangle and diamond markers, direct labels, and explicit units",
+    "outputFootprint": "double-column journal figure at 178 by 112 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size"
+  },
+  "computation": {
+    "kind": "exact discrete regression plus deterministic complete target scans",
+    "correlationRegressionCommand": "python3 research/quartic_correlation_reduction_audit.py --maximum-level 3 --check --pretty --output research/certificates/r062/correlation-reduction-audit.json",
+    "profileScanCommandTemplate": "python3 research/quartic_target_sweep.py --binary tmp/r062-guided/quartic-target-scan --pairs 0:LEVEL_M --threads 18 --target-mode all --run-directory tmp/r062-guided/MVALUE-all-runs --progress-log research/certificates/r062/mVALUE-all-progress.ndjson --output research/certificates/r062/mVALUE-all-summary.json",
+    "samplingCommand": "python3 figures/r062-quartic-correlation/fig-r062-quartic-correlation/prepare_data.py --source-commit 2df1c8967514ec31fe3ae53f74f71721a848b102",
+    "configuration": "complete L=1 target profiles for M=256,512,1024,2048; FFT integer recovery for the unweighted convolution at dyadic M from 256 through 1,048,576; exact direct convolution cross-check through M=1024",
+    "randomSeed": "not applicable; no randomness",
+    "precision": "C++ long double with compensated sums for heat-weighted targets; exact Python integers for the small carry regression; double FFT coefficients rounded to integers with maximum residual below 2.8e-9",
+    "tolerances": {
+      "fftIntegerRecovery": "absolute residual below 1e-5",
+      "targetFractions": "absolute discrepancy below 1e-15",
+      "weightedMaximum": "absolute discrepancy below 1e-18"
+    },
+    "newTargetScanWallTimeSeconds": 43.55854883101784,
+    "samplingWallTimeSeconds": 0.8173945839807857,
+    "finalPlotWallTimeSeconds": 1.040937,
+    "monitoring": {
+      "enabled": true,
+      "reportIntervalSeconds": 0.1,
+      "progressLogs": [
+        "research/certificates/r062/m512-all-progress.ndjson",
+        "research/certificates/r062/m1024-all-progress.ndjson",
+        "research/certificates/r062/m2048-all-progress.ndjson",
+        "research/certificates/r062/correlation-reduction-progress.ndjson"
+      ],
+      "resourceLogs": [
+        "research/certificates/r062/m512-all-resources.csv",
+        "research/certificates/r062/m1024-all-resources.csv",
+        "research/certificates/r062/m2048-all-resources.csv",
+        "figure-data-resources.csv",
+        "plot-attempt1-resources.csv",
+        "plot-attempt2-resources.csv",
+        "plot-attempt3-resources.csv",
+        "plot-resources.csv"
+      ],
+      "failedAttempts": [
+        "attempt 1 exited immediately because Matplotlib was absent from the initial Python environment",
+        "attempt 2 exited during PDF export because a mathtext square-root argument lacked braces",
+        "attempt 3 rendered successfully but was rejected by visual QA because lower-axis labels collided with the interpretation line"
+      ]
+    }
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "memoryGiB": 36,
+    "quarticThreadsPerTarget": 18,
+    "maximumObservedFigureDataRssMiB": 419.188,
+    "maximumObservedFinalPlotRssMiB": 169.203
+  },
+  "environment": {
+    "python": "3.12.13",
+    "numpyDataPreparation": "2.3.5",
+    "numpyPlotEnvironment": "2.5.2",
+    "matplotlib": "3.11.1",
+    "compiler": "Apple clang C++20",
+    "packagesLock": "requirements-research.txt"
+  },
+  "data": [
+    {
+      "path": "weighted-target-profiles.csv",
+      "format": "csv",
+      "schema": "3,840 complete finite observations with L, M, target, normalized target position, normalized signed ratio, cancellation condition, ordered path count, and classification",
+      "bytes": 559689,
+      "sha256": "34b9da03f834766862c60933810c03324f994fc0db920e893e18bb920d64bccf"
+    },
+    {
+      "path": "scale-comparison.csv",
+      "format": "csv",
+      "schema": "13 dyadic levels with optional heat-weighted maximum, ordinary outer maximum, maximizing block and carry, normalization by M, and FFT integer-recovery residual",
+      "bytes": 1092,
+      "sha256": "a8d789ac3b5e722ae4102c4e7b0fe8bccc3a73ad16d2f2857c80d6f335f52513"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "format": "json",
+      "schema": "source commit, pinned source hashes, row counts, finite maximum, environment, and sampling wall time",
+      "bytes": 1955,
+      "sha256": "5e524b3f465ad8eb70597968d311773d0463e24eb36bcd082dbefd6cf0a56803"
+    }
+  ],
+  "figure": {
+    "script": "plot.py",
+    "scriptSha256": "7c8ccbd84cb21d808324d70c9c6d57b556004aa5d7579364e0e903a50690381b",
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r062-mplconfig python3 figures/r062-quartic-correlation/fig-r062-quartic-correlation/plot.py",
+    "profile": "journal-default",
+    "widthMillimetres": 178,
+    "heightMillimetres": 112,
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 68318,
+        "sha256": "6facd0e387697fa8084cd47a0817d21be26dadc4311ddab83a11a1d6841b2b3e"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 165802,
+        "sha256": "10e8693cf1a865be6adce7af49602868c7adf7f84181a192fe72bcec81dc453c"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 586084,
+        "dpi": 600,
+        "pixels": "4204 by 2645",
+        "sha256": "626fe7e3727d135a5ae1d6c902bb8e420171e8c1568a912e18d6c0d57f331ab9"
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md",
+    "chineseSiteSummary": "R0.62 证明四次目标的全指标 O(sqrt(M)) 上界；3,840 个完整热核加权目标仍处于 10^-3 量级，而普通未加权相关会增长，说明下一步必须保留热核与时间顺序。"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "notes": "The PDF page is 178 by 112 mm to rounding and the 600 dpi PNG is 4204 by 2645 pixels. The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected. Panel separation, patterned lines, open markers, direct labels, logarithmic scales, and the finite-evidence boundary remain legible. Four embedded CID TrueType font resources were found, and Poppler extracted 990 bytes of text including the title."
+  }
+}

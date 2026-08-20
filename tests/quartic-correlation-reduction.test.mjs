@@ -18,6 +18,10 @@ const auditUrl = new URL(
   import.meta.url,
 );
 const certificateRoot = new URL("../research/certificates/r062/", import.meta.url);
+const figureRoot = new URL(
+  "../figures/r062-quartic-correlation/fig-r062-quartic-correlation/",
+  import.meta.url,
+);
 
 test("states the R0.62 all-index quartic ceiling and its exact boundary", async () => {
   const [note, audit] = await Promise.all([
@@ -96,5 +100,35 @@ test("archives the extended R0.62 full-target scans", async () => {
     const payload = await readFile(new URL(entry.file, certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, entry.expected, entry.file + " hash mismatch");
+  }
+});
+
+test("archives the formal R0.62 correlation figure and its failed-attempt logs", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r062-quartic-correlation");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.chartContract.dataSufficiency.includes("3,840"), true);
+  assert.equal(manifest.computation.monitoring.failedAttempts.length, 3);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 112);
+  assert.equal(manifest.figure.outputs.length, 3);
+
+  for (const entry of [...manifest.data, ...manifest.figure.outputs]) {
+    const payload = await readFile(new URL(entry.path, figureRoot));
+    assert.equal(payload.length, entry.bytes, entry.path + " byte mismatch");
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.sha256, entry.path + " hash mismatch");
+  }
+  for (const name of [
+    "plot-attempt1-resources.csv",
+    "plot-attempt2-resources.csv",
+    "plot-attempt3-resources.csv",
+    "plot-resources.csv",
+  ]) {
+    const text = await readFile(new URL(name, figureRoot), "utf8");
+    assert.match(text, /status/);
   }
 });

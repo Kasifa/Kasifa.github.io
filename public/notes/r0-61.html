@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.61：完整四次目标系数被化为显式路径和；大规模有限扫描未见随输出数增长，但一致界仍待证明。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.61｜完整四次目标系数与有限一致性证据">
+  <meta property="og:description" content="461 个不同参数三元组、约 74.95 亿条有序路径全部给出反相四次修正；这是有限证据，不是全指标定理。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-61-quartic-target.png">
+  <title>R0.61｜完整四次目标系数与有限一致性证据</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}.figure-print{display:none}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:7.6pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:5px 0;padding:5px 7px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:3px 0}.figure-screen{display:none}.figure-print{display:block}#figure figure{width:96%;margin:5px auto;padding:4px 0}#figure figcaption{margin-top:4px;font-size:6.7pt;line-height:1.25}#reproduce{margin-bottom:0}#reproduce .proof code{font-size:3.75pt;line-height:1.05}}</style>
+  <script defer src="/i18n-en.js?v=0.45"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#formula">系数公式</a><a href="#paths">路径核</a><a href="#evidence">有限证据</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.61 · 四次目标完整计算</div>
+        <h1>四次项在扫描范围内反相且很小；<br>一致上界还没有证明</h1>
+        <p class="lead">我沿 R0.60 的唯一剪切 Picard 链，把第一次可能回到低频目标的四次项化成完整的三重有序路径和。对振幅 \(A=\varepsilon\sqrt H\)，四次项相对二次目标精确等于 \(-\varepsilon^2R_{L,M,m}/L^2\)。随后我用 long-double 完整枚举与 60 位独立复算检查了 461 个不同参数三元组、7,494,536,238 条有序路径；所有观测到的 \(R\) 都为正，最大值约为 \(1.3286563\times10^{-3}\)。这支持四次目标具有稳定的 \(L^{-2}\) 增益，但尚不能替代覆盖全部指标的相关估计。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 精确公式已证明，有限扫描已复核</span><strong>10 项计算检查全通过</strong><p>版本 v0.61 · 2026-08-20</p><p>不同三元组：461 个</p><p>有序路径：7,494,536,238 条</p><p>高精度复算：60 位</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#formula">01 · 精确系数公式</a></li>
+        <li><a href="#paths">02 · 完整路径与热核</a></li>
+        <li><a href="#evidence">03 · 有限计算证据</a></li>
+        <li><a href="#figure">04 · 期刊附图</a></li>
+        <li><a href="#meaning">05 · 研究价值</a></li>
+        <li><a href="#next">06 · R0.62 方向</a></li>
+        <li><a href="#reproduce">07 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>公式是全指标定理；正性与最大值只是有限计算</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · COEFFICIENT</span><strong>完整四次系数公式</strong><p>每条允许路径、重复热率和路径重数都已包含。</p></div>
+            <div class="status"><span>OBSERVED · SIGN</span><strong>扫描值全部为正</strong><p>在已计算集合中，四次项都与二次目标反相。</p></div>
+            <div class="status"><span>OPEN · UNIFORMITY</span><strong>一致界尚未证明</strong><p>有限扫描不能推出所有 \(L,M,m\) 上的统一常数。</p></div>
+            <div class="status"><span>OPEN · CLAY PROBLEM</span><strong>原问题没有解决</strong><p>该频率包仍属于全局光滑的特殊剪切类。</p></div>
+          </div>
+          <p>R0.61 回答了 R0.60 提出的直接数值二选一：扫描范围内没有出现随输出数 \(M\) 增长的四次障碍，反而出现了稳定的反相修正。但我不能把这个现象写成全指标定理，也不能由此推出完整 Picard 余项受控。</p>
+        </section>
+
+        <section id="formula"><div class="section-no">01 / Exact coefficient</div><h2>四次目标相对二次目标的尺度因子完全分离</h2>
+          <p>令 \(N=LM\)、\(H=4N\)、\(T=(\log2)/2\)，并取 \(t_H=T/H^2\)。固定目标 \(k_m=(0,m,0)\)，二次与四次系数可以写成</p>
+          <div class="equation">\[
+            \widehat G_2(0,m,t_H)=-im\,e^{-m^2t_H}H^{-2}S_{2,m},
+            \qquad
+            \widehat G_4(0,m,t_H)=im^3e^{-m^2t_H}H^{-6}S_{4,m}.
+          \]</div>
+          <p>因此在 \(A=\varepsilon\sqrt H\) 时，</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{A^4\widehat G_4(0,m,t_H)}{A^2\widehat G_2(0,m,t_H)}
+            =-\frac{\varepsilon^2}{L^2}R_{L,M,m},
+            \qquad
+            R_{L,M,m}=\frac{L^2m^2}{H^3}\frac{S_{4,m}}{S_{2,m}}.}
+          \]</div>
+          <p>正的 \(R_{L,M,m}\) 表示四次目标与二次目标相位相反，所以它削弱而不是增强第一次相干低频输出。</p>
+        </section>
+
+        <section id="paths"><div class="section-no">02 / Complete paths and heat kernel</div><h2>所有四次目标路径恰好是两正一负的三个时间排列</h2>
+          <p>初始第一频率为 \(-Q\)，三个剪切载频必须满足 \(p_1+p_2+p_3=Q\)。由 \(H=4LM\) 的区间分离，唯一可能的符号型是</p>
+          <div class="equation result">\[
+            A+B-C=Q,\qquad A,B,C\in\{H,\ldots,H+LM-1\},
+          \]</div>
+          <p>并且完整的时间有序路径正好是 \((A,B,-C)\)、\((A,-C,B)\)、\((-C,A,B)\)。每条路径的三重 Duhamel 积分由四个热率的合流差商给出：</p>
+          <div class="equation">\[
+            K_T(\alpha_0,\alpha_1,\alpha_2,\alpha_3)
+            =-[\alpha_0,\alpha_1,\alpha_2,\alpha_3]e^{-Tx}>0.
+          \]</div>
+          <p>某些相邻热率会严格相等，所以不能使用只对互异分母有效的部分分式。扫描器先按精确整数热率排序；遇到重复节点时直接代入指数函数的解析导数。</p>
+        </section>
+
+        <section id="evidence"><div class="section-no">03 / Finite evidence</div><h2>约 74.95 亿条有序路径未显示 \(M\) 增长</h2>
+          <table><thead><tr><th>计算族</th><th>覆盖</th><th>作用</th></tr></thead><tbody>
+            <tr><td>基础边缘扫描</td><td>30 组 \((L,M)\)</td><td>连接小尺度、对角尺度与 \(M=1\) 极端。</td></tr>
+            <tr><td>扩展边缘扫描</td><td>18 组，最高 \(M=8192\)</td><td>检验长输出方向是否出现增长。</td></tr>
+            <tr><td>全部目标扫描</td><td>4 个参数族、416 个目标</td><td>检查峰值是否隐藏在内部目标。</td></tr>
+          </tbody></table>
+          <p>去重后共有 461 个三元组、49 个参数对。所有观测比值均为正；最大值出现在 \((L,M,m)=(4,64,64)\)，为 \(0.0013286562612066827\)。最大消去条件数约为 3860.6。</p>
+          <p>在观测最大点，60 位复算得到 \(0.001328656261206690024552778522639\ldots\)，与 long-double 结果的相对差低于 \(5.6\times10^{-15}\)。这排除了当前最大值来自普通浮点消去误差，但不构成区间证书。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">04 / Journal figure</div><h2>全部目标剖面与边缘尺度证据统一归档</h2>
+          <figure>
+            <img class="figure-screen" src="/figures/r0-61-quartic-target.svg" alt="R0.61 完整四次目标剖面与边缘尺度扫描">
+            <img class="figure-print" src="/figures/r0-61-quartic-target.png" alt="R0.61 完整四次目标剖面与边缘尺度扫描">
+            <figcaption>图 R0.61-1。左图显示四组代表性参数下的全部 416 个目标比值；右图显示固定 \(L\) 时边缘目标随二进制输出数 \(M\) 的变化，并标出观测最大点。所有显示值均为正。PDF、SVG、600 dpi PNG、展示表、验证脚本、进度日志、资源监控和哈希已归档；彩色、真灰度与 PDF 最终尺寸均已检查。图中结论明确限于有限扫描。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-61-quartic-target.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-61-quartic-target.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Research value</div><h2>得到的是一个干净的四次尺度律，不是通向奇点的证据</h2>
+          <p>R0.61 的数学价值高于单纯扩大扫描。完整四次系数第一次被压缩为可审计的合流热核与四点符号相关和；它把下一步所需的解析对象精确暴露出来。有限证据强烈支持 \(C\varepsilon^2/L^2\) 型相对界，并显示修正相位具有稳定性。</p>
+          <p>对 Clay 问题的直接价值仍低。当前频率包处在全局正则剪切类，即使把四次一致界证明出来，也只是特殊类中的非线性余项估计。真正的桥梁仍是破坏剪切不变性的三维扰动，以及对全部高阶项的临界控制。</p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.62</div><h2>下一步证明加权四点 Rudin--Shapiro 相关界</h2>
+          <div class="proof"><strong>目标定理。</strong>对四次路径核证明独立于 \(L,M,m\) 的估计 \(\sup_{L,M,m}|R_{L,M,m}|&lt;\infty\)；正性与最优常数可以作为更强的第二问题。</div>
+          <ol>
+            <li>先把四次和写成张量 Rudin--Shapiro 的四点相关形式；</li>
+            <li>对合流热核建立离散多变量总变差界；</li>
+            <li>用张量递推或多变量 Abel 求和提取符号消去；</li>
+            <li>若完整正性难以证明，先完成绝对一致界；</li>
+            <li>只有全指标界成立后，才进入六次目标项与完整偶数阶余项。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility and sources</div><h2>公式、有限证书、高精度复算与附图分层固定</h2>
+          <div class="proof"><strong>聚合检查命令。</strong><br><code>python3 research/quartic_target_audit.py --summary research/certificates/r061/scaling-summary.json --summary research/certificates/r061/extended-summary.json --summary research/certificates/r061/all-targets-summary.json --high-precision research/certificates/r061/high-precision.json --source-commit 895543f44b3c83c777014eefc9594f95b3b9d829 --check --pretty --output research/certificates/r061/quartic-target-exploration.json</code></div>
+          <p>正式数学源提交为 <code>895543f44b3c83c777014eefc9594f95b3b9d829</code>，证书提交为 <code>044dea434aba9448c2bfcf1f999992f9b96e3e5b</code>，附图源提交为 <code>737a9e5645c3f4b07b0ea695f0c216eb1c14808f</code>。扩展扫描峰值 CPU 为 1591.3%，高精度复算峰值常驻内存为 265.719 MiB；全部计算无随机输入，GPU 未使用。</p>
+          <p><a href="/notes/r0-61.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_target_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_target_scan.cpp">查看并行扫描器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r061">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r061-quartic-target/fig-r061-quartic-target">查看期刊附图包</a></p>
+          <p>声明边界：没有证明所有指标上的正性或一致界，没有控制完整高阶余项，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.61 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

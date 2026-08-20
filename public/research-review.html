@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.44"></script>
+  <script defer src="/i18n-en.js?v=0.45"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.44</strong>网页版本</span>
+            <span><strong>v0.45</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -3676,7 +3676,43 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/invariant_shear_picard_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.61：</strong>沿唯一 Picard 链精确计算 \(\Pi_0G_4(t_H)\) 的嵌套热分母，检验其相对二次目标是否满足 \(C\varepsilon^2/L^2\) 型统一上界，或是否出现随 \(M\) 增长的明确下界。</p>
+            <p><strong style="color:var(--gold)">R0.61 已完成：</strong>完整四次目标系数已化为显式合流热核路径和。有限扫描覆盖 461 个不同三元组和约 74.95 亿条有序路径，全部观测到反相修正且未见随 \(M\) 增长；全指标一致界仍待证明。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.61 · 2026-08-20</p>
+            <h3>完整四次目标系数与有限一致性证据</h3>
+            <p>
+              沿 R0.60 的唯一剪切 Picard 链，我把四次目标相对二次目标的系数写成
+              \[
+              \frac{A^4\widehat G_4(0,m,t_H)}{A^2\widehat G_2(0,m,t_H)}
+              =-\frac{\varepsilon^2}{L^2}R_{L,M,m},
+              \qquad
+              R_{L,M,m}=\frac{L^2m^2}{H^3}\frac{S_{4,m}}{S_{2,m}}.
+              \]
+              其中 \(S_{4,m}\) 是全部两正一负载频路径的有序和；重复热率由合流差商严格处理。
+            </p>
+            <p>
+              三组确定性扫描共包含 464 次计算、461 个不同 \((L,M,m)\) 三元组、
+              49 个参数对与 7,494,536,238 条有序四次路径。所有观测到的
+              \(R_{L,M,m}\) 均为正，最大值约为 \(1.3286563\times10^{-3}\)，
+              位于 \((4,64,64)\)。60 位独立复算与 long-double 结果的相对差低于
+              \(5.6\times10^{-15}\)。
+            </p>
+            <p>
+              <strong>结论边界：</strong>精确系数公式覆盖全部 dyadic \(L,M\) 与目标
+              \(m\)，但正性、观测最大值和未见 \(M\) 增长都只是有限计算证据。
+              当前没有全指标一致界，也没有完整高阶余项控制；该频率包仍属于
+              全局光滑剪切类。
+            </p>
+            <p>
+              <a href="/notes/r0-61.html"><strong>阅读 R0.61 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-61.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r061">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_target_scan.cpp">查看并行扫描器</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r061-quartic-target/fig-r061-quartic-target">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.62：</strong>证明合流热核加权的四点 Rudin--Shapiro 相关界，先争取 \(\sup_{L,M,m}|R_{L,M,m}|&lt;\infty\)，再判断正性和最优常数。</p>
           </div>
         </section>
 
@@ -3691,7 +3727,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.44 · 2026-08-20<br>
+        综述 v0.45 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

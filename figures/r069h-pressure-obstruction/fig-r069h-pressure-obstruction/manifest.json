@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Can the sign of the principal pressure-Hessian component be determined from local strain and vorticity?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "exact response curves plus signed decomposition",
+    "nonColorEncoding": "solid and dashed curves, distinct markers, hatched bars, zero axes, and exact rational labels",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "identical local velocity gradients do not fix the pressure-Hessian sign"
+  },
+  "claimBoundary": "pointwise-sign obstruction only; no Navier-Stokes regularity or singularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "241 exact-response samples and three certified nodes",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact rational formulas",
+    "solver": "closed pressure-Hessian response from exact Fourier coefficients",
+    "wallTimeSeconds": 0.4593129580025561
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 155.203125,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T07:40:00+08:00",
+  "data": [
+    {
+      "bytes": 12456,
+      "path": "pressure-response.csv",
+      "schema": "t, H11Minus, H11Plus",
+      "sha256": "4d65366119b9d2febd5cbfa18265230e501c6e89ec046d540aa00363c3358b12"
+    },
+    {
+      "bytes": 111,
+      "path": "certified-nodes.csv",
+      "schema": "t, H11Minus, H11Plus",
+      "sha256": "1343f665203c35e1c4fd91d116f627006bb5b7b364e4ebf398ced562c057a3c1"
+    },
+    {
+      "bytes": 161,
+      "path": "pressure-decomposition.csv",
+      "schema": "family, base, crossAtT2, perturbationAtT2, totalAtT2",
+      "sha256": "a44bd4e2d0568c6bd65cdd32f463fa7e9982aee0f228a9fbbdae316c8e33097d"
+    },
+    {
+      "bytes": 684,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and exact formulas",
+      "sha256": "367701f93e31274610f7e0b088f49b6df4a3b121c5e761f4dba553696f8ad594"
+    },
+    {
+      "bytes": 447,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "46000f0d2adcfb07023887466c0e590726fa68efa6c03c845a107776146f91be"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "08643b52040fa8a384cfc6ff6db903a84a814e2d86c2aa839c3170647f42596c"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 46190,
+        "path": "figure.pdf",
+        "sha256": "d0e4e43c8ddce6d6eb3b3cb5f3d62bc7a3a3de800ebecae3bcb6759dfeb0bfed"
+      },
+      {
+        "bytes": 201886,
+        "path": "figure.svg",
+        "sha256": "db6d6f97e38fa1eaaa5a3e4cffc94dd559e24ce619bd97343cc8854bf8a247af"
+      },
+      {
+        "bytes": 366855,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "ff56994227961affcc5b53b4d57188706abe2e05aad6362a54491043024cb8cb"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069h-pressure-obstruction",
+  "git": {
+    "certificateCommit": "33ca9d4f8f2893cc12828895e36ac0e787077af0",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "86ac684e2a2564f56d42d9c216918ed659652846"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 4503,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "pressure-hessian-pointwise-obstruction.json",
+      "location": "research/certificates/r069h/pressure-hessian-pointwise-obstruction.json",
+      "sha256": "a988bd4d3fb1e7286dfa1facd9de0867fb37c8044af3b5e95a44be8878340653"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "two exact smooth periodic divergence-free families have the same local strain and vorticity but opposite principal pressure-Hessian signs when t squared exceeds 85/54"
+}

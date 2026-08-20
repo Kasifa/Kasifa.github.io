@@ -9,6 +9,7 @@ const figureRoot = new URL(
   "../figures/r069f-endpoint-scaling/fig-r069f-endpoint-scaling/",
   import.meta.url,
 );
+const publicRoot = new URL("../public/figures/", import.meta.url);
 
 test("archives the formal R0.69F endpoint-scaling figure", async () => {
   const [manifestText, validationText, caption, contract] = await Promise.all([
@@ -60,4 +61,20 @@ test("the R0.69F figure package passes the strict validator", () => {
   const report = JSON.parse(run.stdout);
   assert.deepEqual(report.errors, []);
   assert.deepEqual(report.warnings, []);
+});
+
+test("publishes byte-exact mirrors of the R0.69F figure", async () => {
+  for (const extension of ["pdf", "svg", "png"]) {
+    const [archived, published] = await Promise.all([
+      readFile(new URL("figure." + extension, figureRoot)),
+      readFile(
+        new URL("r0-69f-endpoint-scaling." + extension, publicRoot),
+      ),
+    ]);
+    assert.equal(
+      createHash("sha256").update(published).digest("hex"),
+      createHash("sha256").update(archived).digest("hex"),
+      extension + " public mirror differs from archived figure",
+    );
+  }
 });

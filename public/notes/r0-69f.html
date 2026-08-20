@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69F：精确求出正时间分数 Volterra 预解增益，证明优化 Bielecki 权重和时间分片最多恢复经典 type-I 延拓尺度。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69F｜端点预解优化的经典尺度障碍">
+  <meta property="og:description" content="精确 Mittag–Leffler 增益表明指数无法被参数优化消除；所得时间壳下界弱于经典延拓结论。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69f-endpoint-scaling.png">
+  <title>R0.69F｜端点预解优化的经典尺度障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.65">
+  <style>.hero h1{font-size:clamp(2.3rem,4.8vw,4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.65"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#gain">精确增益</a><a href="#weight">权重优化</a><a href="#shells">时间壳</a><a href="#classical">经典比较</a><a href="#decision">判定</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69F · 分数 Volterra 端点尺度</div>
+        <h1>精确优化只到经典尺度，<br>这条预解支路应当停止</h1>
+        <p class="lead">我把 R0.69E 的正时间预解化成精确的半阶 Volterra 算子，并同时优化 Bielecki 权重与几何时间分片。局部增益恰好是 \(E_{1/2}(x)=e^{x^2}\operatorname{erfc}(-x)\)，所以 \(V^2h\) 指数不是粗糙权重制造的。与深数据包的几何衰减配对后，最多只能推出某些时间壳上的 type-I 尺度下界；经典 \(L^\infty\) 局部延拓已经在每个晚期时间壳给出更强结论。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69F 完成</span><strong>严格负结果</strong><p>版本 v0.69F · 2026-08-21</p><p>形式检查：22 / 22 通过</p><p>高精度增益节点：8 组</p><p>权重优化节点：6 组</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#gain">01 · 精确局部增益</a></li>
+        <li><a href="#weight">02 · Bielecki 优化</a></li>
+        <li><a href="#shells">03 · 几何时间壳</a></li>
+        <li><a href="#classical">04 · 经典延拓比较</a></li>
+        <li><a href="#decision">05 · 路线判定</a></li>
+        <li><a href="#meaning">06 · 对总问题的意义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · 下一分支</a></li>
+        <li><a href="#reproduce">09 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified negative result</div><h2>端点预解的标量优化只给出经典 type-I 时间壳尺度</h2>
+          <p>在长度为 \(h\) 的正时间窗口上，记 \(V=\sup_I\|v(t)\|_\infty\)。周期 Oseen 导数核把线性化方程主控为半阶 Volterra 算子，其精确局部增益是</p>
+          <div class="equation result">\[
+            \boxed{
+            G(x)=E_{1/2}(x)
+            =e^{x^2}\operatorname{erfc}(-x),\qquad
+            x=2C_S\sqrt{\pi h}\,V.}
+          \]</div>
+          <p>令候选奇性时刻为 \(T_*\)，按 R0.69A 的热时间比例取 \(\beta=256\)，并定义</p>
+          <div class="equation">\[
+            t_j=T_*-(T_*-\tau)\beta^{-j},\qquad
+            h_j=t_j-t_{j-1},\qquad
+            x_j=2C_S\sqrt{\pi h_j}\,
+            \sup_{t\in[t_{j-1},t_j]}\|v(t)\|_\infty.
+          \]</div>
+          <p>在实际非线性分支使用的正时间连续子空间中，预解满足</p>
+          <div class="equation result">\[
+            \boxed{
+            \mathfrak M_v^{\,c}(t_r)
+            \le
+            \Gamma_*
+            \left(\frac1{1-a}+2r\right)
+            \prod_{j=1}^rE_{1/2}(x_j).}
+          \]</div>
+          <p>若 R0.69D 的稳定门槛沿这些区间失效，则</p>
+          <div class="equation">\[
+            \limsup_{r\to\infty}\frac1r
+            \sum_{j=1}^r
+            \left(x_j^2+\frac{2x_j}{\sqrt\pi}\right)
+            \ge\frac12\log\frac1\rho.
+          \]</div>
+          <p>证书给出 \(\rho=0.7975855452903291\ldots\)、\(x_\rho=0.0926155457\ldots\)，于是</p>
+          <div class="equation result">\[
+            \boxed{
+            \limsup_{j\to\infty}V_j\sqrt{h_j}
+            \ge\frac{0.0261263630\ldots}{C_S}.}
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>EXACT · LOCAL</span><strong>Mittag–Leffler 增益</strong><p>半阶卷积的全部 Neumann 项精确求和。</p></div>
+            <div class="status"><span>EXACT · WEIGHT</span><strong>唯一权重极小点</strong><p>优化方程是一个严格单调的三次方程。</p></div>
+            <div class="status"><span>CERTIFIED · SHELL</span><strong>明确时间壳阈值</strong><p>数据包衰减率转成无量纲局部下界。</p></div>
+            <div class="status"><span>DECISION · NEGATIVE</span><strong>没有新延拓条件</strong><p>经典理论已经给出更强的每壳结论。</p></div>
+          </div>
+        </section>
+
+        <section id="gain"><div class="section-no">01 / Exact fractional gain</div><h2>\(V^2h\) 指数来自精确卷积，不是估计松弛</h2>
+          <p>对标量核</p>
+          <div class="equation">\[
+            (Kq)(t)=2C_SV\int_{s_0}^{t}(t-s)^{-1/2}q(s)\,ds,
+          \]</div>
+          <p>第 \(n\) 次卷积作用在常数函数上时为</p>
+          <div class="equation">\[
+            K^n\mathbf1(t)=
+            \frac{(2C_SV\sqrt\pi)^n(t-s_0)^{n/2}}
+            {\Gamma(1+n/2)}.
+          \]</div>
+          <p>全部阶数求和得到 \(E_{1/2}\)。闭式恒等式和误差函数初等上界给出</p>
+          <div class="equation result">\[
+            \boxed{
+            \log G(x)
+            \le x^2+\frac{2x}{\sqrt\pi},\qquad x\ge0.}
+          \]</div>
+          <p>当 \(x\to\infty\) 时，\(G(x)\sim2e^{x^2}\)。因此任何仍只使用 \(\sup_I\|v\|_\infty\) 和核绝对值的改进，都无法把 \(V^2h\) 指数降成更弱的量。</p>
+        </section>
+
+        <section id="weight"><div class="section-no">02 / Exact Bielecki optimization</div><h2>最优 \(\lambda\) 只消除多项式损失</h2>
+          <p>把 R0.69E 的晚期长度记为 \(L\)，并令</p>
+          <div class="equation">\[
+            A=4\pi C_S^2V^2L,\qquad
+            \theta=b_\lambda\in(0,1).
+          \]</div>
+          <p>含指数的证书因子化成</p>
+          <div class="equation">\[
+            F_A(\theta)=\frac{\exp(A/\theta^2)}{1-\theta}.
+          \]</div>
+          <p>唯一极小点满足</p>
+          <div class="equation result">\[
+            \boxed{\theta_A^3=2A(1-\theta_A).}
+          \]</div>
+          <p>当 \(A\to\infty\) 时，</p>
+          <div class="equation">\[
+            \min_{0&lt;\theta&lt;1}F_A(\theta)
+            =2eA\,e^A\left(1+O(A^{-1})\right),
+            \qquad
+            E_{1/2}(\sqrt A)=2e^A(1+o(1)).
+          \]</div>
+          <p>最优 Bielecki 证书比精确标量增益多一个约 \(eA\) 的多项式因子，但两者具有完全相同的指数 \(e^A\)。继续微调 \(\lambda\) 不会改变尺度结论。</p>
+        </section>
+
+        <section id="shells"><div class="section-no">03 / Geometric endpoint shells</div><h2>因果重启把全区间条件数写成局部增益乘积</h2>
+          <p>固定一个早期临界块 \(X_\tau\)，并令 \(a=2C_B\|v\|_{X_\tau}&lt;1\)。对连续强迫 \(f\)，精确重启恒等式在第 \(j\) 个时间壳给出</p>
+          <div class="equation">\[
+            Z_j\le G(x_j)(Z_{j-1}+2F),\qquad
+            Z_0\le\frac{F}{1-a}.
+          \]</div>
+          <p>由于 \(G(x_j)\ge1\)，前代递推得到</p>
+          <div class="equation">\[
+            \frac{Z_j}{F}
+            \le
+            \left(\frac1{1-a}+2j\right)
+            \prod_{i=1}^jG(x_i).
+          \]</div>
+          <p>固定 \(\tau\) 后，临界范数与这个正时间连续范数的等价常数不随时间壳数增长。因此，若条件数要以 \(\rho^{-r/2}\) 的速度增长，局部对数增益之和必须线性增长，进而只能推出 \(V_j\sqrt{h_j}\) 在某些时间壳上保持阶一。</p>
+        </section>
+
+        <section id="classical"><div class="section-no">04 / Classical continuation comparison</div><h2>标准 \(L^\infty\) 局部存在已经给出更强的每壳下界</h2>
+          <p>同一 Oseen 核估计给出从时刻 \(t_0&gt;0\) 的 \(L^\infty\) 局部存在时间</p>
+          <div class="equation">\[
+            \Delta t\ge
+            \frac{c_\infty}{\|v(t_0)\|_\infty^2}.
+          \]</div>
+          <p>若 \(T_*\) 是第一奇性时刻，否则就能继续延拓。因此每个充分靠后的正则时刻都必须满足</p>
+          <div class="equation result">\[
+            \boxed{
+            \|v(t)\|_\infty\sqrt{T_*-t}
+            \ge\sqrt{c_\infty}.}
+          \]</div>
+          <p>几何时间壳还有 \(T_*-t_{j-1}=\beta h_j/(\beta-1)\)。于是经典延拓直接给出</p>
+          <div class="equation">\[
+            V_j\sqrt{h_j}
+            \ge
+            \sqrt{c_\infty\frac{\beta-1}{\beta}}
+          \]</div>
+          <p>并且该不等式对每个晚期时间壳成立，而 R0.69F 只得到一个依赖 \(C_S\) 的 limsup 下界。端点 \(L_t^2L_x^\infty\) Serrin 条件也早已要求第一奇性时刻前 \(\int\|v(t)\|_\infty^2dt=\infty\)。</p>
+        </section>
+
+        <section id="decision"><div class="section-no">05 / Route decision</div><h2>R0.69F 通过了判定标准，但答案是“停止这条标量优化分支”</h2>
+          <div class="proof"><strong>严格判定。</strong>&nbsp;精确局部增益、最优 Bielecki 权重与 \(\beta=256\) 时间壳拼接都已计算。它们共同说明：只保留参考解的 \(L^\infty\) 幅度并对核取绝对值，最终只能恢复经典 type-I 尺度。该结果没有提供比 Leray–Serrin 延拓理论更强的约束，因此继续优化 \(\tau\)、\(\lambda\) 或时间片数量没有研究收益。</div>
+          <p>这是一个有价值的负结果：它定位了信息丢失发生在“把矢量、符号和空间局部几何压成一个标量幅度”这一步，而不是参数选得不够好。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Value for the main problem</div><h2>它没有推进整体正则性，但排除了一个看似可行的技术捷径</h2>
+          <p>对千禧年问题，R0.69E–F 说明临界线性化预解在每个固定正则区间内是可控的；接近候选奇性端点时，基于 \(L^\infty\) 绝对值主控的条件数恶化至多编码经典延拓率。</p>
+          <p>因此，下一阶段必须保留被标量主控删除的信息：涡量方向、Biot–Savart 核的反对称几何因子、压力与拉伸的符号抵消，或真正局部化的频率通量。没有这些信息，继续计算更精细的无符号常数不会触及未解决部分。</p>
+          <p>本页既没有证明奇性存在，也没有排除奇性；它只证明一个具体策略不足。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图把共同指数与时间壳阈值分开显示</h2>
+          <figure><img src="/figures/r0-69f-endpoint-scaling.svg" alt="R0.69F 精确分数 Volterra 增益、最优 Bielecki 证书与时间壳阈值"><figcaption>图 R0.69F。左图扣除共同指数 \(A=4\pi C_S^2V^2h\) 后，精确增益的余项趋于 \(\log2\)，最优 Bielecki 证书只多出 \(\log(2eA)\) 级多项式余项。右图给出 \(\phi(x)=x^2+2x/\sqrt\pi\) 与数据包速率 \(c_\rho\) 的唯一交点 \(x_\rho=0.0926155\ldots\)，对应 \(\limsup V_j\sqrt{h_j}\ge0.0261264\ldots/C_S\)。经典延拓已经在每个晚期时间壳给出正下界。线型、阈值线与交点标记保证灰度打印可区分。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69f-endpoint-scaling.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69f-endpoint-scaling.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / Next localized branch</div><h2>R0.69G 将保留涡量方向与拉伸核的符号几何</h2>
+          <p>下一步不再压缩成 \(\sup_I\|v\|_\infty\)。我将从周期 Biot–Savart 表示出发，把涡量拉伸写成带方向夹角的局部核，并按空间尺度与时间壳同时分解。</p>
+          <div class="proof"><strong>R0.69G 的通过标准。</strong>&nbsp;构造一个保留 \(\omega(x)\)、\(\omega(y)\) 方向差与核反对称性的有符号壳算子，并证明它相对无符号 \(L^\infty\) 主控产生严格尺度改进。若推导只重述 Constantin–Fefferman 一类涡量方向相干准则，则明确记录这一对应关系，再转向压力通道。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>c3f3d94620f6852e48e07525cc81f2c94ee1511d</code>，形式证书提交为 <code>53aa9dfc5a58264df349e219c5a3cfe97c80dbe8</code>，附图提交为 <code>f020cc891e4ec8e35a16e92aded606ce27c74336</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>209511a0c2ebbff23419b3878e502f0142ae8ea7f272281ff3b3cc4df5c0b57e</code>，形式证书 SHA-256 为 <code>96e66ff755aa0cc57379ac6582b72c149f7bf290ce44a3de8a9777162dfcc9e3</code>。22 项检查全部通过；8 个 Mittag–Leffler 节点用 100 位精度核对级数与闭式，6 个权重节点核对唯一极小点，4 组壳递推核对乘积上界。监控运行约 0.5 秒，峰值常驻内存约 117.4 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>6bb463cbae1c3917d59d65e199d5ed4003e28741a36df350c9e439be283cb93f</code>、<code>c3f483c835970f6f6411b82830074dc2b775b59525d11e42f89997d1224a26f1</code> 与 <code>77bc7e4ec0ca277a10926139e7ec9a55cb30028aa1501b2f24fc6b39985e1b0f</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069f">查看 R0.69F 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/critical_resolvent_endpoint_scaling_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069f-endpoint-scaling/fig-r069f-endpoint-scaling">查看期刊附图包</a></p>
+          <p>主要分析输入：<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru（2001）</a> · <a href="https://projecteuclid.org/journals/revista-matematica-iberoamericana/volume-23/issue-3/The-Navier-Stokes-equations-in-the-critical-Morrey-Campanato-space/rmi/1204128305.full">Lemarié-Rieusset（2007）</a> · <a href="https://doi.org/10.1137/24M1719487">Hou（2025）</a>。</p>
+          <p>声明边界：本页证明的是标量正时间预解优化无法超越经典延拓尺度。稳定门槛失效不等于不稳定确实发生；时间壳下界不是奇性证据；通用常数 \(C_B,C_H,C_S\) 没有被指定为数值；本页没有构造或排除有限时奇性，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69F · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

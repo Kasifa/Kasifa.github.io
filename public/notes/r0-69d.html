@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69D：在参考解的临界线性化预解算子有界时，加入深层数据包后的完整非线性解分支以 O(rho^r) 收敛到参考轨道。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69D｜条件非线性解耦">
+  <meta property="og:description" content="精确二次根吸收完整扰动自相互作用；剩余关口被定位为参考临界预解算子的延拓，而不是数据包本身。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69d-nonlinear-decoupling.png">
+  <title>R0.69D｜条件非线性解耦</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.63">
+  <style>.hero h1{font-size:clamp(2.35rem,5vw,4.1rem)}</style>
+  <script defer src="/i18n-en.js?v=0.63"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#difference">差方程</a><a href="#root">二次根</a><a href="#resolvent">预解关口</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69D · 完整非线性比较的条件定理</div>
+        <h1>二次反馈已经闭合，<br>真正关口是参考预解算子</h1>
+        <p class="lead">固定一条阶一参考解轨道。只要它的临界线性化算子 \(I-\mathcal A_v\) 在考察区间上具有有界逆，加入 R0.69A 深层数据包后的真正非线性解就存在唯一的邻近分支，并以 \(O(\rho^r)\) 收敛到参考解。证明没有删去 \(\mathcal B(z,z)\)：较小二次根同时封闭自映射和严格压缩。由此，当前数据包连非线性动力学也无法在一个预解稳定区间上制造阶一偏离。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69D 完成</span><strong>条件非线性解耦</strong><p>版本 v0.69D · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>完整二次项：已吸收</p><p>下一关：预解延拓</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#difference">01 · 精确差方程</a></li>
+        <li><a href="#root">02 · 较小二次根</a></li>
+        <li><a href="#resolvent">03 · 参考预解关口</a></li>
+        <li><a href="#decision">04 · 已完成判定</a></li>
+        <li><a href="#meaning">05 · 对总问题的意义</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 下一关</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified result</div><h2>有界参考预解算子强迫完整非线性轨道以几何速度解耦</h2>
+          <p>记 \(E_{\rm per}=BMO^{-1}_{\rm per}\)，\(X_T\) 为区间 \([0,T]\) 上的周期 Koch–Tataru 路径空间。固定标准估计中的符号常数 \(C_H,C_B&gt;0\)：</p>
+          <div class="equation">\[
+            \|e^{t\Delta}f\|_{X_T}\le C_H\|f\|_{E_{\rm per}},\qquad
+            \|\mathcal B(a,b)\|_{X_T}\le C_B\|a\|_{X_T}\|b\|_{X_T}.
+          \]</div>
+          <p>设参考解 \(v=e^{t\Delta}w_0+\mathcal B(v,v)\)，并定义</p>
+          <div class="equation">\[
+            \mathcal A_vz=\mathcal B(v,z)+\mathcal B(z,v),\qquad
+            M_T=\bigl\|(I-\mathcal A_v)^{-1}\bigr\|_{X_T\to X_T}&lt;\infty.
+          \]</div>
+          <p>R0.69B 已证明 \(\delta_r:=\|U_r(0)\|_{E_{\rm per}}\le C_0\rho^r\)，其中 \(C_0=6+4\sqrt2\)、\(\rho&lt;0.797586\)。令</p>
+          <div class="equation">\[
+            \chi_r:=4C_BM_T^2C_H\delta_r.
+          \]</div>
+          <p>若 \(\chi_r&lt;1\)，则从 \(w_0+U_r(0)\) 出发的方程在参考解附近有唯一 mild 解分支 \(u_r\)，而且</p>
+          <div class="equation result">\[
+            \boxed{
+            \|u_r-v\|_{X_T}\le R_-(r)
+            =\frac{1-\sqrt{1-\chi_r}}{2C_BM_T}
+            =\frac{2M_TC_H\delta_r}{1+\sqrt{1-\chi_r}}
+            \le2M_TC_HC_0\rho^r.}
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>EXACT · DIFFERENCE</span><strong>无 Picard 截断</strong><p>参考耦合和完整二次自相互作用同时保留。</p></div>
+            <div class="status"><span>EXACT · ROOT</span><strong>较小二次根</strong><p>同一半径同时满足自映射和严格压缩。</p></div>
+            <div class="status"><span>CERTIFIED · RATE</span><strong>差为 \(O(\rho^r)\)</strong><p>非线性只改变有界前因子，不改变几何指数。</p></div>
+            <div class="status"><span>CONDITIONAL · GATE</span><strong>\(M_T&lt;\infty\)</strong><p>参考预解算子仍须在目标区间上单独控制。</p></div>
+          </div>
+        </section>
+
+        <section id="difference"><div class="section-no">01 / Exact difference equation</div><h2>两条真正非线性轨道之差只剩一个参考线性化项和一个完整二次项</h2>
+          <p>写 \(u_r=v+z_r\)。把两条 mild 方程逐项相减，没有任何近似地得到</p>
+          <div class="equation result">\[
+            \boxed{z_r=e^{t\Delta}U_r(0)+\mathcal A_vz_r+\mathcal B(z_r,z_r).}
+          \]</div>
+          <p>若 \(L_v=(I-\mathcal A_v)^{-1}\)，这等价于固定点方程</p>
+          <div class="equation">\[
+            z_r=\Phi_r(z_r),\qquad
+            \Phi_r(z)=L_v\bigl[e^{t\Delta}U_r(0)+\mathcal B(z,z)\bigr].
+          \]</div>
+          <p>在半径 \(R\) 的 \(X_T\) 球内，精确估计是</p>
+          <div class="equation">\[
+            \|\Phi_r(z)\|_{X_T}\le M_T(C_H\delta_r+C_BR^2),\qquad
+            \|\Phi_r(z)-\Phi_r(y)\|_{X_T}\le2M_TC_BR\|z-y\|_{X_T}.
+          \]</div>
+          <p>因此 R0.69C 未控制的 \(\mathcal B(z,z)\) 已经直接进入非线性映射，而不是被当作高阶误差删去。</p>
+        </section>
+
+        <section id="root"><div class="section-no">02 / Smaller quadratic root</div><h2>较小根精确地把自映射等式和压缩常数接在一起</h2>
+          <p>半径球的自映射条件归结为一个标量二次不等式：</p>
+          <div class="equation">\[
+            M_TC_BR^2-R+M_TC_H\delta_r\le0.
+          \]</div>
+          <p>它的判别式为 \(1-\chi_r\)。取较小根 \(R_-(r)\) 时，自映射不等式恰好取等号，而映射的 Lipschitz 常数为</p>
+          <div class="equation result">\[
+            \boxed{q_r=2M_TC_BR_-(r)=1-\sqrt{1-\chi_r}&lt;1.}
+          \]</div>
+          <p>Banach 不动点定理随即给出该闭球内的存在唯一性。根式有理化后还得到</p>
+          <div class="equation">\[
+            1\le\frac{R_-(r)}{M_TC_H\delta_r}
+            =\frac{2}{1+\sqrt{1-\chi_r}}&lt;2.
+          \]</div>
+          <p>这说明完整非线性反馈至多把参考预解后的线性尺度放大两倍；只要 \(M_T\) 固定，\(\rho^r\) 的几何指数不会被二次反馈改变。</p>
+        </section>
+
+        <section id="resolvent"><div class="section-no">03 / Reference resolvent gate</div><h2>有限临界路径范数与有界线性化预解不能未经证明地画等号</h2>
+          <p>如果参考路径本身足够小，则</p>
+          <div class="equation">\[
+            a_T:=2C_B\|v\|_{X_T}&lt;1
+            \quad\Longrightarrow\quad
+            M_T\le\frac1{1-a_T},
+          \]</div>
+          <p>这是 Neumann 级数给出的直接充分条件。但对一般阶一参考解，仅知道 \(\|v\|_{X_T}&lt;\infty\) 并不能从粗范数估计推出 \(2C_B\|v\|_{X_T}&lt;1\)，也不能自动推出 \(I-\mathcal A_v\) 在端点空间中有界可逆。</p>
+          <p>为此定义参考条件数</p>
+          <div class="equation">\[
+            \mathfrak M_v(T):=\bigl\|(I-\mathcal A_v)^{-1}\bigr\|_{X_T\to X_T},
+          \]</div>
+          <p>逆不存在时取 \(+\infty\)。当前数据包在以下明确区域内必然渐近无关：</p>
+          <div class="equation result">\[
+            \boxed{4C_BC_HC_0\,\mathfrak M_v(T)^2\rho^r&lt;1.}
+          \]</div>
+          <p>反过来说，若该数据包要在深度增加时仍接近一个阶一阻碍，参考条件数至少必须沿相应区间增长到 \(\rho^{-r/2}\) 量级，或者共同参考区间本身消失。这只是条件必要尺度，不是预解增长确实发生的证据。</p>
+        </section>
+
+        <section id="decision"><div class="section-no">04 / Decision</div><h2>当前深数据包的非线性近场路线已经关闭</h2>
+          <p>R0.69D 排除的不是单个二次项，而是参考解附近的完整非线性分支。任意数量的参考因子、任意数量的扰动因子以及它们的重复反馈，都已包含在固定点中。只要参考线性化预解保持有界，数据包的巨大物理 Fourier 系数就无法转化成阶一临界轨道偏离。</p>
+          <div class="proof"><strong>严格判定。</strong>&nbsp;R0.69A–D 这条数据包路线现在只剩一个与特殊 Fourier 构造无关的障碍：能否在参考解的认证正则区间上定量控制 \(\mathfrak M_v(T)\)。继续增加载波或重新计算第一 Picard 项，不会绕开这个关口。</div>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Value for the main problem</div><h2>价值在于把模糊的“大数据非线性”压缩成一个可检验的线性化延拓量</h2>
+          <p>对三维 Navier–Stokes 光滑性问题，这不是全局正则性结论。它没有证明 \(\mathfrak M_v(T)\) 在任意时间保持有限，也没有证明预解发散等价于奇性。但它完成了一次严格降维：当前数据包是否能改变阶一参考动力学，不再依赖大量 Fourier 相互作用的逐项猜测，而只依赖一个明确的参考算子条件数。</p>
+          <p>这一区分很重要。若后续能从可测量的正则区间量控制 \(\mathfrak M_v(T)\)，则条件结论会自动升级为这些区间上的非线性连续依赖；若不能，失败点必须落在时间重启、轨道局部化、端点双线性估计或线性化可逆性中的某一处。</p>
+          <p>因此本结果提供的是可证伪的延拓接口，而不是对千禧年问题完成度的夸大表述。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>附图给出精确非线性放大因子与参考条件数的深度预算</h2>
+          <figure><img src="/figures/r0-69d-nonlinear-decoupling.svg" alt="R0.69D 较小二次根与参考预解条件数下的数据包深度预算"><figcaption>图 R0.69D。左图给出较小二次根相对参考预解线性尺度的精确放大因子以及固定点压缩常数；在 \(0\le\chi&lt;1\) 内，前者介于一与二之间，后者严格小于一。右图以 \(K=4C_BC_HC_0M_T^2\) 的四个无量纲情景展示 \(\chi_r\le K\rho^r\) 的几何下降；每个固定有限 \(K\) 最终都会进入严格稳定区。图中的 \(K\) 只是情景值，不是对通用 Koch–Tataru 常数的数值指定。线型和标记保证灰度打印可区分。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69d-nonlinear-decoupling.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69d-nonlinear-decoupling.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next continuation gate</div><h2>R0.69E 将构造周期临界路径空间的时间重启与预解拼接定理</h2>
+          <p>下一步不再调整数据包，而是直接处理参考算子。目标是在一个已知光滑的参考解区间上，把 \([0,T]\) 分成有限个临界小区间，建立端点迹、热流重启和局部线性化逆的拼接估计，并输出一个可计算的 \(M_T\) 上界。</p>
+          <div class="proof"><strong>R0.69E 的通过标准。</strong>&nbsp;必须给出明确的局部空间、时间平移规则、端点数据范数、分区小量和拼接常数；最终证明 \(I-\mathcal A_v\) 在整个认证正则区间上可逆。若端点 \(BMO^{-1}\) 迹不足以重启，则需要精确定位缺失的迹估计，并改用一个与 R0.69D 双线性框架兼容的临界空间。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>db524282bccb412aed5ccd17b663de63ebdc6581</code>，形式证书提交为 <code>d0562f7a8e7046e30df59fb4b959adc6044d64d6</code>，附图提交为 <code>94804c74f56cc883b4acbace5e14b3f07fc2c730</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>bb658514e69dc3cde4bdeaf81fdf596be1cb6e0dfed7423ae287ff07cf82e171</code>，形式证书 SHA-256 为 <code>ec0aa2e543533c749851aebd4118ab544b2c703105453e822c6b99ff0d6e42c7</code>。SymPy 1.14.0 对判别式、较小根、自映射等式、压缩常数、放大区间与小参考解推论完成 18 项源锁定检查，全部通过。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>480b9eeb06f002a0ecbf9aaed57fbbba73ec17f615fa7dd61b040adfe303b348</code>、<code>15814c7775dbb126a9b7b39688408e40a2b3517de87b8b53d86fa21cdc6b578e</code> 与 <code>ce135a9cfb01a550d3c8c7f88dc5d597140754ea249d437eebb6d3fb3f2baade</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069d">查看 R0.69D 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/transverse_nonlinear_decoupling_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069d-nonlinear-decoupling/fig-r069d-nonlinear-decoupling">查看期刊附图包</a></p>
+          <p>主要分析输入：<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru（2001）</a> · <a href="https://arxiv.org/abs/math/0609781">Germain–Pavlović–Staffilani（2007）</a>。</p>
+          <p>声明边界：本页证明的是有界参考线性化预解条件下的局部非线性稳定性。它没有证明有限临界路径范数自动给出该预解界，没有排除远离参考解的其他 mild 解，没有延拓任意大解穿过潜在奇性时刻，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69D · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

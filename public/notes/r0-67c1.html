@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.67C-1：精确枚举第一四比特周期的全部六阶热路径，并以有理区间证明完整五单形热系数严格为正。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.67C-1｜完整六阶热核的第一周期严格符号">
+  <meta property="og:description" content="34,690 个有效载频元组、十种时间次序和 32 阶精确 Taylor 包络给出严格正区间；渐近主投影仍待证明。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-67c1-one-cycle-heat.png">
+  <title>R0.67C-1｜完整六阶热核的第一周期严格符号</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.53"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#paths">完整路径</a><a href="#taylor">精确包络</a><a href="#value">研究价值</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.67C-1 · 完整六阶热核校准</div>
+        <h1>第一完整周期严格为正<br>渐近主投影仍待判定</h1>
+        <p class="lead">在 \(M=16,\ q=2,\ T=\log2/2\) 上，直接枚举 34,690 个有效载频元组及全部十种时间次序。五单形热核的 32 阶精确 Taylor 系数和有理尾界给出 \(0.0516697551544&lt;S_{6,q}&lt;0.0516697551584\)。这是有限尺度的严格校准点，不是渐近主谱定理。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.67C-1 精确证书已完成</span><strong>8 项正式检查全通过</strong><p>版本 v0.67C-1 · 2026-08-20</p><p>有序带符号路径：346,900</p><p>Taylor 阶数：32</p><p>最大常驻内存：33,177,600 字节</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#paths">01 · 完整路径</a></li>
+        <li><a href="#enumeration">02 · 精确枚举</a></li>
+        <li><a href="#taylor">03 · 五单形包络</a></li>
+        <li><a href="#certificate">04 · 严格区间</a></li>
+        <li><a href="#figure">05 · 期刊附图</a></li>
+        <li><a href="#value">06 · 研究价值</a></li>
+        <li><a href="#next">07 · R0.67C-2</a></li>
+        <li><a href="#reproduce">08 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>完整热核已经在一个周期上严格离零，但真正决定渐近定理的配对仍未计算</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · PATHS</span><strong>346,900 条有序路径</strong><p>全部载频约束和十种时间次序，无抽样。</p></div>
+            <div class="status"><span>CERTIFIED · SIGN</span><strong>\(S_{6,q}^{(16)}&gt;0\)</strong><p>有理时间区间加绝对 Taylor 尾界。</p></div>
+            <div class="status"><span>OPEN · ASYMPTOTIC</span><strong>\(\rho_v(F_{2/15})\) 未知</strong><p>第一周期的正号不能外推为主谱配对的正号。</p></div>
+            <div class="status"><span>BOUNDARY</span><strong>不是正则性证明</strong><p>没有控制全部 Picard 阶数，也没有产生奇异解。</p></div>
+          </div>
+        </section>
+
+        <section id="paths"><div class="section-no">01 / Complete paths</div><h2>十种时间次序共享同一个五载频约束，但具有不同的中间热率</h2>
+          <p>取 \(M=16\)、\(H=4M=64\)、\(q=2\)、\(Q=H+q=66\)。对 \(a,b,c,d,e\in\{0,\ldots,15\}\)，令</p>
+          <div class="equation">\[
+            A=H+a,\quad B=H+b,\quad C=H+c,\quad D=H+d,\quad E=H+e.
+          \]</div>
+          <p>约束 \(A+B+C-D-E=Q\) 等价于 \(e=a+b+c-d-q\)。每条路径包含三个正载频和两个负载频，共有 \({5\choose3}=10\) 个 \((3,2)\)-shuffle。对任一顺序，令</p>
+          <div class="equation result">\[
+            k_0=-Q,\qquad k_j=-Q+\sum_{\ell=1}^{j}p_\ell,
+            \qquad
+            \beta_j=H^2\alpha_j=k_j^2+\sum_{\ell=j+1}^{5}p_\ell^2.
+          \]</div>
+          <p>审计逐条验证 \(k_5=0\)。完整枚举中的最大整数热率是 \(67014\)，即 \(\max\alpha_j=67014/4096=16.36083984375\)。</p>
+        </section>
+
+        <section id="enumeration"><div class="section-no">02 / Exact enumeration</div><h2>34,690 个有效载频元组全部进入求和，零时间项独立回到 500</h2>
+          <p>四重循环只保留 \(0\le e&lt;16\) 的元组，并乘入目标及五个载频的 Rudin--Shapiro 符号。有效元组数为 34,690；再乘十种时间次序，得到 346,900 条有序带符号路径。</p>
+          <p>五单形展开的零阶完整齐次多项式为 \(h_0=1\)，因此第一 Taylor 系数必须等于十倍零时间质量。精确结果是</p>
+          <div class="equation result">\[
+            \boxed{J_0=5000=10\times500.}
+          \]</div>
+          <p>这里的 500 与 R0.67A 的第一四位周期质量完全一致，给出了独立的归一化和符号核对。</p>
+        </section>
+
+        <section id="taylor"><div class="section-no">03 / Five-simplex enclosure</div><h2>完整五单形核由五个非零热率的齐次多项式展开</h2>
+          <div class="equation">\[
+            K_T^{(5)}(\alpha_0,\ldots,\alpha_5)
+            =\sum_{n=0}^{\infty}
+            \frac{(-1)^n h_n(\alpha_0,\ldots,\alpha_4)T^{n+5}}
+            {(n+5)!},\qquad \alpha_5=0.
+          \]</div>
+          <p>脚本以整数递推计算每条路径的 \(h_0,\ldots,h_{32}\)，再做带符号总和。时间 \(T=\log2/2=\operatorname{atanh}(1/3)\) 用 120 项正有理级数包住。</p>
+          <p>若 \(A=\max\alpha_j\)，则 \(h_n\le{n+4\choose4}A^n\)。这一不等式把 32 阶以后的所有路径统一压入一个有理几何尾项，绝对上界为</p>
+          <div class="equation result">\[
+            R_{32}^{\rm abs}
+            &lt;1.943443793315\times10^{-12}.
+          \]</div>
+        </section>
+
+        <section id="certificate"><div class="section-no">04 / Certified interval</div><h2>严格下端点比整个遗漏尾项大约十个数量级</h2>
+          <div class="equation result">\[
+            \boxed{
+            0.0516697551544485637774
+            &lt;S_{6,q}^{(M=16)}
+            &lt;0.0516697551583354513640.}
+          \]</div>
+          <p>由此得到无条件的有限尺度结论 \(S_{6,q}^{(M=16)}&gt;0\)。严格下端点与尾界之比大于 \(2.65\times10^{10}\)，所以符号并非浮点舍入造成。所有证明字段都使用 Python 整数和 <code>Fraction</code>；十进制数只用于显示。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>枚举几何、Taylor 收敛和尾界分离已按期刊双栏尺寸保存</h2>
+          <figure><img src="/figures/r0-67c1-one-cycle-heat.svg" alt="R0.67C-1 第一周期完整六阶热核严格正号期刊附图"><figcaption>图 R0.67C-1。左图按第一个正载频偏移分解 34,690 个有效元组；右上展示 0 至 32 阶部分和；右下在对数尺度上比较严格系数下界与绝对尾界。颜色、形状、灰度、PDF 和最终尺寸均已检查。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-67c1-one-cycle-heat.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-67c1-one-cycle-heat.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="value"><div class="section-no">06 / Research value</div><h2>这项结果关闭的是“公式与实现是否一致”，还没有关闭“主谱配对是否非零”</h2>
+          <div class="proof"><strong>已经获得的价值。</strong>同一次精确计算核对了五载频约束、十种时间次序、中间频率、六个热率、Rudin--Shapiro 符号、五单形 Taylor 约定和时间归一化。后续主谱计算若出现异常，可以用这个有限尺度证书作回归基准。</div>
+          <p>它不是高水平定理的终点。零时间序列在较晚周期才改变符号，因此第一周期的正号不能决定渐近主根 \(\mu\) 的投影符号。真正有发表价值的下一结论仍是给出 \(\rho_v(F_{2/15})\) 的严格离零区间。</p>
+        </section>
+
+        <section id="next"><div class="section-no">07 / R0.67C-2</div><h2>下一步直接计算规范提升主项，并给出可执行的 resolvent 误差预算</h2>
+          <div class="proof"><strong>固定路线。</strong>第一，构造有限算子 \(L\) 在 \(\mu\)-主谱子空间上的精确投影，并求出质量—一次矩向量 \(v\)；第二，在五原子规范提升上区间计算 \((Jv)(F_{2/15})\)；第三，计算缺陷 \(Rv\) 的加权 \((C^{1,1})^*\) 范数，用 \((\mu-256)^{-1}\) 控制无穷维修正。</div>
+          <p>若规范主项已经大于总误差，立即得到完整热投影的严格符号。若误差仍跨过零，就逐项加入 Neumann 修正，并用 \((256/\mu)^n\) 控制剩余尾项。该步骤不需要再选择研究路线。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>数学说明、精确审计、正式证书和期刊附图分别锁定</h2>
+          <p>数学与审计源提交为 b898179036990a352a6b73e04f2a733905f9dc32，正式证书提交为 bc7c318781afccc72ba6ff3fe034c9e72ee0f18c，期刊附图包提交为 9c49fc06efd2375f6763671200da3ab03c3e6c3f。正式运行耗时 3.35 秒，最大常驻内存 33,177,600 字节，0 次交换。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_one_cycle_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_heat_one_cycle_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r067c1">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067c1-one-cycle-heat/fig-r067c1-one-cycle-heat">查看期刊附图包</a></p>
+          <p>声明边界：本文只证明 \(M=16\) 上完整六阶热系数严格为正；没有证明渐近主热投影非零，没有控制全部高阶 Picard 项，没有推出范数膨胀、奇异性或全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.67C-1 · 2026-08-20<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

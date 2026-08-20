@@ -80,7 +80,7 @@ export function extractTranslatableStrings(html) {
 export async function listSiteHtmlFiles(publicDirectory) {
   const noteDirectory = join(publicDirectory, "notes");
   const noteFiles = (await readdir(noteDirectory))
-    .filter((name) => /^r0-\d+[a-z]?\.html$/.test(name))
+    .filter((name) => /^r0-\d+(?:[a-z]\d*)?\.html$/.test(name))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   return [

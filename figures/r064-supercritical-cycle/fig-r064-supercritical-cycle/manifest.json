@@ -1,0 +1,145 @@
+{
+  "analyticalQuestion": "Does the zero-time forty-eight-state digit transfer admit a common norm with per-level factor at most two?",
+  "caption": {
+    "chineseSiteSummary": "R0.64 \u7ed9\u51fa\u4e00\u4e2a\u53ef\u8fbe\u7684\u56db\u4f4d\u96f6\u65f6\u95f4\u8d85\u4e34\u754c\u5faa\u73af\uff0c\u4e25\u683c\u6392\u9664\u5b8c\u6574\u72b6\u6001\u7a7a\u95f4\u4e0a\u7684\u9010\u5c42\u56e0\u5b50\u4e8c\u516c\u5171\u8303\u6570\uff1b\u5e26\u70ed\u6743\u79ef\u5206\u4f30\u8ba1\u4ecd\u672a\u89e3\u51b3\u3002",
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "dataSufficiency": "The audit compares all forty-eight states with direct convolution through ten dyadic levels, derives the exact image characteristic polynomial, and extends the certified scalar recurrence to thirty cycles.",
+    "family": "state-reduction diagram plus exact spectrum and reachable-growth diagnostics",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size",
+    "nonColorEncoding": "boxes, arrows, open markers, dashed threshold lines, direct labels, and signed numerical positions",
+    "outputFootprint": "double-column journal figure at 178 by 96 millimetres, with PDF, SVG, and 600 dpi PNG exports",
+    "palettePolicy": "blue for exact state structure, rust for the supercritical root, neutral ink for the threshold",
+    "takeaway": "The zero-time full-state transfer is supercritical on an explicit reachable four-bit cycle, so the remaining proof route must retain heat weighting and simplex integration before taking a norm.",
+    "variants": [
+      "48-state to rank-six cycle reduction",
+      "six exact nonzero eigenvalues",
+      "reachable target-cycle block growth through r=120"
+    ]
+  },
+  "computation": {
+    "command": "python3 research/quartic_supercritical_cycle_audit.py --output research/certificates/r064/supercritical-cycle-audit.json --max-direct-level 10",
+    "configuration": "two exact 48 by 48 digit matrices, four-bit word 0100, rank-six image restriction, ten direct dyadic convolution levels, and one hundred twenty recurrence cycles",
+    "kind": "exact-audit",
+    "monitoring": {
+      "enabled": true,
+      "failedAttempts": [
+        {
+          "log": "figure-data-attempt1-resources.csv",
+          "reason": "The initial r<=30 display window ended at block growth 21.14 and did not yet show the slow convergence toward the exact dominant root; the recurrence window was extended without changing the certified transfer data.",
+          "stage": "figure-data validation"
+        },
+        {
+          "logs": [
+            "figure-data-attempt2-resources.csv",
+            "plot-attempt1-resources.csv"
+          ],
+          "reason": "The first successful r<=120 render emitted a Python invalid-escape SyntaxWarning in one TeX label. The string literal was normalized and both data provenance and outputs were regenerated from the final source commit.",
+          "stage": "figure source normalization"
+        }
+      ],
+      "reportIntervalSeconds": 0.1,
+      "resourceLogs": [
+        "figure-data-attempt1-resources.csv",
+        "figure-data-attempt2-resources.csv",
+        "plot-attempt1-resources.csv",
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ]
+    },
+    "precision": "Python integers and Fractions for every certified claim; floating roots only for display",
+    "randomSeed": "not applicable; no randomness",
+    "solver": "exact finite linear algebra, polynomial determinant, direct convolution, and scalar recurrence",
+    "wallTimeSeconds": 0.7902130829966572
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "host": "local Mac workstation",
+    "maximumObservedFinalPlotRssMiB": 158.016,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-20T18:05:42+08:00",
+  "data": [
+    {
+      "bytes": 390,
+      "format": "csv",
+      "path": "cycle-spectrum.csv",
+      "schema": "six nonzero eigenvalues with exact root intervals and multiplicities",
+      "sha256": "af33364ef511793fde30ff4346dd22b2bcdf3e2b8916c256179fd112f08c6e9c"
+    },
+    {
+      "bytes": 45755,
+      "format": "csv",
+      "path": "reachable-cycle.csv",
+      "schema": "exact reachable sequence through r=120, including M, target, y_r, sign, and block growth",
+      "sha256": "437c13720d28a71fd2eea2739384ce7b0f28193592cb2378960d5cecffb732d8"
+    },
+    {
+      "bytes": 636,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "source certificate hash, row counts, exact polynomial, environment, and sampling time",
+      "sha256": "2acb7e669fc54977038c7c0f88553ba1fcb66359688f382a294b8109ae4fc488"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.3.5",
+    "packagesLock": "requirements-research.txt",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r064-mplconfig python3 figures/r064-supercritical-cycle/fig-r064-supercritical-cycle/plot.py",
+    "heightMillimetres": 96,
+    "outputs": [
+      {
+        "bytes": 31345,
+        "path": "figure.pdf",
+        "sha256": "4ca6564a179eed5816e3f82ca2910fc0d509a38680bfa7f799284c81b3a5760b"
+      },
+      {
+        "bytes": 59226,
+        "path": "figure.svg",
+        "sha256": "79b4d68ea4d4ee1e25f4d51157eeb75afc1cfdaba027048f9ef597e3fa1ecbe7"
+      },
+      {
+        "bytes": 329753,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2267",
+        "sha256": "c131cd87c8c05132dcfa3491e6cec6912dc4dfd5a780ea67d8976a2c1b33c656"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "scriptSha256": "4703630f5cd6a45767419e45881613b239496df990d625c9fea673c16d0a594e",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r064-supercritical-cycle",
+  "git": {
+    "certificateCommit": "d854e72d4348cefae6294a03d874058e0d7d9832",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "a0d77827bd2df3dd437b2561ddd70d7890de2bbb"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "notes": "The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected at the intended 178 by 96 mm size. All panels, thresholds, root labels, and boundary text remain legible.",
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [],
+  "status": "formal",
+  "supportedClaim": "The exact least-significant-bit-first word 0100 has a four-level product with characteristic polynomial x^42 (x-16)^2 (x^4-25x^3-120x^2+3248x-8192) and a reachable real eigenvalue 25.151589..., strictly above the threshold 16. This rules out a pointwise factor-two common norm on the complete zero-time state space; the heat-integrated estimate remains open."
+}

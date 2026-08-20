@@ -18,6 +18,10 @@ const auditUrl = new URL(
   import.meta.url,
 );
 const certificateRoot = new URL("../research/certificates/r064/", import.meta.url);
+const figureRoot = new URL(
+  "../figures/r064-supercritical-cycle/fig-r064-supercritical-cycle/",
+  import.meta.url,
+);
 
 test("states the exact R0.64 supercritical cycle and its boundary", async () => {
   const [note, audit] = await Promise.all([
@@ -76,5 +80,31 @@ test("archives the R0.64 exact certificate with valid hashes", async () => {
     const payload = await readFile(new URL(entry.file, certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, entry.expected, entry.file + " hash mismatch");
+  }
+});
+
+test("archives the formal R0.64 supercritical-cycle figure", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r064-supercritical-cycle");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 96);
+  assert.equal(manifest.figure.outputs.length, 3);
+  assert.match(manifest.supportedClaim, /reachable real eigenvalue 25\.151589/);
+  assert.match(manifest.supportedClaim, /heat-integrated estimate remains open/i);
+  assert.equal(manifest.computation.monitoring.failedAttempts.length, 2);
+
+  for (const entry of [...manifest.data, ...manifest.figure.outputs]) {
+    const payload = await readFile(new URL(entry.path, figureRoot));
+    assert.equal(payload.length, entry.bytes, entry.path + " byte mismatch");
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.sha256, entry.path + " hash mismatch");
+  }
+  for (const name of manifest.computation.monitoring.resourceLogs) {
+    const text = await readFile(new URL(name, figureRoot), "utf8");
+    assert.match(text, /exited:0/);
   }
 });

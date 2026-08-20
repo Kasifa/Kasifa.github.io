@@ -98,6 +98,10 @@ const r058ManifestUrl = new URL(
   "../figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation/manifest.json",
   import.meta.url,
 );
+const r060ManifestUrl = new URL(
+  "../figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard/manifest.json",
+  import.meta.url,
+);
 
 test("keeps a complete journal-figure provenance template", async () => {
   const manifest = JSON.parse(await readFile(templateUrl, "utf8"));
@@ -785,6 +789,41 @@ test("archives the formal R0.58 Duhamel critical-saturation figure", async () =>
   assert.equal(manifest.computation.kind, "exact-audit");
   assert.equal(manifest.computation.monitoring.formalSamples, 96);
   assert.equal(manifest.computation.monitoring.samplingSamples, 3);
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 105);
+  assert.deepEqual(
+    manifest.figure.outputs.map(({ path }) => path).sort(),
+    ["figure.pdf", "figure.png", "figure.svg"],
+  );
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.equal(manifest.qa.pdfFontsEmbedded, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
+});
+
+test("archives the formal R0.60 invariant-shear Picard figure", async () => {
+  const manifest = JSON.parse(await readFile(r060ManifestUrl, "utf8"));
+
+  assert.equal(manifest.figureId, "fig-r060-invariant-shear-picard");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.formalSourceCommit,
+    "db3e7eb9071f67c041a96863f9afc43bbca50aec",
+  );
+  assert.equal(
+    manifest.git.certificateCommit,
+    "ac67dd76630215fd3f49fedc9b261445e1cbb7ad",
+  );
+  assert.equal(
+    manifest.git.sourceCommit,
+    "ffaa745636bf20084ff3e3ee2df0e0b655c3ab8b",
+  );
+  assert.match(manifest.supportedClaim, /cubic target projection vanishes/);
+  assert.match(manifest.supportedClaim, /odd orders three through nine/);
+  assert.match(manifest.supportedClaim, /order eleven.*support path/);
+  assert.equal(manifest.computation.kind, "exact-audit");
+  assert.equal(manifest.computation.monitoring.formalSamples, 8);
+  assert.equal(manifest.computation.monitoring.samplingSamples, 2);
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 105);
   assert.deepEqual(

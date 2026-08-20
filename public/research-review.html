@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.43"></script>
+  <script defer src="/i18n-en.js?v=0.44"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1115,7 +1115,7 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-20</strong>最近修订</span>
-            <span><strong>v0.43</strong>网页版本</span>
+            <span><strong>v0.44</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
             <span><strong>全局正则</strong>当前方向</span>
           </div>
@@ -1127,7 +1127,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>直接检验 R0.59 张量频率包的三阶共振，判断第一相干低频输出能否在统一高阶 Picard 余项界下保持可辨识。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>精确计算不变剪切单链的四次目标系数，检验它相对 R0.59 二次目标是否具有独立于 \(M\) 的统一衰减。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -3628,7 +3628,54 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/multi_output_critical_saturation_audit.py">查看精确审计脚本</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r059-multi-output-critical-saturation/fig-r059-multi-output-critical-saturation">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.60：</strong>枚举三阶树形频率通道与双时间积分分母，先判断是否存在回流到 \(K_M\) 的同阶共振；只有建立独立于 \(L,M\) 的高阶余项界后，才讨论第一相干输出能否升级为完整非线性结论。</p>
+            <p><strong style="color:var(--gold)">R0.60 已完成：</strong>完整三维方程在该频率包上精确约化为平行剪切系统；三次目标回返严格不可能，奇数阶三至九均不能到达 \(\xi_1=0\)，第一次可能的目标修正是四次项。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.60 · 2026-08-20</p>
+            <h3>不变剪切链、三次目标间隙与四阶能量账本</h3>
+            <p>
+              R0.59 高频包严格保持
+              \[
+              u=(0,F(x_1,t),G(x_1,x_2,t))
+              \]
+              的平行剪切结构。完整 Navier--Stokes 方程因此约化为
+              \[
+              \partial_tF-\partial_1^2F=0,\qquad
+              \partial_tG-\Delta_{12}G+F\partial_2G=0.
+              \]
+              对每个固定光滑频率包，后一个方程是已知光滑剪切速度下的线性
+              抛物方程，所以该构造在这个对称类内全局光滑。
+            </p>
+            <p>
+              按振幅展开后，完整 Picard 森林塌缩为单条有序链
+              \[
+              (\partial_t-\Delta_{12})G_n=-F_1\partial_2G_{n-1}.
+              \]
+              令 \(N=LM\)、\(H=4N\)。三次项满足
+              \(|\xi_1|\ge3N+1>3H/4\)，所以其目标投影严格为零。
+              三、五、七、九阶到零平面的距离下界分别为
+              \(3N+1,2N+2,N+3,4\)。
+            </p>
+            <p>
+              十一阶在 \(N\ge5\) 时首次具有显式零平面支撑路径，但这不证明
+              完整系数非零。三次项仍可回到原始高频 \(V\) 支撑，并与二次项
+              共同满足精确四阶能量恒等式。因此第一处可能改变 R0.59 低频目标
+              的项是 \(G_4\)，不是 \(G_3\)。
+            </p>
+            <p>
+              <strong>结论边界：</strong>这是对当前频率包的结构定理，不是任意
+              三维初值的估计。它关闭了错误的三次共振路线，却同时说明该构造
+              不是 Clay 奇点候选；对千禧年问题的直接价值仍低。
+            </p>
+            <p>
+              <a href="/notes/r0-60.html"><strong>阅读 R0.60 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-60.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r060">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/invariant_shear_picard_audit.py">查看精确审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r060-invariant-shear-picard/fig-r060-invariant-shear-picard">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.61：</strong>沿唯一 Picard 链精确计算 \(\Pi_0G_4(t_H)\) 的嵌套热分母，检验其相对二次目标是否满足 \(C\varepsilon^2/L^2\) 型统一上界，或是否出现随 \(M\) 增长的明确下界。</p>
           </div>
         </section>
 
@@ -3643,7 +3690,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.43 · 2026-08-20<br>
+        综述 v0.44 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

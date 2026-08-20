@@ -27,6 +27,10 @@ const checksumsUrl = new URL(
   "../research/certificates/r067/SHA256SUMS",
   import.meta.url,
 );
+const figureRoot = new URL(
+  "../figures/r067-sixth-order-cycle/fig-r067-sixth-order-cycle/",
+  import.meta.url,
+);
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -129,4 +133,34 @@ test("locks the formal R0.67A certificate, logs, and resource record", async () 
     sha256(stderrBuffer),
     expected.get("sixth-order-cycle-audit.stderr.log"),
   );
+});
+
+test("archives a formal journal figure for the R0.67A theorem", async () => {
+  const python = process.env.CODEX_PYTHON || "python3";
+  const validator = new URL(
+    "../research/validate_figure_package.py",
+    import.meta.url,
+  );
+  const { stdout } = await execFileAsync(
+    python,
+    [validator.pathname, figureRoot.pathname],
+    { cwd: repository },
+  );
+  const validation = JSON.parse(stdout);
+  assert.deepEqual(validation.errors, []);
+  assert.deepEqual(validation.warnings, []);
+
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  assert.equal(manifest.figureId, "fig-r067-sixth-order-cycle");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.figure.widthMillimetres, 178);
+  assert.equal(manifest.figure.heightMillimetres, 108);
+  assert.equal(manifest.figure.outputs.length, 3);
+  assert.equal(manifest.figure.outputs.at(-1).dpi, 600);
+  assert.equal(manifest.figure.outputs.at(-1).pixels, "4204 by 2551");
+  assert.equal(manifest.qa.grayscaleInspected, true);
+  assert.match(manifest.supportedClaim, /Y_r=C6,0 mu\^r\+O\(300\^r\)/);
+  assert.match(manifest.supportedClaim, /complete heat-weighted five-simplex projection is not certified/);
 });

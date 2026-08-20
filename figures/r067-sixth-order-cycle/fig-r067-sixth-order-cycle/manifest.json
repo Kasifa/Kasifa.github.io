@@ -1,0 +1,152 @@
+{
+  "analyticalQuestion": "Does the exact reachable zero-time sixth-order target contain a spectral mode above the conditional four-free-coordinate C1,1 zero-affine scale?",
+  "caption": {
+    "chineseSiteSummary": "R0.67A \u7528\u7cbe\u786e 320 \u72b6\u6001\u8f6c\u79fb\u8bc1\u660e\u96f6\u65f6\u95f4\u516d\u9636\u53ef\u8fbe\u6807\u91cf\u6ee1\u8db3 Y_r=C_{6,0}mu^r+O(300^r)\uff0c\u4e14 C_{6,0}<0\u3001mu>400\uff1b\u5b8c\u6574\u70ed\u6838\u6295\u5f71\u4ecd\u5f85\u8bc1\u660e\u3002",
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "dataSufficiency": "40 exact recurrence values, seven direct levels, two-prime rank checks, ten Schur transforms, and 14 passing checks",
+    "family": "one convergence diagnostic, one spectral-enclosure strip, and one threshold-growth panel",
+    "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size",
+    "nonColorEncoding": "marker shape and fill, interval bars, a shaded disk, dashed asymptotic guide, and direct labels",
+    "outputFootprint": "double-column 178 by 108 millimetres with PDF, SVG, and 600 dpi PNG",
+    "palettePolicy": "blue/open for finite and structural values; rust/filled for the dominant theorem; neutral references",
+    "takeaway": "the reachable dominant root lies above both the conditional 256 C2 zero-affine scale and every degree-ten mode"
+  },
+  "claimBoundary": "Zero-time fixed-order correlation only; no complete heat projection, full Picard-series control, norm inflation, singularity, global regularity, or Millennium-problem claim.",
+  "computation": {
+    "command": "python3 research/sixth_order_cycle_audit.py --max-direct-level 7 --sequence-terms 40 --progress --output research/certificates/r067/sixth-order-cycle-audit.json",
+    "configuration": "320 direct sign/carry states, 36-dimensional cycle image, 40 target terms, and exact C2 carry weight",
+    "kind": "exact-audit",
+    "monitoring": {
+      "enabled": true,
+      "resourceLogs": [
+        "research/certificates/r067/sixth-order-cycle-audit.stderr.log",
+        "figure-data-resources.csv",
+        "plot-resources.csv"
+      ]
+    },
+    "precision": "Python integers and Fractions for proof fields; 80-digit Decimal only for plotted display values",
+    "randomSeed": "not applicable; no randomness",
+    "solver": "exact digit transfer, two-prime rank audits, exact characteristic polynomial, Schur transforms, rational recurrence, and interval spectral projection",
+    "wallTimeSeconds": 1.2654698329920004
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "gpu": "not used",
+    "host": "local Mac workstation",
+    "maximumObservedFinalPlotRssMiB": 164.344,
+    "maximumObservedFormalAuditRssMiB": 43.640625,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.1 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-20T20:33:00+08:00",
+  "data": [
+    {
+      "bytes": 14570,
+      "format": "csv",
+      "path": "reachable-sequence.csv",
+      "schema": "40 exact target values with display normalizations by mu^r and 256^r",
+      "sha256": "93fe0034dedec7491615d28cbc4a914ff7ef88a2603122f2770b2c03ab842b2f"
+    },
+    {
+      "bytes": 340,
+      "format": "csv",
+      "path": "spectral-enclosures.csv",
+      "schema": "four exact quartic root intervals and one strict degree-ten Schur disk",
+      "sha256": "f95841045c6b8ebe8febfffa61118b567261da86c1778e77a771ef699d4245b5"
+    },
+    {
+      "bytes": 189,
+      "format": "csv",
+      "path": "thresholds.csv",
+      "schema": "C2 zero-affine threshold, dominant-root interval, and absolute carry eigenvalue",
+      "sha256": "bee7effed866cee0699ced48187f080f7d28baa86209a17a4698f7c806f64fcc"
+    },
+    {
+      "bytes": 802,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "pinned commits, certificate hash, theorem intervals, and extraction environment",
+      "sha256": "c66eeadfa35756bd9e1981a8696c0e3620c0521109e121be89c8f6ee159b8dc3"
+    },
+    {
+      "bytes": 54,
+      "format": "csv",
+      "path": "figure-data-resources.csv",
+      "schema": "elapsed time, resident memory, and exit status for deterministic extraction",
+      "sha256": "615dcf542515bc25db7c8781e3681e625d3f297956189ab36dc9f70ddfe2cd96"
+    },
+    {
+      "bytes": 55,
+      "format": "csv",
+      "path": "plot-resources.csv",
+      "schema": "elapsed time, resident memory, and exit status for final rendering",
+      "sha256": "097cb7b5f07b173ce9d6a23100723c2e030a9f4cdeb2b2efa800fb9971390952"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "command": "PYTHONPATH=tmp/r062-python MPLCONFIGDIR=tmp/r067-mplconfig python3 figures/r067-sixth-order-cycle/fig-r067-sixth-order-cycle/plot.py",
+    "heightMillimetres": 108,
+    "outputs": [
+      {
+        "bytes": 32242,
+        "path": "figure.pdf",
+        "sha256": "1c53b721ca416d2ec689275b476d6c15093a393adf851cee1650e4335480112f"
+      },
+      {
+        "bytes": 100521,
+        "path": "figure.svg",
+        "sha256": "23a3569777f8ff82a30f5640425cfbb69a460303e28c955e21401ef9140c2a96"
+      },
+      {
+        "bytes": 485772,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2551",
+        "sha256": "94cc0f5f3e44c3e63f2c7fef9b02b8e3196cf38e6f2e5c229d63aeea6395a312"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "scriptSha256": "f46703e8f971a98b992a813d218c1408064dc09ecbbd3a3ede49d1593385a35b",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r067-sixth-order-cycle",
+  "git": {
+    "certificateCommit": "03aaf0af31b74207b9d9a068e4331424a5e84957",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "8da878e5f7b07fd4e58f039d8abee458cd3eb122"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "notes": "The final color export, true grayscale conversion, and Poppler-rendered PDF were inspected at 178 by 108 mm. The sign change, four quartic intervals, complete radius-300 Schur disk, conditional 256 zero-affine scale, asymptotic guide, and heat-projection claim boundary remain legible. PDF text extraction was unavailable in the local bundle; vector rendering was verified directly.",
+    "pdfFontsEmbedded": true,
+    "pdfTextExtracted": false,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 20442,
+      "extractionCommand": "python3 figures/r067-sixth-order-cycle/fig-r067-sixth-order-cycle/prepare_data.py",
+      "fileName": "sixth-order-cycle-audit.json",
+      "location": "research/certificates/r067/sixth-order-cycle-audit.json",
+      "sha256": "b3d02a759f56e43aa9b6df63fad45a6b64a89b012fbc65be3f4a644123b3f8ef"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Exact 320-state arithmetic proves Y_r=C6,0 mu^r+O(300^r), with C6,0 strictly negative and 402.425429345624<mu<402.4254293456256. Hence |Y_r|/256^r tends to infinity. The complete heat-weighted five-simplex projection is not certified."
+}

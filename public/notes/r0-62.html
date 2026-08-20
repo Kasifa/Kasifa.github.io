@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.62：四次目标的三进位相关分解与首个全指标余项上界；一致界还差一个平方根因子。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.62｜四次相关分解与全指标平方根上界">
+  <meta property="og:description" content="证明所有 dyadic 指标上的 O(sqrt(M)) 四次上界，并用完整目标扫描定位到仍待提取的热核消去。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-62-quartic-correlation.png">
+  <title>R0.62｜四次相关分解与全指标平方根上界</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}.figure-print{display:none}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:7.45pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:5px 0;padding:5px 7px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:3px 0}.figure-screen{display:none}.figure-print{display:block}#figure figure{width:96%;margin:5px auto;padding:4px 0}#figure figcaption{margin-top:4px;font-size:6.65pt;line-height:1.22}#reproduce{margin-bottom:0}#reproduce .proof code{font-size:3.45pt;line-height:1.0}}</style>
+  <script defer src="/i18n-en.js?v=0.46"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#carry">三进位分解</a><a href="#bound">全指标上界</a><a href="#evidence">有限证据</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.62 · 四次相关的解析上界</div>
+        <h1>全部指标上的平方根上界已经证明；<br>一致界还差一次热核消去</h1>
+        <p class="lead">我把 R0.61 的四点符号和拆成块内、块间与唯一进位，证明未加权相关只有 \(-1,0,1\) 三个进位通道。随后我不再用路径绝对值计数，而把 Rudin--Shapiro 热流界直接放进三重 Duhamel 积分，得到对所有 dyadic \(L,M\) 和全部 \(1\le m\le M\) 成立的上界 \(|R_{L,M,m}|\le7.8343(m/M)^2\sqrt M\)。它消除了全部 \(L\) 增长，但还不是独立于 \(M\) 的一致界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全指标平方根上界已证明</span><strong>4 项整数检查全通过</strong><p>版本 v0.62 · 2026-08-20</p><p>新增完整目标：3,584 个</p><p>累计不同三元组：4,042 个</p><p>累计有序路径：27,082,065,198 条</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#carry">01 · 三进位分解</a></li>
+        <li><a href="#bound">02 · 全指标上界</a></li>
+        <li><a href="#evidence">03 · 完整目标扫描</a></li>
+        <li><a href="#figure">04 · 期刊附图</a></li>
+        <li><a href="#meaning">05 · 研究价值</a></li>
+        <li><a href="#next">06 · R0.63 方向</a></li>
+        <li><a href="#reproduce">07 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>得到的是第一个全指标四次余项界，不是所需的一致界</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL INDICES</span><strong>平方根上界</strong><p>覆盖全部 dyadic \(L,M\) 与每个目标 \(m\)。</p></div>
+            <div class="status"><span>FORMAL · REDUCTION</span><strong>三个进位通道</strong><p>未加权四点相关精确分成 \(k=-1,0,1\)。</p></div>
+            <div class="status"><span>OPEN · UNIFORMITY</span><strong>还差 \(M^{-1/2}\)</strong><p>下一步必须保留平滑热权与时间顺序。</p></div>
+            <div class="status"><span>OPEN · CLAY PROBLEM</span><strong>原问题没有解决</strong><p>当前频率包仍处在全局光滑的剪切类。</p></div>
+          </div>
+          <p>R0.62 把 R0.61 的开放问题缩小了一步：无符号计数给出的端点增长约为 \(LM\)，现在严格降到 \(\sqrt M\)，并且不再含 \(L\)。但 \(\sqrt M\) 仍会随输出数增长，所以不能把这个结果表述成 \(\sup_{L,M,m}|R_{L,M,m}|&lt;\infty\)。</p>
+        </section>
+
+        <section id="carry"><div class="section-no">01 / Three-carry reduction</div><h2>载频关系只允许三个进位，并在未加权情形精确张量分离</h2>
+          <p>把每个载频偏移写成 \(rL+n\)，其中 \(0\le r&lt;M\)、\(0\le n&lt;L\)。关系 \(A+B-C=Q\) 等价于</p>
+          <div class="equation">\[
+            (r_A+r_B-r_C-r)L+(n_A+n_B-n_C-n)=0.
+          \]</div>
+          <p>第二个括号严格位于 \((-2L,2L)\)，又必须是 \(L\) 的整数倍。因此存在唯一 \(k\in\{-1,0,1\}\)，使</p>
+          <div class="equation result">\[
+            n_A+n_B-n_C-n=kL,
+            \qquad r_A+r_B-r_C-r=-k.
+          \]</div>
+          <p>若 \(I_{L,k}\) 与 \(O_{M,r,k}\) 分别表示块内四点相关与块间三点卷积，则未加权载频和满足全指标恒等式</p>
+          <div class="equation result">\[
+            \boxed{\sum_{Q\in J_m}\sum_{A+B-C=Q}c_Qc_Ac_Bc_C
+            =\sum_{k=-1}^{1}I_{L,k}O_{M,m-1,k}.}
+          \]</div>
+          <p>合流热核依赖完整载频与三个时间位置，不能按 \(r,n\) 直接分离。这正是普通相关恒等式与热核加权定理之间的差别。</p>
+        </section>
+
+        <section id="bound"><div class="section-no">02 / All-index bound</div><h2>把热流符号消去放进 Duhamel 积分，消除全部 \(L\) 增长</h2>
+          <p>令 \(C_{\rm RS}=2+\sqrt2\)、\(C_T=(1+\sqrt2)C_{\rm RS}\)。Rudin--Shapiro 前缀估计与 Abel 求和给出</p>
+          <div class="equation">\[
+            \|e^{s\Delta}F\|_\infty\le2C_T\sqrt{LM}\,e^{-H^2s},
+            \qquad
+            \|G_{1,m}(s)\|_\infty\le C_{\rm RS}\sqrt L\,e^{-(H^2+m^2)s}.
+          \]</div>
+          <p>在固定 \(m\) 扇区，\(\partial_2\) 只是乘以 \(im\)。对剪切 Picard 链迭代三次，并用热半群的 \(L^\infty\) 收缩性，可得</p>
+          <div class="equation">\[
+            |S_{4,m}|\le\frac43C_{\rm RS}C_T^3T^3L^2M^{3/2},
+            \qquad
+            S_{2,m}\ge\frac8{25}(1-2^{-25/16})L.
+          \]</div>
+          <p>代回 R0.61 的精确比值公式后得到</p>
+          <div class="equation result">\[
+            \boxed{|R_{L,M,m}|\le
+            \frac{C_{\rm RS}C_T^3T^3}{48\kappa_2}
+            \Bigl(\frac mM\Bigr)^2\sqrt M
+            &lt;7.8343\Bigl(\frac mM\Bigr)^2\sqrt M.}
+          \]</div>
+          <p>小数 \(7.8343\) 只是显式常数的显示值；证明使用的是前一行的精确表达式。</p>
+        </section>
+
+        <section id="evidence"><div class="section-no">03 / Complete target scans</div><h2>完整目标扫描到 \(M=2048\) 仍未显示平方根增长</h2>
+          <table><thead><tr><th>\(L\)</th><th>\(M\)</th><th>最坏目标 \(m\)</th><th>\(\max_mR_{L,M,m}\)</th></tr></thead><tbody>
+            <tr><td>1</td><td>512</td><td>481</td><td>0.0009855702272829397</td></tr>
+            <tr><td>1</td><td>1024</td><td>981</td><td>0.0012127996801718404</td></tr>
+            <tr><td>1</td><td>2048</td><td>1912</td><td>0.0011457637853978923</td></tr>
+          </tbody></table>
+          <p>三次新扫描包含 3,584 个完整目标，分别用 18 个工作线程完成，计算耗时约为 1.8、6.0 与 35.8 秒。合并 R0.61 后，有限证书覆盖 4,042 个不同三元组与 27,082,065,198 条有序路径；整体观测最大值仍是 \((4,64,64)\) 处的 \(0.0013286562612066827\)。</p>
+          <p>这些数值远低于已证明的平方根上界。它们支持一致有界猜想，却不能证明所有指标上的正性或一致常数。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">04 / Journal figure</div><h2>热核加权数据与未加权相关增长必须分开阅读</h2>
+          <figure>
+            <img class="figure-screen" src="/figures/r0-62-quartic-correlation.svg" alt="R0.62 热核加权四次目标与未加权相关缺口">
+            <img class="figure-print" src="/figures/r0-62-quartic-correlation.png" alt="R0.62 热核加权四次目标与未加权相关缺口">
+            <figcaption>图 R0.62-1。上图给出 \(L=1\) 时四组完整热核加权目标剖面；左下图比较各尺度的目标最大值；右下图给出普通未加权外层相关除以 \(M\) 后的增长诊断。第三幅图说明不能先用热核上确界替换热核，再依赖一个普通相关系数证明一致界。PDF、SVG、600 dpi PNG、展示数据、图源、失败渲染日志、资源监控、清单与哈希均已归档，并完成彩色、真灰度和 PDF 最终尺寸检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-62-quartic-correlation.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-62-quartic-correlation.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Research value</div><h2>这是特殊剪切类中的真实解析进展，对 Clay 问题的直接价值仍低</h2>
+          <p>与 R0.61 相比，本页不再只有精确公式和有限扫描，而是得到一个覆盖所有指标的非线性四次估计。它明确展示张量 Rudin--Shapiro 消去可以进入实际热流，而不只存在于未加权多项式中；同时把剩余缺口压缩成一个确定的 \(M^{1/2}\) 因子。</p>
+          <p>局限同样明确：该频率包属于可全局求解的剪切不变类，四次上界也没有控制全部偶数阶 Picard 和。即使下一步证明一致界，也仍需离开剪切类、处理真正三维扰动并建立全阶临界控制，才可能与一般三维正则性问题发生实质联系。</p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.63</div><h2>下一步只追踪热核加权递推中的缺失 \(M^{-1/2}\)</h2>
+          <div class="proof"><strong>目标引理。</strong>对完整合流热核权重证明 \(|S_{4,m}|\le CL^2M\)，其中 \(C\) 与 \(L,M,m\) 无关。</div>
+          <ol>
+            <li>先把三单形热核保留为时间积分，再交换符号求和与积分；</li>
+            <li>在每个时间层建立两状态 Rudin--Shapiro 递推矩阵；</li>
+            <li>寻找独立于 dyadic 层数的收缩矩阵范数；</li>
+            <li>若范数临界，按三个进位通道定位唯一增长分量；</li>
+            <li>只在得到 \(CL^2M\) 后，再进入六次项和全偶数阶余项。</li>
+          </ol>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility and sources</div><h2>全指标证明、整数回归、完整扫描与附图分别固定</h2>
+          <div class="proof"><strong>整数回归命令。</strong><br><code>python3 research/quartic_correlation_reduction_audit.py --maximum-level 3 --progress-log research/certificates/r062/correlation-reduction-progress.ndjson --pretty --check --output research/certificates/r062/correlation-reduction-audit.json</code></div>
+          <p>正式定理源提交为 <code>f7159fe6e089af6207c18d6aee3ea081a2b8508f</code>，扩展证书提交为 <code>db6203643c5aa371bfa50af6f62128db60f5219b</code>，正式附图提交为 <code>be7eb1a0a8719aea2f9d74299357a1a6fc959b17</code>。整数回归检查 16 个 dyadic 参数盒、60 个目标块与 228,225 个直接载频三元组；四项检查全部通过。</p>
+          <p><a href="/notes/r0-62.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_correlation_reduction_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r062">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_correlation_reduction_audit.py">查看整数审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r062-quartic-correlation/fig-r062-quartic-correlation">查看期刊附图包</a></p>
+          <p>声明边界：没有证明独立于 \(M\) 的一致界，没有证明全部指标上的正性，没有控制完整高阶余项，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.62 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

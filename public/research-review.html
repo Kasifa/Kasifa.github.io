@@ -3712,7 +3712,48 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_target_scan.cpp">查看并行扫描器</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r061-quartic-target/fig-r061-quartic-target">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.62：</strong>证明合流热核加权的四点 Rudin--Shapiro 相关界，先争取 \(\sup_{L,M,m}|R_{L,M,m}|&lt;\infty\)，再判断正性和最优常数。</p>
+            <p><strong style="color:var(--gold)">R0.62 已完成：</strong>未加权四点相关被精确分成三个进位通道，并证明所有 dyadic 指标上的四次比值满足 \(|R_{L,M,m}|\le7.8343(m/M)^2\sqrt M\)。这个上界消除了全部 \(L\) 增长，但一致界仍差一个平方根因子。</p>
+          </div>
+
+          <div class="task-one" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.62 · 2026-08-20</p>
+            <h3>四次相关分解与全指标平方根上界</h3>
+            <p>
+              将载频偏移写成 \(rL+n\) 后，关系 \(A+B-C=Q\) 只允许
+              \(k=-1,0,1\) 三个进位。未加权相关因此精确分解为
+              \[
+              \sum_{Q\in J_m}\sum_{A+B-C=Q}c_Qc_Ac_Bc_C
+              =\sum_{k=-1}^{1}I_{L,k}O_{M,m-1,k}.
+              \]
+              合流热核依赖完整载频和时间顺序，所以真正的加权和不能直接张量分离。
+            </p>
+            <p>
+              我把 Rudin--Shapiro 热流的 \(L^\infty\) 上界直接放进三重
+              Duhamel 积分，并结合二次目标的严格下界，得到对所有 dyadic
+              \(L,M\) 与全部 \(1\le m\le M\) 成立的估计
+              \[
+              |R_{L,M,m}|\le7.8343\left(\frac mM\right)^2\sqrt M.
+              \]
+              它把无符号端点估计从 \(O(LM)\) 改进为 \(O(\sqrt M)\)。
+            </p>
+            <p>
+              新增的 3,584 个完整目标扫描延伸到 \(L=1,M=2048\)。合并后，
+              有限证书覆盖 4,042 个不同三元组和 27,082,065,198 条有序路径，
+              整体观测最大值仍约为 \(0.0013286563\)，没有显示平方根增长。
+            </p>
+            <p>
+              <strong>结论边界：</strong>平方根上界是全指标定理；扫描正性和小数
+              最大值只是有限证据。上界仍随 \(M\) 增长，完整偶数阶余项也没有
+              控制；该频率包仍属于全局光滑剪切类。
+            </p>
+            <p>
+              <a href="/notes/r0-62.html"><strong>阅读 R0.62 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-62.pdf">下载同版 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r062">查看机器可读证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_correlation_reduction_audit.py">查看整数审计脚本</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r062-quartic-correlation/fig-r062-quartic-correlation">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.63：</strong>保留三单形时间积分，在每个时间层建立两状态 Rudin--Shapiro 递推，争取从 \(O(\sqrt M)\) 中提取缺失的 \(M^{-1/2}\)。</p>
           </div>
         </section>
 
@@ -3727,7 +3768,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.45 · 2026-08-20<br>
+        综述 v0.46 · 2026-08-20<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

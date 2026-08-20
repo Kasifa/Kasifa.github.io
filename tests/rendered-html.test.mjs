@@ -135,6 +135,20 @@ const sixtyFirstFigurePdfUrl = new URL(
   "../public/figures/r0-61-quartic-target.pdf",
   import.meta.url,
 );
+const sixtySecondNoteUrl = new URL("../public/notes/r0-62.html", import.meta.url);
+const sixtySecondPdfUrl = new URL("../public/notes/r0-62.pdf", import.meta.url);
+const sixtySecondFigureSvgUrl = new URL(
+  "../public/figures/r0-62-quartic-correlation.svg",
+  import.meta.url,
+);
+const sixtySecondFigurePngUrl = new URL(
+  "../public/figures/r0-62-quartic-correlation.png",
+  import.meta.url,
+);
+const sixtySecondFigurePdfUrl = new URL(
+  "../public/figures/r0-62-quartic-correlation.pdf",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -332,8 +346,9 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.match(home, /href="\/notes\/r0-60\.pdf"/);
   assert.ok(home.includes("R0.60 已完成："));
   assert.ok(home.includes("R0.61 已完成："));
-  assert.ok(home.includes("下一步 R0.62："));
-  assert.ok(home.includes("综述 v0.45 · 2026-08-20"));
+  assert.ok(home.includes("R0.62 已完成："));
+  assert.ok(home.includes("下一步 R0.63："));
+  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -376,8 +391,9 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.match(home, /href="\/notes\/r0-61\.html"/);
   assert.match(home, /href="\/notes\/r0-61\.pdf"/);
   assert.ok(home.includes("R0.61 已完成："));
-  assert.ok(home.includes("下一步 R0.62："));
-  assert.ok(home.includes("综述 v0.45 · 2026-08-20"));
+  assert.ok(home.includes("R0.62 已完成："));
+  assert.ok(home.includes("下一步 R0.63："));
+  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -401,6 +417,54 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
   assert.match(figureSvg, /Finite quartic target scan in the invariant shear chain/);
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes the R0.62 three-carry reduction and all-index square-root bound", async () => {
+  const [home, note, pdf, figureSvg, figurePng, figurePdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixtySecondNoteUrl, "utf8"),
+    readFile(sixtySecondPdfUrl),
+    readFile(sixtySecondFigureSvgUrl, "utf8"),
+    readFile(sixtySecondFigurePngUrl),
+    readFile(sixtySecondFigurePdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-62\.html"/);
+  assert.match(home, /href="\/notes\/r0-62\.pdf"/);
+  assert.ok(home.includes("R0.62 已完成："));
+  assert.ok(home.includes("下一步 R0.63："));
+  assert.ok(home.includes("综述 v0.46 · 2026-08-20"));
+  assert.match(note, /研究笔记 R0\.62/);
+  assert.match(note, /4 项整数检查全通过/);
+  assert.match(note, /新增完整目标：3,584 个/);
+  assert.match(note, /累计不同三元组：4,042 个/);
+  assert.match(note, /累计有序路径：27,082,065,198 条/);
+  assert.ok(note.includes("k\\in\\{-1,0,1\\}"));
+  assert.ok(
+    note.includes("\\sum_{k=-1}^{1}I_{L,k}O_{M,m-1,k}"),
+  );
+  assert.ok(
+    note.includes("&lt;7.8343\\Bigl(\\frac mM\\Bigr)^2\\sqrt M"),
+  );
+  assert.ok(note.includes("0.0012127996801718404"));
+  assert.ok(note.includes("0.0011457637853978923"));
+  assert.match(note, /一致界还差一次热核消去/);
+  assert.match(note, /没有解决三维 Navier--Stokes 千禧年问题/);
+  assert.match(note, /r0-62-quartic-correlation\.svg/);
+  assert.match(note, /r0-62-quartic-correlation\.png/);
+  assert.match(note, /r0-62-quartic-correlation\.pdf/);
+  assert.match(note, /f7159fe6e089af6207c18d6aee3ea081a2b8508f/);
+  assert.match(note, /db6203643c5aa371bfa50af6f62128db60f5219b/);
+  assert.match(note, /be7eb1a0a8719aea2f9d74299357a1a6fc959b17/);
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+  assert.match(
+    figureSvg,
+    /Heat-weighted quartic profiles and the unweighted correlation gap/,
+  );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
   assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
 });

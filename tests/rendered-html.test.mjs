@@ -91,6 +91,16 @@ const fiftySeventhFigurePngUrl = new URL(
   "../public/figures/r0-57-coherent-fixed-output.png",
   import.meta.url,
 );
+const fiftyEighthNoteUrl = new URL("../public/notes/r0-58.html", import.meta.url);
+const fiftyEighthPdfUrl = new URL("../public/notes/r0-58.pdf", import.meta.url);
+const fiftyEighthFigureSvgUrl = new URL(
+  "../public/figures/r0-58-duhamel-critical-saturation.svg",
+  import.meta.url,
+);
+const fiftyEighthFigurePngUrl = new URL(
+  "../public/figures/r0-58-duhamel-critical-saturation.png",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -115,7 +125,7 @@ test("publishes and links the Leray polarization-channel theorem and normal obst
 
   assert.match(home, /href="\/notes\/r0-56\.html"/);
   assert.match(home, /href="\/notes\/r0-56\.pdf"/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.56 已完成："));
   assert.ok(home.includes("R0.57 已完成："));
   assert.match(note, /研究笔记 R0\.56/);
@@ -160,7 +170,7 @@ test("publishes the sharp R0.57 fixed-output obstruction with reproducible asset
   assert.match(home, /href="\/notes\/r0-57\.html"/);
   assert.match(home, /href="\/notes\/r0-57\.pdf"/);
   assert.ok(home.includes("R0.57 已完成："));
-  assert.ok(home.includes("下一步 R0.58："));
+  assert.ok(home.includes("R0.58 已完成："));
   assert.match(note, /研究笔记 R0\.57/);
   assert.match(note, /全指标相干反例已证明/);
   assert.match(note, /20 项检查全通过/);
@@ -186,6 +196,47 @@ test("publishes the sharp R0.57 fixed-output obstruction with reproducible asset
   assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
   assert.match(figureSvg, /Coherent fixed-output saturation/);
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+});
+
+test("publishes the exact R0.58 Duhamel denominator and critical saturation", async () => {
+  const [home, note, pdf, figureSvg, figurePng] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(fiftyEighthNoteUrl, "utf8"),
+    readFile(fiftyEighthPdfUrl),
+    readFile(fiftyEighthFigureSvgUrl, "utf8"),
+    readFile(fiftyEighthFigurePngUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-58\.html"/);
+  assert.match(home, /href="\/notes\/r0-58\.pdf"/);
+  assert.ok(home.includes("R0.58 已完成："));
+  assert.ok(home.includes("下一步 R0.59："));
+  assert.match(note, /研究笔记 R0\.58/);
+  assert.match(note, /全指标 Duhamel 定理已证明/);
+  assert.match(note, /24 项检查全通过/);
+  assert.match(note, /精确频率实例：8,390,656 个/);
+  assert.match(note, /最大符号长度：4,194,304/);
+  assert.ok(note.includes("d_L(t;c)=e^{-t}\\sum_{N=L}^{2L-1}"));
+  assert.ok(note.includes("\\frac1{32L}\\le d_L(t_L)\\le\\frac1{2L}"));
+  assert.ok(note.includes("\\Theta(L^{-2})"));
+  assert.ok(note.includes("\\Theta(L^{-1})"));
+  assert.ok(note.includes("\\Theta(L^{-3})"));
+  assert.ok(note.includes("(2+\\sqrt2)\\sqrt L"));
+  assert.match(note, /临界饱和定理，不是范数膨胀/);
+  assert.match(note, /更高 Picard 余项/);
+  assert.match(note, /r0-58-duhamel-critical-saturation\.svg/);
+  assert.match(note, /r0-58-duhamel-critical-saturation\.png/);
+  assert.match(
+    note,
+    /c04d2f00dd90ad16e885af573f00cde5f2ec3c3d499fdb5909952f4cec8512b2/,
+  );
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
+  assert.match(
+    figureSvg,
+    /Exact Duhamel denominator: shell gain versus critical saturation/,
+  );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
 });
 
@@ -1153,7 +1204,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1224,7 +1275,7 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-20<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
@@ -1257,7 +1308,7 @@ test("publishes and links the complete affine-family global enclosure", async ()
 
   assert.match(home, /href="\/notes\/r0-52\.html"/);
   assert.match(home, /href="\/notes\/r0-52\.pdf"/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.52/);
   assert.match(note, /href="\/notes\/r0-52\.pdf"/);
@@ -1292,7 +1343,7 @@ test("publishes and links the rational product-affine witness", async () => {
 
   assert.match(home, /href="\/notes\/r0-53\.html"/);
   assert.match(home, /href="\/notes\/r0-53\.pdf"/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.53 已完成："));
   assert.match(home, /R0\.53 已完成：<\/strong>&nbsp;简单有理乘积仿射权/);
   assert.match(note, /研究笔记 R0\.53/);
@@ -1331,7 +1382,7 @@ test("publishes and links the complete product-affine global enclosure", async (
 
   assert.match(home, /href="\/notes\/r0-54\.html"/);
   assert.match(home, /href="\/notes\/r0-54\.pdf"/);
-  assert.match(home, /<strong>v0\.41<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.42<\/strong>网页版本/);
   assert.ok(home.includes("R0.54 已完成："));
   assert.match(home, /R0\.54 已完成：<\/strong>完整乘积仿射族/);
   assert.match(note, /研究笔记 R0\.54/);

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.58：完整 Duhamel 积分产生精确热分母；它在三个范数中给出壳衰减，但在 Rudin--Shapiro 压平后的临界热范数中只能达到常数阶饱和。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.58｜Duhamel 热分母与临界饱和">
+  <meta property="og:description" content="精确区分真实壳增益与临界范数饱和；这是一条估计障碍，不是范数膨胀或正则性证明。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-58-duhamel-critical-saturation.png">
+  <title>R0.58｜Duhamel 热分母与临界饱和</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <style>html[lang="en"] .proof strong::after{content:" "}.figure-print{display:none}@page{size:A4;margin:9mm 11mm}@media print{body{font-size:7.8pt}.layout{padding-bottom:0}.layout section:last-child{margin-bottom:0}.equation,.proof{margin:6px 0;padding:6px 8px}section{break-inside:auto}h2,h3,.status,figure{break-inside:avoid}p{margin:4px 0}.refs li{padding:3px 4px 3px 35px;font-size:7.2pt;line-height:1.32}.figure-screen{display:none}.figure-print{display:block}#figure figure{width:94%;margin:6px auto;padding:5px 0}#figure figcaption{margin-top:5px;font-size:7pt;line-height:1.32}#reproduce{margin-bottom:0}#reproduce .proof code{font-size:4.1pt;line-height:1.02}}</style>
+  <script defer src="/i18n-en.js?v=0.42"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 个人研究笔记</a>
+    <nav><a href="#kernel">精确核</a><a href="#norms">范数比较</a><a href="#flattening">相位压平</a><a href="#meaning">价值判断</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.58 · 完整 Duhamel 时间积分</div>
+        <h1>热分母确实存在，<br>但临界负正则性可以把增益全部吃掉</h1>
+        <p class="lead">我对 R0.57 的同一个实值无散相干频率包逐项完成时间积分，得到精确的 \(N^{-2}\) 热分母。它把固定块、\(\mathcal X^{-1}\) 与 \(\dot H^{1/2}\) 的归一化比值分别压到 \(L^{-2}\)、\(L^{-1}\)、\(L^{-3}\)。但是，对 dyadic 壳采用 Rudin--Shapiro 符号后，高频输入的空间相位被压平到 \(\sqrt L\)，匹配乘积却仍满足 \(a_n^2=1\)。结果是在热 \(\dot B^{-1}_{\infty,\infty}\) 与周期 \(BMO^{-1}\) 中，比值具有与壳无关的正下界。这是一条临界饱和定理，不是范数膨胀、双线性无界或三维 Navier--Stokes 正则性证明。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 全指标 Duhamel 定理已证明</span><strong>24 项检查全通过</strong><p>版本 v0.58 · 2026-08-20</p><p>精确频率实例：8,390,656 个</p><p>最大符号长度：4,194,304</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#kernel">01 · 精确 Duhamel 核</a></li>
+        <li><a href="#time">02 · 抛物观察时间</a></li>
+        <li><a href="#norms">03 · 三种壳衰减</a></li>
+        <li><a href="#flattening">04 · 相位压平</a></li>
+        <li><a href="#critical">05 · 两种临界饱和</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#meaning">07 · 研究价值</a></li>
+        <li><a href="#next">08 · R0.59 方向</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>这里证明临界双线性饱和，不证明不适定性</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · EXACT</span><strong>热分母已逐项积分</strong><p>每个高频对贡献精确的 \((1-e^{-2N^2t})/(2N^2)\)。</p></div>
+            <div class="status"><span>FORMAL · DECAY</span><strong>三个范数获得壳增益</strong><p>固定块、\(\mathcal X^{-1}\)、\(\dot H^{1/2}\) 分别为 \(L^{-2},L^{-1},L^{-3}\)。</p></div>
+            <div class="status"><span>FORMAL · SATURATED</span><strong>两个临界热范数不再衰减</strong><p>Rudin--Shapiro 压平后，归一化比值具有统一正下界。</p></div>
+            <div class="status"><span>OPEN · NONLINEAR</span><strong>高阶余项仍未控制</strong><p>没有范数膨胀、奇性或任意大光滑初值闭合结论。</p></div>
+          </div>
+          <p>Koch--Tataru 的小 \(BMO^{-1}\) 初值全局适定性、Bourgain--Pavlović 在更大 Besov 空间的范数膨胀，以及 Coiculescu--Palasek 对某些大 \(BMO^{-1}\) 临界数据的非唯一性，要求我们把“常数阶饱和”“双线性无界”和“完整非线性不适定”严格分开。本页只证明第一项。</p>
+        </section>
+
+        <section id="kernel"><div class="section-no">01 / Exact Duhamel kernel</div><h2>对相干包逐项积分，分母不是估计而是恒等式</h2>
+          <p>固定 \(k=e_2\)，并对 \(N=L,\ldots,2L-1\) 取</p>
+          <div class="equation">\[
+            p_N=(N,0,0),\qquad q_N=(-N,1,0),\qquad
+            \widehat U(p_N)=c_Ne_2,\quad\widehat V(q_N)=c_Ne_3.
+          \]</div>
+          <p>因为 \(|p_N|^2=N^2\)、\(|q_N|^2=N^2+1\)、\(|k|^2=1\)，完整第一 Duhamel 输出在 \(k\) 上的模长为</p>
+          <div class="equation result">\[
+            \boxed{d_L(t;c)=e^{-t}\sum_{N=L}^{2L-1}
+            c_N^2\frac{1-e^{-2N^2t}}{2N^2}.}
+          \]</div>
+          <p>交换项仍逐个为零；加入共轭伙伴后，实际物理输出是单位频率的实正弦波。式中的 \(2N^2\) 就是瞬时 R0.57 尚未包含的热分母。</p>
+        </section>
+
+        <section id="time"><div class="section-no">02 / Parabolic time</div><h2>在 \(t_L=(\log2)/(2L^2)\) 观察，输出恰为 \(L^{-1}\) 量级</h2>
+          <p>令所有 \(|c_N|=A\)，并把 \(A^2\) 提出。对每个 \(N\in[L,2L)\)，有 \(1-e^{-2N^2t_L}\ge1/2\)、\(e^{-t_L}\ge1/2\) 与 \((2N^2)^{-1}&gt;(8L^2)^{-1}\)。因此</p>
+          <div class="equation result">\[
+            \boxed{\frac1{32L}\le d_L(t_L)\le\frac1{2L}.}
+          \]</div>
+          <p>而且存在精确的 Riemann 和极限：</p>
+          <div class="equation">\[
+            \lim_{L\to\infty}Ld_L(t_L)
+            =\frac12\int_1^2\frac{1-2^{-x^2}}{x^2}\,dx&gt;0.
+          \]</div>
+          <p>所以时间积分确实把瞬时常数一变成了一个真实的高频分母；后面的问题只剩下临界范数如何归一化它。</p>
+        </section>
+
+        <section id="norms"><div class="section-no">03 / Three decaying normalizations</div><h2>同一个输出在三个范数中呈现三种不同的壳衰减</h2>
+          <div class="equation result">\[
+            \begin{array}{c|c}
+            \text{归一化}&
+            \|\mathcal D_{t_L}(U,V)\|/(\|U\|\|V\|)\\
+            \hline
+            \text{固定输出 }\ell^2\times\ell^2&\Theta(L^{-2})\\
+            \mathcal X^{-1}&\Theta(L^{-1})\\
+            \dot H^{1/2}&\Theta(L^{-3}).
+            \end{array}
+          \]</div>
+          <p>\(\mathcal X^{-1}\) 是 Fourier \(\ell^1\) 范数，符号无法降低输入质量，所以留下 \(L^{-1}\) 增益。\(\dot H^{1/2}\) 对两个高频输入各收取半阶导数，再增加两个 \(L^{-1}\)。这三条不是拟合斜率，而是带显式上下常数的全指标估计。</p>
+        </section>
+
+        <section id="flattening"><div class="section-no">04 / Rudin--Shapiro flattening</div><h2>输入相位可以被压平，配对输出的符号却完全保留</h2>
+          <p>令 \(L=2^m\)，并递归定义</p>
+          <div class="equation">\[
+            P_{m+1}=P_m+z^{2^m}Q_m,\qquad
+            Q_{m+1}=P_m-z^{2^m}Q_m,\qquad P_0=Q_0=1.
+          \]</div>
+          <p>写 \(P_m(z)=\sum_{n=0}^{L-1}a_nz^n\)，则 \(a_n\in\{-1,1\}\)。递归和平行四边形恒等式给出每个前缀的统一界</p>
+          <div class="equation result">\[
+            \sup_{M\le L,\,|z|=1}\left|\sum_{n&lt;M}a_nz^n\right|
+            \le(2+\sqrt2)\sqrt L.
+          \]</div>
+          <p>对递减热权做 Abel 求和后，两个实输入都满足</p>
+          <div class="equation result">\[
+            \|e^{s\Delta}U\|_\infty,\|e^{s\Delta}V\|_\infty
+            \le2(2+\sqrt2)A\sqrt L\,e^{-L^2s}.
+          \]</div>
+          <p>关键是把同一符号同时放入两个匹配输入：空间和被压到 \(\sqrt L\)，但每个低模乘积仍为 \(a_n^2=1\)，所以 Duhamel 输出没有符号损失。</p>
+        </section>
+
+        <section id="critical"><div class="section-no">05 / Critical saturation</div><h2>热 Besov 与周期 \(BMO^{-1}\) 的归一化比值不随壳消失</h2>
+          <p>对热范数 \(\|f\|_{\mathcal B^{-1}}=\sup_{s&gt;0}\sqrt s\|e^{s\Delta}f\|_\infty\)，输入为 \(O(A/\sqrt L)\)，低频输出为 \(O(A^2/L)\)。精确常数给出</p>
+          <div class="equation result">\[
+            \frac{\|\mathcal D_{t_L}(U,V)\|_{\mathcal B^{-1}}}
+            {\|U\|_{\mathcal B^{-1}}\|V\|_{\mathcal B^{-1}}}
+            \ge\frac{\sqrt e}{32\sqrt2(2+\sqrt2)^2}&gt;0.
+          \]</div>
+          <p>对周期局部 heat--Carleson 定义的 \(BMO^{-1}_{\rm per}\)，同样得到</p>
+          <div class="equation result">\[
+            \frac{\|\mathcal D_{t_L}(U,V)\|_{BMO^{-1}_{\rm per}}}
+            {\|U\|_{BMO^{-1}_{\rm per}}\|V\|_{BMO^{-1}_{\rm per}}}
+            \ge\frac{\sqrt2\cos(1/4)\sqrt{1-e^{-1/8}}}
+            {64(2+\sqrt2)^2}&gt;0.
+          \]</div>
+          <div class="proof warning"><strong>最重要的解释。</strong>若把输入归一化为大小 \(\varepsilon\)，第一非线性输出仍只是 \(O(\varepsilon^2)\)。因此常数阶比值与 Koch--Tataru 的小数据双线性有界性完全一致。这里排除的是一个额外趋零的壳因子，不是双线性有界性本身。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Formal figure</div><h2>精确系数、五种归一化与相位压平统一归档</h2>
+          <figure>
+            <img class="figure-screen" src="/figures/r0-58-duhamel-critical-saturation.svg" alt="R0.58 精确 Duhamel 分母、壳衰减与临界饱和">
+            <img class="figure-print" src="/figures/r0-58-duhamel-critical-saturation.png" alt="R0.58 精确 Duhamel 分母、壳衰减与临界饱和">
+            <figcaption>图 R0.58-1。左图显示 \(Ld_L(t_L)\) 收敛到正的 Riemann 极限；中图比较五种范数中的严格壳尺度；右图显示 Rudin--Shapiro 符号把输入最大值保持在 \(\sqrt L\) 量级，而全正符号增长为 \(L\)。PDF、SVG、600 dpi PNG、数据、图源、验证脚本、监控、清单和哈希全部归档，并完成彩色、真灰度和 PDF 渲染检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-58-duhamel-critical-saturation.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-58-duhamel-critical-saturation.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value</div><h2>它杀死一个过强估计，但对 Clay 问题的直接价值仍低</h2>
+          <p>正面价值是把 R0.57 的悬而未决点彻底算清：时间积分绝不是形式装饰，它真的给出 \(N^{-2}\)；但在最接近 Koch--Tataru 的临界热组织中，负一阶尺度和相位压平可以恰好消耗这个分母。以后不能再期待仅凭“热分母加壳分离”得到额外小因子。</p>
+          <p>负面边界同样明确：这是第一 Picard 项的单低模障碍，没有高阶余项，没有 \(\mathbb R^3\) 紧支光滑初值版本，也没有任意大光滑有限能量数据的先验控制。它不能推出不适定、非唯一、奇性或正则性。</p>
+          <p>独立论文价值目前为有限到中等：Rudin--Shapiro 压平与本项目法向通道的精确结合可能形成有用引理，但高到低相干转移是经典机制，且定向检索不能证明新颖性。只有把单输出扩展为多输出结构，或找出可由动力学传播且能排除此类压平的条件，才可能升级为更强成果。</p>
+        </section>
+
+        <section id="next"><div class="section-no">08 / R0.59</div><h2>下一步检验一个符号序列能否同时维持多个低输出相干</h2>
+          <ol>
+            <li>把单个 \(k=e_2\) 扩展为结构化低频集合 \(K\)，保留完整 Leray 极化；</li>
+            <li>写出同一 Rudin--Shapiro 符号序列对所有 \(k\in K\) 的相关矩阵；</li>
+            <li>证明总输出的 periodic \(BMO^{-1}\) 下界，或证明多输出必然出现平方函数缺陷；</li>
+            <li>同时检查总动能守恒如何迫使其他模承担负转移；</li>
+            <li>只有得到全指标多输出定理后，才开始单独估计更高 Picard 余项。</li>
+          </ol>
+          <p>R0.59 的验收标准不是更多曲线，而是一条多输出全指标定理或一条全指标不可能性构造。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and sources</div><h2>证明、精确审计、监控与期刊图分别固定</h2>
+          <div class="proof"><strong>正式复现命令。</strong><br><code>python3 research/run_with_monitor.py --output research/certificates/r058/resources.csv --interval 0.25 -- python3 research/duhamel_critical_saturation_audit.py --maximum-shell 4096 --maximum-rs-level 22 --source-commit 35a817f00d8821e91f033764f6bd29fc1697ad56 --progress --progress-log research/certificates/r058/progress.ndjson --check --pretty --output research/certificates/r058/duhamel-critical-saturation.json</code></div>
+          <p>正式数学源提交为 <code>35a817f00d8821e91f033764f6bd29fc1697ad56</code>，证书提交为 <code>1b3dda216a04eceff473f52e9af18d0223f8a8ce</code>，最终附图源提交为 <code>1860b1397be4e1ae4d74238d4b9d156a1d51fbb3</code>，附图归档提交为 <code>e2d4c5ee1d7569708862f80eb1965a5156cbdb24</code>。</p>
+          <p>成功科学审计耗时 25.760813 秒；监控历时 25.873088 秒、采样 96 次，峰值 CPU 为 100.0%，峰值常驻内存为 951.469 MiB。没有使用 GPU、随机数或浮点数学判定，24 项检查全部通过。证书 SHA-256 为 <code>c04d2f00dd90ad16e885af573f00cde5f2ec3c3d499fdb5909952f4cec8512b2</code>。</p>
+          <p><a href="/notes/r0-58.pdf">下载同版 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/duhamel_critical_saturation_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/duhamel_critical_saturation_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r058">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r058-duhamel-critical-saturation/fig-r058-duhamel-critical-saturation">查看期刊附图包</a></p>
+          <h3>已发表基线与最新边界</h3>
+          <ol class="refs">
+            <li>H. Koch 与 D. Tataru，<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf"><em>Well-posedness for the Navier--Stokes equations</em></a>，<em>Advances in Mathematics</em> 157 (2001), 22--35。给出小 \(BMO^{-1}\) 初值的全局适定性与临界 heat--Carleson 组织。</li>
+            <li>J. Bourgain 与 N. Pavlović，<a href="https://arxiv.org/abs/0807.0882"><em>Ill-posedness of the Navier--Stokes equations in a critical space in 3D</em></a>，<em>Journal of Functional Analysis</em> 255 (2008), 2233--2247。给出 \(\dot B^{-1}_{\infty,\infty}\) 的高到低范数膨胀机制。</li>
+            <li>P. Germain，<a href="https://arxiv.org/abs/0806.4525"><em>The second iterate for the Navier--Stokes equation</em></a>，<em>Journal of Functional Analysis</em> 255 (2008), 2248--2264。系统研究第二迭代的有界性边界。</li>
+            <li>M. P. Coiculescu 与 S. Palasek，<a href="https://arxiv.org/abs/2503.14699"><em>Non-uniqueness of smooth solutions of the Navier--Stokes equations from critical data</em></a>，<em>Inventiones Mathematicae</em> 244 (2026), 165--219。证明某些大 \(BMO^{-1}\) 临界数据的全局非唯一性。</li>
+            <li>P. Balister，<a href="https://arxiv.org/abs/1909.08777"><em>Bounds on Rudin--Shapiro polynomials of arbitrary degree</em></a>，<em>Journal of Fourier Analysis and Applications</em> 26 (2020), 68。提供 Rudin--Shapiro 任意次数界的现代背景；本页使用自包含的 dyadic 前缀证明。</li>
+          </ol>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>Navier--Stokes 个人研究日志</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.58 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

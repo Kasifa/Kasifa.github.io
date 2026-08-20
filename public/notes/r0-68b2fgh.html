@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.68B-2f/g/h：以 binary128 区间、精确签名压缩和预解式界，严格证明一个固定八阶主导热系数在完整缺陷修正后仍为负。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.68B-2f/g/h｜一个固定八阶系数的严格负号">
+  <meta property="og:description" content="十阶矩、热 Taylor 系数、全部 16^6 个位移的签名缺陷与预解式修正共同进入源锁定证书；结论只针对一个固定八阶系数。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-68b2fgh-corrected-heat.png">
+  <title>R0.68B-2f/g/h｜一个固定八阶系数的严格负号</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.59">
+  <script defer src="/i18n-en.js?v=0.59"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#moments">矩提升</a><a href="#defect">缺陷</a><a href="#sign">严格符号</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.68B-2f/g/h · 有限系数证书</div>
+        <h1>完整缺陷修正后<br>一个八阶系数仍严格为负</h1>
+        <p class="lead">我把十阶矩提升、热 Taylor 系数、全部自由位移的符号缺陷和主根预解式放进同一套向外舍入证书。最终区间完全位于零的左侧。这封闭了一个明确的有限维符号问题；它没有控制全部 Picard 阶，也没有推出奇性或一般三维正则性。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.68B-2h 完成</span><strong>固定系数严格为负</strong><p>版本 v0.68B-2h · 2026-08-21</p><p>矩坐标：14,350,336</p><p>签名类：44,514</p><p>最终上端点：−2.8732×10⁻⁹</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 结论边界</a></li>
+        <li><a href="#moments">01 · 十阶矩提升</a></li>
+        <li><a href="#heat">02 · 热 Taylor 系数</a></li>
+        <li><a href="#defect">03 · 签名缺陷</a></li>
+        <li><a href="#resolvent">04 · 预解式修正</a></li>
+        <li><a href="#sign">05 · 严格负号</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 价值与下一步</a></li>
+        <li><a href="#reproduce">08 · 复现与哈希</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Result boundary</div><h2>这是一个源锁定的有限系数符号定理</h2>
+          <div class="equation result">\[
+            \boxed{
+            B_{8,\mathrm{corr}}\in
+            [-2.69744373399132142\times10^{-8},
+             -2.87321129703704757\times10^{-9}]&lt;0.}
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>CERTIFIED · BINARY128</span><strong>全部十阶矩</strong><p>14,350,336 个中心与半径进入完整扫描。</p></div>
+            <div class="status"><span>CERTIFIED · EXACT TAIL</span><strong>8,008 个热系数</strong><p>精确有理时间级数配合无穷尾上界。</p></div>
+            <div class="status"><span>CERTIFIED · COMPLETE</span><strong>全部自由位移</strong><p>\(16^6\) 个点精确压缩为 44,514 个签名类。</p></div>
+            <div class="status"><span>OPEN · ALL ORDERS</span><strong>Picard 无限族</strong><p>本轮只证明一个固定八阶系数的符号。</p></div>
+          </div>
+        </section>
+
+        <section id="moments"><div class="section-no">01 / Degree-ten moments</div><h2>binary64 精度不足后，完整矩提升改用受保护的 IEEE binary128</h2>
+          <p>每个 1,792 态包含总阶不超过十的 8,008 个多重指标通道。正式矩提升因此处理 14,350,336 个数值，并分别保存原始矩和中心矩的中心—半径数组。原始矩最大半径为 \(7.91179658125257438\times10^{-22}\)，中心矩最大半径为 \(1.88584884046089302\times10^{-20}\)。</p>
+          <p>四个完整数组共有 14,350,336 个值，各自用 SHA-256 绑定。独立流式验证器重新扫描每个中心和半径，确认所有值有限、所有半径非负。上一版 binary64 实现只保留为被拒绝的精度基线。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">02 / Guarded heat jet</div><h2>35 个时间次序和 6,055 个有理项给出严格的十阶热 jet</h2>
+          <p>热系数使用 35 个 shuffle、245 个衰减率和 6,055 个精确有理项。时间 \(T=\log 2/2\) 由 \(\operatorname{atanh}(1/3)\) 的 120 项有理区间封闭；64 阶截断后的统一无穷尾上界为 \(2.62605089342894371\times10^{-25}\)。</p>
+          <div class="equation result">\[
+            B_{10}\in
+            [-1.49238243184751323\times10^{-8},
+             -1.49238243184751290\times10^{-8}].
+          \]</div>
+          <p>这一负号当时仍只属于空间十阶 Taylor jet，因为完整空间缺陷和预解式尚未加入。R0.68B-2h 的作用就是把这两项补齐。</p>
+        </section>
+
+        <section id="defect"><div class="section-no">03 / Exact signature defect</div><h2>全部 \(16^6\) 个自由位移压缩为 44,514 个精确签名类</h2>
+          <p>每个类保存距离壳层、精确重数和十四维符号。符号坐标只取 \(0,\pm1\)，每类最多七个非零项；全部重数之和精确等于 16,777,216。配对十阶中心矩后，目标观测缺陷满足</p>
+          <div class="equation result">\[
+            b_{\mathrm{obs}}^{(10)}
+            \le 30.2344865053562053.
+          \]</div>
+          <p>这里修正了一个会低估尾项的实现细节：无抵消界必须先对每个数字传输矩阵逐项取绝对值，再相乘。若先组成带符号周期矩阵、最后才取绝对值，路径间抵消会被错误保留。正确的绝对路径周期有 695,808 个非零元，最大行和为 54,210,304。</p>
+        </section>
+
+        <section id="resolvent"><div class="section-no">04 / Resolvent correction</div><h2>主根下界与精确收缩率把无限余项压到可用尺度</h2>
+          <p>源自精确主根证书的下端点为 \(6438.80686952999622\)。块收缩率恰为 \(2^{-20}\)，所以预解式比率上界只有 \(1.48113514775426706\times10^{-10}\)。将首项和加权几何尾合并后得到</p>
+          <div class="equation result">\[
+            Z_{\mathrm{obs}}
+            \le 0.00469566611238897251.
+          \]</div>
+          <p>再乘先前完整扫描得到的十一阶导数上界 \(2.56632663673508140\times10^{-6}\)，完整导数修正不超过</p>
+          <div class="equation result">\[
+            \Delta_{\mathrm{defect}}
+            \le 1.20506130214380835\times10^{-8}.
+          \]</div>
+        </section>
+
+        <section id="sign"><div class="section-no">05 / Strict sign</div><h2>修正上界小于热信号的严格下界，剩余余量没有跨过零</h2>
+          <p>热信号的最小绝对值约为 \(1.49238243184751290\times10^{-8}\)，而完整修正上界约为 \(1.20506130214380835\times10^{-8}\)。向外舍入合成后，最终上端点为 \(-2.87321129703704757\times10^{-9}\)。</p>
+          <p>源未锁定审计和源锁定正式运行除提交号与运行时间外完全一致。独立验证脚本复核十二个缺陷载荷的哈希与字节数、上游矩与热系数哈希、压缩计数、绝对路径周期元数据、预解式关系以及最终严格负上端点。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>矩半径、热部分和与最终符号预算使用同一组归档证书</h2>
+          <figure><img src="/figures/r0-68b2fgh-corrected-heat.svg" alt="R0.68B-2f/g/h 十阶矩半径、热 Taylor 部分值与完整缺陷修正后的严格符号预算"><figcaption>图 R0.68B-2f/g/h。上左给出各空间次数的原始矩最大半径，上右给出热 Taylor 部分值，下图比较热信号下界、完整缺陷修正上界和严格剩余余量。三幅图均取自源锁定证书。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-68b2fgh-corrected-heat.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-68b2fgh-corrected-heat.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Value and next gate</div><h2>局部方法已经闭合；真正关键的下一关是无限阶机制和逻辑蕴含</h2>
+          <p>这个结果的直接价值，是把精确组合、代数谱数据、高精度矩、热级数无穷尾和预解式缺陷接成一条可审计证书。它也说明此前数值负号不是浮点偶然现象。</p>
+          <p>它对千禧年问题的直接价值仍然有限。当前平行剪切不变类本身全局光滑；一个八阶系数的负号既不产生有限时奇性，也不控制任意三维扰动。即使把同类符号推广到很多有限阶，只要没有一个从无限阶系数到临界范数失控或正则性矛盾的定理，仍不能触及 Clay 问题。</p>
+          <div class="proof"><strong>下一道判定门。</strong>&nbsp;我将先写清候选无限阶系数族及其对 Navier–Stokes 解的严格蕴含，再寻找阶数递推、生成函数或不变锥。只有同时证明统一尾界和与临界范数相关的结论，才继续把有限阶计算扩展为更高阶大规模扫描。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>源提交、数据清单、正式输出、资源日志和附图包均单独绑定</h2>
+          <p>十阶矩源提交为 <code>2d4c9e1c4150034b8204cea32d19238ca3013190</code>，证书提交为 <code>e44246b5e7a16527698d7a914ca2a4435b548a72</code>。中心矩半径数组 SHA-256 为 <code>437a8f18234fb8c07ea23661a77e3413eee4dbb674e4dcefd83a17d386a268bf</code>。</p>
+          <p>热系数源提交为 <code>014a9e604c65b405ebc7684cf3913c74ef19a55e</code>，证书提交为 <code>0b4b1524eb0e9d320f574fbd154b63464ef70c90</code>。热系数半径数组 SHA-256 为 <code>ab121c7f974542d42652d823410d23f2bda2502c5960479463206fed80b6432e</code>。</p>
+          <p>缺陷引擎源提交为 <code>efd0d828678ce99fcc5d0f40d751b1883d32f740</code>，合规正式证书提交为 <code>04204df9ccf4a6a378cd5963d19d38f97a04526e</code>，缺陷载荷清单 SHA-256 为 <code>edfb110c8cd7f8369be4d5748cb798d9ca72864a8e35b1146c790662f2acacfc</code>。18 线程 DGX 正式运行用时 17.11 秒，平均 CPU 利用率 1687%，峰值常驻内存 474,984 KiB。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2f-moments">查看矩证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2g-heat-jet">查看热系数证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2h-corrected-heat">查看缺陷与修正符号证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b2fgh-corrected-heat/fig-r068b2fgh-corrected-heat">查看期刊附图包</a></p>
+          <p>声明边界：本页证明平行剪切不变类中一个明确固定的八阶系数在完整有限缺陷修正后为负。它没有控制全部 Picard 阶，没有构造有限时奇性，没有控制一般三维扰动，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.68B-2f/g/h · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

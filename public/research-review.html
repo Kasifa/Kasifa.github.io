@@ -4204,6 +4204,45 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.68B-2f：</strong>&nbsp;用 MPFR 定向舍入封闭十阶三角矩提升、热系数和缺陷预解式；只有最终区间完全离开零，才升级为严格热符号定理。</p>
           </div>
+
+          <div class="task-one" id="r068b2fgh" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.68B-2f/g/h · 2026-08-21</p>
+            <h3>一个固定八阶系数在完整缺陷修正后严格为负</h3>
+            <p>
+              受保护的 IEEE binary128 矩提升封闭了总阶十以内的
+              14,350,336 个矩坐标。随后，35 个时间次序、6,055 个
+              精确有理项和统一无穷尾界给出十阶热 jet：
+              \[
+                B_{10}\in[-1.49238243184751323,-1.49238243184751290]
+                \times10^{-8}.
+              \]
+            </p>
+            <p>
+              全部 (16^6) 个自由位移精确压缩为 44,514 个符号类。
+              正确的无抵消尾使用逐数字传输矩阵的逐项绝对值之积；
+              合并主根预解式后，完整导数修正不超过
+              (1.20506130214380835\times10^{-8})。最终严格得到
+              \[
+                B_{8,\mathrm{corr}}\in
+                [-2.69744373399132142,-0.287321129703704757]
+                \times10^{-8}&lt;0.
+              \]
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;这是一个明确固定八阶系数的
+              源锁定符号证书。当前平行剪切类本身全局光滑；这个负号不控制
+              全部 Picard 阶，不构造奇性，也不是一般三维正则性结论。
+            </p>
+            <p>
+              <a href="/notes/r0-68b2fgh.html"><strong>阅读 R0.68B-2f/g/h 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-68b2fgh-corrected-heat.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2f-moments">查看矩证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2g-heat-jet">查看热系数证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r068b2h-corrected-heat">查看修正符号证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r068b2fgh-corrected-heat/fig-r068b2fgh-corrected-heat">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步：</strong>&nbsp;先明确候选无限阶系数族对临界范数或奇性判据的严格蕴含，再研究阶数递推、生成函数、不变锥和统一尾界。</p>
+          </div>
         </section>
 
       </article>
@@ -4217,7 +4256,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.58 · 2026-08-21<br>
+        综述 v0.59 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

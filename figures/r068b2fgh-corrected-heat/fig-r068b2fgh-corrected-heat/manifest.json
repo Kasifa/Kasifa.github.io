@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r068b2fgh-corrected-heat",
+  "status": "formal",
+  "createdAt": "2026-08-21T04:10:00+08:00",
+  "analyticalQuestion": "Does the guarded degree-ten heat jet remain negative after the complete signature defect and resolvent correction?",
+  "supportedClaim": "For one fixed eighth-order coefficient, the corrected dominant-heat interval has a strictly negative upper endpoint.",
+  "claimBoundary": "One fixed eighth-order coefficient only; all Picard orders and general 3D Navier-Stokes regularity remain open.",
+  "git": {
+    "momentSourceCommit": "2d4c9e1c4150034b8204cea32d19238ca3013190",
+    "momentArchiveCommit": "e44246b5e7a16527698d7a914ca2a4435b548a72",
+    "heatSourceCommit": "014a9e604c65b405ebc7684cf3913c74ef19a55e",
+    "heatArchiveCommit": "0b4b1524eb0e9d320f574fbd154b63464ef70c90",
+    "defectSourceCommit": "efd0d828678ce99fcc5d0f40d751b1883d32f740",
+    "defectArchiveCommit": "04204df9ccf4a6a378cd5963d19d38f97a04526e",
+    "dirtyAtCertifiedRuns": false,
+    "repository": "Kasifa/Kasifa.github.io"
+  },
+  "sourceData": [
+    {
+      "fileName": "moment-enclosure.json",
+      "location": "research/certificates/r068b2f-moments/moment-enclosure.json",
+      "bytes": 3103,
+      "sha256": "2aae68d256e7e17e8689e8536ba4a52398a0cf0c21f0de657537ee6c66b28c60",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "heat-jet.json",
+      "location": "research/certificates/r068b2g-heat-jet/heat-jet.json",
+      "bytes": 3043,
+      "sha256": "0e21199c676d74950029ea93f2562032787361e00e9332c4c1bc1c2aa6b5f38d",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "defect-sign.json",
+      "location": "research/certificates/r068b2h-corrected-heat/defect-sign.json",
+      "bytes": 1786,
+      "sha256": "c79f78816ae780074b90c7eb098d0b804253e1a449cbd0e0b8e60861de0f5bca",
+      "extractionCommand": "python3 prepare_data.py"
+    },
+    {
+      "fileName": "independent-verification.json",
+      "location": "research/certificates/r068b2h-corrected-heat/independent-verification.json",
+      "bytes": 1506,
+      "sha256": "499e9914d8b5bf2248070f84f0e09c7f68cdc8f43fc84fa47a357fc9896fcc78",
+      "extractionCommand": "python3 prepare_data.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "moment-radius-by-degree.csv",
+      "bytes": 650,
+      "sha256": "fb53872c82620fc47bc576e165961e508a6f7868603d147eac0312f0d0d489d5",
+      "format": "csv",
+      "schema": "degree, channel count, raw maximum radius, and global centred maximum radius"
+    },
+    {
+      "path": "heat-partial-by-degree.csv",
+      "bytes": 1446,
+      "sha256": "c69026c777f05b83a0b8bbf1d72e88077568e3463aaee28c3c61048751069dd3",
+      "format": "csv",
+      "schema": "degree and guarded heat partial interval"
+    },
+    {
+      "path": "sign-budget.csv",
+      "bytes": 355,
+      "sha256": "c746119cbf470cb61616f56b8bea9f336d0dd5c67730f217cac05a2c0d65fa18",
+      "format": "csv",
+      "schema": "heat magnitude lower bound, correction upper bound, and strict residual margin"
+    },
+    {
+      "path": "certified-summary.csv",
+      "bytes": 457,
+      "sha256": "b828ab4d23551c7b9ba7e5e134607aadc9c9ac0b251f92518bb2e6465e533816",
+      "format": "csv",
+      "schema": "certificate dimensions, endpoints, hashes, and verification status"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 1250,
+      "sha256": "2911dd18af431e54dec22f120532cb68907a434733f3ac951396b8f4b5b89b40",
+      "format": "json",
+      "schema": "pinned certificate paths, hashes, and commits"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "59a4e57a32493ca34648575def912a5cfefd3ce6a7c45633f474d8b781c81826",
+      "format": "csv",
+      "schema": "deterministic data-extraction resource record"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "0de91b01b0f7d21be16b6fc5de705ae4120d32e4a670514ec2d698d691340a57",
+      "format": "csv",
+      "schema": "deterministic rendering resource record"
+    }
+  ],
+  "computation": {
+    "kind": "guarded interval certificate visualization",
+    "configuration": "complete degree-ten moment lift, exact heat time series with strict tail, exact signature compression, and guarded resolvent correction",
+    "precision": "exact combinatorics and rationals with guarded IEEE binary128 centre-radius arithmetic",
+    "command": "python3 prepare_data.py && python3 validate_data.py && python3 plot.py && python3 build_manifest.py",
+    "certifiedWallTimeSeconds": 571.543
+  },
+  "compute": {
+    "certificateHost": "NVIDIA DGX Spark",
+    "architecture": "aarch64",
+    "compiler": "GCC 13.3.0",
+    "logicalCpuCores": 20,
+    "formalDefectThreads": 18,
+    "formalDefectMaximumRssKiB": 474984,
+    "renderHost": "local Mac workstation",
+    "renderGpu": "not used"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "gmpy2": "2.3.1",
+    "gmp": "6.3.0",
+    "matplotlib": "3.11.1",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "plot.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 105,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 42186,
+        "sha256": "d9c801e9f88dac556140e407b90fdfe840e13f996e442e06ab39f99e85b64953"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 125097,
+        "sha256": "9602430c20dbb6271c10dee9ed3a406c73b1b04296dd5c40602ba1904acb37bd"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 391644,
+        "sha256": "89f85a2a616038f5034b7f48c448d0c0b3134774b16feef3d8d96389813fe953",
+        "dpi": 600,
+        "pixels": "4204 by 2480"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "log-radius convergence, heat partial values, and sign-budget comparison",
+    "takeaway": "the complete guarded correction is smaller than the certified heat magnitude for one fixed coefficient",
+    "nonColorEncoding": "marker shapes, hatching, direct labels, and explicit bound directions",
+    "outputFootprint": "double-column 178 by 105 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The PNG and grayscale render were inspected at final size; markers, hatching, and labels preserve meaning without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

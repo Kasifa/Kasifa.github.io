@@ -92,7 +92,7 @@ test("archives the R0.65 publication certificate with valid hashes", async () =>
     assert.ok(match, "Malformed SHA256SUMS line: " + line);
     return { expected: match[1], file: match[2] };
   });
-  assert.equal(entries.length, 5);
+  assert.equal(entries.length, 6);
   for (const entry of entries) {
     const payload = await readFile(new URL(entry.file, certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");

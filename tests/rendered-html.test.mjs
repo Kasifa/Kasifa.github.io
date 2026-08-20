@@ -175,6 +175,19 @@ const sixtyFourthFigurePdfUrl = new URL(
   "../public/figures/r0-64-supercritical-cycle.pdf",
   import.meta.url,
 );
+const sixtyFifthNoteUrl = new URL("../public/notes/r0-65.html", import.meta.url);
+const sixtyFifthFigureSvgUrl = new URL(
+  "../public/figures/r0-65-weighted-cycle.svg",
+  import.meta.url,
+);
+const sixtyFifthFigurePngUrl = new URL(
+  "../public/figures/r0-65-weighted-cycle.png",
+  import.meta.url,
+);
+const sixtyFifthFigurePdfUrl = new URL(
+  "../public/figures/r0-65-weighted-cycle.pdf",
+  import.meta.url,
+);
 
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
@@ -375,8 +388,9 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
-  assert.ok(home.includes("下一步 R0.65："));
-  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -422,8 +436,9 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
-  assert.ok(home.includes("下一步 R0.65："));
-  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -466,8 +481,9 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.ok(home.includes("R0.62 已完成："));
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
-  assert.ok(home.includes("下一步 R0.65："));
-  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.62/);
   assert.match(note, /4 项整数检查全通过/);
   assert.match(note, /新增完整目标：3,584 个/);
@@ -513,8 +529,9 @@ test("publishes the R0.63 time-layer factorization and lifted transfer boundary"
   assert.match(home, /href="\/notes\/r0-63\.html"/);
   assert.ok(home.includes("R0.63 已完成："));
   assert.ok(home.includes("R0.64 已完成："));
-  assert.ok(home.includes("下一步 R0.65："));
-  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.63/);
   assert.match(note, /4 项审计检查全通过/);
   assert.match(note, /时间层比较：27 项/);
@@ -559,8 +576,9 @@ test("publishes the R0.64 exact reachable supercritical cycle", async () => {
 
   assert.match(home, /href="\/notes\/r0-64\.html"/);
   assert.ok(home.includes("R0.64 已完成："));
-  assert.ok(home.includes("下一步 R0.65："));
-  assert.ok(home.includes("综述 v0.48 · 2026-08-20"));
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
   assert.match(note, /研究笔记 R0\.64/);
   assert.match(note, /9 项审计检查全通过/);
   assert.match(note, /状态维数：48/);
@@ -584,6 +602,47 @@ test("publishes the R0.64 exact reachable supercritical cycle", async () => {
   assert.match(
     figureSvg,
     /A zero-time digit cycle exceeds the factor-two threshold/,
+  );
+  assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
+  assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");
+});
+
+test("publishes the R0.65 exact-moment heat-weighted cycle enclosures", async () => {
+  const [home, note, figureSvg, figurePng, figurePdf] = await Promise.all([
+    readFile(siteUrl, "utf8"),
+    readFile(sixtyFifthNoteUrl, "utf8"),
+    readFile(sixtyFifthFigureSvgUrl, "utf8"),
+    readFile(sixtyFifthFigurePngUrl),
+    readFile(sixtyFifthFigurePdfUrl),
+  ]);
+
+  assert.match(home, /href="\/notes\/r0-65\.html"/);
+  assert.ok(home.includes("R0.65 已完成："));
+  assert.ok(home.includes("下一步 R0.66："));
+  assert.ok(home.includes("综述 v0.49 · 2026-08-20"));
+  assert.match(note, /研究笔记 R0\.65/);
+  assert.match(note, /11 项审计检查全通过/);
+  assert.match(note, /最高总次数：96/);
+  assert.ok(note.includes("1\\le r\\le24"));
+  assert.ok(note.includes("S_r<0\\ (14\\le r\\le24)"));
+  assert.ok(note.includes("\\frac{|S_r|}{|S_{r-1}|}>16"));
+  assert.ok(note.includes("25.29<\\frac{|S_{24}|}{|S_{23}|}<25.30"));
+  assert.ok(note.includes("T=\\log2/2=\\operatorname{atanh}(1/3)"));
+  assert.ok(note.includes("2\\times10^{-12}"));
+  assert.match(note, /有限个尺度无论多大/);
+  assert.ok(note.includes("没有证明 \\(|S_r|/M_r\\) 无界"));
+  assert.match(note, /没有解决三维 Navier--Stokes 千禧年问题/);
+  assert.match(note, /r0-65-weighted-cycle\.svg/);
+  assert.match(note, /r0-65-weighted-cycle\.png/);
+  assert.match(note, /r0-65-weighted-cycle\.pdf/);
+  assert.match(note, /22044d1d0fd530f2d50f4a541978aa7ae118da56/);
+  assert.match(note, /8e2a6eb43bf3536fb4d66d4f72047a9cbfc7cf8d/);
+  assert.match(note, /8e2660c871453a4cbd6e60464d6d7fb0d26c6ce8/);
+  assert.doesNotMatch(note, /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/);
+  assert.doesNotMatch(note, /我们|攻关|主攻|杀死错误想法|突破/);
+  assert.match(
+    figureSvg,
+    /Heat-weighted periodic target through 24 four-bit cycles/,
   );
   assert.equal(figurePng.subarray(1, 4).toString("ascii"), "PNG");
   assert.equal(figurePdf.subarray(0, 5).toString("ascii"), "%PDF-");

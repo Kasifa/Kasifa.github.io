@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.65：用精确二元矩与有理余项认证热加权周期目标在 r=14 变号，并出现十个连续超临界块。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.65｜热加权周期目标的精确矩包络">
+  <meta property="og:description" content="完整单形系数在第十四个周期变号，随后十个四层块的绝对增长均严格超过 16；有限证书不等于渐近定理。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-65-weighted-cycle.png">
+  <title>R0.65｜热加权周期目标的精确矩包络</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.49"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">有限定理</a><a href="#moments">精确矩</a><a href="#simplex">有理余项</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.65 · 完整热积分的有限尺度证书</div>
+        <h1>热权没有消除周期增长；<br>系数在第十四个周期变号</h1>
+        <p class="lead">我保留 R0.61 的完整三时间单形，把 R0.64 的四十八态递推提升到二元整数矩，并用 \(T=\operatorname{atanh}(1/3)\) 的有理包络控制阶数 \(48\) 之后的全部余项。沿 \(M_r=16^r\)、\(q_r=2(16^r-1)/15\)，系数在 \(r=14\) 严格变号，且 \(r=15,\ldots,24\) 的十个四层块均有 \(|S_r|/|S_{r-1}|>16\)。这是有限尺度定理，不是渐近增长定理。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · 有理区间证书已完成</span><strong>11 项审计检查全通过</strong><p>版本 v0.65 · 2026-08-20</p><p>状态：48 × 二元矩</p><p>最高总次数：96</p><p>认证尺度：\(1\le r\le24\)</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#result">01 · 有限尺度定理</a></li>
+        <li><a href="#moments">02 · 精确矩递推</a></li>
+        <li><a href="#simplex">03 · 单形展开与余项</a></li>
+        <li><a href="#meaning">04 · 数学含义</a></li>
+        <li><a href="#figure">05 · 期刊附图</a></li>
+        <li><a href="#next">06 · R0.66 任务</a></li>
+        <li><a href="#reproduce">07 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>证明了指定巨大整数尺度上的符号与增长，没有证明无限尺度极限</h2>
+          <div class="grid">
+            <div class="status"><span>FORMAL · ALL-ORDER IDENTITY</span><strong>精确矩递推</strong><p>四十八态与任意有限二元矩次数闭合。</p></div>
+            <div class="status"><span>CERTIFIED · FINITE SCALES</span><strong>\(r=14\) 严格变号</strong><p>前十三个周期为正，此后到 \(r=24\) 为负。</p></div>
+            <div class="status"><span>CERTIFIED · TEN BLOCKS</span><strong>每块增长 \(>16\)</strong><p>\(r=15,\ldots,24\) 的区间完全分离。</p></div>
+            <div class="status"><span>OPEN · ASYMPTOTIC</span><strong>主模态投影未证明</strong><p>尚未证明 \(|S_r|/M_r\) 无界。</p></div>
+          </div>
+        </section>
+
+        <section id="result"><div class="section-no">01 / Certified finite theorem</div><h2>完整热加权系数先缩小、变号，再进入十个连续超临界块</h2>
+          <p>固定</p>
+          <div class="equation result">\[
+            L=1,\qquad M_r=16^r,\qquad
+            q_r=2\frac{16^r-1}{15},\qquad m_r=q_r+1,
+          \]</div>
+          <p>并令 \(S_r=S_{4,m_r}\) 是 R0.61 的完整单形系数。精确有理区间给出</p>
+          <div class="equation result">\[
+            \boxed{S_r>0\ (1\le r\le13),\qquad
+            S_r<0\ (14\le r\le24).}
+          \]</div>
+          <p>而且十个连续转移满足</p>
+          <div class="equation result">\[
+            \boxed{\frac{|S_r|}{|S_{r-1}|}>16,
+            \qquad 15\le r\le24.}
+          \]</div>
+          <p>最终尺度为 \(M_{24}=79228162514264337593543950336\)。其严格区间蕴含</p>
+          <div class="equation">\[
+            1.1786<\frac{|S_{24}|}{M_{24}}<1.1787,
+            \qquad
+            25.29<\frac{|S_{24}|}{|S_{23}|}<25.30.
+          \]</div>
+          <p>最后一个比值接近 R0.64 的零时间特征值 \(25.1515893341\ldots\)，但二十四个点不能证明其极限。</p>
+        </section>
+
+        <section id="moments"><div class="section-no">02 / Exact bivariate moments</div><h2>三元卷积只有两个自由指标，因而可把四十八态提升到精确二元矩</h2>
+          <p>对目标状态 \(s\)、三次状态 \(\boldsymbol\sigma\)、进位 \(k\) 与次数 \(i,j\)，定义</p>
+          <div class="equation">\[
+            X_n^{s,\boldsymbol\sigma,k;i,j}(q)
+            =a_n^s(q)\!\sum_{A+B-C=q+k2^n}
+            a_n^{\sigma_1}(A)a_n^{\sigma_2}(B)a_n^{\sigma_3}(C)A^iB^j.
+          \]</div>
+          <p>若下一目标位为 \(b\)，令 \(N=2^n\) 且 \(k'=2k+b-(\varepsilon_1+\varepsilon_2-\varepsilon_3)\)，则</p>
+          <div class="equation result">\[
+            \boxed{\begin{aligned}
+            X_{n+1}^{s,\boldsymbol\sigma,k;i,j}
+            ={}&\sum_{\boldsymbol\varepsilon}
+            (-1)^{sb+\boldsymbol\sigma\cdot\boldsymbol\varepsilon}
+            \sum_{u=0}^{i}\sum_{v=0}^{j}
+            \binom{i}{u}\binom{j}{v}\\
+            &\times(\varepsilon_1N)^{i-u}(\varepsilon_2N)^{j-v}
+            X_n^{b,\boldsymbol\varepsilon,k';u,v}.
+            \end{aligned}}
+          \]</div>
+          <p>这个公式在次数零时回到 R0.64 的四十八态整数矩阵。机器审计把总次数不超过四的所有矩，在前六个二进制层级逐状态与直接枚举比较；全部一致。正式计算保留到总次数 \(96\)。</p>
+        </section>
+
+        <section id="simplex"><div class="section-no">03 / Rational simplex enclosure</div><h2>热核先作全阶单形展开，再用统一解析尾界向外包住</h2>
+          <p>每条路径的三个非零热率为 \(\alpha_0,\alpha_1,\alpha_2\)。单形核满足全阶恒等式</p>
+          <div class="equation result">\[
+            \boxed{K_T(\alpha_0,\alpha_1,\alpha_2,0)
+            =\sum_{d=0}^{\infty}(-1)^d
+            \frac{T^{d+3}}{(d+3)!}
+            h_d(\alpha_0,\alpha_1,\alpha_2),}
+          \]</div>
+          <p>其中 \(h_d(x,y,z)=\sum_{i+j+k=d}x^iy^jz^k\)。代入 \(C=A+B-q_r\) 后，每一个截断系数都是 \(A,B\) 的整数多项式，可由精确矩递推求值。</p>
+          <p>所有热率满足 \(\alpha_j\le75/8\)，有序路径不超过 \(3M^2\)。若 \(z=(75/8)T\)，则阶数 \(D\) 后的总余项满足</p>
+          <div class="equation">\[
+            |E_{D,r}|\le3M^2\frac{T^3}{2}
+            \frac{z^{D+1}}{(D+1)!(D+4)}
+            \frac{1}{1-z/(D+2)}.
+          \]</div>
+          <p>这里 \(T=\log2/2=\operatorname{atanh}(1/3)\)，用正项级数及几何尾项给出纯有理上下端点。\(r=24\) 时，阶数 \(48\) 的尾界小于认证主值的 \(2\times10^{-12}\)。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">04 / Meaning</div><h2>热积分没有恢复逐块因子十六，但有限链仍不足以否定统一常数</h2>
+          <p>R0.64 只证明零时间完整状态超临界；R0.65 进一步证明，在真正的 Navier--Stokes 四次目标泛函上，保留高斯权和完整时间积分之后仍存在十个连续超临界块。这排除了“每个 \(0100\) 块都被热核压到 \(16\) 以下”的命题。</p>
+          <p>它还排除了全尺度正性策略：早期正号对应四次项削弱二次目标，但从 \(r=14\) 起相位反转。任何进一步证明都必须处理带符号的绝对增长。</p>
+          <p>然而 \(|S_{4,m}|\le CM\) 中的 \(C\) 未指定。有限个尺度无论多大，都不能排除一个更大的统一常数。因此当前证书是渐近主模态的强候选证据，不是该估计的反例。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>变号与连续超临界链已按期刊双栏尺寸保存</h2>
+          <figure>
+            <img src="/figures/r0-65-weighted-cycle.svg" alt="R0.65 热加权周期目标的变号和连续超临界块">
+            <figcaption>图 R0.65-1。左图是带符号的 \(S_r/M_r\)，在 \(r=14\) 由正变负；右图是每四层绝对增长，与阈值 \(16\) 和零时间特征值比较。阴影区的十个块全部严格超过 \(16\)。PDF、SVG、600 dpi PNG、数据表、资源日志、图源、清单与哈希均已归档，并完成彩色、真灰度和 PDF 最终尺寸检查。</figcaption>
+          </figure>
+          <p><a href="/figures/r0-65-weighted-cycle.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-65-weighted-cycle.png">下载 600 dpi PNG</a></p>
+        </section>
+
+        <section id="next"><div class="section-no">06 / R0.66</div><h2>下一步证明完整单形泛函对主特征值的谱投影不为零</h2>
+          <div class="proof"><strong>渐近判定任务。</strong>构造一个循环块上的解析函数传输，分离 \(\lambda=25.1515893341\ldots\) 的谱投影，并用严格尾界证明完整热加权单形泛函在该特征方向上的系数 \(C_*\) 是否为零。</div>
+          <p>若 \(C_*\ne0\)，目标是证明 \(S_r=C_*\lambda^r+O(16^r)\)，从而真正否定这一特殊频率包上的 \(O(M)\) 四次估计；若 \(C_*=0\)，则必须找出使十个超临界块最终坍缩的精确消去恒等式。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / Reproducibility</div><h2>证明脚本、完整证书、四个独立枚举和正式附图均已固定</h2>
+          <p>数学推导提交为 <code>22044d1d0fd530f2d50f4a541978aa7ae118da56</code>，机器证书提交为 <code>8e2a6eb43bf3536fb4d66d4f72047a9cbfc7cf8d</code>，正式附图提交为 <code>8e2660c871453a4cbd6e60464d6d7fb0d26c6ce8</code>。正式审计耗时约 \(511\) 秒，峰值常驻内存约 \(836\) MiB；四个直接路径枚举与精确矩中心的相对差均低于 \(10^{-12}\)。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_weighted_cycle_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r065">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/quartic_weighted_cycle_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r065-weighted-cycle/fig-r065-weighted-cycle">查看期刊附图包</a></p>
+          <p>声明边界：没有证明 \(|S_r|/M_r\) 无界，没有否定统一四次估计，没有控制完整偶数阶 Picard 级数，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><span><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</span><span>R0.65 · 2026-08-20<br><a href="/">返回研究主页</a></span></div></footer>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -16,6 +17,7 @@ const auditUrl = new URL(
   "../research/quartic_correlation_reduction_audit.py",
   import.meta.url,
 );
+const certificateRoot = new URL("../research/certificates/r062/", import.meta.url);
 
 test("states the R0.62 all-index quartic ceiling and its exact boundary", async () => {
   const [note, audit] = await Promise.all([
@@ -61,4 +63,38 @@ test("reproduces the exact three-carry factorization on finite dyadic boxes", as
   assert.equal(report.coverage.directCarrierTriples, 228225);
   assert.ok(Number(report.analyticConstants.C_quartic) < 7.9);
   assert.match(report.analyticConstants.bound, /sqrt\(M\)/);
+});
+
+test("archives the extended R0.62 full-target scans", async () => {
+  const [aggregateText, correlationText, sumsText] = await Promise.all([
+    readFile(new URL("extended-quartic-exploration.json", certificateRoot), "utf8"),
+    readFile(new URL("correlation-reduction-audit.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const aggregate = JSON.parse(aggregateText);
+  const correlation = JSON.parse(correlationText);
+
+  assert.equal(aggregate.status, "passed");
+  assert.equal(aggregate.coverage.distinctParameterTargetTriples, 4042);
+  assert.equal(aggregate.coverage.orderedQuarticPathsAcrossDistinctTriples, 27082065198);
+  assert.deepEqual(aggregate.observations.maximumNormalizedSignedRatio, {
+    L: 4,
+    M: 64,
+    target: 64,
+    value: 0.0013286562612066827,
+  });
+  assert.equal(correlation.status, "passed");
+  assert.ok(Number(correlation.analyticConstants.C_quartic) < 7.9);
+
+  const entries = sumsText.trim().split("\n").map((line) => {
+    const match = line.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "Malformed SHA256SUMS line: " + line);
+    return { expected: match[1], file: match[2] };
+  });
+  assert.equal(entries.length, 15);
+  for (const entry of entries) {
+    const payload = await readFile(new URL(entry.file, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, entry.expected, entry.file + " hash mismatch");
+  }
 });

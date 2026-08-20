@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -10,6 +11,10 @@ const noteUrl = new URL(
 );
 const auditUrl = new URL(
   "../research/pressure_hessian_pointwise_obstruction_audit.py",
+  import.meta.url,
+);
+const certificateRoot = new URL(
+  "../research/certificates/r069h/",
   import.meta.url,
 );
 
@@ -54,4 +59,43 @@ test("reproduces the exact R0.69H symbolic and Fourier audit", () => {
   assert.equal(payload.witnessAudit.pressureAtTEqualsTwo.plus, "131/85");
   assert.match(payload.decision.closedBranch, /pointwise pressure/i);
   assert.match(payload.decision.nextBranch, /strain-space orthogonality/i);
+});
+
+test("archives the source-locked R0.69H certificate", async () => {
+  const [certificateText, readme, sumsText] = await Promise.all([
+    readFile(
+      new URL(
+        "pressure-hessian-pointwise-obstruction.json",
+        certificateRoot,
+      ),
+      "utf8",
+    ),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 15);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "86ac684e2a2564f56d42d9c216918ed659652846",
+  );
+  assert.equal(
+    certificate.witnessAudit.exactThresholdTSquared,
+    "85/54",
+  );
+  assert.match(readme, /15 checks, all passed/);
+  assert.match(readme, /same local strain and vorticity/i);
+  assert.match(readme, /does not solve the Millennium Problem/i);
+
+  const records = sumsText.trim().split("\n");
+  assert.equal(records.length, 3);
+  for (const record of records) {
+    const match = record.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, "malformed SHA256SUMS line: " + record);
+    const payload = await readFile(new URL(match[2], certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, match[1], match[2] + " hash mismatch");
+  }
 });

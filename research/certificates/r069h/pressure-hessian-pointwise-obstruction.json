@@ -1,0 +1,167 @@
+{
+  "checks": {
+    "allPressureSourcesHaveZeroSpatialMean": true,
+    "basePressureCoefficientIsMinusOne": true,
+    "baseStreamFieldIsDivergenceFree": true,
+    "commonLocalGradientIsDiagOneMinusOneZero": true,
+    "crossPressureCoefficientsVanish": true,
+    "finiteMeanZeroSelectorRecoversHalfOscillation": true,
+    "perturbationFieldsAreDivergenceFree": true,
+    "perturbationGradientsVanishAtOrigin": true,
+    "perturbationPressureCoefficientsAreExactOpposites": true,
+    "pressureSignsReverseAboveExactThreshold": true,
+    "pressureTraceMatchesPoissonEquationAtOrigin": true,
+    "quadrupoleAngularMeanVanishes": true,
+    "quadrupoleRangeIsMinusOneToTwo": true,
+    "rotationSquareMatchesVorticityFormula": true,
+    "symmetricGradientSquareSplitsExactly": true
+  },
+  "classification": "rigorous pointwise-sign obstruction for pressure-Hessian closures based only on local strain and vorticity; not a Navier-Stokes regularity theorem",
+  "decision": {
+    "closedBranch": "pointwise pressure compensation determined by local strain and vorticity",
+    "nextBranch": "localized strain-space orthogonality and weighted pressure commutators"
+  },
+  "formulas": {
+    "meanZeroDuality": "sup_{int g=0, ||g||_1=1}|int K g|=osc(K)/2",
+    "pressureSource": "q=tr(A^2)=|S|^2-|omega|^2/2",
+    "quadrupole": "Q_e(theta)=3(e dot theta)^2-1",
+    "strainEquation": "(D_t-Delta)S+S^2+(omega tensor omega-|omega|^2 I)/4+Hess(p)=0"
+  },
+  "literatureBoundary": {
+    "noveltyClaim": "exact audited periodic witness and route decision only; pressure-Hessian nonlocality itself is known",
+    "publishedInputs": [
+      "Miller 2020 strain equation and middle-eigenvalue criterion",
+      "Chevillard et al. 2011 local/nonlocal pressure Hessian",
+      "Wilczek-Meneveau 2014 statistical pressure closure"
+    ]
+  },
+  "provenance": {
+    "python": "3.12.13",
+    "sourceCommit": "86ac684e2a2564f56d42d9c216918ed659652846",
+    "sourceFiles": {
+      "research/pressure_hessian_pointwise_obstruction_audit.py": "6016b07e163e9bbac9e88948bc4c7acc65036ed983a84afe37e5802579e1d847",
+      "research/pressure_hessian_pointwise_obstruction_note.md": "8eda90895ee566c3680c6c12720de7f8a3a0b32fdeffb4cd6c5ed0dc346305f0"
+    },
+    "sympy": "1.14.0"
+  },
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "study": "R0.69H",
+  "theorem": {
+    "commonLocalData": "S(0)=diag(1,-1,0), omega(0)=0, principal direction=e1",
+    "oppositePressureFamilies": "H11_minus(0)=-1-(54/85)t^2; H11_plus(0)=-1+(54/85)t^2",
+    "scope": "rules out only pointwise pressure-Hessian sign or closure rules that depend solely on the local pair (S,omega)"
+  },
+  "witnessAudit": {
+    "baseGradientAtOrigin": [
+      [
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "-1",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "exactThresholdTSquared": "85/54",
+    "families": {
+      "minus": {
+        "perturbationFrequencies": [
+          1,
+          2
+        ],
+        "perturbationGradientAtOrigin": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "pressureH11Coefficients": [
+          "-1",
+          "0",
+          "-54/85"
+        ],
+        "pressureH22Coefficients": [
+          "-1",
+          "0",
+          "54/85"
+        ],
+        "sourceMeanCoefficients": [
+          "0",
+          "0",
+          "0"
+        ],
+        "sourceValuesAtOrigin": [
+          "2",
+          "0",
+          "0"
+        ]
+      },
+      "plus": {
+        "perturbationFrequencies": [
+          2,
+          1
+        ],
+        "perturbationGradientAtOrigin": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "pressureH11Coefficients": [
+          "-1",
+          "0",
+          "54/85"
+        ],
+        "pressureH22Coefficients": [
+          "-1",
+          "0",
+          "-54/85"
+        ],
+        "sourceMeanCoefficients": [
+          "0",
+          "0",
+          "0"
+        ],
+        "sourceValuesAtOrigin": [
+          "2",
+          "0",
+          "0"
+        ]
+      }
+    },
+    "pressureAtTEqualsTwo": {
+      "minus": "-301/85",
+      "plus": "131/85"
+    }
+  }
+}

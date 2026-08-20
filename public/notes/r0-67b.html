@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.67B：构造六阶五载频循环的质量与四个一次矩精确提升，并证明零仿射 C1,1 对偶余项与主根严格谱分离。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.67B｜质量—仿射提升与严格 resolvent">
+  <meta property="og:description" content="精确 1600 维提升给出 26&lt;256&lt;300&lt;mu；完整热加权五单形投影仍待判定。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-67b-affine-moment-lift.png">
+  <title>R0.67B｜质量—仿射提升与严格 resolvent</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css">
+  <script defer src="/i18n-en.js?v=0.52"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#lift">精确提升</a><a href="#gap">谱间隙</a><a href="#resolvent">Resolvent</a><a href="#next">下一步</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.67B · 六阶质量—仿射提升</div>
+        <h1>一次矩精确闭合<br>零仿射余项低于主根</h1>
+        <p class="lead">五载频约束 \(A+B+C-D-E=Q\) 只留下四个自由坐标。质量与四个一次矩组成精确 1600 维块三角系统；零仿射余项在 \((C^{1,1})^*\) 中至多按 \(256^r\) 增长，而其余有限谱小于 \(300\)，主根满足 \(\mu&gt;402\)。因此得到严格层级 \(26&lt;256&lt;300&lt;\mu\)。完整热核投影的符号仍未判定。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.67B 精确证书已完成</span><strong>13 项正式检查全通过</strong><p>版本 v0.67B · 2026-08-20</p><p>有限维数：1600</p><p>直接卷积：7 层全状态</p><p>最大内存：54,067,200 字节</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#boundary">00 · 结论边界</a></li>
+        <li><a href="#lift">01 · 精确矩提升</a></li>
+        <li><a href="#audit">02 · 独立核对</a></li>
+        <li><a href="#canonical">03 · 规范提升</a></li>
+        <li><a href="#gap">04 · 严格谱间隙</a></li>
+        <li><a href="#resolvent">05 · 余项 resolvent</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · R0.67C 任务</a></li>
+        <li><a href="#reproduce">08 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="boundary"><div class="section-no">00 / Boundary</div><h2>前两道热投影门槛已经关闭，最后只剩主特征分布与完整热核的配对</h2>
+          <div class="grid">
+            <div class="status"><span>EXACT · LIFT</span><strong>1600 维仿射闭合</strong><p>质量加四个自由方向的一次矩。</p></div>
+            <div class="status"><span>EXACT · GAP</span><strong>\(26&lt;256&lt;300&lt;\mu\)</strong><p>有限矩、零仿射余项与主根严格分离。</p></div>
+            <div class="status"><span>CERTIFIED · RESOLVENT</span><strong>\(\|(\mu-\mathcal P)^{-1}\|\le(\mu-256)^{-1}\)</strong><p>主根外的无穷维修正级数绝对收敛。</p></div>
+            <div class="status"><span>OPEN · PAIRING</span><strong>完整热投影符号未知</strong><p>仍需严格计算十种时间次序的五单形泛函。</p></div>
+          </div>
+        </section>
+
+        <section id="lift"><div class="section-no">01 / Exact affine lift</div><h2>质量与四个一次矩在每个四位周期后精确闭合</h2>
+          <p>由 \(A+B+C-D-E=Q\) 取 \(A,B,C,D\) 为自由坐标，并用 \(E=A+B+C-D-Q\) 恢复第五个载频。令 \(x_j\) 为四个自由指标除以 \(M_r=16^r\) 后的坐标。每条四位仿射分支都写成</p>
+          <div class="equation">\[
+            x\longmapsto\frac{x+e}{16},\qquad e\in\{0,\ldots,15\}^4.
+          \]</div>
+          <p>令 \(W\) 为 R0.67A 的 320 维质量矩阵，\(E_j\) 为第 \(j\) 个分支平移量的带符号聚合矩阵。直接积分得到</p>
+          <div class="equation result">\[
+            \boxed{m'=Wm,\qquad
+            \ell'_j=\frac1{16}\bigl(W\ell_j+E_jm\bigr),
+            \quad1\le j\le4.}
+          \]</div>
+          <p>因此有限算子 \(L\) 的维数是 \(320\times(1+4)=1600\)，且严格块三角。这里没有数值拟合：五个矩阵全部由整数数字转移构造。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">02 / Independent direct audit</div><h2>直接五多项式卷积逐状态核对质量和全部四个一次矩</h2>
+          <p>独立核对不复用矩阵提升。脚本直接生成五个 Rudin--Shapiro 多项式，反转两个负载频因子，并依次把前四个因子乘以其原始指标后做五重卷积。第七层共有 \(M=128\)，所有 320 个状态的质量与四个一次矩都逐整数一致。</p>
+          <table><thead><tr><th>二进制层</th><th>\(M\)</th><th>最大绝对质量</th><th>最大绝对一次矩</th></tr></thead><tbody>
+            <tr><td>1</td><td>2</td><td>10</td><td>6</td></tr>
+            <tr><td>2</td><td>4</td><td>37</td><td>72</td></tr>
+            <tr><td>3</td><td>8</td><td>160</td><td>750</td></tr>
+            <tr><td>4</td><td>16</td><td>500</td><td>3,472</td></tr>
+            <tr><td>5</td><td>32</td><td>3,194</td><td>45,022</td></tr>
+            <tr><td>6</td><td>64</td><td>6,142</td><td>331,330</td></tr>
+            <tr><td>7</td><td>128</td><td>51,034</td><td>3,785,734</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="canonical"><div class="section-no">03 / Canonical lift</div><h2>一个五原子规范提升让缺陷自动消去常数和全部仿射函数</h2>
+          <p>逐状态定义</p>
+          <div class="equation result">\[
+            J(m,\ell)=
+            \left(m-\sum_{j=1}^4\ell_j\right)\delta_0
+            +\sum_{j=1}^4\ell_j\delta_{e_j}.
+          \]</div>
+          <p>若 \(\mathcal M\) 提取质量和四个一次矩，则 \(\mathcal MJ=I\)，且仿射闭合给出 \(\mathcal M\mathcal P=L\mathcal M\)。于是</p>
+          <div class="equation result">\[
+            \boxed{R=\mathcal PJ-JL,\qquad \mathcal MR=0.}
+          \]</div>
+          <p>这意味着 \(Rv\) 的每个分量都消去 \(1,x_1,x_2,x_3,x_4\)。R0.67A 中“如果余项消去质量和一次矩”的条件现在已经被精确构造取代。</p>
+        </section>
+
+        <section id="gap"><div class="section-no">04 / Exact spectral gap</div><h2>块三角结构把 1600 维谱完全还原为质量谱及其十六分之一缩放</h2>
+          <div class="equation">\[
+            \operatorname{spec}L=
+            \operatorname{spec}W
+            \cup\bigcup_{j=1}^{4}\frac1{16}\operatorname{spec}W.
+          \]</div>
+          <p>R0.67A 已证明除主根外的质量谱都严格落在半径 300 内；同时 \(\rho(W)/16&lt;416/16=26\)。主根区间仍为</p>
+          <div class="equation result">\[
+            402.425429345624&lt;\mu&lt;402.4254293456256.
+          \]</div>
+          <p>完整 320 维质量矩阵中的因子 \(q_4^4\) 被保留，因此没有把主谱子空间误写成简单特征值。可达标量的生成函数只有一个 \(q_4\) 因子，与完整矩阵的代数重数是两件不同的事。</p>
+        </section>
+
+        <section id="resolvent"><div class="section-no">05 / Zero-affine resolvent</div><h2>二阶泰勒余项把绝对转移的 65536 精确降到 256</h2>
+          <p>按进位赋予状态正权</p>
+          <div class="equation">\[
+            w=(16,83441,631131,471851,28561),\qquad
+            A_{\rm abs}w=65536w.
+          \]</div>
+          <p>对消去全部仿射函数的向量测度，\(f((x+e)/16)\) 的常数项和一次项都不贡献；梯度 Lipschitz 常数缩小 \(16^{-2}\)。所以</p>
+          <div class="equation result">\[
+            \boxed{\|\mathcal P\zeta\|_{(C^{1,1})^*,w}
+            \le256\|\zeta\|_{(C^{1,1})^*,w}.}
+          \]</div>
+          <p>由于 \(256&lt;\mu\)，Neumann 级数给出严格 resolvent。若 \(Lv=\mu v\)，则</p>
+          <div class="equation result">\[
+            \eta_v=(\mu-\mathcal P|_{\ker\mathcal M})^{-1}Rv,\qquad
+            \rho_v=Jv+\eta_v,\qquad
+            \mathcal P\rho_v=\mu\rho_v.
+          \]</div>
+          <p>有限主谱子空间由此提升为完整仿射算子的真实特征分布。仍不能从结构本身推出 \(\rho_v(F_{\theta_\infty})\ne0\)。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>直接核对、谱分离和块结构已按期刊双栏尺寸保存</h2>
+          <figure><img src="/figures/r0-67b-affine-moment-lift.svg" alt="R0.67B 质量—仿射提升和严格谱间隙期刊附图"><figcaption>图 R0.67B-1。左图为七层直接卷积核对；右上给出 \(26&lt;256&lt;300&lt;\mu\) 的严格分离；右下显示质量与四个一次矩的九个非零块。颜色、点形、区间、灰度和 PDF 均已检查。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-67b-affine-moment-lift.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-67b-affine-moment-lift.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / R0.67C</div><h2>下一步只做一件事：严格判定完整热加权六阶主投影是否非零</h2>
+          <div class="proof"><strong>三个可核查步骤。</strong>第一，写出十种时间次序在四自由坐标上的六个归一化热率，并建立统一 \(C^{1,1}\) 界；第二，计算规范提升缺陷的显式范数和有限主谱投影，得到可执行的总误差预算；第三，用高阶精确矩与有理尾界包住完整五单形泛函，给出 \(\rho_v(F_{\theta_\infty})\) 的严格正区间或负区间。</div>
+          <p>如果区间跨过零，就公开记录为失败结果并更换目标周期；如果严格离零，R0.67 将升级为完整热加权六阶渐近定理。任何一种结果都不自动控制八阶以上项。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility</div><h2>数学推导、正式证书、资源记录和期刊附图相互独立锁定</h2>
+          <p>数学与审计源提交为 d0347369ae6ba564d4275d0cd720ba1cd4b91615，正式证书提交为 74d09579d5cf859dab79840528abaa43a1f56f1d，期刊附图包提交为 2e3d6c7。正式运行耗时 2.04 秒，最大常驻内存 54,067,200 字节，0 次交换。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_affine_moment_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/sixth_order_affine_moment_audit.py">查看精确审计脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r067b">查看机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r067b-affine-moment-lift/fig-r067b-affine-moment-lift">查看期刊附图包</a></p>
+          <p>声明边界：本文证明质量—仿射提升、严格谱间隙和主特征分布的存在；没有证明完整热投影非零，没有控制全部高阶 Picard 项，没有推出范数膨胀、奇异性或全局正则性，也没有解决三维 Navier--Stokes 千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、有限计算与猜想分开记录。</div><div>R0.67B · 2026-08-20<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

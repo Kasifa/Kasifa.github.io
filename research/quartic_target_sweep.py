@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -36,6 +37,24 @@ def parse_pairs(value: str) -> list[tuple[int, int]]:
     return pairs
 
 
+def append_progress(
+    path: Path | None, started: float, stage: str, **details: object
+) -> None:
+    if path is None:
+        return
+    record = {
+        "timestampUtc": datetime.now(timezone.utc).isoformat(),
+        "elapsedSeconds": time.perf_counter() - started,
+        "stage": stage,
+        **details,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as target:
+        target.write(json.dumps(record, sort_keys=True) + "\n")
+        target.flush()
+        os.fsync(target.fileno())
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", type=Path, required=True)
@@ -44,6 +63,7 @@ def main() -> None:
     parser.add_argument("--threads", type=int, default=16)
     parser.add_argument("--target-mode", choices=["edge", "all"], default="edge")
     parser.add_argument("--run-directory", type=Path, required=True)
+    parser.add_argument("--progress-log", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     arguments = parser.parse_args()
     if bool(arguments.preset) == bool(arguments.pairs):
@@ -55,6 +75,8 @@ def main() -> None:
     arguments.run_directory.mkdir(parents=True, exist_ok=True)
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
+    if arguments.progress_log is not None and arguments.progress_log.exists():
+        arguments.progress_log.unlink()
     records: list[dict[str, object]] = []
 
     jobs = [
@@ -66,6 +88,15 @@ def main() -> None:
             else range(1, (1 << level_m) + 1)
         )
     ]
+    append_progress(
+        arguments.progress_log,
+        started,
+        "started",
+        parameterPairs=len(pairs),
+        jobs=len(jobs),
+        targetMode=arguments.target_mode,
+        threadsPerRun=arguments.threads,
+    )
 
     for index, (level_l, level_m, target) in enumerate(jobs, start=1):
         length = 1 << level_l
@@ -97,6 +128,20 @@ def main() -> None:
             f"condition={record['cancellationConditionNumber']:.6g} eta={eta:.1f}s",
             file=sys.stderr,
             flush=True,
+        )
+        append_progress(
+            arguments.progress_log,
+            started,
+            "job-completed",
+            completed=index,
+            jobs=len(jobs),
+            L=length,
+            M=outputs,
+            target=target,
+            normalizedSignedRatio=record["normalizedSignedRatio"],
+            cancellationConditionNumber=record["cancellationConditionNumber"],
+            orderedQuarticPaths=record["orderedQuarticPaths"],
+            etaSeconds=eta,
         )
 
     maximum = max(records, key=lambda item: float(item["normalizedSignedRatio"]))
@@ -137,6 +182,17 @@ def main() -> None:
     }
     arguments.output.write_text(
         json.dumps(aggregate, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    append_progress(
+        arguments.progress_log,
+        started,
+        "completed",
+        parameterPairs=len(pairs),
+        jobs=len(records),
+        maximumNormalizedSignedRatio=aggregate["maximumNormalizedSignedRatio"],
+        largestCancellationConditionNumber=aggregate[
+            "largestCancellationConditionNumber"
+        ],
     )
     print(
         json.dumps(

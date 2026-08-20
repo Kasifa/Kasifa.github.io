@@ -15,6 +15,10 @@ const archiveRoot = new URL(
   "../research/certificates/r068b2c-pilot/",
   import.meta.url,
 );
+const completeArchiveRoot = new URL(
+  "../research/certificates/r068b2c2-pilot/",
+  import.meta.url,
+);
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -73,6 +77,58 @@ test("locks the monitored degree-ten defect pilot archive", async () => {
   );
   assert.deepEqual(jsonBuffer, stdoutBuffer);
   assert.match(stderrBuffer.toString("utf8"), /classes=44514/);
+  assert.match(stderrBuffer.toString("utf8"), /monitor: finished returncode=0/);
+  assert.match(resourcesBuffer.toString("utf8"), /exited:0/);
+
+  const expected = new Map(
+    checksumText
+      .trim()
+      .split("\n")
+      .map((line) => {
+        const [digest, name] = line.trim().split(/\s+/);
+        return [name, digest];
+      }),
+  );
+  for (const [name, buffer] of [
+    ["eighth-order-heat-defect-pilot.json", jsonBuffer],
+    ["eighth-order-heat-defect-pilot.stdout.log", stdoutBuffer],
+    ["eighth-order-heat-defect-pilot.stderr.log", stderrBuffer],
+    ["resources.csv", resourcesBuffer],
+  ]) {
+    assert.equal(sha256(buffer), expected.get(name));
+  }
+});
+
+test("locks the monitored complete mixed-derivative pilot archive", async () => {
+  const [jsonBuffer, stdoutBuffer, stderrBuffer, resourcesBuffer, checksumText] =
+    await Promise.all([
+      readFile(new URL("eighth-order-heat-defect-pilot.json", completeArchiveRoot)),
+      readFile(new URL("eighth-order-heat-defect-pilot.stdout.log", completeArchiveRoot)),
+      readFile(new URL("eighth-order-heat-defect-pilot.stderr.log", completeArchiveRoot)),
+      readFile(new URL("resources.csv", completeArchiveRoot)),
+      readFile(new URL("SHA256SUMS", completeArchiveRoot), "utf8"),
+    ]);
+  const report = JSON.parse(jsonBuffer.toString("utf8"));
+  assert.equal(report.status, "exploratory-passed");
+  assert.equal(Object.values(report.checks).every(Boolean), true);
+  assert.equal(report.derivativeMajorants.multiindexCount, 4368);
+  assert.deepEqual(report.derivativeMajorants.maximumMultiindex, [0, 0, 0, 11, 0, 0]);
+  assert.ok(report.derivativeMajorants.maximumBound < 2.567e-6);
+  assert.ok(
+    report.derivativeMajorants.maximumBound <
+      report.gapDiagnostics.requiredGlobalDerivativeUpper,
+  );
+  assert.ok(
+    report.gapDiagnostics.allDerivativeCorrectionUpper <
+      report.gapDiagnostics.heatJetMagnitude,
+  );
+  assert.match(report.derivativeMajorants.scope, /pure and mixed/);
+  assert.equal(
+    report.provenance.sourceCommit,
+    "11c46ce8c111a3433767b0d4cfc623d125f131fa",
+  );
+  assert.deepEqual(jsonBuffer, stdoutBuffer);
+  assert.match(stderrBuffer.toString("utf8"), /shuffle=35\/35 multiindices=4368/);
   assert.match(stderrBuffer.toString("utf8"), /monitor: finished returncode=0/);
   assert.match(resourcesBuffer.toString("utf8"), /exited:0/);
 

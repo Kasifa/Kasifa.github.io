@@ -112,7 +112,7 @@ def main() -> None:
             "finalQaSurface": "color PNG, true grayscale conversion, and Poppler-rendered PDF at final size",
         },
         "computation": {
-            "kind": "exact-moment rational-interval audit",
+            "kind": "exact-audit",
             "command": (
                 "python3 research/quartic_weighted_cycle_audit.py --profile publication --max-r 24 "
                 "--order 48 --time-series-terms 120 --output research/certificates/r065/weighted-cycle-audit.json"

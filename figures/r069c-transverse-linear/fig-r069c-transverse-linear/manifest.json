@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r069c-transverse-linear",
+  "status": "formal",
+  "createdAt": "2026-08-21T05:30:00+08:00",
+  "analyticalQuestion": "Can a genuinely three-dimensional non-normal sideband around the R0.69A packet create order-one amplification in a scaling-critical norm?",
+  "supportedClaim": "The exact stretch survives Leray projection, but its symbol is bounded by the target derivative scale and the complete linearized propagator converges to free heat at O(rho^r) in the periodic Koch-Tataru norm.",
+  "claimBoundary": "exact transverse Fourier-Leray sideband reduction plus abstract critical-path-space linearized stability; not a nonlinear large-data theorem or a Navier-Stokes singularity result",
+  "git": {
+    "sourceCommit": "55b89d43ca854e33c10e63f64974fc479f56ceaa",
+    "certificateCommit": "8715f4aab57361fef04a60ce2b144cada4291495",
+    "repository": "Kasifa/Kasifa.github.io",
+    "dirtyAtCertifiedRun": false
+  },
+  "sourceData": [
+    {
+      "fileName": "transverse-sideband-linear.json",
+      "location": "research/certificates/r069c/transverse-sideband-linear.json",
+      "bytes": 3717,
+      "sha256": "e67e5ed445bd2ef413f283a0f4a47ca29c864bc5ec79d04afbce350eff0b009a",
+      "extractionCommand": "python3 build.py"
+    }
+  ],
+  "data": [
+    {
+      "path": "symbol-curves.csv",
+      "bytes": 39613,
+      "sha256": "c1d301f48dab976566a57053ea4ef333793d1ee34acc35ebb4ae9b0292f7026f",
+      "format": "csv",
+      "schema": "m/R, s/m, exact largest singular-value ratio, normalized stretch entry"
+    },
+    {
+      "path": "decay-envelopes.csv",
+      "bytes": 3346,
+      "sha256": "1c84c4c6c4e3db03e996ed1071e4d8ecd15d512ab9925b4c771ca47192e4d3da",
+      "format": "csv",
+      "schema": "depth, rho^r, complete-packet critical bound, one-carrier gain bound"
+    },
+    {
+      "path": "figure-data-metadata.json",
+      "bytes": 745,
+      "sha256": "a0270d166908ec57820f83608bc2be46816f54a7d9c57f686761476bffcddf7e",
+      "format": "json",
+      "schema": "pinned certificate and theorem metadata"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 368,
+      "sha256": "d0510b1117ddc4b23b14c8ef8088ff5debb9eb21a2682f7583e97c1536fa3cb3",
+      "format": "json",
+      "schema": "eight figure-data validation checks"
+    },
+    {
+      "path": "figure-data-resources.csv",
+      "bytes": 59,
+      "sha256": "765d9ba28726d436a6cf2147240b6d6889afd6abb665c3ad847a835df37d8fd1",
+      "format": "csv",
+      "schema": "data extraction resources"
+    },
+    {
+      "path": "plot-resources.csv",
+      "bytes": 60,
+      "sha256": "4086bb147b7df3da07b7930b50ca55e7e8c6a89f64cc2f3ceb1fdfe75457398b",
+      "format": "csv",
+      "schema": "rendering resources"
+    }
+  ],
+  "computation": {
+    "kind": "exact-certificate extraction plus double-precision presentation sampling of a proven symbolic formula",
+    "configuration": "four m/R ratios, 161 logarithmic transverse aspect ratios each, and packet depths 0 through 50",
+    "precision": "exact symbolic theorem; IEEE binary64 used only to draw certified inequalities",
+    "solver": "closed-form 2 by 2 singular values and geometric envelopes",
+    "command": "python3 build.py",
+    "scientificWallTimeSeconds": 0.554129
+  },
+  "compute": {
+    "host": "local Mac workstation",
+    "operatingSystem": "macOS-26.6.1-arm64-arm-64bit",
+    "cpu": "Apple M5 Max",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1",
+    "pillow": "12.3.0",
+    "packagesLock": "requirements-research.txt"
+  },
+  "figure": {
+    "script": "build.py",
+    "widthMillimetres": 178,
+    "heightMillimetres": 92,
+    "profile": "journal-default",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 40828,
+        "sha256": "cbc1c1776ea776820f65a9bbdc4a1db217a008d505fb2e323fdefc70682390f6"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 105474,
+        "sha256": "1fe3f2775d058fffe062beffccaca8a463dc4fb9cef2ed316690e38931e1741c"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 507903,
+        "sha256": "603c2a803738e09907bab9bd80ea429611ae9f42fcf23eb89ffd7c5ab4fe8879",
+        "dpi": 600,
+        "pixels": "4204 by 2173"
+      }
+    ]
+  },
+  "chartContract": {
+    "family": "dimensionless symbol curves and logarithmic critical-envelope comparison",
+    "takeaway": "non-normal stretching is real but cannot overcome the certified critical smallness of the deep packet at linear order",
+    "nonColorEncoding": "distinct line styles, markers, direct ceiling line, and explicit formula callouts",
+    "outputFootprint": "double-column 178 by 92 millimetres with PDF, SVG, and 600 dpi PNG"
+  },
+  "qa": {
+    "status": "passed",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "notes": "The 178 mm color and grayscale renders were inspected at final size; line styles, markers, labels, and callouts remain legible without color."
+  },
+  "caption": {
+    "english": "caption.md"
+  }
+}

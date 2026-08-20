@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -10,6 +11,26 @@ const execFileAsync = promisify(execFile);
 const repository = new URL("..", import.meta.url).pathname;
 const noteUrl = new URL("../research/sixth_order_cycle_note.md", import.meta.url);
 const auditUrl = new URL("../research/sixth_order_cycle_audit.py", import.meta.url);
+const certificateUrl = new URL(
+  "../research/certificates/r067/sixth-order-cycle-audit.json",
+  import.meta.url,
+);
+const certificateStdoutUrl = new URL(
+  "../research/certificates/r067/sixth-order-cycle-audit.stdout.log",
+  import.meta.url,
+);
+const certificateStderrUrl = new URL(
+  "../research/certificates/r067/sixth-order-cycle-audit.stderr.log",
+  import.meta.url,
+);
+const checksumsUrl = new URL(
+  "../research/certificates/r067/SHA256SUMS",
+  import.meta.url,
+);
+
+function sha256(buffer) {
+  return createHash("sha256").update(buffer).digest("hex");
+}
 
 test("states the R0.67A zero-time sixth-order theorem and heat boundary", async () => {
   const [note, audit] = await Promise.all([
@@ -68,4 +89,44 @@ test("reproduces the exact R0.67A five-carrier transfer certificate", async () =
   assert.equal(certificate.absoluteTransfer.eigenvalue, 65536);
   assert.equal(certificate.absoluteTransfer.C2ZeroAffineThreshold, 256);
   assert.equal(certificate.directAudit.exactLevelsChecked, 4);
+});
+
+test("locks the formal R0.67A certificate, logs, and resource record", async () => {
+  const [jsonBuffer, stdoutBuffer, stderrBuffer, checksumText] =
+    await Promise.all([
+      readFile(certificateUrl),
+      readFile(certificateStdoutUrl),
+      readFile(certificateStderrUrl),
+      readFile(checksumsUrl, "utf8"),
+    ]);
+  const certificate = JSON.parse(jsonBuffer.toString("utf8"));
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.values(certificate.checks).every(Boolean), true);
+  assert.equal(certificate.directAudit.exactLevelsChecked, 7);
+  assert.deepEqual(jsonBuffer, stdoutBuffer);
+  assert.match(stderrBuffer.toString("utf8"), /isolating reachable scalar/);
+  assert.match(stderrBuffer.toString("utf8"), /maximum resident set size/);
+  assert.match(stderrBuffer.toString("utf8"), /\b0\s+swaps/);
+
+  const expected = new Map(
+    checksumText
+      .trim()
+      .split("\n")
+      .map((line) => {
+        const [digest, name] = line.trim().split(/\s+/);
+        return [name, digest];
+      }),
+  );
+  assert.equal(
+    sha256(jsonBuffer),
+    expected.get("sixth-order-cycle-audit.json"),
+  );
+  assert.equal(
+    sha256(stdoutBuffer),
+    expected.get("sixth-order-cycle-audit.stdout.log"),
+  );
+  assert.equal(
+    sha256(stderrBuffer),
+    expected.get("sixth-order-cycle-audit.stderr.log"),
+  );
 });

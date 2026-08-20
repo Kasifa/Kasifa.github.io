@@ -1,0 +1,188 @@
+{
+  "checks": {
+    "euclideanCompactSupportConstructionNotClaimed": true,
+    "finiteChecksAreNotUsedAsProofs": true,
+    "finiteExhaustiveInteractionRegressionPassed": true,
+    "finitePacketFamilyRegressionPassed": true,
+    "finiteTensorPrefixRegressionPassed": true,
+    "formalAllTargetSignsSquareToPositiveOne": true,
+    "formalCompleteQuadraticTermReducesToUAdvectingV": true,
+    "formalExactDuhamelDenominatorIsTwoRSquared": true,
+    "formalHeatBesovMultiOutputSaturation": true,
+    "formalLinearQuadraticL2Orthogonality": true,
+    "formalPeriodicBmoMultiOutputSaturation": true,
+    "formalProjectionContractsHeatBesov": true,
+    "formalProjectionContractsPeriodicBmoMinusOne": true,
+    "formalRealAndDivergenceFree": true,
+    "formalSingleHighShell": true,
+    "formalTargetCoefficientEnvelope": true,
+    "formalTargetProjectionRetainsOnlyUniqueDiagonalMatches": true,
+    "formalTensorPrefixBound": true,
+    "formalWeightedAbelBoundForBothInputs": true,
+    "higherPicardRemainderControlNotClaimed": true,
+    "kochTataruBilinearUnboundednessNotClaimed": true,
+    "largeDataRegularityNotClaimed": true,
+    "normInflationNotClaimed": true,
+    "threeDimensionalNavierStokesRegularityNotClaimed": true
+  },
+  "computation": {
+    "createdUtc": "2026-08-20T01:24:13.633826+00:00",
+    "exactBackend": "Python integers and Gaussian integers",
+    "floatingPointDecisionUse": false,
+    "gpu": false,
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.9.6",
+    "randomness": false,
+    "wallSeconds": 72.990615542
+  },
+  "energyBookkeeping": {
+    "higherOrderBoundary": "the order-A^4 output energy requires higher-Picard and dissipative bookkeeping",
+    "linearFirstCoordinateSupport": "H<=|xi_1|<5H/4",
+    "orthogonality": "<exp(t_H Delta)u_0,D_(t_H)(u_0,u_0)>_L2=0",
+    "quadraticFirstCoordinateSupport": "|xi_1|<H/4 or |xi_1|>=2H"
+  },
+  "exactDuhamel": {
+    "classification": "formal exact identity and all-index inequalities",
+    "coefficient": "d_m(t)=m exp(-m^2t) sum_n (1-exp(-2R_(m-1,n)^2t))/(2R_(m-1,n)^2)",
+    "lowerBound": "2mL/(25H^2)",
+    "observationTime": "t_H=log(2)/(2H^2)",
+    "projectedPhysicalOutput": "2A^2 sum_(m=1)^M d_m(t_H) sin(mx_2)e_3",
+    "upperBound": "mL/(2H^2)"
+  },
+  "finiteRegressions": {
+    "interactions": {
+      "classification": "finite exhaustive interaction regression; support proof is the all-index interval argument",
+      "linearQuadraticL2Orthogonality": true,
+      "maximumDyadicLevel": 6,
+      "orderedPositivePairsChecked": 29822521,
+      "projectedPairsChecked": 16129,
+      "projectionRetainsOnlyUniqueDiagonalMatches": true,
+      "quadraticFirstCoordinateSupport": "|xi_1|<H/4 or |xi_1|>=2H",
+      "recordsSha256": "3c4277719bb5f01af66c3808197af762ecbd0fa2f2982eaaecc4ba8114cef6cc",
+      "targetPairsChecked": 16129
+    },
+    "packetFamily": {
+      "classification": "finite exact integer regression of the all-index packet formulas",
+      "eachTargetHasExactlyLModes": true,
+      "largestHighScale": 4194304,
+      "largestOutputCount": 1024,
+      "maximumDyadicLevel": 10,
+      "modesChecked": 4190209,
+      "parameterPairsChecked": 121,
+      "recordsSha256": "6a082b6ce4c39df961f7b9d55fc79caeca8a53ce81703f9da48453ea07fbfee3",
+      "separation": "H/M=4L",
+      "shell": "H<=|xi|<2H"
+    },
+    "tensorPrefixes": {
+      "abelChecks": 484,
+      "classification": "finite exact Gaussian-integer regression of the formal tensor-prefix proof",
+      "maximumDyadicLevel": 10,
+      "maximumSampledModulusSquaredRatio": {
+        "denominator": 2048,
+        "numerator": 7938
+      },
+      "phasePairs": [
+        "(i,i)",
+        "(i,-1)",
+        "(-1,i)",
+        "(-i,-i)"
+      ],
+      "prefixesChecked": 16760836,
+      "rationalSquaredEnvelope": "C_T^2=34+24sqrt(2)<68",
+      "recordsSha256": "aac5bf0dfb063519dd22fc5f61443320d0fc21a6a55aab432dc42c9831e6dd96",
+      "tensorPrefixConstant": "C_T=(1+sqrt(2))*(2+sqrt(2))=4+3sqrt(2)",
+      "weightedAbelIdentityPassed": true
+    }
+  },
+  "git": {
+    "head": "f80788625f97a3038c492a6697832a7653bb8b82",
+    "sourceCommit": "f80788625f97a3038c492a6697832a7653bb8b82",
+    "worktreeStatusAtRun": [
+      "?? research/certificates/r059/"
+    ]
+  },
+  "literatureBoundary": {
+    "bourgainPavlovic": "https://arxiv.org/abs/0807.0882",
+    "cheskidovDai": "https://arxiv.org/abs/1212.3801",
+    "germainSecondIterate": "https://arxiv.org/abs/0806.4525",
+    "kochTataru": "https://math.berkeley.edu/~tataru/papers/nas.pdf",
+    "rudinShapiroBound": "https://arxiv.org/abs/1909.08777"
+  },
+  "normComparison": {
+    "classification": "formal all-index symbolic envelopes; exponentials enter only through monotonicity",
+    "constant": "C_T=(1+sqrt(2))*(2+sqrt(2))",
+    "envelopes": {
+      "heatBesovInput": {
+        "upper": "sqrt(2/e)*C_T*A/sqrt(H)"
+      },
+      "heatBesovOutput": {
+        "lower": "exp(-1/4)*A^2/(600H)"
+      },
+      "heatBesovQuotient": {
+        "lower": "exp(3/4)/(1200*C_T^2)",
+        "outputCountPower": 0,
+        "shellPower": 0
+      },
+      "periodicBmoInput": {
+        "upper": "sqrt(2)*C_T*A/sqrt(H)"
+      },
+      "periodicBmoOutput": {
+        "lower": "exp(-1/64)*A^2/(3200H)"
+      },
+      "periodicBmoQuotient": {
+        "lower": "exp(-1/64)/(6400*C_T^2)",
+        "outputCountPower": 0,
+        "shellPower": 0
+      },
+      "targetCoefficient": {
+        "lower": "2mL/(25H^2)",
+        "upper": "mL/(2H^2)"
+      }
+    },
+    "projectionContraction": {
+      "heatBesov": "L-infinity contraction commuting with heat flow",
+      "periodicBmoMinusOne": "Jensen inequality plus translation invariance of balls"
+    }
+  },
+  "packet": {
+    "carrier": "R_(r,n)=H+rL+n",
+    "classification": "formal all-index construction",
+    "frequencies": "p=(R,0,0), q=(-R,r+1,0)",
+    "parameters": "dyadic L and M; H=4LM",
+    "polarizations": "U parallel e_2, V parallel e_3",
+    "separation": "H/M=4L",
+    "shell": "H<=|xi|<2H",
+    "targetSet": "K_M={(0,m,0):1<=m<=M}",
+    "tensorSigns": "c_(r,n)=b_r*a_n from dyadic Rudin-Shapiro sequences"
+  },
+  "phaseFlattening": {
+    "classification": "formal tensor-prefix factorization and Abel summation",
+    "heatEnvelope": "||exp(sDelta)u_0||_infinity<=4C_T A sqrt(LM) exp(-H^2s)",
+    "matchedProducts": "c_(r,n)^2=1 simultaneously for all M targets",
+    "prefixConstant": "C_T=(1+sqrt(2))*(2+sqrt(2))"
+  },
+  "researchDecision": {
+    "directClayValue": "low; this is a first-iterate obstruction, not an arbitrary-data a priori estimate",
+    "multiOutputQuestion": "negative: a growing structured output set need not force a square-function defect",
+    "nextTest": "uniform higher-Picard remainder bound versus an explicit third-order resonance",
+    "ruledOutStrategy": "shell decay based only on frequency separation, output multiplicity, and isotropic first-iterate critical norms",
+    "standaloneNovelty": "moderate at most, pending broader literature review"
+  },
+  "schemaVersion": "1.0",
+  "scope": {
+    "notClaimed": [
+      "norm inflation or discontinuity of the solution map",
+      "unboundedness of the Koch-Tataru bilinear map",
+      "control of higher Picard iterates or the nonlinear remainder",
+      "an R^3 compactly supported construction",
+      "large-data global regularity or a solution of the Millennium problem"
+    ],
+    "system": "complete first Navier-Stokes Picard iterate of one real periodic tensor-sign packet",
+    "theorems": [
+      "single-shell tensor Rudin-Shapiro packet with M coherent low outputs",
+      "exact all-index Duhamel coefficients for every target output",
+      "uniform multi-output saturation in heat Besov and periodic BMO^-1",
+      "exact L2 orthogonality of the linear and first nonlinear terms"
+    ]
+  }
+}

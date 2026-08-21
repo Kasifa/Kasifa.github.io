@@ -18,6 +18,10 @@ const polynomialUrl = new URL(
   "research/two_scale_annular_polynomial_qmc.py",
   root,
 );
+const zonePolynomialUrl = new URL(
+  "research/two_scale_zonepair_polynomial_qmc.py",
+  root,
+);
 
 test("states the R0.69V exact cubic law and uniform annular decoupling", async () => {
   const note = await readFile(noteUrl, "utf8");
@@ -111,4 +115,37 @@ test("reconstructs every R0.69V annulus as a common-sample cubic", () => {
   );
   assert.equal(Number.isFinite(result.candidate.exactSignedTotal), true);
   assert.equal(result.candidate.annuli.length, 8);
+});
+
+test("independently reconstructs selected coarse annuli by zone pairs", () => {
+  const output = new URL("tmp/r069v-zone-polynomial-test/", root);
+  const run = spawnSync(
+    fileURLToPath(new URL("tmp/r068b-venv/bin/python", root)),
+    [
+      fileURLToPath(zonePolynomialUrl),
+      "--output-root",
+      fileURLToPath(output),
+      "--replicates",
+      "2",
+      "--power",
+      "8",
+      "--indices=-2,0",
+      "--amplitude-grid",
+      "101",
+    ],
+    {
+      cwd: fileURLToPath(new URL(".", root)),
+      encoding: "utf8",
+      timeout: 30_000,
+    },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+  const result = JSON.parse(
+    readFileSync(new URL("result.json", output), "utf8"),
+  );
+  assert.equal(result.status, "passed");
+  assert.deepEqual(result.method.indices, [-2, 0]);
+  assert.equal(result.method.zonePairs, 10);
+  assert.ok(result.audits.sampleNodeReconstructionResidualMax < 1e-11);
+  assert.equal(result.audits.allUnorderedZonePairsRetained, true);
 });

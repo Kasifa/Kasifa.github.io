@@ -1,0 +1,52 @@
+{
+  "checks": {
+    "amplitudeScalingMatchesProduction": true,
+    "crossProductDifferenceIdentity": true,
+    "farKernelL2SquaredIsExact": true,
+    "nearKernelRadialMassIsLinear": true,
+    "optimalRadiusIsEnstrophyLength": true,
+    "optimizedNormPowersAreThreeHalves": true,
+    "scalingSystemHasUniqueSolution": true,
+    "sourceCommitHasFortyHexCharacters": true,
+    "sourceCommitMatchesHead": true,
+    "spatialScalingMatchesProduction": true,
+    "splitMinimumConstantIsExact": true,
+    "splitOptimizerIsCritical": true,
+    "splitOptimizerIsStrictMinimum": true,
+    "youngOptimizerIsCritical": true,
+    "youngRemainderIsSextic": true
+  },
+  "claimBoundary": {
+    "notProved": "failure of signed cross-scale cancellation, global regularity, or finite-time blow-up",
+    "proved": "the magnitude-coupled nonlocal difference plus an energy far field returns exactly to the classical A^(3/2)B^(3/2) bound"
+  },
+  "nearFarSplit": {
+    "far": "C_f*r^(-3/2)*A^3",
+    "near": "C_n*r*A^(1/2)*B^(5/2)",
+    "optimalRadius": "2**(3/5)*3**(2/5)*A*C_f**(2/5)/(2*B*C_n**(2/5))",
+    "optimizedBound": "5*2**(3/5)*3**(2/5)*A**(3/2)*B**(3/2)*C_f**(2/5)*C_n**(3/5)/6"
+  },
+  "provenance": {
+    "auditScript": "research/nonlocal_vorticity_difference_split_audit.py",
+    "auditScriptSha256": "4b4292b4eb23cca3210c241deb6ccdd5d5eeec6222ed8bf3e09fab19e6038be8",
+    "researchNote": "research/nonlocal_vorticity_difference_split_note.md",
+    "researchNoteSha256": "aafb5ebc7452dfd0609003c40d802e4312de967c4ee7040a4399c5a9e4d15b8b",
+    "sourceCommit": "97cfa19f962309bb62ae3fab0e4dcaef9f9eca38"
+  },
+  "release": "R0.69R",
+  "scalingUniqueness": {
+    "amplitudeConstraint": "p+q=3",
+    "solution": {
+      "p": "3/2",
+      "q": "3/2"
+    },
+    "spatialConstraint": "p+3q=6"
+  },
+  "schemaVersion": "1.0",
+  "status": "passed",
+  "youngEndpoint": {
+    "enstrophyNormPower": 6,
+    "optimizer": "81*A**6*C**4/(256*epsilon**4)",
+    "remainder": "27*A**6*C**4/(256*epsilon**3)"
+  }
+}

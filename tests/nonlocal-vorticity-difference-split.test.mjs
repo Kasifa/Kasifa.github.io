@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -40,4 +41,32 @@ test("reproduces the R0.69R exact optimization and scaling audit", () => {
     result.nearFarSplit.optimalRadius,
     "2**(3/5)*3**(2/5)*A*C_f**(2/5)/(2*B*C_n**(2/5))",
   );
+});
+
+test("archives the source-locked R0.69R certificate", async () => {
+  const certificateRoot = new URL("../research/certificates/r069r/", import.meta.url);
+  const [certificateText, sumsText, readme, resources] = await Promise.all([
+    readFile(new URL("nonlocal-vorticity-difference-split.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("resources.csv", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 15);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "97cfa19f962309bb62ae3fab0e4dcaef9f9eca38",
+  );
+  assert.match(readme, /unique homogeneous exponents/i);
+  assert.match(readme, /signed cross-scale cancellation/i);
+  assert.match(resources, /exited:0/);
+
+  for (const line of sumsText.trim().split("\n")) {
+    const [expected, fileName] = line.trim().split(/\s+/, 2);
+    const payload = await readFile(new URL(fileName, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, expected, fileName + " hash mismatch");
+  }
 });

@@ -1,0 +1,122 @@
+{
+  "analyticalQuestion": "Does velocity generation improve the far-shell pressure quadrupole beyond scalar R^-3 decay?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "log-log decay comparison plus signed eigenvalue bars",
+    "nonColorEncoding": "solid-circle versus dashed-square curves, hatching, signed bars, and exact labels",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "velocity generation gains two far-shell powers but does not annihilate the coefficient"
+  },
+  "claimBoundary": "shell-separation gain only; no Navier-Stokes regularity or singularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "two decay laws and one three-axis exact quadrupole",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact symbolic certificate values",
+    "solver": "exact SymPy fourth-derivative certificate",
+    "wallTimeSeconds": 0.52037924999604
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 157.34375,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T08:40:00+08:00",
+  "data": [
+    {
+      "bytes": 2042,
+      "path": "shell-decay.csv",
+      "schema": "radiusRatio, scalarSourceRMinus3, velocityGeneratedRMinus5",
+      "sha256": "3205f74ed4aa5c7f9f04e14d37f5cf1c43f78a097d14739acac6a171fc91cf8d"
+    },
+    {
+      "bytes": 40,
+      "path": "quadrupole-eigenvalues.csv",
+      "schema": "axis, fourPiR5Eigenvalue",
+      "sha256": "8c787918c92469a9029de3fee3cce77e878f0cda73604ff52f66983bef522264"
+    },
+    {
+      "bytes": 529,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and exact shell identities",
+      "sha256": "54cfafb0d16a5b2e87e36a4776aca2aa105f920eed920542b76c08d3a0d1cf6b"
+    },
+    {
+      "bytes": 351,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "c5f3d6bfc5b0218ae4ace229e63bcedd8f2ba3712467056d4214fea1e332c097"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "c4962c884092fd494b5c8caf993e4e60555c0dd993edfed1a1e0813cfcb8cac8"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 41207,
+        "path": "figure.pdf",
+        "sha256": "b54f3a980f77274659d6162dd17cb5cf78956e1baac9bf003931445b0f36e126"
+      },
+      {
+        "bytes": 151106,
+        "path": "figure.svg",
+        "sha256": "59ccf7f4689a1311534a99911f111e6f2dff161681de3272a0a11f0387fd2a4b"
+      },
+      {
+        "bytes": 416683,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "e49b713efaa34ff083f903cc5d80c7b581e7dfd0ccb2d56cef7ee283bfb9e1cb"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069k-shell-gain",
+  "git": {
+    "certificateCommit": "83049f868fb0ea2b393e0b469fa9f2343c6602cf",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "b2c7ad329eba2df516dd251a1f74af42ad153e74"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2849,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "velocity-generated-shell-quadrupole.json",
+      "location": "research/certificates/r069k/velocity-generated-shell-quadrupole.json",
+      "sha256": "a638fc121e7d91bf009d939a12f831b134fe8b5a2aa779c14880d5871c36f8fa"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "stress localization gives an R^-5 kinetic-energy bound, two powers better than the scalar-source bound, with a nonzero anisotropic coefficient"
+}

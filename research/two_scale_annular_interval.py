@@ -2950,6 +2950,8 @@ def integrate_coefficients_moment_taylor3(
     generic_function,
     core_function,
     progress,
+    worker_index: int = 0,
+    workers: int = 1,
 ) -> tuple[list[Interval], dict[str, object]]:
     """Radial cubature with an integrated Hessian term and third-order bound."""
     total = [Interval.exact_integer(0) for _ in range(4)]
@@ -2968,7 +2970,9 @@ def integrate_coefficients_moment_taylor3(
     ]
     evaluated_boxes = 0
     maximum_remainder = [0.0] * 4
-    for left_index, left in enumerate(radial_cells):
+    assigned_rows = list(range(worker_index, cell_count, workers))
+    for completed_rows, left_index in enumerate(assigned_rows, start=1):
+        left = radial_cells[left_index]
         right_start = first_non_core if left.role == "fixed-core" else left_index
         indices = np.arange(right_start, cell_count)
         if not indices.size:
@@ -3092,16 +3096,18 @@ def integrate_coefficients_moment_taylor3(
             total[degree] = total[degree] + row
         evaluated_boxes += indices.size
         if progress is not None and (
-            left_index == 0
-            or (left_index + 1) % max(1, cell_count // 20) == 0
-            or left_index + 1 == cell_count
+            completed_rows == 1
+            or completed_rows % max(1, len(assigned_rows) // 20) == 0
+            or completed_rows == len(assigned_rows)
         ):
             record = {
                 "timestampUtc": datetime.now(timezone.utc).isoformat(),
                 "event": "moment-taylor3-progress",
                 "annulus": annular.index,
-                "rowsComplete": left_index + 1,
-                "rows": cell_count,
+                "rowsComplete": completed_rows,
+                "rows": len(assigned_rows),
+                "workerIndex": worker_index,
+                "workers": workers,
                 "evaluatedRadialBoxes": evaluated_boxes,
                 "coefficientIntervals": [value.scalar() for value in total],
             }
@@ -3111,6 +3117,9 @@ def integrate_coefficients_moment_taylor3(
     return total, {
         "rule": "exact angular moments plus integrated Hessian and third-order Taylor remainder",
         "radialCells": cell_count,
+        "assignedRows": len(assigned_rows),
+        "workerIndex": worker_index,
+        "workers": workers,
         "momentPrimitivePower": moments.power,
         "momentPrimitiveCells": moments.cells,
         "evaluatedRadialBoxes": evaluated_boxes,
@@ -3409,11 +3418,17 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--plateau-cells", type=int, default=256)
     parser.add_argument("--arb-precision", type=int, default=160)
     parser.add_argument("--source-commit")
+    parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--worker-index", type=int, default=0)
     return parser.parse_args()
 
 
 def main() -> int:
     arguments = parse_arguments()
+    if arguments.workers < 1:
+        raise SystemExit("--workers must be positive")
+    if not 0 <= arguments.worker_index < arguments.workers:
+        raise SystemExit("--worker-index must lie in [0, workers)")
     started = time.perf_counter()
     ctx.prec = arguments.arb_precision
     head_commit = subprocess.run(
@@ -3469,6 +3484,8 @@ def main() -> int:
                 generic_function,
                 core_function,
                 progress,
+                arguments.worker_index,
+                arguments.workers,
             )
             results[str(index)] = coefficients
             integration_audits[str(index)] = audit
@@ -3478,6 +3495,7 @@ def main() -> int:
     c1, c2, c3 = j0[1], j0[2], j0[3]
     discriminant = c2 * c2 - 4 * c1 * c3
     endpoint = jm2[0]
+    is_partial = arguments.workers > 1
     passed = bool(
         float(j0[0].lower) <= 0.0 <= float(j0[0].upper)
         and float(c3.upper) < 0.0
@@ -3487,7 +3505,7 @@ def main() -> int:
     result = {
         "schemaVersion": "1.0",
         "release": "R0.69W",
-        "status": "passed" if passed else "failed",
+        "status": "partial" if is_partial else ("passed" if passed else "failed"),
         "claimBoundary": (
             "rigorous static sign obstruction for the declared separation-four "
             "two-scale family; no dynamical propagation or Navier-Stokes "
@@ -3502,6 +3520,8 @@ def main() -> int:
             "coreCells": arguments.core_cells,
             "plateauCells": arguments.plateau_cells,
             "arbPrecisionBits": arguments.arb_precision,
+            "workers": arguments.workers,
+            "workerIndex": arguments.worker_index,
             "epsilon": 0.25,
             "annuli": [0, -2],
             "intervalRule": (
@@ -3570,6 +3590,12 @@ def main() -> int:
         "runtime": {
             "elapsedSeconds": time.perf_counter() - started,
         },
+        "partial": {
+            "enabled": is_partial,
+            "workers": arguments.workers,
+            "workerIndex": arguments.worker_index,
+            "mustBeMergedBeforeDecision": is_partial,
+        },
     }
     result_path = output_root / "result.json"
     result_path.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")
@@ -3585,7 +3611,7 @@ def main() -> int:
         ),
         flush=True,
     )
-    return 0 if passed else 1
+    return 0 if is_partial or passed else 1
 
 
 if __name__ == "__main__":

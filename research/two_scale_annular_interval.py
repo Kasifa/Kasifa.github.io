@@ -655,7 +655,7 @@ def polynomial_derivative(coefficients: list[Fraction]) -> list[Fraction]:
 
 
 SURVIVAL_DERIVATIVES: list[list[Fraction]] = [SURVIVAL_COEFFICIENTS]
-for derivative_order in range(1, 6):
+for derivative_order in range(1, 7):
     differentiated = polynomial_derivative(SURVIVAL_DERIVATIVES[-1])
     SURVIVAL_DERIVATIVES.append(
         [coefficient / TRANSITION_LENGTH for coefficient in differentiated]
@@ -688,6 +688,11 @@ class CutoffCertificate:
             / float(MOLLIFIER_RADIUS) ** 2
             / normalization_lower
         )
+        rho_second_maximum = (
+            40.0
+            / float(MOLLIFIER_RADIUS) ** 3
+            / normalization_lower
+        )
         self.derivative_bounds = list(DERIVATIVE_GLOBAL_BOUNDS)
         self.derivative_bounds[4] = (
             float(Fraction(360) / TRANSITION_LENGTH**4)
@@ -698,6 +703,13 @@ class CutoffCertificate:
             + float(Fraction(720) / TRANSITION_LENGTH**4) * rho_maximum
             + float(Fraction(120) / TRANSITION_LENGTH**3)
             * rho_prime_maximum
+        )
+        self.derivative_bounds.append(
+            float(Fraction(1440) / TRANSITION_LENGTH**5) * rho_maximum
+            + float(Fraction(720) / TRANSITION_LENGTH**4)
+            * rho_prime_maximum
+            + float(Fraction(120) / TRANSITION_LENGTH**3)
+            * rho_second_maximum
         )
         self.nodes = [
             ACTIVE_LOW + ACTIVE_SPAN * Fraction(index, cells)
@@ -783,7 +795,7 @@ class CutoffCertificate:
                     upper,
                 )
             enclosed = numerator / self.raw_moments.normalization
-            if order in (4, 5):
+            if order in (4, 5, 6):
                 lower_boundary = Fraction(1) + TRANSITION_A
                 upper_boundary = Fraction(1) + TRANSITION_B
                 boundary_value = Interval.exact_integer(0)
@@ -812,7 +824,7 @@ class CutoffCertificate:
                         boundary_value = boundary_value + Interval.from_fraction(
                             jump_third
                         ) * rho_interval
-                    else:
+                    elif order == 5:
                         bump_prime = bump * (-2 * u) / (1 - u * u) ** 2
                         rho_prime_interval = Interval(
                             *arb_float_bounds(bump_prime)
@@ -825,6 +837,42 @@ class CutoffCertificate:
                             + Interval.from_fraction(jump_fourth) * rho_interval
                             + Interval.from_fraction(jump_third)
                             * rho_prime_interval
+                        )
+                    else:
+                        bump_log_prime = (-2 * u) / (1 - u * u) ** 2
+                        bump_log_second = (
+                            -2 / (1 - u * u) ** 2
+                            - 8 * u * u / (1 - u * u) ** 3
+                        )
+                        bump_prime = bump * bump_log_prime
+                        bump_second = bump * (
+                            bump_log_prime * bump_log_prime
+                            + bump_log_second
+                        )
+                        rho_prime_interval = Interval(
+                            *arb_float_bounds(bump_prime)
+                        ) / (
+                            Interval.from_fraction(MOLLIFIER_RADIUS) ** 2
+                            * self.raw_moments.normalization
+                        )
+                        rho_second_interval = Interval(
+                            *arb_float_bounds(bump_second)
+                        ) / (
+                            Interval.from_fraction(MOLLIFIER_RADIUS) ** 3
+                            * self.raw_moments.normalization
+                        )
+                        jump_fifth = (
+                            -Fraction(720) / TRANSITION_LENGTH**5
+                            if boundary == lower_boundary
+                            else Fraction(720) / TRANSITION_LENGTH**5
+                        )
+                        boundary_value = (
+                            boundary_value
+                            + Interval.from_fraction(jump_fifth) * rho_interval
+                            + Interval.from_fraction(jump_fourth)
+                            * rho_prime_interval
+                            + Interval.from_fraction(jump_third)
+                            * rho_second_interval
                         )
                 enclosed = enclosed + boundary_value
             if order == 0:
@@ -888,6 +936,21 @@ class CutoffCertificate:
             derivative_lower, derivative_upper
         )
 
+    def _bump_second_range(
+        self, lower: Fraction, upper: Fraction
+    ) -> Interval:
+        """A global analytic enclosure for the second bump derivative.
+
+        With ``t=(1-u^2)^(-1)``, the second derivative equals
+        ``exp(-t) (4 t^4 - 12 t^3 + 6 t^2)``.  For ``t>=1``, separately
+        maximizing every absolute monomial gives a bound below 40.  The
+        interval is zero when the queried coordinate cell misses the support.
+        """
+
+        if upper <= -1 or lower >= 1:
+            return Interval.exact_integer(0)
+        return Interval(-40.0, 40.0)
+
     def _normalized_bump_mass(
         self, lower: Fraction, upper: Fraction
     ) -> Interval:
@@ -937,8 +1000,10 @@ class CutoffCertificate:
     def high_derivative_range(
         self, lower_radius: Fraction, upper_radius: Fraction, order: int
     ) -> Interval:
-        if order not in (4, 5):
-            raise ValueError("direct high-derivative range only supports orders 4 and 5")
+        if order not in (4, 5, 6):
+            raise ValueError(
+                "direct high-derivative range only supports orders 4, 5, and 6"
+            )
         if order == 4:
             midpoint = (lower_radius + upper_radius) / 2
             half_width = (upper_radius - lower_radius) / 2
@@ -957,13 +1022,15 @@ class CutoffCertificate:
                 midpoint_value
                 + Interval(-float(lipschitz.upper), float(lipschitz.upper))
             ).intersect(-bound, bound)
-        else:
+        elif order == 5:
             result = (
                 Interval.from_fraction(SURVIVAL_DERIVATIVES[5][0])
                 * self._interior_mass_range(
                     lower_radius, upper_radius
                 )
             )
+        else:
+            result = Interval.exact_integer(0)
         for boundary, jump_third, jump_fourth in (
             (
                 Fraction(1) + TRANSITION_A,
@@ -987,7 +1054,7 @@ class CutoffCertificate:
             )
             if order == 4:
                 result = result + Interval.from_fraction(jump_third) * rho
-            else:
+            elif order == 5:
                 rho_prime = bump_prime / (
                     Interval.from_fraction(MOLLIFIER_RADIUS) ** 2
                     * self.raw_moments.normalization
@@ -997,13 +1064,35 @@ class CutoffCertificate:
                     + Interval.from_fraction(jump_fourth) * rho
                     + Interval.from_fraction(jump_third) * rho_prime
                 )
+            else:
+                rho_prime = bump_prime / (
+                    Interval.from_fraction(MOLLIFIER_RADIUS) ** 2
+                    * self.raw_moments.normalization
+                )
+                rho_second = self._bump_second_range(
+                    coordinate_lower, coordinate_upper
+                ) / (
+                    Interval.from_fraction(MOLLIFIER_RADIUS) ** 3
+                    * self.raw_moments.normalization
+                )
+                jump_fifth = (
+                    -Fraction(720) / TRANSITION_LENGTH**5
+                    if boundary == Fraction(1) + TRANSITION_A
+                    else Fraction(720) / TRANSITION_LENGTH**5
+                )
+                result = (
+                    result
+                    + Interval.from_fraction(jump_fifth) * rho
+                    + Interval.from_fraction(jump_fourth) * rho_prime
+                    + Interval.from_fraction(jump_third) * rho_second
+                )
         bound = float(self.derivative_bounds[order])
         return result.intersect(-bound, bound)
 
     def derivative_interval(
         self, lower_radius: Fraction, upper_radius: Fraction, order: int
     ) -> Interval:
-        if order in (4, 5):
+        if order in (4, 5, 6):
             return self.high_derivative_range(
                 lower_radius, upper_radius, order
             )
@@ -1978,7 +2067,7 @@ def radial_field_components(
     radius: Interval,
     q_derivatives: tuple[Interval, ...],
 ) -> tuple[list[Interval], list[Interval], list[Interval]]:
-    q0, q1, q2, q3, q4, q5 = q_derivatives[:6]
+    q0, q1, q2, q3, q4, q5, q6 = q_derivatives[:7]
     sqrt_six = Interval(*arb_float_bounds(arb(6).sqrt()))
     p = [
         q0 + radius * q1 + radius**2 * q2 / 6,
@@ -1987,6 +2076,7 @@ def radial_field_components(
         + Fraction(5, 3) * radius * q3
         + radius**2 * q4 / 6,
         5 * q3 + 2 * radius * q4 + radius**2 * q5 / 6,
+        7 * q4 + Fraction(7, 3) * radius * q5 + radius**2 * q6 / 6,
     ]
     q = [
         (4 * radius * q1 + radius**2 * q2) / 6,
@@ -1995,6 +2085,9 @@ def radial_field_components(
         + Fraction(4, 3) * radius * q3
         + radius**2 * q4 / 6,
         3 * q3 + Fraction(5, 3) * radius * q4 + radius**2 * q5 / 6,
+        Fraction(14, 3) * q4
+        + 2 * radius * q5
+        + radius**2 * q6 / 6,
     ]
     h = [
         radius * q1 + radius**2 * q2 / 6,
@@ -2003,6 +2096,7 @@ def radial_field_components(
         + Fraction(5, 3) * radius * q3
         + radius**2 * q4 / 6,
         4 * q3 + 2 * radius * q4 + radius**2 * q5 / 6,
+        6 * q4 + Fraction(7, 3) * radius * q5 + radius**2 * q6 / 6,
     ]
     return p, q, [sqrt_six * value for value in h]
 
@@ -2054,12 +2148,12 @@ def radial_cell_profile_data(
     if cell.role in ("fixed-core", "intermediate-plateau"):
         return [
             profile_polynomial_by_role(cell.role, None, order)
-            for order in range(4)
+            for order in range(5)
         ]
     scale = EPSILON if cell.role == "inner-transition" else Fraction(1)
     if at_midpoint:
         scaled = (cell.lower + cell.upper) / (2 * scale)
-        derivatives = cutoff.point_derivatives(scaled, 5)
+        derivatives = cutoff.point_derivatives(scaled, 6)
         radius = Interval.from_fraction(scaled)
     else:
         scaled_lower = cell.lower / scale
@@ -2078,11 +2172,14 @@ def radial_cell_profile_data(
             cutoff.high_derivative_range(
                 scaled_lower, scaled_upper, 5
             ),
+            cutoff.high_derivative_range(
+                scaled_lower, scaled_upper, 6
+            ),
         )
         radius = cell_interval(scaled_lower, scaled_upper)
     components = radial_field_components(radius, derivatives)
     result = []
-    for order in range(4):
+    for order in range(5):
         fields = profile_polynomial_by_role(cell.role, components, order)
         scale_factor = Interval.from_fraction(scale**order)
         if order:
@@ -2175,11 +2272,11 @@ def annular_cutoff_derivatives(
     index: int,
     distance: Interval,
     point_value: bool,
-) -> tuple[Interval, Interval, Interval]:
+) -> tuple[Interval, ...]:
     first_scale = 2.0 ** (index + 1)
     second_scale = 2.0**index
     values: list[Interval] = []
-    for order in range(3):
+    for order in range(4):
         first_lower = down(distance.lower / first_scale)
         first_upper = up(distance.upper / first_scale)
         second_lower = down(distance.lower / second_scale)
@@ -2198,7 +2295,7 @@ def annular_cutoff_derivatives(
             first / Interval.from_number(first_scale**order)
             - second / Interval.from_number(second_scale**order)
         )
-    return values[0], values[1], values[2]
+    return tuple(values)
 
 
 def compose_scalar_jet(
@@ -2230,11 +2327,11 @@ def interval_absolute_maximum(value: Interval) -> np.ndarray:
     return np.maximum(np.abs(value.lower), np.abs(value.upper))
 
 
-class Taylor2D3:
-    """Bivariate normalized derivative algebra through total degree three."""
+class Taylor2D4:
+    """Bivariate normalized derivative algebra through total degree four."""
 
     __array_priority__ = 1003
-    maximum_degree = 3
+    maximum_degree = 4
 
     def __init__(self, coefficients: dict[tuple[int, int], PolyInterval]):
         self.coefficients = {
@@ -2244,18 +2341,18 @@ class Taylor2D3:
         }
 
     @staticmethod
-    def coerce(value) -> "Taylor2D3":
-        if isinstance(value, Taylor2D3):
+    def coerce(value) -> "Taylor2D4":
+        if isinstance(value, Taylor2D4):
             return value
-        return Taylor2D3({(0, 0): PolyInterval.coerce(value)})
+        return Taylor2D4({(0, 0): PolyInterval.coerce(value)})
 
     def coefficient(self, i: int, j: int) -> PolyInterval:
         return self.coefficients.get((i, j), PolyInterval.coerce(0))
 
     def __add__(self, other):
-        other = Taylor2D3.coerce(other)
+        other = Taylor2D4.coerce(other)
         keys = set(self.coefficients) | set(other.coefficients)
-        return Taylor2D3(
+        return Taylor2D4(
             {
                 key: self.coefficient(*key) + other.coefficient(*key)
                 for key in keys
@@ -2265,16 +2362,16 @@ class Taylor2D3:
     __radd__ = __add__
 
     def __neg__(self):
-        return Taylor2D3({key: -value for key, value in self.coefficients.items()})
+        return Taylor2D4({key: -value for key, value in self.coefficients.items()})
 
     def __sub__(self, other):
-        return self + (-Taylor2D3.coerce(other))
+        return self + (-Taylor2D4.coerce(other))
 
     def __rsub__(self, other):
-        return Taylor2D3.coerce(other) - self
+        return Taylor2D4.coerce(other) - self
 
     def __mul__(self, other):
-        other = Taylor2D3.coerce(other)
+        other = Taylor2D4.coerce(other)
         result: dict[tuple[int, int], PolyInterval] = {}
         for (i, j), left in self.coefficients.items():
             for (k, ell), right in other.coefficients.items():
@@ -2282,7 +2379,7 @@ class Taylor2D3:
                 if sum(key) > self.maximum_degree:
                     continue
                 result[key] = result.get(key, PolyInterval.coerce(0)) + left * right
-        return Taylor2D3(result)
+        return Taylor2D4(result)
 
     __rmul__ = __mul__
 
@@ -2302,18 +2399,18 @@ class Taylor2D3:
                             (i - p, j - q), PolyInterval.coerce(0)
                         )
                 result[(i, j)] = -inverse00 * convolution
-        return Taylor2D3(result)
+        return Taylor2D4(result)
 
     def __truediv__(self, other):
-        return self * Taylor2D3.coerce(other).reciprocal()
+        return self * Taylor2D4.coerce(other).reciprocal()
 
     def __rtruediv__(self, other):
-        return Taylor2D3.coerce(other) / self
+        return Taylor2D4.coerce(other) / self
 
     def __pow__(self, exponent: int):
         if not isinstance(exponent, (int, np.integer)) or exponent < 0:
             raise ValueError("only nonnegative Taylor powers are supported")
-        result = Taylor2D3.coerce(1)
+        result = Taylor2D4.coerce(1)
         base = self
         power = int(exponent)
         while power:
@@ -2329,17 +2426,17 @@ def profile_taylor(
     data: list[tuple[PolyInterval, PolyInterval, PolyInterval]],
     field_index: int,
     axis: int,
-) -> Taylor2D3:
+) -> Taylor2D4:
     coefficients: dict[tuple[int, int], PolyInterval] = {}
-    for order in range(4):
+    for order in range(5):
         key = (order, 0) if axis == 0 else (0, order)
         coefficients[key] = data[order][field_index] / math.factorial(order)
-    return Taylor2D3(coefficients)
+    return Taylor2D4(coefficients)
 
 
-def radius_taylor(value: Interval, axis: int) -> Taylor2D3:
+def radius_taylor(value: Interval, axis: int) -> Taylor2D4:
     key = (1, 0) if axis == 0 else (0, 1)
-    return Taylor2D3(
+    return Taylor2D4(
         {(0, 0): PolyInterval.coerce(value), key: PolyInterval.coerce(1)}
     )
 
@@ -2490,7 +2587,7 @@ def integrate_coefficients_midpoint(
                 )
                 for value in psi_derivatives
             )
-            psi_jet = compose_scalar_jet(distance_jet, psi_derivatives)
+            psi_jet = compose_scalar_jet(distance_jet, psi_derivatives[:3])
             if left.role == "fixed-core":
                 box_value = direct_core_function(
                     left_radius_jet,
@@ -2639,7 +2736,7 @@ class AnnularMomentCertificate:
         cell_distance = Interval(down(lower_nodes), up(upper_nodes))
         clipped_distance, psi_range, _ = annular.enclose(cell_distance)
         active = psi_range.upper > 0.0
-        psi0, psi1, psi2 = annular_cutoff_derivatives(
+        psi0, psi1, psi2, _psi3 = annular_cutoff_derivatives(
             cutoff, annular.index, clipped_distance, False
         )
         psi0 = Interval(
@@ -2779,10 +2876,10 @@ class AnnularMomentCertificate:
 
     def integrand_derivatives(
         self, value: Interval, moment_power: int
-    ) -> tuple[Interval, Interval, Interval]:
+    ) -> tuple[Interval, Interval, Interval, Interval]:
         clipped, psi_range, _ = self.annular.enclose(value)
         active = psi_range.upper > 0.0
-        psi0, psi1, psi2 = annular_cutoff_derivatives(
+        psi0, psi1, psi2, psi3 = annular_cutoff_derivatives(
             self.cutoff, self.annular.index, clipped, False
         )
         safe = clipped
@@ -2811,12 +2908,37 @@ class AnnularMomentCertificate:
                 * psi0
                 * previous2
             )
+        if moment_power >= 0:
+            previous3 = safe ** max(0, moment_power - 3)
+        else:
+            previous3 = 1 / safe ** (3 - moment_power)
+        value3 = psi3 * power
+        if moment_power:
+            value3 = value3 + 3 * moment_power * psi2 * previous
+        if moment_power * (moment_power - 1):
+            value3 = (
+                value3
+                + 3
+                * moment_power
+                * (moment_power - 1)
+                * psi1
+                * previous2
+            )
+        if moment_power * (moment_power - 1) * (moment_power - 2):
+            value3 = (
+                value3
+                + moment_power
+                * (moment_power - 1)
+                * (moment_power - 2)
+                * psi0
+                * previous3
+            )
         return tuple(
             Interval(
                 np.where(active, result.lower, 0.0),
                 np.where(active, result.upper, 0.0),
             )
-            for result in (value0, value1, value2)
+            for result in (value0, value1, value2, value3)
         )
 
 
@@ -2836,8 +2958,8 @@ def moment_jet(
     center_value = certificate.primitive_point(center_sum, moment_power) - center_lower
     lower_range = certificate.primitive_range(range_difference, moment_power)
     value_range = certificate.primitive_range(range_sum, moment_power) - lower_range
-    upper_g, upper_gp, _ = certificate.integrand_derivatives(range_sum, moment_power)
-    lower_g, lower_gp, _ = certificate.integrand_derivatives(
+    upper_g, upper_gp, *_ = certificate.integrand_derivatives(range_sum, moment_power)
+    lower_g, lower_gp, *_ = certificate.integrand_derivatives(
         range_difference, moment_power
     )
     zero = PolyInterval.coerce(0)
@@ -2862,16 +2984,20 @@ def moment_taylor(
     radius_r: Interval,
     radius_s: Interval,
     point_value: bool,
-) -> Taylor2D3:
+) -> Taylor2D4:
     summed = radius_r + radius_s
     difference = radius_s - radius_r
     primitive = (
         certificate.primitive_point if point_value else certificate.primitive_range
     )
     value = primitive(summed, moment_power) - primitive(difference, moment_power)
-    gu, gpu, gppu = certificate.integrand_derivatives(summed, moment_power)
-    gv, gpv, gppv = certificate.integrand_derivatives(difference, moment_power)
-    return Taylor2D3(
+    gu, gpu, gppu, g3u = certificate.integrand_derivatives(
+        summed, moment_power
+    )
+    gv, gpv, gppv, g3v = certificate.integrand_derivatives(
+        difference, moment_power
+    )
+    return Taylor2D4(
         {
             (0, 0): PolyInterval.coerce(value),
             (1, 0): PolyInterval.coerce(gu + gv),
@@ -2883,6 +3009,11 @@ def moment_taylor(
             (2, 1): PolyInterval.coerce((gppu - gppv) / 2),
             (1, 2): PolyInterval.coerce((gppu + gppv) / 2),
             (0, 3): PolyInterval.coerce((gppu - gppv) / 6),
+            (4, 0): PolyInterval.coerce((g3u - g3v) / 24),
+            (3, 1): PolyInterval.coerce((g3u + g3v) / 6),
+            (2, 2): PolyInterval.coerce((g3u - g3v) / 4),
+            (1, 3): PolyInterval.coerce((g3u + g3v) / 6),
+            (0, 4): PolyInterval.coerce((g3u - g3v) / 24),
         }
     )
 
@@ -3033,7 +3164,7 @@ def integrate_coefficients_moment_midpoint(
     }
 
 
-def integrate_coefficients_moment_taylor3(
+def integrate_coefficients_moment_taylor4(
     radial_cells: list[RadialCell],
     cutoff: CutoffCertificate,
     annular: AnnularAngularKernel,
@@ -3044,7 +3175,7 @@ def integrate_coefficients_moment_taylor3(
     worker_index: int = 0,
     workers: int = 1,
 ) -> tuple[list[Interval], dict[str, object]]:
-    """Radial cubature with an integrated Hessian term and third-order bound."""
+    """Radial cubature using cubic cancellation and a fourth-order bound."""
     total = [Interval.exact_integer(0) for _ in range(4)]
     pi_interval = Interval(*arb_float_bounds(arb.pi()))
     cell_count = len(radial_cells)
@@ -3159,23 +3290,27 @@ def integrate_coefficients_moment_taylor3(
             average = average + polynomial_coefficient(
                 center_value.coefficient(0, 2), degree
             ) * Interval.from_number(width_s**2 / 12.0)
-            c30 = interval_absolute_maximum(
-                polynomial_coefficient(range_value.coefficient(3, 0), degree)
+            c40 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(4, 0), degree)
             )
-            c21 = interval_absolute_maximum(
-                polynomial_coefficient(range_value.coefficient(2, 1), degree)
+            c31 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(3, 1), degree)
             )
-            c12 = interval_absolute_maximum(
-                polynomial_coefficient(range_value.coefficient(1, 2), degree)
+            c22 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(2, 2), degree)
             )
-            c03 = interval_absolute_maximum(
-                polynomial_coefficient(range_value.coefficient(0, 3), degree)
+            c13 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(1, 3), degree)
+            )
+            c04 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(0, 4), degree)
             )
             remainder = up(
-                c30 * width_r**3 / 32.0
-                + c21 * width_r**2 * width_s / 48.0
-                + c12 * width_r * width_s**2 / 48.0
-                + c03 * width_s**3 / 32.0
+                c40 * width_r**4 / 80.0
+                + c31 * width_r**3 * width_s / 128.0
+                + c22 * width_r**2 * width_s**2 / 144.0
+                + c13 * width_r * width_s**3 / 128.0
+                + c04 * width_s**4 / 80.0
             )
             maximum_remainder[degree] = max(maximum_remainder[degree], float(np.max(remainder)))
             enclosed = average + Interval(-remainder, remainder)
@@ -3193,7 +3328,7 @@ def integrate_coefficients_moment_taylor3(
         ):
             record = {
                 "timestampUtc": datetime.now(timezone.utc).isoformat(),
-                "event": "moment-taylor3-progress",
+                "event": "moment-taylor4-progress",
                 "annulus": annular.index,
                 "rowsComplete": completed_rows,
                 "rows": len(assigned_rows),
@@ -3206,7 +3341,10 @@ def integrate_coefficients_moment_taylor3(
             progress.flush()
             print(json.dumps(record, sort_keys=True), flush=True)
     return total, {
-        "rule": "exact angular moments plus integrated Hessian and third-order Taylor remainder",
+        "rule": (
+            "exact angular moments plus integrated Hessian, exact cubic "
+            "parity cancellation, and fourth-order Taylor remainder"
+        ),
         "radialCells": cell_count,
         "assignedRows": len(assigned_rows),
         "workerIndex": worker_index,
@@ -3214,7 +3352,7 @@ def integrate_coefficients_moment_taylor3(
         "momentPrimitivePower": moments.power,
         "momentPrimitiveCells": moments.cells,
         "evaluatedRadialBoxes": evaluated_boxes,
-        "maximumPointwiseThirdOrderRemainders": maximum_remainder,
+        "maximumPointwiseFourthOrderRemainders": maximum_remainder,
         "skippedCoreCoreBoxes": first_non_core * (first_non_core + 1) // 2,
     }
 
@@ -3573,7 +3711,7 @@ def main() -> int:
             moment_certificate = AnnularMomentCertificate(
                 cutoff, annular, arguments.moment_power
             )
-            coefficients, audit = integrate_coefficients_moment_taylor3(
+            coefficients, audit = integrate_coefficients_moment_taylor4(
                 radial_cells,
                 cutoff,
                 annular,
@@ -3625,8 +3763,10 @@ def main() -> int:
             "intervalRule": (
                 "Arb transcendental endpoints plus outward-rounded binary64 "
                 "validated trapezoidal distance primitives and radial "
-                "midpoint-Hessian boxes"
+                "midpoint-Hessian boxes with exact cubic parity cancellation "
+                "and a fourth-order remainder"
             ),
+            "maximumCertifiedCutoffDerivativeOrder": 6,
         },
         "mollifier": {
             "baseTransition": ["1/20", "19/20"],
@@ -3636,6 +3776,7 @@ def main() -> int:
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,
             "endpointDistributionTermsThroughOrderFive": True,
+            "endpointDistributionTermsThroughOrderSix": True,
         },
         "symbolicAudits": symbolic_audits,
         "integrationAudits": integration_audits,

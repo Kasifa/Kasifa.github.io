@@ -120,8 +120,8 @@ def main() -> int:
             "momentPrimitivePower": audits[0]["momentPrimitivePower"],
             "momentPrimitiveCells": audits[0]["momentPrimitiveCells"],
             "evaluatedRadialBoxes": sum(audit["evaluatedRadialBoxes"] for audit in audits),
-            "maximumPointwiseThirdOrderRemainders": [
-                max(audit["maximumPointwiseThirdOrderRemainders"][degree] for audit in audits)
+            "maximumPointwiseFourthOrderRemainders": [
+                max(audit["maximumPointwiseFourthOrderRemainders"][degree] for audit in audits)
                 for degree in range(4)
             ],
             "workers": expected_workers,

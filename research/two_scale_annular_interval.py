@@ -1331,9 +1331,10 @@ class CutoffCertificate:
         ) / 6
         return profile_p, profile_q, profile_r
 
-    def q_range_array(
+    def _q_range_coarse_array(
         self, lower_scaled: np.ndarray, upper_scaled: np.ndarray
     ) -> Interval:
+        """Cell-table enclosure used only as a cross-cell fallback."""
         lower_scaled = np.asarray(lower_scaled, dtype=np.float64)
         upper_scaled = np.asarray(upper_scaled, dtype=np.float64)
         result_lower = np.zeros(np.broadcast(lower_scaled, upper_scaled).shape)
@@ -1361,6 +1362,31 @@ class CutoffCertificate:
             result_lower[active] = self.q_lower[np.minimum(upper_cell + 1, self.cells)]
             result_upper[active] = self.q_upper[lower_cell]
         return Interval(np.maximum(0.0, result_lower), np.minimum(1.0, result_upper))
+
+    def q_range_array(
+        self, lower_scaled: np.ndarray, upper_scaled: np.ndarray
+    ) -> Interval:
+        """Enclose the monotone cutoff on intervals from its endpoint values.
+
+        The convolved survival profile is nonincreasing.  Evaluating both
+        endpoints with the certified second-order point interpolant avoids an
+        artificial full cutoff-cell width in every much smaller distance cell.
+        """
+
+        lower_scaled, upper_scaled = np.broadcast_arrays(
+            np.asarray(lower_scaled, dtype=np.float64),
+            np.asarray(upper_scaled, dtype=np.float64),
+        )
+        lower_endpoint = self.q_point_array(
+            Interval(upper_scaled, upper_scaled)
+        )
+        upper_endpoint = self.q_point_array(
+            Interval(lower_scaled, lower_scaled)
+        )
+        return Interval(
+            np.maximum(0.0, lower_endpoint.lower),
+            np.minimum(1.0, upper_endpoint.upper),
+        )
 
     def q_point_array(self, radius: Interval) -> Interval:
         """Second-order certified linear interpolation at point intervals."""
@@ -1405,7 +1431,9 @@ class CutoffCertificate:
             lower_value = interpolated.lower - interpolation_error
             upper_value = interpolated.upper + interpolation_error
             if np.any(~same_cell):
-                fallback = self.q_range_array(clipped_lower, clipped_upper)
+                fallback = self._q_range_coarse_array(
+                    clipped_lower, clipped_upper
+                )
                 lower_value = np.where(
                     same_cell, lower_value, fallback.lower
                 )
@@ -4042,6 +4070,7 @@ def main() -> int:
             "rawMomentSecondDerivativeBounds": [
                 str(value) for value in raw.second_derivative_bounds
             ],
+            "distanceCellCutoffRangesUseMonotoneEndpointInterpolation": True,
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,
             "endpointDistributionTermsThroughOrderFive": True,

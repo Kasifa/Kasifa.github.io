@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69V：两尺度非自相似仿射族具有精确三次生产律与统一环带解耦极限；有限分离的高分辨率审计仍发现稳健负环带。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69V｜两尺度形变在无限分离时返回基线，有限分离仍保留负环带">
+  <meta property="og:description" content="精确解耦定理排除只靠尺度分离改善全空间比值；三套独立 QMC 审计把下一步压缩为三个三次系数与一个端点值的严格区间证书。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69v-two-scale.png">
+  <title>R0.69V｜两尺度形变在无限分离时返回基线，有限分离仍保留负环带</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.80">
+  <style>.hero h1{font-size:clamp(1.9rem,3.75vw,3.35rem)}</style>
+  <script defer src="/i18n-en.js?v=0.80"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#family">两尺度族</a><a href="#cubic">三次律</a><a href="#decoupling">解耦</a><a href="#proof">证明骨架</a><a href="#method">计算口径</a><a href="#screen">主扫描</a><a href="#crosscheck">交叉核验</a><a href="#rootgap">根障碍</a><a href="#figure">附图</a><a href="#meaning">意义</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69V · 两尺度仿射环带的精确解耦与有限分离障碍</div>
+        <h1>真正改变形状仍不能靠无限尺度分离提高环带比；<br>有限分离的最佳候选又被一条粗环带阻断</h1>
+        <p class="lead">R0.69U 证明纯膨胀只是同一个自相似轨道。本版本叠加两个不同半径的光滑紧支撑仿射场，固定最内核心而改变无量纲尺度比。解析上得到精确三次生产律，并证明当两尺度无限分离时，全空间环带比对所有振幅一致返回单尺度基线。有限分离 \(1:\!4\) 的高分辨率扫描一度接近 0.964，但独立区对估计确认 \(j=0\) 仍为负。研究靶点因此从“继续搜参数”收缩为一个明确的严格区间判别式证书。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69V 解析定理、21 项证书与三套监控 QMC 完成</span><strong>无限分离路线关闭；有限分离负号待严格认证</strong><p>版本 v0.69V · 2026-08-21</p><p>解析检查：21 / 21 通过</p><p>正式样本：293,601,280 对</p><p>主扫描：\(\widehat\Gamma=0.963554\)</p><p>独立 \(j=0\)：约 −61 SE</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 主定理与边界</a></li>
+        <li><a href="#family">01 · 非自相似两尺度族</a></li>
+        <li><a href="#cubic">02 · 精确三次生产律</a></li>
+        <li><a href="#decoupling">03 · 统一环带解耦</a></li>
+        <li><a href="#proof">04 · 混合项估计</a></li>
+        <li><a href="#method">05 · 正确计算口径</a></li>
+        <li><a href="#screen">06 · P18 振幅扫描</a></li>
+        <li><a href="#crosscheck">07 · P19 独立交叉核验</a></li>
+        <li><a href="#rootgap">08 · 三次根障碍</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 对主问题的价值</a></li>
+        <li><a href="#next">11 · R0.69W 路线</a></li>
+        <li><a href="#reproduce">12 · 复现与监控</a></li>
+        <li><a href="#sources">13 · 文献与声明边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main theorem</div><h2>尺度分离本身不能改善全空间环带抵消比</h2>
+          <p>令 \(U_R\) 是 R0.69U 的紧支撑仿射场，并取</p>
+          <div class="equation">\[
+            u_{\varepsilon,a}=aU_1+(1-a)U_\varepsilon,
+            \qquad \varepsilon=2^{-N},\quad 0\le a\le1.
+          \]</div>
+          <p>若 \(\Gamma_q\) 是单尺度场 \(U_1\) 的全空间双增量环带比，则</p>
+          <div class="equation result">\[
+            \boxed{\sup_{0\le a\le1}
+            \left|\Gamma_{\rm ann}(u_{\varepsilon,a})-\Gamma_q\right|
+            \longrightarrow0\qquad(\varepsilon\downarrow0).}
+          \]</div>
+          <div class="proof"><strong>结论边界。</strong>&nbsp;这是一条关于声明静态场族的严格统一极限定理。它没有给出沿 Navier–Stokes 解传播的先验估计，也没有证明全局正则性、有限时奇性或解决千禧年问题。</div>
+        </section>
+
+        <section id="family"><div class="section-no">01 / Genuinely shape-changing family</div><h2>最内核心保持不变，无量纲过渡半径比却真实改变</h2>
+          <p>每个 \(U_R\) 在 \(B_R\) 内等于同一仿射场 \(Ax\)，在 \(B_{2R}\) 外消失。由于两个振幅之和为一，\(B_\varepsilon\) 内的速度梯度仍恰为 \(A\)，涡量仍为 \(e_3\)。</p>
+          <p>与此同时，两个过渡壳位于半径 \(\varepsilon\) 与一，半径比 \(1/\varepsilon=2^N\) 不能由公共膨胀消去。因此该族不再属于 R0.69U 的单一自相似轨道，确实满足“改变形状而非只改尺度”的验收条件。</p>
+        </section>
+
+        <section id="cubic"><div class="section-no">02 / Exact cubic production</div><h2>局部生产是显式三次式，而且一个混合系数精确消失</h2>
+          <p>记 \(b=1-a\)、\(\mathcal V(u)=\int\omega_u\cdot S_u\omega_u\,dx\)。对 \(0&lt;\varepsilon\le1/2\)，有</p>
+          <div class="equation result">\[
+            \boxed{\mathcal V(u_{\varepsilon,a})
+            =V_q\bigl(a^3+\varepsilon^3b^3\bigr)
+            +\varepsilon^3ab^2C_q.}
+          \]</div>
+          <p>这里 \(V_q\approx1.9568944\)、\(C_q\approx-2.8046292\)。不存在 \(a^2b\) 项：紧支撑分部积分精确给出 \(\int\nabla\times U_1=0\) 与 \(\int\partial_3(U_1)_3=0\)。这一消失不是浮点拟合。</p>
+        </section>
+
+        <section id="decoupling"><div class="section-no">03 / Uniform annular decoupling</div><h2>两个纯尺度序列在 \(\ell^1\) 中分离，混合项统一变小</h2>
+          <p>设 \(A=(\mathcal A_j(U_1))_{j\in\mathbb Z}\)。纯外、内尺度的环带序列分别为</p>
+          <div class="equation">\[
+            a^3A,\qquad \varepsilon^3b^3\tau_NA,
+          \]</div>
+          <p>其中 \(\tau_N\) 是对数尺度平移。对任意 \(A\in\ell^1\)，远平移的有限支撑近似最终互不重叠，所以两份绝对质量渐近相加。该论证同时覆盖 \(a\) 接近零或一的端点退化。</p>
+        </section>
+
+        <section id="proof"><div class="section-no">04 / Mixed-pair estimate</div><h2>所有混合环带只付出小体积与一条对数径向积分</h2>
+          <p>把完整对称双增量核按 \(a^2b\) 与 \(ab^2\) 展开，所有混合项的环带 \(\ell^1\) 质量满足</p>
+          <div class="equation result">\[
+            \boxed{\|X_{\varepsilon,a}\|_{\ell^1}
+            \le C\varepsilon^3\left[ab^2\bigl(1+\log(1/\varepsilon)\bigr)+a^2b\right].}
+          \]</div>
+          <p>以 \(M_{\varepsilon,a}=a^3+\varepsilon^3b^3\) 归一化，并令 \(t=a/(\varepsilon b)\)，两个比值化为 \(\varepsilon t/(1+t^3)\) 与 \(\varepsilon^2t^2/(1+t^3)\)。它们对全部 \(t\ge0\) 一致有界，故混合质量相对 \(M_{\varepsilon,a}\) 一致趋零。</p>
+        </section>
+
+        <section id="method"><div class="section-no">05 / Numerical decision rule</div><h2>比值分子使用解析三次式，QMC 只估各环带绝对值和</h2>
+          <p>低分辨率平衡振幅曾给出接近 0.999 的环带均值比，但样本有符号总和明显偏离独立已知的总生产。该数字只能说明估计方差大，不能当作饱和证据。</p>
+          <p>正式扫描因此把分子固定为上一节的解析 \(|\mathcal V_{\rm exact}|\)，只用共同样本三次重建估计 \(\sum_j|\widehat{\mathcal A}_j|\)。同时使用第二种直接区对参数化独立核验粗环带，避免一种采样坐标的方差结构决定结论。</p>
+        </section>
+
+        <section id="screen"><div class="section-no">06 / P18 amplitude screen</div><h2>一亿六千七百七十七万点对把最佳筛选值修正到 0.963554</h2>
+          <p>主扫描对 \(j=-8,\ldots,1\) 使用 16 个独立 scrambled-Sobol 扰动、每个环带—径向区 \(2^{18}\) 点，共 167,772,160 个分层点对。四个共同振幅节点在样本级精确重建每条三次多项式，最大重建残差为 \(1.33\times10^{-15}\)。</p>
+          <div class="equation result">\[
+            a_*=0.1595,\qquad
+            \frac{|\mathcal V_{\rm exact}|}{\sum_j|\widehat{\mathcal A}_j|}
+            =0.9635537051.
+          \]</div>
+          <p>候选样本总和与解析总量只差 0.023 个报告标准误，但仍有一条负均值环带。这个比值是数据选择后的探索性估计，不是区间下界或上界。</p>
+        </section>
+
+        <section id="crosscheck"><div class="section-no">07 / Independent zone-pair cross-check</div><h2>另一种采样坐标确认 \(j=0\) 负号约离零六十一个标准误</h2>
+          <p>独立核验在全部十个无序径向区对上直接采样 \(x,y\)，使用 16 个扰动、每对 \(2^{19}\) 点，共 83,886,080 对。候选振幅上的三个粗环带为</p>
+          <div class="equation">\[
+            \widehat{\mathcal A}_{-1}=-6.37\times10^{-5}\pm7.23\times10^{-5},\quad
+            \widehat{\mathcal A}_{0}=-6.2919\times10^{-4}\pm1.0343\times10^{-5},\quad
+            \widehat{\mathcal A}_{1}=8.1613\times10^{-5}\pm1.6093\times10^{-6}.
+          \]</div>
+          <p>“\(\pm\)”是一倍独立扰动标准误。\(j=0\) 的负号由外过渡—外过渡自配对主导，并非主扫描中的偶然微小负值。</p>
+        </section>
+
+        <section id="rootgap"><div class="section-no">08 / Cubic root obstruction</div><h2>两条粗环带把全振幅问题压缩为一个负判别式</h2>
+          <p>第三套计算以直接区对共同样本重建 \(j=-2,0\) 两条三次式，得到</p>
+          <div class="equation result">\[
+            \widehat{\mathcal A}_0(a)=a\left(-0.0016401859
+            +0.0041314598a-0.1360513164a^2\right).
+          \]</div>
+          <p>均值二次因子的判别式为负且首项系数为负，所以均值模型在全部 \(a&gt;0\) 上为负。端点 \(a=0\) 时 \(\mathcal A_0=0\)，但 \(\widehat{\mathcal A}_{-2}(0)=-0.0019467840\pm8.67797\times10^{-5}\)。</p>
+          <p>4001 点网格上不存在两条均值同时非负的振幅；最佳最小值仍是 \(a=0.107\) 处的 \(-2.9487\times10^{-4}\)。逐点 95% 上带也在每个网格点排除共同非负，但它们不是同时置信带，更不是严格区间证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图同时展示筛选峰值、根障碍和负号来源</h2>
+          <figure><img src="/figures/r0-69v-two-scale.svg" alt="R0.69V 两尺度全环带振幅扫描、粗环带三次根障碍与负 j=0 区对来源"><figcaption>图 R0.69V。左图以解析总量为分子显示全振幅筛选；中图用独立区对参数化展示 \(j=-2\) 与 \(j=0\) 的三次均值和逐点扰动带；右图拆解候选 \(j=0\) 的五类非零区对贡献。严格结论是无限分离统一返回基线；有限分离的曲线、误差带与根障碍仍是随机化诊断。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69v-two-scale.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69v-two-scale.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Value for the Millennium route</div><h2>价值是关闭一种自然的多尺度修复，并给出可严格化的最小反证</h2>
+          <p>R0.69U 只排除了纯自相似膨胀；R0.69V 进一步证明，即使真实改变两过渡层的无量纲半径比，只要把它们无限分开，混合相互作用就一致消失，环带比仍回到原始单尺度值。继续增加尺度比不再是有效研究方向。</p>
+          <p>有限分离方面，当前证据没有发现全同号参数，反而把障碍定位到单条粗环带的三次多项式。这是可写入分析论文的“机制排除定理 + 可验证数值靶点”，但还不是对 Navier–Stokes 正则性的正面突破。距离千禧年目标仍缺沿真实解可传播、可时间积分的临界先验控制。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.69W interval route</div><h2>下一步不再扩大扫描，而是严格封闭三个系数与一个端点值</h2>
+          <p>R0.69W 的验收目标是对 \(\mathcal A_0(a)/a=c_1+c_2a+c_3a^2\) 的三个系数给出外向舍入区间，并证明 \(c_3&lt;0\) 与 \(c_2^2-4c_1c_3&lt;0\)。这样可严格推出每个 \(a&gt;0\) 都有 \(\mathcal A_0(a)&lt;0\)。</p>
+          <p>端点 \(a=0\) 则需严格证明 \(\mathcal A_{-2}(0)&lt;0\)。证书必须包住声明的光滑卷积截断本身，不能只认证其 48 点浮点求积近似。若完成，这将严格关闭尺度比四的整个一参数族；随后才值得增加独立形状自由度或转入动力学传播。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility and monitoring</div><h2>解析、主扫描、固定候选与根审计分别源锁定并完整归档</h2>
+          <p>解析源提交为 <code>0e99dfbab767890839bca88bcf773b5889a8fa91</code>；共同样本主扫描源提交为 <code>2895a99b2448f8102663e238e68d3c4a5a3504c6</code>；区对根审计源提交为 <code>ba569f3832d93a6f286bb90d92d2d7b15478bf23</code>；证书归档提交为 <code>472aa0939a1de116c78fcf93ef078edc5947ae30</code>；正式期刊图提交为 <code>a949338</code>。</p>
+          <p>21 项解析检查在 0.748 秒内通过。三套正式数值任务分别运行 334.399、243.058 与 83.633 秒；最大观测 CPU 均为 100%，主扫描与根审计峰值内存分别为 1012.375 与 937.688 MiB。全部科学进度、资源采样、逐扰动数据、区对分解和 SHA-256 清单均在证书目录。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069v">查看解析证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069v-polynomial-qmc">查看 P18 主扫描</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069v-zonepair-qmc">查看 P19 交叉核验</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069v-zonepair-polynomial-qmc">查看三次根审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/two_scale_annular_decoupling_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069v-two-scale/fig-r069v-two-scale">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">13 / Literature and claim boundary</div><h2>本结果属于静态有符号环带机制研究，不替代经典正则性判据</h2>
+          <p>涡量方向与三维正则性的经典几何背景参见 <a href="https://doi.org/10.1002/cpa.3160460604">Constantin–Fefferman（1993）</a>。与本项目相邻的过滤路线可参见 <a href="https://arxiv.org/abs/2606.27560">Yu（2026）的过滤涡量拉伸、次网格缺陷与条件环带 Carleson 嵌入</a>。千禧年问题的正式目标以 <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 的问题页</a> 为准。</p>
+          <p>本页严格主张的只有：两尺度族的非自相似性、精确三次生产律、一个混合系数精确为零、混合环带 \(\ell^1\) 估计，以及对振幅一致的无限分离解耦极限。有限分离的 0.963554、负号标准误、三次根与逐点带全部属于随机化证据。它们不构成严格区间、动力学耗减、全局正则性或有限时奇性证明。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、随机化计算、外部定理与开放问题分开记录。</div><div>R0.69V · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

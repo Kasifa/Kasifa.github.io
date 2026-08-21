@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69P：求出涡量拉伸与中间应变特征值的尖锐常数，构造局部饱和的紧支撑无散场，并证明仅靠能量信息仍留下六次余项。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69P｜点态拉伸可精确饱和，真正缺少的是时空耗散结构">
+  <meta property="og:description" content="不可压性不强迫有利对齐；Betchov 恒等式隔离正的中间应变特征值，但能量层级仍产生六次余项。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69p-stretching-sign.png">
+  <title>R0.69P｜点态拉伸可精确饱和，真正缺少的是时空耗散结构</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.75">
+  <style>.hero h1{font-size:clamp(2.15rem,4.45vw,3.75rem)}</style>
+  <script defer src="/i18n-en.js?v=0.75"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#sharp">尖锐常数</a><a href="#realization">局部实现</a><a href="#betchov">Betchov</a><a href="#middle">中间特征值</a><a href="#energy">能量指数</a><a href="#target">新靶点</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69P · 涡量拉伸的尖锐符号结构</div>
+        <h1>点态最坏伸长可以精确实现，<br>缺失信息必须来自时空演化</h1>
+        <p class="lead">R0.69O 已把领先压力余项降回二次涡量。我现在把剩余的三维拉伸拆到应变特征架中：点态常数 \(\sqrt{2/3}\) 是尖锐的，而且任意取等速度梯度都能嵌入紧支撑无散场，在整个小球上实现。Betchov 恒等式把全局产生量改写为正的中间应变特征值，却没有降低能量估计的六次时间代价。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69P 完成</span><strong>点态几何路线关闭，转向时空亏损</strong><p>版本 v0.69P · 2026-08-21</p><p>形式检查：20 / 20 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.42 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#sharp">01 · 尖锐常数</a></li>
+        <li><a href="#realization">02 · 局部无散实现</a></li>
+        <li><a href="#betchov">03 · Betchov 重写</a></li>
+        <li><a href="#middle">04 · 中间特征值</a></li>
+        <li><a href="#energy">05 · 六次能量余项</a></li>
+        <li><a href="#target">06 · 可检验的新靶点</a></li>
+        <li><a href="#meaning">07 · 对总问题的意义</a></li>
+        <li><a href="#figure">08 · 期刊附图</a></li>
+        <li><a href="#next">09 · 下一步</a></li>
+        <li><a href="#reproduce">10 · 复现</a></li>
+        <li><a href="#sources">11 · 来源与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>不可压性本身不产生有利符号，也不改进尖锐系数</h2>
+          <p>令 \(S=(\nabla u+\nabla u^T)/2\)，\(\omega=\nabla\times u\)。对任意实对称无迹矩阵 \(S\)，都有</p>
+          <div class="equation result">\[
+            \boxed{|\omega\cdot S\omega|\le\sqrt{\frac23}\,|S|\,|\omega|^2.}
+          \]</div>
+          <p>常数 \(\sqrt{2/3}\) 不能降低。更强的是：对任意 \(s,w>0\)，存在光滑、紧支撑、散度为零的速度场，在一个开球上同时满足</p>
+          <div class="equation result">\[
+            \boxed{|S|=s,\qquad|\omega|=w,\qquad
+            \omega\cdot S\omega=\sqrt{\frac23}\,sw^2.}
+          \]</div>
+          <p>把应变取反即可在相同模长下达到负端点。因此任何只使用光滑性与不可压性的普适点态符号、严格亏损系数或自动方向相干性都不成立。</p>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这里关闭的是“不可压性自动改善点态拉伸几何”这条路线。它不排除 Navier–Stokes 动力学在时空平均、非局部耦合或条件几何假设下产生耗散，也没有解决千禧年问题。</div>
+        </section>
+
+        <section id="sharp"><div class="section-no">01 / Sharp Rayleigh endpoint</div><h2>最坏情形是涡量沿最大伸长特征方向排列</h2>
+          <p>设 \(\lambda_1\le\lambda_2\le\lambda_3\) 且 \(\lambda_1+\lambda_2+\lambda_3=0\)。Rayleigh 商与无迹条件给出</p>
+          <div class="equation">\[
+            |\omega\cdot S\omega|
+            \le\max(|\lambda_1|,|\lambda_3|)|\omega|^2,
+            \qquad \lambda_3^2\le\frac23|S|^2.
+          \]</div>
+          <p>对 \(-S\) 使用同一论证即可控制 \(|\lambda_1|\)。正端点由</p>
+          <div class="equation result">\[
+            S_+=s\,\operatorname{diag}\!\left(-\frac1{\sqrt6},-\frac1{\sqrt6},\frac2{\sqrt6}\right),
+            \qquad \omega_+=we_3
+          \]</div>
+          <p>精确达到，因为 \(|S_+|=s\) 且 \(\omega_+\cdot S_+\omega_+=\sqrt{2/3}\,sw^2\)。这不是数值近似，而是代数等号。</p>
+        </section>
+
+        <section id="realization"><div class="section-no">02 / Solenoidal realization</div><h2>每个无迹速度梯度都能在有限能量场的小球内实现</h2>
+          <p>令 \(A=S+\Omega\)，其中 \(\Omega x=(\omega\times x)/2\)，并取仿射场 \(u_A(x)=Ax\)。因为 \(\operatorname{tr}A=0\)，它散度为零，且具有二次向量势</p>
+          <div class="equation">\[
+            B_A(x)=-\frac13x\times(Ax),
+            \qquad \nabla\times B_A=Ax.
+          \]</div>
+          <p>取 \(\chi\in C_c^\infty(B_2)\)、\(\chi=1\) 于 \(B_1\)，定义</p>
+          <div class="equation result">\[
+            \boxed{v_A=\nabla\times(\chi B_A).}
+          \]</div>
+          <p>则 \(v_A\in C_c^\infty(\mathbb R^3)\)、\(\nabla\cdot v_A=0\)，并在整个 \(B_1\) 内等于 \(Ax\)。所以尖锐矩阵对不是不可实现的局部喷射；它确实存在于光滑有限能量无散场的一个开集上。外部截断环带承担全局积分恒等式要求的补偿。</p>
+        </section>
+
+        <section id="betchov"><div class="section-no">03 / Betchov identity</div><h2>全局抵消把方向对齐改写为应变行列式</h2>
+          <p>点态恒等式为</p>
+          <div class="equation">\[
+            \operatorname{tr}(A^3)
+            =\operatorname{tr}(S^3)+\frac34\omega\cdot S\omega.
+          \]</div>
+          <p>对周期或充分衰减的光滑无散场，分部积分给出 \(\int\operatorname{tr}(A^3)=0\)。又因无迹三阶矩阵满足 \(\operatorname{tr}(S^3)=3\det S\)，所以</p>
+          <div class="equation result">\[
+            \boxed{\int\omega\cdot S\omega\,dx=-4\int\det S\,dx.}
+          \]</div>
+          <p>相应的涡量与应变能量恒等式为</p>
+          <div class="equation">\[
+          \begin{aligned}
+            \frac12\frac d{dt}\|\omega\|_2^2+\nu\|\nabla\omega\|_2^2
+            &=-4\int\det S,\\
+            \frac12\frac d{dt}\|S\|_2^2+\nu\|\nabla S\|_2^2
+            &=-2\int\det S.
+          \end{aligned}
+          \]</div>
+          <p>Betchov 恒等式是真抵消，但不是符号定理：它只把产生量从涡量对齐换成了有符号的应变行列式。</p>
+        </section>
+
+        <section id="middle"><div class="section-no">04 / Middle eigenvalue</div><h2>正产生只来自正的中间应变特征值</h2>
+          <p>若 \(\lambda_2\le0\)，则 \(\det S\ge0\)，所以 \(-4\det S\le0\)。若 \(\lambda_2>0\)，写 \(\lambda_3=r\lambda_2\)、\(r\ge1\)，则</p>
+          <div class="equation">\[
+            \frac{-4\det S}{\lambda_2|S|^2}
+            =\frac{2r(1+r)}{1+r+r^2}
+            =2-\frac{2}{1+r+r^2}<2.
+          \]</div>
+          <p>当 \(r\to\infty\) 时该比值趋于二，因此</p>
+          <div class="equation result">\[
+            \boxed{-4\det S\le2\lambda_2^+|S|^2}
+          \]</div>
+          <p>中的常数二是尖锐上确界。另一方面，</p>
+          <div class="equation result">\[
+            \boxed{0\le\lambda_2^+\le\frac{|S|}{\sqrt6}}
+          \]</div>
+          <p>也为尖锐等式，其见证是 \(S=|S|\operatorname{diag}(-2,1,1)/\sqrt6\)，并可由上一节的紧支撑构造在小球内实现。正的中间特征值因此不是不可压性自动压低的量。</p>
+        </section>
+
+        <section id="energy"><div class="section-no">05 / Energy-only endpoint</div><h2>符号重写没有改变能量估计的六次余项</h2>
+          <p>由中间特征值界只能得到</p>
+          <div class="equation">\[
+            \int\omega\cdot S\omega
+            \le2\int\lambda_2^+|S|^2
+            \le\frac2{\sqrt6}\int|S|^3.
+          \]</div>
+          <p>三维 Gagliardo–Nirenberg 与 Young 不等式于是回到</p>
+          <div class="equation result">\[
+            \boxed{\|S\|_3^3
+            \lesssim\|S\|_2^{3/2}\|\nabla S\|_2^{3/2}
+            \le\varepsilon\|\nabla S\|_2^2
+            +C\varepsilon^{-3}\|S\|_2^6.}
+          \]</div>
+          <p>其代数端点是精确的：</p>
+          <div class="equation">\[
+            \sup_{D\ge0}\left(\sigma^{3/2}D^{3/4}-\varepsilon D\right)
+            =\frac{27}{256}\varepsilon^{-3}\sigma^6.
+          \]</div>
+          <p>因此 R0.69O 与本版本把预算分开了：压力余项是 \(\mathsf A_v^2\mathsf E_v\) 的二次时间量，拉伸余项仍是 \(\int\sigma^6dt\)。</p>
+        </section>
+
+        <section id="target"><div class="section-no">06 / Measurable deficit</div><h2>下一条有意义的估计必须控制时空亏损，而不是再做矩阵代数</h2>
+          <p>定义两个无量纲耗散观测量</p>
+          <div class="equation result">\[
+          \Theta_{\rm align}
+          =\frac{(\omega\cdot S\omega)_+}{\sqrt{2/3}|S||\omega|^2},
+          \qquad
+          \Theta_2=\frac{\sqrt6\,\lambda_2^+}{|S|}.
+          \]</div>
+          <p>分母为零时取零。两者都在 \([0,1]\) 中，而局部实现证明能量与不可压性允许端点一。故真正缺少的是对</p>
+          <div class="equation">\[
+            \int_{Q_r}\Theta_2|S|^3
+            \quad\text{或}\quad
+            \int_{Q_r}\Theta_{\rm align}|S||\omega|^2
+          \]</div>
+          <p>的尺度局部时空亏损。方向相干性判据说明额外几何信息在条件下可以充分，但不能把这些条件当作能量不等式已经推出的结论。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Value for the main problem</div><h2>本结果关闭一条错误捷径，同时把开放问题压缩成可检验对象</h2>
+          <p>积极价值有两层。第一，最坏点态常数不仅是抽象矩阵上界，而且能在紧支撑无散场的小球内精确实现；所以后续证明不应再期待局部不可压性自动提供严格小于一的对齐系数。第二，Betchov 恒等式把真正的全局正产生定位到 \(\lambda_2^+\)，使下一步可以针对一个明确的有符号量设计时空估计。</p>
+          <p>限制同样明确：这些结论是运动学与能量代数，不包含 Navier–Stokes 演化对相干结构的动态约束。六次余项仍远超 Leray–Hopf 或 CKN 的先验时间可积性。</p>
+          <div class="proof"><strong>价值判断。</strong>&nbsp;这是高质量的无增益定理和路线筛选结果，而不是正则性突破。它减少了模糊搜索空间，并把下一阶段的成功标准明确为无条件、尺度临界的时空亏损。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Journal figure</div><h2>附图同时展示尖锐对齐、Betchov 比值与六次 Young 端点</h2>
+          <figure><img src="/figures/r0-69p-stretching-sign.svg" alt="R0.69P 涡量拉伸尖锐对齐、中间应变特征值与六次能量余项"><figcaption>图 R0.69P。左图给出轴对称伸长应变中的精确角度曲线，正端点 \(\sqrt{2/3}\) 可在小球内实现；中图显示 \((-4\det S)/(\lambda_2|S|^2)\) 单调逼近尖锐上确界二；右图给出能量层级 Young 优化，极大余项为 \(27\varepsilon^{-3}\sigma^6/256\)。颜色、纹理、线型与端点标记保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69p-stretching-sign.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69p-stretching-sign.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next stage</div><h2>R0.69Q 将审计涡量方向运输能否产生无条件时空亏损</h2>
+          <p>下一步从 \(\xi=\omega/|\omega|\) 的运输—扩散方程与 \(\lambda_2^+\) 集合的局部预算出发，逐项检查旋转、扩散与压力 Hessian 是否能在 \(Q_r\) 内产生可积时间幂或真实小尺度因子。</p>
+          <p>接受标准不变：不能预设 Lipschitz 方向相干、Serrin 混合范数或待证明的 \(L_t^1L_x^\infty\) 控制。若推导只重新表述已有条件正则性判据，就把它记录为条件接口；若出现不受控制的 \(|\omega|^{-1}\) 奇性或同阶交换子，就构造反例并关闭该分支。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility</div><h2>源笔记、形式证书和期刊图分别锁定到完整提交</h2>
+          <p>数学源提交为 <code>1471752c76624699c0f5a40d523bdc484a49cbd3</code>，形式证书提交为 <code>f8514f1879ad41c2ee0761d82eeca5d010cf78af</code>，最终附图提交为 <code>95cfe18a4484be1662e2357afc8abe8e173391a6</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>841d64636cd2e40ac5a48ac20c936ed21709e572064584be24a2a9ecaed67e38</code>，形式证书 SHA-256 为 <code>75f1ffcfd8d7b66e6fee0603c596b2c6f0aed9be701bcc10b47b9a277ff8e718</code>。20 项检查全部通过；监控运行 0.42 秒，峰值常驻内存 65.750 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>b872731fdc108dc1c11ddad814992ea1f7dd6a3ee31b2e72529cae0a236b847c</code>、<code>f6505cdf1197575668c0c96b4ac09f385c374a93777002c6b6fcc40290f69dde</code> 与 <code>31494f49c1b2e15a27c763b4909393a14745bbfd3412deef64e3b17b8032bb24</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069p">查看 R0.69P 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/vorticity_stretching_sign_structure_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069p-stretching-sign/fig-r069p-stretching-sign">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">11 / Sources and boundary</div><h2>经典结构、项目新增审计与未解决部分分开陈述</h2>
+          <p>Betchov 的全局三次恒等式、Constantin–Fefferman 的涡量方向条件正则性路线，以及基于中间应变特征值的正则性判据都属于已有工作。本版本的项目内贡献是：在 R0.69O 后的确切预算位置统一比较这些机制，给出尖锐常数的符号审计，并用显式向量势把所有无迹仿射喷射嵌入紧支撑无散场。这里不主张该局部构造具有文献首创性。</p>
+          <p>主要来源：<a href="https://doi.org/10.1017/S0022112056000317">Betchov（1956，涡量产生恒等式）</a> · <a href="https://doi.org/10.1512/iumj.1993.42.42034">Constantin–Fefferman（1993，涡量方向与正则性）</a> · <a href="https://arxiv.org/abs/1710.05569">Miller（中间应变特征值判据）</a>。</p>
+          <p>声明边界：本页证明点态拉伸常数与中间特征值界的尖锐性、紧支撑无散局部实现、Betchov 重写以及能量层级六次余项的持续存在。它没有推出无条件方向相干、时空耗散、全局正则性或奇性，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69P · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

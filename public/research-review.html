@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.68"></script>
+  <script defer src="/i18n-en.js?v=0.69"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4626,6 +4626,33 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69J：</strong>&nbsp;在球上分离压力的近场 Newton 部分与调和远场部分，逐阶减去远场多极矩，检验领先四极项是否仍保持临界大小。</p>
           </div>
+
+          <div class="task-one" id="r069j" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69J · 2026-08-21</p>
+            <h3>远场余项获得尺度增益，但领先迹零四极矩仍然存在</h3>
+            <p>
+              我把压力分成近场 Newton 部分与球内调和的远场部分。对
+              \(Q_R=\nabla^2p_{\mathrm{far}}(0)\)，余项满足
+
+              \[
+                |\nabla^2p_{\mathrm{far}}(x)-Q_R|
+                \le Cr\int_{|y|\ge R}\frac{|q(y)|}{|y|^4}\,dy,
+              \]
+
+              因而每个远程壳获得一个 \(r/R\) 因子。但零质量、零偶极矩的精确四源见证仍给出
+              \(Q_R=3(2\pi R^3)^{-1}\operatorname{diag}(1,-1,0)\)，与迹零应变的配对为 \(3/(\pi R^3)\ne0\)。12 项形式检查全部通过。
+            </p>
+            <p>
+              <strong>结论边界：</strong>&nbsp;见证目前是标量压力源，并非由无散速度生成。结果只关闭朴素调和 Taylor 减法，不排除速度生成约束或跨壳相消。
+            </p>
+            <p>
+              <a href="/notes/r0-69j.html"><strong>阅读 R0.69J 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69j-quadrupole.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069j">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069j-quadrupole/fig-r069j-quadrupole">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69K：</strong>&nbsp;把远场四极矩写成 dyadic 壳系数序列，检验速度生成的压力源是否强迫 telescoping、Carleson 或 square-function 控制。</p>
+          </div>
         </section>
 
       </article>
@@ -4639,8 +4666,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.68 · 2026-08-21<br>
-        上次综述 v0.67 · 2026-08-21<br>
+        综述 v0.69 · 2026-08-21<br>
+        上次综述 v0.68 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

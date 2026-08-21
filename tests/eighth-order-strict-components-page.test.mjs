@@ -15,7 +15,7 @@ test("publishes the R0.68B-2d/e page with strict evidence boundaries", async () 
 
   assert.match(home, /id="r068b2de"/);
   assert.match(home, /\/notes\/r0-68b2de\.html/);
-  assert.match(home, /综述 v0\.68 · 2026-08-21/);
+  assert.match(home, /综述 v0\.69 · 2026-08-21/);
   assert.match(note, /4,368/);
   assert.match(note, /1,792/);
   assert.match(note, /2\.567\\times10\^{-6\}/);

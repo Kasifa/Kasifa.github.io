@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69J：分离压力的近场与调和远场，证明 Taylor 减法改善余项，却留下非零的领先迹零四极矩。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69J｜远场余项衰减，但领先四极矩仍在">
+  <meta property="og:description" content="精确零质量、零偶极矩见证保留非零压力 Hessian，关闭朴素调和减法路线。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69j-quadrupole.png">
+  <title>R0.69J｜远场余项衰减，但领先四极矩仍在</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.69">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.69"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#split">近远场分解</a><a href="#remainder">余项增益</a><a href="#flux">边界通量</a><a href="#witness">精确见证</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69J · 调和压力尾的领先四极矩</div>
+        <h1>余项获得尺度增益，<br>领先四极矩没有消失</h1>
+        <p class="lead">我把压力分成近场 Newton 部分与球内调和的远场部分。减去远场的常 Hessian 后，余项严格获得一个 \(r/R\) 因子；但一个精确的零质量、零偶极矩见证仍留下非零迹零四极矩。朴素调和 Taylor 减法不能独自闭合局部应变预算。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69J 完成</span><strong>领先四极矩障碍</strong><p>版本 v0.69J · 2026-08-21</p><p>形式检查：12 / 12 通过</p><p>精确远场源：4 个</p><p>监控运行：0.23 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#split">01 · 近场与远场</a></li>
+        <li><a href="#remainder">02 · 余项的尺度增益</a></li>
+        <li><a href="#flux">03 · 领先项的边界通量</a></li>
+        <li><a href="#witness">04 · 精确四源见证</a></li>
+        <li><a href="#meaning">05 · 对总问题的意义</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 下一分支</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified quadrupole obstruction</div><h2>Taylor 减法只改善非恒定余项，不能控制领先迹零四极矩</h2>
+          <p>令 \(q=-\Delta p\)，把观测球外的压力源产生的调和压力记为 \(p_{\mathrm{far}}\)，并定义</p>
+          <div class="equation result">\[
+            \boxed{\nabla^2p_{\mathrm{far}}(x)=Q_R+
+            \bigl(\nabla^2p_{\mathrm{far}}(x)-Q_R\bigr),\qquad
+            Q_R:=\nabla^2p_{\mathrm{far}}(0),\quad\operatorname{tr}Q_R=0.}
+          \]</div>
+          <p>对 \(|x|\le r\le R/2\)，非恒定余项满足</p>
+          <div class="equation result">\[
+            \boxed{|\nabla^2p_{\mathrm{far}}(x)-Q_R|
+            \le Cr\int_{|y|\ge R}\frac{|q(y)|}{|y|^4}\,dy.}
+          \]</div>
+          <p>因此余项有真实尺度增益；障碍只集中在常数、对称、迹零的矩阵 \(Q_R\)。</p>
+          <div class="grid">
+            <div class="status"><span>POSITIVE · REMAINDER</span><strong>获得一个 \(r/R\)</strong><p>每个远程 dyadic 壳的变化量额外衰减。</p></div>
+            <div class="status"><span>EXACT · LEADING JET</span><strong>四极矩保持临界</strong><p>常 Hessian 不随观测半径衰减。</p></div>
+            <div class="status"><span>CERTIFIED · NONZERO</span><strong>迹零配对仍非零</strong><p>精确见证给出 \(3/(\pi R^3)\)。</p></div>
+            <div class="status"><span>DECISION · NEGATIVE</span><strong>停止朴素 Taylor 分支</strong><p>转向跨壳系数与速度生成约束。</p></div>
+          </div>
+        </section>
+
+        <section id="split"><div class="section-no">01 / Near and far pressure</div><h2>远场压力在观测球内调和，可以逐阶展开</h2>
+          <p>取在 \(B_R\) 内等于一的截断函数 \(\chi\)，写成</p>
+          <div class="equation">\[
+            p=(-\Delta)^{-1}(\chi q)+(-\Delta)^{-1}((1-\chi)q)
+            =p_{\mathrm{near}}+p_{\mathrm{far}}.
+          \]</div>
+          <p>远场源与观测点分离，所以 \(p_{\mathrm{far}}\) 在球内调和。压力 Hessian 核为</p>
+          <div class="equation">\[
+            K_{ij}(z)=\frac{3z_i z_j-|z|^2\delta_{ij}}{4\pi|z|^5},
+            \qquad |\nabla K(z)|\le \frac{C}{|z|^4}.
+          \]</div>
+        </section>
+
+        <section id="remainder"><div class="section-no">02 / One scale-ratio gain</div><h2>均值定理给非恒定远场 Hessian 一个 \(r/R\) 因子</h2>
+          <p>若远场源支撑在 \(B_R\) 外，且 \(|x|\le R/2\)，从 \(0\) 到 \(x\) 的线段始终与源保持可比于 \(|y|\) 的距离。对每个 dyadic 壳 \(R_m\) 得到</p>
+          <div class="equation result">\[
+            |H_m(x)-H_m(0)|
+            \le C\frac r{R_m}\frac1{R_m^3}
+            \int_{|y|\sim R_m}|q(y)|\,dy.
+          \]</div>
+          <p>这是本阶段的正面结果：减去常 Hessian 后，所有远程壳都比自然 Hessian 尺度多一个距离比。</p>
+        </section>
+
+        <section id="flux"><div class="section-no">03 / Boundary flux of the leading jet</div><h2>领先四极矩没有被无散性消掉，而是被移到截断环带</h2>
+          <p>对任意常对称矩阵 \(Q\)，利用无散性和一次分部积分，</p>
+          <div class="equation result">\[
+            \boxed{\int\phi S:Q=-\int(Qu)\cdot\nabla\phi.}
+          \]</div>
+          <p>即使 \(S\) 与 \(Q\) 都迹零，其 Frobenius 内积仍可非零。减去调和二次多项式只是把其系数转移为边界通量，并未估计这个系数。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">04 / Exact zero-mass zero-dipole witness</div><h2>前两阶标量多极矩同时消失，压力 Hessian 仍严格非零</h2>
+          <p>在半径 \(R\) 的球面上取有符号源</p>
+          <div class="equation">\[
+            q_R=\delta_{Re_1}+\delta_{-Re_1}-\delta_{Re_2}-\delta_{-Re_2}.
+          \]</div>
+          <p>它的总质量与一阶矩都为零，中心势与梯度也为零；但精确计算给出</p>
+          <div class="equation result">\[
+            \boxed{Q_R=\frac{3}{2\pi R^3}\operatorname{diag}(1,-1,0),\qquad
+            \operatorname{diag}(1,-1,0):Q_R=\frac{3}{\pi R^3}\ne0.}
+          \]</div>
+          <p>四个点源可由对称光滑小包替代，中心 Hessian 连续趋近上述矩阵，因此非零障碍对光滑化稳定。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Value for the main problem</div><h2>它把“压力非局部性”压缩成一个更精确的跨尺度系数问题</h2>
+          <p>R0.69I 表明裸截断只会产生同阶交换子；R0.69J 进一步把远场交换子分成可获得尺度增益的余项与不可自动消失的领先四极矩。由此排除了仅靠调和性、迹零、零质量和零偶极矩闭合压力项的路线。</p>
+          <p>留下的可能性也更具体：速度生成的特殊源 \(q=\operatorname{tr}((\nabla u)^2)\) 是否限制每个壳的四极矩系数，以及这些有符号系数能否跨壳 telescoping，或满足 Carleson / square-function 控制。</p>
+          <p>精确见证目前是标量压力源，并非由无散速度生成。这个边界必须保留；本页没有证明奇性存在或不存在，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>附图把余项增益与领先系数障碍分开显示</h2>
+          <figure><img src="/figures/r0-69j-quadrupole.svg" alt="R0.69J 精确四源压力四极矩与余项尺度增益"><figcaption>图 R0.69J。左图展示零质量、零偶极矩的四源几何与非零迹零四极矩；右图把归一化领先系数与按 \(r/R\) 衰减的余项包络分开。圆方标记、实虚线、方向箭头与纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69j-quadrupole.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69j-quadrupole.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next shellwise channel</div><h2>R0.69K 检验壳层四极矩系数能否出现跨尺度相消</h2>
+          <div class="proof"><strong>R0.69K 的通过标准。</strong>&nbsp;把 \(Q_R\) 分解为 dyadic 壳系数序列，先推导相邻截断半径之间的精确差分，再检查速度生成的压力源是否强迫 telescoping、Carleson 或 square-function 界。若一般无散 Fourier 场仍能产生同号、不可求和的壳系数，就给出有限精确见证。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>7271dd542389ab22b24f6f54980e7d2763188c2f</code>，形式证书提交为 <code>83076596d7f2664d81888d9acb24f134d9b3ac5f</code>，最终附图提交为 <code>f15c6cc03e5c93ba2ced77e9a40d53a9c4ba66f2</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>c04a6129b66aaae5efbeb1c417cb2b36e613bc453dc717f209f23f7deff1e40f</code>，形式证书 SHA-256 为 <code>5b8b2a9288123b4a664dc8c6bf8882220ffcf5422791ae9f2d9c0eb02517ed73</code>。12 项检查全部通过；监控运行 0.23 秒，峰值常驻内存 64.094 MiB，本任务为 CPU 精确符号审计。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>06a5d4b22920700d9ab08551745575989d0fb2e4dcd479acc303d17d715a35fb</code>、<code>3c90945c22512fa76ec5122e5545b446711cb800c0ce8060c66d2d22b08d188a</code> 与 <code>adf70732080989c6045d1a7b63d2035d18b5641b43352f87b46221a82d379e98</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069j">查看 R0.69J 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/harmonic_pressure_quadrupole_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069j-quadrupole/fig-r069j-quadrupole">查看期刊附图包</a></p>
+          <p>声明边界：本页只证明标量压力源层面的领先四极矩障碍。它不排除速度生成结构、跨壳相消或其他几何控制，不给出 Navier–Stokes 正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69J · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

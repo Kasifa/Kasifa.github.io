@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Does dissipation-assisted interpolation repair the pressure commutator time exponent, and what obstruction remains?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "sharp Young profile, constrained time-spike mass comparison, and post-Young exponent comparison",
+    "nonColorEncoding": "distinct markers, line styles, hatching, and value labels",
+    "outputFootprint": "double-column 178 by 82 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "dissipation repairs the pressure time exponent; the unresolved nonlinearity is cubic strain/vorticity stretching"
+  },
+  "claimBoundary": "exact algebraic and functional exponent audit; not a complete localized H1 estimate or Navier-Stokes regularity theorem",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "181 normalized Young-profile samples, 10 exact dyadic time spikes, and 2 exact post-Young exponents",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact rational formulas",
+    "solver": "closed-form exponent identities",
+    "wallTimeSeconds": 0.44877887502661906
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 152.890625,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T10:20:00+08:00",
+  "data": [
+    {
+      "bytes": 4014,
+      "path": "sharp-young-profile.csv",
+      "schema": "zOverZStar, profitOverMaximum",
+      "sha256": "0a261831d9de8021659904697e273bd215852ab81e5992f27c2f02989f75c8dd"
+    },
+    {
+      "bytes": 299,
+      "path": "time-spike-masses.csv",
+      "schema": "amplitude, width, quadraticMass, cubicMass, minimumDissipationMass",
+      "sha256": "b46a99185efde0aaf74ba90b9ba01085c15d74f56b2b5b8539b61a18f4360858"
+    },
+    {
+      "bytes": 153,
+      "path": "remainder-exponents.csv",
+      "schema": "sector, sigmaPowerAfterYoung, status",
+      "sha256": "ffdb3103cee48957a3b1c2917565a0db833cd242ffbca175dc9e4f0c59e3bdda"
+    },
+    {
+      "bytes": 629,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69O time-closure certificate",
+      "sha256": "a21d89f82c9e710c5914bd69f5783c82cd9a806b161c61548e2bb9330400c6d0"
+    },
+    {
+      "bytes": 522,
+      "path": "validation.json",
+      "schema": "ten figure-data validation checks",
+      "sha256": "c51847e30fcd1c7910874a4f0b8c2de57f49d212140006d0c433d8afa6b980f0"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "5cd266de24fe7202c586df5e204502ca623e38b68d43f7aa3f31f6163f384873"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 82,
+    "outputs": [
+      {
+        "bytes": 31323,
+        "path": "figure.pdf",
+        "sha256": "cde3b295403ae9a22d813f4db8abe5b24ecfcb46fe98d5aea740378d68b654c3"
+      },
+      {
+        "bytes": 61648,
+        "path": "figure.svg",
+        "sha256": "4f5a95394a1c61cb965961377b5cd0907cf4d1da0c99d3b6fe69e0aa763f95f5"
+      },
+      {
+        "bytes": 430684,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 1937",
+        "sha256": "4eb3b80a7325f4adcf7a988a59a20ad721f02290e000e679931f362543eea90a"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069o-pressure-time-closure",
+  "git": {
+    "certificateCommit": "49136625e4c1f48d1f765653b15cc8df8b50ec8e",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "46f217d0d6cb29f3a60e8c5a101e92c6f7e8e560"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2708,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "energy-commutator-time-closure.json",
+      "location": "research/certificates/r069o/energy-commutator-time-closure.json",
+      "sha256": "b81cb6986b701233c33ab0713546318ae6c88cde2ab1a3cb6a6767ed35400113"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the leading pressure remainder is quadratic in enstrophy with a sharp mu^4 coefficient inside the interpolation mechanism, while cubic strain/vorticity stretching still produces a sextic remainder"
+}

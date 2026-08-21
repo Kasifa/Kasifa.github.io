@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69N：用精确应力交换子把近场压力配对降到空间能量层级，并定位剩余的时间三次指数缺口。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69N｜空间交换子闭合，时间指数仍差一步">
+  <meta property="og:description" content="Hardy–BMO 直接路线差半阶导数；应力交换子绕过空间障碍，但最优端点仍留下 mu sigma^3。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69n-energy-commutator.png">
+  <title>R0.69N｜空间交换子闭合，时间指数仍差一步</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.73">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.73"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#localization">局部化</a><a href="#commutator">交换子</a><a href="#estimate">主估计</a><a href="#hardy">对偶墙</a><a href="#endpoint">最优端点</a><a href="#time">时间缺口</a><a href="#budget">完整预算</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69N · 能量层级压力交换子</div>
+        <h1>空间抵消真实成立，<br>时间积分仍差一个幂</h1>
+        <p class="lead">我把 R0.69M 中过强的近场 \(L^2\) 压力源替换成精确应力交换子。新估计只使用局部动能、涡量梯度量与可吸收的二阶耗散；它绕过了 Hardy–BMO 的半阶导数障碍。不过最优端点在 Young 不等式后仍为 \(\mu_v\sigma_v^3\)，尚不能由 CKN 的二次时间耗散控制。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69N 完成</span><strong>空间桥梁成立，时间未闭合</strong><p>版本 v0.69N · 2026-08-21</p><p>形式检查：17 / 17 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.24 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#localization">01 · 无散局部化</a></li>
+        <li><a href="#commutator">02 · 精确交换子</a></li>
+        <li><a href="#estimate">03 · 能量层级估计</a></li>
+        <li><a href="#hardy">04 · Hardy 对偶墙</a></li>
+        <li><a href="#endpoint">05 · 端点优化</a></li>
+        <li><a href="#time">06 · 时间集中见证</a></li>
+        <li><a href="#budget">07 · 完整压力预算</a></li>
+        <li><a href="#meaning">08 · 对总问题的意义</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#next">10 · 下一分支</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>近场压力源范数被移除，但尚未得到正则性闭合</h2>
+          <p>设 \(v\) 是在 \(B_{2r}\) 内等于 \(u\)、在 \(B_{4r}\) 外为零的无散局部化。对 \(4\le q\le6\)，令</p>
+          <div class="equation">\[
+            p=\frac q{q-2},\qquad
+            \theta=3\left(\frac12-\frac1q\right),\qquad
+            X_q=\mu_v^{2(1-\theta)}\sigma_v^{2\theta}.
+          \]</div>
+          <p>其中 \(\mu_v=r^{-1/2}\|v\|_2\)、\(\sigma_v=r^{1/2}\|\nabla v\|_2\)。在截断环带 \(A_\phi\) 上定义 \(\mu_A,\sigma_A\) 与 \(D_A=r^3\|\nabla^2u\|_{2,A_\phi}^2\)，则</p>
+          <div class="equation result">\[
+            \boxed{r^3|\mathcal P_{v,r}|
+            \le C_qX_q\bigl(D_A^{1/2}+\sigma_A+\mu_A\bigr).}
+          \]</div>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这是光滑解层面的空间能量估计，也是后续逼近论证的候选先验式；本页没有证明它在奇点尺度序列上可积闭合，没有推出正则性，也没有解决千禧年问题。</div>
+        </section>
+
+        <section id="localization"><div class="section-no">01 / Solenoidal localization</div><h2>Bogovskii 修正把近场变成紧支撑无散场</h2>
+          <p>取 \(\eta=1\) 于 \(B_{2r}\)、支撑于 \(B_{3r}\)。在 \(\nabla\eta\) 所在环带上，\(f=\nabla\eta\cdot u\) 的积分为零。Bogovskii 算子给出 \(\nabla\cdot w=f\)，于是</p>
+          <div class="equation">\[
+            v=\eta u-w,\qquad \nabla\cdot v=0,\qquad v=u\ \text{on }B_{2r}.
+          \]</div>
+          <p>并且</p>
+          <div class="equation">\[
+            \|\nabla v\|_2^2\le C\left(
+            \|\nabla u\|_{L^2(B_{3r})}^2+r^{-2}\|u\|_{L^2(B_{3r})}^2\right).
+          \]</div>
+          <p>因此局部化没有引入超出能量层级的新空间范数。过渡修正只支撑在 \(B_{2r}\) 外，可继续使用 R0.69K 的分离核估计。</p>
+        </section>
+
+        <section id="commutator"><div class="section-no">02 / Exact stress commutator</div><h2>关键抵消是 \(\mathcal T(S[v])=0\)，不是对 \(u\,q_v\) 取绝对值</h2>
+          <p>记</p>
+          <div class="equation">\[
+            \mathcal T(A)=\partial_a\partial_b(-\Delta)^{-1}A_{ab},
+            \qquad q_v=\partial_i\partial_j(v_iv_j).
+          \]</div>
+          <p>无散条件给出 \(\partial_a\partial_bS_{ab}[v]=0\)，从而 \(\mathcal T(S[v])=0\)。压力配对可精确转移为</p>
+          <div class="equation">\[
+            \mathcal P_{v,r}
+            =\int v_iv_j\,\partial_i\partial_j\mathcal T(\phi S)\,dx.
+          \]</div>
+          <p>展开截断交换子得到</p>
+          <div class="equation result">\[
+            \boxed{\mathcal T(\phi S)
+            =-v\cdot\nabla\phi+(-\Delta)^{-1}G_\phi[v],}
+          \]</div>
+          <p>其中</p>
+          <div class="equation">\[
+            G_\phi[v]=-2(\partial_kv_i)(\partial_{ki}\phi)
+            -v_i\partial_i\Delta\phi+(\partial_{ab}\phi)S_{ab}.
+          \]</div>
+          <p>所有系数都支撑在截断环带；未局部化的最高阶部分精确消失，因此应变一侧少损失一阶导数。</p>
+        </section>
+
+        <section id="estimate"><div class="section-no">03 / Calderón–Zygmund bridge</div><h2>二次压力源被应力的双重散度结构替代</h2>
+          <p>对 \(1&lt;p&lt;\infty\)，Calderón–Zygmund 有界性给出</p>
+          <div class="equation">\[
+          \begin{aligned}
+            \|\nabla^2\mathcal T(\phi S)\|_p\le C_p\bigl(
+            &r^{-1}\|\nabla^2v\|_{L^p(A_\phi)}
+            +r^{-2}\|\nabla v\|_{L^p(A_\phi)}\\
+            &+r^{-3}\|v\|_{L^p(A_\phi)}\bigr).
+          \end{aligned}
+          \]</div>
+          <p>再用 \(\|v\|_q^2\) 与该量作 Hölder 配对、用三维 Gagliardo–Nirenberg 插值 \(\|v\|_q\)，逐项收集 \(r\) 的幂，恰好得到主估计。这里不再出现 R0.69M 中对一般适当弱解不可用的 \(r^{5/2}\|q_v\|_2\)。</p>
+        </section>
+
+        <section id="hardy"><div class="section-no">04 / Hardy duality wall</div><h2>直接 Hardy–BMO 路线确实看见抵消，却比能量空间高半阶</h2>
+          <p>对每个 \(j\)，\(\partial_jv\) 无散而 \(\nabla v_j\) 无旋，因此</p>
+          <div class="equation">\[
+            q_v=\sum_j(\partial_jv)\cdot\nabla v_j,\qquad
+            \|q_v\|_{\mathcal H^1}\le C\|\nabla v\|_2^2.
+          \]</div>
+          <p>这是 Coifman–Lions–Meyer–Semmes 的 div–curl 结构。但 Hardy–Sobolev 重新分配</p>
+          <div class="equation">\[
+            \mathcal H^1\hookrightarrow\dot W^{-s,\,3/(3-s)}
+            \quad\text{对偶于}\quad
+            \dot W^{s,\,3/s}
+          \]</div>
+          <p>始终位于 \(s(3/s)=3\) 的临界 BMO 线。能量耗散点 \(W^{1,2}\) 的乘积只有 \(2\)；若坚持 Hilbert 对偶 \(p'=2\)，必须取 \(s=3/2\)。所以直接 Hardy–BMO 配对缺少半阶导数。交换子恒等式绕开了这堵墙，而不是把它重新命名。</p>
+        </section>
+
+        <section id="endpoint"><div class="section-no">05 / Endpoint optimization</div><h2>\(q=4\) 是整个能量插值族内最省耗散的端点</h2>
+          <p>对含 \(D_A^{1/2}\) 的领先项使用 Young 不等式后，代价为</p>
+          <div class="equation">\[
+            X_q^2
+            =\mu_v^{-2+12/q}\sigma_v^{6-12/q}.
+          \]</div>
+          <p>当 \(q\) 从 \(4\) 增至 \(6\) 时，\(\sigma_v\) 的幂从 \(3\) 严格增至 \(4\)。因此最佳端点是</p>
+          <div class="equation result">\[
+            r^3|\mathcal P_{v,r}|
+            \le C\mu_v^{1/2}\sigma_v^{3/2}
+            (D_A^{1/2}+\sigma_A+\mu_A),
+          \]</div>
+          <p>而领先项满足</p>
+          <div class="equation result">\[
+            C\mu_v^{1/2}\sigma_v^{3/2}D_A^{1/2}
+            \le\varepsilon D_A+C_\varepsilon\mu_v\sigma_v^3.
+          \]</div>
+          <p>没有任何 \(4\le q\le6\) 的选择把耗散幂降到 CKN 的二次层级。</p>
+        </section>
+
+        <section id="time"><div class="section-no">06 / Temporal concentration</div><h2>纯时间不等式不能从二次质量控制三次代价</h2>
+          <p>在归一化时间区间取</p>
+          <div class="equation">\[
+            \sigma_A(t)=A\,\mathbf1_{[0,A^{-2}]}(t),\qquad
+            \mu_A(t)=1.
+          \]</div>
+          <p>则</p>
+          <div class="equation result">\[
+            \boxed{\int\sigma_A^2\,dt=1,\qquad
+            \int\mu_A\sigma_A^3\,dt=A\longrightarrow\infty.}
+          \]</div>
+          <p>光滑时间轮廓可以逼近这个尖峰。该例只是否定纯函数空间控制的指数见证，不是 Navier–Stokes 解；它说明下一步必须使用方程的时间方向结构，不能只对当前估计再做一次 Hölder 插值。</p>
+        </section>
+
+        <section id="budget"><div class="section-no">07 / Complete pressure budget</div><h2>近场改进没有牺牲过渡项与五次幂远场增益</h2>
+          <p>把无散局部化带来的过渡应力 \(T_{\mathrm{tr}}\) 与远程壳层放回后，完整预算为</p>
+          <div class="equation result">\[
+            \boxed{r^3|\mathcal P_r|
+            \le C_qX_q(D_A^{1/2}+\sigma_A+\mu_A)
+            +C\sigma_r(e_{\mathrm{tr}}+B_\infty).}
+          \]</div>
+          <p>其中 \(e_{\mathrm{tr}}=r^{-1}\int|T_{\mathrm{tr}}|\)，而 R0.69M 已证明 \(B_\infty\le\mathfrak M_2/120\)。因此这次降阶保留了 R0.69K–M 的远场成果；当前唯一显式主障碍被压缩为时间积分中的 \(\mu_v\sigma_v^3\)。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Value for the main problem</div><h2>这是实质性的中间引理，但距离千禧年结论仍有明确缺口</h2>
+          <p>相较 R0.69M，这一步真正向前推进了一层：近场压力不再依赖 \(q_v\in L^2\) 或 \(\nabla u\in L^4\) 的隐藏正则性，而是由能量量与应变能等式左侧的二阶耗散控制。它给后续局部能量与时间加权方法提供了可操作的压力入口。</p>
+          <p>但它尚未把三次瞬时耗散降成可由适当弱解自动控制的二次时空量。除非 R0.69O 能从局部能量不等式、反向热核或时间频率抵消中恢复缺失的一次幂，否则这条路线仍不能排除奇点。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图把空间进展与时间障碍放在同一张审计图中</h2>
+          <figure><img src="/figures/r0-69n-energy-commutator.svg" alt="R0.69N Hardy 对偶墙、能量端点与时间集中缺口"><figcaption>图 R0.69N。左图显示 Hardy 对偶临界线 \(sp'=3\) 与能量耗散点 \((1,2)\) 之间差半阶导数；中图显示 \(q=4\) 已是能量插值族内最优端点，但 Young 后仍为三次 \(\sigma\) 代价；右图显示时间尖峰保持二次质量为一，同时让三次质量按 \(A\) 增长。线型、标记与纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69n-energy-commutator.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69n-energy-commutator.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next temporal test</div><h2>R0.69O 检验方程的时间结构能否追回缺失的一次幂</h2>
+          <div class="proof"><strong>R0.69O 的通过标准。</strong>&nbsp;时间积分后的领先压力项必须被二次 CKN 量与可吸收的 \(D_A\) 控制，且不能假设 Serrin、梯度或 BMO 正则性判据。接下来依次检验局部能量不等式、反向热核截断与时间频率分解；若三者都失败，就把失败归结为可复现的时间指数不可闭合命题。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>推导、证书与期刊图分别锁定到完整提交</h2>
+          <p>数学源提交为 <code>eb80615c8efe45dd26cdbb6ecb1c6e78ab264b4e</code>，形式证书提交为 <code>5e7798168a831b0cf542d75bc457134592ff7b6c</code>，最终附图提交为 <code>58499f48e19fdb43920d2a7e42f5f3dca4b9dfc2</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>10cdcdaf8ed006c677a7f49d920b2e9921247f9c082babd910858daef957a637</code>，形式证书 SHA-256 为 <code>c666c3fbb01f155e8c4a46e155df880096a3c61705ec74a95ad9eb0e4396c1dd</code>。17 项检查全部通过；监控运行 0.24 秒，峰值常驻内存 63.750 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>72eb11aa2adcadb537134c6e7652fbd103d21f098fb03783659db8100e121013</code>、<code>5dc8096961a38bb5e85a63b0d17e549bf5192bd4ec1ae70a0882058b436046fb</code> 与 <code>28bbb6e8041c8168ff0c5e52f9abd8afc95ad83aca5de58e8afd164d13dbe3e8</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069n">查看 R0.69N 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/energy_stress_commutator_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069n-energy-commutator/fig-r069n-energy-commutator">查看期刊附图包</a></p>
+          <p>外部定理来源：<a href="https://numdam.org/item/SEDP_1989-1990____A16_0/">Coifman–Lions–Meyer–Semmes（div–curl 与 Hardy 空间）</a> · <a href="https://doi.org/10.1007/s002090000130">Kozono–Taniuchi（BMO 双线性估计）</a> · <a href="https://arxiv.org/abs/2106.11852">Li–Zhang（压力正则性升级）</a> · <a href="https://arxiv.org/abs/math/0607114">Gustafson–Kang–Tsai（局部正则性判据）</a>。</p>
+          <p>声明边界：本页证明精确应力交换子恒等式、空间能量估计、Hardy 对偶障碍与时间指数见证。它没有构造 Navier–Stokes 奇性解，不给出全局正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69N · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

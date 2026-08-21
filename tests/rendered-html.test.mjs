@@ -403,7 +403,7 @@ test("publishes the R0.60 invariant-shear reduction and cubic target gap", async
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.60/);
   assert.match(note, /不变约化与支撑定理已证明/);
   assert.match(note, /24 项检查全通过/);
@@ -451,7 +451,7 @@ test("publishes the R0.61 quartic target formula and finite scan boundary", asyn
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.61/);
   assert.match(note, /10 项计算检查全通过/);
   assert.match(note, /不同三元组：461 个/);
@@ -496,7 +496,7 @@ test("publishes the R0.62 three-carry reduction and all-index square-root bound"
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.62/);
   assert.match(note, /4 项整数检查全通过/);
   assert.match(note, /新增完整目标：3,584 个/);
@@ -544,7 +544,7 @@ test("publishes the R0.63 time-layer factorization and lifted transfer boundary"
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.63/);
   assert.match(note, /4 项审计检查全通过/);
   assert.match(note, /时间层比较：27 项/);
@@ -591,7 +591,7 @@ test("publishes the R0.64 exact reachable supercritical cycle", async () => {
   assert.ok(home.includes("R0.64 已完成："));
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.64/);
   assert.match(note, /9 项审计检查全通过/);
   assert.match(note, /状态维数：48/);
@@ -632,7 +632,7 @@ test("publishes the R0.65 exact-moment heat-weighted cycle enclosures", async ()
   assert.match(home, /href="\/notes\/r0-65\.html"/);
   assert.ok(home.includes("R0.65 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.65/);
   assert.match(note, /11 项审计检查全通过/);
   assert.match(note, /最高总次数：96/);
@@ -673,7 +673,7 @@ test("publishes the R0.66 nonzero dominant spectral projection", async () => {
   assert.match(home, /href="\/notes\/r0-66\.html"/);
   assert.ok(home.includes("R0.66 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.72 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.73 · 2026-08-21"));
   assert.match(note, /研究笔记 R0\.66/);
   assert.match(note, /26 项正式检查全通过/);
   assert.match(note, /仿射分支：12,288 条/);

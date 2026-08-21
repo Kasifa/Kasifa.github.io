@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.72"></script>
+  <script defer src="/i18n-en.js?v=0.73"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4745,6 +4745,34 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69N：</strong>&nbsp;检验负阶 Sobolev 与 Hardy–BMO 近场对偶，要求在适当弱解能量空间中有意义、保留 \(2^{-5m}\) 远场增益，并避开已有正则性混合范数。</p>
           </div>
+
+          <div class="task-one" id="r069n" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69N · 2026-08-21</p>
+            <h3>精确应力交换子到达空间能量层级，但时间积分仍是三次的</h3>
+            <p>
+              我先检验 Hardy–BMO：div–curl 确实给出
+              \(\|q_v\|_{\mathcal H^1}\lesssim\|\nabla v\|_2^2\)，
+              但其对偶线满足 \(sp'=3\)，高于能量耗散点
+              \(W^{1,2}\)；Hilbert 对偶需要 \(3/2\) 阶导数。
+            </p>
+            <p>
+              随后利用 \(\mathcal T(S[v])=0\) 得到精确截断交换子，把近场压力改写成
+              \[
+                r^3|\mathcal P_{v,r}|
+                \le C_qX_q(D_A^{1/2}+\sigma_A+\mu_A).
+              \]
+              这移除了过强的 \(L^2\) 压力源范数，并保留过渡项与
+              \(2^{-5m}\) 远场增益。17 项形式检查全部通过。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;\(q=4\) 是该能量插值族内最优端点，但 Young 后仍留下 \(\mu_v\sigma_v^3\)。时间尖峰证明二次 CKN 质量不能通过纯时间不等式控制该三次项；尖峰不是 Navier–Stokes 解。</p>
+            <p>
+              <a href="/notes/r0-69n.html"><strong>阅读 R0.69N 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69n-energy-commutator.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069n">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069n-energy-commutator/fig-r069n-energy-commutator">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69O：</strong>&nbsp;检验局部能量不等式、反向热核截断与时间频率分解，能否把时间积分后的 \(\mu_v\sigma_v^3\) 降到二次 CKN 量加可吸收耗散。</p>
+          </div>
         </section>
 
       </article>
@@ -4758,8 +4786,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.72 · 2026-08-21<br>
-        上次综述 v0.71 · 2026-08-21<br>
+        综述 v0.73 · 2026-08-21<br>
+        上次综述 v0.72 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

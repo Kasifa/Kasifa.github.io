@@ -67,7 +67,10 @@ test("archives the source-locked R0.69O certificate", async () => {
   assert.equal(certificate.status, "passed");
   assert.equal(Object.keys(certificate.checks).length, 18);
   assert.ok(Object.values(certificate.checks).every(Boolean));
-  assert.equal(certificate.provenance.sourceCommit, "SOURCE_COMMIT_PLACEHOLDER");
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "46f217d0d6cb29f3a60e8c5a101e92c6f7e8e560",
+  );
   assert.match(readme, /quadratic enstrophy/i);
   assert.match(resources, /exited:0/);
 

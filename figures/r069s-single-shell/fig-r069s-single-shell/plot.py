@@ -316,7 +316,7 @@ def render(values) -> None:
     right.text(
         0.06,
         0.13,
-        r"$\Gamma=\sum_m |F_m|/|\sum_mF_m|=1$",
+        r"$\Gamma=|\sum_mF_m|/\sum_m |F_m|=1$",
         transform=right.transAxes,
         color=INK,
         fontsize=5.7,

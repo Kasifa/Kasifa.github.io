@@ -1405,6 +1405,7 @@ def build_radial_cells(
     cutoff: CutoffCertificate,
     core_cells: int,
     plateau_cells: int,
+    boundary_refinement: int = 1,
 ) -> list[RadialCell]:
     cells: list[RadialCell] = []
     zero = Interval.exact_integer(0)
@@ -1422,21 +1423,42 @@ def build_radial_cells(
                 constant_poly(zero),
             )
         )
-    for index, profile in enumerate(cutoff.profiles):
+    boundary_bands = (
+        (
+            Fraction(1) + TRANSITION_A - MOLLIFIER_RADIUS,
+            Fraction(1) + TRANSITION_A + MOLLIFIER_RADIUS,
+        ),
+        (
+            Fraction(1) + TRANSITION_B - MOLLIFIER_RADIUS,
+            Fraction(1) + TRANSITION_B + MOLLIFIER_RADIUS,
+        ),
+    )
+
+    def subdivisions(lower: Fraction, upper: Fraction) -> int:
+        if any(lower < band_upper and upper > band_lower for band_lower, band_upper in boundary_bands):
+            return boundary_refinement
+        return 1
+
+    for index in range(cutoff.cells):
         scaled_lower = cutoff.nodes[index]
         scaled_upper = cutoff.nodes[index + 1]
-        lower = EPSILON * scaled_lower
-        upper = EPSILON * scaled_upper
-        cells.append(
-            RadialCell(
-                lower,
-                upper,
-                "inner-transition",
-                affine_poly(profile[0], one - profile[0]),
-                affine_poly(profile[1], -profile[1]),
-                affine_poly(profile[2], -profile[2]),
+        count = subdivisions(scaled_lower, scaled_upper)
+        for subindex in range(count):
+            sub_lower = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex, count)
+            sub_upper = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex + 1, count)
+            profile = cutoff.profile_interval(sub_lower, sub_upper)
+            lower = EPSILON * sub_lower
+            upper = EPSILON * sub_upper
+            cells.append(
+                RadialCell(
+                    lower,
+                    upper,
+                    "inner-transition",
+                    affine_poly(profile[0], one - profile[0]),
+                    affine_poly(profile[1], -profile[1]),
+                    affine_poly(profile[2], -profile[2]),
+                )
             )
-        )
     plateau_length = ACTIVE_LOW - INNER_ACTIVE_HIGH
     for index in range(plateau_cells):
         lower = INNER_ACTIVE_HIGH + plateau_length * Fraction(index, plateau_cells)
@@ -1453,19 +1475,24 @@ def build_radial_cells(
                 constant_poly(zero),
             )
         )
-    for index, profile in enumerate(cutoff.profiles):
-        lower = cutoff.nodes[index]
-        upper = cutoff.nodes[index + 1]
-        cells.append(
-            RadialCell(
-                lower,
-                upper,
-                "outer-transition",
-                affine_poly(zero, profile[0]),
-                affine_poly(zero, profile[1]),
-                affine_poly(zero, profile[2]),
+    for index in range(cutoff.cells):
+        scaled_lower = cutoff.nodes[index]
+        scaled_upper = cutoff.nodes[index + 1]
+        count = subdivisions(scaled_lower, scaled_upper)
+        for subindex in range(count):
+            lower = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex, count)
+            upper = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex + 1, count)
+            profile = cutoff.profile_interval(lower, upper)
+            cells.append(
+                RadialCell(
+                    lower,
+                    upper,
+                    "outer-transition",
+                    affine_poly(zero, profile[0]),
+                    affine_poly(zero, profile[1]),
+                    affine_poly(zero, profile[2]),
+                )
             )
-        )
     return cells
 
 
@@ -1982,8 +2009,11 @@ def radial_cell_profile_data(
                 np.asarray(float(scaled_upper)),
                 order,
             )
-            for order in range(5)
+            for order in range(4)
         ) + (
+            cutoff.high_derivative_range(
+                scaled_lower, scaled_upper, 4
+            ),
             cutoff.high_derivative_range(
                 scaled_lower, scaled_upper, 5
             ),
@@ -3416,6 +3446,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--moment-power", type=int, default=16)
     parser.add_argument("--core-cells", type=int, default=128)
     parser.add_argument("--plateau-cells", type=int, default=256)
+    parser.add_argument("--boundary-refinement", type=int, default=1)
     parser.add_argument("--arb-precision", type=int, default=160)
     parser.add_argument("--source-commit")
     parser.add_argument("--workers", type=int, default=1)
@@ -3454,8 +3485,13 @@ def main() -> int:
             direct_core_function,
             symbolic_audits,
         ) = derive_radial_functions()
+        if arguments.boundary_refinement < 1:
+            raise SystemExit("--boundary-refinement must be positive")
         radial_cells = build_radial_cells(
-            cutoff, arguments.core_cells, arguments.plateau_cells
+            cutoff,
+            arguments.core_cells,
+            arguments.plateau_cells,
+            arguments.boundary_refinement,
         )
         setup_record = {
             "timestampUtc": datetime.now(timezone.utc).isoformat(),
@@ -3519,6 +3555,7 @@ def main() -> int:
             "momentCells": 1 << arguments.moment_power,
             "coreCells": arguments.core_cells,
             "plateauCells": arguments.plateau_cells,
+            "boundaryRefinement": arguments.boundary_refinement,
             "arbPrecisionBits": arguments.arb_precision,
             "workers": arguments.workers,
             "workerIndex": arguments.worker_index,

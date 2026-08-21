@@ -58,7 +58,10 @@ test("archives the source-locked R0.69M certificate", async () => {
   assert.equal(certificate.status, "passed");
   assert.equal(Object.keys(certificate.checks).length, 14);
   assert.ok(Object.values(certificate.checks).every(Boolean));
-  assert.equal(certificate.provenance.sourceCommit, "__SOURCE_COMMIT__");
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "dd6411d1386328a3b873c410dfe5d52e89596591",
+  );
   assert.match(readme, /not a new epsilon-regularity criterion/i);
   assert.match(resources, /exited:0/);
 

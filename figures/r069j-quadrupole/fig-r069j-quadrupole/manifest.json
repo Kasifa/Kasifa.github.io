@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Does harmonic Taylor subtraction control the whole far-field pressure Hessian?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "signed source geometry plus normalized scale comparison",
+    "nonColorEncoding": "circle versus square sources, opposing arrows, solid-circle versus dashed-square curves, and hatching",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "Taylor subtraction improves the harmonic remainder but leaves the leading quadrupole"
+  },
+  "claimBoundary": "scalar pressure-source witness only; no Navier-Stokes regularity or singularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "four signed sources, three center-jet orders, and one scale-ratio envelope",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact symbolic certificate values",
+    "solver": "exact SymPy multipole certificate",
+    "wallTimeSeconds": 0.43091220798669383
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 154.25,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T08:25:00+08:00",
+  "data": [
+    {
+      "bytes": 79,
+      "path": "witness-source.csv",
+      "schema": "label, xOverR, yOverR, weight",
+      "sha256": "7cd584b0c4abeaf676ecd4eb3019214c739bee05faf72a755647df9889b6b2d1"
+    },
+    {
+      "bytes": 1033,
+      "path": "scale-gain.csv",
+      "schema": "rOverR, leadingQuadrupoleNormalized, remainderEnvelopeNormalized",
+      "sha256": "1f8a991cfb14766d83ae0ce7d01ba50c088fbae58d949183370c78859f34dd40"
+    },
+    {
+      "bytes": 92,
+      "path": "quadrupole-eigenvalues.csv",
+      "schema": "axis, fourPiEigenvalue, actualEigenvalue",
+      "sha256": "ceee820297a0b5f82ba859ef81bd516b1dbfe4b0ecc42c632d0b71afc2cb88dd"
+    },
+    {
+      "bytes": 635,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and exact witness properties",
+      "sha256": "d7620a6106f444013d3776f2e350bbc0fd2347479db52240a231a97f260be322"
+    },
+    {
+      "bytes": 358,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "3025455193be422e4b363856d063cbc079670317026d4d1dfbb16dd5b2af0fa0"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "cb1fa6615825566ffc46f7fcae18c3c27aba10bf005a095ba80c19dcebea81bc"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 25433,
+        "path": "figure.pdf",
+        "sha256": "06a5d4b22920700d9ab08551745575989d0fb2e4dcd479acc303d17d715a35fb"
+      },
+      {
+        "bytes": 49282,
+        "path": "figure.svg",
+        "sha256": "3c90945c22512fa76ec5122e5545b446711cb800c0ce8060c66d2d22b08d188a"
+      },
+      {
+        "bytes": 371692,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "adf70732080989c6045d1a7b63d2035d18b5641b43352f87b46221a82d379e98"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069j-quadrupole",
+  "git": {
+    "certificateCommit": "83076596d7f2664d81888d9acb24f134d9b3ac5f",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "7271dd542389ab22b24f6f54980e7d2763188c2f"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 1945,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "harmonic-pressure-quadrupole.json",
+      "location": "research/certificates/r069j/harmonic-pressure-quadrupole.json",
+      "sha256": "5b8b2a9288123b4a664dc8c6bf8882220ffcf5422791ae9f2d9c0eb02517ed73"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the far-field remainder gains r/R, but a zero-mass zero-dipole source retains a nonzero trace-free constant quadrupole"
+}

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69R：在有符号 Biot–Savart 表示中保留精确涡量差分，完成近场与远场估计、最优半径、缩放唯一性和 Young 端点审计。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69R｜非局部涡量差分消去奇性，却仍回到经典六次代价">
+  <meta property="og:description" content="近场差分真实降低一个核奇性阶；远场能量与精确尺度优化却唯一恢复 A^(3/2)B^(3/2)，吸收后仍为 A^6。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69r-nonlocal-difference.png">
+  <title>R0.69R｜非局部涡量差分消去奇性，却仍回到经典六次代价</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.77">
+  <style>.hero h1{font-size:clamp(2rem,4.15vw,3.55rem)}</style>
+  <script defer src="/i18n-en.js?v=0.77"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#kernel">有符号核</a><a href="#difference">精确差分</a><a href="#near">近场</a><a href="#far">远场</a><a href="#optimize">优化</a><a href="#scaling">缩放</a><a href="#young">吸收</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69R · 非局部涡量差分的无增益定理</div>
+        <h1>差分消掉了近场奇性，<br>但远场把指数精确送回原点</h1>
+        <p class="lead">我没有先把涡量模长与方向拆开，而是把 \(\omega(x)\times\omega(x+z)\) 改写为精确涡量差分，再把完整空间分成近场与远场。近场核由临界的 \(ds/s\) 变成可积的 \(ds\)，这个改善是真实的；然而远场只能由 enstrophy 控制。对分裂半径做精确优化后，结果唯一回到 \(A^{3/2}B^{3/2}\)，Young 吸收仍产生 \(A^6\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69R 完成</span><strong>绝对值范数近远场路线关闭，转向有符号尺度通量</strong><p>版本 v0.69R · 2026-08-21</p><p>形式检查：15 / 15 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.37 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#kernel">01 · 有符号拉伸核</a></li>
+        <li><a href="#difference">02 · 精确差分</a></li>
+        <li><a href="#near">03 · 近场降奇性</a></li>
+        <li><a href="#far">04 · 远场恢复尺度</a></li>
+        <li><a href="#optimize">05 · 最优分裂半径</a></li>
+        <li><a href="#scaling">06 · 指数唯一性</a></li>
+        <li><a href="#young">07 · Young 六次端点</a></li>
+        <li><a href="#meaning">08 · 对总问题的意义</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#next">10 · 下一步</a></li>
+        <li><a href="#reproduce">11 · 复现</a></li>
+        <li><a href="#sources">12 · 来源与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>非局部差分改善核，却没有改善最终范数指数</h2>
+          <p>令 \(A=\|\omega\|_{L^2(\mathbb R^3)}\)、\(B=\|\nabla\omega\|_{L^2(\mathbb R^3)}\)。对任意 \(r>0\)，完整的绝对拉伸生产满足</p>
+          <div class="equation result">\[
+            \boxed{\int_{\mathbb R^3}|\omega|^2|\xi\cdot S\xi|\,dx
+            \le C_{\rm n}rA^{1/2}B^{5/2}
+            +C_{\rm f}r^{-3/2}A^3.}
+          \]</div>
+          <p>精确最小化右端得到</p>
+          <div class="equation result">\[
+            \boxed{r_*=\left(\frac{3C_{\rm f}}{2C_{\rm n}}\right)^{2/5}\frac AB,
+            \qquad \int|\omega|^2|\xi\cdot S\xi|
+            \le C_*A^{3/2}B^{3/2}.}
+          \]</div>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这关闭的是“近场取差分、远场只用能量、随后逐项取绝对值”的范数路线。它没有否定不同尺度之间的有符号抵消，也没有证明全局正则性、有限时爆破或千禧年问题。</div>
+        </section>
+
+        <section id="kernel"><div class="section-no">01 / Signed stretching kernel</div><h2>几何表示把拉伸写成跨空间点的幅值—方向耦合</h2>
+          <p>在 \(\rho=|\omega|>0\) 上写 \(\xi=\omega/\rho\)、\(\alpha=\xi\cdot S\xi\)。全空间几何表示具有形式</p>
+          <div class="equation">\[
+            \alpha(x)=\frac{3}{4\pi}\operatorname{p.v.}\!\int_{\mathbb R^3}
+            D(\widehat z,\xi(x+z),\xi(x))
+            \frac{\rho(x+z)}{|z|^3}\,dz,
+          \]</div>
+          <p>其中 \(D(e_1,e_2,e_3)=(e_1\cdot e_3)[e_1\cdot(e_2\times e_3)]\)，且 \(|D|\le|e_2\times e_3|\)。和只控制 \(|\nabla\xi|\) 的路线不同，这个表示在同一个积分核里保留了邻点涡量的模长与方向。</p>
+        </section>
+
+        <section id="difference"><div class="section-no">02 / Exact difference</div><h2>交叉积自动减去常量部分，无需预设方向连续模</h2>
+          <p>关键恒等式不是估计，而是精确消去：</p>
+          <div class="equation result">\[
+            \boxed{\omega(x)\times\omega(x+z)
+            =\omega(x)\times\bigl(\omega(x+z)-\omega(x)\bigr).}
+          \]</div>
+          <p>于是 \(\rho(x)^2\rho(x+z)|\xi(x+z)\times\xi(x)|\) 可由 \(\rho(x)^2|\omega(x+z)-\omega(x)|\) 控制。这个步骤把方向差与模长差重新合并，避免了 R0.69Q 中 \(\rho=0\) 附近的 \(\nabla\log\rho\) 漂移。</p>
+        </section>
+
+        <section id="near"><div class="section-no">03 / Near field</div><h2>差分真实移除一个近场奇性阶，但付出一阶导数</h2>
+          <p>对 \(|z|\le r\)，微积分基本定理给出</p>
+          <div class="equation">\[
+            |\omega(x+z)-\omega(x)|
+            \le |z|\int_0^1|\nabla\omega(x+\theta z)|\,d\theta.
+          \]</div>
+          <p>结合中心 Hardy–Littlewood 极大算子的径向估计</p>
+          <div class="equation">\[
+            \int_{|z|\le r}\frac{|\omega(x+z)-\omega(x)|}{|z|^3}\,dz
+            \le4\pi r\,M(|\nabla\omega|)(x),
+          \]</div>
+          <p>再用 \(L^2\) 极大算子界、Hölder 与三维 Gagliardo–Nirenberg 不等式，得到</p>
+          <div class="equation result">\[
+            \boxed{|\mathcal V_{\rm near}|
+            \le Cr\|\omega\|_4^2\|\nabla\omega\|_2
+            \le C_{\rm n}rA^{1/2}B^{5/2}.}
+          \]</div>
+          <p>原先临界的径向测度 \(ds/s\) 确实变成 \(ds\)；损失发生在极大函数中的一阶导数，不是差分无效。</p>
+        </section>
+
+        <section id="far"><div class="section-no">04 / Far field</div><h2>有限 enstrophy 控制远场，同时恢复丢失的尺度</h2>
+          <p>截断核的 \(L^2\) 范数可以精确计算：</p>
+          <div class="equation">\[
+            \left\|\mathbf1_{\{|z|>r\}}|z|^{-3}\right\|_2^2
+            =4\pi\int_r^\infty s^{-4}\,ds=\frac{4\pi}{3r^3}.
+          \]</div>
+          <p>Young 卷积不等式因此给出远场势的 \(L^\infty\) 控制，乘上 \(\rho^2\) 再积分即得</p>
+          <div class="equation result">\[
+            \boxed{|\mathcal V_{\rm far}|\le C_{\rm f}r^{-3/2}A^3.}
+          \]</div>
+          <p>这一步只使用有限 enstrophy，也正是在这里，近场差分获得的尺度改善被远场重新收回。</p>
+        </section>
+
+        <section id="optimize"><div class="section-no">05 / Exact radius optimization</div><h2>最优半径就是 enstrophy 长度，没有剩余小参数</h2>
+          <p>对 \(F(r)=Xr+Yr^{-3/2}\)，唯一临界点和最小值为</p>
+          <div class="equation result">\[
+            \boxed{r_*=\left(\frac{3Y}{2X}\right)^{2/5},\qquad
+            \min_{r>0}F(r)=\frac53\left(\frac32\right)^{2/5}X^{3/5}Y^{2/5}.}
+          \]</div>
+          <p>代入 \(X=C_{\rm n}A^{1/2}B^{5/2}\)、\(Y=C_{\rm f}A^3\)，可见 \(r_*\) 正比于 \(A/B\)，而 \(X^{3/5}Y^{2/5}\) 精确等于常数乘 \(A^{3/2}B^{3/2}\)。所以结果不是任意选取分裂半径造成的松弛。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">06 / Scaling uniqueness</div><h2>只使用 \(A\) 与 \(B\) 时，两个指数被缩放完全锁死</h2>
+          <p>若希望有齐次单项式界 \(|\mathcal V|\le CA^pB^q\)，振幅缩放 \(u\mapsto au\) 要求 \(p+q=3\)。Navier–Stokes 空间缩放 \(u_\lambda(x)=\lambda u(\lambda x)\) 下，\(\mathcal V\mapsto\lambda^3\mathcal V\)、\(A\mapsto\lambda^{1/2}A\)、\(B\mapsto\lambda^{3/2}B\)，所以 \(p+3q=6\)。</p>
+          <div class="equation result">\[
+            \boxed{p+q=3,\qquad p+3q=6
+            \quad\Longrightarrow\quad p=q=\frac32.}
+          \]</div>
+          <p>这意味着，只要最终仍把全部信息压缩成 \(A\) 与 \(B\) 两个全局范数，重新排列 Hölder 或插值步骤不能改变最终指数。</p>
+        </section>
+
+        <section id="young"><div class="section-no">07 / Young endpoint</div><h2>黏性吸收后的最优余项仍然是六次 enstrophy 范数</h2>
+          <p>令 \(D=B^2\)。优化后的非线性为 \(C_*A^{3/2}D^{3/4}\)。对任意 \(\varepsilon>0\)，精确 Young 优化给出</p>
+          <div class="equation result">\[
+            \boxed{C_*A^{3/2}D^{3/4}
+            \le\varepsilon D+
+            \frac{27C_*^4}{256\varepsilon^3}A^6.}
+          \]</div>
+          <p>于是 enstrophy 预算仍是 \(\frac d{dt}A^2+\nu B^2\lesssim\nu^{-3}A^6\) 的经典局部微分控制。它不能为任意大数据提供统一全局上界。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Value for the main problem</div><h2>这是严格的无增益定理，不是正则性突破</h2>
+          <p>正面结果是：不假设方向 Hölder 连续性，精确涡量差分就能把近场核降一个奇性阶。负面结果同样严格：只要远场退回 \(L^2\) enstrophy、并在每个尺度先取绝对值，最优尺度必定回到 \(A/B\)，指数必定回到 \(3/2,3/2\)，时间余项必定回到六次。</p>
+          <div class="proof"><strong>价值判断。</strong>&nbsp;这个版本没有产生新的条件正则性判据，因此尚不足以单独投稿为高水平突破。它的研究价值是关闭一条自然且技术上完整的路线，并证明下一步必须保留第三种信息：有符号跨尺度抵消、临界 Besov/Morrey 量，或模长集中与方向几何之间的动力学约束。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图把近远场平衡、指数唯一性与六次端点放在同一张图上</h2>
+          <figure><img src="/figures/r0-69r-nonlocal-difference.svg" alt="R0.69R 非局部差分近远场优化、缩放指数唯一性与 Young 六次端点"><figcaption>图 R0.69R。左图显示归一化近场项随半径增长、远场项随半径衰减，总和仅在 \(r/r_*=1\) 处取最小值；中图显示振幅与空间缩放约束唯一交于 \(p=q=3/2\)；右图显示精确 Young 余项在归一化耗散 \(D/D_*=1\) 处达到最大值。线型、点标记与纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69r-nonlocal-difference.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69r-nonlocal-difference.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next stage</div><h2>R0.69S 将在取绝对值之前检查有符号尺度局部通量</h2>
+          <p>下一步用环带分割 \(\sum_j\psi_j(z)=1\) 保留几何核的符号，定义尺度贡献</p>
+          <div class="equation">\[
+            \mathcal F_j(t)=\int\rho(x)^2\int
+            \psi_j(z)D(\widehat z,\xi(x+z),\xi(x))
+            \frac{\rho(x+z)}{|z|^3}\,dz\,dx.
+          \]</div>
+          <p>核心问题不是逐个控制 \(|\mathcal F_j|\)，而是研究相邻尺度部分和是否存在可求和的有符号亏损，并把截断误差明确保留为通量。验收标准是得到尺度临界、时间可积且不等价于已知 Serrin/方向相干假设的控制；如果绝对值不可避免地再次出现，就用本版本的缩放审计关闭该子分支。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility</div><h2>源笔记、形式证书与期刊图均由完整提交和哈希锁定</h2>
+          <p>数学源提交为 <code>97cfa19f962309bb62ae3fab0e4dcaef9f9eca38</code>，形式证书提交为 <code>e1ea54cd2e6cecdcae71db5e87980ea5c939d4d2</code>，最终附图提交为 <code>57193d28c92c3f4e382bb608962abaef18b6ae7d</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>4b4292b4eb23cca3210c241deb6ccdd5d5eeec6222ed8bf3e09fab19e6038be8</code>，形式证书 SHA-256 为 <code>39da9891b8c66dc37b9e02db05d6bd469b32ed84fb282578ca3dd997a2217cc5</code>。15 项检查全部通过；监控运行 0.37 秒，峰值常驻内存 67.062 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>38518e61e764fd913493d77af7f57d022a041715162497bf04ec90f33fa0e933</code>、<code>db17e0b4abc7d434a49bbc4baaaea1592d379f64e0c7fb8e679893fc7d6c1c3a</code> 与 <code>252b0c4ecbdc78c11f04c55ab4f191326da212f338dacc06fe19fcc9ecf535ab</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069r">查看 R0.69R 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/nonlocal_vorticity_difference_split_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069r-nonlocal-difference/fig-r069r-nonlocal-difference">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">12 / Sources and boundary</div><h2>经典几何表示与本次路线审计分开陈述</h2>
+          <p>涡量方向的几何耗散机制与奇异积分表示始于 Constantin–Fefferman；Hardy–Littlewood 极大算子、Gagliardo–Nirenberg 插值和近远场分割是标准调和分析工具。本版本不把这些经典工具声明为新结果。</p>
+          <p>主要来源：<a href="https://doi.org/10.1512/iumj.1993.42.42034">Constantin–Fefferman（1993）</a> · <a href="https://doi.org/10.1017/CBO9780511613203">Majda–Bertozzi（2002）</a>。</p>
+          <p>声明边界：本页证明的是精确差分恒等式、近远场估计、最优分裂半径、仅用 \(L^2\) 与 \(\dot H^1\) 范数时的指数唯一性，以及最优 Young 六次余项。它没有排除有符号跨尺度抵消或加入第三个临界量的估计，没有证明全局正则性或有限时奇性，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69R · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

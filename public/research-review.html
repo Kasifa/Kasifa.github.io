@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.76"></script>
+  <script defer src="/i18n-en.js?v=0.77"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4874,6 +4874,39 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69R：</strong>&nbsp;在有符号 Biot–Savart 核中保留 \(\omega(x)\times(\omega(x+z)-\omega(x))\) 的非局部差分，精确优化近场/远场分裂，检验是否出现真正的尺度增益。</p>
           </div>
+
+          <div class="task-one" id="r069r" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69R · 2026-08-21</p>
+            <h3>非局部涡量差分消去一个近场奇性阶，但精确优化仍返回经典六次代价</h3>
+            <p>
+              保留精确恒等式
+              \[
+                \omega(x)\times\omega(x+z)
+                =\omega(x)\times\bigl(\omega(x+z)-\omega(x)\bigr)
+              \]
+              后，近场核从临界径向测度 \(ds/s\) 改善为可积的 \(ds\)。
+              极大函数与三维插值给出
+              \(C_{\rm n}rA^{1/2}B^{5/2}\)，能量控制的远场给出
+              \(C_{\rm f}r^{-3/2}A^3\)。15 项形式检查全部通过。
+            </p>
+            <p>
+              分裂半径的唯一最优值正比于 \(A/B\)，代回后精确得到
+              \[
+                |\mathcal V|\le C_*A^{3/2}B^{3/2}.
+              \]
+              振幅缩放与 Navier–Stokes 空间缩放还证明，只使用
+              \(A=\|\omega\|_2\)、\(B=\|\nabla\omega\|_2\) 时，指数
+              \(p=q=3/2\) 是唯一可能。Young 吸收因而仍产生 \(A^6\) 余项。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;这一步关闭的是逐尺度取绝对值、远场只用 enstrophy 的范数路线。差分改善是真实的，但不足以改变最终指数；有符号跨尺度抵消与第三个临界量仍然开放。这是严格的无增益定理，不是正则性突破。</p>
+            <p>
+              <a href="/notes/r0-69r.html"><strong>阅读 R0.69R 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69r-nonlocal-difference.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069r">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069r-nonlocal-difference/fig-r069r-nonlocal-difference">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69S：</strong>&nbsp;在取绝对值以前按环带保留有符号几何核，研究相邻尺度部分和是否产生可求和的临界通量亏损。</p>
+          </div>
         </section>
 
       </article>
@@ -4887,8 +4920,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.76 · 2026-08-21<br>
-        上次综述 v0.75 · 2026-08-21<br>
+        综述 v0.77 · 2026-08-21<br>
+        上次综述 v0.76 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -11,8 +11,8 @@ test("publishes R0.69P with sharp local stretching geometry and strict boundary"
   ]);
   assert.match(home, /id="r069p"/);
   assert.match(home, /href="\/notes\/r0-69p\.html"/);
-  assert.match(home, /综述 v0\.76 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.76/);
+  assert.match(home, /综述 v0\.77 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.77/);
   assert.match(home, /下一步 R0\.69Q/);
   assert.ok(note.includes("|\\omega\\cdot S\\omega|\\le\\sqrt{\\frac23}\\,|S|\\,|\\omega|^2"));
   assert.ok(note.includes("v_A=\\nabla\\times(\\chi B_A)"));

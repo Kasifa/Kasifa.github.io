@@ -11,8 +11,8 @@ test("publishes R0.69O with dissipation-assisted pressure closure and strict bou
   ]);
   assert.match(home, /id="r069o"/);
   assert.match(home, /href="\/notes\/r0-69o\.html"/);
-  assert.match(home, /综述 v0\.76 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.76/);
+  assert.match(home, /综述 v0\.77 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.77/);
   assert.match(home, /下一步 R0\.69P/);
   assert.match(note, /\\sigma_v\^2\\le C\\mu_v\\mathcal D_v\^\{1\/2\}/);
   assert.match(note, /C\\varepsilon\^\{-3\}\\mu_v\^4\\sigma_v\^2/);

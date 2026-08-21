@@ -152,6 +152,26 @@ def main() -> int:
                 for degree in range(4)
             ],
             "maximumSelectedBoxDetails": maximum_selected_details,
+            "accumulatedAverageWidthDiagnostic": [
+                sum(audit["accumulatedAverageWidthDiagnostic"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "accumulatedRemainderWidthDiagnostic": [
+                sum(audit["accumulatedRemainderWidthDiagnostic"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "accumulatedCenterWidthDiagnostic": [
+                sum(audit["accumulatedCenterWidthDiagnostic"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "accumulatedRrWidthDiagnostic": [
+                sum(audit["accumulatedRrWidthDiagnostic"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "accumulatedSsWidthDiagnostic": [
+                sum(audit["accumulatedSsWidthDiagnostic"][degree] for audit in audits)
+                for degree in range(4)
+            ],
             "workers": expected_workers,
             "allRowsCoveredExactlyOnce": True,
         }

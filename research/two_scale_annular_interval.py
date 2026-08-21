@@ -1686,7 +1686,10 @@ def build_radial_cells(
     core_cells: int,
     plateau_cells: int,
     boundary_refinement: int = 1,
+    transition_cells: int | None = None,
 ) -> list[RadialCell]:
+    if transition_cells is None:
+        transition_cells = cutoff.cells
     cells: list[RadialCell] = []
     zero = Interval.exact_integer(0)
     one = Interval.exact_integer(1)
@@ -1719,9 +1722,13 @@ def build_radial_cells(
             return boundary_refinement
         return 1
 
-    for index in range(cutoff.cells):
-        scaled_lower = cutoff.nodes[index]
-        scaled_upper = cutoff.nodes[index + 1]
+    transition_nodes = [
+        ACTIVE_LOW + ACTIVE_SPAN * Fraction(index, transition_cells)
+        for index in range(transition_cells + 1)
+    ]
+    for index in range(transition_cells):
+        scaled_lower = transition_nodes[index]
+        scaled_upper = transition_nodes[index + 1]
         count = subdivisions(scaled_lower, scaled_upper)
         for subindex in range(count):
             sub_lower = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex, count)
@@ -1755,9 +1762,9 @@ def build_radial_cells(
                 constant_poly(zero),
             )
         )
-    for index in range(cutoff.cells):
-        scaled_lower = cutoff.nodes[index]
-        scaled_upper = cutoff.nodes[index + 1]
+    for index in range(transition_cells):
+        scaled_lower = transition_nodes[index]
+        scaled_upper = transition_nodes[index + 1]
         count = subdivisions(scaled_lower, scaled_upper)
         for subindex in range(count):
             lower = scaled_lower + (scaled_upper - scaled_lower) * Fraction(subindex, count)
@@ -2980,29 +2987,28 @@ class AnnularMomentCertificate:
         )
         result = Interval(prefix_lower[start], prefix_upper[start]) + partial + Interval(-error, error)
         if np.any(~same):
-            fallback = Interval(
-                prefix_lower[np.clip(np.floor(lower_position).astype(int), 0, self.cells)],
-                prefix_upper[np.clip(np.ceil(upper_position).astype(int), 0, self.cells)],
+            lower_endpoint = self.primitive_point(
+                Interval(value.lower, value.lower), moment_power
+            )
+            upper_endpoint = self.primitive_point(
+                Interval(value.upper, value.upper), moment_power
             )
             result = Interval(
-                np.where(same, result.lower, fallback.lower),
-                np.where(same, result.upper, fallback.upper),
+                np.where(same, result.lower, lower_endpoint.lower),
+                np.where(same, result.upper, upper_endpoint.upper),
             )
         return result
 
     def primitive_range(self, value: Interval, moment_power: int) -> Interval:
-        lower_position = np.clip(
-            np.floor(np.clip(value.lower, 0.0, self.maximum) / self.step).astype(int),
-            0,
-            self.cells,
+        lower_value = Interval(value.lower, value.lower)
+        upper_value = Interval(value.upper, value.upper)
+        lower_primitive = self.primitive_point(
+            lower_value, moment_power
         )
-        upper_position = np.clip(
-            np.ceil(np.clip(value.upper, 0.0, self.maximum) / self.step).astype(int),
-            0,
-            self.cells,
+        upper_primitive = self.primitive_point(
+            upper_value, moment_power
         )
-        prefix_lower, prefix_upper = self.prefix[moment_power]
-        return Interval(prefix_lower[lower_position], prefix_upper[upper_position])
+        return Interval(lower_primitive.lower, upper_primitive.upper)
 
     def integrand_derivatives(
         self, value: Interval, moment_power: int
@@ -3326,6 +3332,11 @@ def integrate_coefficients_moment_taylor4(
     maximum_fourth_remainder = [0.0] * 4
     selected_third_boxes = [0] * 4
     selected_fourth_boxes = [0] * 4
+    accumulated_average_width_diagnostic = [0.0] * 4
+    accumulated_remainder_width_diagnostic = [0.0] * 4
+    accumulated_center_width_diagnostic = [0.0] * 4
+    accumulated_rr_width_diagnostic = [0.0] * 4
+    accumulated_ss_width_diagnostic = [0.0] * 4
     maximum_selected_box_details: list[dict[str, object] | None] = [
         None for _ in range(4)
     ]
@@ -3420,13 +3431,16 @@ def integrate_coefficients_moment_taylor4(
             ]),
         )
         for degree in range(4):
-            average = polynomial_coefficient(center_value.coefficient(0, 0), degree)
-            average = average + polynomial_coefficient(
+            center_term = polynomial_coefficient(
+                center_value.coefficient(0, 0), degree
+            )
+            rr_term = polynomial_coefficient(
                 center_value.coefficient(2, 0), degree
             ) * Interval.from_number(width_r**2 / 12.0)
-            average = average + polynomial_coefficient(
+            ss_term = polynomial_coefficient(
                 center_value.coefficient(0, 2), degree
             ) * Interval.from_number(width_s**2 / 12.0)
+            average = center_term + rr_term + ss_term
             c40 = interval_absolute_maximum(
                 polynomial_coefficient(range_value.coefficient(4, 0), degree)
             )
@@ -3511,6 +3525,35 @@ def integrate_coefficients_moment_taylor4(
             selected_fourth_boxes[degree] += int(
                 choose_third.size - np.count_nonzero(choose_third)
             )
+            weight_upper = area.upper * float(pi_interval.upper)
+            accumulated_average_width_diagnostic[degree] += math.fsum(
+                float(value)
+                for value in (
+                    (average.upper - average.lower) * weight_upper
+                )
+            )
+            accumulated_remainder_width_diagnostic[degree] += math.fsum(
+                float(value)
+                for value in (2 * remainder * weight_upper)
+            )
+            accumulated_center_width_diagnostic[degree] += math.fsum(
+                float(value)
+                for value in (
+                    (center_term.upper - center_term.lower) * weight_upper
+                )
+            )
+            accumulated_rr_width_diagnostic[degree] += math.fsum(
+                float(value)
+                for value in (
+                    (rr_term.upper - rr_term.lower) * weight_upper
+                )
+            )
+            accumulated_ss_width_diagnostic[degree] += math.fsum(
+                float(value)
+                for value in (
+                    (ss_term.upper - ss_term.lower) * weight_upper
+                )
+            )
             enclosed = average + Interval(-remainder, remainder)
             boxes = enclosed * area * pi_interval
             row = Interval(
@@ -3557,6 +3600,11 @@ def integrate_coefficients_moment_taylor4(
         "selectedThirdOrderBoxesByCoefficient": selected_third_boxes,
         "selectedFourthOrderBoxesByCoefficient": selected_fourth_boxes,
         "maximumSelectedBoxDetails": maximum_selected_box_details,
+        "accumulatedAverageWidthDiagnostic": accumulated_average_width_diagnostic,
+        "accumulatedRemainderWidthDiagnostic": accumulated_remainder_width_diagnostic,
+        "accumulatedCenterWidthDiagnostic": accumulated_center_width_diagnostic,
+        "accumulatedRrWidthDiagnostic": accumulated_rr_width_diagnostic,
+        "accumulatedSsWidthDiagnostic": accumulated_ss_width_diagnostic,
         "skippedCoreCoreBoxes": first_non_core * (first_non_core + 1) // 2,
     }
 
@@ -3850,6 +3898,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--core-cells", type=int, default=128)
     parser.add_argument("--plateau-cells", type=int, default=256)
     parser.add_argument("--boundary-refinement", type=int, default=1)
+    parser.add_argument("--transition-cells", type=int)
     parser.add_argument("--arb-precision", type=int, default=160)
     parser.add_argument("--source-commit")
     parser.add_argument("--workers", type=int, default=1)
@@ -3890,11 +3939,19 @@ def main() -> int:
         ) = derive_radial_functions()
         if arguments.boundary_refinement < 1:
             raise SystemExit("--boundary-refinement must be positive")
+        transition_cells = (
+            arguments.transition_cells
+            if arguments.transition_cells is not None
+            else arguments.cutoff_cells
+        )
+        if transition_cells < 1:
+            raise SystemExit("--transition-cells must be positive")
         radial_cells = build_radial_cells(
             cutoff,
             arguments.core_cells,
             arguments.plateau_cells,
             arguments.boundary_refinement,
+            transition_cells,
         )
         setup_record = {
             "timestampUtc": datetime.now(timezone.utc).isoformat(),
@@ -3959,6 +4016,7 @@ def main() -> int:
             "coreCells": arguments.core_cells,
             "plateauCells": arguments.plateau_cells,
             "boundaryRefinement": arguments.boundary_refinement,
+            "transitionCells": transition_cells,
             "arbPrecisionBits": arguments.arb_precision,
             "workers": arguments.workers,
             "workerIndex": arguments.worker_index,

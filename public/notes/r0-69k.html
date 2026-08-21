@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69K：利用速度生成压力源的双重散度结构，把远场壳层压力 Hessian 从 R^-3 改善到尖锐的 R^-5。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69K｜速度生成结构带来两个远场衰减幂">
+  <meta property="og:description" content="应力局部化使每个壳层自动零质量、零偶极矩，并给出尖锐的 R^-5 动能控制。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69k-shell-gain.png">
+  <title>R0.69K｜速度生成结构带来两个远场衰减幂</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.70">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.70"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">双重散度</a><a href="#shells">壳层分解</a><a href="#bound">远场界</a><a href="#sharp">尖锐性</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69K · 速度生成的壳层压力结构</div>
+        <h1>真实压力源多出两个<br>远场衰减幂</h1>
+        <p class="lead">一般标量源可以保留 \(R^{-3}\) 四极矩，但 Navier–Stokes 压力源具有双重散度结构。我用应力而不是标量源做 dyadic 局部化，使每个远场壳自动零质量、零偶极矩，并得到 \(R^{-5}\) 动能控制。各向异性速度包表明这个幂次不能普遍继续改进。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69K 完成</span><strong>速度生成的双阶增益</strong><p>版本 v0.69K · 2026-08-21</p><p>形式检查：14 / 14 通过</p><p>精确四阶导数通道：2 个</p><p>监控运行：0.35 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#identity">01 · 压力源恒等式</a></li>
+        <li><a href="#shells">02 · 应力壳层分解</a></li>
+        <li><a href="#bound">03 · \(R^{-5}\) 远场界</a></li>
+        <li><a href="#sharp">04 · 幂次尖锐性</a></li>
+        <li><a href="#meaning">05 · 对总问题的意义</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#next">07 · 下一分支</a></li>
+        <li><a href="#reproduce">08 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified velocity-generated gain</div><h2>速度生成结构把远程壳的压力 Hessian 从 \(R^{-3}\) 改善到 \(R^{-5}\)</h2>
+          <p>对光滑无散速度场，压力源并非任意标量，而满足</p>
+          <div class="equation result">\[
+            \boxed{q:=\operatorname{tr}((\nabla u)^2)
+            =\partial_i\partial_j(u_i u_j),\qquad -\Delta p=q.}
+          \]</div>
+          <p>取非负 dyadic 分区 \(\sum_m\chi_m=1\)，定义</p>
+          <div class="equation">\[
+            T^{(m)}_{ij}=\chi_m u_i u_j,\qquad
+            q_m=\partial_i\partial_jT^{(m)}_{ij}.
+          \]</div>
+          <p>则 \(\sum_mq_m=q\) 精确成立。若第 \(m\) 个壳距观测点约为 \(R_m\)，其常压力 Hessian 满足</p>
+          <div class="equation result">\[
+            \boxed{|Q^{(m)}|\le \frac{C}{R_m^5}
+            \int_{\operatorname{supp}\chi_m}|u|^2\,dy.}
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>EXACT · SOURCE</span><strong>双重散度恒等式</strong><p>没有把压力源当作自由标量。</p></div>
+            <div class="status"><span>EXACT · MOMENTS</span><strong>质量与偶极矩为零</strong><p>每个应力壳分别成立。</p></div>
+            <div class="status"><span>POSITIVE · DECAY</span><strong>多出两个距离幂</strong><p>核从 \(R^{-3}\) 改善到 \(R^{-5}\)。</p></div>
+            <div class="status"><span>SHARP · NONZERO</span><strong>改进系数仍可非零</strong><p>各向异性能量张量给出见证。</p></div>
+          </div>
+        </section>
+
+        <section id="identity"><div class="section-no">01 / Double-divergence identity</div><h2>不可压缩条件把压力源写成速度应力的二阶散度</h2>
+          <div class="equation">\[
+            \begin{aligned}
+            \partial_i\partial_j(u_i u_j)
+            &=\partial_i\bigl((\partial_j u_i)u_j+u_i\partial_j u_j\bigr)\\
+            &=\partial_i u_j\,\partial_j u_i
+            =\operatorname{tr}((\nabla u)^2).
+            \end{aligned}
+          \]</div>
+          <p>关键不是形式上的分部积分，而是把截断放在 \(u_i u_j\) 上。若先写成 \(\chi_mq\)，截断交换子会丢失壳层矩相消。</p>
+        </section>
+
+        <section id="shells"><div class="section-no">02 / Stress-localized shells</div><h2>每个壳层源自动消去前两阶标量多极矩</h2>
+          <p>由于 \(T^{(m)}\) 紧支撑，分部积分给出</p>
+          <div class="equation result">\[
+            \boxed{\int q_m\,dy=0,\qquad
+            \int y_kq_m(y)\,dy=0.}
+          \]</div>
+          <p>第二矩则不是任意有符号张量，而是壳层动能应力：</p>
+          <div class="equation result">\[
+            \boxed{\int y_a y_bq_m(y)\,dy
+            =2\int\chi_m(y)u_a(y)u_b(y)\,dy.}
+          \]</div>
+          <p>右端为正半定矩阵。这说明 R0.69J 的一般标量四源见证不能直接作为速度生成壳层源。</p>
+        </section>
+
+        <section id="bound"><div class="section-no">03 / Absolute far-tail bound</div><h2>对 Newton Hessian 核再分部两次产生 \(R_m^{-5}\)</h2>
+          <p>记 \(K_{ab}(z)=\partial_a\partial_b(4\pi|z|)^{-1}\)。远程壳与观测球分离时，</p>
+          <div class="equation">\[
+            Q^{(m)}_{ab}
+            =\int\partial_i\partial_jK_{ab}(-y)
+            \,\chi_m(y)u_i(y)u_j(y)\,dy.
+          \]</div>
+          <p>因为 \(|\nabla^2K(z)|\le C|z|^{-5}\)，所有位于半径 \(R\) 外的壳满足</p>
+          <div class="equation result">\[
+            \boxed{\left|\sum_{R_m\ge R}Q^{(m)}\right|
+            \le \frac{C}{R^5}\sum_{R_m\ge R}\int\chi_m|u|^2
+            \le \frac{C}{R^5}\|u\|_2^2.}
+          \]</div>
+          <p>这个绝对尾界不需要假设跨壳同号相消、Carleson 性或 square-function 界。</p>
+        </section>
+
+        <section id="sharp"><div class="section-no">04 / Sharp anisotropic coefficient</div><h2>正半定能量张量仍可产生严格非零的 \(R^{-5}\) 四极矩</h2>
+          <p>在 \(Re_1\) 方向，精确四阶导数给出两个速度通道。取壳层能量张量</p>
+          <div class="equation">\[
+            E=\operatorname{diag}(1,2,0),
+          \]</div>
+          <p>则</p>
+          <div class="equation result">\[
+            \boxed{4\pi Q_R=\frac1{R^5}\operatorname{diag}(0,6,-6),\qquad
+            \operatorname{diag}(1,-1,0):Q_R
+            =-\frac{3}{2\pi R^5}\ne0.}
+          \]</div>
+          <p>该能量比可由紧支撑无散流函数包实现。因此 \(R^{-5}\) 是真实速度生成源的尖锐远场幂，而不是审计中的人工张量。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">05 / Value for the main problem</div><h2>这是压力非局部性上的真实增益，但仍不是全局次临界估计</h2>
+          <p>R0.69J 对一般标量源找到 \(R^{-3}\) 四极矩障碍；R0.69K 证明该障碍在真实速度生成源下必须重新组织。应力局部化恢复两个矩相消，并把远场压到 \(R^{-5}\)。</p>
+          <p>然而 \(R^{-5}\|u\|_2^2\) 在 Navier–Stokes 缩放下仍与压力 Hessian 同阶。它提供的是远近分离参数上的小量，而不是固定尺度上的全局闭合。</p>
+          <p>尚未控制的是近场壳与截断过渡环带。只有把这两部分和远场尾放回同一局部应变预算，才能判断净增益是否保留。本页没有给出正则性或奇性结论，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>附图比较两个距离幂，并显示改进系数仍然非零</h2>
+          <figure><img src="/figures/r0-69k-shell-gain.svg" alt="R0.69K 标量源与速度生成壳层的远场衰减比较"><figcaption>图 R0.69K。左图比较一般标量源的 \(R^{-3}\) 与速度生成应力壳的 \(R^{-5}\)；右图显示正半定能量张量产生的归一化四极矩特征值 \(0,6,-6\)。实虚线、圆方标记和纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69k-shell-gain.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69k-shell-gain.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next three-zone budget</div><h2>R0.69L 把近场、过渡环带和远场尾放在同一尺度上</h2>
+          <div class="proof"><strong>R0.69L 的通过标准。</strong>&nbsp;选取观测半径 \(r\) 与分离比 \(A>2\)，对 \(|y|\lesssim r\)、\(r\lesssim|y|\lesssim Ar\) 和 \(|y|\gtrsim Ar\) 分别记账。远场必须保留 \(A^{-5}\) 增益；近场 Calderón–Zygmund 项和环带通量必须使用相同缩放归一化。若优化 \(A\) 后仍无可吸收小量，就给出明确的临界障碍式。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">08 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>b2c7ad329eba2df516dd251a1f74af42ad153e74</code>，形式证书提交为 <code>83049f868fb0ea2b393e0b469fa9f2343c6602cf</code>，最终附图提交为 <code>d6da35131624ffac7f18c00c21aeb815f1e2ff21</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>f0c703e0ac7907f337cbc40eef59da59fc85eebcbf1a49e5ce0f63a8bba1c93c</code>，形式证书 SHA-256 为 <code>a638fc121e7d91bf009d939a12f831b134fe8b5a2aa779c14880d5871c36f8fa</code>。14 项检查全部通过；监控运行 0.35 秒，峰值常驻内存 65.781 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>b54f3a980f77274659d6162dd17cb5cf78956e1baac9bf003931445b0f36e126</code>、<code>59ccf7f4689a1311534a99911f111e6f2dff161681de3272a0a11f0387fd2a4b</code> 与 <code>e49b713efaa34ff083f903cc5d80c7b581e7dfd0ccb2d56cef7ee283bfb9e1cb</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069k">查看 R0.69K 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/velocity_generated_shell_quadrupole_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069k-shell-gain/fig-r069k-shell-gain">查看期刊附图包</a></p>
+          <p>声明边界：本页只证明速度生成压力源的远程壳分离增益及其尖锐性。近场与过渡环带仍未闭合，不给出 Navier–Stokes 正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69K · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

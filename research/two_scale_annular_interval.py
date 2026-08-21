@@ -3482,6 +3482,13 @@ def integrate_coefficients_moment_taylor4(
                 for pos, index in enumerate(indices)
             ]),
         )
+        row_center_widths = [0.0] * 4
+        row_rr_widths = [0.0] * 4
+        row_ss_widths = [0.0] * 4
+        row_remainder_widths = [0.0] * 4
+        row_maximum_center_box: list[dict[str, object] | None] = [
+            None for _ in range(4)
+        ]
         for degree in range(4):
             center_term = polynomial_coefficient(
                 center_value.coefficient(0, 0), degree
@@ -3578,34 +3585,44 @@ def integrate_coefficients_moment_taylor4(
                 choose_third.size - np.count_nonzero(choose_third)
             )
             weight_upper = area.upper * float(pi_interval.upper)
+            center_width_values = (
+                center_term.upper - center_term.lower
+            ) * weight_upper
+            rr_width_values = (rr_term.upper - rr_term.lower) * weight_upper
+            ss_width_values = (ss_term.upper - ss_term.lower) * weight_upper
+            remainder_width_values = 2 * remainder * weight_upper
+            row_center_widths[degree] = math.fsum(
+                float(value) for value in center_width_values
+            )
+            row_rr_widths[degree] = math.fsum(
+                float(value) for value in rr_width_values
+            )
+            row_ss_widths[degree] = math.fsum(
+                float(value) for value in ss_width_values
+            )
+            row_remainder_widths[degree] = math.fsum(
+                float(value) for value in remainder_width_values
+            )
+            maximum_center_position = int(np.argmax(center_width_values))
+            row_maximum_center_box[degree] = {
+                "rightIndex": int(indices[maximum_center_position]),
+                "rightRole": radial_cells[
+                    int(indices[maximum_center_position])
+                ].role,
+                "weightedCenterWidth": float(
+                    center_width_values[maximum_center_position]
+                ),
+            }
             accumulated_average_width_diagnostic[degree] += math.fsum(
                 float(value)
                 for value in (
                     (average.upper - average.lower) * weight_upper
                 )
             )
-            accumulated_remainder_width_diagnostic[degree] += math.fsum(
-                float(value)
-                for value in (2 * remainder * weight_upper)
-            )
-            accumulated_center_width_diagnostic[degree] += math.fsum(
-                float(value)
-                for value in (
-                    (center_term.upper - center_term.lower) * weight_upper
-                )
-            )
-            accumulated_rr_width_diagnostic[degree] += math.fsum(
-                float(value)
-                for value in (
-                    (rr_term.upper - rr_term.lower) * weight_upper
-                )
-            )
-            accumulated_ss_width_diagnostic[degree] += math.fsum(
-                float(value)
-                for value in (
-                    (ss_term.upper - ss_term.lower) * weight_upper
-                )
-            )
+            accumulated_remainder_width_diagnostic[degree] += row_remainder_widths[degree]
+            accumulated_center_width_diagnostic[degree] += row_center_widths[degree]
+            accumulated_rr_width_diagnostic[degree] += row_rr_widths[degree]
+            accumulated_ss_width_diagnostic[degree] += row_ss_widths[degree]
             enclosed = average + Interval(-remainder, remainder)
             boxes = enclosed * area * pi_interval
             row = Interval(
@@ -3614,11 +3631,22 @@ def integrate_coefficients_moment_taylor4(
             )
             total[degree] = total[degree] + row
         evaluated_boxes += indices.size
-        if progress is not None and (
-            completed_rows == 1
-            or completed_rows % max(1, len(assigned_rows) // 20) == 0
-            or completed_rows == len(assigned_rows)
-        ):
+        if progress is not None:
+            moment_center_widths = {
+                str(power): float(
+                    np.max(
+                        center_moments[position]
+                        .coefficient(0, 0)
+                        .coefficients[0]
+                        .upper
+                        - center_moments[position]
+                        .coefficient(0, 0)
+                        .coefficients[0]
+                        .lower
+                    )
+                )
+                for position, power in enumerate(ANNULAR_POWERS)
+            }
             record = {
                 "timestampUtc": datetime.now(timezone.utc).isoformat(),
                 "event": "moment-taylor4-progress",
@@ -3629,6 +3657,14 @@ def integrate_coefficients_moment_taylor4(
                 "workers": workers,
                 "evaluatedRadialBoxes": evaluated_boxes,
                 "coefficientIntervals": [value.scalar() for value in total],
+                "rowWidthDiagnostics": {
+                    "center": row_center_widths,
+                    "rr": row_rr_widths,
+                    "ss": row_ss_widths,
+                    "remainder": row_remainder_widths,
+                    "maximumCenterBox": row_maximum_center_box,
+                    "momentCenterMaximumWidths": moment_center_widths,
+                },
             }
             progress.write(json.dumps(record, sort_keys=True) + "\n")
             progress.flush()

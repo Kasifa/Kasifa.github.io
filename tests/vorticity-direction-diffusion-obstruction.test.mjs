@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -38,4 +39,32 @@ test("reproduces the R0.69Q exact symbolic audit", () => {
   assert.equal(result.affineCore.positiveStretching, "sqrt(6)*s*w**2/3");
   assert.equal(result.scalingObstruction.ratio, "L**2*P*a/(D*nu)");
   assert.equal(result.shortTimeObstruction.fullDissipationAverageLimit, "0");
+});
+
+test("archives the source-locked R0.69Q certificate", async () => {
+  const certificateRoot = new URL("../research/certificates/r069q/", import.meta.url);
+  const [certificateText, sumsText, readme, resources] = await Promise.all([
+    readFile(new URL("vorticity-direction-diffusion-obstruction.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("resources.csv", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 18);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "c5e19140c3dc79d22eb368e63dc2014681afff18",
+  );
+  assert.match(readme, /radial--angular split/i);
+  assert.match(readme, /short-time interior-dissipation obstruction/i);
+  assert.match(resources, /exited:0/);
+
+  for (const line of sumsText.trim().split("\n")) {
+    const [expected, fileName] = line.trim().split(/\s+/, 2);
+    const payload = await readFile(new URL(fileName, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, expected, fileName + " hash mismatch");
+  }
 });

@@ -1,0 +1,60 @@
+{
+  "affineCore": {
+    "amplitudeGradient": "0",
+    "directionGradient": "0",
+    "positiveStretching": "sqrt(6)*s*w**2/3",
+    "strain": "s*diag(-1,-1,2)/sqrt(6)",
+    "vorticity": "w*e3"
+  },
+  "checks": {
+    "absorptionRatioHasSupercriticalFactor": true,
+    "affineCoreHasConstantVorticity": true,
+    "affineCoreHasZeroAmplitudeGradient": true,
+    "affineCoreHasZeroDirectionGradient": true,
+    "affineCoreSaturatesPositiveStretching": true,
+    "affineJetIsDivergenceFree": true,
+    "directionEquationChainRule": true,
+    "magnitudeEquationChainRule": true,
+    "polarGradientNormSplitsExactly": true,
+    "positivePartScalesCubically": true,
+    "projectedLaplacianIdentity": true,
+    "quadraticPotentialRecoversAffineJet": true,
+    "sourceCommitHasFortyHexCharacters": true,
+    "sourceCommitMatchesHead": true,
+    "strainWitnessIsSymmetric": true,
+    "strainWitnessIsTraceFree": true,
+    "unitDirectionLaplacianConstraint": true,
+    "vorticityDissipationScalesAsLength": true
+  },
+  "claimBoundary": {
+    "notProved": "failure of nonlocal geometric criteria, global regularity, or blow-up",
+    "proved": "exact polar identities and affine-core plus short-time obstruction to interior-only dissipation absorption"
+  },
+  "polarIdentities": {
+    "direction": "D_t xi=(I-xi tensor xi)Sxi+nu(I-xi tensor xi)Delta xi+2nu grad(log rho).grad xi",
+    "dissipation": "|grad omega|^2=|grad rho|^2+rho^2|grad xi|^2",
+    "magnitude": "(D_t-nu Delta)rho=rho alpha-nu rho |grad xi|^2"
+  },
+  "provenance": {
+    "auditScript": "research/vorticity_direction_diffusion_obstruction_audit.py",
+    "auditScriptSha256": "308080231b30cfae777086a50ab2ad784d2dc21ec8d18609e3d9294994ba0bfb",
+    "researchNote": "research/vorticity_direction_diffusion_obstruction_note.md",
+    "researchNoteSha256": "ddfe001a3d3a7ac66a74102852ae7fbdda1b16c42aaadff9a401330e83ed8961",
+    "sourceCommit": "c5e19140c3dc79d22eb368e63dc2014681afff18"
+  },
+  "release": "R0.69Q",
+  "scalingObstruction": {
+    "dissipationFactor": "a^2 L",
+    "field": "v_{a,L}(x)=a L v(x/L)",
+    "positiveProductionFactor": "a^3 L^3",
+    "ratio": "L**2*P*a/(D*nu)"
+  },
+  "schemaVersion": "1.0",
+  "shortTimeObstruction": {
+    "directionDissipationAverageLimit": "0",
+    "fullDissipationAverageLimit": "0",
+    "productionAverageLimit": "|B|*sqrt(2/3)*s*w^2",
+    "scope": "interior-only inequalities without flux or initial trace"
+  },
+  "status": "passed"
+}

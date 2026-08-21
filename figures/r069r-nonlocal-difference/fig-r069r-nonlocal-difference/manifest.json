@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Can the exact vorticity difference improve the classical enstrophy exponent after an energy far-field split?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "near/far balance curves, scaling-constraint intersection, and normalized Young endpoint",
+    "nonColorEncoding": "line styles, marker shapes, hatching, and direct annotations",
+    "outputFootprint": "double-column 178 by 82 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "difference cancellation alone does not change the classical norm powers"
+  },
+  "claimBoundary": "absolute norm-only near/far route only; signed scale-local cancellation remains open",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "321 near/far radius samples, 321 scaling-constraint samples, and 351 Young-endpoint samples",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact closed-form identities",
+    "solver": "closed-form near/far optimization, scaling constraints, and Young duality",
+    "wallTimeSeconds": 0.5505945000040811
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 154.1875,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T13:10:00+08:00",
+  "data": [
+    {
+      "bytes": 24458,
+      "path": "near-far-balance.csv",
+      "schema": "radiusOverOptimal, nearContribution, farContribution, totalBound",
+      "sha256": "cf1dbaaff64dc7bef81984476c28072c6992d9496b217e8977d48f4a8b5ac79b"
+    },
+    {
+      "bytes": 10695,
+      "path": "scaling-constraints.csv",
+      "schema": "p, qAmplitude, qSpatial",
+      "sha256": "50fe3c682f7d416088edcbbdfd97db6e6869ebe5345c9a190c8559cd78831db2"
+    },
+    {
+      "bytes": 23945,
+      "path": "young-endpoint.csv",
+      "schema": "dOverOptimal, production, dissipation, profit",
+      "sha256": "2e3db1bea40399efa4d497a08c85f90235eba6631063d15869710a1abfd4fcf8"
+    },
+    {
+      "bytes": 679,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69R difference-split certificate",
+      "sha256": "a48b411d44086c262f45f851cb048bbba13f0a738cf405eedaf21ae1bc58183d"
+    },
+    {
+      "bytes": 440,
+      "path": "validation.json",
+      "schema": "ten figure-data validation checks",
+      "sha256": "fb9ca161cfd14fb5a2168aa486539170ff5e169d0fde52fddd1cdd9f77c96fb5"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "419bb2245d963adca351cb75351222662c7d270db06605f9a7f73e2cbdfc901a"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 82,
+    "outputs": [
+      {
+        "bytes": 32340,
+        "path": "figure.pdf",
+        "sha256": "38518e61e764fd913493d77af7f57d022a041715162497bf04ec90f33fa0e933"
+      },
+      {
+        "bytes": 87700,
+        "path": "figure.svg",
+        "sha256": "db17e0b4abc7d434a49bbc4baaaea1592d379f64e0c7fb8e679893fc7d6c1c3a"
+      },
+      {
+        "bytes": 456833,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 1937",
+        "sha256": "252b0c4ecbdc78c11f04c55ab4f191326da212f338dacc06fe19fcc9ecf535ab"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069r-nonlocal-difference",
+  "git": {
+    "certificateCommit": "e1ea54cd2e6cecdcae71db5e87980ea5c939d4d2",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "97cfa19f962309bb62ae3fab0e4dcaef9f9eca38"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 1983,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "nonlocal-vorticity-difference-split.json",
+      "location": "research/certificates/r069r/nonlocal-vorticity-difference-split.json",
+      "sha256": "39da9891b8c66dc37b9e02db05d6bd469b32ed84fb282578ca3dd997a2217cc5"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the difference removes one local singular order, but exact radius optimization and scaling return A^(3/2) B^(3/2) and a sextic Young remainder"
+}

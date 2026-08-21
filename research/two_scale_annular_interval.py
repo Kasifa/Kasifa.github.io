@@ -888,20 +888,81 @@ class CutoffCertificate:
             derivative_lower, derivative_upper
         )
 
+    def _normalized_bump_mass(
+        self, lower: Fraction, upper: Fraction
+    ) -> Interval:
+        """Enclose normalized bump mass on a fixed coordinate interval."""
+
+        clipped_lower = max(Fraction(-1), lower)
+        clipped_upper = min(Fraction(1), upper)
+        if clipped_lower >= clipped_upper:
+            return Interval.exact_integer(0)
+        if clipped_lower == -1 and clipped_upper == 1:
+            return Interval.exact_integer(1)
+        return (
+            self.raw_moments.moment(
+                clipped_lower, clipped_upper, 0
+            )
+            / self.raw_moments.normalization
+        ).intersect(0.0, 1.0)
+
+    def _interior_mass_range(
+        self, lower_radius: Fraction, upper_radius: Fraction
+    ) -> Interval:
+        """Enclose the mollifier mass seeing the open beta transition.
+
+        For a fixed radius ``r``, the contributing bump coordinates form
+        ``[(r-b)/rho, (r-a)/rho]``.  As ``r`` ranges over a radial cell, the
+        intersection of these intervals supplies a rigorous lower mass and
+        their union supplies a rigorous upper mass.  This local enclosure is
+        crucial for the fifth derivative: its interior beta contribution is
+        a constant times precisely this mass.
+        """
+
+        lower_boundary = Fraction(1) + TRANSITION_A
+        upper_boundary = Fraction(1) + TRANSITION_B
+        guaranteed = self._normalized_bump_mass(
+            (upper_radius - upper_boundary) / MOLLIFIER_RADIUS,
+            (lower_radius - lower_boundary) / MOLLIFIER_RADIUS,
+        )
+        possible = self._normalized_bump_mass(
+            (lower_radius - upper_boundary) / MOLLIFIER_RADIUS,
+            (upper_radius - lower_boundary) / MOLLIFIER_RADIUS,
+        )
+        return Interval(
+            max(0.0, float(guaranteed.lower)),
+            min(1.0, float(possible.upper)),
+        )
+
     def high_derivative_range(
         self, lower_radius: Fraction, upper_radius: Fraction, order: int
     ) -> Interval:
         if order not in (4, 5):
             raise ValueError("direct high-derivative range only supports orders 4 and 5")
         if order == 4:
-            result = Interval(
-                -float(Fraction(360) / TRANSITION_LENGTH**4),
-                float(Fraction(360) / TRANSITION_LENGTH**4),
+            midpoint = (lower_radius + upper_radius) / 2
+            half_width = (upper_radius - lower_radius) / 2
+            midpoint_value = self.point_derivatives(midpoint, 4)[4]
+            fifth = self.high_derivative_range(
+                lower_radius, upper_radius, 5
             )
+            absolute_fifth = max(
+                abs(float(fifth.lower)), abs(float(fifth.upper))
+            )
+            lipschitz = Interval.from_fraction(
+                Fraction.from_float(absolute_fifth) * half_width
+            )
+            bound = float(self.derivative_bounds[4])
+            return (
+                midpoint_value
+                + Interval(-float(lipschitz.upper), float(lipschitz.upper))
+            ).intersect(-bound, bound)
         else:
-            result = Interval(
-                -float(Fraction(720) / TRANSITION_LENGTH**5),
-                0.0,
+            result = (
+                Interval.from_fraction(SURVIVAL_DERIVATIVES[5][0])
+                * self._interior_mass_range(
+                    lower_radius, upper_radius
+                )
             )
         for boundary, jump_third, jump_fourth in (
             (

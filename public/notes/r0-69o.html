@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69O：利用可吸收二阶耗散与 Hilbert 插值，把领先压力交换子的时间余项降回二次涡量，并定位剩余的涡量拉伸障碍。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69O｜压力时间指数闭合，涡量拉伸成为主障碍">
+  <meta property="og:description" content="压力交换子的三次时间代价可被二阶耗散修复；完整正则性仍卡在产生六次余项的三维拉伸非线性。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69o-pressure-time-closure.png">
+  <title>R0.69O｜压力时间指数闭合，涡量拉伸成为主障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.74a">
+  <style>.hero h1{font-size:clamp(2.2rem,4.6vw,3.85rem)}</style>
+  <script defer src="/i18n-en.js?v=0.74"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#interpolation">插值</a><a href="#young">吸收</a><a href="#sharpness">尖锐性</a><a href="#spike">尖峰回测</a><a href="#localization">局部化</a><a href="#lower">低阶项</a><a href="#remote">远场</a><a href="#budget">压力预算</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69O · 压力交换子的耗散辅助时间闭合</div>
+        <h1>压力项回到二次层级，<br>真正的障碍转向三维拉伸</h1>
+        <p class="lead">R0.69N 留下的 \(\mu_v\sigma_v^3\) 并非最终时间指数。我把同一个可吸收二阶导数量再次用于 Hilbert 插值，得到 \(\varepsilon\mathcal D_v+C\varepsilon^{-3}\mu_v^4\sigma_v^2\)。因此领先压力余项回到二次涡量时间积分；旧尖峰因必须支付 \(A^2\) 的二阶耗散而失效。这个修复不等于完整正则性闭合：三维应变或涡量拉伸仍产生 \(\sigma^6\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69O 完成</span><strong>压力时间幂修复，拉伸仍开放</strong><p>版本 v0.69O · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.23 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#interpolation">01 · Hilbert 插值</a></li>
+        <li><a href="#young">02 · 两次 Young 吸收</a></li>
+        <li><a href="#sharpness">03 · 代数尖锐性</a></li>
+        <li><a href="#spike">04 · 尖峰回测</a></li>
+        <li><a href="#localization">05 · 扩大球局部化</a></li>
+        <li><a href="#lower">06 · 低阶交换子项</a></li>
+        <li><a href="#remote">07 · 过渡与远场</a></li>
+        <li><a href="#budget">08 · 完整压力预算</a></li>
+        <li><a href="#meaning">09 · 对总问题的意义</a></li>
+        <li><a href="#figure">10 · 期刊附图</a></li>
+        <li><a href="#next">11 · 下一主障碍</a></li>
+        <li><a href="#reproduce">12 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>领先压力交换子的时间余项可以降回二次涡量</h2>
+          <p>沿用 R0.69N 的紧支撑无散局部化 \(v\)，定义</p>
+          <div class="equation">\[
+            \mu_v=r^{-1/2}\|v\|_2,\qquad
+            \sigma_v=r^{1/2}\|\nabla v\|_2,\qquad
+            \mathcal D_v=r^3\|\nabla^2v\|_2^2.
+          \]</div>
+          <p>截断环带 \(A_\phi\subset B_r\) 位于 \(v=u\) 的区域，因此 \(D_A\le\mathcal D_v\)。R0.69N 的领先压力项由下式控制：</p>
+          <div class="equation result">\[
+            \boxed{
+            \mu_v^{1/2}\sigma_v^{3/2}\mathcal D_v^{1/2}
+            \le\varepsilon\mathcal D_v
+            +C\varepsilon^{-3}\mu_v^4\sigma_v^2.}
+          \]</div>
+          <p>在长度为一的归一化时间区间 \(I\) 上，令</p>
+          <div class="equation">\[
+            \mathsf A_v=\|\mu_v\|_{L^\infty_\tau(I)}^2,\qquad
+            \mathsf E_v=\int_I\sigma_v^2\,d\tau,\qquad
+            \mathsf F_v=\int_I\mathcal D_v\,d\tau.
+          \]</div>
+          <p>时间积分后得到</p>
+          <div class="equation result">\[
+            \boxed{
+            \int_I\mu_v^{1/2}\sigma_v^{3/2}\mathcal D_v^{1/2}\,d\tau
+            \le\varepsilon\mathsf F_v
+            +C\varepsilon^{-3}\mathsf A_v^2\mathsf E_v.}
+          \]</div>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这条估计修复了领先压力交换子的时间指数。它尚未推导完整的局部 \(H^1\) 不等式，也没有推出全局正则性、奇性或千禧年问题的结论。</div>
+        </section>
+
+        <section id="interpolation"><div class="section-no">01 / Hilbert interpolation</div><h2>可吸收二阶导数同时提供缺失的空间插值</h2>
+          <p>由于 \(v\) 紧支撑，分部积分与 Cauchy–Schwarz 给出</p>
+          <div class="equation">\[
+            \|\nabla v\|_2^2
+            =-\int v\cdot\Delta v\,dx
+            \le\|v\|_2\|\Delta v\|_2
+            \le C\|v\|_2\|\nabla^2v\|_2.
+          \]</div>
+          <p>乘以 \(r\) 后恰好成为尺度不变关系</p>
+          <div class="equation result">\[
+            \boxed{\sigma_v^2\le C\mu_v\mathcal D_v^{1/2}.}
+          \]</div>
+          <p>对集中在波数 \(k\) 的 Fourier 波包，\(\|\nabla v\|_2\asymp k\|v\|_2\)、\(\|\nabla^2v\|_2\asymp k^2\|v\|_2\)，所以该插值在频率幂上不能改进。</p>
+        </section>
+
+        <section id="young"><div class="section-no">02 / Double Young reduction</div><h2>关键不是再做时间 Hölder，而是把耗散使用两次</h2>
+          <p>简写 \(\mu=\mu_v\)、\(\sigma=\sigma_v\)、\(\mathcal D=\mathcal D_v\)。第一次 Young 不等式给出</p>
+          <div class="equation">\[
+            \mu^{1/2}\sigma^{3/2}\mathcal D^{1/2}
+            \le\delta\mathcal D+C\delta^{-1}\mu\sigma^3.
+          \]</div>
+          <p>不立即对 \(\mu\sigma^3\) 作时间估计，而是使用上一节的插值：</p>
+          <div class="equation">\[
+            \mu\sigma^3
+            =\mu\sigma\,\sigma^2
+            \le C\mu^2\sigma\mathcal D^{1/2}.
+          \]</div>
+          <p>第二次 Young 不等式于是得到</p>
+          <div class="equation">\[
+            C\delta^{-1}\mu^2\sigma\mathcal D^{1/2}
+            \le\delta\mathcal D+C\delta^{-3}\mu^4\sigma^2.
+          \]</div>
+          <p>合并并把 \(2\delta\) 重命名为 \(\varepsilon\)，即得主结果。二阶导数既作为被吸收项出现，又通过 Hilbert 插值降低余项的 \(\sigma\) 次数；这正是纯时间不等式遗漏的信息。</p>
+        </section>
+
+        <section id="sharpness"><div class="section-no">03 / Algebraic sharpness</div><h2>仅使用这条插值时，\(\mu^4\varepsilon^{-3}\) 是必要代价</h2>
+          <p>令插值取等并参数化为</p>
+          <div class="equation">\[
+            \sigma=\mu z,\qquad \mathcal D=\mu^2z^4.
+          \]</div>
+          <p>若希望右端为 \(\varepsilon\mathcal D+C_\varepsilon\mu^\alpha\sigma^2\)，除以 \(\mu^2z^2\) 后必须控制</p>
+          <div class="equation">\[
+            \mu z^{3/2}-\varepsilon z^2.
+          \]</div>
+          <p>其极大点与极大值分别为</p>
+          <div class="equation result">\[
+            \boxed{
+            z_*=\left(\frac{3\mu}{4\varepsilon}\right)^2,\qquad
+            \max_{z>0}\bigl(\mu z^{3/2}-\varepsilon z^2\bigr)
+            =\frac{27}{256}\varepsilon^{-3}\mu^4.}
+          \]</div>
+          <p>因此在这个纯代数机制内必须有 \(\alpha\ge4\)，临界情形的 \(\varepsilon^{-3}\) 也不能降低。这里的尖锐性不声称真实 Navier–Stokes 压力场同时饱和前面每一步。</p>
+        </section>
+
+        <section id="spike"><div class="section-no">04 / Spike replay</div><h2>旧时间尖峰不再是否定见证，因为它必须支付发散耗散</h2>
+          <p>R0.69N 的归一化尖峰为</p>
+          <div class="equation">\[
+            \mu_A(\tau)=1,\qquad
+            \sigma_A(\tau)=A\mathbf1_{[0,A^{-2}]}(\tau).
+          \]</div>
+          <p>它确实满足</p>
+          <div class="equation">\[
+            \int\sigma_A^2\,d\tau=1,\qquad
+            \int\mu_A\sigma_A^3\,d\tau=A.
+          \]</div>
+          <p>但一旦强制 Hilbert 插值，尖峰区间上就有</p>
+          <div class="equation">\[
+            \mathcal D_A\ge c\frac{\sigma_A^4}{\mu_A^2}=cA^4.
+          \]</div>
+          <p>于是</p>
+          <div class="equation result">\[
+            \boxed{\int\mathcal D_A\,d\tau\ge cA^2\longrightarrow\infty.}
+          \]</div>
+          <p>它仍然否定只从 \(\int\sigma^2\) 出发的纯时间闭合，却不能否定允许吸收二阶耗散的估计。</p>
+        </section>
+
+        <section id="localization"><div class="section-no">05 / Enlarged-ball localization</div><h2>抽象的 \(\mathcal D_v\) 可还原为扩大球耗散与显式截断代价</h2>
+          <p>R0.69N 使用 \(v=\eta u-w\)，其中 \(\nabla\cdot w=\nabla\eta\cdot u\)。Bogovskii 算子的高阶 Sobolev 映射性质给出</p>
+          <div class="equation">\[
+            \|\nabla^2w\|_2\le C\left(
+            r^{-1}\|\nabla u\|_{L^2(A_\eta)}
+            +r^{-2}\|u\|_{L^2(A_\eta)}\right).
+          \]</div>
+          <p>结合 \(\nabla^2(\eta u)\) 的乘积法则，得到</p>
+          <div class="equation result">\[
+            \boxed{
+            \mathcal D_v^{1/2}
+            \le C\left(D_{3r}^{1/2}+\sigma_{A_\eta}+\mu_{A_\eta}\right),
+            \qquad D_{3r}=r^3\|\nabla^2u\|_{L^2(B_{3r})}^2.}
+          \]</div>
+          <p>因此</p>
+          <div class="equation">\[
+            \varepsilon\mathcal D_v
+            \le C\varepsilon D_{3r}
+            +C\varepsilon(\sigma_{A_\eta}^2+\mu_{A_\eta}^2).
+          \]</div>
+          <p>这只进行一次半径扩大，但后续完整局部估计仍必须执行半径迭代并追踪局部化产生的全部方程；本页没有省略这一接口。</p>
+        </section>
+
+        <section id="lower"><div class="section-no">06 / Lower commutator terms</div><h2>两个低阶项成为有限动能幂，而不是新的临界耗散</h2>
+          <p>使用 \(\sigma\le C\mu^{1/2}\mathcal D^{1/4}\)，R0.69N 的其余近场项满足</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            \mu^{1/2}\sigma^{5/2}
+            &\le\varepsilon\mathcal D
+              +C\varepsilon^{-5/3}\mu^{14/3},\\
+            \mu^{3/2}\sigma^{3/2}
+            &\le\varepsilon\mathcal D
+              +C\varepsilon^{-3/5}\mu^{18/5}.
+          \end{aligned}
+          \]</div>
+          <p>在单位归一化时间区间，它们分别只贡献 \(\mathsf A_v^{7/3}\) 与 \(\mathsf A_v^{9/5}\)。这些是 Caccioppoli 型截断代价，不会重新引入三次涡量时间积分。</p>
+        </section>
+
+        <section id="remote"><div class="section-no">07 / Transition and remote field</div><h2>过渡应力与远程壳层仍停留在二次时间预算内</h2>
+          <p>R0.69N 的外部压力预算保持为</p>
+          <div class="equation">\[
+            r^3|\mathcal P_{\mathrm{ext}}|
+            \le C\sigma_r(e_{\mathrm{tr}}+B_\infty).
+          \]</div>
+          <p>令 \(\mathsf H=\|e_{\mathrm{tr}}+B_\infty\|_{L^\infty_\tau(I)}\)，Cauchy 与 Young 给出</p>
+          <div class="equation">\[
+            \int_Ir^3|\mathcal P_{\mathrm{ext}}|\,d\tau
+            \le C\mathsf H\mathsf E_r^{1/2}
+            \le\delta\mathsf E_r+C\delta^{-1}\mathsf H^2.
+          \]</div>
+          <p>R0.69M 的远场增益 \(B_\infty\le\mathfrak M_2/120\) 没有损失；压力近场、过渡区与远场现在都具有明确的二次时间接口。</p>
+        </section>
+
+        <section id="budget"><div class="section-no">08 / Pressure-sector budget</div><h2>时间积分后的压力预算已不再含三次涡量余项</h2>
+          <p>把领先项、低阶交换子项与外部压力合并，得到示意性的压力扇区估计</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            \int_Ir^3|\mathcal P_r|\,d\tau
+            \le{}&\varepsilon\mathsf F_v
+            +C\varepsilon^{-3}\mathsf A_v^2\mathsf E_v\\
+            &+C_\varepsilon(\mathsf A_v^{7/3}+\mathsf A_v^{9/5})
+            +\delta\mathsf E_r+C\delta^{-1}\mathsf H^2.
+          \end{aligned}
+          \]</div>
+          <p>第一行是本版本的主推进：可吸收二阶导数之后，只剩带尺度不变局部动能系数的二次涡量。第二行是显式低阶、过渡与远场代价。把 \(\mathsf F_v\) 换回扩大球耗散时，还要加入上一节列出的截断项。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">09 / Value for the main problem</div><h2>压力不再是当前估计链的主瓶颈，但核心三维困难没有消失</h2>
+          <p>这一步的价值是排除一个真实的技术疑点：R0.69N 的 \(\mu_v\sigma_v^3\) 不是压力机制不可避免的超二次时间代价。把空间插值与可吸收耗散联用后，压力项与 CKN 二次时间量兼容。</p>
+          <p>它仍不是千禧年问题的解答。首先，适当弱解本身没有先验的 \(L^2_{t,x}\) 二阶导数，完整证明必须从光滑逼近或强解区间建立可统一传递的局部 \(H^1\) 估计。其次，即使压力项完全处理，三维非线性仍含真正的拉伸机制。</p>
+          <div class="proof"><strong>价值判断。</strong>&nbsp;这是可用于后续局部高阶估计的压力引理，也是对 R0.69N 时间障碍的严格修正；它把研究资源从压力重新集中到三维涡量拉伸。它不是正则性定理。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图把尖锐代价、尖峰回测与剩余指数放在同一证据链中</h2>
+          <figure><img src="/figures/r0-69o-pressure-time-closure.svg" alt="R0.69O 压力时间闭合、尖峰耗散回测与涡量拉伸六次余项"><figcaption>图 R0.69O。左图给出 Hilbert 插值取等后的普适 Young 优化曲线，极大值精确为 \(27\mu^4/(256\varepsilon^3)\)；中图显示旧尖峰的二次质量保持为一、三次代价按 \(A\) 增长，但所需二阶耗散质量按 \(A^2\) 增长；右图对比压力余项的 \(\sigma^2\) 与拉伸余项的 \(\sigma^6\)。线型、标记、纹理与数值标签保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69o-pressure-time-closure.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69o-pressure-time-closure.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next obstruction</div><h2>R0.69P 直接审计有符号的三维应变与涡量拉伸</h2>
+          <p>光滑局部 \(H^1\) 计算中的对流项满足尺度不变估计</p>
+          <div class="equation result">\[
+            r^3\int|\nabla u|^3\,dx
+            \le C\sigma^{3/2}\mathcal D^{3/4}
+            \le\varepsilon\mathcal D+C_\varepsilon\sigma^6.
+          \]</div>
+          <p>若把 Hilbert 插值直接代入，\(\mathcal D\) 的幂反而超过一，不能吸收。因此 R0.69P 不再继续优化压力，而是比较三个可能真正降低拉伸项的结构：应变特征架的有符号代数、涡量方向相干性、以及时空交换子。接受标准是不预设已有 Serrin 或几何正则性判据，却把六次余项降到可由能量层级控制的量；失败则形成明确的无增益命题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility and sources</div><h2>数学源、形式证书与期刊图分别锁定到完整提交</h2>
+          <p>数学源提交为 <code>46f217d0d6cb29f3a60e8c5a101e92c6f7e8e560</code>，形式证书提交为 <code>49136625e4c1f48d1f765653b15cc8df8b50ec8e</code>，最终附图提交为 <code>f1394260fb256826d77ecbf8181b180c680d5d7f</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>8b45915852bca0ff0f7c4eb019d85911888604d1fccd95e75b5c47bd0d2b6526</code>，形式证书 SHA-256 为 <code>b81cb6986b701233c33ab0713546318ae6c88cde2ab1a3cb6a6767ed35400113</code>。18 项检查全部通过；监控运行 0.23 秒，峰值常驻内存 64.125 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>cde3b295403ae9a22d813f4db8abe5b24ecfcb46fe98d5aea740378d68b654c3</code>、<code>4f5a95394a1c61cb965961377b5cd0907cf4d1da0c99d3b6fe69e0aa763f95f5</code> 与 <code>4eb3b80a7325f4adcf7a988a59a20ad721f02290e000e679931f362543eea90a</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069o">查看 R0.69O 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/energy_commutator_time_closure_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069o-pressure-time-closure/fig-r069o-pressure-time-closure">查看期刊附图包</a></p>
+          <p>外部定理来源：<a href="https://doi.org/10.1002/cpa.3160350604">Caffarelli–Kohn–Nirenberg（适当弱解的部分正则性）</a> · <a href="https://www.mathnet.ru/eng/dan43056">Bogovskii（无散局部化）</a> · <a href="https://arxiv.org/abs/2010.04105">Guzmán–Salgado（Bogovskii 算子的高阶估计）</a> · <a href="https://arxiv.org/abs/2009.14291">Vasseur–Yang（适当解的二阶导数估计）</a>。</p>
+          <p>声明边界：本页证明压力交换子的耗散辅助时间指数降阶、该代数机制的尖锐 \(\mu^4\varepsilon^{-3}\) 代价、旧尖峰的耗散回测与剩余的六次拉伸障碍。它没有构造 Navier–Stokes 奇性解，不给出全局正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69O · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

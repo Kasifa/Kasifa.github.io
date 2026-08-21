@@ -218,7 +218,7 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });
 
-test("maps the complete published research route through R0.69U", async () => {
+test("maps the complete published route as a branching tree through R0.69U", async () => {
   const home = await readFile(siteUrl, "utf8");
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
@@ -252,6 +252,12 @@ test("maps the complete published research route through R0.69U", async () => {
   );
 
   assert.deepEqual(actual, expected);
+  assert.match(route, /class="route-tree"/);
+  assert.match(route, /class="tree-root"/);
+  assert.equal((route.match(/class="tree-row/g) ?? []).length, 6);
+  assert.equal((route.match(/class="tree-branch/g) ?? []).length, 5);
+  assert.equal((route.match(/<details class="tree-notes">/g) ?? []).length, 7);
+  assert.doesNotMatch(route, /class="route-topology"|class="route-stage"/);
   assert.match(route, /R0\.1–R0\.8/);
   assert.match(route, /R0\.61–R0\.66/);
   assert.match(route, /R0\.67A–R0\.68B-2h/);

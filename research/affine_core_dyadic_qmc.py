@@ -21,6 +21,7 @@ import json
 import math
 from pathlib import Path
 import platform
+import subprocess
 import sys
 import time
 
@@ -250,6 +251,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--relative-min", type=int, default=-8)
     parser.add_argument("--relative-max", type=int, default=2)
     parser.add_argument("--seed-base", type=int, default=690801)
+    parser.add_argument("--source-commit")
     arguments = parser.parse_args()
     arguments.radius_powers = tuple(
         sorted({int(value) for value in arguments.radius_powers.split(",")})
@@ -265,6 +267,16 @@ def parse_arguments() -> argparse.Namespace:
 
 def main() -> int:
     arguments = parse_arguments()
+    head_commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if arguments.source_commit is not None and arguments.source_commit != head_commit:
+        raise SystemExit(
+            f"source commit mismatch: requested {arguments.source_commit}, HEAD is {head_commit}"
+        )
     output_root = arguments.output_root
     output_root.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
@@ -465,8 +477,13 @@ def main() -> int:
                 ),
                 "energyBelowRigorousBound": energy < 50.0 / 21.0,
                 "limitingOuterPositive": limiting_outer > 0.0,
+                "sourceCommitMatchesHead": (
+                    arguments.source_commit is None
+                    or arguments.source_commit == head_commit
+                ),
             },
             "provenance": {
+                "sourceCommit": arguments.source_commit,
                 "script": str(source_path.relative_to(source_path.parents[1])),
                 "scriptSha256": sha256(source_path),
                 "python": sys.version,

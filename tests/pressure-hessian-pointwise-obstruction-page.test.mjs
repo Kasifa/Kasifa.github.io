@@ -14,7 +14,7 @@ test("publishes R0.69H with the exact pressure-sign obstruction", async () => {
   assert.match(home, /id="r069h"/);
   assert.match(home, /\/notes\/r0-69h\.html/);
   assert.match(home, /综述 v0\.78 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.78/);
+  assert.match(home, /i18n-en\.js\?v=0\.79/);
   assert.match(home, /下一步 R0\.69I/);
   assert.ok(note.includes("H_{11}^{-}(0)=-1-\\frac{54}{85}t^2"));
   assert.ok(note.includes("H_{11}^{+}(0)=-1+\\frac{54}{85}t^2"));

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69T：把三维涡量拉伸精确写成两个涡量增量的有符号物理空间环带和，并用六千七百万组准蒙特卡洛样本审计紧支撑仿射核心的跨边界尺度载荷。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69T｜两个涡量增量给出精确环带分解，仿射核心几乎不发生跨尺度抵消">
+  <meta property="og:description" content="全局配对交换产生第二个涡量增量；显式仿射核心的跨边界载荷集中在中间尺度，探索性有符号比为 0.996478。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69t-affine-annuli.png">
+  <title>R0.69T｜两个涡量增量给出精确环带分解，仿射核心几乎不发生跨尺度抵消</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.79">
+  <style>.hero h1{font-size:clamp(1.9rem,3.85vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.79"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#kernel">有符号核</a><a href="#exchange">配对交换</a><a href="#annuli">环带</a><a href="#core">仿射核心</a><a href="#cutoff">显式截断</a><a href="#quadrature">计算</a><a href="#refinement">收敛</a><a href="#distribution">尺度分布</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69T · 物理空间环带与仿射核心边界载荷</div>
+        <h1>配对交换精确产生第二个涡量增量；<br>显式仿射核心却只显示约 0.35% 的跨环带抵消</h1>
+        <p class="lead">我先在全空间有符号 Biot–Savart 公式中消去涡量方向场，再交换两个空间点。结果不是估计，而是一个绝对收敛的双增量恒等式：总涡量拉伸等于所有平滑物理环带贡献的有符号和。随后我对 R0.69P 的紧支撑仿射核心进行了 67,108,864 组五维 scrambled-Sobol 采样。总载荷以 0.033% 的相对偏差重构精确值，但负环带只有一个很小的外尾；探索性核心载荷比为 0.996478。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69T 结构定理完成，数值压力测试完成</span><strong>双增量成立；强跨尺度抵消暂未出现</strong><p>版本 v0.69T · 2026-08-21</p><p>结构检查：12 / 12 通过</p><p>数值检查：5 / 5 通过</p><p>样本：67,108,864 对</p><p>峰值内存：2045.141 MiB</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论与数值结论</a></li>
+        <li><a href="#kernel">01 · 方向无关有符号核</a></li>
+        <li><a href="#exchange">02 · 第二个涡量增量</a></li>
+        <li><a href="#annuli">03 · 精确环带重构</a></li>
+        <li><a href="#core">04 · 边界载荷恒等式</a></li>
+        <li><a href="#cutoff">05 · 显式光滑截断场</a></li>
+        <li><a href="#quadrature">06 · 五维准蒙特卡洛</a></li>
+        <li><a href="#refinement">07 · 精确值与细化</a></li>
+        <li><a href="#distribution">08 · 环带符号分布</a></li>
+        <li><a href="#meaning">09 · 对主问题的意义</a></li>
+        <li><a href="#figure">10 · 期刊附图</a></li>
+        <li><a href="#next">11 · 下一阶段</a></li>
+        <li><a href="#reproduce">12 · 复现与监控</a></li>
+        <li><a href="#sources">13 · 来源与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>严格部分给出无余项环带恒等式；计算部分显示一个接近无抵消的边界载荷</h2>
+          <p>对任意紧支撑光滑无散速度场，记 \(\omega=\nabla\times u\)、\(S=(\nabla u+\nabla u^{\mathsf T})/2\)。本版本严格证明</p>
+          <div class="equation result">\[
+            \boxed{\mathcal V(u)=\int\omega\cdot S\omega
+            =\sum_{j\in\mathbb Z}\mathcal A_j(u),\qquad
+            \sum_j|\mathcal A_j(u)|&lt;\infty,}
+          \]</div>
+          <p>其中每个 \(\mathcal A_j\) 都包含两个涡量增量，没有涡量方向场在零点处的分母，也没有隐藏的中间尺度交换子。</p>
+          <p>对一个显式紧支撑仿射核心，我另行计算核心限制的跨边界环带载荷 \(\mathcal C_j\)。最细层 16 个独立扰动的均值给出</p>
+          <div class="equation result">\[
+            \boxed{\sum_j\mathcal C_j\approx3.41900136,qquad
+            \frac{|\sum_j\mathcal C_j|}{\sum_j|\mathcal C_j|}
+            \approx0.99647808.}
+          \]</div>
+          <div class="proof"><strong>证据边界。</strong>&nbsp;第一行是严格定理；第二行是针对一个显式截断场的随机化准蒙特卡洛证据。\(\mathcal C_j\) 是核心限制的原始核载荷，不是全空间双增量 \(\mathcal A_j\)。数值比值不是区间包络，也不是普适常数。</div>
+        </section>
+
+        <section id="kernel"><div class="section-no">01 / Signed kernel without direction denominators</div><h2>涡量方向场可以在积分核中完全消去</h2>
+          <p>令 \(e_{xy}=(y-x)/|y-x|\)，并定义</p>
+          <div class="equation">\[
+            J(x,y)=\bigl(e_{xy}\cdot\omega(x)\bigr)
+            \bigl(e_{xy}\cdot(\omega(y)\times\omega(x))\bigr).
+          \]</div>
+          <p>经典几何核中的 \(\rho^2(x)\rho(y)\)、\(\xi=\omega/|\omega|\) 恰好相乘还原为这个关于两点涡量的多项式。因此它自动延拓到涡量零点，并得到绝对收敛恒等式</p>
+          <div class="equation result">\[
+            \boxed{\mathcal V(u)=\frac3{4\pi}
+            \iint\frac{J(x,y)}{|x-y|^3}\,dy\,dx.}
+          \]</div>
+          <p>这一步保留了符号与全部角向信息，没有先用绝对值把几何结构抹掉。</p>
+        </section>
+
+        <section id="exchange"><div class="section-no">02 / Pair exchange</div><h2>交换 \(x,y\) 后，原本缺失的第二个增量精确出现</h2>
+          <p>置 \(\delta\omega(x,y)=\omega(y)-\omega(x)\)。把积分与交换 \(x,y\) 后的同一积分平均，直接代数化简给出</p>
+          <div class="equation result">\[
+            \boxed{\mathcal V(u)=\frac3{8\pi}\iint
+            \frac{(e_{xy}\cdot\delta\omega)
+            (e_{xy}\cdot(\omega(x)\times\delta\omega))}
+            {|x-y|^3}\,dy\,dx.}
+          \]</div>
+          <p>分子现在含有两个 \(\delta\omega=O(|x-y|)\)，近对角核从形式上的三阶奇性降到 \(O(|x-y|^{-1})\)，在三维局部可积。这是全局配对产生的真实有符号抵消，不是逐点 Hölder 估计。</p>
+          <p>困难也因此被精确定位：绝对值估计自然出现 \(|\omega|\,|\nabla\omega|^2\)，它仍不受 enstrophy 与一阶耗散单独控制。</p>
+        </section>
+
+        <section id="annuli"><div class="section-no">03 / Smooth physical annuli</div><h2>平滑径向分割重构总拉伸，有限窗口只留下显式近尾和远尾</h2>
+          <p>取 \(\chi(r)=1\)（\(r\le1\)）、\(\chi(r)=0\)（\(r\ge2\)），并定义</p>
+          <div class="equation">\[
+            \psi_j(z)=\chi(2^{-j-1}|z|)-\chi(2^{-j}|z|),
+            \qquad \sum_{j\in\mathbb Z}\psi_j(z)=1.
+          \]</div>
+          <p>把 \(\psi_j\) 插入双增量核即得 \(\mathcal A_j\)。非负分割与绝对收敛允许逐项求和。对有限窗口 \(L\le j\le U\)，还有精确望远镜公式</p>
+          <div class="equation result">\[
+            \boxed{\sum_{j=L}^{U}\psi_j(z)
+            =\chi(2^{-U-1}|z|)-\chi(2^{-L}|z|).}
+          \]</div>
+          <p>所以缺失部分恰好是远尾 \(1-\chi(2^{-U-1}|z|)\) 与近尾 \(\chi(2^{-L}|z|)\)。若以后让尺度随时间移动，所有边界导数都已经被显式保留。</p>
+        </section>
+
+        <section id="core"><div class="section-no">04 / Affine-core boundary carrier</div><h2>仿射核心内部没有任何非零配对；全部正生产由跨边界点对携带</h2>
+          <p>R0.69P 的构造是</p>
+          <div class="equation">\[
+            v_A=\nabla\times(\chi_0B_A),\qquad
+            B_A(x)=-\frac13x\times(Ax),
+          \]</div>
+          <p>其中 \(v_A=Ax\) 于单位球内。取</p>
+          <div class="equation">\[
+            S=\frac1{\sqrt6}\operatorname{diag}(-1,-1,2),
+            \qquad \omega=(0,0,1),
+          \]</div>
+          <p>则球内 \(\omega\cdot S\omega=2/\sqrt6&gt;0\)，但任意 \(x,y\in B_1\) 都有 \(\delta\omega=0\) 与 \(J(x,y)=0\)。因此</p>
+          <div class="equation result">\[
+            \boxed{|B_1|\,\omega\cdot S\omega
+            =\frac3{4\pi}\int_{x\in B_1}\int_{y\notin B_1}
+            \frac{J(x,y)}{|x-y|^3}\,dy\,dx
+            =\frac{8\pi}{3\sqrt6}.}
+          \]</div>
+          <p>这证明正生产不是核心内部方向扩散的结果，而是一个完全非局部的边界载荷。</p>
+        </section>
+
+        <section id="cutoff"><div class="section-no">05 / Explicit smooth compact field</div><h2>计算使用固定的 \(C^\infty\) 径向阶跃，没有截断形状自由度</h2>
+          <p>在 \(1&lt;r&lt;2\) 置 \(t=r-1\)，采用</p>
+          <div class="equation">\[
+            \chi_0(r)=\frac1{1+\exp(-1/t+1/(1-t))},
+          \]</div>
+          <p>并令 \(r\le1\) 时为一、\(r\ge2\) 时为零。脚本使用解析的一阶、二阶径向导数求 \(\omega_A=\nabla\times v_A\)，而不是有限差分。单位球内数值表达严格退化为 \((0,0,1)\)，球外二以外严格为零。</p>
+          <p>该截断是本次压力测试的一部分。改变过渡宽度或外支撑半径可能改变负尾，因此当前比值不能外推到全部紧支撑仿射嵌入。</p>
+        </section>
+
+        <section id="quadrature"><div class="section-no">06 / Monitored randomized QMC</div><h2>轴对称性把六维点对积分降到五维，16 个独立扰动提供误差读数</h2>
+          <p>场关于 \(z\) 轴协变，核在同时旋转 \(x,y\) 时不变。我固定核心点的共同方位角，只采样核心半径与极角、壳层半径与极角、相对方位角，共五维。每个变量由 scrambled Sobol 序列生成。</p>
+          <p>正式运行使用 16 个独立 seed，每个 \(2^{22}=4,194,304\) 对，总计 67,108,864 对。环带窗口为 \(j=-8,\ldots,1\)；由于点对距离不超过三，远尾严格为零，近尾在全部采样中为零。每个样本的环带权重加近、远尾等于一，最大浮点残差为零。</p>
+          <p>独立进程监控记录了 9.755 秒墙钟时间、最高 100.0% CPU、峰值 2045.141 MiB RSS、无 NVIDIA GPU，并以退出码零结束。</p>
+        </section>
+
+        <section id="refinement"><div class="section-no">07 / Reconstruction and refinement</div><h2>总载荷靠近精确标尺，但最细层的朴素 95% 扰动区间没有覆盖精确值</h2>
+          <p>三层嵌套分辨率得到</p>
+          <div class="equation">\[
+            \begin{array}{c|c|c}
+            \text{每个扰动的点对数}&amp;\text{均值}&amp;\text{扰动标准误}\\ \hline
+            2^{18}&amp;3.42100780&amp;0.00814186\\
+            2^{20}&amp;3.41746411&amp;0.00257272\\
+            2^{22}&amp;3.41900136&amp;0.00053034
+            \end{array}
+          \]</div>
+          <p>精确值为 \(3.42013288\)。最细均值的绝对误差是 \(-0.00113152\)，相对误差约 0.033%，等于 \(-2.13\) 个报告标准误。因此最细层的朴素 95% 区间略低于精确值；本页不把扰动标准误冒充严格误差界。</p>
+          <div class="proof"><strong>读法。</strong>&nbsp;样本内环带和与同一批样本的未分带积分在 \(10^{-12}\) 内重合，说明分带实现无丢项；与解析精确值的差异则反映剩余准蒙特卡洛误差与误差估计的不完备性。</div>
+        </section>
+
+        <section id="distribution"><div class="section-no">08 / Signed annular distribution</div><h2>主要正载荷位于 \(j=-2,-1\)，唯一稳定负项是很小的外环带</h2>
+          <p>最细层均值与扰动标准误的关键项为</p>
+          <div class="equation">\[
+            \begin{array}{c|r|r}
+            j&amp;\mathcal C_j&amp;\mathrm{SE}\\ \hline
+            -3&amp;0.31580357&amp;0.00057591\\
+            -2&amp;1.32325806&amp;0.00021658\\
+            -1&amp;1.50249778&amp;0.00003599\\
+            0&amp;0.26417331&amp;0.00000301\\
+            1&amp;-0.00604200&amp;0.00000004
+            \end{array}
+          \]</div>
+          <p>在报告的 95% 扰动区间下，\(j=1\) 是唯一显著负项。它只抵消约 0.35% 的绝对环带总量，于是核心边界载荷的探索性比值达到 0.996478。</p>
+          <p>这个结果对“任意场都会出现强跨尺度抵消”的直觉是不利证据，但它还不是反例定理：它只审计核心限制积分，且一个有限数值比值不能排除某个非常接近一的普适上界。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">09 / Value for the Millennium route</div><h2>结构桥梁是真进展；数值结果把下一步推向解析饱和族，而不是继续猜抵消</h2>
+          <p>严格的新支点是双增量环带恒等式：它同时避开涡量方向零点、保留符号、给出绝对收敛，并把所有有限窗口误差化为两条显式尾项。这为后续局部化、移动尺度与动力学预算提供了可审计坐标系。</p>
+          <p>压力测试则给出明确的路线信号：至少对这个尖锐正生产仿射核心，物理环带并没有自动制造有用的固定亏损。继续对单个场增加采样量不会解决主问题；更有价值的是构造一参数截断族，解析判断 \(\Gamma_{\rm core}\) 能否趋于一，并同时计算全空间双增量 \(\Gamma_{\rm ann}\)。</p>
+          <div class="proof"><strong>当前价值评估。</strong>&nbsp;双增量表示与边界载荷恒等式具有可进入严肃分析论文的结构价值；0.996478 是高质量探索证据，而非可单独发表的主定理。距离千禧年问题仍缺少沿真实 Navier–Stokes 解可时间积分的临界先验界，或一个排除这类界的解析饱和机制。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图分开显示主载荷、负尾和精确值重构</h2>
+          <figure><img src="/figures/r0-69t-affine-annuli.svg" alt="R0.69T 紧支撑仿射核心的有符号物理空间环带载荷、负尾与准蒙特卡洛精确值重构"><figcaption>图 R0.69T。左图给出环带载荷和 95% 扰动区间，生产集中在 \(j=-2,-1\)；中图放大小尾并显示 \(j=1\) 是唯一稳定负项；右图用点—区间而非趋势线比较三层分辨率与精确核心值。右图纵轴采用明确标注的聚焦尺度。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69t-affine-annuli.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69t-affine-annuli.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next stage</div><h2>R0.69U 将寻找解析饱和族，并把核心载荷与全局双增量比值分开</h2>
+          <p>下一步固定同一个仿射矩阵，引入外支撑半径或过渡宽度参数 \(R\)，构造 \(\chi_R\)。首先推导 \(\omega_R\) 的解析径向公式与每个环带的缩放；随后计算 \(\Gamma_{\rm core}(R)\) 和全空间 \(\Gamma_{\rm ann}(R)\)，并寻找 \(R\to\infty\) 或薄过渡极限。</p>
+          <p>若能证明某个光滑紧支撑族满足 \(\Gamma\to1\)，则关闭所有仅依赖静态环带标签的统一亏损路线；若比值被解析地隔离在一以下，再检验该亏损是否对 Navier–Stokes 缩放不变且能沿解传播。两种结果都比继续对单个样本做更大计算更有数学价值。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility and monitoring</div><h2>结构证书、数值证书、过程日志和期刊图均独立锁定</h2>
+          <p>结构源提交为 <code>bf437d5ec74532006c19fa09a8b486129503718d</code>，结构证书提交为 <code>4ef77882a26b9d532c389cabdb1eb602a23f2875</code>；数值源提交为 <code>1cb1f3d7478148bd5240181c8206a554bb4ed6d6</code>，监控证书提交为 <code>1d73e9b2569cbe87aae3500c8ea46e0d3a9355b8</code>，期刊图提交为 <code>c1fea73798f7c514b24f6797c8455138e86c5788</code>。</p>
+          <p>结构笔记、审计脚本与结构证书的 SHA-256 分别为 <code>0af3f548f2464383f809f9a181c81075e8e0ec2e58611389073f14fa5bbc0791</code>、<code>a33e8aa6dfb05e83385f15c79033a83a8463c0ff7bd4c8ed4d6bdacef006db05</code>、<code>c40098e9ff3411392b7f25e2d81145297eac62476f86ad260dc39d242d304238</code>。</p>
+          <p>正式附图 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>944c28257b77bf222344af11f72e4867c7fd647c0a7a57f0f0887adf5fc9b029</code>、<code>cab8184d97673162216f4089407c887144bfd4d94fe6f64417bd3eef978d9545</code>、<code>bd62ef3b6b053d77dc1c051363516cb0a5597f7dccfcb0db8c82e8295e33a6b6</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069t">查看 R0.69T 结构证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069t-affine-qmc">查看监控数值证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/physical_space_annular_increment_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069t-affine-annuli/fig-r069t-affine-annuli">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">13 / Sources and claim boundary</div><h2>经典几何表示、标准准蒙特卡洛工具与本项目结论分开陈述</h2>
+          <p>涡量方向与三维正则性的经典几何背景参见 <a href="https://doi.org/10.1002/cpa.3160460604">Constantin–Fefferman（1993）</a>。准蒙特卡洛实现使用 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.qmc.Sobol.html">SciPy 的 Sobol 序列</a>。千禧年问题的正式目标以 <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 的问题页</a> 为准。</p>
+          <p>本版本严格证明的是方向无关的有符号核、配对交换产生的双增量、平滑环带的绝对可求和重构、有限窗口的显式双尾，以及仿射核心的边界载荷恒等式。数值部分只支持一个显式截断场的尺度分布判断。它没有证明统一环带亏损、沿真实解的动力学耗减、全局正则性或有限时奇性，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、随机化计算、外部定理与开放问题分开记录。</div><div>R0.69T · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

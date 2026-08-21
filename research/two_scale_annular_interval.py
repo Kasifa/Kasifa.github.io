@@ -2912,9 +2912,14 @@ class AnnularMomentCertificate:
         self.power = power
         self.cells = 1 << power
         self.maximum = 4.0
-        self.step = self.maximum / self.cells
-        nodes = np.arange(self.cells + 1, dtype=np.float64) * self.step
-        node_interval = Interval(down(nodes), up(nodes))
+        self.step = math.ldexp(1.0, 2 - power)
+        nodes = np.ldexp(
+            np.arange(self.cells + 1, dtype=np.float64), 2 - power
+        )
+        # Every distance-grid node is a dyadic rational represented exactly
+        # in binary64.  Widening it by one ULP would spuriously cross aligned
+        # cutoff cells and repeatedly charge a full-cell range.
+        node_interval = Interval(nodes, nodes)
         node_clipped, _, _ = annular.enclose(node_interval)
         node_psi = annular_cutoff_derivatives(
             cutoff, annular.index, node_interval, True
@@ -2922,7 +2927,7 @@ class AnnularMomentCertificate:
         node_active = node_psi.upper > 0.0
         lower_nodes = nodes[:-1]
         upper_nodes = nodes[1:]
-        cell_distance = Interval(down(lower_nodes), up(upper_nodes))
+        cell_distance = Interval(lower_nodes, upper_nodes)
         clipped_distance, psi_range, _ = annular.enclose(cell_distance)
         active = psi_range.upper > 0.0
         psi0, psi1, psi2, _psi3 = annular_cutoff_derivatives(
@@ -4132,6 +4137,7 @@ def main() -> int:
             ],
             "distanceCellCutoffRangesUseMonotoneEndpointInterpolation": True,
             "cutoffPointInterpolation": "certified cubic Hermite with fourth-derivative remainder",
+            "distanceMomentGridUsesExactDyadicEndpoints": True,
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,
             "endpointDistributionTermsThroughOrderFive": True,

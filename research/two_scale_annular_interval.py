@@ -55,6 +55,7 @@ INNER_ACTIVE_HIGH = EPSILON * ACTIVE_HIGH
 ANNULAR_POWERS = (-4, -2, 0, 2, 4)
 NEGATIVE_INFINITY = -math.inf
 POSITIVE_INFINITY = math.inf
+BUMP_SECOND_ABSOLUTE_BOUND = Fraction(8)
 
 
 def down(value):
@@ -93,6 +94,66 @@ def arb_float_bounds(value: arb) -> tuple[float, float]:
         lower = Fraction(midpoint - radius, denominator)
         upper = Fraction(midpoint + radius, denominator)
     return fraction_float_bounds(lower)[0], fraction_float_bounds(upper)[1]
+
+
+def fraction_arb(value: Fraction) -> arb:
+    return arb(value.numerator) / arb(value.denominator)
+
+
+def bump_second_critical_audit() -> dict[str, object]:
+    """Certify the critical structure and the global ``|bump''| < 8`` bound."""
+
+    variable = sp.symbols("bump_second_t", real=True)
+    critical = sp.Poly(
+        2 * variable**3 - 14 * variable**2 + 21 * variable - 6,
+        variable,
+    )
+    isolated = critical.intervals(eps=sp.Rational(1, 10**12))
+    relevant = [
+        (Fraction(interval[0]), Fraction(interval[1]))
+        for interval, multiplicity in isolated
+        if multiplicity == 1 and interval[1] > 1
+    ]
+    value_bounds = []
+    for lower, upper in relevant:
+        midpoint = (lower + upper) / 2
+        radius = (upper - lower) / 2
+        t_ball = arb(fraction_arb(midpoint), fraction_arb(radius))
+        value = (-t_ball).exp() * (
+            4 * t_ball**4 - 12 * t_ball**3 + 6 * t_ball**2
+        )
+        value_bounds.append(arb_float_bounds(value))
+    passed = bool(
+        len(relevant) == 2
+        and relevant[0][0] > Fraction(159, 100)
+        and relevant[0][1] < Fraction(160, 100)
+        and relevant[1][0] > Fraction(503, 100)
+        and relevant[1][1] < Fraction(504, 100)
+        and relevant[0][0]
+        > 1 / (1 - Fraction(3, 5) ** 2)
+        and relevant[0][1]
+        < 1 / (1 - Fraction(31, 50) ** 2)
+        and relevant[1][0]
+        > 1 / (1 - Fraction(89, 100) ** 2)
+        and relevant[1][1]
+        < 1 / (1 - Fraction(9, 10) ** 2)
+        and all(
+            max(abs(lower), abs(upper))
+            < float(BUMP_SECOND_ABSOLUTE_BOUND)
+            for lower, upper in value_bounds
+        )
+    )
+    if not passed:
+        raise RuntimeError("failed to certify the standard-bump second derivative")
+    return {
+        "criticalPolynomial": str(critical.as_expr()),
+        "positiveCriticalIntervalsAboveOne": [
+            [str(lower), str(upper)] for lower, upper in relevant
+        ],
+        "criticalValueIntervals": [list(bounds) for bounds in value_bounds],
+        "absoluteBound": int(BUMP_SECOND_ABSOLUTE_BOUND),
+        "passed": True,
+    }
 
 
 @dataclass(frozen=True)
@@ -689,7 +750,7 @@ class CutoffCertificate:
             / normalization_lower
         )
         rho_second_maximum = (
-            40.0
+            float(BUMP_SECOND_ABSOLUTE_BOUND)
             / float(MOLLIFIER_RADIUS) ** 3
             / normalization_lower
         )
@@ -939,17 +1000,55 @@ class CutoffCertificate:
     def _bump_second_range(
         self, lower: Fraction, upper: Fraction
     ) -> Interval:
-        """A global analytic enclosure for the second bump derivative.
-
-        With ``t=(1-u^2)^(-1)``, the second derivative equals
-        ``exp(-t) (4 t^4 - 12 t^3 + 6 t^2)``.  For ``t>=1``, separately
-        maximizing every absolute monomial gives a bound below 40.  The
-        interval is zero when the queried coordinate cell misses the support.
-        """
+        """Enclose the second bump derivative using its certified extrema."""
 
         if upper <= -1 or lower >= 1:
             return Interval.exact_integer(0)
-        return Interval(-40.0, 40.0)
+        clipped_lower = max(Fraction(-1), lower)
+        clipped_upper = min(Fraction(1), upper)
+
+        def endpoint(coordinate: Fraction) -> Interval:
+            if not (Fraction(-1) < coordinate < Fraction(1)):
+                return Interval.exact_integer(0)
+            u = fraction_arb(coordinate)
+            bump = (-1 / (1 - u * u)).exp()
+            log_first = (-2 * u) / (1 - u * u) ** 2
+            log_second = (
+                -2 / (1 - u * u) ** 2
+                - 8 * u * u / (1 - u * u) ** 3
+            )
+            return Interval(
+                *arb_float_bounds(
+                    bump * (log_first * log_first + log_second)
+                )
+            )
+
+        left = endpoint(clipped_lower)
+        right = endpoint(clipped_upper)
+        result_lower = min(float(left.lower), float(right.lower))
+        result_upper = max(float(left.upper), float(right.upper))
+        if lower < -1 or upper > 1:
+            result_lower = min(result_lower, 0.0)
+            result_upper = max(result_upper, 0.0)
+        if clipped_lower <= 0 <= clipped_upper:
+            result_lower = min(result_lower, -1.0)
+        # The exact Sturm audit leaves only the guarded critical pairs
+        # |u| in (0.60, 0.62) and |u| in (0.89, 0.90).
+        for guard_lower, guard_upper in (
+            (Fraction(3, 5), Fraction(31, 50)),
+            (Fraction(-31, 50), Fraction(-3, 5)),
+        ):
+            if clipped_lower < guard_upper and clipped_upper > guard_lower:
+                result_lower = min(result_lower, -2.0)
+        for guard_lower, guard_upper in (
+            (Fraction(89, 100), Fraction(9, 10)),
+            (Fraction(-9, 10), Fraction(-89, 100)),
+        ):
+            if clipped_lower < guard_upper and clipped_upper > guard_lower:
+                result_upper = max(
+                    result_upper, float(BUMP_SECOND_ABSOLUTE_BOUND)
+                )
+        return Interval(result_lower, result_upper)
 
     def _normalized_bump_mass(
         self, lower: Fraction, upper: Fraction
@@ -1529,6 +1628,7 @@ def derive_radial_functions():
             sp.factor(sp.denom(direct_expression))
         ),
         "directAngularToDistanceMomentsExact": direct_to_moments_exact,
+        "bumpSecondDerivativeAudit": bump_second_critical_audit(),
     }
     return generic, core, direct, direct_core, audits
 

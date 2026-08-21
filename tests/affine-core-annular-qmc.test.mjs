@@ -1,10 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const certificateRoot = new URL("research/certificates/r069t-affine-qmc/", root);
+const figureRoot = new URL(
+  "figures/r069t-affine-annuli/fig-r069t-affine-annuli/",
+  root,
+);
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -53,4 +58,30 @@ test("records scientific progress and independent process-tree monitoring", asyn
   assert.match(resources, /2045\.141/);
   assert.match(readme, /67,108,864 pairs total/);
   assert.match(readme, /not an interval enclosure/i);
+});
+
+test("archives the formal R0.69T affine-annulus journal figure", async () => {
+  const manifest = JSON.parse(await readFile(new URL("manifest.json", figureRoot), "utf8"));
+  assert.equal(manifest.figureId, "fig-r069t-affine-annuli");
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.git.sourceCommit, "1cb1f3d7478148bd5240181c8206a554bb4ed6d6");
+  assert.equal(manifest.git.certificateCommit, "1d73e9b2569cbe87aae3500c8ea46e0d3a9355b8");
+  assert.match(manifest.supportedClaim, /0\.996478/);
+  for (const record of [...manifest.data, ...manifest.figure.outputs]) {
+    const payload = await readFile(new URL(record.path, figureRoot));
+    assert.equal(sha256(payload), record.sha256, record.path);
+  }
+});
+
+test("the R0.69T affine-annulus figure passes the strict package validator", () => {
+  const run = spawnSync(
+    process.env.PYTHON ?? "python3",
+    [
+      new URL("research/validate_figure_package.py", root).pathname,
+      figureRoot.pathname,
+    ],
+    { cwd: root.pathname, encoding: "utf8", env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" } },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
 });

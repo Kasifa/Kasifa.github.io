@@ -1,0 +1,122 @@
+{
+  "analyticalQuestion": "Which physical annuli carry the positive compact affine-core boundary production, and does their sum reconstruct the exact value?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "signed categorical bars with uncertainty and refinement dot-interval benchmark",
+    "nonColorEncoding": "filled versus hatched bars, zero lines, interval whiskers, benchmark dashes, and direct labels",
+    "outputFootprint": "double-column 178 by 82 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "the explicit core boundary carrier has little cross-annulus cancellation while reconstructing the exact benchmark at the declared QMC error scale"
+  },
+  "claimBoundary": "one explicit cutoff and the core-restricted carrier; randomized QMC, not an interval proof, global annular ratio, universal depletion theorem, or regularity result",
+  "computation": {
+    "command": "python plot.py",
+    "configuration": "16 independent scrambled Sobol replicates, 2^22 pairs each, annuli j=-8 through 1",
+    "kind": "data-analysis",
+    "precision": "IEEE binary64 with independent-scramble standard errors",
+    "solver": "five-dimensional symmetry-reduced signed Biot-Savart quadrature",
+    "wallTimeSeconds": 0.39745916600804776
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 152.984375,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T13:10:00+08:00",
+  "data": [
+    {
+      "bytes": 940,
+      "path": "annular-summary.csv",
+      "schema": "index, lengthLower, lengthUpper, mean, standardError, ci95Lower, ci95Upper",
+      "sha256": "75bf753929455f630602f6765cccd991055ca789ad105ee36c0691c81a640c54"
+    },
+    {
+      "bytes": 760,
+      "path": "refinement.csv",
+      "schema": "power, pointsPerReplicate, total mean/error, exact benchmark, reconstruction, ratio",
+      "sha256": "4449e261421dea078c755aa2647266e892bcd04b6bf12f455ca910cd7419f2fe"
+    },
+    {
+      "bytes": 756,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69T QMC result and claim boundary",
+      "sha256": "7f7b0ab66c89bc17004fea74086b4a90a52609009ad575c6bb3088792ea7ab75"
+    },
+    {
+      "bytes": 398,
+      "path": "validation.json",
+      "schema": "nine figure-data validation checks",
+      "sha256": "334dbbd64fef6fac696b6545b1c794abef3c80b455d2142263469de2f5337a98"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "2b6eede8081f613dd0138ef67ad70d1e5d46b45e48788619cbfaa0a4784b7b8c"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 82,
+    "outputs": [
+      {
+        "bytes": 27449,
+        "path": "figure.pdf",
+        "sha256": "944c28257b77bf222344af11f72e4867c7fd647c0a7a57f0f0887adf5fc9b029"
+      },
+      {
+        "bytes": 57823,
+        "path": "figure.svg",
+        "sha256": "cab8184d97673162216f4089407c887144bfd4d94fe6f64417bd3eef978d9545"
+      },
+      {
+        "bytes": 318246,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 1937",
+        "sha256": "bd62ef3b6b053d77dc1c051363516cb0a5597f7dccfcb0db8c82e8295e33a6b6"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069t-affine-annuli",
+  "git": {
+    "certificateCommit": "1d73e9b2569cbe87aae3500c8ea46e0d3a9355b8",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "1cb1f3d7478148bd5240181c8206a554bb4ed6d6"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 6350,
+      "extractionCommand": "python plot.py",
+      "fileName": "result.json",
+      "location": "research/certificates/r069t-affine-qmc/result.json",
+      "sha256": "1705daf735616a8d67b7b134074aa38a286245df7066f33d495e8f9d6fd8ebed"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "for one explicit compact affine core, monitored QMC concentrates the signed boundary carrier at j=-2 and j=-1, resolves only the j=1 mean as negative, and yields the exploratory ratio 0.996478"
+}

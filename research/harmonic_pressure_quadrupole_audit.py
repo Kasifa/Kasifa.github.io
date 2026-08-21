@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import sympy as sp
@@ -19,7 +21,11 @@ def kernel(source: sp.Matrix) -> sp.Matrix:
     )
 
 
-def audit() -> dict[str, object]:
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def audit(source_commit: str | None = None) -> dict[str, object]:
     radius = sp.symbols("R", positive=True)
     e1 = sp.Matrix([1, 0, 0])
     e2 = sp.Matrix([0, 1, 0])
@@ -67,12 +73,34 @@ def audit() -> dict[str, object]:
             sp.simplify(point.dot(point) - radius**2) == 0 for point, _ in sources
         ),
     }
+    if source_commit is not None:
+        head_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        checks["sourceCommitHasFortyHexCharacters"] = (
+            len(source_commit) == 40
+            and all(character in "0123456789abcdef" for character in source_commit)
+        )
+        checks["sourceCommitMatchesHead"] = source_commit == head_commit
+
+    script_path = Path(__file__).resolve()
+    note_path = script_path.with_name("harmonic_pressure_quadrupole_note.md")
 
     return {
         "schemaVersion": "1.0",
         "release": "R0.69J",
         "status": "passed" if all(checks.values()) else "failed",
         "normalization": "reported Hessians are multiplied by 4*pi",
+        "provenance": {
+            "sourceCommit": source_commit,
+            "auditScript": str(script_path.relative_to(script_path.parents[1])),
+            "auditScriptSha256": sha256(script_path),
+            "researchNote": str(note_path.relative_to(note_path.parents[1])),
+            "researchNoteSha256": sha256(note_path),
+        },
         "source": {
             "points": ["+R e1", "-R e1", "+R e2", "-R e2"],
             "weights": [1, 1, -1, -1],
@@ -100,8 +128,9 @@ def audit() -> dict[str, object]:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--source-commit")
     args = parser.parse_args()
-    result = audit()
+    result = audit(args.source_commit)
     rendered = json.dumps(result, indent=2, sort_keys=True) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

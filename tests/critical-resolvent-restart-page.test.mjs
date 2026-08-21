@@ -12,8 +12,8 @@ test("publishes R0.69E with the regular-interval resolvent theorem and boundary"
 
   assert.match(home, /id="r069e"/);
   assert.match(home, /\/notes\/r0-69e\.html/);
-  assert.match(home, /综述 v0\.75 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.75/);
+  assert.match(home, /综述 v0\.76 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.76/);
   assert.match(home, /下一步 R0\.69F/);
   assert.ok(note.includes("a=2C_B\\|v\\|_{X_\\tau}"));
   assert.ok(note.includes("b_\\lambda=2C_SV_\\tau\\sqrt{\\frac{\\pi}{\\lambda}}"));

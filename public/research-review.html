@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.75"></script>
+  <script defer src="/i18n-en.js?v=0.76"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4844,6 +4844,36 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69Q：</strong>&nbsp;从涡量方向的运输—扩散方程与 \(\lambda_2^+\) 集合的局部预算出发，检验是否能在不预设方向相干或 Serrin 条件的情况下产生尺度临界的时空亏损。</p>
           </div>
+
+          <div class="task-one" id="r069q" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69Q · 2026-08-21</p>
+            <h3>方向扩散只是总涡量耗散的一部分，尖锐仿射核心排除内部自动吸收</h3>
+            <p>
+              在 \(\omega=\rho\xi\)、\(\rho>0\) 的区域，我推导了精确恒等式
+              \[
+                |\nabla\omega|^2=|\nabla\rho|^2+\rho^2|\nabla\xi|^2
+              \]
+              以及模长—方向演化方程。角向项 \(\rho^2|\nabla\xi|^2\)
+              并不是新耗散，而是 enstrophy 耗散的正交分量；方向方程还包含在涡量零点附近奇异的
+              \(\nabla\log\rho\) 漂移。18 项形式检查全部通过。
+            </p>
+            <p>
+              更强的是，R0.69P 的紧支撑仿射核心在整个小球上满足
+              \[
+                (\omega\cdot S\omega)_+=\sqrt{\frac23}sw^2>0,
+                \qquad \nabla\rho=\nabla\xi=\nabla\omega=0.
+              \]
+              以此为光滑初值的局部 Navier–Stokes 解满足：短时间正生产的时间平均趋于正数，角向与全部内部耗散的时间平均都趋于零。因此不存在不含通量或初始迹的普适内部吸收常数。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;这一步关闭“方向扩散自动补足 enstrophy 预算”的路线，但不排除经典条件方向相干、截断通量或非局部幅值—方向耦合。它是严格的路线排错，不是正则性突破。</p>
+            <p>
+              <a href="/notes/r0-69q.html"><strong>阅读 R0.69Q 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69q-direction-diffusion.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069q">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069q-direction-diffusion/fig-r069q-direction-diffusion">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69R：</strong>&nbsp;在有符号 Biot–Savart 核中保留 \(\omega(x)\times(\omega(x+z)-\omega(x))\) 的非局部差分，精确优化近场/远场分裂，检验是否出现真正的尺度增益。</p>
+          </div>
         </section>
 
       </article>
@@ -4857,8 +4887,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.75 · 2026-08-21<br>
-        上次综述 v0.74 · 2026-08-21<br>
+        综述 v0.76 · 2026-08-21<br>
+        上次综述 v0.75 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

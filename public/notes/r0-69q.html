@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69Q：推导涡量模长与方向的精确演化方程，证明方向耗散已包含在总 enstrophy 耗散中，并构造短时间 Navier–Stokes 内部吸收反例。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69Q｜方向扩散不是额外耗散：仿射核心排除内部吸收">
+  <meta property="og:description" content="正涡量拉伸可在一个开球上保持尖锐，而径向、角向与全部内部涡量耗散同时为零。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69q-direction-diffusion.png">
+  <title>R0.69Q｜方向扩散不是额外耗散：仿射核心排除内部吸收</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.76">
+  <style>.hero h1{font-size:clamp(2.1rem,4.35vw,3.65rem)}</style>
+  <script defer src="/i18n-en.js?v=0.76"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#magnitude">模长方程</a><a href="#direction">方向方程</a><a href="#split">耗散分解</a><a href="#core">仿射核心</a><a href="#shorttime">短时间反例</a><a href="#scaling">缩放</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69Q · 涡量方向扩散的内部吸收障碍</div>
+        <h1>方向扩散已经包含在总耗散中，<br>尖锐拉伸却能让它局部归零</h1>
+        <p class="lead">我把 \(\omega=\rho\xi\) 代回三维涡量方程，逐项核对模长、方向与 enstrophy 的精确恒等式。结果表明 \(\rho^2|\nabla\xi|^2\) 不是新获得的耗散，而只是 \(|\nabla\omega|^2\) 的角向分量。更强的是，R0.69P 的紧支撑仿射核心给出真正的光滑 Navier–Stokes 初值：正拉伸在一个开球上达到尖锐值，而径向、角向和全部内部涡量耗散同时为零。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69Q 完成</span><strong>内部方向吸收路线关闭，转向非局部差分</strong><p>版本 v0.69Q · 2026-08-21</p><p>形式检查：18 / 18 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.59 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#magnitude">01 · 模长方程</a></li>
+        <li><a href="#direction">02 · 方向方程</a></li>
+        <li><a href="#split">03 · 耗散正交分解</a></li>
+        <li><a href="#core">04 · 尖锐仿射核心</a></li>
+        <li><a href="#shorttime">05 · 短时间动力学反例</a></li>
+        <li><a href="#scaling">06 · 全局缩放障碍</a></li>
+        <li><a href="#meaning">07 · 对总问题的意义</a></li>
+        <li><a href="#figure">08 · 期刊附图</a></li>
+        <li><a href="#next">09 · 下一步</a></li>
+        <li><a href="#reproduce">10 · 复现</a></li>
+        <li><a href="#sources">11 · 来源与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>角向耗散不能单独吸收正涡量拉伸</h2>
+          <p>在 \(\rho=|\omega|>0\) 的区域写 \(\omega=\rho\xi\)、\(|\xi|=1\)、\(\alpha=\xi\cdot S\xi\)。精确的模长方程是</p>
+          <div class="equation result">\[
+            \boxed{(\partial_t+u\cdot\nabla-\nu\Delta)\rho
+            =\rho\alpha-\nu\rho|\nabla\xi|^2.}
+          \]</div>
+          <p>对应的 enstrophy 密度恒等式为</p>
+          <div class="equation result">\[
+            \boxed{\frac12(\partial_t+u\cdot\nabla-\nu\Delta)\rho^2
+            +\nu|\nabla\rho|^2+\nu\rho^2|\nabla\xi|^2
+            =\rho^2\alpha.}
+          \]</div>
+          <p>然而尖锐仿射核心在一个开球上满足</p>
+          <div class="equation result">\[
+            \boxed{\rho^2\alpha=\sqrt{\frac23}\,s w^2>0,
+            \qquad\nabla\rho=\nabla\xi=\nabla\omega=0.}
+          \]</div>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;这排除的是不含通量、初始迹或非局部项的“内部耗散自动吸收”估计。它不排除经典方向相干判据或带截断通量、Biot–Savart 耦合的时空估计，也没有解决千禧年问题。</div>
+        </section>
+
+        <section id="magnitude"><div class="section-no">01 / Magnitude equation</div><h2>方向弯曲确实抑制模长，但权重恰是正在增长的涡量</h2>
+          <p>记 \(D_t=\partial_t+u\cdot\nabla\)。由 \(|\xi|=1\) 可得</p>
+          <div class="equation">\[
+            \xi\cdot\partial_j\xi=0,
+            \qquad \xi\cdot\Delta\xi=-|\nabla\xi|^2.
+          \]</div>
+          <p>将 \(\Delta(\rho\xi)=\xi\Delta\rho+2\nabla\rho\cdot\nabla\xi+\rho\Delta\xi\) 代入 \(D_t\omega-\nu\Delta\omega=S\omega\) 并与 \(\xi\) 内积，就得到主结论中的模长方程。负项 \(-\nu\rho|\nabla\xi|^2\) 的符号有利，但它可以在最大正拉伸处精确消失，不能仅凭方程形式认定它足以控制 \(\rho\alpha\)。</p>
+        </section>
+
+        <section id="direction"><div class="section-no">02 / Direction equation</div><h2>投影扩散之外还出现了涡量零点奇异漂移</h2>
+          <p>从向量方程减去 \(\xi D_t\rho\) 后得到</p>
+          <div class="equation result">\[
+            \boxed{D_t\xi=(I-\xi\otimes\xi)S\xi
+            +\nu(I-\xi\otimes\xi)\Delta\xi
+            +2\nu\nabla\log\rho\cdot\nabla\xi.}
+          \]</div>
+          <p>所有右端项都切于单位球；其中 \((I-\xi\otimes\xi)\Delta\xi=\Delta\xi+|\nabla\xi|^2\xi\)。但方程只在 \(\rho>0\) 上有意义，\(\nabla\log\rho\) 在涡量零点附近不受能量不等式控制。把它当成全局光滑的抛物方程，会悄悄假设掉一个真实障碍。</p>
+        </section>
+
+        <section id="split"><div class="section-no">03 / Polar dissipation</div><h2>径向与角向项之和逐点等于已有的全部涡量耗散</h2>
+          <p>对每个空间方向，\(\partial_j\omega=(\partial_j\rho)\xi+\rho\partial_j\xi\)。两项正交，因此</p>
+          <div class="equation result">\[
+            \boxed{|\nabla\omega|^2
+            =|\nabla\rho|^2+\rho^2|\nabla\xi|^2.}
+          \]</div>
+          <p>所以 enstrophy 方程中的角向正项不是额外获得的预算，而是原有 \(\nu\|\nabla\omega\|_2^2\) 的一个正交分量。若在总耗散之外再次把它作为独立几何收益使用，就发生了重复计数。</p>
+        </section>
+
+        <section id="core"><div class="section-no">04 / Sharp affine core</div><h2>同一个开球内，正拉伸尖锐而全部空间耗散为零</h2>
+          <p>取</p>
+          <div class="equation">\[
+            S_+=\frac{s}{\sqrt6}\operatorname{diag}(-1,-1,2),
+            \qquad \Omega x=\frac12we_3\times x,\qquad A=S_++\Omega.
+          \]</div>
+          <p>利用 \(B_A=-x\times(Ax)/3\) 与 \(v_A=\nabla\times(\chi B_A)\)，可使 \(v_A=Ax\) 于 \(B_1\)。因此 \(\omega=we_3\)、\(S=S_+\) 在整个核心球内常数，正拉伸为 \(\sqrt{2/3}\,sw^2\)，而 \(\nabla\rho\)、\(\nabla\xi\)、\(\nabla\omega\) 全部为零。这直接否定任何有限常数 \(C\) 下的点态估计</p>
+          <div class="equation result">\[
+            (\omega\cdot S\omega)_+\le C\nu\rho^2|\nabla\xi|^2
+            \quad\text{或}\quad
+            (\omega\cdot S\omega)_+\le C\nu|\nabla\omega|^2.
+          \]</div>
+        </section>
+
+        <section id="shorttime"><div class="section-no">05 / Genuine dynamics</div><h2>反例不是静态喷射：它延伸为短时间 Navier–Stokes 障碍</h2>
+          <p>以紧支撑 \(v_A\) 为初值，标准局部适定性给出光滑 Navier–Stokes 解。固定 \(B\Subset B_1\)，并定义</p>
+          <div class="equation">\[
+          \begin{aligned}
+            P(T)&=\int_0^T\!\int_B(\omega\cdot S\omega)_+\,dx\,dt,\\
+            D_\xi(T)&=\nu\int_0^T\!\int_B\rho^2|\nabla\xi|^2\,dx\,dt,\\
+            D_\omega(T)&=\nu\int_0^T\!\int_B|\nabla\omega|^2\,dx\,dt.
+          \end{aligned}
+          \]</div>
+          <p>小时间内 \(|\omega|\ge w/2\)，所以方向场仍良定义。光滑时间连续性与初值上的常数核心给出</p>
+          <div class="equation result">\[
+            \boxed{\frac{P(T)}T\to|B|\sqrt{\frac23}\,s w^2,
+            \qquad\frac{D_\xi(T)}T\to0,
+            \qquad\frac{D_\omega(T)}T\to0.}
+          \]</div>
+          <p>如果普适的短柱内部吸收 \(P(T)\le CD_\xi(T)\) 或 \(P(T)\le CD_\omega(T)\) 成立，除以 \(T\) 再令 \(T\downarrow0\) 就得到正数不大于零的矛盾。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">06 / Similarity scaling</div><h2>全局正部分与黏性耗散的比值带有超临界因子</h2>
+          <p>对固定紧支撑无散场 \(v\)，令 \(v_{a,L}(x)=aL\,v(x/L)\)。若 \(P_+(v)=\int(\omega\cdot S\omega)_+\)、\(D(v)=\int|\nabla\omega|^2\)，则</p>
+          <div class="equation result">\[
+            \boxed{P_+(v_{a,L})=a^3L^3P_+(v),
+            \qquad D(v_{a,L})=a^2L D(v).}
+          \]</div>
+          <p>于是生产/黏性耗散比被乘以 \(aL^2/\nu\)，可任意增大。这里使用的是正部分；它不对 Betchov 全局有符号积分作符号判断，也不排除加入其他控制范数后的估计。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Value for the main problem</div><h2>成功路线必须留下仿射核心无法抹去的量</h2>
+          <p>本版本把一个容易重复计数的直觉变成了可检验的否定定理。方向扩散确实存在，但它没有增加 enstrophy 预算；最大正拉伸与零方向耗散还能在一个开球上同时出现，并能作为真正解的光滑初值。</p>
+          <p>因此下一条无条件估计至少必须保留以下一种信息：局部化产生的边界通量、从初值累积的时间缺陷，或把涡量模长与方向共同保留的非局部 Biot–Savart 差分。单独研究 \(|\nabla\xi|\) 的内部正项不会闭合。</p>
+          <div class="proof"><strong>价值判断。</strong>&nbsp;这是新的项目内路线裁决和短时间障碍，不是可直接投稿的正则性突破。它的价值在于排除一个貌似有利但会重复计数的机制，并把后续搜索压缩到非局部差分与通量项。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Journal figure</div><h2>附图锁定耗散分解、仿射端点与相似缩放</h2>
+          <figure><img src="/figures/r0-69q-direction-diffusion.svg" alt="R0.69Q 涡量径向角向耗散分解、仿射核心反例与相似缩放"><figcaption>图 R0.69Q。左图把总涡量耗散精确分解为径向与角向分量；中图显示同一仿射核心上正拉伸为一而三类内部耗散全为零；右图显示生产/黏性耗散比的精确缩放因子 \(aL^2/\nu\)。色彩、纹理、线型、标记与直接标注保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69q-direction-diffusion.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69q-direction-diffusion.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next stage</div><h2>R0.69R 将保留非局部涡量差分，检查是否仍回到经典超临界指数</h2>
+          <p>下一步不再把方向与模长拆开，而在有符号 Biot–Savart 核中使用精确恒等式</p>
+          <div class="equation result">\[
+            \boxed{\omega(x)\times\omega(x+z)
+            =\omega(x)\times\bigl(\omega(x+z)-\omega(x)\bigr).}
+          \]</div>
+          <p>这个差分自动耦合模长与方向，并在 \(z=0\) 消去一个奇性阶。R0.69R 将做近场/远场分裂，对分裂半径精确优化。接受标准是优化后出现真正的尺度增益或可积时间幂；若最终只重现经典 enstrophy 的超临界幂，就用尖锐缩放族关闭这条分支。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility</div><h2>源笔记、证书与期刊图分别锁定到完整提交</h2>
+          <p>数学源提交为 <code>c5e19140c3dc79d22eb368e63dc2014681afff18</code>，形式证书提交为 <code>502c4f56f660e7c7a0c916815f9142f781e36d81</code>，最终附图提交为 <code>9d3c5228b6eef1f0482fc386e46a8335ec8295b3</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>308080231b30cfae777086a50ab2ad784d2dc21ec8d18609e3d9294994ba0bfb</code>，形式证书 SHA-256 为 <code>5db39990d92371618e7feb6d53e35587392ac89791022da8a983ad74c9f11bfa</code>。18 项检查全部通过；监控运行 0.59 秒，峰值常驻内存 65.578 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>edb5948175fe279a8628e78f48c589fd9d68b03f0ed8adaff55fed22f2e1ffd1</code>、<code>d861c84ab488fa1714d3bb3d20b075b4eb96419aa8c382b18fc49bc4501a0621</code> 与 <code>b9f0f161b9b9de9098e6737eceec25007094f2c5fb07d8a0b5d34e6b3f3b6e02</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069q">查看 R0.69Q 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/vorticity_direction_diffusion_obstruction_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069q-direction-diffusion/fig-r069q-direction-diffusion">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">11 / Sources and boundary</div><h2>经典方向判据与本次内部吸收障碍分开陈述</h2>
+          <p>模长—方向分解及方向演化方程属于经典结构。Constantin–Fefferman 把方向相干与非局部涡量拉伸表示结合；Beirão da Veiga–Berselli 放宽方向正则性假设；Grujić 把几何耗散局部化到任意小的时空柱。本版本没有加强这些条件正则性定理。</p>
+          <p>主要来源：<a href="https://doi.org/10.1512/iumj.1993.42.42034">Constantin–Fefferman（1993）</a> · <a href="https://doi.org/10.57262/die/1356060864">Beirão da Veiga–Berselli（2002）</a> · <a href="https://doi.org/10.1007/s00220-008-0726-8">Grujić（2009）</a>。</p>
+          <p>声明边界：本页证明精确极分解恒等式、开球仿射核心反例、短时间真实解的内部吸收障碍及正部分缩放律。它没有排除带通量、初始迹或非局部幅值—方向耦合的估计，没有证明全局正则性或有限时奇性，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69Q · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

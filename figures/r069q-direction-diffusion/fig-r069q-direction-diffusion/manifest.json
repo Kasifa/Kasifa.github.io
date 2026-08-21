@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Can diffusion of the vorticity direction automatically absorb positive vortex stretching?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "polar dissipation decomposition, affine-core endpoint bars, and exact similarity-scaling curves",
+    "nonColorEncoding": "hatching, zero markers, line styles, marker shapes, and direct labels",
+    "outputFootprint": "double-column 178 by 82 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "angular diffusion is not extra and cannot furnish an interior-only universal absorption constant"
+  },
+  "claimBoundary": "exact local and scaling obstruction only; cutoff-flux and nonlocal geometric estimates remain open",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "181 polar-split samples, four affine-core observables, and three 321-point exact scaling curves",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact closed-form identities",
+    "solver": "closed-form polar decomposition and similarity scaling",
+    "wallTimeSeconds": 0.6335571249946952
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 158.515625,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T11:45:00+08:00",
+  "data": [
+    {
+      "bytes": 10355,
+      "path": "polar-dissipation-split.csv",
+      "schema": "splitDegrees, radialFraction, angularFraction, totalFraction",
+      "sha256": "133c3613550d0618ade34a569a7731b76778e7107535a2169f0939e91c7c00d5"
+    },
+    {
+      "bytes": 126,
+      "path": "affine-core-obstruction.csv",
+      "schema": "quantity, normalizedValue",
+      "sha256": "adc38a1234c48878afdbadae75c5fbb60f7346a461b5cc7499537b5f0e4d0326"
+    },
+    {
+      "bytes": 47234,
+      "path": "absorption-scaling.csv",
+      "schema": "lengthScale, amplitudeOverViscosity, ratioFactor",
+      "sha256": "93bbcddd97b23617a3d5fd5096e546aa92fbd0d1bfd2743c3b91edbedc843b34"
+    },
+    {
+      "bytes": 699,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69Q direction-diffusion certificate",
+      "sha256": "c141f7e440d4ddfa92b2977ca3ef5acd74abe8b23b6f17924997856726dd7280"
+    },
+    {
+      "bytes": 456,
+      "path": "validation.json",
+      "schema": "ten figure-data validation checks",
+      "sha256": "8a9153d624528768e989e30a19ee38465f6b0e27ae558e125cff876eb489f5cb"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "6944ae02f7a6870af134367deb4e1cdc35295f076c42f58d769a74ce94bba8f7"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 82,
+    "outputs": [
+      {
+        "bytes": 49606,
+        "path": "figure.pdf",
+        "sha256": "edb5948175fe279a8628e78f48c589fd9d68b03f0ed8adaff55fed22f2e1ffd1"
+      },
+      {
+        "bytes": 191881,
+        "path": "figure.svg",
+        "sha256": "d861c84ab488fa1714d3bb3d20b075b4eb96419aa8c382b18fc49bc4501a0621"
+      },
+      {
+        "bytes": 551673,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 1937",
+        "sha256": "b9f0f161b9b9de9098e6737eceec25007094f2c5fb07d8a0b5d34e6b3f3b6e02"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069q-direction-diffusion",
+  "git": {
+    "certificateCommit": "502c4f56f660e7c7a0c916815f9142f781e36d81",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "c5e19140c3dc79d22eb368e63dc2014681afff18"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2432,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "vorticity-direction-diffusion-obstruction.json",
+      "location": "research/certificates/r069q/vorticity-direction-diffusion-obstruction.json",
+      "sha256": "5db39990d92371618e7feb6d53e35587392ac89791022da8a983ad74c9f11bfa"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "direction dissipation is exactly part of enstrophy dissipation, and a sharp affine core makes both vanish while stretching is positive"
+}

@@ -1,0 +1,62 @@
+{
+  "amplitudeAudit": {
+    "crossPressure": "alpha*beta**2",
+    "localDissipation": "alpha**2",
+    "ratio": "beta**2/alpha"
+  },
+  "checks": {
+    "allNormalizedQuantitiesAreScaleInvariant": true,
+    "boundaryCostDoesNotContainSeparationParameter": true,
+    "crossPressureHasAlphaBetaSquaredHomogeneity": true,
+    "dyadicKernelHasFifthPower": true,
+    "finiteShellLimitRetainsEveryTransitionShell": true,
+    "firstSeparatedShellHasNonzeroFloor": true,
+    "firstSeparationStepMatchesTailMigration": true,
+    "nearCostDoesNotContainSeparationParameter": true,
+    "pressureToDissipationRatioIsBetaSquaredOverAlpha": true,
+    "secondSeparationStepMatchesTailMigration": true,
+    "separationBudgetIsMonotone": true,
+    "sourceCommitHasFortyHexCharacters": true,
+    "sourceCommitMatchesHead": true,
+    "thirdSeparationStepMatchesTailMigration": true
+  },
+  "finiteSeparationModel": {
+    "B2": "e2/1024 + e3/1024 + e4/1024 + tail5/1024",
+    "B3": "e2/1024 + e3/32768 + e4/32768 + tail5/32768",
+    "B4": "e2/1024 + e3/32768 + e4/1048576 + tail5/1048576",
+    "B5": "e2/1024 + e3/32768 + e4/1048576 + tail5/33554432",
+    "firstShellWeight": "1/1024",
+    "truncatedLimit": "e2/1024 + e3/32768 + e4/1048576"
+  },
+  "lengthExponents": {
+    "dissipation": "0",
+    "firstBoundaryFlux": "0",
+    "localizedSourceL2": "-5/2",
+    "nearCost": "0",
+    "normalizedShellEnergy": "0",
+    "pressurePairing": "-3",
+    "rCubedPressurePairing": "0",
+    "secondBoundaryFlux": "0",
+    "shellEnergy": "1",
+    "sigma": "0",
+    "strainL2": "-1/2"
+  },
+  "normalizedBudget": {
+    "boundary": "b_r",
+    "far": "sigma_r 2**(-5M) sum_{m>=M} e_m",
+    "near": "sigma_r N_r",
+    "optimized": "sum_{m>=2} 2**(-5m) e_m",
+    "pressure": "r**3 |P_r|",
+    "transition": "sigma_r sum_{m=2}^{M-1} 2**(-5m) e_m"
+  },
+  "provenance": {
+    "auditScript": "research/three_zone_pressure_budget_audit.py",
+    "auditScriptSha256": "89b9ad773c093fcb75c9ef9c2ef878a3c1195e0af6bd4c9f3c81b5fd54d1b43c",
+    "researchNote": "research/three_zone_pressure_budget_note.md",
+    "researchNoteSha256": "072b447921a87564c572a8d0c07c196e9aba3329e0bc5f20e7d7c82c702b7ad2",
+    "sourceCommit": "e5bcd77e238edc7cabf49d9c96e792ef92a33aba"
+  },
+  "release": "R0.69L",
+  "schemaVersion": "1.0",
+  "status": "passed"
+}

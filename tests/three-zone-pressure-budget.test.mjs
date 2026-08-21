@@ -61,7 +61,7 @@ test("archives the source-locked R0.69L certificate", async () => {
   assert.ok(Object.values(certificate.checks).every(Boolean));
   assert.equal(
     certificate.provenance.sourceCommit,
-    "SOURCE_COMMIT_PLACEHOLDER",
+    "e5bcd77e238edc7cabf49d9c96e792ef92a33aba",
   );
   assert.match(readme, /parameter-migration obstruction/i);
   assert.match(resources, /exited:0/);

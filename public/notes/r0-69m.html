@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69M：把三分区压力预算与 CKN、临界 L3、Morrey 和局部压力判据逐项比较。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69M｜远场可控，近场范数仍过强">
+  <meta property="og:description" content="B_infinity 获得 M_2/120 的严格上界；高频见证排除速度小量对当前近场范数的时间切片控制。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69m-criterion.png">
+  <title>R0.69M｜远场可控，近场范数仍过强</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.72">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.72"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#baseline">已知基准</a><a href="#morrey">Morrey 界</a><a href="#strict">单向性</a><a href="#near">近场缺口</a><a href="#witness">高频见证</a><a href="#annular">环带量</a><a href="#repair">指数修复</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69M · 正则性判据对照</div>
+        <h1>远场得到严格控制，<br>近场范数却站得太高</h1>
+        <p class="lead">我把 R0.69L 的三个剩余量逐项放到 CKN、临界 \(L^3\)、局部压力投影与 Morrey 判据中比较。结论是：加权远场尾得到可复用的临界 Morrey 上界；当前近场 \(L^2\) 源与绝对环带量则高于适当弱解层级，不能形成新的 \(\varepsilon\)-正则性判据。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69M 完成</span><strong>判据覆盖与指数缺口</strong><p>版本 v0.69M · 2026-08-21</p><p>形式检查：14 / 14 通过</p><p>文献对照：5 类</p><p>监控运行：0.26 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 路线判定</a></li>
+        <li><a href="#baseline">01 · 已知判据基准</a></li>
+        <li><a href="#morrey">02 · 远场 Morrey 界</a></li>
+        <li><a href="#strict">03 · 为什么严格更弱</a></li>
+        <li><a href="#near">04 · 近场正则性缺口</a></li>
+        <li><a href="#witness">05 · 高频不可控性</a></li>
+        <li><a href="#annular">06 · 绝对环带量</a></li>
+        <li><a href="#repair">07 · 第一种指数修复</a></li>
+        <li><a href="#meaning">08 · 对总问题的意义</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#next">10 · 下一分支</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Criterion decision</div><h2>保留远场引理，淘汰当前近场范数作为新判据</h2>
+          <p>R0.69L 的压力预算为</p>
+          <div class="equation">\[
+            r^3|\mathcal P_r|\le C\min\{b_r,\sigma_r(N_r+B_\infty)\},
+            \qquad B_\infty=\sum_{m\ge2}2^{-5m}e_m.
+          \]</div>
+          <p>逐项比较后的严格判定如下。</p>
+          <div class="grid">
+            <div class="status"><span>RETAIN · FAR TAIL</span><strong>\(B_\infty\)</strong><p>适当弱解能量层级可定义，并受临界动能 Morrey 量控制。</p></div>
+            <div class="status"><span>REJECT · NEAR SOURCE</span><strong>\(N_r\)</strong><p>要求 \(q_0\in L^2\)，远高于能量层级给出的 \(q_0\in L^1\)。</p></div>
+            <div class="status"><span>REJECT · ABSOLUTE FLUX</span><strong>\(b_r\)</strong><p>绝对值形式要求 \(u|q|\) 与 \(u|\nabla p|\) 的额外可积性。</p></div>
+            <div class="status"><span>NO NEW CRITERION</span><strong>R0.69L 原式</strong><p>远场有效，但当前近场输入已处于已知正则性条件之上。</p></div>
+          </div>
+          <div class="proof"><strong>结论。</strong>&nbsp;R0.69L 作为光滑场估计成立，但其当前形式不是新的 \(\varepsilon\)-正则性判据。真正缺口是近场配对指数，不再是远近分离半径。</div>
+        </section>
+
+        <section id="baseline"><div class="section-no">01 / Established baselines</div><h2>比较必须从适当弱解层级开始，而不是从光滑解假设开始</h2>
+          <p>适当弱解的基准空间是</p>
+          <div class="equation">\[
+            u\in L_t^\infty L_x^2\cap L_t^2H_x^1,
+            \qquad p\in L_{t,x}^{3/2}.
+          \]</div>
+          <p>CKN 小耗散判据使用 \(r^{-1}\int_{Q_r}|\nabla u|^2\)；Gustafson–Kang–Tsai 的局部梯度判据覆盖临界线 \(3/p+2/q=2\)；Escauriaza–Seregin–Šverák 处理端点 \(L_t^\infty L_x^3\)；Seregin 给出包含 CKN 情形的临界 Morrey 判据；局部压力投影还可产生速度单独的小量判据。候选条件只有在这个基准上可定义且不被已有条件覆盖，才有新增价值。</p>
+        </section>
+
+        <section id="morrey"><div class="section-no">02 / Positive far-tail lemma</div><h2>五次幂壳层权重把临界 Morrey 控制压成 \(1/120\)</h2>
+          <p>定义中心固定的外部动能 Morrey 包络</p>
+          <div class="equation">\[
+            \mathfrak M_2(r)=\sup_{\rho\ge4r}\frac1\rho\int_{B_\rho}|u|^2\,dx.
+          \]</div>
+          <p>若第 \(m\) 个壳支撑于 \(B_{2^{m+1}r}\)，则</p>
+          <div class="equation">\[
+            E_m\le2^{m+1}r\,\mathfrak M_2(r).
+          \]</div>
+          <p>代入 R0.69K 的 \(2^{-5m}\) 权重，得到精确几何级数</p>
+          <div class="equation result">\[
+            \boxed{B_\infty(r)
+            \le2\sum_{m\ge2}2^{-4m}\mathfrak M_2(r)
+            =\frac1{120}\mathfrak M_2(r).}
+          \]</div>
+          <p>这是 R0.69M 保留下来的新中间引理：速度生成的远场压力预算可以由临界动能 Morrey 包络控制，并带有明确常数。</p>
+        </section>
+
+        <section id="strict"><div class="section-no">03 / One-way comparison</div><h2>\(B_\infty\) 严格弱于全尺度 Morrey 控制，反向常数不存在</h2>
+          <p>若能量 \(E\) 只放在第 \(k\) 个远壳，则</p>
+          <div class="equation">\[
+            B_\infty=2^{-5k}\frac Er,
+            \qquad
+            \mathfrak M_2(r)\ge\frac{E}{2^{k+1}r}.
+          \]</div>
+          <p>因此</p>
+          <div class="equation result">\[
+            \boxed{\frac{\mathfrak M_2(r)}{B_\infty}\ge2^{4k-1}\longrightarrow\infty.}
+          \]</div>
+          <p>远处能量在 \(B_\infty\) 中比临界 Morrey 归一化再多衰减四个 dyadic 幂。于是 Morrey 控制推出远场预算控制，但远场预算不能恢复完整 Morrey 控制。</p>
+        </section>
+
+        <section id="near"><div class="section-no">04 / Near-field regularity mismatch</div><h2>\(N_r\) 的主项要求 \(\nabla u\in L^4\)，能量层级只给出 \(\nabla u\in L^2\)</h2>
+          <p>对 \(q_0=\partial_i\partial_j(\eta_0u_i u_j)\)，不可压条件给出精确展开</p>
+          <div class="equation">\[
+          \begin{aligned}
+            q_0={}&\eta_0\,\partial_i u_j\partial_j u_i
+            +(\partial_i\eta_0)u_j\partial_j u_i
+            +(\partial_j\eta_0)u_i\partial_i u_j\\
+            &+(\partial_{ij}\eta_0)u_i u_j.
+          \end{aligned}
+          \]</div>
+          <p>能量正则性只保证首项属于 \(L^1_x\)。而</p>
+          <div class="equation">\[
+            N_r=r^{5/2}\|q_0\|_2
+          \]</div>
+          <p>要求该二次梯度项属于 \(L^2_x\)，大致相当于 \(\nabla u\in L^4_x\)。因此 \(N_r\) 对一般适当弱解未必有限；从它出发不能直接得到更弱的奇点排除判据。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">05 / High-frequency functional witness</div><h2>速度 \(L^3\) 与动能 Morrey 量可以趋零，同时 \(N_r\) 发散</h2>
+          <p>取固定光滑截断 \(\chi\)，令</p>
+          <div class="equation">\[
+            \psi_N=a_NN^{-1}\chi(x)\sin(Nx_1)\sin(Nx_2),
+            \qquad u_N=(\partial_2\psi_N,-\partial_1\psi_N,0).
+          \]</div>
+          <p>这是光滑、紧支撑、散度为零的时间切片。在截断等于一的固定盒内，压力源含非退化的 \(a_N^2N^2\) 振荡项。令 \(a_N=N^{-1/2}\)，则</p>
+          <div class="equation result">\[
+            \|u_N\|_3=O(N^{-1/2}),\qquad
+            \mathfrak M_2(1)=O(N^{-1}),\qquad
+            N_1\ge cN.
+          \]</div>
+          <p>这排除了“由速度或局部动能小量通过纯空间函数不等式自动控制 \(N_r\)”的可能。它不是 Navier–Stokes 奇性解，也不反驳任何时空 \(\varepsilon\)-正则性定理。</p>
+        </section>
+
+        <section id="annular"><div class="section-no">06 / Absolute annular cost</div><h2>两次分部积分后的绝对值量比标准局部能量压力通量更强</h2>
+          <p>R0.69L 的另一条界使用</p>
+          <div class="equation">\[
+            b_r=r^2\int_{B_r\setminus B_{r/2}}|u|\,|q|\,dx
+            +r\int_{B_r\setminus B_{r/2}}|u|\,|\nabla p|\,dx.
+          \]</div>
+          <p>在能量层级，\(q\in L^1_x\) 与 \(u\in L^6_x\) 并不推出 \(u|q|\in L^1_x\)。同一高频族还满足</p>
+          <div class="equation result">\[
+            \int_K|u_N|\,|q_N|\,dx\ge ca_N^3N^2=cN^{1/2}.
+          \]</div>
+          <p>标准局部能量不等式中的 \(pu\cdot\nabla\phi\) 在适当弱解空间中有意义；把它改写为 \(b_r\) 的绝对值形式会丢失抵消并要求额外可积性。</p>
+        </section>
+
+        <section id="repair"><div class="section-no">07 / First exponent repair</div><h2>\(L^3\)–\(L^{3/2}\) 配对可以降阶，但仍处于已知正则侧</h2>
+          <p>定义</p>
+          <div class="equation">\[
+            U_r=\|u\|_{L^3(B_{4r})},\qquad
+            G_r=r\|\nabla u\|_{L^3(B_{4r})},\qquad
+            Q_r=r^2\|q_0\|_{3/2}.
+          \]</div>
+          <p>由近场源展开和 Calderón–Zygmund 有界性可得</p>
+          <div class="equation result">\[
+            \boxed{r^3\left|\int\phi S:\nabla^2(-\Delta)^{-1}q_0\,dx\right|
+            \le CG_r(G_r^2+U_rG_r+U_r^2).}
+          \]</div>
+          <p>这避免了把二阶导数直接放进 \(L^2\)，但要求 \(\nabla u\in L^3_x\)。其三次时间平均对应 \(3/3+2/3=5/3&lt;2\)，位于已知临界梯度线 \(3/p+2/q=2\) 的更强正则一侧，所以仍不能升级为更弱的新判据。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Value for the main problem</div><h2>这一步没有证明正则性，但排除了一个会制造假进展的范数选择</h2>
+          <p>正面价值是 \(B_\infty\le\mathfrak M_2/120\)：远场压力尾的确比完整临界 Morrey 控制更柔和。负面价值同样重要：\(N_r\) 与 \(b_r\) 不是适当弱解层级的自然量，若把它们的小量性当作候选条件，会把需要证明的正则性偷偷放进假设。</p>
+          <p>因此 R0.69M 没有给出千禧年问题的解，但把压力局部化路线的剩余困难从“所有尺度的非局部尾”压缩成一个明确问题：能否在能量层级建立有抵消的近场对偶，而不诉诸已知正则性混合范数。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图同时保存可用的远场界与必须淘汰的近场假设</h2>
+          <figure><img src="/figures/r0-69m-criterion.svg" alt="R0.69M Morrey 远场界与高频近场不可控性"><figcaption>图 R0.69M。左图令各壳饱和临界动能 Morrey 上界，逐壳贡献按 \(2^{1-4m}\) 衰减，累积到精确常数 \(1/120\)。右图取 \(a_N=N^{-1/2}\)：速度 \(L^3\) 与动能 Morrey 量下降，而 \(N_1\) 与绝对环带 \(u q\) 量上升。线型、标记与纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69m-criterion.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69m-criterion.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next low-regularity pairing</div><h2>R0.69N 转向负阶 Sobolev 与 Hardy–BMO 对偶</h2>
+          <div class="proof"><strong>R0.69N 的通过标准。</strong>&nbsp;新的近场估计必须同时满足三点：在适当弱解能量空间中有意义；保留远场 \(2^{-5m}\) 壳层增益；不假设已经落入已知正则性定理的混合范数。下一步将检验把压力源放入负阶 Sobolev 或 Hardy 空间、把导数移到局部应变一侧，是否能得到与耗散配对的闭合结构。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>数学源、形式证书、期刊附图与外部定理分开锁定</h2>
+          <p>数学源提交为 <code>dd6411d1386328a3b873c410dfe5d52e89596591</code>，形式证书提交为 <code>2fa8315869cbedf42e2dd8e19ab8565fb987b8af</code>，最终附图提交为 <code>b9370de968e7414ba33caec29b82402181ffbe67</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>5a0bdb6be5d5fbe0fee4acb228477c5871e789cd0f67bbf273e87f1d5536895f</code>，形式证书 SHA-256 为 <code>8792c719fe7eb2e84d761bf3bf96a5f8c8ba68bb858a3974264ca2a34b299b19</code>。14 项检查全部通过；监控运行 0.26 秒，峰值常驻内存 64.938 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>08b78faa2c0be1dfd5d5c8cf1ae566e469734d4e75a83616bd90f78718f75eba</code>、<code>45fa2887a2759832156b6e2ae204c95c2c96b40f09d7d5273df941df3ab3dbb2</code> 与 <code>7325347e1741685add39b6ec45a3b1b7b5eeed48eb8a3c2037fffe03e7bc54ca</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069m">查看 R0.69M 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/criterion_comparison_pressure_budget_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069m-criterion/fig-r069m-criterion">查看期刊附图包</a></p>
+          <p>外部定理来源：<a href="https://arxiv.org/abs/math/0607114">Gustafson–Kang–Tsai（局部速度与梯度判据）</a> · <a href="https://arxiv.org/abs/math/0607537">Seregin（临界 Morrey 判据）</a> · <a href="https://www.mathnet.ru/eng/rm609">Escauriaza–Seregin–Šverák（端点 \(L_{3,\infty}\)）</a> · <a href="https://arxiv.org/abs/1805.04841">Jiu–Wang–Zhou（局部压力投影判据）</a>。</p>
+          <p>声明边界：本页证明 Morrey 对远场预算的单向控制、时间切片高频不可控性与第一种指数修复的强度判断。它没有构造 Navier–Stokes 奇性解，不给出正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69M · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

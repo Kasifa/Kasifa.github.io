@@ -13,8 +13,8 @@ test("publishes R0.69I with the exact localization obstruction", async () => {
 
   assert.match(home, /id="r069i"/);
   assert.match(home, /\/notes\/r0-69i\.html/);
-  assert.match(home, /综述 v0\.71 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.71/);
+  assert.match(home, /综述 v0\.72 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.72/);
   assert.match(home, /下一步 R0\.69J/);
   assert.ok(note.includes("\\int\\phi S:\\nabla^2p"));
   assert.ok(note.includes("\\left(\\frac12qu-A^2u\\right)\\cdot\\nabla\\phi"));

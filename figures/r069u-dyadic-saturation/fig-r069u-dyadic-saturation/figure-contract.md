@@ -1,7 +1,7 @@
 # Figure contract — R0.69U dyadic core saturation
 
 - Analytical question: does pushing a smooth affine cutoff to dyadic radius
-  (R) force the core-restricted boundary carrier into a one-sign regime, and
+  \(R\) force the core-restricted boundary carrier into a one-sign regime, and
   how do the surviving annuli approach their analytic limits?
 - Supported takeaway: the exact theorem gives eventual
   `Gamma_core=1`; monitored QMC resolves the finite-radius transition and the

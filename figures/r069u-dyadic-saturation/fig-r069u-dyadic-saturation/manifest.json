@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Does pushing a smooth affine cutoff to dyadic radius R force the core-restricted annular carrier to one sign, and what does dilation do to the full-space ratio?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "log point plots, point-interval limiting shares, and standardized reconstruction residuals",
+    "nonColorEncoding": "circle, square, diamond, open downward triangle, analytic shading, interval whiskers, and direct labels",
+    "outputFootprint": "double-column 178 by 82 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "the core-restricted carrier reaches the exact one-sign regime while the two principal annuli converge to positive analytic limits"
+  },
+  "claimBoundary": "core-restricted saturation is exact, but finite-radius values are randomized QMC and the self-similar family does not prove full-space annular saturation or regularity",
+  "computation": {
+    "command": "python plot.py",
+    "configuration": "16 independent scrambled Sobol replicates, 2^18 pairs per radius, R=1 through 64 dyadic",
+    "kind": "data-analysis",
+    "precision": "IEEE binary64 with independent-scramble standard errors; analytic sign margin is exact rational arithmetic",
+    "solver": "five-dimensional symmetry-reduced signed Biot-Savart core-carrier quadrature",
+    "wallTimeSeconds": 0.4719749589858111
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 152.8125,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T13:40:00+08:00",
+  "data": [
+    {
+      "bytes": 1563,
+      "path": "summary.csv",
+      "schema": "radius, total mean/error, exact value, ratio, principal annuli",
+      "sha256": "9f675607432eb30e362f329983bb13242f472d8e51c35fa15328737e746864a7"
+    },
+    {
+      "bytes": 3876,
+      "path": "annular.csv",
+      "schema": "radius, relative/indexed annulus mean and scramble interval",
+      "sha256": "f6e62ccc3f7ea6a56854ea1efe91d5210cf32c0bd63f515a6cbbe1e3fee28f35"
+    },
+    {
+      "bytes": 452,
+      "path": "profile.json",
+      "schema": "mollified cutoff energy and analytic limiting carriers",
+      "sha256": "ae1a7c59b3e2d98eeb9bfc3fb3f6a0f83a40c680acd75f631b669d5a3b5c6ae4"
+    },
+    {
+      "bytes": 1039,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69U theorem and QMC provenance",
+      "sha256": "eef38341f0587a44e7582f281822ee138a771fbec73615168a0c4d73a40c5567"
+    },
+    {
+      "bytes": 531,
+      "path": "validation.json",
+      "schema": "thirteen figure-data validation checks",
+      "sha256": "995308adbd3f2e468b6349f4bfd90a892ed98e2f90cea13d2ffc005f903b6308"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "91e913e8cf05008b3c2945883a1f5c5c7703b8103a4125f9d2effb292237dbec"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 82,
+    "outputs": [
+      {
+        "bytes": 34234,
+        "path": "figure.pdf",
+        "sha256": "9bab7a55847620484781c6df5c01183c1e977cd59318d86c63dc52003e530576"
+      },
+      {
+        "bytes": 75803,
+        "path": "figure.svg",
+        "sha256": "ecb39f0f60d7be75a7b872ec3a5755d62f03fe893167711bfbe1e9c59a823d20"
+      },
+      {
+        "bytes": 343589,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 1937",
+        "sha256": "dffd7a1d0218dc9c58708c0359676467d4391fc2e4ed156d824e150496515f01"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069u-dyadic-saturation",
+  "git": {
+    "certificateCommit": "a24d3f9bea948edfdd24806edef53f99841206f5",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "29ca62f2667816cb26564b2791251a9d2e68197c"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 5688,
+      "extractionCommand": "python plot.py",
+      "fileName": "result.json",
+      "location": "research/certificates/r069u-dyadic-qmc/result.json",
+      "sha256": "30e683f05d8d7f631a937c71b04b6478819e6e8310a1576a548e3bfe7f9fbd83"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the exact theorem gives eventual core ratio one and full-space dilation invariance; monitored finite-radius QMC resolves convergence of the two positive principal annuli to their analytic limits"
+}

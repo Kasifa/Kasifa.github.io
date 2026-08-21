@@ -188,7 +188,7 @@ def render(values) -> None:
         transform=left.transAxes, ha="right", va="top", color=MUTED, fontsize=4.8,
     )
     left.text(
-        0.98, 0.09, "zero markers are shown at a display floor",
+        0.98, 0.86, "zero markers use a display floor",
         transform=left.transAxes, ha="right", color=MUTED, fontsize=4.5,
     )
     left.set_xscale("log", base=2)
@@ -199,7 +199,7 @@ def render(values) -> None:
     left.set(
         xlabel=r"dyadic cutoff radius $R$",
         ylabel=r"reported cancellation deficit $1-\Gamma_{\rm core}$",
-        title="a  Core deficit collapses across radii",
+        title="a  Core cancellation deficit",
     )
     left.grid(True, which="major", color=GRID, lw=0.45, alpha=0.7)
     left.legend(loc="lower left", frameon=False, fontsize=4.3, handletextpad=0.4)
@@ -244,7 +244,7 @@ def render(values) -> None:
     middle.set(
         xlabel=r"dyadic cutoff radius $R$",
         ylabel="fraction of exact core production",
-        title="b  Two principal annuli approach positive limits",
+        title="b  Positive principal-annulus limits",
     )
     middle.grid(True, axis="y", color=GRID, lw=0.45, alpha=0.7)
     middle.legend(loc="center right", frameon=False, fontsize=4.6)
@@ -277,7 +277,7 @@ def render(values) -> None:
     right.set(
         xlabel=r"dyadic cutoff radius $R$",
         ylabel=r"$(\widehat{\mathcal{C}}-\mathcal{C}_{\rm exact})/{\rm SE}$",
-        title="c  Exact-value reconstruction at every radius",
+        title="c  Exact-value reconstruction",
     )
     right.grid(True, axis="y", color=GRID, lw=0.45, alpha=0.7)
 

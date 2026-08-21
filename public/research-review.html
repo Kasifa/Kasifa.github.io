@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.77"></script>
+  <script defer src="/i18n-en.js?v=0.78"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4907,6 +4907,36 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69S：</strong>&nbsp;在取绝对值以前按环带保留有符号几何核，研究相邻尺度部分和是否产生可求和的临界通量亏损。</p>
           </div>
+
+          <div class="task-one" id="r069s" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69S · 2026-08-21</p>
+            <h3>单个尖锐 Fourier 输出壳可以承载全部有符号涡量拉伸</h3>
+            <p>
+              我构造了一个由六个 Fourier 模态组成的实、光滑、零均值无散场。
+              三个正频率
+              \(k=(1,0,0)\)、\(p=(0,1,0)\)、\(q=(-1,-1,0)\)
+              闭合成三角形，平方模长为 \(1,1,2\)，因此全部位于壳
+              \(1\le|r|&lt;2\)。17 项形式检查全部通过。
+            </p>
+            <p>
+              三个正模态的能量传递为 \((2,-3,1)\)，总和为零；
+              乘上频率平方后的 enstrophy 传递为 \((2,-3,2)\)，总和为一。
+              加上共轭模态后，直接 Fourier 计算给出
+              \[
+                \int_{\mathbb T^3}\omega\cdot S\omega\,dx=2.
+              \]
+              尖锐输出壳分解中只有 \(\mathcal F_0=2\)，所以
+              \(\Gamma=|\sum_m\mathcal F_m|/\sum_m|\mathcal F_m|=1\)。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;这一步严格排除“只靠尖锐输出壳标签就得到统一有符号亏损”。它不排除壳内角向抵消、平滑 Littlewood–Paley 交换子、物理空间环带或沿真实解演化的时间退相干；这是候选机制的压力测试，不是正则性定理。</p>
+            <p>
+              <a href="/notes/r0-69s.html"><strong>阅读 R0.69S 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69s-single-shell.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069s">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069s-single-shell/fig-r069s-single-shell">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69T：</strong>&nbsp;回到有符号 Biot–Savart 核的物理空间环带分解，完整保留截断交换子和边界通量，并用仿射核心与六模态场做双重压力测试。</p>
+          </div>
         </section>
 
       </article>
@@ -4920,8 +4950,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.77 · 2026-08-21<br>
-        上次综述 v0.76 · 2026-08-21<br>
+        综述 v0.78 · 2026-08-21<br>
+        上次综述 v0.77 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

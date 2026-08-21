@@ -11,8 +11,8 @@ test("publishes R0.69M with the criterion comparison and claim boundary", async 
   ]);
   assert.match(home, /id="r069m"/);
   assert.match(home, /href="\/notes\/r0-69m\.html"/);
-  assert.match(home, /综述 v0\.77 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.77/);
+  assert.match(home, /综述 v0\.78 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.78/);
   assert.match(home, /下一步 R0\.69N/);
   assert.match(note, /B_\\infty\(r\)/);
   assert.match(note, /=\\frac1\{120\}\\mathfrak M_2\(r\)/);

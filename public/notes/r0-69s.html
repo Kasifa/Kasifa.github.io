@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69S：构造一个精确的六模态无散场，证明单个尖锐 Fourier 输出壳可以承载全部有符号涡量拉伸，跨壳抵消比达到一。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69S｜单个 Fourier 壳可以承载全部有符号涡量拉伸">
+  <meta property="og:description" content="显式闭合三模态使能量传递总和为零、涡量平方加权传递为正，且只有一个输出壳活跃；尖锐壳分组本身不产生统一有符号亏损。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69s-single-shell.png">
+  <title>R0.69S｜单个 Fourier 壳可以承载全部有符号涡量拉伸</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.78">
+  <style>.hero h1{font-size:clamp(2rem,4.15vw,3.55rem)}</style>
+  <script defer src="/i18n-en.js?v=0.78"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#shell">壳分解</a><a href="#witness">显式场</a><a href="#stretching">拉伸</a><a href="#transfer">传递</a><a href="#decomposition">单壳</a><a href="#gamma">耗减比</a><a href="#scaling">缩放</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69S · 单输出壳无耗减反例</div>
+        <h1>能量在三模态中精确抵消，<br>涡量拉伸却可全部留在一个壳内</h1>
+        <p class="lead">R0.69R 说明逐尺度取绝对值会回到六次 enstrophy 代价。这里进一步检验最直接的有符号方案：先按尖锐 Fourier 输出壳分组，再期待不同壳之间自动抵消。一个完全显式的六模态无散三角多项式使总涡量拉伸等于 \(2\)，而只有壳 \(m=0\) 活跃。因此跨壳抵消比精确达到 \(1\)：壳分组本身不提供任何统一亏损。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69S 完成</span><strong>尖锐输出壳自动耗减路线关闭，转向物理空间环带</strong><p>版本 v0.69S · 2026-08-21</p><p>形式检查：17 / 17 通过</p><p>期刊图检查：10 / 10 通过</p><p>证书运行：0.26 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#shell">01 · 尖锐壳分解</a></li>
+        <li><a href="#witness">02 · 精确六模态场</a></li>
+        <li><a href="#stretching">03 · 直接拉伸计算</a></li>
+        <li><a href="#transfer">04 · 能量与 enstrophy</a></li>
+        <li><a href="#decomposition">05 · 为什么只有一个壳</a></li>
+        <li><a href="#gamma">06 · 抵消比取等</a></li>
+        <li><a href="#scaling">07 · 符号与频率稳健性</a></li>
+        <li><a href="#meaning">08 · 对总问题的意义</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#next">10 · 下一步</a></li>
+        <li><a href="#reproduce">11 · 复现</a></li>
+        <li><a href="#sources">12 · 来源与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main result</div><h2>不存在只由尖锐输出壳分组推出的统一有符号亏损</h2>
+          <p>在归一化三维环面 \(\mathbb T^3=(\mathbb R/2\pi\mathbb Z)^3\) 上，存在一个实、光滑、零均值、无散速度场 \(u\)，使尖锐输出壳产生量满足</p>
+          <div class="equation result">\[
+            \boxed{\mathcal F_0(u)=2,\qquad
+            \mathcal F_m(u)=0\ (m\ne0),\qquad
+            \Gamma(u)=1.}
+          \]</div>
+          <p>所以不存在与 \(u\) 无关的常数 \(\theta&lt;1\)，使所有光滑无散场都满足</p>
+          <div class="equation">\[
+            \left|\sum_m\mathcal F_m(u)\right|
+            \le\theta\sum_m|\mathcal F_m(u)|.
+          \]</div>
+          <div class="proof"><strong>严格边界。</strong>&nbsp;结论只针对互不重叠的尖锐 Fourier 输出壳。它没有排除壳内角向抵消、平滑 Littlewood–Paley 交换子、物理空间环带、沿真实解演化产生的时间退相干或额外临界量。</div>
+        </section>
+
+        <section id="shell"><div class="section-no">01 / Sharp output shells</div><h2>正交壳把总拉伸精确拆开，但正交性本身不带符号</h2>
+          <p>对非零频率定义互相正交的尖锐投影</p>
+          <div class="equation">\[
+            \widehat{P_mf}(r)=\mathbf1_{\{2^m\le|r|&lt;2^{m+1}\}}\widehat f(r),
+            \qquad
+            \mathcal F_m(u)=\int_{\mathbb T^3}P_m\omega\cdot P_m(S\omega)\,dx,
+          \]</div>
+          <p>其中 \(S=(\nabla u+\nabla u^{\mathsf T})/2\)、\(\omega=\nabla\times u\)。Parseval 正交性给出精确恒等式</p>
+          <div class="equation result">\[
+            \boxed{\sum_{m\in\mathbb Z}\mathcal F_m(u)
+            =\int_{\mathbb T^3}\omega\cdot S\omega\,dx.}
+          \]</div>
+          <p>这一步只说明总和正确；它不说明各项必须异号，也不说明绝对值之和比总和大出固定比例。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">02 / Exact witness</div><h2>三个正频率闭合成三角形，加入共轭后得到实无散场</h2>
+          <p>取</p>
+          <div class="equation">\[
+            k=(1,0,0),\quad p=(0,1,0),\quad q=(-1,-1,0),\quad k+p+q=0,
+          \]</div>
+          <p>以及复振幅</p>
+          <div class="equation">\[
+            a_k=(0,1,-1-i),\quad
+            a_p=(-1,0,-1),\quad
+            a_q=(-1-i,1+i,1).
+          \]</div>
+          <p>三者精确满足 \(k\cdot a_k=p\cdot a_p=q\cdot a_q=0\)。令 \(a_{-r}=\overline{a_r}\)，并置</p>
+          <div class="equation result">\[
+            \boxed{u(x)=\sum_{r\in\{\pm k,\pm p,\pm q\}}a_re^{ir\cdot x}.}
+          \]</div>
+          <p>这个场是实、光滑、零均值且无散的。六个频率的平方模长为 \(1,1,2\)，全部落在 \(1\le|r|&lt;2\) 内。</p>
+        </section>
+
+        <section id="stretching"><div class="section-no">03 / Direct stretching audit</div><h2>十二个有序三模态贡献以有理数精确求和</h2>
+          <p>每个 Fourier 模态满足</p>
+          <div class="equation">\[
+            \omega_r=i\,r\times a_r,\qquad
+            S_r=\frac i2(r\otimes a_r+a_r\otimes r).
+          \]</div>
+          <p>因此总拉伸是有限和 \(\mathcal V(u)=\sum_{r+s+t=0}\omega_r\cdot S_s\omega_t\)。正三角形的六个非零有序贡献为</p>
+          <div class="equation">\[
+            \frac52,\ -\frac12,\ -\frac32,\ -\frac12,\ -\frac32,\ \frac52,
+          \]</div>
+          <p>共轭三角形给出同一列数，于是</p>
+          <div class="equation result">\[
+            \boxed{\int_{\mathbb T^3}\omega\cdot S\omega\,dx=2&gt;0.}
+          \]</div>
+          <p>这是 SymPy 有理数与复数符号运算验证的有限恒等式，不是浮点仿真或数值拟合。</p>
+        </section>
+
+        <section id="transfer"><div class="section-no">04 / Energy versus enstrophy transfer</div><h2>能量守恒并不迫使涡量平方加权传递抵消</h2>
+          <p>三个正模态的动能传递是</p>
+          <div class="equation result">\[
+            \boxed{(T_k,T_p,T_q)=(2,-3,1),\qquad T_k+T_p+T_q=0.}
+          \]</div>
+          <p>乘上对应频率平方后，enstrophy 传递变为</p>
+          <div class="equation result">\[
+            \boxed{|k|^2T_k+|p|^2T_p+|q|^2T_q=2-3+2=1&gt;0.}
+          \]</div>
+          <p>负频率把该值加倍，正好恢复总涡量拉伸 \(2\)。因此三模态能量守恒与正的 enstrophy 生产完全相容。</p>
+        </section>
+
+        <section id="decomposition"><div class="section-no">05 / One active shell</div><h2>非线性乘积可以产生别的频率，但正交性仍把全部配对拉回原壳</h2>
+          <p>因为 \(P_0\omega=\omega\)、\(P_m\omega=0\)（\(m\ne0\)），有</p>
+          <div class="equation result">\[
+            \boxed{\mathcal F_0
+            =\langle\omega,P_0(S\omega)\rangle
+            =\langle P_0\omega,S\omega\rangle
+            =\langle\omega,S\omega\rangle=2.}
+          \]</div>
+          <p>这里没有假设乘积 \(S\omega\) 保持在原壳。投影可以通过 \(L^2\) 自伴性移动到第一因子，而第一因子已经完全位于壳零；其余壳因第一因子为零而全部消失。</p>
+        </section>
+
+        <section id="gamma"><div class="section-no">06 / Sharp cancellation ratio</div><h2>跨壳抵消比的平凡上界可以精确取等</h2>
+          <p>定义</p>
+          <div class="equation">\[
+            \Gamma(u)=
+            \frac{|\sum_m\mathcal F_m(u)|}{\sum_m|\mathcal F_m(u)|},
+            \qquad 0\le\Gamma\le1.
+          \]</div>
+          <p>本例只有 \(\mathcal F_0=2\)，所以分子与分母都等于 \(2\)，从而 \(\Gamma=1\)。任何仅依赖“把总拉伸写成若干壳贡献之和”的证明，都不能推出统一的 \(\Gamma\le\theta&lt;1\)。</p>
+          <div class="proof"><strong>逻辑含义。</strong>&nbsp;这不是说跨尺度抵消从不发生，而是说它不是壳标签自动附带的代数性质。若要得到耗减，必须加入壳内结构、平滑交换子、时间相干性或物理空间几何。</div>
+        </section>
+
+        <section id="scaling"><div class="section-no">07 / Sign and scale robustness</div><h2>反例可翻转符号，也可搬到任意高频壳</h2>
+          <p>产生量对振幅是三次齐次的：\(\mathcal F_m(au)=a^3\mathcal F_m(u)\)。因此 \(u\mapsto-u\) 把全部壳产生量变号，总拉伸变为 \(-2\)，但 \(\Gamma\) 仍等于 \(1\)。壳分解没有偏好的生产符号。</p>
+          <p>进一步令 \(u^{(\ell)}(x)=u(2^\ell x)\)，则所有频率移动到壳 \(m=\ell\)，并且</p>
+          <div class="equation result">\[
+            \boxed{\mathcal F_\ell(u^{(\ell)})=2^{3\ell}\mathcal F_0(u),
+            \qquad\Gamma(u^{(\ell)})=1.}
+          \]</div>
+          <p>所以障碍不是最低频率的偶然现象；它可以出现在任意高的二进制尺度。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Value for the main problem</div><h2>这是一条候选机制的严格淘汰，不是正则性定理</h2>
+          <p>R0.69R 已排除“物理空间差分后逐项取绝对值”带来指数改善；R0.69S 又排除“只按尖锐输出壳分组”自动产生统一符号亏损。两者合起来说明，下一步不能只更换记账方式，必须保留乘积内部的角向、空间或时间相关性。</p>
+          <div class="proof"><strong>价值判断。</strong>&nbsp;这个显式取等族具有可复用的反例价值：今后任何声称来自壳分解的普适耗减不等式，都必须先通过它。它目前不足以单独成为解决千禧年问题的高水平结果，因为没有给出新的无条件先验界；价值在于精确缩小可行证明机制，并提供一个可审计的压力测试。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图同时展示闭合三角形、两种传递和单壳取等</h2>
+          <figure><img src="/figures/r0-69s-single-shell.svg" alt="R0.69S 单个 Fourier 输出壳承载全部有符号涡量拉伸的精确三模态反例"><figcaption>图 R0.69S。左图显示三个正频率闭合且全部位于 \(1\le|r|&lt;2\)；中图显示动能传递 \((2,-3,1)\) 总和为零，而 enstrophy 加权传递 \((2,-3,2)\) 总和为一；右图显示只有壳零产生 \(F_0(u)=2\)，取负场后符号全部翻转。柱位、边框和纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69s-single-shell.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69s-single-shell.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next stage</div><h2>R0.69T 转向物理空间环带，并把截断边界项完整保留</h2>
+          <p>取径向环带分割 \(\sum_j\psi_j(z)=1\)，对几何 Biot–Savart 核定义</p>
+          <div class="equation">\[
+            \mathcal A_j(t)=\int\rho(x)^2\int
+            \psi_j(z)D(\widehat z,\xi(x+z),\xi(x))
+            \frac{\rho(x+z)}{|z|^3}\,dz\,dx.
+          \]</div>
+          <p>R0.69T 的验收顺序已经固定：先证明环带和与总拉伸的精确关系；再显式计算移动截断带来的交换子与边界通量；随后用 R0.69P 的仿射核心和本页六模态场做双重压力测试。只有在不提前取绝对值、保持 Navier–Stokes 临界缩放且得到可时间积分亏损时，才进入动力学证明；否则构造反例并关闭该子分支。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility</div><h2>源笔记、证书、监控日志和三种图形格式均由哈希锁定</h2>
+          <p>数学源提交为 <code>3bbbb660949181380420ebba9f103e901e560043</code>，形式证书提交为 <code>8b242ef41057aee2a08ece71f33682a7a50f077d</code>，最终修正附图提交为 <code>bd7131b578fb8af780743023c28e2a20489e8069</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>02968daf79ff9d687d3790e03b4d0182147da91bf3481354743b55f636f2ca99</code>，形式证书 SHA-256 为 <code>7ae48701d9971dabad5e46daeb017a3a91a00c81e1126045161300f9cd8e85af</code>。17 项检查全部通过；监控运行 0.260920 秒，峰值常驻内存 64.812 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>5e6210a2dd3be0bd574b54354c389c86694f820469b31db2db6bdcb179cb25c7</code>、<code>396b12f7b5a3340ca038ea673669af789ef2700dab5a831550ed59dbb307ad2c</code> 与 <code>1261e8c98f2d7a39450a2a535d9019effb439670e5bda43f011536bb2afd265e</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069s">查看 R0.69S 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/signed_output_shell_no_cancellation_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069s-single-shell/fig-r069s-single-shell">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">12 / Sources and boundary</div><h2>经典频率分解背景与本项目的显式路线审计分开陈述</h2>
+          <p>Littlewood–Paley 与仿微分分解是经典调和分析工具，本页不把频率壳或三模态传递本身声明为新概念。经典背景可参见 <a href="https://doi.org/10.24033/asens.1404">Bony（1981）</a>；千禧年问题的正式目标与可接受解答边界以 <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 的问题页</a> 为准。</p>
+          <p>本项目在本版本中证明的是：给出一组完全显式的无散 Fourier 系数，直接求出十二个非零拉伸贡献，验证总涡量拉伸为二，并证明尖锐输出壳抵消比取到一。它没有证明平滑投影不存在有利交换子，没有排除物理空间或时间动力学耗减，没有建立全局正则性或有限时奇性，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69S · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -12,7 +12,7 @@ test("publishes R0.69C with the exact linearized gate and boundary", async () =>
 
   assert.match(home, /id="r069c"/);
   assert.match(home, /\/notes\/r0-69c\.html/);
-  assert.match(home, /综述 v0\.77 · 2026-08-21/);
+  assert.match(home, /综述 v0\.78 · 2026-08-21/);
   assert.match(home, /下一步 R0\.69D/);
   assert.ok(note.includes("[\\mathscr T_{R,m,s}]"));
   assert.ok(note.includes("-Rs/Q"));

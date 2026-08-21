@@ -12,7 +12,7 @@ test("publishes R0.69A with the exact theorem and claim boundary", async () => {
 
   assert.match(home, /id="r069a"/);
   assert.match(home, /\/notes\/r0-69a\.html/);
-  assert.match(home, /综述 v0\.77 · 2026-08-21/);
+  assert.match(home, /综述 v0\.78 · 2026-08-21/);
   assert.match(home, /下一步 R0\.69B/);
   assert.match(note, /1\.00000002593745353460841221206765949/);
   assert.match(note, /2\.6140836268319572193\\times10\^\{-8\}/);

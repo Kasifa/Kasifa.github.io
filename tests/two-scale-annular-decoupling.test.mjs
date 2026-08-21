@@ -1,0 +1,66 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+
+const root = new URL("../", import.meta.url);
+const noteUrl = new URL(
+  "research/two_scale_annular_decoupling_note.md",
+  root,
+);
+const auditUrl = new URL(
+  "research/two_scale_annular_decoupling_audit.py",
+  root,
+);
+
+test("states the R0.69V exact cubic law and uniform annular decoupling", async () => {
+  const note = await readFile(noteUrl, "utf8");
+  assert.ok(note.includes("u_{\\varepsilon,a}=aU_1+bU_\\varepsilon"));
+  assert.ok(note.includes("\\varepsilon^3ab^2C_q"));
+  assert.ok(note.includes("No \\(a^2b\\) term occurs"));
+  assert.ok(note.includes("\\Gamma_{\\rm ann}(u_{\\varepsilon,a})-\\Gamma_q"));
+  assert.ok(note.includes("\\varepsilon\\bigl(1+\\log(1/\\varepsilon)\\bigr)"));
+  assert.ok(note.includes("finite-\\(N\\) saturating parameter"));
+  assert.match(note, /do\s+not solve the Millennium Problem/);
+});
+
+test("reproduces the R0.69V symbolic and deterministic audit", () => {
+  const output = new URL("tmp/r069v-test-audit.json", root);
+  const run = spawnSync(
+    fileURLToPath(new URL("tmp/r068b-venv/bin/python", root)),
+    [
+      fileURLToPath(auditUrl),
+      "--output",
+      fileURLToPath(output),
+    ],
+    {
+      cwd: fileURLToPath(new URL(".", root)),
+      encoding: "utf8",
+      timeout: 30_000,
+    },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+  const result = JSON.parse(run.stdout);
+  assert.equal(result.status, "passed");
+  assert.equal(result.checkCount, 21);
+  assert.equal(result.passedCount, 21);
+  assert.equal(result.coefficients.C21Exact, 0);
+  assert.ok(result.coefficients.VReference > 1.9);
+  assert.ok(result.coefficients.C12Reference < -2.7);
+});
+
+test("keeps both complete and annulus-importance QMC implementations", async () => {
+  const [complete, importance] = await Promise.all([
+    readFile(new URL("research/two_scale_full_annular_qmc.py", root), "utf8"),
+    readFile(
+      new URL("research/two_scale_annular_importance_qmc.py", root),
+      "utf8",
+    ),
+  ]);
+  assert.match(complete, /all unordered zone pairs/);
+  assert.match(complete, /transition--transition/);
+  assert.match(importance, /sample\s+the displacement z=y-x directly/);
+  assert.match(importance, /transitionTransitionPairsRetained/);
+  assert.match(importance, /y_zone_indices >= x_zone_index/);
+});

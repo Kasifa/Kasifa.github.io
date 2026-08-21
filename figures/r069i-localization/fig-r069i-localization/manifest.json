@@ -1,0 +1,128 @@
+{
+  "analyticalQuestion": "Does spatial localization preserve the global strain cancellations or produce a scale gain?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "signed exact decomposition plus global-to-localized comparison",
+    "nonColorEncoding": "distinct hatches, solid-circle and dashed-square trajectories, zero axes, and exact rational labels",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "bare localization transfers both global cancellations to nonzero same-scale commutators"
+  },
+  "claimBoundary": "bare-localization obstruction only; no Navier-Stokes regularity or singularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "two exact global/localized channels and six scaling terms",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact rational certificate values",
+    "solver": "exact rational Fourier-convolution certificate",
+    "wallTimeSeconds": 0.38808408300974406
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 154.0,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T08:10:00+08:00",
+  "data": [
+    {
+      "bytes": 192,
+      "path": "pressure-commutator.csv",
+      "schema": "component, exact, value",
+      "sha256": "0cd77ccb4676df629dbd2c5ef54c8bf3611699f3e652ea89ceea37f4a2b91c22"
+    },
+    {
+      "bytes": 149,
+      "path": "global-localized.csv",
+      "schema": "channel, globalExact, globalValue, localizedExact, localizedValue",
+      "sha256": "21af52ff72b5e70d1047fb82720e54e66473457d79d9a48be36dd99c94671c38"
+    },
+    {
+      "bytes": 103,
+      "path": "scaling-degrees.csv",
+      "schema": "term, degree",
+      "sha256": "64ba8ad6fb315980af4b11cebbffb24a8a9e22229231ca525df17ba627186cc1"
+    },
+    {
+      "bytes": 649,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and exact formulas",
+      "sha256": "ea6a9381e5d2f8dd3b5eeef16bd403ef0a11fcd33a4195977543e7c218e4e8a4"
+    },
+    {
+      "bytes": 358,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "08d03d190a2dec8aa9942007db0915345eb42c8461b4158b45b3ef17d9e3e382"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "bb9dd5344d038f323f4f0fd826016ce7fdac0a90d894120edd020de01bb9fd0e"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 29849,
+        "path": "figure.pdf",
+        "sha256": "7ec53f1e2ca40c865212b1f6b7fc42f0b525602fb2347ffbfbc57bc6fee963ff"
+      },
+      {
+        "bytes": 40839,
+        "path": "figure.svg",
+        "sha256": "175cfba03b6e7f1f7fc311316ca5ef0d69411ab7f5800c9beefd59a06a3af211"
+      },
+      {
+        "bytes": 323914,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "0c5fd46bc45572ccda196074198175492dd678195aafcb9e28485ff08d9fcae9"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069i-localization",
+  "git": {
+    "certificateCommit": "9578b9f4b77e9e910ba5db27625722894463d44c",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "b03985d6d2fd1f55ba5d600cb75859efb694876b"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2071,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "localized-strain-pressure-commutator.json",
+      "location": "research/certificates/r069i/localized-strain-pressure-commutator.json",
+      "sha256": "73dfa59251ffcb9603eeb298d3028e191936ab3ccf2f0b7ab7d6dc9c9288a5d2"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the global pressure and Betchov pairings vanish, while an exact weighted Fourier witness makes both nonzero and every resulting commutator retains scaling degree three"
+}

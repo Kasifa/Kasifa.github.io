@@ -6,7 +6,7 @@ const noteUrl=new URL("../public/notes/r0-69k.html",import.meta.url);
 test("publishes R0.69K with the exact velocity-generated shell gain",async()=>{
  const [home,note]=await Promise.all([readFile(homeUrl,"utf8"),readFile(noteUrl,"utf8")]);
  assert.match(home,/id="r069k"/); assert.match(home,/\/notes\/r0-69k\.html/);
- assert.match(home,/综述 v0\.79 · 2026-08-21/); assert.match(home,/i18n-en\.js\?v=0\.79/);
+ assert.match(home,/综述 v0\.80 · 2026-08-21/); assert.match(home,/i18n-en\.js\?v=0\.80/);
  assert.match(home,/下一步 R0\.69L/);
  assert.ok(note.includes("q:=\\operatorname{tr}((\\nabla u)^2)"));
  assert.ok(note.includes("\\partial_i\\partial_j(u_i u_j)"));

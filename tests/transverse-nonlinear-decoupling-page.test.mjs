@@ -12,8 +12,8 @@ test("publishes R0.69D with the nonlinear gate and exact boundary", async () => 
 
   assert.match(home, /id="r069d"/);
   assert.match(home, /\/notes\/r0-69d\.html/);
-  assert.match(home, /综述 v0\.78 · 2026-08-21/);
-  assert.match(home, /i18n-en\.js\?v=0\.79/);
+  assert.match(home, /综述 v0\.80 · 2026-08-21/);
+  assert.match(home, /i18n-en\.js\?v=0\.80/);
   assert.match(home, /下一步 R0\.69E/);
   assert.ok(note.includes("\\mathcal A_vz=\\mathcal B(v,z)+\\mathcal B(z,v)"));
   assert.ok(note.includes("\\chi_r:=4C_BM_T^2C_H\\delta_r"));

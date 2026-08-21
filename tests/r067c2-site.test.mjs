@@ -22,7 +22,7 @@ test("publishes the strict dominant R0.67C-2 sign and its fixed-order boundary",
   ]);
   assert.ok(home.includes("R0.67C-2 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.79 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.80 · 2026-08-21"));
   assert.match(home, /href="\/notes\/r0-67c2\.html"/);
   assert.match(home, /id="r067c2"/);
   assert.match(home, /mjx-container\[display="true"\].+font-size:\s*\.66em/);

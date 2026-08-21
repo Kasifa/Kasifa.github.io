@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69U：构造光滑紧支撑仿射场的二进尺度族，严格证明固定核心边界载体最终精确饱和，并证明纯自相似膨胀不能改变全空间双增量环带比。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69U｜固定核心载体最终精确饱和，但全空间比值对纯膨胀严格不变">
+  <meta property="og:description" content="两条主环带具有严格正号裕量，因而大二进半径上核心载荷比等于一；完整场却只是临界自相似缩放，下一步必须真正改变形状。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69u-dyadic-saturation.png">
+  <title>R0.69U｜固定核心载体最终精确饱和，但全空间比值对纯膨胀严格不变</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.80">
+  <style>.hero h1{font-size:clamp(1.9rem,3.85vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.80"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#cutoff">截断</a><a href="#field">仿射场</a><a href="#carrier">载体</a><a href="#annuli">双环带</a><a href="#margin">正号裕量</a><a href="#saturation">精确饱和</a><a href="#obstruction">缩放障碍</a><a href="#qmc">计算</a><a href="#figure">附图</a><a href="#meaning">意义</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="#sources">来源</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69U · 仿射核心的二进饱和与临界缩放障碍</div>
+        <h1>固定核心载体在大二进半径上精确无抵消；<br>完整场却因自相似缩放而无法提供全空间饱和</h1>
+        <p class="lead">R0.69T 的单个截断场给出 0.996478 的探索性核心比值。本版本构造一个定量的光滑紧支撑族并严格证明：当外边界取充分大的二进半径时，只有两条环带仍有贡献，而且两者都为正，因此 \(\Gamma_{\rm core}=1\) 恰好成立。与此同时，完整双增量环带满足精确的 \(R^3\) 缩放律，所以纯粹把同一形状向外放大根本不会改变全空间比值。静态核心亏损路线由此关闭；下一步必须改变径向形状并纳入过渡区—过渡区点对。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69U 解析定理、符号证书与有限半径审计完成</span><strong>核心精确饱和；全空间问题仍开放</strong><p>版本 v0.69U · 2026-08-21</p><p>符号检查：19 / 19 通过</p><p>有限半径：7 个二进尺度</p><p>样本：29,360,128 对</p><p>峰值内存：669.969 MiB</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 主定理与边界</a></li>
+        <li><a href="#cutoff">01 · 定量光滑截断</a></li>
+        <li><a href="#field">02 · 二进仿射场族</a></li>
+        <li><a href="#carrier">03 · 精确核心载体</a></li>
+        <li><a href="#annuli">04 · 两条极限环带</a></li>
+        <li><a href="#margin">05 · 有理正号裕量</a></li>
+        <li><a href="#saturation">06 · 最终精确饱和</a></li>
+        <li><a href="#obstruction">07 · 全空间缩放障碍</a></li>
+        <li><a href="#qmc">08 · 有限半径审计</a></li>
+        <li><a href="#figure">09 · 期刊附图</a></li>
+        <li><a href="#meaning">10 · 对主问题的价值</a></li>
+        <li><a href="#next">11 · R0.69V 路线</a></li>
+        <li><a href="#reproduce">12 · 复现与监控</a></li>
+        <li><a href="#sources">13 · 文献与声明边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Main theorem</div><h2>核心限制的静态环带亏损不可能统一严格小于一</h2>
+          <p>存在径向函数 \(q\in C^\infty([0,\infty))\)，满足 \(0\le q\le1\)、\(q=1\) 于 \([0,1]\)、\(q=0\) 于 \([2,\infty)\)。对二进半径 \(R=2^m\)，定义</p>
+          <div class="equation">\[
+            u_R=\nabla\times\bigl(q(|x|/R)B_A(x)\bigr),
+            \qquad B_A(x)=-\frac13x\times(Ax).
+          \]</div>
+          <p>令 \(\mathcal C_j(R)\) 是 R0.69T 的有符号环带载体，但把 \(x\) 限制在固定单位核心。则对所有充分大的二进 \(R\)，只有 \(j=m-1,m\) 两项可能非零，两项都严格为正，并且</p>
+          <div class="equation result">\[
+            \boxed{\Gamma_{\rm core}(R)
+            :=\frac{|\sum_j\mathcal C_j(R)|}{\sum_j|\mathcal C_j(R)|}=1.}
+          \]</div>
+          <div class="proof"><strong>结论边界。</strong>&nbsp;这是核心限制边界载体的严格饱和定理，不是全空间双增量比值的饱和定理。它没有证明全局正则性、有限时奇性，也没有解决千禧年问题。</div>
+        </section>
+
+        <section id="cutoff"><div class="section-no">01 / Quantitative smooth cutoff</div><h2>截断由对称概率密度构造，正号裕量不依赖浮点积分</h2>
+          <p>取 \(a=1/20\)、\(b=19/20\)、\(L=9/10\)，并以 \(z=(t-a)/L\) 定义</p>
+          <div class="equation">\[
+            h(t)=\frac{30}{L}z^2(1-z)^2\mathbf1_{[a,b]}(t).
+          \]</div>
+          <p>把 \(h\) 与支撑在 \((-\varepsilon,\varepsilon)\) 内的非负偶光滑核卷积，得到关于 \(1/2\) 对称的 \(\eta\in C_c^\infty(0,1)\)。在 \(1&lt;s&lt;2\) 令 \(q(s)=\int_{s-1}^{1}\eta(t)\,dt\)，并在两端常值延拓。</p>
+          <p>精确 beta 积分与 Young 卷积不等式给出</p>
+          <div class="equation result">\[
+            \boxed{E:=\int_1^2s\,q'(s)^2\,ds
+            =\frac32\|\eta\|_2^2\le\frac{50}{21}&lt;\frac52.}
+          \]</div>
+          <p>关键不是某个数值截断的偶然形状，而是严格有理间隙 \(5/2-50/21=5/42\)。</p>
+        </section>
+
+        <section id="field"><div class="section-no">02 / Dyadic affine family</div><h2>单位核心保持固定应变与固定涡量，外过渡层移到半径 \(R\)</h2>
+          <p>写 \(A=S+W\)，其中</p>
+          <div class="equation">\[
+            S=\frac1{\sqrt6}\operatorname{diag}(-1,-1,2),
+            \qquad
+            W=\begin{pmatrix}0&amp;-1/2&amp;0\\1/2&amp;0&amp;0\\0&amp;0&amp;0\end{pmatrix}.
+          \]</div>
+          <p>于是 \(\operatorname{tr}A=0\)、\(\nabla\times(Ax)=e_3\)，且 \(\nabla\times B_A=Ax\)。在 \(q(|x|/R)=1\) 的区域内，\(u_R=Ax\)。所以对每个 \(R&gt;1\)，单位球内恒有</p>
+          <div class="equation result">\[
+            \boxed{\omega_R=e_3,
+            \qquad \omega_R\cdot S_R\omega_R=\frac2{\sqrt6}.}
+          \]</div>
+          <p>这个设计把核心生产固定下来，只移动承载非局部 Biot–Savart 作用的过渡层。</p>
+        </section>
+
+        <section id="carrier"><div class="section-no">03 / Exact core carrier</div><h2>核心内部点对完全消失，跨边界载体却精确等于固定正生产</h2>
+          <p>令 \(e=(y-x)/|y-x|\)，并定义</p>
+          <div class="equation">\[
+            J_R(x,y)=(e\cdot e_3)\bigl(e\cdot(\omega_R(y)\times e_3)\bigr).
+          \]</div>
+          <p>以 \(\psi_j(z)=q(2^{-j-1}|z|)-q(2^{-j}|z|)\) 分解距离后，</p>
+          <div class="equation">\[
+            \mathcal C_j(R)=\frac3{4\pi}\int_{B_1}\int_{\mathbb R^3}
+            \psi_j(y-x)\frac{J_R(x,y)}{|x-y|^3}\,dy\,dx.
+          \]</div>
+          <p>核心涡量为常数，所以核心—核心点对的核恒为零；点态 Biot–Savart 恒等式仍给出</p>
+          <div class="equation result">\[
+            \boxed{\sum_j\mathcal C_j(R)
+            =|B_1|\frac2{\sqrt6}=\frac{8\pi}{3\sqrt6}}
+          \]</div>
+          <p>并且该等式对每个 \(R&gt;1\) 都成立。全部核心正生产由远处过渡层的跨边界点对携带。</p>
+        </section>
+
+        <section id="annuli"><div class="section-no">04 / Two limiting annuli</div><h2>二进半径把过渡载荷压到相邻的两条主环带</h2>
+          <p>令 \(y=Rsn\)，其中 \(1&lt;s&lt;2\)、\(n\in\mathbb S^2\)。固定 \(x\in B_1\) 时，\((y-x)/|y-x|\) 一致趋于 \(n\)，而横向涡量的解析式给出</p>
+          <div class="equation">\[
+            n_1(\omega_R)_2-n_2(\omega_R)_1
+            =-\frac{s}{\sqrt6}n_3(1-n_3^2)
+            \bigl(6q'(s)+sq''(s)\bigr).
+          \]</div>
+          <p>角向矩恰为 \(\int_{\mathbb S^2}n_3^2(1-n_3^2)\,d\sigma=8\pi/15\)。当 \(R=2^m\) 时，两条极限权重分别是 \(q(s)\) 与 \(1-q(s)\)，因此只需研究两个一维系数</p>
+          <div class="equation">\[
+            I_-=-\int_1^2(6q'+sq'')q\,ds,
+            \qquad
+            I_+=-\int_1^2(6q'+sq'')(1-q)\,ds.
+          \]</div>
+        </section>
+
+        <section id="margin"><div class="section-no">05 / Rational sign margin</div><h2>两次分部积分把环带符号化为一条显式能量不等式</h2>
+          <p>利用 \(q\) 在两个端点的平坦性，两次分部积分得到精确恒等式</p>
+          <div class="equation result">\[
+            \boxed{I_-=\frac52+E,
+            \qquad I_+=\frac52-E,
+            \qquad I_-+I_+=5.}
+          \]</div>
+          <p>由 \(E\le50/21\) 立即得到 \(I_+\ge5/42&gt;0\) 以及 \(I_-&gt;0\)。相应两条环带的极限为</p>
+          <div class="equation">\[
+            \mathcal C_{m-1}(2^m)\to|B_1|\frac{2}{5\sqrt6}\left(\frac52+E\right),
+            \qquad
+            \mathcal C_m(2^m)\to|B_1|\frac{2}{5\sqrt6}\left(\frac52-E\right).
+          \]</div>
+          <p>外环带极限份额至少为 \(1/42\)，内环带至多为 \(41/42\)。所以这里不是一个符号在极限中擦边归零的脆弱论证。</p>
+        </section>
+
+        <section id="saturation"><div class="section-no">06 / Eventual exact saturation</div><h2>紧支撑几何先排除其余环带，正极限再固定两条存活项的符号</h2>
+          <p>所有 \(q'\) 与 \(q''\) 的支撑都与 \(s=1,2\) 保持正距离。对充分大的 \(m\)，在整个载体支撑上，\(|2^msn-x|/2^m\) 严格位于一与二之间。因此除 \(j=m-1,m\) 外的每条环带都精确为零，而不是仅仅渐近很小。</p>
+          <p>上一节的严格正极限保证两条存活贡献最终同时为正。再结合固定总和 \(8\pi/(3\sqrt6)\)，便得到充分大二进半径上的 \(\Gamma_{\rm core}=1\)。</p>
+          <div class="proof"><strong>关闭的子路线。</strong>&nbsp;任何只读取这个核心边界载体的静态二进标签、并宣称存在统一 \(\Gamma_{\rm core}\le1-\delta\) 的证明策略都不可能成立。若要恢复耗减，必须加入全空间点对、动力学条件、角向结构或其他并非静态核心标签的信息。</div>
+        </section>
+
+        <section id="obstruction"><div class="section-no">07 / Critical dilation obstruction</div><h2>同一个构造无法回答全空间问题，因为完整场只是精确自相似膨胀</h2>
+          <p>由 \(B_A\) 的齐次性，整个场满足</p>
+          <div class="equation">\[
+            u_R(x)=R\,u_1(x/R),
+            \qquad \omega_R(x)=\omega_1(x/R),
+            \qquad S_R(x)=S_1(x/R).
+          \]</div>
+          <p>在全空间双增量环带积分中作 \(x=RX\)、\(y=RY\)，得到</p>
+          <div class="equation result">\[
+            \boxed{\mathcal A_{m+k}(u_R)=R^3\mathcal A_k(u_1),
+            \qquad \Gamma_{\rm ann}(u_R)=\Gamma_{\rm ann}(u_1).}
+          \]</div>
+          <p>每条有符号环带及其绝对值都乘同一个 \(R^3\)。过渡壳体积本身也是 \(O(R^3)\)，所以把边界推远不会令过渡区—过渡区贡献消失。全空间饱和族必须改变形状，而不能只改变尺度。</p>
+        </section>
+
+        <section id="qmc"><div class="section-no">08 / Finite-radius randomized audit</div><h2>二千九百三十六万组点对验证了有限半径过渡，但不替代解析证明</h2>
+          <p>正式计算对 \(R=1,2,4,8,16,32,64\) 各使用 16 个独立 scrambled-Sobol 扰动、每个 \(2^{18}\) 对，共评估 29,360,128 对。轴对称性把六维点对积分降到五维。样本级环带分割残差为零，最大重构残差为 \(8.88\times10^{-16}\)。</p>
+          <p>报告的核心比值依次为</p>
+          <div class="equation">\[
+            0.99592006,\ 0.99983345,\ 0.99999957,\
+            0.999999999998,\ 1,\ 1,\ 1.
+          \]</div>
+          <p>在 \(R=64\) 时，总载荷为 \(3.4201322121\)，扰动标准误为 \(8.60\times10^{-7}\)；两条主环带为 \(3.3361623722\) 与 \(0.0839698400\)，对应解析极限 \(3.3363218603\) 与 \(0.0838110202\)。</p>
+          <div class="proof"><strong>数值边界。</strong>&nbsp;浮点输出中的一不是严格等式，扰动标准误也不是区间包络。最终精确饱和只来自支撑几何与有理正号裕量的解析证明。</div>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图把数值显示下限、解析饱和区和极限环带份额明确分开</h2>
+          <figure><img src="/figures/r0-69u-dyadic-saturation.svg" alt="R0.69U 仿射核心边界载体的二进饱和、两条主环带份额与准蒙特卡洛精确值重构"><figcaption>图 R0.69U。左图显示七个二进半径上的核心抵消亏损；二进浮点零用空心倒三角放在明确标注的 \(10^{-16}\) 显示底线上，这不是测得的上界。阴影区则来自解析支撑定理：二进 \(R\ge64\) 时只剩两条正环带，故精确有 \(\Gamma_{\rm core}=1\)。中图显示两条主环带趋向正的解析份额，外环带另有至少 \(1/42\) 的严格安全裕量。右图显示各半径的总载荷都在 1.1 个报告标准误内重构精确核心值；该误差读数不是区间证明。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69u-dyadic-saturation.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69u-dyadic-saturation.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Value for the Millennium route</div><h2>价值在于严格淘汰一个看似自然但不够强的机制，并锁定下一种不可约实验</h2>
+          <p>本结果对千禧年问题的直接价值是负向而精确的：仅靠固定核心的静态物理环带符号，无法产生统一严格亏损。继续在同一自相似族上扩大半径或增加样本，不会推进全空间正则性问题。</p>
+          <p>正向价值是把下一步压缩到一个明确对象：改变对数半径上的过渡形状，计算完整 \(x,y\) 双增量积分，并把核心—过渡、过渡—核心、过渡—过渡三类点对全部保留。只有全空间比值的解析饱和或临界亏损，才可能改变主路线。</p>
+          <div class="proof"><strong>研究价值评估。</strong>&nbsp;定量光滑构造、两条极限系数、精确核心饱和与临界缩放障碍构成一组可写入分析论文的严格中间结果；它们更像“机制排除定理”，而不是对全局正则性的正面突破。距离千禧年目标仍缺沿真实 Navier–Stokes 解可传播、可时间积分的临界先验控制。</div>
+        </section>
+
+        <section id="next"><div class="section-no">11 / R0.69V shape-changing route</div><h2>下一阶段使用两尺度非自相似过渡，并首先审计完整双增量符号</h2>
+          <p>R0.69V 将固定单位仿射核心，同时在对数半径上引入两个彼此独立的过渡尺度与形状参数。第一步建立无散光滑场的解析涡量公式和完整点对分区；第二步推导全空间环带积分在各区域的缩放；第三步先以受监控数值搜索筛选候选形状，再只对通过筛选的族寻求解析极限。</p>
+          <p>验收条件是：必须计算全空间 \(\Gamma_{\rm ann}\)，必须包含过渡—过渡点对，必须显示相对于自相似基线的真实形状变化，并必须区分数值候选、可验证误差界与严格极限定理。若全空间比值趋于一，就关闭静态统一亏损；若出现尺度不变的严格间隙，再检验它能否沿方程传播。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproducibility and monitoring</div><h2>解析证明、有限半径计算和期刊图分别源锁定并带资源记录</h2>
+          <p>解析源提交为 <code>9748c451e9d1cc8d6e7e2bcd732f79691b1c13ca</code>，形式证书提交为 <code>0210533624aeb28e5cf58978fc5ea7e446e3fc7e</code>；有限半径源提交为 <code>29ca62f2667816cb26564b2791251a9d2e68197c</code>，数值证书提交为 <code>a24d3f9bea948edfdd24806edef53f99841206f5</code>；正式期刊图提交为 <code>f6afeba</code>。</p>
+          <p>数学笔记、符号审计脚本与有限半径脚本的 SHA-256 分别为 <code>18618793be7ffadff5fdab625fe9581f2fdca2a3dd66364b2d05100ba87d7b10</code>、<code>3ae845319073e9628c4ef88acb965d3af757bc820c51e764edb8675b5a71eb44</code>、<code>3516720be82e4c7c97e42295c5e86ad6c6199b6a0c8cfe74b33d738dd6cc7828</code>。</p>
+          <p>正式附图 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>9bab7a55847620484781c6df5c01183c1e977cd59318d86c63dc52003e530576</code>、<code>ecb39f0f60d7be75a7b872ec3a5755d62f03fe893167711bfbe1e9c59a823d20</code>、<code>dffd7a1d0218dc9c58708c0359676467d4391fc2e4ed156d824e150496515f01</code>。</p>
+          <p>符号证书运行 0.249 秒，19 项检查全部通过，峰值 66.031 MiB；有限半径运行 79.594 秒，最高 100.0% CPU、峰值 669.969 MiB，无 NVIDIA GPU，退出码均为零。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069u">查看 R0.69U 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069u-dyadic-qmc">查看有限半径数值证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/affine_core_dyadic_saturation_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069u-dyadic-saturation/fig-r069u-dyadic-saturation">查看期刊附图包</a></p>
+        </section>
+
+        <section id="sources"><div class="section-no">13 / Literature and claim boundary</div><h2>本结果与过滤涡量拉伸路线相邻，但只主张本项目已经逐式证明的范围</h2>
+          <p>涡量方向与三维正则性的经典几何背景参见 <a href="https://doi.org/10.1002/cpa.3160460604">Constantin–Fefferman（1993）</a>。与本项目相邻的过滤路线可参见 <a href="https://arxiv.org/abs/2606.27560">Yu（2026）的过滤涡量拉伸、次网格缺陷与条件环带 Carleson 嵌入</a>；该工作研究过滤近场、远场应变、交换子与临界增量缺陷，不等同于本页的静态核心饱和构造。千禧年问题的正式目标以 <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 的问题页</a> 为准。</p>
+          <p>当前的文献检索用于定位邻近路线，不构成穷尽性优先权调查。本页严格主张的只有：定量光滑截断、核心总载荷恒等式、两条极限环带的正号裕量、最终精确核心饱和，以及全空间比值对该自相似膨胀的不变性。它不主张全空间饱和、统一动力学耗减、全局正则性或有限时奇性。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、随机化计算、外部定理与开放问题分开记录。</div><div>R0.69U · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

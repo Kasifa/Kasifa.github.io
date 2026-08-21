@@ -5,58 +5,58 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
 const figureRoot = new URL(
-  "figures/r069t-affine-annuli/fig-r069t-affine-annuli/",
+  "figures/r069u-dyadic-saturation/fig-r069u-dyadic-saturation/",
   root,
 );
 
-test("publishes R0.69T with the exact annular theorem and numerical boundary", async () => {
+test("publishes R0.69U with exact core saturation and the full-space boundary", async () => {
   const [home, note] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
-    readFile(new URL("notes/r0-69t.html", publicRoot), "utf8"),
+    readFile(new URL("notes/r0-69u.html", publicRoot), "utf8"),
   ]);
-  assert.match(home, /id="r069t"/);
-  assert.match(home, /href="\/notes\/r0-69t\.html"/);
+  assert.match(home, /id="r069u"/);
+  assert.match(home, /href="\/notes\/r0-69u\.html"/);
   assert.match(home, /综述 v0\.80 · 2026-08-21/);
-  assert.match(home, /R0\.69U 的结果/);
-  assert.ok(note.includes("\\sum_{j\\in\\mathbb Z}\\mathcal A_j(u)"));
-  assert.ok(note.includes("e_{xy}\\cdot\\delta\\omega"));
-  assert.ok(note.includes("\\frac{8\\pi}{3\\sqrt6}"));
-  assert.match(note, /67,108,864/);
-  assert.match(note, /0\.99647808/);
-  assert.match(note, /不是区间包络/);
+  assert.match(home, /下一步 R0\.69V/);
+  assert.ok(note.includes("\\Gamma_{\\rm core}(R)"));
+  assert.ok(note.includes("\\frac{50}{21}"));
+  assert.ok(note.includes("I_+\\ge5/42&gt;0"));
+  assert.ok(note.includes("\\mathcal A_{m+k}(u_R)=R^3\\mathcal A_k(u_1)"));
+  assert.match(note, /29,360,128/);
+  assert.match(note, /不是全空间双增量比值的饱和定理/);
   assert.match(note, /没有解决千禧年问题/);
 });
 
-test("keeps every R0.69T navigation target and source asset resolvable", async () => {
-  const note = await readFile(new URL("notes/r0-69t.html", publicRoot), "utf8");
+test("keeps every R0.69U target and published figure byte-exact", async () => {
+  const note = await readFile(new URL("notes/r0-69u.html", publicRoot), "utf8");
   const ids = new Set([...note.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
   const targets = [...note.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
   assert.ok(targets.length >= 14);
   for (const target of targets) assert.ok(ids.has(target), "missing #" + target);
   for (const source of [
     "https://doi.org/10.1002/cpa.3160460604",
-    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.qmc.Sobol.html",
+    "https://arxiv.org/abs/2606.27560",
     "https://www.claymath.org/millennium/navier-stokes-equation/",
   ]) assert.ok(note.includes(source), source);
   for (const extension of ["pdf", "svg", "png"]) {
     const [archived, published] = await Promise.all([
       readFile(new URL("figure." + extension, figureRoot)),
-      readFile(new URL("figures/r0-69t-affine-annuli." + extension, publicRoot)),
+      readFile(new URL("figures/r0-69u-dyadic-saturation." + extension, publicRoot)),
     ]);
     assert.deepEqual(published, archived, extension);
   }
 });
 
-test("lists the R0.69T translations in the bilingual build", async () => {
+test("lists the R0.69U translations in the bilingual build", async () => {
   const [translations, generated] = await Promise.all([
     readFile(new URL("translations/en.json", root), "utf8"),
     readFile(new URL("i18n-en.js", publicRoot), "utf8"),
   ]);
   for (const phrase of [
-    "R0.69T | Two vorticity increments give an exact annular decomposition",
-    "Research note R0.69T · physical-space annuli and the affine-core boundary carrier",
+    "R0.69U | The fixed-core carrier eventually saturates exactly",
+    "Research note R0.69U · dyadic affine-core saturation and the critical dilation obstruction",
   ]) {
-    assert.match(translations, new RegExp(phrase.replaceAll(".", "\\.")));
-    assert.match(generated, new RegExp(phrase.replaceAll(".", "\\.")));
+    assert.ok(translations.includes(phrase), phrase);
+    assert.ok(generated.includes(phrase), phrase);
   }
 });

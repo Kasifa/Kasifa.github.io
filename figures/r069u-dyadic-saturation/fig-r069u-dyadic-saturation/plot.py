@@ -276,7 +276,7 @@ def render(values) -> None:
     right.set_yticks([-2, -1, 0, 1, 2])
     right.set(
         xlabel=r"dyadic cutoff radius $R$",
-        ylabel=r"$(\widehat{\mathcal C}-\mathcal C_{\rm exact})/{\rm SE}$",
+        ylabel=r"$(\widehat{\mathcal{C}}-\mathcal{C}_{\rm exact})/{\rm SE}$",
         title="c  Exact-value reconstruction at every radius",
     )
     right.grid(True, axis="y", color=GRID, lw=0.45, alpha=0.7)

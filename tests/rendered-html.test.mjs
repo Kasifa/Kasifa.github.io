@@ -218,6 +218,58 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });
 
+test("maps the complete published research route through R0.69U", async () => {
+  const home = await readFile(siteUrl, "utf8");
+  const start = home.indexOf('<section class="route-overview"');
+  const end = home.indexOf('<div class="page-shell">', start);
+
+  assert.ok(start >= 0, "research route map is missing");
+  assert.ok(end > start, "research route map does not end before the main article");
+
+  const route = home.slice(start, end);
+  const sequential = Array.from(
+    { length: 66 },
+    (_, index) => `/notes/r0-${index + 1}.html`,
+  );
+  const later = [
+    "/notes/r0-67.html",
+    "/notes/r0-67b.html",
+    "/notes/r0-67c1.html",
+    "/notes/r0-67c2.html",
+    "/notes/r0-68a.html",
+    "/notes/r0-68b1.html",
+    "/notes/r0-68b2.html",
+    "/notes/r0-68b2de.html",
+    "/notes/r0-68b2fgh.html",
+    ...Array.from(
+      { length: 21 },
+      (_, index) => `/notes/r0-69${String.fromCharCode(97 + index)}.html`,
+    ),
+  ];
+  const expected = [...sequential, ...later];
+  const actual = [...route.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g)].map(
+    (match) => match[1],
+  );
+
+  assert.deepEqual(actual, expected);
+  assert.match(route, /R0\.1–R0\.8/);
+  assert.match(route, /R0\.61–R0\.66/);
+  assert.match(route, /R0\.67A–R0\.68B-2h/);
+  assert.match(route, /R0\.69B–R0\.69F/);
+  assert.match(route, /R0\.69G–R0\.69O/);
+  assert.match(route, /R0\.69P–R0\.69U/);
+  assert.match(route, /NEXT · R0\.69V/);
+  assert.match(route, /路线回返/);
+  assert.match(route, /当前主线/);
+  assert.doesNotMatch(route, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);
+
+  await Promise.all(
+    expected.map((path) =>
+      readFile(new URL(`../public${path}`, import.meta.url), "utf8"),
+    ),
+  );
+});
+
 test("publishes and links the Leray polarization-channel theorem and normal obstruction", async () => {
   const [home, note, pdf] = await Promise.all([
     readFile(siteUrl, "utf8"),

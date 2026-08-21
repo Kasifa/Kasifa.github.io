@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69L：把近场 Calderón–Zygmund 项、过渡壳层、A^-5 远场尾与精确环带通量放在同一临界尺度上。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69L｜远场小量迁移为过渡壳层预算">
+  <meta property="og:description" content="A^-5 远场增益保留，但优化分离比收敛到非零加权壳层量，而不是零。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69l-three-zone.png">
+  <title>R0.69L｜远场小量迁移为过渡壳层预算</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.71">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.71"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#normalization">统一尺度</a><a href="#near">近场</a><a href="#shells">壳层</a><a href="#optimize">优化</a><a href="#flux">环带通量</a><a href="#meaning">意义</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69L · 三分区压力预算</div>
+        <h1>远场尾变小，固定壳层<br>并没有消失</h1>
+        <p class="lead">R0.69K 的 \(A^{-5}\) 远场增益是真实的。我把它与近场 Calderón–Zygmund 项、过渡环带和精确压力边界通量统一到临界尺度。结果是：增大分离比只把固定壳层从远场尾迁入过渡和，优化极限仍是正的加权壳层量。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69L 完成</span><strong>分离参数迁移障碍</strong><p>版本 v0.69L · 2026-08-21</p><p>形式检查：14 / 14 通过</p><p>统一无量纲量：6 类</p><p>监控运行：0.29 秒</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 三分区结论</a></li>
+        <li><a href="#normalization">01 · 统一尺度</a></li>
+        <li><a href="#near">02 · 近场代价</a></li>
+        <li><a href="#shells">03 · 过渡与远场</a></li>
+        <li><a href="#optimize">04 · 优化分离比</a></li>
+        <li><a href="#flux">05 · 精确环带通量</a></li>
+        <li><a href="#meaning">06 · 对总问题的意义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · 下一分支</a></li>
+        <li><a href="#reproduce">09 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Scale-invariant three-zone result</div><h2>完整压力预算保留 \(A^{-5}\)，但不随 \(A\to\infty\) 消失</h2>
+          <p>令 \(0\le\phi\le1\) 等于一于 \(B_{r/2}\)，支撑在 \(B_r\)，并记</p>
+          <div class="equation">\[
+            \mathcal P_r=\int\phi S:\nabla^2p\,dx,\qquad
+            \sigma_r=r^{1/2}\|\phi^{1/2}S\|_2.
+          \]</div>
+          <p>把速度应力分成近场与半径约 \(2^mr\) 的壳，定义</p>
+          <div class="equation">\[
+            N_r=r^{5/2}\|\partial_i\partial_j(\eta_0u_i u_j)\|_2,\qquad
+            e_m=\frac1r\int\chi_m|u|^2.
+          \]</div>
+          <p>取 \(M\ge3\)、\(A=2^M\)，并设</p>
+          <div class="equation">\[
+            B_M=\sum_{m=2}^{M-1}2^{-5m}e_m
+            +2^{-5M}\sum_{m\ge M}e_m.
+          \]</div>
+          <p>则三分区估计与精确环带估计合并为</p>
+          <div class="equation result">\[
+            \boxed{r^3|\mathcal P_r|
+            \le C\min\{b_r,\;\sigma_r(N_r+B_M)\}.}
+          \]</div>
+          <div class="grid">
+            <div class="status"><span>NEAR · CZ</span><strong>\(\sigma_rN_r\)</strong><p>近场源含完整截断交换子。</p></div>
+            <div class="status"><span>TRANSITION · SHELLS</span><strong>\(\sum_{m&lt;M}2^{-5m}e_m\)</strong><p>已越过分离线的壳层保留自身权重。</p></div>
+            <div class="status"><span>FAR · GAIN</span><strong>\(A^{-5}\sum_{m\ge M}e_m\)</strong><p>R0.69K 的五次幂增益完整保留。</p></div>
+            <div class="status"><span>BOUNDARY · EXACT</span><strong>\(b_r\)</strong><p>同一压力配对的环带表示。</p></div>
+          </div>
+        </section>
+
+        <section id="normalization"><div class="section-no">01 / Common critical normalization</div><h2>所有项先乘 \(r^3\)，再比较是否存在可吸收小量</h2>
+          <p>精确环带量定义为</p>
+          <div class="equation">\[
+            b_r=r^2\int_{B_r\setminus B_{r/2}}|u|\,|q|\,dx
+            +r\int_{B_r\setminus B_{r/2}}|u|\,|\nabla p|\,dx,
+            \qquad q=\operatorname{tr}((\nabla u)^2).
+          \]</div>
+          <p>在 Navier–Stokes 缩放下，\(r^3\mathcal P_r\)、\(\sigma_r\)、\(N_r\)、\(b_r\)、\(e_m\) 与 \(B_M\) 全部不变。这个检查排除了把几何分离幂误当作次临界尺度幂的可能。</p>
+        </section>
+
+        <section id="near"><div class="section-no">02 / Near Calderón–Zygmund cost</div><h2>近场可以严格估计，但不会自动获得 \(A\)-小量</h2>
+          <p>令 \(q_0=\partial_i\partial_j(\eta_0u_i u_j)\)，\(H_0=\nabla^2(-\Delta)^{-1}q_0\)。Riesz 变换的 \(L^2\) 有界性给出</p>
+          <div class="equation result">\[
+            \boxed{r^3\left|\int\phi S:H_0\,dx\right|
+            \le C\sigma_rN_r.}
+          \]</div>
+          <p>\(q_0\) 中的截断导数不能删去；它们正是应力分区在二阶散度下保持精确所需的交换子。\(N_r\) 与分离指标 \(M\) 无关，因此增大 \(A\) 不会改善这一项。</p>
+        </section>
+
+        <section id="shells"><div class="section-no">03 / Transition shells and far tail</div><h2>每个分离壳保留 \(2^{-5m}\) 权重，未分离尾共享 \(A^{-5}\)</h2>
+          <p>对 \(x\in B_r\) 与 \(m\ge2\)，R0.69K 的双重分部积分给出</p>
+          <div class="equation">\[
+            \|H_m\|_{L^\infty(B_r)}
+            \le C(2^mr)^{-5}E_m,\qquad E_m=\int\chi_m|u|^2.
+          \]</div>
+          <p>因此</p>
+          <div class="equation result">\[
+            \boxed{r^3\left|\int\phi S:H_m\,dx\right|
+            \le C\sigma_r\,2^{-5m}e_m.}
+          \]</div>
+          <p>对 \(2\le m&lt;M\) 保留逐壳权重；对 \(m\ge M\) 使用 \(2^{-5m}\le2^{-5M}=A^{-5}\)，便得到 \(B_M\)。这里没有使用跨壳符号相消。</p>
+        </section>
+
+        <section id="optimize"><div class="section-no">04 / Exact optimization in the separation index</div><h2>优化 \(A\) 只改变分类，极限是非零的加权壳层和</h2>
+          <p>相邻两个分离指标满足精确恒等式</p>
+          <div class="equation">\[
+            B_M-B_{M+1}
+            =\bigl(2^{-5M}-2^{-5(M+1)}\bigr)
+            \sum_{m\ge M+1}e_m\ge0.
+          \]</div>
+          <p>因而 \(B_M\) 单调下降，但其极限为</p>
+          <div class="equation result">\[
+            \boxed{\inf_{M\ge3}B_M
+            =B_\infty=\sum_{m\ge2}2^{-5m}e_m,}
+          \]</div>
+          <p>而不是零。每当分离线越过一个固定壳，该壳就从合并远场尾进入过渡和，并留下自身的 \(2^{-5m}\) 权重。最靠近的分离壳权重为 \(2^{-10}=1/1024\)；它是小常数，但没有理由对任意有限能量数据统一可吸收。</p>
+        </section>
+
+        <section id="flux"><div class="section-no">05 / Exact annular pressure identity</div><h2>边界通量是同一压力配对的精确表示，不是第二份独立小量</h2>
+          <p>局部压力正交恒等式为</p>
+          <div class="equation">\[
+            \mathcal P_r
+            =\int(\Delta p)u\cdot\nabla\phi\,dx
+            +\int u_i(\partial_jp)(\partial_{ij}\phi)\,dx.
+          \]</div>
+          <p>两项都支撑在 \(B_r\setminus B_{r/2}\)，从而 \(r^3|\mathcal P_r|\le Cb_r\)。若要把压力吸收到局部应变耗散</p>
+          <div class="equation">\[
+            D_r=r^3\int\phi|\nabla S|^2\,dx
+          \]</div>
+          <p>中，还需要在相关尺度序列上证明</p>
+          <div class="equation result">\[
+            C\min\{b_r,\sigma_r(N_r+B_\infty)\}
+            \le\varepsilon D_r,\qquad \varepsilon<1.
+          \]</div>
+          <p>有限能量与大分离比本身不推出这个条件。局部振幅为 \(\alpha\)、远程包振幅为 \(\beta\) 时，局部应变—远程压力交叉项按 \(\alpha\beta^2\) 缩放，而局部耗散按 \(\alpha^2\) 缩放；比值 \(\beta^2/\alpha\) 不受 \(A\) 控制。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Value for the main problem</div><h2>结果关闭一种错误的闭合设想，也把下一步缺口压缩为两个局部量</h2>
+          <p>正面结果是：速度生成结构带来的 \(A^{-5}\) 远场增益在完整预算中没有消失。负面结果是：仅靠增大远近分离，无法让完整外部压力贡献趋于零，因为过渡壳层保留了精确加权和。</p>
+          <p>因此下一步不再继续调分离半径，而应判断现有的局部能量、Morrey 型或压力正则性条件是否能控制 \(b_r\) 或 \(N_r+B_\infty\)，并且是否比已知判据真正更弱。</p>
+          <p>本页给出的是压力局部化路线中的一个严格障碍式，不是正则性定理或奇性构造，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图把“远场变小、过渡项增加”的迁移过程直接画出</h2>
+          <figure><img src="/figures/r0-69l-three-zone.svg" alt="R0.69L 分离参数迁移与非零加权壳层极限"><figcaption>图 R0.69L。示例令 \(m=2,\ldots,12\) 的归一化壳层能量均为一。左图将 \(B_M\) 分为过渡壳层与合并远场尾；总量收敛到严格为正的加权壳层极限。右图显示分离线越过固定壳层后，该壳保留自己的 \(2^{-5m}\) 权重。纹理、线型与标记保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69l-three-zone.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69l-three-zone.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / Next criterion comparison</div><h2>R0.69M 检查缺口是否已被已知正则性判据覆盖</h2>
+          <div class="proof"><strong>R0.69M 的通过标准。</strong>&nbsp;把 \(b_r\)、\(N_r\)、\(B_\infty\) 与局部能量、尺度不变 Morrey 量、压力空间和 Caffarelli–Kohn–Nirenberg 型小量逐项比较。只有在条件严格弱于或结构上不同于现有判据时，才把它保留为候选定理；否则明确记录为已知条件的改写。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>e5bcd77e238edc7cabf49d9c96e792ef92a33aba</code>，形式证书提交为 <code>2b65698e149c0a091608e90da5a5fbe7a0defcd0</code>，最终附图提交为 <code>9826b3071b40afa2389a4d578102095fe63f25ad</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>89b9ad773c093fcb75c9ef9c2ef878a3c1195e0af6bd4c9f3c81b5fd54d1b43c</code>，形式证书 SHA-256 为 <code>086fc4bc3f156704008de33245c81bc909e10b1f23f164a5d31ed8445a5966bf</code>。14 项检查全部通过；监控运行 0.29 秒，峰值常驻内存 63.750 MiB。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>a6f40d5cb3b495d75e66aeb54b7224318096f561b4819bdd212b827e8a9de6ed</code>、<code>9bd3953b530519e1ef3af5387acbe0d8e874a2909ad75777da457c6a5ae21f16</code> 与 <code>1ca022581bcd1619f7c9dcd2440d2cc85ac811201d16dd43141c7165512e1d62</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069l">查看 R0.69L 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/three_zone_pressure_budget_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069l-three-zone/fig-r069l-three-zone">查看期刊附图包</a></p>
+          <p>声明边界：本页证明三分区压力预算与分离参数迁移公式。它没有排除附加局部能量、Morrey、压力或几何条件带来的闭合，不给出 Navier–Stokes 正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69L · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -15,7 +15,7 @@ test("publishes the R0.68B-2f/g/h fixed-coefficient sign certificate", async () 
 
   assert.match(home, /id="r068b2fgh"/);
   assert.match(home, /\/notes\/r0-68b2fgh\.html/);
-  assert.match(home, /综述 v0\.69 · 2026-08-21/);
+  assert.match(home, /综述 v0\.71 · 2026-08-21/);
   assert.match(note, /14,350,336/);
   assert.match(note, /44,514/);
   assert.match(note, /16,777,216/);

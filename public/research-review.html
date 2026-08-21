@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.70"></script>
+  <script defer src="/i18n-en.js?v=0.71"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -4675,6 +4675,42 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.69L：</strong>&nbsp;建立近场、过渡环带与应力局部化远场尾的三区域压力预算，统一缩放后优化分离比。</p>
           </div>
+
+          <div class="task-one" id="r069l" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.69L · 2026-08-21</p>
+            <h3>远场的 \(A^{-5}\) 小量会迁移成非零过渡壳层预算</h3>
+            <p>
+              我把近场 Calderón–Zygmund 项、过渡壳层、速度生成远场尾与精确环带通量放到同一临界尺度。若
+              \[
+                B_M=\sum_{m=2}^{M-1}2^{-5m}e_m
+                +2^{-5M}\sum_{m\ge M}e_m,\qquad A=2^M,
+              \]
+              则局部压力配对满足
+              \[
+                r^3|\mathcal P_r|
+                \le C\min\{b_r,\sigma_r(N_r+B_M)\}.
+              \]
+            </p>
+            <p>
+              分离指标的优化可以精确完成：
+              \[
+                B_M-B_{M+1}
+                =\bigl(2^{-5M}-2^{-5(M+1)}\bigr)
+                \sum_{m\ge M+1}e_m\ge0,
+                \qquad
+                \inf_M B_M=\sum_{m\ge2}2^{-5m}e_m.
+              \]
+              因此增大 \(A\) 会缩小合并远场尾，却只是把固定壳层迁入过渡和；极限不是零。14 项形式检查全部通过。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;这保留了 R0.69K 的真实远场增益，同时排除了仅靠放大分离比实现统一压力吸收。附加局部能量、Morrey、压力或几何条件仍可能控制剩余量。</p>
+            <p>
+              <a href="/notes/r0-69l.html"><strong>阅读 R0.69L 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-69l-three-zone.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069l">查看形式证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069l-three-zone/fig-r069l-three-zone">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.69M：</strong>&nbsp;把 \(b_r\)、\(N_r\) 与加权壳层极限逐项对照现有局部能量、Morrey 与压力正则性判据，判断是否存在真正更弱的条件。</p>
+          </div>
         </section>
 
       </article>
@@ -4688,8 +4724,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.70 · 2026-08-21<br>
-        上次综述 v0.69 · 2026-08-21<br>
+        综述 v0.71 · 2026-08-21<br>
+        上次综述 v0.70 · 2026-08-21<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -20,7 +20,7 @@ test("publishes the exact R0.68B-1 spectrum with its heat boundary", async () =>
   ]);
   assert.ok(home.includes("R0.68B-1 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.70 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.71 · 2026-08-21"));
   assert.match(home, /href="\/notes\/r0-68b1\.html"/);
   assert.match(home, /id="r068b1"/);
   assert.match(note, /note-retro\.css\?v=0\.56/);

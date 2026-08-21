@@ -21,7 +21,7 @@ test("publishes the exact R0.67B affine lift with its heat-pairing boundary", as
   assert.ok(home.includes("R0.67B 已完成："));
   assert.ok(home.includes("R0.67C-1 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.70 · 2026-08-21"));
+  assert.ok(home.includes("综述 v0.71 · 2026-08-21"));
   assert.match(home, /href="\/notes\/r0-67b\.html"/);
   assert.match(note, /1600 维块三角系统/);
   assert.ok(note.includes("26&lt;256&lt;300&lt;\\mu"));

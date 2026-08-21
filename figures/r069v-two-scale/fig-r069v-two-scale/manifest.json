@@ -1,0 +1,175 @@
+{
+  "analyticalQuestion": "Can a genuinely shape-changing two-scale affine family improve the full-space annular ratio, and can any amplitude make all annuli one sign at separation four?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "amplitude curve, polynomial pointwise bands, and signed zone-pair bars",
+    "nonColorEncoding": "diamond candidate marker, distinct line markers, zero references, direct labels, signed horizontal direction, and interval whiskers",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "the finite-separation near-saturation screen is blocked by a robust negative coarse annulus, while exact scale separation returns the baseline ratio"
+  },
+  "claimBoundary": "uniform decoupling is an exact theorem; finite-separation ratios, root gaps and scramble bands are randomized diagnostics rather than rigorous interval enclosures",
+  "computation": {
+    "command": "python plot.py",
+    "configuration": "two independent 16-scramble QMC parameterizations at epsilon=1/4, including 167772160-point full-annulus scan and 41943040-point coarse cubic audit",
+    "kind": "data-analysis",
+    "precision": "IEEE binary64 with sample-exact cubic reconstruction and independent-scramble standard errors",
+    "solver": "five-dimensional symmetry-reduced signed Biot-Savart annular quadrature",
+    "wallTimeSeconds": 0.49505516700446606
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 162.3125,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T14:45:00+08:00",
+  "data": [
+    {
+      "bytes": 531167,
+      "path": "amplitude-scan.csv",
+      "schema": "amplitude, exact total, sampled annular l1 and ratio",
+      "sha256": "629c0dc1f4e333b3673393f7c3e4deaa82406b7a9daa28611d07e81ec48e2762"
+    },
+    {
+      "bytes": 824572,
+      "path": "amplitude-sign-scan.csv",
+      "schema": "amplitude, selected annular means and pointwise scramble bands",
+      "sha256": "58bf9286e28f249ea53fe9831e82224d162265f06ba8e58e6d07eed31264800c"
+    },
+    {
+      "bytes": 388,
+      "path": "coarse-coefficients.csv",
+      "schema": "annular cubic coefficient means and standard errors",
+      "sha256": "1e8695bcd42c5c2625bdec5bbe362a12e6816684d8413be63aeaeb459690c469"
+    },
+    {
+      "bytes": 739,
+      "path": "fixed-candidate-annular.csv",
+      "schema": "fixed-candidate annular means and standard errors",
+      "sha256": "f179fd8e75d764a03c7b857019a765f991f39250c5c1ad8c04c0ebcba8a8bf58"
+    },
+    {
+      "bytes": 43334,
+      "path": "fixed-candidate-zone-pairs.csv",
+      "schema": "fixed-candidate unordered zone-pair contributions",
+      "sha256": "aaf66fb1aeb627ce24cfcc9302ea73145b65a8648bae6142ed2a1e56aefa1b98"
+    },
+    {
+      "bytes": 894,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69V provenance and displayed statistics",
+      "sha256": "817ffaa0c9dbd2966d098cfd4d324a281a1ae7050c3b5db7c1fcc4215c31ada8"
+    },
+    {
+      "bytes": 737,
+      "path": "validation.json",
+      "schema": "fourteen figure-data validation checks",
+      "sha256": "53f2c9070ff2a130c2e73e61e15099c153d786ad2886717da48622f738b5dda1"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "4d833358ddbdc057b5a7847bc2f27157ea9e0527fa33a3279d18ded4fd18aa6b"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 64190,
+        "path": "figure.pdf",
+        "sha256": "0d0fef428ee0c25d2cd456f697286f2df20574ee44c697f0713f93595a65af22"
+      },
+      {
+        "bytes": 158281,
+        "path": "figure.svg",
+        "sha256": "2acb59edde24747b938f18c253c792947a28748fa75c8545082300ac89cbac5a"
+      },
+      {
+        "bytes": 424787,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "43fd17608b180d4fc975a9fb2de3df3565fed6c8fd6398107f2ac270abb87eda"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069v-two-scale",
+  "git": {
+    "certificateCommit": "472aa0939a1de116c78fcf93ef078edc5947ae30",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "ba569f3832d93a6f286bb90d92d2d7b15478bf23"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 5663,
+      "extractionCommand": "python plot.py",
+      "fileName": "result.json",
+      "location": "research/certificates/r069v-polynomial-qmc/result.json",
+      "sha256": "a549c455949819e83d0b86d1be1c0b453f6db6897412cc87dd3cbc5a2d69bcdb"
+    },
+    {
+      "bytes": 531167,
+      "extractionCommand": "python plot.py",
+      "fileName": "amplitude-scan.csv",
+      "location": "research/certificates/r069v-polynomial-qmc/amplitude-scan.csv",
+      "sha256": "629c0dc1f4e333b3673393f7c3e4deaa82406b7a9daa28611d07e81ec48e2762"
+    },
+    {
+      "bytes": 1918,
+      "extractionCommand": "python plot.py",
+      "fileName": "result.json",
+      "location": "research/certificates/r069v-zonepair-qmc/result.json",
+      "sha256": "196c4a3604414e9340249228307656259968e5b2286aee69a12330b884e5e215"
+    },
+    {
+      "bytes": 43334,
+      "extractionCommand": "python plot.py",
+      "fileName": "zone-pairs.csv",
+      "location": "research/certificates/r069v-zonepair-qmc/zone-pairs.csv",
+      "sha256": "aaf66fb1aeb627ce24cfcc9302ea73145b65a8648bae6142ed2a1e56aefa1b98"
+    },
+    {
+      "bytes": 1545,
+      "extractionCommand": "python plot.py",
+      "fileName": "result.json",
+      "location": "research/certificates/r069v-zonepair-polynomial-qmc/result.json",
+      "sha256": "82848977d64fd8edce231cea6d5665fba799b050d4cd35b2980f7031f7325c85"
+    },
+    {
+      "bytes": 824572,
+      "extractionCommand": "python plot.py",
+      "fileName": "amplitude-sign-scan.csv",
+      "location": "research/certificates/r069v-zonepair-polynomial-qmc/amplitude-sign-scan.csv",
+      "sha256": "58bf9286e28f249ea53fe9831e82224d162265f06ba8e58e6d07eed31264800c"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "uniform scale separation returns the baseline ratio exactly in the limit; at separation four QMC finds a near-saturation screen but independent coarse-annulus reconstruction retains a negative carrier for every scanned amplitude"
+}

@@ -56,7 +56,7 @@ test("archives the source-locked R0.69T certificate", async () => {
     "bf437d5ec74532006c19fa09a8b486129503718d",
   );
   assert.match(readme, /two-increment identity/i);
-  assert.match(readme, /pairs that cross the cutoff boundary/i);
+  assert.match(readme, /pairs that\s+cross the cutoff boundary/i);
   assert.match(resources, /exited:0/);
 
   for (const line of sumsText.trim().split("\n")) {

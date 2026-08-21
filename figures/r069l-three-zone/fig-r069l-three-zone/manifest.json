@@ -1,0 +1,122 @@
+{
+  "analyticalQuestion": "Can increasing the near/far separation ratio make the complete velocity-generated shell budget vanish?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "stacked separation-budget bars plus logarithmic shell-weight paths",
+    "nonColorEncoding": "hatched stacked bars, dashed floor, distinct line styles and markers",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "far-tail suppression relabels rather than removes fixed shells"
+  },
+  "claimBoundary": "finite unit-shell illustration of an exact identity; no Navier-Stokes regularity or singularity conclusion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "unit energy on dyadic shells m=2 through 12",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact dyadic rational weights",
+    "solver": "closed-form separation-budget identity",
+    "wallTimeSeconds": 0.5062336660048459
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 155.265625,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T09:15:00+08:00",
+  "data": [
+    {
+      "bytes": 917,
+      "path": "separation-budget.csv",
+      "schema": "separationIndex, separationRatio, transitionRelative, farRelative, totalRelative, exactLimitRelative",
+      "sha256": "bed62377c7adf87d40a4e677f765227a935403b41f1a956b870380d9ee192bd1"
+    },
+    {
+      "bytes": 1385,
+      "path": "weight-migration.csv",
+      "schema": "separationIndex, shellIndex, assignedWeightRelative, classification",
+      "sha256": "1578ed2e2a1ec3751a1fd14cbdf32ff6ddf538331bde2811cbcb45ada46d6f30"
+    },
+    {
+      "bytes": 614,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned certificate and finite unit-shell illustration",
+      "sha256": "3a767d295d3abe0566fba1d15943bbae35dec65f0f20778c093aaf22cab009d7"
+    },
+    {
+      "bytes": 393,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "fcf9844b7c58307fd4bff9cb6e5efe49cb823639790d85a2339e8570fd88d2d6"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "928e58ca23e268faa1043fe3c14367c7e29af48f56f136ff855db7bdfce01e0a"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 42586,
+        "path": "figure.pdf",
+        "sha256": "a6f40d5cb3b495d75e66aeb54b7224318096f561b4819bdd212b827e8a9de6ed"
+      },
+      {
+        "bytes": 138000,
+        "path": "figure.svg",
+        "sha256": "9bd3953b530519e1ef3af5387acbe0d8e874a2909ad75777da457c6a5ae21f16"
+      },
+      {
+        "bytes": 451779,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "1ca022581bcd1619f7c9dcd2440d2cc85ac811201d16dd43141c7165512e1d62"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069l-three-zone",
+  "git": {
+    "certificateCommit": "2b65698e149c0a091608e90da5a5fbe7a0defcd0",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "e5bcd77e238edc7cabf49d9c96e792ef92a33aba"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2287,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "three-zone-pressure-budget.json",
+      "location": "research/certificates/r069l/three-zone-pressure-budget.json",
+      "sha256": "086fc4bc3f156704008de33245c81bc909e10b1f23f164a5d31ed8445a5966bf"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the lumped A^-5 far tail decreases by migrating fixed shells into a positive weighted transition-shell floor"
+}

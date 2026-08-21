@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -36,4 +37,32 @@ test("reproduces the R0.69T symbolic pair-exchange and scaling audit", () => {
   assert.equal(result.scaling.navierStokesExponent, 3);
   assert.equal(result.affineCore.interiorPairContribution, "zero");
   assert.match(result.exactIdentities.pairSymmetrizedNumerator, /delta_omega/);
+});
+
+test("archives the source-locked R0.69T certificate", async () => {
+  const certificateRoot = new URL("../research/certificates/r069t/", import.meta.url);
+  const [certificateText, sumsText, readme, resources] = await Promise.all([
+    readFile(new URL("physical-space-annular-increment.json", certificateRoot), "utf8"),
+    readFile(new URL("SHA256SUMS", certificateRoot), "utf8"),
+    readFile(new URL("README.md", certificateRoot), "utf8"),
+    readFile(new URL("resources.csv", certificateRoot), "utf8"),
+  ]);
+  const certificate = JSON.parse(certificateText);
+  assert.equal(certificate.status, "passed");
+  assert.equal(Object.keys(certificate.checks).length, 12);
+  assert.ok(Object.values(certificate.checks).every(Boolean));
+  assert.equal(
+    certificate.provenance.sourceCommit,
+    "bf437d5ec74532006c19fa09a8b486129503718d",
+  );
+  assert.match(readme, /two-increment identity/i);
+  assert.match(readme, /pairs that cross the cutoff boundary/i);
+  assert.match(resources, /exited:0/);
+
+  for (const line of sumsText.trim().split("\n")) {
+    const [expected, fileName] = line.trim().split(/\s+/, 2);
+    const payload = await readFile(new URL(fileName, certificateRoot));
+    const actual = createHash("sha256").update(payload).digest("hex");
+    assert.equal(actual, expected, fileName + " hash mismatch");
+  }
 });

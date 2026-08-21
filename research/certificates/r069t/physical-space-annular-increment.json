@@ -1,0 +1,60 @@
+{
+  "affineCore": {
+    "carrier": "pairs crossing from the constant-vorticity core to its complement",
+    "interiorPairContribution": "zero",
+    "nextTarget": "signed annular distribution of the boundary carrier"
+  },
+  "annularPartition": {
+    "finiteWindow": "sum_(j=L)^U psi_j(r)=chi(2^(-U-1)*r)-chi(2^(-L)*r)",
+    "remainder": "1-window=[1-chi(2^(-U-1)*r)]+chi(2^(-L)*r)",
+    "representativeTelescopingShells": [
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "shell": "psi_j(r)=chi(2^(-j-1)*r)-chi(2^(-j)*r)"
+  },
+  "checks": {
+    "constantVorticityPairsVanish": true,
+    "directionFieldCancelsExactly": true,
+    "dyadicPhysicalShellShiftHasCorrectDirection": true,
+    "eightShellWindowTelescopes": true,
+    "exchangedFormulaMatchesDirectSubstitution": true,
+    "navierStokesScalingExponentIsThree": true,
+    "originalNumeratorIsCubic": true,
+    "pairExchangeCreatesTwoIncrements": true,
+    "radialPairWeightIsExchangeInvariant": true,
+    "sourceCommitHasFortyHexCharacters": true,
+    "sourceCommitMatchesHead": true,
+    "windowRemainderSplitsNearAndFar": true
+  },
+  "claimBoundary": {
+    "notProved": "a universal annular depletion factor, a regularity criterion, global regularity, or finite-time blow-up",
+    "proved": "exact direction-free two-increment annular reconstruction, explicit finite-window boundaries, scaling, and affine-core carrier"
+  },
+  "exactIdentities": {
+    "constantCorePairs": "zero whenever omega_y=omega_x",
+    "directionFreeNumerator": "rho_x^2*rho_y*(e dot xi_x)*(e dot (xi_y cross xi_x)) = (e dot omega_x)*(e dot (omega_y cross omega_x))",
+    "pairSymmetrizedNumerator": "(1/2)*(e dot delta_omega)*(e dot (omega_x cross delta_omega))"
+  },
+  "provenance": {
+    "auditScript": "research/physical_space_annular_increment_audit.py",
+    "auditScriptSha256": "a33e8aa6dfb05e83385f15c79033a83a8463c0ff7bd4c8ed4d6bdacef006db05",
+    "researchNote": "research/physical_space_annular_increment_note.md",
+    "researchNoteSha256": "0af3f548f2464383f809f9a181c81075e8e0ec2e58611389073f14fa5bbc0791",
+    "sourceCommit": "bf437d5ec74532006c19fa09a8b486129503718d"
+  },
+  "release": "R0.69T",
+  "scaling": {
+    "amplitude": "A_j(alpha*u)=alpha^3*A_j(u)",
+    "dyadicShift": "A_j(u_(2^ell))=2^(3*ell)*A_(j+ell)(u)",
+    "navierStokesExponent": 3
+  },
+  "schemaVersion": "1.0",
+  "status": "passed"
+}

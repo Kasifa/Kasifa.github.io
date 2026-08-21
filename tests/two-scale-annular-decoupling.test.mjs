@@ -105,5 +105,10 @@ test("reconstructs every R0.69V annulus as a common-sample cubic", () => {
   assert.ok(result.audits.sampleNodeReconstructionResidualMax < 1e-11);
   assert.ok(result.audits.deterministicNodeResidualMax < 1e-6);
   assert.equal(result.audits.transitionTransitionPairsRetained, true);
+  assert.equal(
+    Number.isFinite(result.candidate.exactTotalOverAnnularL1OfMeans),
+    true,
+  );
+  assert.equal(Number.isFinite(result.candidate.exactSignedTotal), true);
   assert.equal(result.candidate.annuli.length, 8);
 });

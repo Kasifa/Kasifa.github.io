@@ -5,7 +5,9 @@ At fixed dyadic separation, the vorticity is affine in the outer amplitude a,
 so every signed two-increment annulus is a cubic polynomial in a.  Four common
 amplitude nodes reconstruct that polynomial exactly at the sample level.
 The resulting coefficient means can be scanned on a continuous amplitude
-grid without rerunning the point-pair integral.
+grid without rerunning the point-pair integral.  The exact local-production
+polynomial supplies the signed numerator; QMC is used only for the individual
+annular means and their absolute-value sum.
 
 This is randomized QMC evidence.  Scramble intervals are diagnostics and the
 dense amplitude scan is not an interval proof.
@@ -331,12 +333,15 @@ def main() -> int:
                 for amplitude in amplitude_grid
             ]
         )
-        signed_grid = np.sum(annular_grid, axis=0)
+        sampled_signed_grid = np.sum(annular_grid, axis=0)
+        exact_signed_grid = evaluate_coefficients(
+            exact_total_coefficients, amplitude_grid
+        )
         l1_grid = np.sum(np.abs(annular_grid), axis=0)
         ratio_grid = np.divide(
-            np.abs(signed_grid),
+            np.abs(exact_signed_grid),
             l1_grid,
-            out=np.full_like(signed_grid, np.nan),
+            out=np.full_like(exact_signed_grid, np.nan),
             where=l1_grid > 0.0,
         )
         minimum_grid = np.min(annular_grid, axis=0)
@@ -390,13 +395,21 @@ def main() -> int:
         candidate_ratio_mean, candidate_ratio_se = mean_and_se(
             candidate_replicate_ratio.tolist()
         )
+        candidate_sampled_total_mean, candidate_sampled_total_se = mean_and_se(
+            candidate_replicate_signed.tolist()
+        )
+        candidate_exact_total = float(exact_signed_grid[best_index])
 
         scan_records = [
             {
                 "amplitude": float(amplitude_grid[position]),
-                "signedSum": float(signed_grid[position]),
+                "exactSignedTotal": float(exact_signed_grid[position]),
+                "sampledSignedSum": float(sampled_signed_grid[position]),
+                "sampledTotalResidual": float(
+                    sampled_signed_grid[position] - exact_signed_grid[position]
+                ),
                 "annularL1": float(l1_grid[position]),
-                "cancellationRatio": float(ratio_grid[position]),
+                "exactTotalOverAnnularL1OfMeans": float(ratio_grid[position]),
                 "minimumAnnulus": float(minimum_grid[position]),
                 "negativeAnnulusCount": int(negative_count_grid[position]),
             }
@@ -466,8 +479,14 @@ def main() -> int:
             },
             "candidate": {
                 "bestAmplitude": best_amplitude,
-                "cancellationRatioOfMeans": float(ratio_grid[best_index]),
-                "signedSumOfMeans": float(signed_grid[best_index]),
+                "exactTotalOverAnnularL1OfMeans": float(ratio_grid[best_index]),
+                "exactSignedTotal": candidate_exact_total,
+                "sampledSignedSumOfMeans": float(sampled_signed_grid[best_index]),
+                "sampledSignedSumStandardError": candidate_sampled_total_se,
+                "sampledTotalZScore": (
+                    (candidate_sampled_total_mean - candidate_exact_total)
+                    / candidate_sampled_total_se
+                ),
                 "annularL1OfMeans": float(l1_grid[best_index]),
                 "minimumAnnulusMean": float(minimum_grid[best_index]),
                 "negativeAnnulusCount": int(negative_count_grid[best_index]),
@@ -533,7 +552,9 @@ def main() -> int:
             started,
             "completed",
             bestAmplitude=best_amplitude,
-            cancellationRatio=result["candidate"]["cancellationRatioOfMeans"],
+            exactTotalOverAnnularL1OfMeans=(
+                result["candidate"]["exactTotalOverAnnularL1OfMeans"]
+            ),
             negativeAnnulusCount=result["candidate"]["negativeAnnulusCount"],
         )
     return 0 if result["status"] == "passed" else 1

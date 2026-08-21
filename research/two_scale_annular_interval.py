@@ -809,6 +809,12 @@ class CutoffCertificate:
         values = [self.point(node) for node in self.nodes]
         self.q_lower = np.asarray([float(value[0].lower) for value in values])
         self.q_upper = np.asarray([float(value[0].upper) for value in values])
+        self.q_prime_lower = np.asarray(
+            [float(value[1].lower) for value in values]
+        )
+        self.q_prime_upper = np.asarray(
+            [float(value[1].upper) for value in values]
+        )
         self.q_lower[0] = 1.0
         self.q_upper[0] = 1.0
         self.q_lower[-1] = 0.0
@@ -1369,7 +1375,7 @@ class CutoffCertificate:
         """Enclose the monotone cutoff on intervals from its endpoint values.
 
         The convolved survival profile is nonincreasing.  Evaluating both
-        endpoints with the certified second-order point interpolant avoids an
+        endpoints with the certified cubic-Hermite point interpolant avoids an
         artificial full cutoff-cell width in every much smaller distance cell.
         """
 
@@ -1389,7 +1395,7 @@ class CutoffCertificate:
         )
 
     def q_point_array(self, radius: Interval) -> Interval:
-        """Second-order certified linear interpolation at point intervals."""
+        """Certified cubic Hermite interpolation at point intervals."""
         lower_radius, upper_radius = np.broadcast_arrays(
             radius.lower, radius.upper
         )
@@ -1423,10 +1429,28 @@ class CutoffCertificate:
             )
             left = Interval(self.q_lower[cell], self.q_upper[cell])
             right = Interval(self.q_lower[cell + 1], self.q_upper[cell + 1])
-            interpolated = (1 - theta) * left + theta * right
             cell_width = ACTIVE_SPAN / self.cells
+            left_prime = Interval(
+                self.q_prime_lower[cell], self.q_prime_upper[cell]
+            )
+            right_prime = Interval(
+                self.q_prime_lower[cell + 1],
+                self.q_prime_upper[cell + 1],
+            )
+            theta_squared = theta * theta
+            theta_cubed = theta_squared * theta
+            h00 = 2 * theta_cubed - 3 * theta_squared + 1
+            h10 = theta_cubed - 2 * theta_squared + theta
+            h01 = -2 * theta_cubed + 3 * theta_squared
+            h11 = theta_cubed - theta_squared
+            interpolated = (
+                h00 * left
+                + h10 * float(cell_width) * left_prime
+                + h01 * right
+                + h11 * float(cell_width) * right_prime
+            )
             interpolation_error = float(
-                DERIVATIVE_GLOBAL_BOUNDS[2] * cell_width**2 / 8
+                self.derivative_bounds[4] * float(cell_width) ** 4 / 384
             )
             lower_value = interpolated.lower - interpolation_error
             upper_value = interpolated.upper + interpolation_error
@@ -4071,6 +4095,7 @@ def main() -> int:
                 str(value) for value in raw.second_derivative_bounds
             ],
             "distanceCellCutoffRangesUseMonotoneEndpointInterpolation": True,
+            "cutoffPointInterpolation": "certified cubic Hermite with fourth-derivative remainder",
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,
             "endpointDistributionTermsThroughOrderFive": True,

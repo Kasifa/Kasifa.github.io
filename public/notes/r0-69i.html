@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69I：精确局部化压力—应变正交与 Betchov 相消，证明裸空间截断会产生非零且同尺度的边界交换子。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69I｜局部化把全局相消转移成同阶交换子">
+  <meta property="og:description" content="两个全局零配对在加权后都严格非零，且六个局部化项保持同一 Navier–Stokes 缩放次数。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69i-localization.png">
+  <title>R0.69I｜局部化把全局相消转移成同阶交换子</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.68">
+  <style>.hero h1{font-size:clamp(2.25rem,4.7vw,3.9rem)}</style>
+  <script defer src="/i18n-en.js?v=0.68"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#pressure">压力局部化</a><a href="#betchov">Betchov 局部化</a><a href="#budget">完整预算</a><a href="#scaling">缩放</a><a href="#witness">精确见证</a><a href="#meaning">意义</a><a href="#figure">期刊附图</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69I · 全局相消的精确局部化</div>
+        <h1>截断没有消除压力，<br>只是把它移到边界环带</h1>
+        <p class="lead">我精确局部化了压力—应变正交恒等式与 Betchov 相消。两种全局配对都严格为零，但加入空间权重后都变成非零边界交换子；更关键的是，六个局部化项与原项保持相同的 Navier–Stokes 缩放次数。裸空间截断本身不会产生符号或尺度增益。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69I 完成</span><strong>严格局部化障碍</strong><p>版本 v0.69I · 2026-08-21</p><p>形式检查：14 / 14 通过</p><p>精确 Fourier 速度模：24 个</p><p>同尺度项：6 个</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#pressure">01 · 压力正交局部化</a></li>
+        <li><a href="#betchov">02 · Betchov 局部化</a></li>
+        <li><a href="#budget">03 · 完整应变预算</a></li>
+        <li><a href="#scaling">04 · 缩放审计</a></li>
+        <li><a href="#witness">05 · 精确 Fourier 见证</a></li>
+        <li><a href="#meaning">06 · 对总问题的意义</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#next">08 · 下一分支</a></li>
+        <li><a href="#reproduce">09 · 复现与边界</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified localization obstruction</div><h2>两个全局零配对在局部化后都严格非零，而且没有缩放降阶</h2>
+          <p>对光滑周期无散速度场和光滑权重 \(\phi\)，压力配对满足</p>
+          <div class="equation result">\[
+            \boxed{\int\phi S:\nabla^2p
+            =\int(\Delta p)u\cdot\nabla\phi
+            +\int u_i(\partial_jp)(\partial_{ij}\phi).}
+          \]</div>
+          <p>Betchov 配对同时满足</p>
+          <div class="equation result">\[
+            \boxed{\int\phi\left(\operatorname{tr}(S^3)+\frac34\omega\cdot S\omega\right)
+            =\int\left(\frac12qu-A^2u\right)\cdot\nabla\phi,}
+          \]</div>
+          <p>其中 \(A=\nabla u\)、\(q=\operatorname{tr}(A^2)=-\Delta p\)。当 \(\phi=1\) 时两式右端都为零；权重变化时，两个全局相消都被精确转移到截断区域。</p>
+          <div class="grid">
+            <div class="status"><span>EXACT · PRESSURE</span><strong>二项压力交换子</strong><p>一个 \(\nabla\phi\) 项和一个 \(\nabla^2\phi\) 项。</p></div>
+            <div class="status"><span>EXACT · BETCHOV</span><strong>三次边界通量</strong><p>全局三次相消变成加权通量。</p></div>
+            <div class="status"><span>CERTIFIED · NONZERO</span><strong>两个交换子均非零</strong><p>精确有理 Fourier 卷积给出见证。</p></div>
+            <div class="status"><span>DECISION · NEGATIVE</span><strong>停止裸局部化分支</strong><p>转向压力远场的调和多极结构。</p></div>
+          </div>
+        </section>
+
+        <section id="pressure"><div class="section-no">01 / Weighted pressure orthogonality</div><h2>全局压力正交被完整转移到权重变化的区域</h2>
+          <p>因为压力 Hessian 对称，\(S:\nabla^2p=A:\nabla^2p\)。先对 \(\partial_j u_i\) 分部，再对压力项分部，并使用 \(\nabla\cdot u=0\)，就得到上面的二项恒等式。</p>
+          <p>若 \(\phi\) 在 \(B_r\) 上等于一、在 \(B_{2r}\) 外等于零，则</p>
+          <div class="equation">\[
+            \left|\int\phi S:\nabla^2p\right|
+            \le\frac Cr\int_{B_{2r}\setminus B_r}|u|\,|q|
+            +\frac C{r^2}\int_{B_{2r}\setminus B_r}|u|\,|\nabla p|.
+          \]</div>
+          <p>这把缺陷放进环带，但并没有闭合它：第二项仍含有真正非局部的压力梯度。</p>
+        </section>
+
+        <section id="betchov"><div class="section-no">02 / Weighted Betchov identity</div><h2>经典三次相消也产生同一环带上的通量</h2>
+          <p>逐点有</p>
+          <div class="equation">\[
+            \operatorname{tr}(A^3)=\operatorname{tr}(S^3)+\frac34\omega\cdot S\omega.
+          \]</div>
+          <p>对 \(\operatorname{tr}(A^3)=\partial_j u_i\partial_k u_j\partial_i u_k\) 做加权分部，得到</p>
+          <div class="equation result">\[
+            \boxed{\int\phi\operatorname{tr}(A^3)
+            =\int\left(\frac12qu-A^2u\right)\cdot\nabla\phi.}
+          \]</div>
+          <p>此外，迹为零的三阶矩阵满足 \(\operatorname{tr}(S^3)=3\det S\)，所以</p>
+          <div class="equation">\[
+            \operatorname{tr}(S^3)+\frac14\omega\cdot S\omega
+            =2\det S+\frac13\operatorname{tr}(A^3).
+          \]</div>
+        </section>
+
+        <section id="budget"><div class="section-no">03 / Complete localized strain budget</div><h2>压力与 Betchov 缺陷在同一个加权应变恒等式中出现</h2>
+          <div class="equation result">\[
+          \boxed{\begin{aligned}
+            \frac12\frac d{dt}\int\phi|S|^2+\int\phi|\nabla S|^2+2\int\phi\det S
+            ={}&\frac12\int(\Delta\phi+u\cdot\nabla\phi)|S|^2\\
+            &-\frac13\int\left(\frac12qu-A^2u\right)\cdot\nabla\phi\\
+            &-\int(\Delta p)u\cdot\nabla\phi
+            -\int u_i(\partial_jp)(\partial_{ij}\phi).
+          \end{aligned}}
+          \]</div>
+          <p>压力在 \(\phi=1\) 的内部消失，却在截断环带完整重现；三次 Betchov 修正也同步出现在环带。因此，局部化是精确的记账变换，不是自动的耗散机制。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">04 / Scaling audit</div><h2>六个局部化项的缩放次数全部等于三</h2>
+          <p>在 \(u_\lambda=\lambda u(\lambda x,\lambda^2t)\)、
+          \(p_\lambda=\lambda^2p(\lambda x,\lambda^2t)\)、
+          \(\phi_\lambda=\phi(\lambda x)\) 下，压力配对、两个压力交换子、Betchov 配对以及两个三次通量全部按 \(\lambda^3\) 缩放。</p>
+          <div class="proof"><strong>严格结论。</strong>&nbsp;环带支撑有利于分区与多尺度分析，但仅仅缩小截断半径不会产生额外的正幂小量。任何闭合都必须再加入调和尾、多尺度求和、Morrey 控制或几何信息。</div>
+        </section>
+
+        <section id="witness"><div class="section-no">05 / Exact Fourier witness</div><h2>有限 Fourier 场把两个交换子同时变成非零有理数</h2>
+          <p>证书使用四组无散余弦载频及权重</p>
+          <div class="equation">\[
+            \phi(x)=1+\frac17\sin x_3-\frac1{11}\sin x_1.
+          \]</div>
+          <p>精确卷积给出</p>
+          <div class="equation result">\[
+            \boxed{\int\phi S:\nabla^2p=-\frac{676}{40425},\qquad
+            \int\phi\operatorname{tr}(A^3)=\frac{228}{2695}.}
+          \]</div>
+          <p>压力的两个边界分量分别为
+          \(-332/8085\) 与 \(328/13475\)，其和恰好是
+          \(-676/40425\)。未加权的两个全局配对都严格等于零。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">06 / Value for the main problem</div><h2>它关闭了一个自然局部化捷径，但给出了下一步应保留的信息</h2>
+          <p>R0.69H 排除了局部压力符号闭合；R0.69I 进一步表明，把全局相消直接乘上截断函数，也不会自动产生更弱的尺度。压力并未消失，而是以同阶交换子进入边界环带。</p>
+          <p>有价值的下一步因此更具体：分离球内的近场 Newton 核与球内调和的远场压力，逐阶减去远场多极矩，检查迹为零应变能否杀掉领先调和项。</p>
+          <p>本页没有证明奇性存在或不存在，也没有解决三维 Navier–Stokes 千禧年问题。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图显示全局零怎样变成非零同阶交换子</h2>
+          <figure><img src="/figures/r0-69i-localization.svg" alt="R0.69I 全局相消与局部化交换子的精确比较"><figcaption>图 R0.69I。左图分解压力交换子：两项
+          \(-332/8085\) 与 \(328/13475\) 精确相加为
+          \(-676/40425\)。右图比较全局与局部化配对：压力和 Betchov 通道都从零变为非零；证书中的六个局部化项全部保持缩放次数三。实虚线、空心圆方标记与纹理保证灰度可辨。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69i-localization.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69i-localization.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="next"><div class="section-no">08 / Next harmonic-tail channel</div><h2>R0.69J 分离近场压力与调和远场多极矩</h2>
+          <div class="proof"><strong>R0.69J 的通过标准。</strong>&nbsp;在球上写出压力的近场 Newton 部分与调和远场部分，减去常数、线性及二次调和矩，并检验迹为零应变与环带通量是否产生真实的尺度衰减。若领先四极矩仍保持临界大小，就构造精确见证并关闭该分支。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and boundary</div><h2>数学源、形式证书与正式附图分别锁定</h2>
+          <p>数学源提交为 <code>b03985d6d2fd1f55ba5d600cb75859efb694876b</code>，形式证书提交为 <code>9578b9f4b77e9e910ba5db27625722894463d44c</code>，最终附图提交为 <code>e333c0f312b50cee97a71597cbd73c76c0fcb0f6</code>。</p>
+          <p>审计脚本 SHA-256 为 <code>a022c46a35a23c5dc302acbcd3f15970b8b930a1f023da65b140cf2f91dbdabb</code>，形式证书 SHA-256 为 <code>73dfa59251ffcb9603eeb298d3028e191936ab3ccf2f0b7ab7d6dc9c9288a5d2</code>。14 项检查全部通过；监控运行 5.04 秒，峰值常驻内存 73.469 MiB，本任务为 CPU 精确有理 Fourier 审计。</p>
+          <p>正式附图的 PDF、SVG 与 600 dpi PNG 的 SHA-256 分别为 <code>7ec53f1e2ca40c865212b1f6b7fc42f0b525602fb2347ffbfbc57bc6fee963ff</code>、<code>175cfba03b6e7f1f7fc311316ca5ef0d69411ab7f5800c9beefd59a06a3af211</code> 与 <code>0c5fd46bc45572ccda196074198175492dd678195aafcb9e28485ff08d9fcae9</code>。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069i">查看 R0.69I 形式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/localized_strain_pressure_commutator_note.md">查看完整数学笔记</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069i-localization/fig-r069i-localization">查看期刊附图包</a></p>
+          <p>声明边界：本页只关闭裸空间截断作为自动符号或尺度增益来源的路线。它不排除调和尾、多尺度、Morrey 或几何控制，不给出 Navier–Stokes 正则性或奇性结论，也没有解决千禧年问题。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、外部定理、有限计算与开放问题分开记录。</div><div>R0.69I · 2026-08-21<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

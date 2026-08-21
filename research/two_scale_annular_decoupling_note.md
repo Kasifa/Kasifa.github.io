@@ -288,43 +288,106 @@ independent numerical estimators.
    and doubles distinct-zone pairs.  It records every transition--transition
    contribution without treating fine annuli as rare events.
 
-The first refined importance run for the balanced amplitudes used eight
-independent scrambles and \(2^{15}\) points per annulus--zone stratum.
-At \(N=2\), the cancellation ratio of the annular means was
-\(0.99926\), while the signed annular sum was
-\(0.02022\pm0.00503\) against the independent total
-\(0.0257011\).  This is a strong candidate for finite-separation sign
-alignment, not a proof: several small annuli remain statistically compatible
-with either sign, and scramble errors are not interval bounds.
+The first lower-resolution balanced-amplitude run reported a ratio of annular
+means near \(0.999\), but its sampled signed sum missed the independently
+known production by a material fraction.  That number is therefore retained
+only as a variance diagnostic.  In the final scan the numerator is never
+estimated from the point-pair samples: it is supplied by the exact cubic law
+(1.6).
 
-At \(N=4,6\), the same run produced ratios \(0.7420\) and \(0.6873\).
-Those values are not interpreted as an asymptotic trend because the smallest
-totals are only \(10^{-3}\) and \(10^{-5}\), and the resolved annular errors
-remain material.  The exact conclusion at this stage is (1.8); the finite
-\(N=2\) candidate requires a source-locked higher-resolution audit.
+At \(N=2\), a source-locked common-sample cubic run used sixteen independent
+scrambles and \(2^{18}\) points in each annulus--zone stratum, for
+\(167{,}772{,}160\) stratified point pairs.  Four amplitude nodes reconstruct
+every annular carrier as a cubic at sample level.  The best point on a
+4001-point grid was
+
+\[
+ a=0.1595,\qquad
+ \frac{|\mathcal V_{\rm exact}|}
+      {\sum_j|\widehat{\mathcal A}_j|}
+ =0.9635537.
+ \tag{5.1}
+\]
+
+The sampled signed sum at this amplitude was within \(0.023\) reported
+scramble standard errors of the exact cubic numerator.  One mean annulus was
+still negative, but the importance parameterization had relatively large
+variance on the coarse outer-transition self-pairs.
+
+An independent direct zone-pair run therefore sampled every one of the ten
+unordered radial-zone pairs with sixteen scrambles and \(2^{19}\) points per
+pair.  At the same amplitude it gave
+
+\[
+ \widehat{\mathcal A}_0
+ =-6.2918609\times10^{-4},\qquad
+ {\rm SE}=1.0343137\times10^{-5},
+ \tag{5.2}
+\]
+
+placing the negative mean about 61 reported standard errors from zero.  The
+dominant contribution is the outer-transition--outer-transition pair.
+
+Finally, a second common-sample cubic audit used the direct zone-pair
+parameterization to reconstruct only \(\mathcal A_{-2}(a)\) and
+\(\mathcal A_0(a)\).  Its \(j=0\) mean polynomial is
+
+\[
+ \widehat{\mathcal A}_0(a)
+ =a\left(-0.0016401859
+          +0.0041314598a
+          -0.1360513164a^2\right).
+ \tag{5.3}
+\]
+
+The quadratic factor has negative mean discriminant and negative leading
+coefficient.  At \(a=0\), where \(\mathcal A_0=0\) by support,
+
+\[
+ \widehat{\mathcal A}_{-2}(0)
+ =-0.0019467840,qquad
+ {\rm SE}=8.6779726\times10^{-5}.
+ \tag{5.4}
+\]
+
+No point of the 4001-point grid makes both mean carriers nonnegative.  The
+maximized minimum is still \(-2.9486752\times10^{-4}\) at \(a=0.107\), and
+at every grid point at least one pointwise 95% upper scramble band is below
+zero.  These bands are neither simultaneous nor rigorous interval
+enclosures; (5.2)--(5.4) identify a sharply localized certification target,
+not a proved finite-parameter sign obstruction.
 
 ## 6. Route decision
 
-R0.69V establishes two facts.
+R0.69V establishes two exact facts and one numerical route decision.
 
 1. The fixed-core two-scale construction genuinely changes shape and has an
    exact cubic production law.
 2. Sending the two scales infinitely far apart cannot improve the limiting
    full-space annular ratio: all amplitude choices return to the single-profile
    value \(\Gamma_q\).
+3. At the most favorable tested finite separation, the corrected
+   exact-numerator scan does not saturate, and an independent estimator finds
+   a robust negative coarse annulus.  The earlier near-one screening value was
+   a variance artifact, not evidence of exact sign alignment.
 
-The only remaining static opportunity inside this family is finite-scale
-interference.  The next nonredundant task is to exploit cubic dependence on
-\(a\): estimate every annular coefficient as a cubic polynomial using common
-Sobol points, locate an amplitude interval where all material annuli may have
-one sign, and then either certify those signs or exhibit a forced negative
-annulus.
+The next nonredundant task, R0.69W, is not another broad parameter scan.  It is
+the rigorous enclosure of the four quantities isolated by (5.3)--(5.4): the
+three nonzero coefficients of \(\mathcal A_0(a)/a\) and the constant
+\(\mathcal A_{-2}(0)\).  If interval arithmetic proves that the quadratic
+factor in (5.3) has negative leading coefficient and negative discriminant,
+then \(\mathcal A_0(a)<0\) for every \(a>0\); a certified negative value in
+(5.4) handles \(a=0\).  That would close exact one-sign saturation throughout
+this one-parameter, separation-four family.  The interval construction must
+also enclose the declared smooth mollification rather than silently certify
+only its floating-point quadrature.
 
 ## 7. Claim boundary
 
 The strict results are the shape criterion, exact production law (1.6), zero
 \(a^2b\) coefficient, mixed-annulus estimate (4.2), and uniform decoupling
-limit (1.8).  The reported finite-separation ratios are randomized numerical
-evidence.  They are not interval enclosures and do not prove exact annular
+limit (1.8).  Equations (5.1)--(5.4), the grid exclusion, and all scramble
+bands are randomized numerical evidence.  They are not interval enclosures
+and do not yet prove a finite-parameter sign obstruction, exact annular
 saturation, a dynamically propagated depletion mechanism, global regularity,
 finite-time singularity, or the Millennium Problem.

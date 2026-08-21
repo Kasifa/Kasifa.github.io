@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -11,6 +12,10 @@ const noteUrl = new URL(
 );
 const auditUrl = new URL(
   "research/two_scale_annular_decoupling_audit.py",
+  root,
+);
+const polynomialUrl = new URL(
+  "research/two_scale_annular_polynomial_qmc.py",
   root,
 );
 
@@ -63,4 +68,42 @@ test("keeps both complete and annulus-importance QMC implementations", async () 
   assert.match(importance, /sample\s+the displacement z=y-x directly/);
   assert.match(importance, /transitionTransitionPairsRetained/);
   assert.match(importance, /y_zone_indices >= x_zone_index/);
+});
+
+test("reconstructs every R0.69V annulus as a common-sample cubic", () => {
+  const output = new URL("tmp/r069v-polynomial-test/", root);
+  const run = spawnSync(
+    fileURLToPath(new URL("tmp/r068b-venv/bin/python", root)),
+    [
+      fileURLToPath(polynomialUrl),
+      "--output-root",
+      fileURLToPath(output),
+      "--replicates",
+      "2",
+      "--power",
+      "8",
+      "--separation",
+      "2",
+      "--j-padding",
+      "4",
+      "--amplitude-grid",
+      "101",
+    ],
+    {
+      cwd: fileURLToPath(new URL(".", root)),
+      encoding: "utf8",
+      timeout: 30_000,
+    },
+  );
+  assert.equal(run.status, 0, run.stderr || run.stdout);
+  const result = JSON.parse(
+    readFileSync(new URL("result.json", output), "utf8"),
+  );
+  assert.equal(result.status, "passed");
+  assert.equal(result.method.amplitudeNodes.length, 4);
+  assert.ok(result.audits.vandermondeResidualMax < 1e-13);
+  assert.ok(result.audits.sampleNodeReconstructionResidualMax < 1e-11);
+  assert.ok(result.audits.deterministicNodeResidualMax < 1e-6);
+  assert.equal(result.audits.transitionTransitionPairsRetained, true);
+  assert.equal(result.candidate.annuli.length, 8);
 });

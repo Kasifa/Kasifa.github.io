@@ -114,16 +114,44 @@ def main() -> int:
     }
     for annulus_key in ("0", "-2"):
         audits = [record["integrationAudits"][annulus_key] for record in records]
+        maximum_selected_details = []
+        for degree in range(4):
+            audit = max(
+                audits,
+                key=lambda item: item[
+                    "maximumPointwiseSelectedOrderRemainders"
+                ][degree],
+            )
+            maximum_selected_details.append(
+                audit["maximumSelectedBoxDetails"][degree]
+            )
         merged["integrationAudits"][annulus_key] = {
             "rule": audits[0]["rule"],
             "radialCells": audits[0]["radialCells"],
             "momentPrimitivePower": audits[0]["momentPrimitivePower"],
             "momentPrimitiveCells": audits[0]["momentPrimitiveCells"],
             "evaluatedRadialBoxes": sum(audit["evaluatedRadialBoxes"] for audit in audits),
-            "maximumPointwiseFourthOrderRemainders": [
-                max(audit["maximumPointwiseFourthOrderRemainders"][degree] for audit in audits)
+            "maximumPointwiseSelectedOrderRemainders": [
+                max(audit["maximumPointwiseSelectedOrderRemainders"][degree] for audit in audits)
                 for degree in range(4)
             ],
+            "maximumCandidateThirdOrderRemainders": [
+                max(audit["maximumCandidateThirdOrderRemainders"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "maximumCandidateFourthOrderRemainders": [
+                max(audit["maximumCandidateFourthOrderRemainders"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "selectedThirdOrderBoxesByCoefficient": [
+                sum(audit["selectedThirdOrderBoxesByCoefficient"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "selectedFourthOrderBoxesByCoefficient": [
+                sum(audit["selectedFourthOrderBoxesByCoefficient"][degree] for audit in audits)
+                for degree in range(4)
+            ],
+            "maximumSelectedBoxDetails": maximum_selected_details,
             "workers": expected_workers,
             "allRowsCoveredExactlyOnce": True,
         }

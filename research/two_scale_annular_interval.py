@@ -17,8 +17,10 @@ Two exact reductions precede interval arithmetic.
 
 Every transcendental bump evaluation is enclosed by Arb.  All later binary64
 interval operations use explicit outward rounding with nextafter.  Raw bump
-moments, cutoff values, annular primitives, and the final radial sum are all
-one-sided Darboux enclosures.  No probabilistic error estimate enters.
+moments use a validated composite trapezoidal rule with explicit second-
+derivative bounds; cutoff values, annular primitives, and the final radial sum
+remain deterministic interval enclosures.  No probabilistic error estimate
+enters.
 """
 
 from __future__ import annotations
@@ -526,7 +528,7 @@ class CenteredPoly:
 
 
 class RawMomentTable:
-    """Darboux enclosures for integral bump(u) u^k du, 0 <= k <= 5."""
+    """Validated trapezoidal bump-moment primitives, 0 <= k <= 5."""
 
     def __init__(self, power: int):
         self.power = power
@@ -535,6 +537,10 @@ class RawMomentTable:
         self.prefix: list[tuple[np.ndarray, np.ndarray]] = []
         self.cell_ranges: list[tuple[np.ndarray, np.ndarray]] = []
         self.critical_blocks: dict[str, list[list[int]]] = {}
+        self.second_derivative_bounds = [
+            Fraction(degree * degree + degree + 8)
+            for degree in range(6)
+        ]
         endpoint_intervals: list[list[tuple[float, float]]] = [
             [] for _ in range(6)
         ]
@@ -599,22 +605,29 @@ class RawMomentTable:
             prefix_upper = np.empty(self.cells + 1, dtype=np.float64)
             prefix_lower[0] = 0.0
             prefix_upper[0] = 0.0
-            step_float = float(self.step)
+            step_interval = Interval.from_fraction(self.step)
+            error = Interval.from_fraction(
+                self.second_derivative_bounds[degree]
+                * self.step**3
+                / 12
+            )
             for index in range(self.cells):
-                contribution_lower = math.nextafter(
-                    float(cell_lower[index]) * step_float,
-                    NEGATIVE_INFINITY,
+                left = Interval(
+                    endpoint_lower[index], endpoint_upper[index]
                 )
-                contribution_upper = math.nextafter(
-                    float(cell_upper[index]) * step_float,
-                    POSITIVE_INFINITY,
+                right = Interval(
+                    endpoint_lower[index + 1], endpoint_upper[index + 1]
+                )
+                trapezoid = (left + right) * step_interval / 2
+                contribution = trapezoid + Interval(
+                    -float(error.upper), float(error.upper)
                 )
                 prefix_lower[index + 1] = math.nextafter(
-                    prefix_lower[index] + contribution_lower,
+                    prefix_lower[index] + float(contribution.lower),
                     NEGATIVE_INFINITY,
                 )
                 prefix_upper[index + 1] = math.nextafter(
-                    prefix_upper[index] + contribution_upper,
+                    prefix_upper[index] + float(contribution.upper),
                     POSITIVE_INFINITY,
                 )
             self.prefix.append((prefix_lower, prefix_upper))
@@ -622,12 +635,29 @@ class RawMomentTable:
         if float(self.normalization.lower) <= 0.0:
             raise RuntimeError("mollifier normalization did not stay positive")
 
+    def _endpoint_interval(self, degree: int, coordinate: Fraction) -> Interval:
+        if coordinate in (Fraction(-1), Fraction(1)):
+            return Interval.exact_integer(0)
+        u = fraction_arb(coordinate)
+        bump = (-1 / (1 - u * u)).exp()
+        return Interval(*arb_float_bounds(bump * u**degree))
+
     def _cell_segment(
-        self, degree: int, cell: int, length: Fraction
+        self, degree: int, lower: Fraction, upper: Fraction
     ) -> Interval:
-        lower, upper = self.cell_ranges[degree]
-        return Interval(float(lower[cell]), float(upper[cell])) * Interval.from_fraction(
-            length
+        length = upper - lower
+        if length <= 0:
+            return Interval.exact_integer(0)
+        left = self._endpoint_interval(degree, lower)
+        right = self._endpoint_interval(degree, upper)
+        trapezoid = (
+            (left + right) * Interval.from_fraction(length) / 2
+        )
+        error = Interval.from_fraction(
+            self.second_derivative_bounds[degree] * length**3 / 12
+        )
+        return trapezoid + Interval(
+            -float(error.upper), float(error.upper)
         )
 
     def moment(self, lower: Fraction, upper: Fraction, degree: int) -> Interval:
@@ -658,12 +688,12 @@ class RawMomentTable:
         first_grid_value = Fraction(-1) + first_grid * self.step
         if lower < first_grid_value:
             result = result + self._cell_segment(
-                degree, first_grid - 1, first_grid_value - lower
+                degree, lower, first_grid_value
             )
         last_grid_value = Fraction(-1) + last_grid * self.step
         if last_grid_value < upper:
             result = result + self._cell_segment(
-                degree, last_grid, upper - last_grid_value
+                degree, last_grid_value, upper
             )
         return result
 
@@ -3292,6 +3322,13 @@ def integrate_coefficients_moment_taylor4(
     ]
     evaluated_boxes = 0
     maximum_remainder = [0.0] * 4
+    maximum_third_remainder = [0.0] * 4
+    maximum_fourth_remainder = [0.0] * 4
+    selected_third_boxes = [0] * 4
+    selected_fourth_boxes = [0] * 4
+    maximum_selected_box_details: list[dict[str, object] | None] = [
+        None for _ in range(4)
+    ]
     assigned_rows = list(range(worker_index, cell_count, workers))
     for completed_rows, left_index in enumerate(assigned_rows, start=1):
         left = radial_cells[left_index]
@@ -3405,14 +3442,75 @@ def integrate_coefficients_moment_taylor4(
             c04 = interval_absolute_maximum(
                 polynomial_coefficient(range_value.coefficient(0, 4), degree)
             )
-            remainder = up(
+            c30 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(3, 0), degree)
+            )
+            c21 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(2, 1), degree)
+            )
+            c12 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(1, 2), degree)
+            )
+            c03 = interval_absolute_maximum(
+                polynomial_coefficient(range_value.coefficient(0, 3), degree)
+            )
+            third_remainder = up(
+                c30 * width_r**3 / 32.0
+                + c21 * width_r**2 * width_s / 48.0
+                + c12 * width_r * width_s**2 / 48.0
+                + c03 * width_s**3 / 32.0
+            )
+            fourth_remainder = up(
                 c40 * width_r**4 / 80.0
                 + c31 * width_r**3 * width_s / 128.0
                 + c22 * width_r**2 * width_s**2 / 144.0
                 + c13 * width_r * width_s**3 / 128.0
                 + c04 * width_s**4 / 80.0
             )
-            maximum_remainder[degree] = max(maximum_remainder[degree], float(np.max(remainder)))
+            choose_third = third_remainder <= fourth_remainder
+            remainder = np.where(
+                choose_third, third_remainder, fourth_remainder
+            )
+            local_maximum_position = int(np.argmax(remainder))
+            local_maximum = float(remainder[local_maximum_position])
+            if local_maximum > maximum_remainder[degree]:
+                right_index = int(indices[local_maximum_position])
+                maximum_remainder[degree] = local_maximum
+                maximum_selected_box_details[degree] = {
+                    "leftIndex": left_index,
+                    "rightIndex": right_index,
+                    "leftRole": radial_cells[left_index].role,
+                    "rightRole": radial_cells[right_index].role,
+                    "leftInterval": [
+                        str(radial_cells[left_index].lower),
+                        str(radial_cells[left_index].upper),
+                    ],
+                    "rightInterval": [
+                        str(radial_cells[right_index].lower),
+                        str(radial_cells[right_index].upper),
+                    ],
+                    "thirdOrderCandidate": float(
+                        third_remainder[local_maximum_position]
+                    ),
+                    "fourthOrderCandidate": float(
+                        fourth_remainder[local_maximum_position]
+                    ),
+                    "selectedOrder": (
+                        3 if bool(choose_third[local_maximum_position]) else 4
+                    ),
+                }
+            maximum_third_remainder[degree] = max(
+                maximum_third_remainder[degree],
+                float(np.max(third_remainder)),
+            )
+            maximum_fourth_remainder[degree] = max(
+                maximum_fourth_remainder[degree],
+                float(np.max(fourth_remainder)),
+            )
+            selected_third_boxes[degree] += int(np.count_nonzero(choose_third))
+            selected_fourth_boxes[degree] += int(
+                choose_third.size - np.count_nonzero(choose_third)
+            )
             enclosed = average + Interval(-remainder, remainder)
             boxes = enclosed * area * pi_interval
             row = Interval(
@@ -3442,8 +3540,9 @@ def integrate_coefficients_moment_taylor4(
             print(json.dumps(record, sort_keys=True), flush=True)
     return total, {
         "rule": (
-            "exact angular moments plus integrated Hessian, exact cubic "
-            "parity cancellation, and fourth-order Taylor remainder"
+            "exact angular moments plus integrated Hessian and the per-box "
+            "minimum of independent third-order and cubic-parity fourth-order "
+            "Taylor remainder bounds"
         ),
         "radialCells": cell_count,
         "assignedRows": len(assigned_rows),
@@ -3452,7 +3551,12 @@ def integrate_coefficients_moment_taylor4(
         "momentPrimitivePower": moments.power,
         "momentPrimitiveCells": moments.cells,
         "evaluatedRadialBoxes": evaluated_boxes,
-        "maximumPointwiseFourthOrderRemainders": maximum_remainder,
+        "maximumPointwiseSelectedOrderRemainders": maximum_remainder,
+        "maximumCandidateThirdOrderRemainders": maximum_third_remainder,
+        "maximumCandidateFourthOrderRemainders": maximum_fourth_remainder,
+        "selectedThirdOrderBoxesByCoefficient": selected_third_boxes,
+        "selectedFourthOrderBoxesByCoefficient": selected_fourth_boxes,
+        "maximumSelectedBoxDetails": maximum_selected_box_details,
         "skippedCoreCoreBoxes": first_non_core * (first_non_core + 1) // 2,
     }
 
@@ -3863,8 +3967,8 @@ def main() -> int:
             "intervalRule": (
                 "Arb transcendental endpoints plus outward-rounded binary64 "
                 "validated trapezoidal distance primitives and radial "
-                "midpoint-Hessian boxes with exact cubic parity cancellation "
-                "and a fourth-order remainder"
+                "midpoint-Hessian boxes with the per-box minimum of rigorous "
+                "third-order and cubic-parity fourth-order remainders"
             ),
             "maximumCertifiedCutoffDerivativeOrder": 6,
         },
@@ -3873,6 +3977,13 @@ def main() -> int:
             "radius": "1/40",
             "normalizationInterval": raw.normalization.scalar(),
             "criticalBlocks": raw.critical_blocks,
+            "rawMomentRule": (
+                "validated composite trapezoid with explicit global "
+                "second-derivative bounds, including partial endpoint cells"
+            ),
+            "rawMomentSecondDerivativeBounds": [
+                str(value) for value in raw.second_derivative_bounds
+            ],
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,
             "endpointDistributionTermsThroughOrderFive": True,

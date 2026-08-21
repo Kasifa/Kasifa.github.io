@@ -1,0 +1,122 @@
+{
+  "analyticalQuestion": "Which terms in the R0.69L pressure budget are controlled at critical Morrey or suitable-weak-solution regularity?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "Morrey shell-budget bars plus exponent-separation lines",
+    "nonColorEncoding": "hatched bars, dashed limit, distinct line styles and markers",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "the useful far bound does not repair the near-field regularity mismatch"
+  },
+  "claimBoundary": "functional time-slice comparison; not a Navier-Stokes solution counterexample or a regularity criterion",
+  "computation": {
+    "command": "python3 plot.py",
+    "configuration": "dyadic shells m=2 through 12 and log2 frequencies 0 through 12",
+    "kind": "exact-audit",
+    "precision": "IEEE binary64 plotting of exact rational powers",
+    "solver": "closed-form geometric series and power-law exponents",
+    "wallTimeSeconds": 0.4609176250232849
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "host": "local Mac workstation",
+    "maximumRssMiB": 153.484375,
+    "memoryGiB": 36,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-21T09:28:00+08:00",
+  "data": [
+    {
+      "bytes": 913,
+      "path": "morrey-shell-comparison.csv",
+      "schema": "shellIndex, Morrey-saturated contribution, partial and exact sums, reverse-ratio lower bound",
+      "sha256": "f6c8f366129fc976ce8cb0880bc28058697883a744385eadfff264c70c62410d"
+    },
+    {
+      "bytes": 1298,
+      "path": "high-frequency-witness.csv",
+      "schema": "quantity, log2Frequency, powerExponent, log2NormalizedQuantity",
+      "sha256": "98fd08f34f23ea390505a400f8f90ce5fc413c9f1466ccc9cf40027f9d65e3e6"
+    },
+    {
+      "bytes": 548,
+      "path": "figure-data-metadata.json",
+      "schema": "pinned R0.69M criterion certificate",
+      "sha256": "0d9c85a4b24ceafd0d3b072dbc9c4c17bbc6e5fb132555e67e239c7a0241fa66"
+    },
+    {
+      "bytes": 416,
+      "path": "validation.json",
+      "schema": "eight figure-data validation checks",
+      "sha256": "629440f43a92550cbb949389dc363f381548482b5c9fae8c2d1a95fb7190eb53"
+    },
+    {
+      "bytes": 66,
+      "path": "resources.csv",
+      "schema": "elapsedSeconds, maximumRssMiB, status",
+      "sha256": "0f8593ac7e00da62dd66f56e806967de7cc09a3cd044149de8336c0a483eb0a8"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 34143,
+        "path": "figure.pdf",
+        "sha256": "08b78faa2c0be1dfd5d5c8cf1ae566e469734d4e75a83616bd90f78718f75eba"
+      },
+      {
+        "bytes": 64047,
+        "path": "figure.svg",
+        "sha256": "45fa2887a2759832156b6e2ae204c95c2c96b40f09d7d5273df941df3ab3dbb2"
+      },
+      {
+        "bytes": 380757,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "7325347e1741685add39b6ec45a3b1b7b5eeed48eb8a3c2037fffe03e7bc54ca"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069m-criterion",
+  "git": {
+    "certificateCommit": "2fa8315869cbedf42e2dd8e19ab8565fb987b8af",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "dd6411d1386328a3b873c410dfe5d52e89596591"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 2015,
+      "extractionCommand": "python3 plot.py",
+      "fileName": "criterion-comparison-pressure-budget.json",
+      "location": "research/certificates/r069m/criterion-comparison-pressure-budget.json",
+      "sha256": "8792c719fe7eb2e84d761bf3bf96a5f8c8ba68bb858a3974264ca2a34b299b19"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "the far-shell term is bounded by M_2/120, while a smooth high-frequency family separates velocity smallness from the near costs"
+}

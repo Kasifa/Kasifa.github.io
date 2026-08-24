@@ -1,0 +1,213 @@
+{
+  "arithmetic": "exact SymPy symbolic, rational, matrix, trigonometric, Fourier-support, dyadic-scale, and exponent arithmetic",
+  "checks": {
+    "conditionalNoGoExponentArithmeticAndScope": true,
+    "displayedPullbackResidualsAndConditionalScaleArithmetic": true,
+    "exactCovariancePolynomialAndEndpointSlacks": true,
+    "exactGlobalTwoModeShearAndFrameSupport": true
+  },
+  "claimBoundary": "This finite certificate directly checks the displayed two-mode global shear field residuals, covariance polynomial and endpoint slacks, all-integer singleton support, field pullback residuals, Fourier multiplier argument, conditional scale/exponent arithmetic, and the exact positive majorant point. Together with the separately named analytic Haar, frame, spectral, continuity, decay, and change-of-variable lemmas, it supports a contradiction only for one function F fixed uniformly across all dyadic N and locally bounded near the zero four-tuple, with T, nu, eta0=1/257, and the pinned frame fixed. It does not assert that the signed diffusion deficit K_Q-D_P is large, does not exclude estimates depending on initial H1, enstrophy, palinstrophy, higher Sobolev norms, frequency moments, absolute covariance, or another derivative-sensitive datum, and does not prove singularity, PDE closure, continuation, global regularity, or the Millennium problem.",
+  "covarianceSpectrumLedger": {
+    "Q": "alpha^2*v_N tensor v_N+beta^2*w_MN tensor w_MN",
+    "baseMajorantStatus": "0<I_1(infinity)<infinity; no quadrature used",
+    "baseMajorantUpperIntegral": "257/(7680*nu)",
+    "cEtaBound": "0<=c_eta<=1/15",
+    "cEtaMonotonicityLedger": {
+      "dEtaOddsResidual": "0",
+      "dcDzetaResidual": "0",
+      "status": "exact derivative identities plus 0<=eta<1/2 give the analytic monotonicity implication",
+      "substitution": "zeta=sqrt(eta/(1-eta)), c_eta=zeta/(1-zeta)"
+    },
+    "characteristicPolynomial": "lambda*(lambda^2-E*lambda+alpha^2*beta^2*(1-d^2))",
+    "characteristicResidual": "0",
+    "continuityCertificate": "the finite-time top gap is positive, so eta and c_eta*G are continuous near the positive point; therefore they stay positive on a positive-measure relative neighborhood and I_1(S)>0 for every S>0",
+    "directionDotProduct": "sin(17*N*x1)",
+    "eigenvalues": "lambda_(1,2)=(E+/-sqrt((alpha^2-beta^2)^2+4*alpha^2*beta^2*d^2))/2; lambda_3=0",
+    "etaDefinition": "eta=r/E=lambda2/E",
+    "etaEndpointBound": "0<=eta<=1/257",
+    "etaEndpointSlack": "-(256*q - 1)/(257*(q + 1))",
+    "etaFirstBound": "eta<=q/(1+q)",
+    "etaFirstBoundSlackFormula": "(Delta + q - 1)/(2*(q + 1))",
+    "gapBound": "lambda1-lambda2>=alpha^2-beta^2>0 for finite t",
+    "gapSquareSlack": "4*alpha^2*beta^2*d^2",
+    "gradientDensity": "A_N^2*N^2*(exp(-2*nu*N^2*t)+exp(-2*nu*M^2*N^2*t))",
+    "positivePoint": {
+      "cEta": "1/15",
+      "directions": "v_N=e2 and w_MN=e3 are orthogonal",
+      "eta": "1/257",
+      "location": "t=0, x1=0",
+      "normalizedGradientDensity": "2",
+      "normalizedMajorantIntegrand": "2/15"
+    },
+    "projectorDerivativeSampleNormSquared": "512*N**2/225",
+    "q": "exp(-510*N**2*nu*t)/256",
+    "qAtTimeZero": "1/256",
+    "qLogDerivative": "-510*N**2*nu",
+    "relativeGapBound": "(lambda1-lambda2)/E>=255/257",
+    "relativeGapEndpointSlack": "-2*(256*q - 1)/(257*(q + 1))",
+    "traceE": "alpha^2+beta^2"
+  },
+  "definitions": {
+    "amplitudeChoice": "A_N=N^(1/4)",
+    "commutatorSquare": "C_P_N(t)=||[Pi_0,P_N]omega_N||_2^2+sum_j||[T_j,P_N]omega_N||_2^2",
+    "completeFrame": "{T_star=Pi_0} union {T_j:j in Z}",
+    "directionCost": "W_L_N=integral ||u_N,*||_2^2 ||grad u_N||_2^2 ||grad L_N||_infinity^2 dt",
+    "domain": "T^3=(R/(2*pi*Z))^3 with normalized Haar measure",
+    "dyadicFrequency": "N=2^J",
+    "fixedFrequencyRatio": "M=16=2^4",
+    "frameHypotheses": "phi is real, even, radial, smooth, supported in the strict annulus, and sum_j|phi(2^(-j)*xi)|^2=1 for xi!=0",
+    "majorant": "I_N=integral c_(r_N/E_N)*G_N dx dt",
+    "majorantCoefficient": "c_eta=sqrt(eta)/(sqrt(1-eta)-sqrt(eta))",
+    "residual": "R_N(t)=integral_T3 r_N(x,t) dx",
+    "rowGradientConvention": "B_ij=partial_i u_j"
+  },
+  "dyadicScalingLedger": {
+    "analyticDependencies": [
+      "normalized Haar invariance under the integer covering S_N",
+      "Fourier-symbol index shift lifted from modes to the pinned frame",
+      "simple-eigenvalue spectral projectors are invariant under positive scalar multiplication of Q",
+      "change of variables s=N^2*t on the stated finite or infinite time intervals"
+    ],
+    "annularIndexShift": "T_j*S_N=S_N*T_(j-J)",
+    "certificateScope": "the producer checks the displayed-field pullback residuals, multiplier-argument identity, one finite Haar sample, and conditional factor arithmetic; the universal Haar, frame, commutator, and spectral-projector lifting statements are analytic report lemmas rather than consequences of the sample",
+    "commutatorBlockIdentities": {
+      "annular": "[T_j,P_N]omega_N=A_N*S_N([T_(j-J),P_1]omega_1)",
+      "baseConstantEvaluation": "the stated analytic scaling lemma includes Pi_0; the multiplier-dependent base L2 norm is not evaluated in closed form",
+      "zeroMode": "[Pi_0,P_N]omega_N=A_N*S_N([Pi_0,P_1]omega_1)"
+    },
+    "displayedFieldPullbackResiduals": {
+      "covariance": [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "velocity": [
+        "0",
+        "0",
+        "0"
+      ],
+      "vorticity": [
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "fieldScaling": {
+      "covariance": "Q_N=A_N^2*S_N[Q_1(.,N^2*t)]",
+      "gradientDensity": "G_N=A_N^2*N^2*S_N[G_1(.,N^2*t)]",
+      "omega": "omega_N=A_N*S_N[omega_1(.,N^2*t)]",
+      "projectors": "L_N=S_N[L_1], P_N=S_N[P_1] at base time N^2*t",
+      "residualRatio": "eta_N=S_N[eta_1(.,N^2*t)]",
+      "velocity": "u_N=(A_N/N)*S_N[u_1(.,N^2*t)]"
+    },
+    "finiteL2SampleResidual": "0",
+    "finiteTimeIdentities": {
+      "commutator": "||C_P_N||_L2(0,T)=(A_N^2/N)*||C_P_1||_L2(0,N^2*T)",
+      "directionCost": "W_L_N(0,T)=(A_N^4/N^2)*W_L_1(0,N^2*T)",
+      "majorant": "I_N(T)=A_N^2*I_1(N^2*T)",
+      "residual": "||R_N||_L2(0,T)=(A_N^2/N)*||R_1||_L2(0,N^2*T)"
+    },
+    "finiteZeroModeSampleResidual": "0",
+    "infiniteHorizonConstants": {
+      "R": "C_R=||R_1||_L2(0,infinity); positivity and finiteness are analytic report lemmas, not numerical integration",
+      "commutator": "C_commutator=||C_P_1||_L2(0,infinity); finiteness is an analytic complete-frame lemma and no closed-form value is evaluated",
+      "directionCost": "C_W=W_L_1(0,infinity); positivity/finiteness use the certified sample plus analytic gap/decay lemmas",
+      "majorant": "I_1=I_1(infinity); positivity/finiteness use the exact positive point plus analytic continuity/decay"
+    },
+    "multiplierArgumentResidual": "0",
+    "normalizedHaar": "||S_N f||_p=||f||_p for integer N and 1<=p<=infinity",
+    "pullback": "S_N f(x)=f(N*x)",
+    "scaleFactorResiduals": {
+      "commutatorL2": "0",
+      "directionCost": "0",
+      "majorant": "0",
+      "residualL2": "0"
+    },
+    "zeroModeIdentity": "Pi_0(S_N f)=Pi_0(f)"
+  },
+  "exponentLedger": {
+    "amplitude": "A_N=N^(1/4)",
+    "commutatorL2InfiniteHorizon": "C_commutator/sqrt(N)",
+    "directionCostInfiniteHorizon": "C_W/N",
+    "fixedTimeMajorantLowerBound": "I_N(T)=sqrt(N)*I_1(N^2*T)>=sqrt(N)*I_1(T) for N>=1; I_1(T)>0",
+    "initialEnstrophy": "257*sqrt(N)/256",
+    "initialH1Boundary": "initial H1^2 includes the enstrophy term and diverges like N^(1/2)",
+    "initialKineticEnergy": "65537/(65536*N**(3/2))",
+    "limits": {
+      "commutatorL2": "0",
+      "directionCost": "0",
+      "kineticEnergy": "0",
+      "majorant": "+infinity",
+      "residualL2": "0"
+    },
+    "majorantInfiniteHorizon": "I_1*sqrt(N)",
+    "residualL2InfiniteHorizon": "C_R/sqrt(N)",
+    "uniformEtaBound": "eta_N<=1/257"
+  },
+  "globalShearLedger": {
+    "activeIndexDerivation": "1/2<2^(J-j)<2 gives -1<J-j<1; since J-j is integer, j=J. Replacing J by J+4 gives j=J+4.",
+    "activeIndexIntersection": "empty",
+    "advectiveNonlinearity": [
+      "0",
+      "0",
+      "0"
+    ],
+    "crossFrequencyOuterProduct": "absent because the singleton active index groups are disjoint",
+    "curlResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "heatEquationResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "highActiveIndex": "J+4",
+    "highActiveOffsets": [
+      4
+    ],
+    "highResponseSquare": "1",
+    "initialEnstrophy": "257*A_N**2/256",
+    "initialKineticEnergy": "65537*A_N**2/(65536*N**2)",
+    "lowActiveIndex": "J",
+    "lowActiveOffsets": [
+      0
+    ],
+    "lowResponseSquare": "1",
+    "pressureChoice": "p=0",
+    "responseSquareDerivation": "analytic consequence of the pinned strict singleton support and exact tightness sum; phi is not numerically evaluated",
+    "solutionBoundary": "for every finite dyadic N and A_N>0 this is a smooth global mean-zero unforced Navier--Stokes shear heat flow",
+    "supportConvention": "strict annulus 1/2<|xi|/2^j<2",
+    "tightCovariance": "Q_N=omega_low tensor omega_low+omega_high tensor omega_high",
+    "velocity": "u_N=(A_N/N)*[-exp(-nu*N^2*t)*v_N+M^(-2)*exp(-nu*M^2*N^2*t)*w_MN]",
+    "velocityDivergence": "0",
+    "vorticity": "omega_N=A_N*[exp(-nu*N^2*t)*v_N+M^(-1)*exp(-nu*M^2*N^2*t)*w_MN]",
+    "vorticityDivergence": "0",
+    "vorticityHeatEquationResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "zeroModeLedger": "Pi_0 omega_N=0, but [Pi_0,P_N]omega_N is retained in the complete commutator square",
+    "zeroModeOfVorticity": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "release": "R0.70S",
+  "status": "exact-energy-palinstrophy-majorant-audit"
+}

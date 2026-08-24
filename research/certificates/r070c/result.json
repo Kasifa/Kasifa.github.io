@@ -1,0 +1,73 @@
+{
+  "arithmetic": "exact SymPy integers, rationals, pi, and trigonometric identities",
+  "checks": {
+    "abcAntiHalfTranslation": true,
+    "abcBeltrami": true,
+    "abcDivergenceFree": true,
+    "abcHeatEigenvalue": true,
+    "abcStretchingAntiHalfTranslation": true,
+    "abcStretchingNonzeroAtOrigin": true,
+    "evenSeedDivergenceFree": true,
+    "evenSeedHeatEigenvalue": true,
+    "evenSeedParity": true,
+    "evenSeedStretchingFormula": true,
+    "evenStretchingL1": true,
+    "evenStretchingL2Squared": true,
+    "evenStretchingMeanZero": true,
+    "evenStretchingOdd": true,
+    "evenVorticityParity": true,
+    "leadingPolynomialRoot": true,
+    "leadingPolynomialSimpleRoot": true,
+    "oddPotentialCurlsToEvenSeed": true
+  },
+  "evenR3Seed": {
+    "localization": "curl(rho_R * oddVectorPotential), with rho_R even",
+    "oddVectorPotential": [
+      "sin(z)",
+      "sin(x)",
+      "sin(y)"
+    ],
+    "stretching": "-3*sin(x)*sin(y)*sin(z)",
+    "torusStretchingL1": "192",
+    "torusStretchingL2Squared": "9*pi**3",
+    "velocity": [
+      "cos(y)",
+      "cos(z)",
+      "cos(x)"
+    ],
+    "vorticity": [
+      "sin(z)",
+      "sin(x)",
+      "sin(y)"
+    ]
+  },
+  "iftGate": {
+    "absoluteOrder": "Theta(epsilon^3)",
+    "derivativeAtRoot": "-3",
+    "normalizedLeadingSignedPolynomial": "1 - lam**3",
+    "root": "1",
+    "signedOrderAfterTuning": "exactly zero on the selected cylinder for a fixed large even two-plateau cutoff",
+    "signedOrderBeforeTuning": "O(epsilon^4)"
+  },
+  "parityLedger": {
+    "annularDensity": "w_eta[U](-x)=-w_eta[U](x)",
+    "claimBoundary": "Even parity is preserved by the linear heat layer, not by the full Navier--Stokes nonlinearity; the exact nonlinear zero uses an implicit-function amplitude tuning.",
+    "evenVelocity": "U(-x)=U(x)",
+    "evenWindowChange": "z maps to -z",
+    "oddVorticity": "Omega(-x)=-Omega(x)"
+  },
+  "periodicExactWitness": {
+    "antiTranslation": "pi*(1,1,1)",
+    "curlEigenvalue": "1",
+    "laplacianEigenvalue": "-1",
+    "name": "unit ABC Beltrami field",
+    "stretchingAtOrigin": "3",
+    "velocity": [
+      "sin(z) + cos(y)",
+      "sin(x) + cos(z)",
+      "sin(y) + cos(x)"
+    ]
+  },
+  "release": "R0.70C",
+  "status": "exact-symbolic-audit"
+}

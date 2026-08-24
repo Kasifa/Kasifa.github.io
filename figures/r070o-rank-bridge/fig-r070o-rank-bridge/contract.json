@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070o-rank-bridge",
+  "release": "R0.70O",
+  "analyticalQuestion": "What exact information is lost when a decaying scalar filter is used to infer unfiltered critical vorticity control, and how should the normalized covariance spectrum be stratified?",
+  "takeaway": "The Bessel response and the observed near-line residual decay like N^-4 while the inverse reconstruction factor grows like N^4. The normalized spectrum separates into mutually exclusive coercive, near-line, and near-plane regions at x=delta and y=eta.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi",
+      "qa-original.png",
+      "qa-grayscale.png"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG and an equal-resolution grayscale rendering, with co-generated vector PDF and SVG"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "127 exact integer-frequency evaluations for each response curve, exact rational feasible-boundary samples, and exact threshold-line samples",
+    "rowCount": 1070,
+    "provenance": "closed formulas certified by research/certificates/r070o/result.json; no random sampling, fitting, DNS, or PDE time stepping"
+  },
+  "parameters": {
+    "viscosityForDisplayedResidual": "nu=1",
+    "delta": "1/20",
+    "eta": "2/5",
+    "frequencyRange": "2 <= N <= 128"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "asymptotic trend",
+      "variant": "log-log exact response and time-residual comparison",
+      "question": "How quickly does the scalar Bessel observation lose a high-frequency transverse component?",
+      "takeaway": "A(N)=(1+N^2)^-2 and the exact residual norm A(N)/(4 sqrt(nu)) have the same N^-4 decay."
+    },
+    {
+      "id": "B",
+      "family": "asymptotic trend",
+      "variant": "log-log exact inverse reconstruction factor",
+      "question": "What factor is required to reconstruct an unfiltered component from the filtered observation?",
+      "takeaway": "The exact factor 1/A(N)=(1+N^2)^2 grows like N^4, so no frequency-uniform L2 lower frame is present."
+    },
+    {
+      "id": "C",
+      "family": "feasible-region map",
+      "variant": "ordered normalized covariance spectrum",
+      "question": "Which normalized spectra are coercive, near a line, or near a plane?",
+      "takeaway": "With x=lambda_3/E and y=(lambda_2+lambda_3)/E, the ordered PSD domain is 0<=x<=1/3 and 2x<=y<=(1+x)/2. The vertical threshold x=delta and horizontal threshold y=eta give the mutually exclusive coercive, near-line, and near-plane partition."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "response, coercive region, and lower-frame threshold",
+      "rust": "residual, inverse response, and near-line region"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted strokes; open circle versus filled triangle markers; direct labels; neutral hatching; and distinct region textures"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT FILTER OBSTRUCTION + SPECTRAL GEOMETRY / NOT A CONTINUATION OR MILLENNIUM THEOREM",
+    "scope": "One exact Bessel-filter reconstruction obstruction and the exact feasible geometry of three ordered normalized covariance eigenvalues.",
+    "notClaimed": [
+      "failure of a filter family with a uniform all-frequency lower frame",
+      "control of a variable principal direction or its filter commutators",
+      "a continuation criterion for Navier-Stokes",
+      "finite-time singularity or global regularity",
+      "a Millennium-problem solution"
+    ]
+  }
+}

@@ -1,0 +1,574 @@
+{
+  "amplitudeCancellationLedger": {
+    "LDivLResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "blockDivergenceResiduals": [
+      "a1*g22 + a1*g33 + d1 + p1",
+      "a2*g22 + a2*g33 + d2 + p2",
+      "a3*g22 + a3*g33 + d3 + p3"
+    ],
+    "conclusionModuloDivergenceConstraints": "A_L=-2*ell*sum_alpha(a_alpha*div(b_alpha))",
+    "covarianceExpansionResidual": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "orientationFlipResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "polynomialCertificate": "A_parallel+2*sum(a*d)=2*sum(a*c), where c=p+a*div(ell)+d",
+    "polynomialResidual": "0",
+    "reflectionDecompositionResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "scope": "finite coordinate-gauge polynomial identities; rotation to a general local orientation and smooth eigenline calculus are analytic lemmas",
+    "sharpSOS": "lambda*J_P-(sum a*d)^2=sum_(i<j)(a_i*d_j-a_j*d_i)^2",
+    "sharpSOSResidual": "0",
+    "sharpWitnessSlack": "0",
+    "spectralCrossResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "spectralPremise": "P*Q*ell=C=sum_alpha a_alpha*b_alpha; the eigenline premise is C=0"
+  },
+  "analyticDependencies": [
+    "the countable complete-frame Parseval identity, convergence, and sum/integral interchange",
+    "the pinned cutoff's strict support, real-even radial response, square partition, and derivative commutation",
+    "the report's general M=2^m parameter extension and limit r/E=1/(M^2+1)->0; the direct machine anchor here is M=16",
+    "general smooth simple-eigenvalue projector calculus and orientation patching",
+    "periodic integration by parts at the stated general Sobolev regularity",
+    "the report's reduced inverse R_Q, half-curvature normalization K_Q, and general derivative-level upper ledger J_P<=6*D_P+12*gamma^(-1)*K_Q",
+    "the standard H1 continuation alternative and every PDE closure implication"
+  ],
+  "arithmetic": "exact SymPy rational, matrix, polynomial, trigonometric, and finite Fourier-shell arithmetic",
+  "checks": {
+    "coordinateCancellationAndSharpSOS": true,
+    "finiteParsevalStretchingSign": true,
+    "fixedFrameGlobalShearSharpness": true,
+    "isolatedRankOneBoundaryJet": true,
+    "nonzeroPeriodicProductRuleSample": true
+  },
+  "claimBoundary": "The direct certificate checks finite matrix, trigonometric, polynomial, Fourier-shell, conditional pinned-response, point-jet, and global vertical-shear heat residuals. Together with the named analytic frame lemmas, the report's analytic general-M extension proves that common origin and a pointwise residual ratio 1/(M^2+1) do not improve the sharp coefficient 2 or force A_L small; the direct machine anchor is M=16. It does not assert uniform near rank on the torus, propagation of equality, nonzero vortex stretching, control of J_P or the stretching commutator by energy data, an enstrophy estimate, PDE closure or singularity, and it does not verify the Section 8 continuation hypotheses from lower-order or initial data. It proves neither unconditional global regularity nor a solution of the Millennium problem.",
+  "definitions": {
+    "commutator": "[T,S]=T(S dot)-S*T",
+    "completeFrame": "{T_star=Pi_0} union {T_j:j in Z}",
+    "longitudinalDefect": "A_L=L*(grad(lambda)+2*lambda*div(L))",
+    "projectedDivergenceSquare": "J_P=sum_alpha |div(P*Omega_alpha)|^2",
+    "rowGradient": "B_ij=partial_i u_j",
+    "tensorDivergence": "(div Q)_j=sum_i partial_i Q_ij",
+    "torus": "(R/(2*pi*Z))^3 with normalized Haar measure"
+  },
+  "finiteParsevalLedger": {
+    "S": [
+      [
+        "2",
+        "3"
+      ],
+      [
+        "3",
+        "-1"
+      ]
+    ],
+    "T1": [
+      [
+        "3/5",
+        "0"
+      ],
+      [
+        "0",
+        "5/13"
+      ]
+    ],
+    "T2": [
+      [
+        "4/5",
+        "0"
+      ],
+      [
+        "0",
+        "12/13"
+      ]
+    ],
+    "commutatorTerms": [
+      "1176/4225",
+      "384/4225"
+    ],
+    "commutatorTotal": "24/65",
+    "covarianceTerms": [
+      "12242/4225",
+      "28448/4225"
+    ],
+    "covarianceTotal": "626/65",
+    "leftSide": "10",
+    "parsevalResolution": [
+      [
+        "1",
+        "0"
+      ],
+      [
+        "0",
+        "1"
+      ]
+    ],
+    "scope": "finite noncommuting Hilbert-space model fixing the exact plus sign; not a proof of the countable Fourier-frame theorem",
+    "splitResidual": "0",
+    "w": [
+      "1",
+      "2"
+    ]
+  },
+  "fixedFrameShearLedger": {
+    "ALRaw": [
+      "-2*rho**2 - 2*sigma**2",
+      "0",
+      "0"
+    ],
+    "ALUnderTightPremise": [
+      "-2",
+      "0",
+      "0"
+    ],
+    "JRaw": "rho**2 + sigma**2",
+    "JUnderTightPremise": "1",
+    "M": 16,
+    "activeSetBoundary": "I_5 is a nonempty subset of {2,3}; neither possible index is asserted individually nonzero; I_80=I_5+4",
+    "advectiveNonlinearity": [
+      "0",
+      "0",
+      "0"
+    ],
+    "conditionalALResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "curlResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "frameCovarianceFactorIdentity": "Q_frame-Q_target=(rho^2+sigma^2-1)*Q_target",
+    "frameCovarianceFactorResidual": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "framePremiseBoundary": "strict annular support, real-even radiality, dyadic response shift, and exact square tightness are analytic properties of the pinned frame; phi is not numerically evaluated",
+    "gradientDensityRaw": "258*rho**2 + 258*sigma**2",
+    "gradientDensityUnderTightPremise": "258",
+    "heatEquationResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "highDivergence": "0",
+    "highLaplacianResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "highMean": [
+      "0",
+      "0",
+      "0"
+    ],
+    "highPossibleIndices": [
+      6,
+      7
+    ],
+    "highShellRadius": 80,
+    "highVorticity": [
+      "-sin(80*x2)/5",
+      "cos(80*x1)/16",
+      "0"
+    ],
+    "lowDivergence": "0",
+    "lowLaplacianResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "lowMean": [
+      "0",
+      "0",
+      "0"
+    ],
+    "lowPossibleIndices": [
+      2,
+      3
+    ],
+    "lowShellRadius": 5,
+    "lowVorticity": [
+      "-sin(3*x1 - 4*x2)/6 - sin(3*x1 + 4*x2)/6 + cos(5*x2)",
+      "-sin(3*x1 - 4*x2)/8 + sin(3*x1 + 4*x2)/8",
+      "0"
+    ],
+    "originALFromCovariance": [
+      "-2",
+      "0",
+      "0"
+    ],
+    "originAbsoluteGap": "255/256",
+    "originCovariance": [
+      [
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1/256",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "originCovarianceDerivatives": [
+      [
+        [
+          "-2",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ]
+    ],
+    "originDivL": [
+      "0",
+      "0",
+      "0"
+    ],
+    "originEigenvalues": [
+      "1",
+      "1/256",
+      "0"
+    ],
+    "originEnergy": "257/256",
+    "originHighDerivatives": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "-16",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "originHighValue": [
+      "0",
+      "1/16",
+      "0"
+    ],
+    "originLowDerivatives": [
+      [
+        "-1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "originLowValue": [
+      "1",
+      "0",
+      "0"
+    ],
+    "originProjectorDerivatives": [
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ]
+    ],
+    "originRelativeGap": "255/257",
+    "originResidual": "1/256",
+    "originResidualRatio": "1/257",
+    "possibleIndexIntersection": "empty",
+    "projectedBlockDivergences": [
+      "rho",
+      "sigma",
+      "0",
+      "0"
+    ],
+    "responseSymbols": {
+      "rho": "phi(5/4)",
+      "sigma": "phi(5/8)",
+      "tightPremise": "rho^2+sigma^2=1"
+    },
+    "sharpSlackModuloTightness": "0",
+    "solutionBoundary": "the displayed finite Fourier vertical shear is an exact smooth global unforced heat-flow solution; sharpness is pointwise at t=0 and stretching is identically zero",
+    "vortexStretching": [
+      "0",
+      "0",
+      "0"
+    ],
+    "vorticityHeatEquationResidual": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "periodicProductRuleLedger": {
+    "divQMinusOmegaDotGradOmega": [
+      "0",
+      "0",
+      "0"
+    ],
+    "normalizedIntegralBColonQ": "2",
+    "normalizedIntegralMinusUDotDivQ": "2",
+    "normalizedIntegralSColonQ": "2",
+    "scope": "one exact nonzero smooth periodic sample fixing row-gradient and integration-by-parts signs; the general Sobolev identity is analytic",
+    "velocity": [
+      "2*cos(x2)",
+      "0",
+      "2*sin(x1 + x2) + 2*cos(x1)"
+    ],
+    "velocityDivergence": "0",
+    "vorticity": [
+      "2*cos(x1 + x2)",
+      "2*sin(x1) - 2*cos(x1 + x2)",
+      "2*sin(x2)"
+    ],
+    "vorticityDivergence": "0"
+  },
+  "rankOneBoundaryLedger": {
+    "blockDivergences": [
+      "0",
+      "0"
+    ],
+    "boundary": "an isolated smooth rank-one point forces A_L=0 but need not force J_P=0; J_P=0 follows when rank one holds on an open neighborhood",
+    "originAL": [
+      "0",
+      "0",
+      "0"
+    ],
+    "originCovariance": [
+      [
+        "2",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "originCovarianceDerivatives": [
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ]
+    ],
+    "originJ": "2",
+    "originProjectedDivergences": [
+      "1",
+      "-1"
+    ],
+    "originProjectedValues": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  "release": "R0.70T",
+  "status": "exact-frame-stretching-divergence-defect-audit"
+}

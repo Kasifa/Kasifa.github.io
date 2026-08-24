@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.69W：用外向舍入区间、精确球面矩与经验证 Taylor 求积，严格排除尺度比四的整个两尺度振幅族。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.69W｜尺度比四的整个两尺度振幅族被两条粗环带严格排除">
+  <meta property="og:description" content="三个系数、一个判别式和一个端点值均获严格区间证书；这是声明静态场族的机制排除定理，不是 Navier–Stokes 正则性结论。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-69w-interval-obstruction.png">
+  <title>R0.69W｜尺度比四的整个两尺度振幅族被两条粗环带严格排除</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.80">
+  <style>.hero h1{font-size:clamp(1.9rem,3.75vw,3.35rem)} .interval-table{font-variant-numeric:tabular-nums}.interval-table p{max-width:100%;overflow-x:auto;overflow-y:hidden}</style>
+  <script defer src="/i18n-en.js?v=0.80"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#proof">符号证明</a><a href="#angular">角向约化</a><a href="#cutoff">真实截断</a><a href="#cubature">严格求积</a><a href="#intervals">区间</a><a href="#audit">核验</a><a href="#figure">附图</a><a href="#meaning">意义</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.69W · 两尺度有限分离的严格区间障碍</div>
+        <h1>不再依赖随机误差条：<br>尺度比四的每个振幅都被严格负环带排除</h1>
+        <p class="lead">R0.69V 把有限分离问题压缩为三个三次系数和一个端点值。本版本对声明的真实光滑卷积截断作外向舍入认证：对全部 \(0&lt;a\le1\)，粗环带 \(j=0\) 严格为负；在退化端点 \(a=0\)，另一条粗环带 \(j=-2\) 严格为负。于是尺度比四的整个一参数静态族不存在“所有相关环带同时非负”的振幅。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.69W 严格证书、独立核验与正式附图完成</span><strong>一参数有限分离路线关闭；下一阶段已暂停</strong><p>版本 v0.69W · 2026-08-24</p><p>Arb 精度：256 bit</p><p>正式分片：20</p><p>浮点求积节点：0</p><p>独立判定：全部通过</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 严格结论</a></li>
+        <li><a href="#proof">01 · 全振幅符号证明</a></li>
+        <li><a href="#angular">02 · 精确角向约化</a></li>
+        <li><a href="#cutoff">03 · 真实卷积与端点项</a></li>
+        <li><a href="#cubature">04 · 经验证径向求积</a></li>
+        <li><a href="#intervals">05 · 证书区间</a></li>
+        <li><a href="#audit">06 · 独立核验与监控</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#boundary">09 · 主张边界与暂停点</a></li>
+        <li><a href="#reproduce">10 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Certified result</div><h2>两条粗环带严格排除整个闭振幅区间</h2>
+          <p>固定 R0.69V 的尺度比四两尺度族</p>
+          <div class="equation">\[
+            u_a=aU_1+(1-a)U_{1/4},\qquad 0\le a\le1.
+          \]</div>
+          <p>对同一真实光滑截断及 R0.69T 的物理空间环带泛函，正式证书给出</p>
+          <div class="equation result">\[
+            \boxed{\mathcal A_0(u_a)&lt;0\quad(0&lt;a\le1),\qquad
+            \mathcal A_{-2}(u_0)&lt;0.}
+          \]</div>
+          <p>因此不存在 \(a\in[0,1]\) 使两条被审计的粗环带都非负，更不存在该族中所有相关环带同时非负的振幅。</p>
+          <div class="proof"><strong>严格性口径。</strong>&nbsp;这里的“严格”指完整解析约化、真实卷积截断、距离原函数、径向求积和最终代数判定均由确定性外包区间覆盖；不是把随机标准误当成置信证明。</div>
+        </section>
+
+        <section id="proof"><div class="section-no">01 / Sign proof for every amplitude</div><h2>负首项系数与负判别式一次覆盖连续统，而非采样振幅</h2>
+          <p>精确振幅代数把 \(j=0\) 写成</p>
+          <div class="equation">\[
+            \mathcal A_0(u_a)=a\,q(a),\qquad
+            q(a)=c_1+c_2a+c_3a^2.
+          \]</div>
+          <p>证书严格证明 \(c_3&lt;0\) 且 \(\Delta=c_2^2-4c_1c_3&lt;0\)。所以二次式 \(q\) 在实轴上没有根，并因开口向下而处处为负；特别地，全部 \(a&gt;0\) 都有 \(\mathcal A_0(u_a)&lt;0\)。</p>
+          <p>当 \(a=0\) 时前式因代数因子恰为零，不能用除以 \(a\) 的论证。证书改查 \(j=-2\)，直接得到 \(\mathcal A_{-2}(u_0)&lt;0\)，从而封闭端点。</p>
+        </section>
+
+        <section id="angular"><div class="section-no">02 / Exact common-rotation reduction</div><h2>五维带符号核被化成二维径向积分</h2>
+          <p>径向截断使涡量可写为三个轴对称张量分量。共同 \(SO(3)\) 旋转由精确球面矩积分；以 \(t=n\cdot m\) 表示相对方向后，角平均是四次多项式，所有表面出现的 \(\sqrt{1-t^2}\) 项精确消失。</p>
+          <p>令 \(d^2=r^2+s^2-2rst\)，全部角向依赖只剩五类经验证距离矩</p>
+          <div class="equation">\[
+            J_k(r,s)=\int_{|r-s|}^{r+s}\psi_j(d)d^k\,dd,
+            \qquad k\in\{-4,-2,0,2,4\}.
+          \]</div>
+          <p>符号审计还确认共同核心—共同核心项恒为零，因而正式数值阶段只需要覆盖 \((r,s)\) 二维矩形。</p>
+        </section>
+
+        <section id="cutoff"><div class="section-no">03 / True mollifier and endpoint distributions</div><h2>证书覆盖声明的光滑卷积，而不是 48 点近似</h2>
+          <p>截断由区间 \([1/20,19/20]\) 上的 beta\((3,3)\) 生存函数，与半径 \(1/40\) 的归一化标准 bump 卷积。原始 bump 矩使用复合梯形原函数，并以 \(|(z^kb(z))''|\le k^2+k+8\) 对完整单元和任意端点残片同时给出误差界。</p>
+          <p>未延拓的 beta 生存函数只有 \(C^2\)。生产器显式加入四至六阶分布导数中的 \(\delta,\delta',\delta''\) 端点项；六阶需要的 bump 二阶导数再由精确 Sturm 根隔离与 Arb 求值证明 \(|b''|&lt;8\)。因此没有遗漏会在边界层放大的端点质量。</p>
+        </section>
+
+        <section id="cubature"><div class="section-no">04 / Validated radial cubature</div><h2>每个径向盒独立比较三阶与四阶余项，采用更紧的严格上界</h2>
+          <p>五类距离原函数用复合梯形规则与二阶导数误差界认证。由于卷积生存截断单调不增，每个距离单元的截断范围由两端值与两端导数的三次 Hermite 认证插值给出，余项为 \(\|q^{(4)}\|_\infty h^4/384\)。距离网格节点是可精确表示的二进有理数，保留为点区间，避免对齐节点误跨截断单元；任意原函数查询端点使用同一套部分单元规则。所有非精确 binary64 运算都以 <code>nextafter</code> 向外扩张，跨盒累加采用定向单边求和。</p>
+          <p>盒中心的截断导数从最近的精确有理节点作三阶 Taylor 展开，以全局四阶导数界包住余项，再与独立整格导数范围取交；整盒误差仍使用整格范围。因此中心系数不再反复承担人为的 cutoff 单元宽度，而严格包络没有缩小到未经证明的点估计。每个径向盒计算两个覆盖同一精确盒平均的余项：总次数二的三阶导数界，以及利用所有三次中心矩为零的总次数三／四阶导数界。程序逐系数取两者较小值；只有六阶端点分布项的支撑带接受额外细分。整个过程始终传播振幅的精确三次多项式，没有采样 \(a\)。</p>
+        </section>
+
+        <section id="intervals"><div class="section-no">05 / Certified intervals</div><h2>最终区间与离零余量</h2>
+          <div class="interval-table">
+            <p>\(c_1\in\texttt{[-0.0020421027908703103,-0.0008440552534174868]}\)</p>
+            <p>\(c_2\in\texttt{[0.002393592617980337,0.004933596141229829]}\)</p>
+            <p>\(c_3\in\texttt{[-0.12676969700886406,-0.12489333880250154]}\)</p>
+            <p>\(\Delta\in\texttt{[-0.0010297777226174903,-0.00039732714404764783]}\)</p>
+            <p>\(\mathcal A_{-2}(u_0)\in\texttt{[-0.001947993537909744,-0.0019148502803584854]}\)</p>
+          </div>
+          <p>决定性余量为 \(-\sup c_3=\texttt{0.12489333880250154}\)、\(-\sup\Delta=\texttt{0.00039732714404764783}\) 与 \(-\sup\mathcal A_{-2}(u_0)=\texttt{0.0019148502803584854}\)。三者均严格为正，所以结论不依赖显示精度或“接近零”的主观判断。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Independent verification and monitoring</div><h2>生产器之外再次以有理端点重算判别式</h2>
+          <p>独立检查器不导入生产器模块，而把 JSON 中的十进制区间端点解析为精确有理数，再重算 \(c_2^2-4c_1c_3\)、首项系数符号、端点符号、源码哈希与 HEAD 对齐。证书另记录正式运行时源码树为干净状态；所有判定均通过。</p>
+          <p>正式作业使用 20 个互不重叠的径向行分片。每个分片都保留进度 NDJSON、两秒资源采样 CSV、标准输出日志和部分结果；合并器以外向舍入汇总。最长分片墙钟时间为 \texttt{1535.665} 秒，累计分片计算时间为 \texttt{28877.699} 秒，各分片观测峰值常驻内存之和为 \texttt{67.297} GiB。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>一张图同时给出全振幅包络和三条严格符号余量</h2>
+          <figure><img src="/figures/r0-69w-interval-obstruction.svg" alt="R0.69W 严格二次包络与首项系数、判别式、端点环带的区间证书"><figcaption>图 R0.69W。左图显示由系数区间诱导的 \(q(a)\) 全振幅严格包络及零线；右图分别显示 \(c_3\)、判别式 \(\Delta\) 与端点 \(\mathcal A_{-2}(u_0)\) 的认证区间。全部上端点严格位于零左侧。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-69w-interval-obstruction.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-69w-interval-obstruction.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>价值是把有限分离的随机化障碍升级为可复核定理</h2>
+          <p>R0.69V 已严格排除“把两尺度无限分开即可改善比值”，但尺度比四仍只由随机化计算支持。R0.69W 关闭这个有限分离漏洞：不论怎样选择这一维振幅，至少一条粗环带保持严格负号。</p>
+          <p>更可迁移的成果是方法链：精确共同旋转、距离矩约化、真实卷积的端点分布审计、局部混合阶 Taylor 求积与生产器外的有理验证。这套框架可以用于下一种多自由度静态几何，也能单独整理成严肃的计算机辅助分析结果。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">09 / Claim boundary and pause</div><h2>关闭的是一个静态候选族，不是千禧年问题</h2>
+          <p>本结果没有推进 Navier–Stokes 解的时间演化，没有控制临界范数，也没有证明全局正则性或构造有限时奇性。它说明这一具体的尺度比四仿射一参数族不能提供全同号环带机制；其他几何与真正的动力学机制仍然开放。</p>
+          <div class="proof"><strong>暂停点。</strong>&nbsp;R0.69W 的证书、附图、网页与在线镜像完成后，研究在进入下一种几何或动力学阶段之前暂停。这里不自动选择下一条路线。</div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility and sources</div><h2>源码、完整分片证书、监控记录与图包同时归档</h2>
+          <p>正式生产器源码提交为 <code>2b3141a333d3dea0c4b7a241c11f9adbca31d1b4</code>；证书归档提交为 <code>9daba0ad146e11ee8dfe17d2751fe7d80fe2d5b6</code>；网页发布记录由 GitHub 提交历史锁定。证书采用 524,288 个原始 bump 矩单元、2,048 个截断认证单元、4,194,304 个距离矩单元、512 个过渡径向单元、128 个核心单元与 256 个平台单元。</p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069w">查看完整严格证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/two_scale_annular_interval_note.md">查看数学说明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069w-interval-obstruction/fig-r069w-interval-obstruction">查看正式附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>所有归档载荷由 SHA-256 清单锁定。独立验证命令、Python 与 python-flint 版本、操作系统与处理器信息均写入证书目录；任何更改都会由自动测试或清单核验暴露。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、随机化计算、外部定理与开放问题分开记录。</div><div>R0.69W · 2026-08-24<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

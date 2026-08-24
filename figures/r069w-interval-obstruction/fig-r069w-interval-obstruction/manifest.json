@@ -1,0 +1,125 @@
+{
+  "analyticalQuestion": "Can every amplitude in the declared separation-four two-scale family be rigorously excluded by coarse-annulus signs?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "chartContract": {
+    "family": "rigorous amplitude envelope plus three small-multiple interval forests",
+    "nonColorEncoding": "solid midpoint, dashed upper envelope, diamond estimates, capped intervals and black zero references",
+    "outputFootprint": "double-column 178 by 86 millimetres with PDF, SVG, and 600 dpi PNG",
+    "takeaway": "the entire certified envelope and all three decision intervals remain strictly negative"
+  },
+  "claimBoundary": "rigorous static sign obstruction for the declared separation-four two-scale family; no dynamical propagation or Navier-Stokes regularity conclusion",
+  "computation": {
+    "command": "python plot.py --certificate-commit 9daba0ad146e11ee8dfe17d2751fe7d80fe2d5b6",
+    "configuration": "20 disjoint radial-row workers; raw moment P19, cutoff 2048 with monotone certified cubic-Hermite value interpolation and certified point-derivative Taylor enclosures, distance moment P22, transition 512, boundary refinement 4",
+    "kind": "exact-audit",
+    "precision": "256-bit Arb transcendental endpoints plus outward-rounded IEEE binary64 interval primitives",
+    "solver": "exact common-rotation sphere moments and validated two-dimensional hybrid Taylor cubature",
+    "wallTimeSeconds": 1535.6651919609867
+  },
+  "compute": {
+    "cpu": "20-core Arm v8.2+ CPU",
+    "host": "NVIDIA DGX Spark",
+    "memoryGiB": 121,
+    "operatingSystem": "Linux-6.17.0-1018-nvidia-aarch64-with-glibc2.39",
+    "processes": 20,
+    "sumOfPerWorkerPeakRssMiB": 68911.90699999998,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-24T09:36:39+08:00",
+  "data": [
+    {
+      "bytes": 33821,
+      "path": "interval-data.csv",
+      "schema": "kind, label, amplitude, rigorous lower endpoint, rigorous upper endpoint",
+      "sha256": "e5bf5f9de61acfca72e3a275628b4172f4d4206f4a5adccc4e156a3596eb8938"
+    },
+    {
+      "bytes": 3772,
+      "path": "figure-data-metadata.json",
+      "schema": "displayed coefficient, discriminant, endpoint and resource provenance",
+      "sha256": "0702dd4e15be1790cf4b9f4d39c43f44c232392be418c3d5ea125153a0ba411b"
+    },
+    {
+      "bytes": 701,
+      "path": "validation.json",
+      "schema": "fifteen exact source and displayed-data validation checks",
+      "sha256": "5ab4555623db9670ef3ded4da39082859a84bb8ca128620b7e2314622fc7819a"
+    },
+    {
+      "bytes": 765,
+      "path": "resources.csv",
+      "schema": "worker, sample count, per-worker peak RSS and terminal monitor status",
+      "sha256": "35c79d15f1d526aa2f3c4f8cfd6c9eb09748019e28a5b18c0bd65366c20b50ae"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements-research.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.3",
+    "pythonFlint": "0.9.0"
+  },
+  "figure": {
+    "heightMillimetres": 86,
+    "outputs": [
+      {
+        "bytes": 46927,
+        "path": "figure.pdf",
+        "sha256": "2681527a9950a6254a546bb94c239e43d533c8798d4d749b405791cd4cff488d"
+      },
+      {
+        "bytes": 64038,
+        "path": "figure.svg",
+        "sha256": "f6b823a2c55f9dcaeb7f958e06d9ff91a9902076d35455196feb681f020c91f3"
+      },
+      {
+        "bytes": 364939,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4204 by 2031",
+        "sha256": "e3dffef107782522c512c3b3ee4b5afbcd054f37f9b99179a431346b241cee94"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r069w-interval-obstruction",
+  "git": {
+    "certificateCommit": "9daba0ad146e11ee8dfe17d2751fe7d80fe2d5b6",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "2b3141a333d3dea0c4b7a241c11f9adbca31d1b4"
+  },
+  "presentationRuntimeSeconds": 0.40731149999191985,
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 19655,
+      "extractionCommand": "python plot.py --certificate-commit <commit>",
+      "fileName": "result.json",
+      "location": "research/certificates/r069w/result.json",
+      "sha256": "a8dec0bc87a30a511dcd812ce7b674e078253be9ba97c7ffc74cdaffc34074d3"
+    },
+    {
+      "bytes": 1216,
+      "extractionCommand": "python plot.py --certificate-commit <commit>",
+      "fileName": "verifier.json",
+      "location": "research/certificates/r069w/verifier.json",
+      "sha256": "48450c124a7ff290faac265ec3edbb98870d1fe61a424620cfd406537ccf84b9"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "a negative leading coefficient and negative discriminant force A_0(u_a)<0 for every a>0, while A_-2(u_0)<0 closes the endpoint"
+}

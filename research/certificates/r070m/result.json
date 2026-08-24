@@ -1,0 +1,202 @@
+{
+  "affineRelativeGeometry": {
+    "congruenceInvariant": true,
+    "determinantRate": "d/dt log(det(Q))=trace(Q**(-1)*F) because trace(Sigma)=0",
+    "distanceBound": "d_AI(Chat(t0),Chat(t))<=integral affine shape speed",
+    "requires": "Q positive definite",
+    "shape": "C=det(Q)**(-1/3)*Q",
+    "shapeSpeedSquared": "trace((Q**(-1)*F)**2)-trace(Q**(-1)*F)**2/3",
+    "testRelativeTrace": "13/30",
+    "testShapeSpeedSquared": "1969/1350"
+  },
+  "arithmetic": "exact SymPy matrix, algebraic-number, rational, and limit arithmetic",
+  "checkDetails": {
+    "affineRelativeGeometry": {
+      "determinantPreservedBySL3Congruence": true,
+      "deviatoricShapeSpeedInvariant": true,
+      "relativeQuadraticTraceInvariant": true,
+      "relativeTraceInvariant": true
+    },
+    "rankDefectBoundary": {
+      "isotropicRegularizationReintroducesStrain": true,
+      "nullPlaneStrainLeavesRawCovarianceFixed": true,
+      "rankOneCovariance": true,
+      "regularizationLeakageDoesNotVanish": true
+    },
+    "sharpEuclideanAmplification": {
+      "exactAmplificationFamily": true,
+      "kappaSquaredLimit": true,
+      "normalizedDerivativeLimit": true,
+      "optimizedShapeQuotientSharp": true,
+      "sharpUpperGap": true
+    },
+    "zeroIntegralHolonomy": {
+      "exactHyperbolicMonodromy": true,
+      "nearRankOnePhysicalCovariance": true,
+      "nonNormalMonodromy": true,
+      "noncommutingGenerators": true,
+      "symmetricTraceFreeGenerators": true,
+      "zeroResidualPullback": true,
+      "zeroSignedIntegral": true
+    }
+  },
+  "checks": {
+    "affineRelativeGeometry": true,
+    "rankDefectBoundary": true,
+    "sharpEuclideanAmplification": true,
+    "zeroIntegralHolonomy": true
+  },
+  "claimBoundary": {
+    "exactNSEInput": "the rank-defect boundary occurs on a smooth unforced periodic shear solution",
+    "notClaimed": "the four-pulse holonomy is not yet embedded in one unforced finite-energy periodic NSE trajectory; no critical residual estimate, blow-up theorem, global regularity theorem, or Millennium solution is claimed",
+    "proved": "exact matrix pullback, sharp kappa-squared Euclidean loss, zero-integral noncommutative holonomy, affine-relative SPD identity, and non-uniform rank regularization",
+    "routeDecision": "a universal pullback estimate needs either direct spectral-spread control or a scale-frame coercivity lower bound that prevents covariance rank collapse"
+  },
+  "pullbackLedger": {
+    "deformation": "Gdot=Sigma*G; det(G)=1",
+    "equation": "Qdot=Sigma*Q+Q*Sigma+F",
+    "identity": "QhatDot=G**(-1)*F*G**(-T)",
+    "integrated": "Q=G*(Q0+integral(G**(-1)*F*G**(-T)))*G**T",
+    "pullback": "Qhat=G**(-1)*Q*G**(-T)"
+  },
+  "rankDefect": {
+    "effectiveResidual": "F_epsilon=F+epsilon*E_dot*I-2*epsilon*E*Sigma",
+    "epsilonLimit": "the added strain contribution remains order one as epsilon tends to zero",
+    "inverseDiagnostic": "undefined on the periodic shear whenever the covariance is nonzero",
+    "nullPlaneExampleRelativeSpeedSquared": "8",
+    "regularization": "Q_epsilon=Q+epsilon*trace(Q)*I",
+    "smoothNSEWitness": "u=A*exp(-nu*N**2*t)*sin(N*y)*e1 has vorticity parallel to e3 and every weighted covariance has rank at most one"
+  },
+  "release": "R0.70M",
+  "sharpEuclideanAmplification": {
+    "amplification": "k**4*(2*epsilon + 1)/(epsilon*k**4 + epsilon*k**2 + 1)",
+    "family": "G=diag(k,k**(-1),1), Q=diag(1,epsilon,epsilon), F=e2 tensor e2",
+    "kappaG": "k**2",
+    "normalizedDerivativeLimit": [
+      [
+        "-k**4",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "k**4",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "normalizedSensitivityBound": "Euclidean pulled residual sensitivity can require exp(2*integral spectral spread)",
+    "optimizedShapeQuotientLimit": "lim_epsilon_to_0 rhoG/rho0=k**4=kappa(G)**2",
+    "optimizedShapeQuotientSquared": "k**8*(2*epsilon + 1)**2*(2*epsilon**2 + 1)*(epsilon**2*k**4 + 1)/((epsilon**2 + 1)*(epsilon*k**4 + epsilon*k**2 + 1)**2*(epsilon**2*k**8 + epsilon**2*k**4 + 1))",
+    "sharpLimit": "lim_epsilon_to_0 amplification=k**4=kappa(G)**2",
+    "spectralSpreadBound": "kappa(G(t))<=exp(integral(lambda_max(Sigma)-lambda_min(Sigma)))"
+  },
+  "status": "exact-deformation-holonomy-and-affine-boundary-audit",
+  "zeroIntegralLoop": {
+    "detMonodromy": "1",
+    "eigenvalues": [
+      "-431/81 - 160*sqrt(7)/81",
+      "-431/81 + 160*sqrt(7)/81"
+    ],
+    "expA": [
+      [
+        "3",
+        "0"
+      ],
+      [
+        "0",
+        "1/3"
+      ]
+    ],
+    "expC": [
+      [
+        "5/3",
+        "4/3"
+      ],
+      [
+        "4/3",
+        "5/3"
+      ]
+    ],
+    "generators": {
+      "A": "log(3)*diag(1,-1)",
+      "C": "log(3)*[[0,1],[1,0]]",
+      "order": "A,C,-A,-C"
+    },
+    "kappaG2": "1280*sqrt(1651522)/6561 + 1644961/6561",
+    "kappaG2Approx": "501.434067295843",
+    "loopRecords": [
+      {
+        "loops": "0",
+        "trB2": "0",
+        "traceQ": "3"
+      },
+      {
+        "loops": "1",
+        "trB2": "6553600/9889449",
+        "traceQ": "3296483/6561"
+      },
+      {
+        "loops": "2",
+        "trB2": "4869613158400/7304807158089",
+        "traceQ": "2434935719363/43046721"
+      },
+      {
+        "loops": "3",
+        "trB2": "3554719886796390400/5332082372060413929",
+        "traceQ": "1777360790686804643/282429536481"
+      },
+      {
+        "loops": "4",
+        "trB2": "2594462330191607863705600/3891693511964593495224969",
+        "traceQ": "1297231170654864498408323/1853020188851841"
+      },
+      {
+        "loops": "5",
+        "trB2": "1893602138230824938609213440000/2840403207455656397045332519209",
+        "traceQ": "946801069151885465681777506403/12157665459056928801"
+      }
+    ],
+    "monodromy": [
+      [
+        "-119/9",
+        "-160/81"
+      ],
+      [
+        "160/9",
+        "209/81"
+      ]
+    ],
+    "nonNormality": [
+      [
+        "2048000/6561",
+        "2048000/6561"
+      ],
+      [
+        "2048000/6561",
+        "-2048000/6561"
+      ]
+    ],
+    "physicalAnisotropy3D": "6553600/9889449",
+    "physicalCovariance2D": [
+      [
+        "1172641/6561",
+        "-1575680/6561"
+      ],
+      [
+        "-1575680/6561",
+        "2117281/6561"
+      ]
+    ],
+    "rankOneGap3D": "13122/3296483",
+    "residual": "zero",
+    "signedIntegral": "zero",
+    "smoothPulseBoundary": "four disjoint smooth unit-mass scalar pulses preserve the same ordered exponentials exactly",
+    "traceMonodromy": "-862/81",
+    "tracePhysicalCovariance2D": "3289922/6561"
+  }
+}

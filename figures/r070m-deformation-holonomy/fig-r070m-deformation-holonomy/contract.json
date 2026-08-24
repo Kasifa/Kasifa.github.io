@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070m-deformation-holonomy",
+  "release": "R0.70M",
+  "analyticalQuestion": "Can a strain-only pullback control physical normalized covariance when the signed strain integral and pulled residual both vanish?",
+  "takeaway": "No. Time ordering creates hyperbolic holonomy from a zero-signed-integral strain loop, while Euclidean residual sensitivity has a sharp kappa_2(G)^2 loss and the affine-relative escape is unavailable at covariance rank loss.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG plus a grayscale rendering, with co-generated vector PDF and SVG and integrity hashes"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "four exact strain segments, nine exact loop-count covariance states, and fifty-one exact-algebraic optimized quotient evaluations",
+    "rowCount": 64,
+    "provenance": "closed matrix formulas certified by research/r070m_deformation_holonomy_audit.py; no random sampling, fitting, DNS, or PDE time stepping"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "ordered sequence",
+      "variant": "two-generator signed strain timeline",
+      "question": "What is the signed strain history?",
+      "takeaway": "The A and C coefficients each have zero integral, but their ordered exponentials do not commute."
+    },
+    {
+      "id": "B",
+      "family": "ordered trend",
+      "variant": "log rank-one gap by loop count",
+      "question": "What happens to physical covariance when the pulled covariance is fixed?",
+      "takeaway": "The physical three-dimensional covariance approaches the rank-one anisotropy boundary exponentially while Qhat remains I."
+    },
+    {
+      "id": "C",
+      "family": "parameter comparison",
+      "variant": "normalized optimized quotient amplification",
+      "question": "Is the kappa-squared loss an artifact of an unoptimized residual norm?",
+      "takeaway": "No. After optimizing scalar amplitude in both frames, rhoG/rho0 approaches kappa_2(G)^2 as epsilon tends to zero."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "A generator and lower-k amplification family",
+      "rust": "C generator and higher-k amplification family"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted strokes, filled versus open markers, direct labels, and a neutral reference line"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT MATRIX ODE AND PERIODIC-SHEAR RANK CHECK / HOLONOMY NOT YET AN UNFORCED FINITE-ENERGY NSE TRAJECTORY",
+    "scope": "Exact strain-only propagator matrix identities, smooth time pulses, and an independent rank-defect check on a smooth periodic shear solution.",
+    "notClaimed": [
+      "a physical deformation-gradient identity",
+      "an unforced finite-energy periodic NSE realization of the four-pulse loop",
+      "a weak-solution or energy-controlled estimate",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

@@ -806,15 +806,31 @@ class CutoffCertificate:
             ACTIVE_LOW + ACTIVE_SPAN * Fraction(index, cells)
             for index in range(cells + 1)
         ]
-        values = [self.point(node) for node in self.nodes]
-        self.q_lower = np.asarray([float(value[0].lower) for value in values])
-        self.q_upper = np.asarray([float(value[0].upper) for value in values])
-        self.q_prime_lower = np.asarray(
-            [float(value[1].lower) for value in values]
+        node_derivatives = [
+            self.point_derivatives(node, 3) for node in self.nodes
+        ]
+        self.node_lower = np.asarray(
+            [fraction_float_bounds(node)[0] for node in self.nodes]
         )
-        self.q_prime_upper = np.asarray(
-            [float(value[1].upper) for value in values]
+        self.node_upper = np.asarray(
+            [fraction_float_bounds(node)[1] for node in self.nodes]
         )
+        self.q_derivative_lower = [
+            np.asarray(
+                [float(value[order].lower) for value in node_derivatives]
+            )
+            for order in range(4)
+        ]
+        self.q_derivative_upper = [
+            np.asarray(
+                [float(value[order].upper) for value in node_derivatives]
+            )
+            for order in range(4)
+        ]
+        self.q_lower = self.q_derivative_lower[0]
+        self.q_upper = self.q_derivative_upper[0]
+        self.q_prime_lower = self.q_derivative_lower[1]
+        self.q_prime_upper = self.q_derivative_upper[1]
         self.q_lower[0] = 1.0
         self.q_upper[0] = 1.0
         self.q_lower[-1] = 0.0
@@ -1470,6 +1486,92 @@ class CutoffCertificate:
             upper_value = np.where(crosses_low, np.maximum(upper_value, 1.0), upper_value)
             result_lower[active] = np.maximum(0.0, lower_value)
             result_upper[active] = np.minimum(1.0, upper_value)
+        return Interval(result_lower, result_upper)
+
+    def q_derivative_point_array(
+        self, radius: Interval, order: int
+    ) -> Interval:
+        """Enclose a cutoff derivative on a narrow point interval.
+
+        Whole-cell derivative ranges are indispensable for Taylor remainder
+        bounds, but using them for the *midpoint coefficients* charges an
+        artificial cell-width uncertainty to every radial box.  At a point we
+        instead expand from the nearest exact rational cutoff node through
+        derivative order three and bound the remainder with the certified
+        global fourth-derivative bound.  Intersecting with the independently
+        certified whole-cell range retains a second enclosure.
+        """
+
+        if order == 0:
+            return self.q_point_array(radius)
+        if order not in (1, 2, 3):
+            raise ValueError(
+                "point derivative interpolation supports orders 0 through 3"
+            )
+        lower_radius, upper_radius = np.broadcast_arrays(
+            radius.lower, radius.upper
+        )
+        result_lower = np.zeros(lower_radius.shape)
+        result_upper = np.zeros(lower_radius.shape)
+        below = upper_radius <= float(ACTIVE_LOW)
+        above = lower_radius >= float(ACTIVE_HIGH)
+        active = ~(below | above)
+        if np.any(active):
+            midpoint = np.clip(
+                0.5 * (lower_radius[active] + upper_radius[active]),
+                float(ACTIVE_LOW),
+                float(ACTIVE_HIGH),
+            )
+            position = (
+                (midpoint - float(ACTIVE_LOW))
+                / float(ACTIVE_SPAN)
+                * self.cells
+            )
+            node_index = np.clip(
+                np.rint(position).astype(int), 0, self.cells
+            )
+            node = Interval(
+                self.node_lower[node_index], self.node_upper[node_index]
+            )
+            delta = Interval(
+                lower_radius[active], upper_radius[active]
+            ) - node
+            expansion = Interval(
+                self.q_derivative_lower[order][node_index],
+                self.q_derivative_upper[order][node_index],
+            )
+            for derivative_order in range(order + 1, 4):
+                exponent = derivative_order - order
+                coefficient = Interval(
+                    self.q_derivative_lower[derivative_order][node_index],
+                    self.q_derivative_upper[derivative_order][node_index],
+                )
+                expansion = expansion + (
+                    coefficient * delta**exponent / math.factorial(exponent)
+                )
+            remainder_exponent = 4 - order
+            absolute_delta = interval_absolute_maximum(delta)
+            remainder = up(
+                float(self.derivative_bounds[4])
+                * absolute_delta**remainder_exponent
+                / math.factorial(remainder_exponent)
+            )
+            point_enclosure = expansion + Interval(-remainder, remainder)
+            range_enclosure = self.derivative_range_array(
+                lower_radius[active], upper_radius[active], order
+            )
+            enclosed_lower = np.maximum(
+                point_enclosure.lower, range_enclosure.lower
+            )
+            enclosed_upper = np.minimum(
+                point_enclosure.upper, range_enclosure.upper
+            )
+            if np.any(enclosed_lower > enclosed_upper):
+                raise RuntimeError(
+                    "point Taylor and whole-cell derivative enclosures became disjoint"
+                )
+            result_lower[active] = enclosed_lower
+            result_upper[active] = enclosed_upper
         return Interval(result_lower, result_upper)
 
 
@@ -2470,9 +2572,13 @@ def annular_cutoff_derivatives(
         first_upper = up(distance.upper / first_scale)
         second_lower = down(distance.lower / second_scale)
         second_upper = up(distance.upper / second_scale)
-        if point_value and order == 0:
-            first = cutoff.q_point_array(Interval(first_lower, first_upper))
-            second = cutoff.q_point_array(Interval(second_lower, second_upper))
+        if point_value:
+            first = cutoff.q_derivative_point_array(
+                Interval(first_lower, first_upper), order
+            )
+            second = cutoff.q_derivative_point_array(
+                Interval(second_lower, second_upper), order
+            )
         else:
             first = cutoff.derivative_range_array(
                 first_lower, first_upper, order
@@ -3068,12 +3174,15 @@ class AnnularMomentCertificate:
         return Interval(lower_primitive.lower, upper_primitive.upper)
 
     def integrand_derivatives(
-        self, value: Interval, moment_power: int
+        self,
+        value: Interval,
+        moment_power: int,
+        point_value: bool = False,
     ) -> tuple[Interval, Interval, Interval, Interval]:
         clipped, psi_range, _ = self.annular.enclose(value)
         active = psi_range.upper > 0.0
         psi0, psi1, psi2, psi3 = annular_cutoff_derivatives(
-            self.cutoff, self.annular.index, clipped, False
+            self.cutoff, self.annular.index, clipped, point_value
         )
         safe = clipped
         if moment_power >= 0:
@@ -3185,10 +3294,10 @@ def moment_taylor(
     )
     value = primitive(summed, moment_power) - primitive(difference, moment_power)
     gu, gpu, gppu, g3u = certificate.integrand_derivatives(
-        summed, moment_power
+        summed, moment_power, point_value
     )
     gv, gpv, gppv, g3v = certificate.integrand_derivatives(
-        difference, moment_power
+        difference, moment_power, point_value
     )
     return Taylor2D4(
         {
@@ -4137,6 +4246,12 @@ def main() -> int:
             ],
             "distanceCellCutoffRangesUseMonotoneEndpointInterpolation": True,
             "cutoffPointInterpolation": "certified cubic Hermite with fourth-derivative remainder",
+            "cutoffPointDerivatives": (
+                "nearest exact rational node Taylor expansion through order "
+                "three with fourth-derivative remainder, intersected with "
+                "the certified whole-cell range"
+            ),
+            "centerMomentDerivativesUseCertifiedPointTaylor": True,
             "distanceMomentGridUsesExactDyadicEndpoints": True,
             "trueConvolutionCertified": True,
             "floatingQuadratureNodesUsed": 0,

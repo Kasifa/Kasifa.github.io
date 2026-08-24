@@ -1,0 +1,508 @@
+{
+  "arithmetic": "exact SymPy symbolic, rational, polynomial-jet, trigonometric, matrix, integral, and limit arithmetic",
+  "checks": {
+    "energyAndH1NormMapObstruction": true,
+    "rotatingBeltramiTightFrame": true,
+    "simpleSpectrumCurvatureSigns": true,
+    "singleBlockCovarianceProductRule": true
+  },
+  "claimBoundary": "This certificate proves only the displayed finite symbolic, rational, polynomial-jet, trigonometric, matrix, integral, and limit identities. It does not prove covariance-PDE propagation, an analytic no-go theorem beyond the stated energy/H1-to-projector-gradient norm maps, or the failure of estimates using higher Sobolev norms. It does not prove a Navier--Stokes continuation criterion, finite-time blow-up, global smoothness, or the Millennium problem.",
+  "normMapObstructionLedger": {
+    "amplitudeOne": {
+      "L2NormSquaredAtTimeT": "exp(-2*N**2*nu*time)",
+      "energyIdentity": "||u(T)||_2^2+2*nu*integral_0^T||grad u||_2^2 dt=1",
+      "energyIdentityValue": "1",
+      "gradientL2NormSquaredAtTimeT": "N**2*exp(-2*N**2*nu*time)",
+      "initialL2NormSquared": "1"
+    },
+    "certifiedNormMapBoundary": "No bound of sup_x|grad P| using only a uniform initial H1 bound, zero best-line residual, and unit relative principal gap can hold for this explicit family.",
+    "h1Normalized": {
+      "amplitude": "a_N=(1+N^2)^(-1/2)",
+      "bestLineResidual": "0",
+      "divergence": "0",
+      "heatEquationResidual": [
+        "0",
+        "0",
+        "0"
+      ],
+      "initialCovarianceEnergy": "N**2/(N**2 + 1)",
+      "initialCovarianceEnergyLowerBound": ">=1/2 for integer N>=1",
+      "initialCovarianceEnergyLowerBoundSlack": "(N - 1)*(N + 1)/(2*(N**2 + 1))",
+      "initialGradientL2NormSquared": "N**2/(N**2 + 1)",
+      "initialH1NormSquared": "1",
+      "initialL2NormSquared": "1/(N**2 + 1)",
+      "nonlinearity": [
+        "0",
+        "0",
+        "0"
+      ],
+      "projectorGradientFrobenius": "sqrt(2)*N",
+      "projectorIsAmplitudeIndependent": true,
+      "relativeGap": "1"
+    },
+    "higherSobolevBoundary": {
+      "derivativeSumH2NormSquared": "(N**2 - N + 1)*(N**2 + N + 1)/(N**2 + 1)",
+      "limit": "oo",
+      "meaning": "the family does not rule out projector-gradient bounds that depend on a higher Sobolev norm",
+      "normConvention": "||u||_2^2+||grad u||_2^2+||second spatial derivatives||_2^2"
+    },
+    "unboundedness": {
+      "finiteFrequencySamples": [
+        {
+          "N": 1,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(2)/2",
+          "projectorGradientFrobeniusSquared": "2",
+          "relativeGap": "1",
+          "residual": "0"
+        },
+        {
+          "N": 2,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(5)/5",
+          "projectorGradientFrobeniusSquared": "8",
+          "relativeGap": "1",
+          "residual": "0"
+        },
+        {
+          "N": 4,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(17)/17",
+          "projectorGradientFrobeniusSquared": "32",
+          "relativeGap": "1",
+          "residual": "0"
+        },
+        {
+          "N": 8,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(65)/65",
+          "projectorGradientFrobeniusSquared": "128",
+          "relativeGap": "1",
+          "residual": "0"
+        },
+        {
+          "N": 16,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(257)/257",
+          "projectorGradientFrobeniusSquared": "512",
+          "relativeGap": "1",
+          "residual": "0"
+        },
+        {
+          "N": 32,
+          "amplitudeOneInitialL2Squared": "1",
+          "h1NormSquared": "1",
+          "h1NormalizedAmplitude": "sqrt(41)/205",
+          "projectorGradientFrobeniusSquared": "2048",
+          "relativeGap": "1",
+          "residual": "0"
+        }
+      ],
+      "normalizedCovarianceGradientLimit": "oo",
+      "projectorGradientLimit": "oo"
+    }
+  },
+  "release": "R0.70Q",
+  "rotatingBeltramiLedger": {
+    "BeltramiIdentity": "curl(u_N)=-N*u_N",
+    "Gamma": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "N**4*exp(-2*N**2*nu*time)*sin(N*x1)**2",
+        "-N**4*exp(-2*N**2*nu*time)*sin(2*N*x1)/2"
+      ],
+      [
+        "0",
+        "-N**4*exp(-2*N**2*nu*time)*sin(2*N*x1)/2",
+        "N**4*exp(-2*N**2*nu*time)*cos(N*x1)**2"
+      ]
+    ],
+    "bestLineResidual": "0",
+    "covariance": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "N**2*exp(-2*N**2*nu*time)*cos(N*x1)**2",
+        "N**2*exp(-2*N**2*nu*time)*sin(2*N*x1)/2"
+      ],
+      [
+        "0",
+        "N**2*exp(-2*N**2*nu*time)*sin(2*N*x1)/2",
+        "N**2*exp(-2*N**2*nu*time)*sin(N*x1)**2"
+      ]
+    ],
+    "covarianceInEigenbasis": [
+      [
+        "N**2*exp(-2*N**2*nu*time)",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "covarianceParabolicResidual": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "curl": [
+      "0",
+      "N*exp(-N**2*nu*time)*cos(N*x1)",
+      "N*exp(-N**2*nu*time)*sin(N*x1)"
+    ],
+    "curvatureK": "2*N**4*exp(-2*N**2*nu*time)",
+    "curvatureKQ": "N**4*exp(-2*N**2*nu*time)",
+    "divergence": "0",
+    "domain": "T^3=(R/(2*pi*Z))^3 with normalized Haar measure",
+    "energyE": "N**2*exp(-2*N**2*nu*time)",
+    "heatEquationResidual": [
+      "0",
+      "0",
+      "0"
+    ],
+    "largestEigenvalueParabolicResidual": "0",
+    "mode": "u_N=-exp(-nu*N^2*t)*(0,cos(N*x1),sin(N*x1))",
+    "nonlinearity": [
+      "0",
+      "0",
+      "0"
+    ],
+    "normalizedCovarianceGradientFrobenius": "sqrt(2)*N",
+    "normalizedCovarianceGradientFrobeniusSquared": "2*N**2",
+    "principalGap": "N**2*exp(-2*N**2*nu*time)",
+    "projectorGradientFrobenius": "sqrt(2)*N",
+    "projectorGradientFrobeniusSquared": "2*N**2",
+    "relativeGap": "1",
+    "rowGradient": [
+      [
+        "0",
+        "N*exp(-N**2*nu*time)*sin(N*x1)",
+        "-N*exp(-N**2*nu*time)*cos(N*x1)"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "supportRestrictedScalarTightFrame": {
+      "coefficientSquareSum": "1",
+      "coefficients": [
+        "3/5",
+        "4/5"
+      ],
+      "scope": "the two Fourier modes +/-N*e1 only"
+    },
+    "transverseResidualParabolicResidual": "0",
+    "vorticityStretching": [
+      "0",
+      "0",
+      "0"
+    ]
+  },
+  "simpleSpectrumLedger": {
+    "assumption": "lambda1>lambda2>lambda3 with lambda1 simple; L=v1 tensor v1; P=I-L; r=tr(PQ)=tr(Q)-lambda1",
+    "firstDerivatives": {
+      "largestEigenvalue": "partial lambda1=tr(L*partial Q)",
+      "projector": "partial L=sum_b>1 (L_b*(partial Q)*L+L*(partial Q)*L_b)/(lambda1-lambda_b)",
+      "projectorMatrixInEigenbasis": [
+        [
+          "0",
+          "h12/(lambda1 - lambda2)",
+          "h13/(lambda1 - lambda3)"
+        ],
+        [
+          "h12/(lambda1 - lambda2)",
+          "0",
+          "0"
+        ],
+        [
+          "h13/(lambda1 - lambda3)",
+          "0",
+          "0"
+        ]
+      ],
+      "residual": "partial r=tr(P*partial Q)",
+      "residualValueInEigenbasis": "h22 + h33",
+      "symbolicValueInEigenbasis": "h11"
+    },
+    "laplacianCurvature": {
+      "canonicalHalfCurvature": "K_Q=sum_k sum_b>1 |v_b^T*(partial_k Q)*v1|^2/(lambda1-lambda_b)>=0",
+      "certificateConvention": "K=2*K_Q",
+      "largestEigenvalue": "Delta lambda1=tr(L*Delta Q)+K",
+      "largestEigenvalueCurvatureSignUnderDNu": "negative",
+      "largestEigenvalueCurvatureSignUnderDelta": "positive",
+      "oneDirectionImplicitFormula": "(2*h12**2*lambda1 - 2*h12**2*lambda3 + 2*h13**2*lambda1 - 2*h13**2*lambda2 + k11*lambda1**2 - k11*lambda1*lambda2 - k11*lambda1*lambda3 + k11*lambda2*lambda3)/((lambda1 - lambda2)*(lambda1 - lambda3))",
+      "oneDirectionResidualFormula": "-(2*h12**2*lambda1 - 2*h12**2*lambda3 + 2*h13**2*lambda1 - 2*h13**2*lambda2 - k22*lambda1**2 + k22*lambda1*lambda2 + k22*lambda1*lambda3 - k22*lambda2*lambda3 - k33*lambda1**2 + k33*lambda1*lambda2 + k33*lambda1*lambda3 - k33*lambda2*lambda3)/((lambda1 - lambda2)*(lambda1 - lambda3))",
+      "parabolicLargestEigenvalue": "D_nu lambda1=tr(L*D_nu Q)-nu*K",
+      "parabolicResidual": "D_nu r=tr(P*D_nu Q)+nu*K",
+      "residual": "Delta r=tr(P*Delta Q)-K",
+      "residualCurvatureSignUnderDNu": "positive",
+      "residualCurvatureSignUnderDelta": "negative"
+    },
+    "rationalThreeCoordinateSample": {
+      "Q0": [
+        [
+          "7",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "3",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "1"
+        ]
+      ],
+      "curvatureK": "6",
+      "curvatureKQ": "3",
+      "implicitFirstAndSecondRates": [
+        [
+          "2",
+          "7/2"
+        ],
+        [
+          "-1",
+          "4"
+        ],
+        [
+          "3",
+          "7/2"
+        ]
+      ],
+      "laplacianLargestEigenvalue": "11",
+      "laplacianQ": [
+        [
+          "5",
+          "1",
+          "-1"
+        ],
+        [
+          "1",
+          "-3",
+          "2"
+        ],
+        [
+          "-1",
+          "2",
+          "4"
+        ]
+      ],
+      "laplacianResidual": "-5",
+      "spatialFirstDerivatives": [
+        [
+          [
+            "2",
+            "1",
+            "-2"
+          ],
+          [
+            "1",
+            "-1",
+            "3"
+          ],
+          [
+            "-2",
+            "3",
+            "0"
+          ]
+        ],
+        [
+          [
+            "-1",
+            "2",
+            "1"
+          ],
+          [
+            "2",
+            "4",
+            "-2"
+          ],
+          [
+            "1",
+            "-2",
+            "3"
+          ]
+        ],
+        [
+          [
+            "3",
+            "-1",
+            "2"
+          ],
+          [
+            "-1",
+            "0",
+            "1"
+          ],
+          [
+            "2",
+            "1",
+            "-2"
+          ]
+        ]
+      ],
+      "tracePartitionResidual": "0"
+    }
+  },
+  "singleBlockCovarianceLedger": {
+    "blockEquation": "D_nu*Omega=B^T*Omega+G",
+    "convention": "B_ij=partial_i u_j, so (omega dot grad)u=B^T*omega",
+    "covariance": "Q_Omega=Omega tensor Omega",
+    "directPolynomialSample": {
+      "Omega": [
+        "x^2+t*y",
+        "y^2+t*z",
+        "z^2+t*x"
+      ],
+      "divergence": "0",
+      "evaluationPoint": [
+        "1/2",
+        "-1/3",
+        "2/5",
+        "1/7"
+      ],
+      "gradientSquareAtPoint": [
+        [
+          "50/49",
+          "-2/21",
+          "1/7"
+        ],
+        [
+          "-2/21",
+          "205/441",
+          "4/35"
+        ],
+        [
+          "1/7",
+          "4/35",
+          "809/1225"
+        ]
+      ],
+      "leftAtPoint": [
+        [
+          "-13745/12348",
+          "-3523/26460",
+          "-7211/17640"
+        ],
+        [
+          "-3523/26460",
+          "-48886/231525",
+          "-7916/165375"
+        ],
+        [
+          "-7211/17640",
+          "-7916/165375",
+          "-7417/17150"
+        ]
+      ],
+      "nu": "2/7",
+      "residual": [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "rightAtPoint": [
+        [
+          "-13745/12348",
+          "-3523/26460",
+          "-7211/17640"
+        ],
+        [
+          "-3523/26460",
+          "-48886/231525",
+          "-7916/165375"
+        ],
+        [
+          "-7211/17640",
+          "-7916/165375",
+          "-7417/17150"
+        ]
+      ],
+      "velocity": [
+        "y",
+        "-x",
+        "0"
+      ]
+    },
+    "filteredRemainder": "G=[u dot grad,T]omega+[T,B^T]omega when [T,A]=T*A-A*T and [T,Delta]=0",
+    "parabolicOperator": "D_nu=partial_t+u dot grad-nu*Delta",
+    "productRule": "D_nu*Q_Omega=B^T*Q_Omega+Q_Omega*B+G tensor Omega+Omega tensor G-2*nu*sum_k partial_k Omega tensor partial_k Omega",
+    "symbolicResidual": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "traceEquation": "D_nu|Omega|^2=2*S:Q_Omega+2*G dot Omega-2*nu*sum_k|partial_k Omega|^2",
+    "traceResidual": "0",
+    "viscousGradientSquareSign": "negative"
+  },
+  "status": "exact-covariance-evolution-curvature-audit"
+}

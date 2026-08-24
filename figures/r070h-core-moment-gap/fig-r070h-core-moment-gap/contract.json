@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070h-core-moment-gap",
+  "release": "R0.70H",
+  "analyticalQuestion": "Which adjacent-scale core-moment quantity detects the persistent baseline in the R0.70F recurrence, and where does the unresolved spacetime amplification enter?",
+  "takeaway": "For the Lambda=2 algebraic sample, ordinary adjacent increments decay and their total variation saturates, while the instantaneous pairing-covariant increments stay order one and accumulate linearly; the actual spacetime dual requirement additionally amplifies the core side by r_k^(-3).",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "600 dpi PNG with vector PDF and SVG parity checks"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "one analytic scale row k=0,...,40",
+    "rowCount": 41,
+    "parameters": {
+      "Lambda": 2,
+      "rho": "Lambda^(-2)=1/4",
+      "q": "Lambda^(-4)=1/16",
+      "lambda0": "rho^2=1/16",
+      "lambda1": "rho^3=1/64",
+      "r0": 1
+    },
+    "provenance": "closed-form evaluations from the R0.70H core-moment audit; no fitted values or trajectory samples"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "trend",
+      "variant": "semilog adjacent-increment comparison",
+      "range": "k=1,...,12",
+      "question": "Does the ordinary increment see the same persistent baseline as the instantaneous pairing-covariant increment?",
+      "takeaway": "The ordinary increment decays geometrically, whereas both degree-zero and degree-one pairing increments remain order one."
+    },
+    {
+      "id": "B",
+      "family": "trend",
+      "variant": "cumulative analytic comparison with saturation inset",
+      "range": "N=1,...,40",
+      "question": "How do ordinary total variation and pairing-covariant masses accumulate?",
+      "takeaway": "Ordinary total variation approaches 31/225, while pairing L1 and square masses grow at least linearly."
+    },
+    {
+      "id": "C",
+      "family": "trend",
+      "variant": "base-2 logarithmic weight amplification",
+      "range": "k=0,...,8",
+      "question": "What extra scale weight appears in the actual spacetime source-core dual pairing?",
+      "takeaway": "With rho=1/4 and r0=1, the spacetime coordinate weight is r_k^(-2)=2^(4k), while the dual requirement is r_k^(-3)=2^(6k)."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "ordinary differences and the r_k^(-2) context weight",
+      "rust": "pairing-covariant quantities and the focal r_k^(-3) weight"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted strokes, filled versus open markers, direct labels, and panel separation"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "ALGEBRAIC DIAGNOSTIC / NOT AN NSE TRAJECTORY",
+    "geometry": "Lambda=2 is an algebra sample only and does not verify the support-separation geometry required by R0.70F.",
+    "notClaimed": [
+      "a Navier-Stokes trajectory",
+      "nonlinear time persistence",
+      "a parabolic Carleson estimate",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

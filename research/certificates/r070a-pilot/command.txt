@@ -1,0 +1,13 @@
+Working directory:
+/Users/kasifa/Documents/Math/navier-stokes-recap-r060-worktree
+
+Command used for the five-point pilot:
+tmp/r068b-venv/bin/python research/r070a_scale_ratio_robustness.py --output tmp/r070a-pilot-coarse.json --rhos 3.8,3.9,4,4.1,4.2 --raw-moment-power 14 --cutoff-cells 64 --moment-power 14 --core-cells 4 --plateau-cells 8 --transition-cells 8 --arb-precision 128
+
+The unmodified output is archived as raw-result.json.  A one-off
+post-processing step added the discriminant recomputed from coefficient
+midpoints, replaced its diagnostic secant, and added provenance metadata.
+The exact post-processing command and the byte-identical producer script state
+were not retained.  The current companion script generates the corrected
+schema directly.  The test suite verifies field by field that post-processing
+did not alter any rigorous coefficient or discriminant interval.

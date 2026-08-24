@@ -11,7 +11,7 @@ test("publishes R0.69Q with the exact polar identities and strict boundary", asy
   ]);
   assert.match(home, /id="r069q"/);
   assert.match(home, /href="\/notes\/r0-69q\.html"/);
-  assert.match(home, /综述 v0\.82 · 2026-08-24/);
+  assert.match(home, /综述 v0\.84 · 2026-08-25/);
   assert.match(home, /i18n-en\.js(?:\?[^"]*)?/);
   assert.match(home, /下一步 R0\.69R/);
   assert.ok(note.includes("=\\rho\\alpha-\\nu\\rho|\\nabla\\xi|^2"));

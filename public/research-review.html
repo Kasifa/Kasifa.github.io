@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.83"></script>
+  <script defer src="/i18n-en.js?v=0.84"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1417,9 +1417,9 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-25</strong>最近修订</span>
-            <span><strong>v0.83</strong>网页版本</span>
+            <span><strong>v0.84</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>协方差谱的秩分层</strong>当前方向</span>
+            <span><strong>全频覆盖与变方向交换子</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1429,7 +1429,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>把多尺度协方差分成强制、近面与近线三种谱区域，并检查哪一支能连接临界继续性判据。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>在完整频率覆盖下建立变方向投影的交换子桥，并检查它的假设能否由方程传播。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1438,7 +1438,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.70N</p>
+            <p class="eyebrow">Research topology · R0.1–R0.70O</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1660,15 +1660,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.70N</span>
+                <span class="route-range">R0.69P–R0.70O</span>
                 <span class="tree-state current">当前主线</span>
               </div>
               <h3>从有符号环带障碍转向协方差秩分层</h3>
-              <p>静态环带族被严格排除后，主线转向真实方程中的源—核动力学；拉回与普适多尺度强制性又分别被条件数和精确秩缺陷截断。</p>
-              <p class="tree-path">点态饱和 → 有限分离排除 → 临界源—核账本 → 代数零结构失败 → 归一化演化 → 压力局部补偿失败 → 拉回条件数 → 多尺度 frame no-go</p>
+              <p>静态环带族被严格排除后，主线转向真实方程中的源—核动力学；拉回、普适多尺度强制性和有限滤波重建又分别被条件数、精确秩缺陷和高频盲性截断。</p>
+              <p class="tree-path">点态饱和 → 有限分离排除 → 临界源—核账本 → 代数零结构失败 → 归一化演化 → 压力局部补偿失败 → 拉回条件数 → 多尺度 frame no-go → 谱分层 → finite-filter reconstruction no-go</p>
               <details class="tree-notes">
-                <summary>展开 13 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.70N">
+                <summary>展开 14 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.70O">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1682,6 +1682,7 @@
                   <a class="milestone" href="/notes/r0-70l.html">R0.70L</a>
                   <a class="milestone" href="/notes/r0-70m.html">R0.70M</a>
                   <a class="milestone" href="/notes/r0-70n.html">R0.70N</a>
+                  <a class="milestone" href="/notes/r0-70o.html">R0.70O</a>
                 </nav>
               </details>
             </article>
@@ -1690,11 +1691,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.70O</span>
+                <span class="route-range">NEXT · R0.70P</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>协方差谱的强制—近面—近线三分法</h3>
-              <p>分别处理最小特征值有定量下界、涡量接近一个平面、涡量接近一条线三种区域；重点审计过滤谱如何连接未过滤临界范数，以及主方向如何演化。</p>
+              <h3>全频下框架与变方向交换子</h3>
+              <p>先证明带显式交换子余项的条件性临界重建定理，再检查全频覆盖、主谱隙与方向正则性是否能从局部协方差方程传播。</p>
             </article>
           </div>
         </div>
@@ -5779,6 +5780,39 @@
             </p>
             <p><strong style="color:var(--gold)">下一步 R0.70O：</strong>&nbsp;把谱分成强制、近面与近线三种区域，先建立过滤协方差到未过滤临界范数的桥接目标，并写出主方向的精确演化账本。</p>
           </div>
+
+          <div class="task-one" id="r070o" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.70O · 2026-08-25</p>
+            <h3>谱退化能指出方向，高频盲有限标量滤波不能替代全频覆盖</h3>
+            <p>
+              对特征值 \(\lambda_1\ge\lambda_2\ge\lambda_3\ge0\)，最佳平面残差与最佳直线残差分别是
+              \[
+                \lambda_3,
+                \qquad
+                \lambda_2+\lambda_3.
+              \]
+              在 \(E=\operatorname{tr}Q&gt;0\) 且取 \(0<2\delta<\eta<1/2\) 后，强制、近线与近面区域可以定义成互斥完备的三分法，并给出相应主投影的定量谱隙。
+            </p>
+            <p>
+              但几何接近一条线不等于临界范数可重建。对固定非负权重的有限标量 Fourier 滤波族，若总响应满足 \(A(e_2)>0\) 且 \(A(N_qe_2)\to0\)，一个光滑无外力周期剪切族精确满足
+              \[
+                \|r_N\|_{L_t^2}={A(Ne_2)\over4\sqrt\nu}\longrightarrow0,
+                \qquad
+                \|P_{e_3^\perp}\omega_N\|_{L_t^4L_x^2}
+                ={1\over2\nu^{1/4}}.
+              \]
+              固定投影的正面替代是全频 lower-frame 下界；主方向变化时还会出现 \([T_j,P]\omega\)。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;关闭的是高频盲有限观测到未过滤临界横向涡量的统一直接桥。光滑族不排除单个解的定性有限性或固定正延迟估计；周期反例也不能直接调用陈述于全空间的 Miller 定理。本阶段没有得到新的继续性判据，也没有解决千禧年问题。</p>
+            <p>
+              <a href="/notes/r0-70o.html"><strong>阅读 R0.70O 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-70o-rank-bridge.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070o">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070o_report-source.md">查看完整报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070o-rank-bridge/fig-r070o-rank-bridge">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.70P：</strong>&nbsp;先证明全频下框架与变方向交换子的条件桥，再检查这些假设是否由 Navier–Stokes 协方差账本传播。</p>
+          </div>
         </section>
 
       </article>
@@ -5792,8 +5826,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.83 · 2026-08-25<br>
-        上次综述 v0.82 · 2026-08-24<br>
+        综述 v0.84 · 2026-08-25<br>
+        上次综述 v0.83 · 2026-08-25<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

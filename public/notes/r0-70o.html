@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70O：协方差谱可以精确分成强制、近面与近线区域，但高频响应趋零的有限标量滤波不能把近线残差统一重建成未过滤涡量的临界范数。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70O｜协方差谱分层：有限平滑滤波的临界重建障碍">
+  <meta property="og:description" content="最佳平面与最佳直线具有精确谱公式；一个光滑周期剪切族排除了高频盲观测到临界横向涡量的直接统一桥。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-70o-rank-bridge.png">
+  <title>R0.70O｜协方差谱分层：有限平滑滤波的临界重建障碍</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.84">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.45rem)}</style>
+  <script defer src="/i18n-en.js?v=0.84"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#strata">分层</a><a href="#evolution">演化</a><a href="#smooth">光滑障碍</a><a href="#endpoint">端点</a><a href="#positive">正面定理</a><a href="#direction">变方向</a><a href="#figure">附图</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.70O · RANK STRATA · EXACT OBSTRUCTION · LOWER FRAME</div>
+        <h1>谱退化能指出方向，<br>高频盲有限标量滤波不能替代全频覆盖</h1>
+        <p class="lead">我把 R0.70N 留下的秩亏分成强制、近面和近线三支。只有近线支具有“两横向涡量分量”的正确代数形式；但精确周期剪切表明，高频响应趋零的有限标量滤波族不能把这个观测残差统一重建成未过滤的临界 \(L_t^4L_x^2\) 范数。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.70O 精确证书、独立内部复核 PASS 与正式附图完成</span><strong>高频盲有限滤波直接重建关闭</strong><p>版本 v0.70O · 2026-08-25</p><p>精确生产器：5 组全部通过</p><p>定向测试：9 / 9</p><p>完整回归：609 / 609</p><p>下一门槛：全频下框架与变方向交换子</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 精确结论</a></li>
+        <li><a href="#strata">01 · 谱三分法</a></li>
+        <li><a href="#evolution">02 · 主方向演化</a></li>
+        <li><a href="#smooth">03 · 光滑定量障碍</a></li>
+        <li><a href="#endpoint">04 · 能量端点</a></li>
+        <li><a href="#positive">05 · 下框架正面定理</a></li>
+        <li><a href="#direction">06 · 变方向缺口</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#next">09 · 下一条路线</a></li>
+        <li><a href="#boundary">10 · 主张边界</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact conclusion</div><h2>最佳平面与最佳直线由两个谱残差精确刻画</h2>
+          <p>设 \(Q=\int V\otimes V\,d\mu\) 的特征值满足 \(\lambda_1\geq\lambda_2\geq\lambda_3\geq0\)，并记 \(E=\operatorname{tr}Q\)。Rayleigh–Ritz 给出以下未归一化恒等式；后面的归一化三分法只在 \(E&gt;0\) 上使用。</p>
+          <div class="equation result">\[
+            \lambda_3=\min_{|n|=1}\int|n\cdot V|^2\,d\mu,
+            \qquad
+            \lambda_2+\lambda_3
+            =\min_{|\ell|=1}\int|P_{\ell^\perp}V|^2\,d\mu.
+          \]</div>
+          <p>第一式测量数据偏离最佳平面的绝对能量；第二式测量数据偏离最佳直线的绝对能量。归一化比值只描述几何形状，不能替代绝对残差。</p>
+          <div class="proof"><strong>本阶段的核心判断。</strong>&nbsp;谱分层本身成立，但仅凭高频响应趋零的有限标量滤波残差，不能统一控制未过滤横向涡量的临界范数。这个结论排除的是一座直接桥，不是 Navier–Stokes 正则性定理。</div>
+        </section>
+
+        <section id="strata"><div class="section-no">01 / Spectral trichotomy</div><h2>三个区域可以互斥、完备，并各自带有正确谱隙</h2>
+          <p>固定 \(0&lt;2\delta&lt;\eta&lt;1/2\)。我使用以下有优先级的定义：</p>
+          <div class="equation">\[
+            \begin{aligned}
+            \mathsf C_\delta&:\ \lambda_3/E\geq\delta,\\
+            \mathsf L_{\delta,\eta}&:\ \lambda_3/E&lt;\delta,
+              \quad(\lambda_2+\lambda_3)/E\leq\eta,\\
+            \mathsf P_{\delta,\eta}&:\ \lambda_3/E&lt;\delta,
+              \quad(\lambda_2+\lambda_3)/E&gt;\eta.
+            \end{aligned}
+          \]</div>
+          <p>它们分别表示定量强制、近线和近面，而且不会重叠。谱排序立即给出</p>
+          <div class="equation result">\[
+            \mathsf L_{\delta,\eta}:\quad
+            \lambda_1-\lambda_2\geq(1-2\eta)E,
+            \qquad
+            \mathsf P_{\delta,\eta}:\quad
+            \lambda_2-\lambda_3&gt;(\eta-2\delta)E.
+          \]</div>
+          <p>这些下界保证相应主线或法向投影在代数上稳定，但没有自动给出它们随空间变化的正则性。</p>
+        </section>
+
+        <section id="evolution"><div class="section-no">02 / Spectral evolution</div><h2>谱隙控制投影微分，源项仍必须逐项估计</h2>
+          <p>对对称矩阵账本</p>
+          <div class="equation">\[
+            \dot Q=\Sigma Q+Q\Sigma+F,
+            \qquad \Sigma=\Sigma^{\mathsf T},\quad F=F^{\mathsf T},
+          \]</div>
+          <p>在简单谱区域，本征基中的精确公式是</p>
+          <div class="equation result">\[
+            \dot\lambda_a=2\lambda_a\sigma_{aa}+f_{aa},
+            \qquad
+            e_b^{\mathsf T}\dot e_a
+            ={(\lambda_a+\lambda_b)\sigma_{ba}+f_{ba}
+              \over\lambda_a-\lambda_b}.
+          \]</div>
+          <p>相同的扰动公式适用于空间导数。近线主投影 \(P_1\) 满足</p>
+          <div class="equation">\[
+            \|\partial_iP_1\|_F
+            \leq {\|\partial_iQ\|_F\over\lambda_1-\lambda_2}.
+          \]</div>
+          <p>因此谱隙只是分母。要得到 Miller 型方向条件，还需要控制 \(\nabla Q/E\)、处理换向或直接使用投影形式，并闭合 \(F\) 中的 Navier–Stokes 源项。</p>
+        </section>
+
+        <section id="smooth"><div class="section-no">03 / Smooth quantitative obstruction</div><h2>观测残差趋零，未过滤临界范数保持不变</h2>
+          <p>令有限指标集 \(J\) 上的 \(T_j\) 是实保持、逐分量作用的标量 Fourier 滤波器，固定非负权重 \(w_j\geq0\)，并记总响应</p>
+          <div class="equation">\[
+            A(k)=\sum_jw_j|m_j(k)|^2.
+          \]</div>
+          <p>假设 \(A(e_2)&gt;0\)，并存在整数 \(N_q\to\infty\)、\(N_q\geq2\)，使 \(A(N_qe_2)\to0\)。在归一化三维环面上取 \(\kappa&gt;1\)，令 \(a_N^2A(e_2)=1+\kappa N A(Ne_2)\)，以及</p>
+          <div class="equation">\[
+            u_N=a_Ne^{-\nu t}\sin y\,e_1
+            +N^{-1/2}e^{-\nu N^2t}\sin(Ny)\,e_3.
+          \]</div>
+          <p>这是光滑、无外力、全局存在的精确剪切解：散度为零，\((u_N\cdot\nabla)u_N=0\)，并满足热方程。观测协方差的主线恒为 \(e_3\)。若 \(r_N=\lambda_2+\lambda_3\)，则</p>
+          <div class="equation result">\[
+            \|r_N\|_{L_t^2}
+            ={A(Ne_2)\over4\sqrt\nu}\longrightarrow0,
+            \qquad
+            \|P_{e_3^\perp}\omega_N\|_{L_t^4L_x^2}
+            ={1\over2\nu^{1/4}}.
+          \]</div>
+          <p>所以不存在只依赖该残差的统一估计，也不存在满足 \(\Phi(0)=0\) 的统一零点连续重建模量。这里必须保留 \(A(N_qe_2)\to0\)；“有限滤波器”本身不够，identity 观测不属于这个 no-go。</p>
+        </section>
+
+        <section id="endpoint"><div class="section-no">04 / Time and endpoint boundary</div><h2>有限时域给出尖锐比值，compact-band 定性失败出现在粗糙初始端点</h2>
+          <p>对任意固定 \(T&gt;0\)，令 \(\theta_{N,T}=1-e^{-4\nu N^2T}\)。当 \(A(Ne_2)&gt;0\) 时，上面的光滑族满足</p>
+          <div class="equation result">\[
+            {\|P_{e_3^\perp}\omega_N\|_{L^4(0,T;L^2)}^2
+             \over\|r_N\|_{L^2(0,T)}}
+            ={1\over A(Ne_2)}.
+          \]</div>
+          <p>失稳集中在宽度约为 \(N^{-2}\) 的初始层。因此它没有排除固定正延迟 \([\tau,\infty)\) 上、常数允许依赖 \(\tau\) 的估计。</p>
+          <p>对 compact-band 滤波器，还能叠加 \(n_k=2^k\) 的无限隐藏模态，得到一个 Leray–Hopf 剪切解：观测残差恒为零，但</p>
+          <div class="equation">\[
+            {1\over8\nu}\sum_{k,l}{n_kn_l\over n_k^2+n_l^2}
+            \geq{1\over16\nu}\sum_k1=\infty.
+          \]</div>
+          <p>这个初值属于 \(L^2\setminus H^1\)，解在每个 \(t&gt;0\) 光滑。它给出初始端点的定性重建失败，不与具有 \(H^1\) 初值假设的方向判据冲突。</p>
+        </section>
+
+        <section id="positive"><div class="section-no">05 / Exact positive replacement</div><h2>固定投影的正确条件是全频下框架</h2>
+          <p>对固定正交投影 \(P\)，定义</p>
+          <div class="equation">\[
+            R_P(f)=\sum_jw_j\|T_jPf\|_2^2
+            =\sum_kA(k)|P\widehat f(k)|^2.
+          \]</div>
+          <p>给定频率集 \(\Lambda\)，并令 \(f\) 的 Fourier 支撑于 \(\Lambda\)。不等式 \(a_0\|Pf\|_2^2\leq R_P(f)\) 对所有这类 \(f\) 成立，当且仅当在每个 \(\operatorname{Ran}P\) 含可容许 Fourier 系数的 \(k\in\Lambda\) 上都有</p>
+          <div class="equation result">\[
+            A(k)\geq a_0&gt;0.
+          \]</div>
+          <p>对 mean-zero \(f\)，相应的 \(\dot H^{-1/2}\) 重建当且仅当在所有非零可容许频率上 \(A(k)\geq a_0|k|^{-1}\)。特别地，若 \(L^2\) lower-frame 条件覆盖涡量的全部非零可容许频率，且固定 \(P\) 的绝对残差 \(R_P\in L_t^2\)，则</p>
+          <div class="equation">\[
+            \|P\omega\|_{L^4(0,T;L^2)}^4
+            \leq a_0^{-2}\|R_P\|_{L^2(0,T)}^2.
+          \]</div>
+          <p>这是一座真实但有条件的线性桥。有限相邻尺度通常不满足全频下界；完整 Littlewood–Paley square function 才可能满足相应覆盖条件。</p>
+        </section>
+
+        <section id="direction"><div class="section-no">06 / Variable direction and literature</div><h2>主方向随时空变化后，交换子成为新的核心项</h2>
+          <p>若 \(P=P_{v^\perp}(x,t)\)，标量滤波不再与乘法投影交换：</p>
+          <div class="equation result">\[
+            T_j(P\omega)=P\,T_j\omega+[T_j,P]\omega.
+          \]</div>
+          <p>一条有效路线至少还要同时给出：全频覆盖、绝对残差的 \(L_t^2\) 控制、统一主谱隙、\(\nabla Q/E\) 控制、方向定向或投影版本，以及跨尺度可求和的交换子估计。缺少任何一项，都不能把过滤协方差直接代入现有继续性判据。</p>
+          <p><a href="https://ejde.math.txstate.edu/Volumes/1999/05/chae.pdf">Chae–Choe</a> 使用固定全局方向下的两个未过滤涡量分量；<a href="https://doi.org/10.1090/bproc/74">Miller</a> 使用空间 Lipschitz 的可变单位方向与临界 \(L_t^4L_x^2\) 条件；<a href="https://iumj.org/article/3627/">Constantin–Fefferman</a> 使用高涡量区域的点态方向相干。平均协方差不能在没有新桥梁时替代这些假设。</p>
+          <p>这里的精确反例位于 \(\mathbb T^3\)，而 Miller 的原定理陈述于 \(\mathbb R^3\)。要把它作为下游定理使用，必须先引用或证明周期版本，或把整个桥重建在全空间。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>高频响应、重建失稳与谱区域</h2>
+          <figure><img src="/figures/r0-70o-rank-bridge.svg" alt="R0.70O 高频滤波响应、临界重建失稳和协方差谱三分区"><figcaption>图 R0.70O。A：对 Bessel 滤波器，响应 \(A(N)=(1+N^2)^{-2}\) 与观测残差 \(A(N)/4\) 都按 \(N^{-4}\) 衰减。B：尖锐重建比值 \(1/A(N)=(1+N^2)^2\) 发散。C：在 \(x=\lambda_3/E\)、\(y=(\lambda_2+\lambda_3)/E\) 的可行域内，\(\delta=1/20\)、\(\eta=2/5\) 给出互斥的强制、近线与近面区域。全部曲线来自闭式公式，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-70o-rank-bridge.pdf">下载矢量 PDF</a> · <a href="/figures/r0-70o-rank-bridge.png">下载 600 dpi PNG</a> · <a href="/figures/r0-70o-rank-bridge.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>这一步把“几何上接近”与“分析上可重建”分开了</h2>
+          <p>近线谱确实提取出一个与两横向涡量分量相似的几何量；这是此前多尺度 frame 路线留下的有效部分。但有限平滑观测会丢失高频，谱残差再小也不自动控制未过滤临界范数。</p>
+          <p>这项结果的价值主要是路线筛选。我现在可以停止寻找“有限滤波残差直接推出临界方向条件”的统一不等式，并把注意力移到两个可审计的缺口：全频下框架和变方向交换子。它也给出一个正面定理，准确说明需要补回什么信息。</p>
+          <p>这不是千禧年问题的实质性解答。它没有缩小所有可能奇性的集合，也没有排除奇性；它只关闭了当前协方差观测方案中的一个自然但错误的推理。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next route</div><h2>R0.70P 先做纯调和分析桥，再检查 NSE 是否能传播它的假设</h2>
+          <p>下一阶段先证明一个条件定理：在全频标量 frame、统一主谱隙、绝对近线残差 \(L_t^2\) 控制，以及尺度可求和的 \([T_j,P_{v^\perp}]\omega\) 估计下，推出未过滤横向涡量属于 \(L_t^4L_x^2\)。</p>
+          <p>随后逐项检查这些假设是否能从局部协方差 PDE 账本传播，而不是把目标临界范数换一种写法重新假设。如果交换子估计不可避免地循环使用目标范数，这条路线就应停止。这个代数与调和分析门槛完成以前，不需要启动大型 DNS。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">10 / Claim boundary</div><h2>关闭的是高频盲观测的统一直接桥，不是方向正则性问题</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>谱三分法与投影谱隙</strong><p>三个区域互斥完备，最佳平面与最佳直线残差精确。</p></div>
+            <div class="status"><span>PROVED</span><strong>光滑定量重建障碍</strong><p>观测残差趋零，未过滤横向临界范数保持常数。</p></div>
+            <div class="status"><span>PROVED</span><strong>固定投影下框架定理</strong><p>全频响应下界给出正确的条件性 \(L_t^4L_x^2\) 桥。</p></div>
+            <div class="status"><span>OPEN</span><strong>变方向与 NSE 传播</strong><p>交换子、空间正则性、方向定向和源项闭合尚未完成。</p></div>
+          </div>
+          <p>光滑序列只排除统一定量重建；compact-band 例子只给出粗糙初始端点的定性失败；当前计算也不排除固定正延迟估计。</p>
+          <p>本版本没有得到新的继续性判据、奇性构造或全局光滑性定理，也没有解决千禧年问题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>精确生产器、原始文献审计、独立复核和正式图包全部封存</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070o_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070o_literature_audit.md">查看有界原始文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070o_independent_audit.md">查看独立内部复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070o">查看精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070o-rank-bridge/fig-r070o-rank-bridge">查看正式期刊附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器认证五组有限符号、有理数、Fourier 与积分恒等式；任意测度上的 Rayleigh–Ritz、无限 dyadic 级数和任意滤波符号的下框架充要性由解析证明承担。独立复核重新运行生产器，并得到与归档文件相同的 SHA-256。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确反例、条件正例、文献边界与开放桥梁分开记录。</div><div>R0.70O · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

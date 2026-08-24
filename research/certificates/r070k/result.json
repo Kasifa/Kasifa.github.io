@@ -1,0 +1,153 @@
+{
+  "arithmetic": "exact SymPy polynomial, rational, matrix, and exponential differentiation",
+  "axisymmetricModel": {
+    "correlation": "(3*p-1)/2",
+    "isotropicInitialAnisotropyNormSquare": "2*q(t)**2/3",
+    "isotropicInitialCorrelation": "q(t)=(exp(3*t)-1)/(exp(3*t)+2)",
+    "limit": "q(t) increases from 0 to 1 and B approaches the rank-one vertex",
+    "production": "9*p*(1-p)/2=(1+2*q)*(1-q)",
+    "replicatorEquation": "dp/dt=3*p*(1-p)",
+    "shape": "diag((1-p)/2,(1-p)/2,p)",
+    "source": "diag(-1/2,-1/2,1)",
+    "variance": "9*p*(1-p)/4"
+  },
+  "burgersVortex": {
+    "anisotropyNormSquare": "2/3",
+    "backgroundStrain": "gamma*diag(-1/2,-1/2,1)",
+    "balance": "stationarity forces transport, viscosity, and subfilter/cutoff terms to balance the positive raw stretching in the complete filtered identity",
+    "boundary": "exact self-consistent stationary NSE solution but not a Leray finite-energy field because the background strain grows linearly and the tube is axial",
+    "normalizedAnisotropy": "diag(-1/3,-1/3,2/3)",
+    "normalizedShape": "e3 tensor e3",
+    "rawResolvedStretchingTrace": "2*gamma*E>0",
+    "sourceCorrelation": "gamma>0",
+    "swirl": "2*nu*omega_peak*(1-exp(-gamma*rho**2/(4*nu)))/(gamma*rho)",
+    "vorticity": "omega_peak*exp(-gamma*rho**2/(4*nu))*e3"
+  },
+  "checkDetails": {
+    "axisymmetricModel": {
+      "axisAnisotropyNormFormula": true,
+      "compressivePlaneIsStationary": true,
+      "correlationFormula": true,
+      "extensionalAxisIsStationary": true,
+      "isotropicCorrelationSolvesVarianceOde": true,
+      "isotropicSolutionFormula": true,
+      "probabilitySolvesReplicator": true,
+      "productionAsCorrelationPolynomial": true,
+      "varianceFormula": true
+    },
+    "burgersVortex": {
+      "filteredAxialShapeIsRankOne": true,
+      "frozenSourceVarianceVanishesOnEigenstate": true,
+      "normalizedAnisotropyIsMaximal": true,
+      "sourceCorrelationIsPositive": true,
+      "stationaryAxialVorticityBalance": true,
+      "swirlCurlRecoversGaussianVorticity": true
+    },
+    "normalization": {
+      "anisotropyIsTraceFree": true,
+      "masterDerivativeIsTraceFree": true,
+      "scalarAmplitudeChangeCancels": true,
+      "shapeHasUnitTrace": true,
+      "shapeIsSymmetric": true,
+      "sourceIsSymmetric": true,
+      "sourceIsTraceFree": true
+    },
+    "periodicShear": {
+      "anisotropyDerivativeFormula": true,
+      "anisotropyNormFormula": true,
+      "negativeWitnessAtPOneFifth": true,
+      "nonlinearityVanishesBecauseOnlyZDependenceAndZeroVerticalVelocity": true,
+      "positiveWitnessAtPFourFifths": true,
+      "probabilityReplicator": true,
+      "velocitySolvesHeatEquation": true,
+      "vorticityFormula": true
+    },
+    "realizability": {
+      "anisotropySquareIdentity": true,
+      "isotropicNormIsZero": true,
+      "planeSourceCorrelation": true,
+      "rankOneSharpNorm": true,
+      "rankOneSourceCorrelation": true,
+      "twoComponentNorm": true
+    },
+    "sourceVariance": {
+      "correlationDerivativeIsTwiceVariance": true,
+      "sourceProductionMatchesMaster": true,
+      "varianceHasCenteredSquareForm": true
+    }
+  },
+  "checks": {
+    "axisymmetricModel": true,
+    "burgersVortex": true,
+    "normalization": true,
+    "periodicShear": true,
+    "realizability": true,
+    "sourceVariance": true
+  },
+  "claimBoundary": {
+    "analyticNotComputerProved": "positive-semidefinite covariance positivity, the full filtered tensor identity from integration by parts, the complete three-dimensional Burgers velocity-pressure verification, small-data NSE continuity, and completeness of the literature search",
+    "notClaimed": "an energy-only bound for the raw core magnitude, a favorable sign for source evolution or pressure, a fixed-positive-terminal-time finite-energy cascade, blow-up, global regularity, or a Millennium solution",
+    "proved": "the normalized covariance identity, the frozen-source variance law, the exact axisymmetric replicator solution, sharp realizability examples, the Burgers scalar vorticity balance, the exact periodic two-mode shear sign pair, and scaling/homogeneity ledgers"
+  },
+  "frozenSourceVarianceLaw": {
+    "centeredSquare": "tr(R*(Sigma-q*I)**2)",
+    "correlation": "q=Sigma:B=Sigma:R",
+    "correlationDerivative": "dq/dt=2*(tr(R*Sigma**2)-q**2)",
+    "equality": "the support of R lies in one eigenspace of Sigma",
+    "shapeEquation": "dR/dt=Sigma*R+R*Sigma-2*(Sigma:R)*R",
+    "sign": "nonnegative for R positive semidefinite with trace one",
+    "sourceFlux": "F_S=Sigma*Q+Q*Sigma"
+  },
+  "homogeneityLedger": {
+    "normalizedAnisotropyB[epsilon*u]": "B[u]",
+    "normalizedCorrelationK[epsilon*u]": "epsilon*K[u]",
+    "rawCovarianceQ[epsilon*u]": "epsilon**2*Q[u]",
+    "rawCubicWorkJ[epsilon*u]": "epsilon**3*J[u]",
+    "sourceFunctionalSigma[epsilon*u]": "epsilon*Sigma[u]"
+  },
+  "masterIdentity": {
+    "amplitudeCancellation": "F=lambda*Q implies dB/dt=0",
+    "enstrophyTrace": "E=tr(Q)>0",
+    "evolution": "dB/dt=(dev(F)-B*tr(F))/E where F=dQ/dt",
+    "normalizedAnisotropy": "B=Q/E-I/3=A/E",
+    "normalizedShape": "R=Q/E",
+    "rawCovariance": "Q=int chi Omega tensor Omega",
+    "rawDeviatoricMoment": "A=dev(Q)"
+  },
+  "periodicShear": {
+    "anisotropyNormDerivative": "12*nu*p*(1-p)*(2*p-1)",
+    "anisotropyNormSquare": "2*p**2-2*p+2/3",
+    "conclusion": "after trace normalization, viscous evolution alone has no universal sign for anisotropy magnitude",
+    "nonlinearity": "zero identically, so this is an exact periodic Navier-Stokes heat solution",
+    "oppositeSigns": "+144*nu/125 at p=4/5 and -144*nu/125 at p=1/5",
+    "probability": "p=A**2*exp(-2*nu*t)/(A**2*exp(-2*nu*t)+B**2*exp(-8*nu*t))",
+    "shape": "diag(p,1-p,0)",
+    "velocity": "(B*exp(-4*nu*t)*sin(2*z)/2,-A*exp(-nu*t)*sin(z),0)",
+    "vorticity": "(A*exp(-nu*t)*cos(z),B*exp(-4*nu*t)*cos(2*z),0)"
+  },
+  "realizability": {
+    "eigenvalueBounds": "-1/3 <= eigenvalue(B) <= 2/3",
+    "frobeniusBound": "abs(Sigma:B) <= sqrt(2/3)*abs(Sigma)_F",
+    "interpretation": "energy gives bounded shape but no small anisotropy defect",
+    "normBound": "0 <= tr(B**2) <= 2/3",
+    "sharpState": "R=e3 tensor e3",
+    "sourceCorrelationBounds": "lambda_min(Sigma) <= Sigma:B <= lambda_max(Sigma)"
+  },
+  "release": "R0.70K",
+  "scalingLedger": {
+    "criticalMoment_rQ": "1",
+    "dimensionlessCorrelationR2SigmaColonB": "1",
+    "instantaneousRawPairingSigmaColonA": "r**(-3)",
+    "localizedEnstrophyTraceE": "r**(-1)",
+    "localizedRawCovarianceQ": "r**(-1)",
+    "normalizedAnisotropyB": "1",
+    "normalizedShapeR": "1",
+    "parabolicWindowRawPairing": "r**(-1)",
+    "rawDeviatoricMomentA": "r**(-1)",
+    "sourceCorrelationSigmaColonB": "r**(-2)",
+    "sourceStrainSigma": "r**(-2)",
+    "velocity": "r**(-1)",
+    "vorticity": "r**(-2)"
+  },
+  "status": "exact-normalized-anisotropy-evolution-audit"
+}

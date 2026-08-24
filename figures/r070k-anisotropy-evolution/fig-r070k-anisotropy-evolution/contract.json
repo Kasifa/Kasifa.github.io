@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070k-anisotropy-evolution",
+  "release": "R0.70K",
+  "analyticalQuestion": "Does trace normalization turn localized vorticity anisotropy into a dissipative source-aware variable?",
+  "takeaway": "No. A frozen axisymmetric strain drives isotropic covariance monotonically toward the rank-one extensional state, while an exact periodic Navier-Stokes shear shows that normalized viscous anisotropy production has either sign.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG with co-generated vector PDF and SVG outputs and integrity hash checks"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "long-form evaluations of three closed-form normalized-anisotropy identities",
+    "rowCount": 483,
+    "parameters": {
+      "panelA_timePoints": 121,
+      "panelA_timeRange": [0, 4],
+      "panelB_correlationPoints": 151,
+      "panelB_correlationRange": [-0.5, 1],
+      "panelC_probabilityPoints": 201,
+      "panelC_probabilityRange": [0, 1],
+      "summaryRows": 10,
+      "panelC_viscosityNormalization": "nu=1"
+    },
+    "provenance": "closed-form R0.70K covariance, variance, and periodic heat-shear formulas; no fitted values and no sampled PDE simulation"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "trend",
+      "variant": "exact frozen-source trajectory from isotropic covariance",
+      "range": "t in [0,4]",
+      "question": "What does a fixed axisymmetric strain do to an initially isotropic normalized covariance?",
+      "takeaway": "The axial weight and source correlation increase monotonically toward one; the anisotropy norm approaches its sharp rank-one value 2/3."
+    },
+    {
+      "id": "B",
+      "family": "trend",
+      "variant": "frozen-source variance production",
+      "range": "q in [-1/2,1]",
+      "question": "Is the resolved source contribution damping?",
+      "takeaway": "Its exact production (1+2q)(1-q) is nonnegative and vanishes only at the source eigenspace endpoints."
+    },
+    {
+      "id": "C",
+      "family": "trend",
+      "variant": "exact periodic Navier-Stokes diffusion sign gate",
+      "range": "p in [0,1]",
+      "question": "Does viscosity monotonically reduce normalized anisotropy?",
+      "takeaway": "No. The exact derivative 12 nu p(1-p)(2p-1) is negative below p=1/2 and positive above p=1/2, with the certified witnesses at p=1/5 and p=4/5."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "negative, isotropic-reference, or shape quantities",
+      "rust": "positive source alignment and anisotropy production"
+    },
+    "nonColorDistinction": "solid versus dashed strokes, open versus filled markers, signed fills, direct labels, zero baselines, and panel separation"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT ANALYTIC IDENTITIES / NOT DNS / NOT A REGULARITY OR BLOW-UP RESULT",
+    "scope": "Panel A is the source-only normalized covariance ODE; panel B is its exact variance law; panel C is an exact periodic Navier-Stokes heat solution.",
+    "notClaimed": [
+      "a DNS run or fitted turbulence model",
+      "a finite-energy R3 fixed-positive-time cascade",
+      "an energy-only control of raw localized enstrophy",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070i-temporal-hardy",
+  "release": "R0.70I",
+  "analyticalQuestion": "What temporal singularity remains after summing the finite nested-scale chain in the direct source-core estimate, and why is the resulting energy-only route critical?",
+  "takeaway": "The normalized finite-chain envelope is min(r_K^(-1),s^(-1/2)); the scalar model f=s^(-alpha) has the sharp integrability threshold alpha=1/4, while fixed-amplitude initial-boundary NSE scaling makes E and D order r but both the target-functional scale factor and r^(-3)E^2 order r^(-1).",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG with vector PDF and SVG parity and hash checks"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "long-form closed-form evaluations for panels A, B, and C",
+    "rowCount": 138,
+    "parameters": {
+      "panelA_r0": 1,
+      "panelA_rho": "1/4",
+      "panelA_K": 6,
+      "panelA_rK": "2^(-12)",
+      "panelB_alphas": [
+        "3/20",
+        "1/4",
+        "7/20"
+      ],
+      "panelC_amplitude": "1/8",
+      "panelC_profileConstants": "normalized to one"
+    },
+    "provenance": "closed-form R0.70I temporal-envelope, Hardy-integral, and initial-boundary scale ledgers; no fitted values or trajectory samples"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "trend",
+      "variant": "base-two log-log finite-chain envelope",
+      "range": "s=2^(-j), j=0,...,32",
+      "question": "Where does the finite finest scale truncate the s^(-1/2) temporal singularity?",
+      "takeaway": "The Hardy regime persists for s at least r_K^2, while the chain saturates at r_K^(-1) below that time."
+    },
+    {
+      "id": "B",
+      "family": "trend",
+      "variant": "exact truncated Hardy integrals",
+      "range": "epsilon=2^(-J), J=2,...,32",
+      "question": "For f(s)=s^(-alpha), where is the scalar weighted-integrability endpoint?",
+      "takeaway": "The integral is bounded for alpha below 1/4, logarithmic at alpha=1/4, and power divergent above 1/4."
+    },
+    {
+      "id": "C",
+      "family": "trend",
+      "variant": "fixed-amplitude initial-boundary scale ledger",
+      "range": "r=2^(-k), k=1,...,12",
+      "question": "Does energy-class scaling match the negative dual scale weight?",
+      "takeaway": "At fixed a=1/8, E and integrated D scale as r, whereas the normalized target scale factor and r^(-3)E^2 both scale as a^4 r^(-1); coincident unit-profile scale factors do not identify the two functionals."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "Hardy reference, subcritical behavior, and energy-class quantities",
+      "rust": "finite-chain cap, supercritical behavior, and focal inverse-scale quantities"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted strokes, filled versus open markers, neutral ink, direct labels, and panel separation"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "CLOSED-FORM ANALYTIC SCALING / NOT A SIMULATED NSE TRAJECTORY / NOT A FIXED-POSITIVE-TOP COUNTEREXAMPLE",
+    "scope": "Panel A is a normalized envelope for the crude direct estimate, and panel C is a fixed-amplitude initial-boundary scale ledger.",
+    "notClaimed": [
+      "a simulated Navier-Stokes trajectory",
+      "a fixed-positive-top counterexample",
+      "nonlinear persistence to a common terminal time",
+      "an energy-only bound for the complete positive-part functional",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

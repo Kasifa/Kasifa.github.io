@@ -1,0 +1,224 @@
+{
+  "checks": {
+    "alphaQuarterThreshold": true,
+    "alphaThresholdSamples": true,
+    "finiteKernelMinBound": true,
+    "finiteKernelPiecewiseLedger": true,
+    "fixedEnergyHeatTargetIsRMinus3": true,
+    "frozenLowMixedScaleLedger": true,
+    "generalRhsForcedGamma": true,
+    "generalRhsSamples": true,
+    "heatScalingLedger": true,
+    "isotropicTraceFreeContraction": true,
+    "nseInitialBoundaryScaling": true,
+    "overlapFineFactors": true
+  },
+  "claimBoundary": {
+    "finiteRegression": "the kernel computation is exact for rho in {1/2,1/3,2/5}, K=0,...,8, and rational representatives of every shell, fine tail, and fine endpoint; it is not an all-K computer proof",
+    "initialBoundary": "the Navier--Stokes scaling ledger uses r_0=r, t_0=r^2 and therefore follows a family whose terminal time collapses to the initial face as r tends to zero",
+    "notClaimed": "a common-positive-top counterexample, singularity formation, large-data regularity, theorem nonexistence, or a Millennium solution",
+    "notComputerProved": "the all-scale Hardy bound, the full lower-triangular LP convolution, realization of the scalar power-law profile by a Navier--Stokes solution, the Kato expansion and nondegenerate base-moment lower bound, or nonlinear persistence",
+    "notNseCommonTop": "neither the fixed-energy heat scaling nor the small-amplitude Navier--Stokes initial-layer scaling constructs concentration along one unforced Leray/Navier--Stokes solution trajectory at one fixed positive terminal time uniformly separated from its initial face; the NSE family members all start at t=0 but have different rescaled data and solutions, with tops t_0=r^2 tending to zero"
+  },
+  "frozenLowMixedScale": {
+    "currentBandLedger": {
+      "combined": "r_k^(-1/2)",
+      "curlBand": "||B_k||_2 <= r_k^(-1)||V_k||_2",
+      "cutoffWeight": "r_k^(-1)",
+      "finalOuterPower": "-3/2",
+      "frozenVorticityBernstein": "r_0^(-3/2)||omega||_2",
+      "sourceHalfWeight": "r_k^(-1/2)|c_k|",
+      "supportSquareRoot": "r_k^(3/2)"
+    },
+    "interpretation": "both the frozen-low/annular same-index ledger and frozen low--low absolute estimates close with the report's outer factor r_0^(-3/2)",
+    "lowLowLedger": {
+      "cauchyCompanion": "r_k^(5/2)",
+      "finalOuterPower": "-3/2",
+      "geometricSquareRootOuterPower": "5/2",
+      "geometricSquareSum": "sum r_k^5",
+      "lowVelocityBernstein": "r_0^(-5/2)||u||_2",
+      "lowVelocityBernsteinSquaredPower": "-5",
+      "spatialWeight": "r_k^2",
+      "timeIntervalSquareRootPower": "1"
+    },
+    "scopeBoundary": "only the outer frozen low L_0=P_(<=c/r_0)omega is covered; the producer checks the same-index exponent, while the report's full lower-triangular array uses the analytic r_k/r_j geometric convolution; the moving-low sum is excluded; physical cutoffs are retained and window indicators only reduce the absolute integral"
+  },
+  "generalHomogeneousRhs": {
+    "candidate": "r_0^(-gamma)*E^p*D^q",
+    "forcedGamma": "p+q+1",
+    "nseScaleExponent": "p+q-gamma",
+    "samples": {
+      "p0q1": {
+        "forcedGamma": "2",
+        "p": "0",
+        "q": "1",
+        "resultingScaleExponent": "-1"
+      },
+      "p0q2": {
+        "forcedGamma": "3",
+        "p": "0",
+        "q": "2",
+        "resultingScaleExponent": "-1"
+      },
+      "p1/2q1/2": {
+        "forcedGamma": "2",
+        "p": "1/2",
+        "q": "1/2",
+        "resultingScaleExponent": "-1"
+      },
+      "p1q0": {
+        "forcedGamma": "2",
+        "p": "1",
+        "q": "0",
+        "resultingScaleExponent": "-1"
+      },
+      "p1q1": {
+        "forcedGamma": "3",
+        "p": "1",
+        "q": "1",
+        "resultingScaleExponent": "-1"
+      },
+      "p2q0": {
+        "forcedGamma": "3",
+        "p": "2",
+        "q": "0",
+        "resultingScaleExponent": "-1"
+      }
+    },
+    "targetScaleExponent": "-1"
+  },
+  "heatScaling": {
+    "ansatz": "u^(A,r)(x,t)=A*v(x/r,t/r^2)",
+    "coreTarget": "A^4*r^3",
+    "criticalMoment": "A^2*r^2",
+    "degreeNMoment": "A^2*r^(n+1)",
+    "energy": "A^2*r^3",
+    "equationBoundary": "A=r^(-3/2) is a linear heat/Stokes scaling and is not the Navier--Stokes invariant amplitude",
+    "fixedEnergyInitialLayer": {
+      "amplitude": "r^(-3/2)",
+      "criticalMomentScale": "1/r",
+      "dissipationScale": "1",
+      "energyScale": "1",
+      "targetScale": "r**(-3)"
+    },
+    "integratedEnstrophy": "A^2*r^3"
+  },
+  "isotropicTraceFree": {
+    "anisotropicBoundary": "trace freedom cancels only the isotropic tensor; the witness diag(1,0,0) contracts to s11 and need not vanish",
+    "contraction": "0",
+    "identity": "(q*I):S=q*trace(S)=0 for trace-free S"
+  },
+  "nseScaling": {
+    "amplitudeBoundary": "the exact producer checks exponents; the analytic small-amplitude lower bound T[v^a]>=c*a^4 requires a nondegenerate base moment",
+    "ansatz": "u^(a,r)(x,t)=r^(-1)*v^a(x/r,t/r^2)",
+    "coreTarget": "a**4/r",
+    "criticalMoment": "a**2",
+    "energy": "a**2*r",
+    "integratedEnstrophy": "a**2*r",
+    "outerRadiusAndTop": "r_0=r and t_0=r^2",
+    "outerScaleEnergySquare": "a**4/r"
+  },
+  "release": "R0.70I",
+  "status": "exact-finite-temporal-hardy-scaling-audit",
+  "temporalHardyKernel": {
+    "KRange": "0,...,8",
+    "analyticBoundary": "the producer samples every shell, the strict fine tail, and the fine endpoint for K<=8; the all-K geometric proof is not a finite regression claim",
+    "definition": "G_K(s)=sum_{k=0}^{K-1} r_k^(-1)1_{s<r_(k+1)^2} +sum_{k=0}^{K-1} r_k^(-1)1_{r_(k+1)^2<=s<r_k^2} +r_K^(-1)1_{s<r_K^2}",
+    "finiteRegionCasesChecked": 162,
+    "majorant": "G_K(s)<=C_rho*min(r_K^(-1),s^(-1/2))",
+    "overlapFineSquaredFactors": {
+      "rho1_2Degree0": "1/4",
+      "rho1_2Degree1": "1/16",
+      "rho1_3Degree0": "1/9",
+      "rho1_3Degree1": "1/81",
+      "rho2_5Degree0": "4/25",
+      "rho2_5Degree1": "16/625"
+    },
+    "ratios": [
+      "1/2",
+      "1/3",
+      "2/5"
+    ],
+    "records": {
+      "rho1_2": {
+        "representativeK8": {
+          "K": 8,
+          "fineEndpointContribution": "256",
+          "fineTailKernel": "511",
+          "fineTailSample": "1/131072",
+          "kernelAtMeasureZeroBoundary": "255",
+          "rKInverse": "256",
+          "rKSquared": "1/65536"
+        },
+        "rho": "1/2",
+        "uniformGeometricConstant": "2"
+      },
+      "rho1_3": {
+        "representativeK8": {
+          "K": 8,
+          "fineEndpointContribution": "6561",
+          "fineTailKernel": "9841",
+          "fineTailSample": "1/86093442",
+          "kernelAtMeasureZeroBoundary": "3280",
+          "rKInverse": "6561",
+          "rKSquared": "1/43046721"
+        },
+        "rho": "1/3",
+        "uniformGeometricConstant": "3/2"
+      },
+      "rho2_5": {
+        "representativeK8": {
+          "K": 8,
+          "fineEndpointContribution": "390625/256",
+          "fineTailKernel": "650871/256",
+          "fineTailSample": "32768/152587890625",
+          "kernelAtMeasureZeroBoundary": "130123/128",
+          "rKInverse": "390625/256",
+          "rKSquared": "65536/152587890625"
+        },
+        "rho": "2/5",
+        "uniformGeometricConstant": "5/3"
+      }
+    },
+    "uniformConstant": "C_rho=1/(1-rho)"
+  },
+  "temporalThreshold": {
+    "atCriticality": "1/2+2*(1/4)=1, hence logarithmic divergence",
+    "criticalAlpha": "1/4",
+    "lerayBoundary": "alpha<1 gives scalar L1 integrability, while the weighted core majorant requires alpha<1/4",
+    "profile": "f(t0-s)=s^(-alpha)",
+    "samples": {
+      "alpha0_1": {
+        "alpha": "0",
+        "scalarLerayL1Integrable": true,
+        "weightedExponent": "1/2",
+        "weightedL2Integrable": true
+      },
+      "alpha1_3": {
+        "alpha": "1/3",
+        "scalarLerayL1Integrable": true,
+        "weightedExponent": "7/6",
+        "weightedL2Integrable": false
+      },
+      "alpha1_4": {
+        "alpha": "1/4",
+        "scalarLerayL1Integrable": true,
+        "weightedExponent": "1",
+        "weightedL2Integrable": false
+      },
+      "alpha1_8": {
+        "alpha": "1/8",
+        "scalarLerayL1Integrable": true,
+        "weightedExponent": "3/4",
+        "weightedL2Integrable": true
+      },
+      "alpha3_4": {
+        "alpha": "3/4",
+        "scalarLerayL1Integrable": true,
+        "weightedExponent": "2",
+        "weightedL2Integrable": false
+      }
+    },
+    "weightedIntegrandPower": "s^(-(1/2+2*alpha))"
+  }
+}

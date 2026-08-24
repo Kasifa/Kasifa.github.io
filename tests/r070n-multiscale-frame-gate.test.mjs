@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import test from "node:test";
@@ -10,6 +10,10 @@ const execFileAsync = promisify(execFile);
 const root = new URL("../", import.meta.url);
 const research = new URL("research/", root);
 const certificateRoot = new URL("certificates/r070n/", research);
+const figureRoot = new URL(
+  "figures/r070n-multiscale-frame/fig-r070n-multiscale-frame/",
+  root,
+);
 
 test("locks the R0.70N scope, no-go, and next route", async () => {
   const report = await readFile(new URL("r070n_report-source.md", research), "utf8");
@@ -196,5 +200,76 @@ test("locks every R0.70N certificate payload by SHA-256", async () => {
     const payload = await readFile(new URL(match[2], certificateRoot));
     const actual = createHash("sha256").update(payload).digest("hex");
     assert.equal(actual, match[1], match[2]);
+  }
+});
+
+test("archives the R0.70N formal figure package and exact validation", async () => {
+  const files = (await readdir(figureRoot)).sort();
+  const expectedFiles = [
+    "caption.md",
+    "contract.json",
+    "data.csv",
+    "figure-contract.md",
+    "figure.pdf",
+    "figure.png",
+    "figure.svg",
+    "manifest.json",
+    "plot.py",
+    "validation.json",
+  ].sort();
+  assert.deepEqual(files, expectedFiles);
+
+  const manifest = JSON.parse(
+    await readFile(new URL("manifest.json", figureRoot), "utf8"),
+  );
+  const validation = JSON.parse(
+    await readFile(new URL("validation.json", figureRoot), "utf8"),
+  );
+  const contract = JSON.parse(
+    await readFile(new URL("contract.json", figureRoot), "utf8"),
+  );
+  const caption = await readFile(new URL("caption.md", figureRoot), "utf8");
+
+  assert.equal(manifest.figureId, "fig-r070n-multiscale-frame");
+  assert.equal(manifest.release, "R0.70N");
+  assert.equal(manifest.status, "formal");
+  assert.equal(
+    manifest.git.commit,
+    "483b4128e3c53df7d95f483eec3df41926050fb0",
+  );
+  assert.equal(manifest.outputs.length, 8);
+  const source = await readFile(new URL(manifest.source, figureRoot));
+  assert.equal(
+    createHash("sha256").update(source).digest("hex"),
+    manifest.sourceSha256,
+  );
+  assert.equal(
+    manifest.sourceData[0].sha256,
+    "a652ae1264af52fc5e36c937f33dd0abeabaa18102b127c6a13b5b188ba7a440",
+  );
+  assert.match(manifest.claimBoundary, /not DNS[\s\S]{0,180}not a low-rank regularity theorem/i);
+
+  assert.equal(validation.status, "passed");
+  assert.ok(Object.values(validation.checks).every((value) => value === true));
+  assert.equal(validation.diagnostics.dataRows, 553);
+  assert.deepEqual(validation.diagnostics.shearNormalizedSpectrum, [0, 0, 1]);
+  assert.deepEqual(validation.diagnostics.oneAxisNormalizedSpectrum, [0, 0.5, 0.5]);
+  assert.deepEqual(
+    validation.diagnostics.balancedTwoAxisNormalizedSpectrum,
+    [0.25, 0.25, 0.5],
+  );
+  assert.equal(validation.diagnostics.balancedOrthogonalFrameConstant, 0.25);
+  assert.equal(validation.diagnostics.gaussianFrameConstantAtL1, 0.1);
+  assert.ok(validation.diagnostics.gaussianFrameConstantAtL100 < 1.3e-5);
+  assert.match(validation.visualQa.originalResolution, /passed/i);
+  assert.match(validation.visualQa.grayscale, /passed/i);
+
+  assert.equal(contract.data.rowCount, 553);
+  assert.match(contract.takeaway, /exact periodic shear/i);
+  assert.match(caption, /balanced\s+two-axis helical control/i);
+  assert.match(caption, /1\/\(8L\^2\+2\)/);
+  for (const name of ["figure.pdf", "figure.svg", "figure.png"]) {
+    const info = await stat(new URL(name, figureRoot));
+    assert.ok(info.size > 10_000, name);
   }
 });

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070n-multiscale-frame",
+  "release": "R0.70N",
+  "analyticalQuestion": "Can nonnegative scalar-filtered vorticity covariances across scales, centers, or times provide a universal positive three-dimensional frame?",
+  "takeaway": "No. Exact periodic shear and one-axis helical solutions retain a common nullspace at every scalar scale. Positive definiteness requires genuine nonparallel directional content and has no solution-independent lower constant, even for smooth full-rank three-dimensional data.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG plus a grayscale rendering, with co-generated vector PDF and SVG and integrity hashes"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "nine exact normalized eigenvalues, 396 closed two-axis frame evaluations, 100 exact whole-space Gaussian quotients, and 48 exact positive-aggregation states",
+    "rowCount": 553,
+    "provenance": "closed formulas and exact NSE witnesses certified by research/r070n_multiscale_frame_audit.py; no random sampling, fitting, DNS, or PDE time stepping"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "normalized spectrum comparison",
+      "variant": "rank-one, rank-two, and two-axis positive control",
+      "question": "What directional rank is present in the exact witnesses?",
+      "takeaway": "Shear has spectrum (0,0,1), one-axis helical covariance has (0,1/2,1/2), and the balanced two-axis control has (1/4,1/4,1/2)."
+    },
+    {
+      "id": "B",
+      "family": "parameter comparison",
+      "variant": "two-axis helical frame constant",
+      "question": "What quantitative directional escape is sufficient?",
+      "takeaway": "The lower frame depends jointly on axis angle and observed energy balance; counting modes alone is insufficient."
+    },
+    {
+      "id": "C",
+      "family": "asymptotic trend",
+      "variant": "whole-space full-rank Gaussian family",
+      "question": "Does smooth full-rank three-dimensional data give a uniform constant?",
+      "takeaway": "No. The exact quotient is 1/(8L^2+2), tending to zero while every finite-L covariance is positive definite."
+    },
+    {
+      "id": "D",
+      "family": "aggregation comparison",
+      "variant": "positive repeated scales or time samples",
+      "question": "Can more positive observations repair a common nullspace?",
+      "takeaway": "No. Shear and one-axis helical constants remain zero for every sample count; the two-axis control is positive because of new directions, not because of count."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "rank-deficient witnesses and primary exact curves",
+      "rust": "positive directional controls and emphasized boundaries"
+    },
+    "nonColorDistinction": "solid, dashed, dotted, or dash-dot strokes; circle, square, triangle, or diamond markers; hatching; direct labels; and neutral references"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT PDE WITNESSES + ANALYTIC FRAME IDENTITIES / ROUTE NO-GO, NOT A REGULARITY OR MILLENNIUM RESULT",
+    "scope": "Universal scalar/componentwise multi-scale covariance-frame no-go, exact periodic shear and helical witnesses, exact two-axis positive control, and exact whole-space initial-data degeneration.",
+    "notClaimed": [
+      "failure of every conditional frame estimate",
+      "failure of every component-mixing or augmented observable",
+      "low covariance rank implies regularity",
+      "finite-time singularity or global regularity",
+      "a Millennium-problem solution"
+    ]
+  }
+}

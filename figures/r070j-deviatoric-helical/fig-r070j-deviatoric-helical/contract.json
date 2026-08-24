@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070j-deviatoric-helical",
+  "release": "R0.70J",
+  "analyticalQuestion": "Which parts of the deviatoric high-high contraction vanish under helicity or angular averaging, and how do the surviving source-core norms scale?",
+  "takeaway": "A pure helical mode can have pointwise coupling one with an STF source; the complete sphere cancels only the signed quadrupole while its positive part has mean sqrt(3)/9; and the critical source and core dual norms scale oppositely with a scale-invariant pairing.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG with co-generated vector PDF and SVG outputs and integrity hash checks"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "long-form closed-form evaluations for phase, direction cosine, and refinement scale",
+    "rowCount": 145,
+    "parameters": {
+      "panelA_phasePoints": 73,
+      "panelB_directionCosinePoints": 49,
+      "panelC_refinementScales": 12,
+      "panelC_Lambda": 4,
+      "panelC_amplitude": 1,
+      "panelC_profileAndTimeConstants": "normalized to one"
+    },
+    "provenance": "closed-form R0.70J helical, angular, and critical scaling formulas; no fitted values or PDE trajectory samples"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "trend",
+      "variant": "phase sweep with signed control",
+      "range": "theta in [0,2*pi]",
+      "question": "Does fixed helicity force the STF contraction to vanish through phase?",
+      "takeaway": "For S0 and either helicity the contraction is identically one; a trace-free control can have zero phase mean without being pointwise zero."
+    },
+    {
+      "id": "B",
+      "family": "distribution",
+      "variant": "signed quadrupole over direction cosine",
+      "range": "z=xi_3 in [-1,1]",
+      "question": "What remains after a complete isotropic angular average?",
+      "takeaway": "The signed mean of P2(z) is zero, but the normalized positive-part mean is sqrt(3)/9."
+    },
+    {
+      "id": "C",
+      "family": "trend",
+      "variant": "base-two log-log critical norm ledger",
+      "range": "r=2^(-k), k=1,...,12",
+      "question": "How do the source square norm, core dual square norm, and their pairing transform across scale?",
+      "takeaway": "At amplitude a=1, after normalizing fixed profile, time-integral, and Lambda factors, source norm squared scales as r, the core dual norm squared as r^(-1), and both the Cauchy product and signed pairing stay scale invariant."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "helicity-negative or signed-reference quantities",
+      "rust": "helicity-positive, positive-part, and focal pairing quantities"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted strokes, open versus filled markers, signed fills, direct labels, and panel separation"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT ANALYTIC IDENTITIES / NOT DNS / NOT A BLOW-UP OR REGULARITY RESULT",
+    "scope": "Panels A and B evaluate exact tensor formulas; panel C is a monomial critical-coordinate ledger.",
+    "notClaimed": [
+      "a numerical Navier-Stokes simulation",
+      "a self-consistent fixed-positive-terminal-time source-core trajectory",
+      "a strict compact-and-bandlimited packet",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

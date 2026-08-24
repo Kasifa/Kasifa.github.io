@@ -1,0 +1,36 @@
+{
+  "arithmetic": "exact SymPy integers, rationals, pi, radicals, and inverse trigonometric functions",
+  "checks": {
+    "directNegativePartFormula": true,
+    "exactHalfIntervalLowerBoundPositive": true,
+    "frequencyGateLowerAverage": true,
+    "frequencyGateNormalizedError": true,
+    "frequencyGateUpperAverage": true,
+    "halfAmplitudeValue": true,
+    "negativePartDerivative": true,
+    "oneDimensionalZeroLimit": true,
+    "ratioLeadingCoefficient": true,
+    "threeDimensionalZeroLimit": true
+  },
+  "claimBoundary": "This is an abstract scalar measure-theoretic obstruction. It does not realize f as Navier--Stokes flux or annular vortex stretching and does not negate PDE conclusions that use additional local balance terms.",
+  "cutoffGate": {
+    "class": "psi >= 0, integral(psi) >= m0 > 0, L1_norm(partial_1 psi) <= c1",
+    "ensembleConsequence": "every positive-weight ensemble of normalized local averages lies in the same interval",
+    "everyNormalizedLocalAverage": "delta/2 <= <f>_psi <= 3*delta/2",
+    "frequencyCondition": "N >= 2*c1/(delta*m0)",
+    "integrationByParts": "abs(integral psi*sin(N*x_1)) <= c1/N"
+  },
+  "release": "R0.70D",
+  "status": "exact-symbolic-audit",
+  "witness": {
+    "density": "f_delta_N(x) = delta + sin(N*x_1)",
+    "domain": "T^3 = [0,2*pi)^3",
+    "negativePartMass": "8*pi**2*delta*asin(delta) - 4*pi**3*delta + 8*pi**2*sqrt(1 - delta**2)",
+    "negativePartMassAtDeltaHalf": "-4*pi**3/3 + 4*sqrt(3)*pi**2",
+    "negativePartMassLimitAtZero": "8*pi**2",
+    "negativeToSignedRatio": "asin(delta)/pi - 1/2 + sqrt(1 - delta**2)/(pi*delta)",
+    "parameterRange": "0 < delta <= 1/2; N is a positive integer",
+    "ratioLeadingAsymptotic": "1/(pi*delta)",
+    "signedMass": "8*pi**3*delta"
+  }
+}

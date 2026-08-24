@@ -235,7 +235,7 @@ test("archives the R0.70M figure package and exact validation", async () => {
 
   assert.equal(manifest.figureId, "fig-r070m-deformation-holonomy");
   assert.equal(manifest.release, "R0.70M");
-  assert.ok(["draft", "formal"].includes(manifest.status));
+  assert.equal(manifest.status, "formal");
   assert.equal(manifest.outputs.length, 8);
   const source = await readFile(new URL(manifest.source, figureRoot));
   assert.equal(

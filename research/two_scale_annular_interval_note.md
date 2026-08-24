@@ -76,12 +76,17 @@ two-dimensional in \((r,s)\).
 
 No 48-node exploratory quadrature enters the certificate.  Arb encloses every
 transcendental bump evaluation.  Raw moments
-\(\int e^{-1/(1-z^2)}z^k\,dz\), \(0\le k\le5\), are bounded by one-sided
-Darboux sums with explicit outward rounding.  The convolution and its first
-three derivatives follow by integrating the corresponding beta polynomials.
+\(\int e^{-1/(1-z^2)}z^k\,dz\), \(0\le k\le5\), use a validated composite
+trapezoidal primitive.  The global bound
+\(|(z^k b(z))''|\le k^2+k+8\) follows from
+\(|b|\le1\), \(|b'|\le1\), and \(|b''|<8\), so both full cells and arbitrary
+partial endpoint cells carry explicit second-derivative error bounds.  The
+convolution and its first three derivatives then follow by integrating the
+corresponding beta polynomials.  The producer never replaces this convolution
+by floating quadrature nodes.
 
-The extended beta survival function is only \(C^2\).  Its fourth and fifth
-distributional derivatives contain endpoint masses.  The verifier includes
+The extended beta survival function is only \(C^2\).  Its fourth through sixth
+distributional derivatives contain endpoint masses.  The producer includes
 these terms explicitly:
 
 \[
@@ -96,45 +101,125 @@ these terms explicitly:
 \]
 
 After convolution, (3.1)--(3.2) become certified bump and bump-derivative
-boundary terms.  Their local ranges, rather than a global worst-case bound,
-control the third-order cubature remainder.
+boundary terms.  Differentiating once more gives
+
+\[
+ D^6S=[S^{(5)}]_a\delta_a+[S^{(5)}]_b\delta_b
+ +[S^{(4)}]_a\delta'_a+[S^{(4)}]_b\delta'_b
+ +[S^{(3)}]_a\delta''_a+[S^{(3)}]_b\delta''_b,
+ \tag{3.3}
+\]
+
+because the beta\((3,3)\) survival profile has no sixth interior derivative.
+Thus the sixth derivative of the mollified cutoff consists only of certified
+bump, bump-prime, and bump-second-derivative boundary terms.  With
+\(t=(1-u^2)^{-1}\),
+
+\[
+ b''(u)=e^{-t}(4t^4-12t^3+6t^2).
+ \tag{3.4}
+\]
+
+An exact Sturm isolation of the critical polynomial
+\(2t^3-14t^2+21t-6\), followed by Arb evaluation on its two roots above one,
+certifies \(|b''|<8\).  Rational guard bands around the corresponding
+\(|u|\approx0.610\) and \(|u|\approx0.895\) localize this bound.  These local
+ranges, rather than a global worst-case interval, control the cubature
+remainder.
 
 ## 4. Validated distance primitives and radial cubature
 
 For every \(k\) in (2.3), a composite trapezoidal primitive is enclosed using
 the exact endpoint intervals and the classical second-derivative error bound.
-Point queries use the same validated partial-cell rule.  All binary64
-arithmetic is widened with `nextafter`; accumulated endpoints use directed
-one-sided sums.
+The convolved survival cutoff is nonincreasing, so its range on each distance
+cell is enclosed by certified cubic Hermite interpolation at the two endpoints;
+this avoids repeatedly charging a full cutoff-table cell to a much smaller
+distance cell.  The interpolation remainder is bounded by
+\(\|q^{(4)}\|_\infty h^4/384\).  Point queries use the same validated
+partial-cell rule.  The distance grid has dyadic step \(2^{2-P}\), so every
+grid node is exactly representable in binary64 and is retained as a point
+interval; widening such a node would spuriously cross aligned cutoff cells.
+For the Taylor coefficients at a radial-box center, cutoff derivatives through
+order three are expanded from the nearest exact rational cutoff node.  The
+node derivatives are themselves interval-certified, the residual term uses
+the global fourth-derivative bound, and the result is intersected with the
+independent whole-cell derivative range.  Only the box-wide remainder uses the
+whole-cell derivative enclosure.  This point/range separation removes a
+purely artificial cutoff-cell width without weakening any box enclosure.
+All non-exact binary64 arithmetic is widened with `nextafter`; accumulated
+endpoints use directed one-sided sums.
 
-On each radial rectangle, the reduced integrand is expanded through total
-degree two at its midpoint.  The two diagonal Hessian terms are integrated
-exactly.  A bivariate normalized Taylor algebra propagates interval bounds for
-all total-degree-three derivatives.  If the side lengths are \(h_r,h_s\), the
-remaining average error is bounded coefficientwise by
+On each radial rectangle the producer computes two independent rigorous
+remainders.  The first is the standard total-degree-two midpoint expansion
+with a third-derivative bound.  Its average remainder is bounded by
 
 \[
- |T_{30}|\frac{h_r^3}{32}
- +|T_{21}|\frac{h_r^2h_s}{48}
- +|T_{12}|\frac{h_rh_s^2}{48}
- +|T_{03}|\frac{h_s^3}{32}.
+ M_{30}\frac{h_r^3}{32}
+ +M_{21}\frac{h_r^2h_s}{48}
+ +M_{12}\frac{h_rh_s^2}{48}
+ +M_{03}\frac{h_s^3}{32}.
  \tag{4.1}
 \]
 
+The second expansion goes through total degree three.  The two diagonal
+Hessian terms are integrated exactly, while every cubic monomial has an odd
+exponent in at least one centered coordinate and therefore integrates to zero
+exactly.  A bivariate normalized Taylor algebra propagates interval bounds for
+all total-degree-four derivatives.  Its average remainder is bounded
+coefficientwise by
+
+\[
+ |T_{40}|\frac{h_r^4}{80}
+ +|T_{31}|\frac{h_r^3h_s}{128}
+ +|T_{22}|\frac{h_r^2h_s^2}{144}
+ +|T_{13}|\frac{h_rh_s^3}{128}
+ +|T_{04}|\frac{h_s^4}{80}.
+ \tag{4.2}
+\]
+
+For every box and every amplitude coefficient the certified error is the
+smaller of (4.1) and (4.2).  This selection does not mix midpoint values or
+derivative enclosures: both bounds enclose the same exact box average.  The
+sixth cutoff derivative needed by (4.2) is supported only in the two mollified
+endpoint bands, so those bands alone receive the extra boundary refinement.
 This preserves the analytic cancellations at the box center while retaining a
 fully deterministic, non-probabilistic remainder.  The exact polynomial in
 the amplitude is propagated throughout; no amplitude sampling is used.
 
 ## 5. Certified intervals
 
-The formal source-locked run records the coefficient intervals, the
-discriminant interval, all grid parameters, progress records, resource usage,
-software versions, source hash, and Git commit in the R0.69W archive.  The
-independent checker parses the decimal endpoints as exact rational numbers and
-recomputes the interval discriminant without importing the producer.
+The formal source-locked run gives
 
-The numerical interval table and final margins are inserted from the archived
-`result.json` when the formal run completes.
+\[
+\begin{aligned}
+c_1&\in[-0.0020421027908703103,-0.0008440552534174868],\\
+c_2&\in[0.002393592617980337,0.004933596141229829],\\
+c_3&\in[-0.12676969700886406,-0.12489333880250154],\\
+\Delta&\in[-0.0010297777226174903,-0.00039732714404764783],\\
+\mathcal A_{-2}(u_0)&\in
+[-0.001947993537909744,-0.0019148502803584854].
+\end{aligned}
+\tag{5.1}
+\]
+
+Thus the strict margins from zero are at least
+`0.12489333880250154`, `0.00039732714404764783`, and
+`0.0019148502803584854` for \(c_3\), \(\Delta\), and the endpoint value,
+respectively.
+
+The locked producer commit is
+`2b3141a333d3dea0c4b7a241c11f9adbca31d1b4`.  The P22 distance primitive has
+4,194,304 cells; the other formal parameters are raw-moment P19, 2,048 cutoff
+cells, 512 transition cells, 128 core cells, 256 plateau cells, boundary
+refinement four, and 256-bit Arb endpoints.  Twenty disjoint workers completed
+with a maximum elapsed time of `1535.6651919609867` seconds and a summed worker
+time of `28877.69878333574` seconds.  Their observed peak-RSS values sum to
+`67.2967841796875` GiB.
+
+The archive records all grid parameters, progress records, resource usage,
+software versions, source hashes, and the clean Git commit.  The independent
+checker parses the decimal endpoints as exact rational numbers and recomputes
+the interval discriminant without importing the producer; all 24 checks pass.
 
 ## 6. Research value and boundary
 

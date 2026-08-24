@@ -118,22 +118,22 @@ test("keeps every R0.70L/M public figure byte-exact and links every archive", as
   }
 });
 
-test("advances the public route tree exactly through R0.70M", async () => {
+test("retains R0.70L/M while the public route advances through R0.70N", async () => {
   const home = await readFile(new URL("research-review.html", publicRoot), "utf8");
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
   const route = home.slice(start, end);
 
-  assert.match(route, /Research topology · R0\.1–R0\.70M/);
-  assert.match(route, /R0\.69P–R0\.70M/);
-  assert.match(route, /展开 12 篇公开笔记/);
+  assert.match(route, /Research topology · R0\.1–R0\.70N/);
+  assert.match(route, /R0\.69P–R0\.70N/);
+  assert.match(route, /展开 13 篇公开笔记/);
   assert.equal((route.match(/href="\/notes\/r0-70l\.html"/g) ?? []).length, 1);
   assert.equal((route.match(/href="\/notes\/r0-70m\.html"/g) ?? []).length, 1);
-  assert.match(route, /NEXT · R0\.70N/);
-  assert.match(route, /多尺度协方差 frame coercivity/);
-  assert.match(home, /综述 v0\.82 · 2026-08-24/);
-  assert.match(home, /上次综述 v0\.81 · 2026-08-24/);
-  assert.match(home, /src="\/i18n-en\.js\?v=0\.82"/);
+  assert.match(route, /NEXT · R0\.70O/);
+  assert.match(route, /协方差谱的强制—近面—近线三分法/);
+  assert.match(home, /综述 v0\.83 · 2026-08-25/);
+  assert.match(home, /上次综述 v0\.82 · 2026-08-24/);
+  assert.match(home, /src="\/i18n-en\.js\?v=0\.83"/);
 });
 
 test("ships complete R0.70L/M translations in the generated dictionary", async () => {

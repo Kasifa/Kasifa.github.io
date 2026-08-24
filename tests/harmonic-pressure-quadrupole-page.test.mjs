@@ -13,7 +13,7 @@ test("publishes R0.69J with the exact harmonic quadrupole obstruction", async ()
   assert.match(home, /id="r069j"/);
   assert.match(home, /\/notes\/r0-69j\.html/);
   assert.match(home, /综述 v0\.82 · 2026-08-24/);
-  assert.match(home, /i18n-en\.js\?v=0\.82/);
+  assert.match(home, /i18n-en\.js(?:\?[^"]*)?/);
   assert.match(home, /下一步 R0\.69K/);
   assert.ok(note.includes("Q_R:=\\nabla^2p_{\\mathrm{far}}(0)"));
   assert.ok(note.includes("\\frac{3}{2\\pi R^3}\\operatorname{diag}(1,-1,0)"));

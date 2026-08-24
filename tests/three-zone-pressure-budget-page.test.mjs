@@ -12,7 +12,7 @@ test("publishes R0.69L with the exact three-zone budget and boundary", async () 
   assert.match(home, /id="r069l"/);
   assert.match(home, /href="\/notes\/r0-69l\.html"/);
   assert.match(home, /综述 v0\.82 · 2026-08-24/);
-  assert.match(home, /i18n-en\.js\?v=0\.82/);
+  assert.match(home, /i18n-en\.js(?:\?[^"]*)?/);
   assert.match(home, /下一步 R0\.69M/);
   assert.match(note, /r\^3\|\\mathcal P_r\|/);
   assert.match(note, /\\sigma_r\(N_r\+B_M\)/);

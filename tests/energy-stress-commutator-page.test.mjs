@@ -12,7 +12,7 @@ test("publishes R0.69N with the energy commutator and strict claim boundary", as
   assert.match(home, /id="r069n"/);
   assert.match(home, /href="\/notes\/r0-69n\.html"/);
   assert.match(home, /综述 v0\.82 · 2026-08-24/);
-  assert.match(home, /i18n-en\.js\?v=0\.82/);
+  assert.match(home, /i18n-en\.js(?:\?[^"]*)?/);
   assert.match(home, /下一步 R0\.69O/);
   assert.match(note, /\\mathcal T\(S\[v\]\)=0/);
   assert.match(note, /X_q\\bigl\(D_A\^\{1\/2\}\+\\sigma_A\+\\mu_A\\bigr\)/);

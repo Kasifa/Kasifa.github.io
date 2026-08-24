@@ -54,6 +54,23 @@ def main() -> int:
     mollifier = document.get("mollifier", {})
     checks["trueConvolution"] = mollifier.get("trueConvolutionCertified") is True
     checks["noFloatingQuadrature"] = mollifier.get("floatingQuadratureNodesUsed") == 0
+    checks["sixthOrderEndpointTerms"] = (
+        mollifier.get("endpointDistributionTermsThroughOrderSix") is True
+    )
+    checks["exactDyadicDistanceNodes"] = (
+        mollifier.get("distanceMomentGridUsesExactDyadicEndpoints") is True
+    )
+    checks["centerPointDerivativeTaylor"] = (
+        mollifier.get("centerMomentDerivativesUseCertifiedPointTaylor") is True
+    )
+    checks["pointDerivativeTaylorDocumented"] = (
+        "fourth-derivative remainder"
+        in mollifier.get("cutoffPointDerivatives", "")
+    )
+    method = document.get("method", {})
+    checks["cutoffDerivativeOrderSix"] = (
+        method.get("maximumCertifiedCutoffDerivativeOrder") == 6
+    )
     audits = document.get("symbolicAudits", {})
     checks["angularPolynomial"] = audits.get("angularDegree") == 4
     checks["squareRootEliminated"] = audits.get("commonRotationSquareRootEliminated") is True
@@ -75,10 +92,29 @@ def main() -> int:
     checks["discriminantNegative"] = discriminant[1] < 0
     checks["endpointNegative"] = endpoint[1] < 0
 
+    partial = document.get("partial", {})
+    checks["allPartialRowsCovered"] = (
+        partial.get("allRowsCoveredExactlyOnce") is True
+    )
+    integration_audits = document.get("integrationAudits", {})
+    checks["allJ0RowsCovered"] = (
+        integration_audits.get("0", {}).get("allRowsCoveredExactlyOnce") is True
+    )
+    checks["allJMinus2RowsCovered"] = (
+        integration_audits.get("-2", {}).get("allRowsCoveredExactlyOnce") is True
+    )
+
     provenance = document.get("provenance", {})
     script = arguments.source_root / provenance.get("script", "")
     checks["scriptExists"] = script.is_file()
     checks["scriptHash"] = checks["scriptExists"] and sha256(script) == provenance.get("scriptSha256")
+    checks["sourceTreeCleanDuringProduction"] = (
+        provenance.get("sourceTreeDirty") is False
+    )
+    checks["requestedSourceMatched"] = (
+        provenance.get("requestedSourceCommit")
+        == provenance.get("sourceCommit")
+    )
     if arguments.require_head:
         head = subprocess.run(
             ["git", "rev-parse", "HEAD"],

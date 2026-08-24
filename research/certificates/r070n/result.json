@@ -1,0 +1,176 @@
+{
+  "aggregateLedger": {
+    "aggregate": "Qcal=sum_j w_j*Q_j",
+    "commonSource": "Sigma_j=Sigma_star+Delta_j",
+    "perScale": "Qdot_j=Sigma_j*Q_j+Q_j*Sigma_j+F_j",
+    "pullback": "QcalHat=G_star**(-1)*Qcal*G_star**(-T)",
+    "pullbackIdentity": "QcalHatDot=G_star**(-1)*Fcal*G_star**(-T)",
+    "residual": "Fcal=sum_j w_j*(F_j+Delta_j*Q_j+Q_j*Delta_j)+sum_j wdot_j*Q_j",
+    "timeWindowBoundary": "past sources create the same Delta*Q+Q*Delta mismatch relative to any current common source"
+  },
+  "arithmetic": "exact SymPy symbolic, trigonometric, matrix, and rational arithmetic",
+  "beltramiWave": {
+    "coercivityQuadraticGap": "-11*c/6",
+    "nullDirection": "e3",
+    "rank": "2",
+    "solution": "u=A*exp(-nu*N**2*t)*(cos(N*z),-sin(N*z),0)",
+    "threeScaleCovariance": [
+      [
+        "11/12",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "11/12",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "trace": "11/6",
+    "twoAxisPositiveControl": {
+      "covariance": [
+        [
+          "alpha",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "alpha + beta",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "beta"
+        ]
+      ],
+      "determinant": "alpha*beta*(alpha + beta)",
+      "optimalConstant": "min(alpha,beta)/(2*(alpha+beta))",
+      "trace": "2*alpha + 2*beta"
+    },
+    "vorticity": "omega=N*u"
+  },
+  "checkDetails": {
+    "aggregateLedger": {
+      "commonPullbackCancelsOnlyCommonSource": true,
+      "commonReferenceSource": true,
+      "nativeSourceMismatchRetained": true,
+      "positiveTimeWindowMismatchRetained": true,
+      "timeDependentWeightTermRetained": true
+    },
+    "exactBeltramiWave": {
+      "curlEigenfield": true,
+      "divergenceFree": true,
+      "nonlinearityZero": true,
+      "solvesHeatEquation": true,
+      "threeScaleCovarianceHasCommonNullDirection": true,
+      "twoAxisPressureSignVerified": true,
+      "twoNonparallelAxesGivePositiveControl": true
+    },
+    "exactPeriodicShear": {
+      "divergenceFree": true,
+      "nonlinearityZero": true,
+      "solvesHeatEquation": true,
+      "threeScaleCovarianceRankOne": true,
+      "vorticityHasFixedDirection": true
+    },
+    "universalFrameNoGo": {
+      "beltramiViolatesEveryPositiveFrameConstant": true,
+      "positiveTimeAggregationDoesNotRepairCommonNullspace": true,
+      "scaleNormalizationDoesNotRepairBeltrami": true,
+      "scaleNormalizationDoesNotRepairShear": true,
+      "shearViolatesEveryPositiveFrameConstant": true,
+      "wholeSpaceSchwartzFamilyHasNoUniformConstant": true
+    }
+  },
+  "checks": {
+    "aggregateLedger": true,
+    "exactBeltramiWave": true,
+    "exactPeriodicShear": true,
+    "universalFrameNoGo": true
+  },
+  "claimBoundary": {
+    "exactNSEInputs": "unforced smooth periodic shear and helical Beltrami solutions",
+    "notClaimed": "conditional frame bounds are impossible; all augmented observables fail; low-rank geometry implies regularity; global smoothness; finite-time blow-up; or a Millennium solution",
+    "proved": "the universal positive multi-scale covariance frame bound fails for scalar/componentwise filters, including normalized scales and positive time windows",
+    "routeDecision": "replace universal frame coercivity by a coercive-versus-common-subspace geometric dichotomy, and derive any augmented-observable PDE ledger before computation"
+  },
+  "commonSubspaceBoundary": {
+    "addingCentersCutoffsScales": "does not repair a fixed common subspace",
+    "analyticLemma": "if every scalar/componentwise filtered vorticity lies in a fixed proper subspace V, every nonnegative scale/time Gramian has range contained in V",
+    "claimScope": "finite exact examples certify the no-go; the arbitrary-family statement is proved analytically in the report",
+    "normalizingEachScale": "does not change the range or common nullspace"
+  },
+  "finiteFrame": {
+    "equivalentCondition": "sum observations |n dot Omega|**2 >= c*sum observations |Omega|**2 for every unit n",
+    "filterMultipliers": [
+      "1",
+      "1/2",
+      "1/3"
+    ],
+    "optimalConstant": "lambda_min(Qcal)/trace(Qcal)",
+    "weightedMultiplierSquare": "11/6",
+    "weights": [
+      "1",
+      "2",
+      "3"
+    ]
+  },
+  "periodicShear": {
+    "coercivityQuadraticGap": "-11*c/12",
+    "nullDirection": "e1 (and every vector in span(e1,e2))",
+    "rank": "1",
+    "solution": "u=A*exp(-nu*N**2*t)*sin(N*y)*e1",
+    "threeScaleCovariance": [
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "11/12"
+      ]
+    ],
+    "trace": "11/12",
+    "vorticity": "omega=-A*N*exp(-nu*N**2*t)*cos(N*y)*e3"
+  },
+  "release": "R0.70N",
+  "status": "exact-multiscale-frame-no-go-audit",
+  "wholeSpaceCalibration": {
+    "datum": "u_L=(-y*psi_L,x*psi_L,0), psi_L=exp(-(x**2+y**2)/2-z**2/(2*L**2))",
+    "identityFilterCovariance": [
+      [
+        "pi**(3/2)/(4*L)",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "pi**(3/2)/(4*L)",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "2*pi**(3/2)*L"
+      ]
+    ],
+    "limit": "lim_L_to_infinity lambda_min(Q_L)/trace(Q_L)=0",
+    "optimalConstantForLAtLeastOne": "1/(2*(4*L**2 + 1))",
+    "scope": "exact initial-data calibration; not a positive-time rank claim",
+    "vorticity": "(x*z*psi_L/L**2,y*z*psi_L/L**2,(2-x**2-y**2)*psi_L)"
+  }
+}

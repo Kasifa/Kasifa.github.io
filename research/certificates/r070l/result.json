@@ -1,0 +1,288 @@
+{
+  "arithmetic": "exact SymPy Fourier, matrix, polynomial, and rational arithmetic",
+  "beltramiFilterSplit": {
+    "identities": "curl(v_N)=N*v_N, Delta(v_N)=-N**2*v_N, and (v_N dot grad)v_N=grad(1+sin(N*x)*cos(N*z))",
+    "interpretation": "pressure and SGS shares depend on the filter convention even when their sum is exact",
+    "invariantCombinedShare": "-C",
+    "pressureShare": "-theta*C",
+    "sgsShare": "-(1-theta)*C",
+    "velocity": "v_N=(sin(N*z),sin(N*x)+cos(N*z),cos(N*x))"
+  },
+  "checkDetails": {
+    "beltramiFilterSplit": {
+      "curlEigenfield": true,
+      "identityFilterPlacesShareInPressure": true,
+      "laplacianEigenfield": true,
+      "nonlinearityIsGradient": true,
+      "pressureAndSgsSumIsFilterIndependent": true,
+      "zeroMixedModePlacesShareInSgs": true
+    },
+    "periodicInitialFacePair": {
+      "minusCorrelationDerivativeHasCertifiedSign": true,
+      "minusCorrelationIsOneHalf": true,
+      "minusLocalGradientContribution": true,
+      "minusLocalStrainIsCommon": true,
+      "minusLocalVorticityVanishes": true,
+      "minusPressureH11": true,
+      "minusPressureHasNoCarrierCrossSource": true,
+      "minusShapeDerivativeContribution": true,
+      "minusShapeIsCommon": true,
+      "minusVelocityIsDivergenceFree": true,
+      "minusVelocityVanishesAtOrigin": true,
+      "minusViscousSourceContribution": true,
+      "onlyPressureContributionSwitchesInQdotLedger": true,
+      "pairHasIdenticalCovariance": true,
+      "pairHasIdenticalKineticEnergy": true,
+      "pairHasIdenticalLocalGradientContribution": true,
+      "pairHasIdenticalShapeDerivativeContribution": true,
+      "pairHasIdenticalViscousSourceContribution": true,
+      "plusCorrelationDerivativeHasCertifiedSign": true,
+      "plusCorrelationIsOneHalf": true,
+      "plusLocalGradientContribution": true,
+      "plusLocalStrainIsCommon": true,
+      "plusLocalVorticityVanishes": true,
+      "plusPressureH11": true,
+      "plusPressureHasNoCarrierCrossSource": true,
+      "plusShapeDerivativeContribution": true,
+      "plusShapeIsCommon": true,
+      "plusVelocityIsDivergenceFree": true,
+      "plusVelocityVanishesAtOrigin": true,
+      "plusViscousSourceContribution": true
+    },
+    "pressureDuality": {
+      "functionalGradientIsTraceFree": true,
+      "nonzeroGradientHasStrictPressureDirection": true,
+      "oppositePressureChoicesGiveOppositeDerivatives": true
+    },
+    "strainAlgebra": {
+      "combinedQuadraticCanBeNegative": true,
+      "combinedQuadraticCanBePositive": true,
+      "combinedQuadraticIdentity": true,
+      "rotationSquareMatchesVorticityDyad": true,
+      "symmetricGradientSquareSplits": true
+    }
+  },
+  "checks": {
+    "beltramiFilterSplit": true,
+    "periodicInitialFacePair": true,
+    "pressureDuality": true,
+    "strainAlgebra": true
+  },
+  "claimBoundary": {
+    "analyticInput": "the compact support-separated realization of arbitrary STF center pressure Hessians proved and certified in R0.70J",
+    "notClaimed": "a sign for a nonlocal or time-integrated compensator, a Leray-to-critical estimate, blow-up, global regularity, or a Millennium solution",
+    "proved": "the exact resolved-strain ledger, the indefinite combined quadratic, the explicit periodic opposite-sign pair, and the finite-dimensional pressure duality used by the local-functional no-go theorem"
+  },
+  "correlationLedger": {
+    "combinedLocalQuadratic": "B:Sigma**2+(2/3)*abs(Sigma)**2-2*q**2",
+    "correlation": "q=Sigma:B",
+    "shape": "R=Q/tr(Q), B=R-I/3",
+    "sign": "both signs occur before pressure, viscosity, SGS, cutoff, and covariance-residual terms"
+  },
+  "localFunctionalNoGo": {
+    "scope": "smooth initial-face data with a buffered core and compact exterior pressure packets; it excludes only nontrivial instantaneous local source dependence",
+    "statement": "for a C1 instantaneous scalar Phi(Sigma,B), arbitrary STF center pressure variation contributes -D_Sigma Phi:H; a universal sign under the support-separated R0.70J pressure realization forces D_Sigma Phi=0",
+    "survivingOptions": "nonlocal pressure information, spatial integration, time history, or adjacent-scale sums"
+  },
+  "periodicWitness": {
+    "commonLocalData": "u(0)=0, Sigma(0)=diag(1,-1,0), omega(0)=0",
+    "commonShape": "R=diag(1/2,0,1/2), B=diag(1/6,-1/3,1/6), q=1/2",
+    "mechanism": "the pressure Hessian orientation switches while the normalized covariance and its instantaneous nonpressure ledger remain matched",
+    "oppositeDerivatives": "qdot_minus=3901/2040>0; qdot_plus=-1283/2040<0",
+    "records": {
+      "minus": {
+        "derivativeLedger": {
+          "localGradient": "1/6",
+          "pressure": "563/510",
+          "shapeDerivative": "197/120",
+          "viscousSource": "-1"
+        },
+        "materialDerivativeOfSigmaColonB": "3901/2040",
+        "materialSigmaDotColonB": "23/85",
+        "normalizedShape": [
+          [
+            "1/2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "1/2"
+          ]
+        ],
+        "perturbation": [
+          1,
+          2
+        ],
+        "pressureHessianAtOrigin": [
+          [
+            "-301/85",
+            "-152/65",
+            "0"
+          ],
+          [
+            "-152/65",
+            "131/85",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "pressurePairingHColonB": "-563/510",
+        "sigmaColonB": "1/2",
+        "sigmaColonBdot": "197/120",
+        "velocityGradientAtOrigin": [
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "-1",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "velocityNormSquarePerUnitVolume": "391/2",
+        "vorticityAtOrigin": [
+          "0",
+          "0",
+          "0"
+        ],
+        "vorticityCovariancePerUnitVolume": [
+          [
+            "60",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "60"
+          ]
+        ]
+      },
+      "plus": {
+        "derivativeLedger": {
+          "localGradient": "1/6",
+          "pressure": "-733/510",
+          "shapeDerivative": "197/120",
+          "viscousSource": "-1"
+        },
+        "materialDerivativeOfSigmaColonB": "-1283/2040",
+        "materialSigmaDotColonB": "-193/85",
+        "normalizedShape": [
+          [
+            "1/2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "1/2"
+          ]
+        ],
+        "perturbation": [
+          2,
+          1
+        ],
+        "pressureHessianAtOrigin": [
+          [
+            "131/85",
+            "-152/65",
+            "0"
+          ],
+          [
+            "-152/65",
+            "-301/85",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "pressurePairingHColonB": "733/510",
+        "sigmaColonB": "1/2",
+        "sigmaColonBdot": "197/120",
+        "velocityGradientAtOrigin": [
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "-1",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "velocityNormSquarePerUnitVolume": "391/2",
+        "vorticityAtOrigin": [
+          "0",
+          "0",
+          "0"
+        ],
+        "vorticityCovariancePerUnitVolume": [
+          [
+            "60",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "60"
+          ]
+        ]
+      }
+    },
+    "streamFunctions": "psi_minus=-sin(x)sin(y)+2(1-cos(x))(1-cos(2y)); psi_plus=-sin(x)sin(y)+2(1-cos(2x))(1-cos(y))",
+    "velocity": "u=(-partial_y psi, partial_x psi+sqrt(120)*(cos(z)-1), 0)",
+    "viscosity": "nu=1"
+  },
+  "release": "R0.70L",
+  "resolvedStrainEquation": {
+    "evolution": "SigmaDot=-dev(Sigma**2)-dev(W**2)-dev(Hess(P))+nu*Delta(S)-dev(sym(grad(div(tau))))",
+    "filteredMomentum": "D_U U=-grad(P)+nu*Delta(U)-div(tau)",
+    "rotationSquare": "dev(W**2)=dev(Omega tensor Omega)/4",
+    "source": "Sigma(t)=S(U)(X(t),t), Xdot=U(X(t),t)"
+  },
+  "status": "exact-source-evolution-compensator-obstruction-audit"
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r070l-source-compensator",
+  "release": "R0.70L",
+  "analyticalQuestion": "Can two smooth Navier-Stokes initial data with the same local strain and normalized vorticity covariance have opposite source-shape correlation derivatives?",
+  "takeaway": "Yes. The exact matched pair has identical local, viscous, and covariance-shape contributions; the pressure Hessian alone switches the sign of qdot.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG with co-generated vector PDF and SVG outputs and integrity hashes"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "exact rational entries of the two pressure Hessians, the common anisotropy weights, and the complete qdot contribution ledger",
+    "rowCount": 21,
+    "provenance": "closed finite-Fourier formulas certified by research/r070l_source_compensator_audit.py; no fitted values, random sampling, or time-stepping simulation"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "comparison",
+      "variant": "pressure-Hessian diagonal and common anisotropy weights",
+      "question": "What changes when all local source-shape data are matched?",
+      "takeaway": "The diagonal pressure axes interchange while B remains fixed; the off-diagonal pressure component is identical and does not pair with diagonal B."
+    },
+    {
+      "id": "B",
+      "family": "contribution",
+      "variant": "exact qdot ledger",
+      "question": "Which term causes the sign reversal?",
+      "takeaway": "Local quadratic, source viscosity, and normalized covariance evolution agree exactly. Only -H:B differs, yielding qdot_minus=3901/2040 and qdot_plus=-1283/2040."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "plus witness or negative contribution",
+      "rust": "minus witness or positive contribution"
+    },
+    "nonColorDistinction": "solid versus dashed strokes, circle versus square or diamond markers, open versus filled marks, hatching, direct labels, and a zero baseline"
+  },
+  "claimBoundary": {
+    "visibleCaveat": "EXACT FOURIER INITIAL-FACE IDENTITIES / NOT DNS / NOT A REGULARITY OR BLOW-UP RESULT",
+    "scope": "Smooth periodic initial data at nu=1, identity filter, whole-torus normalized covariance, and the resolved-material derivative at the origin.",
+    "notClaimed": [
+      "a long-time simulation",
+      "a weak-solution estimate",
+      "a nonlocal pressure compensator",
+      "regularity or singularity formation",
+      "a Millennium-problem solution"
+    ]
+  }
+}

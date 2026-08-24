@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70K：推导迹归一化涡量协方差的精确演化。冻结应变源产生非负方差，精确双模剪切则证明归一化黏性项可正可负。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70K｜归一化涡量各向异性有界，但并不耗散">
+  <meta property="og:description" content="归一化消除了纯振幅增长，却没有产生 Lyapunov 单调性；下一道门槛是源演化、压力与跨尺度通量组成的精确补偿项。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-70k-anisotropy-evolution.png">
+  <title>R0.70K｜归一化涡量各向异性有界，但并不耗散</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.81">
+  <style>.hero h1{font-size:clamp(2rem,4.5vw,4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.81"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">归一化</a><a href="#variance">冻结源</a><a href="#shear">双模剪切</a><a href="#burgers">Burgers 边界</a><a href="#compensator">补偿账本</a><a href="#figure">附图</a><a href="#meaning">价值</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.70K · 归一化涡量协方差的精确演化</div>
+        <h1>形状变得有界，<br>但没有变得耗散</h1>
+        <p class="lead">本版本把局部滤波涡量协方差除以自身迹，得到无量纲形状变量。精确演化表明：冻结的解析应变源产生非负方差并推动对齐；在一个非线性项恒为零的精确周期 Navier–Stokes 剪切中，归一化黏性演化又同时出现正、负两种符号。因此，归一化本身不能提供从 Leray 能量到临界控制所缺少的耗散机制。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.70K 精确代数、独立复核与正式附图完成</span><strong>归一化单调路线关闭；补偿项成为下一门槛</strong><p>版本 v0.70K · 2026-08-24</p><p>符号检查：6 组全部通过</p><p>独立数学复核：PASS</p><p>文献边界：10 篇原始来源</p><p>附图数据：闭式公式，不是 DNS</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 精确结论</a></li>
+        <li><a href="#identity">01 · 归一化恒等式</a></li>
+        <li><a href="#variance">02 · 冻结源方差</a></li>
+        <li><a href="#shear">03 · 双模剪切</a></li>
+        <li><a href="#burgers">04 · Burgers 边界</a></li>
+        <li><a href="#compensator">05 · 补偿账本</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#meaning">07 · 研究价值</a></li>
+        <li><a href="#boundary">08 · 主张边界</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact conclusion</div><h2>有界不等于耗散</h2>
+          <p>令</p>
+          <div class="equation">\[
+            Q=\int\chi\,\Omega\otimes\Omega\,dx,\qquad
+            E=\operatorname{tr}Q&gt;0,
+          \]</div>
+          <p>并定义迹为一的形状 \(R=Q/E\) 与无量纲各向异性</p>
+          <div class="equation result">\[
+            \boxed{B=R-\frac13I=\frac{\operatorname{dev}Q}{E}.}
+          \]</div>
+          <p>半正定性给出锐界</p>
+          <div class="equation">\[
+            -\frac13\le\lambda_i(B)\le\frac23,
+            \qquad 0\le|B|_F^2\le\frac23.
+          \]</div>
+          <p>但“有界”不是“小”，更不是“耗散”。秩一涡量恰好达到 \(2/3\)；同时，原始拉伸功仍含没有被归一化消去的局部涡量质量 \(E\)。</p>
+          <div class="proof"><strong>本版本的精确否定结论。</strong>&nbsp;冻结源使有符号相关 \(q\) 不减；纯扩散在归一化后则可以增加或减少 \(|B|_F^2\)。不存在只由迹归一化自动产生的普适单调律。</div>
+        </section>
+
+        <section id="identity"><div class="section-no">01 / Normalized covariance identity</div><h2>真正归一化的是 \(B=A/E\)</h2>
+          <p>R0.70J 末尾提出的原始偏差矩 \(A=\operatorname{dev}Q\) 仍带有量纲。本版本显式改用 \(B=A/E\)，我不改写已经哈希封存的旧报告。</p>
+          <p>若 \(F=\dot Q\)，直接微分得到</p>
+          <div class="equation result">\[
+            \boxed{\dot B=
+            \frac{\operatorname{dev}F-B\operatorname{tr}F}{E}.}
+          \]</div>
+          <p>当 \(F=\lambda Q\) 时，右端严格为零，所以纯振幅变化被精确消去。完整滤波协方差通量可分为</p>
+          <div class="equation">\[
+            \dot Q=F_\chi+F_S+F_\nu+F_C,
+          \]</div>
+          <p>分别代表移动或固定截断的输运、解析应变拉伸、黏性扩散与亚滤波交换。每一项都必须带自己的分母迹修正；只保留 \(\operatorname{dev}F/E\) 会漏项。归一化在 \(E=0\) 时没有定义，\(E\) 很小时的分母问题也没有被锐界解决。</p>
+        </section>
+
+        <section id="variance"><div class="section-no">02 / Frozen-source variance law</div><h2>冻结源产生非负方差，而不是阻尼</h2>
+          <p>对空间常值、对称且无迹的源 \(\Sigma\)，令 \(q=\Sigma:B=\Sigma:R\)。源项诱导的形状方程是</p>
+          <div class="equation">\[
+            \dot R\big|_\Sigma
+            =\Sigma R+R\Sigma-2qR.
+          \]</div>
+          <p>相关性满足精确方差律</p>
+          <div class="equation result">\[
+            \boxed{\dot q\big|_\Sigma
+            =2\operatorname{tr}\!\left[R(\Sigma-qI)^2\right]\ge0.}
+          \]</div>
+          <p>等号只在 \(R\) 的支撑完全落入 \(\Sigma\) 的一个特征空间时成立。冻结的解析应变不会耗散自身与涡量形状的相关性；它把协方差推向源的特征方向。</p>
+          <p>对 \(\Sigma_0=\operatorname{diag}(-1/2,-1/2,1)\)，从各向同性出发可显式得到</p>
+          <div class="equation">\[
+            q(t)=\frac{e^{3t}-1}{e^{3t}+2},\qquad
+            |B(t)|_F^2=\frac23q(t)^2.
+          \]</div>
+          <p>相关性从零单调趋近最大伸展值一，各向异性同时趋近秩一锐界。</p>
+        </section>
+
+        <section id="shear"><div class="section-no">03 / Exact periodic shear</div><h2>黏性归一化项同时具有两种符号</h2>
+          <p>在三维周期空间考虑</p>
+          <div class="equation">\[
+            u(t,z)=\left(
+            \frac D2e^{-4\nu t}\sin2z,
+            -Ce^{-\nu t}\sin z,0\right).
+          \]</div>
+          <p>速度只依赖 \(z\)，且竖直分量为零，所以 \((u\cdot\nabla)u=0\)；涡量也没有竖直分量，所以拉伸项同样为零。两个模式只按各自热方程的速率衰减。</p>
+          <p>取恒等滤波与 \(\chi\equiv1\) 的全环面平均。写归一化涡量协方差为 \(R=\operatorname{diag}(p,1-p,0)\)，则</p>
+          <div class="equation result">\[
+            \boxed{\frac d{dt}|B|_F^2
+            =12\nu p(1-p)(2p-1).}
+          \]</div>
+          <p>在 \(p=4/5\) 时导数是 \(+144\nu/125\)，在 \(p=1/5\) 时是 \(-144\nu/125\)。这个符号对不含非线性、压力、截断或亚滤波交换，直接证明负半定的原始扩散矩阵在迹归一化后不产生普遍的各向异性单调性。</p>
+        </section>
+
+        <section id="burgers"><div class="section-no">04 / Burgers-vortex boundary</div><h2>完整方程可以保持最大各向异性</h2>
+          <p>经典 Burgers 涡提供另一侧的自洽 Navier–Stokes 边界。它的背景应变为</p>
+          <div class="equation">\[
+            \Sigma_\gamma=\gamma\operatorname{diag}(-1/2,-1/2,1),
+          \]</div>
+          <p>轴向高斯涡量使</p>
+          <div class="equation">\[
+            R=e_3\otimes e_3,\qquad
+            B=\operatorname{diag}(-1/3,-1/3,2/3),
+            \qquad q=\gamma&gt;0.
+          \]</div>
+          <p>这里 \(B\) 已经位于最大各向异性顶点，却保持静止。原始正拉伸由输运与黏性在完整稳态方程中精确补偿。</p>
+          <div class="proof"><strong>边界。</strong>&nbsp;经典 Burgers 涡含线性增长的背景速度和无限长轴向涡管，在 \(\mathbb R^3\) 上不是有限能量 Leray 解。它是完整方程的结构见证，不是正则性反例。</div>
+        </section>
+
+        <section id="compensator"><div class="section-no">05 / Exact compensator ledger</div><h2>缺少的机制被压缩到一个明确账本</h2>
+          <p>把实际解析应变写成常值参考源与剩余项之和，并令 \(F_{\rm err}\) 汇集非恒定应变、输运、截断、扩散和亚滤波交换，可得</p>
+          <div class="equation result">\[
+            \boxed{
+            \dot q=\dot\Sigma:B
+            +2\operatorname{tr}\!\left[R(\Sigma-qI)^2\right]
+            +\Sigma:\mathcal T_B(F_{\rm err}).}
+          \]</div>
+          <p>中间项已经确定非负。任何可能的控制只能来自源自身的演化，或来自剩余通量的联合补偿。对真实低频源，\(\dot\Sigma\) 又带入偏差压力 Hessian、应变自放大、涡量、黏性与亚滤波 Hessian；这些项不能在没有证明时被替换成局部涡黏性。</p>
+          <p>因此，下一步我不再寻找 \(B\) 单独的符号，而是在同一滤波和截断约定下联合演化 \((E,B,\Sigma)\)，再检查相邻尺度求和中是否存在补偿。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>闭式轨迹、非负方差与黏性符号对</h2>
+          <figure><img src="/figures/r0-70k-anisotropy-evolution.svg" alt="R0.70K 冻结源对齐轨迹、非负方差产生率及精确周期剪切的黏性双符号"><figcaption>图 R0.70K。A：各向同性协方差在冻结轴对称源下趋向秩一状态。B：源相关产生率 \((1+2q)(1-q)\) 在可实现区间内非负。C：精确周期双模剪切给出 \(\nu^{-1}d|B|_F^2/dt=12p(1-p)(2p-1)\) 的正、负两区。全部曲线来自闭式公式，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-70k-anisotropy-evolution.pdf">下载矢量 PDF</a> · <a href="/figures/r0-70k-anisotropy-evolution.png">下载 600 dpi PNG</a> · <a href="/figures/r0-70k-anisotropy-evolution.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value and literature boundary</div><h2>价值是关闭一条路线，并留下可检验的新门槛</h2>
+          <p>R0.70K 不是正则性定理。它用冻结源恒等式和精确周期剪切排除所检验的普遍单调性，并用 Burgers 涡标出完整方程的补偿边界。此后继续研究 \(B\) 本身的代数符号，已经没有足够理由。</p>
+          <p>十篇原始文献的有界检索找到精确滤波恒等式、条件尺度局部性、平均通量定理和统计闭合，但没有找到对本页固定截断、迹归一化涡量协方差的确定性符号估计。这只是声明检索协议的边界，不是文献不存在的证明。</p>
+          <p>下一步，我只检查源演化补偿：推导真实 \(\dot\Sigma_k\)，保留偏差压力 Hessian 与跨尺度通量，再检验某个相邻尺度组合能否补偿非负方差。若符号仍失败，我会先构造精确见证，再决定是否需要大规模模拟。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">08 / Claim boundary</div><h2>结论只适用于声明的光滑与固定滤波门槛</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>归一化与方差恒等式</strong><p>六组精确检查和独立推导一致。</p></div>
+            <div class="status"><span>PROVED</span><strong>周期黏性双符号</strong><p>精确 Navier–Stokes 热剪切隔离扩散项。</p></div>
+            <div class="status"><span>OPEN</span><strong>分母与弱解极限</strong><p>\(E=0\)、低质量区域和 Leray 极限未处理。</p></div>
+            <div class="status"><span>OPEN</span><strong>源演化补偿</strong><p>压力与相邻尺度联合账本尚未闭合。</p></div>
+          </div>
+          <p>恒等式适用于光滑解、固定且与空间导数可交换的滤波、光滑截断，以及 \(E&gt;0\) 的时刻。时变滤波尺度、尖锐截断和弱解极限需要额外论证。</p>
+          <p>周期双模剪切不是 \(\mathbb R^3\) 上的有限能量级联；Burgers 涡也不是 Leray 有限能量场。本版本没有证明有限时奇性、全局正则性，也没有解决千禧年问题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and sources</div><h2>精确生产器、独立复核、文献边界与附图包可分别检查</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070k">查看精确证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070k_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070k_literature_audit.md">查看原始文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070k_independent_audit.md">查看独立复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070k-anisotropy-evolution/fig-r070k-anisotropy-evolution">查看十文件正式附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>证书生产器精确检查归一化、冻结源、轴对称模型、可实现性、Burgers 标量平衡和周期剪切。任意半正定 \(R\) 的一般正性、完整 Burgers 速度—压力解、弱解极限和文献完备性分别留在解析主张边界中。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确恒等式、结构见证、文献推论与开放问题分开记录。</div><div>R0.70K · 2026-08-24<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

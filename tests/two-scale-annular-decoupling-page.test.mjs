@@ -16,8 +16,9 @@ test("publishes R0.69V with the exact theorem and randomized boundary separated"
   ]);
   assert.match(review, /id="r069v"/);
   assert.match(review, /href="\/notes\/r0-69v\.html"/);
-  assert.match(review, /综述 v0\.80 · 2026-08-21/);
-  assert.match(review, /下一步 R0\.69W/);
+  assert.match(review, /综述 v0\.81 · 2026-08-24/);
+  const card = review.slice(review.indexOf('id="r069v"'), review.indexOf('id="r069w"'));
+  assert.match(card, /下一步 R0\.69W/);
   assert.ok(note.includes("\\sup_{0\\le a\\le1}"));
   assert.ok(note.includes("\\Gamma_{\\rm ann}(u_{\\varepsilon,a})-\\Gamma_q"));
   assert.ok(note.includes("\\varepsilon^3ab^2C_q"));

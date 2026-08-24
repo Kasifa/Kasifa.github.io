@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.80"></script>
+  <script defer src="/i18n-en.js?v=0.81"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1334,7 +1334,10 @@
     }
 
     @media (max-width: 900px) {
-      .hero-inner { gap: 38px; }
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 38px;
+      }
       .page-shell { grid-template-columns: 1fr; gap: 44px; }
       .toc li:nth-child(odd) { border-right-color: var(--line); }
     }
@@ -1413,10 +1416,10 @@
             我目前只讨论 Clay 正式表述中的原始方程。修正模型、数值现象和条件结果会单独标明，不把它们写成原问题的解答。
           </p>
           <div class="status-meta">
-            <span><strong>2026-08-21</strong>最近修订</span>
-            <span><strong>v0.68</strong>网页版本</span>
+            <span><strong>2026-08-24</strong>最近修订</span>
+            <span><strong>v0.81</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>全局正则</strong>当前方向</span>
+            <span><strong>源演化补偿</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1426,7 +1429,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>构造改变对数径向形状的两尺度非自相似族，检查完整全空间涡量环带比是否饱和。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>联合演化真实低频应变源与归一化涡量各向异性，寻找能够抵消正方差项的压力或跨尺度补偿量。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1435,10 +1438,10 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.69U</p>
+            <p class="eyebrow">Research topology · R0.1–R0.70K</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
-              我把六十九轮研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
+              我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
             </p>
           </div>
           <nav class="route-map-actions" aria-label="路线图快捷入口">
@@ -1657,21 +1660,25 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.69U</span>
+                <span class="route-range">R0.69P–R0.70K</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>有符号涡量增量与环带抵消</h3>
-              <p>点态和固定核心都能饱和；纯膨胀又使全空间比值保持不变。</p>
-              <p class="tree-path">点态饱和 → 单壳输出 → 双增量环带 → 固定核心饱和</p>
+              <h3>从有符号环带障碍转向源—核动力学</h3>
+              <p>静态环带族被严格排除后，主线转向真实方程中的外部应变、核心涡量协方差与时间补偿。</p>
+              <p class="tree-path">点态饱和 → 有限分离排除 → 临界源—核账本 → 代数零结构失败 → 归一化演化</p>
               <details class="tree-notes">
-                <summary>展开 6 篇笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.69U">
+                <summary>展开 10 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.70K">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
                   <a href="/notes/r0-69s.html">R0.69S</a>
                   <a class="milestone" href="/notes/r0-69t.html">R0.69T</a>
                   <a class="milestone" href="/notes/r0-69u.html">R0.69U</a>
+                  <a href="/notes/r0-69v.html">R0.69V</a>
+                  <a class="milestone" href="/notes/r0-69w.html">R0.69W</a>
+                  <a class="milestone" href="/notes/r0-70j.html">R0.70J</a>
+                  <a class="milestone" href="/notes/r0-70k.html">R0.70K</a>
                 </nav>
               </details>
             </article>
@@ -1680,11 +1687,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.69V</span>
+                <span class="route-range">NEXT · R0.70L</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>两尺度非自相似族</h3>
-              <p>改变对数径向形状，分别计算核心—过渡与过渡—过渡点对，再判断完整全空间环带比是否饱和。</p>
+              <h3>源演化补偿量</h3>
+              <p>在同一滤波与截断约定下联合推导低频应变源和归一化涡量协方差，检查压力 Hessian、黏性与跨尺度项能否补偿冻结源的正方差。</p>
             </article>
           </div>
         </div>
@@ -5618,7 +5625,63 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r069w">查看完整严格证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r069w-interval-obstruction/fig-r069w-interval-obstruction">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">当前暂停点：</strong>&nbsp;R0.69W 的证书、附图与网页发布完成后，在进入下一种几何或动力学阶段以前暂停；不自动延伸当前静态族。</p>
+            <p><strong style="color:var(--gold)">路线转折：</strong>&nbsp;R0.69W 关闭一参数有限分离静态族后，我不再扩大同类扫描，而是转向真实方程中的外部应变、核心涡量矩与临界时间结构。R0.70A–I 的连续门槛由 R0.70J 公开页统一回顾。</p>
+          </div>
+
+          <div class="task-one" id="r070j" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.70J · 2026-08-24</p>
+            <h3>偏差高—高相关没有隐藏的 helicity 零结构</h3>
+            <p>
+              对任意对称无迹张量 \(S\) 与向量 \(w\)，精确恒等式是
+              \[
+                S:\operatorname{dev}(w\otimes w)=w^{\mathsf T}Sw.
+              \]
+              纯 helicity 实波的相位平均核为
+              \(K_S(\xi)=-\xi^{\mathsf T}S\xi\)，与 helicity 符号无关。取
+              \(S_0=\operatorname{diag}(1/2,1/2,-1)\) 可构造逐点恒等于一的 Beltrami 见证；完整球平均只消去有符号二次谐波，正部平均仍为 \(\sqrt3/9\)。
+            </p>
+            <p>
+              R0.70A–I 先后检查并界定了移动环带标签、匹配尺度桥、空间反演奇偶与线性热层、固定尺度覆盖、Yu 单壳 parity、仿射 jet、相邻源差分、核心矩变化和时间 Hardy 对偶。R0.70J 把最终留下的偏差对角项精确算完：无迹性、不可压、固定 helicity、角平均与物理截断本身不足以形成普适代数零结构。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;紧支撑构造实现函数空间几何与初始面附近的严格正相关，但不提供一个共同固定正时间的有限能量级联。严格环带定位、真实压力轨道与 Leray 端点仍然开放；本结果不是正则性或奇性定理。</p>
+            <p>
+              <a href="/notes/r0-70j.html"><strong>阅读 R0.70J 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-70j-deviatoric-helical.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070j">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070j_report-source.md">查看完整报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070j-deviatoric-helical/fig-r070j-deviatoric-helical">查看期刊附图包</a>
+            </p>
+          </div>
+
+          <div class="task-one" id="r070k" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.70K · 2026-08-24</p>
+            <h3>归一化把形状变得有界，却不会自动产生耗散律</h3>
+            <p>
+              令 \(Q=\int\chi\,\Omega\otimes\Omega\)、\(E=\operatorname{tr}Q&gt;0\)，真正无量纲的各向异性是
+              \[
+                B=\frac{Q}{E}-\frac13I.
+              \]
+              若 \(F=\dot Q\)，则
+              \(\dot B=(\operatorname{dev}F-B\operatorname{tr}F)/E\)：纯振幅变化被精确消去，并有 \(0\le|B|_F^2\le2/3\)，但这个界不提供小各向异性，也没有控制原始因子 \(E\)。
+            </p>
+            <p>
+              对冻结的对称无迹源 \(\Sigma\)，相关 \(q=\Sigma:B\) 满足
+              \[
+                \dot q=2\operatorname{tr}\!\left[R(\Sigma-qI)^2\right]\ge0,
+                \qquad R=Q/E.
+              \]
+              这是一条强化对齐的方差律，不是阻尼律。另一个非线性恒为零的精确周期 Navier–Stokes 双模剪切解给出
+              \(d|B|_F^2/dt=12\nu p(1-p)(2p-1)\)，在 \(p=1/5\) 与 \(4/5\) 分别取相反符号，证明归一化后的黏性也没有普适单调性。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;Burgers 涡旋说明正源相关与最大各向异性可被完整稳态方程补偿，但它不是有限能量 Leray 场。R0.70K 关闭“归一化本身产生 Lyapunov 量”的分支；它没有解决分母低质量、压力补偿、弱解极限或千禧年问题。</p>
+            <p>
+              <a href="/notes/r0-70k.html"><strong>阅读 R0.70K 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-70k-anisotropy-evolution.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070k">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070k_report-source.md">查看完整报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070k-anisotropy-evolution/fig-r070k-anisotropy-evolution">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.70L：</strong>&nbsp;在同一滤波与截断体系中推导真实低频应变源 \(\Sigma_k\) 的演化，显式保留偏差压力 Hessian、黏性和次网格项，再检查它们能否与冻结源的正方差组成可求和的补偿量。</p>
           </div>
         </section>
 
@@ -5633,8 +5696,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.80 · 2026-08-21<br>
-        上次综述 v0.79 · 2026-08-21<br>
+        综述 v0.81 · 2026-08-24<br>
+        上次综述 v0.80 · 2026-08-24<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

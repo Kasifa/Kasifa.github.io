@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70J：精确计算偏差高—高涡量相关的 helicity 符号，构造紧支撑正相关实现，并关闭仅靠无迹性、不可压和角平均的普适代数零结构路线。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70J｜偏差高—高相关没有隐藏的 helicity 零结构">
+  <meta property="og:description" content="无迹性只消去各向同性部分；纯 helicity、相位平均和物理截断仍保留严格正相关。本结果关闭一条代数机制，不是 Navier–Stokes 正则性结论。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-70j-deviatoric-helical.png">
+  <title>R0.70J｜偏差高—高相关没有隐藏的 helicity 零结构</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.81">
+  <style>.hero h1{font-size:clamp(1.95rem,4.2vw,3.7rem)} .route-table td:first-child{white-space:nowrap}</style>
+  <script defer src="/i18n-en.js?v=0.81"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#route">路线</a><a href="#symbol">符号</a><a href="#helicity">helicity</a><a href="#realization">实现</a><a href="#critical">临界边界</a><a href="#figure">附图</a><a href="#meaning">价值</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.70J · 偏差对角相关的精确代数门槛</div>
+        <h1>无迹性只消去标量部分；<br>helicity 也不消去偏差对角</h1>
+        <p class="lead">R0.70I 留下一个最小问题：外部无迹应变与核心高频涡量协方差之间，会不会因不可压、纯 helicity 或角平均而自动正交？本版本算出完整符号并给出正相关见证。答案是否定的；下一步必须使用真实方程中的源演化或定量各向异性信息。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.70J 精确证书、独立内部复核 PASS 与正式附图完成</span><strong>普适代数零结构分支关闭</strong><p>版本 v0.70J · 2026-08-24</p><p>精确检查：5 组全部通过</p><p>聚焦回归：14 / 14</p><p>附图验证：22 项通过</p><p>公开口径：内部研究报告，不是定理章节</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 精确结论</a></li>
+        <li><a href="#route">01 · R0.70A–I 路线</a></li>
+        <li><a href="#symbol">02 · 偏差张量符号</a></li>
+        <li><a href="#helicity">03 · helicity 与角平均</a></li>
+        <li><a href="#realization">04 · 物理空间实现</a></li>
+        <li><a href="#critical">05 · 临界尺度边界</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#meaning">07 · 研究价值</a></li>
+        <li><a href="#boundary">08 · 主张边界</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact gate result</div><h2>偏差投影没有提供第二次消去</h2>
+          <p>对任意对称无迹矩阵 \(S\) 与向量 \(w\)，令</p>
+          <div class="equation">\[
+            \mathring Q(w)=w\otimes w-\frac{|w|^2}{3}I.
+          \]</div>
+          <p>精确收缩为</p>
+          <div class="equation result">\[
+            \boxed{S:\mathring Q(w)=w^{\mathsf T}Sw.}
+          \]</div>
+          <p>无迹性只让 \(S:I=0\)，并没有让两个同属五维无迹对称张量空间的对象彼此正交。若 \(S\ne0\)，取 \(w\) 在它的正特征方向上就得到严格正值。</p>
+          <div class="proof"><strong>路线判断。</strong>&nbsp;仅依赖无迹性、不可压、固定 helicity、相位或角平均和物理截断的普适代数零结构不存在。这个判断不依赖更密的 Fourier 网格或更多 helicity 标签。</div>
+        </section>
+
+        <section id="route"><div class="section-no">01 / Route from R0.70A to R0.70I</div><h2>九个连续门槛把问题压缩到一个偏差对角项</h2>
+          <table class="route-table"><thead><tr><th>阶段</th><th>留下的精确信息</th><th>关闭或仍缺的部分</th></tr></thead><tbody>
+            <tr><td>R0.70A</td><td>移动尺度标签不会在总涡量伸长恒等式中留下 \(\dot r\) 边界项。</td><td>尺度比四附近只得到非显式的稳健邻域。</td></tr>
+            <tr><td>R0.70B</td><td>有符号物理环带到非负滤波储库只有正向估计。</td><td>运动学逆估计与测试的平移不变二次正规形均失败。</td></tr>
+            <tr><td>R0.70C</td><td>真实光滑小数据 Navier–Stokes 演化可把初始符号带入短时间。</td><td>可出现有符号积分为零而绝对活动严格为正；空间反演奇偶与线性热层不修复该缺陷。</td></tr>
+            <tr><td>R0.70D</td><td>固定尺度上全部覆盖平均为正。</td><td>这仍不能控制未分辨负质量；本阶段的见证是抽象标量密度。</td></tr>
+            <tr><td>R0.70E</td><td>修正了 Yu 文中对象的归属，并分别检查论文余项功与项目移动壳收缩。</td><td>两者都存在“有符号为零、绝对量为正”的光滑小数据见证。</td></tr>
+            <tr><td>R0.70F</td><td>固定外源的仿射 Taylor 展开确有尺度增益。</td><td>逐项取绝对值的无权打包仍线性累积；构造只位于初始面。</td></tr>
+            <tr><td>R0.70G</td><td>相邻外源系数的平方估计成立。</td><td>临界伸缩缺陷转移到与之对偶的核心矩估计。</td></tr>
+            <tr><td>R0.70H</td><td>固定时刻的核心矩有无权尺度变差控制。</td><td>抛物坐标额外放大 \(r_k^{-2}\)，从矩演化取绝对值又会遇到伸长项。</td></tr>
+            <tr><td>R0.70I</td><td>时间缺口被化为 \(s^{-1/2}\) Hardy 权；冻结低频混合项可在 Leray 能量层关闭。</td><td>仍留下移动低频累积与偏差高—高对角。</td></tr>
+          </tbody></table>
+          <p>这些中间结果属于路线判断，不是独立正则性定理。R0.70J 只接住最后一个明确问题：偏差对角是否存在更深的 helicity 代数消去。</p>
+        </section>
+
+        <section id="symbol"><div class="section-no">02 / Tensor and cutoff symbol</div><h2>物理截断保留共轭频率的零输出项</h2>
+          <p>不可压只要求一个频率上的涡量振幅垂直于波向量。除非出现额外的特殊兼容条件 \(P_\xi S P_\xi=0\)，平面 \(\xi^\perp\) 中仍有非零二次型方向。</p>
+          <p>对实场 \(W\)、常数源 \(S\) 与物理截断 \(\chi\)，精确 Fourier 形式为</p>
+          <div class="equation">\[
+            \int\chi W^{\mathsf T}SW\,dx
+            =\frac1{(2\pi)^6}\iint
+            \widehat\chi(-\xi-\eta)
+            \widehat W(\xi)^{\mathsf T}S\widehat W(\eta)
+            \,d\xi d\eta.
+          \]</div>
+          <p>乘以 \(\chi\) 是物理空间局部化，不是 Fourier 投影。实波同时含 \(k\) 与 \(-k\)，所以 \(k+(-k)=0\) 的对角协方差不会因二倍频平均而消失。</p>
+        </section>
+
+        <section id="helicity"><div class="section-no">03 / Pure-helicity and angular audit</div><h2>两个 helicity 符号给出同一个相位平均核</h2>
+          <p>对方向 \(\xi\)、helicity \(\sigma\in\{\pm1\}\) 的实纯 helicity 波，归一化相位平均为</p>
+          <div class="equation result">\[
+            \boxed{K_S(\xi)=-\xi^{\mathsf T}S\xi.}
+          \]</div>
+          <p>这个核与 \(\sigma\) 无关，并且在 \(\xi\mapsto-\xi\) 下为偶函数。反向频率和 homochiral 投影都不能消去它。</p>
+          <p>取</p>
+          <div class="equation">\[
+            S_0=\operatorname{diag}(1/2,1/2,-1),\qquad
+            \omega_\sigma=\sqrt2(e_1\cos\theta-\sigma e_2\sin\theta),
+          \]</div>
+          <p>可直接得到 \(S_0:\mathring Q(\omega_\sigma)\equiv1\)。完整球面的有符号均值确实为零，但正部均值仍为</p>
+          <div class="equation">\[
+            \left\langle(K_{S_0})_+\right\rangle_{S^2}=\frac{\sqrt3}{9}&gt;0.
+          \]</div>
+          <p>因此“各向同性前先取有符号平均”和“逐尺度取正部后求和”是两个不同问题。</p>
+        </section>
+
+        <section id="realization"><div class="section-no">04 / Compact physical realization</div><h2>外部应变与核心涡量可在物理空间中精确分离</h2>
+          <p>报告用紧支撑同伦局部化构造光滑无散外部涡量源，使其诱导速度在整个开核心内产生常数应变 \(S_0\)；另一个紧支撑无散载体在核心内具有指定 Beltrami 型涡量。所有返回涡量都保留，源与核心支撑严格分离。</p>
+          <p>对任意非零非负核心截断，局部收缩保持严格为正。紧支撑载体与严格带限对象不能是同一个函数，这是不可回避的不确定性原理边界；严格 Littlewood–Paley 环带实现还需要单独的高频拟局部误差估计。</p>
+          <p>同一构造可作为光滑紧支撑初值。小振幅 Navier–Stokes 解在初始面附近由连续性保留正号，但所得时间窗随缩放按 \(r^2\) 缩短。</p>
+        </section>
+
+        <section id="critical"><div class="section-no">05 / Critical scale ledger</div><h2>源—核 Cauchy 乘积在临界坐标上已经是尖锐的</h2>
+          <p>在外尺度 \(R=\Lambda r\)、振幅 \(a\) 与长度 \(r^2\) 的抛物时间窗上，归一化源系数与核心矩给出</p>
+          <div class="equation">\[
+            \int r^{-1}|c_r|^2dt\sim a^2r\Lambda^{-4},\qquad
+            \int r|\mathcal N_r|^2dt\sim a^4r^{-1},
+          \]</div>
+          <div class="equation">\[
+            \int c_r:\mathcal N_r\,dt\sim a^3\Lambda^{-2}&gt;0.
+          \]</div>
+          <p>两个平方范数随 \(r\) 以相反指数变化，乘积正好不改善。这说明普通 Cauchy 对偶已经达到临界尖锐度；更多同类绝对值估计不会自动产生缺失的小因子。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>一张图同时显示 helicity 见证、角向正部与临界尖锐性</h2>
+          <figure><img src="/figures/r0-70j-deviatoric-helical.svg" alt="R0.70J 纯 helicity 偏差相关、角向二次谐波和临界源核尺度账本"><figcaption>图 R0.70J。A：两个 helicity 的正相关见证都在全部相位上等于一。B：完整球面有符号均值为零，而正部均值为 \(\sqrt3/9\)。C：源平方范数与核心对偶平方范数以相反临界指数变化，Cauchy 乘积和有符号配对保持常数。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-70j-deviatoric-helical.pdf">下载矢量 PDF 附图</a> · <a href="/figures/r0-70j-deviatoric-helical.png">下载 600 dpi PNG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value and literature boundary</div><h2>价值是把一个模糊的“也许有零结构”变成可证伪命题</h2>
+          <p>有界原始文献审计覆盖 harmonic tensor、helical triad、同旋级联、涡量方向相干、应变—涡量对齐、压力 Hessian 与局部化正则性准则。已有结果分别提供表示理论、条件正则性或统计几何；在本次审计的十篇原始来源中，没有找到所需的普适正交定理。这是有限范围的检索结论，不是全体文献不存在性定理，也不构成优先权声明。</p>
+          <p>R0.70J 的贡献不是“大问题前进了一大步”，而是关闭一个此前足以误导后续工作的机制：既然最小 Beltrami 见证已经严格非零，就没有理由继续扩大角向采样或 helicity 标签来寻找同一种消去。</p>
+          <p>仍值得研究的是方程相关补偿：真实低频源如何随压力和次网格项演化，或者相邻尺度求和是否产生单项看不到的抵消。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">08 / Claim boundary</div><h2>关闭的是代数分支，不是千禧年问题</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>精确偏差与 helicity 符号</strong><p>五组 SymPy 检查、独立审计与哈希清单均通过。</p></div>
+            <div class="status"><span>PROVED</span><strong>紧支撑正相关实现</strong><p>返回场与源—核支撑分离被完整记录。</p></div>
+            <div class="status"><span>OPEN</span><strong>固定正终端时间</strong><p>小数据连续性只保留缩短的初始时间窗。</p></div>
+            <div class="status"><span>OPEN</span><strong>Leray 到临界闭合</strong><p>严格环带、压力轨道与弱解极限都未完成。</p></div>
+          </div>
+          <p>本版本没有构造奇性，没有证明全局光滑，也没有给出有限能量一解上的级联。它不能被称为 Millennium 问题的部分解答。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and sources</div><h2>报告、文献审计、独立复核、证书与图包同时归档</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070j_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070j_literature_audit.md">查看有界原始文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070j_independent_audit.md">查看独立内部复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070j">查看精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070j-deviatoric-helical/fig-r070j-deviatoric-helical">查看十文件期刊附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>证书生产器只覆盖有限精确代数。光滑支撑、严格带限误差、小数据理论和文献完备性分别写在主张边界中，均未被计入计算机证明范围。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>严格证明、解析见证、外部定理与开放问题分开记录。</div><div>R0.70J · 2026-08-24<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

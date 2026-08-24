@@ -19,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.81"></script>
+  <script defer src="/i18n-en.js?v=0.82"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1417,9 +1417,9 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-24</strong>最近修订</span>
-            <span><strong>v0.81</strong>网页版本</span>
+            <span><strong>v0.82</strong>网页版本</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>源演化补偿</strong>当前方向</span>
+            <span><strong>多尺度协方差 frame</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1429,7 +1429,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>联合演化真实低频应变源与归一化涡量各向异性，寻找能够抵消正方差项的压力或跨尺度补偿量。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>检查相邻尺度协方差能否组成一致强制的 frame，并先用剪切与 Beltrami 族排除秩缺陷。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1438,7 +1438,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.70K</p>
+            <p class="eyebrow">Research topology · R0.1–R0.70M</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1660,15 +1660,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.70K</span>
+                <span class="route-range">R0.69P–R0.70M</span>
                 <span class="tree-state current">当前主线</span>
               </div>
               <h3>从有符号环带障碍转向源—核动力学</h3>
               <p>静态环带族被严格排除后，主线转向真实方程中的外部应变、核心涡量协方差与时间补偿。</p>
-              <p class="tree-path">点态饱和 → 有限分离排除 → 临界源—核账本 → 代数零结构失败 → 归一化演化</p>
+              <p class="tree-path">点态饱和 → 有限分离排除 → 临界源—核账本 → 代数零结构失败 → 归一化演化 → 压力局部补偿失败 → 拉回条件数与秩边界</p>
               <details class="tree-notes">
-                <summary>展开 10 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.70K">
+                <summary>展开 12 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.70M">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1679,6 +1679,8 @@
                   <a class="milestone" href="/notes/r0-69w.html">R0.69W</a>
                   <a class="milestone" href="/notes/r0-70j.html">R0.70J</a>
                   <a class="milestone" href="/notes/r0-70k.html">R0.70K</a>
+                  <a class="milestone" href="/notes/r0-70l.html">R0.70L</a>
+                  <a class="milestone" href="/notes/r0-70m.html">R0.70M</a>
                 </nav>
               </details>
             </article>
@@ -1687,11 +1689,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.70L</span>
+                <span class="route-range">NEXT · R0.70N</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>源演化补偿量</h3>
-              <p>在同一滤波与截断约定下联合推导低频应变源和归一化涡量协方差，检查压力 Hessian、黏性与跨尺度项能否补偿冻结源的正方差。</p>
+              <h3>多尺度协方差 frame coercivity</h3>
+              <p>先推导相邻尺度 Gramian 的精确源项与余项账本，再用周期剪切和 Beltrami 族寻找秩缺陷；只有一致强制性通过反例检验，才进入仿射相对估计。</p>
             </article>
           </div>
         </div>
@@ -5681,7 +5683,65 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070k_report-source.md">查看完整报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070k-anisotropy-evolution/fig-r070k-anisotropy-evolution">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.70L：</strong>&nbsp;在同一滤波与截断体系中推导真实低频应变源 \(\Sigma_k\) 的演化，显式保留偏差压力 Hessian、黏性和次网格项，再检查它们能否与冻结源的正方差组成可求和的补偿量。</p>
+            <p><strong style="color:var(--gold)">转入 R0.70L：</strong>&nbsp;在同一滤波与截断体系中让真实低频应变源开始演化，并显式保留偏差压力 Hessian、黏性和次网格项。</p>
+          </div>
+
+          <div class="task-one" id="r070l" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.70L · 2026-08-24</p>
+            <h3>同一源与形状，压力仍能翻转导数</h3>
+            <p>
+              沿滤波速度轨道取真实应变源 \(\Sigma=S(U)(X(t),t)\)，并令 \(q=\Sigma:B\)。完整联合账本保留应变自作用、解析涡量、偏差压力 Hessian、黏性、次网格 Hessian 与协方差余项。局部二次组合已经双符号；更一般地，对任意 \(C^1\) 瞬时局部标量 \(\Phi(\Sigma,B)\)，外部压力包产生
+              \[
+                \dot\Phi\big|_H=-D_\Sigma\Phi:H^\circ.
+              \]
+              在声明的缓冲与滤波条件下，若导数对所有光滑初值具有统一单边符号，就必须有 \(D_\Sigma\Phi=0\)。
+            </p>
+            <p>
+              两组精确周期初值具有相同的 \((\Sigma,B,q)\)、动能和全部非压力账本；只有压力收缩不同，最终得到
+              \[
+                \dot q_-={3901\over2040}>0,
+                \qquad
+                \dot q_+=-{1283\over2040}<0.
+              \]
+              这关闭了只依赖当前局部源与局部形状的非平凡普适 Lyapunov 路线，但没有排除非局部压力、空间积分、历史或相邻尺度状态。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;周期符号对是光滑初值上的精确初始面恒等式；压力门槛只覆盖声明的局部函数类与支撑分离条件。它不是长期轨道结论、正则性定理或千禧年问题的部分解答。</p>
+            <p>
+              <a href="/notes/r0-70l.html"><strong>阅读 R0.70L 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-70l-source-compensator.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070l">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070l_report-source.md">查看完整报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070l-source-compensator/fig-r070l-source-compensator">查看期刊附图包</a>
+            </p>
+          </div>
+
+          <div class="task-one" id="r070m" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.70M · 2026-08-24</p>
+            <h3>拉回精确消项，却不能免费返回物理度量</h3>
+            <p>
+              对
+              \[
+                \dot Q=\Sigma Q+Q\Sigma+F,
+                \qquad \dot G=\Sigma G,
+              \]
+              应变传播子拉回 \(\widehat Q=G^{-1}QG^{-\mathsf T}\) 满足精确恒等式
+              \[
+                \dot{\widehat Q}=G^{-1}FG^{-\mathsf T}.
+              \]
+              但 \(G\) 只是 strain-only propagator，不是物理形变梯度。返回欧氏变量时，优化后的相对残差仍最多损失 \(\kappa_2(G)^2\)，并且指数 2 由显式正定矩阵族达到。
+            </p>
+            <p>
+              一个零有符号积分、零余项的非交换应变回路具有双曲有序指数；拉回协方差保持不变，物理协方差却接近秩一。仿射不变 SPD 度量虽能去掉条件数，却要求 \(Q\succ0\)；精确无外力周期剪切流已经产生真实秩一协方差，使单尺度逆协方差路线失效。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;非交换回路是精确矩阵 ODE 见证，尚未嵌入无外力周期 NSE 轨道；秩缺陷则由独立的精确 NSE 剪切流实现。Leray 能量仍未控制拉回余项，本阶段没有得到新的继续性判据。</p>
+            <p>
+              <a href="/notes/r0-70m.html"><strong>阅读 R0.70M 研究笔记 →</strong></a><br>
+              <a href="/figures/r0-70m-deformation-holonomy.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070m">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070m_report-source.md">查看完整报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070m-deformation-holonomy/fig-r070m-deformation-holonomy">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.70N：</strong>&nbsp;先测试最小多尺度协方差 frame 的一致强制性，再决定是否进入仿射相对估计。代数门槛通过以前，不启动大规模 DNS。</p>
           </div>
         </section>
 
@@ -5696,8 +5756,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.81 · 2026-08-24<br>
-        上次综述 v0.80 · 2026-08-24<br>
+        综述 v0.82 · 2026-08-24<br>
+        上次综述 v0.81 · 2026-08-24<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

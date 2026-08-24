@@ -11,8 +11,8 @@ test("publishes R0.69R with the exact optimized split and strict boundary", asyn
   ]);
   assert.match(home, /id="r069r"/);
   assert.match(home, /href="\/notes\/r0-69r\.html"/);
-  assert.match(home, /综述 v0\.81 · 2026-08-24/);
-  assert.match(home, /i18n-en\.js\?v=0\.81/);
+  assert.match(home, /综述 v0\.82 · 2026-08-24/);
+  assert.match(home, /i18n-en\.js\?v=0\.82/);
   assert.match(home, /下一步 R0\.69S/);
   assert.ok(note.includes("C_{\\rm n}rA^{1/2}B^{5/2}"));
   assert.ok(note.includes("+C_{\\rm f}r^{-3/2}A^3"));

@@ -16,7 +16,7 @@ test("publishes R0.69T with the exact annular theorem and numerical boundary", a
   ]);
   assert.match(home, /id="r069t"/);
   assert.match(home, /href="\/notes\/r0-69t\.html"/);
-  assert.match(home, /综述 v0\.81 · 2026-08-24/);
+  assert.match(home, /综述 v0\.82 · 2026-08-24/);
   assert.match(home, /R0\.69U 的结果/);
   assert.ok(note.includes("\\sum_{j\\in\\mathbb Z}\\mathcal A_j(u)"));
   assert.ok(note.includes("e_{xy}\\cdot\\delta\\omega"));

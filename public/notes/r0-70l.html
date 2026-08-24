@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70L：推导真实滤波应变源与归一化涡量协方差的联合演化，并证明只依赖局部源和局部形状的瞬时补偿量不能具有普适 Navier–Stokes 符号。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70L｜压力使局部源—形状补偿量失去普适符号">
+  <meta property="og:description" content="局部二次项本身不定号；更强的压力 Hessian 见证说明，任何非平凡的瞬时局部补偿量都必须保留非局部、历史或相邻尺度信息。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-70l-source-compensator.png">
+  <title>R0.70L｜压力使局部源—形状补偿量失去普适符号</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.82">
+  <style>.hero h1{font-size:clamp(1.9rem,4.1vw,3.65rem)} .ledger td:first-child{white-space:nowrap}</style>
+  <script defer src="/i18n-en.js?v=0.82"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#source">源方程</a><a href="#ledger">联合账本</a><a href="#pressure">压力门槛</a><a href="#witness">符号对</a><a href="#survives">保留路线</a><a href="#figure">附图</a><a href="#meaning">价值</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.70L · 真实滤波应变源的补偿门槛</div>
+        <h1>源开始演化以后，<br>压力仍可单独翻转符号</h1>
+        <p class="lead">R0.70K 把下一步缩成一个明确问题：真实低频应变源的演化，能否补偿归一化涡量形状的正方差？本版本推导完整联合账本。局部二次项已经可正可负；进一步的支撑分离定理和精确周期符号对表明，只依赖当前局部源与局部形状的非平凡瞬时补偿量不能具有普适符号。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.70L 精确推导、独立内部复核 PASS 与正式附图完成</span><strong>瞬时局部补偿量分支关闭</strong><p>版本 v0.70L · 2026-08-24</p><p>精确生产器：4 组全部通过</p><p>附图验证：20 项通过</p><p>精确周期见证：同局部数据、相反导数</p><p>公开口径：结构性初始面否定结果</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 精确结论</a></li>
+        <li><a href="#source">01 · 真实源方程</a></li>
+        <li><a href="#ledger">02 · 联合相关账本</a></li>
+        <li><a href="#pressure">03 · 压力盲性定理</a></li>
+        <li><a href="#witness">04 · 周期符号对</a></li>
+        <li><a href="#survives">05 · 仍保留的路线</a></li>
+        <li><a href="#figure">06 · 期刊附图</a></li>
+        <li><a href="#meaning">07 · 研究价值</a></li>
+        <li><a href="#boundary">08 · 主张边界</a></li>
+        <li><a href="#reproduce">09 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact conclusion</div><h2>演化真实源并没有关闭符号门槛</h2>
+          <p>沿滤波速度 \(U\) 的轨道取真实应变源</p>
+          <div class="equation">\[
+            \Sigma(t)=S(U)(X(t),t),\qquad \dot X=U(X,t),
+          \]</div>
+          <p>并继续使用 R0.70K 的迹归一化形状</p>
+          <div class="equation">\[
+            R=\frac{Q}{\operatorname{tr}Q},\qquad B=R-\frac13I,\qquad q=\Sigma:B.
+          \]</div>
+          <p>完整推导保留压力、黏性、次网格 Hessian 和协方差残差。结果不是一个新的耗散律：局部二次项本身不定号，压力又能在保持局部 \((\Sigma,B,q)\) 不变时任意改变 \(\dot q\)。</p>
+          <div class="proof"><strong>路线判断。</strong>&nbsp;“用当前局部应变和当前局部涡量形状构造普适 Lyapunov 标量”这一分支已经关闭。继续研究必须增加非局部压力、空间积分、历史或相邻尺度状态。</div>
+        </section>
+
+        <section id="source"><div class="section-no">01 / Resolved source equation</div><h2>滤波应变源的每一项都必须保留</h2>
+          <p>若 \(\tau=\overline{u\otimes u}-U\otimes U\)，则沿轨道的精确无迹源方程为</p>
+          <div class="equation result">\[
+            \boxed{
+            \dot\Sigma
+            =-(\Sigma^2)^\circ
+            -\frac14(\Omega_*\otimes\Omega_*)^\circ
+            -H_*^\circ
+            +\nu(\Delta S)_*
+            -K_{\tau,*}^\circ.}
+          \]</div>
+          <p>这里 \(H=\nabla^2P\)，而</p>
+          <div class="equation">\[
+            (K_\tau)_{ij}
+            =\frac12\partial_a(\partial_j\tau_{ia}+\partial_i\tau_{ja}).
+          \]</div>
+          <p>压力 Hessian 与次网格 Hessian 的分配会随滤波约定改变；只有完整组合具有一致的方程意义。因此本页没有用局部涡黏性模型替代任何一项。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">02 / Coupled correlation ledger</div><h2>联合演化把缺口写成六个可检查的收缩</h2>
+          <div class="equation result">\[
+          \boxed{
+          \begin{aligned}
+            \dot q={}&B:\Sigma^2+\frac23|\Sigma|_F^2-2q^2
+            -\frac14B:(\Omega_*\otimes\Omega_*)-B:H_*^\circ\\
+            &+\nu B:(\Delta S)_*-B:K_{\tau,*}^\circ
+            +\Sigma:\mathcal T_B(F_{\rm err}).
+          \end{aligned}}
+          \]</div>
+          <p>第一个局部组合记作 \(\mathcal Q(\Sigma,R)\)。同一个应变 \(\Sigma=\operatorname{diag}(2,-1,-1)\) 下，取 \(R=e_1\otimes e_1\) 得 \(\mathcal Q=-2\)，取 \(R=e_2\otimes e_2\) 得 \(\mathcal Q=1\)。所以在进入压力之前，纯局部二次项已经没有统一符号。</p>
+          <table class="ledger"><thead><tr><th>信息</th><th>是否由本阶段关闭</th></tr></thead><tbody>
+            <tr><td>精确系数与符号</td><td>已独立重算</td></tr>
+            <tr><td>局部二次项定号</td><td>否；存在精确正、负见证</td></tr>
+            <tr><td>压力点态定号</td><td>否；可独立翻转</td></tr>
+            <tr><td>非局部或历史补偿</td><td>仍开放</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="pressure"><div class="section-no">03 / Pressure-blindness theorem</div><h2>任意局部源方向都能被压力对偶检测</h2>
+          <p>R0.70J 的支撑分离构造可用缓冲核心外部的光滑速度包，任意改变核心处的对称无迹压力 Hessian，同时保持核心源 \(\Sigma\)、归一化协方差 \(B\)、截断运动和 \(B\) 的无压力演化不变。</p>
+          <p>因此，对任意 \(C^1\) 瞬时标量 \(\Phi(\Sigma,B)\)，压力贡献是</p>
+          <div class="equation result">\[
+            \boxed{\dot\Phi\big|_H=-D_\Sigma\Phi:H_*^\circ.}
+          \]</div>
+          <p>若要求它对所有声明范围内的光滑初值具有同一个单边符号，就必须有</p>
+          <div class="equation">\[
+            \boxed{D_\Sigma\Phi=0.}
+          \]</div>
+          <p>这不是“压力不可研究”。它只说明：如果补偿量看不见非局部压力，却又非平凡地依赖局部源，那么压力可以单独破坏其普适符号。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">04 / Exact periodic sign pair</div><h2>同一局部状态对应相反的精确导数</h2>
+          <p>报告构造两组光滑周期无散初值 \(u_-\) 与 \(u_+\)。在原点和初始时刻，它们具有相同的</p>
+          <div class="equation">\[
+            \Sigma=\operatorname{diag}(1,-1,0),\quad
+            R=\operatorname{diag}(1/2,0,1/2),\quad
+            B=\operatorname{diag}(1/6,-1/3,1/6),\quad q=1/2.
+          \]</div>
+          <p>局部梯度、源黏性与归一化协方差演化也完全相同。只有压力收缩改变，精确 Fourier 反演给出</p>
+          <div class="equation result">\[
+            \boxed{
+            \dot q_-=\frac{3901}{2040}&gt;0,\qquad
+            \dot q_+=-\frac{1283}{2040}&lt;0.}
+          \]</div>
+          <p>两组初值能量相同，并各自产生真实的短时光滑 Navier–Stokes 解。见证发生在初始面；它没有声称长期轨道保持匹配。</p>
+        </section>
+
+        <section id="survives"><div class="section-no">05 / Surviving candidates</div><h2>否定定理留下五类更大的状态空间</h2>
+          <p>仍未被排除的是：空间积分后的压力正交及其局部化交换子、显式非局部压力变量、相邻滤波尺度的压力—次网格联合账本、拉格朗日历史，以及应变传播子的矩阵拉回。</p>
+          <p>其中最小的下一门槛是</p>
+          <div class="equation">\[
+            \dot G=\Sigma G,\qquad
+            \widehat Q=G^{-1}QG^{-\mathsf T},\qquad
+            \dot{\widehat Q}=G^{-1}F_{\rm err}G^{-\mathsf T}.
+          \]</div>
+          <p>这个拉回在矩阵层面精确消去常值源，但它引入历史条件数。R0.70L 只把它保留为 R0.70M 候选，没有把条件数估计写成已闭合结论。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">06 / Journal figure</div><h2>压力是匹配源—形状符号对中的唯一开关</h2>
+          <figure><img src="/figures/r0-70l-source-compensator.svg" alt="R0.70L 两个匹配源形状初值的压力 Hessian 与完整 q 导数贡献账本"><figcaption>图 R0.70L。A：两组光滑周期初值具有相同的 \(\Sigma\) 与 \(B\)，压力 Hessian 的两个对角轴互换。B：局部梯度、源黏性和协方差形状演化逐项相同；只有压力项变号，从而得到相反的 \(\dot q\)。全部数据是精确有限 Fourier 初始面恒等式，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-70l-source-compensator.pdf">下载矢量 PDF</a> · <a href="/figures/r0-70l-source-compensator.png">下载 600 dpi PNG</a> · <a href="/figures/r0-70l-source-compensator.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">07 / Research value and literature boundary</div><h2>价值是精确排除一个自然但过小的状态空间</h2>
+          <p>R0.70L 的意义不在于得到正则性估计，而在于避免继续枚举 \((\Sigma,B)\) 的局部多项式。压力非局部性早已是经典事实；本阶段新增的是声明假设下的局部泛函否定定理，以及局部数据完全匹配、导数精确反号的周期 Navier–Stokes 见证。</p>
+          <p>十一篇原始来源的有界审计覆盖精确滤波速度梯度、条件压力闭合、Germano 恒等式、Gaussian 尺度分解与强涡量统计。没有一篇给出本页所需的确定性局部补偿符号。这是有限检索结论，不是全体文献不存在性证明。</p>
+          <p>下一步不再寻找更多局部标量。我只检查应变传播子的完整残差拉回，以及它是否能在不预先控制临界累计应变的情况下返回物理度量。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">08 / Claim boundary</div><h2>这是结构性初始面否定结果，不是正则性定理</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>完整源与相关账本</strong><p>压力、黏性、涡量与次网格项均保留。</p></div>
+            <div class="status"><span>PROVED</span><strong>局部泛函压力门槛</strong><p>在缓冲核心与声明滤波假设下成立。</p></div>
+            <div class="status"><span>OPEN</span><strong>非局部与历史补偿</strong><p>压力变量、空间积分和相邻尺度仍未关闭。</p></div>
+            <div class="status"><span>OPEN</span><strong>能量到临界控制</strong><p>弱解极限、分母质量与固定正时间均未解决。</p></div>
+          </div>
+          <p>定理不自动覆盖非紧 Gaussian 或严格 Littlewood–Paley 滤波、空间平均源、依赖压力的截断加速度、含压力或历史的泛函，也不声称在一个固定能量球上获得最优结论。</p>
+          <p>本版本没有构造奇性，没有证明全局光滑，也不是千禧年问题的部分解答。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproducibility and sources</div><h2>报告、独立复核、文献审计、证书和正式图包可分别检查</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070l_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070l_literature_audit.md">查看有界原始文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070l_independent_audit.md">查看独立内部复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070l">查看精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070l-source-compensator/fig-r070l-source-compensator">查看期刊附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器只认证有限 Fourier、矩阵与有理数计算。连续体滤波推导、支撑分离证明、短时光滑解与文献解释分别是解析论证，不被计算机证书替代。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确恒等式、结构见证、文献边界与开放问题分开记录。</div><div>R0.70L · 2026-08-24<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

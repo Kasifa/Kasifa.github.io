@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70M：应变传播子拉回精确消去常值伸长项，但欧氏返回付出锐的条件数平方；仿射不变替代又在光滑周期剪切的秩一协方差处失效。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70M｜应变传播子拉回：非交换回路与秩边界">
+  <meta property="og:description" content="坐标消项是精确的，但拉伸转移到了演化度量。零有符号积分仍可产生双曲 holonomy；下一门槛是多尺度协方差 frame coercivity。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-70m-deformation-holonomy.png">
+  <title>R0.70M｜应变传播子拉回：非交换回路与秩边界</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.82">
+  <style>.hero h1{font-size:clamp(1.85rem,4vw,3.55rem)}</style>
+  <script defer src="/i18n-en.js?v=0.82"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#name">名称</a><a href="#bv">拉回估计</a><a href="#kappa">锐损失</a><a href="#holonomy">回路</a><a href="#affine">秩边界</a><a href="#residual">余项</a><a href="#figure">附图</a><a href="#meaning">价值</a><a href="#boundary">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.70M · STRAIN-ONLY PULLBACK · HOLONOMY · RANK BOUNDARY</div>
+        <h1>拉回能精确消项，<br>却不能免费返回物理度量</h1>
+        <p class="lead">R0.70L 留下一个自然问题：沿应变生成的矩阵 \(G\) 拉回涡量协方差，能否彻底消去最危险的伸长项？代数上可以；但拉伸只是进入了演化度量。返回普通欧氏变量要付出锐的 \(\kappa_2(G)^2\) 因子；改用仿射不变度量可以去掉它，却要求协方差正定，而一个最简单的光滑周期剪切已经给出秩一边界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.70M 精确证书、独立内部复核 PASS 与正式附图完成</span><strong>两条直接拉回路线关闭</strong><p>版本 v0.70M · 2026-08-24</p><p>精确生产器：4 组全部通过</p><p>附图验证：20 项通过</p><p>正式图包：通用验证 0 error / 0 warning</p><p>下一门槛：多尺度协方差 frame coercivity</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 精确结论</a></li>
+        <li><a href="#name">01 · 名称与物理边界</a></li>
+        <li><a href="#bv">02 · 拉回形状估计</a></li>
+        <li><a href="#kappa">03 · 条件数平方</a></li>
+        <li><a href="#holonomy">04 · 非交换回路</a></li>
+        <li><a href="#affine">05 · 仿射与秩边界</a></li>
+        <li><a href="#residual">06 · 完整 NSE 余项</a></li>
+        <li><a href="#figure">07 · 期刊附图</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#boundary">09 · 主张边界</a></li>
+        <li><a href="#reproduce">10 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact conclusion</div><h2>坐标抵消成立，但能量闭合没有随之出现</h2>
+          <p>从局部滤波涡量协方差账本</p>
+          <div class="equation">\[
+            \dot Q=\Sigma Q+Q\Sigma+F,\qquad \Sigma\in\operatorname{Sym}_0(3),
+          \]</div>
+          <p>定义应变传播子与拉回协方差</p>
+          <div class="equation result">\[
+            \dot G=\Sigma G,\qquad
+            \widehat Q=G^{-1}QG^{-\mathsf T},\qquad
+            \boxed{\dot{\widehat Q}=G^{-1}FG^{-\mathsf T}.}
+          \]</div>
+          <p>常值应变项确实完全消失。但这只是换坐标；从 NSE 能量层控制拉回余项，以及把结论安全地送回原来的欧氏度量，仍是两个独立问题。</p>
+          <div class="proof"><strong>本阶段的结论。</strong>&nbsp;拉回后的条件估计是精确的；普适欧氏返回却有锐的条件数平方障碍。逆协方差的仿射替代又在光滑 NSE 的真实秩缺陷处失效。</div>
+        </section>
+
+        <section id="name"><div class="section-no">01 / Naming boundary</div><h2>\(G\) 是应变传播子，不是物理形变梯度</h2>
+          <p>本页的</p>
+          <div class="equation">\[
+            \dot G=\Sigma G
+          \]</div>
+          <p>只含对称应变。我称它为<strong>应变传播子</strong>，英文是 strain-only propagator。物理流映射的形变梯度使用完整速度梯度，满足</p>
+          <div class="equation">\[
+            \dot D=(\Sigma+W)D.
+          \]</div>
+          <p>在黏性 Eulerian–Lagrangian 表述中，还会出现扩散交换子或随机平均。因此下文“拉回”只指辅助矩阵 \(G\)，不指 Cauchy 公式，也不把 \(\det G=1\) 解释成条件数控制。</p>
+        </section>
+
+        <section id="bv"><div class="section-no">02 / Pulled-shape BV estimate</div><h2>去掉纯幅值后得到无额外 Grönwall 的条件估计</h2>
+          <p>令</p>
+          <div class="equation">\[
+            \widehat E=\operatorname{tr}\widehat Q,\qquad
+            \widehat B=\frac{\widehat Q}{\widehat E}-\frac13I.
+          \]</div>
+          <p>定义在拉回度量中去掉最佳标量幅值的相对残差</p>
+          <div class="equation">\[
+            \rho_G=
+            \inf_{\lambda\in\mathbb R}
+            \frac{|G^{-1}(F-\lambda Q)G^{-\mathsf T}|_F}
+            {\operatorname{tr}(G^{-1}QG^{-\mathsf T})}.
+          \]</div>
+          <p>精确形状估计为</p>
+          <div class="equation result">\[
+            \boxed{
+            |\widehat B(t)-\widehat B(s)|_F
+            \le(1+\sqrt2)\int_s^t\rho_G(r)\,dr.}
+          \]</div>
+          <p>所以 \(\rho_G\in L^1\) 会给出 \(\widehat B\) 的有界变差和有限终端极限。尚未得到的是从 Leray 能量推出这一积分条件。</p>
+        </section>
+
+        <section id="kappa"><div class="section-no">03 / Sharp Euclidean return loss</div><h2>欧氏回程的 \(\kappa_2(G)^2\) 不能降低</h2>
+          <p>若在原始坐标中定义相同的最优幅值商 \(\rho_0\)，则</p>
+          <div class="equation result">\[
+            \boxed{\rho_G\le\kappa_2(G)^2\rho_0.}
+          \]</div>
+          <p>显式正定矩阵族证明，即使两个坐标系都先优化掉纯幅值方向，仍有</p>
+          <div class="equation">\[
+            \frac{\rho_G}{\rho_0}\longrightarrow\kappa_2(G)^2.
+          \]</div>
+          <p>对称应变只给出</p>
+          <div class="equation">\[
+            \kappa_2(G(t))
+            \le\exp\!\int
+            \bigl(\lambda_{\max}(\Sigma)-\lambda_{\min}(\Sigma)\bigr)\,dt.
+          \]</div>
+          <p>若先假定这段临界应变历史有限，论证就回到了已有的应变继续性条件，而不是从基础能量得到新控制。</p>
+        </section>
+
+        <section id="holonomy"><div class="section-no">04 / Zero-integral holonomy</div><h2>零有符号积分不等于零历史</h2>
+          <p>取两个不交换的对称无迹矩阵 \(A,C\)，按 \(+A,+C,-A,-C\) 的顺序施加四个互不重叠的光滑单位质量脉冲。矩阵积分严格为零，协方差余项也取零，但有序指数为</p>
+          <div class="equation result">\[
+            G_*=e^{-C}e^{-A}e^Ce^A,\qquad
+            \operatorname{tr}G_*=-\frac{862}{81}&lt;-2.
+          \]</div>
+          <p>它是双曲且非正规的。拉回协方差始终为 \(I\)，物理三维协方差在一次回路后却满足</p>
+          <div class="equation">\[
+            \operatorname{tr}B_*^2
+            =\frac23-\frac{13122}{3296483}.
+          \]</div>
+          <p>一次零积分、零余项回路已经把欧氏形状推到接近秩一的边界。这里起作用的是时间次序与不交换性。这个回路目前只是精确光滑矩阵历史，尚未嵌入一条无外力有限能周期 NSE 轨道。</p>
+        </section>
+
+        <section id="affine"><div class="section-no">05 / Affine geometry and rank boundary</div><h2>仿射不变度量去掉条件数，却需要正定协方差</h2>
+          <p>令 \(\mathcal G=G^{\mathsf T}G\)。则</p>
+          <div class="equation">\[
+            Q=G\widehat QG^{\mathsf T},\qquad
+            E=\mathcal G:\widehat Q,\qquad
+            \dot{\mathcal G}:\widehat Q=2\Sigma:Q.
+          \]</div>
+          <p>这说明拉伸只是完整地转移进了演化度量。若 \(Q\succ0\)，可以用标准仿射不变 SPD 几何定义</p>
+          <div class="equation">\[
+            \mathfrak a(Q,F)^2
+            =\operatorname{tr}[(Q^{-1}F)^2]
+            -\frac13[\operatorname{tr}(Q^{-1}F)]^2,
+          \]</div>
+          <p>其 determinant-normalized 形状速度不含 \(G\) 或 \(\kappa_2(G)\)。这项矩阵几何是已有理论；本阶段只把精确 NSE 协方差余项放进该度量并检查秩边界。</p>
+          <p>精确无外力周期剪切</p>
+          <div class="equation">\[
+            u=A_0e^{-\nu N^2t}\sin(Ny)e_1
+          \]</div>
+          <p>的涡量始终平行于 \(e_3\)，所以任何非零标量滤波协方差都只有秩一。\(Q^{-1}\) 在这类最简单的光滑 NSE 解上已经不存在；各向同性正则化也不能一致通过 \(\varepsilon\downarrow0\)。</p>
+        </section>
+
+        <section id="residual"><div class="section-no">06 / Complete NSE residual</div><h2>四类拉回余项都停在临界尺度</h2>
+          <p>移动截断、非恒定应变、黏性与 SGS 交换都必须保留。直接估计是</p>
+          <div class="equation result">\[
+            \boxed{
+            |\dot{\widehat B}|_F
+            \le(1+\sqrt2)
+            \left(A_\chi+2S_G+2D_G+2C_G\right).}
+          \]</div>
+          <p>四项的时间积分都具有 Navier–Stokes 临界缩放。返回欧氏坐标时，截断振幅不损失条件数，非恒定应变通常损失一阶，黏性与 SGS 通常损失二阶。Leray 能量目前不控制这些拉回临界量，也不给 \(\widehat E\) 正下界。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>非交换回路、秩一缺口与锐的欧氏放大</h2>
+          <figure><img src="/figures/r0-70m-deformation-holonomy.svg" alt="R0.70M 零有符号应变历史、物理秩一缺口与优化残差商的条件数平方放大"><figcaption>图 R0.70M。A：生成元按 \(+A,+C,-A,-C\) 排列；两组有符号积分都为零，但有序指数给出精确双曲矩阵。B：当 \(Q_0=I\) 且余项为零时，拉回协方差保持 \(I\)，物理协方差却趋近秩一边界。C：显式正定族的优化残差商满足 \(\rho_G/\rho_0\to\kappa_2(G)^2\)。全部曲线来自闭式矩阵公式，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-70m-deformation-holonomy.pdf">下载矢量 PDF</a> · <a href="/figures/r0-70m-deformation-holonomy.png">下载 600 dpi PNG</a> · <a href="/figures/r0-70m-deformation-holonomy.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value and route decision</div><h2>价值是把“拉回也许会解决伸长”拆成三个可核验事实</h2>
+          <p>坐标抵消是精确的；欧氏返回的 \(\kappa_2(G)^2\) 损失是锐的；去掉条件数的逆协方差几何又在光滑周期 NSE 上遇到真实秩缺陷。因此 R0.70M 的价值主要是路线筛选，不是正则性推进。</p>
+          <p>核心流体与 PDE 审计止于十二篇高信号原始来源，另检查三篇仿射 SPD 几何来源。物理形变历史、临界继续性条件和矩阵几何均有明确先例；有界检索没有找到本页这一组局部协方差、应变传播子、锐平方损失与秩边界结论。这不是普遍新颖性声明。</p>
+          <p>R0.70N 将先测试最小多尺度 frame</p>
+          <div class="equation">\[
+            \mathcal Q_k=\sum_{j=k-m}^{k+m}w_jQ_j,
+            \qquad
+            \mathcal Q_k\succeq
+            c\,\operatorname{tr}(\mathcal Q_k)I.
+          \]</div>
+          <p>我会先推导它的精确源与余项账本，再用剪切和 Beltrami 族寻找秩缺陷。只有强制性估计通过这些反例检验，才进入仿射相对估计；在代数门槛通过以前，不启动大规模 DNS。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">09 / Claim boundary</div><h2>精确矩阵历史与精确 NSE 边界必须分开</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>拉回与条件性 BV</strong><p>无遗漏的源消项和最优幅值商估计。</p></div>
+            <div class="status"><span>PROVED</span><strong>锐平方损失与 holonomy</strong><p>正定族和零积分光滑矩阵回路均精确认证。</p></div>
+            <div class="status"><span>PROVED</span><strong>周期 NSE 秩边界</strong><p>光滑无外力剪切严格产生秩一协方差。</p></div>
+            <div class="status"><span>OPEN</span><strong>能量闭合与轨道实现</strong><p>回路的无外力轨道、弱解极限和临界控制均未完成。</p></div>
+          </div>
+          <p>本版本不主张四脉冲回路已经由一条无外力有限能周期 NSE 轨道实现，不主张 Leray 能量控制了拉回余项，也没有得到新的继续性判据。</p>
+          <p>它没有证明爆破或全局光滑性，也没有解决千禧年问题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">10 / Reproducibility and sources</div><h2>精确生产器、独立复核、文献边界与正式图包全部封存</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070m_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070m_literature_audit.md">查看有界原始文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070m_independent_audit.md">查看独立内部复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070m">查看精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070m-deformation-holonomy/fig-r070m-deformation-holonomy">查看正式期刊附图包</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器认证精确矩阵、代数与有理数计算。矩阵历史的光滑实现、周期剪切的 PDE 身份、完整残差推导和文献解释分别是解析论证；正式 manifest 指向不可变源快照，并通过通用图包验证。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>坐标恒等式、PDE 见证、文献边界与开放问题分开记录。</div><div>R0.70M · 2026-08-24<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

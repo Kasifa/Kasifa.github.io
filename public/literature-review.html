@@ -500,19 +500,469 @@
       .topology, .result-card, .recent-card { break-inside: avoid; box-shadow: none; }
     }
   </style>
+  <style id="main-site-visual-overrides">
+    /* Keep this page on the same archival visual system as the research home page. */
+    :root {
+      color-scheme: light dark;
+      --ink: #27221d;
+      --muted: #675f55;
+      --paper: #f2eddf;
+      --paper-2: #e9e1d1;
+      --card: transparent;
+      --card-solid: #f2eddf;
+      --deep: #27221d;
+      --teal: #4d5b4a;
+      --teal-soft: #e7e6da;
+      --orange: #8a302c;
+      --orange-soft: #eaded2;
+      --gold: #9a7433;
+      --gold-soft: #e8dec5;
+      --green: #435946;
+      --green-soft: #e1e5dc;
+      --line: rgba(39, 34, 29, .28);
+      --shadow: none;
+      --radius: 0;
+      --content: 1120px;
+      --topbar: rgba(242, 237, 223, .97);
+      --selection: #cdbd97;
+      --footer-bg: #27221d;
+      --footer-text: #cfc5b3;
+      --footer-strong: #f2eddf;
+      --footer-link: #d6b56d;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #eee7d8;
+        --muted: #bcb19e;
+        --paper: #171816;
+        --paper-2: #22241f;
+        --card-solid: #171816;
+        --deep: #eee7d8;
+        --teal: #99aa96;
+        --teal-soft: #252b25;
+        --orange: #ee8b7c;
+        --orange-soft: #342725;
+        --gold: #d9b567;
+        --gold-soft: #332e21;
+        --green: #9fbea2;
+        --green-soft: #243027;
+        --line: rgba(238, 231, 216, .26);
+        --topbar: rgba(23, 24, 22, .96);
+        --selection: #614c3c;
+        --footer-bg: #0d0f0e;
+        --footer-text: #bcb2a0;
+        --footer-strong: #eee7d8;
+        --footer-link: #e2bf78;
+      }
+    }
+
+    body {
+      background: var(--paper);
+      font-family: Georgia, "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+      font-size: 17px;
+      line-height: 1.82;
+      letter-spacing: .006em;
+    }
+    a { color: var(--orange); }
+    a:hover { color: var(--ink); }
+    ::selection { background: var(--selection); color: var(--ink); }
+
+    .progress {
+      position: fixed;
+      z-index: 60;
+      inset: 0 auto auto 0;
+      width: 0;
+      height: 2px;
+      background: var(--orange);
+    }
+    .skip-link {
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .bar {
+      border-top: 4px solid var(--ink);
+      border-bottom: 3px double var(--ink);
+      background: var(--topbar);
+      color: var(--ink);
+      backdrop-filter: none;
+    }
+    .bar-inner { min-height: 62px; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      flex: 0 0 auto;
+      color: var(--ink);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      display: grid;
+      width: 31px;
+      height: 31px;
+      place-items: center;
+      border: 1px solid var(--ink);
+      color: var(--orange);
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 16px;
+    }
+    .bar .topnav {
+      display: flex;
+      min-width: 0;
+      gap: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .bar .topnav::-webkit-scrollbar { display: none; }
+    .bar .topnav a { color: var(--muted); }
+    .bar .topnav a:hover { color: var(--orange); }
+    .bar-actions {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .bar-actions .topnav { flex: 1 1 auto; justify-content: flex-end; }
+    .bar-language { display: flex; flex: 0 0 auto; }
+    .top-language-switcher {
+      appearance: none;
+      padding: 7px 10px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      font: 700 11px/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      letter-spacing: .02em;
+      cursor: pointer;
+    }
+    .top-language-switcher:hover,
+    .top-language-switcher:focus-visible {
+      background: var(--ink);
+      color: var(--paper);
+      outline: none;
+    }
+
+    .hero {
+      overflow: visible;
+      border-bottom: 3px double var(--ink);
+      background: transparent;
+      color: var(--ink);
+    }
+    .hero::after { display: none; }
+    .hero-inner {
+      padding: 74px 0 62px;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, .55fr);
+      gap: 72px;
+      align-items: center;
+    }
+    .eyebrow {
+      margin-bottom: 16px;
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .12em;
+    }
+    h1 {
+      max-width: 760px;
+      color: var(--ink);
+      font-size: clamp(3.5rem, 7.2vw, 6.2rem);
+      font-weight: 400;
+      letter-spacing: -.045em;
+      line-height: .94;
+    }
+    html[data-language="en"] h1 {
+      font-size: clamp(3rem, 6vw, 5.15rem);
+      line-height: .92;
+    }
+    .lead {
+      max-width: 700px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.8vw, 1.18rem);
+    }
+    .verdict {
+      padding: 24px;
+      border: 3px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .verdict small {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+    }
+    .verdict strong {
+      color: var(--ink);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .verdict p { color: var(--muted); }
+    .verdict dl {
+      border-top-color: var(--line);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    .verdict dt { color: var(--muted); }
+    .verdict dd { color: var(--ink); }
+
+    .layout {
+      padding: 72px 0 110px;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 72px;
+    }
+    .toc {
+      top: 92px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      font-size: 13px;
+    }
+    .toc strong {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .12em;
+    }
+    .toc ol {
+      margin-top: 13px;
+      border-top: 1px solid var(--ink);
+    }
+    .toc li {
+      margin: 0 !important;
+      border-bottom: 1px solid var(--line);
+    }
+    .toc a {
+      display: block;
+      padding: 9px 0;
+      color: var(--muted);
+    }
+    .toc a:hover { color: var(--orange); }
+    .toc-note {
+      margin-top: 22px;
+      padding: 15px 0;
+      border-top: 3px double var(--ink);
+      border-bottom: 3px double var(--ink);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .toc-note strong { display: block; margin-bottom: 7px; color: var(--ink); }
+
+    section { scroll-margin-top: 92px; }
+    section + section { margin-top: 96px; }
+    .section-index {
+      color: var(--orange);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .09em;
+    }
+    h2 {
+      color: var(--ink);
+      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      font-weight: 400;
+      letter-spacing: -.025em;
+    }
+    h3 {
+      color: var(--ink);
+      font-family: Georgia, "Songti SC", "STSong", serif;
+      font-weight: 600;
+    }
+    .deck { color: var(--muted); }
+    .equation {
+      padding: 20px 24px;
+      border-top: 1px solid var(--line);
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      border-left: 3px solid var(--orange);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .boundary {
+      padding: 20px 24px;
+      border: 3px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+    .boundary strong { color: var(--orange); }
+
+    .topology {
+      padding: 25px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .topology > figcaption {
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--line);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+    }
+    .topology > figcaption strong { color: var(--orange); font-size: 12px; }
+    .topology-node,
+    .result-card,
+    .recent-card,
+    .exclusion-row,
+    .criteria li {
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+    .topology-node.root {
+      border: 3px double var(--ink);
+      background: transparent;
+    }
+    .topology-node.positive { border-color: var(--green); background: var(--green-soft); }
+    .topology-node.negative { border-color: var(--orange); background: var(--orange-soft); }
+    .topology-arrow {
+      position: relative;
+      height: 34px;
+      color: transparent;
+      font-size: 0;
+    }
+    .topology-arrow::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: 1px solid var(--ink);
+    }
+    .two-branches::before,
+    .branch-grid::before { border-top-color: var(--ink); }
+    .branch-card {
+      border: 1px solid var(--ink);
+      border-top: 4px double var(--ink);
+      border-radius: 0;
+      background: transparent;
+    }
+    .branch-card b,
+    .result-card .state,
+    .recent-card b { color: var(--orange); }
+    .gap-node {
+      border: 3px double var(--orange);
+      border-radius: 0;
+      background: transparent;
+    }
+    .result-card,
+    .recent-card { padding: 19px; }
+    .review-table th { color: var(--orange); }
+    .review-table th,
+    .review-table td { border-bottom-color: var(--line); }
+    .status-pill {
+      border: 1px solid currentColor;
+      border-radius: 0;
+      background: transparent !important;
+    }
+    .route-step::before {
+      border-color: var(--paper);
+      border-radius: 0;
+      background: var(--ink);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+    .route-step.closed::before { background: var(--orange); box-shadow: 0 0 0 1px var(--orange); }
+    .route-step.kept::before { background: var(--green); box-shadow: 0 0 0 1px var(--green); }
+    .route-step.pause::before { background: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+    .route-step b { color: var(--orange); }
+    .criteria li::before { color: var(--orange); }
+    .preprint-label {
+      border: 1px solid var(--orange);
+      border-radius: 0;
+      background: transparent;
+    }
+
+    footer {
+      border-top: 0;
+      background: var(--footer-bg);
+    }
+    .footer-inner { color: var(--footer-text); }
+    .footer-inner strong { color: var(--footer-strong); }
+    .footer-inner a { color: var(--footer-link); }
+
+    @media (max-width: 1100px) {
+      .bar-inner { align-items: flex-start; flex-direction: column; gap: 10px; padding: 12px 0 10px; }
+      .bar-actions { width: 100%; }
+      .bar .topnav { width: auto; padding-bottom: 2px; justify-content: flex-start; }
+    }
+    @media (max-width: 980px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 34px; }
+      .layout { grid-template-columns: 1fr; gap: 42px; }
+      .toc { position: static; }
+      .toc ol { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .toc li:nth-child(odd) { border-right: 1px solid var(--line); }
+      .toc a { padding-right: 12px; }
+      .branch-grid { grid-template-columns: repeat(2, 1fr); }
+      .branch-grid::before { display: none; }
+      .recent-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .bar nav a:not(:last-child) { display: block; }
+      .bar-inner,
+      .hero-inner,
+      .layout,
+      .footer-inner { width: min(calc(100% - 28px), var(--content)); }
+      .brand { white-space: normal; line-height: 1.35; }
+      .hero-inner { padding: 58px 0 50px; }
+      .layout { padding-top: 38px; }
+      .toc ol,
+      .result-grid,
+      .criteria,
+      .two-branches,
+      .branch-grid { grid-template-columns: 1fr; }
+      .toc li:nth-child(odd) { border-right: 0; }
+      .topology { padding: 17px; }
+      .topology > figcaption { display: block; }
+      .topology > figcaption span { display: block; margin-top: 6px; }
+      .two-branches::before { display: none; }
+      .exclusion-row { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .progress, .bar, .toc, .language-switcher, .top-language-switcher { display: none !important; }
+      body { background: white; color: black; }
+      .hero { color: black; background: white; }
+      .hero *, .verdict *, h1, h2, h3 { color: black !important; }
+    }
+  </style>
 </head>
 <body>
+  <div class="progress" id="progress" aria-hidden="true"></div>
   <a class="skip-link" href="#content">跳到正文</a>
   <header class="bar">
     <div class="bar-inner">
-      <a class="brand" href="/">ν · 三维 Navier–Stokes 全局正则性问题</a>
-      <nav aria-label="文献综述导航">
-        <a href="#map">理论地图</a>
-        <a href="#blowup">爆破排除</a>
-        <a href="#route">本站路线</a>
-        <a href="#references">参考文献</a>
-        <a href="/">返回主页</a>
-      </nav>
+      <a class="brand" href="/" aria-label="返回研究主页">
+        <span class="brand-mark">ν</span>
+        <span>三维 Navier–Stokes 全局正则性问题</span>
+      </a>
+      <div class="bar-actions">
+        <nav class="topnav" data-section-nav aria-label="文献综述目录">
+          <a href="#problem">问题边界</a>
+          <a href="#critical">临界困难</a>
+          <a href="#map">理论地图</a>
+          <a href="#foundations">经典骨架</a>
+          <a href="#blowup">爆破排除</a>
+          <a href="#recent">近期进展</a>
+          <a href="#route">本站路线</a>
+          <a href="#references">参考文献</a>
+        </nav>
+        <span class="bar-language" data-language-switcher-slot></span>
+      </div>
     </div>
   </header>
 
@@ -522,12 +972,12 @@
         <div>
           <p class="eyebrow">Literature review · Evidence cutoff 2026-08-25</p>
           <h1>三维 Navier–Stokes<br>全局正则性问题</h1>
-          <p class="lead">我把经典结果、条件正则性、爆破排除、近期定量进展和本站路线放在同一张图上。重点不是罗列论文，而是说明每条理论已经排除了什么，以及它离原问题还差哪一步。</p>
+          <p class="lead">这页只回答三个问题：已经证明了什么，哪些爆破方式已被排除，我现在的路线接在文献的什么位置。定理、预印本和本站笔记分开记录。</p>
         </div>
         <aside class="verdict" aria-label="综述结论">
-          <small>结论先行</small>
+          <small>当前结论</small>
           <strong>问题仍未解决</strong>
-          <p>现有理论已经把可能的奇性压到很窄的临界区域，但还没有从能量级信息推出任意大数据所需的全局临界控制。</p>
+          <p>已知理论给潜在奇性加了很多限制，但还不能从能量估计推出一般大数据所需的全局临界控制。</p>
           <dl>
             <div><dt>经典基线</dt><dd>Leray–Hopf</dd></div>
             <div><dt>关键尺度</dt><dd>临界空间</dd></div>
@@ -541,24 +991,27 @@
     <div class="layout">
       <aside class="toc" aria-label="目录">
         <strong>CONTENTS</strong>
-        <ol>
-          <li><a href="#problem">01 · 问题边界</a></li>
-          <li><a href="#critical">02 · 临界困难</a></li>
-          <li><a href="#map">03 · 理论地图</a></li>
-          <li><a href="#foundations">04 · 经典骨架</a></li>
-          <li><a href="#blowup">05 · 爆破排除</a></li>
-          <li><a href="#recent">06 · 近期进展</a></li>
-          <li><a href="#route">07 · 本站路线</a></li>
-          <li><a href="#judgment">08 · 研究判断</a></li>
-          <li><a href="#references">09 · 参考文献</a></li>
+        <ol data-section-nav>
+          <li><a href="#problem">问题边界</a></li>
+          <li><a href="#critical">临界困难</a></li>
+          <li><a href="#map">理论地图</a></li>
+          <li><a href="#foundations">经典骨架</a></li>
+          <li><a href="#blowup">爆破排除</a></li>
+          <li><a href="#recent">近期进展</a></li>
+          <li><a href="#route">本站路线</a></li>
+          <li><a href="#references">参考文献</a></li>
         </ol>
+        <div class="toc-note">
+          <strong>证据标签</strong>
+          已发表定理、预印本和本站笔记分别标明，不混在一起。
+        </div>
       </aside>
 
       <article>
         <section id="problem">
-          <span class="section-index">01 / Exact problem boundary</span>
-          <h2>先把原问题说准确</h2>
-          <p class="deck">Clay 问题不是“方程有没有解”，而是任意光滑无散初值产生的三维解能否永久保持光滑；负面答案则需要严格构造正式条件允许的有限时破裂。</p>
+          <span class="section-index">NOTE 01 / Problem boundary</span>
+          <h2>先把问题本身说清楚</h2>
+          <p class="deck">这里讨论的不是一般意义上的“有没有解”，而是三维光滑解会不会在有限时间失去正则性。</p>
           <div class="equation">
             \[
               \partial_t u+(u\cdot\nabla)u-\Delta u+\nabla p=0,
@@ -566,10 +1019,10 @@
               \qquad u(\cdot,0)=u_0.
             \]
           </div>
-          <p>正式表述允许在 \(\mathbb R^3\) 或三维周期空间 \(\mathbb T^3\) 上给出正向光滑性证明，也允许按规定的初值和外力给出崩溃例子。研究中通常把“无外力、任意光滑无散初值是否全局光滑”看作核心正则性版本。二维正则性、修改方程爆破、特殊对称解或带外力弱解非唯一性都不能直接替代这个版本。<a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></p>
+          <p>Clay 的正式表述给了正向和负向两种结论：可以证明所有允许的光滑初值都产生全局光滑解，也可以构造满足正式条件的有限时破裂。本站先看无外力、任意光滑无散初值的全局正则性。二维结果、修改方程、特殊对称解和带外力弱解非唯一性都不等于这个问题的答案。<a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></p>
 
           <figure class="topology" aria-labelledby="topology-1-title">
-            <figcaption><strong id="topology-1-title">技术拓扑图 1 · 问题的逻辑层级</strong><span>从局部解到两种可能的终局</span></figcaption>
+            <figcaption><strong id="topology-1-title">技术拓扑图 1 · 问题的逻辑层级</strong><span>从局部强解到两种可能的结论</span></figcaption>
             <div class="topology-node root"><strong>光滑、无散、有限能量初值 \(u_0\)</strong><span>局部强解存在且短时唯一</span></div>
             <div class="topology-arrow" aria-hidden="true">↓</div>
             <div class="topology-node root"><strong>最大光滑时间 \(T_*\)</strong><span>问题转化为是否可能有 \(T_*&lt;\infty\)</span></div>
@@ -582,15 +1035,15 @@
           </figure>
 
           <div class="boundary">
-            <strong>本综述的边界</strong>
-            <p>我只把已发表定理写成已知结果；2026 年预印本单独标记；本站 R0.69P–R0.71A 只作为经过审计的研究笔记，不把它们外推成正则性定理。</p>
+            <strong>这页怎样使用证据</strong>
+            <p>已发表定理写成已知结果，2026 年预印本单独标记，本站 R0.69P–R0.71A 只写成研究笔记。我不把计算或笔记外推成正则性定理。</p>
           </div>
         </section>
 
         <section id="critical">
-          <span class="section-index">02 / Critical-scale obstruction</span>
-          <h2>为什么三维问题卡在临界尺度</h2>
-          <p class="deck">全局能量估计足以构造弱解，却允许能量在越来越小的尺度上集中。三维独有的涡量拉伸又能把这种集中转成正的 enstrophy 生产。</p>
+          <span class="section-index">NOTE 02 / Critical scale</span>
+          <h2>困难出现在临界尺度</h2>
+          <p class="deck">能量估计可以一直成立，但它没有排除能量向越来越小的尺度集中。三维涡量拉伸正好作用在这里。</p>
           <div class="equation">
             \[
               u_\lambda(x,t)=\lambda u(\lambda x,\lambda^2t),
@@ -601,13 +1054,13 @@
               =\int_{\mathbb R^3}\omega\cdot S\omega\,dx.
             \]
           </div>
-          <p>速度空间 \(L^3\)、\(\dot H^{1/2}\)、\(BMO^{-1}\) 以及一族临界 Besov 范数与方程缩放相容。小临界数据可以全局求解，大临界数据可以局部求解；如果潜在爆破前 \(L_t^\infty L_x^3\) 保持有界，则爆破不能发生。真正缺少的是：怎样从一般大数据的能量级控制，无条件推出某个这样的临界量全局有界。<a href="#ref-5">[5]</a><a href="#ref-6">[6]</a><a href="#ref-7">[7]</a><a href="#ref-8">[8]</a><a href="#ref-10">[10]</a></p>
+          <p>速度空间 \(L^3\)、\(\dot H^{1/2}\)、\(BMO^{-1}\) 和一些临界 Besov 范数都与方程缩放相容。小临界数据有全局理论，大临界数据有局部理论；如果潜在爆破前 \(L_t^\infty L_x^3\) 一直有界，爆破就不会发生。缺口很具体：能不能只从一般大数据已有的能量级信息，推出一个全局临界界。<a href="#ref-5">[5]</a><a href="#ref-6">[6]</a><a href="#ref-7">[7]</a><a href="#ref-8">[8]</a><a href="#ref-10">[10]</a></p>
         </section>
 
         <section id="map">
-          <span class="section-index">03 / Literature topology</span>
+          <span class="section-index">NOTE 03 / Literature map</span>
           <h2>五条主要理论分支</h2>
-          <p class="deck">这些分支并不是彼此竞争的“解法”。它们从不同方向刻画：如果奇性存在，它必须逃过哪些控制。</p>
+          <p class="deck">我把常用结果分成五支。它们不是五个互相竞争的解法，而是从不同方向限制潜在奇性。</p>
           <figure class="topology" aria-labelledby="topology-2-title">
             <figcaption><strong id="topology-2-title">技术拓扑图 2 · 文献主干</strong><span>每一支都留下一个明确的开放接口</span></figcaption>
             <div class="topology-node root"><strong>三维全局正则性</strong><span>目标：把最大光滑时间延拓到无穷</span></div>
@@ -631,9 +1084,9 @@
         </section>
 
         <section id="foundations">
-          <span class="section-index">04 / Foundational results</span>
+          <span class="section-index">NOTE 04 / Established results</span>
           <h2>经典理论骨架</h2>
-          <p class="deck">把“存在、唯一、正则”分开后，问题的位置会清楚很多。</p>
+          <p class="deck">先把存在、唯一和正则分开，才不会把弱解存在误写成全局正则性结论。</p>
           <table class="review-table">
             <thead><tr><th>理论层级</th><th>已经严格得到</th><th>仍然缺少</th></tr></thead>
             <tbody>
@@ -650,9 +1103,9 @@
         </section>
 
         <section id="blowup">
-          <span class="section-index">05 / Blow-up exclusion tree</span>
+          <span class="section-index">NOTE 05 / Blow-up boundaries</span>
           <h2>哪些爆破图景已被排除</h2>
-          <p class="deck">已知结果对奇性施加了很强的必要条件，但开放区域仍包含非自相似、形状变化和多尺度递归的 Type II 图景。</p>
+          <p class="deck">下面只区分三件事：已经排除、受到定量约束、仍然开放。</p>
           <figure class="topology" aria-labelledby="topology-3-title">
             <figcaption><strong id="topology-3-title">技术拓扑图 3 · 候选爆破排除树</strong><span>假设 \(T_*&lt;\infty\)，逐项检查它必须避开什么</span></figcaption>
             <div class="exclusion-list">
@@ -663,25 +1116,25 @@
               <div class="exclusion-row"><span class="status-pill open">仍开放</span><strong>Type II、非自相似、形状变化、多尺度递归</strong><span>目前没有一般排除定理。</span></div>
             </div>
           </figure>
-          <p>Seregin 证明潜在爆破时刻前 \(\|u(t)\|_3\to\infty\)；Tao 又把端点正则性定量化，得到显式高阶界和三重对数型爆破下界。Barker–Prange 把 Type I 上界与空间浓缩、临界范数下界和奇点数量联系起来。这些结果更准确地描述“如果爆破，它必须怎样发生”，但还没有证明这种发生方式不可能。<a href="#ref-13">[13]</a><a href="#ref-14">[14]</a><a href="#ref-23">[23]</a></p>
+          <p>Seregin 证明，若真有潜在爆破，则 \(\|u(t)\|_3\to\infty\)。Tao 给出端点正则性的定量高阶界和爆破下界。Barker–Prange 把 Type I 上界与空间浓缩、临界范数下界和奇点数量联系起来。它们说明了爆破必须满足什么，但还没有推出矛盾。<a href="#ref-13">[13]</a><a href="#ref-14">[14]</a><a href="#ref-23">[23]</a></p>
         </section>
 
         <section id="recent">
-          <span class="section-index">06 / Recent progress</span>
-          <h2>2019—2026 年值得保留的进展</h2>
-          <p class="deck">我不使用“已经接近解决”这样的判断，只按结果类型记录它实际推进了哪一条边界。</p>
+          <span class="section-index">NOTE 06 / Recent papers</span>
+          <h2>2019—2026 年我保留的进展</h2>
+          <p class="deck">这里只保留改变理论边界的结果。我不判断离最终解还有多远，因为没有可检验的标准。</p>
           <div class="recent-list">
             <article class="recent-card"><b>QUANTITATIVE</b><h3>临界正则性的定量化</h3><p>Tao 给出临界 \(L^3\) 控制下的显式高阶界和爆破下界；Barker–Prange 进一步连接 Type I 图景、局部浓缩和奇点数量。<a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></p></article>
             <article class="recent-card"><b>PARTIAL REGULARITY</b><h3>CKN 的对数改进</h3><p>Lei–Ren 对部分正则性作定量改进，并得到轴对称小旋量情形的应用；一般三维奇异集仍未证明为空。<a href="#ref-15">[15]</a></p></article>
             <article class="recent-card"><b>CRITICAL ENDPOINTS</b><h3>Lorentz 与应变特征值条件</h3><p>近年的工作把定量边界推进到临界 Lorentz 空间，并细化中间应变特征值的延拓条件；这些仍是条件正则性结果。<a href="#ref-16">[16]</a><a href="#ref-17">[17]</a></p></article>
           </div>
-          <h3>两篇与当前路线直接相邻的 2026 年预印本</h3>
-          <p>Yu 研究过滤涡量拉伸、增量缺陷、远场应变和局部化余项；Grujić 在特定临界浓缩与加权 BMO 涡量方向假设下给出对数耗散机制。两篇都与“增量—尺度—几何耗散”相邻，但截至资料截止日仍应标为预印本，它们给出条件机制，不是一般大数据全局正则定理。<a href="#ref-29">[29]</a><a href="#ref-30">[30]</a></p>
+          <h3>两篇与当前路线相邻的 2026 年预印本</h3>
+          <p>Yu 讨论过滤后的涡量拉伸、增量缺陷、远场应变和局部化余项。Grujić 在给定临界浓缩与加权 BMO 涡量方向条件下得到对数耗散机制。它们都接近“增量—尺度—几何耗散”这条线，但截至资料截止日仍是预印本，也都不是一般大数据全局正则定理。<a href="#ref-29">[29]</a><a href="#ref-30">[30]</a></p>
           <div class="boundary"><strong>不能误读的两类结果</strong><p>Tao 的平均 Navier–Stokes 模型爆破说明能量与缩放等粗结构不足以单独完成证明，但不是原方程的反例。Buckmaster–Vicol 与 Albritton–Brué–Colombo 的弱非唯一性定理有解类或外力边界，也不能替代无外力光滑初值的 Clay 核心问题。<a href="#ref-26">[26]</a><a href="#ref-27">[27]</a><a href="#ref-28">[28]</a></p></div>
         </section>
 
         <section id="route">
-          <span class="section-index">07 / Position of this research route</span>
+          <span class="section-index">NOTE 07 / Current route</span>
           <h2>本站路线在文献图上的位置</h2>
           <p class="deck">R0.69P–R0.71A 从涡量方向几何与有符号物理环带出发，经过 source–core 对偶、协方差框架和 response-distance，最终把开放缺口压缩到 common-response 的有符号临界时间补偿。它的主要价值是保存精确恒等式、条件桥和可复用的 no-go，而不是给出正则性结论。</p>
           <figure class="topology" aria-labelledby="topology-4-title">
@@ -703,12 +1156,8 @@
               <div class="route-step pause"><header><b>OPEN BRIDGE · R0.71B</b><strong>common-response 的有符号尺度补偿</strong></header><p>需要一个沿真实 Navier–Stokes 解传播、全空间结算并能进入 \(\varepsilon\)-正则性或临界延拓的 tent / Carleson 型候选量。<a href="/recap-r0-61-r0-71a.html">累计回顾</a></p></div>
             </div>
           </figure>
-        </section>
-
-        <section id="judgment">
-          <span class="section-index">08 / Research judgment</span>
-          <h2>从文献得到的研究判断</h2>
-          <p class="deck">下一条值得投入的引理，不能只是又一个单时刻恒等式。它至少应同时通过下面六个门。</p>
+          <h3>下一步只检查什么</h3>
+          <p>静态环带路线已经暂停。我下一步只考虑能接到真实时间演化的量，并用下面六条先做筛选。</p>
           <ol class="criteria">
             <li><strong>尺度正确。</strong>在 Navier–Stokes 缩放下临界或略次临界。</li>
             <li><strong>能量级可定义。</strong>适合弱解上有意义，不预先要求高阶光滑性。</li>
@@ -717,13 +1166,13 @@
             <li><strong>动态可迭代。</strong>沿时间或半径产生严格收缩，而非静态重写。</li>
             <li><strong>不循环论证。</strong>不能把想证明的临界控制重新当作假设。</li>
           </ol>
-          <p>DGX 仿真适合扫描形状参数、定位饱和族、保存中间积分块并寻找反例候选；它不能证明对所有光滑初值、所有尺度成立的统一不等式。我会继续采用“数值搜索候选结构 → 区间或精确证书 → 分析引理 → 接到适合弱解或临界空间”的顺序。</p>
+          <p>数值计算只用来找候选结构和反例，不承担证明。通过计算筛选后，还需要区间或精确证书、分析引理，以及与弱解或临界空间的严格接口。</p>
         </section>
 
         <section id="references">
-          <span class="section-index">09 / Primary sources</span>
+          <span class="section-index">SOURCES / Primary references</span>
           <h2>参考文献</h2>
-          <p class="deck">以下尽量链接原始论文、作者页面、期刊 DOI 或 Clay 官方材料。预印本单独标记。</p>
+          <p class="deck">我优先链接原始论文、期刊 DOI 和 Clay 官方材料。预印本单独标记。</p>
           <ol class="references">
             <li id="ref-1">Clay Mathematics Institute. <a href="https://www.claymath.org/millennium/Navier-Stokes-Equation/">Navier–Stokes Equation</a>. Official current status page.</li>
             <li id="ref-2">C. L. Fefferman. <a href="https://www.claymath.org/library/monographs/MPPc.pdf"><em>Existence and Smoothness of the Navier–Stokes Equation</em></a>. In <em>The Millennium Prize Problems</em>.</li>
@@ -768,5 +1217,26 @@
       <div>文献综述 v0.86 · 2026-08-25<br><a href="/">返回研究主页</a></div>
     </div>
   </footer>
+  <script>
+    (() => {
+      const progress = document.getElementById("progress");
+      const updateProgress = () => {
+        const height = document.documentElement.scrollHeight - innerHeight;
+        progress.style.width = `${height > 0 ? (scrollY / height) * 100 : 0}%`;
+      };
+      addEventListener("scroll", updateProgress, { passive: true });
+      addEventListener("resize", updateProgress);
+      updateProgress();
+
+      addEventListener("DOMContentLoaded", () => {
+        const slot = document.querySelector("[data-language-switcher-slot]");
+        const button = document.querySelector(".language-switcher");
+        if (!slot || !button) return;
+        button.classList.remove("language-switcher");
+        button.classList.add("top-language-switcher");
+        slot.replaceChildren(button);
+      }, { once: true });
+    })();
+  </script>
 </body>
 </html>

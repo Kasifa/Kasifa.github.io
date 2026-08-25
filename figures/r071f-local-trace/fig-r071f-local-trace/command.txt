@@ -1,0 +1,5 @@
+MPLCONFIGDIR=/private/tmp/r071f-local-trace-mpl PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python figures/r071f-local-trace/fig-r071f-local-trace/plot.py
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python figures/r071f-local-trace/fig-r071f-local-trace/validate_data.py
+pdftoppm -png -r 300 -singlefile figures/r071f-local-trace/fig-r071f-local-trace/figure.pdf /private/tmp/r071f-local-trace-pdf
+MPLCONFIGDIR=/private/tmp/r071f-local-trace-mpl PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python figures/r071f-local-trace/fig-r071f-local-trace/plot.py --finalize-only
+(cd figures/r071f-local-trace/fig-r071f-local-trace && shasum -a 256 -c SHA256SUMS)

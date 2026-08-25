@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71F：skewed-cylinder 局部化保留 projected-Lamb 热 packing，但不能免费恢复底边迹；临界 Cr^{-2} 代价被饱和而未被否定。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71F｜局部热 packing 成立，底边迹仍需临界代价">
+  <meta property="og:description" content="moving projected-Lamb 账本、matched local continuation criterion、Leray 端点热 packing、精确局部迹公式、固定能量低块分离与严格内部 one-block 缩放边界。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71F｜局部热 packing 成立，底边迹仍需临界代价</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.75rem,3.8vw,3.3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.91"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#setup">对象</a><a href="#ledger">移动账本</a><a href="#equivalence">两种表示</a><a href="#criterion">局部判据</a><a href="#packing">热 packing</a><a href="#moments">端点</a><a href="#witness">精确局部迹</a><a href="#partition">固定能量</a><a href="#interior">内部柱</a><a href="#trace">迹边界</a><a href="#literature">文献</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71F · SKEWED CYLINDERS · LOCAL HEAT PACKING · CRITICAL TRACE</div>
+        <h1>局部热 packing 成立，<br>底边迹仍需临界代价</h1>
+        <p class="lead">我检查了 mollified-flow skewed cylinders 能否补上 R0.71E 的热底边迹缺口。移动 cutoff 的 projected-Lamb 账本、matched local continuation criterion 和有界重叠热 packing 都可以严格成立；Leray 能量在热矩的 \(\alpha=1\) 端点给出时间可积性。负面边界同样明确：真实全局光滑 2D3C 解在每个非零非负局部 cutoff 上保留精确的 \(K^2\) 迹代价，严格内部的 one-block 缩放族排除纯几何的 \(o(r^{-2})\) 因子。临界 \(Cr^{-2}\) 没有被否定。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71F 报告与两程序证书完成</span><strong>局部热体积闭合；临界底边迹仍未闭合</strong><p>版本 v0.71F · 2026-08-25</p><p>精确生产器与独立 FFT 检查器通过</p><p>正式附图：公式与有限检查，不是 DNS</p><p>下一门槛：signed Lamb trace 的驻留时间</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#setup">01 · 对象与约定</a></li>
+        <li><a href="#ledger">02 · Moving projected-Lamb ledger</a></li>
+        <li><a href="#equivalence">03 · Projected / material equivalence</a></li>
+        <li><a href="#criterion">04 · Matched local criterion</a></li>
+        <li><a href="#packing">05 · Bounded-overlap heat packing</a></li>
+        <li><a href="#moments">06 · \(\alpha=1\) Leray 边界</a></li>
+        <li><a href="#witness">07 · Exact local cutoff formula</a></li>
+        <li><a href="#partition">08 · 固定能量低块分离</a></li>
+        <li><a href="#interior">09 · 严格内部 one-block no-go</a></li>
+        <li><a href="#trace">10 · Trace / Carleson 边界</a></li>
+        <li><a href="#literature">11 · 文献边界</a></li>
+        <li><a href="#meaning">12 · 研究价值</a></li>
+        <li><a href="#next">13 · R0.71G</a></li>
+        <li><a href="#claims">14 · 主张清单</a></li>
+        <li><a href="#reproduce">15 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>几何保留局部热体积，但不产生免费的热底边迹</h2>
+          <p>本节有一个无条件正结果、一个条件继续性结果和两个范围不同的迹障碍。正结果是有界重叠局部化保留 projected-Lamb 热 packing，并在 \(\alpha=1\) 落入 Leray 能量层。条件结果是 matched dyadic partition 给出正确的局部继续性消费端。迹障碍分成两类：固定能量的 dyadic 2D3C 初始迹，以及严格内部的 whole-space one-block 缩放族。</p>
+          <div class="equation result">\[
+            \sum_{j,Q}q_{j,Q}(t,s)\le N\|e^{s\Delta}L(t)\|_2^2,
+            \qquad
+            \int_0^T\mathcal V_{\rm loc}(t)\,dt&lt;\infty.
+          \]</div>
+          <p>这些结论没有给出 \(A_{\rm loc,+}\in L_t^1\)。局部底边仍需完整的频率平方，或同等强度的独立迹正则性。skewed-cylinder 几何负责轨道与覆盖，不负责人工热高度 \(s\) 的正则化。</p>
+        </section>
+
+        <section id="setup"><div class="section-no">01 / Setup and conventions</div><h2>先固定 frame、热延拓和零分母约定</h2>
+          <p>以下先在归一化三维环面上工作。令 \(u\) 为零均值无散速度，\(\omega=\nabla\times u\)，并写</p>
+          <div class="equation">\[
+            L=\mathbb P(u\times\omega)
+             =\partial_tu-\nu\Delta u
+             =-\mathbb P\nabla\!\cdot(u\otimes u).
+          \]</div>
+          <p>对固定的实偶 tight scalar frame \((T_j)_j\)，定义</p>
+          <div class="equation result">\[
+            A_{j,s}=e^{s\Delta}T_j,
+            \qquad W_{j,s}=A_{j,s}\omega,
+            \qquad F_{j,s}=A_{j,s}L,
+          \]</div>
+          <div class="equation">\[
+            (\partial_t-\nu\partial_s)W_{j,s}=\nabla\times F_{j,s}.
+          \]</div>
+          <p>记 \(Y=\|\omega\|_2^2\)、\(D_{j,s}=\|\nabla W_{j,s}\|_2^2\)。所有商在分母为零时都置零。matched partition 出现时，frame 还满足固定的 dyadic annular support；frame 和 partition 规则在数据之前确定。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">02 / Moving projected-Lamb ledger</div><h2>时间面、两个热高度面、cutoff–curl、shape 与 collar 必须同时保留</h2>
+          <p>令 \(0\le\chi_Q(t,x)\le1\)、\(0\le\zeta(s)\le1\)，令 \(V_r\) 为光滑无散的 mollified velocity，并置 \(R_Q=(\partial_t+V_r\cdot\nabla)\chi_Q\)。时间面记为 \(\mathcal T_Q\)，上下热高度面记为 \(\mathcal S_Q\)。完整局部功是</p>
+          <div class="equation result">\[
+            B_Q^L=\langle F_{j,s},\nabla\times(\chi_QW_{j,s})\rangle.
+          \]</div>
+          <p>直接乘以 \(\chi_Q\zeta W_{j,s}\) 并在 \(t,s,x\) 上积分，得到</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            \mathcal T_Q+\nu\mathcal S_Q
+            ={}&amp;\int_I\!\int_0^h\zeta B_Q^L\,dsdt\\
+            &amp;+\iiint\zeta e_{j,s}(R_Q-V_r\cdot\nabla\chi_Q)
+            -\nu\iiint e_{j,s}\chi_Q\zeta'.
+          \end{aligned}
+          \]</div>
+          <p>其中</p>
+          <div class="equation">\[
+            B_Q^L
+            =\int\chi_QF_{j,s}\cdot\nabla\times W_{j,s}
+             +\int F_{j,s}\cdot(\nabla\chi_Q\times W_{j,s}).
+          \]</div>
+          <p>第二项就是 cutoff–curl collar，没有固定符号。把热面改写成耗散形式后，两个 \(\zeta'\) 项精确相消，剩下 \(\nu\iiint\zeta e_{j,s}\Delta\chi_Q\)。热 taper 只移动同一笔账，不生成新的正项。</p>
+        </section>
+
+        <section id="equivalence"><div class="section-no">03 / Projected and material forms</div><h2>projected 与 material 写法是同一条恒等式</h2>
+          <p>定义</p>
+          <div class="equation">\[
+            G_{j,s}=A_{j,s}(S\omega)+[u\cdot\nabla,A_{j,s}]\omega.
+          \]</div>
+          <p>物质形式与 projected-Lamb 压缩满足</p>
+          <div class="equation result">\[
+            (\partial_t+u\cdot\nabla-\nu\partial_s)W_{j,s}=G_{j,s},
+            \qquad
+            G_{j,s}=u\cdot\nabla W_{j,s}+\nabla\times F_{j,s},
+          \]</div>
+          <div class="equation">\[
+            \int\chi_QW_{j,s}\cdot G_{j,s}
+            =B_Q^L-\int e_{j,s}u\cdot\nabla\chi_Q.
+          \]</div>
+          <p>因此 cutoff–curl 和 relative transport 不能作为两项独立缺陷重复计费。若中心满足 \(X_Q'=V_r(t,X_Q)\)，则</p>
+          <div class="equation">\[
+            R_Q=[V_r(t,x)-V_r(t,X_Q(t))]\cdot\nabla\chi_Q.
+          \]</div>
+          <p>它位于 collar，并支付 mollified flow 的局部变化。若整个 cutoff 随流映射，\(R_Q=0\)，但导数会支付 flow-map distortion。两种做法都不改变独立热高度变量。</p>
+        </section>
+
+        <section id="criterion"><div class="section-no">04 / Matched local continuation</div><h2>stabilized denominator 给出正确的局部消费端</h2>
+          <p>在固定 \((t,s,j)\) 上令</p>
+          <div class="equation result">\[
+            d_{j,Q}=\|\nabla\times(\chi_QW_{j,s})\|_2^2,
+            \qquad
+            q_{j,Q}=\frac{((B_Q^L)^+)^2}{d_{j,Q}}.
+          \]</div>
+          <p>原 cutoff-square palinstrophy 与 \(d_{j,Q}\) 只有在 collar 被保留时才可比较：</p>
+          <div class="equation">\[
+            d_{j,Q}+r^{-2}M_{j,Q}
+            \asymp P_{j,Q}^{\chi^2}+r^{-2}M_{j,Q}.
+          \]</div>
+          <p>在 matched radius \(r_j=\rho K_j^{-1}\) 上，annular Bernstein 给出 \(\sum_Qd_{j,Q}\lesssim D_{j,s}\)，从而</p>
+          <div class="equation">\[
+            \frac{(b_{j,s}^+)^2}{D_{j,s}}
+            \lesssim\sum_Qq_{j,Q}(t,s).
+          \]</div>
+          <p>定义</p>
+          <div class="equation result">\[
+            A_{\rm loc,+}(t)
+            =\frac1{Y(t)}\sum_{j,Q}q_{j,Q}(t,0),
+          \]</div>
+          <p>并在 \(Y=0\) 时明确令 \(A_{\rm loc,+}=0\)。若强解满足 \(\int_0^{T_*}A_{\rm loc,+}(t)dt&lt;\infty\)，则由 R0.71C 的全局 shell consumer 可继续越过 \(T_*\)。这个局部条件比全局 shell 条件更严格；\(u\in L_t^2L_x^\infty\) 蕴含它，但没有证明逆向蕴含或严格分离。</p>
+        </section>
+
+        <section id="packing"><div class="section-no">05 / Bounded-overlap heat packing</div><h2>局部正商逐块 Cauchy 后仍可由完整热化 Lamb 场控制</h2>
+          <p>每个 cutoff 都满足</p>
+          <div class="equation">\[
+            q_{j,Q}(t,s)
+            \le\|1_{\operatorname{supp}\chi_{j,Q}}F_{j,s}(t)\|_2^2.
+          \]</div>
+          <p>若 supports 的重叠数至多为 \(N\)，则 frame 求和给出</p>
+          <div class="equation result">\[
+            \sum_{j,Q}q_{j,Q}(t,s)
+            \le N\|e^{s\Delta}L(t)\|_2^2.
+          \]</div>
+          <p>这是真正的无条件局部热体积上界。它不依赖 shape 项有利，也没有把 collar 改名为耗散。若在每个独立空间半径再放一套 cover，有界重叠只控制每一尺度；无权的无限尺度链仍会支付保留尺度数。加入 \(r_k^\beta\)、\(\beta&gt;0\) 才得到几何级数上界。</p>
+        </section>
+
+        <section id="moments"><div class="section-no">06 / Heat moments and Leray endpoint</div><h2>谱矩公式对所有 \(\alpha&gt;0\) 成立，但标准能量只自动闭合 \(\alpha=1\)</h2>
+          <div class="equation result">\[
+            \int_0^\infty s^{\alpha-1}\sum_{j,Q}q_{j,Q}(t,s)\,ds
+            \le\frac{N\Gamma(\alpha)}{2^\alpha}
+            \|(-\Delta)^{-\alpha/2}L(t)\|_2^2.
+          \]</div>
+          <p>这是 extended-valued spectral inequality。不能由它声称 \(0&lt;\alpha&lt;1\) 的右侧对 Leray 解自动有限。标准能量闭合 \(\alpha=1\)；周期谱隙还给出 \(\alpha\ge1\) 的有限性。具体地，</p>
+          <div class="equation">\[
+            \int_0^\infty\sum_{j,Q}q_{j,Q}(t,s)\,ds
+            \le\frac N2\|(-\Delta)^{-1/2}L(t)\|_2^2
+            \le\frac N2\|u(t)\|_4^4.
+          \]</div>
+          <p>令</p>
+          <div class="equation result">\[
+            \mathcal V_{\rm loc}(t)
+            =\frac1{Y(t)}\int_0^\infty\sum_{j,Q}q_{j,Q}(t,s)\,ds,
+          \]</div>
+          <p>并在 \(Y=0\) 时令 \(\mathcal V_{\rm loc}=0\)。则在周期 Leray–Hopf 的有限截断/Fatou 意义下，</p>
+          <div class="equation result">\[
+            \int_0^T\mathcal V_{\rm loc}(t)\,dt
+            \le\frac{NC_S^3}{2\sqrt{2\nu}}\|u_0\|_2^2\sqrt T.
+          \]</div>
+          <p>moving-cutoff 恒等式本身只在光滑或强解区间使用。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">07 / Exact local cutoff witness</div><h2>完整保留 cutoff–curl 后，每个非零非负 cutoff 仍有精确 \(K^2\) 迹代价</h2>
+          <p>取 R0.71E 的固定 radial frame refinement、\(\sigma=-1\) 和 dyadic \(K=2^j\)。真实全局光滑周期 2D3C NSE 初值为</p>
+          <div class="equation">\[
+            u_{-,a,K}=aK\left(0,-2\cos Kx_1,
+            -2\sin K(x_1+x_2)-2\cos Kx_2\right).
+          \]</div>
+          <p>正的低半径块在初始物理时间的热延拓是</p>
+          <div class="equation">\[
+            W_s=2aK^2e^{-K^2s}(\sin Kx_2,0,\sin Kx_1),
+            \quad
+            F_s=-2a^2K^3e^{-K^2s}(0,0,\cos Kx_2).
+          \]</div>
+          <p>对数据之前固定的任意非零光滑 \(\phi\ge0\)，完整局部功满足</p>
+          <div class="equation result">\[
+            B_\phi(s)
+            =4a^3K^6e^{-2K^2s}
+             \int\phi(x)\sin^2(Kx_2)\,dx&gt;0.
+          \]</div>
+          <p>这里没有删除 cutoff–curl 项。未局部化的 \(F_s\) 与 \(W_s\) 都带同一标量热因子 \(e^{-K^2s}\)；乘上固定 \(\phi\) 后这个共同因子仍保留，因此</p>
+          <div class="equation result">\[
+            q_\phi(0)
+            =\frac{2K^2}{1-e^{-2K^2h}}
+             \int_0^h q_\phi(s)\,ds.
+          \]</div>
+          <p>精确系数与 \(K^2+h^{-1}\) 同阶。在 \(h=\theta K^{-2}\) 时，热高度平均是底边的固定正比例。这说明临界 \(K^2\) 被饱和，不说明正确缩放的迹估计失败。</p>
+          <figure><img src="/figures/r0-71f-local-trace.svg" alt="R0.71F 局部商热剖面塌缩、有限热盒临界 multiplier、固定能量低块分离与内部 r 平方倒数缩放边界"><figcaption>图 R0.71F。A：\(K=1,2,4,8\) 的独立 FFT 点与精确 \(e^{-2\tau}\) 热剖面塌缩。B：有限热盒的迹 multiplier 在短盒极限支付 \(\theta^{-1}\)，在长盒极限趋于 \(2K^2\)。C：固定能量 \(a=K^{-1}\) 时，matched low-block 的归一化 bottom envelope 保持常数，对应 heat-bulk envelope 按 \(K^{-2}\) 衰减；这里只画解析包络形状，不伪称 full-frame 测量值。D：严格内部 one-block 族实现 \(r^{-2}\)，任一 illustrative subcritical 幂都逐尺度落后；临界尺度被饱和而未被否定。图中量来自闭式公式与独立有限检查，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71f-local-trace.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71f-local-trace.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71f-local-trace.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="partition"><div class="section-no">08 / Matched low-block partition</div><h2>固定能量序列分离的是低块 aggregate，不是 full-frame 两侧估计</h2>
+          <p>在 \(r=\rho/K\) 上取非负 partition，满足统一 overlap、\(\sum_Q\phi_Q^2\le C_0\) 和 \(\sum_Q|\nabla\phi_Q|^2\le C_1r^{-2}\)。以下只讨论上一节的正低半径子块。求和得到</p>
+          <div class="equation">\[
+            \sum_QB_Q(s)=2a^3K^6e^{-2K^2s},
+          \]</div>
+          <div class="equation result">\[
+            \frac{a^4K^6e^{-2K^2s}}{2(C_0+C_1/\rho^2)}
+            \le\sum_Qq_Q(s)
+            \le2Na^4K^6e^{-2K^2s}.
+          \]</div>
+          <p>用总物理 enstrophy \(Y=8a^2K^4\) 归一化，并取 \(a=K^{-1}\)，则</p>
+          <div class="equation result">\[
+            \|u_{-,K^{-1},K}\|_2^2=6,
+            \qquad
+            c_0\le\frac1Y\sum_Qq_Q(0)\le C_0',
+            \qquad
+            \frac1Y\int_0^\infty\sum_Qq_Q(s)ds=O(K^{-2}).
+          \]</div>
+          <p>这是真实全局光滑 NSE 初始迹的固定动能分离。它只给 low-block aggregate 的两侧界；本节没有声称 full-frame \(A_{\rm loc,+}\) 也有两侧估计。初始迹结果也不能代替物理时间的驻留时间控制。</p>
+        </section>
+
+        <section id="interior"><div class="section-no">09 / Strictly interior one-block scaling</div><h2>严格内部 skewed cylinders 排除纯几何 \(o(r^{-2})\)，但不排除临界 \(Cr^{-2}\)</h2>
+          <p>为避开只在初始面的量词，我另取 whole-space 光滑紧支撑无散数据，使它在一个 affine core 内等于 \(u_{\rm aff}=(x_1,-x_2-x_3,0)\)。该 core 内 \(\omega=(1,0,0)\)、\(\nabla\times L=(1,0,0)\)。对位于 core 内且 \(\nabla\chi\times\omega\not\equiv0\) 的非负 cutoff，初始局部功和 stabilized denominator 都为正；光滑局部解的连续性把正性保留到一个严格内部中心时刻。</p>
+          <p>这一缩放测试使用 covariant one-block frame \(T_0=I\)。选择足够小、完整位于光滑区间内的 Yang symmetric skewed cylinder 后，admissibility 由</p>
+          <div class="equation">\[
+            r^2\fint_{Q_r}\mathcal M(|\nabla u|)
+            \le r^2\sup_{t\in I_r}\|\nabla u(t)\|_{L^\infty(\mathbb R^3)}
+          \]</div>
+          <p>保证。NSE 缩放同时作用于解、cutoff、mollifier、轨道和热高度：</p>
+          <div class="equation">\[
+            u_\lambda(t,x)=\lambda u(\lambda^2t,\lambda x),
+            \quad r_\lambda=\lambda^{-1}r,
+            \quad h_\lambda=\lambda^{-2}h,
+          \]</div>
+          <div class="equation">\[
+            B_{Q_\lambda}=\lambda^3B_Q,
+            \quad d_{Q_\lambda}=\lambda^3d_Q,
+            \quad q_{Q_\lambda}=\lambda^3q_Q,
+            \quad Y_\lambda=\lambda Y.
+          \]</div>
+          <p>因此存在严格内部的光滑 NSE 与 admissible cylinders 族，使</p>
+          <div class="equation result">\[
+            \frac{A_{Q_r}}{\mathcal V_{Q_r,\theta r^2}}
+            =c_*r^{-2},
+            \qquad c_*&gt;0.
+          \]</div>
+          <p>这只否定对该 one-block class 普适、常数只依赖统一几何/admissibility 的纯乘法因子 \(c(r)=o(r^{-2})\)。它不否定临界 \(Cr^{-2}\)，不覆盖另一个指定 frame，也不排除带 shape、collar、pressure、subgrid 或解依赖项的估计。此缩放族的动能按 \(\lambda^{-1}\) 变化；它与上一节的固定能量初始迹是两项不同陈述。内部柱到初始面的距离仍为 \(O(r^2)\)，没有覆盖与初始面保持固定正时间距离的柱。</p>
+        </section>
+
+        <section id="trace"><div class="section-no">10 / Trace and Carleson boundary</div><h2>物理时空覆盖不能替代热高度导数</h2>
+          <p>对绝对连续的非负 \(q\)，</p>
+          <div class="equation">\[
+            q(0)\le h^{-1}\int_0^hq(s)ds+\int_0^h|q'(s)|ds.
+          \]</div>
+          <p>局部商的 \(q'\) 含有 \(\Delta F_{j,s}\) 与 \(\Delta W_{j,s}\)。annular Bernstein 正好付出 \(K_j^2\)，也就是精确见证中的迹代价。跨壳控制这些项需要额外导数或频率信息；本节没有证明某个具体 Besov 或 dissipation-wavenumber 条件足以闭合它。</p>
+          <p>能量只给 \(\mathcal V_{\rm loc}\in L_t^1\)。长度为 \(r^2\) 的物理时间区间满足 \(\int_{I_r}\mathcal V_{\rm loc}\to0\)，但乘上临界 \(r^{-2}\) 后若要 vanishing，需要更强的 \(o(r^2)\) 速率。普通 Lebesgue 点一般只给 \(r^2\mathcal V_{\rm loc}(t_0)+o(r^2)\)。weak \((1,1)\) 的 flow-adapted maximal theorem 不会凭空增加热高度 \(s\) 的正则性。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Version-locked literature boundary</div><h2>四篇主源提供几何、逆迹或条件闭合，但都没有给出本节缺少的免费升级</h2>
+          <ul>
+            <li><a href="https://arxiv.org/abs/2008.05588v2">Yang, arXiv:2008.05588v2</a> 构造 skewed-cylinder maximal function、admissibility 与 covering，证明 weak \((1,1)\) 和 strong \((p,p)\)。它没有 projected-Lamb heat trace。</li>
+            <li><a href="https://arxiv.org/html/2009.14291v1">Vasseur–Yang, arXiv:2009.14291v1</a> 用该几何全局化局部涡量估计；局部正则性定理仍假设 mixed-norm smallness。</li>
+            <li><a href="https://arxiv.org/html/2606.16438v1">Chen–Liang–Tsai, arXiv:2606.16438v1</a> 对其特定 parabolic Poisson extension，从内部法向导数恢复边界 Besov/Triebel–Lizorkin 正则；它不是从零阶热体积恢复这里的 signed bottom trace。</li>
+            <li><a href="https://arxiv.org/html/2606.27560v1">Yu, arXiv:2606.27560v1</a> 在其 whole-space 设置中给出条件性的无权 filtered-vortex-stretching 闭合；full far field、exterior tail、commutator increments 与其余 shell budgets 的可和性仍是额外输入。</li>
+          </ul>
+          <p>Serrin 端点 \(L_t^2L_x^\infty\) 由局部 Cauchy 上界蕴含本节的条件判据。对 Koch–Tataru、具体 critical Besov、BKM 与 dissipation-wavenumber 判据，本节没有证明正向、反向或严格分离关系。“没有得到该蕴含”只描述当前报告和版本锁定文献的范围，不是原创性或优先权声明。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">12 / Research value</div><h2>这一步把“局部化是否修复迹缺口”变成了有清楚量词的否定答案</h2>
+          <p>我得到的正面价值是一个可复用的 moving projected-Lamb ledger、一个正确的 matched local consumer，以及 Leray 层的 bounded-overlap heat packing。负面价值是把几何能做和不能做的事分开：它能组织轨道、collar 和覆盖，却不能提供独立热高度的两个频率幂。</p>
+          <p>这仍是路线筛选，不是三维 Navier–Stokes 全局正则性的证明。它没有构造奇性，没有证明所有非线性耗竭机制失败，也没有建立外部同行评审或原创性结论。下一步必须进入物理时间，检查高 signed Lamb trace 能持续多久。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next gate R0.71G</div><h2>下一节检查高频 signed Lamb trace 的驻留时间</h2>
+          <p>R0.71G 的问题是：NSE 动力学能否把频率 \(K\) 上的大 signed Lamb trace 的持续时间限制在粘性时间 \(K^{-2}\)，并同时保留 inter-shell transfer 与时间边界？</p>
+          <ul>
+            <li>区分瞬时大迹与持续大迹；</li>
+            <li>保留 \(\partial_tL\)、inter-shell transfer 和 moving-partition 项；</li>
+            <li>从 NSE 预算证明 occupation-time 或 frequency-envelope 可和性，而不是把它重新写成假设；</li>
+            <li>同时测试精确 2D3C 族与严格内部缩放柱；</li>
+            <li>逐项比较 Serrin、BKM、critical Besov 和 dissipation-wavenumber 条件。</li>
+          </ul>
+          <p>如果最终条件只是 \(\int A_{\rm sb,+}(t)dt&lt;\infty\) 的改写，这条分支就停止。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim ledger</div><h2>可以说什么，仍不能说什么</h2>
+          <ul>
+            <li>已证明：moving projected-Lamb ledger 与 projected/material equivalence 是精确恒等式。</li>
+            <li>已证明：matched local criterion 是条件继续性定理；\(A_{\rm loc,+}=0\) 的 \(Y=0\) 约定已明确。</li>
+            <li>已证明：bounded-overlap heat-moment inequality 对每个 \(\alpha&gt;0\) 成立；标准能量自动闭合的是 \(\alpha=1\)，不是全部 \(0&lt;\alpha&lt;1\)。</li>
+            <li>已证明：固定 dyadic frame 的全局光滑 2D3C 初始迹在任意非零非负 cutoff 上实现精确 \(K^2\) 代价。</li>
+            <li>已证明：fixed-energy matched partition 给出 low-block aggregate 分离；没有声称 full-frame \(A_{\rm loc,+}\) 的两侧界。</li>
+            <li>已证明：严格内部 one-block family 排除纯几何 \(o(r^{-2})\)；临界 \(Cr^{-2}\) 没有被否定。</li>
+            <li>未证明：标准能量推出 bottom coefficient 属于 \(L_t^1\)，或无限独立空间尺度的无权 packing。</li>
+            <li>未得到：无条件正则性、奇性构造、外部同行评审、原创性结论或千禧年问题解答。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduction and sources</div><h2>报告、两程序证书、版本锁定文献和期刊附图源</h2>
+          <p><a href="/notes/r0-71f.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71f.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71f.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71f-local-trace.pdf">下载附图 PDF</a> · <a href="/figures/r0-71f-local-trace.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71f-local-trace.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_literature_audit.md">版本锁定文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_independent_audit.md">三路独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_gap_matrix.md">工作缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_exact_audit.py">精确 Fourier 生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_independent_audit.py">独立 FFT / cutoff 检查器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071f">机器可读证书与环境记录</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071f-local-trace/fig-r071f-local-trace">期刊附图包与绘图源</a>。两程序证书检查有限 Fourier 重构、cutoff–curl 恒等式、精确热衰减、Gamma 谱常数、matched-partition 代数和固定能量归一化。一般 moving-cylinder ledger、Leray-level packing、继续性蕴含与严格内部缩放定理由报告中的解析证明承担；程序输出不替代这些证明。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.71F · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

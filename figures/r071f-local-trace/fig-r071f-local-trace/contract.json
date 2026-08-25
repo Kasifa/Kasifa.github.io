@@ -1,0 +1,46 @@
+{
+  "release": "R0.71F",
+  "figureId": "fig-r071f-local-trace",
+  "analyticalQuestion": "After genuine localization or matched-partition packing, what exact trace loss remains between the projected-Lamb heat bulk and its bottom face?",
+  "surface": {
+    "renderer": "Matplotlib static research figure",
+    "widthMillimetres": 178,
+    "heightMillimetres": 104,
+    "outputs": ["PDF", "SVG", "PNG at 600 dpi"]
+  },
+  "palettePolicy": {
+    "mode": "hard two-root cap",
+    "roots": ["navy", "rust"],
+    "nonColorDistinction": ["line style", "marker shape", "open fill", "hatching", "direct labels"]
+  },
+  "parameters": {
+    "fftWavenumbers": [1, 2, 4, 8],
+    "displayWavenumbers": [1, 2, 4, 8, 16, 32, 64, 128],
+    "fftTau": [0.0, 0.125, 0.5, 1.0, 2.0],
+    "thetaRange": [0.01, 10.0],
+    "radii": [1.0, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125]
+  },
+  "exactClaims": {
+    "localizedProfile": "q(s)/q(0)=exp(-2*K^2*s)=exp(-2*tau)",
+    "finiteTraceMultiplierOverK2": "2/(1-exp(-2*theta))",
+    "smallThetaAsymptote": "theta^(-1)",
+    "largeThetaLimit": "2",
+    "partitionBottomLower": "1/(16*(C0+C1/rho^2)) at a=K^(-1)",
+    "partitionBottomUpper": "N/4 at a=K^(-1)",
+    "partitionBulkLower": "1/(32*(C0+C1/rho^2)*K^2)",
+    "partitionBulkUpper": "N/(8*K^2)",
+    "geometryCriticalFamily": "A/V=c_*r^(-2)"
+  },
+  "dataSufficiency": {
+    "analyticProfileRows": 241,
+    "independentFftRows": 20,
+    "finiteMultiplierRows": 241,
+    "partitionRows": 16,
+    "geometryRows": 8,
+    "randomSeed": null,
+    "pdeTimeStepping": false,
+    "dns": false
+  },
+  "supportedClaim": "Localized heat packing is valid, but the bottom trace retains the exact frequency-square or radius-minus-two critical cost.",
+  "claimBoundary": "Exact formulas, independent FFT checks, normalized analytic envelopes, and a scale-covariant family only; no DNS, persistence theorem, critical-trace rejection, singularity, regularity, or Millennium-problem claim."
+}

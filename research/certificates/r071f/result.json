@@ -1,0 +1,144 @@
+{
+  "checks": {
+    "boundedOverlapPackingRetainsStabilizedDenominator": true,
+    "cutoffCurlTermIncludedExactly": true,
+    "fixedEnergySequenceSeparatesBottomFromBulk": true,
+    "heatMomentConstantUsesGammaFunction": true,
+    "localWorkStrictlyPositiveForEveryNonzeroNonnegativeCutoff": true,
+    "localizedBottomTraceCostsExactlyTwoFrequencyPowers": true,
+    "projectedLambLowBlockReconstructedFromFullDatum": true,
+    "trueGlobalSmooth2D3CInitialTrace": true,
+    "usesR071EFixedFrameValues": true
+  },
+  "claimBoundary": "The certificate proves exact finite identities and sharp scaling for the localized initial heat trace. The general moving-cylinder ledger and Leray-level packing are analytic theorems in the report. No regularity, singularity, or novelty theorem is claimed.",
+  "heatTrace": {
+    "alphaMoment": "q0*gamma(alpha)/(2**alpha*K**(2*alpha))",
+    "alphaMomentTraceFactor": "2**alpha*K**(2*alpha)/gamma(alpha)",
+    "finiteHeightIntegral": "q0*(exp(K**2*h) - 1)*(exp(K**2*h) + 1)*exp(-2*K**2*h)/(2*K**2)",
+    "finiteTraceFactor": "2*K**2*exp(2*K**2*h)/((exp(K**2*h) - 1)*(exp(K**2*h) + 1))",
+    "infiniteHeightIntegral": "q0/(2*K**2)",
+    "infiniteTraceFactor": "2*K**2",
+    "matchedAverageOverBottom": "(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/(2*theta)",
+    "matchedHeight": "h=theta/K**2",
+    "qOfS": "q0*exp(-2*K**2*s)",
+    "selectedMoments": {
+      "alpha=1": "q0/(2*K**2)",
+      "alpha=1/2": "sqrt(2)*sqrt(pi)*q0/(2*K)",
+      "alpha=2": "q0/(4*K**4)"
+    }
+  },
+  "localizedIdentity": {
+    "AjSL": [
+      "0",
+      "0",
+      "-2*K**3*a**2*exp(-K**2*s)*cos(K*y)"
+    ],
+    "Wjs": [
+      "2*K**2*a*exp(-K**2*s)*sin(K*y)",
+      "0",
+      "2*K**2*a*exp(-K**2*s)*sin(K*x)"
+    ],
+    "boundaryDivergence": "4*K**5*a**3*(-K*phi(x, y, z)*sin(K*y)**2 + K*phi(x, y, z)*cos(K*y)**2 + sin(K*y)*cos(K*y)*Derivative(phi(x, y, z), y))*exp(-2*K**2*s)",
+    "curlPhiW": [
+      "2*K**2*a*exp(-K**2*s)*sin(K*x)*Derivative(phi(x, y, z), y)",
+      "-2*K**2*a*(K*phi(x, y, z)*cos(K*x) + sin(K*x)*Derivative(phi(x, y, z), x) - sin(K*y)*Derivative(phi(x, y, z), z))*exp(-K**2*s)",
+      "-2*K**2*a*(K*phi(x, y, z)*cos(K*y) + sin(K*y)*Derivative(phi(x, y, z), y))*exp(-K**2*s)"
+    ],
+    "global": {
+      "B": "2*K**6*a**3*exp(-2*K**2*s)",
+      "D": "4*K**6*a**2*exp(-2*K**2*s)",
+      "q": "K**6*a**4*exp(-2*K**2*s)"
+    },
+    "localWorkFormula": "4*a**3*K**6*exp(-2*K**2*s)*Integral(phi*sin(K*y)**2)",
+    "pointwiseAfterIntegrationByParts": "4*K**6*a**3*phi(x, y, z)*exp(-2*K**2*s)*sin(K*y)**2",
+    "pointwiseBeforeIntegrationByParts": "4*K**5*a**3*(K*phi(x, y, z)*cos(K*y) + sin(K*y)*Derivative(phi(x, y, z), y))*exp(-2*K**2*s)*cos(K*y)",
+    "strictPositivity": "positive for every nonzero smooth phi >= 0 on the torus"
+  },
+  "lowBlockReconstruction": {
+    "fullDatumNormsAtAEqualsKEqualsOne": {
+      "enstrophy": "8",
+      "velocityL2Squared": "6"
+    },
+    "normalizedAtAEqualsKEqualsOne": {
+      "enstrophy": "4",
+      "palinstrophy": "4",
+      "positiveQuotient": "1",
+      "positiveWork": "2",
+      "projectedLambL2Squared": "2"
+    },
+    "omega": {
+      "(-1, 0, 0)": [
+        "0",
+        "0",
+        "I"
+      ],
+      "(0, -1, 0)": [
+        "I",
+        "0",
+        "0"
+      ],
+      "(0, 1, 0)": [
+        "-I",
+        "0",
+        "0"
+      ],
+      "(1, 0, 0)": [
+        "0",
+        "0",
+        "-I"
+      ]
+    },
+    "projectedLamb": {
+      "(-1, 0, 0)": [
+        "0",
+        "0",
+        "0"
+      ],
+      "(0, -1, 0)": [
+        "0",
+        "0",
+        "-1"
+      ],
+      "(0, 1, 0)": [
+        "0",
+        "0",
+        "-1"
+      ],
+      "(1, 0, 0)": [
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  },
+  "matchedPartition": {
+    "denominatorSumUpper": "8*K**6*a**2*(C0*rho**2 + C1)/rho**2",
+    "fixedEnergySequenceAEqualsOneOverK": {
+      "normalizedBottomLower": "rho**2/(16*(C0*rho**2 + C1))",
+      "normalizedBottomUpper": "N/4",
+      "normalizedInfiniteBulkLower": "rho**2/(32*K**2*(C0*rho**2 + C1))",
+      "normalizedInfiniteBulkUpper": "N/(8*K**2)",
+      "velocityL2Squared": "6"
+    },
+    "hypotheses": {
+      "gradientCutoff": "sum_Q abs(grad(phi_Q))**2 <= C1/r**2",
+      "matchedRadius": "r=rho/K",
+      "overlap": "sum_Q 1_supp(phi_Q) <= N",
+      "partition": "sum_Q phi_Q = 1, phi_Q >= 0",
+      "squareCutoff": "sum_Q phi_Q**2 <= C0"
+    },
+    "normalizedBottomLower": "K**2*a**2*rho**2/(16*(C0*rho**2 + C1))",
+    "normalizedBottomUpper": "K**2*N*a**2/4",
+    "positiveQuotientSumLower": "K**6*a**4*rho**2/(2*(C0*rho**2 + C1))",
+    "positiveQuotientSumUpper": "2*K**6*N*a**4",
+    "positiveWorkSum": "2*K**6*a**3"
+  },
+  "release": "R0.71F",
+  "routeDecision": {
+    "nextGate": "R0.71G must seek an NSE-dynamic frequency-envelope or time-frequency compensation, not another geometric bulk-to-trace upgrade.",
+    "positiveResult": "Bounded-overlap localization preserves the unconditional projected-Lamb heat-area packing estimate.",
+    "sharpObstruction": "For the true smooth 2D3C family, every nonnegative local cutoff retains the exact K-square bottom-trace cost.",
+    "skewedGeometryBoundary": "Flow-adapted cylinders organize spatial-temporal overlap but do not create regularity in the independent heat-height variable."
+  },
+  "status": "localized-heat-packing-and-sharp-bottom-trace-obstruction"
+}

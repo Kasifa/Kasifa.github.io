@@ -67,6 +67,12 @@ test("uses the research home page archival visual language", async () => {
   assert.match(html, /@media \(prefers-color-scheme: dark\)/);
 });
 
+test("places the language switcher in the literature review top bar", async () => {
+  const html = await readFile(pageUrl, "utf8");
+  assert.match(html, /<div class="bar-actions">[\s\S]*data-language-switcher-slot[\s\S]*<\/div>/);
+  assert.match(html, /\.top-language-switcher\s*\{/);
+});
+
 test("links the literature review from the research home page", async () => {
   const home = await readFile(homeUrl, "utf8");
   assert.ok(

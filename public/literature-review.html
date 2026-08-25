@@ -627,6 +627,33 @@
     .bar .topnav::-webkit-scrollbar { display: none; }
     .bar .topnav a { color: var(--muted); }
     .bar .topnav a:hover { color: var(--orange); }
+    .bar-actions {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .bar-actions .topnav { flex: 1 1 auto; justify-content: flex-end; }
+    .bar-language { display: flex; flex: 0 0 auto; }
+    .top-language-switcher {
+      appearance: none;
+      padding: 7px 10px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      font: 700 11px/1.2 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      letter-spacing: .02em;
+      cursor: pointer;
+    }
+    .top-language-switcher:hover,
+    .top-language-switcher:focus-visible {
+      background: var(--ink);
+      color: var(--paper);
+      outline: none;
+    }
 
     .hero {
       overflow: visible;
@@ -871,7 +898,8 @@
 
     @media (max-width: 1100px) {
       .bar-inner { align-items: flex-start; flex-direction: column; gap: 10px; padding: 12px 0 10px; }
-      .bar .topnav { width: 100%; padding-bottom: 2px; }
+      .bar-actions { width: 100%; }
+      .bar .topnav { width: auto; padding-bottom: 2px; justify-content: flex-start; }
     }
     @media (max-width: 980px) {
       .hero-inner { grid-template-columns: 1fr; gap: 34px; }
@@ -906,7 +934,7 @@
       .exclusion-row { grid-template-columns: 1fr; }
     }
     @media print {
-      .progress, .bar, .toc, .language-switcher { display: none !important; }
+      .progress, .bar, .toc, .language-switcher, .top-language-switcher { display: none !important; }
       body { background: white; color: black; }
       .hero { color: black; background: white; }
       .hero *, .verdict *, h1, h2, h3 { color: black !important; }
@@ -922,16 +950,19 @@
         <span class="brand-mark">ν</span>
         <span>三维 Navier–Stokes 全局正则性问题</span>
       </a>
-      <nav class="topnav" data-section-nav aria-label="文献综述目录">
-        <a href="#problem">问题边界</a>
-        <a href="#critical">临界困难</a>
-        <a href="#map">理论地图</a>
-        <a href="#foundations">经典骨架</a>
-        <a href="#blowup">爆破排除</a>
-        <a href="#recent">近期进展</a>
-        <a href="#route">本站路线</a>
-        <a href="#references">参考文献</a>
-      </nav>
+      <div class="bar-actions">
+        <nav class="topnav" data-section-nav aria-label="文献综述目录">
+          <a href="#problem">问题边界</a>
+          <a href="#critical">临界困难</a>
+          <a href="#map">理论地图</a>
+          <a href="#foundations">经典骨架</a>
+          <a href="#blowup">爆破排除</a>
+          <a href="#recent">近期进展</a>
+          <a href="#route">本站路线</a>
+          <a href="#references">参考文献</a>
+        </nav>
+        <span class="bar-language" data-language-switcher-slot></span>
+      </div>
     </div>
   </header>
 
@@ -1196,6 +1227,15 @@
       addEventListener("scroll", updateProgress, { passive: true });
       addEventListener("resize", updateProgress);
       updateProgress();
+
+      addEventListener("DOMContentLoaded", () => {
+        const slot = document.querySelector("[data-language-switcher-slot]");
+        const button = document.querySelector(".language-switcher");
+        if (!slot || !button) return;
+        button.classList.remove("language-switcher");
+        button.classList.add("top-language-switcher");
+        slot.replaceChildren(button);
+      }, { once: true });
     })();
   </script>
 </body>

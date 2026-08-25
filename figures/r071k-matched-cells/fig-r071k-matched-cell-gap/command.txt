@@ -1,0 +1,15 @@
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python generate_data.py --output data.csv --metadata figure-data-metadata.json
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+MPLCONFIGDIR=/private/tmp/r071k-matched-cell-mpl PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python plot.py --data data.csv --output-stem figure
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python qa_images.py
+PYTHONDONTWRITEBYTECODE=1 python3 independent_validate.py --data data.csv --output independent-validation.json
+
+Build a draft manifest before the source commit:
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python build_manifest.py --status draft --dirty-at-certified-run true
+
+After committing the clean source snapshot, rebuild the formal manifest:
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python build_manifest.py --status formal --source-commit SOURCE_COMMIT --certificate-commit SOURCE_COMMIT --dirty-at-certified-run false
+
+Validate and verify:
+../../../tmp/r068b-venv/bin/python ../../../research/validate_figure_package.py .
+shasum -a 256 -c SHA256SUMS

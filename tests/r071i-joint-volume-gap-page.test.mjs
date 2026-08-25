@@ -125,7 +125,7 @@ test("the historical recap exposes the first 73 post-R0.60 nodes from home", asy
     ...route.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g),
   ].map((match) => match[1]);
   const first = routeLinks.indexOf("/notes/r0-61.html");
-  const expected = routeLinks.slice(first, -1);
+  const expected = routeLinks.slice(first, first + 73);
   assert.equal(expected.length, 73);
   assert.equal(expected.at(-1), "/notes/r0-71i.html");
 
@@ -165,8 +165,8 @@ test("states the joint identity, volume gap, claim boundary, and R0.71J gate", a
   assert.match(note, /预设宽单环 frame、完整 Parseval frame 和全框架右端都没有在这里处理/);
   assert.match(note, /R0\.71J 检查全壳求和后是否出现新的 NSE 抵消/);
   assert.match(recap, /R0\.71J 检查完整 frame 求和后的正生成/);
-  assert.match(home, /NEXT · R0\.71K/);
-  assert.match(literature, /开放接口 · R0\.71K/);
+  assert.match(home, /NEXT · R0\.71L/);
+  assert.match(literature, /开放接口 · R0\.71L/);
   assert.match(literature, /All-shell|全壳|完整 frame/i);
 });
 

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71K：一个预先固定、尺度匹配、有限重叠的空间分割仍保留 R0.71J 的 K 平方 heat-payment 缺口；黏性 collar 是未控制的主阶项。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71K｜匹配空间小区仍保留两阶缺口">
+  <meta property="og:description" content="固定 aligned matched partition、逐格零入口、严格局部分母、局部正生成下界、完整 heat/support 上界与主阶 collar 边界。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71K｜匹配空间小区仍保留两阶缺口</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.18rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.96"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#partition">分割</a><a href="#symmetry">逐格恒等式</a><a href="#denominator">分母</a><a href="#endpoint">端点</a><a href="#ledger">时间账本</a><a href="#theorem">定理</a><a href="#heat">热支付</a><a href="#collar">Collar</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71K · MATCHED CELLS · ZERO ENTRY · LEADING COLLAR</div>
+        <h1>固定匹配空间小区不会修复热支付，<br>黏性 collar 留在主阶</h1>
+        <p class="lead">我把 R0.71J 的 global cell 换成一个预先固定、尺度匹配、有限重叠的光滑分割。对同一个全局光滑 2D3C 见证，选中 parent 的 \(K^3\) 个小区都从零入口出发，局部总正生成仍至少是 \(K^{-2}\)；同一 bounded-overlap heat/support 支付至多是 \((\nu K^4)^{-1}\)。这个结论关闭 heat-only 路线，但不关闭显式 collar-paid 路线。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71K 定理、双重证书与逐格求积完成</span><strong>固定 matched-cell heat-only payment 关闭；collar 支付仍开放</strong><p>版本 v0.71K · 2026-08-26</p><p>exact translated-cell algebra：PASS</p><p>独立 Fourier / one-cell quadrature：PASS</p><p>覆盖：一组固定 aligned partitions</p><p>下一对象：viscous collar 与 tangent budget</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#partition">01 · 固定匹配分割</a></li><li><a href="#symmetry">02 · 逐格恒等式</a></li><li><a href="#denominator">03 · 分母与 collar</a></li><li><a href="#endpoint">04 · 正端点</a></li><li><a href="#ledger">05 · 完整时间账本</a></li><li><a href="#theorem">06 · 有限小区定理</a></li><li><a href="#heat">07 · 局部热支付</a></li><li><a href="#collar">08 · 主阶 collar</a></li><li><a href="#figure">09 · 正式附图</a></li><li><a href="#literature">10 · 文献边界</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#next">12 · 下一步</a></li><li><a href="#claims">13 · 主张边界</a></li><li><a href="#reproduce">14 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>匹配空间局部化仍保留 \(K^2\) 缺口</h2>
+          <p>令 \(\kappa=4K\)，观察区间为 \(I_K=[0,(\log2)/(18\nu K^2)]\)。对选中 parent 的有限 \(K^3\) 个小区，R0.71K 证明</p>
+          <div class="equation result">\[
+            \mathcal Z_K^{\rm sel,loc}
+            \ge\frac{A_*}{64C_{\rm part}K^2},
+            \qquad
+            \mathcal H_K^{\rm loc}
+            \le\frac{N(1-2^{-1/9})}{2\nu K^4}.
+          \]</div>
+          <p>这里 \(C_{\rm part}\) 只取决于固定分割，\(N\) 是支撑重叠数，\(A_*=1.1965465392386773\times10^{-5}\)。因此两者之比至少按 \(\nu K^2\) 增长。定理排除的是同一个 local heat/support endpoint，不是所有可能的局部支付。</p>
+        </section>
+
+        <section id="partition"><div class="section-no">01 / One partition fixed in advance</div><h2>分割规则在数据之前固定，不按每个 \(K\) 临时调参</h2>
+          <p>先取 \(h\in C_c^\infty(\mathbb R)\)、\(h\ge0\)，满足 \(\sum_{n\in\mathbb Z}h(y-2\pi n)=1\)，再取三维张量积。对每个 dyadic parent \(\kappa_j\ge4\)，格点间距定为 \(8\pi/\kappa_j\)，小区半径为 \(r_j=\rho/\kappa_j\)。</p>
+          <div class="equation">\[
+            \sum_Q\chi_{j,Q}=1,
+            \qquad \sum_Q\chi_{j,Q}^2\le C_0,
+            \qquad \sum_Q|\nabla\chi_{j,Q}|^2\le C_1r_j^{-2}.
+          \]</div>
+          <p>在选中 parent \(\kappa=4K\) 上，格点间距正好是 \(2\pi/K\)，共有 \(K^3\) 个小区。显式模板的三维 overlap 不超过 \(8\)。这是一条固定的 scale-covariant 规则。</p>
+        </section>
+
+        <section id="symmetry"><div class="section-no">02 / Exact translated-cell identities</div><h2>每个小区都精确继承零入口</h2>
+          <p>R0.71J 的 2D3C 解始终只含 \(K\mathbb Z\times K\mathbb Z\times\{0\}\) 上的 Fourier 模。平移 \(2\pi Q/K\) 不改变选中 parent 的 \(F_\kappa\) 与 \(W_\kappa\)，只把一个 cutoff 送到另一个 cutoff。因此全部小区的 work 和 denominator 相同。</p>
+          <div class="equation result">\[
+            B_{\kappa,Q}=\frac{B_\kappa}{K^3},
+            \qquad
+            d_{\kappa,Q}=\frac{D_{\rm loc}}{K^3},
+            \qquad
+            \sum_Qq_{\kappa,Q}=\frac{(B_\kappa^+)^2}{D_{\rm loc}}.
+          \]</div>
+          <p>由于 \(B_\kappa(0)=0\)，每个小区都有 \(B_{\kappa,Q}(0)=q_{\kappa,Q}(0)=a_{\kappa,Q}(0)=0\)。这不是总和抵消，而是逐格零入口。</p>
+        </section>
+
+        <section id="denominator"><div class="section-no">03 / Denominator and cutoff-curl collar</div><h2>局部分母只改变常数，不改变尺度</h2>
+          <p>完整局部方向是</p>
+          <div class="equation">\[
+            C_{\kappa,Q}
+            =\nabla\times(\chi_QW_\kappa)
+            =\chi_Q\nabla\times W_\kappa+\nabla\chi_Q\times W_\kappa.
+          \]</div>
+          <p>第二项没有被删去。用 pointwise partition bounds 和 parent 下频率边界可得</p>
+          <div class="equation result">\[
+            D_{\rm loc}:=\sum_Q\|C_{\kappa,Q}\|_2^2
+            \le C_{\rm part}\,D_\kappa,
+            \qquad C_{\rm part}=2C_0+\frac{4C_1}{\rho^2}.
+          \]</div>
+          <p>R0.71J 已证明 \(D_\kappa&gt;0\) 保持在固定窗口上。若一个局部分母为零，translation symmetry 会使全部局部分母为零，再由 \(\sum_QC_{\kappa,Q}=\nabla\times W_\kappa\) 得到矛盾。因此选中有限小区没有 denominator face。</p>
+        </section>
+
+        <section id="endpoint"><div class="section-no">04 / Positive localized endpoint</div><h2>局部总振幅在抛物窗口末端保持正下界</h2>
+          <p>在 \(t_*=(\log2)/(18\nu K^2)\)，R0.71J 的固定窗口收敛给出 \(a_\kappa(t_*)\ge A_*/2\)。结合逐格恒等式与分母上界，</p>
+          <div class="equation result">\[
+            A_{\rm loc}^{\rm sel}(t_*)
+            :=\sum_Qa_{\kappa,Q}(t_*)
+            =\frac{(B_\kappa^+)^2}{D_{\rm loc}Y}
+            \ge\frac{A_*}{2C_{\rm part}}.
+          \]</div>
+          <p>局部化带来的损失只进入固定常数 \(C_{\rm part}\)。它没有把正端点降成随 \(K\) 消失的量。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">05 / Complete fixed-cutoff time ledger</div><h2>固定 cutoff 只消去 motion row，tangent row 仍在</h2>
+          <p>固定 partition 使 \(\chi_t=0\)，等价的 Eulerian cutoff-motion 组合精确为零；refresh atom 也为零。完整 localized-vorticity equation 仍含全部 nonlinear pairs 和黏性 collar</p>
+          <div class="equation">\[
+            -\nu\nabla\times\left(
+            2\sum_m(\partial_m\chi_Q)\partial_mW
+            +(\Delta\chi_Q)W\right).
+          \]</div>
+          <p>定义完整的 \(N\)、\(M\)、\(Y_t/Y\) 与 projective tangent row 后，每个小区满足</p>
+          <div class="equation result">\[
+            z_{Q,t}+\nu\kappa^2z_Q=\mathcal J_Q,
+            \qquad
+            a_{Q,t}+2\nu\kappa^2a_Q=2z_Q^+\mathcal J_Q.
+          \]</div>
+          <p>这里 \(\mathcal J_Q\) 是先合并 radial、tangent、collar 和 normalization 后的 signed source；我没有对这些行分别取正部。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">06 / Finite selected-cell theorem</div><h2>正缺陷恒等式把零入口和正终值转成 \(K^{-2}\) 下界</h2>
+          <p>写 \(\mathcal J_Q=\mathcal J_Q^+-\mathcal J_Q^-\)。精确恒等式是</p>
+          <div class="equation result">\[
+            2\kappa^{-2}z_Q^+\mathcal J_Q^+
+            =\kappa^{-2}a_{Q,t}+2\nu a_Q
+            +2\kappa^{-2}z_Q^+\mathcal J_Q^-.
+          \]</div>
+          <p>对有限 \(K^3\) 个小区求和、在 \(I_K\) 上积分，并丢掉两个非负缺陷项，就得到</p>
+          <div class="equation result">\[
+            \mathcal Z_K^{\rm sel,loc}
+            :=\kappa^{-2}\sum_Q\int_{I_K}z_Q^+\mathcal J_Q^+dt
+            \ge\frac{A_*}{64C_{\rm part}K^2}.
+          \]</div>
+          <p>这一步只用有限小区恒等式。若把 full-frame/full-cell positive creation 定义成有限非负截断的 supremum，它必然不小于这个下界；这里没有暗中使用无限 frame–cell evolution identity。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">07 / Same local heat-support payment</div><h2>有限重叠只能把 heat endpoint 乘一个常数 \(N\)</h2>
+          <p>逐格 Cauchy 与 bounded overlap 给出</p>
+          <div class="equation">\[
+            \sum_Qq_{j,Q}\le
+            \sum_Q\|1_{\operatorname{supp}\chi_{j,Q}}F_j\|_2^2
+            \le N\|F_j\|_2^2.
+          \]</div>
+          <p>再用 R0.71J 的完整 parent-frame bound，</p>
+          <div class="equation result">\[
+            \mathcal H_K^{\rm loc}
+            :=\sum_j\kappa_j^{-2}\int_{I_K}
+            \frac{\sum_Q\|1_{\operatorname{supp}\chi_{j,Q}}F_j\|_2^2}{Y}dt
+            \le\frac{N(1-2^{-1/9})}{2\nu K^4}.
+          \]</div>
+          <p>因此同一 local heat/support endpoint 比所需正生成少两个 \(K\) 次幂。</p>
+        </section>
+
+        <section id="collar"><div class="section-no">08 / Leading-order collar boundary</div><h2>局部化没有制造免费 coercivity，而是暴露一个同阶未控项</h2>
+          <p>在 \(r\asymp K^{-1}\) 上，\(\nabla\chi=O(K)\)、\(\Delta\chi=O(K^2)\)。cutoff–curl 与 interior curl 同阶；denominator 的 interior、collar-square 和 cross rows 也同阶。黏性 collar 进入 \(\mathcal J_Q\) 后，经过 \(K^3\) 小区求和、physical-time 积分和 \(\kappa^{-2}\) 权重，绝对值预算可以达到 \(K^{-2}\)。</p>
+          <div class="equation result">\[
+            \text{positive creation}\sim K^{-2},
+            \qquad
+            \text{viscous collar budget}\sim K^{-2},
+            \qquad
+            \text{local heat payment}\sim(\nu K^4)^{-1}.
+          \]</div>
+          <p>collar 足够大，尺度上可能支付正生成；但目前没有从 Leray energy 推出它的绝对预算。把 \(|\mathcal J_Q|\) 原样放到右端只会重述缺口，不是闭合。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>正式附图同时记录分割、正端点、两阶尺度差和主阶 collar</h2>
+          <figure><img src="/figures/r0-71k-matched-cell-gap.svg" alt="R0.71K 固定匹配分割、零入口正端点、K 的负二次与负四次尺度以及主阶 collar"><figcaption>图 R0.71K。A：固定光滑 translated partition。B：global zero entry 与独立 one-cell endpoint audit。C：除去固定常数后的 \(K^{-2}\) positive-creation lower bound 和 \(K^{-4}\) heat upper bound。D：逐格与总量的 \(K\) 次幂；collar 和正生成同为 \(K^{-2}\)。曲线来自闭式公式和确定性分割采样，不是 DNS 或拟合。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71k-matched-cell-gap.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71k-matched-cell-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71k-matched-cell-gap.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">10 / Primary-source boundary</div><h2>局部 cutoff、refined cover 和 enstrophy cascade 都有先例；当前差别只在组合 quotient</h2>
+          <p><a href="https://arxiv.org/abs/1101.2193">Dascaliuc–Grujić</a> 与 <a href="https://arxiv.org/abs/1502.01258">Leitmeyer</a> 已发展 refined physical covers、bounded multiplicity 和条件性 energy/enstrophy cascade。它们对 signed flux 做 ensemble average，不是逐格取正部、平方、除以局部 curl denominator 再除以全局 \(Y\)。</p>
+          <p><a href="https://arxiv.org/abs/1108.1165">Tao</a> 已用 moving cutoff 处理 transport leakage 和 collars。<a href="https://arxiv.org/abs/2606.27560v1">Yu 2026 预印本</a>处理 filtered vortex stretching、palinstrophy absorption 与 localization residual；其 localization budgets 没有自动 coercive contribution，无权闭合还使用额外可和性假设。</p>
+          <p>限定的十项一手文献检索没有找到与完整 matched cellwise projected-Lamb quotient、denominator faces 和 refresh ledger 同构的定理。这个 negative finding 不是原创性、优先权或发表级别判断。</p>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>固定 matched-cell 的 heat-only 逃逸口已排除</h2>
+          <p>R0.71F 已经证明局部 heat packing，并说明 matched partition 不能隐藏另一类底边迹代价。R0.71K 新增的是 physical-time zero-entry creation：同一个 R0.71J broad-parent 见证在每个 aligned cell 都从零出发，局部总端点仍保持正值。</p>
+          <p>这使路线边界更具体：frequency-only 和 fixed matched-cell heat-only 两条支付都已关闭，剩余的有限门是 viscous collar 与 projective tangent row。它仍没有把一般三维潜在奇性解的集合缩小，也没有推出新的无条件继续性判据。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next gate</div><h2>R0.71L 先检查 fixed-cell collar 与 tangent 的绝对预算</h2>
+          <p>下一步不进入 moving cells、refresh 或无限 soft limit。我先在固定分割上把 viscous collar 和 tangent contributions 分离到不破坏 radial–tangent cancellation 的程度，再检查 weighted absolute budget 是否能由现有 Leray-level NSE quantity 控制。</p>
+          <p>若唯一上界需要未控制的导数，或只是把完整 \(\mathcal J_Q\) 重新命名，这条 temporal-residence 分支应停止。只有出现独立、非循环的 NSE payment，才进入 faces 和 moving partitions。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim boundary</div><h2>本节是一个量词明确的 heat-payment no-go，不是千禧年问题的解答</h2>
+          <ul>
+            <li>已证明：一组预先固定的 aligned scale-covariant matched partitions 上，逐格零入口、严格分母和正局部端点。</li>
+            <li>已证明：selected finite-cell positive creation 的 \(K^{-2}\) 下界，以及 full-frame local heat/support payment 的 \((\nu K^4)^{-1}\) 上界。</li>
+            <li>已保留：cutoff–curl、denominator collar、viscous collar、projective tangent 和 \(Y_t/Y\) rows。</li>
+            <li>未证明：任意 phase-misaligned partition、moving/deforming cells、general denominator faces、refresh atoms 或 child-refined frame。</li>
+            <li>未证明：collar 的 Leray-level payment、无限 frame–cell identity、无条件 weighted BV、继续性、全局光滑性或有限时破裂。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性、优先权或发表级别声明。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduce</div><h2>报告、双重证书、文献台账、累计回顾与附图源</h2>
+          <p><a href="/notes/r0-71k.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71k.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71k.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71k-matched-cell-gap.pdf">下载附图 PDF</a> · <a href="/figures/r0-71k-matched-cell-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71k-matched-cell-gap.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_independent_audit.py">independent checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071k">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071k-matched-cells/fig-r071k-matched-cell-gap">期刊附图完整包</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>逐项保留推导、反例、审计和未解决的量词。</div><div>研究笔记 R0.71K · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -20,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.95"></script>
+  <script defer src="/i18n-en.js?v=0.96"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1419,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-26</strong>最近修订</span>
-            <span><strong>v0.95</strong>网页版本</span>
-            <span><strong>134</strong>公开研究笔记</span>
-            <span><strong>R0.71J</strong>最新研究节点</span>
+            <span><strong>v0.96</strong>网页版本</span>
+            <span><strong>135</strong>公开研究笔记</span>
+            <span><strong>R0.71K</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>matched spatial localization</strong>当前方向</span>
+            <span><strong>fixed-cell collar / tangent budget</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1433,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>把已经排除 frequency-only payment 的联合生成放进固定 matched spatial partition，逐项检查 cutoff、collar、分母时间面和 refresh atoms。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>在固定 matched spatial partition 上分离 viscous collar 与 projective tangent，检查它们的 weighted absolute budget 能否由现有 Leray-level 量非循环地支付。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1442,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71J</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71K</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1451,7 +1451,7 @@
           <nav class="route-map-actions" aria-label="路线图快捷入口">
             <a href="/literature-review.html">阅读当前问题文献综述</a>
             <a href="/recap-r0-60.html">阅读 R0.60 阶段回顾</a>
-            <a href="/recap-r0-61-r0-71j.html">阅读 R0.60 之后的累计回顾</a>
+            <a href="/recap-r0-61-r0-71k.html">阅读 R0.60 之后的累计回顾</a>
             <a href="#first-task">查看完整笔记</a>
           </nav>
         </header>
@@ -1666,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71J</span>
+                <span class="route-range">R0.69P–R0.71K</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍走到 full-frame 正缺陷边界</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–D 关闭纯投影符号律、无权尺度打包、静态有符号传播和仅靠物质热几何获得增益的设想。R0.71E–F 把拉伸压成 projected-Lamb 注入，证明 Leray 能量级热体积及其有界重叠局部化。R0.71G–I 把时间缺口收缩到入口、单边联合生成与 faces。R0.71J 证明逐壳取正部以后只剩时间端点 telescope，并在 R0.71E 的完整 broad parent frame 上给出全局光滑 2D3C 的 \(K^2\) heat-payment gap。frequency-only escape 已关闭；matched spatial localization 和完整 face-paid BV 仍开放。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap</p>
+              <h3>从有符号环带障碍走到固定 matched-cell collar 边界</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–D 关闭纯投影符号律、无权尺度打包、静态有符号传播和仅靠物质热几何获得增益的设想。R0.71E–F 把拉伸压成 projected-Lamb 注入，证明 Leray 能量级热体积及其有界重叠局部化。R0.71G–I 把时间缺口收缩到入口、单边联合生成与 faces。R0.71J 在完整 broad parent frame 上给出全局光滑 2D3C 的 \(K^2\) heat-payment gap；R0.71K 又证明一组预先固定的 aligned matched partitions 仍保留同一个两阶缺口。frequency-only 与 fixed matched-cell heat-only 支付已关闭；viscous collar、projective tangent 和完整 face-paid BV 仍开放。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap</p>
               <details class="tree-notes">
-                <summary>展开 44 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71J">
+                <summary>展开 45 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71K">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1719,6 +1719,7 @@
                   <a class="milestone" href="/notes/r0-71h.html">R0.71H</a>
                   <a class="milestone" href="/notes/r0-71i.html">R0.71I</a>
                   <a class="milestone" href="/notes/r0-71j.html">R0.71J</a>
+                  <a class="milestone" href="/notes/r0-71k.html">R0.71K</a>
                 </nav>
               </details>
             </article>
@@ -1727,11 +1728,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71K</span>
+                <span class="route-range">NEXT · R0.71L</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>Matched spatial localization</h3>
-              <p>保留同一个 broad parent frame，把 global cell 换成固定、尺度匹配、有限重叠的空间分片。逐项保留 cutoff–curl、transport、viscous collar、分母时间面和 refresh atoms，检查局部 quotient 求和是继续继承 \(K^2\) 缺口，还是产生新的 Leray-level coercive payment。</p>
+              <h3>Fixed-cell collar 与 tangent budget</h3>
+              <p>我先停在固定分割，不进入 moving cells、refresh 或无限 soft limit；把 viscous collar 与 projective tangent 从联合源中分离出来，检查 weighted absolute budget 是否能由现有 Leray-level NSE 量控制，同时保持 radial–tangent cancellation。只有得到独立、非循环的支付，才继续进入 faces 和 moving partitions。</p>
             </article>
           </div>
         </div>
@@ -1816,7 +1817,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71J 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71K 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5674,11 +5675,11 @@
           </div>
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
-            <p class="eyebrow">累计回顾 R0.61–R0.71J · 2026-08-26</p>
-            <h3>R0.60 recap 之后的累计回顾收录 74 个节点；全站现有 134 篇公开研究笔记</h3>
-            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及驻留边界、投影热曲率与单边联合生成。</p>
-            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71J 证明逐壳取正部以后只留下时间端点 telescope 与两个非负缺陷，并在完整 broad parent frequency frame 上排除同一 heat endpoint 的统一支付；matched spatial cells、faces 和无条件 weighted BV 仍未闭合。</p>
-            <p><a href="/recap-r0-61-r0-71j.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71j.pdf">下载同步 PDF</a></p>
+            <p class="eyebrow">累计回顾 R0.61–R0.71K · 2026-08-26</p>
+            <h3>R0.60 recap 之后的累计回顾收录 75 个节点；全站现有 135 篇公开研究笔记</h3>
+            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及驻留边界、投影热曲率、单边联合生成、全壳正缺陷与固定匹配小区。</p>
+            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71J 证明逐壳取正部以后只留下时间端点 telescope 与两个非负缺陷；R0.71K 再证明一组固定 aligned matched partitions 仍保留 \(K^2\) heat-payment gap。frequency-only 与 fixed matched-cell heat-only 支付已关闭，viscous collar、projective tangent、faces 和无条件 weighted BV 仍未闭合。</p>
+            <p><a href="/recap-r0-61-r0-71k.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71k.pdf">下载同步 PDF</a></p>
           </div>
 
           <div class="task-one" id="r070a" data-release="r070a" style="margin-top:2rem">
@@ -6362,7 +6363,36 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071j-full-frame/fig-r071j-full-frame-gap">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71K：</strong>&nbsp;把 global cell 换成固定 matched spatial partition，检查 localized quotients、collars 和 faces 是否继续继承同一个 \(K^2\) 缺口。</p>
+            <p><strong style="color:var(--gold)">R0.71K 已完成：</strong>&nbsp;一组预先固定的 aligned matched partitions 精确继承逐格零入口和局部正端点；同一 local heat/support payment 仍少两个 \(K\) 次幂。</p>
+          </div>
+
+          <div class="task-one" id="r071k" data-release="r071k" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71K · 2026-08-26</p>
+            <h3>固定匹配空间小区仍保留两阶热支付差，黏性 collar 留在主阶</h3>
+            <p>
+              令 \(\kappa=4K\)，并在数据之前固定一组 aligned、尺度协变、有限重叠的光滑分割。对 R0.71J 的同一个全局光滑 2D3C 见证，选中 parent 的有限 \(K^3\) 个小区都满足零入口、严格正分母与平移恒等式。有限小区正缺陷恒等式给出
+              \[
+                \mathcal Z_K^{\rm sel,loc}\ge \frac{A_*}{64C_{\rm part}K^2},
+              \]
+              而完整 bounded-overlap local heat/support payment 至多为
+              \[
+                \mathcal H_K^{\rm loc}\le \frac{N(1-2^{-1/9})}{2\nu K^4}.
+              \]
+              因而两者之比至少按 \(\nu K^2\) 增长。
+            </p>
+            <p>
+              固定 cutoff 只使 motion row 与 refresh atom 为零；cutoff–curl、denominator collar、viscous collar、projective tangent 和 \(Y_t/Y\) rows 都被保留。黏性 collar 的 weighted absolute budget 可以达到 \(K^{-2}\)，与正生成同阶，但目前没有从 Leray energy 得到它的独立支付。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;本节关闭的是一组预先固定 aligned matched partitions 上的 local heat/support-only 支付。它不覆盖 phase-misaligned、moving/deforming cells、general denominator faces、refresh atoms、child-refined frame、无限 frame–cell identity、无条件 weighted BV、继续性、全局光滑性或有限时破裂。</p>
+            <p>
+              <a href="/notes/r0-71k.html"><strong>阅读 R0.71K 研究笔记 →</strong></a> ·
+              <a href="/notes/r0-71k.pdf">下载同步 PDF</a><br>
+              <a href="/figures/r0-71k-matched-cell-gap.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071k">查看双重证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071k_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071k-matched-cells/fig-r071k-matched-cell-gap">查看附图、数据与源代码包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71L：</strong>&nbsp;留在固定分割上分离 viscous collar 与 projective tangent，检查 weighted absolute budget 能否由现有 Leray-level NSE 量非循环地控制。</p>
           </div>
         </section>
 
@@ -6377,8 +6407,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.95 · 2026-08-26<br>
-        上次综述 v0.94 · 2026-08-26<br>
+        综述 v0.96 · 2026-08-26<br>
+        上次综述 v0.95 · 2026-08-26<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

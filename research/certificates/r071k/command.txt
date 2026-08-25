@@ -1,0 +1,13 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071k_exact_audit.py --output research/certificates/r071k/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071k_independent_audit.py --output research/certificates/r071k/independent-result.json
+
+Run the figure commands in:
+figures/r071k-matched-cells/fig-r071k-matched-cell-gap/command.txt
+
+Validate the formal figure package:
+tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071k-matched-cells/fig-r071k-matched-cell-gap
+
+Rebuild and verify this release ledger:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071k/build_hashes.py
+(cd research/certificates/r071k && shasum -a 256 -c SHA256SUMS)
+

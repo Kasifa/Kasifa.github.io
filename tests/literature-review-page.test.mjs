@@ -25,6 +25,46 @@ test("publishes a source-backed literature review with four technical topologies
   assert.match(html, /\/bilingual\.js/);
   assert.equal((html.match(/<li id="ref-\d+">/g) ?? []).length, 30);
   assert.doesNotMatch(html, /已经解决|接近解决千禧年问题/);
+  assert.doesNotMatch(html, /08 \/ Research judgment|08 · 研究判断|id="judgment"|DGX/);
+  assert.doesNotMatch(html, /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法/);
+});
+
+test("keeps the top and side literature directories identical", async () => {
+  const html = await readFile(pageUrl, "utf8");
+  const top = html.match(/<nav class="topnav" data-section-nav[\s\S]*?<\/nav>/)?.[0];
+  const side = html.match(/<ol data-section-nav>[\s\S]*?<\/ol>/)?.[0];
+  assert.ok(top, "top directory should exist");
+  assert.ok(side, "side directory should exist");
+
+  const links = (block) =>
+    [...block.matchAll(/<a href="(#[^"]+)">([^<]+)<\/a>/g)].map((match) => ({
+      href: match[1],
+      label: match[2].trim(),
+    }));
+
+  assert.deepEqual(links(top), links(side));
+  assert.deepEqual(
+    links(top).map(({ href }) => href),
+    [
+      "#problem",
+      "#critical",
+      "#map",
+      "#foundations",
+      "#blowup",
+      "#recent",
+      "#route",
+      "#references",
+    ],
+  );
+});
+
+test("uses the research home page archival visual language", async () => {
+  const html = await readFile(pageUrl, "utf8");
+  assert.match(html, /--paper: #f2eddf/);
+  assert.match(html, /--orange: #8a302c/);
+  assert.match(html, /border-bottom: 3px double var\(--ink\)/);
+  assert.match(html, /font-family: Georgia, "Songti SC"/);
+  assert.match(html, /@media \(prefers-color-scheme: dark\)/);
 });
 
 test("links the literature review from the research home page", async () => {

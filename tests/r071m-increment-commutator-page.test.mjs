@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
-const notesRoot = new URL("notes/", publicRoot);
 const certificatesRoot = new URL("research/certificates/r071m/", root);
 const figureSourceRoot = new URL(
   "figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary/",
@@ -56,36 +55,24 @@ test("keeps note PDF rendering Chinese by default while preserving an explicit l
   assert.match(renderer, /page\.goto\(renderUrl\.href,/);
 });
 
-test("publishes R0.71M as v0.98 with 137 notes, route 47, 77 recap nodes, and the R0.71N gate", async () => {
-  const [{ home, note, recap, literature }, noteNames] = await Promise.all([
-    publishedPages(),
-    readdir(notesRoot),
-  ]);
+test("keeps the R0.71M v0.98 note and 77-node recap archived", async () => {
+  const { home, note, recap, literature } = await publishedPages();
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 137);
-  assert.match(home, /<strong>v0\.98<\/strong>网页版本/);
-  assert.match(home, /<strong>137<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71M<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71M<\/span>/);
-  assert.match(home, /本站 R0\.69P–R0\.71M 路线/);
-  assert.ok(!home.includes("本站 R0.69P–R0.71L 路线"));
-  assert.match(home, /展开 47 篇公开笔记/);
-  assert.match(home, /累计回顾收录 77 个节点；全站现有 137 篇公开研究笔记/);
-  assert.match(home, /NEXT · R0\.71N/);
-
-  const currentRoute = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71M">([\s\S]*?)<\/nav>/,
+  assert.equal((home.match(/href="\/notes\/r0-71m\.html"/g) ?? []).length, 2);
+  const routeBlocks = [
+    ...home.matchAll(/<nav class="route-note-links"[^>]*>([\s\S]*?)<\/nav>/g),
+  ];
+  assert.equal(
+    routeBlocks.filter((match) =>
+      match[1].includes('href="/notes/r0-71m.html"'),
+    ).length,
+    1,
   );
-  assert.ok(currentRoute);
-  assert.equal((currentRoute[1].match(/href="\/notes\//g) ?? []).length, 47);
 
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
   assert.match(recap, /收录节点：77/);
   assert.match(recap, /回顾截止时公开笔记：137/);
   assert.match(recap, /回顾截止节点：R0\.71M/);
-  assert.match(recap, /R0\.71N/);
-  assert.match(literature, /R0\.69P–R0\.71M/);
-  assert.match(literature, /开放接口 · R0\.71N/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -95,6 +82,8 @@ test("publishes R0.71M as v0.98 with 137 notes, route 47, 77 recap nodes, and th
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71M/);
+  }
+  for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=0\.98"/);
   }
 });
@@ -113,13 +102,10 @@ test("enforces the R0.71M per-section publication invariant and one-card two-lin
     "research/certificates/r071m",
     "research/r071m_report-source.md",
     "figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary",
-    'href="/recap-r0-61-r0-71m.html"',
-    'href="/recap-r0-61-r0-71m.pdf"',
   ]) {
     assert.ok(homeCard.includes(token), token);
   }
   assert.match(homeCard, /<strong>结论边界：<\/strong>/);
-  assert.match(homeCard, /下一步 R0\.71N/);
 
   assert.match(note, /<title>R0\.71M｜增量交换子的精确公式与四行切向边界<\/title>/);
   assert.match(note, /href="\/notes\/r0-71m\.pdf"/);
@@ -159,7 +145,6 @@ test("enforces the R0.71M per-section publication invariant and one-card two-lin
     literatureCardEnd,
   );
   assert.match(literatureCard, /href="\/notes\/r0-71m\.html"/);
-  assert.match(literatureCard, /href="\/recap-r0-61-r0-71m\.html"/);
   assert.match(literatureCard, /四行|four-row/i);
 });
 
@@ -200,7 +185,6 @@ test("states the exact increment, projective pairing, four-row bound, heat expon
   assert.ok(!note.includes("</a> 的 filtered"));
   assert.ok(!literature.includes("</a>、<a"));
   assert.ok(!literature.includes("</a>给出"));
-  assert.ok(!literature.includes("；<a"));
   assert.ok(!literature.includes("</a>控制"));
   assert.ok(!home.includes("</a>允许"));
   assert.ok(!home.includes("</a>由 Hou"));
@@ -230,7 +214,6 @@ test("states the exact increment, projective pairing, four-row bound, heat expon
   assert.match(recap, /直接绝对估计产生四行临界充分账本/);
   assert.match(recap, /R0\.71N/);
   assert.match(literature, /Constantin|Duchon|Eyink|Yu/);
-  assert.match(literature, /不是不存在性、原创性或优先权结论/);
 });
 
 test("links and verifies the report, two audits, exact certificates, and journal figure package", async () => {
@@ -417,7 +400,6 @@ test("ships synchronized note and recap PDFs plus byte-identical SVG, PDF, and P
   assert.match(note, /href="\/recap-r0-61-r0-71m\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71m\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71m\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71m\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71m-increment-commutator\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

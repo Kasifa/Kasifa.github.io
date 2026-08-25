@@ -1,0 +1,70 @@
+{
+  "checks": {
+    "domainBoundary": {
+      "identityDomain": [
+        "Y>0",
+        "d_Q>0",
+        "fixed time-independent chi_Q"
+      ],
+      "notCovered": [
+        "the quotient z_Q at d_Q=0",
+        "one-sided denominator faces",
+        "partition refresh atoms",
+        "moving cutoffs",
+        "Leray-limit passage"
+      ],
+      "passed": true,
+      "zeroFacts": [
+        "Y=0 implies omega=0 and hence u=0 for zero-mean periodic data",
+        "d_Q=0 implies C_Q=0 and B_Q=<F_j,C_Q>=0"
+      ]
+    },
+    "fullScalarFusion": {
+      "boundary": "P is nonnegative, but A, the normalization row, and the annular mismatch remain signed before the local-enstrophy substitution.",
+      "coordinateSource": "(2*A*Y*d - B*Y*d_t - B*Y_t*d + 2*I*Y*d)/(2*Y**(3/2)*d**(3/2))",
+      "definitions": {
+        "A": "<G_t,chi W>=<F_t,C>",
+        "I": "int chi G.(G+nu H)",
+        "P": "int chi |G+(nu/2)H|^2",
+        "V": "(nu^2/4) int chi |H|^2",
+        "lambda": "nu*kappa^2",
+        "root": "sqrt(Y*d)",
+        "z": "B/sqrt(Y*d)"
+      },
+      "derivativeSource": "(2*B*Y*d*lambda - B*Y*d_t - B*Y_t*d + 2*B_t*Y*d)/(2*Y**(3/2)*d**(3/2))",
+      "nominalProjective": "-B*lambda/(sqrt(Y)*sqrt(d))",
+      "nominalRadial": "B*lambda/(sqrt(Y)*sqrt(d))",
+      "passed": true,
+      "positiveSquare": "I + V",
+      "signedResidual": "(2*A*Y*d - B*Y*d_t - B*Y_t*d - 2*V*Y*d)/(2*Y*d)",
+      "squarePlusResidual": "(2*A*Y*d - B*Y*d_t - B*Y_t*d + 2*I*Y*d)/(2*Y**(3/2)*d**(3/2))"
+    },
+    "localEnstrophyFusion": {
+      "DChi": "int chi |grad W|^2-(1/2)int (Delta chi)|W|^2=-<chi W,Delta W>",
+      "acceleration": "D*lambda*nu + D_t*nu - I + e_t*lambda + e_tt",
+      "conclusion": "The displayed positive square cancels exactly against the same pairing inside <G_t,chi W>; the remaining numerator is a signed second-time/local-dissipation jet.",
+      "localBalance": "B=e_t+nu*D_chi",
+      "mismatchFormOfB": "2*e*lambda + e_t - h_pair*nu",
+      "passed": true,
+      "positiveSquare": "I + V",
+      "residual": "(2*D*Y*d*lambda*nu - D*Y*d_t*nu - D*Y_t*d*nu + 2*D_t*Y*d*nu - 2*I*Y*d - 2*V*Y*d + 2*Y*d*e_t*lambda + 2*Y*d*e_tt - Y*d_t*e_t - Y_t*d*e_t)/(2*Y*d)",
+      "secondJetNumerator": "(2*D*Y*d*lambda*nu - D*Y*d_t*nu - D*Y_t*d*nu + 2*D_t*Y*d*nu + 2*Y*d*e_t*lambda + 2*Y*d*e_tt - Y*d_t*e_t - Y_t*d*e_t)/(2*Y*d)"
+    },
+    "scalingLedger": {
+      "JExponent": "3",
+      "NSEScaling": "u_mu(t,x)=mu*u(mu^2*t,mu*x)",
+      "boundary": "Formal local Euclidean co-scaling of the filter and cutoff, not a continuous symmetry of one fixed torus or one fixed cell.",
+      "kappaMinus2_z_J_dt_Exponent": "0",
+      "numeratorExponents": {
+        "acceleration": "5",
+        "annularMismatchSquare": "5",
+        "normalization": "5"
+      },
+      "passed": true,
+      "rootExponent": "2"
+    }
+  },
+  "claimBoundary": "Exact fixed-cell algebra for classical periodic NSE only. The audit proves neither a sign or energy bound for the second-jet residual nor a continuation, singularity, or global-regularity result.",
+  "release": "R0.71N",
+  "status": "passed"
+}

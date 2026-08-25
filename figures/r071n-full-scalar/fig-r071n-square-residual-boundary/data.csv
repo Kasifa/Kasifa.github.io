@@ -1,0 +1,22 @@
+panel,series,witness,stage,component,x,value,unit,formula,evidenceClass,note
+A,structureFlow,,complete derivative,,0,0,,J=(B_t+lambda*B-0.5*B*(Y_t/Y+d_t/d))/sqrt(Y*d),exact fixed-cell theorem,"retain B_t, d_t, and Y_t together"
+A,structureFlow,,square plus residual,,1,1,,J=(P_square+R)/sqrt(Y*d),exact fixed-cell theorem,P_square is nonnegative; R is signed
+A,structureFlow,,local enstrophy substitution,,2,2,,B=e_t+nu*D_chi; R=-P_square+K,exact fixed-cell theorem,the same positive square cancels exactly
+A,structureFlow,,signed second jet,,3,3,,J=K/sqrt(Y*d),exact fixed-cell theorem,K has no sign or Leray-energy bound here
+B,positiveSquare,seed 49,,P_square,0,5023.6425099529406,raw numerator,integral chi*|G+(nu/2)H|^2,finite-Fourier diagnostic; not interval theorem,nonnegative exact component evaluated in binary64
+B,signedResidual,seed 49,,R,1,749.92194429385336,raw numerator,"<G_t,chi W>-(nu^2/4)int chi|H|^2-(B/2)(Y_t/Y+d_t/d)",finite-Fourier diagnostic; not interval theorem,signed component
+B,numeratorTotal,seed 49,,P_square+R,2,5773.5644542467944,raw numerator,P_square+R,finite-Fourier diagnostic; not interval theorem,diamond marker in Panel B
+B,normalizerRoot,seed 49,,sqrt(Y*d),3,4269.2691391541148,normalizer,sqrt(Y*d),finite-Fourier diagnostic; not interval theorem,not plotted; retained for audit
+C,z,seed 49,,z,0,0.0037338304858202916,normalized pairing,B/sqrt(Y*d),finite-Fourier diagnostic; not interval theorem,strictly positive in both witnesses
+C,J,seed 49,,J,1,1.3523542943911777,complete scalar source,z_t+nu*kappa^2*z,finite-Fourier diagnostic; not interval theorem,opposite signs across the two witnesses
+B,positiveSquare,seed 5,,P_square,0,5167.69457947911,raw numerator,integral chi*|G+(nu/2)H|^2,finite-Fourier diagnostic; not interval theorem,nonnegative exact component evaluated in binary64
+B,signedResidual,seed 5,,R,1,-25941.294013318115,raw numerator,"<G_t,chi W>-(nu^2/4)int chi|H|^2-(B/2)(Y_t/Y+d_t/d)",finite-Fourier diagnostic; not interval theorem,signed component
+B,numeratorTotal,seed 5,,P_square+R,2,-20773.599433839005,raw numerator,P_square+R,finite-Fourier diagnostic; not interval theorem,diamond marker in Panel B
+B,normalizerRoot,seed 5,,sqrt(Y*d),3,2818.156235110273,normalizer,sqrt(Y*d),finite-Fourier diagnostic; not interval theorem,not plotted; retained for audit
+C,z,seed 5,,z,0,0.0019598744198175808,normalized pairing,B/sqrt(Y*d),finite-Fourier diagnostic; not interval theorem,strictly positive in both witnesses
+C,J,seed 5,,J,1,-7.3713441345192674,complete scalar source,z_t+nu*kappa^2*z,finite-Fourier diagnostic; not interval theorem,opposite signs across the two witnesses
+D,scalingExponent,,numerator,numerator,0,5,NSE scaling exponent,P_square and R,exact NSE co-scaling ledger,local co-scaling; not a continuous fixed-torus symmetry
+D,scalingExponent,,root,root,1,2,NSE scaling exponent,sqrt(Y*d),exact NSE co-scaling ledger,local co-scaling; not a continuous fixed-torus symmetry
+D,scalingExponent,,J,J,2,3,NSE scaling exponent,numerator/root,exact NSE co-scaling ledger,local co-scaling; not a continuous fixed-torus symmetry
+D,scalingExponent,,weighted creation,weighted creation,3,0,NSE scaling exponent,kappa^-2*z*J*dt,exact NSE co-scaling ledger,local co-scaling; not a continuous fixed-torus symmetry
+D,nextGate,,R0.71O face gate,hard/soft denominator face,4,0,route marker,d_Q downarrow 0: compare hard components with soft regularization,declared next finite gate,no face estimate is asserted in R0.71N

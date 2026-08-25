@@ -20,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.98"></script>
+  <script defer src="/i18n-en.js?v=0.99"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1419,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-26</strong>最近修订</span>
-            <span><strong>v0.98</strong>网页版本</span>
-            <span><strong>137</strong>公开研究笔记</span>
-            <span><strong>R0.71M</strong>最新研究节点</span>
+            <span><strong>v0.99</strong>网页版本</span>
+            <span><strong>138</strong>公开研究笔记</span>
+            <span><strong>R0.71N</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>full scalar fusion / signed residual</strong>当前方向</span>
+            <span><strong>soft denominator / one-sided faces</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1433,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>从完整标量 \(\mathcal J_Q=z_{Q,t}+\nu\kappa_j^2z_Q\) 出发，同时保留 \(B_{Q,t}\)、\(d_{Q,t}\) 与 \(Y_t\)，检查是否存在第二次精确融合或明确的有符号余项。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>固定 cell 上比较 hard denominator 与 \(\sqrt{d_Q+\varepsilon}\)，检查 \(\varepsilon\downarrow0\) 的 source measure 和 \(d_Q=0\) 一侧 faces 能否由已有预算支付。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1442,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71M</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71N</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1451,7 +1451,7 @@
           <nav class="route-map-actions" aria-label="路线图快捷入口">
             <a href="/literature-review.html">阅读当前问题文献综述</a>
             <a href="/recap-r0-60.html">阅读 R0.60 阶段回顾</a>
-            <a href="/recap-r0-61-r0-71m.html">阅读 R0.60 之后的累计回顾</a>
+            <a href="/recap-r0-61-r0-71n.html">阅读 R0.60 之后的累计回顾</a>
             <a href="#first-task">查看完整笔记</a>
           </nav>
         </header>
@@ -1666,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71M</span>
+                <span class="route-range">R0.69P–R0.71N</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍走到 exact increment–projective bridge</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–F 从恒定投影障碍走到 Leray 能量级 projected-Lamb 热体积及其有界重叠局部化。R0.71G–K 把时间缺口收缩到全壳正缺陷与 fixed matched-cell heat gap；R0.71L 又把 raw viscous collar 精确融合回 localized Laplacian row。R0.71M 现在给出 annular-filter Lamb commutator 的精确二次速度增量公式、完整 fixed-cell projective pairing 与四行临界直接账本。热包说明这些绝对临界预算不由能量类普适推出，但不排除 NSE 特有的 signed cancellation。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap → exact viscous fusion → increment–projective bridge</p>
+              <h3>从有符号环带障碍走到 signed second-jet boundary</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–F 建立 Leray 能量级 projected-Lamb 热体积及其有界重叠局部化。R0.71G–L 把时间缺口收缩到 fixed matched-cell heat gap 和 exact viscous fusion；R0.71M 再给出 exact increment–projective bridge。R0.71N 从完整标量同时保留三个时间导数，证明 projective completion 中表面的正平方被 local-enstrophy acceleration 精确消去。留下的是同尺度的 signed second jet，而不是新的耗散。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap → exact viscous fusion → increment–projective bridge → signed second-jet boundary</p>
               <details class="tree-notes">
-                <summary>展开 47 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71M">
+                <summary>展开 48 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71N">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1722,6 +1722,7 @@
                   <a class="milestone" href="/notes/r0-71k.html">R0.71K</a>
                   <a class="milestone" href="/notes/r0-71l.html">R0.71L</a>
                   <a class="milestone" href="/notes/r0-71m.html">R0.71M</a>
+                  <a class="milestone" href="/notes/r0-71n.html">R0.71N</a>
                 </nav>
               </details>
             </article>
@@ -1730,11 +1731,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71N</span>
+                <span class="route-range">NEXT · R0.71O</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>完整标量的第二次融合或 signed residual</h3>
-              <p>我继续停在 fixed cells，不再把四行直接账本逐项绝对化。R0.71N 从完整 \(\mathcal J_Q\) 出发，同时保留 \(B_{Q,t}\)、\(d_{Q,t}\) 与 \(Y_t\)，再代入 radial pairing 与局部 filtered-enstrophy 表示。结果可以是第二个精确标量融合，也可以是一个明确保留下来的有符号 residual；二者都不能预设。</p>
+              <h3>Soft denominator 与 \(d_Q=0\) 一侧 faces</h3>
+              <p>我继续使用 fixed cells，比较 hard components 与 \(R_{Q,\varepsilon}=\sqrt{d_Q+\varepsilon}\)。R0.71O 检查 \(\varepsilon\downarrow0\) 时的 source measures 和 denominator-zero 一侧 faces，能否由已有 energy 与 denominator-mass budgets 统一支付；暂不进入 refresh atoms 或 moving cutoffs。</p>
             </article>
           </div>
         </div>
@@ -1819,7 +1820,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71M 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71N 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5677,11 +5678,11 @@
           </div>
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
-            <p class="eyebrow">累计回顾 R0.61–R0.71M · 2026-08-26</p>
-            <h3>R0.60 recap 之后的累计回顾收录 77 个节点；全站现有 137 篇公开研究笔记</h3>
-            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及驻留边界、全壳正缺陷、固定匹配小区、黏性融合与增量—投影接口。</p>
-            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71M 把 critical increment bridge 压成 exact commutator、exact projective pairing 与四行充分账本；它同时证明标准能量类不普适嵌入所测试的绝对临界预算。这个函数空间分离不是 NSE 解反例，完整标量的 signed fusion、faces 和无条件 weighted BV 仍未闭合。</p>
-            <p><a href="/recap-r0-61-r0-71m.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71m.pdf">下载同步 PDF</a></p>
+            <p class="eyebrow">累计回顾 R0.61–R0.71N · 2026-08-26</p>
+            <h3>R0.60 recap 之后的累计回顾收录 78 个节点；全站现有 138 篇公开研究笔记</h3>
+            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及驻留边界、固定匹配小区、黏性融合、增量—投影接口与 signed second jet。</p>
+            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71N 关闭了把 projective completion 中的正平方解释成新耗散的路线：local filtered enstrophy 代回后，同一平方被 acceleration 精确消去。剩余 signed second jet 仍是临界量；soft denominator、零分母 faces 和无条件 weighted BV 仍未闭合。</p>
+            <p><a href="/recap-r0-61-r0-71n.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71n.pdf">下载同步 PDF</a></p>
           </div>
 
           <div class="task-one" id="r070a" data-release="r070a" style="margin-top:2rem">
@@ -6422,8 +6423,8 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071l">查看双重证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71m.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71m.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71n.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71n.pdf">下载累计回顾 PDF</a>
             </p>
             <p><strong style="color:var(--gold)">R0.71M 已完成：</strong>&nbsp;精确增量交换子与 fixed-cell pairing 已写出；当前审计没有从 Leray energy 推出四行总账，所测试的三个绝对临界预算也不由能量类普适嵌入。</p>
           </div>
@@ -6458,10 +6459,49 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071m">查看双重证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71m.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71m.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71n.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71n.pdf">下载累计回顾 PDF</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71N：</strong>&nbsp;从完整 \(\mathcal J_Q\) 同时展开三个时间导数，检查第二次精确标量融合或明确的 signed residual。</p>
+            <p><strong style="color:var(--gold)">R0.71N 已完成：</strong>&nbsp;表面的正平方被 local-enstrophy acceleration 精确消去；完整 fixed-cell 标量只留下同尺度的 signed second jet。</p>
+          </div>
+
+          <div class="task-one" id="r071n" data-release="r071n" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71N · 2026-08-26</p>
+            <h3>表面的正平方在完整标量中精确消去，留下临界 signed second jet</h3>
+            <p>
+              固定小区上，完整标量先有精确的平方—余项表示
+              \[
+                \mathcal J_Q
+                =\frac{\mathcal P_Q^\square+\mathfrak R_Q}{\sqrt{Yd_Q}},
+                \qquad
+                \mathcal P_Q^\square
+                =\int\chi_Q\left|G_j+\frac\nu2H_j\right|^2.
+              \]
+              名义率 \(\nu\kappa_j^2\) 与 radial/projective 坐标中的项精确消去。
+            </p>
+            <p>
+              令 \(e_Q=\frac12\int\chi_Q|W_j|^2\) 与
+              \(D_Q^\chi=-\langle\chi_QW_j,\Delta W_j\rangle\)。局部 filtered-enstrophy 恒等式
+              \(B_Q=e_{Q,t}+\nu D_Q^\chi\) 代回后，\(\mathfrak R_Q\) 中出现
+              \(-\mathcal P_Q^\square\)，恰好消去前面的正平方。剩余项仍是尺度临界的有符号二阶时间与混合归一化账本。
+            </p>
+            <p>
+              两个显式五模光滑 NSE 初始 jet 都满足 \(z_Q&gt;0\)，但分别给出
+              \(\mathcal J_Q=1.3523543\) 与 \(-7.3713441\)。48、64、80 三档 Fourier 网格一致；这是有限初始-jet 诊断，不是时间区间符号定理。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;本节关闭的是“完成 projective square 后把它当作新耗散”这一条 fixed-cell 代数路线。它没有证明 signed second jet 不能由其他 NSE 机制控制，也没有得到继续性、奇性或全局正则性结论。</p>
+            <p>
+              <a href="/notes/r0-71n.html"><strong>阅读 R0.71N 研究笔记 →</strong></a> ·
+              <a href="/notes/r0-71n.pdf">下载同步 PDF</a><br>
+              <a href="/figures/r0-71n-full-scalar.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071n">查看双重证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071n_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071n_literature_audit.md">查看主源文献台账</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071n-full-scalar/fig-r071n-square-residual-boundary">查看附图、数据与源代码包</a> ·
+              <a href="/recap-r0-61-r0-71n.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71n.pdf">下载累计回顾 PDF</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71O：</strong>&nbsp;固定 cell 上比较 hard denominator 与 \(\sqrt{d_Q+\varepsilon}\)，核对 \(d_Q=0\) 的一侧 faces 和 soft-limit source measure；暂不进入 refresh 或 moving cells。</p>
           </div>
         </section>
 
@@ -6476,8 +6516,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.98 · 2026-08-26<br>
-        上次综述 v0.97 · 2026-08-26<br>
+        综述 v0.99 · 2026-08-26<br>
+        上次综述 v0.98 · 2026-08-26<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

@@ -92,6 +92,7 @@ export async function listSiteHtmlFiles(publicDirectory) {
 
   return [
     join(publicDirectory, "research-review.html"),
+    join(publicDirectory, "literature-review.html"),
     ...recapFiles.map((name) => join(publicDirectory, name)),
     ...noteFiles.map((name) => join(noteDirectory, name)),
   ];

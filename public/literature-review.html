@@ -640,6 +640,11 @@
       gap: 12px;
     }
     .bar-actions .topnav { flex: 1 1 auto; justify-content: flex-end; }
+    html[data-language="en"] .bar-actions .topnav {
+      justify-content: flex-start;
+      gap: 12px;
+      font-size: 10.5px;
+    }
     .bar-language {
       position: absolute;
       top: 12px;
@@ -694,8 +699,8 @@
       line-height: .94;
     }
     html[data-language="en"] h1 {
-      font-size: clamp(3rem, 6vw, 5.15rem);
-      line-height: .92;
+      font-size: clamp(2.9rem, 5.4vw, 4.8rem);
+      line-height: .95;
     }
     .lead {
       max-width: 700px;
@@ -892,6 +897,21 @@
     .route-step.pause::before { background: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
     .route-step b { color: var(--orange); }
     .criteria li::before { color: var(--orange); }
+    .criteria strong {
+      display: block;
+      margin-bottom: 4px;
+      line-height: 1.35;
+    }
+    .references {
+      padding-left: 2rem;
+      line-height: 1.62;
+    }
+    .references li {
+      margin: 0;
+      padding: .62rem 0 .62rem .4rem;
+      border-top: 1px solid var(--line);
+    }
+    .references li:last-child { border-bottom: 1px solid var(--line); }
     .preprint-label {
       border: 1px solid var(--orange);
       border-radius: 0;
@@ -980,14 +1000,14 @@
     <header class="hero">
       <div class="hero-inner">
         <div>
-          <p class="eyebrow">Literature review · Evidence cutoff 2026-08-25</p>
+          <p class="eyebrow">文献综述 · 资料截止 2026-08-25</p>
           <h1>三维 Navier–Stokes<br>全局正则性问题</h1>
-          <p class="lead">这页只回答三个问题：已经证明了什么，哪些爆破方式已被排除，我现在的路线接在文献的什么位置。定理、预印本和本站笔记分开记录。</p>
+          <p class="lead">这页只回答三个问题：目前已经证明了什么，哪些爆破图景已经排除，我的研究路线和现有文献在哪里相接。定理、预印本和本站笔记分开记录。</p>
         </div>
         <aside class="verdict" aria-label="综述结论">
           <small>当前结论</small>
           <strong>问题仍未解决</strong>
-          <p>已知理论给潜在奇性加了很多限制，但还不能从能量估计推出一般大数据所需的全局临界控制。</p>
+          <p>现有理论对潜在奇性已经给出不少限制，但还不能从能量估计得到一般大数据所需的全局临界控制。</p>
           <dl>
             <div><dt>经典基线</dt><dd>Leray–Hopf</dd></div>
             <div><dt>关键尺度</dt><dd>临界空间</dd></div>
@@ -1000,7 +1020,7 @@
 
     <div class="layout">
       <aside class="toc" aria-label="目录">
-        <strong>CONTENTS</strong>
+        <strong>目录</strong>
         <ol data-section-nav>
           <li><a href="#problem">问题边界</a></li>
           <li><a href="#critical">临界困难</a></li>
@@ -1019,9 +1039,9 @@
 
       <article>
         <section id="problem">
-          <span class="section-index">NOTE 01 / Problem boundary</span>
-          <h2>先把问题本身说清楚</h2>
-          <p class="deck">这里讨论的不是一般意义上的“有没有解”，而是三维光滑解会不会在有限时间失去正则性。</p>
+          <span class="section-index">笔记 01 / 问题边界</span>
+          <h2>先把问题说清楚</h2>
+          <p class="deck">这里问的不是“有没有某种解”，而是光滑三维解能否在有限时间失去正则性。</p>
           <div class="equation">
             \[
               \partial_t u+(u\cdot\nabla)u-\Delta u+\nabla p=0,
@@ -1029,7 +1049,7 @@
               \qquad u(\cdot,0)=u_0.
             \]
           </div>
-          <p>Clay 的正式表述给了正向和负向两种结论：可以证明所有允许的光滑初值都产生全局光滑解，也可以构造满足正式条件的有限时破裂。本站先看无外力、任意光滑无散初值的全局正则性。二维结果、修改方程、特殊对称解和带外力弱解非唯一性都不等于这个问题的答案。<a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></p>
+          <p>Clay 的正式表述允许两类答案：证明所有允许的光滑初值都产生全局光滑解，或构造一个满足正式条件的有限时破裂。本站先看无外力、任意光滑无散初值的全局正则性。二维结果、修改方程、特殊对称解和带外力弱解非唯一性，都不能回答这个问题。<a href="#ref-1">[1]</a><a href="#ref-2">[2]</a></p>
 
           <figure class="topology" aria-labelledby="topology-1-title">
             <figcaption><strong id="topology-1-title">技术拓扑图 1 · 问题的逻辑层级</strong><span>从局部强解到两种可能的结论</span></figcaption>
@@ -1046,12 +1066,12 @@
 
           <div class="boundary">
             <strong>这页怎样使用证据</strong>
-            <p>我只把已发表定理写成已知结果；2026 年预印本单独标记；本站 R0.69P–R0.71B 只作为经过审计的研究笔记，不把它们外推成正则性定理。</p>
+            <p>我把已发表定理列为已知结果，2026 年预印本单独标记，本站 R0.69P–R0.71B 只列为研究笔记。我不把计算或笔记外推成正则性定理。</p>
           </div>
         </section>
 
         <section id="critical">
-          <span class="section-index">NOTE 02 / Critical scale</span>
+          <span class="section-index">笔记 02 / 临界尺度</span>
           <h2>困难出现在临界尺度</h2>
           <p class="deck">能量估计可以一直成立，但它没有排除能量向越来越小的尺度集中。三维涡量拉伸正好作用在这里。</p>
           <div class="equation">
@@ -1068,7 +1088,7 @@
         </section>
 
         <section id="map">
-          <span class="section-index">NOTE 03 / Literature map</span>
+          <span class="section-index">笔记 03 / 文献地图</span>
           <h2>五条主要理论分支</h2>
           <p class="deck">我把常用结果分成五支。它们不是五个互相竞争的解法，而是从不同方向限制潜在奇性。</p>
           <figure class="topology" aria-labelledby="topology-2-title">
@@ -1076,25 +1096,25 @@
             <div class="topology-node root"><strong>三维全局正则性</strong><span>目标：把最大光滑时间延拓到无穷</span></div>
             <div class="topology-arrow" aria-hidden="true">↓</div>
             <div class="branch-grid">
-              <div class="branch-card"><b>A · CONTINUATION</b><strong>强解延拓判据</strong><span>Serrin、\(L_t^\infty L_x^3\)、临界 Besov / BMO</span></div>
-              <div class="branch-card"><b>B · PARTIAL REGULARITY</b><strong>适合弱解部分正则</strong><span>CKN \(\varepsilon\)-正则性与奇异集维数</span></div>
-              <div class="branch-card"><b>C · RIGIDITY</b><strong>爆破剖面与刚性</strong><span>后向唯一性、自相似排除、临界元</span></div>
-              <div class="branch-card"><b>D · GEOMETRY</b><strong>几何与符号耗散</strong><span>涡量方向、应变特征值、尺度局部增量</span></div>
-              <div class="branch-card"><b>E · QUANTITATIVE</b><strong>定量化与浓缩</strong><span>临界范数爆破下界、Type I 浓缩、奇点计数</span></div>
+              <div class="branch-card"><b>A · 延拓</b><strong>强解延拓判据</strong><span>Serrin、\(L_t^\infty L_x^3\)、临界 Besov / BMO</span></div>
+              <div class="branch-card"><b>B · 部分正则</b><strong>适合弱解部分正则</strong><span>CKN \(\varepsilon\)-正则性与奇异集维数</span></div>
+              <div class="branch-card"><b>C · 刚性</b><strong>爆破剖面与刚性</strong><span>后向唯一性、自相似排除、临界元</span></div>
+              <div class="branch-card"><b>D · 几何</b><strong>几何与符号耗散</strong><span>涡量方向、应变特征值、尺度局部增量</span></div>
+              <div class="branch-card"><b>E · 定量</b><strong>定量化与浓缩</strong><span>临界范数爆破下界、Type I 浓缩、奇点计数</span></div>
             </div>
             <div class="gap-node"><strong>共同缺口：</strong>由能量级信息推出一个沿真实演化传播、可迭代的临界控制。</div>
           </figure>
 
           <div class="result-grid">
-            <article class="result-card"><span class="state">CONDITIONAL REGULARITY</span><h3>Serrin 与端点 \(L^3\)</h3><p>若 \(u\in L_t^qL_x^p\)、\(2/q+3/p\le1\)，则相应区间正则；ESS 封闭了 \(p=3,q=\infty\) 端点。条件本身尚未由能量自动推出。<a href="#ref-4">[4]</a><a href="#ref-10">[10]</a></p></article>
-            <article class="result-card"><span class="state">PARTIAL REGULARITY</span><h3>CKN 与 \(\varepsilon\)-正则性</h3><p>适合弱解的奇异集具有零的一维抛物 Hausdorff 测度。潜在奇性很稀疏，但“稀疏”仍不等于“空集”。<a href="#ref-11">[11]</a></p></article>
-            <article class="result-card"><span class="state">CRITICAL ELEMENT</span><h3>浓缩紧性与刚性</h3><p>若临界空间中存在爆破数据，可以尝试抽取最小爆破元，再用紧性和唯一延拓排除；框架仍需要临界范数先验有界。<a href="#ref-12">[12]</a><a href="#ref-18">[18]</a></p></article>
-            <article class="result-card"><span class="state">GEOMETRIC DEPLETION</span><h3>涡量方向与中间应变特征值</h3><p>方向相干或 \(\lambda_2^+\) 的临界控制足以得到正则性；目前它们仍是条件判据，不是一般解自动满足的结论。<a href="#ref-19">[19]</a><a href="#ref-20">[20]</a><a href="#ref-21">[21]</a><a href="#ref-22">[22]</a></p></article>
+            <article class="result-card"><span class="state">条件正则性</span><h3>Serrin 与端点 \(L^3\)</h3><p>若 \(u\in L_t^qL_x^p\)、\(2/q+3/p\le1\)，则相应区间正则；ESS 封闭了 \(p=3,q=\infty\) 端点。条件本身尚未由能量自动推出。<a href="#ref-4">[4]</a><a href="#ref-10">[10]</a></p></article>
+            <article class="result-card"><span class="state">部分正则性</span><h3>CKN 与 \(\varepsilon\)-正则性</h3><p>适合弱解的奇异集具有零的一维抛物 Hausdorff 测度。潜在奇性很稀疏，但“稀疏”仍不等于“空集”。<a href="#ref-11">[11]</a></p></article>
+            <article class="result-card"><span class="state">临界元</span><h3>浓缩紧性与刚性</h3><p>若临界空间中存在爆破数据，可以尝试抽取最小爆破元，再用紧性和唯一延拓排除；框架仍需要临界范数先验有界。<a href="#ref-12">[12]</a><a href="#ref-18">[18]</a></p></article>
+            <article class="result-card"><span class="state">几何耗散</span><h3>涡量方向与中间应变特征值</h3><p>方向相干或 \(\lambda_2^+\) 的临界控制足以得到正则性；目前它们仍是条件判据，不是一般解自动满足的结论。<a href="#ref-19">[19]</a><a href="#ref-20">[20]</a><a href="#ref-21">[21]</a><a href="#ref-22">[22]</a></p></article>
           </div>
         </section>
 
         <section id="foundations">
-          <span class="section-index">NOTE 04 / Established results</span>
+          <span class="section-index">笔记 04 / 已知结果</span>
           <h2>经典理论骨架</h2>
           <p class="deck">先把存在、唯一和正则分开，才不会把弱解存在误写成全局正则性结论。</p>
           <table class="review-table">
@@ -1113,7 +1133,7 @@
         </section>
 
         <section id="blowup">
-          <span class="section-index">NOTE 05 / Blow-up boundaries</span>
+          <span class="section-index">笔记 05 / 爆破边界</span>
           <h2>哪些爆破图景已被排除</h2>
           <p class="deck">下面只区分三件事：已经排除、受到定量约束、仍然开放。</p>
           <figure class="topology" aria-labelledby="topology-3-title">
@@ -1130,13 +1150,13 @@
         </section>
 
         <section id="recent">
-          <span class="section-index">NOTE 06 / Recent papers</span>
-          <h2>2019—2026 年我保留的进展</h2>
-          <p class="deck">这里只保留改变理论边界的结果。我不判断离最终解还有多远，因为没有可检验的标准。</p>
+          <span class="section-index">笔记 06 / 近期论文</span>
+          <h2>2019—2026 年值得保留的进展</h2>
+          <p class="deck">这里只保留改变理论边界的结果。我不判断离最终解还有多远，因为目前没有可检验的标准。</p>
           <div class="recent-list">
-            <article class="recent-card"><b>QUANTITATIVE</b><h3>临界正则性的定量化</h3><p>Tao 给出临界 \(L^3\) 控制下的显式高阶界和爆破下界；Barker–Prange 进一步连接 Type I 图景、局部浓缩和奇点数量。<a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></p></article>
-            <article class="recent-card"><b>PARTIAL REGULARITY</b><h3>CKN 的对数改进</h3><p>Lei–Ren 对部分正则性作定量改进，并得到轴对称小旋量情形的应用；一般三维奇异集仍未证明为空。<a href="#ref-15">[15]</a></p></article>
-            <article class="recent-card"><b>CRITICAL ENDPOINTS</b><h3>Lorentz 与应变特征值条件</h3><p>近年的工作把定量边界推进到临界 Lorentz 空间，并细化中间应变特征值的延拓条件；这些仍是条件正则性结果。<a href="#ref-16">[16]</a><a href="#ref-17">[17]</a></p></article>
+            <article class="recent-card"><b>定量正则性</b><h3>临界正则性的定量化</h3><p>Tao 给出临界 \(L^3\) 控制下的显式高阶界和爆破下界；Barker–Prange 进一步连接 Type I 图景、局部浓缩和奇点数量。<a href="#ref-13">[13]</a><a href="#ref-14">[14]</a></p></article>
+            <article class="recent-card"><b>部分正则性</b><h3>CKN 的对数改进</h3><p>Lei–Ren 对部分正则性作定量改进，并得到轴对称小旋量情形的应用；一般三维奇异集仍未证明为空。<a href="#ref-15">[15]</a></p></article>
+            <article class="recent-card"><b>临界端点</b><h3>Lorentz 与应变特征值条件</h3><p>近年的工作把定量边界推进到临界 Lorentz 空间，并细化中间应变特征值的延拓条件；这些仍是条件正则性结果。<a href="#ref-16">[16]</a><a href="#ref-17">[17]</a></p></article>
           </div>
           <h3>两篇与当前路线相邻的 2026 年预印本</h3>
           <p>Yu 讨论过滤后的涡量拉伸、增量缺陷、远场应变和局部化余项。Grujić 在给定临界浓缩与加权 BMO 涡量方向条件下得到对数耗散机制。它们都接近“增量—尺度—几何耗散”这条线，但截至资料截止日仍是预印本，也都不是一般大数据全局正则定理。<a href="#ref-29">[29]</a><a href="#ref-30">[30]</a></p>
@@ -1144,13 +1164,13 @@
         </section>
 
         <section id="route">
-          <span class="section-index">NOTE 07 / Current route</span>
+          <span class="section-index">笔记 07 / 当前路线</span>
           <h2>本站路线在文献图上的位置</h2>
-          <p class="deck">R0.69P–R0.71B 从涡量方向几何与有符号物理环带出发，经过 source–core 对偶、协方差框架和 response-distance，最终排除了 common-response 的两条无权尺度 packing 捷径，并留下一个有精确 enstrophy 消费端、但尚无动态时间可积性的带符号输出系数。它的主要价值是保存精确恒等式、条件桥和可复用的 no-go，而不是给出正则性结论。</p>
+          <p class="deck">R0.69P–R0.71B 以涡量方向几何和有符号物理环带为起点，经过源—核对偶、协方差框架和响应距离。R0.71B 排除了共同响应自动衰减和无权尺度打包两种设想，并留下一个可被耗散估计使用的正输出系数。这个系数还没有动态时间可积性，因此它不是正则性结论。</p>
           <figure class="topology" aria-labelledby="topology-4-title">
             <figcaption><strong id="topology-4-title">技术拓扑图 4 · 本站路线与文献接口</strong><span>绿色为保留对象，橙色为严格关闭的静态支路</span></figcaption>
             <div class="route-chain">
-              <div class="route-step"><header><b>LITERATURE</b><strong>涡量方向相干 / \(\lambda_2^+\) 临界控制</strong></header><p>说明“什么几何足以正则”，但没有证明一般解会自动产生这种几何。</p></div>
+              <div class="route-step"><header><b>文献基线</b><strong>涡量方向相干 / \(\lambda_2^+\) 临界控制</strong></header><p>说明“什么几何足以正则”，但没有证明一般解会自动产生这种几何。</p></div>
               <div class="route-step closed"><header><b>R0.69P</b><strong>点态符号几何可饱和</strong></header><p>无散性本身不能给出严格的点态符号亏损。<a href="/notes/r0-69p.html">研究笔记</a></p></div>
               <div class="route-step closed"><header><b>R0.69Q</b><strong>方向扩散已包含在涡量耗散中</strong></header><p>不能把局部方向耗散再次当作自动吸收正拉伸的额外来源。<a href="/notes/r0-69q.html">研究笔记</a></p></div>
               <div class="route-step closed"><header><b>R0.69R</b><strong>非局部差分近／远场仍回到六次代价</strong></header><p>只使用 \(\|\omega\|_2\) 与 \(\|\nabla\omega\|_2\) 不能得到所需的指数增益。<a href="/notes/r0-69r.html">研究笔记</a></p></div>
@@ -1159,12 +1179,12 @@
               <div class="route-step closed"><header><b>R0.69U</b><strong>仿射核边界载体达到核心饱和</strong></header><p>纯自相似放大不产生全空间统一的严格亏损。<a href="/notes/r0-69u.html">研究笔记</a></p></div>
               <div class="route-step closed"><header><b>R0.69V</b><strong>无限尺度分离返回单尺度基线</strong></header><p>扩大尺度比不能改善完整环带基线；尺度比四只留下有限分离候选。<a href="/notes/r0-69v.html">研究笔记</a></p></div>
               <div class="route-step closed"><header><b>R0.69W</b><strong>尺度比四的一参数静态族被严格区间证书排除</strong></header><p>连续振幅区间不靠网格采样即被两条粗环带封闭；这是静态机制排除，不是动力学正则性定理。<a href="/notes/r0-69w.html">研究笔记</a></p></div>
-              <div class="route-step closed"><header><b>R0.70A–I</b><strong>从移动环带到时间 Hardy 核</strong></header><p>移动标签、反向桥、固定尺度 cover 与仿射 jet 的捷径被逐项关闭；frozen-low sector 可闭合，moving-low 与偏差对角项保持开放。<a href="/notes/r0-70i.html">阶段终点</a></p></div>
+              <div class="route-step closed"><header><b>R0.70A–I</b><strong>从移动环带到时间 Hardy 核</strong></header><p>移动标签、反向桥、固定尺度覆盖和仿射一阶展开等捷径被逐项关闭；冻结低频区可以闭合，移动低频区与偏差对角项仍然开放。<a href="/notes/r0-70i.html">阶段终点</a></p></div>
               <div class="route-step closed"><header><b>R0.70J–O</b><strong>偏差张量与有限观测边界</strong></header><p>无迹性、helicity 和归一化各向异性不产生普适符号；有限高频盲观测也不能统一重建未过滤临界横向涡量。<a href="/notes/r0-70o.html">阶段终点</a></p></div>
-              <div class="route-step kept"><header><b>R0.70P–Z</b><strong>完整框架与 response-distance 通道</strong></header><p>条件投影桥和 response-difference 临界增益被保留；物理协方差面积、正主特征值和强谱隙仍不能决定有符号功。<a href="/notes/r0-70z.html">阶段终点</a></p></div>
+              <div class="route-step kept"><header><b>R0.70P–Z</b><strong>完整框架与响应距离通道</strong></header><p>条件投影桥和响应差的临界增益被保留；物理协方差面积、正主特征值和强谱隙仍不能决定有符号功。<a href="/notes/r0-70z.html">阶段终点</a></p></div>
               <div class="route-step closed"><header><b>R0.71A</b><strong>恒定投影仍允许相反主功</strong></header><p>相同点态协方差、强主谱隙和零标量框架交换子仍对应相反符号；现有能量账本只给出临界投影正则性的时间 \(L^1\)。<a href="/notes/r0-71a.html">研究笔记</a></p></div>
-              <div class="route-step closed"><header><b>R0.71B</b><strong>普通正平方 tent 与无权尺度 packing 都不能保留所需符号</strong></header><p>两壳和多壳精确族排除了 common-response 自动衰减、无权 \(\ell^2\to\ell^1\) 升级和一个直接三场极化端点；带符号正输出系数已有精确消费不等式，但没有动态时间可积性。<a href="/notes/r0-71b.html">研究笔记</a></p></div>
-              <div class="route-step pause"><header><b>OPEN BRIDGE · R0.71C</b><strong>符号先于平方的局部动态传播</strong></header><p>需要从真实 Navier–Stokes 演化推出一个非循环的时间可积估计；若局部化只恢复正平方 Carleson/BMO 质量，这条支路停止。<a href="/recap-r0-61-r0-71a.html">上一阶段累计回顾</a></p></div>
+              <div class="route-step closed"><header><b>R0.71B</b><strong>普通正平方 tent 与无权尺度打包都不能保留所需符号</strong></header><p>两壳和多壳精确族排除了共同响应自动衰减、无权 \(\ell^2\to\ell^1\) 升级和一个直接三场极化端点；带符号正输出系数已有精确消费不等式，但没有动态时间可积性。<a href="/notes/r0-71b.html">研究笔记</a></p></div>
+              <div class="route-step pause"><header><b>开放接口 · R0.71C</b><strong>符号先于平方的局部动态传播</strong></header><p>需要从真实 Navier–Stokes 演化推出一个非循环的时间可积估计；若局部化只恢复正平方 Carleson/BMO 质量，这条支路停止。<a href="/recap-r0-61-r0-71a.html">上一阶段累计回顾</a></p></div>
             </div>
           </figure>
           <h3>下一步只检查什么</h3>
@@ -1181,7 +1201,7 @@
         </section>
 
         <section id="references">
-          <span class="section-index">SOURCES / Primary references</span>
+          <span class="section-index">文献 / 一手来源</span>
           <h2>参考文献</h2>
           <p class="deck">我优先链接原始论文、期刊 DOI 和 Clay 官方材料。预印本单独标记。</p>
           <ol class="references">

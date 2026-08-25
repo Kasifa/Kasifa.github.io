@@ -109,7 +109,7 @@ test("advances the homepage and literature map through R0.71B", async () => {
   assert.match(home, /NEXT · R0\.71C/);
   assert.match(home, /综述 v0\.87 · 2026-08-25/);
   assert.match(literature, /R0\.69P–R0\.71B/);
-  assert.match(literature, /OPEN BRIDGE · R0\.71C/);
+  assert.match(literature, /开放接口 · R0\.71C/);
   assert.match(literature, /文献综述 v0\.87 · 2026-08-25/);
   assert.match(home, /src="\/i18n-en\.js\?v=0\.87"/);
   assert.match(literature, /src="\/i18n-en\.js\?v=0\.87"/);

@@ -59,37 +59,28 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71N as v0.99 with 138 notes, route 48, and recap endpoint 78", async () => {
+test("keeps the historical R0.71N release, v0.99 note, and 78-node recap reachable", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 138);
-  assert.match(home, /<strong>v0\.99<\/strong>网页版本/);
-  assert.match(home, /<strong>138<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71N<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71N<\/span>/);
-  assert.match(home, /展开 48 篇公开笔记/);
-  assert.match(
-    home,
-    /累计回顾收录 78 个节点；全站现有 138 篇公开研究笔记/,
-  );
-  assert.match(home, /NEXT · R0\.71O/);
+  assert.ok(noteNames.filter((name) => name.endsWith(".html")).length >= 138);
+  assert.match(home, /href="\/notes\/r0-71n\.html"/);
+  assert.match(home, /data-release="r071n"/);
 
-  const currentRoute = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71N">([\s\S]*?)<\/nav>/,
-  );
+  const currentRoute = [...home.matchAll(
+    /<nav class="route-note-links"[^>]*>([\s\S]*?)<\/nav>/g,
+  )].find((match) => match[1].includes('href="/notes/r0-71n.html"'));
   assert.ok(currentRoute);
-  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 48);
+  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/r0-71n.html"'), 1);
 
   assert.equal(occurrenceCount(recap, '<article class="phase">'), 12);
   assert.match(recap, /收录节点：78/);
   assert.match(recap, /回顾截止时公开笔记：138/);
   assert.match(recap, /回顾截止节点：R0\.71N/);
   assert.match(recap, /R0\.71O/);
-  assert.match(literature, /R0\.69P–R0\.71N/);
-  assert.match(literature, /开放接口 · R0\.71O/);
+  assert.match(literature, /<header><b>R0\.71N<\/b>/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -99,6 +90,9 @@ test("publishes R0.71N as v0.99 with 138 notes, route 48, and recap endpoint 78"
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71N/);
+    assert.match(page, /src="\/i18n-en\.js\?v=\d+\.\d+"/);
+  }
+  for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=0\.99"/);
   }
 });
@@ -121,13 +115,13 @@ test("keeps one R0.71N card, exactly two homepage note links, and all release li
     "research/r071n_report-source.md",
     "research/r071n_literature_audit.md",
     "figures/r071n-full-scalar/fig-r071n-square-residual-boundary",
-    'href="/recap-r0-61-r0-71n.html"',
-    'href="/recap-r0-61-r0-71n.pdf"',
   ]) {
     assert.ok(homeCard.includes(token), token);
   }
+  assert.match(homeCard, /href="\/recap-r0-61-r0-71[a-z]\.html"/);
+  assert.match(homeCard, /href="\/recap-r0-61-r0-71[a-z]\.pdf"/);
   assert.match(homeCard, /<strong>结论边界：<\/strong>/);
-  assert.match(homeCard, /下一步 R0\.71O/);
+  assert.match(homeCard, /(?:下一步 R0\.71O|R0\.71O 已完成)/);
 
   assert.match(
     note,
@@ -183,7 +177,6 @@ test("keeps one R0.71N card, exactly two homepage note links, and all release li
     literatureCardEnd,
   );
   assert.match(literatureCard, /href="\/notes\/r0-71n\.html"/);
-  assert.match(literatureCard, /href="\/recap-r0-61-r0-71n\.html"/);
   assert.match(literatureCard, /平方|second.?jet|residual/i);
 });
 
@@ -410,7 +403,7 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
   assert.match(note, /href="\/recap-r0-61-r0-71n\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71n\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71n\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71n\.pdf"/);
+  assert.match(home, /href="\/recap-r0-61-r0-71[a-z]\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71n-full-scalar\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");
@@ -466,9 +459,9 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
 
 test("keeps all 40 R0.70A-R0.71N releases continuous in HTML, PDF, route, and card publication", async () => {
   const { home } = await publishedPages();
-  const routeMatch = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71N">([\s\S]*?)<\/nav>/,
-  );
+  const routeMatch = [...home.matchAll(
+    /<nav class="route-note-links"[^>]*>([\s\S]*?)<\/nav>/g,
+  )].find((match) => match[1].includes('href="/notes/r0-71n.html"'));
   assert.ok(routeMatch);
   const releases = releaseSequence();
   assert.equal(releases.length, 40);

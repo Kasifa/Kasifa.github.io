@@ -1,0 +1,22 @@
+Run from this figure-package directory.
+
+R071O_PLOT_PY=/Users/kasifa/Documents/Math/navier-stokes-recap-r060-worktree/tmp/r068b-venv/bin/python
+R071O_PDF_PY=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY ../../../research/r071o_exact_audit.py --output exact-certificate.json
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY ../../../research/r071o_independent_audit.py --output independent-certificate.json
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY generate_data.py --exact-certificate exact-certificate.json --independent-certificate independent-certificate.json --output data.csv --metadata figure-data-metadata.json
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+MPLCONFIGDIR=/private/tmp/r071o-soft-faces-mpl PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY plot.py --data data.csv --output-stem figure
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY qa_images.py
+PYTHONDONTWRITEBYTECODE=1 $R071O_PDF_PY independent_validate.py --data data.csv --metadata figure-data-metadata.json --output independent-validation.json
+
+After visual inspection of the color, true-grayscale, and rendered-PDF QA images:
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY build_manifest.py --status draft --dirty-at-certified-run true
+
+After committing a clean source snapshot, rebuild the formal manifest:
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY build_manifest.py --status formal --source-commit SOURCE_COMMIT --certificate-commit SOURCE_COMMIT --dirty-at-certified-run false
+
+Validate and verify:
+PYTHONDONTWRITEBYTECODE=1 $R071O_PLOT_PY ../../../research/validate_figure_package.py .
+shasum -a 256 -c SHA256SUMS

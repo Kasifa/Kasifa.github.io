@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71O：soft denominator 在孤立有限阶零点恢复 hard quotient 的一侧迹，并产生显式 signed/Jordan face atoms；现有 ordinary budgets 不支付统一 face sum。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71O｜soft denominator 的一侧迹与 face measure">
+  <meta property="og:description" content="精确 hard–soft factorization、有限阶零点原子、raw logarithmic cancellation、抽象预算分离和一个真实 NSE 初始 entry face。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71O｜soft denominator 的一侧迹与 face measure</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.1rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=1.00"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#objects">对象</a><a href="#factor">分解</a><a href="#faces">有限阶零点</a><a href="#variation">变差</a><a href="#raw">对数抵消</a><a href="#separation">预算分离</a><a href="#nse">NSE entry</a><a href="#analyticity">解析性</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71O · SOFT DENOMINATOR · ONE-SIDED TRACES · FACE MEASURES</div>
+        <h1>soft denominator 消除坐标奇点，<br>但没有消除一侧 face cost</h1>
+        <p class="lead">我仍使用固定 multiplier、固定 cutoff 与固定 cell。对每个 \(\varepsilon&gt;0\)，soft quotient 全局光滑；在 \(d_Q&gt;0\) 上，它又精确等于 hard quotient 乘一个径向因子。孤立有限阶零点的极限因此可以逐项算清：signed atom 可能相消，正负 Jordan atoms 与绝对变差仍保留。现有 denominator mass 和 ordinary first-time budgets 没有给出这些 faces 的统一和。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71O 精确 face theorem 与独立数值审计完成</span><strong>hard/soft 极限关闭；weighted positive-entry sum 开放</strong><p>版本 v0.71O · 2026-08-26</p><p>exact symbolic audit: PASS</p><p>SciPy profile audit: PASS</p><p>32³ standalone FFT initial jet: PASS</p><p>下一对象：fixed-partition all-shell/all-cell positive-entry sum</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#objects">01 · 两种 soft source</a></li><li><a href="#factor">02 · hard–soft 分解</a></li><li><a href="#faces">03 · 有限阶零点</a></li><li><a href="#variation">04 · signed/Jordan atoms</a></li><li><a href="#raw">05 · raw 对数抵消</a></li><li><a href="#separation">06 · ordinary-budget 分离</a></li><li><a href="#nse">07 · NSE 初始 entry</a></li><li><a href="#analyticity">08 · 经典区间解析性</a></li><li><a href="#audit">09 · 独立审计</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#literature">11 · 文献边界</a></li><li><a href="#value">12 · 研究价值</a></li><li><a href="#next">13 · 下一步</a></li><li><a href="#claims">14 · 主张边界</a></li><li><a href="#reproduce">15 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Finite verdict</div><h2>soft 极限恢复 hard faces，而不是自动支付它们</h2>
+          <p>本节完成四个有限检查：先区分 R0.71N 与 R0.71I 的 soft source；再证明 exact hard–soft factorization；随后计算孤立有限阶零点的 signed/Jordan atoms；最后比较 face cost 与已有 ordinary budgets。</p>
+          <div class="boundary"><strong>有限判断</strong><p>soft regularization 解决的是 \(d_Q=0\) 处的坐标定义，不是 face-payment 问题。额外 soft radial damping 在有限阶零点没有原子；真正的 face measure 来自径向 cutoff factor 的导数。当前结果没有给出跨全部壳与小区的统一 NSE face sum。</p></div>
+        </section>
+
+        <section id="objects"><div class="section-no">01 / Two soft sources</div><h2>R0.71N-style 与 R0.71I-style source 只差一个明确的 radial term</h2>
+          <div class="equation">\[
+            d_Q=\|C_Q\|_2^2,\qquad B_Q=\langle F_j,C_Q\rangle,\qquad
+            z_{Q,\varepsilon}=\frac{B_Q}{\sqrt Y\sqrt{d_Q+\varepsilon}},
+            \qquad a_{Q,\varepsilon}=(z_{Q,\varepsilon}^+)^2.
+          \]</div>
+          <p>记 \(\lambda_j=\nu\kappa_j^2\) 与 \(\theta_{Q,\varepsilon}=\varepsilon/(d_Q+\varepsilon)\)。两种 source 是</p>
+          <div class="equation result">\[
+            \mathcal J^N_{Q,\varepsilon}
+            =(z_{Q,\varepsilon})_t+\lambda_jz_{Q,\varepsilon},
+          \]</div>
+          <div class="equation result">\[
+            \mathcal J^I_{Q,\varepsilon}
+            =(z_{Q,\varepsilon})_t
+            +\lambda_j(1+\theta_{Q,\varepsilon})z_{Q,\varepsilon}
+            =\mathcal J^N_{Q,\varepsilon}
+            +\lambda_j\theta_{Q,\varepsilon}z_{Q,\varepsilon}.
+          \]</div>
+          <p>额外 damping 在标量等式左侧带正号。混用这两个定义会把同一项放错位置。</p>
+        </section>
+
+        <section id="factor"><div class="section-no">02 / Exact hard–soft factorization</div><h2>soft scalar 是 hard scalar 乘同一个径向因子</h2>
+          <p>在任一 \(d_Q&gt;0\) 分支上，令</p>
+          <div class="equation">\[
+            z_Q=\frac{B_Q}{\sqrt{Yd_Q}},\qquad
+            a_Q=(z_Q^+)^2,\qquad
+            \sigma_{Q,\varepsilon}=\frac{d_Q}{d_Q+\varepsilon}.
+          \]</div>
+          <div class="equation result">\[
+            z_{Q,\varepsilon}=\sqrt{\sigma_{Q,\varepsilon}}\,z_Q,\qquad
+            a_{Q,\varepsilon}=\sigma_{Q,\varepsilon}a_Q,\qquad
+            (\sigma_{Q,\varepsilon})_t
+            =\frac{\varepsilon d_{Q,t}}{(d_Q+\varepsilon)^2}.
+          \]</div>
+          <p>若 \(\mathcal J_Q=z_{Q,t}+\lambda_jz_Q\)，则</p>
+          <div class="equation result">\[
+            2z_{Q,\varepsilon}^+\mathcal J^N_{Q,\varepsilon}
+            =2\sigma_{Q,\varepsilon}z_Q^+\mathcal J_Q
+            +(\sigma_{Q,\varepsilon})_ta_Q.
+          \]</div>
+          <p>I-style 右侧再加 \(2\lambda_j\theta_{Q,\varepsilon}a_{Q,\varepsilon}\)。有限阶零点上，这一附加非负测度的总质量趋于零。</p>
+        </section>
+
+        <section id="faces"><div class="section-no">03 / Finite-order zero</div><h2>一侧 hard traces 由零点阶数与一个标量 \(\gamma\) 完全决定</h2>
+          <p>设 \(\tau=t-t_0\)。我要求 \(t_0\) 是孤立的经典有限阶零点，Taylor 余项可微，并假设</p>
+          <div class="equation">\[
+            C_Q(t_0+\tau)=c\,\tau^m+O_H(|\tau|^{m+1}),\qquad
+            C_{Q,t}(t_0+\tau)=m c\,\tau^{m-1}+O_H(|\tau|^m),\qquad
+            c\neq0,\quad m\in\mathbb N.
+          \]</div>
+          <p>同时，\(F_j\) 与 \(Y\) 在 \(t_0\) 附近具有有界一阶导数，且</p>
+          <div class="equation">\[
+            F_j(t_0+\tau)=F_j(t_0)+O_H(|\tau|),\quad F_{j,t}=O_H(1),\qquad
+            Y(t_0+\tau)=Y(t_0)+O(|\tau|),\quad Y_t=O(1),\quad Y(t_0)&gt;0.
+          \]</div>
+          <p>令</p>
+          <div class="equation">\[
+            \gamma=\frac{\langle F_j(t_0),c\rangle}
+            {\sqrt{Y(t_0)}\|c\|_2}.
+          \]</div>
+          <p>则 \(d_Q=\|c\|_2^2\tau^{2m}+O(|\tau|^{2m+1})\)、\(B_Q=\langle F_j(t_0),c\rangle\tau^m+O(|\tau|^{m+1})\)，并且</p>
+          <div class="equation result">\[
+            z_Q(t_0-)=(-1)^m\gamma,\qquad
+            z_Q(t_0+)=\gamma.
+          \]</div>
+          <p>若 leading pairing 为零，则两侧迹都为零，本节的 leading face atom 也为零。</p>
+        </section>
+
+        <section id="variation"><div class="section-no">04 / Signed and Jordan atoms</div><h2>signed jump 可以消失，正负 face atoms 不能因此删掉</h2>
+          <p>记</p>
+          <div class="equation">\[
+            A_-=\left(((-1)^m\gamma)^+\right)^2,\qquad
+            A_+=(\gamma^+)^2.
+          \]</div>
+          <div class="equation result">\[
+            Da_Q=(a_Q)_t\,dt+(A_+-A_-)\delta_{t_0}.
+          \]</div>
+          <div class="equation result">\[
+            \bigl((\sigma_{Q,\varepsilon})_ta_Q\,dt\bigr)^+
+            \stackrel{*}{\rightharpoonup}A_+\delta_{t_0},\qquad
+            \bigl((\sigma_{Q,\varepsilon})_ta_Q\,dt\bigr)^-
+            \stackrel{*}{\rightharpoonup}A_-\delta_{t_0}.
+          \]</div>
+          <div class="equation result">\[
+            \left|(\sigma_{Q,\varepsilon})_ta_Q\,dt\right|
+            \stackrel{*}{\rightharpoonup}(A_++A_-)\delta_{t_0}.
+          \]</div>
+          <table><thead><tr><th>零点阶数</th><th>signed atom</th><th>face total variation</th></tr></thead><tbody>
+            <tr><td>\(m\) 奇</td><td>\(\gamma|\gamma|\,\delta_{t_0}\)</td><td>\(\gamma^2\)</td></tr>
+            <tr><td>\(m\) 偶</td><td>\(0\)</td><td>\(2(\gamma^+)^2\)</td></tr>
+          </tbody></table>
+          <p>因此 signed atom 可以消失，Jordan variation 却仍记录左右两侧的 face cost。</p>
+          <p>偶阶且 \(\gamma&gt;0\) 时，左右 hard 值相同，signed atom 为零；soft profile 仍必须降到零再升回去，所以绝对变差支付两次迹。</p>
+        </section>
+
+        <section id="raw"><div class="section-no">05 / Raw logarithmic cancellation</div><h2>两个 raw 项分别发散，只有联合后留下有限 face mass</h2>
+          <div class="equation">\[
+          \begin{aligned}
+            \mathsf S_\varepsilon&=
+            \frac{2B_Q^+(B_{Q,t}+\lambda_jB_Q)}
+            {Y(d_Q+\varepsilon)}
+            -a_{Q,\varepsilon}\frac{Y_t}{Y},\\
+            \mathsf R_\varepsilon&=
+            -\frac{(B_Q^+)^2d_{Q,t}}
+            {Y(d_Q+\varepsilon)^2}.
+          \end{aligned}
+          \]</div>
+          <p>在 active half-face 上，两项的积分分别含</p>
+          <div class="equation result">\[
+            +\gamma^2\log\left(1+\frac{\|c\|_2^2\delta^{2m}}{\varepsilon}\right),
+            \qquad
+            -\gamma^2\log\left(1+\frac{\|c\|_2^2\delta^{2m}}{\varepsilon}\right),
+          \]</div>
+          <p>另加一致有界余项。各自总变差对 \(\varepsilon\downarrow0\) 发散；联合后对数精确抵消，并恢复 \((\sigma_\varepsilon)_ta_Q\) 的有限原子。把 source 与 radial row 分开取绝对值会丢掉这个结构。</p>
+        </section>
+
+        <section id="separation"><div class="section-no">06 / Ordinary-budget separation</div><h2>平滑抽象路径把 face count 与已有普通预算分开</h2>
+          <p>取单位向量 \(e\)，在 \([0,2\pi]\) 上令</p>
+          <div class="equation">\[
+            Y_N=1,\qquad F_N=e,\qquad
+            C_N(t)=N^{-1}\sin(Nt)e,\qquad
+            \varepsilon_N=N^{-4}.
+          \]</div>
+          <div class="equation result">\[
+            V^+(a_{N,\varepsilon_N})
+            =V^-(a_{N,\varepsilon_N})
+            =\frac{N}{1+N^{-2}},
+            \qquad
+            \operatorname{TV}(a_{N,\varepsilon_N})
+            =\frac{2N}{1+N^{-2}}.
+          \]</div>
+          <p>但</p>
+          <div class="equation">\[
+            \int d_Ndt=\frac{\pi}{N^2},\quad
+            \int\|C_{N,t}\|^2dt=\pi,\quad
+            \int\|F_N\|^2dt=2\pi,
+          \]</div>
+          <div class="equation">\[
+            \int\|C_{N,t}+\lambda C_N\|^2dt
+            =\pi\left(1+\frac{\lambda^2}{N^2}\right).
+          \]</div>
+          <p>这些 ordinary budgets 有界，face cost 却按 \(N\) 增长。这个族是 smooth Hilbert path，不是耦合 NSE 的多-face 构造；它只排除从这些普通范数单独推出 face bound 的普适函数不等式。</p>
+        </section>
+
+        <section id="nse"><div class="section-no">07 / Genuine NSE initial entry</div><h2>真实光滑 NSE 初值可以从 \(d_Q=0\) 出发并有正 entry trace</h2>
+          <p>在归一化环面取</p>
+          <div class="equation">\[
+            u_0(x)=(0,\cos x_1,\cos x_2).
+          \]</div>
+          <p>选实、偶、径向 multiplier，使其在半径 \(1\) 为零、在半径 \(\sqrt2\) 为一，并取 \(\chi_Q=1\)。初始 filtered vorticity 为零；quadratic Lamb field 在 \((\pm1,\pm1,0)\) 有四个目标模。</p>
+          <div class="equation result">\[
+            Y(0)=1,\quad
+            \|F_j(0)\|_2^2=\frac14,\quad
+            \|\operatorname{curl}F_j(0)\|_2^2=\frac12,
+          \]</div>
+          <div class="equation result">\[
+            \|C_{Q,t}(0)\|_2^2=1,\qquad
+            B_{Q,t}(0)=\frac12.
+          \]</div>
+          <p>因此</p>
+          <div class="equation result">\[
+            \lim_{t\downarrow0}z_Q(t)=\frac12,\qquad
+            \boxed{\lim_{t\downarrow0}a_Q(t)=\frac14}.
+          \]</div>
+          <p>这是一个真正的一侧 NSE 初始 entry face。它不是内部 crossing，也没有构造任意多 NSE faces。</p>
+        </section>
+
+        <section id="analyticity"><div class="section-no">08 / Classical-interval structure</div><h2>解析性把单个经典 observable 的非平凡零点限制为孤立有限阶</h2>
+          <p><a href="https://epubs.siam.org/doi/10.1137/1.9781611970050.ch7">Temam 的周期强解理论</a>给出局部正则区间内的时间解析性。对固定线性 observable \(C_Q(t)\)，在紧子区间上要么恒为零，要么内部零点孤立且有限阶。</p>
+          <p>这个结构把单个经典零点放入前面的 theorem，但不控制零点数量、阶数、间距或 transversality，也不提供跨解、跨壳、跨小区以及逼近潜在奇性端点时的统一计数。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">09 / Independent numerical audit</div><h2>SciPy profiles、oscillatory paths 与 \(32^3\) FFT 分开核对</h2>
+          <p>独立检查器不导入 exact producer。对 \(m=1,\ldots,8\)，finite-order derivative profile 的质量误差最大为 \(2.22\times10^{-16}\)。raw source/radial 数值积分分别显示对数增长，联合质量最大相对误差为 \(3.33\times10^{-16}\)。</p>
+          <p>对 \(N=1,2,4,\ldots,64\)，oscillatory variation 与 extra radial formula 的最大相对误差分别为 \(1.18\times10^{-16}\) 与 \(6.94\times10^{-17}\)。\(32^3\) NumPy FFT 重建四个目标模；全部记录的代数 residual 在该 binary64 运行中为 \(0.0\)。没有时间推进。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>正式附图并列 hard/soft layer、Jordan atoms、预算分离与 NSE entry</h2>
+          <figure><img src="/figures/r0-71o-soft-denominator-faces.svg" alt="R0.71O soft denominator 的有限阶 profile、signed 与 Jordan face atoms、抽象预算分离和真实 NSE 初始 entry trace"><figcaption>图 R0.71O。有限阶 soft layer 恢复一侧 hard traces；signed atoms 可以抵消，Jordan masses 仍支付左右 faces。抽象 oscillatory path 显示 ordinary budgets 不控制 face count；最后一栏记录真实 NSE 初始 entry trace \(1/4\)。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71o-soft-denominator-faces.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71o-soft-denominator-faces.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71o-soft-denominator-faces.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>BV、coarea 与时间解析性说明结构，不提供 NSE face sum</h2>
+          <p><a href="https://doi.org/10.1007/BF02196453">Reshetnyak</a>给出 total-variation measure 的稳定性框架；<a href="https://www.mathnet.ru/eng/sm4127">Vol'pert</a>及<a href="https://www.math.ias.edu/delellis/sites/math.ias.edu.delellis/files/chain100.pdf">Ambrosio–De Lellis–Maly</a>给出 BV chain-rule 背景。固定 \(\varepsilon\) 的 smooth chain rule 不会自动给出 \(\varepsilon\downarrow0\) 的 uniform face bound。</p>
+          <p><a href="https://doi.org/10.1007/BF01236935">Fleming–Rishel coarea</a>与<a href="https://arxiv.org/abs/1503.01746v4">Łochowski crossing formula</a>能把已经受控的 BV 量转成 level/crossing 信息；它们不从 Leray energy 生成零层 crossing 预算。Temam 的解析性结论也不统一控制零点数。</p>
+          <p>截至 2026-08-26 的限定一手检索没有找到针对 \((B_Q^+)^2/[Y(d_Q+\varepsilon)]\) 同时识别一侧 atoms、又从 energy 与 denominator mass 支付完整 NSE frame–cell sum 的定理。这是 bounded negative finding，不是原创性、优先权或不存在性结论。</p>
+        </section>
+
+        <section id="value"><div class="section-no">12 / Research value</div><h2>价值是把 interior identity 与 boundary cost 分开</h2>
+          <p>R0.71O 没有新的 continuation criterion。它精确说明：soft denominator 不能作为“忽略 \(d_Q=0\)”的理由。有限阶 face 的 signed distribution、正负 Jordan atoms 和 absolute variation 都有明确公式；其中只有 signed 部分可能因左右重合而相消。</p>
+          <p>因此下一步不应再寻找单个 fixed-cell 的另一种坐标重写。我需要直接检查固定 partition 上的全壳、全小区 weighted positive-entry sum 是否存在 NSE-specific cancellation 或新的可支付结构。完整 total-Jordan sum 是更强的后续变体。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next finite gate</div><h2>R0.71P 检查 fixed-partition all-shell/all-cell weighted positive-entry sum</h2>
+          <p>下一节保持 multiplier、cutoff 与 partition 固定，先检查右侧正向进入 atoms 的主门槛</p>
+          <div class="equation result">\[
+            \sum_{j,Q}\kappa_j^{-2}
+            \sum_{t_0\in\mathcal Z_{j,Q}}
+            A_{j,Q,+}(t_0).
+          \]</div>
+          <p>我检查它能否在完整 frame–cell 求和后由已有 energy、denominator mass 或一个精确 NSE cancellation 支付。R0.71P 暂不引入 partition refresh、moving cutoffs 或更强的 total-Jordan sum。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>本节关闭 hard/soft face algebra，不关闭全局 face summability</h2>
+          <ul>
+            <li>已证明：N-style 与 I-style soft source 的精确关系。</li>
+            <li>已证明：\(z_\varepsilon=\sqrt\sigma z\)、\(a_\varepsilon=\sigma a\) 与 exact face-source identity。</li>
+            <li>已证明：孤立有限阶零点的一侧 hard traces、signed atom、Jordan atoms 及奇偶阶区别。</li>
+            <li>已证明：raw source 与 radial term 各自有对数发散质量，联合后恢复有限 face measure。</li>
+            <li>已证明：抽象 smooth paths 的 ordinary budgets 不统一控制 face cost。</li>
+            <li>已构造：一个右 entry trace 为 \(1/4\) 的真实 smooth NSE initial jet。</li>
+            <li>未证明：内部 NSE faces 可以任意多，或完整 weighted face sum 发散。</li>
+            <li>未证明：refresh、moving cells、弱解极限、继续性、全局正则性或有限时破裂。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性、优先权或发表级别声明。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduce</div><h2>报告、证书、独立审计、累计回顾与附图源</h2>
+          <p><a href="/notes/r0-71o.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71o.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71o.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71o-soft-denominator-faces.pdf">下载附图 PDF</a> · <a href="/figures/r0-71o-soft-denominator-faces.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71o-soft-denominator-faces.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_independent_audit.md">独立数值审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_independent_audit.py">independent checker</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071o">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces">期刊附图完整包</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确恒等式、有限审计与开放缺口分开记录。</div><div>R0.71O · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

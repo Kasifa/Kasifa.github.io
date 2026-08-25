@@ -1,0 +1,283 @@
+{
+  "checks": {
+    "finiteOrderFace": {
+      "degenerateBoundary": "If b=0 the displayed leading trace vanishes and higher jets must be inspected; flat or accumulating zeros are not covered.",
+      "hypothesis": "C(t0+tau)=c*tau^m+O(|tau|^(m+1)) and C_t=m*c*tau^(m-1)+O(|tau|^m) in the real Hilbert space, c!=0; F,F_t,Y,Y_t have the stated first-order bounds and Y(t0)=Y0>0",
+      "innerProfile": "A_side*s^(2m)/(1+s^(2m))",
+      "innerScale": "delta_epsilon=(epsilon/||c||^2)^(1/(2m))",
+      "leadingPairing": "b=<F(t0),c>",
+      "leftTrace": "A_minus=(max((-1)^m*b,0))^2/(Y0*||c||^2)",
+      "measureLimit": {
+        "extraSoftRadialDamping": "O(epsilon^(1/(2m))) locally, hence no face atom",
+        "extraVariationDefect": "A_plus+A_minus-|A_plus-A_minus|=2*min(A_plus,A_minus)",
+        "localization": "restrict to |t-t0|<r_epsilon with r_epsilon down to zero and delta_epsilon/r_epsilon down to zero",
+        "negativeDerivativeAtom": "A_minus*delta_t0",
+        "positiveDerivativeAtom": "A_plus*delta_t0",
+        "signedDerivativeAtom": "(A_plus-A_minus)*delta_t0",
+        "softSourceNegativeAtom": "A_minus*delta_t0",
+        "softSourcePositiveAtom": "A_plus*delta_t0",
+        "softSourceSignedAtom": "(A_plus-A_minus)*delta_t0",
+        "totalVariationAtom": "(A_plus+A_minus)*delta_t0"
+      },
+      "passed": true,
+      "profileChecks": [
+        {
+          "derivative": "2*s/(s**2 + 1)**2",
+          "derivativeHalfLineMass": "1",
+          "order": 1,
+          "profile": "s**2/(s**2 + 1)",
+          "radialMassScale": "epsilon^(1/2)",
+          "radialProfileIntegral": "beta(3/2, 1/2)/2"
+        },
+        {
+          "derivative": "4*s**3/(s**4 + 1)**2",
+          "derivativeHalfLineMass": "1",
+          "order": 2,
+          "profile": "s**4/(s**4 + 1)",
+          "radialMassScale": "epsilon^(1/4)",
+          "radialProfileIntegral": "beta(5/4, 3/4)/4"
+        },
+        {
+          "derivative": "6*s**5/((s**2 + 1)**2*(s**4 - s**2 + 1)**2)",
+          "derivativeHalfLineMass": "1",
+          "order": 3,
+          "profile": "s**6/(s**6 + 1)",
+          "radialMassScale": "epsilon^(1/6)",
+          "radialProfileIntegral": "beta(7/6, 5/6)/6"
+        },
+        {
+          "derivative": "8*s**7/(s**8 + 1)**2",
+          "derivativeHalfLineMass": "1",
+          "order": 4,
+          "profile": "s**8/(s**8 + 1)",
+          "radialMassScale": "epsilon^(1/8)",
+          "radialProfileIntegral": "beta(9/8, 7/8)/8"
+        },
+        {
+          "derivative": "10*s**9/((s**2 + 1)**2*(s**8 - s**6 + s**4 - s**2 + 1)**2)",
+          "derivativeHalfLineMass": "1",
+          "order": 5,
+          "profile": "s**10/(s**10 + 1)",
+          "radialMassScale": "epsilon^(1/10)",
+          "radialProfileIntegral": "beta(11/10, 9/10)/10"
+        },
+        {
+          "derivative": "12*s**11/((s**4 + 1)**2*(s**8 - s**4 + 1)**2)",
+          "derivativeHalfLineMass": "1",
+          "order": 6,
+          "profile": "s**12/(s**12 + 1)",
+          "radialMassScale": "epsilon^(1/12)",
+          "radialProfileIntegral": "beta(13/12, 11/12)/12"
+        },
+        {
+          "derivative": "14*s**13/((s**2 + 1)**2*(s**12 - s**10 + s**8 - s**6 + s**4 - s**2 + 1)**2)",
+          "derivativeHalfLineMass": "1",
+          "order": 7,
+          "profile": "s**14/(s**14 + 1)",
+          "radialMassScale": "epsilon^(1/14)",
+          "radialProfileIntegral": "beta(15/14, 13/14)/14"
+        },
+        {
+          "derivative": "16*s**15/(s**16 + 1)**2",
+          "derivativeHalfLineMass": "1",
+          "order": 8,
+          "profile": "s**16/(s**16 + 1)",
+          "radialMassScale": "epsilon^(1/16)",
+          "radialProfileIntegral": "beta(17/16, 15/16)/16"
+        }
+      ],
+      "rightTrace": "A_plus=(max(b,0))^2/(Y0*||c||^2)"
+    },
+    "nseInitialFace": {
+      "claimBoundary": "This is a one-sided local initial-jet result. It does not produce arbitrarily many internal NSE faces or an unpayable NSE face sum.",
+      "conclusion": "A genuine smooth NSE initial trace can create a nonzero hard entry face from a zero filtered denominator.",
+      "initialFacts": {
+        "B_t_0": "1/2",
+        "C_0": "0",
+        "F_modes": {
+          "(-1, -1, 0)": [
+            "0",
+            "0",
+            "I/4"
+          ],
+          "(-1, 1, 0)": [
+            "0",
+            "0",
+            "-I/4"
+          ],
+          "(1, -1, 0)": [
+            "0",
+            "0",
+            "I/4"
+          ],
+          "(1, 1, 0)": [
+            "0",
+            "0",
+            "-I/4"
+          ]
+        },
+        "T_omega_0": "0",
+        "Y_0": "1",
+        "norm_C_t_0_squared": "1",
+        "norm_F_squared": "1/4",
+        "norm_G_squared": "1/2"
+      },
+      "initialVelocity": "u0(x)=(0,cos(x1),0)+(0,0,cos(x2)) on the normalized torus",
+      "multiplier": "real-even smooth radial annular symbol m with m(1)=0 and m(sqrt(2))=1",
+      "passed": true,
+      "rightAsymptotics": {
+        "B(t)": "t/2+O(t^2)",
+        "C(t)": "t*C_t(0)+O(t^2)",
+        "a(t)": "1/4+O(t) for t down to 0 from the right",
+        "d(t)": "t^2+O(t^3)",
+        "z(t)": "1/2+O(t) for t down to 0 from the right"
+      },
+      "rightEntryTrace": "1/4"
+    },
+    "oscillatorySeparation": {
+      "budgets": {
+        "integral_d": "pi/N**2",
+        "integral_norm_C_t_squared": "pi",
+        "integral_norm_F_squared": "2*pi",
+        "integral_norm_M_squared": "pi*(N**2 + lambda**2)/N**2"
+      },
+      "claimBoundary": "The paths are smooth Hilbert-space paths, not constrained to be the coupled fixed-cell observables of an NSE solution.",
+      "conclusion": "No universal functional inequality can bound the soft positive source or all one-sided faces using only these L2 field, denominator-mass, and first-time-derivative square budgets.",
+      "extraSoftRadialMass": "pi*N**2*lambda/(N**2 + 1)**(3/2)",
+      "fixedNMeasureLimit": {
+        "extraRadialAtom": "0",
+        "negativeSourceMass": "N",
+        "positiveSourceMass": "N+2*pi*lambda",
+        "signedSource": "D(1_{sin(Nt)>0})+2*lambda*1_{sin(Nt)>0}*dt",
+        "totalSourceVariation": "2*N+2*pi*lambda"
+      },
+      "hardEntryFaces": "N",
+      "hardExitFaces": "N",
+      "hardPositiveComponents": "N",
+      "limitOrder": "The face measure is obtained with N fixed and epsilon down to zero, or diagonally with N^2*epsilon_N down to zero. Holding epsilon fixed while N tends to infinity blurs the faces and is a different limit.",
+      "passed": true,
+      "path": {
+        "B_N": "N^(-1)*sin(N*t)",
+        "C_N": "N^(-1)*sin(N*t)*e",
+        "F": "e",
+        "Y": "1",
+        "d_N": "N^(-2)*sin(N*t)^2",
+        "epsilon_N": "N^(-4)",
+        "interval": "[0,2*pi]"
+      },
+      "samples": [
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 1,
+          "denominatorMass": "pi",
+          "epsilon": "1",
+          "positiveVariation": "1/2",
+          "softPeak": "1/2",
+          "totalVariationIncludingBoundary": "1"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 2,
+          "denominatorMass": "pi/4",
+          "epsilon": "1/16",
+          "positiveVariation": "8/5",
+          "softPeak": "4/5",
+          "totalVariationIncludingBoundary": "16/5"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 4,
+          "denominatorMass": "pi/16",
+          "epsilon": "1/256",
+          "positiveVariation": "64/17",
+          "softPeak": "16/17",
+          "totalVariationIncludingBoundary": "128/17"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 8,
+          "denominatorMass": "pi/64",
+          "epsilon": "1/4096",
+          "positiveVariation": "512/65",
+          "softPeak": "64/65",
+          "totalVariationIncludingBoundary": "1024/65"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 16,
+          "denominatorMass": "pi/256",
+          "epsilon": "1/65536",
+          "positiveVariation": "4096/257",
+          "softPeak": "256/257",
+          "totalVariationIncludingBoundary": "8192/257"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 32,
+          "denominatorMass": "pi/1024",
+          "epsilon": "1/1048576",
+          "positiveVariation": "32768/1025",
+          "softPeak": "1024/1025",
+          "totalVariationIncludingBoundary": "65536/1025"
+        },
+        {
+          "C_tSquareMass": "pi",
+          "FTimeMass": "2*pi",
+          "N": 64,
+          "denominatorMass": "pi/4096",
+          "epsilon": "1/16777216",
+          "positiveVariation": "262144/4097",
+          "softPeak": "4096/4097",
+          "totalVariationIncludingBoundary": "524288/4097"
+        }
+      ],
+      "separationRatio": "N**5/(pi*(N**2 + 1)*(3*N**2 + 1))",
+      "softATimeMass": "pi*(sqrt(N**2 + 1) - 1)/sqrt(N**2 + 1)",
+      "softPeak": "N**2/(N**2 + 1)",
+      "softPositiveVariation": "N**3/(N**2 + 1)",
+      "softTotalVariationIncludingBoundary": "2*N**3/(N**2 + 1)"
+    },
+    "rawSplitCancellation": {
+      "conclusion": "The two raw terms have logarithmically divergent total masses with opposite signs. Only their joint hard-soft factorization has a uniformly finite face-measure limit.",
+      "jointHalfFaceIntegral": "gamma^2*x/(x+epsilon)",
+      "limit": "gamma^2",
+      "model": "On one active half-face, x=||c||^2*|tau|^(2m) and gamma^2=<F0,c>^2/(Y0*||c||^2).",
+      "passed": true,
+      "rawRadialHalfFaceIntegral": "-gamma^2*(log(1+x/epsilon)-x/(x+epsilon))",
+      "rawSourceHalfFaceIntegral": "gamma^2*log(1+x/epsilon)"
+    },
+    "softIdentity": {
+      "definitions": {
+        "R_epsilon": "sqrt(d+epsilon)",
+        "a_epsilon": "(z_epsilon^+)^2",
+        "sigma_epsilon": "d/(d+epsilon)=1-theta_epsilon",
+        "theta_epsilon": "epsilon/(d+epsilon)",
+        "z_epsilon": "B/(sqrt(Y)*R_epsilon)"
+      },
+      "hardLimit": "(2*B*Y*d*lambda - B*Y*d_t - B*Y_t*d + 2*B_t*Y*d)/(2*Y**(3/2)*d**(3/2))",
+      "hardSoftFactorization": {
+        "a": "a_epsilon=sigma_epsilon*a on d>0",
+        "interpretation": "The last term is the exact soft layer that converges to the signed and Jordan one-sided face measures.",
+        "nStyleFaceSource": "2*z_epsilon^+*J_epsilon^(N)=2*sigma_epsilon*z^+*J+sigma_epsilon,t*a",
+        "sigma_t": "epsilon*d_t/(d+epsilon)^2",
+        "z": "z_epsilon=sqrt(sigma_epsilon)*z on d>0"
+      },
+      "nStyleSource": "(2*B*Y*d*lambda - B*Y*d_t + 2*B*Y*epsilon*lambda - B*Y_t*d - B*Y_t*epsilon + 2*B_t*Y*d + 2*B_t*Y*epsilon)/(2*Y**(3/2)*(d + epsilon)**(3/2))",
+      "passed": true,
+      "positiveBranchBalance": "a_epsilon,t+2*lambda*(1+theta_epsilon)*a_epsilon=2*z_epsilon^+*J_epsilon",
+      "softSource": "(2*B*Y*d*lambda - B*Y*d_t + 4*B*Y*epsilon*lambda - B*Y_t*d - B*Y_t*epsilon + 2*B_t*Y*d + 2*B_t*Y*epsilon)/(2*Y**(3/2)*(d + epsilon)**(3/2))",
+      "sourceConventionDifference": "lambda*theta_epsilon*z_epsilon",
+      "zTimeDerivativeOnPositiveBranch": "-(B*Y*d_t + B*Y_t*d + B*Y_t*epsilon - 2*B_t*Y*d - 2*B_t*Y*epsilon)/(2*Y**(3/2)*(d + epsilon)**(3/2))"
+    }
+  },
+  "claimBoundary": "Exact fixed-cell soft algebra, finite-order face asymptotics, one abstract Hilbert-path separation, and one smooth NSE initial jet. No refresh or moving-cell theorem, infinite frame limit, Leray passage, continuation criterion, singularity, or global-regularity result.",
+  "release": "R0.71O",
+  "status": "passed",
+  "verdict": "Soft regularization exposes the one-sided hard faces as source and variation measures; its extra radial damping has no atom at a finite-order zero. Existing denominator-mass and energy-level budgets do not pay the face count by a universal functional inequality, although an NSE-specific summed cancellation remains open."
+}

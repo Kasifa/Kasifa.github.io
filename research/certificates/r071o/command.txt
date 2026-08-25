@@ -1,0 +1,12 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071o_exact_audit.py --output research/certificates/r071o/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071o_independent_audit.py --output research/certificates/r071o/independent-result.json
+
+Figure commands:
+figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces/command.txt
+
+Validate figure package:
+tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071o/build_hashes.py
+(cd research/certificates/r071o && shasum -a 256 -c SHA256SUMS)

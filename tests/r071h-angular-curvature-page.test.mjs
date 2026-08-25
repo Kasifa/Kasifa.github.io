@@ -74,7 +74,7 @@ test("keeps the historical R0.71H release reachable after later releases", async
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71H/);
-    assert.match(page, /src="\/i18n-en\.js\?v=0\.\d+"/);
+    assert.match(page, /src="\/i18n-en\.js\?v=\d+\.\d+"/);
   }
 });
 

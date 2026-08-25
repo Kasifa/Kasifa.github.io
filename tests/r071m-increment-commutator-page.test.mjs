@@ -183,9 +183,15 @@ test("states the exact increment, projective pairing, four-row bound, heat expon
   assert.ok(!note.includes("</a>、<a"));
   assert.ok(!note.includes("</a>给出"));
   assert.ok(!note.includes("</a> 的 filtered"));
-  assert.ok(!literature.includes("</a>、<a"));
-  assert.ok(!literature.includes("</a>给出"));
-  assert.ok(!literature.includes("</a>控制"));
+  const r071mLiteratureStart = literature.indexOf("<header><b>R0.71M</b>");
+  const r071mLiteratureEnd = literature.indexOf("</div>", r071mLiteratureStart);
+  const r071mLiteratureCard = literature.slice(
+    r071mLiteratureStart,
+    r071mLiteratureEnd,
+  );
+  assert.ok(!r071mLiteratureCard.includes("</a>、<a"));
+  assert.ok(!r071mLiteratureCard.includes("</a>给出"));
+  assert.ok(!r071mLiteratureCard.includes("</a>控制"));
   assert.ok(!home.includes("</a>允许"));
   assert.ok(!home.includes("</a>由 Hou"));
   assert.ok(!home.includes("</em>三维"));

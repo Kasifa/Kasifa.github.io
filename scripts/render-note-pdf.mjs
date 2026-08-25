@@ -18,6 +18,8 @@ if (!url || !outputArgument) {
 
 const output = resolve(outputArgument);
 const screenshot = screenshotArgument ? resolve(screenshotArgument) : null;
+const renderUrl = new URL(url);
+if (!renderUrl.searchParams.has("lang")) renderUrl.searchParams.set("lang", "zh");
 await mkdir(dirname(output), { recursive: true });
 if (screenshot) await mkdir(dirname(screenshot), { recursive: true });
 
@@ -29,7 +31,7 @@ try {
     viewport: { width: 1440, height: 1000 },
     deviceScaleFactor: 1,
   });
-  await page.goto(url, { waitUntil: "networkidle" });
+  await page.goto(renderUrl.href, { waitUntil: "networkidle" });
   await page.evaluate(async () => {
     await document.fonts.ready;
     if (globalThis.MathJax?.startup?.promise) {

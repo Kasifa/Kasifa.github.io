@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
-const notesRoot = new URL("notes/", publicRoot);
 const certificatesRoot = new URL("research/certificates/r071j/", root);
 const figureSourceRoot = new URL(
   "figures/r071j-full-frame/fig-r071j-full-frame-gap/",
@@ -43,27 +42,15 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("keeps the R0.71J v0.95 release archived after the R0.71L site update", async () => {
-  const [{ home, note, recap, literature }, noteNames] = await Promise.all([
-    publishedPages(),
-    readdir(notesRoot),
-  ]);
+test("keeps the R0.71J v0.95 release archived after later site updates", async () => {
+  const { home, note, recap, literature } = await publishedPages();
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 136);
-  assert.match(home, /<strong>v0\.97<\/strong>网页版本/);
-  assert.match(home, /<strong>136<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71L<\/strong>最新研究节点/);
-  assert.match(home, /展开 46 篇公开笔记/);
-  assert.match(home, /累计回顾收录 76 个节点；全站现有 136 篇公开研究笔记/);
   assert.equal((home.match(/href="\/notes\/r0-71j\.html"/g) ?? []).length, 2);
 
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
   assert.match(recap, /收录节点：74/);
   assert.match(recap, /回顾截止时公开笔记：134/);
   assert.match(recap, /回顾截止节点：R0\.71J/);
-  assert.match(literature, /R0\.69P–R0\.71L/);
-  assert.match(literature, /开放接口 · R0\.71M/);
-
   for (const [page, minimum] of [
     [home, 10],
     [note, 15],
@@ -75,9 +62,6 @@ test("keeps the R0.71J v0.95 release archived after the R0.71L site update", asy
   }
   for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=0\.95"/);
-  }
-  for (const page of [home, literature]) {
-    assert.match(page, /src="\/i18n-en\.js\?v=0\.97"/);
   }
 });
 
@@ -243,7 +227,6 @@ test("ships synchronized PDFs and three journal figure formats", async () => {
   assert.match(note, /href="\/recap-r0-61-r0-71j\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71j\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71j\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71l\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71j-full-frame-gap\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

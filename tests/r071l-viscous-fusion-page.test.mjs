@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
-const notesRoot = new URL("notes/", publicRoot);
 const certificatesRoot = new URL("research/certificates/r071l/", root);
 const figureSourceRoot = new URL(
   "figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap/",
@@ -43,42 +42,26 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71L as v0.97 with 136 notes, route 46, and 76 recap nodes", async () => {
-  const [{ home, note, recap, literature }, noteNames] = await Promise.all([
-    publishedPages(),
-    readdir(notesRoot),
-  ]);
+test("keeps the R0.71L v0.97 note and 76-node recap archived", async () => {
+  const { home, note, recap, literature } = await publishedPages();
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 136);
-  assert.match(home, /<strong>v0\.97<\/strong>网页版本/);
-  assert.match(home, /<strong>136<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71L<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71L<\/span>/);
-  assert.match(home, /展开 46 篇公开笔记/);
-  assert.match(home, /累计回顾收录 76 个节点；全站现有 136 篇公开研究笔记/);
   assert.equal((home.match(/href="\/notes\/r0-71l\.html"/g) ?? []).length, 2);
-
-  const currentRoute = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71L">([\s\S]*?)<\/nav>/,
-  );
-  assert.ok(currentRoute);
-  assert.equal((currentRoute[1].match(/href="\/notes\//g) ?? []).length, 46);
 
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
   assert.match(recap, /收录节点：76/);
   assert.match(recap, /回顾截止时公开笔记：136/);
   assert.match(recap, /回顾截止节点：R0\.71L/);
-  assert.match(literature, /R0\.69P–R0\.71L/);
-  assert.match(literature, /开放接口 · R0\.71M/);
 
   for (const [page, minimum] of [
     [home, 10],
     [note, 16],
     [recap, 8],
-    [literature, 50],
+    [literature, 49],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71L/);
+  }
+  for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=0\.97"/);
   }
 });
@@ -96,13 +79,10 @@ test("gives R0.71L independent release surfaces on home, note, recap, and litera
     "research/certificates/r071l",
     "research/r071l_report-source.md",
     "figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap",
-    'href="/recap-r0-61-r0-71l.html"',
-    'href="/recap-r0-61-r0-71l.pdf"',
   ]) {
     assert.ok(homeCard.includes(token), token);
   }
   assert.match(homeCard, /<strong>结论边界：<\/strong>/);
-  assert.match(homeCard, /下一步 R0\.71M/);
 
   assert.match(note, /<title>R0\.71L｜黏性 collar 精确融合/);
   assert.match(note, /href="\/notes\/r0-71l\.pdf"/);
@@ -139,7 +119,6 @@ test("gives R0.71L independent release surfaces on home, note, recap, and litera
   assert.ok(literatureMarkerIndex >= 0);
   assert.ok(literatureCardStart >= 0);
   assert.match(literatureCard, /href="\/notes\/r0-71l\.html"/);
-  assert.match(literatureCard, /href="\/recap-r0-61-r0-71l\.html"/);
   assert.ok(
     literatureCard.includes(
       "\\(\\nu\\mathsf A_Q(\\Delta+\\kappa^2)W_j\\)",
@@ -205,13 +184,10 @@ test("states exact viscous and projective fusion with the aligned, denominator, 
   assert.match(note, /A：.*exact algebra/);
   assert.match(note, /B：.*diagnostic，不是连续符号证书/);
   assert.match(note, /C：.*analytic \+ diagnostic mixed evidence/);
-  assert.match(home, /NEXT · R0\.71M/);
   assert.match(home, /当前 direct tangent Cauchy.*尚未从标准能量不等式推出/);
   assert.match(recap, /rowwise absolute collar route 关闭，但更深的 signed critical estimate 没有被排除/);
   assert.match(recap, /当前 direct estimate.*尚未从标准能量不等式推出/);
   assert.match(literature, /Dascaliuc|Leitmeyer/);
-  assert.match(literature, /不是原创性或优先权结论/);
-  assert.match(literature, /这是 direct-estimate boundary，不是一般 Leray-level no-go/);
 });
 
 test("links and verifies the report, audits, exact certificates, and journal figure package", async () => {
@@ -438,7 +414,6 @@ test("ships synchronized note and recap PDFs plus byte-identical SVG, PDF, and P
   assert.match(note, /href="\/recap-r0-61-r0-71l\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71l\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71l\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71l\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71l-viscous-fusion\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

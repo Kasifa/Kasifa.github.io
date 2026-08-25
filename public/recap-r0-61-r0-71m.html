@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="R0.60 之后的研究回顾：按时间整理 R0.61 到 R0.71M 的 77 个研究节点，记录从约化递推到 projected-Lamb 热体积、匹配小区 heat gap、黏性融合与增量—投影接口的路线。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.61–R0.71M｜R0.60 之后的研究回顾">
+  <meta property="og:description" content="十二个阶段、77 个节点：从约化递推到 projected-Lamb 局部热打包，再到固定匹配小区 heat gap、黏性融合和 exact increment–projective bridge。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.61–R0.71M｜R0.60 之后的研究回顾</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.9rem,4.2vw,3.6rem)}
+    .timeline{display:grid;gap:1rem;counter-reset:phase}
+    .phase{border:1px solid var(--line);background:rgba(255,255,255,.025);padding:1.05rem 1.15rem;position:relative}
+    .phase::before{counter-increment:phase;content:"0" counter(phase);font:700 .78rem/1 var(--mono);color:var(--gold);letter-spacing:.1em}
+    .phase h3{margin:.45rem 0 .55rem;font-size:1.15rem}.phase p{margin:.45rem 0}
+    .links{display:flex;flex-wrap:wrap;gap:.35rem .55rem;margin-top:.7rem}.links a{font:650 .76rem/1 var(--mono);border:1px solid var(--line);padding:.36rem .48rem;text-decoration:none}
+    .node-index-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.45rem}.node-index-grid a{font:650 .76rem/1 var(--mono);border:1px solid var(--line);padding:.5rem .35rem;text-align:center;text-decoration:none}
+    .metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.metric{border:1px solid var(--line);padding:1rem}.metric strong{display:block;font-size:1.65rem;color:var(--gold)}
+    @media(max-width:760px){.metric-grid{grid-template-columns:1fr}.node-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.links a,.node-index-grid a{font-size:.72rem}}
+    @media print{
+      .timeline{display:block;overflow:visible}
+      .phase{break-inside:avoid;page-break-inside:avoid;margin-bottom:1rem;position:static;width:100%;overflow:visible}
+      .phase:nth-child(2){break-before:page;page-break-before:always}
+      .phase:nth-child(7){break-before:page;page-break-before:always}
+      .phase:nth-child(12){break-before:page;page-break-before:always}
+    }
+  </style>
+  <script defer src="/i18n-en.js?v=0.98"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">总览</a><a href="#timeline">研究过程</a><a href="#node-index">完整索引</a><a href="#retained">保留结果</a><a href="#value">研究判断</a><a href="#next">下一步</a><a href="#claims">说明</a><a href="#reproduce">资料</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">累计回顾 · R0.61–R0.71M · 2026-08-26</div>
+        <h1>R0.60 之后的<br>研究回顾</h1>
+        <p class="lead">这页接在 R0.00–R0.60 的阶段回顾之后，整理 R0.61 到 R0.71M 的 77 个研究节点。我按时间记录每一段实际证明了什么、哪条设想被具体反例或尺度分析排除，以及哪些条件还没有从 Navier–Stokes 方程中推出。</p>
+      </div>
+      <div class="stamp"><span class="state">累计回顾</span><strong>R0.61–R0.71M</strong><p>收录节点：77</p><p>回顾截止时公开笔记：137</p><p>回顾截止节点：R0.71M</p><p>问题状态：仍未解决</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>目录</strong><ol>
+        <li><a href="#result">00 · 回顾范围</a></li><li><a href="#timeline">01 · 十二个研究阶段</a></li><li><a href="#node-index">02 · 77 节完整索引</a></li><li><a href="#retained">03 · 保留结果</a></li><li><a href="#value">04 · 目前的判断</a></li><li><a href="#next">05 · 下一步</a></li><li><a href="#claims">06 · 说明边界</a></li><li><a href="#reproduce">07 · 原始资料</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / 回顾范围</div><h2>这一页从 R0.60 的阶段终点继续</h2>
+          <div class="metric-grid">
+            <div class="metric"><strong>77</strong><span>R0.61–R0.71M 研究节点</span></div>
+            <div class="metric"><strong>12</strong><span>按问题划分的研究阶段</span></div>
+            <div class="metric"><strong>0</strong><span>全局正则性证明或破裂构造</span></div>
+          </div>
+          <p>R0.00–R0.60 的内容保留在上一份阶段回顾中。R0.60 的结论是：完整 Fourier–Leray 结构与高阶计算可以继续做，但还没有控制一般三维解的临界量。后面的 77 个节点沿着这个缺口推进。</p>
+          <p>节点数量不能换算成“问题完成了多少”。这些记录的作用是把条件结果、精确恒等式、计算证书、反例和停止条件分开。</p>
+        </section>
+
+        <section id="timeline"><div class="section-no">01 / 研究过程</div><h2>R0.60 之后的路线分成十二段</h2>
+          <div class="timeline">
+            <article class="phase"><h3>R0.61–R0.69A · 约化递推、时间分层和剪切类</h3><p>四次及更高阶 Picard 目标可以精确计算，约化递推也有共同解析域和机器证书。不过，所用不变剪切族始终光滑。时间分层、物理环带与完整核的检查最后都回到一般三维涡量拉伸，没有产生奇点候选。</p><div class="links"><a href="/notes/r0-61.html">R0.61</a><a href="/notes/r0-66.html">R0.66</a><a href="/notes/r0-67c2.html">R0.67C-2</a><a href="/notes/r0-68b2fgh.html">R0.68B-2f/g/h</a><a href="/notes/r0-69a.html">R0.69A</a></div></article>
+            <article class="phase"><h3>R0.69B–R0.69F · 横向扰动和预解算子</h3><p>横向线性化、旁带扰动、非线性解耦与临界预解算子的最优尺度回到经典临界尺度，没有比已知继续性条件多出新的控制。这条分支停在 R0.69F。</p><div class="links"><a href="/notes/r0-69b.html">R0.69B</a><a href="/notes/r0-69f.html">R0.69F</a></div></article>
+            <article class="phase"><h3>R0.69G–R0.69O · 压力项和远近场分离</h3><p>压力 Hessian、调和四极矩、三带估计和局部交换子给出了远场衰减与结构恒等式；近场主项仍然是三维涡量拉伸。只靠压力分解，临界能量估计不能闭合。</p><div class="links"><a href="/notes/r0-69g.html">R0.69G</a><a href="/notes/r0-69k.html">R0.69K</a><a href="/notes/r0-69o.html">R0.69O</a></div></article>
+            <article class="phase"><h3>R0.69P–R0.69W · 有符号环带和静态构造</h3><p>涡量拉伸可以写成有符号物理环带和。随后用解析缩放、外向舍入区间和端点证书替代多尺度扫描。尺度比四的一参数两尺度静态族被严格排除；结论只覆盖声明的构造族。</p><div class="links"><a href="/notes/r0-69p.html">R0.69P</a><a href="/notes/r0-69t.html">R0.69T</a><a href="/notes/r0-69v.html">R0.69V</a><a href="/notes/r0-69w.html">R0.69W</a></div></article>
+            <article class="phase"><h3>R0.70A–R0.70I · 移动尺度和时间 Hardy 核</h3><p>移动环带标签本身不会给出边界控制。匹配尺度、动态符号、固定尺度覆盖、单壳奇偶结构、仿射一阶展开、相邻源差分与核心矩变化依次被检查。冻结低频部分可由能量控制；移动低频与偏差对角项仍受临界时间 Hardy 核限制。</p><div class="links"><a href="/notes/r0-70a.html">R0.70A</a><a href="/notes/r0-70d.html">R0.70D</a><a href="/notes/r0-70i.html">R0.70I</a></div></article>
+            <article class="phase"><h3>R0.70J–R0.70O · 偏差张量、协方差谱和有限观测</h3><p>偏差对角项没有普适的代数消失结构，归一化各向异性也不自动单调。局部补偿和形变回路需要额外控制。有限个高频盲标量观测不能统一重建未过滤的临界横向涡量。</p><div class="links"><a href="/notes/r0-70j.html">R0.70J</a><a href="/notes/r0-70l.html">R0.70L</a><a href="/notes/r0-70o.html">R0.70O</a></div></article>
+            <article class="phase"><h3>R0.70P–R0.70Z · Parseval 框架、响应距离和谱隙</h3><p>完整 Parseval 框架给出严格的条件投影公式，协方差演化和近秩一扩散也能精确写出。但能量级输入仍不能控制所需的 \(\lVert\nabla\omega\rVert_2^2\)。响应差通道有临界 Besov 增益；协方差面积、正主特征值和强谱隙都不足以决定有符号功的正负。</p><div class="links"><a href="/notes/r0-70p.html">R0.70P</a><a href="/notes/r0-70s.html">R0.70S</a><a href="/notes/r0-70y.html">R0.70Y</a><a href="/notes/r0-70z.html">R0.70Z</a></div></article>
+            <article class="phase"><h3>R0.71A · 恒定投影和临界时间指数</h3><p>即使主投影恒定、谱隙很强、标量框架交换子为零，协方差功仍可在相同 \(Q\) 下反号。现有能量恒等式只能给时间 \(L^1\) 控制；同范数集中序列排除了从这些输入统一推出任何 \(L_t^s\)、\(s&gt;1\) 控制。</p><div class="links"><a href="/notes/r0-71a.html">R0.71A</a></div></article>
+            <article class="phase"><h3>R0.71B–R0.71D · 正输出系数、有符号传播和物质热 tent</h3><p>精确 Fourier 族排除了共同通道自动衰减、无权尺度打包和一个直接三场极化估计。有符号分区会产生非负细化缺陷，黏性与真实 NSE 初始迹都能从零创造正输出功。完整物质热 tent 保留全部通量后，光滑精确剪切解仍产生 \(k^2\) 临界细化代价。</p><div class="links"><a href="/notes/r0-71b.html">R0.71B</a><a href="/notes/r0-71c.html">R0.71C</a><a href="/notes/r0-71d.html">R0.71D</a></div></article>
+            <article class="phase"><h3>R0.71E · Projected-Lamb 热体积与底边迹</h3><p>Hodge 投影把 stretching 与 transport–filter commutator 精确压成 projected-Lamb 注入；pressure 是 Bernoulli 梯度补项，不是独立涡量扇区。完整正壳注入的竖直热体积满足 \(H^{-1}\) 上界，归一化后由 Leray 能量无条件时间可积。固定光滑框架和六模态初值生成的全局光滑 2D3C NSE 解同时证明：从体积恢复初始底边仍损失 \(2K^2\)，有限抛物热盒质量保持临界。</p><div class="links"><a href="/notes/r0-71e.html">R0.71E</a><a href="/figures/r0-71e-projected-lamb-trace.pdf">正式附图</a></div></article>
+            <article class="phase"><h3>R0.71F · 局部热打包与临界迹障碍</h3><p>移动 cutoff 的 projected-Lamb 账本完整保留时间面、热高度面、cutoff–curl、形状残差与黏性 collar；projected 与 material 两种表示精确等价。匹配分片给出更强的局部条件继续性判据，并把无条件热体积估计保留到有界重叠局部块。六模态 2D3C 光滑解对每个非零非负 cutoff 都实现精确 \(K^2\) 底边代价；固定能量的低块分片序列和严格内部 one-block 缩放又表明，几何本身不能把临界因子改成 \(o(r^{-2})\)。\(Cr^{-2}\) 只被饱和，没有被否定。</p><div class="links"><a href="/notes/r0-71f.html">R0.71F</a><a href="/figures/r0-71f-local-trace.pdf">正式附图</a><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071f">证书</a></div></article>
+            <article class="phase"><h3>R0.71G–R0.71M · 驻留、匹配小区、黏性融合与增量—投影接口</h3><p>R0.71G–I 把时间缺口压到入口、单边联合生成与 faces。R0.71J–K 在完整 broad parent frame 和固定 aligned matched cells 上证明 \(K^{-2}\) 正生成与 \(O((\nu K^4)^{-1})\) heat payment 的两阶缺口。R0.71L 把 raw viscous collar 精确融合回 localized Laplacian row。R0.71M 随后证明 annular-filter Lamb commutator 的精确二次速度增量公式和完整 fixed-cell projective pairing；当前直接绝对估计产生四行临界充分账本。热包排除从标准能量类到所测试绝对临界预算的普适嵌入，但不是 NSE 解反例。</p><div class="links"><a href="/notes/r0-71g.html">R0.71G</a><a href="/notes/r0-71h.html">R0.71H</a><a href="/notes/r0-71i.html">R0.71I</a><a href="/notes/r0-71j.html">R0.71J</a><a href="/notes/r0-71k.html">R0.71K</a><a href="/notes/r0-71l.html">R0.71L</a><a href="/notes/r0-71m.html">R0.71M</a><a href="/figures/r0-71m-increment-commutator.pdf">最新附图</a><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071m">最新证书</a></div></article>
+          </div>
+        </section>
+
+        <section id="node-index"><div class="section-no">02 / 完整索引</div><h2>R0.61–R0.71M 的 77 节公开笔记</h2>
+          <p>下面按原编号逐项列出本回顾覆盖的全部节点。阶段叙述用于说明问题怎样转向；这份索引用于逐节核对，不把中间节点压缩掉。</p>
+          <div class="node-index-grid">
+            <a href="/notes/r0-61.html">R0.61</a>
+            <a href="/notes/r0-62.html">R0.62</a>
+            <a href="/notes/r0-63.html">R0.63</a>
+            <a href="/notes/r0-64.html">R0.64</a>
+            <a href="/notes/r0-65.html">R0.65</a>
+            <a href="/notes/r0-66.html">R0.66</a>
+            <a href="/notes/r0-67.html">R0.67A</a>
+            <a href="/notes/r0-67b.html">R0.67B</a>
+            <a href="/notes/r0-67c1.html">R0.67C-1</a>
+            <a href="/notes/r0-67c2.html">R0.67C-2</a>
+            <a href="/notes/r0-68a.html">R0.68A</a>
+            <a href="/notes/r0-68b1.html">R0.68B-1</a>
+            <a href="/notes/r0-68b2.html">R0.68B-2</a>
+            <a href="/notes/r0-68b2de.html">R0.68B-2d/e</a>
+            <a href="/notes/r0-68b2fgh.html">R0.68B-2f/g/h</a>
+            <a href="/notes/r0-69a.html">R0.69A</a>
+            <a href="/notes/r0-69b.html">R0.69B</a>
+            <a href="/notes/r0-69c.html">R0.69C</a>
+            <a href="/notes/r0-69d.html">R0.69D</a>
+            <a href="/notes/r0-69e.html">R0.69E</a>
+            <a href="/notes/r0-69f.html">R0.69F</a>
+            <a href="/notes/r0-69g.html">R0.69G</a>
+            <a href="/notes/r0-69h.html">R0.69H</a>
+            <a href="/notes/r0-69i.html">R0.69I</a>
+            <a href="/notes/r0-69j.html">R0.69J</a>
+            <a href="/notes/r0-69k.html">R0.69K</a>
+            <a href="/notes/r0-69l.html">R0.69L</a>
+            <a href="/notes/r0-69m.html">R0.69M</a>
+            <a href="/notes/r0-69n.html">R0.69N</a>
+            <a href="/notes/r0-69o.html">R0.69O</a>
+            <a href="/notes/r0-69p.html">R0.69P</a>
+            <a href="/notes/r0-69q.html">R0.69Q</a>
+            <a href="/notes/r0-69r.html">R0.69R</a>
+            <a href="/notes/r0-69s.html">R0.69S</a>
+            <a href="/notes/r0-69t.html">R0.69T</a>
+            <a href="/notes/r0-69u.html">R0.69U</a>
+            <a href="/notes/r0-69v.html">R0.69V</a>
+            <a href="/notes/r0-69w.html">R0.69W</a>
+            <a href="/notes/r0-70a.html">R0.70A</a>
+            <a href="/notes/r0-70b.html">R0.70B</a>
+            <a href="/notes/r0-70c.html">R0.70C</a>
+            <a href="/notes/r0-70d.html">R0.70D</a>
+            <a href="/notes/r0-70e.html">R0.70E</a>
+            <a href="/notes/r0-70f.html">R0.70F</a>
+            <a href="/notes/r0-70g.html">R0.70G</a>
+            <a href="/notes/r0-70h.html">R0.70H</a>
+            <a href="/notes/r0-70i.html">R0.70I</a>
+            <a href="/notes/r0-70j.html">R0.70J</a>
+            <a href="/notes/r0-70k.html">R0.70K</a>
+            <a href="/notes/r0-70l.html">R0.70L</a>
+            <a href="/notes/r0-70m.html">R0.70M</a>
+            <a href="/notes/r0-70n.html">R0.70N</a>
+            <a href="/notes/r0-70o.html">R0.70O</a>
+            <a href="/notes/r0-70p.html">R0.70P</a>
+            <a href="/notes/r0-70q.html">R0.70Q</a>
+            <a href="/notes/r0-70r.html">R0.70R</a>
+            <a href="/notes/r0-70s.html">R0.70S</a>
+            <a href="/notes/r0-70t.html">R0.70T</a>
+            <a href="/notes/r0-70u.html">R0.70U</a>
+            <a href="/notes/r0-70v.html">R0.70V</a>
+            <a href="/notes/r0-70w.html">R0.70W</a>
+            <a href="/notes/r0-70x.html">R0.70X</a>
+            <a href="/notes/r0-70y.html">R0.70Y</a>
+            <a href="/notes/r0-70z.html">R0.70Z</a>
+            <a href="/notes/r0-71a.html">R0.71A</a>
+            <a href="/notes/r0-71b.html">R0.71B</a>
+            <a href="/notes/r0-71c.html">R0.71C</a>
+            <a href="/notes/r0-71d.html">R0.71D</a>
+            <a href="/notes/r0-71e.html">R0.71E</a>
+            <a href="/notes/r0-71f.html">R0.71F</a>
+            <a href="/notes/r0-71g.html">R0.71G</a>
+            <a href="/notes/r0-71h.html">R0.71H</a>
+            <a href="/notes/r0-71i.html">R0.71I</a>
+            <a href="/notes/r0-71j.html">R0.71J</a>
+            <a href="/notes/r0-71k.html">R0.71K</a>
+            <a href="/notes/r0-71l.html">R0.71L</a>
+            <a href="/notes/r0-71m.html">R0.71M</a>
+          </div>
+        </section>
+
+        <section id="retained"><div class="section-no">03 / 保留结果</div><h2>目前可以保留的数学结果</h2>
+          <ul>
+            <li>有符号物理环带恒等式、完整框架交换子关系和周期投影条件继续性机制。</li>
+            <li>协方差演化、秩一扩散吸收、近秩一平方根亏损与响应距离核的精确分解。</li>
+            <li>有符号分区的非负细化缺陷、正输出归一化不连续、黏性正功创造和完整物质热 tent 恒等式。</li>
+            <li>projected-Lamb 全局与局部压缩，以及 \(\int_0^\infty\Theta_s^2ds\le\frac12\|u\|_4^4\)。</li>
+            <li>归一化热体积 \(\mathcal V\in L_t^1\) 的无条件 Leray 能量估计。</li>
+            <li>固定 Parseval 框架上的精确 \(2K^2\) 底边迹代价，以及若干量词明确的光滑 NSE 解族和有限 Fourier 符号对。</li>
+            <li>移动 cutoff 的完整 projected-Lamb 恒等式、projected/material 等价，以及 matched local continuation consumer。</li>
+            <li>有界重叠局部 heat packing 与任意 \(\alpha&gt;0\) 的精确谱矩常数；标准能量无条件关闭的是 \(\alpha=1\)。</li>
+            <li>固定能量低块分片的底边–热体积临界分离，以及 one-block 严格内部柱对纯乘法 \(o(r^{-2})\) 因子的尺度排除。</li>
+            <li>projected-Lamb 的完整物理时间演化、归一化商的径向消去，以及零分母必须保留内部时间面的结论。</li>
+            <li>固定能量全局光滑 2D3C sign-only 驻留反例、临界相对超水平包络，以及 residence-only 不足的跨尺度构造。</li>
+            <li>单位 projective heat curvature identity、软分母缺陷和 \(3\pi/(8\sqrt\varepsilon)\) 线性交叉；这些对象承担不同的分母任务。</li>
+            <li>固定能量 2D3C 点态角速度反例、固定 cutoff 的源—黏性主阶抵消，以及直接变差估计的两阶频率缺口。</li>
+            <li>联合名义抛物标量与振幅向量恒等式、终端面已吸收的单边 BV 归约，以及 soft \(1+\theta_\varepsilon\) 阻尼账本。</li>
+            <li>对称八目标模 2D3C 零入口序列：精确初值 Fourier 常数、固定窗口 \(C^1\) 渐近脉冲，以及声明双环分量上的 heat-volume-only 两阶频率反例。</li>
+            <li>有限固定 frame/cell 的 all-shell positive-defect identity，以及 R0.71E parent-only broad frame 上完整 frequency-frame 的 \(K^2\) heat-payment 排除结论。</li>
+            <li>一组固定 aligned matched partitions 上的逐格零入口、严格分母、\(K^{-2}\) local positive creation 和 \((\nu K^4)^{-1}\) heat/support 上界。</li>
+            <li>固定 cutoff 的 viscous collar 与 localized Laplacian commutator 精确融合；aligned cutoff–curl numerator 逐格为零，Leray 能量支付 denominator mass。</li>
+            <li>annular-filter Lamb commutator 的精确二次速度增量公式，以及 fixed-cell projective pairing、radial identity 与四行尺度临界直接账本。</li>
+            <li>标准能量类与所测试 absolute increment、Carleson、normalized projected-Lamb budgets 的热包函数空间分离；该序列是线性热流，不是 NSE 解反例。</li>
+          </ul>
+          <p>这些结果可以分别整理成条件定理、精确恒等式、反例或计算辅助分析。是否具有独立发表价值，还需要更系统的文献比较和外部同行判断。</p>
+        </section>
+
+        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>剩余标量更精确了，但仍没有跨过正则性门槛</h2>
+          <p>截至 R0.71M，没有新的无条件继续性判据，没有缩小所有潜在奇性解的集合，也没有证明有限时破裂。不能把 77 个节点解释成对千禧年问题完成了某个比例。</p>
+          <p>目前最有内容的无条件正结果仍是 Leray 能量级的 projected-Lamb 热体积、它的有界重叠局部化，以及 fixed-cell denominator mass 的能量支付。R0.71G–M 把直接路线继续收缩：residence 不足，逐壳正部没有免费 telescope，fixed matched cells 排除同一 heat endpoint，raw collar 融合回 signed row，increment route 又被压成四个明确消费者。完整 \(\mathcal J_Q\) 是否还有第二次 signed fusion、faces 和 refresh 仍未闭合。</p>
+          <p>R0.71M 对 critical increment 候选作了精确复核。\(\mathcal R_j\) 有二次速度增量表示，但 \(\operatorname{curl}\mathcal R_j\) 作为分裂行没有一般上频率支撑；只有与 resolved transport 融合后的 \(G_j\) 保持环带。热包证明能量类不普适支付当前 absolute budgets，但没有构造“bounded increment defect / unbounded signed tangent”的 NSE 反例，因此更深的 signed estimate 没有被排除。</p>
+        </section>
+
+        <section id="next"><div class="section-no">05 / 下一步</div><h2>R0.71N 检查完整标量的第二次融合或 signed residual</h2>
+          <p>下一步仍不进入 faces、refresh 或 moving cells，也不把四行直接账本逐项绝对化。R0.71N 从完整 \(\mathcal J_Q=z_{Q,t}+\nu\kappa_j^2z_Q\) 出发，同时保留 \(B_{Q,t}\)、\(d_{Q,t}\) 与 \(Y_t\)，再代入 radial identity 和 \(B_Q\) 的局部 filtered-enstrophy 表示，最后才取正部或绝对值。</p>
+          <p>可接受的结果有两个：得到第二个精确标量融合，或者留下一个公式明确、符号仍开放的 residual。局部 filtered enstrophy 与 \(d_Q\) 是不同状态量，所以两种结果都不能预设；审计完成前不进入 denominator faces 和 moving partitions。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>这里的“完成”只指声明范围内可复核</h2>
+          <p>“完成”表示相应推导、精确计算程序、独立检查和公开材料在声明范围内已经核对，不表示通过外部同行评审。计算反例和光滑解族只排除它们明确覆盖的估计。</p>
+          <p>本回顾没有证明三维 Navier–Stokes 的全局光滑性或有限时破裂。Clay 正式问题仍然开放。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">07 / 原始资料</div><h2>逐节笔记、证书和历史回顾</h2>
+          <p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-71j.html">保留 R0.71J 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-71m.html">打开最新节点 R0.71M</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates">浏览机器可读证书</a> · <a href="/recap-r0-61-r0-71m.pdf">下载同步 PDF</a></p>
+          <p>R0.70A 以后每个完成并认证的研究版本都保留 HTML、PDF、首页路线入口和首页进展入口。正式附图同时保留源数据、绘图程序、环境、独立验证和校验和。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.61–R0.71M 回顾 · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

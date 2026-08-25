@@ -1,0 +1,12 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071m_exact_audit.py --output research/certificates/r071m/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071m_independent_audit.py --order 64 --output research/certificates/r071m/independent-result.json
+
+Figure commands:
+figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary/command.txt
+
+Validate figure package:
+tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071m/build_hashes.py
+(cd research/certificates/r071m && shasum -a 256 -c SHA256SUMS)

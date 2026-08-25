@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71M：环带滤波 Lamb 交换子有精确速度增量公式；固定小区投影配对也可精确重组。当前直接绝对值估计产生四行临界账本，已知增量缺陷因上频率支撑缺口不能直接闭合这条证明路线。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71M｜增量交换子的精确公式与四行切向边界">
+  <meta property="og:description" content="精确增量恒等式、固定小区投影配对、四行临界账本、热包函数空间分离及下一步完整标量融合。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71M｜增量交换子的精确公式与四行切向边界</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.1rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.98"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#objects">对象</a><a href="#increments">增量公式</a><a href="#support">频率融合</a><a href="#projective">投影配对</a><a href="#radial">径向恒等式</a><a href="#ledger">四行账本</a><a href="#gap">直接路线缺口</a><a href="#heat">热包分离</a><a href="#interpolation">半导数差</a><a href="#audit">独立审计</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71M · EXACT INCREMENTS · FOUR-ROW DIRECT LEDGER · WHOLE-SCALAR GATE</div>
+        <h1>增量交换子可以精确写出，<br>但当前直接切向估计仍不闭合</h1>
+        <p class="lead">我保留 R0.71L 的固定小区和黏性融合，不进入 faces、refresh 或 moving cells。环带滤波 Lamb 交换子确实有精确的二次速度增量公式；完整投影配对也能移走外层 cutoff–curl。但把结果直接逐行绝对化，会留下 resolved transport、增量交换子、投影几何与黏性失配四个临界消费者。已知四次增量缺陷不能通过当前 Bernstein 步骤直接支付其中的微分交换子行，因为该分裂行没有一般的 \(O(\kappa_j)\) 上频率支撑。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71M 精确恒等式与双路径审计完成</span><strong>直接 Cauchy/Bernstein 插入不闭合；完整有符号标量融合开放</strong><p>版本 v0.71M · 2026-08-26</p><p>exact symbolic audit: PASS</p><p>order-64 standalone Fourier audit: PASS</p><p>期刊附图三格式与视觉 QA：PASS</p><p>下一对象：完整 \(\mathcal J_Q\) 的二次标量融合</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#objects">01 · 固定对象</a></li><li><a href="#increments">02 · 增量恒等式</a></li><li><a href="#support">03 · 频率支撑</a></li><li><a href="#projective">04 · 投影配对</a></li><li><a href="#radial">05 · 径向与局部 enstrophy</a></li><li><a href="#ledger">06 · 四行临界账本</a></li><li><a href="#gap">07 · 直接插入缺口</a></li><li><a href="#heat">08 · 热包分离</a></li><li><a href="#interpolation">09 · 半导数差</a></li><li><a href="#audit">10 · 独立审计</a></li><li><a href="#figure">11 · 正式附图</a></li><li><a href="#literature">12 · 文献边界</a></li><li><a href="#value">13 · 研究价值</a></li><li><a href="#next">14 · 下一步</a></li><li><a href="#claims">15 · 主张边界</a></li><li><a href="#reproduce">16 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct-route verdict</div><h2>已关闭的是这一条直接插入，不是增量信息本身</h2>
+          <p>本节完成三件可逐行核对的工作：第一，推出环带滤波 Lamb 交换子的精确速度增量公式；第二，把固定小区投影切向配对重写成没有外层 cutoff–curl 的局部积分；第三，明确记录直接 Cauchy 以后出现的四行尺度临界消费者。</p>
+          <div class="boundary"><strong>有限判断</strong><p>已知增量缺陷与本文显示的 Cauchy/Bernstein 步骤合在一起，不能闭合固定小区切向。这只是已检查证明路线的结论。本文没有构造“缺陷有界而切向无界”的反例，因此没有证明增量缺陷在逻辑上不能蕴含切向估计。</p></div>
+        </section>
+
+        <section id="objects"><div class="section-no">01 / Fixed-cell objects</div><h2>先固定滤波、小区与 Hilbert 投影</h2>
+          <p>在 \(\mathbb T^3\) 上采用归一化 Haar 测度。令</p>
+          <div class="equation">\[
+            F_j=T_j\mathbb P(u\times\omega),\qquad
+            W_j=T_j\omega,\qquad
+            G_j=\operatorname{curl}F_j,
+          \]</div>
+          <div class="equation">\[
+            C_Q=\operatorname{curl}(\chi_QW_j),\quad
+            d_Q=\|C_Q\|_2^2,\quad
+            B_Q=\langle F_j,C_Q\rangle,
+          \]</div>
+          <div class="equation">\[
+            E_Q=C_Q/\sqrt{d_Q},\qquad
+            P_Q=I-E_Q\otimes E_Q,\qquad
+            z_Q=\frac{B_Q}{\sqrt{Yd_Q}},\quad Y=\|\omega\|_2^2.
+          \]</div>
+          <p>全部 projective 公式只在 \(d_Q&gt;0\) 的经典时间分支上陈述。这里 \(P_Q\) 是 \(L^2\) Hilbert 空间中的余秩一投影，不是逐点矩阵。</p>
+        </section>
+
+        <section id="increments"><div class="section-no">02 / Exact Lamb increment identity</div><h2>交换子恰好是两个带符号的二次速度增量项</h2>
+          <p>取 \(\delta_hu(x)=u(x-h)-u(x)\)，并定义</p>
+          <div class="equation">\[
+            \mathcal R_j=T_j(u\times\omega)-u\times W_j.
+          \]</div>
+          <p>周期分部积分给出精确恒等式</p>
+          <div class="equation result">\[
+            \mathcal R_j(x)=\int\left[
+            \frac12|\delta_hu(x)|^2\nabla_h\phi_j(h)
+            -\bigl(\nabla_h\phi_j(h)\cdot\delta_hu(x)\bigr)\delta_hu(x)
+            \right]dh.
+          \]</div>
+          <p>两个符号分别是“正、负”；不需要假设 \(\int\phi_j=1\)。因此</p>
+          <div class="equation result">\[
+            F_j=\mathbb P(u\times W_j+\mathcal R_j),\qquad
+            G_j=\operatorname{curl}(u\times W_j)+\operatorname{curl}\mathcal R_j.
+          \]</div>
+        </section>
+
+        <section id="support"><div class="section-no">03 / Support fusion</div><h2>环带的是融合后的 \(G_j\)，不是分裂出的交换子</h2>
+          <p>记 \(A_j=\operatorname{curl}(u\times W_j)\)、\(D_j=\operatorname{curl}\mathcal R_j\)。两项单独都不必落在第 \(j\) 个环带；只有</p>
+          <div class="equation result">\[
+            A_j+D_j=G_j=T_j\operatorname{curl}(u\times\omega)
+          \]</div>
+          <p>重新得到环带支撑。独立 Fourier 见证中，\(\mathcal R_j\) 有 \(57.17\%\) 的能量位于声明输出带上缘 \(1.45\kappa_j\) 以上。这个数值只诊断一个光滑见证；结构性事实是：\(u\times W_j\) 中未滤波的 \(u\) 可以带任意高频，所以一般没有 \(O(\kappa_j)\) 的上频率支撑。</p>
+        </section>
+
+        <section id="projective"><div class="section-no">04 / Exact projective pairing</div><h2>外层 cutoff–curl 可以精确移走</h2>
+          <p>令</p>
+          <div class="equation">\[
+            H_j=(\Delta+\kappa_j^2)W_j,\qquad
+            S_j=G_j+\nu H_j,\qquad
+            M_Q=\operatorname{curl}(\chi_QS_j).
+          \]</div>
+          <p>curl 的自伴性与秩一投影代数给出</p>
+          <div class="equation result">\[
+            \langle P_QF_j,P_QM_Q\rangle
+            =\int\chi_Q\left[G_j-\frac{B_Q}{d_Q}\operatorname{curl}C_Q\right]
+            \cdot\left[G_j+\nu H_j\right].
+          \]</div>
+          <p>这是完整 fixed-cell pairing。它消除了最外层的 cutoff–curl，却没有把切向只化成增量交换子。</p>
+        </section>
+
+        <section id="radial"><div class="section-no">05 / Radial identity and local enstrophy</div><h2>表面的正平方与 \(d_{Q,t}\) 是同一配对的两种写法</h2>
+          <p>同一式子还等价于</p>
+          <div class="equation result">\[
+            \langle P_QF_j,P_QM_Q\rangle
+            =\int\chi_QG_j\cdot(G_j+\nu H_j)
+            -\frac{B_Q}{d_Q}\left(\frac12d_{Q,t}+\nu\kappa_j^2d_Q\right).
+          \]</div>
+          <p>同时，标量 numerator 与局部滤波 enstrophy 满足</p>
+          <div class="equation">\[
+            B_Q=\int\chi_Q(W_j\otimes W_j):\nabla u
+            +\frac12\int|W_j|^2u\cdot\nabla\chi_Q
+            +\langle\mathcal R_j,C_Q\rangle,
+          \]</div>
+          <div class="equation">\[
+            \frac12\frac d{dt}\int\chi_Q|W_j|^2
+            +\nu\int\chi_Q|\nabla W_j|^2
+            =B_Q+\frac\nu2\int(\Delta\chi_Q)|W_j|^2.
+          \]</div>
+          <p>这里局部滤波 enstrophy \(\frac12\int\chi_Q|W_j|^2\) 与 projective 状态 \(d_Q=\|\operatorname{curl}(\chi_QW_j)\|_2^2\) 不是同一个量，不能在下一步中默认为二次融合。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">06 / Direct four-row critical ledger</div><h2>逐行绝对化会产生四个充分消费者</h2>
+          <p>再记</p>
+          <div class="equation">\[
+            K_{j,Q}=\frac{B_Q}{d_Q}\operatorname{curl}C_Q,\qquad
+            V_j=\nu H_j,\qquad
+            \gamma_{j,Q}=\frac{\kappa_jB_Q^+}{Yd_Q}.
+          \]</div>
+          <p>正分支切向有精确表示</p>
+          <div class="equation result">\[
+            \Theta_{j,Q}=\gamma_{j,Q}\kappa_j^{-3}
+            \left|\int\chi_Q(A_j+D_j-K_{j,Q})\cdot(A_j+D_j+V_j)\right|,
+          \]</div>
+          <p>直接 Cauchy 给出</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            \Theta_{j,Q}\le{}&3\gamma_{j,Q}\kappa_j^{-3}
+            \bigl(\|A_j\|_{L^2(\chi_Q)}^2+\|D_j\|_{L^2(\chi_Q)}^2\bigr)\\
+            &+\frac32\gamma_{j,Q}\kappa_j^{-3}
+            \bigl(\|K_{j,Q}\|_{L^2(\chi_Q)}^2+\|V_j\|_{L^2(\chi_Q)}^2\bigr).
+          \end{aligned}
+          \]</div>
+          <p>四行依次是 resolved transport、微分增量交换子、投影分母几何和黏性环带失配。将滤波长度和小区 cutoff 一同缩放时，这四个时间积分在形式局部 Euclidean NSE 缩放下都是临界的；这不是固定 \(\mathbb T^3\) 与固定 cutoff 的连续对称性，也不是能量估计。</p>
+        </section>
+
+        <section id="gap"><div class="section-no">07 / Derivative and upper-support gap</div><h2>已知四次缺陷控制未微分交换子；当前消费者含 curl</h2>
+          <p>增量公式直接给出</p>
+          <div class="equation">\[
+            |\mathcal R_j(x)|\lesssim\kappa_j
+            \left(\int|\delta_hu(x)|^p\,d\mu_j(h)\right)^{2/p},\qquad p\ge2.
+          \]</div>
+          <p>所以一个匹配的四次增量缺陷控制 \(\kappa_j^{-1}\|\mathcal R_j\|_2^2\) 型预算；而上面的直接切向账本含 \(\kappa_j^{-3}\|\operatorname{curl}\mathcal R_j\|_2^2\)。若有 \(\operatorname{supp}\widehat{\mathcal R_j}\subset B(0,C\kappa_j)\)，上 Bernstein 可以比较两者；但一般没有这个上支撑。</p>
+          <div class="boundary"><strong>不能越界解释</strong><p>这里证明的是当前直接 Bernstein 插入没有可用步骤，不是“一个增量缺陷永远不能控制切向”。更深的融合估计、NSE 特有消去或另一种配对仍然可能存在。</p></div>
+        </section>
+
+        <section id="heat"><div class="section-no">08 / Energy-to-critical-budget separation</div><h2>统一能量的热包仍可使三个绝对临界预算发散</h2>
+          <p>固定无散紧支撑轮廓 \(\Phi\)，令</p>
+          <div class="equation">\[
+            \Phi_r(x)=r^{-3/2}\Phi\!\left(\frac{x-x_0}{r}\right),\qquad
+            u_r(t)=e^{\nu t\Delta}\Phi_r.
+          \]</div>
+          <p>则对每个 \(T&gt;0\) 都有精确热能量等式</p>
+          <div class="equation result">\[
+            \|u_r(T)\|_2^2+2\nu\int_0^T\|\nabla u_r\|_2^2dt=1.
+          \]</div>
+          <p>在匹配抛物窗口上，Yu 型四次微分兼容缺陷、velocity square-Carleson mass 分别按 \(r^{-2}\)、\(r^{-1}\) 增长。若轮廓满足</p>
+          <div class="equation">\[
+            \mathbb P(\Phi\times\operatorname{curl}\Phi)\ne0,
+          \]</div>
+          <p>normalized projected-Lamb 积分也按 \(r^{-1}\) 增长。这只排除了从标准能量类到这些绝对临界预算的普适函数空间嵌入。热包是线性热流，不是非线性 NSE 解族，因此不是 NSE 反例。</p>
+        </section>
+
+        <section id="interpolation"><div class="section-no">09 / Half-derivative interpolation boundary</div><h2>标准能量插值在同一可容许尺度上恰少半阶</h2>
+          <p>对 \(0\le\theta\le1\)、\(2\le p\le\infty\)，标准能量插值与 Sobolev/Bernstein 嵌入给出</p>
+          <div class="equation">\[
+            u\in L_t^{2/\theta}\dot H_x^\theta,\qquad
+            s_E=\theta-\frac32+\frac3p.
+          \]</div>
+          <p>同一 \(p,q=2/\theta\) 上的三维 NSE 临界指标是</p>
+          <div class="equation result">\[
+            s_c=-1+\frac3p+\theta,\qquad s_c-s_E=\frac12.
+          \]</div>
+          <p>特别在 \(p=q=3\) 时，能量支付的是 \(L_t^3\dot B_{3,3}^{1/6}\)，而一个抛物临界的三次速度消费者具有 \(2/3\) 指标。这个 \(2/3\)、Onsager 的 \(1/3\) 与 Yu 四次缺陷的量纲对象必须分开。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">10 / Standalone finite Fourier audit</div><h2>独立实现同时检查增量、融合、投影与径向配对</h2>
+          <p>独立检查器使用固定五组无散 Fourier 模、order-64 周期网格、紧环带乘子和正的三角 cutoff，不导入 exact producer。所有乘积在物理空间计算，导数在 Fourier 空间计算；没有随机采样、拟合、DNS 或时间推进。</p>
+          <table><thead><tr><th>检查</th><th>结果</th></tr></thead><tbody>
+            <tr><td>增量恒等式相对残差</td><td>\(2.08\times10^{-16}\)</td></tr>
+            <tr><td>resolved / commutator 融合残差</td><td>\(1.06\times10^{-14}\)</td></tr>
+            <tr><td>projective pairing 残差</td><td>0</td></tr>
+            <tr><td>radial pairing 相对残差</td><td>\(2.04\times10^{-16}\)</td></tr>
+            <tr><td>精确切向 envelope</td><td>\(1.0991\times10^{-5}\)</td></tr>
+            <tr><td>四行直接上界</td><td>\(1.7055\times10^{-3}\)</td></tr>
+          </tbody></table>
+          <p>这些是一个有限光滑见证的 binary64 恒等式诊断。解析部分负责普适恒等式；数值部分不证明连续时间符号或一般 Leray 解估计。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">11 / Journal figure</div><h2>正式附图把精确配对、四行账本与函数空间边界放在同一页</h2>
+          <figure><img src="/figures/r0-71m-increment-commutator.svg" alt="R0.71M 精确增量交换子、四行直接切向账本、热包尺度分离与完整标量融合门槛"><figcaption>图 R0.71M。A、B 是同一个固定光滑 Fourier 见证的确定性诊断，不是连续符号证书；四行是当前直接 Cauchy 产生的充分账本，不是必要条件。C 是解析热包缩放，所画系数在 (r=1) 归一化；热包不是 NSE 解。D 的虚线和叉号只表示当前直接插入失败，R0.71N 仍检查完整标量的有符号融合。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71m-increment-commutator.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71m-increment-commutator.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71m-increment-commutator.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">12 / Primary-source boundary</div><h2>经典增量结构相邻，但没有一篇已查论文替代当前完整对象</h2>
+          <p><a href="https://web.math.princeton.edu/~weinan/papers/misc1.pdf">Constantin–E–Titi</a>, <a href="https://archive.numdam.org/item/SEDP_1999-2000____A13_0/">Duchon–Robert</a> 与 <a href="https://arxiv.org/abs/0704.0759">Cheskidov–Constantin–Friedlander–Shvydkoy</a> 给出能量通量的增量/Besov 结构；它们不是带局部 curl 分母的固定小区投影切向。</p>
+          <p><a href="https://arxiv.org/abs/physics/0606159">Eyink</a>的 filtered vortex force 与 stress-divergence increment 公式是最近的经典结构，但它使用 \(\overline{u\times\omega}-\bar u\times\bar\omega\)，而增量式直接写给 \(-\operatorname{div}\tau\)；第二因子和滤波方式与本文 \(T_j(u\times\omega)-u\times T_j\omega\) 不同。</p>
+          <p><a href="https://arxiv.org/abs/2606.27560v1">Yu 2026 预印本</a>的 Theorem 9.3 控制局部配对功 \(\Omega_\ell\cdot\operatorname{curl}\operatorname{div}R_\ell\)，不是该微分场的独立范数。其 Theorem 8.7 给出 reassigned-annulus 的序列闭合；完整无权闭合还需要 full far-field、\(\widetilde\Sigma_S\) 与 residual summability。</p>
+          <p>限定两轮一手检索没有找到从 Leray energy 单独推出本文 fixed-cell normalized projective pairing、局部分母和全部直接消费者的定理。这是 bounded search 的边界，不是不存在性、原创性或优先权结论。</p>
+        </section>
+
+        <section id="value"><div class="section-no">13 / Research value</div><h2>价值在于把“增量可能支付切向”压成一个可证伪的有限接口</h2>
+          <p>R0.71L 留下的“critical increment bridge”不再是泛泛设想。R0.71M 已经写出精确交换子、完整 fixed-cell pairing、四行直接消费者和上支撑缺口。以后若继续走增量路线，必须说明支付的是未微分 \(\mathcal R_j\)、微分 \(D_j\)，还是融合后的 \(G_j\)，不能用“环带交换子”一词跳过频率支撑。</p>
+          <p>这个结果没有缩小所有潜在奇性解的集合，也没有得到无条件继续性判据。它的实际意义是关闭一条看似自然但缺关键 Bernstein 步骤的证明路径，并把下一次审计集中到完整有符号标量是否存在第二次精确消去。</p>
+        </section>
+
+        <section id="next"><div class="section-no">14 / Next finite gate</div><h2>R0.71N 从完整 \(\mathcal J_Q\) 出发，同时保留三个时间导数</h2>
+          <p>下一节不只拼接 projective pairing 与局部 enstrophy。它必须从</p>
+          <div class="equation result">\[
+            \mathcal J_Q=z_{Q,t}+\nu\kappa_j^2z_Q,\qquad
+            z_Q=\frac{B_Q}{\sqrt{Yd_Q}}
+          \]</div>
+          <p>出发，同时保留 \(B_{Q,t}\)、\(d_{Q,t}\) 与 \(Y_t\)，再代入径向恒等式和 \(B_Q\) 的局部滤波 enstrophy 表示，最后才取正部或绝对值。可接受的结果有两个：得到第二个精确标量融合；或者证明留下一个明确的有符号 residual。因为局部滤波 enstrophy 与 \(d_Q\) 是不同状态量，二次融合不能预设。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">15 / Claim boundary</div><h2>本节是固定小区直接证明路线的审计，不是千禧年问题的解答</h2>
+          <ul>
+            <li>已证明：环带滤波 Lamb 交换子的精确二次速度增量公式。</li>
+            <li>已证明：resolved transport 与交换子 curl 融合成环带 \(G_j\)，分裂行没有一般上频率支撑。</li>
+            <li>已证明：固定小区 projective pairing 与 radial identity。</li>
+            <li>已证明：当前直接绝对值估计的四行充分临界账本。</li>
+            <li>已证明：标准能量类不普适嵌入本文测试的三个绝对临界预算；该热包论证不是 NSE 解反例。</li>
+            <li>未证明：已知增量缺陷在逻辑上不能控制 signed tangent。</li>
+            <li>未证明：四行账本是必要条件、完整 \(\mathcal J_Q\) 的符号、faces、refresh、moving cells、无限 frame–cell 极限、继续性、全局正则性或有限时破裂。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性、优先权或发表级别声明。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">16 / Reproduce</div><h2>报告、双重证书、文献台账、累计回顾与附图源</h2>
+          <p><a href="/notes/r0-71m.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71m.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71m.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71m-increment-commutator.pdf">下载附图 PDF</a> · <a href="/figures/r0-71m-increment-commutator.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71m-increment-commutator.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_independent_audit.py">independent checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071m">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary">期刊附图完整包</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确恒等式、有限审计与开放缺口分开记录。</div><div>R0.71M · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -79,12 +79,20 @@ export function extractTranslatableStrings(html) {
 
 export async function listSiteHtmlFiles(publicDirectory) {
   const noteDirectory = join(publicDirectory, "notes");
-  const noteFiles = (await readdir(noteDirectory))
+  const [publicFiles, noteFilesRaw] = await Promise.all([
+    readdir(publicDirectory),
+    readdir(noteDirectory),
+  ]);
+  const recapFiles = publicFiles
+    .filter((name) => /^recap-.*\.html$/.test(name))
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+  const noteFiles = noteFilesRaw
     .filter((name) => /^r0-\d+[a-z0-9-]*\.html$/.test(name))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   return [
     join(publicDirectory, "research-review.html"),
+    ...recapFiles.map((name) => join(publicDirectory, name)),
     ...noteFiles.map((name) => join(noteDirectory, name)),
   ];
 }

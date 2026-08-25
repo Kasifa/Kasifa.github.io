@@ -30,6 +30,8 @@ test("HTML extraction keeps mathematical comparisons in their text node", () => 
 test("every research page loads the shared language controls before MathJax", async () => {
   const files = await listSiteHtmlFiles(publicDirectory);
   assert.ok(files.length >= 23);
+  assert.ok(files.some((file) => file.endsWith("recap-r0-60.html")));
+  assert.ok(files.some((file) => file.endsWith("recap-r0-61-r0-71a.html")));
   for (const file of files) {
     const html = await readFile(file, "utf8");
     assert.match(html, /href="\/bilingual\.css"/);

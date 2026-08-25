@@ -12,7 +12,7 @@ test("publishes R0.69B with the exact gate and claim boundary", async () => {
 
   assert.match(home, /id="r069b"/);
   assert.match(home, /\/notes\/r0-69b\.html/);
-  assert.match(home, /综述 v0\.84 · 2026-08-25/);
+  assert.match(home, /综述 v0\.86 · 2026-08-25/);
   assert.match(home, /下一步 R0\.69C/);
   assert.match(note, /0\.7975855452903290&lt;\\rho&lt;0\.7975855452903292/);
   assert.ok(note.includes("(6+4\\sqrt{2})\\rho^r"));

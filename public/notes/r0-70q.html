@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70Q：精确过滤协方差演化、秩一扩散平衡与 Beltrami 热模反例；原始投影梯度路线失败，结构适配的条件目标保留。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70Q｜协方差演化已经写清，原始投影梯度仍不能由能量推出">
+  <meta property="og:description" content="精确过滤协方差演化、秩一扩散平衡与 Beltrami 热模反例；原始投影梯度路线失败，结构适配的条件目标保留。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70Q｜协方差演化已经写清，原始投影梯度仍不能由能量推出</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70Q · COVARIANCE EVOLUTION · RAW PROJECTOR NO-GO</div><h1>协方差演化已经写清，<br>原始投影梯度仍不能由能量推出</h1><p class="lead">本节把完整框架协方差的物质—扩散方程逐项写出。秩一状态的谱曲率会被投影梯度协方差精确吸收；但 Leray 能量只给残差的时间 L1。一个旋转 Beltrami 热模进一步说明，即使残差为零、相对谱隙为一，主投影仍可在空间中任意快地旋转。</p></div>
+      <div class="stamp"><span class="state">状态 · 演化恒等式与反例完成；结构适配判据为条件结果</span><strong>原始投影正则性门关闭</strong><p>版本 v0.70Q · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>秩一扩散平衡是精确的，能量时间指数却不够</h2><p>在 \(Q=EL\)、\(E>0\) 的秩一点，谱曲率 \(\mathcal K_Q\) 被投影梯度协方差吸收：</p><div class="equation result">\[\mathcal K_Q\le\sum_{\alpha,k}|P\partial_k\Omega_\alpha|^2.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>强相对谱隙并不稳定低幅值处的方向</h2><p>精确全局 Beltrami 热模满足</p><div class="equation result">\[R=0,\qquad {\lambda_1-\lambda_2\over\operatorname{tr}Q}=1,\qquad \|\nabla P\|_F={\|\nabla Q\|_F\over\operatorname{tr}Q}=\sqrt2\,N.\]</div><p>保留下来的结构适配条件量是精确交换子平方 \(\mathfrak C_P\) 与能量加权方向代价 \(\mathfrak W_L\)。若</p><div class="equation">\[R,\mathfrak C_P\in L_t^2,\qquad \mathfrak W_L=\int\|u_*\|_2^2\|\nabla u\|_2^2\|\nabla L\|_\infty^2\,dt<\infty,\]</div><p>则周期强解可继续。该判据本身不需要谱隙，但这些量尚未由能量传播。</p></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这一步把“谱隙应该让方向平滑”的直觉改成了可检验的幅值敏感陈述：接近零协方差时，相对谱隙没有足够尺度。后续估计应直接看交换子与加权方向成本，而不是统一控制裸的 \(\nabla P\)。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>Beltrami 热模是光滑全局解，只反驳一个原始投影梯度估计。它不是奇性样本。结构适配继续性判据仍含未传播假设，尚未形成无条件结果。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70R 的检查点</h2><p>R0.70R 保留扩散两项的联合符号，定量计算偏离秩一时的最坏损失。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070q_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070q_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070q">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70q.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70Q · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

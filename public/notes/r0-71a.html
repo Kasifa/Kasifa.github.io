@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71A：恒定协方差主投影、强谱隙和零标量框架交换子仍不能决定协方差功的符号；临界投影正则性经现有能量恒等式只给出时间 L1。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71A｜恒定投影仍不能决定伸长功符号">
+  <meta property="og:description" content="一个精确有限 Fourier 符号对关闭了纯投影相干的符号律；集中序列同时确定了现有投影能量方法的临界时间边界。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71A｜恒定投影仍不能决定伸长功符号</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.45rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#pair">符号对</a><a href="#scope">边界</a><a href="#critical">临界估计</a><a href="#scaling">标度障碍</a><a href="#positive">条件结果</a><a href="#literature">文献</a><a href="#recap">进展回顾</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71A · CONSTANT PROJECTOR · CRITICAL METHOD BOUNDARY</div>
+        <h1>投影可以完全不动，<br>伸长功仍可换号</h1>
+        <p class="lead">我完成了两个互补检查。一个精确有限 Fourier 符号对表明，恒定主投影、强谱隙和零标量框架交换子仍不能决定协方差功的符号；另一个紧支撑集中序列表明，临界投影正则性经现有能量恒等式只能稳定给出时间 \(L^1\)，不能给出下游判据所需的 \(L^2\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71A 精确证书与独立数学复核完成</span><strong>纯投影相干符号律关闭；现有临界能量方法到达边界</strong><p>版本 v0.71A · 2026-08-25</p><p>精确生产器：9 组全部通过</p><p>定向测试：8 / 8</p><p>完整回归：705 / 705</p><p>下一门槛：common-response 的有符号尺度补偿</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#pair">01 · 精确符号对</a></li>
+        <li><a href="#scope">02 · 反例边界</a></li>
+        <li><a href="#critical">03 · 临界估计</a></li>
+        <li><a href="#scaling">04 · 集中序列</a></li>
+        <li><a href="#positive">05 · 条件结果</a></li>
+        <li><a href="#literature">06 · 文献边界</a></li>
+        <li><a href="#recap">07 · 最近进展</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#next">09 · 下一条路线</a></li>
+        <li><a href="#claims">10 · 主张边界</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact conclusion</div><h2>完美投影相干不足以给出协方差功的符号律</h2>
+          <p>对固定的实、偶、径向 Parseval 标量框架，我构造了两组光滑、实、均值为零且无散的周期涡量场 \(\omega_{\Lambda,+}\) 与 \(\omega_{\Lambda,-}\)。它们在每一点具有完全相同的框架协方差 \(Q\)，但协方差功符号相反：</p>
+          <div class="equation result">\[
+            Q(\omega_{\Lambda,+})=Q(\omega_{\Lambda,-}),
+            \qquad
+            \int_{\mathbb T^3}S(\omega_{\Lambda,\pm}):Q(\omega_{\Lambda,\pm})\,dx
+            =\pm{3\sqrt2\over40}\Lambda^3.
+          \]</div>
+          <p>这排除了仅由主投影的平滑性、主谱隙和标量框架交换子决定该功符号或迫使其消失的推理。它没有排除带幅值、符号、时间演化或其他 Navier–Stokes 动力学信息的估计。</p>
+        </section>
+
+        <section id="pair"><div class="section-no">01 / Constant-projector pair</div><h2>主投影处处等于 \(e_3\otimes e_3\)，而且有定量强谱隙</h2>
+          <p>基本三波与极化取为</p>
+          <div class="equation">\[
+            \begin{aligned}
+            n&=(-1,0,-1),&c&=(0,-1,0),\\
+            p&=(-3,-3,4),&a&=(1,-1,0)/\sqrt2,\\
+            q&=(4,3,-3),&b&=(-3,4,0)/5.
+            \end{aligned}
+          \]</div>
+          <p>三者满足 \(n+p+q=0\)，频率平方为 \(2,34,34\)，全部极化都位于 \(e_3^\perp\)。再加入正交填充场</p>
+          <div class="equation">\[
+            \eta=e_3[\cos(24x_1)+\sin(97x_1)],
+            \qquad
+            \omega_{\Lambda,\sigma}=\Lambda(\sigma\xi+\sqrt{149775}\,\eta),
+          \]</div>
+          <p>其中 \(\xi=c\cos(n\cdot x)+a\cos(p\cdot x)+b\cos(q\cdot x)\)，\(\sigma=\pm1\)。严格的响应分离和零点估计给出</p>
+          <div class="equation result">\[
+            P_1=e_3\otimes e_3,
+            \quad \nabla P_1=0,
+            \quad [T_\alpha,I-P_1]=0,
+          \]</div>
+          <div class="equation result">\[
+            \lambda_1-\lambda_2\geq10\Lambda^2,
+            \qquad
+            {\lambda_1-\lambda_2\over\lambda_1}\geq{2\over3},
+            \qquad
+            {\lambda_1-\lambda_2\over\operatorname{tr}Q}\geq{1\over2}.
+          \]</div>
+          <p>十模态有序零和三元组穷举的 filler 计数为 \(\{0:12,1:0,2:0,3:0\}\)。因此填充场改变主投影和谱隙，却不改变三次功；翻转基本三波的符号便得到上面的反号结果。</p>
+        </section>
+
+        <section id="scope"><div class="section-no">02 / Exact scope</div><h2>下平面残差没有消失，所以这不是继续性定理的反例</h2>
+          <p>这组场的横向协方差幅值精确为</p>
+          <div class="equation result">\[
+            R=\int_{\mathbb T^3}\operatorname{tr}((I-P_1)Q)\,dx
+            ={3\over2}\Lambda^2.
+          \]</div>
+          <p>因此它不反驳 R0.70P 的完整框架桥，也不反驳含有横向涡量条件的继续性结果。它只说明：主投影即使处处恒定，也会丢掉承载非零功的下平面幅值。</p>
+          <p>把填充振幅改为 \(A\to\infty\) 后，物理涡量与主线的无权夹角对每个有限 \(L^r\) 范数都趋于零，而协方差功保持不变。这进一步排除了单独使用有限 \(L^r\) 小角度的耗减律，但不涉及 \(L^\infty\) 夹角或幅值加权的横向涡量。</p>
+        </section>
+
+        <section id="critical"><div class="section-no">03 / Critical projector estimate</div><h2>临界混合范数精确落在时间 \(L^1\)</h2>
+          <p>令 \(L\) 是秩一正交投影，\(P=I-L\)。现有投影恒等式把危险项写成</p>
+          <div class="equation">\[
+            Z_L={1\over4}\|P\omega\|_2^2+I_L,
+            \qquad
+            I_L=-\int u_{*,j}\,\partial_k u_i\,\partial_iL_{jk}\,dx.
+          \]</div>
+          <p>对 \(3\leq p\leq\infty\) 与 \(2/q+3/p=1\)，标准能量类范数给出</p>
+          <div class="equation result">\[
+            \|I_L\|_{L_t^1}
+            \leq C_p\|\nabla L\|_{L_t^qL_x^p}
+            \|u_*\|_{L_t^\infty L_x^2}^{1-3/p}
+            \|\nabla u\|_{L_t^2L_x^2}^{1+3/p}.
+          \]</div>
+          <p>时间 Hölder 指数恰好满足 \(1/q+(1+3/p)/2=1\)，没有剩余的时间可积性。现有 middle-strain 下游步骤需要 \((I_L)_+\in L_t^2\)，所以这条直接估计还差一个真实的时间指数。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">04 / Same-norm concentration</div><h2>三个输入范数固定时，误差在每个 \(L_t^s,\ s&gt;1\) 中都可发散</h2>
+          <p>我先用紧支撑向量势构造一个非零误差种子。它是任意光滑运动学测试场，不是 Navier–Stokes 解。随后在固定环面的一个坐标胞腔内集中该种子，并作振幅归一化：</p>
+          <div class="equation">\[
+            \widehat u_\lambda(t,x)
+            =\lambda^{3/2}u(\lambda^2t,\lambda x),
+            \qquad
+            L_\lambda(t,x)=L(\lambda^2t,\lambda x).
+          \]</div>
+          <p>两个能量范数与临界投影范数保持完全相同，而</p>
+          <div class="equation result">\[
+            \|I_{L_\lambda}[\widehat u_\lambda]\|_{L_t^s}
+            =\lambda^{2-2/s}\|I_L[u]\|_{L_t^s}.
+          \]</div>
+          <p>所以对每个 \(s&gt;1\)，不存在仅依赖这三个固定范数的有限统一控制函数；种子符号还可使相同结论作用于危险正部 \((I_L)_+\)。这是对当前 Hölder–Gagliardo–Nirenberg 能量方法的严格边界，不是对所有 Navier–Stokes 证明方法的否定。</p>
+        </section>
+
+        <section id="positive"><div class="section-no">05 / Conditional positive result</div><h2>加入一个幅值加权的临界代价后，投影桥仍可闭合</h2>
+          <p>对 \(3\leq p\leq\infty\)，定义</p>
+          <div class="equation">\[
+            \mathfrak W_{L,p}=\int
+            \|u_*\|_2^2\|\nabla L\|_p^2
+            \|\nabla u\|_2^{2(1-3/p)}
+            \|\nabla^2u\|_2^{6/p}\,dt.
+          \]</div>
+          <p>若最大周期 \(H^1\) 强解满足</p>
+          <div class="equation result">\[
+            P\omega\in L_t^4L_x^2,
+            \qquad
+            \mathfrak W_{L,p}&lt;\infty,
+          \]</div>
+          <p>则现有 middle-strain 判据给出继续性。这个条件结果是严格的，但有限 \(p\) 时含有尚未传播的 \(\nabla^2u\)；\(p=\infty\) 时又回到 R0.70Q 的已知加权代价。因此它不是所寻求的纯投影相干准则。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">06 / Literature boundary</div><h2>已知方向判据使用的是不同几何对象或更强正则性</h2>
+          <p><a href="https://www.kurims.kyoto-u.ac.jp/EMIS/journals/EJDE/Volumes/1999/05/chae.pdf">Chae–Choe</a> 控制固定平面内的两个涡量分量；<a href="https://arxiv.org/pdf/2002.02152">Miller</a> 的变量平面结果同时要求空间 Lipschitz 方向和 \(v\times\omega\in L_t^4L_x^2\)；<a href="https://people.dm.unipi.it/beiraodaveiga/pdf/hbv-79.pdf">Beirão da Veiga–Berselli</a> 控制物理涡量方向，并位于更强的混合范数线上。</p>
+          <p>CLMS 的 div–curl Hardy 估计和 Hardy–BMO 对偶提供了已知的 common-response 端点机制，但不会从协方差 \(Q\)、主谱隙或 \(P_1\) 自动制造所需的 BMO 或 Carleson 控制。有限的一手文献检索没有找到与本文临界协方差主投影条件完全相同的定理；这只是有界检索结论，不是新颖性证明。</p>
+        </section>
+
+        <section id="recap"><div class="section-no">07 / Progress recap</div><h2>从 R0.70O 到这里，协方差路线完成了四次收缩</h2>
+          <ol>
+            <li>全频框架给出了带横向涡量与交换子代价的条件桥，但这些量没有从能量自动传播。</li>
+            <li>响应差的弦通道可以获得可求和增益，common-response 通道仍保留阶一贡献。</li>
+            <li>主特征值下界、强谱隙、恒定投影和零标量交换子都不能单独决定协方差功符号。</li>
+            <li>临界 \(\nabla P_1\) 经当前投影能量恒等式的最佳无结构时间结论是 \(L_t^1\)，而不是所需的 \(L_t^2\)。</li>
+          </ol>
+          <p>因此，我不再单纯加强投影平滑性或谱隙。下一阶段只保留能够记录下平面幅值、保留符号，或真正使用 Navier–Stokes 动力学的候选。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>这是有价值的路线排除，不是千禧年问题的部分解答</h2>
+          <p>本节的主要价值是把一个看似自然的几何希望压成两个可以审计的否定结论。有限 Fourier 定理关闭了“投影越稳定，协方差功越受控”的符号推理；集中定理关闭了在同一恒等式里继续更换 Hölder 指数来获得 \(L_t^2\) 的尝试。</p>
+          <p>这些结论可作为一篇分析方法论文中的 no-go 引理或证明边界，但尚未得到新的无条件继续性判据，也没有缩小所有潜在奇性解的集合。对 Clay 问题的直接价值仍然有限，间接价值在于避免继续投入一条已经被精确反例和标度同时阻断的子路线。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next analytic gate</div><h2>R0.71B 检查 common-response 的有符号 tent / Carleson 候选</h2>
+          <p>下一步先定义一个具有正确 Navier–Stokes 缩放、能够看见 common-response 幅值的尺度局部候选量。它必须在本节的恒定投影三波上给出非零响应，不能只测量 response chord 或 \(\nabla P_1\)。</p>
+          <p>随后堆叠少量严格分离的精确 HHL atoms，比较协方差功、候选 Carleson 量与经典 \(\|\omega\|_{\mathrm{BMO}}\|\omega\|_2^2\)。若候选量只与 BMO 等价，就把该分支归档为经典重写；只有它严格更弱且仍支持 Hardy–Carleson 配对时，才进入定理证明。这个门槛仍是解析与有限精确计算，不需要 DGX 或 DNS。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>定理、条件结果和开放问题分开记录</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>恒定投影协方差功符号 no-go</strong><p>同一 \(Q\)、强谱隙和零交换子对应相反的非零功。</p></div>
+            <div class="status"><span>PROVED</span><strong>临界能量方法的 \(L_t^1\) 边界</strong><p>同范数集中序列排除仅由三项范数得到任何 \(L_t^s,\ s&gt;1\) 控制。</p></div>
+            <div class="status"><span>CONDITIONAL</span><strong>有限 \(p\) 加权继续性</strong><p>额外假设 \(\mathfrak W_{L,p}&lt;\infty\) 时可以闭合，但该量尚未传播。</p></div>
+            <div class="status"><span>OPEN</span><strong>有符号 common-response 补偿</strong><p>Carleson、BMO、残差与真实协方差动力学能否给出 \(L_t^2\) 仍未知。</p></div>
+          </div>
+          <p>有限 Fourier 场和集中序列都不是 Navier–Stokes 奇解。这里没有证明临界投影继续性准则为假，没有构造有限时奇性，也没有证明全局光滑性。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>报告、文献审计、独立复核和精确证书已经封存</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071a_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071a_literature_audit.md">查看一手文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071a_independent_audit.md">查看独立数学复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070p_report-source.md">查看 R0.70P 条件投影桥</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070y_report-source.md">查看 R0.70Y response-slope 门槛</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070z_report-source.md">查看 R0.70Z common-response 分解</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071a">查看精确证书与 SHA-256 清单</a> · <a href="/notes/r0-71a.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>精确生产器使用 SymPy 有理数与代数数运算，复算三次功、十模态共振、强谱隙、临界指数和两个非零种子。完整仓库回归为 705 / 705；网页构建与英语目录另行验证。该小节没有使用网络数值搜索、GPU、DGX 或 DNS。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确构造、方法边界、条件结果与开放问题分开记录。</div><div>R0.71A · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

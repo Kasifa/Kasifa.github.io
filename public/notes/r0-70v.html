@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70V：完整框架缺陷的精确 carré-du-champ 与 Fourier response-distance 分解；全张量不受秩残差控制，strain-projected critical defect 保留。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70V｜跨尺度缺陷有非负 response-distance 核，拉伸只看其中一个投影">
+  <meta property="og:description" content="完整框架缺陷的精确 carré-du-champ 与 Fourier response-distance 分解；全张量不受秩残差控制，strain-projected critical defect 保留。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70V｜跨尺度缺陷有非负 response-distance 核，拉伸只看其中一个投影</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70V · RESPONSE DISTANCE · PROJECTED DEFECT</div><h1>跨尺度缺陷有非负 response-distance 核，<br>拉伸只看其中一个投影</h1><p class="lead">R0.70U 留下跨尺度张量 \(\mathcal D_\times=\omega\otimes\omega-Q\)。本节给出它的精确 Fourier 核：每一对输入频率的权重都是框架响应向量之间的平方距离。该核在同半径处二次消失，但完整张量仍不是拉伸账本所需的最小对象。</p></div>
+      <div class="stamp"><span class="state">状态 · response-distance 恒等式与投影账本完成</span><strong>全张量路线关闭；strain-projected 量保留</strong><p>版本 v0.70V · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>完整 Parseval 框架产生一个非负平方弦长核</h2><p>若 \(V(k)\) 是频率 \(k\) 的完整响应向量，则</p><div class="equation result">\[\widehat{\mathcal D_\times}(n)=\sum_{p+q=n}K(p,q)\widehat\omega(p)\otimes\widehat\omega(q),\qquad K(p,q)={1\over2}\|V(p)-V(q)\|_{\ell^2}^2.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>涡量拉伸只使用 strain-compatible 投影</h2><p>定义 \(\nu_n=n/|n|\) 与</p><div class="equation result">\[\mathfrak X_\times=\sum_{n\ne0}|n|^{-2}|\nu_n\times\widehat{\mathcal D_\times}(n)\nu_n|^2.\]</div><p>Biot–Savart 与 Cauchy–Schwarz 给出精确的粘性吸收账本</p><div class="equation">\[|\mathfrak E_S|\le\|\nabla\omega\|_2\mathfrak X_\times^{1/2}\le{\nu\over2}\|\nabla\omega\|_2^2+{1\over2\nu}\mathfrak X_\times.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>response chord 揭示了真实的尺度局部性：同半径相互作用完全消失，窄径向带得到 mode-count 无关的正估计。与此同时，strain projection 删除了对拉伸无贡献的张量方向，使下一门槛更窄。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>公式只是吸收账本。尚未证明 \(\int\mathfrak X_\times dt\) 的能量级控制，主项 \(\int S:Q\) 也未处理。秩一协方差不能控制完整 \(\mathcal D_\times\)，但这不自动否定其 strain projection。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70W 的检查点</h2><p>R0.70W 检查 pairwise polarization-area 估计在跨壳求和后能否控制 \(\mathfrak X_\times\)。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070v_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070v_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070v">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70v.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70V · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

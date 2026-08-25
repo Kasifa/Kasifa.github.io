@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70U：固定三频精确族证明：近秩残差不能以优于平方根的幂控制有符号协方差余项；平方根阶仍未被排除。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70U｜残差是二次小量，有符号余项却保留一次项">
+  <meta property="og:description" content="固定三频精确族证明：近秩残差不能以优于平方根的幂控制有符号协方差余项；平方根阶仍未被排除。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70U｜残差是二次小量，有符号余项却保留一次项</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70U · SIGNED REMAINDER · SQUARE-ROOT FRONTIER</div><h1>残差是二次小量，<br>有符号余项却保留一次项</h1><p class="lead">本节用一个不移动频率的三频族检验残差压缩。所有普通固定频率范数与主谱隙保持有界，协方差残差按 ε² 消失，而完整有符号余项含有非零的 ε 一次项。</p></div>
+      <div class="stamp"><span class="state">状态 · 优于平方根的残差幂路线关闭</span><strong>有限 Fourier 证书锁定一阶共振系数</strong><p>版本 v0.70U · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>线性残差控制和所有更高幂同时失败</h2><p>对每个 \(1\le p\le\infty\)，精确三频族满足</p><div class="equation result">\[\|r_\varepsilon\|_{L^p}=\Theta(\varepsilon^2),\qquad \mathfrak R_{\mathrm{sgn}}(\omega_\varepsilon)=c_0\varepsilon+O(\varepsilon^2),\quad c_0\ne0.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>平方根是该族暴露出的代数边界</h2><p>若 prefactor 沿族局部有界，则下面的估计对任何 \(\theta>1/2\) 都不可能成立：</p><div class="equation result">\[|\mathfrak R_{\mathrm{sgn}}|\le F_\varepsilon\|r_\varepsilon\|_{L^p}^{\theta}.\]</div><p>这个结论包含线性残差与有界权重残差估计，但没有排除 \(\theta=1/2\)，也没有排除投影导数、框架交换子、跨尺度张量或时间积分后的抵消。</p><div class="equation">\[\mathcal D_\times=\omega\otimes\omega-Q\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>残差只记录协方差离开秩一面的面积大小，却丢掉了产生一次共振的跨尺度相位信息。后续必须保留 \(\mathcal D_\times\) 或等价的 response-coherence 数据。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>这是单时刻运动学估计的反例，不是 Navier–Stokes 长时间行为结论。它没有否定平方根阶、有符号时间抵消或任何使用更多结构的估计。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70V 的检查点</h2><p>R0.70V 求出 \(\mathcal D_\times\) 的精确 Fourier response-distance 核，并确定拉伸真正看见的投影范数。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070u_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070u_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070u_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070u">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70u.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70U · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -23,6 +23,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Verify publication completeness, links, and bilingual coverage
+        run: >-
+          node --test
+          tests/release-publication-invariant.test.mjs
+          tests/internal-public-links.test.mjs
+          tests/bilingual-content.test.mjs
       - name: Prepare static artifact
         run: |
           mkdir -p _site

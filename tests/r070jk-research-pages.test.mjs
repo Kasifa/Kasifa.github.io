@@ -28,7 +28,7 @@ function assertLocalAnchorsResolve(html, minimum) {
 
 function assertBilingualAssetsPrecedeMathJax(html) {
   const css = html.indexOf('href="/bilingual.css"');
-  const dictionary = html.indexOf('src="/i18n-en.js?v=0.81"');
+  const dictionary = html.indexOf('src="/i18n-en.js?v=0.86"');
   const runtime = html.indexOf('src="/bilingual.js"');
   const mathJax = html.indexOf("mathjax@3/es5/tex-mml-chtml.js");
   assert.ok(css >= 0 && dictionary > css && runtime > dictionary);

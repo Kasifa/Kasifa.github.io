@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70R：近秩一协方差的谱曲率—投影扩散差有精确且最优的平方根残差界；右端仍是完整 palinstrophy 密度。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70R｜近秩一扩散缺口只有平方根损失，但仍停在涡量梯度层">
+  <meta property="og:description" content="近秩一协方差的谱曲率—投影扩散差有精确且最优的平方根残差界；右端仍是完整 palinstrophy 密度。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70R｜近秩一扩散缺口只有平方根损失，但仍停在涡量梯度层</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70R · NEAR-RANK DIFFUSION · SHARP DEFICIT</div><h1>近秩一扩散缺口只有平方根损失，<br>但仍停在涡量梯度层</h1><p class="lead">R0.70Q 在严格秩一处得到非正扩散贡献。本节把该事实推进到近秩一情形：最坏正误差只按第二特征值比的平方根增长，而且常数不能改进。代价是右端仍含完整块梯度密度，也就是空间积分后的 palinstrophy。</p></div>
+      <div class="stamp"><span class="state">状态 · 尖锐有限维不等式与等号流完成</span><strong>谱分母被定量消除；能量闭合未完成</strong><p>版本 v0.70R · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>谱曲率与投影扩散必须作为一个整体估计</h2><p>令 \(\rho=\lambda_2/\lambda_1<1\)，则</p><div class="equation result">\[\mathcal D_P-\mathcal K_Q\ge-{\sqrt\rho\over1-\sqrt\rho}\,\mathcal G.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>残差比形式显示平方根阶</h2><p>若 \(\eta=r/E<1/2\)，由 \(\rho\le\eta/(1-\eta)\) 得到</p><div class="equation result">\[\mathcal D_P-\mathcal K_Q\ge- {\sqrt\eta\over\sqrt{1-\eta}-\sqrt\eta}\,\mathcal G.\]</div><p>固定框架内的两频无散周期涡量在一点实现等号，并来自一个光滑全局剪切热流。因此平方根系数不是证明松弛造成的。</p><div class="equation">\[\int_{\mathbb T^3}\mathcal G\,dx=\|\nabla\omega\|_2^2.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这一结果删除了不受控的裸谱分母，说明近秩一确实改善扩散账本；同时它精确标出改善停在哪里：误差仍乘以高一阶的涡量梯度。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>定理是系数层的尖锐扩散不等式，不是能量层估计。等号样本是光滑全局剪切解，不表示存在奇性，也没有控制涡量拉伸。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70S 的检查点</h2><p>R0.70S 检查 R0.70Q 的能量级结构量能否控制这个 palinstrophy majorant 的时空积分。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070r_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070r_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070r">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70r.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70R · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

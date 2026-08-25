@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70P：完整 Littlewood–Paley 框架给出能量级平方交换子估计与周期投影继续性桥；Navier–Stokes 协方差是否传播这些假设仍未解决。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70P｜完整框架修复高频盲区，但投影桥仍是条件性的">
+  <meta property="og:description" content="完整 Littlewood–Paley 框架给出能量级平方交换子估计与周期投影继续性桥；Navier–Stokes 协方差是否传播这些假设仍未解决。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70P｜完整框架修复高频盲区，但投影桥仍是条件性的</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70P · COMPLETE FRAME · CONDITIONAL BRIDGE</div><h1>完整框架修复高频盲区，<br>但投影桥仍是条件性的</h1><p class="lead">R0.70O 排除了高频盲的有限标量观测。本节改用完整光滑框架，证明重建损失只剩一个平方交换子，并把它降到能量级。由此得到严格的周期条件继续性桥，但协方差主投影所需的残差与方向正则性尚未从方程传播出来。</p></div>
+      <div class="stamp"><span class="state">状态 · 条件桥证明完成；传播门槛保持开放</span><strong>框架门、交换子门和周期 consumer 均通过</strong><p>版本 v0.70P · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>完整框架把变投影误差压缩为一个平方交换子</h2><p>对固定的实、偶、径向光滑 Littlewood–Paley Parseval 框架，矩阵场 \(A\) 与零均值 \(f\) 满足能量级端点估计</p><div class="equation result">\[\left(\sum_\alpha\|[T_\alpha,A]f\|_2^2\right)^{1/2}\le C_\varphi\|\nabla A\|_\infty\|f\|_{\dot H^{-1}}.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>周期投影 criterion 不需要选择全局有向特征向量</h2><p>若 \(L\) 是可测秩一正交投影，\(P=I-L\)，那么最大周期 \(H^1\) 强解在下面两个条件下可延拓：</p><div class="equation result">\[\operatorname*{ess\,sup}_{0<t<T_{\max}}\|\nabla L(t)\|_\infty<\infty,\qquad P\omega\in L_t^4L_x^2.\]</div><p>把框架残差 \(R(t)=\sum_\alpha\|PT_\alpha\omega(t)\|_2^2\) 与交换子估计合并，得到</p><div class="equation">\[\|P\omega\|_{L_t^4L_x^2}\le a_0^{-1/2}\!\left(\|R\|_{L_t^2}^{1/2}+C_{\mathcal T}\|u-\bar u\|_{L_t^\infty L_x^2}\|\nabla P\|_{L_t^4L_x^\infty}\right).\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这一步把“有限滤波看不见高频”的问题与真正的动力学传播问题分开了。调和分析重建已经闭合，剩余困难不再是选择更多滤波器，而是证明协方差残差、谱隙和方向代价由 Navier–Stokes 演化控制。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>这是条件继续性桥，不是无条件正则性定理。报告没有证明协方差主投影满足这些假设，也没有从 Leray 能量推出 \(R\in L_t^2\) 或 \(\nabla P\in L_t^4L_x^\infty\)。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70Q 的检查点</h2><p>R0.70Q 直接推导过滤协方差的演化方程，检查方程能否传播残差、谱隙与投影正则性。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070p_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070p_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070p_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070p">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70p.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70P · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70C：偶对称小数据 Navier–Stokes 解把运动学符号缺陷升级为真实全局光滑轨道障碍；缺陷已存在于线性热层。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70C｜真实全局光滑小数据轨道中，有符号积分仍可比绝对活动低一阶">
+  <meta property="og:description" content="偶对称小数据 Navier–Stokes 解把运动学符号缺陷升级为真实全局光滑轨道障碍；缺陷已存在于线性热层。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70C｜真实全局光滑小数据轨道中，有符号积分仍可比绝对活动低一阶</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70C · DYNAMIC SIGN DEFECT · LINEAR PARITY</div><h1>真实全局光滑小数据轨道中，<br>有符号积分仍可比绝对活动低一阶</h1><p class="lead">R0.70B 的反例只在运动学层面。本节构造全局光滑、有限能量的小数据全空间解：绝对环带活动为三阶，而 signed integral 由于奇偶性只从四阶开始；再用两个分离副本与隐函数调节，可使时空 signed work 精确为零。</p></div><div class="stamp"><span class="state">状态 · 动态符号恢复路线关闭于一个固定泛函</span><strong>真实 NSE 小数据解族与精确零调节完成</strong><p>版本 v0.70C · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>符号缺陷已经出现在三次线性热层</h2><p>对固定偶滤子、偶环带窗与偶空间 cutoff，存在全局光滑小数据解 \(u^\varepsilon\)，使</p><div class="equation result">\[P_I[u^\varepsilon]=A_I\varepsilon^3+O_I(\varepsilon^4),\qquad W_I[u^\varepsilon]=O_I(\varepsilon^4),\qquad {|W_I|\over P_I}\longrightarrow0.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>两副本振幅调节把 signed work 精确压到零</h2><p>在足够大的固定偶 cutoff 与足够短时间柱上，隐函数给出振幅参数，使</p><div class="equation result">\[W_I[u^\varepsilon]=0,\qquad P_I[u^\varepsilon]>0,\qquad D_I^{\mathrm{sign}}[u^\varepsilon]=P_I[u^\varepsilon].\]</div><p>线性种子满足 \(U(-x)=U(x)\)、\(\Omega(-x)=-\Omega(x)\)，从而局部环带密度为奇函数；非线性修正只从下一振幅阶进入。</p><div class="equation">\[w_\eta[U](-x)=-w_\eta[U](x).\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>这一步证明 signed cancellation 不是只能由强湍流产生的高阶效应。任何成功闭合都必须保留独立的正三次储备，或加入明确排除该奇偶族的结构。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>结论针对一个固定泛函和刻意构造的小数据解。精确零调节需要能容纳两个分离副本的大 cutoff；不排除方向相干、正时间大数据或近奇点非退化假设。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70D 的检查点</h2><p>R0.70D 先做纯测度论门槛：固定尺度的正局部平均能否控制未解析负质量。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070c_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070c">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070c-parity-obstruction/fig-r070c-parity-obstruction">期刊附图包</a></p><p><a href="/notes/r0-70c.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70C · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

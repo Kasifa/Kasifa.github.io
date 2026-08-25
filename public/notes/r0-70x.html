@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70X：精确有限 Fourier 场关闭直接 covariance-area signed bound；循环 Laplacian 权重恒等式同时给出尖锐的一阶 high–high–low 增益。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70X｜协方差秩至多一，有符号 frame-defect work 仍可非零">
+  <meta property="og:description" content="精确有限 Fourier 场关闭直接 covariance-area signed bound；循环 Laplacian 权重恒等式同时给出尖锐的一阶 high–high–low 增益。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70X｜协方差秩至多一，有符号 frame-defect work 仍可非零</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70X · CYCLIC NULL · SIGNED OBSTRUCTION</div><h1>协方差秩至多一，<br>有符号 frame-defect work 仍可非零</h1><p class="lead">R0.70W 的反例没有产生 signed work。本节补上这一缺口：存在光滑有限 Fourier 无散场，使完整框架协方差处处秩至多一、物理面积恒为零，但 strain 与 frame defect 的有符号配对严格为负。</p></div>
+      <div class="stamp"><span class="state">状态 · 直接物理面积 signed bound 关闭；循环 null 保留</span><strong>负结论与正尺度增益同时精确认证</strong><p>版本 v0.70X · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>秩一几何不足以迫使 frame-defect work 消失</h2><p>精确构造满足</p><div class="equation result">\[\operatorname{rank}Q\le1,\qquad G_Q\equiv0,\qquad \mathfrak E_S<0.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>三种 strain placement 具有 Laplacian 加权循环 null</h2><p>若 \(n+p+q=0\)，且三极化分别横截对应频率，则</p><div class="equation result">\[|n|^2A_n+|p|^2A_p+|q|^2A_q=0.\]</div><p>在 high–high–low 三角形中，三种 placement 合并后获得一个 \(t/R\) 的壳间增益；显式族证明一阶是 orbitwise 尖锐的。</p><div class="equation">\[\text{HHL gain}\sim {\text{low radius}\over\text{high radius}}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这一步说明物理协方差面积压缩得过早，但三线性形式本身保留真实的循环消去。后续估计应在卷积前保留 response 权重与三种 strain placement，而不是先取正 definite 面积。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>循环恒等式给出尺度局部性，不会让秩一场的 signed work 自动为零，也没有单独改进经典三次涡量界。本节没有得到时间可积性或继续性定理。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70Y 的检查点</h2><p>R0.70Y 把循环增益提升为完整 multiplier 与临界 Besov 求和，并检查更强的正主特征值假设。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070x_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070x_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070x_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070x">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70x.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70X · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

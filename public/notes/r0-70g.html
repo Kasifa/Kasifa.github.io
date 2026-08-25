@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70G：相邻源 jet 的临界输运因子不是一；源侧有耗散级平方和，核心侧精确对偶估计仍缺失。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70G｜物理源可以望远镜相消，临界归一化却留下固定伸缩缺陷">
+  <meta property="og:description" content="相邻源 jet 的临界输运因子不是一；源侧有耗散级平方和，核心侧精确对偶估计仍缺失。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70G｜物理源可以望远镜相消，临界归一化却留下固定伸缩缺陷</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70G · ADJACENT SOURCE · DILATION DEFECT</div><h1>物理源可以望远镜相消，<br>临界归一化却留下固定伸缩缺陷</h1><p class="lead">本节检验相邻物理 annuli 是否像 martingale difference。未归一化源确实望远镜相消；进入 Navier–Stokes 临界坐标后，普通系数一差分变成带固定衰减的协变输运，持续基线不会消失。</p></div><div class="stamp"><span class="state">状态 · 普通相邻差分捷径关闭；源侧平方函数保留</span><strong>临界 transport law 与三组压力测试完成</strong><p>版本 v0.70G · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>临界坐标中的相邻差分带有 n 依赖的 dilation factor</h2><p>对 \(c_j^{(n)}=r_j^{n+2}P_j^{(n)}\) 与 annular coefficient \(h_j^{(n)}\)，有</p><div class="equation result">\[h_j^{(n)}=c_j^{(n)}-2^{-(n+2)}c_{j-1}^{(n)}.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>Leray dissipation 控制源侧带权平方和</h2><p>固定中心与固定源满足</p><div class="equation result">\[\sum_jr_j^{2n+3}|J_j^{(n)}(x_0)|^2\le C_n\|\Omega\|_2^2,\qquad \sum_jr_j^{-1}|h_j^{(n)}|^2\le C_n\|\Omega\|_2^2.\]</div><p>直接 Cauchy–Schwarz 仍需要核心零阶与一阶矩的负权重平方和；有限能量没有提供该对偶量。</p><div class="equation">\[\sum_j\bigl(r_j^{-3}|M_j^{(0)}|^2+r_j^{-5}|M_j^{(1)}|^2\bigr)<\infty.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果把“望远镜恒等式成立”和“临界归一化后可用普通差分”分开，并把后续问题定位为核心矩的局部 Carleson 或配对变化估计。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>结论使用固定源、固定滤波器与固定中心；physical cutoff 不是 Fourier LP projection。压力测试是初始面复现，没有共同正终点，也不证明 moving-shell packing。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70H 的检查点</h2><p>R0.70H 推导核心矩在相邻滤波尺度和嵌套时间窗下的精确变化与对偶坐标。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070g_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070g_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070g">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070g-critical-transport/fig-r070g-critical-transport">期刊附图包</a></p><p><a href="/notes/r0-70g.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70G · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

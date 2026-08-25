@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70W：分离半径的秩一周期场证明：物理 frame area 及其逆频变换不能控制 strain-projected frame defect；该样本的 signed work 恰为零。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70W｜物理协方差面积处处为零，投影缺陷仍严格为正">
+  <meta property="og:description" content="分离半径的秩一周期场证明：物理 frame area 及其逆频变换不能控制 strain-projected frame defect；该样本的 signed work 恰为零。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70W｜物理协方差面积处处为零，投影缺陷仍严格为正</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70W · PHYSICAL AREA · SUMMATION NO-GO</div><h1>物理协方差面积处处为零，<br>投影缺陷仍严格为正</h1><p class="lead">本节检验 R0.70V 的 pairwise 面积估计能否在全频求和后变成物理协方差面积范数。一个两壳、点态共线的周期场给出否定答案：每个框架块都平行，协方差严格秩一，但跨壳 response 差仍留下非零投影缺陷。</p></div>
+      <div class="stamp"><span class="state">状态 · 物理面积到投影缺陷的求和路线关闭</span><strong>信息损失反例为精确有限 Fourier 场</strong><p>版本 v0.70W · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>点态共线并不等于 response 预卷积共线</h2><p>取 \(\omega_\varepsilon=w+\varepsilon gw\)，其中 \(w=e_1\cos x_2-e_2\cos x_1\)、\(g=\cos4x_3\)。严格分离的径向响应给出</p><div class="equation result">\[Q_\varepsilon=(1+\varepsilon^2g^2)w\otimes w,\qquad G_Q\equiv0,\qquad r\equiv0.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>跨壳 frame defect 与其投影范数仍不为零</h2><p>直接计算得到</p><div class="equation result">\[\mathcal D_{\times,\varepsilon}=2\varepsilon g\,w\otimes w,\qquad \mathfrak X_{\times,\varepsilon}={2\over729}\varepsilon^2>0.\]</div><p>因此任何在 \(G_Q=0\) 时消失的 definite 右端都不能控制 \(\mathfrak X_\times\)。但该样本的 signed work 正好为零：</p><div class="equation">\[\mathfrak E_S(\omega_\varepsilon)=0.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>反例区分了两个层次：物理空间的块面积已经丢掉 response-frequency 标签，无法恢复正投影缺陷；有符号三线性配对仍可能因 Fourier 支撑而取消。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>本节关闭的是“物理面积 → definite 投影范数 → signed work”的间接路线。由于样本的 signed work 为零，它没有关闭直接估计 \(\mathfrak E_S\) 的可能性。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70X 的检查点</h2><p>R0.70X 直接构造有非零 signed work 的秩至多一协方差场，并寻找三线性循环消去。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070w_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070w_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070w">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70w.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70W · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

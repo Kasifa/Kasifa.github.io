@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70S：一列光滑全局周期剪切热流证明：能量、协方差残差、精确交换子与加权方向代价不能统一控制近秩一 palinstrophy majorant。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70S｜四个能量级输入同时趋零，近秩一 palinstrophy majorant 仍可发散">
+  <meta property="og:description" content="一列光滑全局周期剪切热流证明：能量、协方差残差、精确交换子与加权方向代价不能统一控制近秩一 palinstrophy majorant。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70S｜四个能量级输入同时趋零，近秩一 palinstrophy majorant 仍可发散</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70S · ENERGY-LEVEL NO-GO · PALINSTROPHY</div><h1>四个能量级输入同时趋零，<br>近秩一 palinstrophy majorant 仍可发散</h1><p class="lead">本节对 R0.70R 的正 majorant 做直接压力测试。构造是一列光滑全局周期剪切热流：近秩一比保持统一，R0.70Q 的四个输入全部趋于零，而需要控制的 palinstrophy majorant 却趋于无穷。</p></div>
+      <div class="stamp"><span class="state">状态 · 能量级统一 majorant 路线关闭</span><strong>全局光滑序列给出严格尺度分离</strong><p>版本 v0.70S · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>低阶结构信息看不见上移的 palinstrophy 尺度</h2><p>对每个固定 \(T,\nu>0\)，存在光滑全局周期解序列，使</p><div class="equation result">\[\|u_{N,*}(0)\|_2^2+\|R_N\|_{L_t^2}+\|\mathfrak C_{P_N}\|_{L_t^2}+\mathfrak W_{L_N}\longrightarrow0,\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>目标积分却反向发散</h2><p>在统一的点态近秩一上界下，仍有</p><div class="equation result">\[\int_0^T\!\!\int_{\mathbb T^3}c_{r_N/E_N}\,\mathcal G_N\,dx\,dt\longrightarrow+\infty.\]</div><p>因此，任何在上述四个标量输入的零点附近局部有界的右端，都不可能控制 R0.70R majorant。样本的初始 enstrophy 发散，说明缺失信息正是导数尺度。</p><div class="equation">\[\|\omega_N(0)\|_2\longrightarrow\infty\quad\text{沿该尺度序列}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这是一次干净的路线筛选：继续组合同一组能量级标量不会解决问题。后续要么显式加入能看见频率上移的量，要么保留扩散与拉伸中的有符号抵消。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>序列中的每个解都光滑且全局存在，初始 enstrophy 并不统一有界。因此它不排除含初始 H1、频率矩或更高正则性的估计，更不是爆破解。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70T 的检查点</h2><p>R0.70T 放弃正 majorant，回到完整的有符号涡量拉伸恒等式。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070s_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070s_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070s">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70s.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70S · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70F：固定外源环带的 affine jet 有精确 Taylor 尺度增益；常数与线性 jet 可在统一小数据类的初始面同号线性累积。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70F｜harmonic Taylor 展开逐阶增益，固定阶数仍不能阻止线性累计">
+  <meta property="og:description" content="固定外源环带的 affine jet 有精确 Taylor 尺度增益；常数与线性 jet 可在统一小数据类的初始面同号线性累积。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70F｜harmonic Taylor 展开逐阶增益，固定阶数仍不能阻止线性累计</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70F · AFFINE JET · INITIAL-FACE SATURATION</div><h1>harmonic Taylor 展开逐阶增益，<br>固定阶数仍不能阻止线性累计</h1><p class="lead">固定源 harmonic strain 可以合法做 Taylor 展开，且每多减一阶都获得一个尺度比；但 trace-free、divergence-free 与 harmonic 结构不消去常数和线性 jet。任意长初始面族在统一能量和小 \(BMO^{-1}\) 控制下仍可积累同号配对。</p></div><div class="stamp"><span class="state">状态 · 逐项绝对值的无权 affine-jet majorant 路线关闭</span><strong>精确 Taylor 幂次与初始面饱和族完成</strong><p>版本 v0.70F · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>Taylor remainder 的尺度比幂次是精确的</h2><p>令 \(\theta=r_k/r_j\)。常数、线性、二次 jet 以及更高余项满足</p><div class="equation result">\[|\mathcal W^{(n)}_{j,k}|\le C\theta^{n+1}\mathfrak A^\psi_{j,k}\mathcal Q_k\ (n=0,1,2),\qquad |\mathcal W^{(3+)}_{j,k}|\le C\theta^4\mathfrak A^\psi_{j,k}\mathcal Q_k.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>统一小数据初始面仍可产生线性正累计</h2><p>存在嵌套有限族，使</p><div class="equation result">\[\sup_N(\|f_N^{(q)}\|_2+\|f_N^{(q)}\|_{BMO^{-1}})<\infty,\qquad \sum_{n=1}^N\mathcal J_n^{(q)}\ge c_qN,\quad q=0,1.\]</div><p>固定 gap 幂 \(\beta>0\) 对仅有界 reservoir 序列仍线性累计；即使 affine remainder 对应 \(\beta=3\)，斜率仍为 \(1/7\)。</p><div class="equation">\[\sum_{k=1}^N\sum_{j<k}2^{-\beta(k-j)}={N\over2^\beta-1}-{1-2^{-\beta N}\over(2^\beta-1)^2}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果区分了“尺度差上的 Taylor gain”与“粗尺度数量上的 packing”。后续需要 source-aware difference、Carleson、正交性或明确 decorrelation，而不是继续提高固定 Taylor 阶数。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>饱和只在初始面成立，不是一个共同正终点的 backward-cylinder 反例。它否定的是逐项绝对值、无权、bounded-reservoir majorant，不否定真实时空抵消或条件 Carleson 机制。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70G 的检查点</h2><p>R0.70G 把 raw annular jet 换成 adjacent-source difference，并推导临界归一化后的精确 transport law。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070f_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070f_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070f">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070f-affine-jet-saturation/fig-r070f-affine-jet-saturation">期刊附图包</a></p><p><a href="/notes/r0-70f.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70F · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

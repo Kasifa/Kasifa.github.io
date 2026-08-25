@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70I：核心对偶范数产生 s^-1/2 时间 Hardy 核；frozen-low/annular 与 isotropic diagonal 闭合，moving-low 和 deviatoric diagonal 保持开放。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70I｜负尺度核心范数化成尖锐 Hardy 核，frozen-low sector 可以闭合">
+  <meta property="og:description" content="核心对偶范数产生 s^-1/2 时间 Hardy 核；frozen-low/annular 与 isotropic diagonal 闭合，moving-low 和 deviatoric diagonal 保持开放。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70I｜负尺度核心范数化成尖锐 Hardy 核，frozen-low sector 可以闭合</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70I · TEMPORAL HARDY · FROZEN-LOW CLOSURE</div><h1>负尺度核心范数化成尖锐 Hardy 核，<br>frozen-low sector 可以闭合</h1><p class="lead">本节把 R0.70H 的负尺度损失精确化成一维时间 Hardy 核。无限细链产生 \(s^{-1/2}\|\omega\|_2^4\)，超出 Leray 的时间信息；但标准 LP 分解下，完整 frozen outer-low/annular sector 可以绝对值闭合。</p></div><div class="stamp"><span class="state">状态 · frozen-low 正结果完成；moving-low 与偏差对角项保持开放</span><strong>Hardy 核、有限链饱和与初始边界 sharpness 完成</strong><p>版本 v0.70I · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>无限链的核心对偶范数具有 s^-1/2 时间核</h2><p>对 \(n=0,1\)，实际核心量满足</p><div class="equation result">\[\mathcal T_n\lesssim\int_0^{r_0^2}s^{-1/2}\|\omega(t_0-s)\|_2^4\,ds,\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>frozen-low/annular 下三角数组在能量层闭合</h2><p>若源 coefficient square function 为 \(\mathsf C\)，则</p><div class="equation result">\[|\mathscr W_{\mathrm{frozen\text{-}low/mixed}}|\lesssim r_0^{-3/2}\|u\|_{L_t^\infty L_x^2}\mathsf C\|\omega\|_{L_t^2L_x^2}.\]</div><p>有限链的精确 kernel 在最细尺度饱和为 \(\min\{r_K^{-1},s^{-1/2}\}\)。isotropic high–high 因 source strain trace-free 消失，deviatoric diagonal 仍需未控制的四次壳和。</p><div class="equation">\[\int\sum_kr_k^{-1}\|W_k(t)\|_2^4\,dt\quad\text{仍未由 Leray 账本控制}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果把整个 quadratic core 缩小到 moving-low 与 deviatoric high–high diagonal 两个 sector，并证明 outer-scale loss 与 Hardy 临界核不是粗糙估计的假象。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>标量 s^-alpha profile 只是函数空间障碍，不是 NSE 轨道。初始边界 sharpness 使用不同缩放的小数据解且终点趋零；不是一个解在固定正时间集中。端点 p=8 与大数据行为均未解决。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70J 的检查点</h2><p>R0.70J 直接检查偏差 high–high tensor 与外部 harmonic strain 是否具有新的有符号零结构。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070i_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070i_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070i_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070i">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070i-temporal-hardy/fig-r070i-temporal-hardy">期刊附图包</a></p><p><a href="/notes/r0-70i.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70I · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

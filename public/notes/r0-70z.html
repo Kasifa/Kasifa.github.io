@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70Z：完全相同协方差的有限 Fourier 符号对关闭强主谱隙的符号律；投影导数公式成立，但完整 stretching 仍含阶一 common-response 通道。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70Z｜协方差完全相同且谱隙很强，主功仍可以反号">
+  <meta property="og:description" content="完全相同协方差的有限 Fourier 符号对关闭强主谱隙的符号律；投影导数公式成立，但完整 stretching 仍含阶一 common-response 通道。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70Z｜协方差完全相同且谱隙很强，主功仍可以反号</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70Z · EIGENGAP SIGN NO-GO · TWO-CHANNEL LIFT</div><h1>协方差完全相同且谱隙很强，<br>主功仍可以反号</h1><p class="lead">本节给强主谱隙分支一个直接检验。两组光滑有限 Fourier 涡量场具有完全相同的点态协方差、相同主投影与统一强谱隙，主协方差功却大小相同、符号相反。</p></div>
+      <div class="stamp"><span class="state">状态 · 主谱隙符号律关闭；common-response 通道保留</span><strong>相同 Q 的精确符号对与两通道分解完成</strong><p>版本 v0.70Z · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>任何只依赖 Q 的符号律都无法区分这对场</h2><p>对每个 \(\Lambda>0\)，精确符号对满足</p><div class="equation result">\[Q(\omega_{\Lambda,+})=Q(\omega_{\Lambda,-}),\quad \lambda_1-\lambda_2\ge8\Lambda^2,\quad {\lambda_1-\lambda_2\over\operatorname{tr}Q}\ge{1\over2},\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>主协方差功的符号仍相反</h2><p>同一 \(Q\) 对应</p><div class="equation result">\[\mathfrak P_Q(\omega_{\Lambda,\pm})=\pm{9\sqrt{41}\over164}\Lambda^3.\]</div><p>谱隙确实给出投影微分的上界，但不控制协方差功：</p><div class="equation">\[DP_1[H]=\sum_{j=2}^3{P_jHP_1+P_1HP_j\over\lambda_1-\lambda_j},\qquad |DP_1[H]|_F\le{|H|_F\over\lambda_1-\lambda_2}.\]</div><p>预卷积的两通道 lift 表明 response-difference 通道继承 R0.70Y 的弦增益，而 common-response 通道在 HHL 相互作用中仍为阶一。</p></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>结论把“方向稳定”与“功的符号”彻底分开。谱隙能控制给定 Q 的投影灵敏度，却不能恢复生成 Q 时被平方化丢失的 Fourier 符号。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>反例是运动学有限 Fourier 场，不是 Navier–Stokes 解，更不是奇解。它不排除同时使用幅值、下平面残差、方向相干、strain alignment 或真实时间演化的估计。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.71A 的检查点</h2><p>R0.71A 把主投影进一步固定为常数，并对临界投影能量方法做同范数集中检验。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070z_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070z_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070z_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070z">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70z.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70Z · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

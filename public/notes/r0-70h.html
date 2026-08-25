@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70H：零阶与一阶临界核心矩有逐时 l1 变化估计；实际时空功额外含 r_k^-2，缺口是加权抛物 source–core embedding。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70H｜固定时间核心矩变化可控，嵌套时间窗却放大两个临界尺度">
+  <meta property="og:description" content="零阶与一阶临界核心矩有逐时 l1 变化估计；实际时空功额外含 r_k^-2，缺口是加权抛物 source–core embedding。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70H｜固定时间核心矩变化可控，嵌套时间窗却放大两个临界尺度</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70H · CORE MOMENT · PARABOLIC DUALITY GAP</div><h1>固定时间核心矩变化可控，<br>嵌套时间窗却放大两个临界尺度</h1><p class="lead">源侧平方函数已经存在，本节计算与之配对的核心矩。固定时间、固定中心的临界零阶与一阶矩确有总变化界；但实际嵌套时空坐标多出 \(r_k^{-2}\)，配对后形成 \(r_k^{-3}\) 负权重。</p></div><div class="stamp"><span class="state">状态 · 固定时间正估计完成；抛物型对偶缺口定位</span><strong>普通 moment variation 不是缺失桥</strong><p>版本 v0.70H · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>临界核心矩的无权固定时间变化受涡量能量控制</h2><p>对 \(m_k^{(0)}=r_kM_k^{(0)}\)、\(m_k^{(1)}=M_k^{(1)}\)，显式 square-function 假设给出</p><div class="equation result">\[\sum_k|m_{k+1}^{(n)}-m_k^{(n)}|\lesssim r_0\|\omega\|_2^2,\qquad n=0,1.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>实际时空坐标带来 r_k^-2 放大</h2><p>真正进入 R0.70F work 的坐标是 \(\mathcal N_k^{(n)}=r_k^{-2}\mathbf1_{I_k}m_k^{(n)}\)，其直接对偶需要</p><div class="equation result">\[\int\sum_kr_k^{-3}\!\left[\mathbf1_{I_{k+1}}|m_k^{(n)}-\rho_k^nm_{k+1}^{(n)}|^2+\mathbf1_{I_k\setminus I_{k+1}}|m_k^{(n)}|^2\right]dt.\]</div><p>配对协变增量是 \(m_k^{(n)}-\rho_k^{n+2}m_{k+1}^{(n)}\)，不是普通相邻差。直接从矩演化取绝对值会重新出现待控制的 resolved vortex stretching。</p><div class="equation">\[\mathfrak D_k^{\mathrm{pair}}m^{(n)}=m_k^{(n)}-\rho_k^{n+2}m_{k+1}^{(n)}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果纠正了三种容易混淆的归一化，并说明缺口不是少一个时间 Hölder 指数，而是嵌套窗口产生的临界负尺度 source–core embedding。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>无权 L_t^1 l1 估计不蕴含所需的加权 L_t^2 l2。结论限于固定中心的单向细尺度链；初始压力族没有统一涡量 L2，也不反驳耗散积分估计。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70I 的检查点</h2><p>R0.70I 求出负尺度权重的精确时间核，并用 LP/Bony 分解识别可闭合与不可闭合的 sector。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070h_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070h_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070h">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070h-core-moment-gap/fig-r070h-core-moment-gap">期刊附图包</a></p><p><a href="/notes/r0-70h.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70H · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

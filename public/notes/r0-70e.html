@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70E：纠正 Yu 对象归属后，紧支撑小数据全局光滑解给出 signed remainder 与项目 moving-shell contraction 的单壳奇偶横截性。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70E｜Yu 的真实 remainder work 可精确抵消，同核绝对活动仍严格为正">
+  <meta property="og:description" content="纠正 Yu 对象归属后，紧支撑小数据全局光滑解给出 signed remainder 与项目 moving-shell contraction 的单壳奇偶横截性。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70E｜Yu 的真实 remainder work 可精确抵消，同核绝对活动仍严格为正</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70E · YU OBJECT CORRECTION · PARITY TRANSVERSALITY</div><h1>Yu 的真实 remainder work 可精确抵消，<br>同核绝对活动仍严格为正</h1><p class="lead">本节先纠正来源：Yu v1 定义的是 signed remainder work、其正部和 moving-shell strain tensor，并不存在先前误写的 shell scalar。随后在这些真实对象上构造单壳抵消：signed work 为零，同核 absolute activity 为正。</p></div><div class="stamp"><span class="state">状态 · 来源对象已修正；单壳 signed cancellation 完成</span><strong>四个三次项、hard-shell 符号与非线性调节均保留</strong><p>版本 v0.70E · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>Yu 定义的 remainder work 可在全局光滑小数据解上精确为零</h2><p>存在紧支撑光滑无散初值及其全局小数据 NSE 解，使</p><div class="equation result">\[\mathcal V_\chi^{\mathrm{rem}}=0,\qquad \mathcal A_\chi^{\mathrm{rem}}>0,\qquad \mathcal V_\chi^{+,\mathrm{rem}}={1\over2}\mathcal A_\chi^{\mathrm{rem}}>0.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>项目定义的 hard-shell contraction 也有同样横截性</h2><p>对一个充分分离壳对，使用 Yu 精确 moving-shell tensor 的项目配对满足</p><div class="equation result">\[\mathcal W_{k,m}^{\mathrm{mov}}=0,\qquad \mathcal P_{k,m}^{\mathrm{mov}}>0.\]</div><p>非线性精确零点由 \(\lambda(\varepsilon)=1+O(\varepsilon)\) 的隐函数调节得到，不是假设非线性演化保持反射对称。</p><div class="equation">\[H_0(1)=0,\qquad H_0'(1)=-{A_1\over2}\ne0.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果把 generic parity obstruction 转移到文献真正定义的 remainder work，并说明 signed cancellation 不能替代正 remainder 或 magnitude budget。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>even/radial mollifier 与 cutoff 是允许类中的项目选择，不是 Yu 的普遍假设。moving-shell contraction 是项目定义；只处理一个分离壳对，不处理全跨尺度求和、commutator 或 Carleson budget。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70F 的检查点</h2><p>R0.70F 转向固定外源环带的低阶 harmonic affine jet，检查 Taylor 增益能否求和。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070e_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070e_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070e">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070e-yu-parity-transversality/fig-r070e-yu-parity-transversality">期刊附图包</a></p><p><a href="/notes/r0-70e.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70E · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

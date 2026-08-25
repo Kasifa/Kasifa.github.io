@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70Y：response-slope 精确分解导出无对数临界 Besov 估计，q=3 尖锐；统一正主特征值仍不能修复旧的 covariance-area 候选。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70Y｜response chord 斜率可以临界求和，对称 Besov 指数正好停在 3">
+  <meta property="og:description" content="response-slope 精确分解导出无对数临界 Besov 估计，q=3 尖锐；统一正主特征值仍不能修复旧的 covariance-area 候选。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70Y｜response chord 斜率可以临界求和，对称 Besov 指数正好停在 3</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.70Y · RESPONSE SLOPE · CRITICAL BESOV</div><h1>response chord 斜率可以临界求和，<br>对称 Besov 指数正好停在 3</h1><p class="lead">本节把 R0.70X 的 orbitwise 壳间增益升级为完整 multiplier 估计。循环系数是 response chord 斜率的平方，并在 high–high–low 区域得到可求和的一阶增益，由此产生两个无对数临界 Besov 界。</p></div>
+      <div class="stamp"><span class="state">状态 · frame-defect endpoint 估计完成；主协方差项仍开放</span><strong>对称 Besov 序列指数 q=3 尖锐</strong><p>版本 v0.70Y · 2026-08-25</p><p>解析恒等式、精确生产器与独立复核已封存</p><p>本节未使用 DNS、GPU 或 DGX</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>循环系数是 response chord slope 的平方</h2><p>若 \(d_n=(V(p)-V(q))/|n|\)，则</p><div class="equation result">\[\beta_n={K(p,q)\over|n|^2}={1\over2}\|d_n\|_{\ell^2}^2.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>signed frame defect 具有临界、无对数的端点界</h2><p>完整壳分解给出</p><div class="equation result">\[|\mathfrak E_S(\omega)|\le C\|\omega\|_{B^0_{3,3}}^3,\qquad |\mathfrak E_S(\omega)|\le C\|\omega\|_{B^0_{\infty,\infty}}\|\omega\|_2^2.\]</div><p>尺度分离 packet 证明 \(q=3\) 在对称 \(B^0_{3,q}\) 三次界中不能提高。另一个四十模态 filler 使 \(\lambda_1(Q)\) 处处有统一正下界，但旧的物理面积比值仍发散。</p><div class="equation">\[{ |\mathfrak E_S(\omega_\Lambda)|\over \|\nabla\omega_\Lambda\|_2\|G_{Q_\Lambda}\|_{6/5}}\longrightarrow\infty.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续要估计的对象</h2><p>这是该阶段第一个完整的正端点估计：response-difference 通道确有临界尺度补偿。但它只处理 frame defect，不包含主项 \(\int S:Q\)。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>Leray 能量并不自动给出 \(L_t^1B^0_{\infty,\infty}\)，因此端点界还不是 enstrophy 闭合。统一正 \(\lambda_1\) 的反例在某点有 \(\lambda_1=\lambda_2\)，没有决定强主谱隙分支。</p><p>本节没有构造有限时奇性，没有证明全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70Z 的检查点</h2><p>R0.70Z 直接检验强绝对/相对主谱隙能否决定主协方差功的符号，并分解完整 stretching 的 response 通道。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、复核与精确证书已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070y_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070y_independent_audit.md">独立数学复核</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070y_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070y">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70y.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要报告中已经通过精确生产器、SHA-256 清单与独立数学复核的内容；页面没有添加报告之外的新主张。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70Y · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

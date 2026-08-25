@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70B：有符号物理环带只能由非负过滤储备单向控制；反向桥与声明的平移不变二次零余项正规形均被严格反例关闭。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70B｜匹配尺度只恢复已知因子，二次零余项正规形也被三波阻断">
+  <meta property="og:description" content="有符号物理环带只能由非负过滤储备单向控制；反向桥与声明的平移不变二次零余项正规形均被严格反例关闭。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70B｜匹配尺度只恢复已知因子，二次零余项正规形也被三波阻断</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70B · MATCHING-SCALE BRIDGE · NORMAL-FORM NO-GO</div><h1>匹配尺度只恢复已知因子，<br>二次零余项正规形也被三波阻断</h1><p class="lead">本节把有符号物理环带与非负过滤储备放到相同尺度比较。正储备可以向下控制 signed work，但只恢复已知尺度因子；局部化交换子与主项同阶。反向控制和一个较宽的二次正规形类别都存在严格障碍。</p></div><div class="stamp"><span class="state">状态 · 直接环带—Yu 替代路线关闭</span><strong>单向桥、运动学反例与 3:4:5 符号 no-go 完成</strong><p>版本 v0.70B · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>正储备到 signed work 的前向桥没有新小因子</h2><p>局部化 shell work 分成两增量主项 \(T_{j,k}\) 与同阶 cutoff commutator \(C^\chi_{j,k}\)，并满足</p><div class="equation result">\[W_{j,k}=T_{j,k}+C^\chi_{j,k},\qquad |W_{j,k}|\le C{r_k\over r_j}\mathfrak A_{j,k}\mathcal Q_k.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>3:4:5 螺旋三波排除零三次余项的二次生成器</h2><p>声明的连续、平移不变、自伴、至多多项式增长二次 multiplier 必须满足一个符号相容式；实际物理环带在低频展开的四阶项违反它：</p><div class="equation result">\[16g_4-9g_3-7g_5=0,\qquad 16G(4\varepsilon)-9G(3\varepsilon)-7G(5\varepsilon)={72\over5}I_4(\varepsilon r)^4+O((\varepsilon r)^6)>0.\]</div><p>仿射剪切核心可使内部 matching-shell production 为零而过滤储备非零；高频包还使过滤 signed annuli 的绝对和趋零，而未解析高—高 commutator 发散。</p><div class="equation">\[D^{\mathrm{sign}}_{j,k}=\iint|w_{j,k}|-|W_{j,k}|\ge0.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果明确了信息方向：signed observable 位于正储备估计的下游，不能反过来替代它。符号测试也在投入更大计算前排除了一个清楚定义的正规形类。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>运动学反例不是完整抛物时间区间上的 NSE 反例。正规形 no-go 只覆盖声明的二次 multiplier 与零三次余项精确恒等式，不排除局部化、解依赖、非二次、时间非局部或同阶可控余项。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70C 的检查点</h2><p>R0.70C 检查真实 Navier–Stokes 演化是否会自动压低 signed cancellation defect。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070b_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070b">精确证书与 SHA-256 清单</a></p><p><a href="/notes/r0-70b.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70B · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

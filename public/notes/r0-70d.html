@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="研究笔记 R0.70D：高频正弦密度证明固定尺度 signed cover positivity 无法控制未解析负部；必须加入尺度细化、频率或 PDE 结构。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.70D｜每个固定尺度局部平均都为正，负部质量仍可保持不小">
+  <meta property="og:description" content="高频正弦密度证明固定尺度 signed cover positivity 无法控制未解析负部；必须加入尺度细化、频率或 PDE 结构。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.70D｜每个固定尺度局部平均都为正，负部质量仍可保持不小</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.86">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.4rem)}</style>
+  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner"><a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a><nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#value">价值</a><a href="#boundary">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav></div></header>
+  <main>
+    <header class="hero"><div class="hero-inner"><div><div class="eyebrow">研究笔记 R0.70D · FIXED-SCALE COVER · NEGATIVE-MASS BLINDNESS</div><h1>每个固定尺度局部平均都为正，<br>负部质量仍可保持不小</h1><p class="lead">本节把 cover positivity 中最基础的逻辑单独抽出。对任何具有统一质量下界和一阶导数预算的固定分辨率非负权重族，可以让全部局部平均为正且趋零，同时负部保留统一质量。</p></div><div class="stamp"><span class="state">状态 · 固定尺度 cover 正性桥关闭</span><strong>抽象测度论反例与精确负质量公式完成</strong><p>版本 v0.70D · 2026-08-25</p><p>解析推导、精确证书与报告边界已封存</p><p>本节没有构造奇性或证明全局正则性</p></div></div></header>
+    <div class="layout"><aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#result">00 · 本节结论</a></li><li><a href="#identity">01 · 精确账本</a></li><li><a href="#value">02 · 研究价值</a></li><li><a href="#boundary">03 · 主张边界</a></li><li><a href="#next">04 · 下一检查点</a></li><li><a href="#reproduce">05 · 复现与来源</a></li></ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>固定分辨率的所有正平均仍看不见高频负区</h2><p>取 \(f_{\delta,N}(x)=\delta+\sin(Nx_1)\)。当 \(N\ge2C_1/(\delta m_0)\) 时，每个允许权重 \(\theta\) 满足</p><div class="equation result">\[{\delta\over2}\le\langle f_{\delta,N}\rangle_\theta\le{3\delta\over2}.\]</div></section>
+        <section id="identity"><div class="section-no">01 / Auditable ledger</div><h2>负部却有与 δ 无关的正下界</h2><p>对 \(0<\delta\le1/2\)，精确积分给出</p><div class="equation result">\[\int(f_{\delta,N})_-\,d\mu={2\sqrt{1-\delta^2}-\delta(\pi-2\arcsin\delta)\over2\pi}\ge{\sqrt3-\pi/3\over2\pi}>0.\]</div><p>总平均只有 \(\delta\)，所以负质量与总 signed mass 的比值按 \(1/(\pi\delta)\) 发散。</p><div class="equation">\[{\int(f_{\delta,N})_-\,d\mu\over\int f_{\delta,N}\,d\mu}\sim{1\over\pi\delta}.\]</div></section>
+        <section id="value"><div class="section-no">02 / Research value</div><h2>这一步改变了后续检查对象</h2><p>结果关闭“固定尺度正 signed averages 蕴含小负部”的抽象桥，并明确指出成功定理必须增加尺度细化、频率控制、PDE 可容许性或几何符号。</p></section>
+        <section id="boundary"><div class="section-no">03 / Claim boundary</div><h2>证明到这里为止</h2><p>这是抽象标量密度反例，不是 Yu remainder、环带拉伸或 NSE flux 的实现。不适用于分辨率趋零的全尺度观测，也不否定带 Taylor/Kraichnan 条件和局部平衡的 cascade positivity。</p><p>这里没有构造有限时奇性，没有证明无条件全局光滑性，也不是对 Clay 千禧年问题的部分解答。</p></section>
+        <section id="next"><div class="section-no">04 / Next gate</div><h2>R0.70E 的检查点</h2><p>R0.70E 回到 Yu 实际定义的 signed remainder 与 moving-shell tensor，检查单壳奇偶抵消。</p></section>
+        <section id="reproduce"><div class="section-no">05 / Reproducibility</div><h2>报告、证书和可用的独立复核已经封存</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r070d_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r070d">精确证书与 SHA-256 清单</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r070d-cover-blindness/fig-r070d-cover-blindness">期刊附图包</a></p><p><a href="/notes/r0-70d.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute 正式问题说明</a></p><p>公开页只摘要档案中已经审计的声明；有限生产器不替代报告中的无限维解析步骤。</p></section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确结果、条件结论、反例边界与开放问题分开记录。</div><div>R0.70D · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

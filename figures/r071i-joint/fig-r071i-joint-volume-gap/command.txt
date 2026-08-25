@@ -1,0 +1,26 @@
+Set the Python runtime used for this package:
+R071I_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+Set the pinned package path:
+R071I_PYTHONPATH=/tmp/r071h-deps.WmemjF
+
+Generate closed-form data:
+PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON generate_data.py --output data.csv --metadata figure-data-metadata.json
+
+Validate producer formulas:
+PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+
+Render PDF, SVG, and 600 dpi PNG:
+MPLCONFIGDIR=/private/tmp/r071i-joint-mpl PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON plot.py --data data.csv --output-stem figure
+
+Create original-color and grayscale QA previews:
+PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON qa_images.py
+
+Run the independent Decimal and archival checker:
+PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON independent_validate.py --data data.csv --output independent-validation.json
+
+Build manifest and SHA-256 ledger after completing qa-report.md:
+PYTHONPATH=$R071I_PYTHONPATH $R071I_PYTHON build_manifest.py
+
+Rasterize the vector PDF for direct visual inspection:
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm -singlefile -png -r 180 figure.pdf ../../../tmp/pdfs/r071i-joint-render

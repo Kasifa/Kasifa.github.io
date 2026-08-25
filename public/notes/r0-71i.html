@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71I：联合名义抛物恒等式把加权 BV 归约到入口迹与单边生成；共同热流和光滑 2D3C 零入口脉冲表明，R0.71F 物理时间热体积仍少两阶频率。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71I｜联合抛物恒等式把 BV 缺口压到单边生成">
+  <meta property="og:description" content="hard/soft joint identity、face-aware BV、共同热流零外面脉冲、对称八模 2D3C 零入口渐近见证与 cutoff refresh 精确代价。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71I｜联合抛物恒等式把 BV 缺口压到单边生成</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.18rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.94"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#ledger">账本</a><a href="#identity">联合恒等式</a><a href="#vector">振幅向量</a><a href="#bv">BV</a><a href="#soft">软分母</a><a href="#heat">共同热流</a><a href="#nse">2D3C</a><a href="#scaling">尺度</a><a href="#refresh">刷新</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71I · JOINT PARABOLIC DAMPING · ZERO-ENTRY 2D3C · VOLUME GAP</div>
+        <h1>联合抛物恒等式把 BV 缺口压到单边生成，<br>光滑零入口脉冲仍保留两阶频率差</h1>
+        <p class="lead">我把 Lamb 加速度、方向转动和 enstrophy 归一化放进同一个有符号源。终端迹不再是独立负担；剩余量是入口迹、单边联合生成、零分母时间面和刷新原子。但这还没有闭合：一个共同热流脉冲和一个真实、全局光滑、固定能量的 2D3C 零入口序列都表明，R0.71F 的物理时间热体积仍比所需代价少 \(K^2\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71I 恒等式、渐近见证与双重计算审计完成</span><strong>heat-volume-only 路线关闭；完整 face-paid BV 仍开放</strong><p>版本 v0.71I · 2026-08-26</p><p>hard / soft joint identity：PASS</p><p>对称八目标模 Fourier 常数：PASS</p><p>2D3C 内部曲线：固定 \(\theta\) 的 \(K\to\infty\) 极限</p><p>下一对象：全壳正生成是否有新抵消</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#ledger">01 · 完整抛物账本</a></li><li><a href="#identity">02 · 联合标量恒等式</a></li><li><a href="#vector">03 · 振幅向量</a></li><li><a href="#bv">04 · 单边 BV 归约</a></li><li><a href="#soft">05 · 软分母</a></li><li><a href="#heat">06 · 共同热流压力测试</a></li><li><a href="#nse">07 · 真实 2D3C 零入口</a></li><li><a href="#scaling">08 · 两阶尺度差</a></li><li><a href="#refresh">09 · Cutoff refresh</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#literature">11 · 文献边界</a></li><li><a href="#next">12 · 下一步</a></li><li><a href="#claims">13 · 主张边界</a></li><li><a href="#reproduce">14 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>精确归约成立，但同一份热体积不能支付剩余单边生成</h2>
+          <p>在正分母时间分支上，令 \(x=F/\sqrt Y\)、\(E=C/\|C\|_2\)、\(z=\langle x,E\rangle\)、\(a=(z^+)^2\)。R0.71I 的核心式是</p>
+          <div class="equation result">\[
+            z_t+\nu K^2z=\mathcal J,\qquad
+            a_t+2\nu K^2a=2z^+\mathcal J.
+          \]</div>
+          <p>它把绝对变差压到入口迹和 \(\mathcal J\) 的正生成。真正的进展是找到了最短、无重复计费的接口；真正的负结果是，R0.71F 的 physical-time heat volume 不能单独控制这个接口，哪怕入口振幅为零、分母严格为正、cutoff 固定且没有刷新。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">01 / Complete parabolic ledger</div><h2>名义阻尼之外的所有项都留在 \(N\) 与 \(M\)</h2>
+          <p>固定 \(A=e^{s\Delta}T_j\)，记 \(F=AL\)、\(C=\nabla\times(\chi A\omega)\)，其中 \(L=\mathbb P(u\times\omega)=u_t-\nu\Delta u\)。全部有序壳对、Eulerian cutoff movement、形状残差和黏性 collar 给出</p>
+          <div class="equation result">\[
+            N=F_t+\nu K^2F
+             =\nu(\Delta+K^2)F+\sum_{k,\ell}\mathfrak H_{k\ell},
+          \]</div>
+          <div class="equation result">\[
+            M=C_t+\nu K^2C
+             =\nu(\Delta+K^2)C+G.
+          \]</div>
+          <p>\(G\) 含 \(\nabla\times(\chi\sum\mathfrak G_{k\ell})\)、\(\nabla\times((R-V_r\cdot\nabla\chi)A\omega)\) 和负号的 viscous collar。这里没有把 high–high-to-low 或移动 cutoff 静默删掉。</p>
+        </section>
+
+        <section id="identity"><div class="section-no">02 / Joint scalar identity</div><h2>\(Y_t/Y\) 只出现一次，并在取正部之前组合</h2>
+          <p>令 \(\rho=\|C\|_2\)、\(P=I-E\otimes E\)。由于 \(PC=0\)，有 \(PM=PC_t\) 及 \(E_t=PM/\rho\)。定义</p>
+          <div class="equation">\[
+            \mathcal J=
+            \left\langle\frac N{\sqrt Y},E\right\rangle
+            +\frac{\langle P(F/\sqrt Y),PM\rangle}{\rho}
+            -\frac{Y_t}{2Y}z.
+          \]</div>
+          <p>这不是把 \(Y_t/Y\) 删除，而是先把它与加速度、方向转动组合，再取 \(\mathcal J^+\)。若改用未归一化源 \(S=\langle N,E\rangle+\rho^{-1}\langle PF,PM\rangle\)，就必须另外支付 \(Y_t/Y\)；不能两种账本同时计费。</p>
+        </section>
+
+        <section id="vector"><div class="section-no">03 / Amplitude-vector geometry</div><h2>径向生成和切向转动正交</h2>
+          <p>设 \(\Xi=z^+E=\sqrt a\,E\)。几乎处处有</p>
+          <div class="equation result">\[
+            \Xi_t+\nu K^2\Xi
+            =\mathbf1_{\{z&gt;0\}}\mathcal J E
+            +z^+\frac{PM}{\rho},
+          \]</div>
+          <div class="equation result">\[
+            \|\Xi_t+\nu K^2\Xi\|_2^2
+            =\mathbf1_{\{z&gt;0\}}\mathcal J^2
+            +a\frac{\|PM\|_2^2}{d}.
+          \]</div>
+          <p>这是本节保留的精确正结果。它说明名义项 \(\nu K^2C\) 只是径向项，不产生方向转动；但右边仍是需要独立预算的量，不是由恒等式自动变小。</p>
+        </section>
+
+        <section id="bv"><div class="section-no">04 / One-sided BV reduction</div><h2>终端振幅已经包含在 coarea 账本里</h2>
+          <p>对任意非负绝对连续函数，</p>
+          <div class="equation result">\[
+            \operatorname{TV}(a)+a(T_-)+a(T_+)
+            =2a(T_-)+2\int(a_t)^+dt
+            \le2a(T_-)+4\int z^+\mathcal J^+dt.
+          \]</div>
+          <p>因此终端振幅不再作为右端的独立输入。仍须支付的是每个正分母分支的左迹、软极限中的时间面和刷新跳跃。一个选定的光滑初始时刻满足</p>
+          <div class="equation">\[
+            \sum_{j,Q}K_j^{-2}a_{j,Q}(T_-)
+            \lesssim \|u(T_-)\|_2Y(T_-)^{1/2},
+          \]</div>
+          <p>但这不能支付后来出现的分支入口或靠近候选奇性时刻的迹。</p>
+        </section>
+
+        <section id="soft"><div class="section-no">05 / Soft denominator</div><h2>固定 \(\varepsilon\) 的标量式全局成立，额外径向项是有利阻尼</h2>
+          <p>令 \(R_\varepsilon=\sqrt{d+\varepsilon}\)、\(E_\varepsilon=C/R_\varepsilon\)、\(P_\varepsilon=I-E_\varepsilon\otimes E_\varepsilon\)、\(\theta_\varepsilon=\varepsilon/(d+\varepsilon)\)。\(P_\varepsilon\) 是对称算子，但不是正交投影。精确式为</p>
+          <div class="equation result">\[
+            (E_\varepsilon)_t+\nu K^2\theta_\varepsilon E_\varepsilon
+            =R_\varepsilon^{-1}P_\varepsilon M,
+          \]</div>
+          <div class="equation result">\[
+            (a_\varepsilon)_t
+            +2\nu K^2(1+\theta_\varepsilon)a_\varepsilon
+            =2z_\varepsilon^+\mathcal J_\varepsilon.
+          \]</div>
+          <p>加号在左边。固定 \(\varepsilon\) 的标量账本可以跨过 \(d=0\)；使用硬单位向量的切向 Pythagorean 式不能。通过 \(\varepsilon\downarrow0\) 仍需要统一 BV 与紧性。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">06 / Common-heat pressure test</div><h2>两个外部振幅面都为零，尺度差仍按 \(K^2\) 增长</h2>
+          <p>取 \(A_Ke_1=K^2e_1\)、\(A_Ke_2=2K^2e_2\)，并令 \(F_0=(e_1-e_2)/\sqrt2\)、\(C_0=(e_1+e_2)/\sqrt2\)、\(Y=1\)。两者共同受热流后，\(\tau=\nu K^2t\)、\(x=e^{-2\tau}\)，</p>
+          <div class="equation result">\[
+            a=\frac{x(1-x)^2}{2(1+x)},\qquad
+            a_*=\frac{71-17\sqrt{17}}{16}.
+          \]</div>
+          <p>\(a(0)=a(\infty)=0\)，这里消失的是 amplitude faces，不是 denominator faces。精确比值为</p>
+          <div class="equation result">\[
+            \frac{K^{-2}\operatorname{TV}(a)}
+            {\int_0^\infty K^{-2}\|F\|_2^2dt}
+            =\frac{\nu(71-17\sqrt{17})}{3}K^2.
+          \]</div>
+          <p>这个路径只证明共同热几何本身不够；它不是由 NSE 的 \(F,C\) 耦合生成的反例。</p>
+        </section>
+
+        <section id="nse"><div class="section-no">07 / True NSE zero-entry pulse</div><h2>对称八目标模给出严格分母和零入口</h2>
+          <p>在归一化三维环面上，取水平剪切模 \(\widehat u_2(\pm K,0)=1\)，竖直驱动模 \(\widehat u_3(0,2K)=i/2\)、\(\widehat u_3(0,3K)=-i/3\)，并在全部 \((\pm K,\pm2K)\)、\((\pm K,\pm3K)\) 八个目标模上分别放置 \(1/5\)、\(1/10\)。这是 2D3C 场：水平分量走热流，竖直分量满足线性平流扩散，所以每个 \(K\) 都产生全局光滑 NSE 解。</p>
+          <p>对一个固定、光滑、实偶、径向的双环 multiplier，精确初值是</p>
+          <div class="equation result">\[
+            \|u_0\|_2^2=\frac{263}{90},\qquad
+            Y(0)=\frac{36}{5}K^2,
+          \]</div>
+          <div class="equation result">\[
+            \|F_K(0)\|_2^2=8K^2,\qquad
+            d_K(0)=8K^4,\qquad
+            B_K(0)=a_K(0)=0.
+          \]</div>
+          <p>八个 retained modes 已由两套独立 Fourier–Leray 程序重算。分母严格为正，入口振幅恰为零。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">08 / Fixed-window asymptotics</div><h2>真实解在内部产生正脉冲，热体积仍小两阶</h2>
+          <p>固定 \(\nu&gt;0\) 和 \(\theta=\nu K^2t\) 的有界窗口。sideband 方程的平流系数是 \(1/(\nu K)\)，Duhamel 估计给出 \(C^1\) 误差 \(O(K^{-1})\)。因此下面是 \(K\to\infty\) 的严格极限，不是有限 \(K\) 的精确曲线：</p>
+          <div class="equation">\[
+            Q_0=\frac{4x(1-x)^2}{1+x},\quad x=e^{-10\theta},
+            \qquad A_0=\frac{Q_0}{Y_0},
+          \]</div>
+          <div class="equation">\[
+            Y_0=2e^{-2\theta}+2e^{-8\theta}+2e^{-18\theta}
+            +\frac45e^{-10\theta}+\frac25e^{-20\theta}.
+          \]</div>
+          <p>在 \(\theta_*=\log2/10\)，</p>
+          <div class="equation result">\[
+            A_0(\theta_*)=
+            \frac{2}{3(1+3\,2^{1/5}+2\,2^{4/5})}&gt;0.
+          \]</div>
+          <p>于是 outer-weighted BV 和单边生成至少为 \(cK^{-2}\)，而同一分量的 R0.71F physical-time weighted heat volume 是 \(O(K^{-4})\)。这只否定声明的 smooth radial two-ring component 上的 heat-volume-only 控制；预设宽单环 frame、完整 Parseval frame 和全框架右端都没有在这里处理。</p>
+        </section>
+
+        <section id="refresh"><div class="section-no">09 / Cutoff refresh</div><h2>任意刷新速度不是免费参数</h2>
+          <p>在另一条六模 2D3C 构型上，互补 cutoff \(\chi_{\delta,\pm}=(1\pm\delta\cos(Kx_3))/2\) 给出固定能量 aggregate</p>
+          <div class="equation result">\[
+            \sum_\pm a_{\delta,\pm}=\frac{U^2}{3\delta^2+4},\qquad
+            \Delta_{\rm ref}=\frac{U^2}{4}-\frac{U^2}{7}=\frac{3U^2}{28}.
+          \]</div>
+          <p>\(\delta\) 是 cutoff 形状参数，不是 NSE 时间。只有把它指定为快速时间 schedule，才产生任意大的 BV。这排除的是不受控的 movement/refresh；固定或有独立可和预算的分片没有被否定。外乘目标权重后，单次成本是 \(3U^2/(28K^2)\)。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>四个面板把共同热流、真 NSE 极限和刷新成本分开</h2>
+          <figure><img src="/figures/r0-71i-joint-volume-gap.svg" alt="R0.71I 共同热流零外面脉冲、K 平方尺度差、2D3C 零入口极限与 cutoff refresh 精确成本"><figcaption>图 R0.71I。A：共同热流的零外部振幅面脉冲。B：weighted BV/physical-time heat volume 的精确 \(K^2\) 比值。C：全局光滑 2D3C NSE 序列在固定 \(\theta\) 窗口上的 \(K\to\infty\) 闭式极限；不是有限 \(K\) 数值轨迹。D：另一 cutoff 构型的形状变化与 \(3/28\) 刷新差。全部曲线来自闭式公式，没有 DNS、拟合或 PDE 时间推进。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71i-joint-volume-gap.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71i-joint-volume-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71i-joint-volume-gap.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>相邻工具分别覆盖热衰减、Duhamel、时间窗和 crossing</h2>
+          <p><a href="https://arxiv.org/abs/1212.0183v1">Dong Li</a> 严格给出 LP 壳上的 \(K^2\) 热耗散，但不提供 \((\Delta+K^2)P_K=O(K)\)；<a href="https://arxiv.org/abs/1412.8407v3">Auscher–Frey</a> 说明联合 Duhamel 分解可闭合，而把不同源粗压成一个平方 tent 代价可能失败；<a href="https://doi.org/10.3934/mcrf.2011.1.177">Ervedoza–Zuazua</a> 控制的是热方程终端迹，不是由未来体积支付入口迹。</p>
+          <p><a href="https://doi.org/10.1017/S0013091525100813">Cheskidov–Dai</a> 的已发表判据使用临界振幅加权 occupation；<a href="https://doi.org/10.1007/s00021-019-0411-z">Luo</a> 给出 \(K^{-2}\) 抛物时间窗；<a href="https://arxiv.org/abs/1503.01746v4">Łochowski</a> 给出已有标量 BV 的 crossing 表达。它们都没有从 Leray 能量生成本节的单边联合源和全部时间面。</p>
+          <p>限定检索没有定位到直接重合的定理。这不是文献不存在、原创性、优先权或发表价值声明。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next gate</div><h2>R0.71J 检查全壳求和后是否出现新的 NSE 抵消</h2>
+          <p>下一步不再尝试用同一份 heat volume 改写 \(\mathcal J\)。需要保留 \(N\)、\(M\)、\(Y_t/Y\)、软分母时间面和 refresh atoms，直接检查</p>
+          <div class="equation result">\[
+            \sum_{j,Q}K_j^{-2}\int z_{j,Q}^+
+            (\mathcal J_{j,Q})^+dt
+          \]</div>
+          <p>在完整 tight-frame 与所有壳对求和后，是否有 NSE 特有的 cancellation 或 telescoping budget。若候选估计最终只等价于 Serrin/Besov、Cheskidov–Dai occupation、分母下界、目标 BV 或额外 caloric-defect 小量，这条 temporal-residence 分支仍是条件性的，应当停止。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim boundary</div><h2>本节关闭的是 volume-only 路线，不是千禧年问题</h2>
+          <ul>
+            <li>已证明：hard 与 soft joint scalar identities，以及正分母分支上的 amplitude-vector Pythagorean identity。</li>
+            <li>已证明：face-aware BV 归约的端点系数与 \(4\int z^+\mathcal J^+\) 界。</li>
+            <li>已证明：共同热流零 amplitude-face 路径的精确 \(K^2\) 尺度差。</li>
+            <li>已证明：对称八模全局光滑 2D3C 序列的精确零入口初值，以及固定窗口的 \(C^1\) 渐近脉冲。</li>
+            <li>未证明：预设宽单环 frame、完整 frame 总和、无条件 weighted BV、Leray 极限、继续性判据或奇性构造。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性或优先权声明，也没有证明三维 Navier–Stokes 的全局光滑性或有限时破裂。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduce</div><h2>报告、两套审计、证书和期刊附图源</h2>
+          <p><a href="/notes/r0-71i.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71i.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71i.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71i-joint-volume-gap.pdf">下载附图 PDF</a> · <a href="/figures/r0-71i-joint-volume-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71i-joint-volume-gap.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071i_independent_audit.py">standard-library checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071i">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071i-joint/fig-r071i-joint-volume-gap">完整附图包</a></p>
+          <p>两套研究审计分别使用 exact SymPy Fourier convolution 和独立 standard-library Fourier/Leray 实现；附图另有 70 位 Decimal 检查。DGX 与 GPU 未使用，因为本节需要的是闭式结构审计，不是大规模数值分辨率。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>逐项保留推导、反例、审计和未解决的量词。</div><div>研究笔记 R0.71I · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

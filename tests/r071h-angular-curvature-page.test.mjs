@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readdir, readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -46,27 +46,25 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes v0.93 with 132 notes, 72 recap nodes, and R0.71I next", async () => {
-  const [{ home, note, recap, literature }, noteNames] = await Promise.all([
-    publishedPages(),
-    readdir(notesRoot),
-  ]);
+test("keeps the historical R0.71H release reachable after later releases", async () => {
+  const { home, note, recap, literature } = await publishedPages();
+  const opening = '<div class="task-one" id="r071h" data-release="r071h"';
+  const start = home.indexOf(opening);
+  const next = home.indexOf('<div class="task-one"', start + opening.length);
+  const sectionEnd = home.indexOf("</section>", start);
+  const end = next >= 0 && next < sectionEnd ? next : sectionEnd;
+  const historicalCard = home.slice(start, end);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 132);
-  assert.match(home, /<strong>v0\.93<\/strong>网页版本/);
-  assert.match(home, /<strong>132<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71H<\/strong>最新研究节点/);
-  assert.match(home, /展开 42 篇公开笔记/);
-  assert.match(home, /累计回顾收录 72 个节点；全站现有 132 篇公开研究笔记/);
-  assert.equal((home.match(/href="\/notes\/r0-71h\.html"/g) ?? []).length, 2);
-  assert.match(home, /NEXT · R0\.71I/);
-  assert.match(literature, /R0\.69P–R0\.71H/);
-  assert.match(literature, /开放接口 · R0\.71I/);
-  assert.match(literature, /这张本站路线图从 R0\.69P 开始/);
-  assert.match(literature, /历史索引 · R0\.61–R0\.69O/);
-  assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
+  assert.equal((home.match(new RegExp(opening, "g")) ?? []).length, 1);
+  assert.ok(start >= 0);
+  assert.match(historicalCard, /href="\/notes\/r0-71h\.html"/);
+  assert.match(historicalCard, /href="\/notes\/r0-71h\.pdf"/);
+  assert.match(historicalCard, /research\/r071h_report-source\.md/);
+  assert.match(note, /研究笔记 R0\.71H/);
+  assert.match(recap, /R0\.61–R0\.71H/);
   assert.match(recap, /收录节点：72/);
-  assert.match(recap, /回顾截止时公开笔记：132/);
+  assert.match(literature, /<b>R0\.71H<\/b>/);
+  assert.match(literature, /href="\/notes\/r0-71h\.html"/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -76,7 +74,7 @@ test("publishes v0.93 with 132 notes, 72 recap nodes, and R0.71I next", async ()
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71H/);
-    assert.match(page, /src="\/i18n-en\.js\?v=0\.93"/);
+    assert.match(page, /src="\/i18n-en\.js\?v=0\.\d+"/);
   }
 });
 
@@ -132,26 +130,18 @@ test("gives every R0.70A through R0.71H one independent progress card", async ()
   assert.doesNotMatch(home, /id="r070a-i"|id="r070p-z"/);
 });
 
-test("the cumulative recap exposes all 72 post-R0.60 nodes", async () => {
-  const { home, recap } = await publishedPages();
-  const routeStart = home.indexOf('<section class="route-overview"');
-  const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
-  const route = home.slice(routeStart, routeEnd);
-  const routeLinks = [
-    ...route.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g),
-  ].map((match) => match[1]);
-  const first = routeLinks.indexOf("/notes/r0-61.html");
-  const expected = routeLinks.slice(first);
-  assert.equal(expected.length, 72);
-
+test("the historical R0.71H recap retains its 72-node index", async () => {
+  const { recap } = await publishedPages();
   const indexStart = recap.indexOf('<section id="node-index"');
   const indexEnd = recap.indexOf("</section>", indexStart);
   const index = recap.slice(indexStart, indexEnd);
   const actual = [
     ...index.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g),
   ].map((match) => match[1]);
-  assert.deepEqual(actual, expected);
   assert.equal(new Set(actual).size, 72);
+  assert.equal(actual.length, 72);
+  assert.equal(actual[0], "/notes/r0-61.html");
+  assert.equal(actual.at(-1), "/notes/r0-71h.html");
 
   assert.doesNotMatch(
     recap,
@@ -242,7 +232,6 @@ test("ships synchronized PDFs and the three journal figure formats", async () =>
   assert.match(note, /href="\/recap-r0-61-r0-71h\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71h\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71h\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71h\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71h-angular-curvature\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

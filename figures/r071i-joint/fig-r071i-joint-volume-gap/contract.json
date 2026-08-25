@@ -1,0 +1,30 @@
+{
+  "release": "R0.71I",
+  "figureId": "fig-r071i-joint-volume-gap",
+  "analyticalQuestion": "Can joint amplitude-direction heat cancellation convert the physical-time heat volume into the K^-2 weighted-BV budget?",
+  "surface": {
+    "renderer": "Matplotlib static research figure",
+    "widthMillimetres": 178,
+    "heightMillimetres": 108,
+    "outputs": ["PDF", "SVG", "PNG at 600 dpi"]
+  },
+  "palettePolicy": {
+    "mode": "hard two-root cap: navy and rust plus neutrals",
+    "nonColorDistinction": ["line style", "marker shape", "open fill", "direct annotation", "separate axes"]
+  },
+  "parameters": {
+    "panelA": {"tauRange": [0, 3], "samples": 151, "Y": 1},
+    "panelB": {"viscosity": 1, "frequencies": [1, 2, 4, 8, 16, 32, 64, 128, 256]},
+    "panelC": {"thetaRange": [0, 0.6], "samples": 151, "kineticEnergy": "263/90", "multiplierRingsSquared": [5, 10]},
+    "panelD": {"deltaRange": [0, 1], "samples": 101, "fixedEnergyParameterU": 1}
+  },
+  "dataSufficiency": {
+    "rows": 567,
+    "randomSeed": null,
+    "pdeTimeStepping": false,
+    "dns": false,
+    "fittedData": false
+  },
+  "supportedClaim": "Common heat and one exact global-smooth 2D3C NSE family show that physical-time weighted heat volume alone is two frequency powers too small to pay weighted BV; an uncontrolled cutoff refresh has an additional exact positive cost.",
+  "claimBoundary": "The common-heat model is not NSE. The true NSE panel is a closed-form fixed-window limit for one fixed smooth radial two-ring multiplier, not the preselected broad dyadic frame. The refresh panel does not reject a fixed transported partition. No unconditional BV, regularity, singularity, originality, or Millennium claim is made."
+}

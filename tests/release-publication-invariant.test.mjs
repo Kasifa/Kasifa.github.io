@@ -86,13 +86,17 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
 
   for (const phrase of [
     "R0.61–R0.71A",
-    "新增回顾节点：65",
-    "125 篇公开研究笔记",
-    "对 Clay 问题的直接价值仍有限",
-    "R0.71B 只检查有符号 common-response 的尺度补偿",
+    "收录节点：65",
+    "回顾截止时公开笔记：125",
+    "这些结果目前能说明什么",
+    "R0.71B 已完成共同响应的静态检查",
   ]) {
     assert.ok(recap.includes(phrase), phrase);
   }
+  assert.doesNotMatch(
+    recap,
+    /CONTENTS|路线怎样一步步收缩|当前门槛|价值确认|no-go|common-response|精确账本|交换子桥/,
+  );
   assert.equal(recapPdf.subarray(0, 4).toString(), "%PDF");
   assert.ok(recapPdf.length > 10_000);
 });

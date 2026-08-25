@@ -34,6 +34,7 @@ test("publishes every completed research release from R0.70A onward", async () =
     "r071a",
     "r071b",
     "r071c",
+    "r071d",
   ]);
 
   for (const release of releases) {
@@ -60,18 +61,18 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
   const [home, noteFiles, recap, recapPdf] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readdir(notesRoot),
-    readFile(new URL("recap-r0-61-r0-71c.html", publicRoot), "utf8"),
-    readFile(new URL("recap-r0-61-r0-71c.pdf", publicRoot)),
+    readFile(new URL("recap-r0-61-r0-71d.html", publicRoot), "utf8"),
+    readFile(new URL("recap-r0-61-r0-71d.pdf", publicRoot)),
   ]);
 
   const htmlNotes = noteFiles.filter((file) => file.endsWith(".html"));
-  assert.equal(htmlNotes.length, 127);
-  assert.match(home, /<strong>127<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71C<\/strong>最新研究节点/);
-  assert.match(home, /展开 37 篇公开笔记/);
-  assert.match(home, /累计回顾收录 67 个节点；全站现有 127 篇公开研究笔记/);
-  assert.match(home, /href="\/recap-r0-61-r0-71c\.html"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71c\.pdf"/);
+  assert.equal(htmlNotes.length, 128);
+  assert.match(home, /<strong>128<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71D<\/strong>最新研究节点/);
+  assert.match(home, /展开 38 篇公开笔记/);
+  assert.match(home, /累计回顾收录 68 个节点；全站现有 128 篇公开研究笔记/);
+  assert.match(home, /href="\/recap-r0-61-r0-71d\.html"/);
+  assert.match(home, /href="\/recap-r0-61-r0-71d\.pdf"/);
 
   const current = [
     ...Array.from({ length: 26 }, (_, index) =>
@@ -80,6 +81,7 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
     "r0-71a",
     "r0-71b",
     "r0-71c",
+    "r0-71d",
   ];
   for (const slug of current) {
     const matches = home.match(new RegExp(`href="/notes/${slug}\\.html"`, "g")) ?? [];
@@ -87,12 +89,12 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
   }
 
   for (const phrase of [
-    "R0.61–R0.71C",
-    "收录节点：67",
-    "回顾截止时公开笔记：127",
+    "R0.61–R0.71D",
+    "收录节点：68",
+    "回顾截止时公开笔记：128",
     "这些结果目前能说明什么",
-    "R0.71D 只检查带完整通量的局部时间账本",
-    "R0.71B–R0.71C · 正输出系数和有符号传播",
+    "R0.71E 只检查 NSE 特有的非线性相关性",
+    "R0.71B–R0.71D · 正输出系数、有符号传播和物质热 tent",
   ]) {
     assert.ok(recap.includes(phrase), phrase);
   }

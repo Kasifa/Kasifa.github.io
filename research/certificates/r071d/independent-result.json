@@ -1,0 +1,176 @@
+{
+  "arithmetic": "exact SymPy identities plus an independent 48x48 midpoint quadrature",
+  "claimBoundary": {
+    "notProved": [
+      "unconditional regularity for three-dimensional Navier--Stokes",
+      "divergence of the flux ledger for every material or parabolic tent family",
+      "failure of every compact, adjoint, or flow-adapted localization",
+      "absence of an NSE-specific nonlinear sign or depletion cancellation"
+    ],
+    "proved": [
+      "the stated shear is an exact smooth NSE solution and the two cutoff weights are pointwise material",
+      "its parent signed heat flux is zero while the positive child ledger is strictly positive and scale-critical",
+      "the material-shear parabolic box saturates the signed-time Cauchy lower bound with k-independent normalized cost",
+      "the stated cellular Fourier field is an exact smooth 2D Navier--Stokes solution embedded in three dimensions",
+      "the two static weights have zero parent signed flux but a strictly positive child signed-before-square heat ledger",
+      "the child heat-flux box saturates the signed-time Cauchy lower bound on a parabolic interval",
+      "under the stated multiplier values the bottom cutoff commutator has cosine coefficient -rho*m/4"
+    ],
+    "scope": "a pointwise-material scale-critical heat-flux obstruction, an embedded-2D stress check, and the stated LP-cutoff obstruction; not a general no-go theorem"
+  },
+  "embedded2DStressCheck": {
+    "field": {
+      "amplitudeLaw": "a'(t)=-nu*N^2*a(t)",
+      "conclusion": "an exact smooth 2D solution embedded in the 3D torus",
+      "divergence": "0",
+      "heatResidual": [
+        "0",
+        "0",
+        "0"
+      ],
+      "pressure": "-a(t)^2*N^2*cos(N*x1)*cos(N*x2)",
+      "streamFunction": "a(t)*(cos(N*x1)+cos(N*x2))",
+      "velocity": [
+        "-a(t)*N*sin(N*x2)",
+        "a(t)*N*sin(N*x1)",
+        "0"
+      ],
+      "velocityAdvection": "grad(a(t)^2*N^2*cos(N*x1)*cos(N*x2)); its Leray projection is zero",
+      "vortexStretching": [
+        "0",
+        "0",
+        "0"
+      ],
+      "vorticity": "(0,0,C(t)*(cos(N*x1)+cos(N*x2))), C=a*N^2",
+      "vorticityTransport": "0"
+    },
+    "localLedger": {
+      "DMinus": "C**2*N**2/2",
+      "DPlus": "C**2*N**2/2",
+      "YMinus": "-C**2*(rho - 2)/4",
+      "YPlus": "C**2*(rho + 2)/4",
+      "balance": "(1/2)Y_+/-' + nu*D_+/- = beta_+/-",
+      "betaMinus": "C**2*N**2*nu*rho/4",
+      "betaPlus": "-C**2*N**2*nu*rho/4",
+      "fineLedgerOverTotalY": "N**2*nu**2*rho**2/8",
+      "finePositiveLedger": "C**2*N**2*nu**2*rho**2/8",
+      "normalizedSpatialMeasure": "(2*pi)^(-2) dX dY, X=N*x1, Y=N*x2",
+      "parentSignedBeta": "0",
+      "totalY": "C**2",
+      "transportFluxMinus": "0",
+      "transportFluxPlus": "0",
+      "weightBoundary": "the weights are static rather than pointwise material; their integrated cutoff-transport term vanishes exactly",
+      "weights": "phi_+/-=(1+/-rho*cos(N*(x1-x2)))/2, 0<rho<1"
+    },
+    "numericQuadrature": {
+      "averages": {
+        "DMinus": 7.60499999999999,
+        "DPlus": 7.60499999999999,
+        "YMinus": 0.5915,
+        "YPlus": 1.0985,
+        "betaMinus": 1.59705,
+        "betaPlus": -1.59705,
+        "transportMinus": -1.28477957439532e-17,
+        "transportPlus": 1.28477957439532e-17
+      },
+      "expected": {
+        "DMinus": 7.605,
+        "DPlus": 7.605,
+        "YMinus": 0.5915,
+        "YPlus": 1.0985,
+        "betaMinus": 1.59705,
+        "betaPlus": -1.59705,
+        "transportMinus": 0.0,
+        "transportPlus": 0.0
+      },
+      "maxAbsError": 1.4210854715202e-14,
+      "method": "48x48 phase-space midpoint rule using only standard math scalars",
+      "parameters": {
+        "C": 1.3,
+        "N": 3.0,
+        "nu": 0.7,
+        "rho": 0.6
+      },
+      "status": "pass"
+    },
+    "parabolicInterval": {
+      "B": "rho*m^2*N^4*(1-exp(-2*theta))/8",
+      "B2OverDbar": "nu*rho^2*m^2*N^4*(1-exp(-2*theta))/16",
+      "Dbar": "m^2*N^4*(1-exp(-2*theta))/(4*nu)",
+      "amplitude": "C(t)=m*N^2*exp(-nu*N^2*t)",
+      "consequence": "the signed-box Cauchy lower bound is saturated on the positive child",
+      "equalityResidual": "0",
+      "integralBeta2OverD": "nu*rho^2*m^2*N^4*(1-exp(-2*theta))/16",
+      "intervalLength": "tau=theta/(nu*N^2)"
+    }
+  },
+  "lpCutoffCommutator": {
+    "convention": "[T_j,phi]f=T_j(phi*f)-phi*T_j(f)",
+    "cosineCoefficientRelativeToInputAmplitude": "-m*rho/4",
+    "identity": "[T_j,phi_+]omega=-(rho*m*C/4)*(cos(N*(2*x1-x2))+cos(N*(x1-2*x2)))",
+    "input": "cos(N*x1)+cos(N*x2)",
+    "nonzeroCosineModes": [
+      "(2,-1)",
+      "(1,-2)"
+    ],
+    "symbolValues": "m_j(N)=m, m_j(sqrt(5)*N)=0",
+    "weight": "phi_+=(1+rho*cos(N*(x1-x2)))/2"
+  },
+  "materialShear": {
+    "field": {
+      "divergence": "0",
+      "heatResidual": [
+        "0",
+        "0",
+        "0"
+      ],
+      "pressure": "constant",
+      "status": "exact smooth shear NSE solution",
+      "velocity": "(0,A/k*exp(-nu*k^2*t)*sin(k*x1),0)",
+      "velocityAdvection": [
+        "0",
+        "0",
+        "0"
+      ],
+      "vortexStretching": [
+        "0",
+        "0",
+        "0"
+      ],
+      "vorticity": "(0,0,A*exp(-nu*k^2*t)*cos(k*x1))",
+      "vorticityTransport": "0"
+    },
+    "localLedger": {
+      "DMinus": "A^2*k^2*exp(-2*nu*k^2*t)*(2+rho)/8",
+      "DPlus": "A^2*k^2*exp(-2*nu*k^2*t)*(2-rho)/8",
+      "YMinus": "A^2*exp(-2*nu*k^2*t)*(2-rho)/8",
+      "YPlus": "A^2*exp(-2*nu*k^2*t)*(2+rho)/8",
+      "balance": "(1/2)Y_+/-' + nu*D_+/- = beta_+/-",
+      "betaMinus": "nu*A^2*k^2*rho*exp(-2*nu*k^2*t)/4",
+      "betaPlus": "-nu*A^2*k^2*rho*exp(-2*nu*k^2*t)/4",
+      "fineLedgerOverTotalY": "nu^2*k^2*rho^2/(2+rho)",
+      "finePositiveLedger": "nu^2*A^2*k^2*rho^2*exp(-2*nu*k^2*t)/(2*(2+rho))",
+      "parentSignedBeta": "0",
+      "totalY": "A^2*exp(-2*nu*k^2*t)/2"
+    },
+    "parabolicInterval": {
+      "B": "A^2*rho*(1-exp(-2*theta))/8",
+      "B2OverDbar": "nu*A^2*rho^2*(1-exp(-2*theta))/(4*(2+rho))",
+      "Dbar": "A^2*(2+rho)*(1-exp(-2*theta))/(16*nu)",
+      "dimensionlessCostAfterViscousNormalization": "theta*rho^2/(2+rho)",
+      "equalityResidual": "0",
+      "integralBeta2OverD": "nu*A^2*rho^2*(1-exp(-2*theta))/(4*(2+rho))",
+      "integralNormalizedDefect": "nu*theta*rho^2/(2+rho)",
+      "intervalLength": "tau=theta/(nu*k^2)",
+      "scaleIndependentInK": true
+    },
+    "weights": {
+      "definition": "phi_+/-=(1+/-rho*cos(2*k*x1))/2",
+      "materialDerivativeMinus": "0",
+      "materialDerivativePlus": "0",
+      "pointwiseMaterial": true
+    }
+  },
+  "status": "pass",
+  "version": "R0.71D-independent"
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="R0.60 之后的研究回顾：按时间整理 R0.61 到 R0.71D 的 68 个研究节点，说明已经得到的结果、被反例排除的设想和仍未解决的问题。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.61–R0.71D｜R0.60 之后的研究回顾">
+  <meta property="og:description" content="九个阶段、68 个节点：实际得到的结果、已经排除的设想，以及 R0.71E 要检查的问题。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.61–R0.71D｜R0.60 之后的研究回顾</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.89">
+  <style>
+    .hero h1{font-size:clamp(1.9rem,4.2vw,3.6rem)}
+    .timeline{display:grid;gap:1rem;counter-reset:phase}
+    .phase{border:1px solid var(--line);background:rgba(255,255,255,.025);padding:1.05rem 1.15rem;position:relative}
+    .phase::before{counter-increment:phase;content:"0" counter(phase);font:700 .78rem/1 var(--mono);color:var(--gold);letter-spacing:.1em}
+    .phase h3{margin:.45rem 0 .55rem;font-size:1.15rem}
+    .phase p{margin:.45rem 0}
+    .links{display:flex;flex-wrap:wrap;gap:.35rem .55rem;margin-top:.7rem}
+    .links a{font:650 .76rem/1 var(--mono);border:1px solid var(--line);padding:.36rem .48rem;text-decoration:none}
+    .metric-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}
+    .metric{border:1px solid var(--line);padding:1rem}.metric strong{display:block;font-size:1.65rem;color:var(--gold)}
+    @media(max-width:760px){.metric-grid{grid-template-columns:1fr}.links a{font-size:.72rem}}
+  </style>
+  <script defer src="/i18n-en.js?v=0.89"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">总览</a><a href="#timeline">研究过程</a><a href="#retained">保留结果</a><a href="#value">研究判断</a><a href="#next">下一步</a><a href="#claims">说明</a><a href="#reproduce">资料</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">累计回顾 · R0.61–R0.71D · 2026-08-25</div>
+        <h1>R0.60 之后的<br>研究回顾</h1>
+        <p class="lead">这页接在 R0.00–R0.60 的阶段回顾之后，整理 R0.61 到 R0.71D 的 68 个研究节点。我按时间记录每一段实际证明了什么、哪条设想被反例排除，以及哪些条件还没有从方程中推出。</p>
+      </div>
+      <div class="stamp"><span class="state">累计回顾</span><strong>R0.61–R0.71D</strong><p>收录节点：68</p><p>回顾截止时公开笔记：128</p><p>回顾截止节点：R0.71D</p><p>问题状态：仍未解决</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>目录</strong><ol>
+        <li><a href="#result">00 · 这页记录什么</a></li><li><a href="#timeline">01 · 九个研究阶段</a></li><li><a href="#retained">02 · 保留结果</a></li><li><a href="#value">03 · 目前的判断</a></li><li><a href="#next">04 · 下一步</a></li><li><a href="#claims">05 · 说明边界</a></li><li><a href="#reproduce">06 · 原始资料</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / 回顾范围</div><h2>这份回顾覆盖 68 个研究节点</h2>
+          <div class="metric-grid">
+            <div class="metric"><strong>68</strong><span>本页收录的研究节点</span></div>
+            <div class="metric"><strong>9</strong><span>按问题划分的研究阶段</span></div>
+            <div class="metric"><strong>0</strong><span>全局正则性证明或爆破构造</span></div>
+          </div>
+          <p>这些节点不能换算成“完成了多少”。它们的作用主要是把若干证明设想分清：有些给出了条件定理，有些还缺少从能量估计到临界量的控制，有些已经被具体反例排除。</p>
+        </section>
+
+        <section id="timeline"><div class="section-no">01 / 研究过程</div><h2>这 68 个节点可以分成九段</h2>
+          <div class="timeline">
+            <article class="phase"><h3>R0.61–R0.69A · 约化递推、时间分层和剪切类</h3><p>四次及更高阶的 Picard 目标可以精确计算，约化递推也有共同解析域和机器证书。不过，所用的不变剪切族始终光滑。时间分层、物理环带和完整核的检查最后都回到一般三维涡量拉伸，没有产生奇点候选。</p><div class="links"><a href="/notes/r0-61.html">R0.61</a><a href="/notes/r0-66.html">R0.66</a><a href="/notes/r0-67c2.html">R0.67C-2</a><a href="/notes/r0-68b2fgh.html">R0.68B-2f/g/h</a><a href="/notes/r0-69a.html">R0.69A</a></div></article>
+            <article class="phase"><h3>R0.69B–R0.69F · 横向扰动和预解算子</h3><p>我逐项检查了横向线性化、旁带扰动、非线性解耦和临界预解算子。最优尺度最后回到经典临界尺度，没有比已知继续性条件多出新的控制，因此这条分支停在 R0.69F。</p><div class="links"><a href="/notes/r0-69b.html">R0.69B</a><a href="/notes/r0-69c.html">R0.69C</a><a href="/notes/r0-69d.html">R0.69D</a><a href="/notes/r0-69e.html">R0.69E</a><a href="/notes/r0-69f.html">R0.69F</a></div></article>
+            <article class="phase"><h3>R0.69G–R0.69O · 压力项和远近场分离</h3><p>压力 Hessian、调和四极矩、三带估计和局部交换子确实给出了远场衰减或结构恒等式；但近场主项仍然是三维涡量拉伸。仅靠压力分解，临界能量估计还不能闭合。</p><div class="links"><a href="/notes/r0-69g.html">R0.69G</a><a href="/notes/r0-69k.html">R0.69K</a><a href="/notes/r0-69o.html">R0.69O</a></div></article>
+            <article class="phase"><h3>R0.69P–R0.69W · 有符号环带和静态构造</h3><p>涡量拉伸可以写成有符号的物理环带和。随后，我用解析缩放、外向舍入区间和端点证书替代了多尺度扫描。尺度比为四的一参数两尺度静态族已被排除；这个结论只适用于该构造族。</p><div class="links"><a href="/notes/r0-69p.html">R0.69P</a><a href="/notes/r0-69t.html">R0.69T</a><a href="/notes/r0-69v.html">R0.69V</a><a href="/notes/r0-69w.html">R0.69W</a></div></article>
+            <article class="phase"><h3>R0.70A–R0.70I · 移动尺度和时间 Hardy 核</h3><p>移动的环带标签本身不会给出边界控制。我又检查了匹配尺度、动态符号、固定尺度覆盖、单壳奇偶结构、仿射一阶展开、相邻源差分和核心矩变化。冻结低频部分可以由能量估计控制；移动低频部分和偏差对角项仍受临界时间 Hardy 核限制。</p><div class="links"><a href="/notes/r0-70a.html">R0.70A</a><a href="/notes/r0-70b.html">R0.70B</a><a href="/notes/r0-70c.html">R0.70C</a><a href="/notes/r0-70d.html">R0.70D</a><a href="/notes/r0-70e.html">R0.70E</a><a href="/notes/r0-70f.html">R0.70F</a><a href="/notes/r0-70g.html">R0.70G</a><a href="/notes/r0-70h.html">R0.70H</a><a href="/notes/r0-70i.html">R0.70I</a></div></article>
+            <article class="phase"><h3>R0.70J–R0.70O · 偏差张量、协方差谱和有限观测</h3><p>偏差对角项没有普适的代数消失结构，归一化各向异性也不自动单调。局部补偿和形变回路效应都需要额外控制。后面的多尺度框架和谱秩分析还表明：有限个不辨方向的高频观测，不能统一重建未过滤的临界横向涡量。</p><div class="links"><a href="/notes/r0-70j.html">R0.70J</a><a href="/notes/r0-70k.html">R0.70K</a><a href="/notes/r0-70l.html">R0.70L</a><a href="/notes/r0-70m.html">R0.70M</a><a href="/notes/r0-70n.html">R0.70N</a><a href="/notes/r0-70o.html">R0.70O</a></div></article>
+            <article class="phase"><h3>R0.70P–R0.70Z · Parseval 框架、响应距离和谱隙</h3><p>完整 Parseval 框架给出了严格的条件投影公式，协方差演化和近秩一扩散也可以精确写出。不过，能量级输入仍不能控制所需的 \(\lVert\nabla\omega\rVert_2^2\)。响应差的循环通道有临界 Besov 增益；物理协方差面积、正主特征值和强主谱隙都不足以决定有符号功的正负。</p><div class="links"><a href="/notes/r0-70p.html">R0.70P</a><a href="/notes/r0-70q.html">R0.70Q</a><a href="/notes/r0-70r.html">R0.70R</a><a href="/notes/r0-70s.html">R0.70S</a><a href="/notes/r0-70t.html">R0.70T</a><a href="/notes/r0-70u.html">R0.70U</a><a href="/notes/r0-70v.html">R0.70V</a><a href="/notes/r0-70w.html">R0.70W</a><a href="/notes/r0-70x.html">R0.70X</a><a href="/notes/r0-70y.html">R0.70Y</a><a href="/notes/r0-70z.html">R0.70Z</a></div></article>
+            <article class="phase"><h3>R0.71A · 恒定投影和临界时间指数</h3><p>即使主投影处处恒定、谱隙很强、标量框架交换子为零，协方差功仍可在完全相同的 \(Q\) 下反号。现有能量恒等式只能给出时间 \(L^1\) 控制；同范数的集中序列排除了从这三项输入统一推出任何 \(L_t^s\)（\(s&gt;1\)）控制。</p><div class="links"><a href="/notes/r0-71a.html">R0.71A</a></div></article>
+            <article class="phase"><h3>R0.71B–R0.71D · 正输出系数、有符号传播和物质热 tent</h3><p>R0.71B 的精确 Fourier 族排除了共同响应自动衰减、无权尺度打包和一个直接三场极化估计。R0.71C 证明有符号分区会产生非负细化缺陷，黏性和真实 NSE 初始迹能从零创造正输出功。R0.71D 把传输、LP 交换子和竖直热通量写进完整物质热 tent 恒等式；随后一个光滑精确 NSE 剪切解表明，父节点 signed heat work 可以严格为零，子节点正平方却保持 \(k^2\) 临界代价，并在抛物时间盒上恰好取等。</p><div class="links"><a href="/notes/r0-71b.html">R0.71B</a><a href="/notes/r0-71c.html">R0.71C</a><a href="/notes/r0-71d.html">R0.71D</a></div></article>
+          </div>
+        </section>
+
+        <section id="retained"><div class="section-no">02 / 保留结果</div><h2>目前可以保留的结果</h2>
+          <ul>
+            <li>有符号物理环带恒等式、完整框架的交换子关系和周期投影继续性机制。</li>
+            <li>协方差演化、秩一扩散吸收及近秩一平方根亏损的精确分解。</li>
+            <li>框架缺陷的响应距离核、循环图 Laplacian 的零空间与临界 Besov 端点估计。</li>
+            <li>有符号分区的非负细化缺陷、正输出归一化不连续和黏性正功创造。</li>
+            <li>完整物质热 tent 恒等式，以及“零父 signed heat work、正子节点临界缺陷”的光滑精确 NSE 反例。</li>
+            <li>若干把假设和量词写清楚的光滑 Navier–Stokes 解族和有限 Fourier 符号对。它们排除了特定的正控制量、谱隙符号律、时间指数提升、齐次有符号传播和仅依赖 tent 几何的增益。</li>
+          </ul>
+          <p>这些结果可以单独整理成条件定理、反例或方法说明。它们是否有独立发表价值，还要经过系统的文献比较和同行判断。</p>
+        </section>
+
+        <section id="value"><div class="section-no">03 / 目前的判断</div><h2>这些结果目前能说明什么</h2>
+          <p>截至 R0.71D，没有新的无条件继续性判据，没有缩小所有潜在奇性解的集合，也没有证明爆破。不能把 68 个节点的数量解释成对千禧年问题完成了某个百分比。</p>
+          <p>目前最清楚的价值是路线排除。静态 signed 层级不能传播抵消；改成完整物质热 tent 后，黏性边界通量仍在一个光滑精确解上制造尺度临界缺陷。因此，后续若有增益，必须来自真正三维的拉伸、传输–滤波或压力相关性，而不能再归因于局部化几何本身。</p>
+        </section>
+
+        <section id="next"><div class="section-no">04 / 下一步</div><h2>R0.71E 只检查 NSE 特有的非线性相关性</h2>
+          <p>下一对象是在 mollified-flow skewed cylinders 上隔离 \([u\cdot\nabla,A_{j,s}]\omega\)、\(A_{j,s}(S\omega)\) 和局部压力边界项。几何合法性要接到 Yang 型覆盖理论，压力要保留 harmonic tail。</p>
+          <p>接受标准很严格：只能保留一个从 NSE 可控预算推出的 vanishing 或可求和缺陷估计，而且必须严格弱于已知 Serrin、BMO/Besov 或耗散波数充分条件。如果估计只是重述这些条件，或者再次假定想证明的临界小量，路线就停止。这个精确符号筛选不需要 DGX。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">05 / 说明边界</div><h2>这里的“完成”指什么</h2>
+          <p>“完成”只表示相应推导、精确计算程序和证书在声明范围内已经检查过，不表示已经通过外部同行评审。计算反例和光滑解族只能排除它们明确覆盖的估计，不能据此否定所有可能的证明方法。</p>
+          <p>本回顾没有证明三维 Navier–Stokes 的全局光滑性或有限时破裂。Clay 正式问题仍然开放。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">06 / 原始资料</div><h2>逐节笔记和证书</h2>
+          <p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-71c.html">保留的 R0.71C 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-71d.html">打开最新节点 R0.71D</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates">浏览机器可读证书</a> · <a href="/recap-r0-61-r0-71d.pdf">下载同步 PDF</a></p>
+          <p>每个阶段的 HTML、PDF、计算脚本和证书都按原编号保留。这里不重复各节的证明，只提供进入原始材料的索引。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.61–R0.71D 回顾 · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

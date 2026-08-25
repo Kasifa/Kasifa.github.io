@@ -218,7 +218,7 @@ test("ships the complete Chinese research review as static HTML", async () => {
   assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });
 
-test("maps the complete published route as a branching tree through R0.71C", async () => {
+test("maps the complete published route as a branching tree through R0.71D", async () => {
   const home = await readFile(siteUrl, "utf8");
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
@@ -254,6 +254,7 @@ test("maps the complete published route as a branching tree through R0.71C", asy
     "/notes/r0-71a.html",
     "/notes/r0-71b.html",
     "/notes/r0-71c.html",
+    "/notes/r0-71d.html",
   ];
   const expected = [...sequential, ...later];
   const actual = [...route.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g)].map(
@@ -272,9 +273,9 @@ test("maps the complete published route as a branching tree through R0.71C", asy
   assert.match(route, /R0\.67A–R0\.68B-2h/);
   assert.match(route, /R0\.69B–R0\.69F/);
   assert.match(route, /R0\.69G–R0\.69O/);
-  assert.match(route, /R0\.69P–R0\.71C/);
-  assert.match(route, /展开 37 篇公开笔记/);
-  assert.match(route, /NEXT · R0\.71D/);
+  assert.match(route, /R0\.69P–R0\.71D/);
+  assert.match(route, /展开 38 篇公开笔记/);
+  assert.match(route, /NEXT · R0\.71E/);
   assert.match(route, /路线回返/);
   assert.match(route, /当前主线/);
   assert.doesNotMatch(route, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);
@@ -295,7 +296,7 @@ test("publishes and links the Leray polarization-channel theorem and normal obst
 
   assert.match(home, /href="\/notes\/r0-56\.html"/);
   assert.match(home, /href="\/notes\/r0-56\.pdf"/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.56 已完成："));
   assert.ok(home.includes("R0.57 已完成："));
   assert.match(note, /研究笔记 R0\.56/);
@@ -1735,7 +1736,7 @@ test("publishes and links the global charge-character optimization theorem", asy
   assert.match(home, /href="\/notes\/r0-50\.html"/);
   assert.match(home, /href="\/notes\/r0-50\.pdf"/);
   assert.match(home, /<strong>2026-08-25<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.51 已完成："));
   assert.match(note, /研究笔记 R0\.50/);
   assert.match(note, /href="\/notes\/r0-50\.pdf"/);
@@ -1806,7 +1807,7 @@ test("publishes and links the fixed affine charge-weight threshold theorem", asy
   assert.match(home, /href="\/notes\/r0-51\.html"/);
   assert.match(home, /href="\/notes\/r0-51\.pdf"/);
   assert.match(home, /<strong>2026-08-25<\/strong>最近修订/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.51/);
   assert.match(note, /href="\/notes\/r0-51\.pdf"/);
@@ -1839,7 +1840,7 @@ test("publishes and links the complete affine-family global enclosure", async ()
 
   assert.match(home, /href="\/notes\/r0-52\.html"/);
   assert.match(home, /href="\/notes\/r0-52\.pdf"/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.52 已完成："));
   assert.match(note, /研究笔记 R0\.52/);
   assert.match(note, /href="\/notes\/r0-52\.pdf"/);
@@ -1874,7 +1875,7 @@ test("publishes and links the rational product-affine witness", async () => {
 
   assert.match(home, /href="\/notes\/r0-53\.html"/);
   assert.match(home, /href="\/notes\/r0-53\.pdf"/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.53 已完成："));
   assert.match(home, /R0\.53 已完成：<\/strong>&nbsp;简单有理乘积仿射权/);
   assert.match(note, /研究笔记 R0\.53/);
@@ -1913,7 +1914,7 @@ test("publishes and links the complete product-affine global enclosure", async (
 
   assert.match(home, /href="\/notes\/r0-54\.html"/);
   assert.match(home, /href="\/notes\/r0-54\.pdf"/);
-  assert.match(home, /<strong>v0\.88<\/strong>网页版本/);
+  assert.match(home, /<strong>v0\.89<\/strong>网页版本/);
   assert.ok(home.includes("R0.54 已完成："));
   assert.match(home, /R0\.54 已完成：<\/strong>完整乘积仿射族/);
   assert.match(note, /研究笔记 R0\.54/);

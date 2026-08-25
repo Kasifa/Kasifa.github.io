@@ -96,23 +96,23 @@ test("links the certificate, independent checker, and primary sources", async ()
   }
 });
 
-test("retains R0.71B while the homepage and literature map advance through R0.71C", async () => {
+test("retains R0.71B while the homepage and literature map advance through R0.71D", async () => {
   const [home, literature] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
   ]);
 
-  assert.match(home, /<strong>127<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71C<\/strong>最新研究节点/);
-  assert.match(home, /Research topology · R0\.1–R0\.71C/);
-  assert.match(home, /展开 37 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.71D/);
-  assert.match(home, /综述 v0\.88 · 2026-08-25/);
-  assert.match(literature, /R0\.69P–R0\.71C/);
-  assert.match(literature, /开放接口 · R0\.71D/);
-  assert.match(literature, /文献综述 v0\.88 · 2026-08-25/);
-  assert.match(home, /src="\/i18n-en\.js\?v=0\.88"/);
-  assert.match(literature, /src="\/i18n-en\.js\?v=0\.88"/);
+  assert.match(home, /<strong>128<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71D<\/strong>最新研究节点/);
+  assert.match(home, /Research topology · R0\.1–R0\.71D/);
+  assert.match(home, /展开 38 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.71E/);
+  assert.match(home, /综述 v0\.89 · 2026-08-25/);
+  assert.match(literature, /R0\.69P–R0\.71D/);
+  assert.match(literature, /开放接口 · R0\.71E/);
+  assert.match(literature, /文献综述 v0\.89 · 2026-08-25/);
+  assert.match(home, /src="\/i18n-en\.js\?v=0\.89"/);
+  assert.match(literature, /src="\/i18n-en\.js\?v=0\.89"/);
   assert.match(
     await readFile(new URL("notes/r0-71b.html", publicRoot), "utf8"),
     /src="\/i18n-en\.js\?v=0\.87"/,

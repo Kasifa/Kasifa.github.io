@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71D：完整物质热 tent 恒等式成立，但精确光滑 Navier–Stokes 剪切解产生零父节点、正细化缺陷，并在抛物时间盒上保持临界尺度。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71D｜物质热 tent 仍保留临界黏性细化缺陷">
+  <meta property="og:description" content="完整热延拓账本、精确物质剪切见证、临界 k² 缺陷、抛物 Cauchy 等号，以及下一步必须寻找的 NSE 特有补偿。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71D｜物质热 tent 仍保留临界黏性细化缺陷</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.89">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.45rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.89"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identity">恒等式</a><a href="#material">物质几何</a><a href="#vertical">热通量</a><a href="#witness">精确解</a><a href="#defect">细化缺陷</a><a href="#scaling">临界尺度</a><a href="#boxes">时间盒</a><a href="#bottom">底层交换子</a><a href="#adjoint">伴随权</a><a href="#pressure">压力</a><a href="#literature">文献</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71D · MATERIAL HEAT TENT · CRITICAL VISCOUS DEFECT</div>
+        <h1>让窗口随流体移动，<br>黏性细化缺陷仍是临界的</h1>
+        <p class="lead">我把 R0.71C 留下的物质抛物 tent 写成完整的热延拓账本，没有省略传输、滤波交换子、截断运动、时间面或竖直热面。随后一个精确光滑 Navier–Stokes 剪切解给出零的有符号父节点和严格为正的细化账本；在抛物时间尺度上，该缺陷恰好饱和上一节的 Cauchy 不等式。这里关闭的是“仅靠移动几何与热通量获得次临界增益”，不是一般的非线性补偿。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71D 精确恒等式与独立复核完成</span><strong>几何型物质 tent 增益关闭；NSE 特有相关性保留</strong><p>版本 v0.71D · 2026-08-25</p><p>精确 Fourier 平均与数值求积一致</p><p>正式附图：闭式 NSE 剪切解，不是 DNS</p><p>下一门槛：transport–filter / pressure depletion</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#identity">01 · 完整热延拓恒等式</a></li>
+        <li><a href="#material">02 · 物质几何的真实代价</a></li>
+        <li><a href="#vertical">03 · 竖直热通量</a></li>
+        <li><a href="#witness">04 · 精确物质剪切解</a></li>
+        <li><a href="#defect">05 · 零父节点与正细化</a></li>
+        <li><a href="#scaling">06 · 临界 \(k^2\) 标度</a></li>
+        <li><a href="#boxes">07 · 抛物 Cauchy 等号</a></li>
+        <li><a href="#bottom">08 · 底层截断交换子</a></li>
+        <li><a href="#adjoint">09 · 伴随消项与紧支撑</a></li>
+        <li><a href="#pressure">10 · 压力边界账本</a></li>
+        <li><a href="#literature">11 · 文献边界</a></li>
+        <li><a href="#meaning">12 · 研究价值</a></li>
+        <li><a href="#next">13 · 下一条路线</a></li>
+        <li><a href="#claims">14 · 主张边界</a></li>
+        <li><a href="#reproduce">15 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>完整账本可以写出，但它没有产生次临界余量</h2>
+          <p>R0.71D 对一个限定问题给出否定答案：即使局部窗口随流体移动，并把竖直热通量放回同一可加账本，细化后取正部再平方的缺陷也不会仅靠几何而变小。一个精确光滑 NSE 解已经在所有拉伸、非线性传输、压力和传输–滤波交换子都消失时留下临界的黏性缺陷。</p>
+          <div class="equation result">\[
+            \beta_++\beta_-=0,
+            \qquad
+            \delta_k=\frac{(\beta_-^+)^2}{D_-}>0,
+            \qquad
+            \frac{\delta_k}{Y}=\frac{\nu^2\rho^2}{2+\rho}k^2.
+          \]</div>
+          <p>所以，水平输运的精确抵消与竖直热面的精确记账都不足以提供 \(k^{-\varepsilon}\) 增益。仍可能存在的机制只能来自真正三维的拉伸、交换子或压力扇区之间的 NSE 特有相关性。</p>
+        </section>
+
+        <section id="identity"><div class="section-no">01 / Complete heat-extension identity</div><h2>物质热 tent 的每一张面都进入同一个恒等式</h2>
+          <p>令 \(T_j\) 是实偶 Littlewood–Paley 块，\(s\ge0\) 是热延拓变量，并写</p>
+          <div class="equation">\[
+            A_{j,s}=e^{s\Delta}T_j,
+            \qquad W_j=A_{j,s}\omega,
+            \qquad e_j=\frac12|W_j|^2.
+          \]</div>
+          <p>从涡量方程精确得到</p>
+          <div class="equation result">\[
+            (\partial_t+u\cdot\nabla-\nu\partial_s)W_j
+            =A_{j,s}(S\omega)+[u\cdot\nabla,A_{j,s}]\omega=:G_j.
+          \]</div>
+          <p>对 \(I=[t_0,t_1]\)、\(0&lt;s&lt;h\) 和光滑非负权 \(\phi(t,x,s)\)，令 \(E_\phi(t,s)=\int\phi e_j\,dx\)。分部积分给出完整账本：</p>
+          <div class="equation result">\[
+          \begin{aligned}
+          &\int_0^h\!\left[E_\phi(t_1,s)-E_\phi(t_0,s)\right]ds
+          +\nu\int_I\!\left[E_\phi(t,0)-E_\phi(t,h)\right]dt\\
+          &=\int_{I\times(0,h)\times\mathbb T^3}
+          \left\{\phi W_j\cdot G_j
+          +e_j(\partial_t+u\cdot\nabla-\nu\partial_s)\phi\right\}
+          \,dx\,ds\,dt.
+          \end{aligned}
+          \]</div>
+          <p>左侧分别是物理时间面与竖直热面；右侧保留拉伸、传输–滤波交换子和所有截断运动项。少掉其中任何一项，都会改变原方程的局部账本。</p>
+        </section>
+
+        <section id="material"><div class="section-no">02 / Flow adaptation</div><h2>随低频流移动，只把输运改写为相对速度</h2>
+          <p>若 cutoff 随光滑低频速度 \(U_j\) 运动，并满足</p>
+          <div class="equation">\[
+            (\partial_t+U_j\cdot\nabla-\nu\partial_s)\phi=R_{\rm shape},
+          \]</div>
+          <p>完整速度下的剩余项仍是</p>
+          <div class="equation result">\[
+            (\partial_t+u\cdot\nabla-\nu\partial_s)\phi
+            =(u-U_j)\cdot\nabla\phi+R_{\rm shape}.
+          \]</div>
+          <p>流适应没有让水平通量消失，只把它变成高低频相对速度。若直接让 cutoff 随完整光滑流移动，则</p>
+          <div class="equation">\[
+            (\partial_t+u\cdot\nabla)\nabla\phi
+            =-(\nabla u)^T\nabla\phi,
+          \]</div>
+          <p>保持窗口几何的直接估计需要 \(\exp\int\|\nabla u\|_\infty dt\)，已经回到 Lipschitz/BKM 级别。对 suitable weak solution，合法做法是用平滑速度生成斜柱，同时另行证明覆盖与相对速度估计。</p>
+        </section>
+
+        <section id="vertical"><div class="section-no">03 / Vertical heat face</div><h2>竖直热面不是可忽略的修正项</h2>
+          <p>热延拓方向的两个端面具有精确分解：</p>
+          <div class="equation result">\[
+            E_\phi(t,0)-E_\phi(t,h)
+            =\int_0^h\!\int
+            \left(\phi|\nabla W_j|^2-e_j\Delta\phi-e_j\partial_s\phi\right)
+            dx\,ds.
+          \]</div>
+          <p>它同时包含 palinstrophy、空间边界泄漏和斜面泄漏，因此不是额外得到的独立正量。对后面的单频剪切见证，\(W_j(s,t)=e^{-k^2s}T_j\omega_k(t)\)，物理时间损失与竖直边界通量恰好相消：</p>
+          <div class="equation">\[
+            \int_0^h[E_\phi(\tau_k,s)-E_\phi(0,s)]ds
+            +\nu\int_0^{\tau_k}[E_\phi(t,0)-E_\phi(t,h)]dt=0.
+          \]</div>
+          <p>生产器对任意正的 \(A,\nu,k,h,\theta\) 符号验证了这个等式。若删掉竖直热面，账本会虚构出一个并不存在的正余量。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">04 / Exact material shear witness</div><h2>一个光滑精确 NSE 解隔离出纯黏性障碍</h2>
+          <p>对任意整数 \(k\ge1\)，取</p>
+          <div class="equation">\[
+            u_k=\left(0,\frac{A}{k}e^{-\nu k^2t}\sin(kx_1),0\right),
+            \qquad
+            \omega_k=\left(0,0,Ae^{-\nu k^2t}\cos(kx_1)\right).
+          \]</div>
+          <p>这是常压力下的光滑精确三维 NSE 解，并且</p>
+          <div class="equation">\[
+            \nabla\cdot u_k=0,
+            \quad u_k\cdot\nabla u_k=0,
+            \quad u_k\cdot\nabla\omega_k=0,
+            \quad S_k\omega_k=0.
+          \]</div>
+          <p>用光滑分区</p>
+          <div class="equation result">\[
+            \phi_\pm=\frac12\left(1\pm\rho\cos(2kx_1)\right),
+            \qquad0&lt;\rho&lt;1.
+          \]</div>
+          <p>因为 \((u_k)_1=0\)，两个权都满足 \((\partial_t+u_k\cdot\nabla)\phi_\pm=0\)，是真正的物质分区。该解上的整个子节点注入只剩黏性 cutoff 通量，没有把别的未控项藏进见证中。</p>
+        </section>
+
+        <section id="defect"><div class="section-no">05 / Zero parent, positive refinement</div><h2>父节点完全抵消，细化后仍出现严格正值</h2>
+          <p>以归一化空间平均定义 \(Y_\pm=\int\phi_\pm|\omega_k|^2\)、\(D_\pm=\int\phi_\pm|\nabla\omega_k|^2\) 和 \(\beta_\pm=\frac12Y_\pm'+\nu D_\pm\)。精确 Fourier 平均给出</p>
+          <div class="equation">\[
+            D_\pm=\frac{A^2k^2(2\mp\rho)}8e^{-2\nu k^2t},
+            \qquad
+            \beta_\pm=\mp\frac{\nu A^2k^2\rho}{4}e^{-2\nu k^2t}.
+          \]</div>
+          <p>因此父节点的有符号注入恒为零，而细分账本取正部再平方后为</p>
+          <div class="equation result">\[
+            \beta_++\beta_-=0,
+            \qquad
+            \delta_k=\frac{(\beta_-^+)^2}{D_-}
+            =\frac{\nu^2A^2k^2\rho^2}{2(2+\rho)}e^{-2\nu k^2t}>0.
+          \]</div>
+          <figure><img src="/figures/r0-71d-critical-heat-defect.svg" alt="R0.71D 精确物质剪切解上的零父节点、正黏性细化缺陷、临界尺度与抛物时间盒等号"><figcaption>图 R0.71D。光滑物质分区的两个子节点注入大小相同、符号相反，父节点账本严格为零；取正部与耗散归一化后，细化缺陷严格为正。归一化缺陷按 \(k^2\) 增长，而在长度 \(\theta/(\nu k^2)\) 的抛物时间盒上变成与 \(k\) 无关的常数。图来自闭式 NSE 剪切解与精确 Fourier 平均，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71d-critical-heat-defect.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71d-critical-heat-defect.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71d-critical-heat-defect.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="scaling"><div class="section-no">06 / Critical k-squared scaling</div><h2>细化代价正好停在 NSE 的临界尺度</h2>
+          <p>父节点 enstrophy 为 \(Y=A^2e^{-2\nu k^2t}/2\)，所以</p>
+          <div class="equation result">\[
+            \frac{\delta_k}{Y}=\frac{\nu^2\rho^2}{2+\rho}k^2.
+          \]</div>
+          <p>对任意 \(\varepsilon&gt;0\)，不存在只依赖物质 tent 几何与黏性热输运、并对这个精确族一致成立的估计</p>
+          <div class="equation">\[
+            \delta_k\le C\nu^2k^{2-\varepsilon}Y.
+          \]</div>
+          <p>这条反证只针对几何型通用估计。它没有说明加入三维拉伸、交换子和压力相关后仍不可能出现额外小量。</p>
+        </section>
+
+        <section id="boxes"><div class="section-no">07 / Parabolic Cauchy equality</div><h2>R0.71C 的时间盒不等式在这里恰好取等号</h2>
+          <p>取抛物时间长度 \(\tau_k=\theta/(\nu k^2)\)，并令 \(q_\theta=1-e^{-2\theta}\)。精确积分得到</p>
+          <div class="equation">\[
+            B_-:=\int_0^{\tau_k}\beta_-dt=\frac{A^2\rho}{8}q_\theta,
+            \qquad
+            \overline D_-:=\int_0^{\tau_k}D_-dt
+            =\frac{A^2(2+\rho)}{16\nu}q_\theta.
+          \]</div>
+          <p>由于 \(\beta_-/D_-=2\nu\rho/(2+\rho)\) 在时间上恒定，Cauchy 没有任何松弛：</p>
+          <div class="equation result">\[
+            \frac{B_-^2}{\overline D_-}
+            =\int_0^{\tau_k}\frac{(\beta_-^+)^2}{D_-}\,dt
+            =\frac{\nu A^2\rho^2}{4(2+\rho)}(1-e^{-2\theta}).
+          \]</div>
+          <p>再除以 \(\nu Y(0)\) 后，结果与 \(k\) 和 \(\nu\) 都无关。这说明抛物盒虽然尺度正确，却不能把 R0.71C 中“错误方向”的 Cauchy 下界反转成所需上界。</p>
+        </section>
+
+        <section id="bottom"><div class="section-no">08 / Bottom commutator</div><h2>先截断再滤波，会在 tent 底层产生同尺度交换子</h2>
+          <p>若先做空间局部化，令 \(Z_j=A_{j,s}(\chi\omega)\)，则方程还包含</p>
+          <div class="equation">\[
+          \begin{aligned}
+          (\partial_t+u\cdot\nabla-\nu\partial_s)Z_j
+          ={}&A_{j,s}(\chi S\omega)+[u\cdot\nabla,A_{j,s}](\chi\omega)\\
+          &+A_{j,s}\!\left[(D_t\chi-\nu\Delta\chi)\omega
+          -2\nu\nabla\chi\cdot\nabla\omega\right].
+          \end{aligned}
+          \]</div>
+          <p>底面 \(s=0\) 还满足</p>
+          <div class="equation result">\[
+            T_j(\chi\omega)=\chi T_j\omega+[T_j,\chi]\omega.
+          \]</div>
+          <p>证书取 \(f=2a\cos(kx_1)\)、\(\chi=(1+\rho\cos(2kx_1))/2\)，并令乘子满足 \(m_j(k)=m\)、\(m_j(3k)=0\)。此时 \([T_j,\chi]f\) 的 \(+3k\) 系数恰为 \(-\rho ma/4\)，没有尺度小因子。局部 Bernstein 估计也必须加入边界稳定项，不能无条件把局部耗散替换为 \(2^{2j}\) 倍局部能量。</p>
+        </section>
+
+        <section id="adjoint"><div class="section-no">09 / Adjoint compactness tradeoff</div><h2>伴随热权可以消项，但不能同时保持非零紧支撑</h2>
+          <p>显式权</p>
+          <div class="equation">\[
+            \phi(t,x)=\frac12\left[1+\rho_Te^{-4\nu k^2(T-t)}\cos(2kx_1)\right]
+          \]</div>
+          <p>满足反向伴随方程 \((\partial_t+\nu\Delta)\phi=0\)，因而能在代数上消去热 cutoff 项。这并没有得到一个紧支撑的物质 tent：强最大值原理说明，非零、非负且紧支撑的终端轮廓在更早时间会立刻变成处处正。</p>
+          <div class="equation result">\[
+            \text{精确伴随热平衡}
+            \quad\Longrightarrow\quad
+            \text{失去紧支撑，或另付截断误差。}
+          \]</div>
+          <p>因此“局部支撑、精确物质运动、精确热消项”三者不能由一个非零光滑权同时免费满足。</p>
+        </section>
+
+        <section id="pressure"><div class="section-no">10 / Pressure boundary ledger</div><h2>改用应变账本时，压力正交性变成同尺度边界项</h2>
+          <p>涡量账本没有显式压力。若改用热延拓应变 \(\Sigma_j=A_{j,s}S\)、速度 \(U_j=A_{j,s}u\) 与压力 \(p_j=A_{j,s}p\)，则</p>
+          <div class="equation result">\[
+            \int\phi\,\Sigma_j:\nabla^2p_j
+            =\int(\Delta p_j)U_j\cdot\nabla\phi
+            +\int(U_j)_i(\partial_kp_j)(\partial_{ik}\phi).
+          \]</div>
+          <p>全空间的压力正交性在局部化后成为一阶与二阶 cutoff 边界账本。R0.69N–R0.69O 的耗散辅助估计可在各自假设下支付这部分，却不会抵消本节已经隔离出的黏性缺陷。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Literature boundary</div><h2>移动窗口、斜柱和局部通量都有先例，缺的是同一条闭合链</h2>
+          <p><a href="https://doi.org/10.2140/apde.2013.6.25">Tao 的移动局部能量与 enstrophy 估计</a>、<a href="https://doi.org/10.4171/AIHPC/20">Yang 的斜抛物柱覆盖理论</a>、<a href="https://doi.org/10.1007/s00205-021-01661-4">Vasseur–Yang 的流适应最大函数应用</a>、<a href="https://doi.org/10.1002/cpa.3160350604">Caffarelli–Kohn–Nirenberg 的局部能量框架</a>和<a href="https://doi.org/10.1006/aima.2000.1937">Koch–Tataru 的热 tent Carleson 空间</a>已经覆盖主要组成部件。物理尺度上的有符号通量、Duchon–Robert 缺陷与 LP 壳通量也都有成熟先例。</p>
+          <p>检索中最接近的重叠是 <a href="https://arxiv.org/abs/2606.12756">Runlong Yu 2026 年的 moving-window defect-cascade 预印本</a>。它已组合 pressure、flux、energy、trace 与 Carleson packing，但真正的 NSE depletion、packing 和 moving-window closure 仍是条件或开放输入；它没有本节的物质热 tent、LP 有符号细化和精确黏性见证。</p>
+          <p>截至 2026-08-25，我没有找到一条一手文献同时保留完整传输、LP 交换子、压力与黏性热通量，并从 NSE 自身预算推出 signed refinement defect 的 vanishing 或可求和估计。这是限定检索范围内的负向结果，不是不存在、新颖性或优先权证明。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">12 / Research value</div><h2>这一步的价值是排除一个尺度上恰好失败的局部化机制</h2>
+          <p>R0.71D 把“完整通量也许会在物质 tent 中自动抵消”拆成可核查的恒等式、底层交换子、精确 NSE 见证和尺度测试。结果显示，内部黏性通量在父节点中抵消，却在正部平方细化后重新出现，并且恰好占满临界 \(k^2\) 预算。</p>
+          <p>这是一条可复用的 no-go 定理：今后的局部化方案不能把竖直热面当成免费耗散，也不能声称移动窗口本身给出次临界增益。它没有改进已有无条件正则性理论，没有构造奇性，也没有解决 Clay 问题；对该问题的价值目前是清理路线和缩小下一条定理必须使用的结构。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next analytic gate</div><h2>R0.71E：只检查剪切见证中消失的 NSE 特有扇区</h2>
+          <p>下一步将隔离三个在本节见证上为零、在真正三维流中存在的对象：</p>
+          <div class="equation result">\[
+            [u\cdot\nabla,A_{j,s}]\omega,
+            \qquad A_{j,s}(S\omega),
+            \qquad \text{局部压力边界项}.
+          \]</div>
+          <p>几何应由平滑低频流生成，并按 Yang 型斜柱覆盖逐项审计。合格的正结果必须从 NSE 预算得到 vanishing 或可求和缺陷，而且严格低于已知 Serrin、BMO/Besov 或耗散波数充分条件；若所有估计都回到这些条件，就把它记录为另一条精确 no-go。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>已证结论、检索结果与开放方向分开记录</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>完整物质热 tent 恒等式</strong><p>时间面、竖直热面、拉伸、传输–滤波交换子和 cutoff 运动项以精确符号进入同一账本。</p></div>
+            <div class="status"><span>PROVED</span><strong>精确光滑 NSE 黏性见证</strong><p>物质父节点注入恒为零，细化后的正平方账本严格为正。</p></div>
+            <div class="status"><span>PROVED</span><strong>临界标度与时间盒等号</strong><p>瞬时归一化缺陷按 \(k^2\) 缩放；抛物时间盒上 R0.71C 的 Cauchy 不等式精确取等。</p></div>
+            <div class="status"><span>PROVED</span><strong>底层与伴随权边界</strong><p>底层交换子没有统一小尺度因子；精确伴随热消项与非零紧支撑不能同时免费保持。</p></div>
+            <div class="status"><span>OPEN</span><strong>NSE 特有 depletion</strong><p>拉伸、传输–滤波交换子与压力是否存在低于已知正则条件的相关性估计仍未解决。</p></div>
+            <div class="status"><span>NOT CLAIMED</span><strong>一般发散、奇性或全局正则性</strong><p>本节不证明所有自适应 tent 缺陷发散，不构造奇性，也不证明一般三维 NSE 的全局光滑性。</p></div>
+          </div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproducibility and sources</div><h2>报告、文献审计、独立复核、证书与正式附图一并归档</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071d_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071d_literature_audit.md">查看一手文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071d_independent_audit.md">查看独立数学复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071d_exact_audit.py">查看精确生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071d_independent_audit.py">查看独立重建脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071d">查看证书、环境记录与 SHA-256 清单</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071d-material-heat-tent/fig-r071d-critical-heat-defect">查看正式期刊附图包</a> · <a href="/notes/r0-71d.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器用精确符号代数重建热延拓账本、物质剪切平均、临界缺陷、时间盒等号、竖直面恒等式和底层交换子。独立脚本不导入生产器，并以另一套闭式推导和数值求积复核关键量。该小节没有使用随机搜索、DNS、GPU 或 DGX。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确构造、方法边界、条件结果与开放问题分开记录。</div><div>R0.71D · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

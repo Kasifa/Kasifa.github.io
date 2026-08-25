@@ -129,20 +129,20 @@ test("keeps every R0.70O public figure byte-exact and links the archive", async 
   }
 });
 
-test("retains R0.70O while the route tree advances through R0.71C", async () => {
+test("retains R0.70O while the route tree advances through R0.71D", async () => {
   const home = await readFile(new URL("research-review.html", publicRoot), "utf8");
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
   const route = home.slice(start, end);
 
-  assert.match(route, /Research topology · R0\.1–R0\.71C/);
-  assert.match(route, /R0\.69P–R0\.71C/);
-  assert.match(route, /展开 37 篇公开笔记/);
+  assert.match(route, /Research topology · R0\.1–R0\.71D/);
+  assert.match(route, /R0\.69P–R0\.71D/);
+  assert.match(route, /展开 38 篇公开笔记/);
   assert.equal((route.match(/href="\/notes\/r0-70o\.html"/g) ?? []).length, 1);
   assert.doesNotMatch(route, /NEXT · R0\.70O/);
-  assert.match(route, /NEXT · R0\.71D/);
-  assert.match(route, /通量平衡的物质抛物 tent/);
-  assert.match(home, /综述 v0\.88 · 2026-08-25/);
-  assert.match(home, /上次综述 v0\.87 · 2026-08-25/);
-  assert.match(home, /src="\/i18n-en\.js\?v=0\.88"/);
+  assert.match(route, /NEXT · R0\.71E/);
+  assert.match(route, /真正 NSE 非线性扇区的耗竭测试/);
+  assert.match(home, /综述 v0\.89 · 2026-08-25/);
+  assert.match(home, /上次综述 v0\.88 · 2026-08-25/);
+  assert.match(home, /src="\/i18n-en\.js\?v=0\.89"/);
 });

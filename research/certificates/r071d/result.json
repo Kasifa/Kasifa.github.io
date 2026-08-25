@@ -1,0 +1,81 @@
+{
+  "bottomCommutator": {
+    "convention": "[T,phi]f=T(phi*f)-phi*T(f)",
+    "multiplierAssumption": "m(k)=multiplier and m(3*k)=0",
+    "plusThreeModeCoefficient": "-mode_amplitude*multiplier*rho/4",
+    "scaleSmallness": "none"
+  },
+  "checks": {
+    "adjointFourierWeightSolvesBackwardEquation": true,
+    "bottomCutoffCommutatorIsOrderOne": true,
+    "cutoffHeatFluxEqualsChildLedger": true,
+    "exactNavierStokesShear": true,
+    "finePositiveLedgerIsStrictlyPositive": true,
+    "fullVerticalTentIdentityCloses": true,
+    "materialPartition": true,
+    "nonlinearityAndStretchingVanish": true,
+    "normalizedDefectHasCriticalKSquareScaling": true,
+    "parabolicBoxCostIsScaleIndependent": true,
+    "parabolicCauchyIsEquality": true,
+    "parentSignedLedgerIsZero": true,
+    "partitionOfUnity": true,
+    "transportFilterCommutatorVanishesForShear": true,
+    "verticalFluxIsNotOmitted": true
+  },
+  "completeTentIdentity": {
+    "fieldEquation": "(d_t+u.grad-nu*d_s)W_j=A_js(S omega)+[u.grad,A_js]omega",
+    "integratedLedger": "time-top-minus-bottom + nu*(heat-bottom-minus-top) = source + transport-filter-commutator + cutoff-motion",
+    "lowFrequencyMotionResidual": "(u-U_j).grad(phi)+R_shape",
+    "verticalFluxIdentityResidual": "0"
+  },
+  "exactShearWitness": {
+    "divergence": "0",
+    "pressure": "constant",
+    "velocity": "(0,(amplitude/k)*exp(-nu*k^2*t)*sin(k*x1),0)",
+    "velocityNonlinearity": "0",
+    "vortexStretching": "0",
+    "vorticity": "(0,0,amplitude*exp(-nu*k^2*t)*cos(k*x1))",
+    "vorticityTransport": "0"
+  },
+  "materialChildren": {
+    "DMinus": "amplitude**2*k**2*(rho + 2)*exp(-2*k**2*nu*t)/8",
+    "DPlus": "-amplitude**2*k**2*(rho - 2)*exp(-2*k**2*nu*t)/8",
+    "YMinus": "-amplitude**2*(rho - 2)*exp(-2*k**2*nu*t)/8",
+    "YPlus": "amplitude**2*(rho + 2)*exp(-2*k**2*nu*t)/8",
+    "betaMinus": "amplitude**2*k**2*nu*rho*exp(-2*k**2*nu*t)/4",
+    "betaPlus": "-amplitude**2*k**2*nu*rho*exp(-2*k**2*nu*t)/4",
+    "finePositiveLedger": "amplitude**2*k**2*nu**2*rho**2*exp(-2*k**2*nu*t)/(2*(rho + 2))",
+    "normalizedFineLedger": "k**2*nu**2*rho**2/(rho + 2)",
+    "parentSignedLedger": "0",
+    "weights": [
+      "(1+rho*cos(2*k*x1))/2",
+      "(1-rho*cos(2*k*x1))/2"
+    ]
+  },
+  "parabolicBox": {
+    "boxQuotient": "amplitude**2*nu*rho**2*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/(4*(rho + 2))",
+    "cauchyResidual": "0",
+    "dimensionlessCost": "rho**2*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/(2*(rho + 2))",
+    "duration": "theta/(nu*k**2)",
+    "integratedDissipation": "amplitude**2*(rho + 2)*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/(16*nu)",
+    "integratedPointwiseLedger": "amplitude**2*nu*rho**2*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/(4*(rho + 2))",
+    "signedMass": "amplitude**2*rho*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/8"
+  },
+  "release": "R0.71D",
+  "routeDecision": {
+    "nextGate": "isolate the transport-filter and pressure sectors on mollified-flow skewed cylinders; accept only a vanishing or summable estimate below known criteria",
+    "notProved": [
+      "unconditional Navier-Stokes regularity or singularity formation",
+      "divergence of every adaptive material-tent defect norm",
+      "equivalence of every tent norm with BMO, Besov, Serrin, or dissipation-wavenumber criteria",
+      "absence of a Navier-Stokes-specific nonlinear sign or depletion mechanism"
+    ],
+    "proved": [
+      "the complete heat-extension material-tent ledger retains every additive term",
+      "an exact smooth NSE material partition has zero parent signed heat work and positive refined work",
+      "the defect is critical and exactly saturates the parabolic time-box Cauchy inequality",
+      "tent geometry and viscous heat transport alone provide no k^(-epsilon) gain"
+    ]
+  },
+  "status": "material-heat-tent-critical-defect-gate"
+}

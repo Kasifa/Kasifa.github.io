@@ -19,9 +19,11 @@ test("publishes a source-backed literature review with four technical topologies
   assert.match(html, /R0\.70P–Z/);
   assert.match(html, /R0\.71A/);
   assert.match(html, /R0\.71B/);
-  assert.match(html, /开放接口 · R0\.71C/);
+  assert.match(html, /R0\.71C/);
+  assert.match(html, /开放接口 · R0\.71D/);
   assert.match(html, /共同响应自动衰减和无权尺度打包两种设想/);
-  assert.match(html, /还没有动态时间可积性/);
+  assert.match(html, /有符号分层存在非负细化缺陷/);
+  assert.match(html, /必须显式记录通量的局部化问题/);
   assert.match(html, /笔记 01 \/ 问题边界/);
   assert.match(html, /文献 \/ 一手来源/);
   assert.doesNotMatch(html, /NOTE 0[1-7] \/|CONTENTS|OPEN BRIDGE/);

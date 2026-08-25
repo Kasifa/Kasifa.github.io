@@ -1,0 +1,208 @@
+{
+  "NavierStokesInitialTrace": {
+    "amplitude": "omega_0=epsilon*Omega",
+    "decision": "the parent work becomes positive for every nu>0 and epsilon>0 at sufficiently small positive time",
+    "linearViscousPart": "12*nu*epsilon^3",
+    "nonlinearPart": "(76/5)*epsilon^4",
+    "parentDerivativeAtZero": "4*epsilon**3*(19*epsilon + 15*nu)/5",
+    "parentWorkAtZero": "0",
+    "selectedDerivativesAtZero": [
+      "2*epsilon**3*(3*epsilon - 8*nu)",
+      "2*epsilon**3*(23*epsilon + 70*nu)/5"
+    ],
+    "selectedWorksAtZero": [
+      "2*epsilon**3",
+      "-2*epsilon**3"
+    ],
+    "tensor": "Q=omega tensor omega (the full-response or identity-frame tensor)"
+  },
+  "StokesEvolution": {
+    "comparisonTime": "log(2)/(6*nu)",
+    "decision": "different input radii make viscosity reveal initially cancelled positive output on a fixed equal-output-radius node",
+    "fineLedgerAtComparisonTime": "2**(2/3)/8",
+    "parentDerivativeAtZero": "12*nu",
+    "parentWork": "2*(exp(-8*nu*t)-exp(-14*nu*t))",
+    "refinementDefectAtComparisonTime": "7*2**(2/3)/64",
+    "rootLedgerAtComparisonTime": "2**(2/3)/64",
+    "weight1": "8*exp(-8*nu*t)",
+    "weight2": "8*exp(-8*nu*t)",
+    "work1": "2*exp(-8*nu*t)",
+    "work2": "-2*exp(-14*nu*t)"
+  },
+  "acceptanceWitnesses": {
+    "decision": "the new ledger preserves the earlier sign distinction but does not remove either packing obstruction",
+    "r071aNegativeSquare": "0",
+    "r071aPositiveSquare": "9/800",
+    "sameLowOrderedResonances": 96,
+    "sharedHighOrderedResonances": 96
+  },
+  "analyticDependencies": [
+    "the refinement theorem uses positive-part subadditivity and weighted Cauchy; the arbitrary finite-partition proof is in the report",
+    "the Fourier calculation uses normalized torus coefficients, omega_hat(-k)=conjugate(omega_hat(k)), and u_hat(k)=i*k cross omega_hat(k)/|k|^2",
+    "the explicit NSE derivative uses the full-response tensor Q=omega tensor omega; other frame-response kernels can alter the quartic term",
+    "the zero-to-positive fine-coefficient derivative is exact for the orthogonal radial-sphere Parseval response; for any fixed bounded smooth response its universal positive cubic heat term dominates the finite quartic term after sufficiently small amplitude scaling",
+    "a smooth trigonometric polynomial is admissible smooth periodic initial data and has a local smooth Navier-Stokes solution",
+    "the shell-injection continuation step uses the standard H1 blow-up alternative for smooth periodic Navier-Stokes solutions",
+    "comparison with BMO, dyadic BMO, Besov, and dynamic dissipation-wavenumber criteria is a literature statement, not a finite-algebra output"
+  ],
+  "checks": {
+    "StokesCreatesFinePositiveCoefficient": true,
+    "StokesCreatesPositiveCoarseWork": true,
+    "binaryDefectNonnegative": true,
+    "coarseCancellationHasLatentFineMass": true,
+    "fineCoefficientStartsAtZero": true,
+    "partitionRefinementMonotone": true,
+    "positiveOutputNormalizationDiscontinuous": true,
+    "r071aSignPairRechecked": true,
+    "r071bPackingFansRechecked": true,
+    "sameRadiusOppositeOutputs": true,
+    "shellInjectionConditionalReduction": true,
+    "signedBoxDirectionInsufficient": true,
+    "triadsHaveNoCrossResonances": true,
+    "trueNseCreatesFinePositiveCoefficient": true,
+    "trueNseCreatesPositiveCoarseWork": true
+  },
+  "claimBoundary": [
+    "classifies every additive finite signed-before-square partition ledger by an exact nonnegative refinement defect",
+    "proves that neither static nesting nor linear viscous evolution gives a monotone signed-output cancellation principle for the displayed full-response node",
+    "proves an exact true-NSE initial-trace sign-creation example for Q=omega tensor omega",
+    "proves that the R0.71B normalization is discontinuous at a zero output-strain mode and that the displayed radial-sphere response creates a positive fine coefficient from zero under true NSE",
+    "rules out homogeneous Gronwall propagation from a_+(0), but not an estimate with an additive flux source",
+    "does not show that the time integral of the R0.71B coefficient diverges for any NSE solution",
+    "does not exclude adaptive, solution-dependent localization or a PDE flux identity that independently controls the refinement defect",
+    "the shell-injection criterion is a conditional reduction, not a new unconditional regularity theorem",
+    "does not prove a singularity, global regularity, or solve the Millennium problem"
+  ],
+  "normalizationDiscontinuity": {
+    "covarianceCoefficient": "(amp_a*amp_b/4)*(a tensor b+b tensor a)",
+    "decision": "the same-output strain normalization is not continuous even along fixed finite Fourier support and strong Sobolev convergence",
+    "energy": "(amp_a**2 + amp_b**2 + eta**2)/2",
+    "frequencies": {
+      "k": [
+        2,
+        0,
+        0
+      ],
+      "p": [
+        1,
+        1,
+        0
+      ],
+      "q": [
+        1,
+        -1,
+        0
+      ]
+    },
+    "gradientEnstrophy": "amp_a**2 + amp_b**2 + 2*eta**2",
+    "normalizedLiminfAsEtaToZero": "amp_a**2*amp_b**2/(32*(amp_a**2 + amp_b**2))",
+    "positiveOutputTermForEtaPositive": "amp_a**2*amp_b**2/64",
+    "signedWork": "sqrt(2)*amp_a*amp_b*eta/8",
+    "strainCoefficient": "(eta/4)*(e1 tensor e3+e3 tensor e1)",
+    "strainSquare": "eta**2/8",
+    "valueAtEtaZeroByConvention": "0"
+  },
+  "partitionLedger": {
+    "binaryDefect": "delta_v=E_children-E_parent>=0",
+    "consumer": "(sum_i w_i)^+ <= sqrt(sum_i d_i)*sqrt(E_Pi)",
+    "decision": "refining a signed ledger exposes a nonnegative cancellation defect rather than producing a free cancellation estimate",
+    "definition": "E_Pi=sum_(B in Pi) ((sum_(i in B) w_i)^+)^2/(sum_(i in B) d_i)",
+    "positiveChildrenDefect": "(-d*y + e*x)**2/(d*e*(d + e))",
+    "refinement": "E_Pi <= E_PiPrime whenever PiPrime refines Pi",
+    "treeIdentity": "E_leaves=E_root+sum_(internal v) delta_v"
+  },
+  "release": "R0.71C",
+  "shellInjectionReduction": {
+    "coefficient": "A_sb,+=Y^(-1)*sum_alpha (b_alpha^+)^2/D_alpha",
+    "conditionalConclusion": "integral A_sb,+ dt finite implies H1 continuation",
+    "consumer": "P_+<=sqrt(D)*Theta_sb,+<=nu*D/2+(A_sb,+*Y)/(2*nu)",
+    "decision": "the conditional quantity is scale critical, but signed box telescoping supplies only a lower bound for the required positive square variation",
+    "definition": "b_alpha=<T_alpha omega,T_alpha(S omega-u dot grad omega)>",
+    "direction": "(beta_alpha,I^+)^2/integral_I D_alpha <= integral_I (b_alpha^+)^2/D_alpha",
+    "shellIdentity": "(1/2)Y_alpha prime+nu D_alpha=b_alpha",
+    "signedIntervalMass": "beta_alpha,I=(Y_alpha(t1)-Y_alpha(t0))/2+nu*integral_I D_alpha"
+  },
+  "status": "signed-refinement-and-viscous-sign-creation-gate",
+  "twoTriadWitness": {
+    "coarseLedgerAtZero": "0",
+    "expectedOrderedZeroSumResonances": 24,
+    "fineLedgerAtZero": "1/2",
+    "inputRadiiSquared": [
+      [
+        2,
+        2
+      ],
+      [
+        5,
+        5
+      ]
+    ],
+    "modeCountIncludingRealityPartners": 12,
+    "orderedZeroSumResonances": 24,
+    "outputRadiiSquared": [
+      4,
+      4
+    ],
+    "positiveModes": {
+      "(-2, 0, 1)": [
+        "0",
+        "1/2",
+        "0"
+      ],
+      "(0, 0, 2)": [
+        "1",
+        "0",
+        "0"
+      ],
+      "(1, -1, 0)": [
+        "0",
+        "0",
+        "-1"
+      ],
+      "(1, 1, 0)": [
+        "1",
+        "-1",
+        "0"
+      ],
+      "(2, 0, 0)": [
+        "0",
+        "1",
+        "0"
+      ],
+      "(2, 0, 1)": [
+        "-1",
+        "0",
+        "2"
+      ]
+    },
+    "selectedDissipationWeights": [
+      "8",
+      "8"
+    ],
+    "selectedWorks": [
+      "2",
+      "-2"
+    ]
+  },
+  "zeroToPositiveFineCoefficient": {
+    "balancingConstant": "2193*sqrt(1206545)/9652360",
+    "decision": "for the displayed radial Parseval response, a_+(0)=0 but a_+(t)>0 for every sufficiently small positive time; homogeneous Gronwall propagation from a_+(0) is impossible",
+    "frameResponse": "Gamma(r,s)=1 when |r|=|s| and 0 otherwise (orthogonal radial-sphere Parseval response)",
+    "heatConstant": "4482492*sqrt(1206545)/1206545",
+    "heatDerivativeAtZero": "4482492*sqrt(1206545)*delta**3*nu/1206545",
+    "heatPositiveSquareContribution": "delta^4*c0^2*(exp(-290*nu*t)-exp(-16642*nu*t))^2",
+    "heatWork": "delta^3*c0*exp(-2*nu*t)*(exp(-290*nu*t)-exp(-16642*nu*t))",
+    "modeCountIncludingRealityPartners": 10,
+    "nonzeroPositiveOutputsAtZero": 0,
+    "orderedZeroSumResonances": 24,
+    "positiveOutputCoefficientAtZero": "0",
+    "shellParameters": [
+      8,
+      64
+    ],
+    "signedOutputAtZero": "0",
+    "trueNseDerivativeAtZero": "2193*delta**3*(2193*delta + 32704*sqrt(1206545)*nu)/19304720",
+    "trueNseQuarticPart": "4809249*delta**4/19304720",
+    "trueNseViscousPart": "4482492*sqrt(1206545)*delta**3*nu/1206545"
+  }
+}

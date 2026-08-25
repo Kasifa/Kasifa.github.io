@@ -20,7 +20,7 @@ test("publishes the rigorous R0.68A all-order tail reduction", async () => {
   ]);
   assert.ok(home.includes("R0.68B-1 已完成："));
   assert.ok(home.includes("下一步 R0.68B-2c："));
-  assert.ok(home.includes("综述 v0.87 · 2026-08-25"));
+  assert.ok(home.includes("综述 v0.88 · 2026-08-25"));
   assert.match(home, /href="\/notes\/r0-68a\.html"/);
   assert.match(home, /id="r068a"/);
   assert.match(note, /note-retro\.css\?v=0\.56/);

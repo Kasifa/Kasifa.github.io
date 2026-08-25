@@ -20,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.87"></script>
+  <script defer src="/i18n-en.js?v=0.88"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1419,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-25</strong>最近修订</span>
-            <span><strong>v0.87</strong>网页版本</span>
-            <span><strong>126</strong>公开研究笔记</span>
-            <span><strong>R0.71B</strong>最新研究节点</span>
+            <span><strong>v0.88</strong>网页版本</span>
+            <span><strong>127</strong>公开研究笔记</span>
+            <span><strong>R0.71C</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>符号先于平方的动态补偿</strong>当前方向</span>
+            <span><strong>通量平衡的物质抛物 tent</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1433,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>检查带符号正输出系数能否沿真实 Navier–Stokes 演化获得时间可积控制，并排除循环使用既有 BMO/Besov 条件。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>把传输、截断交换子和竖直热通量放进同一个局部恒等式，并检查它能否独立控制有符号分层的细化缺陷。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1442,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71B</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71C</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1451,7 +1451,7 @@
           <nav class="route-map-actions" aria-label="路线图快捷入口">
             <a href="/literature-review.html">阅读当前问题文献综述</a>
             <a href="/recap-r0-60.html">阅读 R0.60 阶段回顾</a>
-            <a href="/recap-r0-61-r0-71a.html">阅读 R0.60 之后的累计回顾</a>
+            <a href="/recap-r0-61-r0-71c.html">阅读 R0.60 之后的累计回顾</a>
             <a href="#first-task">查看完整笔记</a>
           </nav>
         </header>
@@ -1666,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71B</span>
+                <span class="route-range">R0.69P–R0.71C</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍转向 common-response 的精确边界</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A 证明恒定主投影仍不能决定协方差功符号；R0.71B 又用两个任意壳数族排除无权 \(\ell^2\to\ell^1\) packing 和一个直接三场极化端点，并留下能进入 enstrophy 不等式的带符号正输出系数。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → common-response 阶一通道 → 恒定投影符号 no-go → common-response packing no-go → 带符号正输出系数</p>
+              <h3>从有符号环带障碍转向局部通量的精确边界</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–B 关闭纯投影符号律和无权 common-response packing；R0.71C 又证明有符号分区具有非负细化缺陷，黏性与真实 NSE 初始迹都能从零创造正功。下一对象必须把局部通量作为显式源项。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → common-response 阶一通道 → 恒定投影符号 no-go → common-response packing no-go → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造</p>
               <details class="tree-notes">
-                <summary>展开 36 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71B">
+                <summary>展开 37 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71C">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1711,6 +1711,7 @@
                   <a class="milestone" href="/notes/r0-70z.html">R0.70Z</a>
                   <a class="milestone" href="/notes/r0-71a.html">R0.71A</a>
                   <a class="milestone" href="/notes/r0-71b.html">R0.71B</a>
+                  <a class="milestone" href="/notes/r0-71c.html">R0.71C</a>
                 </nav>
               </details>
             </article>
@@ -1719,11 +1720,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71C</span>
+                <span class="route-range">NEXT · R0.71D</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>符号先于平方的局部动态传播</h3>
-              <p>把 R0.71B 的全局 Fourier 正输出系数局部化，先证明或否定一个不依赖既有 BMO/Besov 假设的时间可积性估计；若局部化只恢复普通正平方 Carleson 质量，这条支路停止。</p>
+              <h3>通量平衡的物质抛物 tent</h3>
+              <p>把水平传输、底层截断交换子和竖直热通量放进同一个局部恒等式，再检查这些显式源项能否用严格弱于已知 BMO/Besov 或耗散波数充分条件的量控制非负细化缺陷。</p>
             </article>
           </div>
         </div>
@@ -1808,7 +1809,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71B 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71C 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5666,11 +5667,11 @@
           </div>
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
-            <p class="eyebrow">累计回顾 R0.61–R0.71A · 2026-08-25</p>
-            <h3>R0.60 recap 之后的累计回顾收录 65 个节点；全站现有 126 篇公开研究笔记</h3>
-            <p>R0.60 之后的路线可以分成八段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差，以及恒定投影的临界方法边界。</p>
-            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。保留下来的是一组精确恒等式、条件桥、临界端点估计和量词完整的 no-go；它们把当前问题收缩到有符号 common-response 补偿。</p>
-            <p><a href="/recap-r0-61-r0-71a.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71a.pdf">下载同步 PDF</a></p>
+            <p class="eyebrow">累计回顾 R0.61–R0.71C · 2026-08-25</p>
+            <h3>R0.60 recap 之后的累计回顾收录 67 个节点；全站现有 127 篇公开研究笔记</h3>
+            <p>R0.60 之后的路线可以分成九段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界，以及正输出系数与有符号局部传播障碍。</p>
+            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。保留下来的是一组精确恒等式、条件桥、临界端点估计和量词完整的 no-go；当前问题收缩到必须显式支付局部通量的物质抛物 tent。</p>
+            <p><a href="/recap-r0-61-r0-71c.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71c.pdf">下载同步 PDF</a></p>
           </div>
 
           <div class="task-one" id="r070a-i" style="margin-top:2rem">
@@ -5956,7 +5957,42 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071b-common-response/fig-r071b-common-packing">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71C：</strong>&nbsp;检验符号先于平方的局部 tent 量是否沿真实方程获得非循环的时间可积控制；若它退化为普通正平方 Carleson/BMO 质量，就按停止规则关闭。</p>
+            <p><strong style="color:var(--gold)">R0.71C 已完成：</strong>&nbsp;有符号分区只会显露非负细化缺陷；零输出归一化不连续；黏性与真实 NSE 初始迹都能从零创造正功。静态嵌套与齐次传播因此停止。</p>
+          </div>
+
+          <div class="task-one" id="r071c" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71C · 2026-08-25</p>
+            <h3>有符号分层存在非负细化缺陷；黏性会从零创造正输出功</h3>
+            <p>
+              对有符号功 \(w_i\)、正权 \(d_i\) 和任意有限分区 \(\Pi\)，令
+              \[
+                E_\Pi=\sum_{B\in\Pi}
+                \frac{\left((\sum_{i\in B}w_i)^+\right)^2}
+                {\sum_{i\in B}d_i}.
+              \]
+              若 \(\Pi'\) 细化 \(\Pi\)，则 \(E_\Pi\le E_{\Pi'}\)；在二叉树上，细账本精确等于根账本加全部非负细化缺陷。
+            </p>
+            <p>
+              一个同半径双三波组初始满足 \(w_1=2,\ w_2=-2\)，但 Stokes 演化给出
+              \[
+                W_B(t)=2(e^{-8\nu t}-e^{-14\nu t})>0
+                \qquad(t>0).
+              \]
+              对相同光滑初值，完整 NSE 零时刻导数为
+              \[
+                W_B'(0)=12\nu\varepsilon^3+\frac{76}{5}\varepsilon^4>0.
+              \]
+              第二个平衡族还证明完整 \(a_+\) 可以从零立即变正，所以不能用齐次 Gronwall 从 \(a_+(0)\) 传播它。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;完整壳层注入仍给出一个尺度临界的条件继续性约化，但其 \(L_t^1\) 控制尚未从独立先验估计推出。本节没有证明 \(\int a_+dt\) 发散，没有构造奇性，也没有得到新的无条件正则性定理。</p>
+            <p>
+              <a href="/notes/r0-71c.html"><strong>阅读 R0.71C 研究笔记 →</strong></a> ·
+              <a href="/notes/r0-71c.pdf">下载同步 PDF</a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071c">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071c-signed-localization/fig-r071c-viscous-sign-creation">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71D：</strong>&nbsp;只检查带完整传输、截断交换子与竖直热通量的物质抛物 tent；如果这些通量只能由已知充分延拓范数支付，路线停止。</p>
           </div>
         </section>
 
@@ -5971,8 +6007,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.87 · 2026-08-25<br>
-        上次综述 v0.86 · 2026-08-25<br>
+        综述 v0.88 · 2026-08-25<br>
+        上次综述 v0.87 · 2026-08-25<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

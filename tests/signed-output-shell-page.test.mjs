@@ -11,7 +11,7 @@ test("publishes R0.69S with the exact one-shell theorem and strict boundary", as
   ]);
   assert.match(home, /id="r069s"/);
   assert.match(home, /href="\/notes\/r0-69s\.html"/);
-  assert.match(home, /综述 v0\.87 · 2026-08-25/);
+  assert.match(home, /综述 v0\.88 · 2026-08-25/);
   assert.match(home, /i18n-en\.js(?:\?[^"]*)?/);
   assert.match(home, /下一步 R0\.69T/);
   assert.ok(note.includes("\\mathcal F_0(u)=2"));

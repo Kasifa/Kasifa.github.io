@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71C：有符号分层账本具有非负细化缺陷；黏性与真实 Navier–Stokes 初始迹都能从零创造正输出功。保留一个临界的条件壳层注入判据，但其时间可积性仍未证明。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71C｜有符号分层不会自动传播抵消">
+  <meta property="og:description" content="精确分区定理、归一化不连续族、Stokes 与真实 NSE 正功创造，以及通量平衡局部化的下一门槛。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71C｜有符号分层不会自动传播抵消</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.88">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.45rem)}</style>
+  <script defer src="/i18n-en.js?v=0.88"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#refinement">细化</a><a href="#discontinuity">不连续</a><a href="#stokes">黏性</a><a href="#nse">真实方程</a><a href="#fine-zero">零初值</a><a href="#conditional">条件桥</a><a href="#boxes">时间盒</a><a href="#flux">通量</a><a href="#literature">文献</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71C · SIGNED REFINEMENT · VISCOUS SIGN CREATION</div>
+        <h1>先保留符号再取平方，<br>仍不会自动传播抵消</h1>
+        <p class="lead">我把 R0.71B 的正输出系数放进嵌套分区，得到一个精确的非负细化缺陷。随后两个有限 Fourier 族显示：同输出归一化在零应变模处不连续；黏性与真实 Navier–Stokes 初始迹都能把零的有符号父节点或零的完整细系数变成正值。一个尺度临界的壳层注入条件判据仍然成立，但目前没有独立估计给出它的时间可积性。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71C 精确代数与独立复核完成</span><strong>静态有符号传播关闭；通量平衡局部化保留</strong><p>版本 v0.71C · 2026-08-25</p><p>两套有限 Fourier 重建一致</p><p>正式附图：精确 Stokes 公式，不是 DNS</p><p>下一门槛：flux-balanced material tent</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#refinement">01 · 分区细化定理</a></li>
+        <li><a href="#discontinuity">02 · 归一化不连续</a></li>
+        <li><a href="#stokes">03 · 黏性正功创造</a></li>
+        <li><a href="#nse">04 · 真实 NSE 初始迹</a></li>
+        <li><a href="#fine-zero">05 · 完整细系数从零变正</a></li>
+        <li><a href="#conditional">06 · 条件壳层判据</a></li>
+        <li><a href="#boxes">07 · 时间盒方向</a></li>
+        <li><a href="#flux">08 · 不能省略的通量</a></li>
+        <li><a href="#literature">09 · 文献边界</a></li>
+        <li><a href="#meaning">10 · 研究价值</a></li>
+        <li><a href="#next">11 · 下一条路线</a></li>
+        <li><a href="#claims">12 · 主张边界</a></li>
+        <li><a href="#reproduce">13 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>抵消藏在粗节点里，细化只会把缺陷显露出来</h2>
+          <p>R0.71C 对“先在局部包内求有符号和，再取正部与平方”的静态方案给出否定结论。任何可加分区都要支付非负细化缺陷；线性热流甚至能把起初为零的父节点功变成正值。真实 Navier–Stokes 方程上的精确初始迹保留这个现象。</p>
+          <div class="equation result">\[
+            E_{\rm leaves}=E_{\rm root}+\sum_{v\ {\rm internal}}\delta_v,
+            \qquad \delta_v\ge0.
+          \]</div>
+          <p>这关闭的是静态嵌套与齐次传播。它不排除带显式传输、截断和热通量源项的物质抛物 tent；后者是 R0.71D 唯一保留的检查对象。</p>
+        </section>
+
+        <section id="refinement"><div class="section-no">01 / Partition theorem</div><h2>每次细化都有一个精确的非负代价</h2>
+          <p>对有限指标集的有符号功 \(w_i\in\mathbb R\)、正权 \(d_i&gt;0\) 和分区 \(\Pi\)，定义</p>
+          <div class="equation">\[
+            W_B=\sum_{i\in B}w_i,
+            \qquad D_B=\sum_{i\in B}d_i,
+            \qquad E_\Pi=\sum_{B\in\Pi}\frac{(W_B^+)^2}{D_B}.
+          \]</div>
+          <p>正部次可加性与加权 Cauchy 给出消费式及细化单调性：</p>
+          <div class="equation result">\[
+            \left(\sum_iw_i\right)^+
+            \le\left(\sum_id_i\right)^{1/2}E_\Pi^{1/2},
+            \qquad \Pi'\succ\Pi\Longrightarrow E_\Pi\le E_{\Pi'}.
+          \]</div>
+          <p>两个正子节点 \(x,y\) 配权 \(d,e\) 时，缺陷恰为</p>
+          <div class="equation">\[
+            \delta=\frac{(ex-dy)^2}{de(d+e)}\ge0.
+          \]</div>
+          <p>最粗层是正净生产量的商，最细 Fourier 输出层是 R0.71B 的 \(\mathcal T_+^2\)。因此，嵌套本身不是新的抵消估计；它只是把细系数拆成根系数与一串非负缺陷。</p>
+        </section>
+
+        <section id="discontinuity"><div class="section-no">02 / Zero denominator</div><h2>同输出应变归一化在零模处不连续</h2>
+          <p>一个三模无散族 \(\omega_\eta\) 在每个固定 Sobolev 空间都收敛到 \(\omega_0\)，但选定输出满足 \(\widehat S_\eta(k)=O(\eta)\)、\(w_k=O(\eta)\)。对每个 \(\eta&gt;0\)，对应正输出项恒为</p>
+          <div class="equation result">\[
+            \frac{(w_k^+)^2}{4|k|^2|\widehat S_\eta(k)|_F^2}
+            =\frac{A^2B^2}{64}.
+          \]</div>
+          <p>在 \(\eta=0\) 时，R0.71B 的约定把零分母项设为零。因此 \(a_+(\omega_0)=0\)，而</p>
+          <div class="equation">\[
+            \liminf_{\eta\downarrow0}a_+(\omega_\eta)
+            \ge\frac{A^2B^2}{32(A^2+B^2)}&gt;0.
+          \]</div>
+          <p>这是精确代数不连续，不是浮点误差。换一个稳定分母也许能恢复连续性，但会改变临界缩放或 R0.71B 的精确消费式。</p>
+        </section>
+
+        <section id="stokes"><div class="section-no">03 / Stokes witness</div><h2>同一输出壳上的零父功会被黏性立即变成正值</h2>
+          <p>两个无交叉共振的精确三波组给出同半径输出 \(k_1,k_2\)，初始功与耗散权为</p>
+          <div class="equation">\[
+            w_1=2,\quad w_2=-2,
+            \qquad d_1=d_2=8.
+          \]</div>
+          <p>所以 \(E_{\rm root}(0)=0\)，但 \(E_{\rm leaves}(0)=1/2\)。在线性 Stokes 演化下，</p>
+          <div class="equation result">\[
+            W_B(t)=2\left(e^{-8\nu t}-e^{-14\nu t}\right)&gt;0
+            \qquad(t&gt;0).
+          \]</div>
+          <p>两个输出应变以相同热率衰减，负功对应的输入对却具有更大半径，因而更快消失。零的有符号包不满足热最大值原理。</p>
+          <figure><img src="/figures/r0-71c-viscous-sign-creation.svg" alt="R0.71C 黏性从零父节点创造正功，以及根账本、细账本与非负细化缺陷的精确分解"><figcaption>图 R0.71C。以 \(\tau=\nu t\) 计时，\(w_1=2e^{-8\tau}\) 与 \(w_2=-2e^{-14\tau}\) 在零时刻完全抵消，随后父节点功严格为正。细账本始终精确分成根账本与非负缺陷；在 \(\tau_*=\log2/6\) 时，三者分别为 \(2^{-7/3}\)、\(2^{-16/3}\) 与 \(7\,2^{-16/3}\)。图来自闭式 Stokes 公式，不是 NSE 时间推进或 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71c-viscous-sign-creation.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71c-viscous-sign-creation.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71c-viscous-sign-creation.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="nse"><div class="section-no">04 / True NSE initial trace</div><h2>完整非线性导数没有恢复零符号</h2>
+          <p>把上一节的光滑三角多项式初值乘以 \(\varepsilon&gt;0\)，并用 Fourier 涡量方程计算选定父节点功的完整零时刻导数。黏性三次项与非线性四次项都是正的：</p>
+          <div class="equation result">\[
+            W_B'(0)=12\nu\varepsilon^3+\frac{76}{5}\varepsilon^4&gt;0.
+          \]</div>
+          <p>两套实现都把非线性瞬时生成的 50 个非零频率纳入 \(\partial_tQ\)，并分别得到</p>
+          <div class="equation">\[
+            w_1'(0)=-16\nu\varepsilon^3+6\varepsilon^4,
+            \qquad
+            w_2'(0)=28\nu\varepsilon^3+\frac{46}{5}\varepsilon^4.
+          \]</div>
+          <p>这是真实光滑 NSE 解的初始迹结论，不是数值时间步。它证明所示父节点在充分短的正时间内为正；它没有证明 \(\int a_+dt\) 发散。</p>
+        </section>
+
+        <section id="fine-zero"><div class="section-no">05 / Zero-to-positive fine coefficient</div><h2>完整细系数也能从零开始变正</h2>
+          <p>第二个 \(M=8,64\) 平衡 HHL 族在初始时刻只有两个相反的低输出功，其他协方差功为零，因此对任意幅度 \(\delta&gt;0\)，</p>
+          <div class="equation result">\[
+            \mathcal T_+(\delta\Omega)=a_+(\delta\Omega)=0.
+          \]</div>
+          <p>Stokes 演化却给出</p>
+          <div class="equation">\[
+            w_n^H(t)=\delta^3c_0e^{-2\nu t}
+            \left(e^{-290\nu t}-e^{-16642\nu t}\right)&gt;0.
+          \]</div>
+          <p>对报告中列出的正交径向球 Parseval 响应，真实 NSE 的精确导数同样为正：</p>
+          <div class="equation">\[
+            w_n'(0)=\frac{2193\delta^3
+            \left(2193\delta+32704\sqrt{1206545}\,\nu\right)}{19304720}&gt;0.
+          \]</div>
+          <p>因此不能用 \(a_+(0)\) 作为乘法初值写出齐次 Gronwall 传播。这个结论不排除带加性热源或跨尺度通量源的估计。</p>
+        </section>
+
+        <section id="conditional"><div class="section-no">06 / Conditional reduction</div><h2>完整壳层非线性注入仍给出一个尺度临界条件桥</h2>
+          <p>对 Parseval 输出框架令 \(\Omega_\alpha=T_\alpha\omega\)，并把伸长与传输都留在完整壳层注入中：</p>
+          <div class="equation">\[
+            b_\alpha=\left\langle T_\alpha\omega,
+            T_\alpha(S\omega-u\cdot\nabla\omega)\right\rangle,
+            \qquad \frac12Y_\alpha'+\nu D_\alpha=b_\alpha.
+          \]</div>
+          <p>定义</p>
+          <div class="equation">\[
+            A_{{\rm sb},+}=\frac1Y\sum_{D_\alpha&gt;0}
+            \frac{(b_\alpha^+)^2}{D_\alpha}.
+          \]</div>
+          <p>加权 Cauchy–Young 给出精确消费式</p>
+          <div class="equation result">\[
+            Y'+\nu D\le\nu^{-1}A_{{\rm sb},+}Y.
+          \]</div>
+          <p>因此，若最大周期 \(H^1\) 强解满足 \(A_{{\rm sb},+}\in L_t^1\)，它就能延拓。这个量具有临界缩放，但目前没有从 Leray 能量或其他独立先验量推出该假设，所以这里没有得到新的无条件正则性定理。</p>
+        </section>
+
+        <section id="boxes"><div class="section-no">07 / Signed time boxes</div><h2>时间盒质量控制的是所需正变化的下方</h2>
+          <p>在时间区间 \(I=[t_0,t_1]\) 上，壳层恒等式给出</p>
+          <div class="equation">\[
+            \beta_{\alpha,I}=\int_Ib_\alpha\,dt
+            =\frac12\left(Y_\alpha(t_1)-Y_\alpha(t_0)\right)
+            +\nu\int_ID_\alpha\,dt.
+          \]</div>
+          <p>但 Cauchy 的方向是</p>
+          <div class="equation result">\[
+            \frac{(\beta_{\alpha,I}^+)^2}{\int_ID_\alpha\,dt}
+            \le\int_I\frac{(b_\alpha^+)^2}{D_\alpha}\,dt.
+          \]</div>
+          <p>有符号盒质量是消费式所需正平方变化的下界，不是上界。报告中的抽象单壳振荡路径还显示：固定积分能量、耗散与净盒质量时，右侧可以按 \(N^2\) 增长。该路径不是 NSE 反例，只排除从这些积分数据反向推出上界。</p>
+        </section>
+
+        <section id="flux"><div class="section-no">08 / Local flux ledger</div><h2>真正的局部化必须保留方程产生的边界项</h2>
+          <p>Fourier 乘子与传输不交换：</p>
+          <div class="equation">\[
+            (\partial_t+u\cdot\nabla-\nu\Delta)T_j\omega
+            =T_j(S\omega)+[u\cdot\nabla,T_j]\omega.
+          \]</div>
+          <p>在抛物 tent 的底层，频率与空间截断处在同一尺度，乘子差没有小参数。下一种局部账本必须显式保留传输–滤波交换子、空间截断边界通量、竖直热通量与黏性乘积项，以及压力 Hessian 和应变–协方差梯度项。固定空间盒还要处理 Galilean 平移；零均值 Biot–Savart 规范只能解决本站当前周期设定。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>已知正部判据与动态频率框架都没有提供这里缺少的传播</h2>
+          <p><a href="https://arxiv.org/abs/1710.05569">Miller 的中间应变特征值正部判据</a>是物理空间的条件结果，不能与 Fourier 输出正部交换。<a href="https://doi.org/10.1007/s002090000130">Kozono–Taniuchi 的 BMO 判据</a>、<a href="https://arxiv.org/abs/0708.3067">Cheskidov–Shvydkoy 的 Besov 条件</a>和<a href="https://doi.org/10.1006/aima.2000.1937">Koch–Tataru 的正 Carleson 平方量</a>都在估计前丢掉这里需要的输出符号。</p>
+          <p><a href="https://arxiv.org/abs/1102.1944">动态耗散波数框架</a>是最接近的已知骨架，但正则性侧仍假定一个时间可积低模量。量纲正确的比较应涉及 \(\nu\Lambda^2\)，不是 \(\Lambda\)；无条件的 \(\Lambda\in L_t^1\) 不会推出前者可积。<a href="https://arxiv.org/abs/1108.1165">Tao 的大数据局部化</a>也表明边界与传输项必须留在账本中。</p>
+          <p>有限的一手来源检索没有找到从 Leray 能量推出 \(a_+\) 或 \(A_{{\rm sb},+}\) 时间可积性的定理。这是检索边界，不是新颖性或优先权证明。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value</div><h2>价值是关闭一个结构上不成立的传播机制</h2>
+          <p>R0.71C 把“有符号分层也许自动保留抵消”拆成四个可核查对象：非负细化缺陷、零应变模处的不连续、黏性正功创造，以及完整壳层注入的条件消费式。前三个给出明确的停止条件；第四个把剩余缺口写成正时间变化的独立控制。</p>
+          <p>这些结论可以作为有符号局部化设计的 no-go 引理和条件桥。它们没有改进已知无条件理论，没有构造奇性，也没有证明全局光滑性；对 Clay 问题的直接价值仍然有限。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next analytic gate</div><h2>R0.71D：只检查通量平衡的物质抛物 tent</h2>
+          <p>下一对象必须把水平传输、底层截断交换子与竖直热通量放进同一个可加局部恒等式，并用独立传播、且严格弱于已知 BMO/Besov 或耗散波数充分条件的量控制细化缺陷。</p>
+          <p>停止规则预先固定：如果通量只能由一个已知充分延拓范数支付；如果把底层交换子当作低阶项丢掉；如果再次除以可能消失的包而没有统一稳定分母；或者如果估计直接假定它要证明的正时间变化，这条路线立即归档。在局部恒等式通过这些门槛以前，不需要 DNS、GPU 或 DGX。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>已证、条件结果与开放缺口分开记录</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>有限可加分区细化定理</strong><p>细账本等于根账本加非负细化缺陷；嵌套不会免费产生抵消估计。</p></div>
+            <div class="status"><span>PROVED</span><strong>归一化不连续</strong><p>R0.71B 的同输出零分母约定在强 Sobolev 收敛下发生跳跃。</p></div>
+            <div class="status"><span>PROVED</span><strong>Stokes 与真实 NSE 正功创造</strong><p>两个精确光滑初值族分别关闭父节点热单调性和 \(a_+\) 的齐次传播。</p></div>
+            <div class="status"><span>CONDITIONAL</span><strong>壳层注入继续性约化</strong><p>\(A_{{\rm sb},+}\in L_t^1\) 足以延拓；该时间可积性尚未从独立先验估计得到。</p></div>
+            <div class="status"><span>OPEN</span><strong>带通量的物质抛物 tent</strong><p>尚未证明显式通量能以严格低于已知继续性条件的代价控制细化缺陷。</p></div>
+            <div class="status"><span>NOT CLAIMED</span><strong>奇性或全局正则性</strong><p>本节没有解决千禧年问题，也没有证明一般 NSE 解上的 \(\int a_+dt\) 发散或收敛。</p></div>
+          </div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproducibility and sources</div><h2>完整报告、独立复核、证书、脚本和附图包一并归档</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_literature_audit.md">查看一手文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_independent_audit.md">查看独立数学复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_exact_audit.py">查看精确生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071c_independent_audit.py">查看独立重建脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071c">查看精确证书与 SHA-256 清单</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071c-signed-localization/fig-r071c-viscous-sign-creation">查看正式期刊附图包</a> · <a href="/notes/r0-71c.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器与独立脚本使用精确 Fourier 代数，分别重建分区恒等式、共振分类、Stokes 公式、完整非线性零时刻导数和条件消费式。正式图使用闭式公式，只在绘图边界转换为 binary64。该小节没有使用随机搜索、DNS、GPU 或 DGX。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确构造、方法边界、条件结果与开放问题分开记录。</div><div>R0.71C · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,210 @@
+{
+  "arithmetic": "exact SymPy rationals and symbolic identities",
+  "balancedHHL": {
+    "claim": "a fixed exact-radius Parseval response has zero positive output at t=0 but creates positive low-output work immediately",
+    "heat": {
+      "orderedPairsContributingToTarget": 4,
+      "strictlyPositiveFor": "delta>0, nu>0, t>0",
+      "targetDerivativeAtZeroWithoutDelta": "4482492*sqrt(1206545)*nu/1206545",
+      "targetPositiveOutputTerm": "delta^4*c0^2*(exp(-290*nu*t)-exp(-16642*nu*t))^2",
+      "targetWork": "delta^3*c0*exp(-2*nu*t)*(exp(-290*nu*t)-exp(-16642*nu*t))"
+    },
+    "navierStokes": {
+      "directFirstOrderReconstruction": "2193*delta**3*(2193*delta + 32704*sqrt(1206545)*nu)/19304720",
+      "directReconstructionResidual": "0",
+      "expectedFactoredRate": "2193*delta^3*(2193*delta+32704*sqrt(1206545)*nu)/19304720",
+      "generatedModesOutsideInitialSupport": 18,
+      "linearTargetRateWithoutDelta": "4482492*sqrt(1206545)*nu/1206545",
+      "nonlinearGeneratedModes": 24,
+      "otherInitialSupportQuarticRates": {
+        "(64, -65, 0)": "0",
+        "(65, -64, 0)": "0",
+        "(8, -9, 0)": "0",
+        "(9, -8, 0)": "0"
+      },
+      "outsideGeneratedPairsSurvivingTargetSphereResponse": 0,
+      "quarticTargetRate": "4809249/19304720",
+      "scaledTargetRate": "2193*delta**3*(2193*delta + 32704*sqrt(1206545)*nu)/19304720",
+      "strictlyPositiveFor": "delta>0 and nu>0",
+      "targetFirstOrderOrderedPairs": 4
+    },
+    "parameters": {
+      "M1": 8,
+      "M2": 64,
+      "c0": "2193*sqrt(1206545)/9652360",
+      "h64": "129*sqrt(16642)/16642",
+      "h8": "17*sqrt(290)/290",
+      "radicalSquare": 1206545,
+      "radiusSquaredM1": 145,
+      "radiusSquaredM2": 8321
+    },
+    "response": "Gamma(r,s)=1 when |r|^2=|s|^2, otherwise 0",
+    "support": {
+      "allInitialOutputWorksZero": true,
+      "initialOutputWorks": {
+        "(1, 1, 0)": "0",
+        "(64, -65, 0)": "0",
+        "(65, -64, 0)": "0",
+        "(8, -9, 0)": "0",
+        "(9, -8, 0)": "0"
+      },
+      "initialPositiveOutputCount": 0,
+      "initialSignedModes": 10,
+      "orderedZeroSumResonances": 24
+    }
+  },
+  "claimBoundary": {
+    "notProved": [
+      "failure of every adaptive or PDE-specific localization",
+      "failure of a localization whose flux identity controls the refinement defects",
+      "failure of every regularized denominator that remains comparable to the same-output strain weight",
+      "unconditional time integrability of A_sb,+ or of the R0.71B coefficient a_+",
+      "realizability of the abstract oscillatory one-shell path by Navier-Stokes",
+      "regularity or blow-up for the three-dimensional Navier-Stokes problem"
+    ],
+    "proved": [
+      "finite signed-before-square partition ledgers are monotone under refinement",
+      "their binary refinement loss telescopes as a sum of nonnegative defects",
+      "the stated full-response output parent has zero work at t=0 and positive work immediately under Stokes flow",
+      "the same smooth finite Fourier datum has W'(0)=12*nu*epsilon^3+(76/5)*epsilon^4>0 under true NSE",
+      "integrability of the complete shell-injection coefficient A_sb,+ is a conditional continuation criterion",
+      "signed interval masses give only a lower bound for the required positive square variation",
+      "the same-output strain normalization is discontinuous at a zero output strain coefficient",
+      "the balanced M=8,64 HHL datum has zero initial positive output but creates positive work under heat and true NSE"
+    ],
+    "scope": "full-response fixed-output-node no-go plus a conditional shellwise reduction"
+  },
+  "fourier": {
+    "field": {
+      "allModesDivergenceFree": true,
+      "crossTriadResonances": 0,
+      "equalOutputRadiusSquared": 4,
+      "orderedZeroSumResonances": 24,
+      "realFourierField": true,
+      "signedSupportSize": 12
+    },
+    "initialOutputLedger": {
+      "dK1": "8",
+      "dK2": "8",
+      "leafEnergy": "1/2",
+      "parentEnergy": "0",
+      "refinementDefect": "1/2",
+      "wK1": "2",
+      "wK2": "-2"
+    },
+    "navierStokesDerivative": {
+      "directFirstOrderReconstruction": "4*epsilon**3*(19*epsilon + 15*nu)/5",
+      "directReconstructionResidual": "0",
+      "nonlinearGeneratedModes": 50,
+      "outsideInitialSupportIncludedInQdot": true,
+      "quarticParentRate": "76/5",
+      "quarticRateK1": "6",
+      "quarticRateK2": "46/5",
+      "scaledParentRate": "4*epsilon**3*(19*epsilon + 15*nu)/5",
+      "strictlyPositiveFor": "nu>0 and epsilon>0"
+    },
+    "stokes": {
+      "parentDerivativeAtZero": "12*nu",
+      "parentWork(t)": "2*exp(-8*nu*t)*(1-exp(-6*nu*t)) > 0 for t>0",
+      "t1": "log(2)/(6*nu)",
+      "t1LeafEnergy": "2^(-7/3)",
+      "t1ParentEnergy": "2^(-16/3)",
+      "t1RefinementDefect": "7*2^(-16/3)",
+      "w1(t)": "2*exp(-8*nu*t)",
+      "w2(t)": "-2*exp(-14*nu*t)"
+    }
+  },
+  "normalizationDiscontinuity": {
+    "claim": "the zero-denominator convention makes the normalized positive-output coefficient discontinuous at eta=0",
+    "frequencies": {
+      "k": "(2, 0, 0)",
+      "p": "(1, 1, 0)",
+      "q": "(1, -1, 0)"
+    },
+    "normalizedCoefficientForEtaPositive": "A**2*B**2/(32*(A**2 + B**2 + eta**2))",
+    "normalizedLiminf": "A**2*B**2/(32*(A**2 + B**2))",
+    "normalizedValueAtEtaZero": "0",
+    "otherOutputWorks": {
+      "(1, -1, 0)": "0",
+      "(1, 1, 0)": "0"
+    },
+    "outputDenominator": "2*eta**2",
+    "outputStrainSquare": "eta**2/8",
+    "outputWork": "sqrt(2)*A*B*eta/8",
+    "positiveOutputTerm": "A**2*B**2/64",
+    "response": "Gamma(r,s)=1 when |r|^2=|s|^2, otherwise 0",
+    "totalEnstrophy": "(A**2 + B**2 + eta**2)/2"
+  },
+  "partition": {
+    "arbitrarySignDecomposition": "delta=(e*a-d*b)^2/(d*e*(d+e))+((a+b)^2-((x+y)^+)^2)/(d+e), a=x^+, b=y^+",
+    "definition": "E_Pi=sum_B (W_B^+)^2/D_B",
+    "exactPiecewiseCasesChecked": 784,
+    "example": {
+      "consumerResidual": "35",
+      "leafEnergy": "143/10",
+      "lowerDefect": "113/10",
+      "middleEnergy": "3",
+      "rootEnergy": "16/17",
+      "telescopingResidual": "0",
+      "upperDefect": "35/17",
+      "weights": [
+        "2",
+        "3",
+        "5",
+        "7"
+      ],
+      "works": [
+        "3",
+        "-5",
+        "7",
+        "-1"
+      ]
+    },
+    "provedAlgebraically": [
+      "refinement can only increase E_Pi",
+      "E_leaves=E_root+sum_internal_delta with every delta nonnegative",
+      "(sum_i w_i)^+ <= sqrt(sum_i d_i)*sqrt(E_Pi)"
+    ],
+    "twoPositiveChildrenDefect": "(a*e - b*d)**2/(d*e*(d + e))"
+  },
+  "shell": {
+    "shellQuantity": {
+      "conditionalContinuation": "integral_0^T A_sb,+(t)dt<infinity",
+      "consumer": "P_+<=sqrt(D)*Theta_sb,+",
+      "criticalCoefficient": "A_sb,+=Theta_sb,+^2/Y",
+      "differentialInequality": "Y'+nu*D<=nu^(-1)*A_sb,+*Y",
+      "injection": "b_alpha=<T_alpha omega,T_alpha N(u,omega)>",
+      "nonlinearity": "N(u,omega)=S*omega-u.grad(omega)=curl(u cross omega)",
+      "parsevalTotals": [
+        "sum_alpha Y_alpha=||omega||_2^2=Y",
+        "sum_alpha D_alpha=||grad omega||_2^2=D",
+        "sum_alpha b_alpha=<omega,S omega>=P"
+      ],
+      "scalingExponents": {
+        "A_sb,+": 2,
+        "D": 3,
+        "Y": 1,
+        "bAlpha": 3,
+        "dt": -2,
+        "thetaSquared": 3
+      },
+      "shellIdentity": "(1/2)Y_alpha'+nu*D_alpha=b_alpha",
+      "thetaSquared": "sum_{D_alpha>0}(b_alpha^+)^2/D_alpha",
+      "youngSquareResidual": "(-2*sqrt(D)*Theta*nu + D*nu**2 + Theta**2)/(2*nu)"
+    },
+    "signedIntervalObstruction": {
+      "consumerLowerBound": "pi*N**2/144",
+      "direction": "(integral_I b_alpha)^+^2/integral_I D_alpha <= integral_I (b_alpha^+)^2/D_alpha",
+      "integralD": "2*pi",
+      "integralY": "2*pi",
+      "interval": "[0,2*pi] with integer N",
+      "lowerBoundReason": "on {cos(Nt)>=1/2}, measure=2*pi/3, b_N^+>=N/8 and D_N<=3/2",
+      "notAnNSECounterexample": true,
+      "path": "Y_N=1+(1/2)sin(Nt), D_N=Y_N, b_N=(1/2)Y_N'+D_N",
+      "signedBoxQuotient": "2*pi",
+      "signedMass": "2*pi"
+    }
+  },
+  "status": "pass",
+  "version": "R0.71C-independent"
+}

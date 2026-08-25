@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r071c-viscous-sign-creation",
+  "release": "R0.71C",
+  "analyticalQuestion": "Can an exactly cancelled signed packet sum at tau=0 remain nonpositive under unequal viscous decay, and how is the latent fine-ledger mass redistributed?",
+  "takeaway": "Two equal-radius output packets cancel exactly at tau=0, but unequal viscous decay immediately creates positive parent work. The fine positive-output ledger splits exactly into the parent ledger and a nonnegative refinement defect.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi",
+      "qa-original.png",
+      "qa-grayscale.png"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG, equal-resolution grayscale rendering, and Poppler rendering of the vector PDF"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "251 exact rational tau grid values on [0,1/2], plus the exact marker tau=log(2)/6",
+    "rowCount": 252,
+    "provenance": "closed exact Stokes formulas; no randomness, fitting, DNS, or numerical time stepping"
+  },
+  "parameters": {
+    "dimensionlessTime": "tau=nu*t",
+    "tauRange": "0 through 1/2",
+    "tauStep": "1/500",
+    "exactMarker": "tau_star=log(2)/6",
+    "work1": "w1(tau)=2*exp(-8*tau)",
+    "work2": "w2(tau)=-2*exp(-14*tau)",
+    "parentWork": "W(tau)=w1(tau)+w2(tau)",
+    "parentLedger": "E_root=(max(W,0))^2/(16*exp(-8*tau))",
+    "fineLedger": "E_fine=(max(w1,0))^2/(8*exp(-8*tau))",
+    "refinementDefect": "delta=E_fine-E_root"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "trend",
+      "variant": "highlighted signed multi-series line",
+      "question": "Does exact parent cancellation persist under unequal viscous decay?",
+      "takeaway": "W(0)=0 and W(tau)>0 for every tau>0 because the negative packet decays faster."
+    },
+    {
+      "id": "B",
+      "family": "decomposition over ordered time",
+      "variant": "three-series exact ledger identity",
+      "question": "Where does the fine positive-output ledger go under coarsening?",
+      "takeaway": "E_fine=E_root+delta with delta nonnegative; at tau=0 all fine mass is hidden in the defect."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "positive child work and fine positive-output ledger",
+      "rust": "negative child work and refinement defect"
+    },
+    "neutral": "parent work and parent ledger",
+    "nonColorDistinction": "solid, dashed, and dash-dot line styles; open circle, filled triangle, square, and diamond markers; direct exact annotations; zero line"
+  },
+  "claimBoundary": "An exact two-packet Stokes heat-semigroup witness and its refinement identity. The figure does not prove a Navier-Stokes time-integrability bound, a continuation criterion, a singularity, global regularity, or a Millennium-problem solution."
+}

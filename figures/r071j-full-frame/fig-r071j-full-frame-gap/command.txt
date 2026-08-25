@@ -1,0 +1,27 @@
+Set the repository-local runtime:
+R071J_PYTHON=../../../tmp/r068b-venv/bin/python
+
+Generate the 856 closed-form source rows:
+PYTHONDONTWRITEBYTECODE=1 $R071J_PYTHON generate_data.py --output data.csv --metadata figure-data-metadata.json
+
+Validate the producer formulas:
+PYTHONDONTWRITEBYTECODE=1 $R071J_PYTHON validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+
+Render PDF, SVG, and 600 dpi PNG:
+R071J_MPLCONFIG=$(mktemp -d /tmp/r071j-figure-mpl.XXXXXX)
+MPLCONFIGDIR=$R071J_MPLCONFIG PYTHONDONTWRITEBYTECODE=1 $R071J_PYTHON plot.py --data data.csv --output-stem figure
+
+Create original-color and grayscale QA previews:
+PYTHONDONTWRITEBYTECODE=1 $R071J_PYTHON qa_images.py
+
+Run the independent standard-library Decimal and archival checker:
+PYTHONDONTWRITEBYTECODE=1 python3 independent_validate.py --data data.csv --output independent-validation.json
+
+Rasterize the vector PDF for direct inspection:
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm -singlefile -png -r 180 figure.pdf ../../../tmp/pdfs/r071j-full-frame-render
+
+Build the manifest and SHA-256 ledger after completing qa-report.md:
+PYTHONDONTWRITEBYTECODE=1 $R071J_PYTHON build_manifest.py --status draft --dirty-at-certified-run true
+
+After the release source commit exists, rebuild the release binding with the
+actual commit hashes and dirty-state flag before publication.

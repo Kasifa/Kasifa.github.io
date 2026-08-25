@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71J：逐壳取正部以后，全 frame 求和只留下时间端点望远镜，并产生两个非负缺陷；R0.71E 的宽父框架上，全局光滑 2D3C 解仍给出两阶热体积差。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71J｜逐壳正生成留下非负缺陷">
+  <meta property="og:description" content="全壳正缺陷恒等式、raw tight-frame telescope、宽父框架零入口见证、完整 frame 热体积上界与 K 平方分离。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71J｜逐壳正生成留下非负缺陷</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.18rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.95"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#defect">正缺陷</a><a href="#tightness">Tightness</a><a href="#cells">局部块</a><a href="#frame">父框架</a><a href="#datum">2D3C</a><a href="#limit">极限</a><a href="#separation">尺度差</a><a href="#theorem">定理</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71J · POSITIVE DEFECT · BROAD PARENT FRAME · FULL-FRAME GAP</div>
+        <h1>逐壳取正部以后只剩时间望远镜，<br>宽父框架仍保留两阶热体积差</h1>
+        <p class="lead">我把 R0.71I 的单分量联合恒等式在全部固定壳上求和。普通 signed transfer 的抵消不能穿过逐壳正部：时间端点之外，精确留下黏性振幅质量和负源缺陷。随后我把零入口 2D3C 构造放进 R0.71E 已经声明的宽父框架。完整 parent frame 的正生成至少是 \(K^{-2}\)，同一 frame 的 physical-time heat endpoint 至多是 \(K^{-4}\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71J 恒等式、全 frame 见证与独立 Fourier 审计完成</span><strong>全频 heat-payment 路线关闭；局部化 face-paid BV 仍开放</strong><p>版本 v0.71J · 2026-08-26</p><p>hard / soft positive-defect identity：PASS</p><p>直接 Fourier heat reconstruction：PASS</p><p>覆盖：R0.71E §10.1 parent-only frame</p><p>下一对象：matched spatial cells</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#defect">01 · 全壳正缺陷</a></li><li><a href="#soft">02 · 软分母与量词</a></li><li><a href="#tightness">03 · Tightness 的边界</a></li><li><a href="#cells">04 · 径向与切向</a></li><li><a href="#frame">05 · 宽父框架</a></li><li><a href="#datum">06 · 2D3C 零入口</a></li><li><a href="#limit">07 · 抛物极限</a></li><li><a href="#separation">08 · 完整 frame 尺度差</a></li><li><a href="#theorem">09 · 排除定理</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#literature">11 · 文献边界</a></li><li><a href="#value">12 · 研究价值</a></li><li><a href="#next">13 · 下一步</a></li><li><a href="#claims">14 · 主张边界</a></li><li><a href="#reproduce">15 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>完整 frequency frame 不会把逐壳正生成自动抵消</h2>
+          <p>对固定有限的 frame/cell 指标族，令 \(w_\gamma=\kappa_\gamma^{-2}\)、\(a_\gamma=(z_\gamma^+)^2\)，并把 signed source 写成 \(\mathcal J_\gamma=\mathcal J_\gamma^+-\mathcal J_\gamma^-\)。R0.71J 得到</p>
+          <div class="equation result">\[
+            2\mathcal Z_+=\partial_t\mathcal A_w
+            +2\nu\sum_\gamma a_\gamma+2\mathcal Z_-,
+          \]</div>
+          <p>其中 \(\mathcal A_w=\sum_\gamma w_\gamma a_\gamma\)，\(\mathcal Z_\pm=\sum_\gamma w_\gamma z_\gamma^+\mathcal J_\gamma^\pm\)。唯一的 telescope 是时间导数；其余两项都非负。这个恒等式和下面的真实 NSE 见证共同关闭了“完整 parent frame 求和或同一 heat endpoint 可以免费支付正生成”的设想。</p>
+        </section>
+
+        <section id="defect"><div class="section-no">01 / Exact positive defect</div><h2>负源抵消不会消失，而是转成非负缺陷</h2>
+          <p>每个正分母分量满足</p>
+          <div class="equation">\[
+            a_{\gamma,t}+2\nu\kappa_\gamma^2a_\gamma
+            =2z_\gamma^+\mathcal J_\gamma.
+          \]</div>
+          <p>乘以 \(w_\gamma=\kappa_\gamma^{-2}\) 后求和并积分，得到</p>
+          <div class="equation result">\[
+            \int_{T_-}^{T_+}\mathcal Z_+dt
+            =\frac{\mathcal A_w(T_+)-\mathcal A_w(T_-)}2
+            +\nu\int_{T_-}^{T_+}\sum_\gamma a_\gamma dt
+            +\int_{T_-}^{T_+}\mathcal Z_-dt.
+          \]</div>
+          <p>即使两个 weighted endpoint 相等，后两项仍然存在。普通壳间传递的反对称性只作用于 signed quantities；逐壳取正部以后，一对 \(\tau,-\tau\) 贡献的是 \(\tau^++(-\tau)^+=|\tau|\)。</p>
+        </section>
+
+        <section id="soft"><div class="section-no">02 / Soft denominator and quantifiers</div><h2>软分母再增加一个有利阻尼项，时间面没有被删除</h2>
+          <p>固定 \(\varepsilon&gt;0\) 的标量式为</p>
+          <div class="equation result">\[
+            (a_{\varepsilon,\gamma})_t
+            +2\nu\kappa_\gamma^2
+            (1+\theta_{\varepsilon,\gamma})a_{\varepsilon,\gamma}
+            =2z_{\varepsilon,\gamma}^+\mathcal J_{\varepsilon,\gamma}.
+          \]</div>
+          <p>因此全壳式还增加 \(2\nu\sum_\gamma\theta_{\varepsilon,\gamma}a_{\varepsilon,\gamma}\ge0\)。本节的精确求和只在有限固定指标族、无 partition refresh 的区间上陈述。硬分母为零的时间面、软极限紧性和刷新跳跃仍须单独支付。</p>
+        </section>
+
+        <section id="tightness"><div class="section-no">03 / What tightness really telescopes</div><h2>Parseval 只压缩 raw numerator，不控制非线性 quotient 的时间导数</h2>
+          <p>在 global cell \(\chi=1\)、heat height \(s=0\) 时，tight frame 给出</p>
+          <div class="equation result">\[
+            \sum_jB_j=\langle L,-\Delta u\rangle
+            =\frac12Y_t+\nu\|\Delta u\|_2^2,
+            \qquad \sum_jd_j=\|\Delta u\|_2^2,
+            \qquad \sum_j\|F_j\|_2^2=\|L\|_2^2.
+          \]</div>
+          <p>还能得到瞬时 sandwich</p>
+          <div class="equation result">\[
+            \frac{((\sum_jB_j)^+)^2}{\sum_jd_j}
+            \le\sum_j\frac{(B_j^+)^2}{d_j}
+            \le\sum_j\|F_j\|_2^2.
+          \]</div>
+          <p>这里 \(d_j=0\) 的空壳贡献约定为 \(0\)，因为此时 \(C_j=B_j=0\)；若 \(\sum_jd_j=0\)，三项都为 \(0\)。左边与中间的差本身是非负 frame defect。对这个不等式求时间导数不会保留所需次序，也不会生成 \(\mathcal Z_+\) 的上界。</p>
+        </section>
+
+        <section id="cells"><div class="section-no">04 / Radial and tangent rows</div><h2>有界重叠能打包静态振幅，却不能控制方向角速度</h2>
+          <p>局部源可写成 \(\mathcal J_Q=R_Q+T_Q\)。径向项含 \(N\) 与 \(Y_t/Y\)，切向项是 \(T_Q=\langle P_Qx,E_{Q,t}\rangle\)，其中 \(E_{Q,t}=P_QM_Q/\rho_Q\)。两项能在同一 cell 内真实抵消，不能分别取正部。</p>
+          <p>若支撑重叠数是 \(N_0\)，则 \(\sum_Qa_Q\le N_0\|F\|_2^2/Y\)，但 \(N_0\) 不控制 \(\rho_Q^{-1}\) 或方向角速度。一个纯 Hilbert-space 旋转路径给出 \(z^+T=1/(2\delta)\to\infty\)。它不是 NSE 反例，只说明 overlap geometry 本身不足以支付 tangent row。</p>
+        </section>
+
+        <section id="frame"><div class="section-no">05 / Existing broad parent frame</div><h2>见证使用 R0.71E §10.1 已声明的 parent-only tight frame</h2>
+          <p>取光滑对数半径函数 \(m\)，满足</p>
+          <div class="equation">\[
+            \sum_{j\in\mathbb Z}m(\log_2|\xi|-j)^2=1,
+            \quad m=1\ \text{on }[0,1/2],
+            \quad \operatorname{supp}m\subset[-1/2,1].
+          \]</div>
+          <p>对 parent multiplier \(m_j\)，</p>
+          <div class="equation result">\[
+            W(\xi)=\sum_j2^{-2j}|m_j(\xi)|^2\le4|\xi|^{-2}.
+          \]</div>
+          <p>这正是 R0.71E §10.1 的宽父框架。本节不把结论静默外推到 §10.2 的 lo/hi children；quotient 是非线性的，细化之后必须重新计算。</p>
+        </section>
+
+        <section id="datum"><div class="section-no">06 / Global-smooth zero-entry datum</div><h2>两个竖直通道在严格分母下精确抵消初始 numerator</h2>
+          <p>令 \(K=2^J\)。水平剪切取 \(\widehat u_2(\pm K,0)=1\)，竖直 driver 取 \(\widehat u_3(0,4K)=i/4\)、\(\widehat u_3(0,5K)=-i/5\) 以及它们的共轭模，并在八个 \(\widehat u_3(\pm K,\pm4K)\)、\(\widehat u_3(\pm K,\pm5K)\) 目标模上取系数 \(1\)。所得 2D3C 解中，剪切走热流，竖直速度满足线性平流扩散，所以每个 \(K\) 都全局光滑。</p>
+          <p>对 \(j=J+2\)、\(\kappa=4K\) 的 parent，精确初值是</p>
+          <div class="equation result">\[
+            \|u_0\|_2^2=\frac{2041}{200},\quad
+            Y=178K^2,\quad \|F_\kappa\|_2^2=500K^2,
+            \quad d_\kappa=3942K^4,
+            \quad B_\kappa=a_\kappa=0.
+          \]</div>
+          <p>\(n=4\) 与 \(n=5\) 通道分别贡献 \(+4K^3\) 和 \(-4K^3\)。独立程序还按水平频率分成 \(|m|=0,1,2\) 三组复算；初始时全部 Lamb modes 与 \(C\)-modes 都落在 parent 的 flat top 内。</p>
+        </section>
+
+        <section id="limit"><div class="section-no">07 / Fixed-window parabolic limit</div><h2>纯热极限在零入口之后产生严格正振幅</h2>
+          <p>令 \(\theta=\nu K^2t\)。sideband 耦合在固定窗口上是 \(O((\nu K)^{-1})\)，Duhamel 估计给出 weighted \(C^1\) 误差 \(O(K^{-1})\)。极限 profile 为</p>
+          <div class="equation">\[
+            B_0=4(e^{-34\theta}-e^{-52\theta}),
+          \]</div>
+          <div class="equation">\[
+            D_0=32e^{-32\theta}+1156e^{-34\theta}
+            +50e^{-50\theta}+2704e^{-52\theta},
+          \]</div>
+          <div class="equation">\[
+            Y_0=2e^{-2\theta}+2e^{-32\theta}+68e^{-34\theta}
+            +2e^{-50\theta}+104e^{-52\theta}.
+          \]</div>
+          <p>因此 \(A_0=16(e^{-34\theta}-e^{-52\theta})^2/(D_0Y_0)\)。在 \(\theta_*=\log2/18\)，</p>
+          <div class="equation result">\[
+            A_*=\frac{4}{57(2^{1/9}+44)(3\,2^{1/9}+4\,2^{7/9}+120)}
+            \approx1.19655\times10^{-5}.
+          \]</div>
+          <p>这是固定窗口的严格渐近式，不是有限 \(K\) 的 DNS 曲线。</p>
+        </section>
+
+        <section id="separation"><div class="section-no">08 / Full-frame separation</div><h2>正生成至少 \(K^{-2}\)，同一 full-frame heat endpoint 至多 \(K^{-4}\)</h2>
+          <p>固定 \(\nu&gt;0\)，令 \(I_K=[0,\theta_*/(\nu K^2)]\)。选中 parent 的权重是 \(\kappa^{-2}=1/(16K^2)\)。对所有充分大 dyadic \(K\)，零入口与正终值给出</p>
+          <div class="equation result">\[
+            \mathcal Z_K^{\rm frame}
+            =\sum_j2^{-2j}\int_{I_K}z_j^+\mathcal J_j^+dt
+            \ge\frac{A_*}{64K^2}.
+          \]</div>
+          <p>真实 2D3C 解满足 \(L=(0,0,-V\partial_2w)\)、\(\|L\|_2^2/Y\le4e^{-2\theta}\)，且每个 Lamb mode 都有 \(|\xi_2|\ge4K\)。结合 \(W(\xi)\le4|\xi|^{-2}\)，</p>
+          <div class="equation result">\[
+            \mathcal H_K^{\rm frame}
+            =\sum_j2^{-2j}\int_{I_K}\frac{\|T_jL\|_2^2}{Y}dt
+            \le\frac{1-2^{-1/9}}{2\nu K^4}.
+          \]</div>
+        </section>
+
+        <section id="theorem"><div class="section-no">09 / Quantified no-go theorem</div><h2>同一个完整 broad parent frame 的 heat endpoint 不能统一支付正生成</h2>
+          <p>对固定 \(\nu&gt;0\)，不存在与 dyadic frequency \(K\) 无关的常数 \(C\)，使上述 2D3C 家族对所有充分大 \(K\) 满足 \(\mathcal Z_K^{\rm frame}\le C\mathcal H_K^{\rm frame}\)。因为</p>
+          <div class="equation result">\[
+            \frac{\mathcal Z_K^{\rm frame}}{\mathcal H_K^{\rm frame}}
+            \ge\frac{\nu A_*}{32(1-2^{-1/9})}K^2.
+          \]</div>
+          <p>这个结论覆盖完整 parent frequency frame，而不是只看选中的一个 parent；下界用一个非负 summand，上界包含该 frame 的全部 parents。它没有排除由另一种 NSE-specific quantity 支付，也没有处理 matched spatial cells。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图把 exact defect、热极限和 full-frame 尺度分离放在同一页</h2>
+          <figure><img src="/figures/r0-71j-full-frame-gap.svg" alt="R0.71J 全壳正缺陷恒等式、纯热 profile、完整 frame 正生成与热体积尺度、K 平方比值"><figcaption>图 R0.71J。A：逐壳取正部后的 exact positive-defect ledger。B：零入口 parent 的 pure-heat fixed-window profiles。C：完整 broad parent frame 的正生成下界和 heat endpoint 上界；斜率分别为 \(-2\) 与 \(-4\)。D：两者比值按 \(K^2\) 增长。曲线来自闭式公式和 exact Fourier 数据，不是 DNS 或拟合。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71j-full-frame-gap.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71j-full-frame-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71j-full-frame-gap.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>平滑多尺度 telescope 已知；这里检查的是正部与归一化 quotient 之后的缺陷</h2>
+          <p><a href="https://arxiv.org/abs/0909.2386">Eyink–Aluie</a> 和 <a href="https://doi.org/10.1017/S0022112092001733">Germano</a> 已给出 smooth coarse-graining、非负 band energy 与多级 filtered-stress identities。<a href="https://arxiv.org/abs/0704.0759">Cheskidov–Constantin–Friedlander–Shvydkoy</a> 给出经典 Littlewood–Paley flux commutator 与临界 Besov 界。这些结果覆盖 raw signed flux 的望远镜，不提供本节 normalized shellwise positive source 的无条件支付。</p>
+          <p><a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru</a> 的 heat-flow Carleson 路线是小 \(BMO^{-1}\) 数据整体适定；<a href="https://arxiv.org/abs/0708.3067">Cheskidov–Shvydkoy</a> 的临界 Besov 判据也有额外假设。把这些条件直接放到当前缺口上会形成条件性闭合，不是从 Leray 能量推出的结果。</p>
+          <p>截至 2026-08-26 的限定一手文献检索没有找到与完整 \(N,M,Y_t/Y\)、soft denominators、spatial cells 和 refresh faces 同构的定理。这是 bounded negative finding，不是原创性或优先权判断。</p>
+        </section>
+
+        <section id="value"><div class="section-no">12 / Research value</div><h2>这一步关闭了一个真实逃逸口，但没有推进到正则性定理</h2>
+          <p>R0.71I 只排除了一个特殊双环 component 的 heat-volume-only payment，完整 frame 仍可能被误认为会恢复 signed cancellation。R0.71J 把这个量词补齐到 R0.71E 已声明的完整 broad parent frame，并给出 exact defect identity；因此以后不能再依赖“全壳求和会自动变好”来跳过正部和分母。</p>
+          <p>它的价值是路线排除和接口收缩，不是 Clay 问题的部分证明。仍缺的对象很具体：matched spatial localization、collar 和 transport rows、denominator faces、refresh atoms，以及一个真正由 Leray 能量控制的新 NSE budget。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.71K 把 global cell 换成一个固定 matched spatial partition</h2>
+          <p>下一步保留同一个 broad parent frame，在物理空间加入固定、尺度匹配、有限重叠的 partition。需要逐项保留 cutoff–curl、transport、viscous collar、分母时间面和 refresh atoms，检查 localized quotients 的求和是继续继承 \(K^2\) 缺口，还是出现新的可控 coercive defect。</p>
+          <p>若局部化只把正缺陷搬到未控制的 faces，这条 temporal-residence 分支应当停止；若产生一个确实由 Leray 量支付的新负项，再进入无限 frame–cell 和 soft-limit 步骤。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>本节是声明范围内的 exact no-go，不是千禧年问题的解答</h2>
+          <ul>
+            <li>已证明：有限固定 frame/cell 族上的 hard positive-defect identity，以及 soft denominator 的额外非负阻尼。</li>
+            <li>已证明：global cell 上 tightness 只能 telescope raw signed numerator，并给出 instantaneous quotient sandwich。</li>
+            <li>已证明：R0.71E §10.1 parent-only broad frame 上，全局光滑固定能量 2D3C 家族的 full-frame \(K^2\) heat-payment gap。</li>
+            <li>未证明：R0.71E §10.2 任意 child refinement、matched spatial cells、faces、refresh、无限 soft limit 或另一 NSE budget 的不可能性。</li>
+            <li>未证明：无条件 weighted BV、继续性判据、全局光滑性或有限时破裂。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性、优先权或发表级别声明。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduce</div><h2>报告、双重计算证书、文献台账与附图源</h2>
+          <p><a href="/notes/r0-71j.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71j.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71j.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71j-full-frame-gap.pdf">下载附图 PDF</a> · <a href="/figures/r0-71j-full-frame-gap.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71j-full-frame-gap.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071j_independent_audit.py">standard-library checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071j">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071j-full-frame/fig-r071j-full-frame-gap">完整附图包</a></p>
+          <p>producer 使用 exact SymPy 算术；独立 checker 不导入 producer 或项目 Fourier helper，而是重新构造 curl、convolution、Leray projection 与 heat-decayed Fourier profiles。附图另有独立高精度检查。DGX 与 GPU 未使用，因为闭式代数比 PDE 时间推进提供更强的证据。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>逐项保留推导、反例、审计和未解决的量词。</div><div>研究笔记 R0.71J · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

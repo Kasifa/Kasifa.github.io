@@ -41,36 +41,33 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71I as v0.94 with 133 notes and 73 recap nodes", async () => {
+test("keeps the R0.71I note and 73-node recap as frozen v0.94 artifacts", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 133);
-  assert.match(home, /<strong>v0\.94<\/strong>网页版本/);
-  assert.match(home, /<strong>133<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71I<\/strong>最新研究节点/);
-  assert.match(home, /展开 43 篇公开笔记/);
-  assert.match(home, /累计回顾收录 73 个节点；全站现有 133 篇公开研究笔记/);
+  assert.ok(noteNames.filter((name) => name.endsWith(".html")).length >= 133);
   assert.equal((home.match(/href="\/notes\/r0-71i\.html"/g) ?? []).length, 2);
 
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
   assert.match(recap, /收录节点：73/);
   assert.match(recap, /回顾截止时公开笔记：133/);
   assert.match(recap, /回顾截止节点：R0\.71I/);
-  assert.match(literature, /R0\.69P–R0\.71I/);
-  assert.match(literature, /开放接口 · R0\.71J/);
-
   for (const [page, minimum] of [
-    [home, 10],
     [note, 15],
     [recap, 8],
-    [literature, 48],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71I/);
     assert.match(page, /src="\/i18n-en\.js\?v=0\.94"/);
+  }
+  for (const [page, minimum] of [
+    [home, 10],
+    [literature, 48],
+  ]) {
+    assertLocalAnchorsResolve(page, minimum);
+    assert.match(page, /R0\.71I/);
   }
 });
 
@@ -119,7 +116,7 @@ test("gives R0.71I independent release surfaces on home, recap, and literature",
   assert.ok(literatureCard.includes("\\(O(K^{-4})\\)"));
 });
 
-test("the cumulative recap exposes the same 73 post-R0.60 nodes as home", async () => {
+test("the historical recap exposes the first 73 post-R0.60 nodes from home", async () => {
   const { home, recap } = await publishedPages();
   const routeStart = home.indexOf('<section class="route-overview"');
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
@@ -128,7 +125,7 @@ test("the cumulative recap exposes the same 73 post-R0.60 nodes as home", async 
     ...route.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g),
   ].map((match) => match[1]);
   const first = routeLinks.indexOf("/notes/r0-61.html");
-  const expected = routeLinks.slice(first);
+  const expected = routeLinks.slice(first, -1);
   assert.equal(expected.length, 73);
   assert.equal(expected.at(-1), "/notes/r0-71i.html");
 
@@ -168,8 +165,8 @@ test("states the joint identity, volume gap, claim boundary, and R0.71J gate", a
   assert.match(note, /预设宽单环 frame、完整 Parseval frame 和全框架右端都没有在这里处理/);
   assert.match(note, /R0\.71J 检查全壳求和后是否出现新的 NSE 抵消/);
   assert.match(recap, /R0\.71J 检查完整 frame 求和后的正生成/);
-  assert.match(home, /NEXT · R0\.71J/);
-  assert.match(literature, /开放接口 · R0\.71J/);
+  assert.match(home, /NEXT · R0\.71K/);
+  assert.match(literature, /开放接口 · R0\.71K/);
   assert.match(literature, /All-shell|全壳|完整 frame/i);
 });
 
@@ -247,7 +244,6 @@ test("ships synchronized note and recap PDFs plus three journal figure formats",
   assert.match(note, /href="\/recap-r0-61-r0-71i\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71i\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71i\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71i\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71i-joint-volume-gap\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

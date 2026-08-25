@@ -1,0 +1,23 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071j_exact_audit.py --output research/certificates/r071j/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071j_independent_audit.py --output research/certificates/r071j/independent-result.json
+
+Run the following from figures/r071j-full-frame/fig-r071j-full-frame-gap:
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python generate_data.py --output data.csv --metadata figure-data-metadata.json
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python independent_validate.py --data data.csv --output independent-validation.json
+MPLCONFIGDIR=/private/tmp/r071j-full-frame-mpl PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python plot.py --data data.csv --output-stem figure
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python qa_images.py
+
+During source construction, build a draft manifest:
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python build_manifest.py --status draft --dirty-at-certified-run true
+
+After committing a clean source snapshot, rebuild the formal manifest with the exact clean source commit in both commit arguments:
+PYTHONDONTWRITEBYTECODE=1 ../../../tmp/r068b-venv/bin/python build_manifest.py --status formal --source-commit SOURCE_COMMIT --certificate-commit SOURCE_COMMIT --dirty-at-certified-run false
+
+Validate the formal package and its internal ledger:
+../../../tmp/r068b-venv/bin/python ../../../research/validate_figure_package.py .
+shasum -a 256 -c SHA256SUMS
+
+Return to the repository root, fill the actual release commit fields in environment.txt, and rebuild the release certificate ledger:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071j/build_hashes.py
+(cd research/certificates/r071j && shasum -a 256 -c SHA256SUMS)

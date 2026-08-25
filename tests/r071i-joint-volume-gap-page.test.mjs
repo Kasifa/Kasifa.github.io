@@ -165,8 +165,8 @@ test("states the joint identity, volume gap, claim boundary, and R0.71J gate", a
   assert.match(note, /预设宽单环 frame、完整 Parseval frame 和全框架右端都没有在这里处理/);
   assert.match(note, /R0\.71J 检查全壳求和后是否出现新的 NSE 抵消/);
   assert.match(recap, /R0\.71J 检查完整 frame 求和后的正生成/);
-  assert.match(home, /NEXT · R0\.71L/);
-  assert.match(literature, /开放接口 · R0\.71L/);
+  assert.match(home, /NEXT · R0\.71M/);
+  assert.match(literature, /开放接口 · R0\.71M/);
   assert.match(literature, /All-shell|全壳|完整 frame/i);
 });
 

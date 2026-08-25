@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71L：固定小区中的黏性 collar 与局部 Laplacian 交换子必须精确融合；逐行取绝对值没有产生新的 coercive payment，projective tangent 的当前直接估计仍未由标准 Leray 能量闭合。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71L｜黏性 collar 精确融合，投影切向的直接估计仍未闭合">
+  <meta property="og:description" content="固定 cutoff 的精确融合定理、aligned-cell 修正、Leray 可支付项、projective tangent 障碍和一手文献边界。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71L｜黏性 collar 精确融合，投影切向的直接估计仍未闭合</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.1rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.97"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#objects">对象</a><a href="#fusion">黏性融合</a><a href="#example">精确消去</a><a href="#projective">投影融合</a><a href="#aligned">对齐小区</a><a href="#denominator">分母</a><a href="#leray">能量支付</a><a href="#obstruction">切向障碍</a><a href="#diagnostic">独立诊断</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71L · VISCOUS FUSION · NO FREE COLLAR · OPEN TANGENT</div>
+        <h1>黏性 collar 不是独立支付项，<br>投影切向的当前直接估计仍留缺口</h1>
+        <p class="lead">我保留 R0.71K 的固定 matched cells，重新检查 localized Laplacian、viscous collar、normalization 与 projective tangent。结论是：raw collar 与局部 Laplacian 的交换子部分精确抵消，不能先拆开取绝对值；标准 Leray 能量能支付局部分母质量，但当前 Cauchy–Young 路径尚未从该能量不等式推出剩余的归一化角速度乘积。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71L 精确融合定理与双路径审计完成</span><strong>rowwise absolute collar route 关闭；signed critical route 开放</strong><p>版本 v0.71L · 2026-08-26</p><p>exact commutator fusion：PASS</p><p>standalone Fourier / cutoff audit：PASS</p><p>覆盖：固定 aligned matched cells</p><p>下一对象：critical increment / commutator budget</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li><li><a href="#objects">01 · 固定小区对象</a></li><li><a href="#fusion">02 · 黏性融合</a></li><li><a href="#example">03 · 精确消去例子</a></li><li><a href="#projective">04 · 归一化与投影</a></li><li><a href="#aligned">05 · 对齐小区修正</a></li><li><a href="#denominator">06 · 双侧分母界</a></li><li><a href="#leray">07 · Leray 支付范围</a></li><li><a href="#obstruction">08 · 切向支付障碍</a></li><li><a href="#diagnostic">09 · 独立数值诊断</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#literature">11 · 文献边界</a></li><li><a href="#value">12 · 研究价值</a></li><li><a href="#next">13 · 下一步</a></li><li><a href="#claims">14 · 主张边界</a></li><li><a href="#reproduce">15 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>这一节关闭的是“把 raw collar 当作新正预算”的路线</h2>
+          <p><strong>定理量词。</strong>设 \(u\) 在固定时间区间 \(I=[t_0,t_1]\) 上为经典解，\(\chi_Q\in W^{3,\infty}\) 与时间无关，并且 \(r_Q(t)=\|\nabla\times(\chi_QW_j)(t)\|_2&gt;0\) 对每个 \(t\in I\) 成立。令 \(\mathsf A_QV=\nabla\times(\chi_QV)\)，则下面的 fixed hard-cell 恒等式逐时精确成立：</p>
+          <div class="equation result">\[
+            \nu\left[(\Delta+\kappa^2)C_Q
+            -\nabla\times(\mathcal K_{\chi_Q}W_j)\right]
+            =\nu\mathsf A_Q(\Delta+\kappa^2)W_j.
+          \]</div>
+          <p>左边第一项和 raw collar 都可以是主阶，甚至分别非零；但它们只是右边同一个 signed fused row 的两种展开。先对两项分别取绝对值，会丢掉精确 cancellation，并人为制造一个依赖分解方式的“支付”。</p>
+          <div class="boundary"><strong>直接判断</strong><p>固定小区并没有提供免费 coercivity。正确融合后，当前 rowwise Cauchy–Young 账本尚未闭合 normalized projective tangent；这不等于排除其他 signed NSE 估计。</p></div>
+        </section>
+
+        <section id="objects"><div class="section-no">01 / Fixed-cell Hilbert geometry</div><h2>先把分割半径与局部分母记号彻底分开</h2>
+          <p>写</p>
+          <div class="equation">\[
+            C_Q=\mathsf A_QW_j,\qquad
+            r_Q=\|C_Q\|_2,\qquad
+            E_Q=\frac{C_Q}{r_Q},\qquad
+            P_Q=I-E_Q\otimes E_Q.
+          \]</div>
+          <p>这里 \(P_Q\) 是 \(L^2\) Hilbert 空间中投影到 \(E_Q^\perp\) 的余秩一正交投影；\(I-P_Q=E_Q\otimes E_Q\) 才是秩一投影。它不是逐点矩阵。再令</p>
+          <div class="equation">\[
+            x_j=\frac{F_j}{\sqrt Y},\qquad
+            z_Q=\langle x_j,E_Q\rangle,\qquad
+            a_Q=(z_Q^+)^2,\qquad Y=\|\omega\|_2^2.
+          \]</div>
+          <p>取开邻域 \(U_Q\) 使 \(\operatorname{supp}\chi_Q\subset U_Q\)。matched cutoff 还满足 \(\|\nabla^m\chi_Q\|_\infty\le C_m\kappa^m\)（\(0\le m\le3\)）；三阶导数用于控制对 \(\mathcal K_{\chi_Q}W_j\) 再取 curl 的项。所有公式先限定在 hard cell \(r_Q&gt;0\) 的经典时间区间，general denominator faces 没有被悄悄删除。</p>
+        </section>
+
+        <section id="fusion"><div class="section-no">02 / Exact viscous fusion</div><h2>collar 与局部 Laplacian 交换子精确重组</h2>
+          <p>固定 cutoff 满足</p>
+          <div class="equation">\[
+            \Delta(\chi_QW_j)=\chi_Q\Delta W_j+\mathcal K_{\chi_Q}W_j,
+            \quad
+            \mathcal K_{\chi_Q}W_j=
+            2\sum_m(\partial_m\chi_Q)\partial_mW_j+(\Delta\chi_Q)W_j.
+          \]</div>
+          <p>若 \(W_{j,t}=\nu\Delta W_j+\mathcal G_j\)，则</p>
+          <div class="equation result">\[
+            M_Q:=C_{Q,t}+\nu\kappa^2C_Q
+            =\mathsf A_Q\!\left[\nu(\Delta+\kappa^2)W_j+\mathcal G_j\right].
+          \]</div>
+          <p>这个公式保留完整 nonlinear source \(\mathcal G_j\)。它只把同一个黏性作用的两种坐标表示重新合并，没有忽略 cutoff–curl 或 collar。</p>
+        </section>
+
+        <section id="example"><div class="section-no">03 / Exact nontrivial cancellation</div><h2>两个非零主阶行可以逐点完全消掉</h2>
+          <p>在三维周期空间中取</p>
+          <div class="equation">\[
+            W=(0,\sin x_1,0),\qquad
+            \chi=1+\varepsilon\cos x_1,\qquad 0&lt;\varepsilon&lt;1.
+          \]</div>
+          <p>此时 \(-\Delta W=W\)，而</p>
+          <div class="equation result">\[
+            (\Delta+1)C=(0,0,-3\varepsilon\cos2x_1),
+            \qquad
+            \nabla\times(\mathcal K_\chi W)=(0,0,-3\varepsilon\cos2x_1).
+          \]</div>
+          <p>两项都不为零，但在 fused viscous row 中精确相减为零。这是一个解析恒等式，不是浮点图像或数值拟合。</p>
+        </section>
+
+        <section id="projective"><div class="section-no">04 / Normalization and projective fusion</div><h2>field、normalization 与 tangent 也是同一个标量源的坐标分解</h2>
+          <p>令 \(\lambda=\nu\kappa^2\)、\(N_j=F_{j,t}+\lambda F_j\)。直接微分得到</p>
+          <div class="equation">\[
+            x_{j,t}+\lambda x_j
+            =\frac{N_j}{\sqrt Y}-\frac{Y_t}{2Y}x_j,
+            \qquad
+            E_{Q,t}=\frac{P_QM_Q}{r_Q}.
+          \]</div>
+          <p>因此 R0.71I 的完整 signed source 可精确写成</p>
+          <div class="equation result">\[
+            \mathcal J_Q
+            =\langle x_{j,t}+\lambda x_j,E_Q\rangle
+            +\langle P_Qx_j,E_{Q,t}\rangle
+            =z_{Q,t}+\lambda z_Q.
+          \]</div>
+          <p>因此对任意 \([s,t]\subset I\)，乘以 \(z_Q^+\) 并积分时必须保留初值项：</p>
+          <div class="equation">\[
+            \int_s^t z_Q^+\mathcal J_Q\,d\tau
+            =\frac{(z_Q^+(t))^2-(z_Q^+(s))^2}{2}
+            +\lambda\int_s^t(z_Q^+)^2\,d\tau.
+          \]</div>
+          <p>aligned witness 在它的特定初始端点 \(s=t_0=0\) 有 \(z_Q(s)=0\)，但一般区间恒等式不能先删去 \(-(z_Q^+(s))^2/2\)。把 normalization 或 tangent 单独取正部，同样会破坏这个不变量；正确对象一直是 complete signed source。</p>
+        </section>
+
+        <section id="aligned"><div class="section-no">05 / A new aligned-cell identity</div><h2>实际见证的 cutoff–curl numerator 逐格精确为零</h2>
+          <p>这里进一步专门化到有限 selected aligned family \(\mathcal Q_K\)，其中 \(|\mathcal Q_K|=K^3\)，所有 cutoff 是同一函数的平移，并在声明的经典区间上固定。把 work 分成 interior 与 cutoff–curl 两项：</p>
+          <div class="equation">\[
+            B_Q=\langle F_j,\chi_Q\nabla\times W_j\rangle
+            +B_Q^\partial,\qquad
+            B_Q^\partial=\langle F_j,\nabla\chi_Q\times W_j\rangle.
+          \]</div>
+          <p>R0.71K 的 translation symmetry 使有限族中所有 selected cells 的 \(B_Q^\partial\) 相等；分割恒等式又给出</p>
+          <div class="equation result">\[
+            \sum_QB_Q^\partial
+            =\left\langle F_j,\left(\sum_Q\nabla\chi_Q\right)\times W_j\right\rangle=0,
+            \qquad B_Q^\partial=0.
+          \]</div>
+          <p>因为 \(\mathcal Q_K\) 有限，相等的 cell rows 之和为零才推出每一格为零。这个结论对声明区间中的每个时刻成立。它只修正 aligned witness 的 numerator；cutoff–curl 在 denominator 与 dynamic tangent 中仍然存在，也没有外推到任意 partition。</p>
+        </section>
+
+        <section id="denominator"><div class="section-no">06 / Quantitative denominator floor for the witness</div><h2>有界重叠同时给出局部分母的下侧比较</h2>
+          <p>写 \(D_{\rm loc}=\sum_Q\|C_Q\|_2^2\)、\(D_j=\|\nabla\times W_j\|_2^2\)。R0.71K 已有上界；利用 \(\sum_QC_Q=\nabla\times W_j\) 和 overlap \(N\)，还得到</p>
+          <div class="equation result">\[
+            N^{-1}D_j\le D_{\rm loc}\le C_{\rm part}D_j.
+          \]</div>
+          <p>令 \(D_0(\theta)\) 为 R0.71J 的正 pure-heat limiting denominator profile，并固定</p>
+          <div class="equation">\[
+            D_-:=\frac12\min_{0\le\theta\le\theta_*}D_0(\theta)&gt;0,
+            \qquad
+            D_+:=2\max_{0\le\theta\le\theta_*}D_0(\theta)&lt;\infty.
+          \]</div>
+          <p>对每个固定 \(\nu&gt;0\)，存在 \(K_0(\nu)\)，使所有 dyadic \(K\ge K_0(\nu)\) 及 \(t\in I_{K,\nu}:=[0,\theta_*/(\nu K^2)]\) 满足 \(D_-K^4\le D_j(t)\le D_+K^4\)。所有 selected cells 都是平移，所以 \(d_Q=D_{\rm loc}/K^3\)，从而</p>
+          <div class="equation result">\[
+            \frac{D_-}{N}K\le d_Q\le C_{\rm part}D_+K.
+          \]</div>
+          <p>这是显式 finite aligned witness 的量化下界，量词顺序是“固定 \(\nu\)，再取充分大 \(K\)”；它不是任意 Leray 解所有小区的 denominator floor。</p>
+        </section>
+
+        <section id="leray"><div class="section-no">07 / What energy actually pays</div><h2>Leray 能量支付正分母质量；该质量界本身不推出分母逆</h2>
+          <p>bounded overlap、Bernstein 与 tight frame 给出</p>
+          <div class="equation result">\[
+            \nu\int\sum_{j,Q}\kappa_j^{-2}d_{j,Q}\,dt
+            \lesssim \nu\int Y(t)\,dt
+            \lesssim\|u_0\|_2^2.
+          \]</div>
+          <p>利用上面直至三阶的 cutoff 导数界，raw collar \(\mathcal V_{j,Q}=-\nu\nabla\times(\mathcal K_{\chi_Q}W_j)\) 也满足更强降权后的平方预算</p>
+          <div class="equation">\[
+            \frac1\nu\int\sum_{j,Q}\kappa_j^{-6}\|\mathcal V_{j,Q}\|_2^2dt
+            \lesssim\nu\int Y(t)dt.
+          \]</div>
+          <p>这两个式子是实质性的正结果，但它们的权重都不等于当前 quotient-tangent Cauchy–Young 步骤所需的权重；仅由这两个已写出的不等式不能推出 \(d_{j,Q}^{-1}\) 的控制。</p>
+        </section>
+
+        <section id="obstruction"><div class="section-no">08 / The remaining tangent product</div><h2>当前直接 Cauchy 路径归约到一个尚无 Leray 推论的 Lamb 商</h2>
+          <p>对 fused viscous row 定义</p>
+          <div class="equation">\[
+            M_{j,Q}^\nu=\nu\mathsf A_Q(\Delta+\kappa_j^2)W_j,
+            \qquad
+            \Gamma_{j,Q}=\frac{\|M_{j,Q}^\nu\|_2}{\nu\kappa_j^2r_{j,Q}}.
+          \]</div>
+          <p>因为 \(E_Q\) 支持在 \(U_Q\)，先有明确的 local envelope</p>
+          <div class="equation">\[
+            |z_{j,Q}|\le\frac{\|1_{U_Q}F_j\|_2}{\sqrt Y},
+            \qquad
+            \|1_{U_Q}P_QF_j\|_2\le2\|1_{U_Q}F_j\|_2.
+          \]</div>
+          <p>support localization 与 Cauchy 随后给出窄而精确的界</p>
+          <div class="equation result">\[
+            \kappa_j^{-2}|z_{j,Q}|
+            \frac{|\langle P_Qx_j,P_QM_{j,Q}^\nu\rangle|}{r_{j,Q}}
+            \le2\nu\Gamma_{j,Q}
+            \frac{\|1_{U_Q}F_j\|_2^2}{Y}.
+          \]</div>
+          <p>令 \(\mathfrak T_I^\nu\) 表示上式左边先对 \(j,Q\) 求和、再在 \(I\) 上积分得到的 absolute viscous-tangent target。若 \(\sum_Q1_{U_Q}\le N\)、frame 满足 \(\sum_j\|F_j\|_2^2\le C_{\rm frame}\|L\|_2^2\)，其中 \(L=\mathbb P(u\times\omega)\)，并且额外假设 \(\Gamma_{j,Q}\le\Gamma\)，则当前直接估计归约为</p>
+          <div class="equation">\[
+            \mathfrak T_I^\nu
+            \le2\nu\Gamma NC_{\rm frame}
+            \int_I\frac{\|\mathbb P(u\times\omega)\|_2^2}{\|\omega\|_2^2}dt.
+          \]</div>
+          <p>目前没有从标准 Leray energy inequality 推出这个 normalized projected-Lamb budget 的已知步骤；若不假设 \(\Gamma\) 有界，(local envelope 后的) 上界又保留了待控角速度。这个判断只针对上述 direct estimate，不是 Leray-level no-go theorem。</p>
+          <p>在 \(\mathbb R^3\) 的 NSE 缩放下，上述 Lamb 商的时间积分是尺度不变量，而能量与总耗散按 \(\lambda^{-1}\) 缩放。这严格排除的只是“用普适、齐次、线性的标准能量界控制该 Lamb 商”这一特定形式；它不排除更深的 signed cancellation、非齐次信息或额外临界范数。</p>
+        </section>
+
+        <section id="diagnostic"><div class="section-no">09 / Standalone deterministic diagnostic</div><h2>显式见证中 collar 只做小幅反号抵消，完整 tangent 仍为主阶</h2>
+          <p>对固定 \(\nu&gt;0\)、\(\theta=\nu K^2t\in[0,\theta_*]\)，解析 fixed-window transfer 给出一致渐近</p>
+          <div class="equation">\[
+            z_Q=K^{-3/2}\bigl(\zeta(\theta)+O_\nu(K^{-1})\bigr),
+            \qquad
+            \mathcal J_{\#,Q}=\nu K^{1/2}\bigl(\tau_\#(\theta)+O_\nu(K^{-1})\bigr).
+          \]</div>
+          <p>这里的 \(K\)-指数与 \(O_\nu(K^{-1})\) transfer 是解析账本；具体 \(\zeta,\tau_\#\) 曲线与下面的 scaled \(K^{-2}\) 系数由不导入 exact producer 的固定 tensor-cutoff Gauss–Legendre 求积给出，只用于代码与符号诊断。</p>
+          <table><thead><tr><th>row</th><th>signed coefficient</th><th>evidence</th></tr></thead><tbody>
+            <tr><td>localized-heat tangent</td><td>\(+2.68021\times10^{-7}\)</td><td>deterministic diagnostic</td></tr>
+            <tr><td>raw viscous collar</td><td>\(-8.92992\times10^{-9}\)</td><td>deterministic diagnostic</td></tr>
+            <tr><td>fused tangent</td><td>\(+2.59091\times10^{-7}\)</td><td>deterministic diagnostic</td></tr>
+            <tr><td>complete joint source</td><td>\(+7.27077\times10^{-7}\)</td><td>deterministic diagnostic</td></tr>
+          </tbody></table>
+          <p>在这条见证上，collar 与 heat tangent 反号，约抵消后者的 \(3.33\%\)，没有消掉完整 tangent。积分标量恒等式的残差约为 \(1.3\times10^{-19}\)。这些浮点结果没有证明整个连续窗口上的严格符号；本节定理不依赖它们。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图把 exact cancellation、见证诊断与支付缺口放在同一页</h2>
+          <figure><img src="/figures/r0-71l-viscous-fusion.svg" alt="R0.71L 黏性 collar 与局部 Laplacian 的精确融合、显式见证的切向分解及 Leray 支付边界"><figcaption>图 R0.71L。A：单 Laplace eigenspace 中 localized-heat row 与 raw collar 的逐点相消，是 exact algebra。B：显式 fixed-cell witness 的系数来自独立确定性求积，是 diagnostic，不是连续符号证书。C：\(K^{-4}\) 与 \(K^{-2}\) 的指数来自解析 scale ledger，所画有限系数来自同一 diagnostic，因此是 analytic + diagnostic mixed evidence。D：只画出当前 direct estimate 的依赖边界；它不是排除其他 signed NSE 估计的 no-go theorem。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71l-viscous-fusion.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71l-viscous-fusion.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71l-viscous-fusion.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>标量 collar 与局部 enstrophy 有成熟结果；限定检索未找到同构的完整 tangent 定理</h2>
+          <p><a href="https://doi.org/10.1002/cpa.3160350604">Caffarelli–Kohn–Nirenberg</a> 与 <a href="https://arxiv.org/abs/1101.2193">Dascaliuc–Grujić</a>控制 scalar local-energy cutoff rows；对象不是带局部 curl denominator 的 Hilbert-space tangent。</p>
+          <p><a href="https://arxiv.org/abs/1108.1165">Tao</a> 的 enstrophy localization 使用局部小性、宽 buffer 与收缩 cutoff。<a href="https://arxiv.org/abs/1107.0058">Dascaliuc–Grujić</a> 和 <a href="https://arxiv.org/abs/1502.01258">Leitmeyer</a> 的 enstrophy cascade 还需要方向相干、Kraichnan/Morrey 或 modulation 输入。</p>
+          <p><a href="https://arxiv.org/abs/2606.27560v1">Yu 2026 预印本</a>最接近当前 ledger：它用 solution-adapted backward adjoint cutoff 消去一个 localization residual，并用 increment defect、Carleson 与 shell summability 关闭其他行。这些额外预算不是 Leray energy 的已知推论。</p>
+          <p>本轮十组一手主源检索没有找到满足 fixed cutoff、完整 cutoff–curl/collar、局部分母、projective tangent、绝对预算与 Leray-only 六项条件的同构定理，也没有找到同构的已发表 NSE 反例。这是有限检索边界，不是原创性或优先权判断。</p>
+        </section>
+
+        <section id="value"><div class="section-no">12 / Research value</div><h2>主阶 collar 从“可能的支付”被降为“必须先融合的坐标项”</h2>
+          <p>R0.71K 的尺度表没有错：raw collar 确实可以达到 \(K^{-2}\)。R0.71L 新增的内容是，它与 localized Laplacian 的 commutator 部分不是两个独立物理源。单独绝对化会把一个 exact cancellation 变成虚假的非负成本。</p>
+          <p>这使路线边界更窄也更可信：heat-only payment 已被见证排除，raw-collar-only payment 又被精确融合排除。当前 direct route 剩下的是 signed fused tangent 与它的 critical input。这个结果仍未缩小所有潜在奇性解的集合，也未给出无条件继续性判据。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.71M 不进入 faces，先测试一个尺度临界的 increment–commutator bridge</h2>
+          <p>下一节保留 signed fused tangent，不再做 rowwise absolute collar payment。目标是把 nonlinear frequency source 与 fused viscous mismatch 写成一个显式 velocity-increment / commutator budget，并逐项记录 annular 或 Carleson 求和条件。</p>
+          <p>验收标准只有两个：额外假设必须尺度临界且对象明确；随后必须检查它是否真的由 Leray energy 推出。若不能推出，它只能作为条件桥保留，不能写成正则性结果。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>本节是 fixed-cell 分解路线的精确审计，不是千禧年问题的解答</h2>
+          <ul>
+            <li>已证明：固定 cutoff 下 viscous collar 与 localized Laplacian commutator 的精确融合。</li>
+            <li>已证明：field、normalization 与 projective tangent 精确重组为 \(z_t+\nu\kappa^2z\)。</li>
+            <li>已证明：单 Laplace eigenspace 中两个非零 expanded rows 可以完全相消。</li>
+            <li>已证明：aligned witness 的 cutoff–curl numerator 逐格为零，局部分母具有双侧比较。</li>
+            <li>已证明：Leray 能量支付 weighted denominator mass 与更强降权的 raw-collar square mass；这些已写出的界本身不推出 inverse-denominator tangent product。</li>
+            <li>未证明：complete fused tangent 的符号、绝对预算、Carleson 求和或 Leray-limit passage；也未证明任何一般 Leray-level no-go。</li>
+            <li>未覆盖：general faces、refresh、moving cells、child-refined frame、无条件 weighted BV、继续性、全局光滑性或有限时破裂。</li>
+          </ul>
+          <p>材料尚未经过外部同行评审。本节不作新颖性、优先权或发表级别声明。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduce</div><h2>报告、双重证书、文献台账、累计回顾与附图源</h2>
+          <p><a href="/notes/r0-71l.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71l.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71l.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71l-viscous-fusion.pdf">下载附图 PDF</a> · <a href="/figures/r0-71l-viscous-fusion.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71l-viscous-fusion.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_exact_audit.py">exact producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_independent_audit.py">independent checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071l">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap">期刊附图完整包</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>逐项保留推导、反例、审计和未解决的量词。</div><div>研究笔记 R0.71L · 2026-08-26<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

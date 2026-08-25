@@ -43,26 +43,26 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71K as v0.96 with 135 notes and 75 recap nodes", async () => {
+test("keeps the R0.71K release archived after the R0.71L site update", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 135);
-  assert.match(home, /<strong>v0\.96<\/strong>网页版本/);
-  assert.match(home, /<strong>135<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71K<\/strong>最新研究节点/);
-  assert.match(home, /展开 45 篇公开笔记/);
-  assert.match(home, /累计回顾收录 75 个节点；全站现有 135 篇公开研究笔记/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 136);
+  assert.match(home, /<strong>v0\.97<\/strong>网页版本/);
+  assert.match(home, /<strong>136<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71L<\/strong>最新研究节点/);
+  assert.match(home, /展开 46 篇公开笔记/);
+  assert.match(home, /累计回顾收录 76 个节点；全站现有 136 篇公开研究笔记/);
   assert.equal((home.match(/href="\/notes\/r0-71k\.html"/g) ?? []).length, 2);
 
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
   assert.match(recap, /收录节点：75/);
   assert.match(recap, /回顾截止时公开笔记：135/);
   assert.match(recap, /回顾截止节点：R0\.71K/);
-  assert.match(literature, /R0\.69P–R0\.71K/);
-  assert.match(literature, /R0\.71L/);
+  assert.match(literature, /R0\.69P–R0\.71L/);
+  assert.match(literature, /开放接口 · R0\.71M/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -72,7 +72,12 @@ test("publishes R0.71K as v0.96 with 135 notes and 75 recap nodes", async () => 
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71K/);
+  }
+  for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=0\.96"/);
+  }
+  for (const page of [home, literature]) {
+    assert.match(page, /src="\/i18n-en\.js\?v=0\.97"/);
   }
 });
 
@@ -143,7 +148,7 @@ test("states the translated-cell theorem and the leading-collar boundary", async
   assert.match(note, /固定 cutoff 只消去 motion row，tangent row 仍在/);
   assert.match(note, /这里没有暗中使用无限 frame–cell evolution identity/);
   assert.match(note, /collar 足够大，尺度上可能支付正生成；但目前没有从 Leray energy 推出它的绝对预算/);
-  assert.match(home, /NEXT · R0\.71L/);
+  assert.match(home, /NEXT · R0\.71M/);
   assert.match(recap, /R0\.71L 检查 fixed-cell collar 与 tangent budget/);
   assert.match(literature, /Dascaliuc|Leitmeyer/);
 });
@@ -240,7 +245,7 @@ test("ships synchronized PDFs and three journal figure formats", async () => {
   assert.match(note, /href="\/recap-r0-61-r0-71k\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71k\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71k\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71k\.pdf"/);
+  assert.match(home, /href="\/recap-r0-61-r0-71l\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71k-matched-cell-gap\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

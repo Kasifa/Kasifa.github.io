@@ -1,0 +1,12 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071l_exact_audit.py --output research/certificates/r071l/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071l_independent_audit.py --spatial-order 360 --time-order 80 --output research/certificates/r071l/independent-result.json
+
+Figure commands:
+figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap/command.txt
+
+Validate figure package:
+tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071l/build_hashes.py
+(cd research/certificates/r071l && shasum -a 256 -c SHA256SUMS)

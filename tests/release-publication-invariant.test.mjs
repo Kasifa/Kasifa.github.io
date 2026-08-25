@@ -79,6 +79,16 @@ test("publishes every completed research release from R0.70A onward", async () =
       home.includes('href="/notes/' + slug + '.html"'),
       release + ": homepage link",
     );
+    const cardMarker = 'data-release="' + release + '"';
+    const markerMatches = home.match(new RegExp(cardMarker, "g")) ?? [];
+    assert.equal(markerMatches.length, 1, release + ": one progress card");
+    const cardStart = home.indexOf(cardMarker);
+    const nextCard = home.indexOf('data-release="', cardStart + cardMarker.length);
+    const card = home.slice(cardStart, nextCard < 0 ? home.length : nextCard);
+    assert.ok(
+      card.includes('href="/notes/' + slug + '.html"'),
+      release + ": progress card note link",
+    );
     assert.equal(pdf.subarray(0, 4).toString(), "%PDF", release + ": PDF header");
     assert.ok(pdf.length > 10_000, release + ": PDF is unexpectedly small");
     assert.doesNotMatch(html, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);

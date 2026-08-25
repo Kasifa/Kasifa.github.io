@@ -47,14 +47,12 @@ all-frame positive-defect release.
 - `../../../figures/r071j-full-frame/fig-r071j-full-frame-gap` — journal
   figure package.
 
-## Commit-finalization boundary
+## Commit binding
 
-The mathematical outputs may be generated before the release commits exist.
-`environment.txt` intentionally marks the clean source commit and GitHub
-Pages commit as not yet assigned.  The release owner must replace those
-fields with the actual verified hashes, rebuild this ledger, and rerun the
-checksum check after the clean source and page releases.  An unfilled field
-is not a commit certificate.
+`environment.txt` binds the clean source snapshot and the byte-exact verified
+GitHub Pages deployment to
+`6ab52563da0447ecd67dfdfb03b053f023c284a4`.  The figure manifest and both
+SHA-256 ledgers were rebuilt only after that source release was online.
 
 ## Reproduction boundary
 

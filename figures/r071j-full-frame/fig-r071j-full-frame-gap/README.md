@@ -1,9 +1,10 @@
 # fig-r071j-full-frame-gap
 
-This is a draft formal double-column figure package for R0.71J. Its current
-`manifest.json` follows schema version 1.0 and has status `draft`; the package
-will be bound to the clean source snapshot in the certification commit. It
-preserves four exact boundaries:
+This is the formal double-column figure package for R0.71J. Its current
+`manifest.json` follows schema version 1.0 and has status `formal`; it binds
+the clean source snapshot
+`6ab52563da0447ecd67dfdfb03b053f023c284a4`. It preserves four exact
+boundaries:
 
 1. positive shellwise sources satisfy an exact derivative--viscous--defect
    decomposition;

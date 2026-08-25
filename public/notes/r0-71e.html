@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71E：Lamb 向量的无散投影把拉伸和传输交换子压成一个项；标准能量无条件控制完整热体积，但底边迹仍损失两个频率幂。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71E｜热体积已由能量控制，底边迹仍损失两个导数">
+  <meta property="og:description" content="projected-Lamb 精确压缩、局部热账本、Leray 能量级体积估计、六模态初值的光滑 NSE 迹障碍，以及下一步的局部迹门槛。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71E｜热体积已由能量控制，底边迹仍损失两个导数</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.75rem,3.8vw,3.3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.90"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#compression">压缩</a><a href="#local">局部账本</a><a href="#bulk">热体积</a><a href="#leray">能量控制</a><a href="#trace">迹缺口</a><a href="#witness">精确解</a><a href="#frame">固定框架</a><a href="#pressure">压力</a><a href="#literature">文献</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71E · PROJECTED LAMB · HEAT BULK · TRACE LOSS</div>
+        <h1>热体积已由能量控制，<br>底边迹仍损失两个频率幂</h1>
+        <p class="lead">我把上一节分开的拉伸、传输–滤波交换子和压力重新放回 Navier–Stokes 的 Hodge 结构。拉伸与交换子精确合成 projected Lamb 项，压力是被 curl 消去的 Bernoulli 梯度。这个改写给出一个真正的正结果：归一化竖直热体积由 Leray 能量无条件控制。一个固定光滑 Parseval 框架和六模态初值生成的全局光滑 2D3C NSE 解又表明，恢复 \(s=0\) 的底边值仍要支付完整的 \(K^2\) 迹代价。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71E 定理、证书与独立复核完成</span><strong>热体积闭合；临界底边迹未闭合</strong><p>版本 v0.71E · 2026-08-25</p><p>两个独立有限证书一致</p><p>正式附图：闭式公式，不是 DNS</p><p>下一门槛：局部 projected-Lamb 迹</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#compression">01 · Projected-Lamb 压缩</a></li>
+        <li><a href="#local">02 · 局部热账本</a></li>
+        <li><a href="#bulk">03 · 无条件热体积估计</a></li>
+        <li><a href="#leray">04 · Leray 能量控制</a></li>
+        <li><a href="#trace">05 · 底边迹缺口</a></li>
+        <li><a href="#witness">06 · 六模态精确初值</a></li>
+        <li><a href="#frame">07 · 固定框架与 \(2K^2\)</a></li>
+        <li><a href="#pressure">08 · 压力边界</a></li>
+        <li><a href="#literature">09 · 文献边界</a></li>
+        <li><a href="#meaning">10 · 研究价值</a></li>
+        <li><a href="#next">11 · 下一条路线</a></li>
+        <li><a href="#claims">12 · 主张边界</a></li>
+        <li><a href="#reproduce">13 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>得到一半无条件闭合，并把另一半定位成迹集中</h2>
+          <p>R0.71E 的正结果不是新的无条件正则性判据。它证明上一节的正输出系数在热延拓方向积分后，归一化体积对每个零均值周期 Leray–Hopf 解都时间可积。尚未控制的是热延拓底边 \(s=0\) 的集中。</p>
+          <div class="equation result">\[
+            \int_0^T\mathcal V(t)\,dt&lt;\infty,
+            \qquad
+            A_{\rm sb,+}=\Lambda_L^2\mathcal V.
+          \]</div>
+          <p>第一个因子已经由标准能量预算控制；有效 Lamb 迹波数 \(\Lambda_L\) 仍没有上界、时间可积性或有利相关性。一个精确光滑解族在初始热迹上进一步给出 \(A_{\rm sb,+}(0)=2K^2\mathcal V(0)\)。所以不能从热体积免费恢复底边值。</p>
+        </section>
+
+        <section id="compression"><div class="section-no">01 / Projected-Lamb compression</div><h2>拉伸与传输交换子属于同一个无散非线性</h2>
+          <p>以下在归一化三维环面上工作，并取 \(u\) 的空间均值为零；一般周期解可先用其恒定平均速度做 Galilean 归一化。实偶 tight scalar frame 的乘子满足 \(\sum_j|m_j(k)|^2=1\) 对每个 \(k\ne0\) 成立，并把 \((-\Delta)^{-1/2}\) 在零 Fourier 模上置零。令</p>
+          <div class="equation">\[
+            B=p+\frac12|u|^2,
+            \qquad L=\mathbb P(u\times\omega).
+          \]</div>
+          <p>动量方程的旋转形式给出</p>
+          <div class="equation result">\[
+            u\times\omega=L+\nabla B,
+            \qquad
+            L=\partial_tu-\nu\Delta u
+            =-\mathbb P\nabla\!\cdot(u\otimes u).
+          \]</div>
+          <p>写 \(A_{j,s}=e^{s\Delta}T_j\)、\(W_{j,s}=A_{j,s}\omega\)。取 curl 后得到精确压缩：</p>
+          <div class="equation result">\[
+            (\partial_t-\nu\partial_s)W_{j,s}
+            =\nabla\times(A_{j,s}L).
+          \]</div>
+          <p>等价的物质形式是</p>
+          <div class="equation">\[
+            A_{j,s}(S\omega)+[u\cdot\nabla,A_{j,s}]\omega
+            =u\cdot\nabla W_{j,s}+\nabla\times(A_{j,s}L).
+          \]</div>
+          <p>因此全局壳注入不是三个可自由分配符号的扇区，而是</p>
+          <div class="equation result">\[
+            b_{j,s}=\langle\nabla\times W_{j,s},A_{j,s}L\rangle.
+          \]</div>
+        </section>
+
+        <section id="local"><div class="section-no">02 / Local ledger</div><h2>局部化后出现 cutoff–curl 边界，不能把它省略</h2>
+          <p>令 \(e=|W|^2/2\)、\(E_\phi(t,s)=\int\phi e\,dx\)。对 \(I=[t_0,t_1]\)、\(0&lt;s&lt;h\) 和光滑权 \(\phi\)，分部积分给出</p>
+          <div class="equation result">\[
+          \begin{aligned}
+          &\int_0^h[E_\phi(t_1,s)-E_\phi(t_0,s)]\,ds
+          +\nu\int_I[E_\phi(t,0)-E_\phi(t,h)]\,dt\\
+          &=\iiint\left[
+          \phi\,\nabla\times W\cdot AL
+          +AL\cdot(\nabla\phi\times W)
+          +e(\partial_t-\nu\partial_s)\phi
+          \right].
+          \end{aligned}
+          \]</div>
+          <p>第二项是完整的 cutoff–curl 边界。若权满足 \((\partial_t+V_j\cdot\nabla-\nu\partial_s)\phi=R_{\rm shape}\)，最后一项精确改写为 \(e(R_{\rm shape}-V_j\cdot\nabla\phi)\)，并不会消失。</p>
+          <p>局部 packing 仍有一个严格版本。令</p>
+          <div class="equation">\[
+            B_Q^L=\langle AL,\nabla\times(\phi_QW)\rangle,
+            \qquad d_Q^{\rm loc}=\|\nabla\times(\phi_QW)\|_2^2.
+          \]</div>
+          <p>则在 \(d_Q^{\rm loc}&gt;0\) 时</p>
+          <div class="equation result">\[
+            \frac{((B_Q^L)^+)^2}{d_Q^{\rm loc}}
+            \le\|1_{\operatorname{supp}\phi_Q}AL\|_2^2.
+          \]</div>
+          <p>求和只需要有界重叠，但分母必须保留边界稳定的 palinstrophy。把它直接换回 R0.71C 的原分母，还需要单独证明 Bernstein 与 collar 估计。</p>
+        </section>
+
+        <section id="bulk"><div class="section-no">03 / Unconditional heat bulk</div><h2>完整正壳注入的竖直体积落在 \(H^{-1}\) 能量层</h2>
+          <p>定义</p>
+          <div class="equation">\[
+            D_{j,s}=\|\nabla W_{j,s}\|_2^2,
+            \qquad
+            \Theta_s^2=\sum_{D_{j,s}>0}\frac{(b_{j,s}^+)^2}{D_{j,s}}.
+          \]</div>
+          <p>逐壳 Cauchy 与 tight-frame 恒等式立即给出</p>
+          <div class="equation result">\[
+            \Theta_s^2\le\|e^{s\Delta}L\|_2^2.
+          \]</div>
+          <p>沿热变量积分，并使用 \((-\Delta)^{-1/2}\mathbb P\nabla\cdot\) 的阶零估计，得到</p>
+          <div class="equation result">\[
+            \int_0^\infty\Theta_s^2\,ds
+            \le\frac12\|(-\Delta)^{-1/2}L\|_2^2
+            \le\frac12\|u\|_4^4.
+          \]</div>
+          <p>常数 \(1/2\) 来自精确谱积分 \(\int_0^\infty e^{-2s|k|^2}ds=(2|k|^2)^{-1}\)。这里没有预设 enstrophy 有界。</p>
+        </section>
+
+        <section id="leray"><div class="section-no">04 / Leray energy</div><h2>除以 enstrophy 后，标准能量预算已经足够</h2>
+          <p>令 \(Y=\|\omega\|_2^2\)，并在 \(Y&gt;0\) 时定义</p>
+          <div class="equation result">\[
+            \mathcal V(t)=\frac1{Y(t)}\int_0^\infty\Theta_s(t)^2\,ds.
+          \]</div>
+          <p>\(Y=0\) 时令 \(\mathcal V=0\)。三维插值和 Sobolev 不等式给出</p>
+          <div class="equation">\[
+            \mathcal V(t)\le\frac{C_S^3}{2}\|u(t)\|_2Y(t)^{1/2}.
+          \]</div>
+          <p>结合 Leray–Hopf 能量不等式，对每个有限 \(T\) 有</p>
+          <div class="equation result">\[
+            \int_0^T\mathcal V(t)\,dt
+            \le\frac{C_S^3}{2\sqrt{2\nu}}
+            \|u_0\|_2^2\sqrt T&lt;\infty.
+          \]</div>
+          <p>弱解陈述按几乎处处时间理解。先在有限壳与有限热高度上用点态 Cauchy，再用 Tonelli，或用有限截断和 Fatou 取极限。局部恒等式只在光滑或强解区间使用。</p>
+        </section>
+
+        <section id="trace"><div class="section-no">05 / Bottom trace</div><h2>正则性消费端仍在 \(s=0\)，而不是竖直平均</h2>
+          <p>在光滑或强解区间、且 \(Y&gt;0\) 时，R0.71C 的条件继续性系数定义为</p>
+          <div class="equation">\[
+            A_{\rm sb,+}(t)=\frac{\Theta_0(t)^2}{Y(t)}.
+          \]</div>
+          <p>\(Y=0\) 时令 \(A_{\rm sb,+}=0\)；在零均值归一化下，此时 \(u=L=\Theta_s=0\)。</p>
+          <p>在分母为正时令</p>
+          <div class="equation">\[
+            \Lambda_L^2(t)=
+            \frac{\Theta_0(t)^2}{\int_0^\infty\Theta_s(t)^2\,ds}.
+          \]</div>
+          <p>分母为零时令 \(\Lambda_L=0\)。则缺口精确分解为</p>
+          <div class="equation result">\[
+            A_{\rm sb,+}=\Lambda_L^2\mathcal V.
+          \]</div>
+          <p>\(\mathcal V\in L_t^1\) 是无条件结论；\(\Lambda_L^2\) 尚未控制。把乘积的可积性直接当成假设，只会重述原条件，不构成推进。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">06 / Exact six-mode NSE datum</div><h2>一个六模态初值生成的全局光滑 2D3C 解把两种半径的初始迹符号完全分开</h2>
+          <p>对 \(\sigma=\pm1\)、\(a&gt;0\) 和整数 \(K\ge1\)，取</p>
+          <div class="equation result">\[
+            u_{\sigma,a,K}=aK\left(0,-2\cos Kx_1,
+            2\sigma\sin K(x_1+x_2)-2\cos Kx_2\right).
+          \]</div>
+          <p>它无散、零均值且与 \(x_3\) 无关。水平速度是衰减剪切，第三分量满足由该剪切驱动的线性输运–扩散方程，所以初值生成全局光滑的周期 NSE 解。精确平均得到</p>
+          <div class="equation">\[
+            \|u\|_2^2=6a^2K^2,
+            \qquad Y=8a^2K^4,
+            \qquad D=12a^2K^6.
+          \]</div>
+          <p>按输出半径分解的 stretching、transport 和 combined work 为</p>
+          <div class="equation">\[
+          \begin{array}{c|ccc}
+          \text{输出半径}&\text{stretching}&\text{transport}&\text{combined}\\ \hline
+          K&0&2\sigma a^3K^6&-2\sigma a^3K^6\\
+          \sqrt2K&2\sigma a^3K^6&-2\sigma a^3K^6&4\sigma a^3K^6.
+          \end{array}
+          \]</div>
+          <p>总 transport 为零，总 combined work 是 \(2\sigma a^3K^6\)。两个相位拥有完全相同的二次谱，却有相反三次功。</p>
+          <figure><img src="/figures/r0-71e-projected-lamb-trace.svg" alt="R0.71E projected-Lamb 压缩、热体积上界、底边迹 K 平方增长和有限热盒不变量"><figcaption>图 R0.71E。A：六模态初始迹中，stretching 与传输交换子必须合并后才得到正确输出功。B：projected-Lamb 热体积被完整热化 Lamb 范数控制。C：底边系数按 \(K^2\) 增长，归一化无限热体积保持常数。D：高度 \(\theta/K^2\) 的有限热盒质量与 \(K\) 无关。全部曲线来自闭式公式，不是 DNS 或时间步进。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71e-projected-lamb-trace.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71e-projected-lamb-trace.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71e-projected-lamb-trace.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="frame"><div class="section-no">07 / Fixed frame and exact trace cost</div><h2>同一个固定光滑 Parseval 框架在所有 dyadic \(K\) 上实现 \(2K^2\)</h2>
+          <p>我在对数半径上先构造相邻平方和为一、并在 \([0,1/2]\) 有平顶的光滑 dyadic frame，再用固定的正弦–余弦对把每个父块分成低、高两个子块。构造在数据之前固定，不随 \(K\) 调参。对 \(K=2^j\)，它恰好分开半径 \(K\) 与 \(\sqrt2K\)。</p>
+          <p>选择 \(\sigma=-1\) 后，只有低半径子块贡献正部：</p>
+          <div class="equation">\[
+            b_{\rm lo}(s)=2a^3K^6e^{-2K^2s},
+            \quad D_{\rm lo}(s)=4a^2K^6e^{-2K^2s},
+            \quad q_{\rm lo}(s)=a^4K^6e^{-2K^2s}.
+          \]</div>
+          <p>所以</p>
+          <div class="equation result">\[
+            q_{\rm lo}(0)=2K^2\int_0^\infty q_{\rm lo}(s)\,ds,
+          \]</div>
+          <div class="equation result">\[
+            A_{\rm sb,+}(0)=\frac{a^2K^2}{8},
+            \qquad \mathcal V(0)=\frac{a^2}{16},
+            \qquad A_{\rm sb,+}(0)=2K^2\mathcal V(0).
+          \]</div>
+          <p>对有限热盒也有</p>
+          <div class="equation result">\[
+            \frac1Y\int_0^{\theta/K^2}q_{\rm lo}(s)\,ds
+            =\frac{a^2}{16}(1-e^{-2\theta}),
+          \]</div>
+          <p>它与 \(K\) 无关。这是初始热迹的临界性结果，不是对该解物理时间演化的爆破断言。</p>
+        </section>
+
+        <section id="pressure"><div class="section-no">08 / Pressure boundary</div><h2>压力不是独立涡量注入，但在应变账本中仍然非局部</h2>
+          <p>若把 \(AL\) 改写成 \(A(u\times\omega)-\nabla AB\)，局部账本里两个 Bernoulli 项精确相消。因此不能再向涡量方程添加一个独立的压力正功。</p>
+          <p>若改用过滤应变 \(\Sigma=AS\)、过滤速度 \(U=Au\) 和过滤压力 \(P=Ap\)，则压力 Hessian 留下</p>
+          <div class="equation result">\[
+            -\int\phi\,\Sigma:\nabla^2P
+            =-\int\left[(\Delta P)U\cdot\nabla\phi
+            +U_i(\partial_kP)(\partial_{ik}\phi)\right].
+          \]</div>
+          <p>过滤还产生 \(\tau=A(u\otimes u)-U\otimes U\)，并满足</p>
+          <div class="equation">\[
+            |\Sigma|^2-\frac12|\nabla\times U|^2
+            =-\Delta P-\partial_i\partial_a\tau_{ia}.
+          \]</div>
+          <p>所以应变账本必须把 pressure 与 SGS 放在同一表示中。R0.70L 的压力符号障碍仍然适用。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>投影 Lamb 结构已有先例；准确的 signed heat trace 尚未找到同构定理</h2>
+          <p>去掉 Lamb 向量的梯度部分并保留无散投影不是新想法。相关先例包括 <a href="https://ntrs.nasa.gov/citations/19880002646">Speziale 1987</a>、<a href="https://doi.org/10.1063/1.858488">Shtilman 1992</a>、<a href="https://doi.org/10.1017/jfm.2021.914">Iyer–Sreenivasan–Yeung 2022</a> 和 <a href="https://arxiv.org/abs/2203.07950">Lerner–Vigneron 2022</a>。</p>
+          <p>限定范围的一手来源审计没有找到由标准 NSE 预算推出 flow-adapted filtered Lamb bottom-trace 可求和或 vanishing 的定理。最接近的 <a href="https://arxiv.org/html/2606.27560">Yu 2026 预印本</a> 在最终求和中仍保留远场、交换子替代项和 shell/localization budgets 的额外假设。<a href="https://arxiv.org/abs/2008.05588">Yang 2020</a> 与 <a href="https://arxiv.org/abs/2009.14291">Vasseur–Yang 2020</a> 给出下一步所需的 skewed-cylinder 几何，但没有这条 signed trace 定理。</p>
+          <p>“没有找到”只描述本次检索范围，不是不存在证明，也不是原创性或优先权声明。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">10 / Research value</div><h2>这一步的价值是把一个模糊缺口变成可测的两因子问题</h2>
+          <p>此前可能怀疑热延拓体积或压力扇区漏记了有利量。R0.71E 排除了这两种模糊性：完整 heat bulk 已经被能量闭合；压力在涡量账本中属于 Hodge 梯度补项。剩余对象是有效迹波数 \(\Lambda_L\) 及其与 \(\mathcal V\) 的相关性。</p>
+          <p>这是严肃的中间结果，但离千禧年问题仍很远。它没有缩小所有潜在奇性解的集合，也没有把任何已知条件正则性定理变成无条件定理。它更像一个精确的路线筛选：下一节只需要问局部迹集中是否受 NSE 动力学限制。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next gate</div><h2>R0.71F：局部 projected-Lamb 迹，而不是再找一个体积估计</h2>
+          <p>下一步在 mollified-flow skewed cylinders 上建立局部 projected-Lamb trace criterion。账本必须同时保留 cutoff–curl 边界、移动几何项和 stabilized palinstrophy；若加入应变，还必须保持 pressure/SGS 表示一致。</p>
+          <p>接受标准是：从方程预算证明 Carleson 或壳层可求和性，并与 Serrin、\(BMO^{-1}\)、Besov、BKM 和耗散波数条件做严格逻辑比较。如果最终只是假设 \(A_{\rm sb,+}\in L_t^1\)，这条分支就停止。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim ledger</div><h2>可以说什么，不能说什么</h2>
+          <ul>
+            <li>可以说：projected-Lamb 压缩、局部热账本、\(1/2\) 热体积上界和 \(\mathcal V\in L_t^1\) 已严格证明。</li>
+            <li>可以说：固定光滑框架与全局光滑 2D3C NSE 初值精确实现 \(2K^2\) 底边迹代价。</li>
+            <li>不能说：\(A_{\rm sb,+}\in L_t^1\) 已证明，或 bottom trace 已由 heat bulk 控制。</li>
+            <li>不能说：所有自适应 tent、Carleson 机制或非线性耗竭都失败。</li>
+            <li>不能说：压力在 NSE 中不重要；它只是不构成独立的涡量注入扇区。</li>
+            <li>本节没有证明全局正则性，没有构造奇性，也没有解决千禧年问题。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduction</div><h2>完整报告、证书、程序和正式附图</h2>
+          <p><a href="/notes/r0-71e.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71e.html">阅读 R0.60 之后的累计回顾</a> · <a href="/recap-r0-61-r0-71e.pdf">下载累计回顾 PDF</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071e_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071e_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071e_independent_audit.md">独立人工审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071e_exact_audit.py">Fourier 生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071e_independent_audit.py">独立实空间检查器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071e">机器可读证书</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071e-projected-lamb-trace/fig-r071e-projected-lamb-trace">期刊附图包</a>。证书复现精确 Fourier 卷积、Hodge 分解、热谱因子、迹等式和全空间缩放；一般 Sobolev、Leray、局部 packing 与文献边界在报告中逐项证明或记录。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.71E · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

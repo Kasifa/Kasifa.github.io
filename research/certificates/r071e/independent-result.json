@@ -1,0 +1,173 @@
+{
+  "checks": {
+    "finiteHeatBoxIsScaleIndependent": true,
+    "gradientLambRemainderIsCurlFree": true,
+    "heatTraceCostsExactlyTwoFrequencyPowers": true,
+    "importsNoProjectAuditModule": true,
+    "lowAndHighOutputWorkTablesClose": true,
+    "phasePairHasEqualQuadraticNorms": true,
+    "phasePairHasOppositeCombinedWork": true,
+    "physicalCurlMatchesStatedVorticity": true,
+    "physicalProjectedLambCurlMatchesNonlinearity": true,
+    "plainMidpointQuadratureMatchesExactAverages": true,
+    "twoDThreeComponentShearReductionIsVerified": true,
+    "wholeSpaceLocalJetHasNonzeroLambCurl": true
+  },
+  "claimBoundary": "The checker confirms an exact smooth trace obstruction and the projected-Lamb identities. It does not infer singularity, bottom-trace integrability, or global regularity.",
+  "floatingPointSanity": {
+    "averages": {
+      "combined": 2.0000000000000018,
+      "energy": 5.999999999999994,
+      "enstrophy": 7.999999999999975,
+      "palinstrophy": 12.000000000000021,
+      "stretching": 1.9999999999999953,
+      "transport": 2.1992438734328187e-16
+    },
+    "grid": [
+      96,
+      96
+    ],
+    "maximumAbsoluteError": 2.4868995751603507e-14
+  },
+  "heatTrace": {
+    "bLow": "2*K**6*a**3*exp(-2*K**2*s)",
+    "bottomEqualsTwoKSquareTimesBulkResidual": "0",
+    "bottomOverPhysicalY": "K**2*a**2/8",
+    "dLow": "4*K**6*a**2*exp(-2*K**2*s)",
+    "heatBulk": "K**4*a**4/2",
+    "normalizedFiniteBox": "a**2*(exp(theta) - 1)*(exp(theta) + 1)*exp(-2*theta)/16",
+    "normalizedInfiniteBulk": "a**2/16",
+    "positivePhase": -1,
+    "positiveSquare": "K**6*a**4*exp(-2*K**2*s)"
+  },
+  "phaseMinus": {
+    "gradientRemainderCurl": [
+      "0",
+      "0",
+      "0"
+    ],
+    "norms": {
+      "enstrophy": "8",
+      "palinstrophy": "12",
+      "velocityL2Squared": "6"
+    },
+    "projectedLamb": [
+      "0",
+      "0",
+      "4*(sin(y) - cos(x + y))*cos(x)"
+    ],
+    "sign": -1,
+    "twoDThreeComponentStructure": {
+      "horizontalAdvection": [
+        "0",
+        "0"
+      ],
+      "thirdComponentEquation": "linear advection-diffusion driven by the decaying horizontal shear"
+    },
+    "velocity": [
+      "0",
+      "-2*cos(x)",
+      "-2*sin(x + y) - 2*cos(y)"
+    ],
+    "vorticity": [
+      "-2*(-sin(y) + cos(x + y))",
+      "2*cos(x + y)",
+      "2*sin(x)"
+    ],
+    "works": {
+      "combined": "-2",
+      "highRadiusStretchTransportCombined": [
+        "-2",
+        "2",
+        "-4"
+      ],
+      "lowRadiusStretchTransportCombined": [
+        "0",
+        "-2",
+        "2"
+      ],
+      "stretching": "-2",
+      "transport": "0"
+    }
+  },
+  "phasePlus": {
+    "gradientRemainderCurl": [
+      "0",
+      "0",
+      "0"
+    ],
+    "norms": {
+      "enstrophy": "8",
+      "palinstrophy": "12",
+      "velocityL2Squared": "6"
+    },
+    "projectedLamb": [
+      "0",
+      "0",
+      "4*(sin(y) + cos(x + y))*cos(x)"
+    ],
+    "sign": 1,
+    "twoDThreeComponentStructure": {
+      "horizontalAdvection": [
+        "0",
+        "0"
+      ],
+      "thirdComponentEquation": "linear advection-diffusion driven by the decaying horizontal shear"
+    },
+    "velocity": [
+      "0",
+      "-2*cos(x)",
+      "2*sin(x + y) - 2*cos(y)"
+    ],
+    "vorticity": [
+      "2*(sin(y) + cos(x + y))",
+      "-2*cos(x + y)",
+      "2*sin(x)"
+    ],
+    "works": {
+      "combined": "2",
+      "highRadiusStretchTransportCombined": [
+        "2",
+        "-2",
+        "4"
+      ],
+      "lowRadiusStretchTransportCombined": [
+        "0",
+        "2",
+        "-2"
+      ],
+      "stretching": "2",
+      "transport": "0"
+    }
+  },
+  "status": "pass",
+  "version": "R0.71E-independent",
+  "wholeSpaceScaling": {
+    "curlLocalLamb": [
+      "1",
+      "0",
+      "0"
+    ],
+    "localLamb": [
+      "0",
+      "0",
+      "y + z"
+    ],
+    "localVelocity": [
+      "x",
+      "-y - z",
+      "0"
+    ],
+    "localVorticity": [
+      "1",
+      "0",
+      "0"
+    ],
+    "scaling": {
+      "LambOverEnstrophy": "lambda**2",
+      "LambSquaredNorm": "lambda**3",
+      "energySquaredNorm": "lambda**(-1)",
+      "enstrophySquaredNorm": "lambda"
+    }
+  }
+}

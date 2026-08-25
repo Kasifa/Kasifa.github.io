@@ -16,7 +16,7 @@ test("publishes R0.69V with the exact theorem and randomized boundary separated"
   ]);
   assert.match(review, /id="r069v"/);
   assert.match(review, /href="\/notes\/r0-69v\.html"/);
-  assert.match(review, /综述 v0\.88 · 2026-08-25/);
+
   const card = review.slice(review.indexOf('id="r069v"'), review.indexOf('id="r069w"'));
   assert.match(card, /下一步 R0\.69W/);
   assert.ok(note.includes("\\sup_{0\\le a\\le1}"));

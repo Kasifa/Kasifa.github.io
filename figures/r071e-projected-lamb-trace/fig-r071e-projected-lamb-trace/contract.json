@@ -1,0 +1,29 @@
+{
+  "release": "R0.71E",
+  "figureId": "fig-r071e-projected-lamb-trace",
+  "analyticalQuestion": "What part of the signed shell coefficient is controlled by the projected-Lamb heat bulk, and what exact frequency cost remains at the bottom heat face?",
+  "parameters": {
+    "amplitude": 1.0,
+    "parentPhase": 1,
+    "lowPositivePhase": -1,
+    "parentLowMultiplier": 1.0,
+    "parentHighMultiplier": 1.0,
+    "dimensionlessHeatRangePanelA": [0.0, 1.5],
+    "dimensionlessHeatRangePanelB": [0.0, 3.0],
+    "theta": [0.25, 0.5, 1.0],
+    "wavenumbers": [1, 2, 4, 8, 16, 32, 64, 128]
+  },
+  "exactClaims": {
+    "parentStretching": "2*exp(-4*tau)",
+    "parentCommutator": "2*(exp(-4*tau)-exp(-2*tau))",
+    "parentCombined": "2*(2*exp(-4*tau)-exp(-2*tau))",
+    "combinedZero": "log(2)/2",
+    "lowPositiveSquare": "a^4*K^6*exp(-2*K^2*s)",
+    "dimensionlessHeatArea": "1/2",
+    "bottomCoefficient": "a^2*K^2/8",
+    "normalizedInfiniteBulk": "a^2/16",
+    "bottomToBulkRatio": "2*K^2",
+    "finiteBox": "a^2*(1-exp(-2*theta))/16"
+  },
+  "claimBoundary": "Exact formulas for one smooth global 2D3C Navier-Stokes family and one fixed tight radial refinement; no bottom-trace integrability, arbitrary-solution divergence, singularity, unconditional regularity, or Millennium-problem claim."
+}

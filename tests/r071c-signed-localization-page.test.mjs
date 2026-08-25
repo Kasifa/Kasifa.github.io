@@ -103,26 +103,13 @@ test("ships the synchronized R0.71C PDF and journal figure copies", async () => 
   assert.ok(png.length > 100_000);
 });
 
-test("retains the R0.71C recap while the live route advances through R0.71D", async () => {
-  const [home, literature, recap] = await Promise.all([
-    readFile(new URL("research-review.html", publicRoot), "utf8"),
-    readFile(new URL("literature-review.html", publicRoot), "utf8"),
-    readFile(new URL("recap-r0-61-r0-71c.html", publicRoot), "utf8"),
-  ]);
-
-  assert.match(home, /<strong>128<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71D<\/strong>最新研究节点/);
-  assert.match(home, /Research topology · R0\.1–R0\.71D/);
-  assert.match(home, /展开 38 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.71E/);
-  assert.match(home, /综述 v0\.89 · 2026-08-25/);
-  assert.match(literature, /R0\.69P–R0\.71D/);
-  assert.match(literature, /开放接口 · R0\.71E/);
-  assert.match(literature, /文献综述 v0\.89 · 2026-08-25/);
+test("retains the R0.71C historical recap", async () => {
+  const recap = await readFile(
+    new URL("recap-r0-61-r0-71c.html", publicRoot),
+    "utf8",
+  );
   assert.match(recap, /收录节点：67/);
   assert.match(recap, /回顾截止时公开笔记：127/);
   assert.match(recap, /href="\/recap-r0-61-r0-71c\.pdf"/);
-  assert.match(home, /src="\/i18n-en\.js\?v=0\.89"/);
-  assert.match(literature, /src="\/i18n-en\.js\?v=0\.89"/);
   assert.match(recap, /src="\/i18n-en\.js\?v=0\.88"/);
 });

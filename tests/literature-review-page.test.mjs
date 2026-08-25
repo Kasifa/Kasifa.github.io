@@ -26,7 +26,7 @@ test("publishes a source-backed literature review with four technical topologies
   assert.match(html, /升级和一个直接三场极化端点/);
   assert.match(html, /细化账本精确支付非负缺陷/);
   assert.match(html, /完整恒等式保留 transport mismatch、LP 交换子、竖直热面和压力边界/);
-  assert.match(html, /projected-Lamb 结构无条件控制归一化热体积/);
+  assert.match(html, /Projected-Lamb 热体积由 Leray 能量无条件控制/);
   assert.match(html, /笔记 01 \/ 问题边界/);
   assert.match(html, /文献 \/ 一手来源/);
   assert.doesNotMatch(html, /NOTE 0[1-7] \/|CONTENTS|OPEN BRIDGE/);

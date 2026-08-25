@@ -1,0 +1,48 @@
+{
+  "release": "R0.71H",
+  "figureId": "fig-r071h-angular-curvature",
+  "analyticalQuestion": "Does the exact projective heat identity provide the weighted-BV budget, or do angular growth, cutoff source saturation, and the two-power frequency gap remain?",
+  "surface": {
+    "renderer": "Matplotlib static research figure",
+    "widthMillimetres": 178,
+    "heightMillimetres": 108,
+    "outputs": ["PDF", "SVG", "PNG at 600 dpi"]
+  },
+  "palettePolicy": {
+    "mode": "restrained navy-rust-teal palette",
+    "nonColorDistinction": ["line style", "marker shape", "direct labels", "separate axes"]
+  },
+  "parameters": {
+    "panelA": {
+      "viscosity": 1,
+      "eigenvalues": [1, 4],
+      "initialCoefficients": [1, 1],
+      "timeRange": [0, 1.5]
+    },
+    "panelB": {
+      "viscosity": 1,
+      "kineticEnergy": 6,
+      "amplitude": "1/K",
+      "time": 0,
+      "maximumFrequency": 256
+    },
+    "panelC": {
+      "cutoff": "(1+delta*cos(Z))/2",
+      "deltaRange": [0, 1]
+    },
+    "panelD": {
+      "knownHeatWeight": "K^-2",
+      "directRequiredWeight": "1",
+      "gapRatio": "K^2"
+    }
+  },
+  "dataSufficiency": {
+    "rows": 391,
+    "randomSeed": null,
+    "pdeTimeStepping": false,
+    "dns": false,
+    "fittedData": false
+  },
+  "supportedClaim": "Pure heat has an exact projective-curvature payment identity. The fixed-energy 2D3C family has unbounded initial pointwise angular speed but finite limiting source density. The fixed cutoff quotients remain finite. The direct weighted-BV Young estimate loses two powers of frequency against the known heat-bulk weight.",
+  "claimBoundary": "Closed-form identities, exact initial-time Fourier algebra, and scaling comparison only; no DNS, fitted data, general integrated angular no-go, regularity theorem, singularity claim, originality claim, or Millennium-problem claim."
+}

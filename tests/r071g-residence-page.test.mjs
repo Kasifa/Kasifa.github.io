@@ -30,15 +30,13 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes 131 notes, 71 recap nodes, 12 phases, and two R0.71G home entries", async () => {
+test("retains the R0.71G release checkpoint after later site releases", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(new URL("notes/", publicRoot)),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 131);
-  assert.match(home, /<strong>131<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>v0\.92<\/strong>网页版本/);
+  assert.ok(noteNames.filter((name) => name.endsWith(".html")).length >= 131);
   assert.match(home, /id="r071g"/);
   assert.equal((home.match(/href="\/notes\/r0-71g\.html"/g) ?? []).length, 2);
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 12);
@@ -46,8 +44,6 @@ test("publishes 131 notes, 71 recap nodes, 12 phases, and two R0.71G home entrie
   assert.match(recap, /回顾截止时公开笔记：131/);
   assert.match(recap, /R0\.71G · 正号驻留反例与加权 BV 门槛/);
   assert.match(literature, /R0\.71G[\s\S]*Sign-only 驻留失败/);
-  assert.match(home, /NEXT · R0\.71H/);
-  assert.match(literature, /开放接口 · R0\.71H/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -57,7 +53,7 @@ test("publishes 131 notes, 71 recap nodes, 12 phases, and two R0.71G home entrie
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71G/);
-    assert.match(page, /src="\/i18n-en\.js\?v=0\.92"/);
+    assert.match(page, /src="\/i18n-en\.js\?v=/);
   }
 
   assert.match(note, /href="\/recap-r0-61-r0-71g\.html"/);
@@ -157,7 +153,6 @@ test("links and ships both synchronized R0.71G PDFs and all three journal figure
   assert.match(note, /href="\/recap-r0-61-r0-71g\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71g\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71g\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-71g\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71g-residence-gate\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

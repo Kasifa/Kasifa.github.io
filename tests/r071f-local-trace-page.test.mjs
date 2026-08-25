@@ -26,14 +26,13 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes 131 notes, 70 recap nodes, 11 phases, and two home entries", async () => {
+test("retains the R0.71F release checkpoint after later site releases", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(new URL("notes/", publicRoot)),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 131);
-  assert.match(home, /<strong>131<\/strong>公开研究笔记/);
+  assert.ok(noteNames.filter((name) => name.endsWith(".html")).length >= 131);
   assert.match(home, /id="r071f"/);
   assert.equal((home.match(/href="\/notes\/r0-71f\.html"/g) ?? []).length, 2);
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 11);
@@ -52,7 +51,7 @@ test("publishes 131 notes, 70 recap nodes, 11 phases, and two home entries", asy
     [literature, 39],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
-    assert.match(page, /R0\.71G/);
+    assert.match(page, /R0\.71F/);
   }
 });
 

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71H：单位方向的投影热曲率恒等式精确成立；软分母产生径向缺陷，固定能量 2D3C 解只排除点态角速度控制，局部源与黏性曲率必须联合估计。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71H｜投影热几何成立，角向闭合仍缺两阶频率">
+  <meta property="og:description" content="unit projective theorem、软 epsilon 缺陷、零分母穿越、2D3C 点态边界、非恒定 cutoff 的主阶抵消与 weighted-BV 两阶频率缺口。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71H｜投影热几何成立，角向闭合仍缺两阶频率</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.75rem,3.8vw,3.3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.93"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#ledger">方向账本</a><a href="#theorem">投影定理</a><a href="#heat">纯热流</a><a href="#soft">软分母</a><a href="#faces">时间面</a><a href="#quotient">商的变差</a><a href="#gap">频率缺口</a><a href="#witness">2D3C</a><a href="#cutoff">Cutoff</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71H · PROJECTIVE HEAT GEOMETRY · SOFT FACES · TWO-POWER GAP</div>
+        <h1>投影热几何成立，<br>角向闭合仍缺两阶频率</h1>
+        <p class="lead">我检查了 R0.71G 留下的角向项。单位方向在每个正分母时间分支上满足精确的投影热曲率恒等式；纯热流的 Rayleigh 商下降支付平方角速度。局部化与非线性源进入同一个正源比，但软分母会增加无符号径向缺陷。固定能量的全局光滑 2D3C 解只排除点态能量控制，不排除时间积分；非恒定 cutoff 还显示，分开估计源与黏性曲率会丢掉主阶抵消。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71H 精确恒等式与有限 Fourier 审计完成</span><strong>直接角向耗竭捷径关闭；联合抛物失配仍开放</strong><p>版本 v0.71H · 2026-08-25</p><p>单位方向定理：PASS</p><p>软分母替换：精确拒绝</p><p>点态反例：真实全局光滑 2D3C NSE</p><p>下一对象：joint amplitude-weighted parabolic mismatch</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#ledger">01 · 完整方向账本</a></li>
+        <li><a href="#theorem">02 · 单位投影定理</a></li>
+        <li><a href="#heat">03 · 纯热流支付</a></li>
+        <li><a href="#soft">04 · 软 epsilon 缺陷</a></li>
+        <li><a href="#faces">05 · 零分母时间面</a></li>
+        <li><a href="#quotient">06 · 商的变差</a></li>
+        <li><a href="#gap">07 · 两阶频率缺口</a></li>
+        <li><a href="#witness">08 · 2D3C 点态边界</a></li>
+        <li><a href="#cutoff">09 · Cutoff 抵消</a></li>
+        <li><a href="#figure">10 · 正式附图</a></li>
+        <li><a href="#literature">11 · 文献边界</a></li>
+        <li><a href="#next">12 · 下一步</a></li>
+        <li><a href="#claims">13 · 主张边界</a></li>
+        <li><a href="#reproduce">14 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>热方向有精确耗散结构，但它不是所需的 weighted-BV 定理</h2>
+          <p>本节得到一个确定的正结果：若 \(C_t=-\nu A_0C+G\)，则单位方向 \(E=C/\|C\|_2\) 的平方角速度由 Rayleigh 商下降和投影源共同支付。这个恒等式只在 \(d=\|C\|_2^2&gt;0\) 的连通分支内成立。</p>
+          <div class="equation result">\[
+            \|E_t\|_2^2+\nu^2\|P_{E^\perp}A_0E\|_2^2
+            =-\nu r_t+\frac{\|P_{E^\perp}G\|_2^2}{d}.
+          \]</div>
+          <p>它没有控制零分母时间面，也没有支付 \(F_t\)、\(Y_t/Y\) 和壳—空间块求和。直接取绝对值还比 R0.71F 已有热体积端点多要求两阶频率。因而本节没有得到无条件继续性判据。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">01 / Complete angular ledger</div><h2>全部壳间对、cutoff movement 与 collar 都保留</h2>
+          <p>固定热高度，记 \(F=e^{s\Delta}T_jL\)、\(W=e^{s\Delta}T_j\omega\)、\(C=\nabla\times(\chi W)\)。用 tight shell resolution 展开后，精确演化是</p>
+          <div class="equation result">\[
+            F_t=\nu\Delta F+\sum_{k,\ell}\mathfrak H_{k\ell},
+            \qquad C_t=\nu\Delta C+G,
+          \]</div>
+          <div class="equation">\[
+            G=\nabla\times\!\left(\chi\sum_{k,\ell}\mathfrak G_{k\ell}\right)
+            +\nabla\times((R-V_r\!\cdot\nabla\chi)W)
+            -\nu\nabla\times(\mathcal K_\chi W).
+          \]</div>
+          <p>有序和包括 low–high、high–low、同阶和 high–high-to-low。即使 \(R=(\partial_t+V_r\cdot\nabla)\chi=0\)，Eulerian 账本仍有 \(-V_r\cdot\nabla\chi\)；最后一项是黏性 collar。</p>
+          <p>在 \(d&gt;0\) 上，令 \(\beta=\langle F,E\rangle\)。单位方向导数和 signed-work 导数为</p>
+          <div class="equation result">\[
+            E_t=d^{-1/2}P_{E^\perp}C_t,
+            \qquad
+            \beta_t=\langle F_t,E\rangle+d^{-1/2}\langle P_{E^\perp}F,C_t\rangle.
+          \]</div>
+          <p>\(C_t\) 的径向部分精确消去；Lamb 加速度、角向转动和所有局部化项没有随之消失。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">02 / Unit projective theorem</div><h2>单位方向的 projective-curvature identity</h2>
+          <p>设 \(A_0\) 自伴、非负，\(C\in C^1(J;D(A_0))\)，且 \(C(t)\ne0\)。记</p>
+          <div class="equation">\[
+            r=\langle A_0E,E\rangle,\quad
+            X=P_{E^\perp}A_0E,\quad
+            H=\frac{P_{E^\perp}G}{\|C\|_2}.
+          \]</div>
+          <p>投影方程是 \(E_t=-\nu X+H\)。又因 \(E_t\perp E\)，</p>
+          <div class="equation">\[
+            r_t=-2\nu\|X\|_2^2+2\langle X,H\rangle.
+          \]</div>
+          <p>把这条式子与 \(\|-\nu X+H\|_2^2\) 展开相加，即得</p>
+          <div class="equation result">\[
+            \int_{t_0}^{t_1}\!\left(\|E_t\|_2^2+\nu^2\|X\|_2^2\right)dt
+            =\nu[r(t_0)-r(t_1)]+
+            \int_{t_0}^{t_1}\!\frac{\|P_{E^\perp}G\|_2^2}{d}\,dt.
+          \]</div>
+          <p>有限维非对角正矩阵和四个 Fourier 热特征模的独立检查把点态残差压到 \(2.22\times10^{-16}\) 以下。数值残差只是代数审计，不是 PDE 估计。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">03 / Pure heat payment</div><h2>纯热流的 Rayleigh 下降支付角速度</h2>
+          <p>当 \(G=0\) 时，\(E_t=-\nu X\)，并且</p>
+          <div class="equation result">\[
+            r_t=-2\nu\|X\|_2^2\le0,
+            \qquad
+            \int_{t_0}^{t_1}\|E_t\|_2^2dt
+            =\frac\nu2[r(t_0)-r(t_1)].
+          \]</div>
+          <p>对 Fourier 热流，\(r\) 是特征值的归一化加权平均，\(\|X\|_2^2\) 是同一权重下的谱方差。方向只在不同热衰减率之间重新配比时转动。局部化会把 cutoff 产生的部分移入 \(G\)，所以纯热符号不能直接当作局部 NSE 估计。</p>
+        </section>
+
+        <section id="soft"><div class="section-no">04 / Soft epsilon defects</div><h2>\(d\mapsto d+\varepsilon\) 不保留单位球面恒等式</h2>
+          <p>令 \(Z=C/\sqrt{d+\varepsilon}\)、\(m=\|Z\|_2^2=d/(d+\varepsilon)\)。此时 \(Z\) 不是单位向量，\(Q=I-Z\otimes Z\) 也不是正交投影。以 \(X_\varepsilon=QA_0Z\)、\(H_\varepsilon=QG/\sqrt{d+\varepsilon}\)、\(r_\varepsilon=\langle A_0Z,Z\rangle\) 记，精确式为</p>
+          <div class="equation result">\[
+            \|Z_t\|_2^2+\nu^2\|X_\varepsilon\|_2^2
+            =-\nu(r_\varepsilon)_t+\|H_\varepsilon\|_2^2
+            +\nu r_\varepsilon m_t.
+          \]</div>
+          <p>正交切向形式仍含 \(+\nu m_t r\)；若使用完整软速度，还要增加 \(m_t^2/(4m)\)。这些项没有固定符号，不能靠形式替换删去。</p>
+          <p>最小交叉模型已经显示源项不一致。取 \(A_0=0\)、\(C(t)=(t,0)\)、\(G=(1,0)\)，则</p>
+          <div class="equation result">\[
+            \|H_\varepsilon(t)\|^2=\frac{\varepsilon^2}{(t^2+\varepsilon)^3},
+            \qquad
+            \int_{\mathbb R}\|H_\varepsilon\|^2dt
+            =\frac{3\pi}{8\sqrt\varepsilon}.
+          \]</div>
+          <p>这个 \(\varepsilon^{-1/2}\) 发散只否定“孤立软源正项有统一界”。它没有否定所有联合抵消，也没有使原来的 \(q_\varepsilon\) 导数失效。</p>
+        </section>
+
+        <section id="faces"><div class="section-no">05 / Denominator and refresh faces</div><h2>软商和单位方向承担不同任务</h2>
+          <p>对 \(q=(\beta^+)^2\)、\(a=q/Y\)，在 \(d&gt;0\) 上有 \(a_\varepsilon=\sigma_\varepsilon a\)，其中 \(\sigma_\varepsilon=d/(d+\varepsilon)\)，因此</p>
+          <div class="equation result">\[
+            (a_\varepsilon)_t
+            =\sigma_\varepsilon a_t+(\sigma_\varepsilon)_ta,
+            \qquad
+            (\sigma_\varepsilon)_t=\frac{\varepsilon d_t}{(d+\varepsilon)^2}.
+          \]</div>
+          <p>第二项可在 \(d=0\) 附近集中。若一个正分母分支在孤立时刻落到零再离开，绝对变差支付左右两侧的两个值，即使有符号分布跳跃相互抵消。空间分片刷新还会产生 \(a_Q\) 的非线性跳跃，不能由 \(B_Q\) 的线性重构取消。</p>
+        </section>
+
+        <section id="quotient"><div class="section-no">06 / From direction to weighted variation</div><h2>角速度平方界还不能支付 signed quotient</h2>
+          <p>精确微分给出</p>
+          <div class="equation result">\[
+            |a_t|\le
+            2\sqrt{\frac qY}\frac{\|F_t\|_2}{\sqrt Y}
+            +\frac{\|F\|_2^2}{Y}\|E_t\|_2
+            +a\left|\frac{Y_t}{Y}\right|.
+          \]</div>
+          <p>projective theorem 只处理第二项中的角速度平方。第一项仍含完整 \(F_t\)，第三项需要 enstrophy 的绝对对数变差；两项都没有标准能量级上界。零分母和刷新时间面还要另行支付。</p>
+          <p>在长度 \(O((\nu K^2)^{-1})\) 的 episode 上，Cauchy–Schwarz 可把角弧长约化到端点 \(K^{-2}r(t_-)\) 和源比积分，但这两个量在局部化后尚无统一界，振幅权重也仍在。</p>
+        </section>
+
+        <section id="gap"><div class="section-no">07 / Two-frequency-power gap</div><h2>直接 Young 估计比热体积端点强两阶频率</h2>
+          <p>以 \(\Gamma\) 记由 \(F_t\) 和 \(P_{E^\perp}C_t\) 构成的无量纲曲率率，直接估计得到</p>
+          <div class="equation result">\[
+            K^{-2}|a_t|
+            \le \nu\delta a
+            +\frac\nu\delta\frac{\|F\|_2^2}{Y}\Gamma^2
+            +K^{-2}a\frac{|Y_t|}{Y}.
+          \]</div>
+          <p>当 \(\Gamma=O(1)\) 时，中间项没有 \(K^{-2}\) 权。R0.71F 的无条件热体积只控制求和后的 \(K^{-2}\|F\|_2^2/Y\)。两者相差精确的 \(K^2\)，也就是 two-frequency-power gap。径向消去、环带定位和 NSE 缩放都没有自动补出这两阶。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">08 / Pointwise-only 2D3C result</div><h2>固定能量真解排除点态能量界，但没有给出积分反例</h2>
+          <p>沿用 R0.71G 的全局光滑 2D3C NSE 族，固定 \(\mathcal E=\|u_0\|_2^2\)，设 \(U=\sqrt{\mathcal E/6}\)、\(a_K=U/K\)。只对报告中声明的低频球面 multiplier 与 \(\chi\equiv1\)，在真实初始时刻分母严格为正，且</p>
+          <div class="equation result">\[
+            \Omega_K(0)=\frac{\|P_{E^\perp}C_t\|_2}{\|C\|_2}
+            =\frac12UK\longrightarrow\infty.
+          \]</div>
+          <p>因此不存在只依赖 \((\mathcal E,\nu)\) 的统一瞬时角速度上界。对应的 signed scalar angular factor 也按 \(K\) 增长。</p>
+          <p>结论只到这里。在任意固定黏性时间窗 \(0\le t\le M/(\nu K^2)\) 上，实际角弧长是 \(O(K^{-1})\)，并且</p>
+          <div class="equation">\[
+            K^{-2}\operatorname{TV}_{[0,M/(\nu K^2)]}(q/Y)\longrightarrow0.
+          \]</div>
+          <p>这个 family 不是 integrated BV 反例，也没有否定一般 NSE 解可能存在的联合时间积分估计。这里没有把该结论外推到任意 fixed smooth matched frame。</p>
+        </section>
+
+        <section id="cutoff"><div class="section-no">09 / Nonconstant-cutoff cancellation</div><h2>分开估计正源比会丢失黏性—源主阶抵消</h2>
+          <p>取 \(\chi_\delta(Z)=(1+\delta\cos Z)/2\)。对六模态场的匹配有限 Fourier 计算，三个归一化常数为</p>
+          <div class="equation result">\[
+            D_\delta=\frac{3\delta^2+4}{4},\qquad
+            R_\delta=\frac{2(3\delta^2+2)}{3\delta^2+4},\qquad
+            J_\delta=\frac{12\delta^2}{(3\delta^2+4)^2}.
+          \]</div>
+          <p>对每个固定 \(\delta&gt;0\)，分母 \(D_\delta\) 为正，Rayleigh 比 \(R_\delta\) 有界，源比常数 \(J_\delta\) 也严格为正。固定能量序列满足</p>
+          <div class="equation result">\[
+            K^{-2}\int_0^{M/(\nu K^2)}
+            \frac{\|P_{E^\perp}G\|_2^2}{d}\,dt
+            \longrightarrow \nu M J_\delta,
+            \qquad
+            \int_0^{M/(\nu K^2)}\|E_t\|_2dt=O(K^{-1}).
+          \]</div>
+          <p>正源比达到有限临界常数，但实际方向趋于静止，因为它与 \(-\nu P_{E^\perp}A_0E\) 在主阶精确抵消。这是固定模板的有限 Fourier 结论，不是一般分母下界。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>四个面板区分恒等式、点态边界、cutoff 饱和与尺度缺口</h2>
+          <figure><img src="/figures/r0-71h-angular-curvature.svg" alt="R0.71H 投影热曲率、固定能量点态角速度、非恒定 cutoff 商和两阶频率缺口"><figcaption>图 R0.71H。A：两特征模纯热流中，角速度平方与谱曲率各支付 Rayleigh 下降的一半。B：固定能量 2D3C 真解在 \(t=0\) 的角速度按 \(K\) 增长；这不涉及时间积分。C：固定非恒定 cutoff 的 \(R_\delta\) 与 \(J_\delta\) 都有限。D：直接 weighted-BV 估计与已有热体积权之间相差 \(K^2\)。全部数据来自闭式公式，没有 DNS、拟合、ODE 积分或三维时间推进。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71h-angular-curvature.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71h-angular-curvature.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71h-angular-curvature.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>主源分别提供方向方程、occupation 与 crossing 接口</h2>
+          <p><a href="https://arxiv.org/abs/nlin/0512034">Gibbon–Holm–Kerr–Roulstone</a> 给出 Euler 物质涡量方向与压力 Hessian 源曲率；<a href="https://people.dm.unipi.it/beiraodaveiga/pdf/hbv-79.pdf">Beirão da Veiga–Berselli</a>、<a href="https://arxiv.org/abs/0705.2446">Vasseur</a> 和 <a href="https://arxiv.org/abs/1107.0058">Dascaliuc–Grujić</a> 处理空间方向条件；这些都不是局部 projected-Lamb 方向的时间 BV。</p>
+          <p><a href="https://arxiv.org/abs/1102.1944">Cheskidov–Shvydkoy</a> 与 <a href="https://arxiv.org/abs/1507.06611">Cheskidov–Dai</a> 给出动态波数和临界振幅加权 occupation 条件；<a href="https://arxiv.org/abs/math/0406146">Gibbon–Doering</a> 给出另一组全局导数量的事件宽度；<a href="https://arxiv.org/abs/1503.01746">Łochowski</a> 给出 BV 与积分 crossing 数的精确等价。它们没有从 Leray 预算推出本节的壳—块—软分母 weighted-BV 和。</p>
+          <p>这次限定主源检索没有找到直接重合的闭合定理。这只是有限检索记录，不是文献不存在、原创性、优先权或可发表性结论。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next gate</div><h2>R0.71I 检查 joint amplitude-weighted parabolic mismatch</h2>
+          <p>下一对象不再单独估计正源比。记</p>
+          <div class="equation result">\[
+            \mathfrak M_{j,Q,K}=\nu(\Delta+K^2)C_{j,Q}+G_{j,Q},
+            \qquad
+            E_t=\frac{P_{E^\perp}\mathfrak M_{j,Q,K}}{\sqrt d}.
+          \]</div>
+          <p>需要把这个 joint parabolic mismatch 与振幅 \(\|F\|_2^2/Y\) 同时估计，保留全部壳间对、cutoff movement、collar、\(F_t\)、\(Y_t/Y\)、软分母缺陷和刷新时间面。目标是检查主阶抵消能否恢复两阶频率；这里不预设它能够关闭。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim boundary</div><h2>本节只关闭直接分离估计，不外推到 integrated BV</h2>
+          <ul>
+            <li>已证明：单位方向在每个 \(d&gt;0\) 分支上的 projective-curvature identity。</li>
+            <li>已证明：直接软分母替换产生无符号缺陷，孤立软源在直线 crossing 上为 \(3\pi/(8\sqrt\varepsilon)\)。</li>
+            <li>已证明：固定能量全局光滑 2D3C 族排除统一的点态角速度能量界。</li>
+            <li>已证明：一个固定非恒定 cutoff 中，正源与黏性 projective curvature 有主阶抵消；直接绝对值估计留下 two-power gap。</li>
+            <li>未证明：一般 NSE 解的 integrated angular turning、weighted-BV 反例、无条件继续性、有限时奇性或 Leray-level 极限。</li>
+          </ul>
+          <p>这些结果尚未经过外部同行评审。本节不作新颖性或优先权声明，也没有解决 Clay 千禧年问题。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduce</div><h2>报告、独立审计、证书与期刊附图源</h2>
+          <p><a href="/notes/r0-71h.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71h.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71h.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71h-angular-curvature.pdf">下载附图 PDF</a> · <a href="/figures/r0-71h-angular-curvature.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71h-angular-curvature.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_gap_matrix.md">工作缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_exact_audit.py">精确代数审计程序</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071h_independent_audit.py">独立复核程序</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071h">机器可读证书与环境记录</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071h-angular/fig-r071h-angular-curvature">期刊附图包与绘图源</a>。附图包保存闭式数据、60 位十进制独立重算、命令、环境、SVG/PDF/600 dpi PNG、原图与灰度检查以及 SHA-256 清单。程序核对代数和闭式图值，不替代一般 PDE 证明。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.71H · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

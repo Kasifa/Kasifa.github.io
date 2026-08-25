@@ -1,0 +1,14 @@
+Generate data:
+/Users/kasifa/Documents/Math/navier-stokes-r070n-multiscale-frame/tmp/r068b-venv/bin/python generate_data.py --output data.csv --metadata figure-data-metadata.json
+
+Validate data:
+/Users/kasifa/Documents/Math/navier-stokes-r070n-multiscale-frame/tmp/r068b-venv/bin/python validate_data.py --data data.csv --metadata figure-data-metadata.json --output validation.json
+
+Render figure:
+MPLCONFIGDIR=/private/tmp/r071g-mpl-cache /Users/kasifa/Documents/Math/navier-stokes-r070n-multiscale-frame/tmp/r068b-venv/bin/python plot.py --data data.csv --output-stem figure
+
+Create QA previews:
+/Users/kasifa/Documents/Math/navier-stokes-r070n-multiscale-frame/tmp/r068b-venv/bin/python qa_images.py
+
+Rasterize vector PDF for inspection:
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm -png -r 180 figure.pdf /private/tmp/r071g-figure-render

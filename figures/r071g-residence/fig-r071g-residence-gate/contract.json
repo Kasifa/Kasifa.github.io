@@ -1,0 +1,40 @@
+{
+  "release": "R0.71G",
+  "figureId": "fig-r071g-residence-gate",
+  "analyticalQuestion": "Can signed projected-Lamb work stay positive for arbitrarily many viscous times, what happens at fixed positive relative levels, and does critical residence alone close an unweighted bottom trace?",
+  "surface": {
+    "renderer": "Matplotlib static research figure",
+    "widthMillimetres": 178,
+    "heightMillimetres": 108,
+    "outputs": ["PDF", "SVG", "PNG at 600 dpi"]
+  },
+  "palettePolicy": {
+    "mode": "restrained two-root palette",
+    "roots": ["navy", "rust"],
+    "nonColorDistinction": ["line style", "marker shape", "direct labels", "separate axes"]
+  },
+  "parameters": {
+    "chainRadius": 24,
+    "fixedStep": 0.00025,
+    "finalTheta": 10.5,
+    "profileStep": 0.02,
+    "muValues": [1.0, 0.5, 0.2, 0.1, 0.05],
+    "relativeQLevels": [0.5, 0.1, 0.01],
+    "independentRadii": [12, 18]
+  },
+  "evidenceClasses": {
+    "reducedChain": "fixed-step complex RK4 on the exact 2D3C sideband chain",
+    "weakCoupling": "analytic coefficient limits as mu tends to zero",
+    "functionalObstruction": "closed-form disjoint-event partial sums",
+    "asymptoticGuide": "0.5 times mu inverse is illustrative only"
+  },
+  "dataSufficiency": {
+    "rows": 5292,
+    "randomSeed": null,
+    "pdeTimeStepping": false,
+    "dns": false,
+    "fittedData": false
+  },
+  "supportedClaim": "Sign-only residence has no universal finite viscous-time constant on the exact global-smooth family; fixed positive relative levels remain critical there; critical residence alone does not imply unweighted trace summability.",
+  "claimBoundary": "Reduced-chain checks, exact weak-coupling limits, and an abstract functional construction only; no DNS, no 3D PDE time stepping, no general occupation theorem, no singularity, no regularity theorem, no originality claim, and no Millennium-problem claim."
+}

@@ -26,14 +26,14 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes 130 notes, 70 recap nodes, 11 phases, and two home entries", async () => {
+test("publishes 131 notes, 70 recap nodes, 11 phases, and two home entries", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(new URL("notes/", publicRoot)),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 130);
-  assert.match(home, /<strong>130<\/strong>公开研究笔记/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 131);
+  assert.match(home, /<strong>131<\/strong>公开研究笔记/);
   assert.match(home, /id="r071f"/);
   assert.equal((home.match(/href="\/notes\/r0-71f\.html"/g) ?? []).length, 2);
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 11);

@@ -1,0 +1,150 @@
+{
+  "checks": {
+    "advectiveFormLambEvolution": true,
+    "analyticDuhamelBoundRecorded": true,
+    "criticalScaling": true,
+    "crossFormLambEvolution": true,
+    "normalizedRadialCancellation": true,
+    "residenceAloneFunctionalNoGo": true,
+    "trueNSEInitialDerivatives": true,
+    "twoDThreeCLinearLimit": true,
+    "zeroDenominatorJump": true
+  },
+  "claimBoundary": "This certificate proves finite Fourier algebra, exact scaling, and finite-dimensional symbolic identities. The report proves the smooth-solution moving-cutoff ledger, the arbitrary-M 2D3C theorem, and the BV layer-cake lemma. No Leray-level occupation closure, regularity theorem, singularity, or novelty claim is made.",
+  "initialPhysicalTimeAudit": {
+    "normalizedAtAEqualsKEqualsOne": {
+      "B": "2",
+      "B_t": "-2*(4*nu + 1)",
+      "Y": "8",
+      "Y_t": "-4*(6*nu + 1)",
+      "d": "4",
+      "d_t": "-4*(2*nu - 1)",
+      "logDerivativeQOverY": "-(6*nu + 5)/2",
+      "q": "1",
+      "qOverY": "1/8",
+      "qOverY_t": "-(6*nu + 5)/16",
+      "q_t": "-3*(2*nu + 1)"
+    },
+    "rescaled": {
+      "B": "2*a**3*K**6",
+      "B_t": "-2*a**3*(a+4*nu)*K**8",
+      "Y": "8*a**2*K**4",
+      "Y_t": "-4*a**2*(a+6*nu)*K**6",
+      "d": "4*a**2*K**6",
+      "d_t": "4*a**2*(a-2*nu)*K**8",
+      "logDerivativeQOverY": "-(5*a+6*nu)*K**2/2",
+      "q": "a**4*K**6",
+      "q_t": "-3*a**4*(a+2*nu)*K**8"
+    }
+  },
+  "projectedLambEvolution": {
+    "advectiveForm": "L_t=nu*Delta(L)-P((L dot grad)u+(u dot grad)L)+2*nu*P*sum_m((partial_m u dot grad)partial_m u)",
+    "allOutputFrequencies": [
+      "(-3, -1, 0)",
+      "(-2, -1, 0)",
+      "(-2, 1, 0)",
+      "(-1, -1, 0)",
+      "(-1, 1, 0)",
+      "(0, -1, 0)",
+      "(0, 1, 0)",
+      "(1, -1, 0)",
+      "(1, 1, 0)",
+      "(2, -1, 0)",
+      "(2, 1, 0)",
+      "(3, 1, 0)"
+    ],
+    "crossForm": "L_t=nu*Delta(L)+P(L x omega+u x curl(L)-2*nu*sum_m partial_m(u) x partial_m(omega))",
+    "directEqualsAdvectiveForm": true,
+    "directEqualsCrossForm": true,
+    "inputVelocityModes": 6,
+    "projectedLambModes": 8,
+    "timeDerivativeModes": 12,
+    "vorticityEquation": true
+  },
+  "radialCancellation": {
+    "beta": "<F,C>/sqrt(d)",
+    "exactDerivative": "beta_t=<F_t,E>+d**(-1/2)<P_(E perpendicular)F,C_t>",
+    "positiveSquareCannotBeSeparatedFromDenominatorGrowth": true,
+    "radialComponentCancels": true,
+    "symbolicResidual": "0",
+    "zeroDenominatorExample": {
+      "COfT": "t*c with t>0",
+      "F": "f with <f,c>>0",
+      "conclusion": "the zero-denominator convention need not be continuous",
+      "qAtZeroByConvention": "0",
+      "qForPositiveT": "gamma**2"
+    }
+  },
+  "release": "R0.71G",
+  "residenceAloneNoGo": {
+    "conclusion": "critical residence plus a K**(-2)-weighted bulk does not imply an unweighted bottom-trace sum",
+    "construction": "K_n=2**n, disjoint abs(I_n)=K_n**(-2), A_n=K_n**2*1_(I_n)",
+    "eachResidence": "K_n**(-2)",
+    "unweightedEpisode": "1",
+    "unweightedInfiniteSum": "infinity",
+    "unweightedPartialSum": "count",
+    "weightedEpisode": "2**(-2*n)",
+    "weightedInfiniteSum": "1/3",
+    "weightedPartialSum": "(4**count - 1)/(3*4**count)"
+  },
+  "scaling": {
+    "decision": "critical K**(-2) residence is scale covariant and can be saturated; scaling rejects only o(K**(-2))",
+    "integrated": {
+      "B": 3,
+      "Y": 1,
+      "d": 3,
+      "q": 3,
+      "qOverY": 2
+    },
+    "pointwise": {
+      "C": 3,
+      "F": 3,
+      "W": 2
+    },
+    "time": -2,
+    "timeDerivatives": {
+      "B_t": 5,
+      "d_t": 5,
+      "q_t": 5
+    },
+    "wholeSpaceNSE": "u_lambda(t,x)=lambda*u(lambda**2*t,lambda*x)"
+  },
+  "status": "exact-ledger-and-residence-obstruction",
+  "twoDThreeC": {
+    "chain": "c_m'=-(m**2+1)c_m+i*mu*exp(-theta)*(c_(m-1)+c_(m+1))",
+    "dimensionlessVariables": {
+      "mu": "a/nu",
+      "theta": "nu*K**2*t"
+    },
+    "explicitContinuityBound": {
+      "HError": "abs(H_mu-H_0)<=(4+4*sqrt(2))*mu",
+      "chainDifferenceL2": "<=2*sqrt(2)*mu*exp(-theta)*(1-exp(-theta))",
+      "sufficientMuForPositiveThroughM": "mu<exp(-4*M)/(2*(4+4*sqrt(2)))"
+    },
+    "initialData": "c_0=-1, c_1=i, all other c_m=0",
+    "lowShell": {
+      "B": "2*a**3*K**6*H",
+      "E": "exp(-2*theta)+sum_m((m**2+1)*abs(c_m)**2)",
+      "G": "abs(c_0)**2+exp(-2*theta)",
+      "H": "Re(conj(c_0)*i*exp(-theta)*(c_-1+c_1))",
+      "Y": "2*a**2*K**4*E",
+      "d": "2*a**2*K**6*G",
+      "q": "2*a**4*K**6*(max(H,0)**2)/G",
+      "qOverY": "a**2*K**2*(max(H,0)**2)/(G*E)"
+    },
+    "muEqualsZero": {
+      "BRelative": "exp(-4*theta)",
+      "E": "2*exp(-2*theta) + 2*exp(-4*theta)",
+      "G": "2*exp(-2*theta)",
+      "H": "exp(-4*theta)",
+      "firstRelativeExit": {
+        "B": "-log(rho)/4",
+        "q": "-log(rho)/6",
+        "qOverY": "(-log(sqrt(rho)*sqrt(rho + 8) + rho) + 2*log(2))/2",
+        "qOverYZ": "(sqrt(rho)*sqrt(rho + 8) + rho)/4"
+      },
+      "qOverYRelative": "2*exp(-2*theta)/(exp(2*theta) + 1)",
+      "qRelative": "exp(-6*theta)"
+    }
+  }
+}

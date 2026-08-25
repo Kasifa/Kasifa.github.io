@@ -5,6 +5,7 @@ import test from "node:test";
 import { listSiteHtmlFiles } from "../scripts/i18n-lib.mjs";
 
 const publicDirectory = resolve(import.meta.dirname, "../public");
+const repositoryDirectory = resolve(publicDirectory, "..");
 
 function idsIn(html) {
   return new Set(
@@ -61,5 +62,44 @@ test("every reader-facing internal link, asset, and fragment resolves", async ()
         );
       }
     }
+  }
+});
+
+test("every GitHub main-branch source link resolves in the publication tree", async () => {
+  const files = await listSiteHtmlFiles(publicDirectory);
+  let checked = 0;
+
+  for (const file of files) {
+    const html = await readFile(file, "utf8");
+    for (const match of html.matchAll(/\shref=["'](https:\/\/github\.com\/Kasifa\/Kasifa\.github\.io\/(?:blob|tree)\/main\/[^"']+)["']/g)) {
+      const url = new URL(match[1]);
+      const relativePath = decodeURIComponent(
+        url.pathname.replace(/^\/Kasifa\/Kasifa\.github\.io\/(?:blob|tree)\/main\//, ""),
+      );
+      const target = join(repositoryDirectory, relativePath);
+      assert.ok(
+        target.startsWith(repositoryDirectory + "/"),
+        file + ": unsafe GitHub source path " + match[1],
+      );
+      await assert.doesNotReject(
+        access(target),
+        file + ": missing GitHub source target " + match[1],
+      );
+      checked += 1;
+    }
+  }
+
+  assert.ok(checked >= 700, `expected broad source-link coverage, checked ${checked}`);
+});
+
+test("every reader-facing HTML page follows the site voice boundary", async () => {
+  const files = await listSiteHtmlFiles(publicDirectory);
+  for (const file of files) {
+    const html = await readFile(file, "utf8");
+    assert.doesNotMatch(
+      html,
+      /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
+      file,
+    );
   }
 });

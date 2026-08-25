@@ -20,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.91"></script>
+  <script defer src="/i18n-en.js?v=0.92"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1419,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-25</strong>最近修订</span>
-            <span><strong>v0.91</strong>网页版本</span>
-            <span><strong>130</strong>公开研究笔记</span>
-            <span><strong>R0.71F</strong>最新研究节点</span>
+            <span><strong>v0.92</strong>网页版本</span>
+            <span><strong>131</strong>公开研究笔记</span>
+            <span><strong>R0.71G</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>signed Lamb 迹的时间驻留</strong>当前方向</span>
+            <span><strong>angular/source-curvature 预算</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1433,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>在完整时间—频率账本中检查高频 signed Lamb 正迹的驻留时间，保留壳间传递、移动分片和时间边界。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>检查归一化 signed Lamb 方向的角向源项，保留全部壳间作用、移动分片、collar、零分母时间面与 \(Y\) 归一化。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1442,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71F</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71G</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1451,7 +1451,7 @@
           <nav class="route-map-actions" aria-label="路线图快捷入口">
             <a href="/literature-review.html">阅读当前问题文献综述</a>
             <a href="/recap-r0-60.html">阅读 R0.60 阶段回顾</a>
-            <a href="/recap-r0-61-r0-71f.html">阅读 R0.60 之后的累计回顾</a>
+            <a href="/recap-r0-61-r0-71g.html">阅读 R0.60 之后的累计回顾</a>
             <a href="#first-task">查看完整笔记</a>
           </nav>
         </header>
@@ -1666,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71F</span>
+                <span class="route-range">R0.69P–R0.71G</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍走到局部热打包的临界边界</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–D 关闭纯投影符号律、无权尺度打包、静态有符号传播和仅靠物质热几何获得增益的设想。R0.71E 把拉伸与传输交换子压成 projected-Lamb 项，证明归一化热体积由 Leray 能量无条件控制。R0.71F 证明有界重叠 localization 保留这条热打包，同时用任意 cutoff 的精确光滑迹和内部缩放表明：几何不能免费去掉临界 \(K^2\simeq r^{-2}\) 代价。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → 时间驻留</p>
+              <h3>从有符号环带障碍走到 sign-only 驻留边界</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–D 关闭纯投影符号律、无权尺度打包、静态有符号传播和仅靠物质热几何获得增益的设想。R0.71E–F 把拉伸压成 projected-Lamb 注入，证明 Leray 能量级热体积及其有界重叠局部化。R0.71G 的精确时间账本和固定能量全局光滑 2D3C 族进一步排除统一 sign-only 驻留常数；固定正相对阈值仍保持临界 \((\nu K^2)^{-1}\) 时间，缺口转到角向变化和加权 BV。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → angular/source-curvature</p>
               <details class="tree-notes">
-                <summary>展开 40 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71F">
+                <summary>展开 41 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71G">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1715,6 +1715,7 @@
                   <a class="milestone" href="/notes/r0-71d.html">R0.71D</a>
                   <a class="milestone" href="/notes/r0-71e.html">R0.71E</a>
                   <a class="milestone" href="/notes/r0-71f.html">R0.71F</a>
+                  <a class="milestone" href="/notes/r0-71g.html">R0.71G</a>
                 </nav>
               </details>
             </article>
@@ -1723,11 +1724,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71G</span>
+                <span class="route-range">NEXT · R0.71H</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>Signed Lamb 迹的时间驻留测试</h3>
-              <p>检查频率 \(K\) 上的大正迹能否只维持黏性时间 \(K^{-2}\)。账本必须保留 \(\partial_tL\)、壳间传递、移动分片与时间边界；只有从 NSE 预算真正推出 occupation-time 或 time-frequency envelope 才算推进。</p>
+              <h3>Angular source-curvature 预算</h3>
+              <p>检查归一化方向的角向项 \(\langle P_{E^\perp}F,C_t\rangle\) 是否有非循环的耗竭估计。必须保留全部壳间对、moving-cutoff 与 collar、零分母时间面和 \(Y\) 归一化。</p>
             </article>
           </div>
         </div>
@@ -1812,7 +1813,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71F 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71G 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5670,11 +5671,11 @@
           </div>
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
-            <p class="eyebrow">累计回顾 R0.61–R0.71F · 2026-08-25</p>
-            <h3>R0.60 recap 之后的累计回顾收录 70 个节点；全站现有 130 篇公开研究笔记</h3>
-            <p>R0.60 之后的路线分成十一段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积，以及局部热打包与临界迹障碍。</p>
-            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71F 证明有界重叠 localization 保留 Leray 能量级热体积控制，同时把 geometry-only bottom-from-bulk 改善严格限制在临界 \(r^{-2}\) 边界；当前问题转向 signed Lamb 正迹能否长时间驻留。</p>
-            <p><a href="/recap-r0-61-r0-71f.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71f.pdf">下载同步 PDF</a></p>
+            <p class="eyebrow">累计回顾 R0.61–R0.71G · 2026-08-25</p>
+            <h3>R0.60 recap 之后的累计回顾收录 71 个节点；全站现有 131 篇公开研究笔记</h3>
+            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及 sign-only 驻留反例与加权 BV 门槛。</p>
+            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71G 排除统一 sign-only 驻留常数，并证明临界 residence 单独不足以恢复底边积分；固定正相对阈值与 residence-plus-BV 的条件路线仍保留，下一缺口是 angular/source-curvature 预算。</p>
+            <p><a href="/recap-r0-61-r0-71g.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71g.pdf">下载同步 PDF</a></p>
           </div>
 
           <div class="task-one" id="r070a-i" style="margin-top:2rem">
@@ -6096,7 +6097,40 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071f_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071f-local-trace/fig-r071f-local-trace">查看期刊附图包</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71G：</strong>&nbsp;建立 signed Lamb trace 的 residence-time / time-frequency 账本，保留 \(\partial_tL\)、壳间传递、移动分片和时间边界。</p>
+            <p><strong style="color:var(--gold)">R0.71G 已完成：</strong>&nbsp;固定能量全局光滑 2D3C 族排除统一 sign-only 驻留常数；固定正相对阈值仍保持临界黏性时间。</p>
+          </div>
+
+          <div class="task-one" id="r071g" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71G · 2026-08-25</p>
+            <h3>正号可以持续任意多个黏性时间；归一化高阈值仍按临界尺度退出</h3>
+            <p>
+              对 \(L=\mathbb P(u\times\omega)\)，精确物理时间演化保留全部壳间作用。令
+              \(C=\nabla\times(\chi e^{s\Delta}T_j\omega)\)、\(F=e^{s\Delta}T_jL\)、
+              \(E=C/\|C\|_2\) 与 \(\beta=\langle F,E\rangle\)。在 \(\|C\|_2&gt;0\) 时，
+              \[
+                \beta_t=\langle e^{s\Delta}T_j\partial_tL,E\rangle
+                +\|C\|_2^{-1}\langle P_{E^\perp}F,C_t\rangle.
+              \]
+              径向增长精确消去，只剩 Lamb 加速度和角向旋转；零分母处则必须使用
+              \(q_\varepsilon\) 或保留内部时间面。
+            </p>
+            <p>
+              固定初始动能的全局光滑 2D3C NSE 解族证明：对任意 \(M&lt;\infty\)，
+              可使低壳局部正功在 \(0\le t\le M/(\nu K^2)\) 保持正号。
+              这排除 sign-only 的统一常数，但不排除定量高迹；在同一见证族的弱非线性极限，
+              \(B/B(0)\to e^{-4\theta}\)、\(q/q(0)\to e^{-6\theta}\)，固定正相对阈值仍按
+              \((\nu K^2)^{-1}\) 退出。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;临界 residence 本身不能把 \(K^{-2}\)-weighted heat bulk 变成无权 bottom trace。residence 加统一 weighted-BV/crossing 可和性给出条件控制，但标准 Leray 能量尚未提供 \(\partial_tL\)、角向、moving-cutoff、collar 与 \(Y_t/Y\) 的所需预算。本节没有得到无条件继续性、奇性构造或全局正则性。</p>
+            <p>
+              <a href="/notes/r0-71g.html"><strong>阅读 R0.71G 研究笔记 →</strong></a> ·
+              <a href="/notes/r0-71g.pdf">下载同步 PDF</a><br>
+              <a href="/figures/r0-71g-residence-gate.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071g">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071g-residence/fig-r071g-residence-gate">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71H：</strong>&nbsp;检查 angular source-curvature 项能否由非循环的 NSE 预算耗竭。</p>
           </div>
         </section>
 
@@ -6111,7 +6145,7 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.91 · 2026-08-25<br>
+        综述 v0.92 · 2026-08-25<br>
         上次综述 v0.89 · 2026-08-25<br>
         <a href="#top">返回顶部 ↑</a>
       </div>

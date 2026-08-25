@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71G：精确时间账本与全局光滑 2D3C 解排除 sign-only 驻留定理；固定正相对阈值仍保持临界黏性时间，缺少的是角向与加权 BV 预算。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71G｜正号驻留不成立，归一化时间尺度仍开放">
+  <meta property="og:description" content="projected-Lamb 精确时间演化、归一化径向消去、零分母时间面、全局光滑 2D3C 正号驻留反例、临界相对超水平集、加权 BV 条件与缺失预算。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71G｜正号驻留不成立，归一化时间尺度仍开放</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.75rem,3.8vw,3.3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=0.92"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#evolution">演化</a><a href="#ledger">时间账本</a><a href="#quotient">归一化</a><a href="#witness">正号反例</a><a href="#relative">相对阈值</a><a href="#scaling">缩放</a><a href="#insufficient">驻留边界</a><a href="#bv">BV 条件</a><a href="#budget">缺失预算</a><a href="#audit">审计</a><a href="#literature">文献</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71G · SIGNED RESIDENCE · EXACT TIME LEDGER · WEIGHTED BV</div>
+        <h1>正号驻留不成立，<br>归一化时间尺度仍开放</h1>
+        <p class="lead">我把 R0.71F 的底边迹放回真实物理时间。精确账本显示，归一化商中的径向增长完全消去，只剩 projected-Lamb 加速度和角向旋转。一个固定初始动能、全局光滑的 2D3C NSE 解族证明：只要求正号时，局部功可以维持任意多个黏性时间。固定正相对阈值仍按 \((\nu K^2)^{-1}\) 退出；但临界驻留本身不足以恢复底边积分，还需要统一的加权 BV 或 crossing 预算。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71G 报告与两程序证书完成</span><strong>sign-only 分支关闭；归一化高阈值分支仍开放</strong><p>版本 v0.71G · 2026-08-25</p><p>精确 Fourier 生产器与独立 FFT / ODE 检查通过</p><p>正式附图：约化侧带链与解析包络，不是 DNS</p><p>下一门槛：角向 source-curvature 预算</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#evolution">01 · Projected-Lamb 演化</a></li>
+        <li><a href="#ledger">02 · 时间与移动分片账本</a></li>
+        <li><a href="#quotient">03 · 归一化与零分母</a></li>
+        <li><a href="#witness">04 · Sign-only 反例</a></li>
+        <li><a href="#relative">05 · 相对超水平集</a></li>
+        <li><a href="#scaling">06 · 临界缩放</a></li>
+        <li><a href="#insufficient">07 · 驻留仍不足</a></li>
+        <li><a href="#bv">08 · 条件 BV 引理</a></li>
+        <li><a href="#budget">09 · 缺失预算</a></li>
+        <li><a href="#audit">10 · 初始时间审计</a></li>
+        <li><a href="#literature">11 · 文献边界</a></li>
+        <li><a href="#next">12 · 价值与下一步</a></li>
+        <li><a href="#claims">13 · 主张清单</a></li>
+        <li><a href="#reproduce">14 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>正号持续时间没有统一常数，真正的大迹问题仍未关闭</h2>
+          <p>本节关闭 sign-only 版本：即使初始动能和黏性固定，也不存在只依赖这些量的有限常数，把正功的初始连通分支统一限制在 \(C/(\nu K^2)\) 内。反例中的正功会变得极小，因此它不否定固定正相对阈值的临界驻留，也不产生爆破。</p>
+          <div class="equation result">\[
+            \forall M&lt;\infty\quad
+            B_{\chi}(t)&gt;0\ \text{for}\ 0\le t\le\frac{M}{\nu K^2}.
+          \]</div>
+          <p>即使每个高阈值 episode 都只有 \(CK^{-2}\) 长，R0.71F 的热体积也不能单独推出无权底边积分。能够严格写出的正面接口是“临界驻留 + 统一加权 BV/crossing 可和性”；第二项目前没有从标准 Leray 能量推出。</p>
+        </section>
+
+        <section id="evolution"><div class="section-no">01 / Exact projected-Lamb evolution</div><h2>\(L=\mathbb P(u\times\omega)\) 的演化保留全部壳间作用</h2>
+          <p>在经典解区间，\(L=u_t-\nu\Delta u\) 满足</p>
+          <div class="equation result">\[
+            \partial_tL=\nu\Delta L
+            -\mathbb P\!\left((L\cdot\nabla)u+(u\cdot\nabla)L\right)
+            +2\nu\mathbb P\sum_m
+            ((\partial_m u\cdot\nabla)\partial_m u).
+          \]</div>
+          <p>等价的叉乘形式保留 \(L\times\omega\)、\(u\times\nabla\times L\) 与黏性交叉导数。用 tight dyadic resolution 展开后，\((k,\ell)\) 的 low–high、high–low、同阶和 high–high-to-low 项全部出现；只保留 \(k,\ell\simeq j\) 需要新的估计。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">02 / Physical-time moving-cutoff ledger</div><h2>时间导数、壳间源、移动 cutoff 与 collar 同时进入</h2>
+          <p>固定热高度，记 \(A=e^{s\Delta}T_j\)、\(W=A\omega\)、\(F=AL\)，并令</p>
+          <div class="equation">\[
+            C=\nabla\times(\chi W),\quad
+            B=\langle F,C\rangle,\quad d=\|C\|_2^2,
+          \]</div>
+          <div class="equation result">\[
+            Z=\chi_tW+\chi\nabla\times F+\nu\chi\Delta W,
+            \qquad C_t=\nabla\times Z.
+          \]</div>
+          <p>\(B_t\) 同时含 \(A\partial_tL\)、正的 \(\int\chi|\nabla\times F|^2\)、\(\chi_t\) 与黏性 collar；\(d_t=2\langle C,\nabla\times Z\rangle\)。把 cutoff 随 mollified flow 运输只会重写 \(\chi_t\)，不会令它在 Eulerian 与 material 两套账本中同时消失。</p>
+        </section>
+
+        <section id="quotient"><div class="section-no">03 / Normalization and denominator faces</div><h2>径向增长精确消去，零分母处可能出现跳跃</h2>
+          <p>当 \(d&gt;0\) 时，令 \(E=C/\sqrt d\)、\(\beta=B/\sqrt d=\langle F,E\rangle\)、\(q=(\beta^+)^2\)。精确微分给出</p>
+          <div class="equation result">\[
+            \beta_t
+            =\langle A\partial_tL,E\rangle
+            +d^{-1/2}\langle P_{E^\perp}F,C_t\rangle.
+          \]</div>
+          <p>\(C_t\) 沿 \(C\) 的径向部分完全抵消。剩下的是 Lamb 加速度与 \(E\) 的角向转动，都没有普适符号；因此不能把 \(B_t\) 中的正 curl-square 项直接当作 \(q_t\) 的有利生产。</p>
+          <p>若 \(C(t)=tc\)、\(F(t)=f\) 且 \(\langle f,c\rangle&gt;0\)，则 \(t&gt;0\) 时 \(q=\langle f,c\rangle^2/\|c\|^2\)，而零分母约定给出 \(q(0)=0\)。完整时间恒等式必须使用 \(q_\varepsilon=(B^+)^2/(d+\varepsilon)\)，或在 \(\{d&gt;0\}\) 的每个连通分支分别计算并保留内部时间面。</p>
+        </section>
+
+        <section id="witness"><div class="section-no">04 / Global-smooth sign-residence witness</div><h2>真实 2D3C NSE 解排除统一 sign-only 驻留常数</h2>
+          <p>对 \(a&gt;0\) 和整数 \(K\)，取零均值初值</p>
+          <div class="equation">\[
+            u_0=(0,-2aK\cos Kx_1,
+            -2aK\sin K(x_1+x_2)-2aK\cos Kx_2).
+          \]</div>
+          <p>水平速度是衰减二维剪切，竖直速度是被动标量，因此所得三维解全局光滑。令 \(\theta=\nu K^2t\)、\(\mu=a/\nu\)。竖直分量的精确无限侧带链为</p>
+          <div class="equation result">\[
+            c_m'=-(m^2+1)c_m+i\mu e^{-\theta}(c_{m-1}+c_{m+1}),
+            \quad c_0(0)=-1,\quad c_1(0)=i.
+          \]</div>
+          <p>相位类保持不变：\(c_m=i^mx_m\)、\(x_m\in\mathbb R\)，且 \(x_m'=-(m^2+1)x_m+\mu e^{-\theta}(x_{m-1}-x_{m+1})\)。这使低壳系数和局部 signed density 都为实数。对每个固定时刻，只要 \(\chi(t,\cdot)\ge0\) 且不恒为零，局部功与该低壳系数同号。</p>
+          <p>Duhamel 估计证明：任意给定 \(M\) 都可选足够小的 \(\mu\)，使低壳 signed work 在 \(0\le\theta\le M\) 严格为正。再取 \(a=K^{-1}\)，则 \(\|u_0\|_2^2=6\)、\(\mu=(\nu K)^{-1}\)；足够大的 \(K\) 实现固定能量下任意多个黏性时间的正号驻留。</p>
+        </section>
+
+        <section id="relative"><div class="section-no">05 / Positive relative superlevels</div><h2>固定正相对阈值在见证族上仍按黏性时间退出</h2>
+          <p>约化系数在 \(\mu=0\) 有解析延拓；对非零物理解取 \(\mu\downarrow0\)，得到</p>
+          <div class="equation result">\[
+            \frac{B(t)}{B(0)}\to e^{-4\theta},\qquad
+            \frac{q(t)}{q(0)}\to e^{-6\theta},\qquad
+            \frac{A(t)}{A(0)}\to
+            \frac{2e^{-4\theta}}{1+e^{-2\theta}}.
+          \]</div>
+          <p>所以每个固定 \(0&lt;\rho&lt;1\) 的首次相对退出时间收敛到 \((\nu K^2)^{-1}\) 的固定倍数。若 matched partition 满足 \(\phi_Q\ge0\)、\(\sum_Q\phi_Q=1\)、\(\sum_Q1_{\operatorname{supp}\phi_Q}\le N\)，并具有统一 cutoff 常数，则 aggregate 也有显式 \(O((\nu K^2)^{-1})\) 相对超水平包络。这个结论只说明见证族没有排除规范化高阈值定理。</p>
+          <figure><img src="/figures/r0-71g-residence-gate.svg" alt="R0.71G 侧带链的正号退出、固定相对阈值退出、临界时间尺度与条件 BV 接口"><figcaption>图 R0.71G。A：截断半径 12 与 18 的独立侧带 ODE 检查给出一致的 sign-exit 时间。B：\(\mu\) 变小时，固定正相对阈值的首次退出趋向闭式黏性时间常数。C：NSE 协变缩放保留 \(K^{-2}\) 临界持续时间，不能支持统一 \(o(K^{-2})\) 律。D：临界 residence 只有与统一加权 BV/crossing 预算结合时，才能控制无权 bottom trace。图中数据来自精确公式与约化侧带链，不是 DNS，也不是奇性模拟。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71g-residence-gate.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71g-residence-gate.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71g-residence-gate.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="scaling"><div class="section-no">06 / Scale-critical sharpness</div><h2>协变 whole-space 缩放饱和 \(K^{-2}\)</h2>
+          <p>在 \(\mathbb R^3\) 上同时缩放解、cutoff、filter、半径与热高度，\(u_\lambda(t,x)=\lambda u(\lambda^2t,\lambda x)\)。此时 \(B,d,q\sim\lambda^3\)、\(Y\sim\lambda\)、\(q/Y\sim\lambda^2\)，而物理时间缩放为 \(\lambda^{-2}\)。</p>
+          <p>因此，一个协变光滑族排除阈值、几何与参数都按 NSE 缩放、且常数保持不变的统一 \(o(K^{-2})\) 持续时间律。这个论证不排除依赖非缩放不变量的常数，也不排除临界 \(CK^{-2}\)。</p>
+        </section>
+
+        <section id="insufficient"><div class="section-no">07 / Residence-only obstruction</div><h2>每次只持续 \(K^{-2}\) 仍不能求和底边迹</h2>
+          <p>令 \(K_n=2^n\)、\(n\ge1\)，取互不相交的区间 \(|I_n|=K_n^{-2}\)，并设 \(A_n=K_n^2\mathbf1_{I_n}\)。任一时刻至多一个 shell 活跃；但是</p>
+          <div class="equation result">\[
+            \sum_nK_n^{-2}\int A_n\,dt&lt;\infty,
+            \qquad
+            \sum_n\int A_n\,dt=\infty.
+          \]</div>
+          <p>光滑 bump 也给出同样结论。R0.71F 的 \(K^{-2}\)-weighted heat bulk 与逐 episode 临界驻留之间，仍缺少跨尺度振幅、crossing 或频率包络信息。</p>
+        </section>
+
+        <section id="bv"><div class="section-no">08 / Conditional residence-plus-BV lemma</div><h2>临界驻留加统一加权 BV 可以控制底边</h2>
+          <p>设非负连续 \(a\in BV([t_-,t_+])\)。若它的每个正超水平连通分支长度都不超过统一的 \(CK^{-2}\)，则 layer cake 与一维 coarea 给出</p>
+          <div class="equation result">\[
+            \int_{t_-}^{t_+}a(t)\,dt
+            \le\frac C2K^{-2}
+            \left[\operatorname{TV}(a)+a(t_-)+a(t_+)\right].
+          \]</div>
+          <p>应用到 \(a_{j,Q,\varepsilon}=q_{j,Q,\varepsilon}/Y\) 时，必须对所有 \(j,Q,\varepsilon\) 使用同一个 \(C\)，每个正超水平连通分支都满足上述长度界，并假设 \(K_j^{-2}\)-weighted BV、端点和零分母缺陷面之和在 \(\varepsilon\downarrow0\) 时统一有限。这是一条条件定理，不是 residence 单独的推论。</p>
+        </section>
+
+        <section id="budget"><div class="section-no">09 / Missing NSE budget</div><h2>标准能量没有提供 source、角向和 BV 可和性</h2>
+          <p>归一化导数要求控制 \(A\partial_tL\)、\(P_{E^\perp}C_t\)、移动 cutoff、黏性 collar、零分母时间面与 \(Y_t/Y\)。对 \(a=q/Y\) 的 BV 路线，自然出现的目标包括</p>
+          <div class="equation result">\[
+            K_j^{-4}\frac{\|T_j\partial_tL\|_2^2}{Y},
+            \qquad
+            \frac{\|F_j\|_2^2}{Y},
+            \qquad \text{with angular denominator control}.
+          \]</div>
+          <p>R0.71F 的能量端点只在求和后控制 \(K_j^{-2}\|F_j\|_2^2/Y\)。Leray–Hopf 的 \(L_t^\infty L_x^2\cap L_t^2H_x^1\) 预算没有自动补出上述导数与角向项。缺口不是再做一次代数展开，而是找到非循环的 angular/source-curvature 预算。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">10 / Exact initial-time audit</div><h2>真实 NSE 初始导数落在临界黏性时间尺度</h2>
+          <div class="equation">\[
+            B=2a^3K^6,\quad d=4a^2K^6,\quad
+            q=a^4K^6,\quad Y=8a^2K^4,
+          \]</div>
+          <div class="equation result">\[
+            \frac{\partial_t(q/Y)}{q/Y}
+            =-\frac{5a+6\nu}{2}K^2.
+          \]</div>
+          <p>精确 Fourier 生产器与独立 FFT 重构逐项一致。独立侧带检查在两种截断半径上核对五个 \(\mu\) 值，sign-exit 差异小于 \(4\times10^{-14}\)，能量恒等式残差小于 \(2\times10^{-15}\)。这些是有限浮点检查；任意 \(M\) 的正号驻留结论来自解析 Duhamel 界，不由数值外推。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Version-locked literature boundary</div><h2>最接近的 occupation 与 bad-interval 结果仍没有给出所需单向推导</h2>
+          <ul>
+            <li><a href="https://arxiv.org/abs/1102.1944v2">Cheskidov–Shvydkoy, arXiv:1102.1944v2</a> 的无条件动态耗散波数只有 \(L_t^1\)；Chebyshev 给出的活跃尾界少一个频率幂。</li>
+            <li><a href="https://arxiv.org/abs/1507.06611v6">Cheskidov–Dai, arXiv:1507.06611v6</a> 给出最接近的指标函数加权 time-frequency 判据，但它是正则性假设，不是能量结论。</li>
+            <li><a href="https://arxiv.org/abs/math/0406146">Gibbon–Doering, arXiv:math/0406146</a> 证明全局高阶导数比的 bad-interval width；对象不是固定 LP 壳的 signed Lamb 商。</li>
+            <li><a href="https://arxiv.org/abs/1710.05569v4">Miller, arXiv:1710.05569v4</a> 给出正中间应变特征值的临界判据，但不生成所需 occupation。</li>
+            <li><a href="https://arxiv.org/abs/2203.07950v1">Lerner–Vigneron, arXiv:2203.07950v1</a> 提供 projected-Lamb 代数先例；<a href="https://arxiv.org/abs/2606.27560v1">Yu, arXiv:2606.27560v1</a> 的 filtered stretching 闭合仍依赖额外可和性。</li>
+          </ul>
+          <p>本次限定检索没有找到“标准 Leray 预算 \(\Rightarrow\) 固定高频 signed projected-Lamb 的 \(K^{-2}\) occupation”定理。这个表述只是对已核对主源的范围说明，不是文献不存在证明，也不是原创性或优先权声明。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Research value and next gate</div><h2>驻留问题被分成了一个已关闭命题和一个可检验的开放命题</h2>
+          <p>R0.71G 的价值不在于给出新的无条件正则性，而在于避免把“保持正号”误写成“大迹持续”。全局光滑见证关闭前者；相对超水平包络、尺度检验和 residence-only 反例把后者所需的额外信息定位为角向变化与加权 crossing。</p>
+          <p>R0.71H 将检验 \(\langle P_{E^\perp}F,C_t\rangle\) 是否存在不循环的耗竭估计。计算必须保留全部壳间对、moving-cutoff 与 collar、零分母时间面和 \(Y\) 归一化。若估计只等价于已知正则性范数或假设目标 weighted-BV，可检验的结论就是这条 temporal-residence 分支停止。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim ledger</div><h2>可以说什么，仍不能说什么</h2>
+          <ul>
+            <li>已证明：projected-Lamb 的精确时间演化保留所有壳间作用。</li>
+            <li>已证明：归一化 signed quotient 中 \(C_t\) 的径向部分精确消去。</li>
+            <li>已证明：零分母约定可能不连续，必须使用 \(q_\varepsilon\) 或保留内部时间面。</li>
+            <li>已证明：固定能量全局光滑 2D3C 族排除统一 sign-only 驻留常数。</li>
+            <li>已证明：见证族的固定正相对阈值与 matched aggregate 保持临界黏性时间。</li>
+            <li>已证明：临界 residence 单独不足；residence 加统一加权 BV 给出条件控制。</li>
+            <li>未证明：一般 NSE 解的归一化高迹 occupation，或标准能量推出所需 BV/crossing 预算。</li>
+            <li>未得到：无条件继续性、有限时奇性、外部同行评审、原创性结论或千禧年问题解答。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduction and sources</div><h2>报告、两程序证书、文献审计与期刊附图源</h2>
+          <p><a href="/notes/r0-71g.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71g.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71g.pdf">下载累计回顾 PDF</a> · <a href="/figures/r0-71g-residence-gate.pdf">下载附图 PDF</a> · <a href="/figures/r0-71g-residence-gate.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71g-residence-gate.svg">打开附图 SVG</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_literature_audit.md">版本锁定文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_gap_matrix.md">工作缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_exact_audit.py">精确 Fourier 生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071g_independent_audit.py">独立 FFT / ODE 检查器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071g">机器可读证书与环境记录</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071g-residence/fig-r071g-residence-gate">期刊附图包与绘图源</a>。程序核对精确初始导数、有限 Fourier 重构、侧带链的两个截断半径、相对退出曲线与能量恒等式。任意时长的 sign-only 反例、缩放边界和条件 BV 引理由报告中的解析证明承担；程序输出不替代这些证明。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>R0.71G · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

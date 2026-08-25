@@ -18,8 +18,10 @@ test("publishes a source-backed literature review with four technical topologies
   assert.match(html, /R0\.70A–I/);
   assert.match(html, /R0\.70P–Z/);
   assert.match(html, /R0\.71A/);
-  assert.match(html, /OPEN BRIDGE · R0\.71B/);
-  assert.match(html, /common-response 的有符号尺度补偿/);
+  assert.match(html, /R0\.71B/);
+  assert.match(html, /OPEN BRIDGE · R0\.71C/);
+  assert.match(html, /common-response 的两条无权尺度 packing 捷径/);
+  assert.match(html, /尚无动态时间可积性的带符号输出系数/);
   assert.match(html, /prefers-color-scheme: dark/);
   assert.match(html, /\/i18n-en\.js/);
   assert.match(html, /\/bilingual\.js/);

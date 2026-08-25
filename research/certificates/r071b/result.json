@@ -1,0 +1,252 @@
+{
+  "analyticDependencies": [
+    "the analysis frame is the fixed real-even radial smooth scalar Parseval frame used in R0.70P-R0.71A",
+    "equal radii give identical frame-response vectors and strict factor-four separation gives orthogonal response vectors",
+    "the arbitrary-N fan resonance classifications use the displayed lacunary frequency formulas; the producer exhaustively checks N=8",
+    "the frame shell-supremum bound uses strict support separation and |m_alpha(k)|<=1 from Parseval",
+    "the root tent square mass uses Parseval and normalized Haar measure on the torus",
+    "the standard local square Carleson norm is BMO-equivalent only after the usual admissible Littlewood-Paley hypotheses; that literature theorem is not proved by this finite producer",
+    "the positive-output Cauchy bound uses |S_hat(k)|_F^2=|omega_hat(k)|^2/2 for divergence-free Fourier coefficients"
+  ],
+  "checks": {
+    "positiveOutputCauchyYoungReduction": true,
+    "positiveSquareNotBmoEquivalent": true,
+    "sameCovarianceSignPairSeparated": true,
+    "sameLowFanNoL2ToL1Upgrade": true,
+    "sameLowFanOnlyIntendedResonances": true,
+    "sharedHighFanEqualResponse": true,
+    "sharedHighFanOnlyIntendedResonances": true,
+    "sharedHighFanShellSupFailure": true,
+    "twoShellChordQuadraticDecay": true,
+    "twoShellCommonOrderOne": true
+  },
+  "claimBoundary": [
+    "proves that common response can remain order one when the response chord is quadratically small",
+    "rules out automatic same-sign l2-to-l1 scale packing and a direct polarized shell-supremum times L2 times L2 common-response estimate",
+    "does not rule out the established vorticity BMO or Besov continuation criteria, because those use Carleson square mass or logarithmic higher-norm arguments rather than the rejected direct estimate",
+    "shows that an ordinary positive square tent is sign blind on the R0.71A same-covariance pair and, under standard hypotheses, is a BMO restatement",
+    "defines an exact sign-sensitive positive-output coefficient and proves its Cauchy--Young consumer inequality, but does not derive its time integrability from Leray energy or Navier--Stokes dynamics",
+    "does not prove a new continuation criterion, a singularity, global regularity, or solve the Millennium problem"
+  ],
+  "positiveOutputLedger": {
+    "cauchy": "(P_Q)_+<=||grad omega||_2*T_+",
+    "decision": "the signed coefficient distinguishes the same-Q sign pair and is not equivalent to a positive BMO square amplitude; no energy or NSE propagation bound for a_+ is proved",
+    "definition": "w_k=2*Re(conj(S_hat(k)):Q_hat(k)); T_+^2=sum_k (w_k^+)^2/(4*|k|^2*|S_hat(k)|_F^2), with zero quotient when S_hat(k)=0",
+    "identity": "P_Q=sum_(k in K_+) w_k",
+    "planeWave": {
+      "covarianceWork": "0",
+      "energy": "1/2",
+      "frequency": [
+        7,
+        0,
+        0
+      ],
+      "positiveSquare": "0"
+    },
+    "r071aNegative": {
+      "energy": "299553/2",
+      "normalizedCoefficient": "0",
+      "positiveSquare": "0",
+      "signedOutputs": [
+        {
+          "frequency": [
+            1,
+            0,
+            1
+          ],
+          "work": "-3*sqrt(2)/40"
+        }
+      ]
+    },
+    "r071aPositive": {
+      "energy": "299553/2",
+      "normalizedCoefficient": "3/39940400",
+      "positiveSquare": "9/800",
+      "signedOutputs": [
+        {
+          "frequency": [
+            1,
+            0,
+            1
+          ],
+          "work": "3*sqrt(2)/40"
+        }
+      ]
+    },
+    "young": "(P_Q)_+<=(nu/4)||grad omega||_2^2+nu^(-1)*a_+*||omega||_2^2, a_+=T_+^2/||omega||_2^2",
+    "youngResidualSquare": "(sqrt(nu*D)/2-T/sqrt(nu))^2"
+  },
+  "release": "R0.71B",
+  "sameLowFanLedger": {
+    "MValues": [
+      8,
+      64,
+      512,
+      4096,
+      32768,
+      262144,
+      2097152,
+      16777216
+    ],
+    "asymptotic": "total common work tends to 1/4 while shell-work l2 is asymptotic to 1/(4*sqrt(N))",
+    "auditN": 8,
+    "decision": "same sign and common response do not supply a shell-count-independent l2-to-l1 upgrade",
+    "energy": "3/2",
+    "expectedOrderedResonanceCount": 96,
+    "modeCount": 34,
+    "orderedResonanceCount": 96,
+    "sequence": [
+      {
+        "N": 1,
+        "ratio": 1.0,
+        "shellWorkL2Float": 0.24784743058137831,
+        "totalCommonWorkFloat": 0.24784743058137831
+      },
+      {
+        "N": 2,
+        "ratio": 1.414200798606421,
+        "shellWorkL2Float": 0.1760039579526167,
+        "totalCommonWorkFloat": 0.24890493789448145
+      },
+      {
+        "N": 4,
+        "ratio": 1.9999861991683818,
+        "shellWorkL2Float": 0.12472701961764518,
+        "totalCommonWorkFloat": 0.24945231789869438
+      },
+      {
+        "N": 8,
+        "ratio": 2.82841568691473,
+        "shellWorkL2Float": 0.08829188725200199,
+        "totalCommonWorkFloat": 0.2497261589308691
+      }
+    ],
+    "shellWorkL2": "(1/(4*N))*sqrt(sum_(j=1)^N U_(8^j)^2), evaluated exactly at N=8",
+    "shellWorkL2Float": 0.08829188725200199,
+    "totalCommonWork": "(1/(4*N))*sum_(j=1)^N U_(8^j), evaluated exactly at N=8",
+    "totalCommonWorkFloat": 0.2497261589308691,
+    "uniformPositiveLower": "45*sqrt(82)/1681"
+  },
+  "sharedHighFanLedger": {
+    "MValues": [
+      16,
+      256,
+      4096,
+      65536,
+      1048576,
+      16777216,
+      268435456,
+      4294967296
+    ],
+    "asymptotic": "the normalized common-response operator ratio grows like sqrt(N)/4 while the frame shell supremum and both high L2 norms stay fixed",
+    "auditN": 8,
+    "commonHighRadius": "499273553370870536566250255151644096329315771174134126692871969413714625320335628632321",
+    "commonHighRadiusDigits": 87,
+    "crossWork": "-(1/(8*sqrt(N)))*sum_(j=1)^N M_j/sqrt(1+M_j^2), M_j=16^j",
+    "crossWorkFloat": -0.3534669874150541,
+    "crossWorkResidual": "0",
+    "decision": "no uniform shell-supremum times L2 times L2 estimate exists for the polarized common-response form",
+    "expectedOrderedResonanceCount": 96,
+    "firstHighEnergy": "1/2",
+    "highResponseInnerProducts": "Gamma(p_j,q)=1 exactly because all high radii equal Q_N",
+    "lowEnergy": "4",
+    "lowFrameShellSupUpper": "1",
+    "lowRadiiSquared": [
+      "3879752234950591597298697656752905387217382915162176511387529532277430714524439142826613660142160523040763180934760953831356513258175596568027247785724603276486749649896452",
+      "15214250337706975304114703110998316744966467937145114415163878264114922770843658692134820187932545804987657926060600349949778352798436430077406696689369715459314504173572",
+      "59431568679257235601456743259951676402282178814083370527221236382369000390993384642187063006727233391657039275359767065935823796482523193088758563528815478875733362692",
+      "232154578936786265477766057548050448989220187116288388220199081482156322372757023510914921561633314206228317528498649505469942093333505612017935390796812170012919812",
+      "906853824182139930309479639486368982830191307779249811682180588817225282622497283613317643696902393255895035606024675961682623193509649076795079083107728331900932",
+      "3542397750714693309632304558548508496366156566239819615553688158995570276291509032291185900289686696977667593747926089047925572050921802231510155533303644162052",
+      "13837491213729319709361738122923815230052153689056295323900910864398155621533409377736435612637004253858704140068132549756175828637152749348115582991559559172",
+      "54052700053630155861895988585048894830435284472094658008625007166500077016119946135332674423788383549670909270534246851091484679930703516754289419835148292"
+    ],
+    "modeCount": 34,
+    "normalizedOperatorRatioLower": "(1/(4*sqrt(N)))*sum_(j=1)^N M_j/sqrt(1+M_j^2)",
+    "normalizedOperatorRatioLowerFloat": 0.7069339748301082,
+    "orderedResonanceCount": 96,
+    "otherResponseInnerProducts": "low-high and distinct low-low responses are zero by strict factor-four separation",
+    "rootTentSquareMass": "4",
+    "secondHighEnergy": "1/2",
+    "sequence": [
+      {
+        "N": 1,
+        "crossWorkFloat": -0.12475657231036107,
+        "normalizedOperatorRatioFloat": 0.24951314462072213,
+        "rootTentNormLower": 0.7071067811865476
+      },
+      {
+        "N": 2,
+        "crossWorkFloat": -0.17660389158470566,
+        "normalizedOperatorRatioFloat": 0.3532077831694113,
+        "rootTentNormLower": 1.0
+      },
+      {
+        "N": 4,
+        "crossWorkFloat": -0.2498778074535582,
+        "normalizedOperatorRatioFloat": 0.4997556149071164,
+        "rootTentNormLower": 1.4142135623730951
+      },
+      {
+        "N": 8,
+        "crossWorkFloat": -0.3534669874150541,
+        "normalizedOperatorRatioFloat": 0.7069339748301082,
+        "rootTentNormLower": 2.0
+      }
+    ]
+  },
+  "singleHhlLedger": {
+    "M2TimesChordLimit": "-1/2",
+    "chordAtM4": "-9*sqrt(82)/3362",
+    "chordSymbol": "-sqrt(2)*(2*M + 1)/(2*(2*M**2 + 2*M + 1)**(3/2))",
+    "commonAtM4": "180*sqrt(82)/1681",
+    "commonDerivative": "sqrt(2)*(5*M**2 + 5*M + 1)/(2*M**2 + 2*M + 1)**(5/2)",
+    "commonLimit": "1",
+    "commonSymbol": "sqrt(2)*M*(M + 1)*(2*M + 1)/(2*M**2 + 2*M + 1)**(3/2)",
+    "decision": "the common channel stays order one while the chord channel is O(M^-2)",
+    "frequencies": {
+      "n": [
+        "1",
+        "1",
+        "0"
+      ],
+      "p": [
+        "M",
+        "-M - 1",
+        "0"
+      ],
+      "q": [
+        "-M - 1",
+        "M",
+        "0"
+      ]
+    },
+    "fullSymbol": "sqrt(2)*(2*M + 1)*(2*M**2 + 2*M - 1)/(2*(2*M**2 + 2*M + 1)**(3/2))",
+    "polarizations": {
+      "a": [
+        "0",
+        "0",
+        "1"
+      ],
+      "b": [
+        "M/sqrt(2*M**2 + 2*M + 1)",
+        "(M + 1)/sqrt(2*M**2 + 2*M + 1)",
+        "0"
+      ],
+      "c": [
+        "sqrt(2)/2",
+        "-sqrt(2)/2",
+        "0"
+      ]
+    },
+    "principalSymbol": "sqrt(2)*(2*M + 1)/(2*sqrt(2*M**2 + 2*M + 1))",
+    "radiusSquare": "2*M**2 + 2*M + 1",
+    "strainLegs": [
+      "sqrt(2)*(2*M + 1)/(2*sqrt(2*M**2 + 2*M + 1))",
+      "sqrt(2)*(2*M + 1)*(2*M**2 + 2*M - 1)/(2*(2*M**2 + 2*M + 1)**(3/2))",
+      "-sqrt(2)*(2*M + 1)/(2*sqrt(2*M**2 + 2*M + 1))"
+    ],
+    "weightedCyclicResidual": "0"
+  },
+  "status": "common-response-packing-and-positive-output-gate"
+}

@@ -5,7 +5,9 @@ import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 
 const require = createRequire(import.meta.url);
-const { chromium } = require("playwright");
+const { chromium } = require(
+  "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+);
 
 const [url, outputArgument, screenshotArgument] = process.argv.slice(2);
 if (!url || !outputArgument) {

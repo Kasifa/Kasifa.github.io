@@ -129,20 +129,20 @@ test("keeps every R0.70O public figure byte-exact and links the archive", async 
   }
 });
 
-test("retains R0.70O while the route tree advances through R0.71A", async () => {
+test("retains R0.70O while the route tree advances through R0.71B", async () => {
   const home = await readFile(new URL("research-review.html", publicRoot), "utf8");
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
   const route = home.slice(start, end);
 
-  assert.match(route, /Research topology · R0\.1–R0\.71A/);
-  assert.match(route, /R0\.69P–R0\.71A/);
-  assert.match(route, /展开 35 篇公开笔记/);
+  assert.match(route, /Research topology · R0\.1–R0\.71B/);
+  assert.match(route, /R0\.69P–R0\.71B/);
+  assert.match(route, /展开 36 篇公开笔记/);
   assert.equal((route.match(/href="\/notes\/r0-70o\.html"/g) ?? []).length, 1);
   assert.doesNotMatch(route, /NEXT · R0\.70O/);
-  assert.match(route, /NEXT · R0\.71B/);
-  assert.match(route, /common-response 的有符号尺度补偿/);
-  assert.match(home, /综述 v0\.86 · 2026-08-25/);
-  assert.match(home, /上次综述 v0\.85 · 2026-08-25/);
-  assert.match(home, /src="\/i18n-en\.js\?v=0\.86"/);
+  assert.match(route, /NEXT · R0\.71C/);
+  assert.match(route, /符号先于平方的局部动态传播/);
+  assert.match(home, /综述 v0\.87 · 2026-08-25/);
+  assert.match(home, /上次综述 v0\.86 · 2026-08-25/);
+  assert.match(home, /src="\/i18n-en\.js\?v=0\.87"/);
 });

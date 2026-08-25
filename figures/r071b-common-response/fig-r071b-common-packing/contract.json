@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0",
+  "figureId": "fig-r071b-common-packing",
+  "release": "R0.71B",
+  "analyticalQuestion": "Which scale-packing shortcuts fail for the common-response channel, and what exact sign-sensitive output survives the R0.71A sign pair?",
+  "takeaway": "The common two-shell response remains order one while the chord is quadratic-order small; same-sign shell work does not upgrade from l2 to l1; a shared-high polarized operator ratio grows with square packing; and the positive-output coefficient distinguishes the exact R0.71A sign pair.",
+  "surface": {
+    "renderer": "static Matplotlib",
+    "footprint": "178 mm double-column width",
+    "outputs": [
+      "figure.pdf",
+      "figure.svg",
+      "figure.png at 600 dpi",
+      "qa-original.png",
+      "qa-grayscale.png"
+    ],
+    "finalQaSurface": "original-resolution 600 dpi PNG and equal-resolution grayscale rendering, with co-generated vector PDF and SVG"
+  },
+  "data": {
+    "path": "data.csv",
+    "grain": "exact formula evaluation by M or N plus the two exact R0.71A sign states",
+    "rowCount": 115,
+    "provenance": "closed formulas certified by research/certificates/r071b/result.json; no randomness, fitting, DNS, or PDE time stepping"
+  },
+  "parameters": {
+    "twoShellM": "powers of two from 4 through 65536",
+    "fanN": "1, 2, 4, 8, 16, 32, 64",
+    "sameLowLacunarity": "M_j=8^j",
+    "sharedHighLacunarity": "M_j=16^j"
+  },
+  "panels": [
+    {
+      "id": "A",
+      "family": "asymptotic comparison",
+      "variant": "focused-scale line and marker comparison",
+      "question": "Can the common response remain large while the response chord is small?",
+      "takeaway": "U_M tends to 1 while M^2 C_M tends to -1/2, so the unscaled chord is O(M^-2)."
+    },
+    {
+      "id": "B",
+      "family": "ordered comparison",
+      "variant": "log-log exact finite-sum comparison",
+      "question": "Does same-sign work turn shell l2 packing into shell l1 packing at fixed energy?",
+      "takeaway": "Total common work tends to 1/4 while shell-work l2 decays like 1/(4 sqrt(N))."
+    },
+    {
+      "id": "C",
+      "family": "ordered comparison",
+      "variant": "log-log exact growth comparison",
+      "question": "Can a shell supremum replace square packing in the polarized shared-high form?",
+      "takeaway": "The normalized operator ratio grows like sqrt(N)/4 together with root-tent packing, while the frame shell supremum remains at most one."
+    },
+    {
+      "id": "D",
+      "family": "signed comparison",
+      "variant": "diverging bars with exact coefficient annotations",
+      "question": "Does the positive-output coefficient distinguish the exact same-covariance R0.71A sign pair?",
+      "takeaway": "The sole signed outputs are opposite; T_+^2 is 9/800 for the positive field and zero for the negative field."
+    }
+  ],
+  "palette": {
+    "policy": "hard two-root cap",
+    "roots": {
+      "blue": "common response, total work, operator ratio, and positive field",
+      "rust": "chord, shell l2, root-tent norm, and negative field"
+    },
+    "nonColorDistinction": "solid versus dashed or dotted line styles; open circles versus filled triangles; open fill versus diagonal hatch; direct labels; and an explicit zero line"
+  },
+  "claimBoundary": "Two exact scale-packing no-go constructions and one exact positive-output Cauchy-Young consumer coefficient. The figure does not prove Navier-Stokes propagation or time integrability of that coefficient, a new continuation criterion, a singularity, global regularity, or a Millennium-problem solution."
+}

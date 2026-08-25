@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="description" content="三维不可压缩 Navier–Stokes 全局正则性问题的文献综述：经典理论、临界空间、部分正则性、爆破排除、近期进展与当前研究路线。">
   <meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#141917" media="(prefers-color-scheme: dark)">
@@ -18,7 +19,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/i18n-en.js?v=0.87"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1045,7 +1046,7 @@
 
           <div class="boundary">
             <strong>这页怎样使用证据</strong>
-            <p>已发表定理写成已知结果，2026 年预印本单独标记，本站 R0.69P–R0.71A 只写成研究笔记。我不把计算或笔记外推成正则性定理。</p>
+            <p>我只把已发表定理写成已知结果；2026 年预印本单独标记；本站 R0.69P–R0.71B 只作为经过审计的研究笔记，不把它们外推成正则性定理。</p>
           </div>
         </section>
 
@@ -1145,7 +1146,7 @@
         <section id="route">
           <span class="section-index">NOTE 07 / Current route</span>
           <h2>本站路线在文献图上的位置</h2>
-          <p class="deck">R0.69P–R0.71A 从涡量方向几何与有符号物理环带出发，经过 source–core 对偶、协方差框架和 response-distance，最终把开放缺口压缩到 common-response 的有符号临界时间补偿。它的主要价值是保存精确恒等式、条件桥和可复用的 no-go，而不是给出正则性结论。</p>
+          <p class="deck">R0.69P–R0.71B 从涡量方向几何与有符号物理环带出发，经过 source–core 对偶、协方差框架和 response-distance，最终排除了 common-response 的两条无权尺度 packing 捷径，并留下一个有精确 enstrophy 消费端、但尚无动态时间可积性的带符号输出系数。它的主要价值是保存精确恒等式、条件桥和可复用的 no-go，而不是给出正则性结论。</p>
           <figure class="topology" aria-labelledby="topology-4-title">
             <figcaption><strong id="topology-4-title">技术拓扑图 4 · 本站路线与文献接口</strong><span>绿色为保留对象，橙色为严格关闭的静态支路</span></figcaption>
             <div class="route-chain">
@@ -1162,7 +1163,8 @@
               <div class="route-step closed"><header><b>R0.70J–O</b><strong>偏差张量与有限观测边界</strong></header><p>无迹性、helicity 和归一化各向异性不产生普适符号；有限高频盲观测也不能统一重建未过滤临界横向涡量。<a href="/notes/r0-70o.html">阶段终点</a></p></div>
               <div class="route-step kept"><header><b>R0.70P–Z</b><strong>完整框架与 response-distance 通道</strong></header><p>条件投影桥和 response-difference 临界增益被保留；物理协方差面积、正主特征值和强谱隙仍不能决定有符号功。<a href="/notes/r0-70z.html">阶段终点</a></p></div>
               <div class="route-step closed"><header><b>R0.71A</b><strong>恒定投影仍允许相反主功</strong></header><p>相同点态协方差、强主谱隙和零标量框架交换子仍对应相反符号；现有能量账本只给出临界投影正则性的时间 \(L^1\)。<a href="/notes/r0-71a.html">研究笔记</a></p></div>
-              <div class="route-step pause"><header><b>OPEN BRIDGE · R0.71B</b><strong>common-response 的有符号尺度补偿</strong></header><p>需要一个沿真实 Navier–Stokes 解传播、全空间结算并能进入 \(\varepsilon\)-正则性或临界延拓的 tent / Carleson 型候选量。<a href="/recap-r0-61-r0-71a.html">累计回顾</a></p></div>
+              <div class="route-step closed"><header><b>R0.71B</b><strong>普通正平方 tent 与无权尺度 packing 都不能保留所需符号</strong></header><p>两壳和多壳精确族排除了 common-response 自动衰减、无权 \(\ell^2\to\ell^1\) 升级和一个直接三场极化端点；带符号正输出系数已有精确消费不等式，但没有动态时间可积性。<a href="/notes/r0-71b.html">研究笔记</a></p></div>
+              <div class="route-step pause"><header><b>OPEN BRIDGE · R0.71C</b><strong>符号先于平方的局部动态传播</strong></header><p>需要从真实 Navier–Stokes 演化推出一个非循环的时间可积估计；若局部化只恢复正平方 Carleson/BMO 质量，这条支路停止。<a href="/recap-r0-61-r0-71a.html">上一阶段累计回顾</a></p></div>
             </div>
           </figure>
           <h3>下一步只检查什么</h3>
@@ -1223,7 +1225,7 @@
   <footer>
     <div class="footer-inner">
       <div><strong>三维 Navier–Stokes 全局正则性问题</strong>文献、研究笔记与开放缺口分开记录。</div>
-      <div>文献综述 v0.86 · 2026-08-25<br><a href="/">返回研究主页</a></div>
+      <div>文献综述 v0.87 · 2026-08-25<br><a href="/">返回研究主页</a></div>
     </div>
   </footer>
   <script>

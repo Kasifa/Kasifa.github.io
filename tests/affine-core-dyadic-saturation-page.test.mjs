@@ -16,7 +16,7 @@ test("publishes R0.69U with exact core saturation and the full-space boundary", 
   ]);
   assert.match(home, /id="r069u"/);
   assert.match(home, /href="\/notes\/r0-69u\.html"/);
-  assert.match(home, /综述 v0\.86 · 2026-08-25/);
+  assert.match(home, /综述 v0\.87 · 2026-08-25/);
   const card = home.slice(home.indexOf('id="r069u"'), home.indexOf('id="r069v"'));
   assert.match(card, /下一步 R0\.69V/);
   assert.ok(note.includes("\\Gamma_{\\rm core}(R)"));

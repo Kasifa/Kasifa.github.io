@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="description" content="我记录对三维不可压缩 Navier–Stokes 全局正则性问题的梳理、计算和未解决步骤。">
   <meta name="theme-color" content="#f2eddf" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#171816" media="(prefers-color-scheme: dark)">
@@ -19,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=0.86"></script>
+  <script defer src="/i18n-en.js?v=0.87"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1418,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-25</strong>最近修订</span>
-            <span><strong>v0.86</strong>网页版本</span>
-            <span><strong>125</strong>公开研究笔记</span>
-            <span><strong>R0.71A</strong>最新研究节点</span>
+            <span><strong>v0.87</strong>网页版本</span>
+            <span><strong>126</strong>公开研究笔记</span>
+            <span><strong>R0.71B</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>有符号 common-response 补偿</strong>当前方向</span>
+            <span><strong>符号先于平方的动态补偿</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1432,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>定义能看见 common-response 幅值的有符号尺度局部量，并检查它是否只是经典 BMO 条件的重写。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>检查带符号正输出系数能否沿真实 Navier–Stokes 演化获得时间可积控制，并排除循环使用既有 BMO/Besov 条件。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1441,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71A</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71B</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1665,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71A</span>
+                <span class="route-range">R0.69P–R0.71B</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍转向协方差功的精确边界</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。最新有限构造证明：强谱隙、恒定主投影和零标量交换子仍不能决定协方差功符号；临界投影正则性经现有能量恒等式只给出时间 \(L^1\)。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → common-response 阶一通道 → 恒定投影符号 no-go → 临界能量方法边界</p>
+              <h3>从有符号环带障碍转向 common-response 的精确边界</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A 证明恒定主投影仍不能决定协方差功符号；R0.71B 又用两个任意壳数族排除无权 \(\ell^2\to\ell^1\) packing 和一个直接三场极化端点，并留下能进入 enstrophy 不等式的带符号正输出系数。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → common-response 阶一通道 → 恒定投影符号 no-go → common-response packing no-go → 带符号正输出系数</p>
               <details class="tree-notes">
-                <summary>展开 35 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71A">
+                <summary>展开 36 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71B">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1709,6 +1710,7 @@
                   <a class="milestone" href="/notes/r0-70y.html">R0.70Y</a>
                   <a class="milestone" href="/notes/r0-70z.html">R0.70Z</a>
                   <a class="milestone" href="/notes/r0-71a.html">R0.71A</a>
+                  <a class="milestone" href="/notes/r0-71b.html">R0.71B</a>
                 </nav>
               </details>
             </article>
@@ -1717,11 +1719,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71B</span>
+                <span class="route-range">NEXT · R0.71C</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>common-response 的有符号尺度补偿</h3>
-              <p>先定义具有正确缩放并能看见共同响应幅值的 tent / Carleson 候选量，再用严格分离的精确 HHL atoms 检查它是否弱于经典 BMO 条件。</p>
+              <h3>符号先于平方的局部动态传播</h3>
+              <p>把 R0.71B 的全局 Fourier 正输出系数局部化，先证明或否定一个不依赖既有 BMO/Besov 假设的时间可积性估计；若局部化只恢复普通正平方 Carleson 质量，这条支路停止。</p>
             </article>
           </div>
         </div>
@@ -1806,7 +1808,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71A 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71B 路线放在同一张图中。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5665,7 +5667,7 @@
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
             <p class="eyebrow">累计回顾 R0.61–R0.71A · 2026-08-25</p>
-            <h3>R0.60 recap 之后共有 65 个节点，全站现有 125 篇公开研究笔记</h3>
+            <h3>R0.60 recap 之后的累计回顾收录 65 个节点；全站现有 126 篇公开研究笔记</h3>
             <p>R0.60 之后的路线可以分成八段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差，以及恒定投影的临界方法边界。</p>
             <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。保留下来的是一组精确恒等式、条件桥、临界端点估计和量词完整的 no-go；它们把当前问题收缩到有符号 common-response 补偿。</p>
             <p><a href="/recap-r0-61-r0-71a.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71a.pdf">下载同步 PDF</a></p>
@@ -5917,7 +5919,44 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071a_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071a_literature_audit.md">查看文献边界审计</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71B：</strong>&nbsp;定义能够看见 common-response 幅值的有符号 tent / Carleson 候选量，并先用严格分离的有限 HHL atoms 检查它是否只是经典 BMO 条件的等价重写。</p>
+            <p><strong style="color:var(--gold)">R0.71B 已完成：</strong>&nbsp;普通正平方 tent 是 BMO 侧的 sign-blind 量；两个多壳族又排除了自动尺度 packing。保留下来的候选必须在平方前保留 strain-output 的符号。</p>
+          </div>
+
+          <div class="task-one" id="r071b" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71B · 2026-08-25</p>
+            <h3>共同响应不随壳距衰减；保留正输出后得到精确的 enstrophy 消费端</h3>
+            <p>
+              两壳 HHL 族的 common-response 符号满足
+              \[
+                \mathcal U_M\longrightarrow1,
+                \qquad M^2\mathcal C_M\longrightarrow-\frac12,
+              \]
+              因而 response chord 的二次衰减不能传给共同通道。把同一个低模连接到 \(N\) 个严格分离高壳后，总共同功趋于 \(1/4\)，逐壳功的 \(\ell^2\) 范数却只有 \(O(N^{-1/2})\)。另一个等半径共享高模族则使三场极化算子比按 \(\sqrt N\) 增长。
+            </p>
+            <p>
+              我随后按真实 Fourier 输出定义
+              \[
+                w_k=2\operatorname{Re}(\overline{\widehat S(k)}:\widehat Q(k)),
+                \qquad
+                a_+=\frac1{\|\omega\|_2^2}
+                \sum_k\frac{(w_k^+)^2}{4|k|^2|\widehat S(k)|_F^2}.
+              \]
+              它区分 R0.71A 的同协方差反号对，并给出精确估计
+              \[
+                (\mathfrak P_Q)_+
+                \le\frac\nu4\|\nabla\omega\|_2^2
+                +\nu^{-1}a_+\|\omega\|_2^2.
+              \]
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;这两个 fan 是静态周期场。共享高频族只否定明确写出的三场极化估计，不否定已有 BMO/Besov 延拓定理。当前也没有从 Leray 能量或 Navier–Stokes 动力学推出 \(a_+\in L_t^1\)，所以本节不是新的继续性判据或正则性结果。</p>
+            <p>
+              <a href="/notes/r0-71b.html"><strong>阅读 R0.71B 研究笔记 →</strong></a> ·
+              <a href="/notes/r0-71b.pdf">下载同步 PDF</a><br>
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071b">查看精确证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071b-common-response/fig-r071b-common-packing">查看期刊附图包</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71C：</strong>&nbsp;检验符号先于平方的局部 tent 量是否沿真实方程获得非循环的时间可积控制；若它退化为普通正平方 Carleson/BMO 质量，就按停止规则关闭。</p>
           </div>
         </section>
 
@@ -5932,8 +5971,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v0.86 · 2026-08-25<br>
-        上次综述 v0.85 · 2026-08-25<br>
+        综述 v0.87 · 2026-08-25<br>
+        上次综述 v0.86 · 2026-08-25<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

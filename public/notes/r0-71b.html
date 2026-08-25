@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.71B：两个精确多尺度族排除 common-response 的自动壳层补偿，并构造保留应变输出符号的正输出系数及其 Cauchy–Young 耗散消费式。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71B｜common-response 不会自动产生尺度补偿">
+  <meta property="og:description" content="同低频扇形排除自动的 ℓ2 到 ℓ1 升级，共享高频扇形排除一个三场极化壳层上确界估计；正输出系数通过静态符号测试，但动态传播仍未知。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71B｜common-response 不会自动产生尺度补偿</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.85">
+  <style>.hero h1{font-size:clamp(1.8rem,4vw,3.45rem)}</style>
+  <script defer src="/i18n-en.js?v=0.87"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#atom">单原子</a><a href="#same-low">同低频族</a><a href="#shared-high">共享高频族</a><a href="#tent">tent 边界</a><a href="#coefficient">正输出</a><a href="#consumer">消费式</a><a href="#literature">文献</a><a href="#meaning">价值</a><a href="#next">下一步</a><a href="#claims">主张</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71B · COMMON RESPONSE · SIGNED OUTPUT GATE</div>
+        <h1>common-response 保持阶一，<br>但不会自己变成尺度补偿</h1>
+        <p class="lead">我构造了两个可以任意增加壳层数的精确 Fourier 扇形。第一个保留固定能量与正的总 common work，却让壳层 ℓ2 量趋于零；第二个在三个输入范数固定时让三场极化 common form 按 √N 增长。随后我定义了保留应变输出相位的正输出系数，并得到精确的 Cauchy–Young 耗散消费式。缺口也很清楚：目前没有从 Navier–Stokes 动力学推出该系数的时间可积性。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71B 精确族与独立数学复核完成</span><strong>三个静态捷径关闭；一个有符号消费变量保留</strong><p>版本 v0.71B · 2026-08-25</p><p>精确生产器：10 组全部通过</p><p>独立复核：两组 \(N=8\) Fourier 重建一致</p><p>下一门槛：signed-before-square 的局部传播</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节结论</a></li>
+        <li><a href="#atom">01 · 单个 HHL 原子</a></li>
+        <li><a href="#same-low">02 · 同低频扇形</a></li>
+        <li><a href="#shared-high">03 · 共享高频扇形</a></li>
+        <li><a href="#tent">04 · tent / BMO 边界</a></li>
+        <li><a href="#coefficient">05 · 正输出系数</a></li>
+        <li><a href="#consumer">06 · 涡量消费式</a></li>
+        <li><a href="#literature">07 · 文献边界</a></li>
+        <li><a href="#meaning">08 · 研究价值</a></li>
+        <li><a href="#next">09 · 下一条路线</a></li>
+        <li><a href="#claims">10 · 主张边界</a></li>
+        <li><a href="#reproduce">11 · 复现与来源</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Exact decision</div><h2>response chord 的衰减不能转移给 common channel</h2>
+          <p>R0.70Y–R0.70Z 已经把框架协方差功分成 common 与 chord 两条响应通道。R0.71B 的结论是：chord 在高–高–低区确有二次小量，但 common channel 仍可跨任意大的壳层间隔保持阶一。单个三波已经显示这个差异；两个多壳层族进一步排除“同号自然可求和”和“壳层上确界直接控制三场形式”这两个静态推理。</p>
+          <div class="equation result">\[
+            \mathcal U_M\nearrow1,
+            \qquad
+            M^2\mathcal C_M\longrightarrow-\frac12.
+          \]</div>
+          <p>本节同时留下一个更精确的候选量 \(a_+\)：它只记录协方差功在每个输出频率上的正贡献，并且能被黏性耗散消费。不过，静态定义与动力学闭合是两件事；这里没有得到 \(a_+\in L_t^1\)。</p>
+        </section>
+
+        <section id="atom"><div class="section-no">01 / One exact HHL atom</div><h2>共同响应趋于一，响应弦只剩 \(M^{-2}\)</h2>
+          <p>在归一化环面上取</p>
+          <div class="equation">\[
+            n=(1,1,0),\quad
+            p_M=(M,-M-1,0),\quad
+            q_M=(-M-1,M,0),
+          \]</div>
+          <div class="equation">\[
+            c=\frac{(1,-1,0)}{\sqrt2},\quad
+            a=e_3,\quad
+            b_M=\frac{(M,M+1,0)}{\sqrt{2M^2+2M+1}}.
+          \]</div>
+          <p>三频率精确共振，三个极化均无散；两个高频半径相等，并与低频严格响应分离。直接收缩得到</p>
+          <div class="equation result">\[
+            \mathcal U_M=
+            \frac{\sqrt2M(M+1)(2M+1)}{(2M^2+2M+1)^{3/2}},
+          \]</div>
+          <div class="equation result">\[
+            \mathcal C_M=
+            -\frac{\sqrt2(2M+1)}{2(2M^2+2M+1)^{3/2}}.
+          \]</div>
+          <p>而且 \(\mathcal U'_M&gt;0\)，\(M\ge4\) 时 \(\mathcal U_M&gt;0.969\)。因此不存在随壳层间距趋零的统一 common-response 包络；R0.70Y 的 chord 增益仍然成立，但不能覆盖 common 部分。</p>
+        </section>
+
+        <section id="same-low"><div class="section-no">02 / Same-low fan</div><h2>同号不等于壳层打包定理</h2>
+          <p>令 \(M_j=8^j\)，把同一个低频与 \(N\) 对严格分离的高频配对，并把每个高频振幅归一化为 \(N^{-1/2}\)。所得场只有预设的 \(12N\) 个有序共振，且总 \(L^2\) 质量始终为</p>
+          <div class="equation">\[
+            \|\omega_N\|_2^2=\frac32.
+          \]</div>
+          <p>第 \(j\) 个壳层的 common work 为 \(w_j=\mathcal U_{8^j}/(4N)&gt;0\)。因此</p>
+          <div class="equation result">\[
+            \sum_{j=1}^Nw_j\longrightarrow\frac14,
+            \qquad
+            \Big(\sum_{j=1}^N|w_j|^2\Big)^{1/2}
+            \sim\frac1{4\sqrt N}.
+          \]</div>
+          <p>所有壳层贡献同号，仍然不存在与 \(N\) 无关的 ℓ2 到 ℓ1 升级。这个族并不排除真正记录全部打包质量的 Carleson 范数；它排除的是仅凭符号与共同响应凭空产生该质量。</p>
+        </section>
+
+        <section id="shared-high"><div class="section-no">03 / Shared-high fan</div><h2>固定三个输入量，三场极化 common form 仍按 √N 增长</h2>
+          <p>第二个族取 \(M_j=16^j\)，用有理圆参数制造一个共享高频 \(q\)、\(N\) 个同半径高频 \(p_j\) 与 \(N\) 个严格分离低频 \(n_j\)。全部频率是整数，\(|p_j|=|q|\)，并且没有非预设共振。对相应的无散场 \(A_N,B_N,C_N\)，</p>
+          <div class="equation">\[
+            \sup_\alpha\|T_\alpha A_N\|_\infty\le1,
+            \qquad
+            \|B_N\|_2=\|C_N\|_2=\frac1{\sqrt2},
+          \]</div>
+          <p>但精确的三场极化 common work 是</p>
+          <div class="equation result">\[
+            \mathfrak P_{\rm cr}(A_N;B_N,C_N)
+            =-\frac1{8\sqrt N}\sum_{j=1}^N
+            \frac{M_j}{\sqrt{1+M_j^2}}
+            \sim-\frac{\sqrt N}{8}.
+          \]</div>
+          <p>所以不存在由上述壳层上确界与两个 \(L^2\) 范数给出的统一直接估计。这里否定的对象严格限于这个<strong>三场极化估计</strong>；它不否定已知的单场 Besov 混合估计，也不否定 Kozono–Ogawa–Taniuchi 的延拓判据。后者使用频率分解与高阶范数的对数因子，不依赖这个被排除的三场不等式。</p>
+          <figure><img src="/figures/r0-71b-common-packing.svg" alt="R0.71B 单壳层 common 与 chord、同低频打包、共享高频极化增长及正输出符号测试"><figcaption>图 R0.71B。单个 HHL 原子的 common 符号趋于一而 chord 按 \(M^{-2}\) 衰减；同低频族的总正功趋于 \(1/4\)，壳层 ℓ2 量按 \(N^{-1/2}\) 衰减；共享高频三场极化比值按 \(\sqrt N\) 增长；R0.71A 同协方差符号对在正输出系数上被区分。曲线来自闭式公式与精确有限 Fourier 重建，不是 DNS。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71b-common-packing.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71b-common-packing.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71b-common-packing.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="tent"><div class="section-no">04 / Tent and BMO boundary</div><h2>普通正平方 tent 会吸收增长，却看不见符号</h2>
+          <p>标准 Littlewood–Paley tent / Carleson 平方量在通常可容许分解下等价于 BMO（模常数）。共享高频族的根 tent 质量已经按 \(\sqrt N\) 增长，恰好足以吸收上一节的 \(\sqrt N\)；因此它不是更弱的新系数。</p>
+          <p>这个正平方量还对逐尺度符号翻转不变。R0.71A 的两个场逐点协方差相同、尺度平方质量相同，但协方差功符号相反，所以任何只依赖非负尺度平方的候选量都无法区分它们。反过来，只控制 tent 盒中的有符号总质量也不能直接调用经典 Carleson 嵌入，因为后者需要正测度或总变差控制。真正的替代物必须额外证明部分和、有界抛物算子或时间–尺度通量的伸缩结构。</p>
+        </section>
+
+        <section id="coefficient"><div class="section-no">05 / Positive-output coefficient</div><h2>先保留应变输出的相位，再取正部</h2>
+          <p>令 \(K_+\) 从每对 \(\{k,-k\}\) 中取一个代表，并在输出频率上定义</p>
+          <div class="equation">\[
+            w_k=2\operatorname{Re}
+            \big(\overline{\widehat S(k)}:\widehat Q(k)\big),
+            \qquad
+            \mathfrak P_Q=\sum_{k\in K_+}w_k.
+          \]</div>
+          <p>正输出平方与归一化系数取为</p>
+          <div class="equation result">\[
+            \mathcal T_+^2=
+            \sum_{\substack{k\in K_+\\\widehat S(k)\ne0}}
+            \frac{(w_k^+)^2}{4|k|^2|\widehat S(k)|_F^2},
+            \qquad
+            a_+=\frac{\mathcal T_+^2}{\|\omega\|_2^2}.
+          \]</div>
+          <p>它通过 R0.71A 的同协方差符号测试：正场满足</p>
+          <div class="equation">\[
+            \mathcal T_+^2=\frac9{800}\Lambda^4,
+            \qquad
+            a_+=\frac3{39940400}\Lambda^2,
+          \]</div>
+          <p>负场的 \(\mathcal T_+\) 与 \(a_+\) 都为零。一个非零无散单平面波则有非零 BMO / 平方振幅，却仍满足 \(a_+=0\)。所以 \(a_+\) 不是 \(Q\) 的函数，不是范数，也不等价于 BMO；它专门保留被协方差平方丢掉的应变输出相位。</p>
+        </section>
+
+        <section id="consumer"><div class="section-no">06 / Cauchy–Young consumer</div><h2>消费式精确成立，但还没有 Navier–Stokes 时间传播</h2>
+          <p>由无散 Fourier 系数的恒等式与 Cauchy–Schwarz，正协方差功满足</p>
+          <div class="equation result">\[
+            (\mathfrak P_Q)_+
+            \le\|\nabla\omega\|_2\mathcal T_+
+            \le\frac\nu4\|\nabla\omega\|_2^2
+            +\nu^{-1}a_+\|\omega\|_2^2.
+          \]</div>
+          <p>这正好把四分之一黏性耗散用于吸收 \(\mathcal T_+\)。与 R0.70Y 的混合缺陷估计合并后可写成</p>
+          <div class="equation">\[
+            \frac12Y'+\frac{3\nu}{4}D
+            \le\left[\nu^{-1}a_+
+            +C_{\mathscr T}\|\omega\|_{B^0_{\infty,\infty}}\right]Y.
+          \]</div>
+          <p>然而，这只是确定性的消费不等式，不是闭合。Leray 能量、协方差主投影与本节的静态 Fourier 代数都没有推出 \(a_+\in L_t^1\)。上式中的 \(L_t^1\dot B^0_{\infty,\infty}\) 涡量条件本身已经是已知充分条件，所以把它与 \(a_+\) 并列不会得到新的延拓定理。本节没有给出新的无条件正则性结论。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">07 / Literature boundary</div><h2>经典调和分析给出坐标系，但不会自动制造所需的动态估计</h2>
+          <p><a href="https://www.numdam.org/item/ASENS_1981_4_14_2_209_0/">Bony 的抛物分解</a>分离低–高、高–低与共振项，但频率记账本身没有符号或打包定理。<a href="https://www.sciencedirect.com/science/article/pii/0022123685900072">Coifman–Meyer–Stein 的 tent spaces</a>、<a href="https://doi.org/10.1007/BF02392215">Fefferman–Stein 的 Hardy / BMO 理论</a>与<a href="https://doi.org/10.1016/0022-1236(90)90137-A">Frazier–Jawerth 的离散变换</a>把标准正平方量放在 BMO 边界。</p>
+          <p><a href="https://numdam.org/item/SEDP_1989-1990____A16_0/">CLMS 的 div–curl Hardy 补偿</a>配合 Hardy–BMO 对偶能在假定 BMO 系数以后控制伸长项，却不能从能量或协方差几何推出该系数。<a href="https://www.jstage.jst.go.jp/article/kyushujm/57/2/57_2_303/_article">Kozono–Ogawa–Taniuchi</a> 已经给出 \(L_t^1\dot B^0_{\infty,\infty}\) 涡量延拓判据；<a href="https://math.berkeley.edu/~tataru/papers/nas.pdf">Koch–Tataru</a> 的 \(BMO^{-1}\) 正 Carleson 量属于小数据临界理论，并不是大数据 common-response 的有符号抵消定理。</p>
+          <p>有限的一手来源检索没有在已核查文献中找到本节两个精确扇形或 \(a_+\) 的同一公式。这只是检索边界，不构成新颖性或优先权证明。</p>
+        </section>
+
+        <section id="meaning"><div class="section-no">08 / Research value</div><h2>价值在于精确分类路线，而不是改写 Clay 问题的已知边界</h2>
+          <p>R0.71B 关闭了三条看似便宜的静态捷径：把 chord 衰减转给 common channel、把同号直接升级为壳层 ℓ1 控制、把三场 common form 交给一个壳层上确界与两个能量范数。每条否定都有任意 \(N\) 的解析族，并由 \(N=8\) 的完整有限 Fourier 枚举做回归检查。</p>
+          <p>正输出系数 \(a_+\) 的意义不同：它不是一个已经可控的新范数，而是把“缺失的符号信息”压成可被耗散消费的具体目标。它使下一步要证明的内容可以被精确陈述和反例测试。不过，本节没有改善已知无条件理论，没有证明奇性，也没有证明全局光滑性；对千禧年问题的作用仍是间接的路线筛选。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next analytic gate</div><h2>R0.71C：在取平方之前做局部有符号化</h2>
+          <p>下一步不是再定义一个普通正 Littlewood–Paley tent，而是把 \(w_k\) 的应变相位保留到局部包中，再检查嵌套 tent 的有符号部分和、相邻时间–尺度盒的通量伸缩，或 \(a_+\) 与横向残差之间的定量联系。</p>
+          <p>接受测试预先固定：新候选必须同时通过本节两个扇形与 R0.71A 的同协方差符号对，并与 BMO、dyadic-BMO 和 \(\dot B^0_{\infty,\infty}\) 判据逐项比较。如果它化简为标准正平方 tent，该路线就按 BMO 的经典重写归档。在局部化定义得到解析门槛以前，不需要 DNS、GPU 或 DGX。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>已证、已排除与开放缺口分开记录</h2>
+          <div class="grid">
+            <div class="status"><span>PROVED</span><strong>单原子的 common / chord 分离</strong><p>common 符号趋于一，chord 符号按 \(M^{-2}\) 衰减。</p></div>
+            <div class="status"><span>PROVED</span><strong>同低频打包 no-go</strong><p>固定能量与同号总功并不产生壳层 ℓ2 到 ℓ1 的统一升级。</p></div>
+            <div class="status"><span>PROVED</span><strong>三场极化壳层上确界 no-go</strong><p>共享高频族排除一个特定三场直接估计；结论不延伸到已知单场 Besov 判据。</p></div>
+            <div class="status"><span>PROVED</span><strong>正输出 Cauchy–Young 消费式</strong><p>\(a_+\) 通过 R0.71A 符号测试，并具有正确的临界时间量纲。</p></div>
+            <div class="status"><span>OPEN</span><strong>动力学时间可积性</strong><p>尚无结论从 Navier–Stokes 方程推出 \(a_+\in L_t^1\) 或局部有符号部分和控制。</p></div>
+            <div class="status"><span>NOT CLAIMED</span><strong>新的延拓或全局正则性定理</strong><p>静态 Fourier 族不是 Navier–Stokes 解轨道，也不是有限时奇性。</p></div>
+          </div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproducibility and sources</div><h2>完整报告、独立复核、证书、脚本和附图包一并封存</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_report-source.md">查看完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_literature_audit.md">查看一手文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_independent_audit.md">查看独立数学复核</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_exact_audit.py">查看精确生产器</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071b_independent_audit.py">查看独立重建脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071b">查看精确证书与 SHA-256 清单</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071b-common-response/fig-r071b-common-packing">查看正式期刊附图包</a> · <a href="/notes/r0-71b.pdf">下载同步 PDF</a> · <a href="https://www.claymath.org/millennium/navier-stokes-equation/">查看 Clay Mathematics Institute 的正式问题说明</a></p>
+          <p>生产器核查 10 组恒等式、共振分类与精确常数；独立脚本不导入 R0.71B 生产器，重新构造 Fourier 应变、协方差卷积与两组 \(N=8\) 功。有限枚举只是回归证书；任意 \(N\) 的共振分类与极限由报告中的解析证明承担。该小节没有使用随机搜索、DNS、GPU 或 DGX。</p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>精确构造、方法边界、条件结果与开放问题分开记录。</div><div>R0.71B · 2026-08-25<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

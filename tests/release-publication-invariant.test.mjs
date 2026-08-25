@@ -32,6 +32,7 @@ test("publishes every completed research release from R0.70A onward", async () =
       `r070${String.fromCharCode(97 + index)}`,
     ),
     "r071a",
+    "r071b",
   ]);
 
   for (const release of releases) {
@@ -63,11 +64,11 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
   ]);
 
   const htmlNotes = noteFiles.filter((file) => file.endsWith(".html"));
-  assert.equal(htmlNotes.length, 125);
-  assert.match(home, /<strong>125<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71A<\/strong>最新研究节点/);
-  assert.match(home, /展开 35 篇公开笔记/);
-  assert.match(home, /R0\.60 recap 之后共有 65 个节点/);
+  assert.equal(htmlNotes.length, 126);
+  assert.match(home, /<strong>126<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71B<\/strong>最新研究节点/);
+  assert.match(home, /展开 36 篇公开笔记/);
+  assert.match(home, /累计回顾收录 65 个节点；全站现有 126 篇公开研究笔记/);
   assert.match(home, /href="\/recap-r0-61-r0-71a\.html"/);
   assert.match(home, /href="\/recap-r0-61-r0-71a\.pdf"/);
 
@@ -76,6 +77,7 @@ test("keeps homepage counts, route links, progress links, and cumulative recap s
       `r0-70${String.fromCharCode(97 + index)}`,
     ),
     "r0-71a",
+    "r0-71b",
   ];
   for (const slug of current) {
     const matches = home.match(new RegExp(`href="/notes/${slug}\\.html"`, "g")) ?? [];

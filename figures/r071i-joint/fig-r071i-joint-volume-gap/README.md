@@ -1,8 +1,8 @@
 # fig-r071i-joint-volume-gap
 
-This is a draft formal double-column figure package.  Its current
-manifest.json uses schema version 1.0 and status `draft`; it is not a
-published or certified figure release.  The package records four exact
+This is the formal double-column figure package for R0.71I.  Its current
+manifest.json uses schema version 1.0 and status `formal`; it binds the
+clean source snapshot `c5b9f101845a9055f7a50fc445f827cf08ad3a8a`.  The package records four exact
 R0.71I boundaries:
 
 1. a two-eigenvalue common-heat path has a coefficient pulse with zero outer

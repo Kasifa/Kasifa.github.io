@@ -1,0 +1,303 @@
+{
+  "audit": "fixed-small-coupling one-third endpoint algebra",
+  "betaTrichotomy": [
+    {
+      "beta": 0.0,
+      "classification": "diverges",
+      "difference": 2.3982803959834884e-06,
+      "fittedQPower": 2.000002398280396,
+      "predictedQPower": 2.0
+    },
+    {
+      "beta": 0.1,
+      "classification": "diverges",
+      "difference": -2.7245803567446064e-07,
+      "fittedQPower": 1.3999997275419642,
+      "predictedQPower": 1.4
+    },
+    {
+      "beta": 0.25,
+      "classification": "diverges",
+      "difference": -4.2785656831613845e-06,
+      "fittedQPower": 0.49999572143431686,
+      "predictedQPower": 0.5
+    },
+    {
+      "beta": 0.3333333333333333,
+      "classification": "saturates",
+      "difference": -6.504181042876342e-06,
+      "fittedQPower": -6.504181042876342e-06,
+      "predictedQPower": 0.0
+    },
+    {
+      "beta": 0.4,
+      "classification": "vanishes",
+      "difference": -8.284673330648308e-06,
+      "fittedQPower": -0.40000828467333066,
+      "predictedQPower": -0.4
+    },
+    {
+      "beta": 0.5,
+      "classification": "vanishes",
+      "difference": -1.0955411762306256e-05,
+      "fittedQPower": -1.0000109554117622,
+      "predictedQPower": -1.0
+    }
+  ],
+  "checks": [
+    {
+      "name": "limiting root interpolation",
+      "passed": true,
+      "requirement": "maximum residual < 1e-80",
+      "value": "2.00000000000000000000000000000000000000000000000000E-90"
+    },
+    {
+      "name": "limiting roots are simple",
+      "passed": true,
+      "requirement": "minimum absolute slope > 0.1",
+      "value": "1.62452793650346969801195375215932129304985389562862E-1"
+    },
+    {
+      "name": "limiting tail is nonzero",
+      "passed": true,
+      "requirement": "absolute tail limit > 0.1",
+      "value": "1.89484216794039933255585443400852059454668253305995E-1"
+    },
+    {
+      "name": "initial-data endpoint power",
+      "passed": true,
+      "requirement": "fitted q power within 0.02 of 6",
+      "value": 6.0000267073843165
+    },
+    {
+      "name": "complete prescribed atom power",
+      "passed": true,
+      "requirement": "fitted q power within 0.02 of 2",
+      "value": 2.000003078481324
+    },
+    {
+      "name": "rotational endpoint power",
+      "passed": true,
+      "requirement": "fitted q power within 0.02 of 0",
+      "value": -2.2123848206991702e-07
+    },
+    {
+      "name": "one-third q saturation",
+      "passed": true,
+      "requirement": "fitted q power within 0.02 of 0",
+      "value": -5.8239801148244715e-06
+    },
+    {
+      "name": "delta four-thirds collapse",
+      "passed": true,
+      "requirement": "fitted delta power within 0.002 of 4/3",
+      "value": 1.3333333333333333
+    },
+    {
+      "name": "beta trichotomy",
+      "passed": true,
+      "requirement": "every fitted q power is within 0.025 of 2-6 beta",
+      "value": 1.0955411762306256e-05
+    }
+  ],
+  "claimBoundary": "Finite high-precision algebra corroboration only. The analytic report must prove the half-line no-extra-root lemma, the continuum uniform IFT, and nonlinear enstrophy bounds. This audit proves no universal D^(1/3) estimate and no Navier-Stokes regularity statement.",
+  "deltaCollapse": {
+    "fittedPower": 1.3333333333333333,
+    "predictedPower": 1.3333333333333333,
+    "rows": [
+      {
+        "atomOverDataOneThird": 1.7684200467709288e-10,
+        "atomOverDataOneThirdLedger": 3.0478210977747416e-11,
+        "delta": 0.0009765625,
+        "q": 2048
+      },
+      {
+        "atomOverDataOneThird": 4.4561392839655387e-10,
+        "atomOverDataOneThirdLedger": 3.8299499522160555e-11,
+        "delta": 0.001953125,
+        "q": 2048
+      },
+      {
+        "atomOverDataOneThird": 1.12287673702633e-09,
+        "atomOverDataOneThirdLedger": 3.2113454599137745e-11,
+        "delta": 0.00390625,
+        "q": 2048
+      },
+      {
+        "atomOverDataOneThird": 2.829472074833486e-09,
+        "atomOverDataOneThirdLedger": 2.205533015310443e-11,
+        "delta": 0.0078125,
+        "q": 2048
+      },
+      {
+        "atomOverDataOneThird": 7.129822854344862e-09,
+        "atomOverDataOneThirdLedger": 1.4214588984958822e-11,
+        "delta": 0.015625,
+        "q": 2048
+      }
+    ]
+  },
+  "fittedQPowers": {
+    "atomOverDataOneThird": -5.8239801148244715e-06,
+    "atomOverDataOneThirdLedger": -6.504181042876342e-06,
+    "atomSum": 2.000003078481324,
+    "dataSize": 6.0000267073843165,
+    "rotationalUpper": -2.2123848206991702e-07
+  },
+  "fixedDeltaRows": [
+    {
+      "amplitude": 8.0,
+      "atomOverDataOneThird": 2.8297842039666646e-09,
+      "atomOverDataOneThirdLedger": 2.2056873255971193e-11,
+      "atomSum": 3.508559308223428e-06,
+      "dataSize": 1906015870.8210065,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9645.091819299776,
+      "ledgerProxy": 128.2948934387421,
+      "q": 32,
+      "rotationalUpper": 0.012901573053148622
+    },
+    {
+      "amplitude": 32.0,
+      "atomOverDataOneThird": 2.829625871338087e-09,
+      "atomOverDataOneThirdLedger": 2.2056419879602412e-11,
+      "atomSum": 1.403464817826604e-05,
+      "dataSize": 122016211884.93042,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.969655548259,
+      "ledgerProxy": 128.29035205096454,
+      "q": 64,
+      "rotationalUpper": 0.012901270676073684
+    },
+    {
+      "amplitude": 128.0,
+      "atomOverDataOneThird": 2.829546542439773e-09,
+      "atomOverDataOneThirdLedger": 2.205593737013721e-11,
+      "atomSum": 5.6139420882194594e-05,
+      "dataSize": 7810040015553.724,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.965064957472,
+      "ledgerProxy": 128.28956189687304,
+      "q": 128,
+      "rotationalUpper": 0.01290119508291228
+    },
+    {
+      "amplitude": 512.0,
+      "atomOverDataOneThird": 2.8295068379597607e-09,
+      "atomOverDataOneThirdLedger": 2.20556321699482e-11,
+      "atomSum": 0.00022455934618989225,
+      "dataSize": 499874706401489.1,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.976892025206,
+      "ledgerProxy": 128.28953693810203,
+      "q": 256,
+      "rotationalUpper": 0.012901176184691138
+    },
+    {
+      "amplitude": 2048.0,
+      "atomOverDataOneThird": 2.829486975788692e-09,
+      "atomOverDataOneThirdLedger": 2.2055463584921933e-11,
+      "atomSum": 0.000898240716426806,
+      "dataSize": 3.1993010932267636e+16,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.98633611522,
+      "ledgerProxy": 128.28961698737774,
+      "q": 512,
+      "rotationalUpper": 0.012901171460140177
+    },
+    {
+      "amplitude": 8192.0,
+      "atomOverDataOneThird": 2.8294770422299582e-09,
+      "atomOverDataOneThirdLedger": 2.205537529636736e-11,
+      "atomSum": 0.0035929695353977657,
+      "dataSize": 2.0475856679007027e+18,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.991940796348,
+      "ledgerProxy": 128.28968014414102,
+      "q": 1024,
+      "rotationalUpper": 0.012901170279002706
+    },
+    {
+      "amplitude": 32768.0,
+      "atomOverDataOneThird": 2.829472074833486e-09,
+      "atomOverDataOneThirdLedger": 2.205533015310443e-11,
+      "atomSum": 0.014371891487333739,
+      "dataSize": 1.310465380029955e+20,
+      "delta": 0.0078125,
+      "enstrophyRatioProxy": 9644.994963795665,
+      "ledgerProxy": 128.28971750555363,
+      "q": 2048,
+      "rotationalUpper": 0.012901169983718357
+    }
+  ],
+  "generatedAt": "2026-08-26T21:42:08+08:00",
+  "limitingInterpolation": {
+    "coefficients": [
+      "1.00000000000000000000000000000000000000000000000000E+0",
+      "-3.66596284907236867680578760358568110444248807024510E+0",
+      "3.61413276534750958502171072402341393483115471422161E+0"
+    ],
+    "ectBasisDimension": 4,
+    "ectMaximumFiniteZerosCountingMultiplicity": 3,
+    "forcedFiniteRoots": [
+      "0",
+      "0.1",
+      "0.2"
+    ],
+    "meaning": "The limiting exponential polynomial has exhausted its ECT zero budget at 0, tau_1, tau_2; nonzero slopes and tail coefficient are the finite algebra prerequisites for the analytic no-extra-root proof.",
+    "rootResiduals": [
+      "-1.00000000000000000000000000000000000000000000000000E-90",
+      "-2.00000000000000000000000000000000000000000000000000E-90"
+    ],
+    "rootSlopes": [
+      "-1.81606264208571714553120343361702519240062365524509E-1",
+      "1.62452793650346969801195375215932129304985389562862E-1"
+    ],
+    "tailLimit": "1.89484216794039933255585443400852059454668253305995E-1",
+    "zeroRootSlope": "9.48169916275140908215923120437732830388666643976509E-1"
+  },
+  "method": "90-digit Decimal interpolation, exact Fourier initial-data proxy, fixed-delta endpoint scaling, full-frequency deterministic rotational upper proxy, and log-power regression",
+  "parameters": {
+    "amplitudeLaw": "A_q=delta q^2",
+    "backgroundAmplitudeLaw": "B_q=A_q q/Q",
+    "backgroundFrequency": 4,
+    "d": 8,
+    "deltaSweep": [
+      0.0009765625,
+      0.001953125,
+      0.00390625,
+      0.0078125,
+      0.015625
+    ],
+    "fixedDelta": 0.0078125,
+    "modeMultipliers": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "qValues": [
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024,
+      2048
+    ],
+    "scaledRoots": [
+      0.1,
+      0.2
+    ],
+    "target": [
+      1,
+      1
+    ],
+    "viscosity": 0.02
+  },
+  "passed": true,
+  "release": "R0.71X-working",
+  "schemaVersion": 1,
+  "status": "passed"
+}

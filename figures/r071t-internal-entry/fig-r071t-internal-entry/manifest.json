@@ -1,0 +1,344 @@
+{
+  "analyticalQuestion": "Does finite Galerkin evolution corroborate the positive-time internal target-shell zero from the local NSE flow-map construction, and does double scaling separate its entry atom from the bare normalized Leray time budget?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "Panels A--C are finite Fourier--Galerkin corroboration in the x3-independent three-component invariant sector. Panel D is an exact leading asymptotic ledger. The figure gives no continuum Galerkin error bound, DNS claim, Leray occupation bound, repeated-entry packing, singularity, continuation, or regularity theorem.",
+  "computation": {
+    "configuration": "x3-independent three-component periodic Galerkin sector; primary N=10,Kcut=2 at five tau values; independent direct convolution at N=10,Kcut=2 and N=12,Kcut=3 for tau=0.04",
+    "dns": false,
+    "finiteGalerkin": true,
+    "fittedData": false,
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "simulation",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.1,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "tau",
+        "completed",
+        "targetResidual",
+        "rootCalls",
+        "APlus",
+        "elapsedSeconds",
+        "etaSeconds",
+        "processCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "pdeTimeStepping": true,
+    "precision": "IEEE binary64 complex Fourier coefficients",
+    "solver": "primary dealiased pseudo-spectral and independent direct-convolution Galerkin right-hand sides; SciPy DOP853 time integration and hybr eight-real-dimensional root shooting",
+    "wallTimeSeconds": 0.7568928339751437
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T13:59:07+08:00",
+  "data": [
+    {
+      "bytes": 1138,
+      "format": "json",
+      "path": "config.json",
+      "schema": "seed, target shell, time values, Galerkin truncations, solver tolerances, and classification flags",
+      "sha256": "7a5f218e7cab55df63a20bb5edc56ed4fd4a6378a0fbdd97f8721d82999cf276"
+    },
+    {
+      "bytes": 52408,
+      "format": "json",
+      "path": "solver-results.json",
+      "schema": "primary pseudo-spectral shooting runs, event atoms, residuals, and selected trajectory samples",
+      "sha256": "cf25dd25063d0ef2ca0f45bfd920f6e153ee6bc27240ec8d1c6cbfb1541fc727"
+    },
+    {
+      "bytes": 2326,
+      "format": "json",
+      "path": "independent-results.json",
+      "schema": "direct-convolution same-truncation parity and N=12,Kcut=3 refined validation run",
+      "sha256": "311a5e15e383f0ba070cf1f1ed3409a843676a0e23bc2bac31564e0448c341bf"
+    },
+    {
+      "bytes": 3476,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped stages, tau progress, target residuals, elapsed time, and ETA",
+      "sha256": "367d089b084e940563458d3f9e52a5fa9e8a02606fdc9afc0b4a74f1c3090513"
+    },
+    {
+      "bytes": 1169,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped local process CPU, load average, logical CPU count, and peak-resident-set snapshots",
+      "sha256": "4dcc463925a813941389b5c0f5d9ef71e0a3fb8765d13fd8f4ade8f56f91b829"
+    },
+    {
+      "bytes": 96756,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel,series,case,N,Kcut,x,y,value,unit,formula,evidenceClass,note",
+      "sha256": "63fd3168e1da03f410c418c06c1ff29278542cfd30eb51931472b1c5b274012c"
+    },
+    {
+      "bytes": 1352,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "input hashes, evidence map, configurations, numerical classification, and claim boundary",
+      "sha256": "a78ffc69f1b2248886e69ab32b3653c36eb52b15760ecc9cd9b0c5ae11eaa9e3"
+    },
+    {
+      "bytes": 4648,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "producer-side shooting, crossing, slope-identity, scaling, and boundary checks",
+      "sha256": "fe90be41296671bc4090284ad9f0c79b65c9c18dbd70caa1984be9a375e76ff1"
+    },
+    {
+      "bytes": 4101,
+      "format": "json",
+      "path": "independent-validation.json",
+      "schema": "standalone raw-run, formula, progress, PDF, SVG, PNG, and boundary checks",
+      "sha256": "03f4e837cf19c7ee7637c247c69cf87df8560b4dba92227a110d57e945b7fe0a"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "python": "3.12.13",
+    "scipy": "1.18.0"
+  },
+  "evidenceMap": {
+    "A": "primary pseudo-spectral Galerkin shooting plus one refined direct-convolution point",
+    "B": "primary finite Galerkin trajectory through the shot internal zero",
+    "C": "finite Galerkin entry atom and algebraically identical slope charge",
+    "D": "exact leading two-parameter scaling ledger, not fitted slopes"
+  },
+  "figure": {
+    "heightMillimetres": 124,
+    "outputs": [
+      {
+        "bytes": 54430,
+        "path": "figure.pdf",
+        "sha256": "85f3409f7d267b4c0bf25440de6e14f2bda6ad5eb19d5597b6865ed10d3a782b"
+      },
+      {
+        "bytes": 124239,
+        "path": "figure.svg",
+        "sha256": "6cf608748573766615ec6249a485a0be8405ed2ba61fa5efa03a0647af15139a"
+      },
+      {
+        "bytes": 843166,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4460 by 3070",
+        "sha256": "0ff28aab9f9a7341e9896e2a5494c626404dbfdb40c2bb861e3008fbcb415645"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r071t-internal-entry",
+  "git": {
+    "certificateCommit": "pending",
+    "dirtyAtCertifiedRun": true,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "pending"
+  },
+  "outputs": [
+    {
+      "bytes": 874,
+      "path": "README.md",
+      "sha256": "e5ea85852b59d5d71e166ad515dfd1ee6cdacb7870254f184ac50ce7b9176794"
+    },
+    {
+      "bytes": 1537,
+      "path": "caption.md",
+      "sha256": "9f3badc8b4a539478503f0541233bd6647733de5df76b23bbd3a6e660619c32a"
+    },
+    {
+      "bytes": 1986,
+      "path": "figure-contract.md",
+      "sha256": "a854db3fa4bfc986b1042d1f3e39fd779a129449223a2678ddde47c1cacafa9a"
+    },
+    {
+      "bytes": 1787,
+      "path": "contract.json",
+      "sha256": "d49cff885392e636ace85605b82a6d7e64fbc8e22e29c1b85866bee981578fe6"
+    },
+    {
+      "bytes": 1138,
+      "path": "config.json",
+      "sha256": "7a5f218e7cab55df63a20bb5edc56ed4fd4a6378a0fbdd97f8721d82999cf276"
+    },
+    {
+      "bytes": 3282,
+      "path": "command.txt",
+      "sha256": "f3dec1bca8d8bccead8e17cb6f515afa0b9f81c882dc2e8a8576c3cbff9bdc23"
+    },
+    {
+      "bytes": 492,
+      "path": "environment.txt",
+      "sha256": "668ee8c43497a8b17fca9cedd211644da569e97b151fbeec5f6616b391a22cee"
+    },
+    {
+      "bytes": 75,
+      "path": "requirements.txt",
+      "sha256": "c579cf471dff71d1f1e950137289d06d548ede1463818cb59de432c83cb6fe7a"
+    },
+    {
+      "bytes": 18371,
+      "path": "galerkin_shoot.py",
+      "sha256": "0968c32086dd98564f7a611a72af02410bc171dc8b5978b1346c5624fa25d020"
+    },
+    {
+      "bytes": 12766,
+      "path": "independent_galerkin.py",
+      "sha256": "fd5b763348d86e11888421ed04ff0d097334fd9f6d9c87da0e1370403cb6a5c3"
+    },
+    {
+      "bytes": 8542,
+      "path": "assemble_data.py",
+      "sha256": "42a8d036e0b94db4ccead62bb1c72c63daba408fc19af5455a65d8a3bb77017b"
+    },
+    {
+      "bytes": 6028,
+      "path": "validate_data.py",
+      "sha256": "d635d3ac0e71ee11ee5a9ef40fa6158b7628651a816f8aee3f2a58a28b6bc35e"
+    },
+    {
+      "bytes": 5853,
+      "path": "independent_validate.py",
+      "sha256": "f4a2e03e32eb4b0618d747630f5fda28eda0f5a79646d45cfedea4823e15ed74"
+    },
+    {
+      "bytes": 9390,
+      "path": "plot.py",
+      "sha256": "3332eeaa70c4d4de48f0add7db2931c45ef7ff197329e3c8bccab4001df586c0"
+    },
+    {
+      "bytes": 1960,
+      "path": "qa_images.py",
+      "sha256": "2c267c5b6891744961141d5bec4c672e7a52480984dfc2b0a20d72f692972ebd"
+    },
+    {
+      "bytes": 9883,
+      "path": "build_manifest.py",
+      "sha256": "855d0fd77063b7e17536ad32172fbf89895734e7dd6ebbe49f5b60326c7328e5"
+    },
+    {
+      "bytes": 52408,
+      "path": "solver-results.json",
+      "sha256": "cf25dd25063d0ef2ca0f45bfd920f6e153ee6bc27240ec8d1c6cbfb1541fc727"
+    },
+    {
+      "bytes": 2326,
+      "path": "independent-results.json",
+      "sha256": "311a5e15e383f0ba070cf1f1ed3409a843676a0e23bc2bac31564e0448c341bf"
+    },
+    {
+      "bytes": 3476,
+      "path": "progress.ndjson",
+      "sha256": "367d089b084e940563458d3f9e52a5fa9e8a02606fdc9afc0b4a74f1c3090513"
+    },
+    {
+      "bytes": 1169,
+      "path": "resource-log.ndjson",
+      "sha256": "4dcc463925a813941389b5c0f5d9ef71e0a3fb8765d13fd8f4ade8f56f91b829"
+    },
+    {
+      "bytes": 96756,
+      "path": "data.csv",
+      "sha256": "63fd3168e1da03f410c418c06c1ff29278542cfd30eb51931472b1c5b274012c"
+    },
+    {
+      "bytes": 1352,
+      "path": "figure-data-metadata.json",
+      "sha256": "a78ffc69f1b2248886e69ab32b3653c36eb52b15760ecc9cd9b0c5ae11eaa9e3"
+    },
+    {
+      "bytes": 4648,
+      "path": "validation.json",
+      "sha256": "fe90be41296671bc4090284ad9f0c79b65c9c18dbd70caa1984be9a375e76ff1"
+    },
+    {
+      "bytes": 4101,
+      "path": "independent-validation.json",
+      "sha256": "03f4e837cf19c7ee7637c247c69cf87df8560b4dba92227a110d57e945b7fe0a"
+    },
+    {
+      "bytes": 54430,
+      "path": "figure.pdf",
+      "sha256": "85f3409f7d267b4c0bf25440de6e14f2bda6ad5eb19d5597b6865ed10d3a782b"
+    },
+    {
+      "bytes": 124239,
+      "path": "figure.svg",
+      "sha256": "6cf608748573766615ec6249a485a0be8405ed2ba61fa5efa03a0647af15139a"
+    },
+    {
+      "bytes": 843166,
+      "path": "figure.png",
+      "pixels": "4460 by 3070",
+      "sha256": "0ff28aab9f9a7341e9896e2a5494c626404dbfdb40c2bb861e3008fbcb415645"
+    },
+    {
+      "bytes": 859781,
+      "path": "qa-original.png",
+      "pixels": "2200 by 1514",
+      "sha256": "8ae59bf233ad2356db17a531e9d201653c556be61abf2d7c24a7a9fa2e85d83b"
+    },
+    {
+      "bytes": 348859,
+      "path": "qa-grayscale.png",
+      "pixels": "2200 by 1514",
+      "sha256": "7a1e3391177afb42114324f0454e00649494389716b0da5bb59d3366678b08db"
+    },
+    {
+      "bytes": 207676,
+      "path": "qa-pdf.png",
+      "pixels": "1341 by 922",
+      "sha256": "aab86d456e7498d0799a3b297c52338144e423c57b4ee9465cce77802061eebd"
+    },
+    {
+      "bytes": 454,
+      "path": "qa-report.md",
+      "sha256": "c81c64151a3e539f7ae1a70aca00f8126198215efc17b5e362ab4d2782b75cf4"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 19,
+    "automaticChecks": "validation.json",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentCheckCount": 19,
+    "independentChecks": "independent-validation.json",
+    "independentMethod": "standalone raw-run comparison, direct reconstruction of panel D, progress-log inspection, and independent PDF/SVG/PNG checks",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "originalPreview": "qa-original.png",
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.71T",
+  "schemaVersion": "1.0",
+  "sourceData": [],
+  "status": "draft",
+  "supportedClaim": "In the audited finite Galerkin systems, an eight-dimensional initial target-shell correction produces a simple positive-time zero, its norm has the predicted first-order coefficient, and the atom equals the slope-charge reconstruction. The exact leading double-scaling ledger has atom-to-budget ratio proportional to lambda squared."
+}

@@ -1,0 +1,305 @@
+{
+  "release": "R0.71T",
+  "status": "passed",
+  "scope": "exact finite algebra supporting the positive-time internal-entry theorem, outgoing occupation identity, conditional trace--variation bound, and two-parameter scaling no-go",
+  "checks": {
+    "fourierSeed": {
+      "passed": true,
+      "velocity": "u_*(x)=(0,cos(x_1),cos(x_2))",
+      "target": "Fourier shell |k|^2=2 with nominal kappa=1",
+      "targetModes": {
+        "(-1, -1, 0)": [
+          "0",
+          "0",
+          "I/4"
+        ],
+        "(-1, 1, 0)": [
+          "0",
+          "0",
+          "-I/4"
+        ],
+        "(1, -1, 0)": [
+          "0",
+          "0",
+          "I/4"
+        ],
+        "(1, 1, 0)": [
+          "0",
+          "0",
+          "-I/4"
+        ]
+      },
+      "Y0": "1",
+      "F2": "1/4",
+      "curlF2": "1/2",
+      "globalCellSlope2": "1",
+      "positivePairing": "1/2",
+      "entryFace": "1/4"
+    },
+    "resonantPrecompensation": {
+      "passed": true,
+      "leadingTargetODE": "x_t=-2*nu*x+a^2*exp(-2*nu*t)*F_0",
+      "initialPrecompensation": "x(0)=-a^2*tau*F_0",
+      "solution": "F_0*a**2*(t - tau)*exp(-2*nu*t)",
+      "xAtTau": "0",
+      "xTimeDerivativeAtTau": "F_0*a**2*exp(-2*nu*tau)",
+      "NSEUse": "The report obtains the exact nonlinear precompensation by the finite-dimensional implicit-function theorem; this normal form checks its leading resonant coefficient."
+    },
+    "simpleFaceAndSlopeCharge": {
+      "passed": true,
+      "simpleZero": "C(t_*+s)=c*s+O(s^2), c=2*F(t_*)",
+      "APlus": "1/4",
+      "AMinus": "0",
+      "weightedAtom": "1/4",
+      "slopeIdentity": "kappa^-2*A_plus=kappa^-2*||C_t(t_*)||_2^2/(rho^4*Y(t_*))",
+      "rhoSquared": "2",
+      "nominalKappa": "1"
+    },
+    "outgoingCoareaProfiles": {
+      "passed": true,
+      "mollifier": "rho(s)=6*s*(1-s) on (0,1)",
+      "identity": "lim_delta integral q*rho_delta(||C||)*(d/dt||C||)_+ dt=A_plus",
+      "rows": [
+        {
+          "order": 1,
+          "radius": "tau_1",
+          "outgoingIntegrand": "-6*tau_1*(tau_1 - 1)",
+          "mass": "1",
+          "signedFace": "1",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 2,
+          "radius": "tau_2**2",
+          "outgoingIntegrand": "-12*tau_2**3*(tau_2 - 1)*(tau_2 + 1)",
+          "mass": "1",
+          "signedFace": "0",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 3,
+          "radius": "tau_3**3",
+          "outgoingIntegrand": "-18*tau_3**5*(tau_3 - 1)*(tau_3**2 + tau_3 + 1)",
+          "mass": "1",
+          "signedFace": "1",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 4,
+          "radius": "tau_4**4",
+          "outgoingIntegrand": "-24*tau_4**7*(tau_4 - 1)*(tau_4 + 1)*(tau_4**2 + 1)",
+          "mass": "1",
+          "signedFace": "0",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 5,
+          "radius": "tau_5**5",
+          "outgoingIntegrand": "-30*tau_5**9*(tau_5 - 1)*(tau_5**4 + tau_5**3 + tau_5**2 + tau_5 + 1)",
+          "mass": "1",
+          "signedFace": "1",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 6,
+          "radius": "tau_6**6",
+          "outgoingIntegrand": "-36*tau_6**11*(tau_6 - 1)*(tau_6 + 1)*(tau_6**2 - tau_6 + 1)*(tau_6**2 + tau_6 + 1)",
+          "mass": "1",
+          "signedFace": "0",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 7,
+          "radius": "tau_7**7",
+          "outgoingIntegrand": "-42*tau_7**13*(tau_7 - 1)*(tau_7**6 + tau_7**5 + tau_7**4 + tau_7**3 + tau_7**2 + tau_7 + 1)",
+          "mass": "1",
+          "signedFace": "1",
+          "outgoingFace": "1"
+        },
+        {
+          "order": 8,
+          "radius": "tau_8**8",
+          "outgoingIntegrand": "-48*tau_8**15*(tau_8 - 1)*(tau_8 + 1)*(tau_8**2 + 1)*(tau_8**4 + 1)",
+          "mass": "1",
+          "signedFace": "0",
+          "outgoingFace": "1"
+        }
+      ],
+      "boundary": "This is an exact representation of the entry atom, not an a priori Leray bound for the occupation density."
+    },
+    "traceVariationIdentity": {
+      "passed": true,
+      "kernel": "K_h(s)=(s+h)/(2h) on [-h,0], K_h(s)=(s-h)/(2h) on [0,h]",
+      "identity": "q(0)=(2h)^-1*integral q+integral K_h*q_t",
+      "basisChecks": [
+        {
+          "degree": 0,
+          "residual": "0"
+        },
+        {
+          "degree": 1,
+          "residual": "0"
+        },
+        {
+          "degree": 2,
+          "residual": "0"
+        },
+        {
+          "degree": 3,
+          "residual": "0"
+        },
+        {
+          "degree": 4,
+          "residual": "0"
+        },
+        {
+          "degree": 5,
+          "residual": "0"
+        },
+        {
+          "degree": 6,
+          "residual": "0"
+        },
+        {
+          "degree": 7,
+          "residual": "0"
+        },
+        {
+          "degree": 8,
+          "residual": "0"
+        }
+      ]
+    },
+    "variableDenominator": {
+      "passed": true,
+      "g": "exp(rate*t)",
+      "Y": "exp(2*rate*t)",
+      "f": "1",
+      "gTimeTerm": "rate",
+      "denominatorTerm": "rate",
+      "fTime": "0"
+    },
+    "doubleScalingLedger": {
+      "passed": true,
+      "choice": "base amplitude a_lambda=lambda^-2 followed by NSE dilation lambda",
+      "leadingBaseAtom": "a^2*exp(-2*nu*tau)/4",
+      "leadingBaseBareBudget": "a^2*(1-exp(-4*nu*tau))/(16*nu)",
+      "scaledAtom": "exp(-2*nu*tau)/(4*lambda**4)",
+      "scaledBareBudget": "(exp(nu*tau) - 1)*(exp(nu*tau) + 1)*(exp(2*nu*tau) + 1)*exp(-4*nu*tau)/(16*lambda**6*nu)",
+      "ratio": "2*lambda**2*nu/sinh(2*nu*tau)",
+      "initialData": {
+        "L2Energy": "O(lambda^-2)",
+        "HOneHalfSquared": "O(lambda^-1)",
+        "enstrophy": "1+o(1)"
+      },
+      "rows": [
+        {
+          "lambda": 1,
+          "baseAmplitude": "1",
+          "leadingEntryAtomFactor": "1",
+          "leadingBareBudgetFactor": "1",
+          "ratioFactor": "1",
+          "scaledL2EnergyFactor": "1",
+          "scaledHOneHalfSquaredFactor": "1",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 2,
+          "baseAmplitude": "1/4",
+          "leadingEntryAtomFactor": "1/16",
+          "leadingBareBudgetFactor": "1/64",
+          "ratioFactor": "4",
+          "scaledL2EnergyFactor": "1/4",
+          "scaledHOneHalfSquaredFactor": "1/2",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 4,
+          "baseAmplitude": "1/16",
+          "leadingEntryAtomFactor": "1/256",
+          "leadingBareBudgetFactor": "1/4096",
+          "ratioFactor": "16",
+          "scaledL2EnergyFactor": "1/16",
+          "scaledHOneHalfSquaredFactor": "1/4",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 8,
+          "baseAmplitude": "1/64",
+          "leadingEntryAtomFactor": "1/4096",
+          "leadingBareBudgetFactor": "1/262144",
+          "ratioFactor": "64",
+          "scaledL2EnergyFactor": "1/64",
+          "scaledHOneHalfSquaredFactor": "1/8",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 16,
+          "baseAmplitude": "1/256",
+          "leadingEntryAtomFactor": "1/65536",
+          "leadingBareBudgetFactor": "1/16777216",
+          "ratioFactor": "256",
+          "scaledL2EnergyFactor": "1/256",
+          "scaledHOneHalfSquaredFactor": "1/16",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 32,
+          "baseAmplitude": "1/1024",
+          "leadingEntryAtomFactor": "1/1048576",
+          "leadingBareBudgetFactor": "1/1073741824",
+          "ratioFactor": "1024",
+          "scaledL2EnergyFactor": "1/1024",
+          "scaledHOneHalfSquaredFactor": "1/32",
+          "scaledEnstrophyFactor": "1"
+        },
+        {
+          "lambda": 64,
+          "baseAmplitude": "1/4096",
+          "leadingEntryAtomFactor": "1/16777216",
+          "leadingBareBudgetFactor": "1/68719476736",
+          "ratioFactor": "4096",
+          "scaledL2EnergyFactor": "1/4096",
+          "scaledHOneHalfSquaredFactor": "1/64",
+          "scaledEnstrophyFactor": "1"
+        }
+      ],
+      "boundary": "The contradiction concerns a universal bare normalized-Leray time-payment constant. It does not exclude constants depending on the full initial profile or a different scale-zero charge."
+    },
+    "scaleTable": {
+      "passed": true,
+      "convention": "D[u_lambda](t)=lambda^sigma*D[u](lambda^2*t)",
+      "rows": [
+        {
+          "quantity": "entry atom kappa^-2*A_plus",
+          "scaleExponent": 0
+        },
+        {
+          "quantity": "bare normalized Leray density",
+          "scaleExponent": 0
+        },
+        {
+          "quantity": "bare normalized Leray time integral",
+          "scaleExponent": -2
+        },
+        {
+          "quantity": "strong shell-Lamb density ||F_j||_2^2/Y",
+          "scaleExponent": 2
+        },
+        {
+          "quantity": "kappa^-2*|q_t|",
+          "scaleExponent": 2
+        },
+        {
+          "quantity": "kappa^-4*||F_j,t||_2^2/Y",
+          "scaleExponent": 2
+        },
+        {
+          "quantity": "outgoing occupation density",
+          "scaleExponent": 2
+        }
+      ]
+    }
+  },
+  "claimBoundary": "The certificate verifies finite algebra. The local NSE flow-map implicit-function theorem is proved in the report from standard classical well-posedness. No repeated-entry packing, Leray-level occupation bound, continuation criterion, singularity, or global regularity theorem is claimed."
+}

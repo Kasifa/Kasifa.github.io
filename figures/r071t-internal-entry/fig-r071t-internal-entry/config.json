@@ -1,0 +1,39 @@
+{
+  "release": "R0.71T",
+  "seed": "u_*(x)=(0,cos(x_1),cos(x_2))",
+  "periodicDomain": "(R/2piZ)^3",
+  "invariantSector": "x3-independent three-component velocity",
+  "target": "k3=0 and |k|^2=2",
+  "targetRealDimension": 8,
+  "viscosity": 1.0,
+  "tauValues": [0.005, 0.01, 0.02, 0.04, 0.08],
+  "trajectoryTau": 0.04,
+  "trajectorySamples": 161,
+  "primary": {
+    "method": "pseudo-spectral retained-mode Galerkin ODE",
+    "gridOrder": 10,
+    "cutoff": 2,
+    "integrator": "DOP853",
+    "relativeTolerance": 2e-11,
+    "absoluteTolerance": 2e-13,
+    "maximumStepFraction": 0.125,
+    "rootSolver": "hybr",
+    "rootTolerance": 2e-11
+  },
+  "independent": {
+    "method": "direct retained-mode Fourier convolution",
+    "sameTruncation": {"gridOrder": 10, "cutoff": 2},
+    "refinedTruncation": {"gridOrder": 12, "cutoff": 3},
+    "tau": 0.04,
+    "integrator": "DOP853",
+    "relativeTolerance": 8e-12,
+    "absoluteTolerance": 8e-14,
+    "maximumStepFraction": 0.09090909090909091,
+    "rootSolver": "hybr",
+    "rootTolerance": 1e-11
+  },
+  "finiteGalerkin": true,
+  "pdeTimeStepping": true,
+  "dns": false,
+  "randomSeed": null
+}

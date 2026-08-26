@@ -1,0 +1,1488 @@
+{
+  "claimBoundary": "Finite Fourier--Galerkin corroboration in an invariant sector. It is not DNS, a continuum error estimate, or a replacement for the local NSE flow-map implicit-function theorem.",
+  "method": "dealiased pseudo-spectral evaluation of a finite Fourier--Galerkin ODE",
+  "model": {
+    "cutoff": 2,
+    "dns": false,
+    "finiteGalerkin": true,
+    "gridOrder": 10,
+    "invariantSector": "x3-independent three-component velocity",
+    "pdeTimeStepping": true,
+    "periodicDomain": "(R/2piZ)^3",
+    "retainedModeCount": 24,
+    "retainedModeSet": "k3=0, max(|k1|,|k2|)<=Kcut, k!=0",
+    "target": "k3=0 and |k|^2=2",
+    "targetRealDimension": 8,
+    "viscosity": 1.0
+  },
+  "release": "R0.71T",
+  "seed": {
+    "enstrophy": 1.0,
+    "targetForcingCoordinates": [
+      0.0,
+      0.0,
+      6.280369834735101e-18,
+      -0.3535533905932738,
+      0.0,
+      0.0,
+      8.094402965184367e-18,
+      0.35355339059327384
+    ],
+    "targetForcingNorm": 0.5000000000000001,
+    "targetForcingNormSquared": 0.2500000000000001,
+    "velocity": "u_*(x)=(0,cos(x_1),cos(x_2))"
+  },
+  "solver": {
+    "absoluteTolerance": 2e-13,
+    "integrator": "SciPy solve_ivp DOP853",
+    "maximumStep": "final_time/8",
+    "precision": "IEEE binary64 complex Fourier coefficients",
+    "relativeTolerance": 2e-11,
+    "rootSolver": "SciPy hybr",
+    "rootTolerance": 2e-11
+  },
+  "status": "passed",
+  "tauRuns": [
+    {
+      "APlus": 0.24751552164436547,
+      "correctionCoordinates": [
+        2.302881868679465e-20,
+        1.3250778505900503e-20,
+        2.2124165364206028e-20,
+        0.001767777946605858,
+        -1.8707107242955507e-20,
+        -4.106126182973325e-21,
+        2.911196831801448e-20,
+        -0.00176777794660586
+      ],
+      "correctionNorm": 0.002500015547354067,
+      "eventEnstrophy": 0.9900560010999145,
+      "eventForcingNormSquared": 0.2450542275693798,
+      "integrationCalls": 14,
+      "leadingCorrectionNorm": 0.0025000000000000005,
+      "precompensationRatio": 1.0000062189416266,
+      "realityResidual": 6.883377625502394e-19,
+      "rhsEvaluations": 1372,
+      "rootCalls": 14,
+      "slopeCharge": 0.24751552164436547,
+      "slopeIdentityResidual": 0.0,
+      "targetResidual": 2.1270626390907802e-18,
+      "tau": 0.005,
+      "wallSeconds": 0.11475091695319861
+    },
+    {
+      "APlus": 0.24506167954791813,
+      "correctionCoordinates": [
+        -2.0045367607498836e-20,
+        3.874158201703034e-20,
+        3.531878619265373e-19,
+        0.0035356214211763807,
+        5.324598450748491e-20,
+        6.533885496000332e-20,
+        3.204501811433599e-19,
+        -0.00353562142117638
+      ],
+      "correctionNorm": 0.005000123765244474,
+      "eventEnstrophy": 0.9802230174911436,
+      "eventForcingNormSquared": 0.240215098997908,
+      "integrationCalls": 14,
+      "leadingCorrectionNorm": 0.005000000000000001,
+      "precompensationRatio": 1.0000247530488946,
+      "realityResidual": 5.424693219698351e-19,
+      "rhsEvaluations": 1372,
+      "rootCalls": 14,
+      "slopeCharge": 0.24506167954791813,
+      "slopeIdentityResidual": 0.0,
+      "targetResidual": 8.671577349511824e-19,
+      "tau": 0.01,
+      "wallSeconds": 0.11288716702256352
+    },
+    {
+      "APlus": 0.24024353643893112,
+      "correctionCoordinates": [
+        1.5793416715355539e-19,
+        -1.311726309343874e-19,
+        -1.483695481476818e-20,
+        0.007071761117643141,
+        -1.569151900279145e-19,
+        -1.0638122950310257e-19,
+        -9.746141118677058e-20,
+        -0.00707176111764314
+      ],
+      "correctionNorm": 0.010000980482433646,
+      "eventEnstrophy": 0.9608842765199841,
+      "eventForcingNormSquared": 0.23084623669972476,
+      "integrationCalls": 14,
+      "leadingCorrectionNorm": 0.010000000000000002,
+      "precompensationRatio": 1.0000980482433643,
+      "realityResidual": 3.2610577992481843e-18,
+      "rhsEvaluations": 1372,
+      "rootCalls": 14,
+      "slopeCharge": 0.24024353643893112,
+      "slopeIdentityResidual": 0.0,
+      "targetResidual": 5.193226115449622e-18,
+      "tau": 0.02,
+      "wallSeconds": 0.11399183300090954
+    },
+    {
+      "APlus": 0.23094982389044239,
+      "correctionCoordinates": [
+        -6.205879600095354e-19,
+        2.272895316328694e-19,
+        3.648485939092135e-17,
+        0.014147576884005607,
+        8.694611304133713e-19,
+        6.10104157166617e-19,
+        4.088508078212468e-17,
+        -0.014147576884005603
+      ],
+      "correctionNorm": 0.02000769510407682,
+      "eventEnstrophy": 0.9234763234782893,
+      "eventForcingNormSquared": 0.21327669427430412,
+      "integrationCalls": 14,
+      "leadingCorrectionNorm": 0.020000000000000004,
+      "precompensationRatio": 1.0003847552038407,
+      "realityResidual": 1.5263134250180594e-18,
+      "rhsEvaluations": 1372,
+      "rootCalls": 14,
+      "slopeCharge": 0.23094982389044239,
+      "slopeIdentityResidual": 0.0,
+      "targetResidual": 4.9292573317828963e-17,
+      "tau": 0.04,
+      "wallSeconds": 0.11494820896768942
+    },
+    {
+      "APlus": 0.213621092481932,
+      "correctionCoordinates": [
+        -1.334852969257519e-19,
+        -4.77835103954769e-19,
+        6.157935579586325e-19,
+        0.0283262332886219,
+        -5.118989953694952e-19,
+        -3.1429094156011034e-19,
+        -5.1549401468174106e-18,
+        -0.0283262332886219
+      ],
+      "correctionNorm": 0.04005934328771333,
+      "eventEnstrophy": 0.8534422768859786,
+      "eventForcingNormSquared": 0.18231327155865026,
+      "integrationCalls": 15,
+      "leadingCorrectionNorm": 0.04000000000000001,
+      "precompensationRatio": 1.001483582192833,
+      "realityResidual": 4.414132342469303e-18,
+      "rhsEvaluations": 1470,
+      "rootCalls": 15,
+      "slopeCharge": 0.213621092481932,
+      "slopeIdentityResidual": 0.0,
+      "targetResidual": 7.847958293905905e-18,
+      "tau": 0.08,
+      "wallSeconds": 0.12158795801224187
+    }
+  ],
+  "trajectory": {
+    "eventDirection": [
+      -9.843111054958315e-19,
+      1.777417421549374e-18,
+      -4.523975260712969e-17,
+      -0.7071067811865476,
+      -3.6868996353585306e-18,
+      4.062529083336174e-18,
+      -1.511132946220009e-17,
+      0.7071067811865476
+    ],
+    "eventTargetResidual": 4.9751086708851616e-17,
+    "normalization": "tau*||P_*F(u_*)||_2",
+    "samples": [
+      {
+        "principalCoefficient": -0.020007695104076823,
+        "principalNormalized": -1.000384755203841,
+        "time": 0.0,
+        "timeOverTau": 0.0,
+        "transverseNorm": 5.4263778655157524e-17,
+        "transverseNormalized": 2.713188932757876e-15
+      },
+      {
+        "principalCoefficient": -0.01973794541952161,
+        "principalNormalized": -0.9868972709760804,
+        "time": 0.0005,
+        "timeOverTau": 0.0125,
+        "transverseNorm": 5.4056259259575665e-17,
+        "transverseNormalized": 2.7028129629787827e-15
+      },
+      {
+        "principalCoefficient": -0.01946871128597162,
+        "principalNormalized": -0.9734355642985809,
+        "time": 0.001,
+        "timeOverTau": 0.025,
+        "transverseNorm": 5.4014332829986665e-17,
+        "transverseNormalized": 2.7007166414993327e-15
+      },
+      {
+        "principalCoefficient": -0.019199991998775343,
+        "principalNormalized": -0.9599995999387669,
+        "time": 0.0015,
+        "timeOverTau": 0.0375,
+        "transverseNorm": 5.3972210467233176e-17,
+        "transverseNormalized": 2.6986105233616584e-15
+      },
+      {
+        "principalCoefficient": -0.018931786853931227,
+        "principalNormalized": -0.9465893426965611,
+        "time": 0.002,
+        "timeOverTau": 0.05,
+        "transverseNorm": 5.392969941138785e-17,
+        "transverseNormalized": 2.6964849705693918e-15
+      },
+      {
+        "principalCoefficient": -0.01866409514808788,
+        "principalNormalized": -0.9332047574043939,
+        "time": 0.0025,
+        "timeOverTau": 0.0625,
+        "transverseNorm": 5.405292370515998e-17,
+        "transverseNormalized": 2.7026461852579983e-15
+      },
+      {
+        "principalCoefficient": -0.018396916178544324,
+        "principalNormalized": -0.919845808927216,
+        "time": 0.003,
+        "timeOverTau": 0.075,
+        "transverseNorm": 5.383822406235099e-17,
+        "transverseNormalized": 2.691911203117549e-15
+      },
+      {
+        "principalCoefficient": -0.018130249243250234,
+        "principalNormalized": -0.9065124621625115,
+        "time": 0.0035,
+        "timeOverTau": 0.0875,
+        "transverseNorm": 5.395294105905656e-17,
+        "transverseNormalized": 2.697647052952827e-15
+      },
+      {
+        "principalCoefficient": -0.017864093640806145,
+        "principalNormalized": -0.8932046820403071,
+        "time": 0.004,
+        "timeOverTau": 0.1,
+        "transverseNorm": 5.366917733138331e-17,
+        "transverseNormalized": 2.683458866569165e-15
+      },
+      {
+        "principalCoefficient": -0.01759844867046371,
+        "principalNormalized": -0.8799224335231854,
+        "time": 0.0045000000000000005,
+        "timeOverTau": 0.11250000000000002,
+        "transverseNorm": 5.3768822226728684e-17,
+        "transverseNormalized": 2.6884411113364335e-15
+      },
+      {
+        "principalCoefficient": -0.017333313632125907,
+        "principalNormalized": -0.8666656816062952,
+        "time": 0.005,
+        "timeOverTau": 0.125,
+        "transverseNorm": 5.352398012811763e-17,
+        "transverseNormalized": 2.676199006405881e-15
+      },
+      {
+        "principalCoefficient": -0.017068687826347243,
+        "principalNormalized": -0.853434391317362,
+        "time": 0.0055,
+        "timeOverTau": 0.13749999999999998,
+        "transverseNorm": 5.3412645550754914e-17,
+        "transverseNormalized": 2.670632277537745e-15
+      },
+      {
+        "principalCoefficient": -0.016804570554334004,
+        "principalNormalized": -0.8402285277167,
+        "time": 0.006,
+        "timeOverTau": 0.15,
+        "transverseNorm": 5.3410787422703e-17,
+        "transverseNormalized": 2.6705393711351495e-15
+      },
+      {
+        "principalCoefficient": -0.016540961117944435,
+        "principalNormalized": -0.8270480558972216,
+        "time": 0.006500000000000001,
+        "timeOverTau": 0.1625,
+        "transverseNorm": 5.324127326039407e-17,
+        "transverseNormalized": 2.662063663019703e-15
+      },
+      {
+        "principalCoefficient": -0.016277858819688976,
+        "principalNormalized": -0.8138929409844486,
+        "time": 0.007,
+        "timeOverTau": 0.175,
+        "transverseNorm": 5.316356387374056e-17,
+        "transverseNormalized": 2.6581781936870275e-15
+      },
+      {
+        "principalCoefficient": -0.016015262962730436,
+        "principalNormalized": -0.8007631481365216,
+        "time": 0.0075,
+        "timeOverTau": 0.1875,
+        "transverseNorm": 5.309898619922584e-17,
+        "transverseNormalized": 2.6549493099612914e-15
+      },
+      {
+        "principalCoefficient": -0.015753172850884224,
+        "principalNormalized": -0.787658642544211,
+        "time": 0.008,
+        "timeOverTau": 0.2,
+        "transverseNorm": 5.313741183325148e-17,
+        "transverseNormalized": 2.6568705916625737e-15
+      },
+      {
+        "principalCoefficient": -0.015491587788618533,
+        "principalNormalized": -0.7745793894309265,
+        "time": 0.0085,
+        "timeOverTau": 0.21250000000000002,
+        "transverseNorm": 5.311089537487976e-17,
+        "transverseNormalized": 2.6555447687439876e-15
+      },
+      {
+        "principalCoefficient": -0.015230507081054525,
+        "principalNormalized": -0.7615253540527261,
+        "time": 0.009000000000000001,
+        "timeOverTau": 0.22500000000000003,
+        "transverseNorm": 5.3101203626076517e-17,
+        "transverseNormalized": 2.6550601813038255e-15
+      },
+      {
+        "principalCoefficient": -0.014969930033966544,
+        "principalNormalized": -0.748496501698327,
+        "time": 0.0095,
+        "timeOverTau": 0.2375,
+        "transverseNorm": 5.3096780200531354e-17,
+        "transverseNormalized": 2.654839010026567e-15
+      },
+      {
+        "principalCoefficient": -0.014709855953782287,
+        "principalNormalized": -0.7354927976891142,
+        "time": 0.01,
+        "timeOverTau": 0.25,
+        "transverseNorm": 5.2988618511225925e-17,
+        "transverseNormalized": 2.649430925561296e-15
+      },
+      {
+        "principalCoefficient": -0.014450284147582987,
+        "principalNormalized": -0.7225142073791492,
+        "time": 0.0105,
+        "timeOverTau": 0.2625,
+        "transverseNorm": 5.295159667500311e-17,
+        "transverseNormalized": 2.647579833750155e-15
+      },
+      {
+        "principalCoefficient": -0.014191213923103605,
+        "principalNormalized": -0.7095606961551801,
+        "time": 0.011,
+        "timeOverTau": 0.27499999999999997,
+        "transverseNorm": 5.3004271785653694e-17,
+        "transverseNormalized": 2.6502135892826843e-15
+      },
+      {
+        "principalCoefficient": -0.013932644588732989,
+        "principalNormalized": -0.6966322294366493,
+        "time": 0.0115,
+        "timeOverTau": 0.2875,
+        "transverseNorm": 5.288353236351261e-17,
+        "transverseNormalized": 2.64417661817563e-15
+      },
+      {
+        "principalCoefficient": -0.013674575453514066,
+        "principalNormalized": -0.6837287726757032,
+        "time": 0.012,
+        "timeOverTau": 0.3,
+        "transverseNorm": 5.284328164150105e-17,
+        "transverseNormalized": 2.642164082075052e-15
+      },
+      {
+        "principalCoefficient": -0.013417005827144004,
+        "principalNormalized": -0.6708502913572001,
+        "time": 0.0125,
+        "timeOverTau": 0.3125,
+        "transverseNorm": 5.288331870520065e-17,
+        "transverseNormalized": 2.644165935260032e-15
+      },
+      {
+        "principalCoefficient": -0.013159935019974369,
+        "principalNormalized": -0.6579967509987183,
+        "time": 0.013000000000000001,
+        "timeOverTau": 0.325,
+        "transverseNorm": 5.2831588555294027e-17,
+        "transverseNormalized": 2.641579427764701e-15
+      },
+      {
+        "principalCoefficient": -0.012903362343011305,
+        "principalNormalized": -0.6451681171505651,
+        "time": 0.0135,
+        "timeOverTau": 0.33749999999999997,
+        "transverseNorm": 5.2770594708425814e-17,
+        "transverseNormalized": 2.6385297354212903e-15
+      },
+      {
+        "principalCoefficient": -0.012647287107915677,
+        "principalNormalized": -0.6323643553957837,
+        "time": 0.014,
+        "timeOverTau": 0.35,
+        "transverseNorm": 5.263931869464174e-17,
+        "transverseNormalized": 2.6319659347320863e-15
+      },
+      {
+        "principalCoefficient": -0.012391708627003242,
+        "principalNormalized": -0.619585431350162,
+        "time": 0.0145,
+        "timeOverTau": 0.3625,
+        "transverseNorm": 5.260551752283005e-17,
+        "transverseNormalized": 2.630275876141502e-15
+      },
+      {
+        "principalCoefficient": -0.012136626213244787,
+        "principalNormalized": -0.6068313106622393,
+        "time": 0.015,
+        "timeOverTau": 0.375,
+        "transverseNorm": 5.263901302781902e-17,
+        "transverseNormalized": 2.6319506513909503e-15
+      },
+      {
+        "principalCoefficient": -0.011882039180266288,
+        "principalNormalized": -0.5941019590133143,
+        "time": 0.0155,
+        "timeOverTau": 0.3875,
+        "transverseNorm": 5.228264328613455e-17,
+        "transverseNormalized": 2.6141321643067267e-15
+      },
+      {
+        "principalCoefficient": -0.011627946842349059,
+        "principalNormalized": -0.5813973421174529,
+        "time": 0.016,
+        "timeOverTau": 0.4,
+        "transverseNorm": 5.214355695911338e-17,
+        "transverseNormalized": 2.6071778479556684e-15
+      },
+      {
+        "principalCoefficient": -0.011374348514429878,
+        "principalNormalized": -0.5687174257214938,
+        "time": 0.0165,
+        "timeOverTau": 0.41250000000000003,
+        "transverseNorm": 5.200266138838974e-17,
+        "transverseNormalized": 2.6001330694194865e-15
+      },
+      {
+        "principalCoefficient": -0.011121243512101149,
+        "principalNormalized": -0.5560621756050573,
+        "time": 0.017,
+        "timeOverTau": 0.42500000000000004,
+        "transverseNorm": 5.1874138334156096e-17,
+        "transverseNormalized": 2.5937069167078044e-15
+      },
+      {
+        "principalCoefficient": -0.010868631151611016,
+        "principalNormalized": -0.5434315575805506,
+        "time": 0.0175,
+        "timeOverTau": 0.43750000000000006,
+        "transverseNorm": 5.181830573037258e-17,
+        "transverseNormalized": 2.5909152865186286e-15
+      },
+      {
+        "principalCoefficient": -0.010616510749863514,
+        "principalNormalized": -0.5308255374931756,
+        "time": 0.018000000000000002,
+        "timeOverTau": 0.45000000000000007,
+        "transverseNorm": 5.175703886627072e-17,
+        "transverseNormalized": 2.5878519433135354e-15
+      },
+      {
+        "principalCoefficient": -0.010364881624418685,
+        "principalNormalized": -0.5182440812209341,
+        "time": 0.0185,
+        "timeOverTau": 0.46249999999999997,
+        "transverseNorm": 5.1758795559788527e-17,
+        "transverseNormalized": 2.587939777989426e-15
+      },
+      {
+        "principalCoefficient": -0.010113743093492705,
+        "principalNormalized": -0.5056871546746351,
+        "time": 0.019,
+        "timeOverTau": 0.475,
+        "transverseNorm": 5.18124942702297e-17,
+        "transverseNormalized": 2.5906247135114844e-15
+      },
+      {
+        "principalCoefficient": -0.009863094475958019,
+        "principalNormalized": -0.4931547237979009,
+        "time": 0.0195,
+        "timeOverTau": 0.4875,
+        "transverseNorm": 5.1887636907523494e-17,
+        "transverseNormalized": 2.594381845376174e-15
+      },
+      {
+        "principalCoefficient": -0.009612935091343446,
+        "principalNormalized": -0.4806467545671722,
+        "time": 0.02,
+        "timeOverTau": 0.5,
+        "transverseNorm": 5.1910746114259216e-17,
+        "transverseNormalized": 2.5955373057129603e-15
+      },
+      {
+        "principalCoefficient": -0.009363264259834303,
+        "principalNormalized": -0.46816321299171504,
+        "time": 0.0205,
+        "timeOverTau": 0.5125,
+        "transverseNorm": 5.1820227053779854e-17,
+        "transverseNormalized": 2.591011352688992e-15
+      },
+      {
+        "principalCoefficient": -0.009114081302272523,
+        "principalNormalized": -0.45570406511362604,
+        "time": 0.021,
+        "timeOverTau": 0.525,
+        "transverseNorm": 5.1833758394518054e-17,
+        "transverseNormalized": 2.591687919725902e-15
+      },
+      {
+        "principalCoefficient": -0.008865385540156746,
+        "principalNormalized": -0.4432692770078372,
+        "time": 0.021500000000000002,
+        "timeOverTau": 0.5375,
+        "transverseNorm": 5.179682339174762e-17,
+        "transverseNormalized": 2.5898411695873805e-15
+      },
+      {
+        "principalCoefficient": -0.008617176295642449,
+        "principalNormalized": -0.43085881478212235,
+        "time": 0.022,
+        "timeOverTau": 0.5499999999999999,
+        "transverseNorm": 5.1808810148458503e-17,
+        "transverseNormalized": 2.5904405074229246e-15
+      },
+      {
+        "principalCoefficient": -0.008369452891542027,
+        "principalNormalized": -0.41847264457710126,
+        "time": 0.0225,
+        "timeOverTau": 0.5625,
+        "transverseNorm": 5.183080431700759e-17,
+        "transverseNormalized": 2.5915402158503793e-15
+      },
+      {
+        "principalCoefficient": -0.00812221465132492,
+        "principalNormalized": -0.4061107325662459,
+        "time": 0.023,
+        "timeOverTau": 0.575,
+        "transverseNorm": 5.1780083846469724e-17,
+        "transverseNormalized": 2.5890041923234858e-15
+      },
+      {
+        "principalCoefficient": -0.007875460899117684,
+        "principalNormalized": -0.3937730449558841,
+        "time": 0.0235,
+        "timeOverTau": 0.5875,
+        "transverseNorm": 5.1770079618279125e-17,
+        "transverseNormalized": 2.588503980913956e-15
+      },
+      {
+        "principalCoefficient": -0.0076291909597040975,
+        "principalNormalized": -0.3814595479852048,
+        "time": 0.024,
+        "timeOverTau": 0.6,
+        "transverseNorm": 5.184231879363564e-17,
+        "transverseNormalized": 2.5921159396817813e-15
+      },
+      {
+        "principalCoefficient": -0.00738340415852525,
+        "principalNormalized": -0.36917020792626243,
+        "time": 0.0245,
+        "timeOverTau": 0.6125,
+        "transverseNorm": 5.191605743494975e-17,
+        "transverseNormalized": 2.595802871747487e-15
+      },
+      {
+        "principalCoefficient": -0.007138099821679632,
+        "principalNormalized": -0.3569049910839815,
+        "time": 0.025,
+        "timeOverTau": 0.625,
+        "transverseNorm": 5.172395935522154e-17,
+        "transverseNormalized": 2.5861979677610763e-15
+      },
+      {
+        "principalCoefficient": -0.006893277275923218,
+        "principalNormalized": -0.3446638637961608,
+        "time": 0.025500000000000002,
+        "timeOverTau": 0.6375000000000001,
+        "transverseNorm": 5.171195388018059e-17,
+        "transverseNormalized": 2.5855976940090287e-15
+      },
+      {
+        "principalCoefficient": -0.006648935848669549,
+        "principalNormalized": -0.33244679243347736,
+        "time": 0.026000000000000002,
+        "timeOverTau": 0.65,
+        "transverseNorm": 5.144154325302111e-17,
+        "transverseNormalized": 2.572077162651055e-15
+      },
+      {
+        "principalCoefficient": -0.006405074867989806,
+        "principalNormalized": -0.32025374339949025,
+        "time": 0.0265,
+        "timeOverTau": 0.6625,
+        "transverseNorm": 5.132098873237494e-17,
+        "transverseNormalized": 2.5660494366187466e-15
+      },
+      {
+        "principalCoefficient": -0.006161693662612892,
+        "principalNormalized": -0.3080846831306445,
+        "time": 0.027,
+        "timeOverTau": 0.6749999999999999,
+        "transverseNorm": 5.116210348721357e-17,
+        "transverseNormalized": 2.558105174360678e-15
+      },
+      {
+        "principalCoefficient": -0.005918791561925499,
+        "principalNormalized": -0.29593957809627486,
+        "time": 0.0275,
+        "timeOverTau": 0.6875,
+        "transverseNorm": 5.0973493081200975e-17,
+        "transverseNormalized": 2.548674654060048e-15
+      },
+      {
+        "principalCoefficient": -0.005676367895972185,
+        "principalNormalized": -0.2838183947986092,
+        "time": 0.028,
+        "timeOverTau": 0.7,
+        "transverseNorm": 5.0895087678279146e-17,
+        "transverseNormalized": 2.544754383913957e-15
+      },
+      {
+        "principalCoefficient": -0.00543442199545543,
+        "principalNormalized": -0.2717210997727714,
+        "time": 0.0285,
+        "timeOverTau": 0.7125,
+        "transverseNorm": 5.0813276558251715e-17,
+        "transverseNormalized": 2.540663827912585e-15
+      },
+      {
+        "principalCoefficient": -0.005192953191735706,
+        "principalNormalized": -0.2596476595867852,
+        "time": 0.029,
+        "timeOverTau": 0.725,
+        "transverseNorm": 5.07997883844122e-17,
+        "transverseNormalized": 2.5399894192206096e-15
+      },
+      {
+        "principalCoefficient": -0.004951960816831535,
+        "principalNormalized": -0.2475980408415767,
+        "time": 0.029500000000000002,
+        "timeOverTau": 0.7375,
+        "transverseNorm": 5.083912933277256e-17,
+        "transverseNormalized": 2.5419564666386276e-15
+      },
+      {
+        "principalCoefficient": -0.00471144420341955,
+        "principalNormalized": -0.23557221017097746,
+        "time": 0.03,
+        "timeOverTau": 0.75,
+        "transverseNorm": 5.080402009758639e-17,
+        "transverseNormalized": 2.540201004879319e-15
+      },
+      {
+        "principalCoefficient": -0.004471402684834537,
+        "principalNormalized": -0.22357013424172684,
+        "time": 0.0305,
+        "timeOverTau": 0.7625,
+        "transverseNorm": 5.0735838316270626e-17,
+        "transverseNormalized": 2.536791915813531e-15
+      },
+      {
+        "principalCoefficient": -0.004231835595069506,
+        "principalNormalized": -0.21159177975347523,
+        "time": 0.031,
+        "timeOverTau": 0.775,
+        "transverseNorm": 5.070810568396632e-17,
+        "transverseNormalized": 2.5354052841983157e-15
+      },
+      {
+        "principalCoefficient": -0.003992742268775719,
+        "principalNormalized": -0.19963711343878593,
+        "time": 0.0315,
+        "timeOverTau": 0.7875,
+        "transverseNorm": 5.0666708953005435e-17,
+        "transverseNormalized": 2.533335447650271e-15
+      },
+      {
+        "principalCoefficient": -0.0037541220412627505,
+        "principalNormalized": -0.18770610206313748,
+        "time": 0.032,
+        "timeOverTau": 0.8,
+        "transverseNorm": 5.063282901648841e-17,
+        "transverseNormalized": 2.53164145082442e-15
+      },
+      {
+        "principalCoefficient": -0.003515974248498523,
+        "principalNormalized": -0.17579871242492612,
+        "time": 0.0325,
+        "timeOverTau": 0.8125,
+        "transverseNorm": 5.05970746951555e-17,
+        "transverseNormalized": 2.5298537347577747e-15
+      },
+      {
+        "principalCoefficient": -0.003278298227109346,
+        "principalNormalized": -0.16391491135546726,
+        "time": 0.033,
+        "timeOverTau": 0.8250000000000001,
+        "transverseNorm": 5.054879402098992e-17,
+        "transverseNormalized": 2.5274397010494958e-15
+      },
+      {
+        "principalCoefficient": -0.003041093314379955,
+        "principalNormalized": -0.15205466571899773,
+        "time": 0.0335,
+        "timeOverTau": 0.8375,
+        "transverseNorm": 5.049230988131856e-17,
+        "transverseNormalized": 2.5246154940659276e-15
+      },
+      {
+        "principalCoefficient": -0.0028043588482535454,
+        "principalNormalized": -0.14021794241267724,
+        "time": 0.034,
+        "timeOverTau": 0.8500000000000001,
+        "transverseNorm": 5.042762776645131e-17,
+        "transverseNormalized": 2.5213813883225647e-15
+      },
+      {
+        "principalCoefficient": -0.0025680941673318003,
+        "principalNormalized": -0.12840470836659,
+        "time": 0.0345,
+        "timeOverTau": 0.8625,
+        "transverseNorm": 5.0353154586031194e-17,
+        "transverseNormalized": 2.517657729301559e-15
+      },
+      {
+        "principalCoefficient": -0.0023322986108749227,
+        "principalNormalized": -0.11661493054374611,
+        "time": 0.035,
+        "timeOverTau": 0.8750000000000001,
+        "transverseNorm": 5.0261551005593444e-17,
+        "transverseNormalized": 2.5130775502796716e-15
+      },
+      {
+        "principalCoefficient": -0.0020969715188016557,
+        "principalNormalized": -0.10484857594008276,
+        "time": 0.035500000000000004,
+        "timeOverTau": 0.8875000000000001,
+        "transverseNorm": 5.015060036839289e-17,
+        "transverseNormalized": 2.507530018419644e-15
+      },
+      {
+        "principalCoefficient": -0.001862112231689309,
+        "principalNormalized": -0.09310561158446543,
+        "time": 0.036000000000000004,
+        "timeOverTau": 0.9000000000000001,
+        "transverseNorm": 5.004928625651247e-17,
+        "transverseNormalized": 2.5024643128256233e-15
+      },
+      {
+        "principalCoefficient": -0.0016277200907737798,
+        "principalNormalized": -0.08138600453868898,
+        "time": 0.0365,
+        "timeOverTau": 0.9125,
+        "transverseNorm": 4.9944937119428116e-17,
+        "transverseNormalized": 2.497246855971405e-15
+      },
+      {
+        "principalCoefficient": -0.0013937944379495571,
+        "principalNormalized": -0.06968972189747784,
+        "time": 0.037,
+        "timeOverTau": 0.9249999999999999,
+        "transverseNorm": 4.9865645167133167e-17,
+        "transverseNormalized": 2.4932822583566577e-15
+      },
+      {
+        "principalCoefficient": -0.0011603346157697527,
+        "principalNormalized": -0.058016730788487625,
+        "time": 0.0375,
+        "timeOverTau": 0.9375,
+        "transverseNorm": 4.979743823762441e-17,
+        "transverseNormalized": 2.48987191188122e-15
+      },
+      {
+        "principalCoefficient": -0.000927339967446101,
+        "principalNormalized": -0.04636699837230504,
+        "time": 0.038,
+        "timeOverTau": 0.95,
+        "transverseNorm": 4.974638899402208e-17,
+        "transverseNormalized": 2.487319449701104e-15
+      },
+      {
+        "principalCoefficient": -0.000694809836848971,
+        "principalNormalized": -0.03474049184244854,
+        "time": 0.0385,
+        "timeOverTau": 0.9625,
+        "transverseNorm": 4.975384549043279e-17,
+        "transverseNormalized": 2.487692274521639e-15
+      },
+      {
+        "principalCoefficient": -0.0004627435685073713,
+        "principalNormalized": -0.023137178425368558,
+        "time": 0.039,
+        "timeOverTau": 0.975,
+        "transverseNorm": 4.975022172699613e-17,
+        "transverseNormalized": 2.487511086349806e-15
+      },
+      {
+        "principalCoefficient": -0.00023114050760895093,
+        "principalNormalized": -0.011557025380447544,
+        "time": 0.0395,
+        "timeOverTau": 0.9875,
+        "transverseNorm": 4.9767429105742e-17,
+        "transverseNormalized": 2.4883714552870996e-15
+      },
+      {
+        "principalCoefficient": -2.024021151497329e-33,
+        "principalNormalized": -1.0120105757486644e-31,
+        "time": 0.04,
+        "timeOverTau": 1.0,
+        "transverseNorm": 4.9751086708851616e-17,
+        "transverseNormalized": 2.4875543354425805e-15
+      },
+      {
+        "principalCoefficient": 0.00023067860781454978,
+        "principalNormalized": 0.011533930390727486,
+        "time": 0.0405,
+        "timeOverTau": 1.0125,
+        "transverseNorm": 4.970513667974469e-17,
+        "transverseNormalized": 2.485256833987234e-15
+      },
+      {
+        "principalCoefficient": 0.00046089596867113637,
+        "principalNormalized": 0.023044798433556814,
+        "time": 0.041,
+        "timeOverTau": 1.025,
+        "transverseNorm": 4.9665330896444977e-17,
+        "transverseNormalized": 2.4832665448222484e-15
+      },
+      {
+        "principalCoefficient": 0.000690652734747572,
+        "principalNormalized": 0.034532636737378594,
+        "time": 0.0415,
+        "timeOverTau": 1.0375,
+        "transverseNorm": 4.962674967448183e-17,
+        "transverseNormalized": 2.4813374837240907e-15
+      },
+      {
+        "principalCoefficient": 0.0009199495575630552,
+        "principalNormalized": 0.04599747787815275,
+        "time": 0.042,
+        "timeOverTau": 1.05,
+        "transverseNorm": 4.959104852751648e-17,
+        "transverseNormalized": 2.4795524263758233e-15
+      },
+      {
+        "principalCoefficient": 0.001148787087978184,
+        "principalNormalized": 0.05743935439890919,
+        "time": 0.0425,
+        "timeOverTau": 1.0625,
+        "transverseNorm": 4.954544683952632e-17,
+        "transverseNormalized": 2.477272341976315e-15
+      },
+      {
+        "principalCoefficient": 0.0013771659761949739,
+        "principalNormalized": 0.06885829880974868,
+        "time": 0.043000000000000003,
+        "timeOverTau": 1.075,
+        "transverseNorm": 4.9491423999986496e-17,
+        "transverseNormalized": 2.4745711999993244e-15
+      },
+      {
+        "principalCoefficient": 0.001605086871756874,
+        "principalNormalized": 0.08025434358784368,
+        "time": 0.043500000000000004,
+        "timeOverTau": 1.0875000000000001,
+        "transverseNorm": 4.9425759563408015e-17,
+        "transverseNormalized": 2.4712879781704004e-15
+      },
+      {
+        "principalCoefficient": 0.001832550423548789,
+        "principalNormalized": 0.09162752117743943,
+        "time": 0.044,
+        "timeOverTau": 1.0999999999999999,
+        "transverseNorm": 4.93522573977362e-17,
+        "transverseNormalized": 2.4676128698868097e-15
+      },
+      {
+        "principalCoefficient": 0.0020595572797971152,
+        "principalNormalized": 0.10297786398985574,
+        "time": 0.0445,
+        "timeOverTau": 1.1124999999999998,
+        "transverseNorm": 4.924953176534886e-17,
+        "transverseNormalized": 2.4624765882674425e-15
+      },
+      {
+        "principalCoefficient": 0.0022861080880697444,
+        "principalNormalized": 0.1143054044034872,
+        "time": 0.045,
+        "timeOverTau": 1.125,
+        "transverseNorm": 4.9137783982111746e-17,
+        "transverseNormalized": 2.456889199105587e-15
+      },
+      {
+        "principalCoefficient": 0.002512203495276115,
+        "principalNormalized": 0.12561017476380573,
+        "time": 0.0455,
+        "timeOverTau": 1.1375,
+        "transverseNorm": 4.901787530079299e-17,
+        "transverseNormalized": 2.450893765039649e-15
+      },
+      {
+        "principalCoefficient": 0.0027378441476672314,
+        "principalNormalized": 0.13689220738336155,
+        "time": 0.046,
+        "timeOverTau": 1.15,
+        "transverseNorm": 4.89116160995874e-17,
+        "transverseNormalized": 2.4455808049793694e-15
+      },
+      {
+        "principalCoefficient": 0.0029630306908357052,
+        "principalNormalized": 0.14815153454178523,
+        "time": 0.0465,
+        "timeOverTau": 1.1624999999999999,
+        "transverseNorm": 4.8783949794662475e-17,
+        "transverseNormalized": 2.439197489733123e-15
+      },
+      {
+        "principalCoefficient": 0.0031877637697157917,
+        "principalNormalized": 0.15938818848578956,
+        "time": 0.047,
+        "timeOverTau": 1.175,
+        "transverseNorm": 4.868793802799746e-17,
+        "transverseNormalized": 2.4343969013998724e-15
+      },
+      {
+        "principalCoefficient": 0.003412044028583427,
+        "principalNormalized": 0.17060220142917132,
+        "time": 0.0475,
+        "timeOverTau": 1.1875,
+        "transverseNorm": 4.8629241271350146e-17,
+        "transverseNormalized": 2.431462063567507e-15
+      },
+      {
+        "principalCoefficient": 0.003635872111056276,
+        "principalNormalized": 0.18179360555281376,
+        "time": 0.048,
+        "timeOverTau": 1.2,
+        "transverseNorm": 4.856861423261643e-17,
+        "transverseNormalized": 2.428430711630821e-15
+      },
+      {
+        "principalCoefficient": 0.003859248660093771,
+        "principalNormalized": 0.19296243300468852,
+        "time": 0.0485,
+        "timeOverTau": 1.2125,
+        "transverseNorm": 4.859931479615975e-17,
+        "transverseNormalized": 2.4299657398079872e-15
+      },
+      {
+        "principalCoefficient": 0.004082174317997165,
+        "principalNormalized": 0.2041087158998582,
+        "time": 0.049,
+        "timeOverTau": 1.225,
+        "transverseNorm": 4.8610529607631827e-17,
+        "transverseNormalized": 2.430526480381591e-15
+      },
+      {
+        "principalCoefficient": 0.004304649726409578,
+        "principalNormalized": 0.21523248632047887,
+        "time": 0.0495,
+        "timeOverTau": 1.2375,
+        "transverseNorm": 4.867254324857472e-17,
+        "transverseNormalized": 2.4336271624287353e-15
+      },
+      {
+        "principalCoefficient": 0.004526675526316054,
+        "principalNormalized": 0.22633377631580265,
+        "time": 0.05,
+        "timeOverTau": 1.25,
+        "transverseNorm": 4.865939895733635e-17,
+        "transverseNormalized": 2.432969947866817e-15
+      },
+      {
+        "principalCoefficient": 0.0047482523580436135,
+        "principalNormalized": 0.23741261790218063,
+        "time": 0.0505,
+        "timeOverTau": 1.2625,
+        "transverseNorm": 4.863745740451693e-17,
+        "transverseNormalized": 2.4318728702258462e-15
+      },
+      {
+        "principalCoefficient": 0.004969380861261309,
+        "principalNormalized": 0.2484690430630654,
+        "time": 0.051000000000000004,
+        "timeOverTau": 1.2750000000000001,
+        "transverseNorm": 4.8630339544260284e-17,
+        "transverseNormalized": 2.431516977213014e-15
+      },
+      {
+        "principalCoefficient": 0.00519006167498029,
+        "principalNormalized": 0.25950308374901443,
+        "time": 0.051500000000000004,
+        "timeOverTau": 1.2875,
+        "transverseNorm": 4.8575039441892876e-17,
+        "transverseNormalized": 2.4287519720946433e-15
+      },
+      {
+        "principalCoefficient": 0.005410295437553864,
+        "principalNormalized": 0.2705147718776931,
+        "time": 0.052000000000000005,
+        "timeOverTau": 1.3,
+        "transverseNorm": 4.8510723967170046e-17,
+        "transverseNormalized": 2.4255361983585018e-15
+      },
+      {
+        "principalCoefficient": 0.005630082786677559,
+        "principalNormalized": 0.2815041393338779,
+        "time": 0.0525,
+        "timeOverTau": 1.3125,
+        "transverseNorm": 4.852112729663329e-17,
+        "transverseNormalized": 2.426056364831664e-15
+      },
+      {
+        "principalCoefficient": 0.005849424359389201,
+        "principalNormalized": 0.29247121796946,
+        "time": 0.053,
+        "timeOverTau": 1.325,
+        "transverseNorm": 4.845201861850281e-17,
+        "transverseNormalized": 2.42260093092514e-15
+      },
+      {
+        "principalCoefficient": 0.006068320792068972,
+        "principalNormalized": 0.30341603960344854,
+        "time": 0.0535,
+        "timeOverTau": 1.3375,
+        "transverseNorm": 4.843765276778753e-17,
+        "transverseNormalized": 2.421882638389376e-15
+      },
+      {
+        "principalCoefficient": 0.006286772720439486,
+        "principalNormalized": 0.31433863602197426,
+        "time": 0.054,
+        "timeOverTau": 1.3499999999999999,
+        "transverseNorm": 4.8419238517955974e-17,
+        "transverseNormalized": 2.420961925897798e-15
+      },
+      {
+        "principalCoefficient": 0.006504780779565869,
+        "principalNormalized": 0.3252390389782934,
+        "time": 0.0545,
+        "timeOverTau": 1.3625,
+        "transverseNorm": 4.8363350477739476e-17,
+        "transverseNormalized": 2.4181675238869733e-15
+      },
+      {
+        "principalCoefficient": 0.006722345603855833,
+        "principalNormalized": 0.3361172801927916,
+        "time": 0.055,
+        "timeOverTau": 1.375,
+        "transverseNorm": 4.8301981123707046e-17,
+        "transverseNormalized": 2.4150990561853518e-15
+      },
+      {
+        "principalCoefficient": 0.0069394678270597535,
+        "principalNormalized": 0.3469733913529876,
+        "time": 0.0555,
+        "timeOverTau": 1.3875,
+        "transverseNorm": 4.8271263415619396e-17,
+        "transverseNormalized": 2.4135631707809695e-15
+      },
+      {
+        "principalCoefficient": 0.007156148082270757,
+        "principalNormalized": 0.3578074041135378,
+        "time": 0.056,
+        "timeOverTau": 1.4,
+        "transverseNorm": 4.811650986414847e-17,
+        "transverseNormalized": 2.405825493207423e-15
+      },
+      {
+        "principalCoefficient": 0.007372387001924802,
+        "principalNormalized": 0.36861935009624003,
+        "time": 0.0565,
+        "timeOverTau": 1.4125,
+        "transverseNorm": 4.796721716661736e-17,
+        "transverseNormalized": 2.3983608583308678e-15
+      },
+      {
+        "principalCoefficient": 0.007588185217800766,
+        "principalNormalized": 0.37940926089003824,
+        "time": 0.057,
+        "timeOverTau": 1.425,
+        "transverseNorm": 4.7995765224296274e-17,
+        "transverseNormalized": 2.3997882612148133e-15
+      },
+      {
+        "principalCoefficient": 0.007803543361020541,
+        "principalNormalized": 0.390177168051027,
+        "time": 0.0575,
+        "timeOverTau": 1.4375,
+        "transverseNorm": 4.786489984962786e-17,
+        "transverseNormalized": 2.3932449924813924e-15
+      },
+      {
+        "principalCoefficient": 0.008018462062049115,
+        "principalNormalized": 0.40092310310245566,
+        "time": 0.058,
+        "timeOverTau": 1.45,
+        "transverseNorm": 4.770429424226896e-17,
+        "transverseNormalized": 2.3852147121134474e-15
+      },
+      {
+        "principalCoefficient": 0.008232941950694673,
+        "principalNormalized": 0.41164709753473355,
+        "time": 0.0585,
+        "timeOverTau": 1.4625000000000001,
+        "transverseNorm": 4.7716083088054345e-17,
+        "transverseNormalized": 2.3858041544027166e-15
+      },
+      {
+        "principalCoefficient": 0.008446983656108693,
+        "principalNormalized": 0.4223491828054346,
+        "time": 0.059000000000000004,
+        "timeOverTau": 1.475,
+        "transverseNorm": 4.757601430146324e-17,
+        "transverseNormalized": 2.3788007150731615e-15
+      },
+      {
+        "principalCoefficient": 0.008660587806786045,
+        "principalNormalized": 0.43302939033930216,
+        "time": 0.059500000000000004,
+        "timeOverTau": 1.4875,
+        "transverseNorm": 4.7742270740112473e-17,
+        "transverseNormalized": 2.3871135370056232e-15
+      },
+      {
+        "principalCoefficient": 0.00887375503056509,
+        "principalNormalized": 0.44368775152825435,
+        "time": 0.06,
+        "timeOverTau": 1.5,
+        "transverseNorm": 4.762198152109649e-17,
+        "transverseNormalized": 2.3810990760548243e-15
+      },
+      {
+        "principalCoefficient": 0.009086485954627785,
+        "principalNormalized": 0.45432429773138916,
+        "time": 0.0605,
+        "timeOverTau": 1.5125,
+        "transverseNorm": 4.767374111738783e-17,
+        "transverseNormalized": 2.383687055869391e-15
+      },
+      {
+        "principalCoefficient": 0.009298781205499785,
+        "principalNormalized": 0.46493906027498916,
+        "time": 0.061,
+        "timeOverTau": 1.525,
+        "transverseNorm": 4.755205693393187e-17,
+        "transverseNormalized": 2.377602846696593e-15
+      },
+      {
+        "principalCoefficient": 0.009510641409050558,
+        "principalNormalized": 0.47553207045252777,
+        "time": 0.0615,
+        "timeOverTau": 1.5374999999999999,
+        "transverseNorm": 4.760321287006421e-17,
+        "transverseNormalized": 2.38016064350321e-15
+      },
+      {
+        "principalCoefficient": 0.009722067190493486,
+        "principalNormalized": 0.4861033595246742,
+        "time": 0.062,
+        "timeOverTau": 1.55,
+        "transverseNorm": 4.7499073212267573e-17,
+        "transverseNormalized": 2.3749536606133782e-15
+      },
+      {
+        "principalCoefficient": 0.00993305917438599,
+        "principalNormalized": 0.4966529587192994,
+        "time": 0.0625,
+        "timeOverTau": 1.5625,
+        "transverseNorm": 4.744659773423947e-17,
+        "transverseNormalized": 2.372329886711973e-15
+      },
+      {
+        "principalCoefficient": 0.010143617984629628,
+        "principalNormalized": 0.5071808992314814,
+        "time": 0.063,
+        "timeOverTau": 1.575,
+        "transverseNorm": 4.727909598200485e-17,
+        "transverseNormalized": 2.363954799100242e-15
+      },
+      {
+        "principalCoefficient": 0.010353744244470237,
+        "principalNormalized": 0.5176872122235118,
+        "time": 0.0635,
+        "timeOverTau": 1.5875,
+        "transverseNorm": 4.721102905328643e-17,
+        "transverseNormalized": 2.360551452664321e-15
+      },
+      {
+        "principalCoefficient": 0.010563438576498019,
+        "principalNormalized": 0.5281719288249008,
+        "time": 0.064,
+        "timeOverTau": 1.6,
+        "transverseNorm": 4.7005542241547874e-17,
+        "transverseNormalized": 2.350277112077393e-15
+      },
+      {
+        "principalCoefficient": 0.010772701602647695,
+        "principalNormalized": 0.5386350801323846,
+        "time": 0.0645,
+        "timeOverTau": 1.6125,
+        "transverseNorm": 4.697237783044107e-17,
+        "transverseNormalized": 2.348618891522053e-15
+      },
+      {
+        "principalCoefficient": 0.010981533944198605,
+        "principalNormalized": 0.5490766972099301,
+        "time": 0.065,
+        "timeOverTau": 1.625,
+        "transverseNorm": 4.6609892617895054e-17,
+        "transverseNormalized": 2.330494630894752e-15
+      },
+      {
+        "principalCoefficient": 0.011189936221774846,
+        "principalNormalized": 0.5594968110887422,
+        "time": 0.0655,
+        "timeOverTau": 1.6375,
+        "transverseNorm": 4.637681276783941e-17,
+        "transverseNormalized": 2.31884063839197e-15
+      },
+      {
+        "principalCoefficient": 0.0113979090553454,
+        "principalNormalized": 0.5698954527672698,
+        "time": 0.066,
+        "timeOverTau": 1.6500000000000001,
+        "transverseNorm": 4.604657880432949e-17,
+        "transverseNormalized": 2.302328940216474e-15
+      },
+      {
+        "principalCoefficient": 0.011605453064224256,
+        "principalNormalized": 0.5802726532112127,
+        "time": 0.0665,
+        "timeOverTau": 1.6625,
+        "transverseNorm": 4.5925443564871444e-17,
+        "transverseNormalized": 2.2962721782435718e-15
+      },
+      {
+        "principalCoefficient": 0.011812568867070557,
+        "principalNormalized": 0.5906284433535277,
+        "time": 0.067,
+        "timeOverTau": 1.675,
+        "transverseNorm": 4.577582312922118e-17,
+        "transverseNormalized": 2.2887911564610584e-15
+      },
+      {
+        "principalCoefficient": 0.01201925708188871,
+        "principalNormalized": 0.6009628540944354,
+        "time": 0.0675,
+        "timeOverTau": 1.6875,
+        "transverseNorm": 4.561986732524277e-17,
+        "transverseNormalized": 2.2809933662621382e-15
+      },
+      {
+        "principalCoefficient": 0.012225518326028553,
+        "principalNormalized": 0.6112759163014275,
+        "time": 0.068,
+        "timeOverTau": 1.7000000000000002,
+        "transverseNorm": 4.550809297981039e-17,
+        "transverseNormalized": 2.275404648990519e-15
+      },
+      {
+        "principalCoefficient": 0.012431353216185478,
+        "principalNormalized": 0.6215676608092738,
+        "time": 0.0685,
+        "timeOverTau": 1.7125000000000001,
+        "transverseNorm": 4.5513404607268787e-17,
+        "transverseNormalized": 2.275670230363439e-15
+      },
+      {
+        "principalCoefficient": 0.012636762368400565,
+        "principalNormalized": 0.6318381184200281,
+        "time": 0.069,
+        "timeOverTau": 1.725,
+        "transverseNorm": 4.56218403383849e-17,
+        "transverseNormalized": 2.2810920169192447e-15
+      },
+      {
+        "principalCoefficient": 0.012841746398060742,
+        "principalNormalized": 0.6420873199030369,
+        "time": 0.0695,
+        "timeOverTau": 1.7375,
+        "transverseNorm": 4.5850576462405596e-17,
+        "transverseNormalized": 2.2925288231202794e-15
+      },
+      {
+        "principalCoefficient": 0.013046305919898915,
+        "principalNormalized": 0.6523152959949456,
+        "time": 0.07,
+        "timeOverTau": 1.7500000000000002,
+        "transverseNorm": 4.5902763413339797e-17,
+        "transverseNormalized": 2.2951381706669894e-15
+      },
+      {
+        "principalCoefficient": 0.013250441547994127,
+        "principalNormalized": 0.6625220773997063,
+        "time": 0.07050000000000001,
+        "timeOverTau": 1.7625000000000002,
+        "transverseNorm": 4.579857061430507e-17,
+        "transverseNormalized": 2.289928530715253e-15
+      },
+      {
+        "principalCoefficient": 0.013454153895771707,
+        "principalNormalized": 0.6727076947885852,
+        "time": 0.07100000000000001,
+        "timeOverTau": 1.7750000000000001,
+        "transverseNorm": 4.5826164775835304e-17,
+        "transverseNormalized": 2.291308238791765e-15
+      },
+      {
+        "principalCoefficient": 0.01365744357600341,
+        "principalNormalized": 0.6828721788001704,
+        "time": 0.07150000000000001,
+        "timeOverTau": 1.7875,
+        "transverseNorm": 4.579181564225581e-17,
+        "transverseNormalized": 2.28959078211279e-15
+      },
+      {
+        "principalCoefficient": 0.013860311200807576,
+        "principalNormalized": 0.6930155600403787,
+        "time": 0.07200000000000001,
+        "timeOverTau": 1.8000000000000003,
+        "transverseNorm": 4.5693967314312605e-17,
+        "transverseNormalized": 2.28469836571563e-15
+      },
+      {
+        "principalCoefficient": 0.014062757381649294,
+        "principalNormalized": 0.7031378690824646,
+        "time": 0.0725,
+        "timeOverTau": 1.8124999999999998,
+        "transverseNorm": 4.5725446051718856e-17,
+        "transverseNormalized": 2.2862723025859424e-15
+      },
+      {
+        "principalCoefficient": 0.01426478272934056,
+        "principalNormalized": 0.7132391364670279,
+        "time": 0.073,
+        "timeOverTau": 1.825,
+        "transverseNorm": 4.5682577520429946e-17,
+        "transverseNormalized": 2.284128876021497e-15
+      },
+      {
+        "principalCoefficient": 0.014466387854040419,
+        "principalNormalized": 0.7233193927020208,
+        "time": 0.0735,
+        "timeOverTau": 1.8375,
+        "transverseNorm": 4.562485767272489e-17,
+        "transverseNormalized": 2.281242883636244e-15
+      },
+      {
+        "principalCoefficient": 0.01466757336525514,
+        "principalNormalized": 0.7333786682627569,
+        "time": 0.074,
+        "timeOverTau": 1.8499999999999999,
+        "transverseNorm": 4.55474056470179e-17,
+        "transverseNormalized": 2.2773702823508944e-15
+      },
+      {
+        "principalCoefficient": 0.01486833987183839,
+        "principalNormalized": 0.7434169935919193,
+        "time": 0.0745,
+        "timeOverTau": 1.8624999999999998,
+        "transverseNorm": 4.5613294569219214e-17,
+        "transverseNormalized": 2.28066472846096e-15
+      },
+      {
+        "principalCoefficient": 0.015068687981991374,
+        "principalNormalized": 0.7534343990995686,
+        "time": 0.075,
+        "timeOverTau": 1.875,
+        "transverseNorm": 4.5328295371044135e-17,
+        "transverseNormalized": 2.2664147685522064e-15
+      },
+      {
+        "principalCoefficient": 0.015268618303263023,
+        "principalNormalized": 0.763430915163151,
+        "time": 0.0755,
+        "timeOverTau": 1.8875,
+        "transverseNorm": 4.512693772986227e-17,
+        "transverseNormalized": 2.2563468864931128e-15
+      },
+      {
+        "principalCoefficient": 0.015468131442550166,
+        "principalNormalized": 0.7734065721275082,
+        "time": 0.076,
+        "timeOverTau": 1.9,
+        "transverseNorm": 4.521975835014879e-17,
+        "transverseNormalized": 2.260987917507439e-15
+      },
+      {
+        "principalCoefficient": 0.015667228006097687,
+        "principalNormalized": 0.7833614003048842,
+        "time": 0.0765,
+        "timeOverTau": 1.9124999999999999,
+        "transverseNorm": 4.508597681863911e-17,
+        "transverseNormalized": 2.2542988409319553e-15
+      },
+      {
+        "principalCoefficient": 0.0158659085994987,
+        "principalNormalized": 0.7932954299749347,
+        "time": 0.077,
+        "timeOverTau": 1.925,
+        "transverseNorm": 4.48375858426522e-17,
+        "transverseNormalized": 2.2418792921326095e-15
+      },
+      {
+        "principalCoefficient": 0.01606417382769475,
+        "principalNormalized": 0.8032086913847374,
+        "time": 0.0775,
+        "timeOverTau": 1.9375,
+        "transverseNorm": 4.488923058377923e-17,
+        "transverseNormalized": 2.244461529188961e-15
+      },
+      {
+        "principalCoefficient": 0.016262024294975957,
+        "principalNormalized": 0.8131012147487977,
+        "time": 0.078,
+        "timeOverTau": 1.95,
+        "transverseNorm": 4.484826958600422e-17,
+        "transverseNormalized": 2.2424134793002104e-15
+      },
+      {
+        "principalCoefficient": 0.016459460604981213,
+        "principalNormalized": 0.8229730302490605,
+        "time": 0.0785,
+        "timeOverTau": 1.9625,
+        "transverseNorm": 4.4683801082656045e-17,
+        "transverseNormalized": 2.2341900541328018e-15
+      },
+      {
+        "principalCoefficient": 0.016656483360698374,
+        "principalNormalized": 0.8328241680349185,
+        "time": 0.079,
+        "timeOverTau": 1.975,
+        "transverseNorm": 4.472423651648643e-17,
+        "transverseNormalized": 2.236211825824321e-15
+      },
+      {
+        "principalCoefficient": 0.016853093164464417,
+        "principalNormalized": 0.8426546582232207,
+        "time": 0.0795,
+        "timeOverTau": 1.9875,
+        "transverseNorm": 4.470862071003011e-17,
+        "transverseNormalized": 2.235431035501505e-15
+      },
+      {
+        "principalCoefficient": 0.017049290617965646,
+        "principalNormalized": 0.8524645308982821,
+        "time": 0.08,
+        "timeOverTau": 2.0,
+        "transverseNorm": 4.468556398596048e-17,
+        "transverseNormalized": 2.2342781992980235e-15
+      }
+    ],
+    "tau": 0.04
+  },
+  "wallSeconds": 0.5908752499963157
+}

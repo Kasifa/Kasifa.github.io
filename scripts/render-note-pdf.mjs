@@ -19,6 +19,7 @@ if (!url || !outputArgument) {
 const output = resolve(outputArgument);
 const screenshot = screenshotArgument ? resolve(screenshotArgument) : null;
 const renderUrl = new URL(url);
+const publicOrigin = process.env.PDF_PUBLIC_ORIGIN ?? "https://kasifa.github.io";
 if (!renderUrl.searchParams.has("lang")) renderUrl.searchParams.set("lang", "zh");
 await mkdir(dirname(output), { recursive: true });
 if (screenshot) await mkdir(dirname(screenshot), { recursive: true });
@@ -38,6 +39,12 @@ try {
       await globalThis.MathJax.startup.promise;
     }
   });
+  await page.evaluate((origin) => {
+    for (const anchor of document.querySelectorAll("a[href]")) {
+      const href = anchor.getAttribute("href");
+      if (href?.startsWith("/")) anchor.href = new URL(href, origin).href;
+    }
+  }, publicOrigin);
   if (screenshot) {
     await page.screenshot({ path: screenshot, fullPage: true });
   }

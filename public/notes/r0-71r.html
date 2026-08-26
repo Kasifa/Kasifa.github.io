@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71R：局部观测量满足精确强迫热方程，有限条件 incidence theorem 把时间进入打包归约到两个动力学账本；一参数 endpoint-square、termwise source-square certificate 在尺度协变与 Leray 支付之间存在精确两阶错配。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71R｜endpoint-square incidence certificate 的精确两阶错配">
+  <meta property="og:description" content="精确强迫热方程、有限条件 incidence packing、rho=2 的 Leray 支付、rho=0 的尺度协变、初始 first-jet 压力测试与方法边界。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-71r-parabolic-incidence.png">
+  <title>R0.71R｜endpoint-square incidence certificate 的精确两阶错配</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.68rem,3.6vw,3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=1.03"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#interface">接口</a><a href="#equation">强迫方程</a><a href="#theorem">条件定理</a><a href="#ledger">源账本</a><a href="#scaling">尺度错配</a><a href="#jet">初始 jet</a><a href="#obstructions">反例族</a><a href="#literature">文献</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71R · PARABOLIC INCIDENCE · SCALE AUDIT</div>
+        <h1>有限条件 incidence theorem 可以成立，<br>但当前 endpoint-square certificate 留下精确两阶错配</h1>
+        <p class="lead">R0.71P 留下 distinct positive-entry times，R0.71Q 证明抽象解析性不支付完整计数。本节从 NSE 方程导出 localized observable 的精确强迫热方程，并证明 finite conditional event-to-window packing theorem。结果把无条件闭合压到 upper comparison constant 与 same-observable window overlap 两个动力学账本；在一参数 endpoint-square、termwise source-square certificate (3.3) 中，协变最优常数的缩放选择 \(\rho=0\)，最小的 Leray-paid 指数却是 \(\rho=2\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71R 有限条件定理与尺度审计完成</span><strong>conditional reduction；specific certificate obstructed</strong><p>版本 v0.71R · 2026-08-26</p><p>exact rational/symbolic audit: PASS</p><p>independent numerical audit: PASS</p><p>无 PDE 正时间推进</p><p>下一对象：signed / bilinear critical packet</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#interface">01 · R0.71P–Q 接口</a></li><li><a href="#equation">02 · 强迫热方程</a></li><li><a href="#theorem">03 · 条件打包定理</a></li><li><a href="#ledger">04 · 一参数源账本</a></li><li><a href="#scaling">05 · 两阶尺度错配</a></li><li><a href="#jet">06 · NSE 初始 jet</a></li><li><a href="#obstructions">07 · 方法反例族</a></li><li><a href="#literature">08 · 文献边界</a></li><li><a href="#audit">09 · 双重审计</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#next">12 · 下一步</a></li><li><a href="#claims">13 · 主张边界</a></li><li><a href="#reproduce">14 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>source integral 可由能量支付，event lower charge 与时间 overlap 仍未推出</h2>
+          <div class="boundary"><strong>本节判断</strong><p>精确强迫热方程与 Duhamel 上界给出 finite conditional packing theorem。对一参数 endpoint-square、termwise source-square certificate (3.3)，\(\rho=2\) 是使 nonlinear source 与 viscous commutator 同时进入 Leray 预算的最小指数；协变整数／二进伸缩下的 optimal upper comparison constant 只有在 \(\rho=0\) 才不改变尺度。不存在一个 \(\rho\) 同时满足这两个要求。</p></div>
+          <p>该判决只针对 certificate (3.3) 及其 termwise source-square payment，不关闭其他 Duhamel designs。它不排除保留方向与符号的 bilinear packet，也不证明 uniform NSE temporal packing、继续性判据或全局正则性。</p>
+        </section>
+
+        <section id="interface"><div class="section-no">01 / Inherited target</div><h2>R0.71P 的目标是不同进入时刻上的原子和</h2>
+          <div class="equation result">\[
+            \mathsf S_{\Lambda,+}(K)
+            =\sum_{\beta=(\alpha,t_\beta)}
+            \kappa_{j(\alpha)}^{-2}A_{\beta,+}.
+          \]</div>
+          <p>同刻 shell–cell batch 已由 bounded cutoff overlap 与 \(\dot H^{-1}\) Lamb square sum 组成的一次 time-slice square-function estimate 吸收。R0.71Q 又证明 analytic radius、complex upper bound 与相对 Jensen 数据不产生所需的 absolute event charge。本节改为检查 NSE 方程是否把每个原子转换成 forward source packet。</p>
+        </section>
+
+        <section id="equation"><div class="section-no">02 / Exact forced heat equation</div><h2>局部 filtered-vorticity observable 满足精确强迫热方程</h2>
+          <p>在归一化周期环面上，固定 smooth annular multiplier \(T_j\) 与尺度匹配 cutoff frame \(\chi_Q\)，令</p>
+          <div class="equation">\[
+            W_j=T_j\omega,\qquad F_j=T_jL,\qquad
+            C_{j,Q}=\operatorname{curl}(\chi_QW_j).
+          \]</div>
+          <div class="equation result">\[
+            \boxed{C_{j,Q,t}-\nu\Delta C_{j,Q}=G_{j,Q}},
+          \]</div>
+          <div class="equation">\[
+            G_{j,Q}=\operatorname{curl}(\chi_Q\operatorname{curl}F_j)
+            -\nu\operatorname{curl}\!\left(
+            2\nabla\chi_Q\mathbin{\cdot}\nabla W_j
+            +(\Delta\chi_Q)W_j\right).
+          \]</div>
+          <p>在 entry time \(C_\alpha(t_\beta)=0\) 处，heat-semigroup contraction 与 Cauchy–Schwarz 只给上端估计</p>
+          <div class="equation result">\[
+            \boxed{\frac{\|C_\alpha(t_\beta+h)\|_2^2}{h}
+            \le\int_{t_\beta}^{t_\beta+h}\|G_\alpha(s)\|_2^2\,ds.}
+          \]</div>
+          <p>这是 upper endpoint estimate，不是 event lower charge；不能把不等号反向使用。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Conditional event-to-window theorem</div><h2>显式 forward height 与同观测量 overlap 给出有限条件打包</h2>
+          <p>对每个 positive entry 假设存在</p>
+          <div class="equation">\[
+            h_\beta=\theta_\beta\kappa_{j(\alpha)}^{-2},\qquad
+            0&lt;\theta_-\le\theta_\beta\le\theta_*,\qquad
+            I_\beta=[t_\beta,t_\beta+h_\beta],
+          \]</div>
+          <p>并设 \(Y_\beta^*=\sup_{I_\beta}Y\)。统一 \(\theta_-\) 正下界是 theorem hypothesis，不是从 NSE 推出的结论；缺少它时可以把 windows 任意缩短，从而把 overlap 条件平凡化。post-entry incidence certificate 为</p>
+          <div class="equation">\[
+            A_{\beta,+}\le\Gamma_\rho\kappa_j^{-\rho}
+            \frac{\|C_\alpha(t_\beta+h_\beta)\|_2^2}{Y_\beta^*}.
+          \]</div>
+          <p>这里 \(\Gamma_\rho\) 是 upper comparison constant；真正的 lower-charge strength 由 \(1/\Gamma_\rho\) 编码。统一 \(\theta_-\) 与 forward-window availability 是 theorem gates，不是右端乘子。</p>
+          <p>定义 essential overlap</p>
+          <div class="equation">\[
+            M=\sup_\alpha\operatorname*{ess\,sup}_{s}
+            \sum_{\beta:\alpha(\beta)=\alpha}\mathbf1_{I_\beta}(s).
+          \]</div>
+          <p>若 \(M&lt;\infty\) 且对 finite truncation 一致，则</p>
+          <div class="equation result">\[
+            \boxed{\mathsf S_{\Lambda,+}(K)
+            \le\Gamma_\rho\theta_*M
+            \int_{K^+}\frac1{Y(s)}
+            \sum_{\alpha\in\Lambda}\kappa_{j(\alpha)}^{-(4+\rho)}
+            \|G_\alpha(s)\|_2^2\,ds.}
+          \]</div>
+          <p>限制到 owned windows 完全包含于子区间 \(J\) 时，同一证明给出 source-relative Carleson form。除非另有 local source estimate，它不是 classical \(|J|\)-Carleson bound。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">04 / One-parameter source ledger</div><h2>cutoff 与 annular derivative powers 决定最小 Leray-paid 指数</h2>
+          <p>对固定、尺度协变、三阶导数平方重叠有界的 cutoff frame，精确 product expansion 给出</p>
+          <div class="equation result">\[
+            \sum_{j,Q}\kappa_j^{-(4+\rho)}\|G_{j,Q}\|_2^2
+            \le C_{\chi,T}\left(
+            \sum_j\kappa_j^{-\rho}\|F_j\|_2^2
+            +\nu^2\sum_j\kappa_j^{2-\rho}\|W_j\|_2^2\right).
+          \]</div>
+          <p>在归一化 zero-mean torus 上，\(\rho=2\) 是同时把 nonlinear term 降到 \(\dot H^{-1}\) Lamb budget、把 commutator 降到 enstrophy budget 的最小指数：</p>
+          <div class="equation result">\[
+            \sum_{j,Q}\kappa_j^{-6}\|G_{j,Q}\|_2^2
+            \le C_{\chi,T}\left(\|L\|_{\dot H^{-1}}^2+\nu^2Y\right).
+          \]</div>
+          <p>除以 \(Y\) 后，\(\|L\|_{\dot H^{-1}}^2/Y\lesssim\|u\|_2Y^{1/2}\)，所以 Leray energy 支付有限时间区间上的 source integral，frame constants 则因 frame 固定而与 finite truncation 无关。完整 theorem 右端仍可能因 \(\Gamma_2\) 与 \(M\) 而不一致；统一 \(\theta_-\) 与 forward-window availability 是额外 theorem gates，也仍未证明，但不是右端因子。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">05 / Exact scaling verdict</div><h2>协变 optimal constant 在 \(\rho=0\) 不变，与最小 Leray-paid 指数相差两阶</h2>
+          <p>对给定 finite covariant event/window family \(\mathcal E\)，定义 \(\Gamma_\rho^{\rm opt}[u,\mathcal E]\) 为 certificate (3.3) 中最小的 admissible upper comparison constant。固定 torus 只沿保持 Fourier lattice 的 integer/dyadic \(\lambda\) 比较，并把 solution、annular multiplier、cutoff、event 与 forward window 一起协变搬运。此时 \(A_{\beta,+}\) 与 \(\|C\|_2^2/Y\) 都获得 \(\lambda^2\)，而 \(\kappa_j^{-\rho}\) 获得 \(\lambda^{-\rho}\)。因此</p>
+          <div class="equation result">\[
+            \Gamma_\rho^{\rm opt}[u_\lambda,\mathcal E_\lambda]
+            =\lambda^\rho\Gamma_\rho^{\rm opt}[u,\mathcal E].
+          \]</div>
+          <p>在这条协变 dilation family 上，scale-independent optimal constant 只与</p>
+          <div class="equation result">\[
+            \boxed{\rho=0}
+          \]</div>
+          <p>相容。此时源账本却要求</p>
+          <div class="equation">\[
+            \sum_{j,Q}\kappa_j^{-4}\|G_{j,Q}\|_2^2
+            \lesssim\|L\|_2^2+\nu^2\|\nabla\omega\|_2^2,
+          \]</div>
+          <p>除以 \(Y\) 后，所需的精确 normalized budget 是 \(\|L\|_2^2/Y+\nu^2\|\nabla\omega\|_2^2/Y\)。这里不声称它等价于任何 Serrin norm，也不声称 Leray energy 支付该量。certificate (3.3) 的 termwise source-square interpolation 因而满足精确方法判决：</p>
+          <div class="equation result">\[
+            \boxed{\text{scale covariance: }\rho=0,
+            \qquad\text{minimal Leray payment: }\rho=2.}
+          \]</div>
+        </section>
+
+        <section id="jet"><div class="section-no">06 / Genuine NSE initial-jet test</div><h2>整数频率环面初始 jet 的 surrogate \(\Gamma_{2,\mathrm{jet}}\) 按 \(K^2\) 增长</h2>
+          <p>取 \(K\in\mathbb N\) 和归一化周期环面初值</p>
+          <div class="equation">\[
+            u_{0,K}=a(0,\cos Kx_1,\cos Kx_2).
+          \]</div>
+          <p>使用随 \(K\) 共变的 smooth radial multiplier \(m_K(\xi)=m(|\xi|/K)\)，其中 \(m(1)=0\)、\(m(\sqrt2)=1\)，并取周期兼容 cutoff \(\chi\equiv1\)。所有参与模态都在整数 Fourier lattice 上；multiplier 与 cutoff 不随物理解额外引入非共变尺度。</p>
+          <div class="equation result">\[
+            Y(0)=a^2K^2,\qquad
+            \|F(0)\|_2^2=\frac{a^4K^2}{4},\qquad
+            C_t(0)=2K^2F(0),\qquad
+            A_+=\frac{a^2}{4}.
+          \]</div>
+          <p>对 \(h=\theta K^{-2}\)，只定义 first-jet surrogate</p>
+          <div class="equation result">\[
+            \boxed{\Gamma_{2,\mathrm{jet}}
+            :=\frac{A_+}{K^{-2}\|hC_t(0)\|_2^2/Y(0)}
+            =\frac{K^2}{4\theta^2}.}
+          \]</div>
+          <div class="boundary"><strong>初始迹边界</strong><p>\(\Gamma_{2,\mathrm{jet}}\) 只是用 \(hC_t(0)\) 替代真实 endpoint 后得到的 leading surrogate，不是 positive-time certificate (3.3) 的 \(\Gamma_2\) 下界。证书没有进行 exact positive-time NSE integration，也不把小数据全局光滑性外推成同一常数在固定正时间窗上的精确公式。</p></div>
+        </section>
+
+        <section id="obstructions"><div class="section-no">07 / Forced-parabolic method tests</div><h2>degree-zero entry atoms 不由 quadratic upper charges 自动支付</h2>
+          <p>scalar even-touch family</p>
+          <div class="equation">\[
+            C_\varepsilon(t)=\varepsilon(t-1/2)^2,
+            \qquad G_\varepsilon=C_\varepsilon'+C_\varepsilon,
+          \]</div>
+          <p>保持 \(A_+=1\)，而 post-entry amplitude 与 \(\int|G_\varepsilon|^2\) 都按 \(\varepsilon^2\) 缩小。正 observable scaling 不改变 entry atom，却缩小所有 quadratic charges。</p>
+          <p>sequential family \(C_N=\varepsilon_N\prod_{k=1}^N(t-k/(N+1))^2\) 可归一化到 \(\int_0^1|G_N|^2dt=1\)，同时保留 \(N\) 个质量为一的 positive entries。component family \(C_q=2^{-q}(t-b_q)^2\) 则使 all-component source square 小于 \(3\)，而 entry union 为 \(Q\)。</p>
+          <p>这些是 abstract forced scalar method tests，不是 NSE repeated-entry trajectories。它们只证明 smoothness、analyticity、semigroup upper bounds 与 source-square upper budgets 本身不推出 event lower charge。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">08 / Primary-source boundary</div><h2>已有 parabolic budgets 没有给 filtered entry 的统一 lower charge</h2>
+          <p><a href="https://doi.org/10.1002/cpa.3160350604">Caffarelli–Kohn–Nirenberg</a>与<a href="https://doi.org/10.1016/j.aim.2024.109654">Lei–Ren</a>为 singular cylinders 或 regular epochs 提供 local-energy gate，不把 smooth filtered zero 变成下质量。<a href="https://doi.org/10.1006/aima.2000.1937">Koch–Tataru</a>给出真正的 parabolic square-Carleson upper norm，但没有 entry-to-tent lower implication。</p>
+          <p><a href="https://doi.org/10.1007/s00220-012-1595-8">Dascaliuc–Grujić</a>在额外 coherence、scale separation 与 modulation 条件下控制 signed cover-averaged flux；它不是逐 entry atom 的 lower packet。<a href="https://doi.org/10.1515/crll.1988.390.79">Angenent</a>的 zero-number theorem 使用一维标量齐次 Sturm order，并要求 uniform parabolicity、coefficient regularity、相应 boundary hypotheses 与 positive time；不能直接移植到三维 Hilbert-valued forced observable。<a href="https://doi.org/10.1007/s00205-003-0263-8">Escauriaza–Seregin–Šverák</a>的 backward uniqueness 要求 closed parabolic inequality 与完整场消失。</p>
+          <p>截至 2026-08-26 的两轮限定一手文献检索，没有发现直接给出 R0.71R incidence certificate 或 same-observable overlap bound 的定理。这是 bounded negative finding，不是不存在性、原创性或优先权声明。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">09 / Exact and independent audit</div><h2>精确证书与独立重建分别通过</h2>
+          <p>exact producer 验证 rho-dependent derivative ledger、scaled NSE initial Fourier jet、even-touch homogeneity、sequential polynomial 与 component-union families。independent checker 另行重建 Duhamel ratio、scaling powers、first-jet coefficients、polynomial energies 与 figure data；两者都不进行 PDE time stepping。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图把条件正结果、尺度错配与方法反例分开显示</h2>
+          <figure><img src="/figures/r0-71r-parabolic-incidence.svg" alt="R0.71R 二次抛物 incidence 条件定理、尺度错配、NSE 初始 jet 与方法反例审计"><figcaption>图 R0.71R。A：rho-dependent source ledger；协变 optimal upper comparison constant 在 rho=0 不变，Leray payment 的最小指数为 rho=2。B：整数频率 NSE initial Fourier jet 只定义 first-jet surrogate Gamma_{2,jet}，该 surrogate 按 K^2 增长；它不是 positive-time upper comparison constant 的下界。C：forced scalar even touch 保持 A_+=1，而 quadratic charge 按 epsilon^2 缩小。D：sequential 与 component-union families 在有界 source-square mass 下增长 entry mass。B 不是正时间积分，C–D 不是 NSE trajectories。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>价值在于把开放问题压缩成两个动力学证书</h2>
+          <p>finite conditional theorem 保留 event-to-window upper comparison constant \(\Gamma_\rho\)、统一 window lower height \(\theta_-\) 与 essential same-observable overlap \(M\)，其中 \(1/\Gamma_\rho\) 才编码 lower-charge strength。\(\rho=2\) 时 Leray energy 支付 source integral，frame constants 由固定 frame 给定；协变 dilation 下的 optimal constant 缩放则精确记录两阶损失。initial jet 只提供与该缩放相容的 surrogate，不提供 positive-time lower bound。</p>
+          <p>该结论只分类一参数 endpoint-square、termwise source-square certificate (3.3)。它不排除其他 Duhamel designs，也不排除在 componentwise positive parts 之前保留 signed direction 的 bilinear or oscillatory packet。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next finite gate</div><h2>R0.71S 转向 signed / bilinear scale-critical packet</h2>
+          <p>下一节保留 entry direction \(e_\beta=c_\beta/\|c_\beta\|_2\) 与 signed pairing \(\langle F_j,e_\beta\rangle\)，检查是否存在 frame-summable、由 \(\dot H^{-1}\) 支付且不丢失两阶的 scale-covariant packet functional。</p>
+          <p>候选必须通过 integer-torus initial jet、sequential recurrence 与 repeated-window pressure tests。若 localization 迫使符号消失，或预算退回 \(L^2\)-Lamb / palinstrophy，我会把条件原样保留并停止该分支。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>exact localized forced heat equation；Duhamel upper estimate；finite conditional incidence packing；rho-dependent source ledger；rho=2 的有限时间 Leray payment；rho=0 的 scale-covariance verdict；exact initial first-jet 与 abstract method obstructions。</li>
+            <li><strong>未证明：</strong>uniform NSE upper comparison constant、uniform forward-window overlap、endpoint noncollapse、infinite-frame temporal packing、Leray-limit passage、continuation criterion、finite-time singularity 或 global regularity。</li>
+            <li><strong>方法边界：</strong>只排除 certificate (3.3) 的一参数 endpoint-square、termwise source-square 无条件闭合，不排除其他 Duhamel designs、signed、bilinear 或其他 scale-critical NSE functional。</li>
+            <li><strong>反例边界：</strong>even-touch、sequential 与 component-union families 是 forced scalar paths，不是 Navier–Stokes trajectories。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduce</div><h2>报告、主张矩阵、证书、图数据和独立 checker 全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071r">exact / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence">附图、数据、manifest 与源代码包</a> · <a href="/figures/r0-71r-parabolic-incidence.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-71r.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-71r.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071r_exact_audit.py
+python3 research/r071r_independent_audit.py
+python3 figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence/validate_data.py
+python3 figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence/independent_validate.py</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71R · 2026-08-26 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71r.html">累计回顾</a></div></footer>
+</body>
+</html>

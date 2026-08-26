@@ -1,0 +1,343 @@
+{
+  "release": "R0.71R",
+  "status": "passed",
+  "scope": "conditional NSE parabolic-incidence implication plus exact abstract forced-parabolic obstructions; no uniform incidence theorem, temporal packing theorem, continuation criterion, singularity, or global regularity claim",
+  "checks": {
+    "scaleMatchedSourceLedger": {
+      "passed": true,
+      "observable": "C_{j,Q}=curl(chi_Q W_j), W_j=T_j omega",
+      "forcing": "G_{j,Q}=curl(chi_Q curl F_j)-nu*curl(2 grad chi_Q dot grad W_j + (Delta chi_Q) W_j)",
+      "cutoffScale": "|grad^m chi_Q|<=C_chi*kappa_j^m",
+      "annularDerivativeLedger": {
+        "nonlinearSource": "sum_Q ||curl(chi_Q curl F_j)||_2^2 <= C*kappa_j^4||F_j||_2^2",
+        "viscousCommutator": "sum_Q ||comm_{j,Q}||_2^2 <= C*nu^2*kappa_j^6||W_j||_2^2",
+        "rhoFamily": "sum_{j,Q} kappa_j^(-4-rho)||G_{j,Q}||_2^2 <=C*(sum_j kappa_j^-rho||F_j||_2^2+nu^2 sum_j kappa_j^(2-rho)||W_j||_2^2)",
+        "minimalEnergyMatchedRhoTwo": "sum kappa_j^-6||G||^2 <= C*(||L||_{H^-1}^2+nu^2*Y)",
+        "scaleCovariantRhoZero": "sum kappa_j^-4||G||^2 <= C*(||L||_2^2+nu^2||grad omega||_2^2)"
+      },
+      "lerayPayment": "After division by Y, ||L||_{H^-1}^2/Y is bounded by C||u||_2*Y^(1/2), which is integrable on finite intervals from the energy inequality.",
+      "unpaidInputs": [
+        "uniform post-entry incidence constant Gamma_2; covariant scaling gives its optimal version weight kappa_j^2",
+        "uniform same-observable overlap M for noncollapsing parabolic windows",
+        "forward parabolic windows up to a possible endpoint"
+      ]
+    },
+    "nseFrequencyJetScaling": {
+      "passed": true,
+      "initialData": "u_{0,K}=a(0,cos(K*x1),cos(K*x2)), a=1/8",
+      "multiplier": "m(K)=0, m(sqrt(2)K)=1, chi=1",
+      "exactJet": "Y=a^2K^2, ||F||^2=a^4K^2/4, C_t=2K^2F, A_plus=a^2/4",
+      "nseScaling": {
+        "A": "lambda^2",
+        "kappaMinusRho": "lambda^-rho",
+        "normCSquaredOverY": "lambda^2",
+        "universalIncidenceConstantRequires": "rho=0",
+        "minimalLerayMatchedSourceExponent": "rho=2"
+      },
+      "rows": [
+        {
+          "K": 1,
+          "kineticEnergy": "1/64",
+          "Y0": "1/64",
+          "normFSquared": "1/16384",
+          "normLeadingDirectionSquared": "1/4096",
+          "leadingPairing": "1/8192",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/4096",
+          "gammaTwoTaylorJetSurrogate": "16"
+        },
+        {
+          "K": 2,
+          "kineticEnergy": "1/64",
+          "Y0": "1/16",
+          "normFSquared": "1/4096",
+          "normLeadingDirectionSquared": "1/64",
+          "leadingPairing": "1/512",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/16384",
+          "gammaTwoTaylorJetSurrogate": "64"
+        },
+        {
+          "K": 4,
+          "kineticEnergy": "1/64",
+          "Y0": "1/4",
+          "normFSquared": "1/1024",
+          "normLeadingDirectionSquared": "1",
+          "leadingPairing": "1/32",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/65536",
+          "gammaTwoTaylorJetSurrogate": "256"
+        },
+        {
+          "K": 8,
+          "kineticEnergy": "1/64",
+          "Y0": "1",
+          "normFSquared": "1/256",
+          "normLeadingDirectionSquared": "64",
+          "leadingPairing": "1/2",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/262144",
+          "gammaTwoTaylorJetSurrogate": "1024"
+        },
+        {
+          "K": 16,
+          "kineticEnergy": "1/64",
+          "Y0": "4",
+          "normFSquared": "1/64",
+          "normLeadingDirectionSquared": "4096",
+          "leadingPairing": "8",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/1048576",
+          "gammaTwoTaylorJetSurrogate": "4096"
+        },
+        {
+          "K": 32,
+          "kineticEnergy": "1/64",
+          "Y0": "16",
+          "normFSquared": "1/16",
+          "normLeadingDirectionSquared": "262144",
+          "leadingPairing": "128",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/4194304",
+          "gammaTwoTaylorJetSurrogate": "16384"
+        },
+        {
+          "K": 64,
+          "kineticEnergy": "1/64",
+          "Y0": "64",
+          "normFSquared": "1/4",
+          "normLeadingDirectionSquared": "16777216",
+          "leadingPairing": "2048",
+          "positiveEntryAtom": "1/256",
+          "parabolicTheta": "1/8",
+          "rhoTwoIncidenceRightSideLeadingCoefficient": "1/16777216",
+          "gammaTwoTaylorJetSurrogate": "65536"
+        }
+      ],
+      "claimBoundary": "The table certifies the exact initial Fourier jet and its first-jet parabolic scaling coefficient. It is not an exact positive-time NSE integration."
+    },
+    "scaledEvenTouch": {
+      "passed": true,
+      "family": "C_epsilon(t)=epsilon*(t-1/2)^2, F=1, Y=1, kappa=1",
+      "equation": "C_t+C=G_epsilon",
+      "baseSourceSquareEnergy": "83/240",
+      "entryLeadingCoefficient": "epsilon>0",
+      "positiveEntryFormula": "A_plus=(F*c)^2/(Y*c^2)=1",
+      "rows": [
+        {
+          "epsilon": "1",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/240",
+          "postEntryChargeAtHOneQuarter": "1/256"
+        },
+        {
+          "epsilon": "1/2",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/960",
+          "postEntryChargeAtHOneQuarter": "1/1024"
+        },
+        {
+          "epsilon": "1/4",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/3840",
+          "postEntryChargeAtHOneQuarter": "1/4096"
+        },
+        {
+          "epsilon": "1/16",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/61440",
+          "postEntryChargeAtHOneQuarter": "1/65536"
+        },
+        {
+          "epsilon": "1/256",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/15728640",
+          "postEntryChargeAtHOneQuarter": "1/16777216"
+        },
+        {
+          "epsilon": "1/4096",
+          "positiveEntryMass": 1,
+          "sourceSquareEnergy": "83/4026531840",
+          "postEntryChargeAtHOneQuarter": "1/4294967296"
+        }
+      ],
+      "conclusion": "The positive-entry atom has degree zero in the observable leading coefficient, whereas post-entry amplitude and source-square energy have degree two."
+    },
+    "sequentialForcedFamily": {
+      "passed": true,
+      "family": "q_N(t)=product_{k=1}^N (t-k/(N+1))^2",
+      "observable": "C_N=epsilon_N*q_N with epsilon_N=E_N^-1/2",
+      "equation": "C_t+C=G_N on [0,1]",
+      "sourceNormalization": "integral_0^1 |G_N|^2 dt=1",
+      "entryData": "F=1, Y=1, kappa=1, so every A_plus=1",
+      "rows": [
+        {
+          "N": 1,
+          "roots": [
+            "1/2"
+          ],
+          "polynomialDegree": 2,
+          "unnormalizedSourceEnergy": "83/240",
+          "normalizingAmplitude": 1.7004606037954073,
+          "normalizedSourceSquareEnergy": 1.0000000000000002,
+          "positiveEntryCount": 1,
+          "eachPositiveEntryMass": 1,
+          "totalPositiveEntryMass": 1,
+          "minimumLeadingCoefficient": "1"
+        },
+        {
+          "N": 2,
+          "roots": [
+            "1/3",
+            "2/3"
+          ],
+          "polynomialDegree": 4,
+          "unnormalizedSourceEnergy": "11881/459270",
+          "normalizingAmplitude": 6.217381848555974,
+          "normalizedSourceSquareEnergy": 1.0,
+          "positiveEntryCount": 2,
+          "eachPositiveEntryMass": 1,
+          "totalPositiveEntryMass": 2,
+          "minimumLeadingCoefficient": "1/9"
+        },
+        {
+          "N": 4,
+          "roots": [
+            "1/5",
+            "2/5",
+            "3/5",
+            "4/5"
+          ],
+          "polynomialDegree": 8,
+          "unnormalizedSourceEnergy": "2320246433081/46738586425781250",
+          "normalizingAmplitude": 141.92886502365124,
+          "normalizedSourceSquareEnergy": 1.0,
+          "positiveEntryCount": 4,
+          "eachPositiveEntryMass": 1,
+          "totalPositiveEntryMass": 4,
+          "minimumLeadingCoefficient": "4/15625"
+        },
+        {
+          "N": 8,
+          "roots": [
+            "1/9",
+            "2/9",
+            "1/3",
+            "4/9",
+            "5/9",
+            "2/3",
+            "7/9",
+            "8/9"
+          ],
+          "polynomialDegree": 16,
+          "unnormalizedSourceEnergy": "126690767419007207768451653/3180692660252812274053393185156417810",
+          "normalizingAmplitude": 158448.58674340436,
+          "normalizedSourceSquareEnergy": 1.0,
+          "positiveEntryCount": 8,
+          "eachPositiveEntryMass": 1,
+          "totalPositiveEntryMass": 8,
+          "minimumLeadingCoefficient": "256/282429536481"
+        },
+        {
+          "N": 12,
+          "roots": [
+            "1/13",
+            "2/13",
+            "3/13",
+            "4/13",
+            "5/13",
+            "6/13",
+            "7/13",
+            "8/13",
+            "9/13",
+            "10/13",
+            "11/13",
+            "12/13"
+          ],
+          "polynomialDegree": 24,
+          "unnormalizedSourceEnergy": "445224367134874093124383552904100804180215585464727683/29560987319273435820804368556694431318684840326647493575936224894326300",
+          "normalizingAmplitude": 257673647.37039906,
+          "normalizedSourceSquareEnergy": 0.9999999999999998,
+          "positiveEntryCount": 12,
+          "eachPositiveEntryMass": 1,
+          "totalPositiveEntryMass": 12,
+          "minimumLeadingCoefficient": "7464960000/3211838877954855105157369"
+        }
+      ],
+      "methodBoundary": "No universal positive-entry bound can depend only on the L2 source energy of a general forced analytic scalar parabolic path."
+    },
+    "componentUnionFamily": {
+      "passed": true,
+      "family": "C_q(t)=2^-q*(t-b_q)^2, b_q in (1/4,3/4)",
+      "equation": "(C_q)_t+C_q=G_q",
+      "entryData": "F_q=1, Y=1, kappa=1, so A_{q,+}=1",
+      "energyBoundProof": "On [0,1], |2(t-b)+(t-b)^2|<=3; hence each unscaled source energy is <=9 and sum_q 4^-q=1/3.",
+      "rows": [
+        {
+          "componentCount": 1,
+          "distinctEntryCount": 1,
+          "totalPositiveEntryMass": 1,
+          "summedSourceSquareEnergy": "83/960",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/2"
+        },
+        {
+          "componentCount": 2,
+          "distinctEntryCount": 2,
+          "totalPositiveEntryMass": 2,
+          "summedSourceSquareEnergy": "44429/331776",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/4"
+        },
+        {
+          "componentCount": 4,
+          "distinctEntryCount": 4,
+          "totalPositiveEntryMass": 4,
+          "summedSourceSquareEnergy": "905119/4915200",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/16"
+        },
+        {
+          "componentCount": 8,
+          "distinctEntryCount": 8,
+          "totalPositiveEntryMass": 8,
+          "summedSourceSquareEnergy": "8469849983/36691771392",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/256"
+        },
+        {
+          "componentCount": 16,
+          "distinctEntryCount": 16,
+          "totalPositiveEntryMass": 16,
+          "summedSourceSquareEnergy": "73346729642016535/275496931990437888",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/65536"
+        },
+        {
+          "componentCount": 32,
+          "distinctEntryCount": 32,
+          "totalPositiveEntryMass": 32,
+          "summedSourceSquareEnergy": "1615425798613307541200541469/5600353581731252521471574016",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/4294967296"
+        },
+        {
+          "componentCount": 64,
+          "distinctEntryCount": 64,
+          "totalPositiveEntryMass": 64,
+          "summedSourceSquareEnergy": "280787103367791487125847351231316336142839261483/933005249436376651677834447634438261189902336000",
+          "uniformExactUpperBound": 3,
+          "minimumAmplitude": "1/18446744073709551616"
+        }
+      ],
+      "methodBoundary": "A square-summable all-component source budget does not count the union of degree-zero entry atoms without a componentwise incidence lower charge."
+    }
+  },
+  "decision": "The rho=2 observable-source square budget is Leray-payable, but the optimal rho=2 constant has two powers under covariant dilation. The initial Fourier family records the same K^2 pressure only for its Taylor-jet surrogate. The scale-covariant rho=0 alternative requires an L2-Lamb and palinstrophy budget. Thus the one-parameter endpoint-square Duhamel certificate has an exact two-derivative mismatch; abstract parabolic regularity also supplies neither incidence nor bounded forward overlap."
+}

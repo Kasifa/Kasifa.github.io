@@ -1,0 +1,13 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071r_exact_audit.py --output research/certificates/r071r/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071r_independent_audit.py --output research/certificates/r071r/independent-result.json
+
+Figure commands:
+figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence/command.txt
+
+Validate figure package:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071r/build_hashes.py
+(cd research/certificates/r071r && shasum -a 256 -c SHA256SUMS)
+

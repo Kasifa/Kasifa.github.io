@@ -64,42 +64,42 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71Q as v1.02 with 141 notes, route 51, recap 81, and R0.71R next", async () => {
+test("retains the R0.71Q package after R0.71R becomes current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 141);
-  assert.match(home, /<strong>v1\.02<\/strong>网页版本/);
-  assert.match(home, /<strong>141<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71Q<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71Q<\/span>/);
-  assert.match(home, /展开 51 篇公开笔记/);
-  assert.match(home, /累计回顾收录 81 个节点；全站现有 141 篇公开研究笔记/);
-  assert.match(home, /NEXT · R0\.71R/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 142);
+  assert.match(home, /<strong>v1\.03<\/strong>网页版本/);
+  assert.match(home, /<strong>142<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71R<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.71R<\/span>/);
+  assert.match(home, /展开 52 篇公开笔记/);
+  assert.match(home, /累计回顾收录 82 个节点；全站现有 142 篇公开研究笔记/);
+  assert.match(home, /NEXT · R0\.71S/);
 
   const currentRoute = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71Q">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71R">([\s\S]*?)<\/nav>/,
   );
   assert.ok(currentRoute);
-  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 51);
+  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 52);
   assert.ok(occurrenceCount(recap, '<article class="phase">') >= 12);
   assert.match(recap, /收录节点：81/);
   assert.match(recap, /回顾截止时公开笔记：141/);
   assert.match(recap, /R0\.70A–R0\.71Q 完成版本/);
-  assert.match(literature, /R0\.69P–R0\.71Q/);
-  assert.match(literature, /开放接口 · R0\.71R/);
+  assert.match(literature, /R0\.69P–R0\.71R/);
+  assert.match(literature, /开放接口 · R0\.71S/);
 
-  for (const [page, minimum] of [
-    [home, 10],
-    [note, 16],
-    [recap, 8],
-    [literature, 49],
+  for (const [page, minimum, i18nVersion] of [
+    [home, 10, "1.03"],
+    [note, 16, "1.02"],
+    [recap, 8, "1.02"],
+    [literature, 49, "1.03"],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71Q/);
-    assert.match(page, /src="\/i18n-en\.js\?v=1\.02"/);
+    assert.ok(page.includes('src="/i18n-en.js?v=' + i18nVersion + '"'));
   }
 });
 
@@ -120,12 +120,12 @@ test("ships one R0.71Q release card and the complete research package", async ()
     "research/r071q_gap_matrix.md",
     "research/r071q_independent_audit.md",
     "figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit",
-    'href="/recap-r0-61-r0-71q.html"',
-    'href="/recap-r0-61-r0-71q.pdf"',
+    'href="/recap-r0-61-r0-71r.html"',
+    'href="/recap-r0-61-r0-71r.pdf"',
   ]) {
     assert.ok(card.includes(token), token);
   }
-  assert.match(card, /下一步 R0\.71R/);
+  assert.match(card, /R0\.71R 已完成/);
 
   for (const token of [
     'href="/notes/r0-71q.pdf"',
@@ -380,7 +380,7 @@ test("ships synchronized PDFs, hash-identical figure mirrors, and 43 continuous 
   }
 
   const routeMatch = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71Q">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71R">([\s\S]*?)<\/nav>/,
   );
   assert.ok(routeMatch);
   const releases = releaseSequence();

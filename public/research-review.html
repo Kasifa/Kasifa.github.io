@@ -20,7 +20,7 @@
     };
   </script>
   <link rel="stylesheet" href="/bilingual.css">
-  <script defer src="/i18n-en.js?v=1.02"></script>
+  <script defer src="/i18n-en.js?v=1.03"></script>
   <script defer src="/bilingual.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -1419,11 +1419,11 @@
           </p>
           <div class="status-meta">
             <span><strong>2026-08-26</strong>最近修订</span>
-            <span><strong>v1.02</strong>网页版本</span>
-            <span><strong>141</strong>公开研究笔记</span>
-            <span><strong>R0.71Q</strong>最新研究节点</span>
+            <span><strong>v1.03</strong>网页版本</span>
+            <span><strong>142</strong>公开研究笔记</span>
+            <span><strong>R0.71R</strong>最新研究节点</span>
             <span><strong>\(\mathbb T^3\)</strong>先研究的情形</span>
-            <span><strong>NSE-specific parabolic incidence packing</strong>当前方向</span>
+            <span><strong>signed / bilinear scale-critical incidence packet</strong>当前方向</span>
           </div>
         </aside>
       </div>
@@ -1433,7 +1433,7 @@
       <div class="summary-grid">
         <div class="summary-item"><strong>问题要求</strong><span>证明任意光滑无散初值产生全局光滑解，或严格构造有限时破裂。</span></div>
         <div class="summary-item"><strong>已知困难</strong><span>能量超临界、涡量拉伸、非局部压力与跨尺度能量传递。</span></div>
-        <div class="summary-item"><strong>我目前关注</strong><span>在逐分量正部之前回到 signed precursor/source，检查 NSE 动力学是否强迫 parabolic incidence 或 Carleson packing；不再把定性时间解析性当作 uniform count。</span></div>
+        <div class="summary-item"><strong>我目前关注</strong><span>保留 entry direction 与 signed pairing，检查是否有 frame-summable、由 \(\dot H^{-1}\) 支付且 scale-covariant 的 bilinear packet；不把 certificate (3.3) 的两阶损失隐藏进新范数。</span></div>
         <div class="summary-item"><strong>记录方式</strong><span>把已知结果、预印本、计算、猜想和失败尝试分开写。</span></div>
       </div>
     </div>
@@ -1442,7 +1442,7 @@
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div>
-            <p class="eyebrow">Research topology · R0.1–R0.71Q</p>
+            <p class="eyebrow">Research topology · R0.1–R0.71R</p>
             <h2 class="route-map-title" id="route-map-title">研究路线图</h2>
             <p class="route-map-intro">
               我把已经完成的研究压成一棵路线树。中间是继续推进的主干，左右是保留下来的结果和已经停止的支路。每个节点默认只显示阶段判断；展开“笔记链接”后，可以直接打开这一段的原始记录。
@@ -1451,7 +1451,7 @@
           <nav class="route-map-actions" aria-label="路线图快捷入口">
             <a href="/literature-review.html">阅读当前问题文献综述</a>
             <a href="/recap-r0-60.html">阅读 R0.60 阶段回顾</a>
-            <a href="/recap-r0-61-r0-71q.html">阅读 R0.60 之后的累计回顾</a>
+            <a href="/recap-r0-61-r0-71r.html">阅读 R0.60 之后的累计回顾</a>
             <a href="#first-task">查看完整笔记</a>
           </nav>
         </header>
@@ -1666,15 +1666,15 @@
 
             <article class="tree-node current">
               <div class="tree-node-head">
-                <span class="route-range">R0.69P–R0.71Q</span>
+                <span class="route-range">R0.69P–R0.71R</span>
                 <span class="tree-state current">当前主线</span>
               </div>
-              <h3>从有符号环带障碍走到 complex-time packing method boundary</h3>
-              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–F 建立 Leray 能量级 projected-Lamb 热体积及其有界重叠局部化。R0.71G–P 依次核对 residence、matched-cell heat gap、viscous fusion、signed second jet、soft denominator faces 与同刻 spatial batching。R0.71Q 给出有限 Jensen window theorem，并证明 anchor、component union、cover 与 pointwise envelope 仍是未支付账本。</p>
-              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap → exact viscous fusion → increment–projective bridge → signed second-jet boundary → soft-denominator face boundary → spatial entry batching → temporal-packing boundary → complex-time anchor / truncation / cover boundary</p>
+              <h3>从有符号环带障碍走到 parabolic-incidence certificate boundary</h3>
+              <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71A–P 建立 projected-Lamb 热体积、局部化、denominator faces 与同刻 spatial batching。R0.71Q 给出 finite conditional Jensen theorem。R0.71R 再导出 exact forced heat equation 与 conditional incidence packing，并证明 certificate (3.3) 的一参数 endpoint-square、termwise source-square 方案在 rho=0 scale covariance 与 rho=2 minimal Leray payment 之间存在精确两阶错配。</p>
+              <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap → exact viscous fusion → increment–projective bridge → signed second-jet boundary → soft-denominator face boundary → spatial entry batching → temporal-packing boundary → complex-time anchor / truncation / cover boundary → parabolic-incidence rho=0 / rho=2 boundary</p>
               <details class="tree-notes">
-                <summary>展开 51 篇公开笔记</summary>
-                <nav class="route-note-links" aria-label="R0.69P–R0.71Q">
+                <summary>展开 52 篇公开笔记</summary>
+                <nav class="route-note-links" aria-label="R0.69P–R0.71R">
                   <a href="/notes/r0-69p.html">R0.69P</a>
                   <a href="/notes/r0-69q.html">R0.69Q</a>
                   <a href="/notes/r0-69r.html">R0.69R</a>
@@ -1726,6 +1726,7 @@
                   <a class="milestone" href="/notes/r0-71o.html">R0.71O</a>
                   <a class="milestone" href="/notes/r0-71p.html">R0.71P</a>
                   <a class="milestone" href="/notes/r0-71q.html">R0.71Q</a>
+                  <a class="milestone" href="/notes/r0-71r.html">R0.71R</a>
                 </nav>
               </details>
             </article>
@@ -1734,11 +1735,11 @@
           <div class="tree-row">
             <article class="tree-node next">
               <div class="tree-node-head">
-                <span class="route-range">NEXT · R0.71R</span>
+                <span class="route-range">NEXT · R0.71S</span>
                 <span class="tree-state current">下一检查点</span>
               </div>
-              <h3>NSE-specific parabolic incidence / Carleson packing</h3>
-              <p>我回到 componentwise positive parts 之前的 signed precursor/source，检查 PDE 动力学能否耦合不同 observable 的 entry events；候选必须显式支付 anchor、cover、union 与 event-weight 账本。</p>
+              <h3>signed / bilinear scale-critical incidence packet</h3>
+              <p>保留 entry direction 与 signed pairing，检查能否绕开 certificate (3.3) 的两阶错配；候选必须通过 initial-jet、sequential 与 repeated-window 压力测试，且不能把 normalized L2-Lamb 与 palinstrophy 误称为 Serrin-equivalent budget。</p>
             </article>
           </div>
         </div>
@@ -1823,7 +1824,7 @@
 
           <div class="callout">
             <strong>完整文献综述与技术拓扑</strong>
-            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71Q 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
+            <p>我另做了一页系统综述，把经典理论、五条文献主干、候选爆破排除树、2019—2026 年进展和本站 R0.69P–R0.71R 路线放在同一张图中。R0.61–R0.69O 的历史节点保留在累计回顾里。<a href="/literature-review.html">打开完整文献综述 →</a></p>
           </div>
 
           <div class="card-grid">
@@ -5681,11 +5682,11 @@
           </div>
 
           <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
-            <p class="eyebrow">累计回顾 R0.61–R0.71Q · 2026-08-26</p>
-            <h3>R0.60 recap 之后的累计回顾收录 81 个节点；全站现有 141 篇公开研究笔记</h3>
-            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及驻留边界、固定匹配小区、positive-entry temporal packing 与 complex-time Jensen method audit。R0.70A–R0.71Q 共 43 个完成版本。</p>
-            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71Q 给出固定有限截断上的条件 Jensen bound，并以精确反例隔离 anchor、component-union 与 cover taxes；它们和点态 batch envelope 尚不能由 Leray 预算统一支付。</p>
-            <p><a href="/recap-r0-61-r0-71q.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71q.pdf">下载同步 PDF</a></p>
+            <p class="eyebrow">累计回顾 R0.61–R0.71R · 2026-08-26</p>
+            <h3>R0.60 recap 之后的累计回顾收录 82 个节点；全站现有 142 篇公开研究笔记</h3>
+            <p>R0.60 之后的路线分成十二段：约化 Picard 与剪切边界、横向扰动、压力局部预算、有符号物理环带、移动标签与 source–core 对偶、偏差张量与有限观测、完整框架协方差、恒定投影边界、正输出与物质热 tent、projected-Lamb 热体积、局部热打包与临界迹障碍，以及 positive-entry temporal packing、conditional Jensen 与 parabolic-incidence scale audit。R0.70A–R0.71R 共 44 个完成版本。</p>
+            <p><strong>阶段判断：</strong>&nbsp;目前没有新的无条件继续性判据，也没有构造有限时奇性。R0.71R 证明 finite conditional incidence theorem；在 rho=2 下，Leray energy 支付 source integral，frame constants 因 frame 固定而不依赖 finite truncation。完整右端仍可能因 upper comparison constant Gamma_2 与 essential overlap M 而不一致；theta_- 与 forward windows 是额外 theorem gates，不是右端因子。协变 optimal constant 的 rho=0 与 minimal Leray payment 的 rho=2 只构成 certificate (3.3) 的精确两阶边界。</p>
+            <p><a href="/recap-r0-61-r0-71r.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-71r.pdf">下载同步 PDF</a></p>
           </div>
 
           <div class="task-one" id="r070a" data-release="r070a" style="margin-top:2rem">
@@ -6426,8 +6427,8 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071l">查看双重证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071l_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071l-viscous-fusion/fig-r071l-viscous-fusion-gap">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
             <p><strong style="color:var(--gold)">R0.71M 已完成：</strong>&nbsp;精确增量交换子与 fixed-cell pairing 已写出；当前审计没有从 Leray energy 推出四行总账，所测试的三个绝对临界预算也不由能量类普适嵌入。</p>
           </div>
@@ -6462,8 +6463,8 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071m">查看双重证书</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071m_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071m-increment-commutator/fig-r071m-increment-commutator-boundary">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
             <p><strong style="color:var(--gold)">R0.71N 已完成：</strong>&nbsp;表面的正平方被 local-enstrophy acceleration 精确消去；完整 fixed-cell 标量只留下同尺度的 signed second jet。</p>
           </div>
@@ -6501,8 +6502,8 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071n_report-source.md">查看完整数学报告</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071n_literature_audit.md">查看主源文献台账</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071n-full-scalar/fig-r071n-square-residual-boundary">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
             <p><strong style="color:var(--gold)">R0.71O 已完成：</strong>&nbsp;soft–hard factorization 与有限阶 face atoms 已显式闭合；额外 soft radial damping 没有 finite-order atom。</p>
           </div>
@@ -6542,10 +6543,10 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_gap_matrix.md">查看主张—证据矩阵</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071o_independent_audit.md">查看独立数值审计</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
-            <p><strong style="color:var(--gold)">R0.71P 已完成：</strong>&nbsp;同刻正进入由 bounded-overlap 与 \(\dot H^{-1}\) Lamb square sum 支付；完整时间累积被精确归约到 distinct entry-time counting measure。</p>
+            <p><strong style="color:var(--gold)">R0.71P 已完成：</strong>&nbsp;bounded-overlap 与 \(\dot H^{-1}\) Lamb square sum 组成的一次 time-slice square-function estimate 吸收同刻 batch；完整时间累积被精确归约到 distinct entry-time counting measure。</p>
           </div>
 
           <div class="task-one" id="r071p" data-release="r071p" style="margin-top:2rem">
@@ -6565,7 +6566,7 @@
                 \le M_\chi C_T\frac{\|L(t)\|_{\dot H^{-1}}^2}{Y(t)}
                 \lesssim M_\chi C_T\|u(t)\|_2Y(t)^{1/2}.
               \]
-              因而空间 cell multiplicity 被删除。
+              因而同刻 batch 被一次 time-slice square-function estimate 吸收。
             </p>
             <p>
               完整目标精确变成
@@ -6577,7 +6578,7 @@
               \]
               其中 \(\mathfrak n_\Lambda\) 只计不同 entry times。逐分量 relaxed 正原子已经非负，不能在该目标内部再做 shell–cell signed cancellation。半开窗口上的抽象 sequential path 使计数质量按 \(N\) 增长；真实 smooth NSE initial jet 则达到 cellwise 常数 \(A_+=\|F\|_2^2/Y=1/4\)。
             </p>
-            <p><strong>结论边界：</strong>&nbsp;本节关闭同刻空间 multiplicity，没有给出 uniform NSE temporal packing、内部多 face、无限 frame、Leray 极限、继续性或全局正则性结论。</p>
+            <p><strong>结论边界：</strong>&nbsp;本节证明同刻 batch 的一次 time-slice square-function estimate，没有给出 uniform NSE temporal packing、内部多 face、无限 frame、Leray 极限、继续性或全局正则性结论。</p>
             <p>
               <a href="/notes/r0-71p.html"><strong>阅读 R0.71P 研究笔记 →</strong></a> ·
               <a href="/notes/r0-71p.pdf">下载同步 PDF</a><br>
@@ -6588,8 +6589,8 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_gap_matrix.md">查看主张—证据矩阵</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_independent_audit.md">查看独立数值审计</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
             <p><strong style="color:var(--gold)">R0.71Q 已完成：</strong>&nbsp;有限 Jensen window theorem 成立；解析半径与复域上界不控制 uniform entry count，必须另外支付 anchor、truncation、cover 与 pointwise event-weight 账本。</p>
           </div>
@@ -6623,10 +6624,49 @@
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_gap_matrix.md">查看主张—证据矩阵</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_independent_audit.md">查看独立数值审计</a> ·
               <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit">查看附图、数据与源代码包</a> ·
-              <a href="/recap-r0-61-r0-71q.html">阅读累计回顾</a> ·
-              <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a>
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
             </p>
-            <p><strong style="color:var(--gold)">下一步 R0.71R：</strong>&nbsp;在 componentwise positive parts 之前回到 signed precursor/source，检查 NSE-specific parabolic incidence 或 Carleson packing law；候选必须同时通过 sequential path、Blaschke anchor 与 all-observable union 压力测试。</p>
+            <p><strong style="color:var(--gold)">R0.71R 已完成：</strong>&nbsp;exact forced heat equation 与 finite conditional incidence theorem 成立；certificate (3.3) 的一参数 endpoint-square、termwise source-square 方案无法同时满足 rho=0 scale covariance 与 rho=2 minimal Leray payment，其他 Duhamel designs 保持开放。</p>
+          </div>
+
+
+
+
+
+
+
+          <div class="task-one" id="r071r" data-release="r071r" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.71R · 2026-08-26</p>
+            <h3>有限 incidence theorem 成立，certificate (3.3) 留下精确两阶错配</h3>
+            <p>
+              localized filtered-vorticity observable 满足
+              \[
+                C_{j,Q,t}-\nu\Delta C_{j,Q}=G_{j,Q}.
+              \]
+              对显式 forward height、post-entry upper comparison constant \(\Gamma_\rho\) 与 same-observable overlap，Duhamel 给出 finite conditional event-to-window packing theorem；\(1/\Gamma_\rho\) 编码 lower-charge strength。窗口假设包括 \(0&lt;\theta_-\le\theta_\beta\le\theta_*\) 的统一正下界；\(M\) 取 essential supremum。统一 \(\theta_-\) 与 forward-window availability 是 theorem gates，不是右端因子；缺少正下界时可以任意缩短窗口而平凡化 overlap。
+            </p>
+            <p>
+              rho-dependent source ledger 表明，在 normalized zero-mean torus 上，\(\rho=2\) 是最小 Leray-paid 指数：Leray energy 支付 source integral，frame constants 则由固定 frame 给定；完整右端仍可能因 \(\Gamma_2\) 与 \(M\) 而不一致。对对应 finite covariant event/window family，\(\Gamma_\rho^{\rm opt}\) 定义为 least admissible upper comparison constant；固定 torus 的 compatible integer/dyadic dilation 必须协变搬运 multiplier、cutoff、event 与 window，此时只有 \(\Gamma_\rho^{\rm opt}\) 按 \(\lambda^\rho\) 缩放，并在 \(\rho=0\) 不变。\(\rho=0\) 需要的精确 normalized budget 是 \(\|L\|_2^2/Y+\nu^2\|\nabla\omega\|_2^2/Y\)；这里不声称它等价于 Serrin norm。
+            </p>
+            <p>
+              integer-compatible torus initial data、covariant radial multiplier 与 cutoff 给出 exact Fourier first jet。它只定义 \(\Gamma_{2,\mathrm{jet}}:=A_+/(K^{-2}\|hC_t(0)\|_2^2/Y(0))=K^2/(4\theta^2)\)；这是 leading surrogate，不是 positive-time certificate (3.3) 的 upper comparison constant \(\Gamma_2\) 下界。even-touch、sequential 与 component-union families 只是 forced scalar method tests，不是 NSE trajectories。
+            </p>
+            <p><strong>结论边界：</strong>&nbsp;本节只排除 certificate (3.3) 的一参数 endpoint-square、termwise source-square 无条件闭合；其他 Duhamel designs 保持开放。这里没有证明 uniform incidence、temporal packing、continuation、singularity 或 global regularity，也不排除 signed / bilinear scale-critical packet。</p>
+            <p>
+              <a href="/notes/r0-71r.html"><strong>阅读 R0.71R 研究笔记 →</strong></a><br>
+              <a href="/notes/r0-71r.pdf">下载同步研究笔记 PDF</a> ·
+              <a href="/figures/r0-71r-parabolic-incidence.pdf">下载期刊附图 PDF</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071r">查看双重证书</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_report-source.md">查看完整数学报告</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_literature_audit.md">查看文献审计</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_gap_matrix.md">查看主张—证据矩阵</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071r_independent_audit.md">查看独立数值审计</a> ·
+              <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence">查看附图、数据与源代码包</a> ·
+              <a href="/recap-r0-61-r0-71r.html">阅读累计回顾</a> ·
+              <a href="/recap-r0-61-r0-71r.pdf">下载累计回顾 PDF</a>
+            </p>
+            <p><strong style="color:var(--gold)">下一步 R0.71S：</strong>&nbsp;保留 entry direction 与 signed pairing，检查是否存在 frame-summable、\(\dot H^{-1}\)-paid 且 scale-covariant 的 bilinear packet functional。</p>
           </div>
         </section>
 
@@ -6641,8 +6681,8 @@
         原始方程 · 推导笔记 · 持续修订
       </div>
       <div>
-        综述 v1.02 · 2026-08-26<br>
-        上次综述 v1.01 · 2026-08-26<br>
+        综述 v1.03 · 2026-08-26<br>
+        上次综述 v1.02 · 2026-08-26<br>
         <a href="#top">返回顶部 ↑</a>
       </div>
     </div>

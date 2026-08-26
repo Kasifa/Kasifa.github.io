@@ -5,9 +5,9 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
 const notesRoot = new URL("notes/", publicRoot);
-const certificatesRoot = new URL("research/certificates/r071o/", root);
+const certificatesRoot = new URL("research/certificates/r071p/", root);
 const figureSourceRoot = new URL(
-  "figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces/",
+  "figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching/",
   root,
 );
 
@@ -43,7 +43,7 @@ function releaseSequence() {
   for (let code = "a".charCodeAt(0); code <= "z".charCodeAt(0); code += 1) {
     values.push("r0-70" + String.fromCharCode(code));
   }
-  for (let code = "a".charCodeAt(0); code <= "o".charCodeAt(0); code += 1) {
+  for (let code = "a".charCodeAt(0); code <= "p".charCodeAt(0); code += 1) {
     values.push("r0-71" + String.fromCharCode(code));
   }
   return values;
@@ -52,20 +52,20 @@ function releaseSequence() {
 async function publishedPages() {
   const [home, note, recap, literature] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
-    readFile(new URL("notes/r0-71o.html", publicRoot), "utf8"),
-    readFile(new URL("recap-r0-61-r0-71o.html", publicRoot), "utf8"),
+    readFile(new URL("notes/r0-71p.html", publicRoot), "utf8"),
+    readFile(new URL("recap-r0-61-r0-71p.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
   ]);
   return { home, note, recap, literature };
 }
 
-test("keeps historical R0.71O artifacts reachable after the R0.71P publication", async () => {
+test("publishes R0.71P as v1.01 with 140 notes, route 50, recap 80, and R0.71Q next", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.ok(noteNames.filter((name) => name.endsWith(".html")).length >= 139);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 140);
   assert.match(home, /<strong>v1\.01<\/strong>网页版本/);
   assert.match(home, /<strong>140<\/strong>公开研究笔记/);
   assert.match(home, /<strong>R0\.71P<\/strong>最新研究节点/);
@@ -79,157 +79,149 @@ test("keeps historical R0.71O artifacts reachable after the R0.71P publication",
   );
   assert.ok(currentRoute);
   assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 50);
-  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/r0-71o.html"'), 1);
   assert.equal(occurrenceCount(recap, '<article class="phase">'), 12);
-  assert.match(recap, /收录节点：79/);
-  assert.match(recap, /回顾截止时公开笔记：139/);
-  assert.match(recap, /R0\.70A–R0\.71O 完成版本/);
+  assert.match(recap, /收录节点：80/);
+  assert.match(recap, /回顾截止时公开笔记：140/);
+  assert.match(recap, /R0\.70A–R0\.71P 完成版本/);
   assert.match(literature, /R0\.69P–R0\.71P/);
   assert.match(literature, /开放接口 · R0\.71Q/);
 
-  for (const [page, minimum, i18nVersion] of [
-    [home, 10, "1.01"],
-    [note, 16, "1.00"],
-    [recap, 8, "1.00"],
-    [literature, 49, "1.01"],
+  for (const [page, minimum] of [
+    [home, 10],
+    [note, 16],
+    [recap, 8],
+    [literature, 49],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
-    assert.match(page, /R0\.71O/);
-    assert.ok(page.includes(`src="/i18n-en.js?v=${i18nVersion}"`));
+    assert.match(page, /R0\.71P/);
+    assert.match(page, /src="\/i18n-en\.js\?v=1\.01"/);
   }
 });
 
-test("keeps one release card, exactly two homepage links, and all reproducibility links", async () => {
+test("ships one R0.71P release card and complete reproducibility links", async () => {
   const { home, note, recap, literature } = await publishedPages();
-  const opening = '<div class="task-one" id="r071o" data-release="r071o"';
+  const opening = '<div class="task-one" id="r071p" data-release="r071p"';
   const card = sliceReleaseCard(home, opening);
 
   assert.equal(occurrenceCount(home, opening), 1);
-  assert.equal(occurrenceCount(home, 'href="/notes/r0-71o.html"'), 2);
+  assert.equal(occurrenceCount(home, 'href="/notes/r0-71p.html"'), 2);
   for (const token of [
-    'href="/notes/r0-71o.html"',
-    'href="/notes/r0-71o.pdf"',
-    'href="/figures/r0-71o-soft-denominator-faces.pdf"',
-    "research/certificates/r071o",
-    "research/r071o_report-source.md",
-    "research/r071o_literature_audit.md",
-    "research/r071o_gap_matrix.md",
-    "figures/r071o-soft-denominator-faces/fig-r071o-soft-denominator-faces",
+    'href="/notes/r0-71p.html"',
+    'href="/notes/r0-71p.pdf"',
+    'href="/figures/r0-71p-positive-entry-batching.pdf"',
+    "research/certificates/r071p",
+    "research/r071p_report-source.md",
+    "research/r071p_literature_audit.md",
+    "research/r071p_gap_matrix.md",
+    "research/r071p_independent_audit.md",
+    "figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching",
     'href="/recap-r0-61-r0-71p.html"',
     'href="/recap-r0-61-r0-71p.pdf"',
   ]) {
     assert.ok(card.includes(token), token);
   }
-  assert.match(card, /R0\.71P 已完成/);
+  assert.match(card, /下一步 R0\.71Q/);
 
   for (const token of [
-    'href="/notes/r0-71o.pdf"',
-    'href="/recap-r0-61-r0-71o.html"',
-    'href="/recap-r0-61-r0-71o.pdf"',
-    'src="/figures/r0-71o-soft-denominator-faces.svg"',
-    "research/r071o_report-source.md",
-    "research/r071o_literature_audit.md",
-    "research/r071o_independent_audit.md",
-    "research/r071o_gap_matrix.md",
-    "research/r071o_exact_audit.py",
-    "research/r071o_independent_audit.py",
-    "research/certificates/r071o",
+    'href="/notes/r0-71p.pdf"',
+    'href="/recap-r0-61-r0-71p.html"',
+    'href="/recap-r0-61-r0-71p.pdf"',
+    'src="/figures/r0-71p-positive-entry-batching.svg"',
+    "research/r071p_report-source.md",
+    "research/r071p_literature_audit.md",
+    "research/r071p_independent_audit.md",
+    "research/r071p_gap_matrix.md",
+    "research/r071p_exact_audit.py",
+    "research/r071p_independent_audit.py",
+    "research/certificates/r071p",
   ]) {
     assert.ok(note.includes(token), token);
   }
-  assert.match(recap, /href="\/notes\/r0-71o\.html"/);
-  assert.match(recap, /href="\/figures\/r0-71o-soft-denominator-faces\.pdf"/);
-  assert.match(literature, /<header><b>R0\.71O<\/b>/);
-  assert.match(literature, /href="\/notes\/r0-71o\.html"/);
+  assert.match(recap, /href="\/notes\/r0-71p\.html"/);
+  assert.match(recap, /href="\/figures\/r0-71p-positive-entry-batching\.pdf"/);
+  assert.match(literature, /<header><b>R0\.71P<\/b>/);
 });
 
-test("states the finite-order C1 theorem, face atoms, raw cancellation, abstract separation, and NSE entry boundary", async () => {
+test("states the half-open segmented ledger, relaxed measure, spatial batch, and temporal boundary", async () => {
   const { home, note, recap, literature } = await publishedPages();
 
   for (const token of [
-    "z_{Q,\\varepsilon}=\\sqrt{\\sigma_{Q,\\varepsilon}}",
-    "2z_{Q,\\varepsilon}^+\\mathcal J^N_{Q,\\varepsilon}",
-    "C_{Q,t}(t_0+\\tau)=m c\\,\\tau^{m-1}+O_H(|\\tau|^m)",
-    "A_+-A_-",
-    "A_++A_-",
-    "\\gamma^2\\log",
-    "C_N(t)=N^{-1}\\sin(Nt)e",
-    "\\operatorname{TV}(a_{N,\\varepsilon_N})",
-    "\\|F_j(0)\\|_2^2=\\frac14",
-    "\\boxed{\\lim_{t\\downarrow0}a_Q(t)=\\frac14}",
+    "K=[a,b)",
+    "I^+_{j,Q}(K)",
+    "V^+_{\\rm seg}(a_{j,Q};K)",
+    "A_+-(A_+-A_-)^+=\\min(A_+,A_-)",
+    "componentwise relaxed positive-entry measure",
+    "\\eta^+_\\Lambda",
+    "\\mathbf1_{\\operatorname{supp}\\chi_Q}F_j",
+    "\\|L(t)\\|_{\\dot H^{-1}}^2",
+    "d\\mathfrak n_\\Lambda",
+    "\\overline K=[a,b]\\Subset I_{\\rm strong}",
+    "t=2k\\pi/N",
+    "\\varepsilon_N=N^{-4}",
+    "初始 filtered vorticity",
+    "c=C_t(0)=2F(0)",
+    "N_C(D(t_*,r))",
   ]) {
     assert.ok(note.includes(token), token);
   }
 
-  assert.match(note, /soft regularization 解决的是 .*坐标定义，不是 face-payment/);
-  assert.match(note, /signed atom 可以消失/);
-  assert.match(note, /各自总变差.*发散；联合后对数精确抵消/);
-  assert.match(note, /smooth Hilbert path，不是耦合 NSE/);
-  assert.match(note, /不是内部 crossing，也没有构造任意多 NSE faces/);
-  assert.match(note, /没有新的 continuation criterion/);
+  assert.match(note, /不是 signed weak limit 或 signed aggregate 的正 Jordan 部/);
+  assert.match(note, /right endpoint|右端 .*不计入|右观测端点不计入/);
+  assert.match(note, /extended positive Borel measure/);
+  assert.match(note, /不是 NSE 多-face 构造/);
+  assert.match(note, /一侧初始 jet，不是内部 crossing/);
   assert.match(note, /不作新颖性、优先权或发表级别声明/);
-  assert.match(note, /未证明：内部 NSE faces 可以任意多/);
-  assert.match(note, /未证明：refresh、moving cells、弱解极限/);
-  assert.match(note, /https:\/\/doi\.org\/10\.1007\/BF02196453/);
-  assert.doesNotMatch(note, /BF01040914/);
-
-  const next = note.slice(note.indexOf('<section id="next">'), note.indexOf('<section id="claims">'));
-  assert.match(next, /A_{j,Q,\+}/);
-  assert.doesNotMatch(next, /A_{j,Q,-}/);
-  assert.match(home, /soft denominator|Jordan face/i);
-  assert.match(recap, /raw source\/radial logs/);
+  assert.match(note, /未证明：继续性、有限时奇性、三维全局正则性或千禧年问题结论/);
+  assert.match(home, /逐 shell–cell.*relaxed 正原子/s);
+  assert.match(recap, /distinct entry-time counting measure/);
   assert.match(literature, /bounded negative finding/i);
-  assert.match(literature, /不是原创性、优先权或不存在性结论/);
 });
 
-test("verifies exact and independent certificates and their declared boundaries", async () => {
+test("verifies exact and independent R0.71P certificates", async () => {
   const [exact, independent, report] = await Promise.all([
     readFile(new URL("result.json", certificatesRoot), "utf8").then(JSON.parse),
     readFile(new URL("independent-result.json", certificatesRoot), "utf8").then(JSON.parse),
-    readFile(new URL("research/r071o_report-source.md", root), "utf8"),
+    readFile(new URL("research/r071p_report-source.md", root), "utf8"),
   ]);
   await Promise.all([
     access(new URL("SHA256SUMS", certificatesRoot)),
-    access(new URL("research/r071o_gap_matrix.md", root)),
-    access(new URL("research/r071o_literature_audit.md", root)),
+    access(new URL("research/r071p_gap_matrix.md", root)),
+    access(new URL("research/r071p_literature_audit.md", root)),
   ]);
 
-  assert.equal(exact.release, "R0.71O");
+  assert.equal(exact.release, "R0.71P");
   assert.equal(exact.status, "passed");
   assert.ok(Object.values(exact.checks).every((check) => check.passed));
-  assert.match(exact.checks.finiteOrderFace.hypothesis, /C_t=m\*c/);
-  assert.equal(
-    exact.checks.finiteOrderFace.measureLimit.positiveDerivativeAtom,
-    "A_plus*delta_t0",
-  );
-  assert.equal(
-    exact.checks.finiteOrderFace.measureLimit.negativeDerivativeAtom,
-    "A_minus*delta_t0",
-  );
-  assert.match(exact.checks.rawSplitCancellation.conclusion, /logarithmically divergent/);
-  assert.match(exact.checks.oscillatorySeparation.claimBoundary, /not constrained.*NSE/i);
-  assert.equal(exact.checks.nseInitialFace.rightEntryTrace, "1/4");
-  assert.match(exact.claimBoundary, /No refresh or moving-cell theorem/);
+  const boundary = exact.checks.positiveMeasureLedger.observationBoundaryConvention;
+  assert.equal(boundary.window, "[a,b)");
+  assert.equal(boundary.entryMassAfterSubtractingInitialTrace, "0");
+  assert.match(exact.checks.positiveMeasureLedger.monotonicity, /need not equal.*positive Jordan/i);
+  assert.equal(exact.checks.oscillatoryTemporalPacking.path.interval, "[0,2*pi)");
+  assert.equal(exact.checks.oscillatoryTemporalPacking.samples.at(-1).hardPositiveEntryMass, 64);
+  assert.equal(exact.checks.nseSharpInitialBatch.rightEntryAtom, "1/4");
+  assert.equal(exact.checks.nseSharpInitialBatch.normInitialFilteredVorticitySquared, "0");
+  assert.equal(exact.checks.nseSharpInitialBatch.normInitialFilteredViscousJetSquared, "0");
 
-  assert.equal(independent.release, "R0.71O");
+  assert.equal(independent.release, "R0.71P");
   assert.equal(independent.status, "passed");
   assert.ok(Object.values(independent.checks).every((check) => check.passed));
-  assert.equal(independent.checks.nseInitialFace.gridOrder, 32);
-  assert.equal(independent.checks.nseInitialFace.rightEntryTrace, 0.25);
-  assert.ok(independent.checks.innerProfiles.maximumDerivativeMassError < 1e-14);
-  assert.ok(independent.checks.rawSplitCancellation.maximumJointRelativeError < 1e-14);
-  assert.ok(independent.checks.oscillatoryPaths.maximumVariationRelativeError < 1e-14);
-  assert.match(independent.claimBoundary, /No time integration/);
+  assert.equal(independent.checks.randomOverlapLedgers.trialCount, 64);
+  assert.equal(independent.checks.oscillatoryEntries.maximumEntryCountError, 0);
+  assert.ok(independent.checks.oscillatoryEntries.maximumSoftRelativeError < 2e-15);
+  assert.equal(independent.checks.oscillatoryEntries.rows.at(-1).rightEndpointExcluded, true);
+  assert.equal(independent.checks.nseSharpInitialEntry.gridOrder, 32);
+  assert.equal(independent.checks.nseSharpInitialEntry.rightEntryAtom, 0.25);
+  assert.equal(independent.checks.nseSharpInitialEntry.maximumResidual, 0);
 
-  assert.match(report, /bounded primary-source search/i);
-  assert.match(report, /weighted all-cell\/all-shell entry measure/i);
-  assert.match(report, /No continuation, regularity, or singularity conclusion follows/i);
-  assert.match(report, /https:\/\/doi\.org\/10\.1007\/BF02196453/);
+  assert.match(report, /half open|half-open/i);
+  assert.match(report, /componentwise relaxed positive-entry measure/i);
+  assert.match(report, /distinct entry-time counting measure/i);
+  assert.match(report, /no uniform NSE\s+zero count/i);
 });
 
-test("ships synchronized PDFs and byte-identical three-format figure mirrors with manifest QA", async () => {
+test("ships synchronized PDFs, byte-identical figure mirrors, and continuous releases", async () => {
   const [
-    { home, note, recap },
+    { home, note, recap, literature },
     notePdf,
     recapPdf,
     svg,
@@ -241,19 +233,21 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
     manifest,
     validation,
     independentValidation,
+    instructions,
   ] = await Promise.all([
     publishedPages(),
-    readFile(new URL("notes/r0-71o.pdf", publicRoot)),
-    readFile(new URL("recap-r0-61-r0-71o.pdf", publicRoot)),
-    readFile(new URL("figures/r0-71o-soft-denominator-faces.svg", publicRoot)),
-    readFile(new URL("figures/r0-71o-soft-denominator-faces.pdf", publicRoot)),
-    readFile(new URL("figures/r0-71o-soft-denominator-faces.png", publicRoot)),
+    readFile(new URL("notes/r0-71p.pdf", publicRoot)),
+    readFile(new URL("recap-r0-61-r0-71p.pdf", publicRoot)),
+    readFile(new URL("figures/r0-71p-positive-entry-batching.svg", publicRoot)),
+    readFile(new URL("figures/r0-71p-positive-entry-batching.pdf", publicRoot)),
+    readFile(new URL("figures/r0-71p-positive-entry-batching.png", publicRoot)),
     readFile(new URL("figure.svg", figureSourceRoot)),
     readFile(new URL("figure.pdf", figureSourceRoot)),
     readFile(new URL("figure.png", figureSourceRoot)),
     readFile(new URL("manifest.json", figureSourceRoot), "utf8").then(JSON.parse),
     readFile(new URL("validation.json", figureSourceRoot), "utf8").then(JSON.parse),
     readFile(new URL("independent-validation.json", figureSourceRoot), "utf8").then(JSON.parse),
+    readFile(new URL("AGENTS.md", root), "utf8"),
   ]);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");
@@ -266,24 +260,21 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
   assert.deepEqual(svg, sourceSvg);
   assert.deepEqual(figurePdf, sourceFigurePdf);
   assert.deepEqual(png, sourcePng);
-
-  assert.match(note, /src="\/figures\/r0-71o-soft-denominator-faces\.svg"/);
-  assert.match(recap, /href="\/recap-r0-61-r0-71o\.pdf"/);
-  assert.match(home, /href="\/figures\/r0-71o-soft-denominator-faces\.pdf"/);
-  assert.equal(manifest.release, "R0.71O");
-  assert.equal(manifest.figureId, "fig-r071o-soft-denominator-faces");
+  assert.equal(manifest.release, "R0.71P");
+  assert.equal(manifest.figureId, "fig-r071p-positive-entry-batching");
   assert.equal(manifest.figure.widthMillimetres, 178);
   assert.equal(manifest.figure.heightMillimetres, 118);
   assert.equal(manifest.figure.outputs.find((output) => output.path === "figure.png").dpi, 600);
   assert.equal(manifest.qa.status, "passed");
+  assert.equal(manifest.qa.automaticCheckCount, 95);
+  assert.equal(manifest.qa.independentCheckCount, 84);
   assert.equal(manifest.computation.pdeTimeStepping, false);
   assert.equal(manifest.computation.dns, false);
-  assert.match(manifest.claimBoundary, /abstract smooth Hilbert path, not a coupled NSE observable/i);
-  assert.equal(validation.release, "R0.71O");
-  assert.equal(validation.status, "pass");
-  assert.equal(independentValidation.release, "R0.71O");
-  assert.equal(independentValidation.status, "pass");
-
+  assert.match(manifest.claimBoundary, /abstract smooth Hilbert path, not a coupled NSE/i);
+  assert.equal(validation.release, "R0.71P");
+  assert.equal(validation.status, "passed");
+  assert.equal(independentValidation.release, "R0.71P");
+  assert.equal(independentValidation.status, "passed");
   if (manifest.status === "formal") {
     assert.match(manifest.git.sourceCommit, /^[0-9a-f]{40}$/);
     assert.equal(manifest.git.certificateCommit, manifest.git.sourceCommit);
@@ -291,20 +282,13 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
   } else {
     assert.equal(manifest.status, "draft");
   }
-});
 
-test("keeps all 41 R0.70A-R0.71O releases continuous and screens discouraged wording", async () => {
-  const [{ home, note, recap, literature }, instructions] = await Promise.all([
-    publishedPages(),
-    readFile(new URL("AGENTS.md", root), "utf8"),
-  ]);
   const routeMatch = home.match(
     /<nav class="route-note-links" aria-label="R0\.69P–R0\.71P">([\s\S]*?)<\/nav>/,
   );
   assert.ok(routeMatch);
   const releases = releaseSequence();
-  assert.equal(releases.length, 41);
-
+  assert.equal(releases.length, 42);
   for (const slug of releases) {
     const releaseId = slug.replaceAll("-", "");
     const link = 'href="/notes/' + slug + '.html"';

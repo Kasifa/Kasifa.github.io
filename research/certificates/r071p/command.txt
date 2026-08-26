@@ -1,0 +1,12 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071p_exact_audit.py --output research/certificates/r071p/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071p_independent_audit.py --output research/certificates/r071p/independent-result.json
+
+Figure commands:
+figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching/command.txt
+
+Validate figure package:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071p/build_hashes.py
+(cd research/certificates/r071p && shasum -a 256 -c SHA256SUMS)

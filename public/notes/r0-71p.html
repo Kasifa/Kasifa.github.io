@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71P：同刻正进入原子可由 bounded-overlap 与 H^{-1} Lamb 平方和支付；完整累积仍需要控制不同 entry times 的计数测度。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71P｜同刻空间批次可支付，跨时进入计数仍开放">
+  <meta property="og:description" content="segmented positive variation、逐分量 relaxed 正进入测度、同刻 frame-cell batching、时间计数测度、解析性边界和 sharp NSE initial entry。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71P｜同刻空间批次可支付，跨时进入计数仍开放</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.72rem,3.7vw,3.1rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=1.01"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#target">对象</a><a href="#variation">变差</a><a href="#measure">正测度</a><a href="#batch">同刻批次</a><a href="#counting">跨时计数</a><a href="#analyticity">解析性</a><a href="#separation">压力测试</a><a href="#nse">NSE sharpness</a><a href="#jensen">定量窗口</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71P · POSITIVE ENTRIES · SPATIAL BATCHING · TEMPORAL PACKING</div>
+        <h1>同一时刻的全部正进入可以做空间平方和，<br>不同进入时刻仍需要独立计数预算</h1>
+        <p class="lead">我继续固定 multiplier、cutoff 与 partition。R0.71O 给出的 \(A_{j,Q,+}\) 是 soft/分段路径的正进入原子，不是普通 hard BV 的正跳跃。把同刻所有壳与小区先合并后，cutoff 有界重叠和 Littlewood–Paley \(\dot H^{-1}\) 平方和确实删除了空间 cell count；但完整目标变成同一预算对 entry-time counting measure 的积分。现有 Leray 时间积分不能替代这张计数测度。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71P 同刻 batching theorem 与独立审计完成</span><strong>spatial multiplicity closed；temporal packing open</strong><p>版本 v0.71P · 2026-08-26</p><p>exact symbolic/Fourier audit: PASS</p><p>random overlap + root/quadrature audit: PASS</p><p>32³ standalone FFT sharpness: PASS</p><p>下一对象：quantitative complex-time zero packing</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#target">01 · 正进入目标</a></li><li><a href="#variation">02 · segmented V+</a></li><li><a href="#measure">03 · 正原子测度</a></li><li><a href="#batch">04 · 同刻空间批次</a></li><li><a href="#counting">05 · 时间计数测度</a></li><li><a href="#analyticity">06 · 有限解析截断</a></li><li><a href="#separation">07 · sequential pressure test</a></li><li><a href="#nse">08 · NSE sharp entry</a></li><li><a href="#jensen">09 · Jensen 条件窗口</a></li><li><a href="#audit">10 · 独立审计</a></li><li><a href="#figure">11 · 正式附图</a></li><li><a href="#literature">12 · 文献边界</a></li><li><a href="#value">13 · 研究价值</a></li><li><a href="#next">14 · 下一步</a></li><li><a href="#claims">15 · 主张边界</a></li><li><a href="#reproduce">16 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Finite verdict</div><h2>空间 cell multiplicity 可以删掉，时间 event multiplicity 还不能删</h2>
+          <p>本节先把 \(A_+\) 与 ordinary hard BV 分开，再把全部同刻 faces 做一次局部平方和，最后才累加不同时间。这个顺序得到一个精确而有限的判断。</p>
+          <div class="boundary"><strong>有限判断</strong><p>正进入和是逐 shell–cell 先取 soft 正部、再求和得到的 relaxed 正测度；它一般不等于 signed aggregate 的正 Jordan 部。同刻全部 faces 由 \(\dot H^{-1}\) Lamb budget 支付；完整和则由该 budget 对 distinct entry-time counting measure 的积分控制。当前缺的是 temporal packing，不是另一个 fixed-cell 代数恒等式。</p></div>
+        </section>
+
+        <section id="target"><div class="section-no">01 / Target</div><h2>R0.71P 只检查右侧正进入原子</h2>
+          <p>在有限阶零点 \(t_0\)，若</p>
+          <div class="equation">\[
+            C_{j,Q}(t_0+\tau)=c_{j,Q}(t_0)\tau^m+O_{L^2}(|\tau|^{m+1}),
+          \]</div>
+          <p>则 R0.71O 给出</p>
+          <div class="equation result">\[
+            A_{j,Q,+}(t_0)=
+            \frac{(\langle F_j(t_0),c_{j,Q}(t_0)\rangle^+)^2}
+            {Y(t_0)\|c_{j,Q}(t_0)\|_2^2}.
+          \]</div>
+          <p>本节目标严格保持为</p>
+          <div class="equation result">\[
+            \mathsf S_{\Lambda,+}(K)
+            =\sum_{(j,Q)\in\Lambda}\kappa_j^{-2}
+            \sum_{t_0\in\mathcal Z^+_{j,Q}(K)}A_{j,Q,+}(t_0).
+          \]</div>
+          <p>我只讨论非平凡零均值经典解，因此 \(Y(t)=\|\omega(t)\|_2^2&gt;0\)；平凡解的 entry mass 约定为零。total-Jordan \(A_++A_-\)、moving cutoff 与 refresh atoms 都没有混入这一节。全文固定半开窗口 \(K=[a,b)\)：左端零点可以计入，右观测端点不计入。</p>
+        </section>
+
+        <section id="variation"><div class="section-no">02 / Segmented positive variation</div><h2>soft/分段进入质量不是 ordinary hard \(V^+\)</h2>
+          <p>在 \(K=[a,b)\) 内，把 \(\{d_{j,Q}&gt;0\}\) 的每个连通分支在两端分别补零。若 \(d_{j,Q}(a)&gt;0\)，这会人为产生左端上升 \(0\to a_{j,Q}(a+)\)；我把它声明为 initial trace \(I^+_{j,Q}(K)\)，而不是 entry。于是</p>
+          <div class="equation result">\[
+            V^+_{\rm seg}(a_{j,Q};K)
+            =\sum_{J\in\operatorname{Comp}(\{d_{j,Q}&gt;0\}\cap K)}
+            V^+(a_{j,Q};J)+I^+_{j,Q}(K)
+            +\sum_{t_0\in\mathcal Z^+_{j,Q}(K)}A_{j,Q,+}(t_0).
+          \]</div>
+          <div class="equation result">\[
+            \mathsf S_{\Lambda,+}(K)
+            =\sum_{(j,Q)\in\Lambda}\kappa_j^{-2}
+            \left[V^+_{\rm seg}(a_{j,Q};K)
+            -\sum_{J\in\operatorname{Comp}(\{d_{j,Q}&gt;0\}\cap K)}
+            V^+(a_{j,Q};J)-I^+_{j,Q}(K)\right].
+          \]</div>
+          <p>ordinary hard representative 在内部零点直接从 \(A_-\) 跳到 \(A_+\)，它的正原子只是</p>
+          <div class="equation">\[
+            (Da_{j,Q})^+\{t_0\}=(A_+-A_-)^+.
+          \]</div>
+          <div class="equation result">\[
+            A_+-(A_+-A_-)^+=\min(A_+,A_-).
+          \]</div>
+          <p>偶阶 touch 且 \(A_-=A_+&gt;0\) 时，ordinary hard BV 原子为零，soft/segmented ledger 仍保留完整 \(A_+\)。</p>
+          <p>Tonelli 还给出精确幅值层析：</p>
+          <div class="equation result">\[
+            \mathsf S_{\Lambda,+}(K)
+            =\int_0^\infty\sum_{(j,Q)\in\Lambda}\kappa_j^{-2}
+            \#\{t_0\in\mathcal Z^+_{j,Q}(K):A_{j,Q,+}(t_0)&gt;s\}\,ds.
+          \]</div>
+          <p>这里数的是 amplitude 从零向上穿过正层 \(s\)，不是非负 \(d_Q\) 对零层的符号 crossing。</p>
+        </section>
+
+        <section id="measure"><div class="section-no">03 / Positive atomic measure</div><h2>定义目标以后，跨壳跨小区没有符号可以抵消</h2>
+          <div class="equation result">\[
+            \eta^+_\Lambda
+            =\sum_{(j,Q)\in\Lambda}\kappa_j^{-2}
+            \sum_{t_0\in\mathcal Z^+_{j,Q}(K)}
+            A_{j,Q,+}(t_0)\delta_{t_0}.
+          \]</div>
+          <p>对每个 shell–cell，soft face 的正、负部分可以分别趋于 \(A_+\delta_{t_0}\)、\(A_-\delta_{t_0}\)，而 signed difference 在偶阶 touch 可以趋于零。因此 \(\eta^+_\Lambda\) 是 componentwise relaxed positive-entry measure，不是 signed weak limit 或 signed aggregate 的正 Jordan 部。</p>
+          <p>权重与原子全部非负。同一时间的 atoms 相加；扩大有限截断时总质量单调增加。可数 frame 给出 extended positive Borel measure，极限允许为无穷，也没有预先声称局部有限。</p>
+          <p>因此 R0.71O 留下的“是否有 summed cancellation”在这一节被收紧：对已经定义好的 \(\eta^+\)，字面上的 signed cancellation 不存在。仍可能存在的是新的 NSE estimate、packing law，或者先在一个 signed precursor 中抵消，再证明它支配这张正测度。</p>
+        </section>
+
+        <section id="batch"><div class="section-no">04 / Simultaneous spatial batching</div><h2>同刻全部 entries 先由 support overlap 合并</h2>
+          <p>固定时间 \(t\)，记 \(\mathcal E_\Lambda(t)\) 为所有此时右进入的 \((j,Q)\)。Taylor leading direction 仍支撑在 \(\operatorname{supp}\chi_Q\)，所以 Cauchy–Schwarz 给出 sharp cell bound</p>
+          <div class="equation result">\[
+            A_{j,Q,+}(t)
+            \le\frac{\|\mathbf1_{\operatorname{supp}\chi_Q}F_j(t)\|_2^2}{Y(t)}.
+          \]</div>
+          <p>若 cutoff support overlap 为 \(M_\chi\)，且固定 annular frame 满足标准 \(\dot H^{-1}\) square-function 上界，则</p>
+          <div class="equation result">\[
+          \begin{aligned}
+            \mathsf e_\Lambda(t)
+            &amp;=\sum_{(j,Q)\in\mathcal E_\Lambda(t)}
+            \kappa_j^{-2}A_{j,Q,+}(t)\\
+            &amp;\le\frac{M_\chi}{Y(t)}
+            \sum_j\kappa_j^{-2}\|F_j(t)\|_2^2\\
+            &amp;\le M_\chi C_T\frac{\|L(t)\|_{\dot H^{-1}}^2}{Y(t)}.
+          \end{aligned}
+          \]</div>
+          <p>再由 Sobolev duality、Hölder 与插值，</p>
+          <div class="equation result">\[
+            \mathsf e_\Lambda(t)\lesssim
+            M_\chi C_T\|u(t)\|_2Y(t)^{1/2}.
+          \]</div>
+          <p>这一步删除了“同一时刻有多少 cells”这个因子。它没有累加不同时间。</p>
+        </section>
+
+        <section id="counting"><div class="section-no">05 / Temporal counting measure</div><h2>剩余对象是 distinct entry times，而不是 Lebesgue time</h2>
+          <p>把同刻所有 faces 看成一个 batch。令</p>
+          <div class="equation">\[
+            \mathfrak n_\Lambda
+            =\sum_{t\in\mathcal T_\Lambda(K)}\delta_t,
+          \]</div>
+          <p>其中 \(\mathcal T_\Lambda(K)\) 只记录 \(A_{j,Q,+}(t)&gt;0\) 的不同 entry times。定义</p>
+          <div class="equation">\[
+            \mathcal H(t)=M_\chi C_T\frac{\|L(t)\|_{\dot H^{-1}}^2}{Y(t)}.
+          \]</div>
+          <div class="equation result">\[
+            \boxed{
+            \mathsf S_{\Lambda,+}(K)
+            =\int_K\mathsf e_\Lambda(t)\,d\mathfrak n_\Lambda(t)
+            \le\int_K\mathcal H(t)\,d\mathfrak n_\Lambda(t).}
+          \]</div>
+          <p>Leray energy 可以控制若干 \(\mathcal H(t)\,dt\) 型普通时间积分；它不控制同一函数在零测 entry set 上被重复抽样。把 \(d\mathfrak n_\Lambda\) 直接换成 \(dt\) 是本节明确排除的一步。</p>
+          <p>对可数族，约定非 entry 时 \(A_{j,Q,+}(t)=0\)，并对固定的全体 counting measure 使用 Tonelli 与 monotone convergence。该 measure 可以不局部有限；无限多个同刻 entries 的总权重仍由上面的 time-slice bound 控制。</p>
+        </section>
+
+        <section id="analyticity"><div class="section-no">06 / Finite analytic truncation</div><h2>固定有限截断在经典紧区间内确实有限</h2>
+          <p>若 \(K=[a,b)\) 且 \(\overline K=[a,b]\Subset I_{\rm strong}\)，周期强解对时间解析。固定 bounded observable \(C_{j,Q}(t)\) 要么恒为零，要么每个零点孤立且有限阶；\(\overline K\) 上零点有限。恒零 observable 没有 positive-denominator component，也没有 entry。</p>
+          <div class="boundary"><strong>有限正结果</strong><p>固定有限个 \((j,Q)\) 时，\(\mathsf S_{\Lambda,+}(K)&lt;\infty\)。解析性没有给出随截断、解、壳、小区或 \(K\uparrow T^*\) 一致的零点数、阶数、间距与 transversality。</p></div>
+        </section>
+
+        <section id="separation"><div class="section-no">07 / Sequential-entry pressure test</div><h2>光滑抽象路径把 counting measure 与 \(dt\) 分开</h2>
+          <p>在半开窗口 \(K=[0,2\pi)\) 取单位向量 \(e\)，令</p>
+          <div class="equation">\[
+            Y_N=1,\qquad F_N=e,\qquad
+            C_N(t)=N^{-1}\sin(Nt)e.
+          \]</div>
+          <p>正 atoms 位于 \(t=2k\pi/N\)，\(k=0,\ldots,N-1\)。左端 \(t=0\) 计入，右端 \(2\pi\) 不计入，因此共有 \(N\) 个正进入，每个 \(A_+=1\)：</p>
+          <div class="equation result">\[
+            \mathsf S_{N,+}=N
+            =\int_0^{2\pi}1\,d\mathfrak n_N,
+            \qquad\int_0^{2\pi}1\,dt=2\pi.
+          \]</div>
+          <p>同时</p>
+          <div class="equation">\[
+            \int_K d_N(t)\,dt=\frac\pi{N^2},\qquad
+            \int_K\|C_{N,t}(t)\|^2\,dt=\pi,
+            \qquad\int_K\|F_N(t)\|^2\,dt=2\pi.
+          \]</div>
+          <p>取 \(\varepsilon_N=N^{-4}\)，soft 正进入质量为 \(N/(1+N^{-2})\)，所以 soft/hard 比值趋于一。这个 smooth Hilbert path 证明 counting measure 不能由这些 ordinary budgets 普适替换为 \(dt\)；它不是 NSE 多-face 构造。</p>
+        </section>
+
+        <section id="nse"><div class="section-no">08 / Sharp NSE initial entry</div><h2>真实 smooth NSE initial jet 达到单格 projection 常数</h2>
+          <p>取</p>
+          <div class="equation">\[
+            u_0(x)=(0,\cos x_1,\cos x_2),
+          \]</div>
+          <p>令径向 multiplier 在半径 \(1\) 为零、在 \(\sqrt2\) 为一，并取 \(\chi=1\)。此时初始 filtered vorticity 与 filtered viscous jet 都为零。精确 Fourier convolution 给出</p>
+          <div class="equation result">\[
+            Y(0)=1,\qquad\|F(0)\|_2^2=\frac14,\qquad
+            c=C_t(0)=2F(0),\qquad\|c\|_2^2=1.
+          \]</div>
+          <div class="equation result">\[
+            \boxed{A_+=\frac{(1/2)^2}{1\cdot1}=\frac14
+            =\frac{\|F(0)\|_2^2}{Y(0)}.}
+          \]</div>
+          <p>Cauchy residual 为零。因此单 face 上不能普适插入小于一的改进常数。这仍是一侧初始 jet，不是内部 crossing 或重复 NSE face theorem。</p>
+        </section>
+
+        <section id="jensen"><div class="section-no">09 / Conditional analytic window</div><h2>Jensen 可以计数，但必须显式支付 radius、growth 与 anchor</h2>
+          <p>若 Hilbert 空间复化后的 \(C\) 在复圆盘 \(D(t_*,R)\) 解析，且</p>
+          <div class="equation">\[
+            \sup_{D(t_*,R)}\|C(z)\|\le M,
+            \qquad C(t_*)\ne0,
+          \]</div>
+          <p>选取在 \(C(t_*)\) 上取范数的单位复线性泛函，再用 Jensen 公式可得 distinct vector-zero count</p>
+          <div class="equation result">\[
+            N_C(D(t_*,r))
+            \le\frac{\log(M/\|C(t_*)\|)}{\log(R/r)},
+            \qquad0&lt;r&lt;R.
+          \]</div>
+          <p>标量 Jensen count 按重数计，只会更大。这条条件式明确暴露四项输入：complex-time radius、整盘 complex norm、非退化 projection anchor 与窗口覆盖。当前 Leray budget 没有给出它们的一致版本。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">10 / Independent audit</div><h2>随机 overlap、root detection、quadrature 与 FFT 分开复核</h2>
+          <p>独立 checker 用固定 seed `71071` 做了 64 组有限 overlap 测试。最大 cellwise ratio 为 \(0.6780322244\)，最大 entry-sum/overlap-budget ratio 为 \(0.1434662197\)，所有不等式通过。</p>
+          <p>对 \(N=1,2,\ldots,64\) 的七个 dyadic 样本，sampled signs 与 Brent roots 在半开窗口上给出零 entry-count error；soft rising-layer quadrature 的最大相对误差为 \(1.18\times10^{-16}\)。独立 \(32^3\) FFT 得到 \(A_+=1/4\) 与 sharpness ratio \(1\)，包括 filtered-vorticity 与 viscous-jet 检查在内的 residual 全为 \(0.0\)。没有 PDE 时间推进。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">11 / Journal figure</div><h2>正式附图分开显示 BV 缺失、空间 batching、跨时增长与 NSE sharpness</h2>
+          <figure><img src="/figures/r0-71p-positive-entry-batching.svg" alt="R0.71P segmented positive entry 与 hard BV 的差、同刻 bounded-overlap batching、跨时 entry count 增长和真实 NSE initial entry sharpness"><figcaption>图 R0.71P。A：偶阶 touch 的 hard positive jump 为零，但 segmented/soft entry 保留 \(A_+\)。B：同刻 cell entries 经 support overlap 合并为空间平方和。C：半开窗口上的 sequential abstract path，其 entry mass 按 \(N\) 增长，而 ordinary budgets 不随 \(N\) 增长。D：真实 smooth NSE initial jet 达到 \(A_+=\|F\|_2^2/Y=1/4\)。</figcaption></figure>
+          <div class="download"><a href="/figures/r0-71p-positive-entry-batching.pdf">下载矢量 PDF</a> · <a href="/figures/r0-71p-positive-entry-batching.png">下载 600 dpi PNG</a> · <a href="/figures/r0-71p-positive-entry-batching.svg">下载 SVG</a></div>
+        </section>
+
+        <section id="literature"><div class="section-no">12 / Primary-source boundary</div><h2>crossing formulas 表示已有变差，解析性只给逐 observable 的有限性</h2>
+          <p><a href="https://link.springer.com/article/10.1007/BF01236935">Fleming–Rishel coarea</a> 与 <a href="https://arxiv.org/abs/1503.01746v4">Łochowski up/downcrossing</a> 能表示已经受控的 variation；作用于 ordinary hard path 时只看到 \((A_+-A_-)^+\)，恢复 \(A_+\) 必须使用 soft 或 zero-padded representative。</p>
+          <p><a href="https://epubs.siam.org/doi/10.1137/1.9781611970050.ch7">Temam</a> 给经典区间内的时间解析性；<a href="https://doi.org/10.3792/pja/1195521421">Masuda</a> 的唯一延拓针对完整速度场在空间开集消失，不适用于一个 filtered observable 落入算子核；<a href="https://doi.org/10.1016/0022-1236(89)90015-3">Foias–Temam</a> 的 spatial Gevrey decay 也不计 temporal zeros。</p>
+          <p>截至 2026-08-26 的两轮限定一手检索，没有找到从 Leray energy、时间解析性、唯一延拓或空间频率衰减直接支付本节完整正进入和的定理。这是 bounded negative finding，不是原创性、优先权或不存在性结论。</p>
+        </section>
+
+        <section id="value"><div class="section-no">13 / Research value</div><h2>价值是把“空间太多”与“时间太多”严格拆开</h2>
+          <p>R0.71P 给出一个新的有限正结果：同一时刻不必逐 cell 付费，cutoff support overlap 与 LP square sum 已经把它们统一压成 \(\dot H^{-1}\) Lamb budget。真实 NSE 初始 jet 说明 cellwise projection 的常数一是 sharp 的；它不说明完整 \(M_\chi C_T\) frame 常数 sharp。</p>
+          <p>本节也关闭一个过宽的措辞：正进入 atoms 已经非负，不能再期待它们在 all-shell/all-cell sum 中直接做 signed cancellation。真正开放的是 distinct entry times 的 packing。这个定位比继续重排 fixed-cell source 更具体，但仍离继续性判据很远。</p>
+        </section>
+
+        <section id="next"><div class="section-no">14 / Next finite gate</div><h2>R0.71Q 检查 quantitative complex-time/parabolic-window zero packing</h2>
+          <p>下一节把 Jensen 条件式放进 parabolic windows，逐项记录 analytic radius \(R\)、complex growth \(M\)、projection anchor \(\|C(t_*)\|\) 与窗口覆盖数。</p>
+          <div class="equation result">\[
+            N_C(D(t_*,r))
+            \le\frac{\log(M/\|C(t_*)\|)}{\log(R/r)}.
+          \]</div>
+          <p>若这些输入只能由已知 continuation norm、inverse denominator、target BV 或额外 transversality 支付，我会把 zero-count route 保留为条件结论并停止这一分支。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">15 / Claim boundary</div><h2>本节关闭同刻空间 multiplicity，不关闭 temporal packing</h2>
+          <ul>
+            <li>已证明：segmented/soft 正进入与 ordinary hard positive BV 的精确差。</li>
+            <li>已证明：逐分量 soft 正部的 relaxed entry atoms 组成正测度；它不等于 signed aggregate 的正 Jordan 部。</li>
+            <li>已证明：该正测度内部没有 signed shell–cell cancellation。</li>
+            <li>已证明：同刻 frame–cell entries 的 bounded-overlap 与 \(\dot H^{-1}\) Lamb 上界。</li>
+            <li>已证明：完整目标是 time-slice budget 对 distinct entry-time counting measure 的积分。</li>
+            <li>已证明：固定有限截断在经典紧区间内有限。</li>
+            <li>已证明：半开窗口上的抽象 sequential path 排除用 ordinary \(dt\) budgets 普适支付 entry count。</li>
+            <li>已构造：达到单格 projection 常数的真实 smooth NSE initial jet。</li>
+            <li>未证明：uniform NSE zero count、内部多 face、无限 frame、Leray 极限或接近潜在奇性端点的 bound。</li>
+            <li>未证明：继续性、有限时奇性、三维全局正则性或千禧年问题结论。</li>
+          </ul>
+          <div class="boundary"><strong>主张用语</strong><p>本页只报告 exact finite theorem、conditional Jensen gate、abstract separation 与 one-sided NSE initial sharpness。不作新颖性、优先权或发表级别声明。</p></div>
+        </section>
+
+        <section id="reproduce"><div class="section-no">16 / Reproducibility</div><h2>报告、双实现证书与图件包</h2>
+          <p><a href="/notes/r0-71p.pdf">下载本页同步 PDF</a> · <a href="/recap-r0-61-r0-71p.html">阅读累计回顾</a> · <a href="/recap-r0-61-r0-71p.pdf">下载累计回顾 PDF</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_literature_audit.md">主源文献台账</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_independent_audit.md">独立数学审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_gap_matrix.md">缺口矩阵</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_exact_audit.py">精确 producer</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071p_independent_audit.py">独立 checker</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071p">证书与 SHA-256</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071p-positive-entry-batching/fig-r071p-positive-entry-batching">附图、数据与源代码包</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><p>个人研究记录 · R0.71P · 2026-08-26 · <a href="/">Kasifa.github.io</a></p></footer>
+</body>
+</html>

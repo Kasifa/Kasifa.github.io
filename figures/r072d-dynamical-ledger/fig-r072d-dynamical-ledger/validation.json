@@ -1,0 +1,204 @@
+{
+  "allPassed": true,
+  "checkCount": 15,
+  "checks": [
+    {
+      "name": "source certificates passed",
+      "passed": true,
+      "requirement": "producer and independent allPassed are true",
+      "value": {
+        "independentAllPassed": true,
+        "producerAllPassed": true
+      }
+    },
+    {
+      "name": "source hashes are current",
+      "passed": true,
+      "requirement": "metadata hashes match producer, independent checker, contract, and config",
+      "value": {
+        "figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/config.json": "86dd4b72858aca1b09ac17860f3b90d596757c439800ebc0504b4e44f8753cbb",
+        "figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/contract.json": "5ad010d3d8ad4470918d992c3ff64e08f9f5981040a6d20d3ac65b6ab3b49e40",
+        "research/certificates/r072d/independent-result.json": "b7b110c1255d13a77839d9afa4435c19a1ceecbdfe0a9cd011960f2bb7a20e7d",
+        "research/certificates/r072d/result.json": "358d2bddc50080a4d83b427647d39ab2a7c76a83f0367a57073bfaeed6c7df10"
+      }
+    },
+    {
+      "name": "two-panel row contract",
+      "passed": true,
+      "requirement": "all plotted phase-grid and dimensionless diagnostic rows are archived",
+      "value": {
+        "actual": {
+          "A": 605,
+          "B": 23
+        },
+        "expected": {
+          "A": 605,
+          "B": 23
+        }
+      }
+    },
+    {
+      "name": "heat-panel carrier and time grid",
+      "passed": true,
+      "requirement": "M=8,16,32,64,128 each have the declared 0<=s<=6 grid",
+      "value": {
+        "8": 121,
+        "16": 121,
+        "32": 121,
+        "64": 121,
+        "128": 121
+      }
+    },
+    {
+      "name": "independent heat launch cross-audit",
+      "passed": true,
+      "requirement": "shared M=8,32,128 launch ordinates agree with the independent certificate",
+      "value": {
+        "maximumAbsoluteDefect": 0.0,
+        "sharedCounts": [
+          8,
+          32,
+          128
+        ]
+      }
+    },
+    {
+      "name": "finite-ODE values copied exactly",
+      "passed": true,
+      "requirement": "slope, atom, and full-charge values are exact JSON-to-CSV copies",
+      "value": 0.0
+    },
+    {
+      "name": "interior-root residual and slope behavior",
+      "passed": true,
+      "requirement": "finite roots close and the slope ratio approaches one on the audited sequence",
+      "value": {
+        "maximumRootResidual": 5.1034848709679625e-18,
+        "slopeRatios": [
+          0.9223679053636453,
+          0.9588191753697826,
+          0.9787770119337752,
+          0.9892272442433676
+        ]
+      }
+    },
+    {
+      "name": "dimensionless ledger diagnostics remain finite",
+      "passed": true,
+      "requirement": "finite normalized proxies remain positive and order one without a fitted claim",
+      "value": {
+        "atom": [
+          0.35137788712026713,
+          0.35872606616940766,
+          0.36364034842311627,
+          0.36643098942663105
+        ],
+        "charge": [
+          0.3495786765105844,
+          0.33490782648034584,
+          0.3280252259911045,
+          0.3246918374253634
+        ],
+        "mixedExposure": [
+          0.291666609555727,
+          0.2873863811345307,
+          0.27864347552497065,
+          0.2697168539825766,
+          0.27544955189479475
+        ]
+      }
+    },
+    {
+      "name": "analytic reference levels",
+      "passed": true,
+      "requirement": "reference levels are analytic model values, not fitted regressions",
+      "value": {
+        "atom": [
+          0.36944879285170484,
+          0.36944879285170484
+        ],
+        "charge": [
+          0.32142857142857145,
+          0.32142857142857145
+        ],
+        "slope": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "formal PNG dimensions and 600 dpi",
+      "passed": true,
+      "requirement": "178x86 mm nominal page at approximately 600 dpi",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4200,
+          2028
+        ]
+      }
+    },
+    {
+      "name": "vector PDF and SVG exports",
+      "passed": true,
+      "requirement": "one correctly sized vector PDF page and nontrivial vector SVG",
+      "value": {
+        "pdfMillimetres": [
+          177.79999999999998,
+          85.852
+        ],
+        "pdfPages": 1,
+        "svgBytes": 100104
+      }
+    },
+    {
+      "name": "final-size, grayscale, and PDF QA surfaces",
+      "passed": true,
+      "requirement": "all QA surfaces use the same readable 220 dpi final footprint",
+      "value": {
+        "finalSize": [
+          1540,
+          744
+        ],
+        "grayscaleMode": "L",
+        "pdfSize": [
+          1540,
+          744
+        ]
+      }
+    },
+    {
+      "name": "public assets are byte-identical",
+      "passed": true,
+      "requirement": "public PDF, SVG, and PNG exactly match the formal figure package",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "claim boundary is explicit",
+      "passed": true,
+      "requirement": "finite evidence, theorem boundary, tail, interval, DNS, and Millennium limits are stated",
+      "value": "The plotted FFT phase-grid envelopes and finite Fourier-lattice ODE roots are deterministic finite diagnostics. They corroborate, but do not prove, the infinite-lattice perturbative theorem. The mixed-exposure curve is a truncated grid proxy with a declared analytic tail bound. No interval arithmetic, PDE DNS, Navier-Stokes singularity, regularity theorem, or Millennium-problem solution is claimed."
+    },
+    {
+      "name": "deterministic workflow",
+      "passed": true,
+      "requirement": "no random seed or fitted line supports a plotted claim",
+      "value": {
+        "configRandomness": false,
+        "fitUsed": false,
+        "resultsRandomness": false
+      }
+    }
+  ],
+  "passedCheckCount": 15,
+  "schemaVersion": "r072d-figure-validation-v1",
+  "validatedAt": "2026-08-27T05:41:40+08:00"
+}

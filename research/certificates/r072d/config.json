@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "r072d-certificate-config-v1",
+  "analyticModel": {
+    "M": "2^n",
+    "carriers": "r_j=M+j for 0<=j<M",
+    "coefficients": "w_j=a*epsilon_j with Rudin--Shapiro signs",
+    "carrierMoment": "Ks=M(2M-1)(7M-1)/6",
+    "weightedAbelEnvelope": "||V(t)||<=2|Kz|a(2+sqrt(2))*sqrt(M)*exp(-kappa*M^2*t)",
+    "multiplierL1Scale": "M^-3/2",
+    "multiplierL2SquareScale": "M^-1",
+    "launchVector": "G_(+/-r_j)=i*sgn(Kz)*epsilon_j/sqrt(2)",
+    "launchRow": "h0^2=2Kz^2a^2M^2",
+    "rootTime": "tau=M^-3",
+    "rootCorrection": "zeta=-P0*U(tau)G/(P0*U(tau)e0)",
+    "strongCoupling": "delta*a=gamma*M^(3/2)",
+    "observationCoupling": "eta=Theta(gamma*M^2)",
+    "amplitudeBalance": "S^2*Kf=3P^2*Kv",
+    "normalizedAtomScale": "Theta(gamma^(4/3))",
+    "fullChargeUpperScale": "Theta(gamma^2)"
+  },
+  "producer": {
+    "engine": "mpmath",
+    "decimalDigits": 90,
+    "Kz": 1.25,
+    "kappa": 0.4,
+    "gamma": 0.3,
+    "amplitude": 1.0,
+    "oddGenerations": [3, 5, 7, 9, 11, 13, 15],
+    "abelGenerations": [3, 5, 7, 9, 11],
+    "randomness": false
+  },
+  "independent": {
+    "engine": "NumPy/SciPy binary64",
+    "nu": 0.15,
+    "kappa": 0.15,
+    "Kz": 1.1,
+    "gamma": 0.2,
+    "amplitude": 1.0,
+    "fftGenerations": [3, 5, 7, 9, 11],
+    "fftPointsPerMaximumFrequency": 32,
+    "heatScaledTimeMaximum": 16.0,
+    "odeGenerations": [3, 4, 5, 6],
+    "odeRadiusFactor": 6,
+    "pressureRadiusFactors": [4, 6, 8],
+    "odeMethod": "DOP853",
+    "odeRtol": 2e-10,
+    "odeAtol": 2e-12,
+    "randomness": false
+  },
+  "scope": {
+    "intervalArithmetic": false,
+    "infiniteLatticeDNS": false,
+    "rigorousUnknownConstantLowerBound": false,
+    "provesNSERegularity": false
+  }
+}

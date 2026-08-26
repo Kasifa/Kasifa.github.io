@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.72D：构造平移到高频块的 Rudin–Shapiro 精确三角形 NSE 解，在正时间产生简单目标根，并在保留完整旋转电荷后得到非消失的归一化 complete-root ledger。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72D｜高频平移 Rudin–Shapiro 与非消失 complete-root ledger">
+  <meta property="og:description" content="真实内点根、完整斜率质量和 full rotational charge 在 η≈M² 的临界尺度上同时保持非退化。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72d-dynamical-ledger.png">
+  <title>R0.72D｜高频平移 Rudin–Shapiro 与非消失 complete-root ledger</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.17"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#block">高频块</a><a href="#root">内点根</a><a href="#enstrophy">涡量</a><a href="#charge">旋转电荷</a><a href="#ledger">归一化</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72D · SHIFTED RUDIN–SHAPIRO · INTERIOR ROOT · FULL CHARGE</div>
+        <h1>相位抵消不是静态假象，<br>真实动力学可以达到临界尺度</h1>
+        <p class="lead">R0.72C 只证明了任意物理相位下 \(M^{-8/3}\) 代数前因子的尖锐性，没有证明真实目标根会达到它。本节把同一 Rudin–Shapiro 符号块平移到载频 \([M,2M)\)。相消仍使 multiplier norm 只有 \(\sqrt M\)，但热寿命缩到 \(M^{-2}\)。在 \(\eta\asymp M^2\) 时，我构造了一个正时间简单根；它的 target-row slope 为 \(M\) 量级。匹配低频背景后，完整投影旋转电荷仍为常数量级，最终归一化 complete-root ledger 有严格正下界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72D 完成</span><strong>interior-root dynamical saturation</strong><p>版本 v0.72D · 2026-08-27</p><p>analytic audit: PASS</p><p>producer certificate: PASS</p><p>independent certificate: PASS</p><p>下一对象：supercritical growth or ceiling</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#block">01 · 高频相消块</a></li><li><a href="#root">02 · 精确内点根</a></li><li><a href="#enstrophy">03 · 固定区间涡量</a></li><li><a href="#charge">04 · 完整旋转电荷</a></li><li><a href="#ledger">05 · 非消失账本</a></li><li><a href="#audit">06 · 双路证书</a></li><li><a href="#figure">07 · 正式附图</a></li><li><a href="#value">08 · 研究价值</a></li><li><a href="#next">09 · 下一步</a></li><li><a href="#claims">10 · 主张边界</a></li><li><a href="#reproduce">11 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>完整归一化账本不再趋零，但也没有发散</h2>
+          <div class="equation result">\[
+            \boxed{\liminf_{M\to\infty}
+            \frac{\mathcal J_{{\rm all},M}(I)}
+            {D_M^{1/3}\Lambda_1(I;u_M)}
+            \ge c\frac{\gamma^{4/3}}{\nu^2+\gamma^2}>0.}
+          \]</div>
+          <p>这里 \(u_M\) 是精确光滑无外力三维 Navier–Stokes 解，属于 \(u=(f(y,z,t),0,v(y,t))\) 的三角形 2.5D 子类。根位于 \(t_M=q^{-2}M^{-3}>0\)，不是启动端点。完整账本至少包含这个根；其他根只会增加非负分子。</p>
+          <div class="boundary"><strong>直接边界</strong><p>这个结果证明 R0.72C 的 phase-free 尺度可以由真实动力学实现，并且 full \(\Lambda_1\) charge 没有被丢掉。比值保持有限，所以它不是 \(D^{1/3}\Lambda_1\) 支付失败的反例，更不是一般三维奇性构造。</p></div>
+        </section>
+
+        <section id="block"><div class="section-no">01 / Spectrally shifted block</div><h2>相位平坦性保持，热暴露缩短两个 \(M\) 次幂</h2>
+          <p>取 \(M=2^n\)、Rudin–Shapiro 符号 \(\varepsilon_j\)，并令</p>
+          <div class="equation result">\[
+            r_j=M+j,\qquad w_j=a\varepsilon_j,\qquad 0\le j&lt;M.
+          \]</div>
+          <p>载频矩为</p>
+          <div class="equation result">\[
+            K_s=\sum_{r=M}^{2M-1}r^2
+            =\frac{M(2M-1)(7M-1)}6\asymp M^3,
+            \qquad K_v=a^2K_s.
+          \]</div>
+          <p>任意前缀 Rudin–Shapiro 界与 Abel 求和给出带不等热权的统一估计：</p>
+          <div class="equation result">\[
+            \|V_M(x)\|\le Ca\sqrt M e^{-\kappa M^2x},
+            \qquad
+            \int_0^\infty\|V_M\|\,dx\lesssim aM^{-3/2},
+            \quad
+            \int_0^\infty\|V_M\|^2dx\lesssim a^2M^{-1}.
+          \]</div>
+          <p>因此 \(\Omega_0\asymp a\sqrt M\)、\(\chi_0\asymp1\)，R0.72C 的 carrier coefficient 仍为 \(M^{-8/3}\)。但 mixed exposure 已变成 \(\ell_\times=O(M^{-2})\)。</p>
+        </section>
+
+        <section id="root"><div class="section-no">02 / Exact interior root</div><h2>目标行在启动时达到 Cauchy–Schwarz 等号，微小调整把零点移到正时间</h2>
+          <p>取与目标行对齐的有限支撑向量</p>
+          <div class="equation result">\[
+            G_M=\frac{i\operatorname{sgn}(K_z)}{\sqrt2}
+            \sum_{j=0}^{M-1}\varepsilon_j(e_{r_j}+e_{-r_j}).
+          \]</div>
+          <div class="equation result">\[
+            \|G_M\|_2^2=M,\qquad
+            |P_0V_M(0)G_M|^2=M\rho_0^2=2K_z^2a^2M^2.
+          \]</div>
+          <p>令 \(\delta a=\gamma M^{3/2}\)，所以 \(\eta\asymp\gamma M^2\)，但总 Dyson exposure 仅为 \(O(\gamma)\)。记完整演化算子为 \(U_M\)，取 \(\tau_M=M^{-3}\)，并定义</p>
+          <div class="equation result">\[
+            \zeta_M=-\frac{P_0U_M(\tau_M,0)G_M}
+            {P_0U_M(\tau_M,0)e_0}.
+          \]</div>
+          <p>分母为 \(1+O(M^{-1})\)，而 \(\zeta_M=O(M^{-1/2})\)。把 \(G_M+\zeta_Me_0\) 整体归一到范数平方 \(M\)，就得到精确根</p>
+          <div class="equation result">\[
+            F_{M,0}(\tau_M)=0,\qquad
+            |P_0V_M(\tau_M)F_M(\tau_M)|\ge caM.
+          \]</div>
+          <p>根处 \(F_{M,0}'=\delta P_0V_MF_M\ne0\)，所以这是简单内点根。这里没有把首阶 Dyson 近似当成真实根。</p>
+        </section>
+
+        <section id="enstrophy"><div class="section-no">03 / Fixed-interval enstrophy</div><h2>匹配背景支付完整数据成本，也把 \(\mathcal R_Y\) 保持在常数量级</h2>
+          <p>用 lattice multiplier \(R e_r=re_r\) 计算 commutator，可得</p>
+          <div class="equation result">\[
+            \sup_x\|RF_M(x)\|_2\le C_\gamma M^{3/2}.
+          \]</div>
+          <p>令实际 active moment 为 \(K_f\)，则 \(K_f=K_s[1+O(M^{-2})]\)。我选择物理振幅满足精确平衡</p>
+          <div class="equation result">\[
+            S^2K_f=3P^2K_v,\qquad E_M=S^2K_f+P^2K_v.
+          \]</div>
+          <p>再加入一个 \(z\)-无关的固定低频背景，振幅为 \(B_M^{\rm bg}=b_0qE_M^{1/2}/Q\)。它的全部初始成本进入 \(D_M\)，但它既不进入目标响应，也不进入投影 Lamb 向量。固定物理区间 \(I=[0,T]\) 上，</p>
+          <div class="equation result">\[
+            c_Iq^2E_M\le Y_M(t)\le C_{I,\gamma}q^2E_M,
+            \qquad D_M\asymp q^2E_M,
+            \qquad \mathcal R_{Y_M}(I)=O_{I,\gamma}(1).
+          \]</div>
+        </section>
+
+        <section id="charge"><div class="section-no">04 / Full rotational charge</div><h2>大瞬时 Lamb 分量只持续一个 \(M^{-2}\) 热脉冲</h2>
+          <p>三角形解有精确恒等式</p>
+          <div class="equation result">\[
+            \mathbb P(u\times\omega)=(-vf_z,0,0).
+          \]</div>
+          <p>所有 \(vf_z\) 模都保留固定非零 \(z\)-频率，因此 \(\dot H^{-1}\) 可由完整 \(L^2\) 乘积控制。没有删掉 target-complement 或 off-diagonal convolution。热权 multiplier 进一步给出</p>
+          <div class="equation result">\[
+            \int_I\|v(t)\|_\infty^2dt
+            \lesssim\frac{P^2a^2}{q^2M}.
+          \]</div>
+          <div class="equation result">\[
+            \frac1{|I|}\int_I
+            \frac{\|\mathbb P(u\times\omega)\|_{\dot H^{-1}}^2}{Y_M(t)}dt
+            \lesssim\frac{\delta^2a^2}{M^3}
+            =O(\gamma^2).
+          \]</div>
+          <p>所以 \(\Lambda_1(I;u_M)\le C_{I,\gamma}(\nu^2+\gamma^2)\)。这是 full-frequency upper bound，不是一个 selected-shell surrogate。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">05 / Normalized ledger</div><h2>\(M^{-8/3}\) 与 \(\eta^{4/3}\) 在临界耦合处精确抵消</h2>
+          <p>内点根的固定壳原子满足</p>
+          <div class="equation result">\[
+            \mathcal J_{\rm all}(I)\ge J_*(t_M)
+            \gtrsim\frac{S^2P^2a^2M^2}{q^2E_M}.
+          \]</div>
+          <p>振幅平衡和 \(K_s\asymp M^3\) 给</p>
+          <div class="equation result">\[
+            \frac{\mathcal J_{\rm all}(I)}{D_M^{1/3}}
+            \gtrsim(\delta a)^{4/3}M^{-2}
+            =\gamma^{4/3}.
+          \]</div>
+          <p>另一方面，R0.72C upper ledger 中</p>
+          <div class="equation result">\[
+            \frac M{K_s}\asymp M^{-2},\qquad
+            \chi_0\asymp1,\qquad
+            \left(\frac{\Omega_0^2}{K_v}\right)^{1/3}\asymp M^{-2/3},
+            \qquad \eta\ell_\times=O(\gamma).
+          \]</div>
+          <p>因此上界和下界都为 \(M^0\)。这证明的是尺度锐性，不是一个普适最优常数。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Independent certificates</div><h2>解析证明、producer 与独立 checker 分开承担不同责任</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · 11/11 PASS</strong><p>90 位精度重建 RS 递推、平移矩、Abel 热权、目标行等号与临界幂次。它核对有限代数，不求解有限格 ODE。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · 14/14 PASS</strong><p>不导入 producer 或其结果；使用 binary-parity RS 路径、FFT envelope、独立有限矩阵和 ODE root adjustment，并核对实际归一化后的 \(K_f\) 与精确振幅配平。</p></div>
+          </div>
+          <p>解析报告和独立逐式审计承担无限格与物理归一化证明。证书记录命令、配置、环境、进度、资源和 SHA-256；它不是 interval arithmetic 或一般 NSE 正则性证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图同时展示热尺度塌缩与真实根斜率不塌缩</h2>
+          <figure><img src="/figures/r0-72d-dynamical-ledger.svg" alt="R0.72D shifted Rudin-Shapiro thermal collapse and normalized dynamical-ledger diagnostics"><figcaption>图 R0.72D-1。A：不同 \(M\) 的 heat-weighted multiplier 以 \(s=M^2x\) 重标后塌缩，说明 spectral translation 把暴露压到 \(M^{-2}\)。B：有限格精确根的 slope ratio 与 normalized ledger/charge diagnostics 保持常数量级。数值根残差与斜率只作有限诊断；解析 Duhamel 证明承担极限结论。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">08 / Research value</div><h2>这是实际动力学下界，不再只是静态前因子</h2>
+          <p>R0.72C 证明相位抵消会把 coherent \(M^{-10/3}\) 改成 phase-free \(M^{-8/3}\)，但那只是 upper-ledger coefficient。在当前路线里，本节把真实正时间根、完整 target slope、固定区间 enstrophy、full rotational charge 和非消失 normalized lower bound 放进同一条 exact NSE family。</p>
+          <p>对千禧年问题的价值仍是模型边界：这条机制表明单靠 carrier participation 不能把所有强耦合 triangular profiles 压到零，但它没有产生发散，更没有控制一般三维 vortex stretching。它把下一问缩成了“能否超过 order one，还是存在新的普适 ceiling”。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next finite gate</div><h2>R0.72E 检查 supercritical growth 与 order-one ceiling</h2>
+          <p>我会先尝试把 \(\eta\) 提高到 \(M^2\) 以上，同时继续缩短热暴露或改变 carrier geometry，检查 normalized numerator 能否比 full charge 更快增长。</p>
+          <p>如果每条这样的路线都让 \(\Lambda_1\) 同阶增加，就转向证明 triangular class 的 universal order-one ceiling。两条路线都必须保留正时间 exact root、固定物理区间、完整数据成本和 full charge。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>heat-stable shifted RS bound；正时间简单根；非塌缩 slope；bounded \(\mathcal R_Y\)；full-frequency charge \(O(\gamma^2)\)；normalized complete ledger 的正下界。</li>
+            <li><strong>已排除：</strong>R0.72C 的 \(M^{-8/3}\) 只是静态假象；必须依赖 launch endpoint；terminal decay 可以删除 pre-ledger。</li>
+            <li><strong>仍开放：</strong>normalized ledger 发散；所有 triangular solutions 的 order-one ceiling；一般三维 critical-norm bridge。</li>
+            <li><strong>没有得到：</strong>\(D^{1/3}\Lambda_1\) 支付的反例或证明；有限时奇性；无条件继续性；一般三维 global regularity；原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproduce</div><h2>证明、文献边界、双路证书与期刊附图包完整保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072d_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072d_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072d_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072d_independent_audit.md">独立逐式审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072d">producer / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-72d-dynamical-ledger.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-72d.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72d.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-72d.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r072d_exact_audit.py --output research/certificates/r072d/result.json
+python3 research/r072d_independent_audit.py --output research/certificates/r072d/independent-result.json
+python3 figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/build_figure.py --config figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/config.json
+python3 figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/qa_images.py --config figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/config.json
+python3 figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/validate.py --config figures/r072d-dynamical-ledger/fig-r072d-dynamical-ledger/config.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72D · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72d.html">累计回顾</a></div></footer>
+</body>
+</html>

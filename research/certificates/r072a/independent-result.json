@@ -1,0 +1,992 @@
+{
+  "algorithm": {
+    "importsProducer": false,
+    "integrator": "fixed-step classical RK4",
+    "readsProducerOutput": false,
+    "rootDiscovery": "unseeded sign changes plus cubic Hermite interpolation",
+    "state": "real invariant phase F_r=(-i)^r u_r",
+    "step": 0.004
+  },
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "discovered_root_count",
+      "passed": true,
+      "requirement": "unseeded sign scan finds exactly R positive crossings",
+      "value": [
+        8,
+        16,
+        32,
+        64
+      ]
+    },
+    {
+      "name": "contractive_real_evolution",
+      "passed": true,
+      "requirement": "real invariant RK4 evolution stays contractive to numerical tolerance",
+      "value": 1.0
+    },
+    {
+      "name": "local_exposure_quadrature",
+      "passed": true,
+      "requirement": "trapezoid and closed-form local exposure agree below 2e-14",
+      "value": 2.824129818890242e-15
+    },
+    {
+      "name": "R64_bessel_mass",
+      "passed": true,
+      "requirement": "independent R=64 mass is within 3e-5 relative of frozen Bessel mass",
+      "value": -7.262369765443081e-06
+    },
+    {
+      "name": "root_shift_decay",
+      "passed": true,
+      "requirement": "maximum root shift decreases along dyadic R",
+      "value": [
+        0.027379181344812764,
+        0.0066282584071259976,
+        0.0016315307281189462,
+        0.00040473699630183546
+      ]
+    },
+    {
+      "name": "shrinking_physical_layer",
+      "passed": true,
+      "requirement": "physical layer decreases along dyadic R",
+      "value": [
+        0.0032353115341331035,
+        0.00039400890490395743,
+        4.859574404861389e-05,
+        6.033345167523351e-06
+      ]
+    },
+    {
+      "name": "phase_boundary_endpoints",
+      "passed": true,
+      "requirement": "independent exponent algebra recovers 6/7 and 3/2 endpoints",
+      "value": [
+        {
+          "alphaBoundary": 0.8571428571428571,
+          "beta": 0.0,
+          "constraints": [
+            1.5,
+            0.8571428571428571
+          ]
+        },
+        {
+          "alphaBoundary": 1.1785714285714286,
+          "beta": 0.75,
+          "constraints": [
+            1.5,
+            1.1785714285714286
+          ]
+        },
+        {
+          "alphaBoundary": 1.5,
+          "beta": 1.5,
+          "constraints": [
+            1.5,
+            1.5
+          ]
+        },
+        {
+          "alphaBoundary": 1.5,
+          "beta": 2.25,
+          "constraints": [
+            1.5,
+            1.8214285714285714
+          ]
+        }
+      ]
+    }
+  ],
+  "elapsedSeconds": 0.9624890420236625,
+  "environment": {
+    "numpy": "2.3.5",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13"
+  },
+  "finiteLattice": [
+    {
+      "R": 8,
+      "R2TimesMaximumRootShift": 1.752267606068017,
+      "besselMass": 1.943411301517519,
+      "delta": 4096.0,
+      "dimension": 141,
+      "elapsedSeconds": 0.054683250025846064,
+      "ell2ClosedForm": 0.003224866833459461,
+      "ell2Defect": 2.824129818890242e-15,
+      "ell2Trapezoid": 0.003224866833462285,
+      "eta": 8192.0,
+      "exactSelectedMass": 1.9302268778104261,
+      "finalTau": 13.251836043809192,
+      "layerLength": 0.0032353115341331035,
+      "massDifference": -0.01318442370709283,
+      "maximumNorm": 1.0,
+      "maximumRootShift": 0.027379181344812764,
+      "minimumNorm": 0.7315087119171491,
+      "radius": 70,
+      "relativeMassDifference": -0.006784165398646046,
+      "roots": [
+        {
+          "h": -0.804514369932597,
+          "hSquare": 0.6472433714280434,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 1.9164506430040744
+        },
+        {
+          "h": 0.5988613310317098,
+          "hSquare": 0.35863489380507113,
+          "interpolatedTargetResidual": 2.168404344971009e-19,
+          "tau": 3.5097975552693153
+        },
+        {
+          "h": -0.4977564344756179,
+          "hSquare": 0.2477614680618801,
+          "interpolatedTargetResidual": 3.7947076036992655e-19,
+          "tau": 5.09095009540209
+        },
+        {
+          "h": 0.4348246050680908,
+          "hSquare": 0.18907243717262112,
+          "interpolatedTargetResidual": 1.3552527156068805e-19,
+          "tau": 6.669079694041948
+        },
+        {
+          "h": -0.3908222534838655,
+          "hSquare": 0.15274203381820683,
+          "interpolatedTargetResidual": 1.6263032587282567e-19,
+          "tau": 8.246373122363513
+        },
+        {
+          "h": 0.357822316795467,
+          "hSquare": 0.12803681039687553,
+          "interpolatedTargetResidual": 3.7947076036992655e-19,
+          "tau": 9.823619193334526
+        },
+        {
+          "h": -0.3318820068278729,
+          "hSquare": 0.11014566645609626,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 11.4011722309884
+        },
+        {
+          "h": 0.31078963411225874,
+          "hSquare": 0.09659019667163166,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 12.979215225154004
+        }
+      ],
+      "step": 0.004,
+      "steps": 3313
+    },
+    {
+      "R": 16,
+      "R2TimesMaximumRootShift": 1.6968341522242554,
+      "besselMass": 2.4694304145877384,
+      "delta": 65536.0,
+      "dimension": 221,
+      "elapsedSeconds": 0.11198545800289139,
+      "ell2ClosedForm": 0.0003938537026568767,
+      "ell2Defect": 2.4936649967166602e-18,
+      "ell2Trapezoid": 0.0003938537026568742,
+      "eta": 131072.0,
+      "exactSelectedMass": 2.4677756564935582,
+      "finalTau": 25.821767591785754,
+      "layerLength": 0.00039400890490395743,
+      "massDifference": -0.001654758094180142,
+      "maximumNorm": 1.0,
+      "maximumRootShift": 0.0066282584071259976,
+      "minimumNorm": 0.8517513658470602,
+      "radius": 110,
+      "relativeMassDifference": -0.0006700970735619604,
+      "roots": [
+        {
+          "h": -0.8054559973691919,
+          "hSquare": 0.6487593636979997,
+          "interpolatedTargetResidual": 1.2061749168901237e-18,
+          "tau": 1.9158903242938063
+        },
+        {
+          "h": 0.600145834837243,
+          "hSquare": 0.3601750230724914,
+          "interpolatedTargetResidual": 8.063753657860939e-19,
+          "tau": 3.5079185099343015
+        },
+        {
+          "h": -0.4993063886293003,
+          "hSquare": 0.2493068697260339,
+          "interpolatedTargetResidual": 2.168404344971009e-19,
+          "tau": 5.0869972984615215
+        },
+        {
+          "h": 0.43660043219603284,
+          "hSquare": 0.19061993739376268,
+          "interpolatedTargetResidual": 1.6263032587282567e-19,
+          "tau": 6.662297467569813
+        },
+        {
+          "h": -0.39279906646396323,
+          "hSquare": 0.154291106614961,
+          "interpolatedTargetResidual": 7.105481461830508e-22,
+          "tau": 8.236005007216848
+        },
+        {
+          "h": 0.35998300996135196,
+          "hSquare": 0.12958776746083484,
+          "interpolatedTargetResidual": 8.131516293641283e-20,
+          "tau": 9.808907935911519
+        },
+        {
+          "h": -0.3342143305299789,
+          "hSquare": 0.11169921873160199,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 11.381359789390375
+        },
+        {
+          "h": 0.3132847125279655,
+          "hSquare": 0.09814731110373,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 12.95354278392896
+        },
+        {
+          "h": -0.2958471739908352,
+          "hSquare": 0.08752555035836353,
+          "interpolatedTargetResidual": 6.776263578034403e-20,
+          "tau": 14.525560374343899
+        },
+        {
+          "h": 0.28102726741983874,
+          "hSquare": 0.07897632503346155,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 16.097475658021743
+        },
+        {
+          "h": -0.2682292947355323,
+          "hSquare": 0.07194695455432105,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 17.66932930525372
+        },
+        {
+          "h": 0.25703156676506017,
+          "hSquare": 0.06606522631370158,
+          "interpolatedTargetResidual": 8.131516293641283e-20,
+          "tau": 19.241148710440658
+        },
+        {
+          "h": -0.2471260691427647,
+          "hSquare": 0.06107129404995452,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 20.81295300059877
+        },
+        {
+          "h": 0.2382818726871455,
+          "hSquare": 0.056778250851293025,
+          "interpolatedTargetResidual": 3.3881317890172014e-20,
+          "tau": 22.384755935561838
+        },
+        {
+          "h": -0.23032198011011407,
+          "hSquare": 0.05304821452184378,
+          "interpolatedTargetResidual": 3.3881317890172014e-21,
+          "tau": 23.95656766737508
+        },
+        {
+          "h": 0.22310814196080678,
+          "hSquare": 0.04977724300920351,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 25.52839585019288
+        }
+      ],
+      "step": 0.004,
+      "steps": 6456
+    },
+    {
+      "R": 32,
+      "R2TimesMaximumRootShift": 1.6706874655938009,
+      "besselMass": 3.0128322410118376,
+      "delta": 1048576.0,
+      "dimension": 381,
+      "elapsedSeconds": 0.24093187495600432,
+      "ell2ClosedForm": 4.859338257878765e-05,
+      "ell2Defect": 7.846913223363838e-18,
+      "ell2Trapezoid": 4.85933825787798e-05,
+      "eta": 2097152.0,
+      "exactSelectedMass": 3.0126251863504727,
+      "finalTau": 50.95633091151936,
+      "layerLength": 4.859574404861389e-05,
+      "massDifference": -0.00020705466136483608,
+      "maximumNorm": 1.0,
+      "maximumRootShift": 0.0016315307281189462,
+      "minimumNorm": 0.9224985014923361,
+      "radius": 190,
+      "relativeMassDifference": -6.872425837267936e-05,
+      "roots": [
+        {
+          "h": -0.8055148667218344,
+          "hSquare": 0.6488542005098946,
+          "interpolatedTargetResidual": 5.692061405548898e-19,
+          "tau": 1.9158553187875895
+        },
+        {
+          "h": 0.600226150553207,
+          "hSquare": 0.36027143180792115,
+          "interpolatedTargetResidual": 3.7947076036992655e-19,
+          "tau": 3.5078011580949706
+        },
+        {
+          "h": -0.49940329366590375,
+          "hSquare": 0.2494036497243529,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 5.086750518557415
+        },
+        {
+          "h": 0.43671141564634164,
+          "hSquare": 0.19071686055583176,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 6.661874184698524
+        },
+        {
+          "h": -0.3929225135912441,
+          "hSquare": 0.1543881016868614,
+          "interpolatedTargetResidual": 4.0657581468206416e-19,
+          "tau": 8.235358145067698
+        },
+        {
+          "h": 0.36011776804586987,
+          "hSquare": 0.12968480686233894,
+          "interpolatedTargetResidual": 1.1693289836845616e-17,
+          "tau": 9.80799041550292
+        },
+        {
+          "h": -0.33435952385480955,
+          "hSquare": 0.11179629119241495,
+          "interpolatedTargetResidual": 1.0587911840678754e-21,
+          "tau": 11.380124528757618
+        },
+        {
+          "h": 0.31343964777299715,
+          "hSquare": 0.09824441279606053,
+          "interpolatedTargetResidual": 4.675621868843738e-19,
+          "tau": 12.951942698022293
+        },
+        {
+          "h": -0.29601128597050036,
+          "hSquare": 0.08762268142190935,
+          "interpolatedTargetResidual": 2.0328790734103208e-19,
+          "tau": 14.52354837499274
+        },
+        {
+          "h": 0.28120008539003466,
+          "hSquare": 0.07907348802336278,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 16.09500465392314
+        },
+        {
+          "h": -0.26841042020814254,
+          "hSquare": 0.07204415367631166,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 17.666352201972067
+        },
+        {
+          "h": 0.25722065822306533,
+          "hSquare": 0.06616246701670699,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 19.237618410413912
+        },
+        {
+          "h": -0.24732283112354211,
+          "hSquare": 0.06116858279496413,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 20.808822403149208
+        },
+        {
+          "h": 0.23848604775375679,
+          "hSquare": 0.05687559497320716,
+          "interpolatedTargetResidual": 6.606856988583543e-20,
+          "tau": 22.37997793691058
+        },
+        {
+          "h": -0.23053334280320403,
+          "hSquare": 0.053145622144019584,
+          "interpolatedTargetResidual": 1.0842021724855044e-19,
+          "tau": 23.951095160659847
+        },
+        {
+          "h": 0.22332649415266945,
+          "hSquare": 0.0498747229905223,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 25.52218172548868
+        },
+        {
+          "h": -0.2167557578405428,
+          "hSquare": 0.04698305855702803,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 27.093243508534464
+        },
+        {
+          "h": 0.21073274271252795,
+          "hSquare": 0.044408288851144506,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 28.66428509893272
+        },
+        {
+          "h": -0.20518534950849562,
+          "hSquare": 0.042101027652923506,
+          "interpolatedTargetResidual": 1.2197274440461925e-19,
+          "tau": 30.235310132324518
+        },
+        {
+          "h": 0.2000541028117811,
+          "hSquare": 0.040021644051826684,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 31.806321526262316
+        },
+        {
+          "h": -0.1952894443561292,
+          "hSquare": 0.038137967076925676,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 33.377321649155206
+        },
+        {
+          "h": 0.19084970344047628,
+          "hSquare": 0.03642360930331774,
+          "interpolatedTargetResidual": 1.6940658945086007e-20,
+          "tau": 34.948312443664925
+        },
+        {
+          "h": -0.18669955296744756,
+          "hSquare": 0.03485672307824476,
+          "interpolatedTargetResidual": 2.303929616531697e-19,
+          "tau": 36.5192955182546
+        },
+        {
+          "h": 0.1828088195014912,
+          "hSquare": 0.033419064487528787,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 38.09027221609084
+        },
+        {
+          "h": -0.17915155523390527,
+          "hSquare": 0.03209527974272701,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 39.66124366757464
+        },
+        {
+          "h": 0.17570530634936868,
+          "hSquare": 0.030872354679325496,
+          "interpolatedTargetResidual": 8.470329472543003e-22,
+          "tau": 41.232210830866
+        },
+        {
+          "h": -0.17245053049531944,
+          "hSquare": 0.029739185468117102,
+          "interpolatedTargetResidual": 2.303929616531697e-19,
+          "tau": 42.80317452348592
+        },
+        {
+          "h": 0.16937012872667595,
+          "hSquare": 0.028686240504890784,
+          "interpolatedTargetResidual": 6.776263578034403e-20,
+          "tau": 44.37413544720652
+        },
+        {
+          "h": -0.16644906624136113,
+          "hSquare": 0.027705291652621027,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 45.94509420783655
+        },
+        {
+          "h": 0.16367406267093482,
+          "hSquare": 0.0267891987912091,
+          "interpolatedTargetResidual": 1.2308447514789052e-21,
+          "tau": 47.516051331082565
+        },
+        {
+          "h": -0.16103333734126798,
+          "hSquare": 0.025931735735266612,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 49.08700727536462
+        },
+        {
+          "h": 0.15851639833372405,
+          "hSquare": 0.025127448540695874,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 50.65796244224748
+        }
+      ],
+      "step": 0.004,
+      "steps": 12740
+    },
+    {
+      "R": 64,
+      "R2TimesMaximumRootShift": 1.657802736852318,
+      "besselMass": 3.5653178787892212,
+      "delta": 16777216.0,
+      "dimension": 701,
+      "elapsedSeconds": 0.5431817090138793,
+      "ell2ClosedForm": 6.033308766417722e-06,
+      "ell2Defect": 1.8685546816429865e-18,
+      "ell2Trapezoid": 6.0333087664158535e-06,
+      "eta": 33554432.0,
+      "exactSelectedMass": 3.565291986132454,
+      "finalTau": 101.22273507809544,
+      "layerLength": 6.033345167523351e-06,
+      "massDifference": -2.58926567671125e-05,
+      "maximumNorm": 1.0,
+      "maximumRootShift": 0.00040473699630183546,
+      "minimumNorm": 0.9604300831796064,
+      "radius": 350,
+      "relativeMassDifference": -7.262369765443081e-06,
+      "roots": [
+        {
+          "h": -0.8055185461252669,
+          "hSquare": 0.6488601281517636,
+          "interpolatedTargetResidual": 1.4907779871675686e-19,
+          "tau": 1.915853130999728
+        },
+        {
+          "h": 0.6002311704190348,
+          "hSquare": 0.36027745794260446,
+          "interpolatedTargetResidual": 3.5236570605778894e-19,
+          "tau": 3.5077938239504354
+        },
+        {
+          "h": -0.49940935035854145,
+          "hSquare": 0.2494096992255404,
+          "interpolatedTargetResidual": 3.2526065174565133e-19,
+          "tau": 5.08673509586675
+        },
+        {
+          "h": 0.4367183520872319,
+          "hSquare": 0.19072291904978747,
+          "interpolatedTargetResidual": 1.6263032587282567e-19,
+          "tau": 6.661847731885178
+        },
+        {
+          "h": -0.3929302286255066,
+          "hSquare": 0.15439416456769287,
+          "interpolatedTargetResidual": 8.131516293641283e-20,
+          "tau": 8.235317720653157
+        },
+        {
+          "h": 0.36012618929822926,
+          "hSquare": 0.12969087221846406,
+          "interpolatedTargetResidual": 2.473336205982557e-19,
+          "tau": 9.807933078027661
+        },
+        {
+          "h": -0.33436859615724246,
+          "hSquare": 0.1118023580961651,
+          "interpolatedTargetResidual": 2.117582368135751e-22,
+          "tau": 11.38004733676142
+        },
+        {
+          "h": 0.3134493272432083,
+          "hSquare": 0.09825048074921988,
+          "interpolatedTargetResidual": 6.776263578034403e-20,
+          "tau": 12.951842710037676
+        },
+        {
+          "h": -0.29602153661300035,
+          "hSquare": 0.0876287501387219,
+          "interpolatedTargetResidual": 1.8973538018496328e-19,
+          "tau": 14.523422649542333
+        },
+        {
+          "h": 0.28121087698308117,
+          "hSquare": 0.0790795573335936,
+          "interpolatedTargetResidual": 8.131516293641283e-20,
+          "tau": 16.09485024951851
+        },
+        {
+          "h": -0.2684217269100479,
+          "hSquare": 0.07205022347737233,
+          "interpolatedTargetResidual": 1.8973538018496328e-19,
+          "tau": 17.66616617711318
+        },
+        {
+          "h": 0.2572324576100222,
+          "hSquare": 0.06616853724809188,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 19.237397823588815
+        },
+        {
+          "h": -0.24733510350068566,
+          "hSquare": 0.06117465342369489,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 20.808564312833905
+        },
+        {
+          "h": 0.23849877564701286,
+          "hSquare": 0.056881665985124175,
+          "interpolatedTargetResidual": 1.6263032587282567e-19,
+          "tau": 22.379679401568975
+        },
+        {
+          "h": -0.23054651057749861,
+          "hSquare": 0.05315169353946068,
+          "interpolatedTargetResidual": 1.0842021724855044e-19,
+          "tau": 23.950753238743445
+        },
+        {
+          "h": 0.223340087714999,
+          "hSquare": 0.04988079478054345,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 25.521793475436677
+        },
+        {
+          "h": -0.21676976440554566,
+          "hSquare": 0.04698913076043577,
+          "interpolatedTargetResidual": 1.0164395367051604e-20,
+          "tau": 27.09280598877383
+        },
+        {
+          "h": 0.2107471506159553,
+          "hSquare": 0.04441436149274415,
+          "interpolatedTargetResidual": 2.1006417091906648e-19,
+          "tau": 28.66379536787824
+        },
+        {
+          "h": -0.20520014805935605,
+          "hSquare": 0.042107100763581644,
+          "interpolatedTargetResidual": 1.2197274440461925e-19,
+          "tau": 30.234765248378537
+        },
+        {
+          "h": 0.20006928217007872,
+          "hSquare": 0.04002771766805058,
+          "interpolatedTargetResidual": 1.0842021724855044e-19,
+          "tau": 31.805718547814717
+        },
+        {
+          "h": -0.19530499542707927,
+          "hSquare": 0.03814404123877146,
+          "interpolatedTargetResidual": 3.3881317890172014e-21,
+          "tau": 33.376657634583694
+        },
+        {
+          "h": 0.19086561778851238,
+          "hSquare": 0.0364296840537905,
+          "interpolatedTargetResidual": 1.8973538018496328e-19,
+          "tau": 34.94758445133506
+        },
+        {
+          "h": -0.18671582274887052,
+          "hSquare": 0.03486279846478763,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 36.51850060651943
+        },
+        {
+          "h": 0.18282543740317322,
+          "hSquare": 0.03342514056166161,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 38.08940744329101
+        },
+        {
+          "h": -0.1791685144161584,
+          "hSquare": 0.03210135655809315,
+          "interpolatedTargetResidual": 0.0,
+          "tau": 39.66030609203871
+        },
+        {
+          "h": 0.17572260040087462,
+          "hSquare": 0.030878432291645462,
+          "interpolatedTargetResidual": 1.0842021724855044e-19,
+          "tau": 41.23119751091043
+        },
+        {
+          "h": -0.1724681534011674,
+          "hSquare": 0.029745263937608606,
+          "interpolatedTargetResidual": 6.776263578034403e-20,
+          "tau": 42.802082517414554
+        },
+        {
+          "h": 0.16938807483036472,
+          "hSquare": 0.02869231989473724,
+          "interpolatedTargetResidual": 2.0328790734103208e-20,
+          "tau": 44.372961813310994
+        },
+        {
+          "h": -0.16646733021049945,
+          "hSquare": 0.027711372027411463,
+          "interpolatedTargetResidual": 2.541098841762901e-19,
+          "tau": 45.943836004396545
+        },
+        {
+          "h": 0.16369263947375182,
+          "hSquare": 0.02679528021788369,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 47.51470561636559
+        },
+        {
+          "h": -0.1610522222302313,
+          "hSquare": 0.02593781828529581,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 49.08557110762563
+        },
+        {
+          "h": 0.15853558681730726,
+          "hSquare": 0.025133532287507965,
+          "interpolatedTargetResidual": 1.1011428314305904e-20,
+          "tau": 50.65643287972945
+        },
+        {
+          "h": -0.15613335452310828,
+          "hSquare": 0.024377624394638617,
+          "interpolatedTargetResidual": 9.486769009248164e-20,
+          "tau": 52.22729128592443
+        },
+        {
+          "h": 0.15383711226008426,
+          "hSquare": 0.023665857108521766,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 53.79814663820365
+        },
+        {
+          "h": -0.15163928838655852,
+          "hSquare": 0.022994473782381862,
+          "interpolatedTargetResidual": 1.0164395367051604e-20,
+          "tau": 55.368999213157664
+        },
+        {
+          "h": 0.14953304750058385,
+          "hSquare": 0.022360132294811867,
+          "interpolatedTargetResidual": 3.3881317890172014e-20,
+          "tau": 56.93984925685769
+        },
+        {
+          "h": -0.147512200884312,
+          "hSquare": 0.021759849409733616,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 58.510696988951835
+        },
+        {
+          "h": 0.14557112991586174,
+          "hSquare": 0.021190953864980697,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 60.081542606118724
+        },
+        {
+          "h": -0.14370472027116316,
+          "hSquare": 0.02065104662821325,
+          "interpolatedTargetResidual": 2.541098841762901e-21,
+          "tau": 61.652386284993874
+        },
+        {
+          "h": 0.14190830518082742,
+          "hSquare": 0.02013796707929485,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 63.223228184659554
+        },
+        {
+          "h": -0.14017761630831557,
+          "hSquare": 0.01964976411388134,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 64.79406844877327
+        },
+        {
+          "h": 0.13850874105225708,
+          "hSquare": 0.019184671347881207,
+          "interpolatedTargetResidual": 1.0164395367051604e-20,
+          "tau": 66.36490720739083
+        },
+        {
+          "h": -0.13689808530856679,
+          "hSquare": 0.01874108576115163,
+          "interpolatedTargetResidual": 8.809142651444724e-20,
+          "tau": 67.93574457853876
+        },
+        {
+          "h": 0.13534234089649583,
+          "hSquare": 0.018317549239343287,
+          "interpolatedTargetResidual": 9.486769009248164e-20,
+          "tau": 69.50658066957597
+        },
+        {
+          "h": -0.13383845696733027,
+          "hSquare": 0.017912732563395914,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 71.07741557837099
+        },
+        {
+          "h": 0.13238361482067248,
+          "hSquare": 0.017525421472988176,
+          "interpolatedTargetResidual": 7.623296525288703e-21,
+          "tau": 72.64824939432835
+        },
+        {
+          "h": -0.13097520567493354,
+          "hSquare": 0.01715450450159114,
+          "interpolatedTargetResidual": 6.776263578034403e-20,
+          "tau": 74.2190821992842
+        },
+        {
+          "h": 0.12961081099244698,
+          "hSquare": 0.016798962326119816,
+          "interpolatedTargetResidual": 5.421010862427522e-20,
+          "tau": 75.7899140682902
+        },
+        {
+          "h": -0.12828818500216957,
+          "hSquare": 0.016457858411150886,
+          "interpolatedTargetResidual": 3.218725199566341e-20,
+          "tau": 77.36074507030254
+        },
+        {
+          "h": 0.12700523914553438,
+          "hSquare": 0.01613033077041438,
+          "interpolatedTargetResidual": 1.3552527156068805e-20,
+          "tau": 78.93157526878866
+        },
+        {
+          "h": -0.1257600282082229,
+          "hSquare": 0.01581558469493302,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 80.50240472226236
+        },
+        {
+          "h": 0.12455073791648566,
+          "hSquare": 0.015512886315541098,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 82.07323348475788
+        },
+        {
+          "h": -0.12337567381220461,
+          "hSquare": 0.015221556888615512,
+          "interpolatedTargetResidual": 1.5881867761018131e-22,
+          "tau": 83.64406160625074
+        },
+        {
+          "h": 0.12223325126854898,
+          "hSquare": 0.01494096771568023,
+          "interpolatedTargetResidual": 4.0657581468206416e-20,
+          "tau": 85.21488913303175
+        },
+        {
+          "h": -0.1211219865095184,
+          "hSquare": 0.014670535616011957,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 86.78571610804015
+        },
+        {
+          "h": 0.12004048849960074,
+          "hSquare": 0.014409718879222776,
+          "interpolatedTargetResidual": 1.0164395367051604e-20,
+          "tau": 88.35654257116185
+        },
+        {
+          "h": -0.11898745161949797,
+          "hSquare": 0.01415801364290237,
+          "interpolatedTargetResidual": 3.3881317890172014e-20,
+          "tau": 89.92736855949619
+        },
+        {
+          "h": 0.11796164904423576,
+          "hSquare": 0.013914950645235446,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 91.49819410759471
+        },
+        {
+          "h": -0.11696192673253625,
+          "hSquare": 0.013680092304987177,
+          "interpolatedTargetResidual": 6.776263578034403e-21,
+          "tau": 93.0690192476764
+        },
+        {
+          "h": 0.1159871979624752,
+          "hSquare": 0.01345303009118641,
+          "interpolatedTargetResidual": 1.4907779871675686e-19,
+          "tau": 94.63984400982137
+        },
+        {
+          "h": -0.11503643836754043,
+          "hSquare": 0.013233382152288928,
+          "interpolatedTargetResidual": 8.131516293641283e-20,
+          "tau": 96.21066842214536
+        },
+        {
+          "h": 0.114108681415394,
+          "hSquare": 0.013020791174359884,
+          "interpolatedTargetResidual": 2.710505431213761e-20,
+          "tau": 97.78149251095728
+        },
+        {
+          "h": -0.11320301427037661,
+          "hSquare": 0.012814922439899092,
+          "interpolatedTargetResidual": 4.235164736271502e-21,
+          "tau": 99.35231630090239
+        },
+        {
+          "h": 0.11231857401716036,
+          "hSquare": 0.01261546206924833,
+          "interpolatedTargetResidual": 4.743384504624082e-20,
+          "tau": 100.92313981509174
+        }
+      ],
+      "step": 0.004,
+      "steps": 25306
+    }
+  ],
+  "generatedAt": "2026-08-26T17:31:39.635762+00:00",
+  "logCoefficient": 0.8105694691387022,
+  "logResiduals": [
+    {
+      "R": 8,
+      "massMinusLeadingLog": 0.24469505126603708
+    },
+    {
+      "R": 16,
+      "massMinusLeadingLog": 0.22039988776770603
+    },
+    {
+      "R": 32,
+      "massMinusLeadingLog": 0.20340547544315735
+    },
+    {
+      "R": 64,
+      "massMinusLeadingLog": 0.19422833304367604
+    }
+  ],
+  "phaseBoundary": [
+    {
+      "alphaBoundary": 0.8571428571428571,
+      "beta": 0.0,
+      "constraints": [
+        1.5,
+        0.8571428571428571
+      ]
+    },
+    {
+      "alphaBoundary": 1.1785714285714286,
+      "beta": 0.75,
+      "constraints": [
+        1.5,
+        1.1785714285714286
+      ]
+    },
+    {
+      "alphaBoundary": 1.5,
+      "beta": 1.5,
+      "constraints": [
+        1.5,
+        1.5
+      ]
+    },
+    {
+      "alphaBoundary": 1.5,
+      "beta": 2.25,
+      "constraints": [
+        1.5,
+        1.8214285714285714
+      ]
+    }
+  ],
+  "schemaVersion": "r072a-independent-audit-v1",
+  "scope": {
+    "intervalArithmetic": false,
+    "note": "Independent finite real-lattice corroboration only.",
+    "provesInfiniteLattice": false,
+    "provesNSERegularity": false
+  }
+}

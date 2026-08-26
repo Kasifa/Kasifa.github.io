@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "r072a-certificate-config-v1",
+  "analyticModel": {
+    "nu": 1,
+    "d": 1,
+    "q": 1,
+    "Ky": 0,
+    "Kz": 1,
+    "carrierIndices": [1],
+    "carrierCoefficients": [1],
+    "launch": "i e_{-1}",
+    "deltaRule": "R^4",
+    "omegaAtLaunch": 2,
+    "limitingTarget": "J_1(2 tau)"
+  },
+  "producer": {
+    "RValues": [4, 8, 16, 32, 64],
+    "radiusRule": "4R+24",
+    "integrator": "SciPy DOP853",
+    "rtol": 3e-11,
+    "atol": 3e-13,
+    "maxStep": 0.03,
+    "rootBracketRadius": 0.35,
+    "truncationDoublingR": 32
+  },
+  "independent": {
+    "RValues": [8, 16, 32, 64],
+    "radiusRule": "5R+30",
+    "integrator": "fixed-step classical RK4",
+    "step": 0.004,
+    "rootDiscovery": "unseeded sign changes",
+    "rootInterpolation": "cubic Hermite",
+    "rightMargin": 0.3
+  },
+  "randomness": false
+}

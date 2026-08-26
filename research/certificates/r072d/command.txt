@@ -1,0 +1,16 @@
+PYTHON="${PYTHON:-/Users/kasifa/Documents/Math/.codex-research-venv/bin/python}"
+
+"$PYTHON" research/r072d_exact_audit.py \
+  --output research/certificates/r072d/result.json \
+  --progress-log research/certificates/r072d/producer-progress.ndjson \
+  --resource-log research/certificates/r072d/producer-resource.ndjson \
+  2> research/certificates/r072d/producer-monitor.log
+
+"$PYTHON" research/r072d_independent_audit.py \
+  --output research/certificates/r072d/independent-result.json \
+  --progress-log research/certificates/r072d/independent-progress.ndjson \
+  --resource-log research/certificates/r072d/independent-resource.ndjson \
+  2> research/certificates/r072d/independent-monitor.log
+
+"$PYTHON" research/certificates/r072d/build_hashes.py
+(cd research/certificates/r072d && shasum -a 256 -c SHA256SUMS)

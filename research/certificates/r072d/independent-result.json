@@ -1,0 +1,698 @@
+{
+  "allPassed": true,
+  "arithmetic": {
+    "finiteODE": "SciPy DOP853 on symmetric finite Fourier truncations",
+    "format": "IEEE-754 binary64/complex128",
+    "intervalArithmetic": false,
+    "multiplierNorm": "uniform-grid FFT samples",
+    "quadrature": "composite Simpson rule in scaled time"
+  },
+  "checkCount": 14,
+  "checks": [
+    {
+      "name": "binary Rudin--Shapiro signs have the odd endpoint identity",
+      "passed": true,
+      "requirement": "sum epsilon_j squared equals 2M and sum epsilon_j^2=M",
+      "value": {
+        "maximumEndpointDefect": 0.0
+      }
+    },
+    {
+      "name": "FFT samples obey the dyadic prefix envelope",
+      "passed": true,
+      "requirement": "sampled prefixes lie below (2+sqrt(2))*sqrt(M) and the sampled P/Q identity closes",
+      "value": {
+        "parallelogramDefect": 2.7284841053187847e-12,
+        "prefixOverBound": 0.45217337184298434
+      }
+    },
+    {
+      "name": "heat-weighted FFT multipliers obey the Abel envelope",
+      "passed": true,
+      "requirement": "all sampled ||V(t)|| values lie below the analytic heat envelope",
+      "value": 0.41421356237309503
+    },
+    {
+      "name": "observed heat multiplier L1 has the M^-3/2 scale",
+      "passed": true,
+      "requirement": "binary64 FFT/quadrature fit is within 0.04 of -3/2",
+      "value": -1.4992708475884584
+    },
+    {
+      "name": "observed heat multiplier L2-square has the M^-1 scale",
+      "passed": true,
+      "requirement": "binary64 FFT/quadrature fit is within 0.04 of -1",
+      "value": -0.999706099213963
+    },
+    {
+      "name": "endpoint correction creates an interior root",
+      "passed": true,
+      "requirement": "|P0 U(tau)(G+zeta e0)| is below 2e-13 relative to the evolved columns",
+      "value": 5.1034848709679625e-18
+    },
+    {
+      "name": "root correction has the predicted M^-1/2 size",
+      "passed": true,
+      "requirement": "|zeta|=Theta(M^-1/2) on the finite ODE family",
+      "value": {
+        "fittedPower": -0.4837221061706046,
+        "terminalScaledZeta": 1.547253481459634
+      }
+    },
+    {
+      "name": "root row remains aligned at tau=M^-3",
+      "passed": true,
+      "requirement": "|h(tau)|/h0 approaches one along the audited sequence",
+      "value": {
+        "firstRatio": 0.9223679053636453,
+        "terminalRatio": 0.9892272442433676
+      }
+    },
+    {
+      "name": "finite ODE root slope equals delta times the target row",
+      "passed": true,
+      "requirement": "F0(tau)=0 implies F0'(tau)=delta*h(tau)",
+      "value": 5.410877994393589e-16
+    },
+    {
+      "name": "truncated skew-diffusive evolution is contractive",
+      "passed": true,
+      "requirement": "the corrected state norm does not increase under diffusion plus skew coupling",
+      "value": 0.9892386507271721
+    },
+    {
+      "name": "physical launch normalization and amplitude balance are exact",
+      "passed": true,
+      "requirement": "the corrected vector is normalized to M and S^2*Kf=3*P^2*Kv uses its actual active moment",
+      "value": {
+        "maximumBalanceDefect": 4.440892098500626e-16,
+        "maximumNormSquareDefect": 2.1316282072803006e-14,
+        "terminalKfOverKs": 0.9999766217053869
+      }
+    },
+    {
+      "name": "normalized launch-root model stays nonzero",
+      "passed": true,
+      "requirement": "the finite-ODE atom divided by the model D^(1/3) remains at gamma^(4/3) scale",
+      "value": {
+        "fittedPower": 0.020118405376795122,
+        "terminalScaledAtom": 0.36643098942663105
+      }
+    },
+    {
+      "name": "full rotational-charge comparison stays bounded",
+      "passed": true,
+      "requirement": "(3/4)*(delta*a)^2/Ks remains at gamma^2 scale",
+      "value": {
+        "fittedPower": -0.03495955346069893,
+        "terminalScaledCharge": 0.3246918374253634
+      }
+    },
+    {
+      "name": "finite ODE pressure test is stable under truncation radius",
+      "passed": true,
+      "requirement": "radius factors 4, 6, and 8 agree to 2e-7 for M=32",
+      "value": {
+        "maximumHRatioRelativeDefect": 1.382112670873284e-10,
+        "maximumZetaRelativeDefect": 2.7718805690306527e-11
+      }
+    }
+  ],
+  "elapsedSeconds": 0.38383387500653043,
+  "environment": {
+    "numpy": "2.3.5",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "finiteODE": {
+    "equation": "dF/dt=-nu*r^2*F-i*delta*Kz*a*sum_j epsilon_j exp(-kappa*r_j^2*t)(T_rj+T_-rj)F",
+    "fittedPowers": {
+      "fullChargeUpper": -0.03495955346069893,
+      "launchAtomOverDOneThird": 0.020118405376795122,
+      "zetaAbsolute": -0.4837221061706046
+    },
+    "pressureTest": {
+      "M": 32,
+      "maximumHRatioRelativeDefect": 1.382112670873284e-10,
+      "maximumZetaRelativeDefect": 2.7718805690306527e-11,
+      "radiusFactors": [
+        4,
+        6,
+        8
+      ],
+      "rows": [
+        {
+          "KfOverKs": 0.9999074738507255,
+          "Ks": 74928,
+          "Kv": 74928.0,
+          "M": 32,
+          "S2KfOverP2Kv": 3.0,
+          "activeMomentKf": 74921.06720068716,
+          "atomOverGammaFourThirds": 0.3636403483225959,
+          "carrierRange": [
+            32,
+            63
+          ],
+          "chargeOverGammaSquared": 0.3280252259911028,
+          "delta": 36.20386719675124,
+          "deltaTimesAOverGammaMThreeHalves": 1.0,
+          "dimension": 257,
+          "fullChargeUpperModel": 0.013121009039644114,
+          "h0": 49.780317395532954,
+          "hTauAbsoluteOverH0": 0.9787770117984972,
+          "hTauImag": 8.949262971316385e-07,
+          "hTauReal": 48.723830306780485,
+          "initialNormSquared": 31.99999999999998,
+          "launchAtomOverDOneThirdModel": 0.04253163315300703,
+          "normalization": 0.9999537358551772,
+          "normalizedLaunchNormSquared": 31.99999999999998,
+          "radiusFactor": 4,
+          "relativeRootResidual": 1.2397759480632304e-18,
+          "slopeIdentityRelativeDefect": 3.866918792216411e-16,
+          "solver": {
+            "atol": 2e-12,
+            "functionEvaluations": 41,
+            "method": "DOP853",
+            "rtol": 2e-10,
+            "status": 0
+          },
+          "sqrtMTimesZetaAbsoluteOverGamma": 1.5391194253759783,
+          "tau": 3.0517578125e-05,
+          "terminalNormSquared": 31.322317660739696,
+          "terminalOverInitialNormSquared": 0.9788224268981162,
+          "zetaAbsolute": 0.054416089136964836,
+          "zetaImag": -2.491644010322492e-10,
+          "zetaReal": -0.054416089136964836
+        },
+        {
+          "KfOverKs": 0.9999074738507203,
+          "Ks": 74928,
+          "Kv": 74928.0,
+          "M": 32,
+          "S2KfOverP2Kv": 3.0,
+          "activeMomentKf": 74921.06720068677,
+          "atomOverGammaFourThirds": 0.36364034842311627,
+          "carrierRange": [
+            32,
+            63
+          ],
+          "chargeOverGammaSquared": 0.3280252259911045,
+          "delta": 36.20386719675124,
+          "deltaTimesAOverGammaMThreeHalves": 1.0,
+          "dimension": 385,
+          "fullChargeUpperModel": 0.013121009039644183,
+          "h0": 49.780317395532954,
+          "hTauAbsoluteOverH0": 0.9787770119337752,
+          "hTauImag": 8.949242445601414e-07,
+          "hTauReal": 48.72383031351467,
+          "initialNormSquared": 32.00000000000001,
+          "launchAtomOverDOneThirdModel": 0.042531633164763966,
+          "normalization": 0.9999537358551746,
+          "normalizedLaunchNormSquared": 32.00000000000001,
+          "radiusFactor": 6,
+          "relativeRootResidual": 1.2397759480722551e-18,
+          "slopeIdentityRelativeDefect": 5.155891722242612e-16,
+          "solver": {
+            "atol": 2e-12,
+            "functionEvaluations": 41,
+            "method": "DOP853",
+            "rtol": 2e-10,
+            "status": 0
+          },
+          "sqrtMTimesZetaAbsoluteOverGamma": 1.5391194254186409,
+          "tau": 3.0517578125e-05,
+          "terminalNormSquared": 31.322317660283517,
+          "terminalOverInitialNormSquared": 0.9788224268838597,
+          "zetaAbsolute": 0.054416089138473185,
+          "zetaImag": -2.4916401828429135e-10,
+          "zetaReal": -0.054416089138473185
+        },
+        {
+          "KfOverKs": 0.9999074738507203,
+          "Ks": 74928,
+          "Kv": 74928.0,
+          "M": 32,
+          "S2KfOverP2Kv": 3.0,
+          "activeMomentKf": 74921.06720068677,
+          "atomOverGammaFourThirds": 0.36364034842311627,
+          "carrierRange": [
+            32,
+            63
+          ],
+          "chargeOverGammaSquared": 0.3280252259911045,
+          "delta": 36.20386719675124,
+          "deltaTimesAOverGammaMThreeHalves": 1.0,
+          "dimension": 513,
+          "fullChargeUpperModel": 0.013121009039644183,
+          "h0": 49.780317395532954,
+          "hTauAbsoluteOverH0": 0.9787770119337752,
+          "hTauImag": 8.949242445644711e-07,
+          "hTauReal": 48.72383031351466,
+          "initialNormSquared": 32.00000000000001,
+          "launchAtomOverDOneThirdModel": 0.042531633164763966,
+          "normalization": 0.9999537358551746,
+          "normalizedLaunchNormSquared": 32.00000000000001,
+          "radiusFactor": 8,
+          "relativeRootResidual": 1.2397759480722553e-18,
+          "slopeIdentityRelativeDefect": 5.155891722242613e-16,
+          "solver": {
+            "atol": 2e-12,
+            "functionEvaluations": 41,
+            "method": "DOP853",
+            "rtol": 2e-10,
+            "status": 0
+          },
+          "sqrtMTimesZetaAbsoluteOverGamma": 1.5391194254186398,
+          "tau": 3.0517578125e-05,
+          "terminalNormSquared": 31.322317660283517,
+          "terminalOverInitialNormSquared": 0.9788224268838597,
+          "zetaAbsolute": 0.054416089138473143,
+          "zetaImag": -2.4916401828489706e-10,
+          "zetaReal": -0.054416089138473143
+        }
+      ]
+    },
+    "rootCorrection": "zeta=-P0*U(tau)G/(P0*U(tau)e0)",
+    "rootTime": "tau=M^-3",
+    "rows": [
+      {
+        "KfOverKs": 0.9986046991637363,
+        "Ks": 1100,
+        "Kv": 1100.0,
+        "M": 8,
+        "S2KfOverP2Kv": 3.0000000000000004,
+        "activeMomentKf": 1098.46516908011,
+        "atomOverGammaFourThirds": 0.35137788712026713,
+        "carrierRange": [
+          8,
+          15
+        ],
+        "chargeOverGammaSquared": 0.3495786765105844,
+        "delta": 4.525483399593905,
+        "deltaTimesAOverGammaMThreeHalves": 1.0,
+        "dimension": 97,
+        "fullChargeUpperModel": 0.013983147060423378,
+        "h0": 12.445079348883239,
+        "hTauAbsoluteOverH0": 0.9223679053636453,
+        "hTauImag": 2.4748477494370084e-05,
+        "hTauReal": 11.478941771087113,
+        "initialNormSquared": 7.999999999999998,
+        "launchAtomOverDOneThirdModel": 0.04109740699021677,
+        "normalization": 0.9993021060538881,
+        "normalizedLaunchNormSquared": 7.999999999999998,
+        "radiusFactor": 6,
+        "relativeRootResidual": 5.1034848709679625e-18,
+        "slopeIdentityRelativeDefect": 1.367802442063812e-16,
+        "solver": {
+          "atol": 2e-12,
+          "functionEvaluations": 41,
+          "method": "DOP853",
+          "rtol": 2e-10,
+          "status": 0
+        },
+        "sqrtMTimesZetaAbsoluteOverGamma": 1.4951925205508265,
+        "tau": 0.001953125,
+        "terminalNormSquared": 7.384127423838332,
+        "terminalOverInitialNormSquared": 0.9230159279797917,
+        "zetaAbsolute": 0.10572607704608956,
+        "zetaImag": -5.6354587708339106e-08,
+        "zetaReal": -0.10572607704607453
+      },
+      {
+        "KfOverKs": 0.9996374310535122,
+        "Ks": 9176,
+        "Kv": 9176.0,
+        "M": 16,
+        "S2KfOverP2Kv": 2.9999999999999996,
+        "activeMomentKf": 9172.673067347028,
+        "atomOverGammaFourThirds": 0.35872606616940766,
+        "carrierRange": [
+          16,
+          31
+        ],
+        "chargeOverGammaSquared": 0.33490782648034584,
+        "delta": 12.8,
+        "deltaTimesAOverGammaMThreeHalves": 1.0,
+        "dimension": 193,
+        "fullChargeUpperModel": 0.013396313059213835,
+        "h0": 24.890158697766477,
+        "hTauAbsoluteOverH0": 0.9588191753697826,
+        "hTauImag": -4.9139447152857425e-06,
+        "hTauReal": 23.86516143741497,
+        "initialNormSquared": 15.999999999999995,
+        "launchAtomOverDOneThirdModel": 0.04195685522554682,
+        "normalization": 0.9998186990917465,
+        "normalizedLaunchNormSquared": 15.999999999999995,
+        "radiusFactor": 6,
+        "relativeRootResidual": 0.0,
+        "slopeIdentityRelativeDefect": 4.436555716769286e-23,
+        "solver": {
+          "atol": 2e-12,
+          "functionEvaluations": 41,
+          "method": "DOP853",
+          "rtol": 2e-10,
+          "status": 0
+        },
+        "sqrtMTimesZetaAbsoluteOverGamma": 1.5235756898200088,
+        "tau": 0.000244140625,
+        "terminalNormSquared": 15.343746999443303,
+        "terminalOverInitialNormSquared": 0.9589841874652067,
+        "zetaAbsolute": 0.07617878449100045,
+        "zetaImag": 3.8936740055812385e-09,
+        "zetaReal": -0.07617878449100035
+      },
+      {
+        "KfOverKs": 0.9999074738507203,
+        "Ks": 74928,
+        "Kv": 74928.0,
+        "M": 32,
+        "S2KfOverP2Kv": 3.0,
+        "activeMomentKf": 74921.06720068677,
+        "atomOverGammaFourThirds": 0.36364034842311627,
+        "carrierRange": [
+          32,
+          63
+        ],
+        "chargeOverGammaSquared": 0.3280252259911045,
+        "delta": 36.20386719675124,
+        "deltaTimesAOverGammaMThreeHalves": 1.0,
+        "dimension": 385,
+        "fullChargeUpperModel": 0.013121009039644183,
+        "h0": 49.780317395532954,
+        "hTauAbsoluteOverH0": 0.9787770119337752,
+        "hTauImag": 8.949242445601414e-07,
+        "hTauReal": 48.72383031351467,
+        "initialNormSquared": 32.00000000000001,
+        "launchAtomOverDOneThirdModel": 0.042531633164763966,
+        "normalization": 0.9999537358551746,
+        "normalizedLaunchNormSquared": 32.00000000000001,
+        "radiusFactor": 6,
+        "relativeRootResidual": 1.2397759480722551e-18,
+        "slopeIdentityRelativeDefect": 5.155891722242612e-16,
+        "solver": {
+          "atol": 2e-12,
+          "functionEvaluations": 41,
+          "method": "DOP853",
+          "rtol": 2e-10,
+          "status": 0
+        },
+        "sqrtMTimesZetaAbsoluteOverGamma": 1.5391194254186409,
+        "tau": 3.0517578125e-05,
+        "terminalNormSquared": 31.322317660283517,
+        "terminalOverInitialNormSquared": 0.9788224268838597,
+        "zetaAbsolute": 0.054416089138473185,
+        "zetaImag": -2.4916401828429135e-10,
+        "zetaReal": -0.054416089138473185
+      },
+      {
+        "KfOverKs": 0.9999766217053869,
+        "Ks": 605536,
+        "Kv": 605536.0,
+        "M": 64,
+        "S2KfOverP2Kv": 2.9999999999999996,
+        "activeMomentKf": 605521.8436009932,
+        "atomOverGammaFourThirds": 0.36643098942663105,
+        "carrierRange": [
+          64,
+          127
+        ],
+        "chargeOverGammaSquared": 0.3246918374253634,
+        "delta": 102.4,
+        "deltaTimesAOverGammaMThreeHalves": 1.0,
+        "dimension": 769,
+        "fullChargeUpperModel": 0.012987673497014539,
+        "h0": 99.56063479106591,
+        "hTauAbsoluteOverH0": 0.9892272442433676,
+        "hTauImag": -2.2012494445533193e-07,
+        "hTauReal": 98.48809238948648,
+        "initialNormSquared": 63.99999999999998,
+        "launchAtomOverDOneThirdModel": 0.04285802851657442,
+        "normalization": 0.9999883107843746,
+        "normalizedLaunchNormSquared": 63.99999999999998,
+        "radiusFactor": 6,
+        "relativeRootResidual": 0.0,
+        "slopeIdentityRelativeDefect": 5.410877994393589e-16,
+        "solver": {
+          "atol": 2e-12,
+          "functionEvaluations": 41,
+          "method": "DOP853",
+          "rtol": 2e-10,
+          "status": 0
+        },
+        "sqrtMTimesZetaAbsoluteOverGamma": 1.547253481459634,
+        "tau": 3.814697265625e-06,
+        "terminalNormSquared": 63.31127364653899,
+        "terminalOverInitialNormSquared": 0.9892386507271721,
+        "zetaAbsolute": 0.03868133703649085,
+        "zetaImag": 2.1584003766243236e-11,
+        "zetaReal": -0.03868133703649085
+      }
+    ]
+  },
+  "generatedAtUtc": "2026-08-26T22:05:00.908285+00:00",
+  "heatMultiplierFFT": {
+    "fittedObservedL1Power": -1.4992708475884584,
+    "fittedObservedL2SquarePower": -0.999706099213963,
+    "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+    "rows": [
+      {
+        "L1TailEnvelope": 2.490436162969895e-07,
+        "L2SquareTailEnvelope": 2.977090695277541e-13,
+        "M": 8,
+        "MThreeHalvesTimesObservedL1OverA": 13.908696390133322,
+        "MTimesObservedL2SquareOverASquared": 19.90653183723437,
+        "fftSize": 512,
+        "generation": 3,
+        "initialMultiplierNorm": 8.8,
+        "initialNormOverExactOddEndpoint": 1.0,
+        "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+        "observedTruncatedL1": 0.6146833459330079,
+        "observedTruncatedL2Square": 2.488316479654296
+      },
+      {
+        "L1TailEnvelope": 3.113045203712369e-08,
+        "L2SquareTailEnvelope": 7.442726738193853e-14,
+        "M": 32,
+        "MThreeHalvesTimesObservedL1OverA": 13.665678307577494,
+        "MTimesObservedL2SquareOverASquared": 19.52559136608303,
+        "fftSize": 2048,
+        "generation": 5,
+        "initialMultiplierNorm": 17.6,
+        "initialNormOverExactOddEndpoint": 1.0,
+        "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+        "observedTruncatedL1": 0.07549292031876521,
+        "observedTruncatedL2Square": 0.6101747301900947
+      },
+      {
+        "L1TailEnvelope": 3.891306504640461e-09,
+        "L2SquareTailEnvelope": 1.8606816845484632e-14,
+        "M": 128,
+        "MThreeHalvesTimesObservedL1OverA": 13.606381992207703,
+        "MTimesObservedL2SquareOverASquared": 19.4324753691521,
+        "fftSize": 8192,
+        "generation": 7,
+        "initialMultiplierNorm": 35.2,
+        "initialNormOverExactOddEndpoint": 1.0,
+        "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+        "observedTruncatedL1": 0.009395668920024016,
+        "observedTruncatedL2Square": 0.1518162138215008
+      },
+      {
+        "L1TailEnvelope": 4.864133130800576e-10,
+        "L2SquareTailEnvelope": 4.651704211371158e-15,
+        "M": 512,
+        "MThreeHalvesTimesObservedL1OverA": 13.757479432268008,
+        "MTimesObservedL2SquareOverASquared": 19.621182824981542,
+        "fftSize": 32768,
+        "generation": 9,
+        "initialMultiplierNorm": 70.4,
+        "initialNormOverExactOddEndpoint": 1.0,
+        "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+        "observedTruncatedL1": 0.0011875008543202102,
+        "observedTruncatedL2Square": 0.038322622705042074
+      },
+      {
+        "L1TailEnvelope": 6.08016641350072e-11,
+        "L2SquareTailEnvelope": 1.1629260528427895e-15,
+        "M": 2048,
+        "MThreeHalvesTimesObservedL1OverA": 13.932451985495518,
+        "MTimesObservedL2SquareOverASquared": 19.898477034174398,
+        "fftSize": 131072,
+        "generation": 11,
+        "initialMultiplierNorm": 140.8,
+        "initialNormOverExactOddEndpoint": 1.0,
+        "maximumPointwiseOverAbelEnvelope": 0.41421356237309503,
+        "observedTruncatedL1": 0.000150325489463804,
+        "observedTruncatedL2Square": 0.009716053239342968
+      }
+    ],
+    "sampleCount": 221,
+    "sampledRange": [
+      0.0,
+      16.0
+    ],
+    "scaledTime": "s=kappa*M^2*t",
+    "scope": "truncated sampled norms plus an analytic envelope for the omitted tail"
+  },
+  "independence": {
+    "importsProducer": false,
+    "rawParametersRepeatedLocally": true,
+    "readsProducerResult": false,
+    "rudinShapiroPath": "overlapping binary 11-pair parity only"
+  },
+  "parameters": {
+    "Kz": 1.1,
+    "a": 1.0,
+    "fftGenerations": [
+      3,
+      5,
+      7,
+      9,
+      11
+    ],
+    "fftPointsPerMaximumFrequency": 32,
+    "gamma": 0.2,
+    "heatScaledTimeMaximum": 16.0,
+    "kappa": 0.15,
+    "nu": 0.15,
+    "odeAtol": 2e-12,
+    "odeGenerations": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "odeRadiusFactor": 6,
+    "odeRtol": 2e-10,
+    "q": 1.0,
+    "randomness": false
+  },
+  "passedCheckCount": 14,
+  "release": "R0.72D",
+  "rudinShapiroFFT": {
+    "generationRule": "epsilon_j=(-1)^(popcount(j & (j>>1)))",
+    "maximumEndpointDefect": 0.0,
+    "maximumSampledHalfGenerationIdentityDefect": 2.7284841053187847e-12,
+    "maximumSampledPrefixOverAnalyticBound": 0.45217337184298434,
+    "rows": [
+      {
+        "M": 8,
+        "PAtOne": 4,
+        "PAtOneSquaredDefect": 0,
+        "coefficientEnergy": 8,
+        "fftSize": 512,
+        "generation": 3,
+        "halfGenerationParallelogramDefect": 4.440892098500626e-15,
+        "maximumSampledPrefixOverAnalyticBound": 0.4142135623730951,
+        "sampledPMaximum": 4.0,
+        "sampledPMaximumOverSqrt2M": 1.0,
+        "sampledPrefixLengths": [
+          1,
+          2,
+          3,
+          4,
+          7,
+          8
+        ]
+      },
+      {
+        "M": 32,
+        "PAtOne": 8,
+        "PAtOneSquaredDefect": 0,
+        "coefficientEnergy": 32,
+        "fftSize": 2048,
+        "generation": 5,
+        "halfGenerationParallelogramDefect": 2.1316282072803006e-14,
+        "maximumSampledPrefixOverAnalyticBound": 0.45217337184298434,
+        "sampledPMaximum": 8.0,
+        "sampledPMaximumOverSqrt2M": 1.0,
+        "sampledPrefixLengths": [
+          1,
+          2,
+          3,
+          4,
+          8,
+          16,
+          31,
+          32
+        ]
+      },
+      {
+        "M": 128,
+        "PAtOne": 16,
+        "PAtOneSquaredDefect": 0,
+        "coefficientEnergy": 128,
+        "fftSize": 8192,
+        "generation": 7,
+        "halfGenerationParallelogramDefect": 1.1368683772161603e-13,
+        "maximumSampledPrefixOverAnalyticBound": 0.4392319065957334,
+        "sampledPMaximum": 16.0,
+        "sampledPMaximumOverSqrt2M": 1.0,
+        "sampledPrefixLengths": [
+          1,
+          2,
+          3,
+          16,
+          32,
+          64,
+          127,
+          128
+        ]
+      },
+      {
+        "M": 512,
+        "PAtOne": 32,
+        "PAtOneSquaredDefect": 0,
+        "coefficientEnergy": 512,
+        "fftSize": 32768,
+        "generation": 9,
+        "halfGenerationParallelogramDefect": 6.821210263296962e-13,
+        "maximumSampledPrefixOverAnalyticBound": 0.4264368436954585,
+        "sampledPMaximum": 32.0,
+        "sampledPMaximumOverSqrt2M": 1.0,
+        "sampledPrefixLengths": [
+          1,
+          2,
+          3,
+          64,
+          128,
+          256,
+          511,
+          512
+        ]
+      },
+      {
+        "M": 2048,
+        "PAtOne": 64,
+        "PAtOneSquaredDefect": 0,
+        "coefficientEnergy": 2048,
+        "fftSize": 131072,
+        "generation": 11,
+        "halfGenerationParallelogramDefect": 2.7284841053187847e-12,
+        "maximumSampledPrefixOverAnalyticBound": 0.42051903149159015,
+        "sampledPMaximum": 64.0,
+        "sampledPMaximumOverSqrt2M": 1.0,
+        "sampledPrefixLengths": [
+          1,
+          2,
+          3,
+          256,
+          512,
+          1024,
+          2047,
+          2048
+        ]
+      }
+    ]
+  },
+  "schemaVersion": "r072d-dynamical-ledger-independent-v1",
+  "scope": {
+    "intervalArithmetic": false,
+    "note": "FFT grids and finite ODE truncations corroborate the analytic scales. The report, not these binary64 samples, carries the perturbative argument.",
+    "provesAllGenerations": false,
+    "provesInfiniteLattice": false,
+    "provesNSERegularity": false,
+    "rigorousUnknownConstantLowerBound": false
+  }
+}

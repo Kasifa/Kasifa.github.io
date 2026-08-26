@@ -43,30 +43,30 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71W as v1.09 with synchronized route and full post-R0.60 recap", async () => {
+test("retains R0.71W while v1.10 publishes R0.71X as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 147);
-  assert.match(home, /<strong>v1\.09<\/strong>网页版本/);
-  assert.match(home, /<strong>147<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71W<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71W<\/span>/);
-  assert.match(home, /展开 57 篇公开笔记/);
-  assert.match(home, /href="#r070a">R0\.70A–R0\.71W 完成版本<\/a>/);
-  assert.match(home, /累计回顾收录 87 个节点；全站现有 147 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.71W 共 49 个完成版本/);
-  assert.match(home, /NEXT · R0\.71X/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 148);
+  assert.match(home, /<strong>v1\.10<\/strong>网页版本/);
+  assert.match(home, /<strong>148<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71X<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.71X<\/span>/);
+  assert.match(home, /展开 58 篇公开笔记/);
+  assert.match(home, /href="#r070a">R0\.70A–R0\.71X 完成版本<\/a>/);
+  assert.match(home, /累计回顾收录 88 个节点；全站现有 148 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.71X 共 50 个完成版本/);
+  assert.match(home, /NEXT · R0\.71Y/);
   assert.equal(count(home, 'data-release="r071w"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71w.html"'), 2);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71W">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71X">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 57);
+  assert.equal(count(route[1], 'href="/notes/'), 58);
   assert.equal(count(route[1], 'href="/notes/r0-71w.html"'), 1);
 
   assert.equal(count(recap, '<article class="phase">'), 17);
@@ -81,9 +81,9 @@ test("publishes R0.71W as v1.09 with synchronized route and full post-R0.60 reca
   assert.equal(count(index, 'href="/notes/'), 87);
   assert.equal(count(index, 'href="/notes/r0-71w.html"'), 1);
 
-  assert.match(literature, /R0\.69P–R0\.71W/);
+  assert.match(literature, /R0\.69P–R0\.71X/);
   assert.match(literature, /<header><b>R0\.71W<\/b>/);
-  assert.match(literature, /开放接口 · R0\.71X/);
+  assert.match(literature, /开放接口 · R0\.71Y/);
   for (const letter of "abcdefghijklmnopqrstuvwxyz") {
     assert.ok(
       literature.includes('href="/notes/r0-70' + letter + '.html"'),
@@ -97,14 +97,14 @@ test("publishes R0.71W as v1.09 with synchronized route and full post-R0.60 reca
     );
   }
 
-  for (const [page, minimum] of [
-    [home, 10],
-    [note, 16],
-    [recap, 8],
-    [literature, 50],
+  for (const [page, minimum, version] of [
+    [home, 10, "1.10"],
+    [note, 16, "1.09"],
+    [recap, 8, "1.09"],
+    [literature, 50, "1.10"],
   ]) {
     assertAnchorsResolve(page, minimum);
-    assert.ok(page.includes('src="/i18n-en.js?v=1.09"'));
+    assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));
     assert.doesNotMatch(
       page,
       /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
@@ -141,7 +141,7 @@ test("states the amplitude-doped complete-ledger theorem and its data boundary p
   assert.match(home, /data-independent.*complete first-row/is);
   assert.match(recap, /data-uniform complete first-row no-go/is);
   assert.match(literature, /初始 data size 无界/is);
-  assert.match(literature, /不排除.*D\^\{1\/3\}/is);
+  assert.match(literature, /fixed-dimensional declared triangular family internal saturation/is);
 });
 
 test("verifies the exact, independent, and truncated-coset R0.71W audits", async () => {

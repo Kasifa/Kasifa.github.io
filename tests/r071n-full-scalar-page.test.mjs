@@ -226,7 +226,7 @@ test("states the complete derivative, square-residual cancellation, second jet, 
   );
   assert.match(
     literature,
-    /(?:不是原创性、优先权或不存在性结论|不作原创性、优先权或不存在性声明)/,
+    /不作新颖性、优先权或 NSE 正则性声明/,
   );
 });
 

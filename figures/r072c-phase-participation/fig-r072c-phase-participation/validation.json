@@ -1,0 +1,176 @@
+{
+  "allPassed": true,
+  "checkCount": 15,
+  "checks": [
+    {
+      "name": "source certificates passed",
+      "passed": true,
+      "requirement": "producer and independent allPassed are true",
+      "value": {
+        "independentAllPassed": true,
+        "producerAllPassed": true
+      }
+    },
+    {
+      "name": "certificate hashes are current",
+      "passed": true,
+      "requirement": "figure-data metadata hashes match both archived source certificates",
+      "value": {
+        "research/certificates/r072c/independent-result.json": "50aa901ca06133a3cf8cb16fba83aca11ad72bae3995deb6d268ea2264bdb718",
+        "research/certificates/r072c/result.json": "54306ae1e7973c97fb3131a880ae92506ce868e4cbbbeecfd3fa15caff6a0c0a"
+      }
+    },
+    {
+      "name": "two-panel data contract",
+      "passed": true,
+      "requirement": "Panel A has four ten-point analytic series and Panel B has three 161-point boundaries",
+      "value": {
+        "A": 40,
+        "B": 483
+      }
+    },
+    {
+      "name": "odd-generation carrier grid",
+      "passed": true,
+      "requirement": "n=1,3,...,19 and M=2^n appear once in each exact family",
+      "value": {
+        "counts": [
+          2,
+          8,
+          32,
+          128,
+          512,
+          2048,
+          8192,
+          32768,
+          131072,
+          524288
+        ],
+        "generations": [
+          1,
+          3,
+          5,
+          7,
+          9,
+          11,
+          13,
+          15,
+          17,
+          19
+        ]
+      }
+    },
+    {
+      "name": "exact prefactor formulas",
+      "passed": true,
+      "requirement": "coherent and Rudin-Shapiro CSV values match their exact finite-M formulas",
+      "value": 0.0
+    },
+    {
+      "name": "analytic slope references",
+      "passed": true,
+      "requirement": "reference curves are the stated -10/3 and -8/3 power laws, not regressions",
+      "value": 0.0
+    },
+    {
+      "name": "producer exact-family agreement",
+      "passed": true,
+      "requirement": "all producer odd-generation rows agree with the Kz=1 closed formula",
+      "value": 1.1649798641321628e-15
+    },
+    {
+      "name": "independent exact-family agreement",
+      "passed": true,
+      "requirement": "all independent rows agree after removing their independently chosen Kz^(2/3) scale",
+      "value": 1.4663558566325652e-15
+    },
+    {
+      "name": "phase boundary formulas and nesting",
+      "passed": true,
+      "requirement": "the three strict sufficient boundaries match their formulas and remain ordered",
+      "value": {
+        "maximumFormulaDefect": 0.0,
+        "nestingViolation": 0.0
+      }
+    },
+    {
+      "name": "phase boundary endpoints",
+      "passed": true,
+      "requirement": "beta=0 endpoints and saturation caps are exact",
+      "value": {
+        "arbitraryBetaZero": 1.1428571428571428,
+        "arbitraryCap": 2.0,
+        "coherentBetaZero": 1.4285714285714286,
+        "coherentCap": 2.5,
+        "fixedBetaZero": 1.2857142857142858,
+        "fixedCap": 2.25
+      }
+    },
+    {
+      "name": "deterministic analytic data only",
+      "passed": true,
+      "requirement": "no random sample, regression, or fitted maximum enters the plotted claim",
+      "value": {
+        "configRandomness": false,
+        "fitUsed": false,
+        "resultsRandomness": false
+      }
+    },
+    {
+      "name": "formal PNG dimensions and resolution",
+      "passed": true,
+      "requirement": "178x86 mm nominal size at 600 dpi within Matplotlib quantization",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4200,
+          2028
+        ]
+      }
+    },
+    {
+      "name": "PDF has one correctly sized page",
+      "passed": true,
+      "requirement": "one nominal 178x86 mm page within Matplotlib quantization",
+      "value": {
+        "millimetres": [
+          177.79999999999998,
+          85.852
+        ],
+        "pages": 1
+      }
+    },
+    {
+      "name": "vector and QA assets are present",
+      "passed": true,
+      "requirement": "SVG is nontrivial and color, grayscale, and PDF QA surfaces share final size",
+      "value": {
+        "qaGrayscale": [
+          1540,
+          744
+        ],
+        "qaOriginal": [
+          1540,
+          744
+        ],
+        "qaPdf": [
+          1540,
+          744
+        ],
+        "svgBytes": 81057
+      }
+    },
+    {
+      "name": "claim boundary is explicit",
+      "passed": true,
+      "requirement": "algebraic sharpness, sufficiency, tail-only burn-in, DNS, and endpoint limits are stated",
+      "value": "The prefactor sharpness is algebraic and does not prove actual root-ledger saturation. Phase boundaries are sufficient strict regions. Positive burn-in controls only the remaining tail. The figure contains no DNS or general Navier-Stokes endpoint claim."
+    }
+  ],
+  "passedCheckCount": 15,
+  "schemaVersion": "r072c-figure-validation-v1",
+  "validatedAt": "2026-08-27T04:37:06+08:00"
+}

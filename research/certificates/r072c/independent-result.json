@@ -1,0 +1,622 @@
+{
+  "allPassed": true,
+  "arithmetic": {
+    "format": "IEEE-754 binary64",
+    "intervalArithmetic": false,
+    "linearAlgebra": "NumPy complex128 finite matrices",
+    "multiplierNorm": "direct uniform angle grid",
+    "polynomialAudit": "NumPy FFT samples plus exact integer recursions",
+    "quadrature": "SciPy adaptive QUADPACK over grid-evaluated norms"
+  },
+  "checkCount": 11,
+  "checks": [
+    {
+      "name": "conjugate-paired finite matrix is skew-adjoint",
+      "passed": true,
+      "requirement": "||V+V*||/||V|| < 3e-15",
+      "value": 0.0
+    },
+    {
+      "name": "naive complex extension destroys contraction structure",
+      "passed": true,
+      "requirement": "z=i makes the old same-coefficient pair Hermitian and admits positive energy growth",
+      "value": {
+        "hermitianDefect": 0.0,
+        "skewDefect": 2.0,
+        "witnessEnergyDerivative": 12.25797132161458
+      }
+    },
+    {
+      "name": "conjugate-paired target row equals Parseval rho",
+      "passed": true,
+      "requirement": "relative target-row defect < 3e-15",
+      "value": 0.0
+    },
+    {
+      "name": "Q-row coefficient moduli survive conjugate pairing",
+      "passed": true,
+      "requirement": "matrix Q row matches the modulus formula and each coefficient obeys the 3 nu d^2 r^2 envelope",
+      "value": {
+        "maximumCoefficientRatio": 0.6694444444444444,
+        "relativeDefect": 0.0
+      }
+    },
+    {
+      "name": "representative heat multiplier contracts on the direct grid",
+      "passed": true,
+      "requirement": "all later sampled L-infinity norms do not exceed the A0 grid norm",
+      "value": 0.9255948427536153
+    },
+    {
+      "name": "representative mixed exposure obeys both declared bounds",
+      "passed": true,
+      "requirement": "ell_cross<=min(L,C_cross) and 2*kappa*C_cross^2=C_kappa",
+      "value": {
+        "bound": 0.3,
+        "constantIdentityDefect": 0.0,
+        "ellCross": 0.12715274750864736
+      }
+    },
+    {
+      "name": "Rudin-Shapiro recursion agrees with the binary path",
+      "passed": true,
+      "requirement": "all audited odd generations agree coefficient by coefficient",
+      "value": true
+    },
+    {
+      "name": "odd Rudin-Shapiro generations attain the exact launch endpoint",
+      "passed": true,
+      "requirement": "P_n(1)^2=2M, Q_n(1)=0, and sampled |P|^2+|Q|^2=2M",
+      "value": {
+        "allOddSumsExact": true,
+        "sampledPQIdentityDefect": 5.4569682106375694e-12,
+        "sampledRealMaxOverSqrt2M": 1.0
+      }
+    },
+    {
+      "name": "Rudin-Shapiro geometric prefactor has the M^-8/3 tail",
+      "passed": true,
+      "requirement": "binary64 tail fit is within 2.5e-4 of -8/3",
+      "value": -2.6665098480362004
+    },
+    {
+      "name": "fixed positive layer has the M^-3 tail",
+      "passed": true,
+      "requirement": "binary64 tail fit is within 3e-5 of -3",
+      "value": -2.9999841974361905
+    },
+    {
+      "name": "phase-boundary endpoints match the joint exponents",
+      "passed": true,
+      "requirement": "p=8/3 gives min(2,(8+3 beta)/7); p=3 gives min(9/4,(9+3 beta)/7)",
+      "value": {
+        "exactLaunchBeta0": 1.1428571428571428,
+        "exactLaunchBeta2": 2.0,
+        "fixedLayerBeta0": 1.2857142857142858,
+        "fixedLayerBeta9Over4": 2.25
+      }
+    }
+  ],
+  "elapsedSeconds": 0.07273600000189617,
+  "environment": {
+    "numpy": "2.3.5",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13"
+  },
+  "fixedPositiveLayer": {
+    "expectedPower": -3.0,
+    "fittedTailPower": -2.9999841974361905,
+    "rows": [
+      {
+        "Ks": 1496,
+        "Kv": 1496,
+        "M": 16,
+        "MToThirdTimesPrefactor": 1.4727603629591752,
+        "chi": 0.08056055847719132,
+        "heatL1": 4.170784117019292,
+        "heatL2Squared": 2.802772747006852,
+        "normalizedGeometricPrefactor": 0.0003595606354880799,
+        "omegaSquared": 108.72150094237749,
+        "rhoSquared": 8.758664834396413,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 11440,
+        "Kv": 11440,
+        "M": 32,
+        "MToThirdTimesPrefactor": 1.5640609703605612,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 4.773135285524174e-05,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 89440,
+        "Kv": 89440,
+        "M": 64,
+        "MToThirdTimesPrefactor": 1.612745999587983,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 6.152137754775936e-06,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 707264,
+        "Kv": 707264,
+        "M": 128,
+        "MToThirdTimesPrefactor": 1.6378958134077946,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 7.810095850981686e-07,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 5625216,
+        "Kv": 5625216,
+        "M": 256,
+        "MToThirdTimesPrefactor": 1.6506793622073914,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 9.838815702243992e-08,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 44870400,
+        "Kv": 44870400,
+        "M": 512,
+        "MToThirdTimesPrefactor": 1.657124178006715,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 1.2346537247350178e-08,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 358438400,
+        "Kv": 358438400,
+        "M": 1024,
+        "MToThirdTimesPrefactor": 1.660359958232002,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 1.5463307110890766e-09,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 2865409024,
+        "Kv": 2865409024,
+        "M": 2048,
+        "MToThirdTimesPrefactor": 1.6619812055412122,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 1.9348007691339732e-10,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 22914881536,
+        "Kv": 22914881536,
+        "M": 4096,
+        "MToThirdTimesPrefactor": 1.6627926702668023,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 2.4196817980072262e-11,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 183285493760,
+        "Kv": 183285493760,
+        "M": 8192,
+        "MToThirdTimesPrefactor": 1.6631986131192924,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 3.0253406532561574e-12,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 1466149724160,
+        "Kv": 1466149724160,
+        "M": 16384,
+        "MToThirdTimesPrefactor": 1.6634016371957334,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 3.7821374398748353e-13,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 11728660905984,
+        "Kv": 11728660905984,
+        "M": 32768,
+        "MToThirdTimesPrefactor": 1.6635031623999768,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 4.727960351829031e-14,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 93827139731456,
+        "Kv": 93827139731456,
+        "M": 65536,
+        "MToThirdTimesPrefactor": 1.6635539282940381,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 5.910130796472537e-15,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 750608527851520,
+        "Kv": 750608527851520,
+        "M": 131072,
+        "MToThirdTimesPrefactor": 1.663579312064108,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 7.387776222174605e-16,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 6004833862942720,
+        "Kv": 6004833862942720,
+        "M": 262144,
+        "MToThirdTimesPrefactor": 1.66359200415491,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 9.23479073297545e-17,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 48038533464326144,
+        "Kv": 48038533464326144,
+        "M": 524288,
+        "MToThirdTimesPrefactor": 1.6635983502517533,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 1.1543532451112013e-17,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      },
+      {
+        "Ks": 384307717958270976,
+        "Kv": 384307717958270976,
+        "M": 1048576,
+        "MToThirdTimesPrefactor": 1.6636015233130357,
+        "chi": 0.08055894002541285,
+        "heatL1": 4.170826013664941,
+        "heatL2Squared": 2.8027727480050095,
+        "normalizedGeometricPrefactor": 1.4429443085809503e-18,
+        "omegaSquared": 108.72368522665114,
+        "rhoSquared": 8.758664837515655,
+        "tEqualsKappaA0": 0.036
+      }
+    ]
+  },
+  "generatedAtUtc": "2026-08-26T20:24:59.574321+00:00",
+  "heatGrid": {
+    "Ccross": 1.7868599261872984,
+    "Ckappa": 3.0651536599815143,
+    "chiAFromGrid": 0.16308465400367886,
+    "ellCrossFromGridQuadrature": 0.12715274750864736,
+    "gridNorms": [
+      5.646237514814771,
+      5.226128324674542,
+      4.612416513879652,
+      3.8523381987297785,
+      3.0397865432955866,
+      2.2907972813670705,
+      1.6261335437818147
+    ],
+    "maximumLaterOverInitial": 0.9255948427536153,
+    "mixedConstantIdentityDefect": 0.0,
+    "omegaAFromGrid": 5.646237514814771,
+    "quadratureAbsoluteErrorEstimate": 1.0374381160808573e-09,
+    "rhoA": 2.280161936242158,
+    "times": [
+      0.04,
+      0.05,
+      0.07,
+      0.11000000000000001,
+      0.19,
+      0.33999999999999997,
+      0.64
+    ],
+    "windowLength": 0.3
+  },
+  "independence": {
+    "importsProducer": false,
+    "rawParametersRepeatedLocally": true,
+    "readsProducerResult": false,
+    "rudinShapiroSecondPath": "overlapping binary 11-pair parity"
+  },
+  "matrixStructure": {
+    "conjugatePairedSkewDefect": 0.0,
+    "maximumQCoefficientRatio": 0.6694444444444444,
+    "naiveComplexHermitianDefect": 0.0,
+    "naiveComplexSkewDefect": 2.0,
+    "naiveWitnessCouplingForm": 1.2499999999999998,
+    "naiveWitnessEnergyDerivative": 12.25797132161458,
+    "qRowNormSquareFromCoefficientModuli": 2155.6867713507136,
+    "qRowNormSquareFromMatrix": 2155.6867713507136,
+    "qRowRelativeDefect": 0.0,
+    "rhoFromMatrixRow": 2.280161936242158,
+    "rhoFromParsevalFormula": 2.280161936242158,
+    "rhoRelativeDefect": 0.0
+  },
+  "parameters": {
+    "Ky": 0.8,
+    "Kz": 1.25,
+    "angleGridSize": 32768,
+    "d": 4.0,
+    "fixedTEqualsKappaA0": 0.036,
+    "kappa": 0.48,
+    "magnitudes": [
+      0.8,
+      1.05,
+      0.9,
+      1.2
+    ],
+    "matrixDimension": 41,
+    "matrixRadius": 20,
+    "multipliers": [
+      1,
+      3,
+      6,
+      9
+    ],
+    "nu": 0.03,
+    "phases": [
+      0.2,
+      1.1,
+      -0.7,
+      2.3
+    ],
+    "q": 48.0,
+    "randomness": false,
+    "representativeA0": 0.04,
+    "representativeWindow": 0.3
+  },
+  "passedCheckCount": 11,
+  "phaseBoundary": [
+    {
+      "beta": 0.0,
+      "coherentExactLaunchReference": 1.4285714285714286,
+      "exactLaunchArbitraryPhase": 1.1428571428571428,
+      "fixedPositiveLayer": 1.2857142857142858
+    },
+    {
+      "beta": 1.0,
+      "coherentExactLaunchReference": 1.8571428571428572,
+      "exactLaunchArbitraryPhase": 1.5714285714285714,
+      "fixedPositiveLayer": 1.7142857142857142
+    },
+    {
+      "beta": 2.0,
+      "coherentExactLaunchReference": 2.2857142857142856,
+      "exactLaunchArbitraryPhase": 2.0,
+      "fixedPositiveLayer": 2.142857142857143
+    },
+    {
+      "beta": 2.25,
+      "coherentExactLaunchReference": 2.392857142857143,
+      "exactLaunchArbitraryPhase": 2.0,
+      "fixedPositiveLayer": 2.25
+    },
+    {
+      "beta": 3.0,
+      "coherentExactLaunchReference": 2.5,
+      "exactLaunchArbitraryPhase": 2.0,
+      "fixedPositiveLayer": 2.25
+    }
+  ],
+  "release": "R0.72C",
+  "rudinShapiro": {
+    "exactFamilyFormula": "Phi_M=(|Kz|^(2/3)/2)*(M/Ks)^(4/3) for odd generations",
+    "rows": [
+      {
+        "Ks": 204,
+        "Kv": 204,
+        "M": 8,
+        "MToEightThirdsTimesPrefactor": 1.9789268349970761,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 3,
+        "normalizedGeometricPrefactor": 0.007730182949207331,
+        "omegaSquared": 100.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 25.0,
+        "sumP": 4,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 11440,
+        "Kv": 11440,
+        "M": 32,
+        "MToEightThirdsTimesPrefactor": 2.360162434711897,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 5,
+        "normalizedGeometricPrefactor": 0.00022866969797836266,
+        "omegaSquared": 400.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 100.0,
+        "sumP": 8,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 707264,
+        "Kv": 707264,
+        "M": 128,
+        "MToEightThirdsTimesPrefactor": 2.4715789499470766,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 7,
+        "normalizedGeometricPrefactor": 5.939472857504637e-06,
+        "omegaSquared": 1600.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 400.0,
+        "sumP": 16,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 44870400,
+        "Kv": 44870400,
+        "M": 512,
+        "MToEightThirdsTimesPrefactor": 2.500594483655365,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 9,
+        "normalizedGeometricPrefactor": 1.490470459255795e-07,
+        "omegaSquared": 6400.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 1600.0,
+        "sumP": 32,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 2865409024,
+        "Kv": 2865409024,
+        "M": 2048,
+        "MToEightThirdsTimesPrefactor": 2.5079237209092287,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 11,
+        "normalizedGeometricPrefactor": 3.707670376475263e-09,
+        "omegaSquared": 25600.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 6400.0,
+        "sumP": 64,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 183285493760,
+        "Kv": 183285493760,
+        "M": 8192,
+        "MToEightThirdsTimesPrefactor": 2.509760784609409,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 13,
+        "normalizedGeometricPrefactor": 9.202923517237858e-11,
+        "omegaSquared": 102400.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 25600.0,
+        "sumP": 128,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 11728660905984,
+        "Kv": 11728660905984,
+        "M": 32768,
+        "MToEightThirdsTimesPrefactor": 2.5102203483894723,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 15,
+        "normalizedGeometricPrefactor": 2.2830321071428227e-12,
+        "omegaSquared": 409600.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 102400.0,
+        "sumP": 256,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 750608527851520,
+        "Kv": 750608527851520,
+        "M": 131072,
+        "MToEightThirdsTimesPrefactor": 2.5103352579614806,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 17,
+        "normalizedGeometricPrefactor": 5.6628960426236894e-14,
+        "omegaSquared": 1638400.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 409600.0,
+        "sumP": 512,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      },
+      {
+        "Ks": 48038533464326144,
+        "Kv": 48038533464326144,
+        "M": 524288,
+        "MToEightThirdsTimesPrefactor": 2.510363986518842,
+        "chi": 0.25,
+        "coefficientEnergyExact": true,
+        "generation": 19,
+        "normalizedGeometricPrefactor": 1.4045921890085044e-15,
+        "omegaSquared": 6553600.0,
+        "recursiveEqualsBinaryPath": true,
+        "rhoSquared": 1638400.0,
+        "sumP": 1024,
+        "sumPSquaredOver2M": 1.0,
+        "sumQ": 0
+      }
+    ],
+    "summary": {
+      "M": 2048,
+      "allCoefficientEnergiesExact": true,
+      "allOddGenerationSumsExact": true,
+      "allRecursiveBinaryPathsEqual": true,
+      "expectedPower": -2.6666666666666665,
+      "fftGridSize": 32768,
+      "fittedTailPower": -2.6665098480362004,
+      "generation": 11,
+      "sampledComplexMaxOverSqrt2M": 1.0,
+      "sampledPQIdentityAbsoluteDefect": 5.4569682106375694e-12,
+      "sampledRealMaxOverSqrt2M": 1.0
+    }
+  },
+  "schemaVersion": "r072c-phase-sensitive-independent-v1",
+  "scope": {
+    "intervalArithmetic": false,
+    "note": "Finite matrices, sampled multiplier grids, FFT values, and binary64 regressions corroborate the analytic identities only.",
+    "provesAllGenerations": false,
+    "provesCompleteRootLowerBound": false,
+    "provesInfiniteLattice": false,
+    "provesNSERegularity": false
+  }
+}

@@ -205,7 +205,10 @@ const sixtySixthFigurePdfUrl = new URL(
 test("ships the complete Chinese research review as static HTML", async () => {
   const html = await readFile(siteUrl, "utf8");
 
-  assert.match(html, /<html lang="zh-CN">/);
+  assert.match(
+    html,
+    /<html lang="zh-CN" data-site-version="\d+\.\d+">/,
+  );
   assert.match(html, /三维 Navier–Stokes 全局正则性问题/);
   assert.doesNotMatch(html, /三维 Navier–Stokes 存在性与光滑性问题/);
   assert.doesNotMatch(html, /Navier–Stokes 开放研究日志/);

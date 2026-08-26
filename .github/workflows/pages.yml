@@ -24,11 +24,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Verify publication completeness, links, and bilingual coverage
-        run: >-
-          node --test
-          tests/release-publication-invariant.test.mjs
-          tests/internal-public-links.test.mjs
-          tests/bilingual-content.test.mjs
+        run: |
+          latest_gate="$(node -p "require('./research/release-manifest.json').latestReleaseGate")"
+          test -f "$latest_gate"
+          node --test \
+            tests/release-publication-invariant.test.mjs \
+            tests/internal-public-links.test.mjs \
+            tests/bilingual-content.test.mjs \
+            "$latest_gate"
       - name: Prepare static artifact
         run: |
           mkdir -p _site

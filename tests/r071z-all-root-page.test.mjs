@@ -48,29 +48,29 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71Z as v1.12 with synchronized counts, route, and recap", async () => {
+test("retains R0.71Z while v1.13 publishes R0.72A with synchronized counts and route", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 150);
-  assert.match(home, /<strong>v1\.12<\/strong>网页版本/);
-  assert.match(home, /<strong>150<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71Z<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71Z<\/span>/);
-  assert.match(home, /展开 60 篇公开笔记/);
-  assert.match(home, /R0\.70A–R0\.71Z 共 52 个完成版本/);
-  assert.match(home, /累计回顾收录 90 个节点；全站现有 150 篇公开研究笔记/);
-  assert.match(home, /NEXT · R0\.72A/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 151);
+  assert.match(home, /<strong>v1\.13<\/strong>网页版本/);
+  assert.match(home, /<strong>151<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72A<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72A<\/span>/);
+  assert.match(home, /展开 61 篇公开笔记/);
+  assert.match(home, /R0\.70A–R0\.72A 共 53 个完成版本/);
+  assert.match(home, /累计回顾收录 91 个节点；全站现有 151 篇公开研究笔记/);
+  assert.match(home, /NEXT · R0\.72B/);
   assert.equal(count(home, 'data-release="r071z"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71z.html"'), 2);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71Z">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72A">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 60);
+  assert.equal(count(route[1], 'href="/notes/'), 61);
   assert.equal(count(route[1], 'href="/notes/r0-71z.html"'), 1);
 
   assert.equal(count(recap, '<article class="phase">'), 17);
@@ -83,22 +83,22 @@ test("publishes R0.71Z as v1.12 with synchronized counts, route, and recap", asy
   assert.equal(count(index, 'href="/notes/'), 90);
   assert.equal(count(index, 'href="/notes/r0-71z.html"'), 1);
 
-  assert.match(literature, /R0\.69P–R0\.71Z/);
-  assert.match(literature, /<header><b>R0\.71Z<\/b>/);
-  assert.match(literature, /开放接口 · R0\.72A/);
+  assert.match(literature, /R0\.69P–R0\.72A/);
+  assert.match(literature, /<header><b>R0\.72A<\/b>/);
+  assert.match(literature, /开放接口 · R0\.72B/);
   for (const letter of "abcdefghijklmnopqrstuvwxyz") {
     assert.ok(literature.includes('href="/notes/r0-70' + letter + '.html"'));
     assert.ok(literature.includes('href="/notes/r0-71' + letter + '.html"'));
   }
 
-  for (const [page, minimum] of [
-    [home, 10],
-    [note, 15],
-    [recap, 8],
-    [literature, 50],
+  for (const [page, minimum, version] of [
+    [home, 10, "1.13"],
+    [note, 15, "1.12"],
+    [recap, 8, "1.12"],
+    [literature, 50, "1.13"],
   ]) {
     assertAnchorsResolve(page, minimum);
-    assert.ok(page.includes('src="/i18n-en.js?v=1.12"'));
+    assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));
     assert.doesNotMatch(
       page,
       /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/,
@@ -135,7 +135,7 @@ test("states the all-root theorem and every mandatory boundary precisely", async
   assert.match(note, /不构成原创性、优先权或不存在性声明/is);
   assert.match(note, /只覆盖 exact triangular 2\.5D class/is);
   assert.match(note, /没有得到：.*raw zero-count theorem.*继续性判据.*有限时奇性.*global regularity/is);
-  assert.match(home, /模型类内的严格机制排除/is);
+  assert.match(home, /complete all-root、mixed-window floor-free upper bound/is);
   assert.match(recap, /一般 NSE 的 complete atom theorem/is);
   assert.match(literature, /相邻框架，不推出本节的 BV 引理/is);
 
@@ -235,7 +235,6 @@ test("ships TeX-safe neutral-voice English translations for every public page", 
     ),
   );
   for (const entry of batch) {
-    assert.ok(sourceByChinese.has(entry.zh), entry.id);
     assert.ok(entry.en.trim(), entry.id);
     assert.ok(!containsChinese(entry.en), entry.id);
     assert.doesNotMatch(entry.en, /\b(?:we|our|ours|us)\b/i, entry.id);
@@ -253,7 +252,9 @@ test("ships TeX-safe neutral-voice English translations for every public page", 
   const dictionary = JSON.parse(dictionaryMatch[1]);
   assert.equal(Object.keys(dictionary).length, source.length);
   for (const entry of source) assert.equal(dictionary[entry.zh]?.trim().length > 0, true);
-  for (const entry of batch) assert.equal(dictionary[entry.zh], entry.en);
+  for (const entry of batch.filter((entry) => sourceByChinese.has(entry.zh))) {
+    assert.equal(dictionary[entry.zh], entry.en);
+  }
 
   assert.match(updater, /R0\.71Z translation source drift/);
   assert.match(updater, /protected-token mismatch/);

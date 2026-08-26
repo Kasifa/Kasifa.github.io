@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.72A：在声明的实剪切三角 Fourier-lattice 类中，把全部根上界局部化到实际观察层，关闭 exact launch endpoint，并构造具有对数 selected-root 质量的 exact Bessel 障碍；这不是一般三维正则性定理。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72A｜局部暴露强耦合闭合与 exact Bessel 障碍">
+  <meta property="og:description" content="shrinking layer 把 sufficient decay region 从 alpha&lt;6/7 扩到 alpha&lt;3/2；exact one-carrier family 仍有 logarithmic selected-root mass。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72a-local-bessel.png">
+  <title>R0.72A｜局部暴露强耦合闭合与 exact Bessel 障碍</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.13"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#setting">设定</a><a href="#local">局部暴露</a><a href="#launch">launch</a><a href="#phase">相图</a><a href="#bessel">Bessel</a><a href="#dissipation">耗散</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72A · LOCAL EXPOSURE · EXACT LAUNCH · BESSEL ROOTS</div>
+        <h1>观察层越短，上界越强；<br>Bessel 根仍留下对数质量</h1>
+        <p class="lead">R0.71Z 的 strong-coupling 损失使用了整个未来 heat tail。本节保留实际观察层上的 quadratic exposure，把 complete all-root upper bound 改成 \(1+q_I+\eta\ell_2(I)\)。对 \(\eta=M^\alpha\)、\(L=M^{-\beta}\)，充分衰减区成为 \(\alpha&lt;\min\{3/2,(6+3\beta)/7\}\)；exact launch 又使付款区间与计数区间重合。另一方面，一个 exact one-carrier infinite lattice 在 \(O(R^{-3})\) 层内保留 \(R\) 个可选正根，其 rescaled row mass 为 \((8/\pi^2)\log R+O(1)\)。所以 coupling loss 可以被局部化，却不能完全删掉。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72A 完成</span><strong>local upper theorem + exact lower obstruction</strong><p>版本 v0.72A · 2026-08-27</p><p>analytic audit: PASS</p><p>producer certificate: PASS</p><p>independent certificate: PASS</p><p>下一对象：many-carrier / full nonlinear charge</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#setting">01 · 精确设定</a></li><li><a href="#local">02 · 局部暴露</a></li><li><a href="#launch">03 · launch endpoint</a></li><li><a href="#phase">04 · 强耦合相图</a></li><li><a href="#bessel">05 · exact Bessel family</a></li><li><a href="#dissipation">06 · enhanced dissipation</a></li><li><a href="#audit">07 · 双重证书</a></li><li><a href="#figure">08 · 正式附图</a></li><li><a href="#value">09 · 研究价值</a></li><li><a href="#next">10 · 下一步</a></li><li><a href="#claims">11 · 主张边界</a></li><li><a href="#reproduce">12 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>固定层的 \(6/7\) 不是 shrinking-layer 的最终上界，但 \(3/2\) 也只是充分条件的包络</h2>
+          <div class="equation result">\[
+            \boxed{G_{\rm all}^{\rm ex}(I)
+            \le e^{2\lambda_0L}M\Omega^2
+            \bigl[1+q_I+\eta\ell_2(I)\bigr],
+            \quad q_I\le3,
+            \quad \ell_2(I)\le\min\{L,C_\kappa\}.}
+          \]</div>
+          <p>这是 R0.71Z complete all-root theorem 的 local-exposure 版本。它仍不计 raw roots，也不需要 minimum gap；改进来自不再把短观察层替换成整个未来半轴。</p>
+          <div class="boundary"><strong>直接结论</strong><p>shrinking layer 可以消去 \(\eta L\) 部分，却不能消去 first-root term。相图给的是 upper bound 仍趋零的充分区域，不是相图之外存在反例的 converse theorem。</p></div>
+        </section>
+
+        <section id="setting"><div class="section-no">01 / Exact setting</div><h2>对象仍是 real-shear、fixed-target、triangular Fourier lattice</h2>
+          <div class="equation result">\[
+            F'=D_qF+\delta V_z(x)F,
+            \qquad \eta=|\delta|\Omega,
+            \qquad I=[A,A+L]\subset[A_0,\infty).
+          \]</div>
+          <p>实 shear 使 \(V_z\) skew-adjoint，\(D_q\) self-adjoint nonpositive，因此 \(\|F(x)\|_2\le\sqrt M\)。若 \(\Omega=0\)、\(\delta=0\) 或 shear amplitude \(S=0\)，目标 charge 为零；以下只讨论非平凡支路。</p>
+          <p>有限 carrier launch 属于每个 diagonal graph domain，有限 shifts 保持这些 domain。因此 \(g'=e^{\lambda_0(x-A)}F_0'\) 绝对连续且 \(g''\in L^1\)，包括 \(A_0=0\) 的 exact launch。</p>
+        </section>
+
+        <section id="local"><div class="section-no">02 / Local exposure</div><h2>一个局部平方积分和一个局部 target-row payment 保留全部需要的信息</h2>
+          <div class="equation result">\[
+            \ell_2(I)=\Omega^{-2}\int_I\|V_z(x)\|^2\,dx,
+            \qquad
+            q_I=(\Omega\sqrt M)^{-1}\int_I|QF|\,dx.
+          \]</div>
+          <div class="equation result">\[
+            0\le\ell_2(I)\le\min\{L,C_\kappa\},
+            \qquad q_I\le3,
+            \qquad C_\kappa=\frac{\pi^2}{\sqrt{45}\,\nu d^2}.
+          \]</div>
+          <p>对 \(g=e^{\lambda_0(x-A)}F_0\)，BV zero lemma 给 \(\sum|g'(\tau)|^2\le|g'(\tau_1)|^2+\|g'\|_\infty\int|g''|\)。exact contraction 支付 \(\|g'\|_\infty\)，而 \(QF\) 与 \(V_z^2F\) 分别给 \(q_I\) 和 \(\eta\ell_2(I)\)。完整零集由有限子集的单调上确界处理。</p>
+        </section>
+
+        <section id="launch"><div class="section-no">03 / Exact launch endpoint</div><h2>只有 observation 从 reference layer 开始时，launch cancellation 才能写在同一窗口</h2>
+          <p>normalized ledger 在本节专门取 \(I_x=[A_0,A_0+L]\)，物理时间付款区间为</p>
+          <div class="equation result">\[
+            K_t=[a-A_0q^{-2},b].
+          \]</div>
+          <p>当且仅当本节的 exact-launch specialization \(A=A_0=0\) 成立，\(K_t=I_t=[a,b]\)。此时 launch enstrophy 在原计数窗口内消去 contrast factor，不需要 matched background 或单独 retention hypothesis。</p>
+          <p>这不延伸到任意延迟观察。任意短的正 pre-observation layer 仍可让高频 heat shear 丢失阶一 launch enstrophy；exact endpoint 与 \(A_0\downarrow0\) 的统一正层结论不能混同。</p>
+        </section>
+
+        <section id="phase"><div class="section-no">04 / Strong-coupling phase diagram</div><h2>local exposure 把 complete normalized ledger 改成双尺度条件</h2>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\mathcal J_{\rm all}(I_t)}
+            {D^{1/3}\Lambda_1(K_t;u)}
+            \le C\nu^{-2}e^{2\lambda_0L}M^{-2}\eta^{4/3}
+            \bigl[4+\eta\min\{L,C_\kappa\}\bigr].}
+          \]</div>
+          <p>若 \(\eta_M=M^\alpha\)、\(L_M=M^{-\beta}\) 且 \(\lambda_{0,M}L_M\) 一致有界，则右端趋零的充分条件为</p>
+          <div class="equation result">\[
+            \boxed{\alpha&lt;\min\left\{\frac32,\frac{6+3\beta}{7}\right\}.}
+          \]</div>
+          <p>\(\beta=0\) 恢复 fixed layer 的 \(6/7\)。当层缩得足够快，使 \(\eta L=O(1)\)，充分区域到达每个 \(\alpha&lt;3/2\)。等号线只表示当前上界不再保证衰减；它不证明 sharpness、奇性或 normalized lower bound。</p>
+        </section>
+
+        <section id="bessel"><div class="section-no">05 / Exact Bessel obstruction</div><h2>one-carrier infinite lattice 已足以排除 eta-independent complete constant</h2>
+          <p>取 \(\nu=d=q=K_z=z_1=r_1=1\)、\(K_y=0\)、\(F(0)=ie_{-1}\)，并令 \(\delta_R=R^4\)、\(U_R(\tau)=F(\tau/\delta_R)\)。冻结系统的 target coordinate 是</p>
+          <div class="equation result">\[
+            P_0W(\tau)=J_1(2\tau).
+          \]</div>
+          <p>在 \(T_R=j_{1,R}/2+\rho=O(R)\) 上，exact 与 frozen target 的 \(C^1\) 误差为 \(O(R^{-1})\)，小于最弱 Bessel slope 的 \(R^{-1/2}\)。因此每个前 \(R\) 个 Bessel 根邻域可选一个 simple positive exact root，且 \(L_R=T_R/R^4=O(R^{-3})\)。</p>
+          <div class="equation result">\[
+            \boxed{G_R^{\rm sel}:=
+            \sum_{k=1}^R|P_0V(x_{k,R})F(x_{k,R})|^2
+            =\frac8{\pi^2}\log R+O(1).}
+          \]</div>
+          <p>\(\tau=0\) 还是一个 exact launch root，row mass 为 1；未排除的其他根只会增加非负 complete mass。因此</p>
+          <div class="equation result">\[
+            G_{R,\rm all}^{\rm ex}([0,L_R])\ge1+G_R^{\rm sel}\ge c\log\eta_R,
+            \qquad \eta_R=2R^4.
+          \]</div>
+          <p>这里 \(G_R^{\rm sel}\) 是 rescaled-time row \(h=P_0VF\) 的质量，没有除以 \(\Omega^2\)。原 \(x\)-derivative 是 \(\delta_R h\)。该 family 只有 \(M=1\)，不证明 normalized nonlinear ledger 发散，也没有饱和 \(O(1+\eta L)\) 的上界。</p>
+        </section>
+
+        <section id="dissipation"><div class="section-no">06 / Enhanced-dissipation boundary</div><h2>strong coupling 不是独立的逃逸参数</h2>
+          <p><a href="https://doi.org/10.4007/annals.2008.168.643">Constantin–Kiselev–Ryzhik–Zlatoš</a>、<a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a>与<a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a>的 fixed-profile 理论说明，大 imaginary shear potential 在正时间通常产生 enhanced dissipation。它们控制 observation time 的 semigroup norm，不直接控制此前累积的 coordinate zeros 或 slope mass。</p>
+          <p>对 frozen \(b(\theta)=2\cos\theta\) 比较，\(\lambda_{\rm ED,R}\asymp R^2/(\log R)^2\)，而 \(L_R\asymp R^{-3}\)，故 \(L_R\lambda_{\rm ED,R}\to0\)。这只是 autonomous frozen-profile comparison，不是当前 nonautonomous heat-decaying system 的定理。R0.72B 必须同时记录 profile degeneracy、sublevel constants、freezing error 和 enhanced-dissipation scale。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">07 / Independent certificates</div><h2>解析证明与两个不同数值路径承担不同职责</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · DOP853</strong><p>complex bilateral lattice；以 Bessel 邻域 bracket 根；\(R=4,8,16,32,64\)；另做 truncation doubling。selected masses 从 1.3469595614 增到 3.5652919858。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · RK4</strong><p>real invariant phase；fixed step 0.004；不导入 producer；由 unseeded sign changes 找根，再用 cubic Hermite refinement。共同 \(R\) 上质量差小于 \(4\times10^{-10}\)，根差小于 \(4\times10^{-9}\)。</p></div>
+          </div>
+          <p>producer 使用右 margin 0.35，independent 使用 0.30；两者验证相同的前 \(R\) 个 selected roots 和质量，但不把 layer endpoint 当成同一输入。两份 JSON、命令、环境、进度日志与 SHA-256 均归档。有限矩阵只 corroborate infinite-lattice 解析论证，不是 DNS 或 interval proof。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Journal figure</div><h2>相图、Bessel 对数质量和物理 shrinking scales 分开显示</h2>
+          <figure><img src="/figures/r0-72a-local-bessel.svg" alt="R0.72A local exposure phase boundary, exact Bessel selected-root mass, and physical shrinking-layer scales"><figcaption>图 R0.72A-1。A：\(\eta=M^\alpha\)、\(L=M^{-\beta}\) 的 certified sufficient region。B：两个有限证书与 frozen Bessel sum；等式只对应 selected positive roots。C：observation layer \(L_R=O(R^{-3})\) 与把 \(\tau\)-位移除以 \(\delta_R\) 后的 physical root displacement \(O(R^{-6})\)，两条曲线均使用 \(x\)-coordinate。附图是证据摘要，不替代解析证明。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">09 / Research value</div><h2>这一节把 strong-coupling 接口从模糊阈值改成了可检验的双尺度问题</h2>
+          <p>第一，R0.71Z 的 global heat-tail 损失不是短层内的真实代价；local exposure 给出更大的严格排除区。第二，finite-support launch 的 \(A_0=0\) endpoint 可以直接进入 BV proof，同一计数窗口获得 floor cancellation。第三，exact Bessel family 证明 coupling dependence 不是纯估计伪影。</p>
+          <p>对千禧年问题的价值仍是间接的：它排除了 declared triangular 2.5D class 内的一种粗糙 strong-coupling 设想，并告诉后续构造必须同时击败 \(M^{-2}\) lattice cost、enhanced dissipation 和 full nonlinear charge payment。它没有约束一般三维 vortex-stretching geometry。</p>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next finite gate</div><h2>R0.72B 检查 many-carrier Bessel amplification 能否进入完整 nonlinear charge</h2>
+          <p>下一节保留 exact local-exposure ledger，先尝试把 logarithmic one-carrier family 提升到 growing \(M\) 的 many-carrier sequence；每个候选必须同时报告 complete slope mass、\(M^{-2}\) suppression、full nonlinear rotational charge、freezing error 与 uniform enhanced-dissipation comparison。</p>
+          <p>若 many-carrier 结构仍被统一上界压回零，则把它写成 exclusion theorem；若出现非消失候选，也必须完成 exact roots 与独立证书后才进入公开结论。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">11 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>local-exposure complete all-root upper theorem；finite-support exact-launch endpoint；双尺度 sufficient decay region；one-carrier selected Bessel mass 的对数渐近与 complete-mass 下界。</li>
+            <li><strong>已排除：</strong>把 fixed-layer \(6/7\) 当成所有 shrinking layers 的阈值；把 strong-coupling dependence 全部删去；把 exact launch 与任意正 pre-observation layer 混同。</li>
+            <li><strong>仍开放：</strong>local upper loss 的 sharpness；many-carrier exact lower family；full nonlinear charge；uniform nonautonomous enhanced dissipation；nontriangular 3D feedback。</li>
+            <li><strong>没有得到：</strong>相图 converse、normalized nonlinear divergence、继续性判据、有限时奇性、global regularity、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproduce</div><h2>证明、文献边界、双重证书与期刊附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072a_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072a_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072a_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072a_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072a">producer / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072a-local-bessel/fig-r072a-local-bessel">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-72a-local-bessel.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-72a.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72a.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-72a.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r072a_exact_audit.py --output research/certificates/r072a/result.json
+python3 research/r072a_independent_audit.py --output research/certificates/r072a/independent-result.json
+python3 figures/r072a-local-bessel/fig-r072a-local-bessel/build_figure.py --config figures/r072a-local-bessel/fig-r072a-local-bessel/config.json
+python3 figures/r072a-local-bessel/fig-r072a-local-bessel/qa_images.py --config figures/r072a-local-bessel/fig-r072a-local-bessel/config.json
+python3 figures/r072a-local-bessel/fig-r072a-local-bessel/validate.py --config figures/r072a-local-bessel/fig-r072a-local-bessel/config.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72A · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72a.html">累计回顾</a></div></footer>
+</body>
+</html>

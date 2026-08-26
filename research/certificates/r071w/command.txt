@@ -1,0 +1,21 @@
+Generate the 90-digit producer certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071w_exact_audit.py --output research/certificates/r071w/result.json
+
+Generate the independent binary64 certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071w_independent_audit.py --output research/certificates/r071w/independent-result.json
+
+Generate the nonlinear truncated-coset corroboration:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071w_truncated_coset_audit.py --output research/certificates/r071w/truncated-coset-result.json
+
+The independent program imports neither the producer nor result.json. The
+truncated-coset program imports neither algebraic audit.
+
+Figure commands:
+figures/r071w-complete-ledger/fig-r071w-amplitude-doping/command.txt
+
+Validate the figure package:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/validate_figure_package.py figures/r071w-complete-ledger/fig-r071w-amplitude-doping
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/certificates/r071w/build_hashes.py
+(cd research/certificates/r071w && shasum -a 256 -c SHA256SUMS)

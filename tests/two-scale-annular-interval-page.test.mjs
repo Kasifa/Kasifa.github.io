@@ -7,18 +7,24 @@ const publicRoot = new URL("public/", root);
 const figureRoot = new URL("../figures/r069w-interval-obstruction/fig-r069w-interval-obstruction/", import.meta.url);
 
 test("publishes R0.69W as a rigorous static obstruction with an explicit boundary", async () => {
-  const [review, note] = await Promise.all([
+  const [review, note, notePdf] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("notes/r0-69w.html", publicRoot), "utf8"),
+    readFile(new URL("notes/r0-69w.pdf", publicRoot)),
   ]);
   assert.match(review, /id="r069w"/);
   assert.match(review, /href="\/notes\/r0-69w\.html"/);
+  assert.match(review, /href="\/notes\/r0-69w\.pdf"/);
+  assert.match(note, /href="\/notes\/r0-69w\.pdf"/);
   assert.ok(note.includes("\\mathcal A_0(u_a)=a\\,q(a)"));
   assert.ok(note.includes("\\Delta=c_2^2-4c_1c_3"));
   assert.match(note, /浮点求积节点：0/);
   assert.match(note, /下一阶段已暂停/);
   assert.match(note, /没有证明全局正则性或构造有限时奇性/);
+  assert.doesNotMatch(note, /时间为 \\texttt/);
   assert.doesNotMatch(note, /__[A-Z0-9_]+__/);
+  assert.equal(notePdf.subarray(0, 4).toString(), "%PDF");
+  assert.ok(notePdf.length > 100_000);
 });
 
 test("keeps the R0.69W targets, sources, and public figure mirror complete", async () => {

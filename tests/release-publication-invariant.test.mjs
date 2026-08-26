@@ -46,11 +46,38 @@ async function completedReleaseIds() {
   return [...new Set(["r070a", ...reports])].sort();
 }
 
+function publicReleaseId(file) {
+  const match = file.match(/^r0-(\d{2})([a-z])\.html$/);
+  if (!match) return null;
+  const release = "r0" + match[1] + match[2];
+  return release.localeCompare("r070a") >= 0 ? release : null;
+}
+
 test("publishes every completed research release from R0.70A onward", async () => {
-  const [releases, home] = await Promise.all([
+  const [releases, home, noteFiles] = await Promise.all([
     completedReleaseIds(),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
+    readdir(notesRoot),
   ]);
+
+  const publicReleases = noteFiles.map(publicReleaseId).filter(Boolean).sort();
+  const progressReleases = [
+    ...home.matchAll(/data-release="(r0\d{2}[a-z])"/g),
+  ]
+    .map((match) => match[1])
+    .filter((release) => release.localeCompare("r070a") >= 0)
+    .sort();
+
+  assert.deepEqual(
+    publicReleases,
+    releases,
+    "every R0.70A+ public note must correspond to a completed release",
+  );
+  assert.deepEqual(
+    progressReleases,
+    releases,
+    "every R0.70A+ completed release must have exactly one progress card",
+  );
 
   assert.equal(releases[0], "r070a");
   for (let index = 1; index < releases.length; index += 1) {
@@ -85,6 +112,13 @@ test("publishes every completed research release from R0.70A onward", async () =
     const cardStart = home.indexOf(cardMarker);
     const nextCard = home.indexOf('data-release="', cardStart + cardMarker.length);
     const card = home.slice(cardStart, nextCard < 0 ? home.length : nextCard);
+    assert.ok(
+      home.includes(
+        '<div class="task-one" id="' + release + '" ' + cardMarker,
+      ),
+      release + ": progress card structure",
+    );
+    assert.ok(card.includes(publicCode), release + ": visible progress-card code");
     assert.ok(
       card.includes('href="/notes/' + slug + '.html"'),
       release + ": progress card note link",
@@ -126,7 +160,9 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(recapStart >= 0, "R0.61 recap start is missing from route");
   const recapNodes = routeLinks.length - recapStart;
   const detailsBlocks = [
-    ...route.matchAll(/<details class="tree-notes">([\s\S]*?)<\/details>/g),
+    ...route.matchAll(
+      /<details class="tree-notes"[^>]*>([\s\S]*?)<\/details>/g,
+    ),
   ];
   const currentDetails = detailsBlocks.at(-1)?.[1] ?? "";
   const currentRouteNotes = (
@@ -144,6 +180,22 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
     readFile(new URL(recapStem + ".pdf", publicRoot)),
   ]);
+
+  const nodeIndexStart = recap.indexOf('<section id="node-index">');
+  const nodeIndexEnd = recap.indexOf("</section>", nodeIndexStart);
+  assert.ok(
+    nodeIndexStart >= 0 && nodeIndexEnd > nodeIndexStart,
+    "current recap node index",
+  );
+  const recapIndex = recap.slice(nodeIndexStart, nodeIndexEnd);
+  const recapIndexLinks = [
+    ...recapIndex.matchAll(/href="(\/notes\/r0-[^"]+\.html)"/g),
+  ].map((match) => match[1]);
+  assert.deepEqual(
+    recapIndexLinks,
+    routeLinks.slice(recapStart),
+    "current recap must index every post-R0.60 route node exactly once",
+  );
 
   const versionMatch = home.match(/<strong>v(\d+\.\d+)<\/strong>\u7f51\u9875\u7248\u672c/);
   assert.ok(versionMatch, "homepage version marker is missing");
@@ -170,10 +222,18 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   );
 
   assert.ok(htmlNotes.length > 60);
-  assert.ok(
-    home.includes(
-      "<strong>" + htmlNotes.length + "</strong>公开研究笔记",
-    ),
+  const homepageCountMatches = [
+    ...home.matchAll(/<strong>(\d+)<\/strong>公开研究笔记/g),
+  ];
+  assert.equal(
+    homepageCountMatches.length,
+    1,
+    "homepage must expose one canonical public-note count",
+  );
+  assert.equal(
+    Number(homepageCountMatches[0][1]),
+    htmlNotes.length,
+    "homepage public-note count must equal public HTML notes",
   );
   assert.ok(
     home.includes("<strong>" + latestCode + "</strong>最新研究节点"),
@@ -190,6 +250,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   );
   assert.ok(home.includes('href="/' + recapStem + '.html"'));
   assert.ok(home.includes('href="/' + recapStem + '.pdf"'));
+  assert.ok(recap.includes('href="/' + recapStem + '.pdf"'));
   assert.ok(home.includes("NEXT · " + nextCode));
   assert.ok(literature.includes("R0.69P–" + latestCode));
   assert.ok(literature.includes("开放接口 · " + nextCode));

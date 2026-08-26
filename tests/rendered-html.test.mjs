@@ -271,7 +271,10 @@ test("maps the complete published route as a branching tree", async () => {
   assert.match(route, /class="tree-root"/);
   assert.equal((route.match(/class="tree-row/g) ?? []).length, 6);
   assert.equal((route.match(/class="tree-branch/g) ?? []).length, 5);
-  assert.equal((route.match(/<details class="tree-notes">/g) ?? []).length, 7);
+  assert.equal(
+    (route.match(/<details class="tree-notes"[^>]*>/g) ?? []).length,
+    7,
+  );
   assert.doesNotMatch(route, /class="route-topology"|class="route-stage"/);
   assert.match(route, /R0\.1–R0\.8/);
   assert.match(route, /R0\.61–R0\.66/);
@@ -288,7 +291,9 @@ test("maps the complete published route as a branching tree", async () => {
         ).toUpperCase()}`;
   assert.match(route, new RegExp(`R0\\.69P–${latestCode.replace(".", "\\.")}`));
   const detailsBlocks = [
-    ...route.matchAll(/<details class="tree-notes">([\s\S]*?)<\/details>/g),
+    ...route.matchAll(
+      /<details class="tree-notes"[^>]*>([\s\S]*?)<\/details>/g,
+    ),
   ];
   const currentDetails = detailsBlocks.at(-1)?.[1] ?? "";
   const currentRouteCount = (

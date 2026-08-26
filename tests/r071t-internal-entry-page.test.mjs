@@ -50,7 +50,7 @@ test("retains the corrected R0.71T release after the R0.71V site update", async 
   ]);
 
   assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 146);
-  assert.match(home, /<strong>v1\.07<\/strong>网页版本/);
+  assert.match(home, /<strong>v1\.08<\/strong>网页版本/);
   assert.match(home, /<strong>146<\/strong>公开研究笔记/);
   assert.match(home, /<strong>R0\.71V<\/strong>最新研究节点/);
   assert.match(home, /<span class="route-range">R0\.69P–R0\.71V<\/span>/);
@@ -86,8 +86,8 @@ test("retains the corrected R0.71T release after the R0.71V site update", async 
     assert.doesNotMatch(page, /我们|攻关|主攻|三重审计/);
     assert.doesNotMatch(page, /千禧年问题已经解决|解决了千禧年问题/);
   }
-  assert.ok(home.includes('src="/i18n-en.js?v=1.07"'));
-  assert.ok(literature.includes('src="/i18n-en.js?v=1.07"'));
+  assert.ok(home.includes('src="/i18n-en.js?v=1.08"'));
+  assert.ok(literature.includes('src="/i18n-en.js?v=1.08"'));
   assert.ok(note.includes('src="/i18n-en.js?v=1.05"'));
   assert.ok(recap.includes('src="/i18n-en.js?v=1.05"'));
 });

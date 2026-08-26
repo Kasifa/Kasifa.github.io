@@ -66,7 +66,7 @@ test("keeps historical R0.71O artifacts reachable after R0.71V becomes current",
   ]);
 
   assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 146);
-  assert.match(home, /<strong>v1\.07<\/strong>网页版本/);
+  assert.match(home, /<strong>v1\.08<\/strong>网页版本/);
   assert.match(home, /<strong>146<\/strong>公开研究笔记/);
   assert.match(home, /<strong>R0\.71V<\/strong>最新研究节点/);
   assert.match(home, /<span class="route-range">R0\.69P–R0\.71V<\/span>/);
@@ -88,10 +88,10 @@ test("keeps historical R0.71O artifacts reachable after R0.71V becomes current",
   assert.match(literature, /开放接口 · R0\.71W/);
 
   for (const [page, minimum, i18nVersion] of [
-    [home, 10, "1.07"],
+    [home, 10, "1.08"],
     [note, 16, "1.00"],
     [recap, 8, "1.00"],
-    [literature, 49, "1.07"],
+    [literature, 49, "1.08"],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71O/);

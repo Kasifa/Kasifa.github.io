@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71Y：在声明的 triangular Fourier-lattice 家族和完整 data/root-time enstrophy floors 下，增长维数不能挽救有界观测耦合的 selected-root 端点增益；结论不是 all-root 定理或一般正则性结果。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71Y｜增长根族的算子采样抑制">
+  <meta property="og:description" content="selected exact-root atom sum 至多为 C delta_obs^(4/3)/N；非消失需要 delta_obs 至少按 N^(3/4) 增长。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-71y-operator-sampling.png">
+  <title>R0.71Y｜增长根族的算子采样抑制</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.68rem,3.6vw,3rem)}pre{max-width:100%;overflow-x:auto}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.5pt}}</style>
+  <script defer src="/i18n-en.js?v=1.11"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#setting">设定</a><a href="#slope">斜率</a><a href="#theorem">定理</a><a href="#cost">代价</a><a href="#correction">修正</a><a href="#separation">间隔</a><a href="#extra">额外根</a><a href="#conditioning">条件数</a><a href="#audit">审计</a><a href="#literature">文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71Y · GROWING ROOTS · OPERATOR SAMPLING</div>
+        <h1>有界观测耦合下，<br>预设增长根的端点增益按 \(N^{-1}\) 消失</h1>
+        <p class="lead">本节检查 R0.71X 留下的 growing-dimensional 路线。对 \(M=2N+1\) 个单位模 carrier phases、实 shear、固定 target、完整数据与根时刻 enstrophy floors，exact triangular evolution 的 \(\ell^2\) 收缩和根坐标恒等式给出 \(\mathcal J_N^{\rm sel}/(D_N^{1/3}\Lambda_1)\le C\nu^{-2}\delta_{\rm obs,N}^{4/3}/N\)。所以 uniformly bounded observation coupling 不能保留预设根增益。这里控制的是 selected exact roots，不是全部 nonlinear roots。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71Y 完成</span><strong>selected-root suppression</strong><p>版本 v0.71Y · 2026-08-26</p><p>analytic proof review: PASS</p><p>exact audit: 13/13</p><p>independent audit: 12/12</p><p>source commit: 8836d456</p><p>下一对象：total-root / floor-free ledger</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#setting">01 · 精确设定</a></li><li><a href="#slope">02 · 根斜率</a></li><li><a href="#theorem">03 · 采样定理</a></li><li><a href="#cost">04 · 载波代价</a></li><li><a href="#correction">05 · R0.71X 修正</a></li><li><a href="#separation">06 · 根间隔</a></li><li><a href="#extra">07 · 额外根</a></li><li><a href="#conditioning">08 · ECT 条件数</a></li><li><a href="#audit">09 · 两组审计</a></li><li><a href="#literature">10 · 文献边界</a></li><li><a href="#figure">11 · 正式附图</a></li><li><a href="#value">12 · 研究价值</a></li><li><a href="#next">13 · 下一步</a></li><li><a href="#claims">14 · 主张边界</a></li><li><a href="#reproduce">15 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>增长维数本身不能挽救 R0.71W 的小耦合预设根机制</h2>
+          <div class="boundary"><strong>本节判断</strong><p>ECT inverse 不是这条上界的前置条件。exact root 上的 diagonal heat coordinate 正好为零，目标斜率只是 shear multiplication operator 作用于 active scalar 后的一个坐标。全演化又是 \(\ell^2\) contraction。由此可以在不求 interpolation inverse 的情况下直接结算 selected slopes。</p></div>
+          <p>结果关闭 uniformly small Dyson/IFT corridor 内的 selected prescribed-root 增益，也关闭 bounded coupling 下每个至多线性增长的 sampled-root 集。它不控制未知的全部 nonlinear roots。</p>
+        </section>
+
+        <section id="setting"><div class="section-no">01 / Exact setting</div><h2>定理使用实 shear、单位载波相位和完整增长成本</h2>
+          <p>令 \(M=2N+1\)，取互不相同的正整数 \(r_1,\ldots,r_M\)，launch vector 的 \(M\) 个非零系数均为单位模。scaled active sector 满足</p>
+          <div class="equation result">\[
+            \partial_xF=D_qF+\frac P{q^2}V_z(x)F,\qquad
+            \|F(0)\|_2^2=M.
+          \]</div>
+          <p>实 shear 使 \(V_z(x)\) skew-adjoint，\(D_q\) self-adjoint 且 nonpositive，因此</p>
+          <div class="equation result">\[
+            \|F(x)\|_2\le\|F(0)\|_2=\sqrt M.
+          \]</div>
+          <p>matched background 必须支付 \(E_N=S^2K_{s,N}+P^2K_{v,N}\) 的全部增长成本；旧的 fixed-\(N\) background 不能免费复用。</p>
+        </section>
+
+        <section id="slope"><div class="section-no">02 / Root-coordinate identity</div><h2>在 exact root 上，目标斜率由观测层算子直接控制</h2>
+          <p>设 \(F_0(\tau_m)=0\)，并定义</p>
+          <div class="equation result">\[
+            \Omega_N=\sup_{x\ge A_0}\|V_z(x)\|,\qquad
+            \delta_{\rm obs,N}=\frac P{q^2}\Omega_N.
+          \]</div>
+          <p>由于 \(D_q\) diagonal，根坐标的 heat term 消失。物理时间斜率精确为</p>
+          <div class="equation result">\[
+            \partial_t\widehat f(k_*,t_{m,q})
+            =SP\,P_0V_z(\tau_m)F(\tau_m).
+          \]</div>
+          <p>于是 exact nonlinear sampled-slope mass 满足 \(G_N^{\rm ex}\le NM\Omega_N^2\)。这里没有 Gronwall 指数，也没有 ECT determinant 或 inverse-Jacobian 常数。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Selected-root theorem</div><h2>完整支付后，selected-root endpoint ratio 至多为 \(N^{-1}\)</h2>
+          <p>假设存在与 \(q,N,S,P,z\) 无关的 \(c_D,c_Y&gt;0\)，使 \(D_N\ge c_Dq^2E_N\)，并在每个 counted root 有 \(Y_N(t_{m,q})\ge c_Yq^2E_N\)。则</p>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\mathcal J_N^{\rm sel}}
+            {D_N^{1/3}\Lambda_1(I;u_N)}
+            \le C\nu^{-2}\frac{\delta_{\rm obs,N}^{4/3}}N.}
+          \]</div>
+          <p>因此 bounded \(\delta_{\rm obs,N}\) 给出 vanishing selected ratio。非消失至少要求 \(\delta_{\rm obs,N}\gtrsim N^{3/4}\)；发散要求 \(\delta_{\rm obs,N}/N^{3/4}\to\infty\)。\(\Lambda_1\ge\nu^2\) 已保留完整黏性 baseline；full-frequency rotational charge 只会增大分母。</p>
+        </section>
+
+        <section id="cost"><div class="section-no">04 / Lattice and amplitude cost</div><h2>载波格点的 \(N^3\) 成本压过 \(N^2\) 的最坏采样和</h2>
+          <p>互异正整数和单位相位强制</p>
+          <div class="equation result">\[
+            K_{s,N}\ge\sum_{j=1}^{2N+1}j^2,\qquad
+            \frac{N(2N+1)}{K_{s,N}}\le\frac3{4N}.
+          \]</div>
+          <p>Fourier multiplier upper bound 给 \(\Omega_N^2/K_{v,N}\le2\pi^2K_z^2/3\)。再对 scalar/shear amplitude ratio 优化，极值位于 \(S^2K_s/(P^2K_v)=3\)。这三步合成上面的 \(N^{-1}\) bound。</p>
+        </section>
+
+        <section id="correction"><div class="section-no">05 / R0.71X corrigendum</div><h2>观测耦合、Dyson exposure 与 IFT certificate 必须分开</h2>
+          <p>R0.71X route matrix 中一个 lower comparison 需要修正。因为 operator supremum 从 \(A_0&gt;0\) 开始，正确下界是 heat weighted：</p>
+          <div class="equation result">\[
+            \Omega_N\ge c
+            \left(\sum_l|z_l|^2e^{-2\nu d^2r_l^2A_0}\right)^{1/2}.
+          \]</div>
+          <p>没有统一的 unweighted \(\|z\|_2\) lower bound。R0.71X 的 fixed-dimensional endpoint theorem 没有使用这个错误比较，因此其定理不受影响。</p>
+          <p>launch-to-root Dyson size 是 \(\eta_{\rm Dyson,N}=(P/q^2)\int_0^{\tau_N}\|V_z(x)\|dx\)。完整 quantitative IFT certificate 还要支付 inverse Jacobian 与 derivative-Lipschitz 常数。固定 \(A_0&gt;0\) 时只有已审计的单向控制 \(\delta_{\rm obs,N}\le C_{A_0,\nu,d}\eta_{\rm Dyson,N}\)；反向不成立，\(A_{0,N}\to0\) 时常数退化。</p>
+        </section>
+
+        <section id="separation"><div class="section-no">06 / Separated-root enhancement</div><h2>根间隔可以把 bound 从 \(N^{-1}\) 改善到 \(1/(h_NN^2)\)</h2>
+          <p>设 \(h_N\) 是 scaled roots 与左边界之间的最小间隔，并令 \(W_N^2=\sum_l|z_l|^2e^{-2\nu d^2r_l^2A_0}\)。exact finite-\(q\) estimate 为</p>
+          <div class="equation result">\[
+            G_N^{\rm ex}\le\frac{|K_z|^2M}{\nu d^2h_N}W_N^2,\qquad
+            \frac{\mathcal J_N^{\rm sel}}{D_N^{1/3}\Lambda_1}
+            \le C\frac{\delta_{\rm obs,N}^{4/3}}{h_NN^2}.
+          \]</div>
+          <p>fixed \(h_N\) 给 \(N^{-2}\)，quasi-uniform \(h_N\asymp N^{-1}\) 回到 \(N^{-1}\)。若第一个根贴在 \(A_0\)，只有这个 \(h_N^{-1}\) corollary 退化，原 weighted-kernel form 仍成立。</p>
+        </section>
+
+        <section id="extra"><div class="section-no">07 / Additional-root boundary</div><h2>一般 \(M\) 个 carriers 与 \(R\) 个 sampled roots 只得到条件支付</h2>
+          <div class="equation result">\[
+            \frac{\mathcal J_R}{D^{1/3}\Lambda_1}
+            \le C\frac{R\delta_{\rm obs}^{4/3}}{M^2}.
+          \]</div>
+          <p>bounded coupling 下，任何 extra-root escape 至少要有 \(R\gtrsim M^2\)。但本节没有证明全部 nonlinear target zeros 的数量上界，所以不能把这个条件结论写成 complete all-root theorem。</p>
+        </section>
+
+        <section id="conditioning"><div class="section-no">08 / Equal-grid ECT conditioning</div><h2>ECT 仍决定 exact roots 是否能稳定构造，只是不进入上界证明</h2>
+          <p>equal-grid roots \(\tau_m=mh\) 令 \(x_l=e^{-2\nu d^2hr_l^2}\)。integrated-response matrix 精确分解为 cumulative-sum、Vandermonde 与 diagonal factors，因此</p>
+          <div class="equation result">\[
+            |\det\mathsf M|=(2\nu d^2)^{-N}
+            \prod_l\frac{1-x_l}{r_l^2}\prod_{i&lt;j}|x_i-x_j|,
+          \]</div>
+          <div class="equation result">\[
+            \|\mathsf M^{-1}\|_2\ge
+            h^{-1}(2\nu d^2h\,r_{\max}^2)^{-(N-1)/2}.
+          \]</div>
+          <p>canonical \(r_l=l\) 和 \(hN^2\to0\) 会产生快速 inverse growth。这是 conditioning squeeze，不是 true nonlinear IFT branch radius 的上界。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">09 / Independent checks</div><h2>解析链和两个独立计算层已分别核对</h2>
+          <p>90 位 Decimal producer 通过 13/13：包括 amplitude optimizer、multiplier bound、\(N^{-1}\) 与 \(N^{-2}\) envelopes、临界 \(N^{3/4}\) coupling、heat-weighted correction 和 equal-grid inverse lower bound。</p>
+          <p>独立 NumPy/SciPy finite-matrix reconstruction 通过 12/12：skew defect 为零，semigroup contraction、root slope、multiplier、optimized envelope、separated bound、determinant factorization 与 inverse lower bound 全部通过。它们是 finite algebraic corroboration，不是 DNS，也不构造 growing exact-root family。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">10 / Primary-source boundary</div><h2>ECT、Vandermonde 与 quantitative IFT 文献只支持各自声明的层级</h2>
+          <p><a href="https://books.google.com/books/about/Tchebycheff_Systems.html?id=P7Y-AAAAIAAJ">Karlin–Studden</a>和<a href="https://www.cambridge.org/core/books/abs/totally-positive-matrices/examples/455BC3C6529C3AB981E177E79D3E8176">Pinkus</a>支持 finite-dimensional Chebyshev / total-positivity nondegeneracy；<a href="https://www.cs.purdue.edu/homes/wxg/selected_works/section_01/016.pdf">Gautschi</a>与<a href="https://doi.org/10.1007/BF01398878">Gautschi–Inglese</a>说明 positive-real Vandermonde inverse 会支付节点和维数损失。</p>
+          <p><a href="https://people.tamu.edu/~terdelyi/papers-online/remez7.pdf">Borwein–Erdélyi</a>给 exponential-sum sampling inequalities；<a href="https://doi.org/10.3934/dcdss.2020082">Cannarsa–Martinez–Vancostenoble</a>量化 moment-method 的时间与 gap 代价；<a href="https://arxiv.org/abs/1204.4916">Phan Phien</a>把 inverse Jacobian 与 Lipschitz data 放进 certified IFT radius；<a href="https://doi.org/10.1137/S0895479803438225">Koev</a>说明 structured total-nonnegative computation 与普通 condition number 需要区分。</p>
+          <p>这些一手来源没有给出本节的 NSE root-coordinate identity、matched-background ledger、\(N^{-1}\) payment 或 all-root count。限定检索不构成原创性、优先权或不存在性声明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">11 / Journal figure</div><h2>附图只画 analytic bounds、证书 envelope 与 conditioning lower bound</h2>
+          <figure><img src="/figures/r0-71y-operator-sampling.svg" alt="R0.71Y 增长根算子采样的格点成本、selected-root envelopes 与 equal-grid inverse lower bound"><figcaption>图 R0.71Y-1。A：exact lattice factor \(NM/K_s\) 按 \(N^{-1}\) 衰减。B：fixed \(\delta_{\rm obs}=1/8\) 的 no-separation envelope 为 \(N^{-1}\)；fixed root gap 给 \(N^{-2}\)，\(h=N^{-1}\) 回到 \(N^{-1}\)。C：canonical rates、\(h=N^{-3}\) 时 equal-grid inverse lower bound 的 \(\log_{10}\) 从 \(N=4\) 的 1.806 增至 \(N=64\) 的 49.029。图中没有 DNS 或 growing-root simulation，也没有把 conditioning lower bound 当作 nonlinear IFT radius 上界。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">12 / Research value</div><h2>这是一项明确的路线关闭结果，不是千禧年问题的局部解答</h2>
+          <p>R0.71X 表明 fixed-dimensional small-coupling family 可以达到 \(D^{1/3}\) endpoint。R0.71Y 证明仅增加预设根和 carrier dimension，在支付 exact observation operator、完整 lattice cost 和 matched floor 后，反而产生 \(N^{-1}\) suppression。ECT conditioning 不再是判断 selected-root gain 的前置瓶颈。</p>
+          <p>这把后续搜索压缩到更具体的例外：quadratic extra-root proliferation、floor-free or sparse-phase ledger、strong observation coupling、\(A_{0,N}\to0\) short pulse、non-unit phases 或不同 geometry。它没有缩小一般三维潜在奇性解的集合。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next finite gate</div><h2>R0.71Z 检查 total-root count 与 floor-free complete ledger</h2>
+          <p>下一节先判断 exact triangular nonlinear target coordinate 的全部实根能否由 carrier dimension、observation coupling 和 observation-layer geometry 统一计数。若不能，就寻找至少 quadratic root proliferation 的可复核候选。</p>
+          <p>并行检查 matched background 是否可以移除，或被 weak-solution / full-ledger quantity 自动替代。strong coupling、\(A_0\to0\) 与不同 geometry 仍按独立接口处理。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>在声明的 real-shear、fixed-target、unit-phase、matched-floor triangular setting 中，任意 selected \(N\) 个 exact roots 满足 \(C\nu^{-2}\delta_{\rm obs}^{4/3}/N\) upper bound；bounded coupling 下该比值消失。</li>
+            <li><strong>条件推论：</strong>非消失需要 \(\delta_{\rm obs}\gtrsim N^{3/4}\)；一般 \(R/M\) 账本下，bounded-coupling escape 至少需要 \(R\gtrsim M^2\)。</li>
+            <li><strong>仍开放：</strong>all-root count、floor-free / sparse-phase / non-unit-phase、strong coupling、\(A_{0,N}\to0\)、quadratic extra roots 与不同 geometry。</li>
+            <li><strong>没有得到：</strong>universal endpoint、继续性判据、有限时奇性、global regularity、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduce</div><h2>报告、文献、证书与正式附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071y_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071y_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071y_gap_matrix.md">开放路线矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071y_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071y">exact / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071y-growing-root-suppression/fig-r071y-operator-sampling">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-71y-operator-sampling.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-71y.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-71y.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71y.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071y_exact_audit.py --output research/certificates/r071y/result.json
+python3 research/r071y_independent_audit.py --output research/certificates/r071y/independent-result.json
+python3 figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/produce_data.py --config figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/config.json
+python3 figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/plot.py --config figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/config.json --output-stem figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/figure
+python3 figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/validate.py --config figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/config.json --output figures/r071y-growing-root-suppression/fig-r071y-operator-sampling/validation.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71Y · 2026-08-26 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71y.html">累计回顾</a></div></footer>
+</body>
+</html>

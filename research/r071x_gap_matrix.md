@@ -417,8 +417,10 @@ then (5.4) becomes
 \]
 
 Equation (5.6) is an exact algebraic rewrite of the conditional ledger, but
-\(\varepsilon_N\) is an energy proxy, not the operator parameter in the IFT.
-The latter is
+\(\varepsilon_N\) is an energy proxy, not the operator parameter; in fact
+the corrected audit distinguishes more than one operator control. Define the
+**observation-layer**
+operator coupling
 
 \[
  \delta_{\mathrm{op},N}
@@ -427,11 +429,27 @@ The latter is
  \tag{5.6a}
 \]
 
-For distinct positive integer frequencies \(r_l\), multiplication-operator
-and Fourier estimates give
+This is not, by itself, a sufficient IFT parameter for a target map launched
+at \(x=0\).  The Dyson control also sees, at minimum,
 
 \[
- c\frac{P}{q^2}\|z_N\|_2
+ \eta_{\mathrm{Dyson},N}
+ :=\frac{P}{q^2}\int_0^{\tau_N}
+ \|V_{z_N}(x)\|_{\ell^2\to\ell^2}\,dx,
+ \tag{5.6a'}
+\]
+
+and a certified implicit-function radius additionally pays the limiting
+inverse-Jacobian and derivative-Lipschitz constants.  There is no
+dimension-independent equivalence between (5.6a) and (5.6a').
+
+For distinct positive integer frequencies \(r_l\), multiplication-operator
+and Fourier estimates give the **heat-weighted** lower comparison and the
+unweighted upper comparison
+
+\[
+ c\frac{P}{q^2}
+ \left(\sum_l|z_l|^2e^{-2\nu d^2r_l^2A_0}\right)^{1/2}
  \le \delta_{\mathrm{op},N}
  \le C\frac{P}{q^2}\|z_N\|_1
  \le C\varepsilon_N.
@@ -442,17 +460,24 @@ The last inequality uses
 \(\sum_l r_l^{-2}\le\pi^2/6\). Thus small \(\varepsilon_N\) is sufficient
 for small operator coupling, but is not necessary: coefficients at large
 \(r_l\) can make \(K_{v,N}\) large without a comparable increase in
-\(\|V_{z_N}\|\). The two quantities cannot be merged.
+\(\|V_{z_N}\|\). In particular, because the supremum in (5.6a) starts at
+\(A_0>0\), no dimension-independent lower bound by the **unweighted**
+\(\|z_N\|_2\) is possible: a single mode \(r=R,z=1\) is suppressed by
+\(e^{-\nu d^2R^2A_0}\).  More sharply, taking
+\(z_R=e^{\nu d^2R^2A_0}\) keeps the observation-layer coefficient at order
+one while the pre-observation Dyson integral grows exponentially after its
+\(R^{-2}\) heat-time factor.  The energy proxy, observation coupling, and
+IFT certificate therefore cannot be merged.
 
 This isolates the unresolved finite-dimensional question. A growing-root
 counterfamily would need all of the following simultaneously:
 
 1. an explicit growing family of nodes and response rates;
 2. a quantitative ECT inverse bound and coefficient curve;
-3. a quantitative IFT radius stated for
-   \(\delta_{\mathrm{op},N}\), not for \(\varepsilon_N\);
-4. a choice of \(P,q,N\) for which the actual operator coupling lies inside
-   that radius while
+3. a quantitative IFT radius stated in terms of the full Dyson,
+   inverse-Jacobian, and derivative-Lipschitz controls, not merely
+   \(\varepsilon_N\) or (5.6a);
+4. a choice of \(P,q,N\) for which that complete IFT certificate holds while
    \(\varepsilon_N^{4/3}\mathcal Q_N\to\infty\);
 5. a uniform nonlinear enstrophy/background estimate with the full
    \(K_{s,N},K_{v,N}\) cost included; and

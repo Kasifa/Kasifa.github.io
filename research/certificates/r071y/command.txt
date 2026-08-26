@@ -1,0 +1,11 @@
+Generate the 90-digit producer certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/r071y_exact_audit.py --output research/certificates/r071y/result.json
+
+Generate the independent finite-matrix certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071y_independent_audit.py --output research/certificates/r071y/independent-result.json
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r071y/build_hashes.py
+(cd research/certificates/r071y && shasum -a 256 -c SHA256SUMS)
+
+The independent program imports neither the producer nor result.json.

@@ -1,0 +1,934 @@
+{
+  "checks": [
+    {
+      "name": "optimizer analytic versus dense grid",
+      "passed": true,
+      "requirement": "max_u u/(1+u)^(4/3) = 3/4^(4/3) at u=3",
+      "value": {
+        "analytic": "4.72470393710577436787703977729335631463844299263065E-1",
+        "grid": "4.72470393710577436787703977729335631463844299263065E-1"
+      }
+    },
+    {
+      "name": "integer lattice formula",
+      "passed": true,
+      "requirement": "minimum sum of M distinct positive integer squares equals sum_{1..M} j^2",
+      "value": [
+        14,
+        55,
+        285,
+        1785,
+        12529,
+        93665,
+        723905,
+        5691265,
+        45133569,
+        359489025,
+        2869607425,
+        22931666945,
+        183352619009,
+        1466418192385,
+        11729734713345,
+        93831434829825,
+        750625707982849,
+        6004902582943745,
+        48038808343281665,
+        384308817471995905,
+        3074463942692569089
+      ]
+    },
+    {
+      "name": "lattice suppression bound",
+      "passed": true,
+      "requirement": "NM/Ks <= 3/(4N)",
+      "value": 0.9999983310720495
+    },
+    {
+      "name": "lattice factor is decreasing",
+      "passed": true,
+      "requirement": "the exact factor decreases on the audited N grid",
+      "value": [
+        0.21428571428571427,
+        0.18181818181818182,
+        0.12631578947368421,
+        0.0761904761904762,
+        0.04214223002633889,
+        0.02220680083275503,
+        0.011404811404811404,
+        0.005780085798148566,
+        0.0029097632407488094,
+        0.0014598498521616898,
+        0.0007311717908591625,
+        0.00036589821490624306,
+        0.00018302726288492641,
+        9.153317975528752e-05,
+        4.577147813830603e-05,
+        2.288696128216294e-05,
+        1.144378621281683e-05,
+        5.7219695016527615e-06,
+        2.8610038499262895e-06,
+        1.4305066997742253e-06,
+        7.152545435943958e-07
+      ]
+    },
+    {
+      "name": "lattice factor has N^-1 power",
+      "passed": true,
+      "requirement": "tail fitted power is -1",
+      "value": -0.9999861727682261
+    },
+    {
+      "name": "bounded coupling envelopes have N^-1 power",
+      "passed": true,
+      "requirement": "every fixed-delta_obs envelope has tail power -1",
+      "value": [
+        -0.9999861727682261,
+        -0.9999861727682261,
+        -0.9999861727682261,
+        -0.9999861727682261,
+        -0.9999861727682261
+      ]
+    },
+    {
+      "name": "critical N^(3/4) coupling saturates",
+      "passed": true,
+      "requirement": "delta_obs=N^(3/4) cancels the N^-1 envelope power",
+      "value": 1.382723177390217e-05
+    },
+    {
+      "name": "subcritical N^(1/2) coupling vanishes",
+      "passed": true,
+      "requirement": "delta_obs=N^(1/2) gives power -1/3",
+      "value": -0.3333195061015594
+    },
+    {
+      "name": "multiplier upper constant",
+      "passed": true,
+      "requirement": "Omega^2/Kv <= 2*pi^2*Kz^2/3",
+      "value": "6.57973626739290574588966066658410075687579960482719E+0"
+    },
+    {
+      "name": "fixed-gap separated envelope has N^-2 power",
+      "passed": true,
+      "requirement": "M/(b*h*Ks) has tail power -2 at fixed h",
+      "value": -1.999986172768226
+    },
+    {
+      "name": "quasiuniform separated envelope has N^-1 power",
+      "passed": true,
+      "requirement": "M/(b*h*Ks) has tail power -1 at h=N^-1",
+      "value": -0.9999861727682261
+    },
+    {
+      "name": "equal-grid inverse lower bound grows",
+      "passed": true,
+      "requirement": "h^-1*(b*h*rmax^2)^(-(N-1)/2) grows on the N^-3 audit law",
+      "value": [
+        {
+          "N": 4,
+          "bGapRmaxSquared": 1.0,
+          "gapLaw": "N^-3",
+          "log10InverseLower": 1.806179973983887
+        },
+        {
+          "N": 8,
+          "bGapRmaxSquared": 0.405,
+          "gapLaw": "N^-3",
+          "log10InverseLower": 4.083177379724491
+        },
+        {
+          "N": 16,
+          "bGapRmaxSquared": 0.180625,
+          "gapLaw": "N^-3",
+          "log10InverseLower": 9.186525997213101
+        },
+        {
+          "N": 32,
+          "bGapRmaxSquared": 0.085078125,
+          "gapLaw": "N^-3",
+          "log10InverseLower": 21.103272328287165
+        },
+        {
+          "N": 64,
+          "bGapRmaxSquared": 0.041259765625,
+          "gapLaw": "N^-3",
+          "log10InverseLower": 49.02944708760584
+        }
+      ]
+    },
+    {
+      "name": "unweighted lower comparison fails after A0",
+      "passed": true,
+      "requirement": "single-mode heat-weighted/unweighted ratio tends to zero as r grows",
+      "value": [
+        {
+          "heatWeightedL2": 0.9380049995307295,
+          "r": 1,
+          "ratio": 0.9380049995307295,
+          "unweightedL2": 1.0
+        },
+        {
+          "heatWeightedL2": 0.7741419687922484,
+          "r": 2,
+          "ratio": 0.7741419687922484,
+          "unweightedL2": 1.0
+        },
+        {
+          "heatWeightedL2": 0.35915544132940463,
+          "r": 4,
+          "ratio": 0.35915544132940463,
+          "unweightedL2": 1.0
+        },
+        {
+          "heatWeightedL2": 0.016639098861723628,
+          "r": 8,
+          "ratio": 0.016639098861723628,
+          "unweightedL2": 1.0
+        },
+        {
+          "heatWeightedL2": 7.665124416442866e-08,
+          "r": 16,
+          "ratio": 7.665124416442866e-08,
+          "unweightedL2": 1.0
+        },
+        {
+          "heatWeightedL2": 3.4520480646230225e-29,
+          "r": 32,
+          "ratio": 3.4520480646230225e-29,
+          "unweightedL2": 1.0
+        }
+      ]
+    }
+  ],
+  "criticalCoupling": {
+    "deltaObsLaw": "N^(3/4)",
+    "tailPower": 1.382723177390217e-05
+  },
+  "envelopeRows": [
+    {
+      "deltaObs": 0.015625,
+      "tailPower": -0.9999861727682261,
+      "values": [
+        {
+          "N": 1,
+          "upperEnvelope": 0.0007410781615514344
+        },
+        {
+          "N": 2,
+          "upperEnvelope": 0.0006287935916193989
+        },
+        {
+          "N": 4,
+          "upperEnvelope": 0.0004368460741776876
+        },
+        {
+          "N": 8,
+          "upperEnvelope": 0.00026349445744050997
+        },
+        {
+          "N": 16,
+          "upperEnvelope": 0.00014574320297411879
+        },
+        {
+          "N": 32,
+          "upperEnvelope": 7.679921729702581e-05
+        },
+        {
+          "N": 64,
+          "upperEnvelope": 3.944199778735285e-05
+        },
+        {
+          "N": 128,
+          "upperEnvelope": 1.998964499887364e-05
+        },
+        {
+          "N": 256,
+          "upperEnvelope": 1.0063022634019e-05
+        },
+        {
+          "N": 512,
+          "upperEnvelope": 5.048693274711885e-06
+        },
+        {
+          "N": 1024,
+          "upperEnvelope": 2.5286587505581643e-06
+        },
+        {
+          "N": 2048,
+          "upperEnvelope": 1.2654094899491277e-06
+        },
+        {
+          "N": 4096,
+          "upperEnvelope": 6.329750349652443e-07
+        },
+        {
+          "N": 8192,
+          "upperEnvelope": 3.1655512267869204e-07
+        },
+        {
+          "N": 16384,
+          "upperEnvelope": 1.5829446672772833e-07
+        },
+        {
+          "N": 32768,
+          "upperEnvelope": 7.915146022225947e-08
+        },
+        {
+          "N": 65536,
+          "upperEnvelope": 3.957678688964909e-08
+        },
+        {
+          "N": 131072,
+          "upperEnvelope": 1.978865764744496e-08
+        },
+        {
+          "N": 262144,
+          "upperEnvelope": 9.894394875376436e-09
+        },
+        {
+          "N": 524288,
+          "upperEnvelope": 4.947213950726565e-09
+        },
+        {
+          "N": 1048576,
+          "upperEnvelope": 2.473611103638477e-09
+        }
+      ]
+    },
+    {
+      "deltaObs": 0.03125,
+      "tailPower": -0.9999861727682261,
+      "values": [
+        {
+          "N": 1,
+          "upperEnvelope": 0.0018673999507120911
+        },
+        {
+          "N": 2,
+          "upperEnvelope": 0.0015844605642405623
+        },
+        {
+          "N": 4,
+          "upperEnvelope": 0.0011007831288408116
+        },
+        {
+          "N": 8,
+          "upperEnvelope": 0.0006639644269198547
+        },
+        {
+          "N": 16,
+          "upperEnvelope": 0.0003672498586123867
+        },
+        {
+          "N": 32,
+          "upperEnvelope": 0.00019352190097594654
+        },
+        {
+          "N": 64,
+          "upperEnvelope": 9.938760652438573e-05
+        },
+        {
+          "N": 128,
+          "upperEnvelope": 5.0370749028013354e-05
+        },
+        {
+          "N": 256,
+          "upperEnvelope": 2.5357228084338178e-05
+        },
+        {
+          "N": 512,
+          "upperEnvelope": 1.2721909862544367e-05
+        },
+        {
+          "N": 1024,
+          "upperEnvelope": 6.371820775658201e-06
+        },
+        {
+          "N": 2048,
+          "upperEnvelope": 3.188632106247282e-06
+        },
+        {
+          "N": 4096,
+          "upperEnvelope": 1.5949971412213093e-06
+        },
+        {
+          "N": 8192,
+          "upperEnvelope": 7.976689250298762e-07
+        },
+        {
+          "N": 16384,
+          "upperEnvelope": 3.988770614242971e-07
+        },
+        {
+          "N": 32768,
+          "upperEnvelope": 1.9944918172788286e-07
+        },
+        {
+          "N": 65536,
+          "upperEnvelope": 9.972725377894468e-08
+        },
+        {
+          "N": 131072,
+          "upperEnvelope": 4.9864292638358125e-08
+        },
+        {
+          "N": 262144,
+          "upperEnvelope": 2.493231275891746e-08
+        },
+        {
+          "N": 524288,
+          "upperEnvelope": 1.2466197989707955e-08
+        },
+        {
+          "N": 1048576,
+          "upperEnvelope": 6.233109397455611e-09
+        }
+      ]
+    },
+    {
+      "deltaObs": 0.0625,
+      "tailPower": -0.9999861727682261,
+      "values": [
+        {
+          "N": 1,
+          "upperEnvelope": 0.004705553012949624
+        },
+        {
+          "N": 2,
+          "upperEnvelope": 0.003992590435229985
+        },
+        {
+          "N": 4,
+          "upperEnvelope": 0.0027737996707913578
+        },
+        {
+          "N": 8,
+          "upperEnvelope": 0.0016730855157154221
+        },
+        {
+          "N": 16,
+          "upperEnvelope": 0.0009254116548733239
+        },
+        {
+          "N": 32,
+          "upperEnvelope": 0.00048764463331053246
+        },
+        {
+          "N": 64,
+          "upperEnvelope": 0.0002504410751174852
+        },
+        {
+          "N": 128,
+          "upperEnvelope": 0.0001269263339987315
+        },
+        {
+          "N": 256,
+          "upperEnvelope": 6.389621086088625e-05
+        },
+        {
+          "N": 512,
+          "upperEnvelope": 3.2057204061369685e-05
+        },
+        {
+          "N": 1024,
+          "upperEnvelope": 1.6055982242818492e-05
+        },
+        {
+          "N": 2048,
+          "upperEnvelope": 8.034849422063152e-06
+        },
+        {
+          "N": 4096,
+          "upperEnvelope": 4.0191409454937465e-06
+        },
+        {
+          "N": 8192,
+          "upperEnvelope": 2.0099997389843128e-06
+        },
+        {
+          "N": 16384,
+          "upperEnvelope": 1.0051072120173644e-06
+        },
+        {
+          "N": 32768,
+          "upperEnvelope": 5.02580444886535e-07
+        },
+        {
+          "N": 65536,
+          "upperEnvelope": 2.5129693256860085e-07
+        },
+        {
+          "N": 131072,
+          "upperEnvelope": 1.2565014386637072e-07
+        },
+        {
+          "N": 262144,
+          "upperEnvelope": 6.282549133504526e-08
+        },
+        {
+          "N": 524288,
+          "upperEnvelope": 3.1412850518780406e-08
+        },
+        {
+          "N": 1048576,
+          "upperEnvelope": 1.5706451472303748e-08
+        }
+      ]
+    },
+    {
+      "deltaObs": 0.125,
+      "tailPower": -0.9999861727682261,
+      "values": [
+        {
+          "N": 1,
+          "upperEnvelope": 0.01185725058482295
+        },
+        {
+          "N": 2,
+          "upperEnvelope": 0.010060697465910382
+        },
+        {
+          "N": 4,
+          "upperEnvelope": 0.006989537186843002
+        },
+        {
+          "N": 8,
+          "upperEnvelope": 0.0042159113190481596
+        },
+        {
+          "N": 16,
+          "upperEnvelope": 0.0023318912475859006
+        },
+        {
+          "N": 32,
+          "upperEnvelope": 0.001228787476752413
+        },
+        {
+          "N": 64,
+          "upperEnvelope": 0.0006310719645976455
+        },
+        {
+          "N": 128,
+          "upperEnvelope": 0.00031983431998197827
+        },
+        {
+          "N": 256,
+          "upperEnvelope": 0.000161008362144304
+        },
+        {
+          "N": 512,
+          "upperEnvelope": 8.077909239539016e-05
+        },
+        {
+          "N": 1024,
+          "upperEnvelope": 4.045854000893063e-05
+        },
+        {
+          "N": 2048,
+          "upperEnvelope": 2.0246551839186044e-05
+        },
+        {
+          "N": 4096,
+          "upperEnvelope": 1.0127600559443909e-05
+        },
+        {
+          "N": 8192,
+          "upperEnvelope": 5.064881962859073e-06
+        },
+        {
+          "N": 16384,
+          "upperEnvelope": 2.5327114676436532e-06
+        },
+        {
+          "N": 32768,
+          "upperEnvelope": 1.2664233635561515e-06
+        },
+        {
+          "N": 65536,
+          "upperEnvelope": 6.332285902343854e-07
+        },
+        {
+          "N": 131072,
+          "upperEnvelope": 3.1661852235911934e-07
+        },
+        {
+          "N": 262144,
+          "upperEnvelope": 1.5831031800602297e-07
+        },
+        {
+          "N": 524288,
+          "upperEnvelope": 7.915542321162504e-08
+        },
+        {
+          "N": 1048576,
+          "upperEnvelope": 3.957777765821563e-08
+        }
+      ]
+    },
+    {
+      "deltaObs": 0.25,
+      "tailPower": -0.9999861727682261,
+      "values": [
+        {
+          "N": 1,
+          "upperEnvelope": 0.029878399211393458
+        },
+        {
+          "N": 2,
+          "upperEnvelope": 0.025351369027848996
+        },
+        {
+          "N": 4,
+          "upperEnvelope": 0.017612530061452986
+        },
+        {
+          "N": 8,
+          "upperEnvelope": 0.010623430830717675
+        },
+        {
+          "N": 16,
+          "upperEnvelope": 0.005875997737798187
+        },
+        {
+          "N": 32,
+          "upperEnvelope": 0.0030963504156151446
+        },
+        {
+          "N": 64,
+          "upperEnvelope": 0.0015902017043901717
+        },
+        {
+          "N": 128,
+          "upperEnvelope": 0.0008059319844482137
+        },
+        {
+          "N": 256,
+          "upperEnvelope": 0.00040571564934941084
+        },
+        {
+          "N": 512,
+          "upperEnvelope": 0.00020355055780070988
+        },
+        {
+          "N": 1024,
+          "upperEnvelope": 0.00010194913241053121
+        },
+        {
+          "N": 2048,
+          "upperEnvelope": 5.101811369995651e-05
+        },
+        {
+          "N": 4096,
+          "upperEnvelope": 2.5519954259540948e-05
+        },
+        {
+          "N": 8192,
+          "upperEnvelope": 1.2762702800478019e-05
+        },
+        {
+          "N": 16384,
+          "upperEnvelope": 6.382032982788753e-06
+        },
+        {
+          "N": 32768,
+          "upperEnvelope": 3.1911869076461257e-06
+        },
+        {
+          "N": 65536,
+          "upperEnvelope": 1.5956360604631148e-06
+        },
+        {
+          "N": 131072,
+          "upperEnvelope": 7.9782868221373e-07
+        },
+        {
+          "N": 262144,
+          "upperEnvelope": 3.989170041426794e-07
+        },
+        {
+          "N": 524288,
+          "upperEnvelope": 1.9945916783532728e-07
+        },
+        {
+          "N": 1048576,
+          "upperEnvelope": 9.972975035928978e-08
+        }
+      ]
+    }
+  ],
+  "equalGridInverseLower": [
+    {
+      "N": 4,
+      "bGapRmaxSquared": 1.0,
+      "gapLaw": "N^-3",
+      "log10InverseLower": 1.806179973983887
+    },
+    {
+      "N": 8,
+      "bGapRmaxSquared": 0.405,
+      "gapLaw": "N^-3",
+      "log10InverseLower": 4.083177379724491
+    },
+    {
+      "N": 16,
+      "bGapRmaxSquared": 0.180625,
+      "gapLaw": "N^-3",
+      "log10InverseLower": 9.186525997213101
+    },
+    {
+      "N": 32,
+      "bGapRmaxSquared": 0.085078125,
+      "gapLaw": "N^-3",
+      "log10InverseLower": 21.103272328287165
+    },
+    {
+      "N": 64,
+      "bGapRmaxSquared": 0.041259765625,
+      "gapLaw": "N^-3",
+      "log10InverseLower": 49.02944708760584
+    }
+  ],
+  "generatedAt": "2026-08-26T22:58:19+08:00",
+  "heatWeightedCorrection": [
+    {
+      "heatWeightedL2": 0.9380049995307295,
+      "r": 1,
+      "ratio": 0.9380049995307295,
+      "unweightedL2": 1.0
+    },
+    {
+      "heatWeightedL2": 0.7741419687922484,
+      "r": 2,
+      "ratio": 0.7741419687922484,
+      "unweightedL2": 1.0
+    },
+    {
+      "heatWeightedL2": 0.35915544132940463,
+      "r": 4,
+      "ratio": 0.35915544132940463,
+      "unweightedL2": 1.0
+    },
+    {
+      "heatWeightedL2": 0.016639098861723628,
+      "r": 8,
+      "ratio": 0.016639098861723628,
+      "unweightedL2": 1.0
+    },
+    {
+      "heatWeightedL2": 7.665124416442866e-08,
+      "r": 16,
+      "ratio": 7.665124416442866e-08,
+      "unweightedL2": 1.0
+    },
+    {
+      "heatWeightedL2": 3.4520480646230225e-29,
+      "r": 32,
+      "ratio": 3.4520480646230225e-29,
+      "unweightedL2": 1.0
+    }
+  ],
+  "latticeRows": [
+    {
+      "M": 3,
+      "N": 1,
+      "NMOverMinimumKs": 0.21428571428571427,
+      "minimumKs": 14,
+      "threeOverFourN": 0.75
+    },
+    {
+      "M": 5,
+      "N": 2,
+      "NMOverMinimumKs": 0.18181818181818182,
+      "minimumKs": 55,
+      "threeOverFourN": 0.375
+    },
+    {
+      "M": 9,
+      "N": 4,
+      "NMOverMinimumKs": 0.12631578947368421,
+      "minimumKs": 285,
+      "threeOverFourN": 0.1875
+    },
+    {
+      "M": 17,
+      "N": 8,
+      "NMOverMinimumKs": 0.0761904761904762,
+      "minimumKs": 1785,
+      "threeOverFourN": 0.09375
+    },
+    {
+      "M": 33,
+      "N": 16,
+      "NMOverMinimumKs": 0.04214223002633889,
+      "minimumKs": 12529,
+      "threeOverFourN": 0.046875
+    },
+    {
+      "M": 65,
+      "N": 32,
+      "NMOverMinimumKs": 0.02220680083275503,
+      "minimumKs": 93665,
+      "threeOverFourN": 0.0234375
+    },
+    {
+      "M": 129,
+      "N": 64,
+      "NMOverMinimumKs": 0.011404811404811404,
+      "minimumKs": 723905,
+      "threeOverFourN": 0.01171875
+    },
+    {
+      "M": 257,
+      "N": 128,
+      "NMOverMinimumKs": 0.005780085798148566,
+      "minimumKs": 5691265,
+      "threeOverFourN": 0.005859375
+    },
+    {
+      "M": 513,
+      "N": 256,
+      "NMOverMinimumKs": 0.0029097632407488094,
+      "minimumKs": 45133569,
+      "threeOverFourN": 0.0029296875
+    },
+    {
+      "M": 1025,
+      "N": 512,
+      "NMOverMinimumKs": 0.0014598498521616898,
+      "minimumKs": 359489025,
+      "threeOverFourN": 0.00146484375
+    },
+    {
+      "M": 2049,
+      "N": 1024,
+      "NMOverMinimumKs": 0.0007311717908591625,
+      "minimumKs": 2869607425,
+      "threeOverFourN": 0.000732421875
+    },
+    {
+      "M": 4097,
+      "N": 2048,
+      "NMOverMinimumKs": 0.00036589821490624306,
+      "minimumKs": 22931666945,
+      "threeOverFourN": 0.0003662109375
+    },
+    {
+      "M": 8193,
+      "N": 4096,
+      "NMOverMinimumKs": 0.00018302726288492641,
+      "minimumKs": 183352619009,
+      "threeOverFourN": 0.00018310546875
+    },
+    {
+      "M": 16385,
+      "N": 8192,
+      "NMOverMinimumKs": 9.153317975528752e-05,
+      "minimumKs": 1466418192385,
+      "threeOverFourN": 9.1552734375e-05
+    },
+    {
+      "M": 32769,
+      "N": 16384,
+      "NMOverMinimumKs": 4.577147813830603e-05,
+      "minimumKs": 11729734713345,
+      "threeOverFourN": 4.57763671875e-05
+    },
+    {
+      "M": 65537,
+      "N": 32768,
+      "NMOverMinimumKs": 2.288696128216294e-05,
+      "minimumKs": 93831434829825,
+      "threeOverFourN": 2.288818359375e-05
+    },
+    {
+      "M": 131073,
+      "N": 65536,
+      "NMOverMinimumKs": 1.144378621281683e-05,
+      "minimumKs": 750625707982849,
+      "threeOverFourN": 1.1444091796875e-05
+    },
+    {
+      "M": 262145,
+      "N": 131072,
+      "NMOverMinimumKs": 5.7219695016527615e-06,
+      "minimumKs": 6004902582943745,
+      "threeOverFourN": 5.7220458984375e-06
+    },
+    {
+      "M": 524289,
+      "N": 262144,
+      "NMOverMinimumKs": 2.8610038499262895e-06,
+      "minimumKs": 48038808343281665,
+      "threeOverFourN": 2.86102294921875e-06
+    },
+    {
+      "M": 1048577,
+      "N": 524288,
+      "NMOverMinimumKs": 1.4305066997742253e-06,
+      "minimumKs": 384308817471995905,
+      "threeOverFourN": 1.430511474609375e-06
+    },
+    {
+      "M": 2097153,
+      "N": 1048576,
+      "NMOverMinimumKs": 7.152545435943958e-07,
+      "minimumKs": 3074463942692569089,
+      "threeOverFourN": 7.152557373046875e-07
+    }
+  ],
+  "latticeTailPower": -0.9999861727682261,
+  "meaning": "Finite high-precision audit of the operator-sampling algebra. No growing-root construction, DNS, universal endpoint theorem, or Navier--Stokes regularity result is claimed.",
+  "multiplierRatioUpper": 6.579736267392906,
+  "optimizer": {
+    "maximum": 0.4724703937105774,
+    "uStar": 3.0
+  },
+  "parameters": {
+    "A0": 0.05,
+    "Kz": 1.0,
+    "NValues": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024,
+      2048,
+      4096,
+      8192,
+      16384,
+      32768,
+      65536,
+      131072,
+      262144,
+      524288,
+      1048576
+    ],
+    "d": 8.0,
+    "deltaObsValues": [
+      0.015625,
+      0.03125,
+      0.0625,
+      0.125,
+      0.25
+    ],
+    "nu": 0.02
+  },
+  "release": "R0.71Y",
+  "separatedRootEnvelope": {
+    "fixedGap": 0.05,
+    "fixedGapTailPower": -1.999986172768226,
+    "quasiuniformGapLaw": "N^-1",
+    "quasiuniformGapTailPower": -0.9999861727682261
+  },
+  "status": "passed",
+  "subcriticalCoupling": {
+    "deltaObsLaw": "N^(1/2)",
+    "tailPower": -0.3333195061015594
+  }
+}

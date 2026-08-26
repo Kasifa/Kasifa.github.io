@@ -1,0 +1,16 @@
+Run from the repository root.
+
+PY=/Users/kasifa/Documents/Math/.codex-research-venv/bin/python
+DIR=figures/r071y-growing-root-suppression/fig-r071y-operator-sampling
+export PATH=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:$PATH
+
+$PY $DIR/produce_data.py --config $DIR/config.json
+$PY $DIR/plot.py --data $DIR/data.csv --results $DIR/results.json --config $DIR/config.json --output-stem $DIR/figure
+$PY $DIR/qa_images.py --config $DIR/config.json --manual-status pending
+
+After visual inspection of qa-original.png, qa-grayscale.png, and qa-pdf.png:
+
+$PY $DIR/qa_images.py --config $DIR/config.json --manual-status pass
+$PY $DIR/validate.py --config $DIR/config.json
+$PY $DIR/build_manifest.py --status formal --source-commit 8836d45625304ce8f867283f736a1911ee3d8ada --certificate-commit 8836d45625304ce8f867283f736a1911ee3d8ada --dirty-at-certified-run false
+$PY research/validate_figure_package.py $DIR

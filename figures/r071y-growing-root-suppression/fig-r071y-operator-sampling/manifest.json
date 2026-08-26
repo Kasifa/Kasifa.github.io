@@ -1,0 +1,403 @@
+{
+  "analyticalQuestion": "How do root count N, scaled root separation h, and equal-grid interpolation conditioning jointly constrain the growing-root route in the R0.71Y unit-phase triangular class?",
+  "asymptoticPowers": {
+    "latticeFactor": {
+      "logCoefficient": -0.287867321423295,
+      "power": -0.9999861727682249,
+      "rSquared": 0.9999999999581465
+    },
+    "noSeparationFixedDeltaObs": {
+      "logCoefficient": -3.182238015291256,
+      "power": -0.999986172768226,
+      "rSquared": 0.9999999999581465
+    },
+    "separatedFixedGap": {
+      "logCoefficient": 1.767857693639214,
+      "power": -1.9999861727682238,
+      "rSquared": 0.9999999999895368
+    },
+    "separatedQuasiuniformGap": {
+      "logCoefficient": -1.2278745799147524,
+      "power": -0.9999861727682254,
+      "rSquared": 0.9999999999581465
+    }
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "Every plotted curve is an analytic theorem or committed certificate envelope, not a simulated trajectory. The selected-root estimates assume the R0.71Y unit-modulus carrier phases, real shear, fixed target, and full data/root-time enstrophy floors. They do not construct growing exact roots or count every nonlinear root. The equal-grid inverse lower bound is a conditioning warning, not an upper bound on the true nonlinear IFT radius. The figure is not DNS and proves no universal endpoint estimate or Navier--Stokes regularity statement.",
+  "computation": {
+    "analyticTheoremEnvelope": true,
+    "certificateExtraction": true,
+    "completeAllRootCount": false,
+    "configuration": "R0.71Y unit phases M=2N+1; N=1..2^20; fixed delta_obs=1/8; separated h=0.05 and h=N^-1; canonical equal-grid r_l=l with h=N^-3 at N=4..64",
+    "dns": false,
+    "exactGrowingRootConstruction": false,
+    "fitBoundary": "tail regressions describe the stored exact theorem rows and do not replace their analytic N^-1/N^-2 proofs",
+    "fittedData": true,
+    "formalCommand": "commands recorded in command.txt",
+    "independentFiniteMatrixCorroboration": true,
+    "kind": "exact-audit plus high-precision presentation sampling",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "N",
+        "latticeFactor",
+        "fixedDeltaObsEnvelope",
+        "log10InverseLower",
+        "elapsedSeconds",
+        "processUserCpuSeconds",
+        "processSystemCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "navierStokesRegularityResult": false,
+    "pdeTimeStepping": false,
+    "precision": "source 90-digit Decimal theorem audit, independent binary64 finite-matrix certificate, and independent binary64 figure reconstruction",
+    "producerWallSeconds": 0.004235333006363362,
+    "quantitativeIftRadiusUpperBound": false,
+    "randomSeed": null,
+    "solver": "no PDE solver or DNS; exact finite formulas, deterministic source extraction, and log-log descriptive fits over the stored tail grid",
+    "universalEndpointTheorem": false,
+    "validatorWallSeconds": 0.0633546250173822,
+    "wallTimeSeconds": 0.06758995802374557
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T23:09:58+08:00",
+  "data": [
+    {
+      "bytes": 973,
+      "format": "json",
+      "path": "config.json",
+      "schema": "source certificates, fixed coupling and gap laws, equal-grid N values, physical figure dimensions, and claim classifications",
+      "sha256": "4128aa31343a0d1ca3dca9d2d01054b80233dc2b82d592fb1171eca4b955bbd7"
+    },
+    {
+      "bytes": 3434,
+      "format": "json",
+      "path": "results.json",
+      "schema": "source hashes, reconstructed theorem factors, independent cross-checks, fitted powers, and conditioning rows",
+      "sha256": "c153fba345a2e322a028caae41871d94d01613dd151861f88edd238f0e2fdc54"
+    },
+    {
+      "bytes": 37890,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel, theorem series, N, M, h, delta_obs, plotted value, raw value, normalizer, units, formulas, evidence class, source, and note",
+      "sha256": "ca40ea309f1a18f865dd740b1727542d42ae3bf49e5a090caddfc552047ce91a"
+    },
+    {
+      "bytes": 67804,
+      "format": "json",
+      "path": "data.json",
+      "schema": "lossless plot rows and evidence classes",
+      "sha256": "4bd12cb33ba7a96c40c2dd5d6ea057b50fc3efaacf4efc34f06a7a93e537367e"
+    },
+    {
+      "bytes": 1862,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "source/data hashes, row count, evidence map, and claim boundary",
+      "sha256": "0bf296ddda3f8ccf5be3c8f025bea1aea00d8f4fe8fe28afde584969d013658e"
+    },
+    {
+      "bytes": 6552,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "source-commit verification, independent theorem reconstruction, fit checks, output checks, and final-size QA checks",
+      "sha256": "abbbfb294103c18caf5de4328c815c4b832db636a6bffc3f3d1a25f8300625d6"
+    },
+    {
+      "bytes": 6435,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped extraction, reconstruction, plotting, QA, and validation events",
+      "sha256": "23a9ad6a733c1515f19aeefe29c3c5f543049d97e06df53cda83dfebcd611d64"
+    },
+    {
+      "bytes": 2253,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped wall time, process CPU, peak resident set, load, and logical CPU records",
+      "sha256": "523cdde92d3347c53767e5cdb652eb2b56c5bcd24fb484c0ac5aee56c2d6ec61"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.3.5",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "poppler": "bundled runtime",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "evidenceMap": {
+    "A": "exact lattice identity and analytic upper bound",
+    "B": "exact nonlinear selected-root theorem envelopes, normalized only for N-law comparison",
+    "C": "exact determinant-based equal-grid inverse lower bound"
+  },
+  "figure": {
+    "heightMillimetres": 117.0,
+    "outputs": [
+      {
+        "bytes": 52891,
+        "path": "figure.pdf",
+        "sha256": "3484c288cd1df42ed589cdf242bda870916c6acb4677b31e75cecb395505817e"
+      },
+      {
+        "bytes": 139152,
+        "path": "figure.svg",
+        "sha256": "131fbadd0e205e3fd7d434a3fc3168021be4fd530a96b17722b26a87798ab322"
+      },
+      {
+        "archivalDpi": 600,
+        "bytes": 704098,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4206,
+          2766
+        ],
+        "sha256": "034561e3faa23fd404fd3b36ea8f9d75d75e3ce74a45cc328f0a9f797ba7d934"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178.05
+  },
+  "figureId": "fig-r071y-operator-sampling",
+  "git": {
+    "certificateCommit": "8836d45625304ce8f867283f736a1911ee3d8ada",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "scopeNote": "dirtyAtCertifiedRun refers to the committed R0.71Y theorem certificates; this figure is a deterministic downstream extraction and reconstruction",
+    "sourceCommit": "8836d45625304ce8f867283f736a1911ee3d8ada"
+  },
+  "independentAsymptoticPowers": {
+    "latticeFactor": -0.9999861727682249,
+    "noSeparationFixedDeltaObs": -0.999986172768226,
+    "separatedFixedGap": -1.9999861727682238,
+    "separatedQuasiuniformGap": -0.9999861727682254
+  },
+  "outputs": [
+    {
+      "bytes": 1910,
+      "path": "README.md",
+      "sha256": "f0c3cc8314b753280bb0ad6ec87c9663a372b9aaee8e33ee61a4b2440cf9aa7b"
+    },
+    {
+      "bytes": 1339,
+      "path": "caption.md",
+      "sha256": "f89d66c33d401f8ea3f7c75a09163bef5362a207a2a658a8ed4c7e1f9d59a749"
+    },
+    {
+      "bytes": 2960,
+      "path": "figure-contract.md",
+      "sha256": "e2bb9e849981f86f1885d5d5e23f5b0721d9cfbd2fc5979a334b1f1b009830f6"
+    },
+    {
+      "bytes": 2033,
+      "path": "contract.json",
+      "sha256": "9257825dec79c4ee2c3a6884b528f55b0ea85345affe3ac8c372f25d931b5bdd"
+    },
+    {
+      "bytes": 973,
+      "path": "config.json",
+      "sha256": "4128aa31343a0d1ca3dca9d2d01054b80233dc2b82d592fb1171eca4b955bbd7"
+    },
+    {
+      "bytes": 944,
+      "path": "command.txt",
+      "sha256": "2064dd285ce141ca0386d3cab98f4f13645e45475457b2eade0ed17e2f4f84ca"
+    },
+    {
+      "bytes": 826,
+      "path": "environment.txt",
+      "sha256": "5381d0c017617ea39639af071c1eaeb44832f278d7d74be0a1468c696b282397"
+    },
+    {
+      "bytes": 61,
+      "path": "requirements.txt",
+      "sha256": "ac57e1098cf2ce9aade8347d8b836b70f0defdb5b79d37682d0da0ebd967f428"
+    },
+    {
+      "bytes": 19567,
+      "path": "produce_data.py",
+      "sha256": "b83ce9b7c8593d621cbfc9274f84d7d25903d20dc5667b5af02a158b153b3290"
+    },
+    {
+      "bytes": 14246,
+      "path": "plot.py",
+      "sha256": "8656538431c084d71117059e6f0a808caec520ac9a0122e3c919d50a3a2e8779"
+    },
+    {
+      "bytes": 6448,
+      "path": "qa_images.py",
+      "sha256": "5cbb8d501c8ac3063b9e2b65f01ead2bd9a26946dfd0e32c397349c744b326a5"
+    },
+    {
+      "bytes": 19798,
+      "path": "validate.py",
+      "sha256": "e074e7cf6c72a898625fb484e6de4cac0213aaf4074ab8c3faa164d60df50a7d"
+    },
+    {
+      "bytes": 11580,
+      "path": "build_manifest.py",
+      "sha256": "e7927c955de998f73bb7b9c1ce99639079cf6fea8603cdaf6c54595bf420f0c2"
+    },
+    {
+      "bytes": 3434,
+      "path": "results.json",
+      "sha256": "c153fba345a2e322a028caae41871d94d01613dd151861f88edd238f0e2fdc54"
+    },
+    {
+      "bytes": 37890,
+      "path": "data.csv",
+      "sha256": "ca40ea309f1a18f865dd740b1727542d42ae3bf49e5a090caddfc552047ce91a"
+    },
+    {
+      "bytes": 67804,
+      "path": "data.json",
+      "sha256": "4bd12cb33ba7a96c40c2dd5d6ea057b50fc3efaacf4efc34f06a7a93e537367e"
+    },
+    {
+      "bytes": 1862,
+      "path": "figure-data-metadata.json",
+      "sha256": "0bf296ddda3f8ccf5be3c8f025bea1aea00d8f4fe8fe28afde584969d013658e"
+    },
+    {
+      "bytes": 6552,
+      "path": "validation.json",
+      "sha256": "abbbfb294103c18caf5de4328c815c4b832db636a6bffc3f3d1a25f8300625d6"
+    },
+    {
+      "bytes": 6435,
+      "path": "progress.ndjson",
+      "sha256": "23a9ad6a733c1515f19aeefe29c3c5f543049d97e06df53cda83dfebcd611d64"
+    },
+    {
+      "bytes": 2253,
+      "path": "resource-log.ndjson",
+      "sha256": "523cdde92d3347c53767e5cdb652eb2b56c5bcd24fb484c0ac5aee56c2d6ec61"
+    },
+    {
+      "bytes": 52891,
+      "path": "figure.pdf",
+      "sha256": "3484c288cd1df42ed589cdf242bda870916c6acb4677b31e75cecb395505817e"
+    },
+    {
+      "bytes": 139152,
+      "path": "figure.svg",
+      "sha256": "131fbadd0e205e3fd7d434a3fc3168021be4fd530a96b17722b26a87798ab322"
+    },
+    {
+      "bytes": 704098,
+      "dpi": [
+        599.9988,
+        599.9988
+      ],
+      "path": "figure.png",
+      "pixels": [
+        4206,
+        2766
+      ],
+      "sha256": "034561e3faa23fd404fd3b36ea8f9d75d75e3ce74a45cc328f0a9f797ba7d934"
+    },
+    {
+      "bytes": 345507,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-original.png",
+      "pixels": [
+        1262,
+        830
+      ],
+      "sha256": "62a6528da31ec8f071201cfcbebdf79af2fba2ebf7dc2342c493b17ad19614bc"
+    },
+    {
+      "bytes": 136451,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-grayscale.png",
+      "pixels": [
+        1262,
+        830
+      ],
+      "sha256": "c5bad5fd7efbb3b04b5996a7bda98022cbce14262a74cd9e63074e15e2950c93"
+    },
+    {
+      "bytes": 168964,
+      "dpi": [
+        179.9844,
+        179.9844
+      ],
+      "path": "qa-pdf.png",
+      "pixels": [
+        1262,
+        830
+      ],
+      "sha256": "d8c8a18df44bd1aa08511d16b3379ec97298c50e67ed07f435f1eb9817c979e8"
+    },
+    {
+      "bytes": 1184,
+      "path": "qa-report.md",
+      "sha256": "8ae37e3d94e69a6a1423d65fe95b43de219d8cf3546291ec517f949b33f8f62f"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 24,
+    "automaticChecks": "validation.json",
+    "colorPreview": "qa-original.png",
+    "dataCrossChecked": true,
+    "evidenceBoundaryInspected": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentMethod": "independent source-commit verification, exact source-to-CSV reconstruction, independent power fits, determinant-bound reconstruction, output-format checks, and recorded manual final-size QA",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "nonColorEncodingInspected": true,
+    "pdfRenderInspected": true,
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.71Y",
+  "schemaVersion": "1.0.0",
+  "sourceData": [
+    {
+      "bytes": 21905,
+      "extractionCommand": "python produce_data.py --config config.json",
+      "fileName": "research/certificates/r071y/result.json",
+      "location": "repository",
+      "sha256": "f73f4da52a69f50fab1035faadb2fca0a9e02c0cb49a3b28420fdee9dc53b022"
+    },
+    {
+      "bytes": 8825,
+      "extractionCommand": "python produce_data.py --config config.json",
+      "fileName": "research/certificates/r071y/independent-result.json",
+      "location": "repository",
+      "sha256": "14478743e7ecb6ff0773a0286247b21c833e6be2681a3ad44bd9600e2fc27e1e"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "At bounded observation coupling, the exact selected-root theorem envelope decays as N^-1 without separation, improves to N^-2 at fixed positive separation, and returns to N^-1 for h proportional to N^-1. For canonical equal-grid rates r_l=l, the certified inverse lower bound grows rapidly under h=N^-3.",
+  "takeaway": "At bounded observation coupling, the exact selected-root theorem envelope decays as N^-1 without separation, improves to N^-2 at fixed positive separation, and returns to N^-1 for h proportional to N^-1. For canonical equal-grid rates r_l=l, the certified inverse lower bound grows rapidly under h=N^-3."
+}

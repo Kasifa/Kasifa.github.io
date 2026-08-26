@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "release": "R0.71Z",
+  "audit": "independent-binary64-finite-matrix",
+  "generatedAtUtc": "2026-08-26T16:26:21.320250+00:00",
+  "passed": true,
+  "checkCount": 15,
+  "passedCheckCount": 15,
+  "independence": {
+    "importsProducer": false,
+    "readsProducerResult": false,
+    "rawParametersRepeatedLocally": true
+  },
+  "arithmetic": {
+    "format": "IEEE-754 binary64",
+    "intervalArithmetic": false,
+    "linearAlgebra": "NumPy complex128",
+    "odeAndQuadrature": "SciPy solve_ivp(DOP853) and quad"
+  },
+  "parameters": {
+    "nu": 0.02,
+    "d": 8.0,
+    "Ky": 1.0,
+    "Kz": 1.0,
+    "q": 64.0,
+    "qThreshold": 1.0,
+    "A0": 0.05,
+    "windowLength": 0.3,
+    "delta": 0.035,
+    "carrierCount": 4,
+    "multipliers": [
+      1,
+      2,
+      4,
+      7
+    ],
+    "coefficients": [
+      0.8,
+      0.55,
+      0.35,
+      0.2
+    ],
+    "matrixRadius": 24,
+    "matrixDimension": 49
+  },
+  "checks": [
+    {
+      "name": "finite shift shear is skew-adjoint",
+      "passed": true,
+      "value": 0.0,
+      "requirement": "max ||V+V*||_2 / ||V||_2 < 2e-14"
+    },
+    {
+      "name": "diagonal heat generator is strictly dissipative",
+      "passed": true,
+      "value": 9.765625e-06,
+      "requirement": "min_r lambda_(q,r) > 0"
+    },
+    {
+      "name": "time-dependent finite evolution contracts",
+      "passed": true,
+      "value": {
+        "includingLaunch": 0.9999999999999999,
+        "onObservationGrid": 0.6348098516665845,
+        "atWindowEnd": 0.3314685367565871
+      },
+      "requirement": "norm ratio never exceeds 1 + 2e-11 and is strictly below 1 after launch"
+    },
+    {
+      "name": "finite energy-dissipation identity closes",
+      "passed": true,
+      "value": 2.9472786069898226e-13,
+      "requirement": "relative defect in ||F0||^2-||FT||^2=2 integral E below 2e-8"
+    },
+    {
+      "name": "explicit Q target-row coefficients match",
+      "passed": true,
+      "value": 1.5798047302893128e-16,
+      "requirement": "relative row defect < 2e-13 at all sampled times"
+    },
+    {
+      "name": "Q target row has only the declared plus-minus carrier support",
+      "passed": true,
+      "value": 0.0,
+      "requirement": "maximum off-support coefficient < 2e-14"
+    },
+    {
+      "name": "pointwise dissipation pairing bounds QF",
+      "passed": true,
+      "value": 0.22639332081399577,
+      "requirement": "max |QF|/[6 sqrt(2nu)d|Kz| A sqrt(E)] <= 1 + 2e-12"
+    },
+    {
+      "name": "integrated QF is below the dissipation payment",
+      "passed": true,
+      "value": 0.04239550443244041,
+      "requirement": "integral_window |QF| <= Cauchy bound <= 3 Omega sqrt(M)"
+    },
+    {
+      "name": "Cauchy payment is below 3 Omega sqrt(M)",
+      "passed": true,
+      "value": 0.47044214258335704,
+      "requirement": "Cauchy bound / [3 Omega sqrt(M)] <= 1"
+    },
+    {
+      "name": "multiplier L1 integral formula and bound close",
+      "passed": true,
+      "value": {
+        "formulaDefect": 1.643096728144926e-16,
+        "boundRatio": 0.4485396007724417
+      },
+      "requirement": "quadrature agrees with exact formula and integral ||V|| <= C_kappa Omega"
+    },
+    {
+      "name": "multiplier L2 integral formula and bound close",
+      "passed": true,
+      "value": {
+        "formulaDefect": 3.1622216056004154e-16,
+        "boundRatio": 0.1778315580236636
+      },
+      "requirement": "quadrature agrees with exact formula and integral ||V||^2 <= C_kappa Omega^2"
+    },
+    {
+      "name": "Haar L2 multiplier lower bound is respected",
+      "passed": true,
+      "value": 0.22131580951841964,
+      "requirement": "2 Kz^2 sum |a_l(A0)|^2 / Omega^2 <= 1"
+    },
+    {
+      "name": "synthetic complex zeros are resolved",
+      "passed": true,
+      "value": 1.113475631142613e-16,
+      "requirement": "maximum |g(tau_m)| < 2e-14"
+    },
+    {
+      "name": "double and triple roots have zero sampled slope",
+      "passed": true,
+      "value": 6.102765549018504e-16,
+      "requirement": "maximum |g'(tau)| at multiplicity > 1 below 2e-13"
+    },
+    {
+      "name": "complex bounded-variation sampling inequality holds",
+      "passed": true,
+      "value": {
+        "squaredSlopeRatio": 0.0007592962976730616,
+        "intermediateL1Ratio": 0.0073743890945904954
+      },
+      "requirement": "sum |g'(tau)|^2 <= |g'(tau1)|^2 + ||g'||_inf integral |g''|"
+    }
+  ],
+  "finiteEvolution": {
+    "initialNormSquared": 4.0,
+    "maximumSkewAdjointDefect": 0.0,
+    "maximumQRowRelativeDefect": 1.5798047302893128e-16,
+    "maximumQOffSupportEntry": 0.0,
+    "maximumContractionRatio": 0.9999999999999999,
+    "maximumObservationContractionRatio": 0.6348098516665845,
+    "finalNormSquared": 0.43948556343821177,
+    "finalContractionRatio": 0.3314685367565871,
+    "dissipationIntegral": 1.7802572182814187,
+    "dissipationQuadratureError": 1.544107225995929e-13,
+    "energyIdentityRelativeDefect": 2.9472786069898226e-13,
+    "maximumWeightedPointwiseQRatio": 0.22639332081399577,
+    "qIntegralOnFiniteWindow": 0.6667512536856215,
+    "qIntegralQuadratureError": 5.82504754496583e-12,
+    "qCauchyBoundOnInfiniteWindow": 7.3986120121262005,
+    "qReportedBound": 15.726932905070786,
+    "qIntegralOverReportedBound": 0.04239550443244041,
+    "qCauchyOverReportedBound": 0.47044214258335704,
+    "omega": 2.6211554841784643,
+    "eta": 0.09174044194624625
+  },
+  "multiplierIntegrals": {
+    "omega": 2.6211554841784643,
+    "haarL2NormSquaredAtA0": 1.5205405473882807,
+    "haarL2OverOmegaSquared": 0.22131580951841964,
+    "exactL1Integral": 1.351378778385872,
+    "quadratureL1Integral": 1.3513787783858722,
+    "quadratureL1ErrorEstimate": 1.02936369650595e-12,
+    "relativeL1FormulaDefect": 1.643096728144926e-16,
+    "cKappaOmegaBound": 3.012841622141339,
+    "L1OverBound": 0.4485396007724417,
+    "exactL2Integral": 1.4043582811007416,
+    "quadratureL2Integral": 1.4043582811007411,
+    "quadratureL2ErrorEstimate": 9.747355113673018e-12,
+    "relativeL2FormulaDefect": 3.1622216056004154e-16,
+    "cKappaOmegaSquaredBound": 7.897126340836912,
+    "L2OverBound": 0.1778315580236636,
+    "cKappa": 1.1494326224930678
+  },
+  "complexBvSampling": {
+    "roots": [
+      0.125,
+      0.25,
+      0.5,
+      0.75,
+      0.875
+    ],
+    "multiplicities": [
+      1,
+      2,
+      1,
+      3,
+      1
+    ],
+    "maximumRootResidual": 1.113475631142613e-16,
+    "rootSlopes": [
+      0.0011366998011097548,
+      3.2455334427923302e-18,
+      0.00014549757454204878,
+      6.102765549018504e-16,
+      0.00022733996022230996
+    ],
+    "maximumMultipleRootSlope": 6.102765549018504e-16,
+    "sampledSquaredSlopeMass": 1.3649394395544568e-06,
+    "firstRootSlopeSquared": 1.2920864378429563e-06,
+    "sampledDerivativeSupremum": 0.0355300854180791,
+    "variationIntegral": 0.05055842999096268,
+    "variationQuadratureError": 1.1981543486071343e-13,
+    "bvRightSide": 0.0017976374226207194,
+    "leftOverRight": 0.0007592962976730616,
+    "sumOfSlopesAfterFirstRoot": 0.00037283753476497226,
+    "sumAfterFirstOverVariation": 0.0073743890945904954,
+    "segmentRows": [
+      {
+        "leftRoot": 0.125,
+        "rightRoot": 0.25,
+        "rightSlope": 3.2455334427923302e-18,
+        "variationIntegral": 0.0016735662654850337,
+        "ratio": 1.9392918641627307e-15
+      },
+      {
+        "leftRoot": 0.25,
+        "rightRoot": 0.5,
+        "rightSlope": 0.00014549757454204878,
+        "variationIntegral": 0.0005492570391826566,
+        "ratio": 0.26489888005543294
+      },
+      {
+        "leftRoot": 0.5,
+        "rightRoot": 0.75,
+        "rightSlope": 6.102765549018504e-16,
+        "variationIntegral": 0.0002858800064927196,
+        "ratio": 2.134729750390544e-12
+      },
+      {
+        "leftRoot": 0.75,
+        "rightRoot": 0.875,
+        "rightSlope": 0.00022733996022230996,
+        "variationIntegral": 0.00032477895540732407,
+        "ratio": 0.6999836548436144
+      }
+    ],
+    "note": "The supremum is a dense binary64 sample and the variation is adaptive binary64 quadrature; this is corroboration, not a directed-rounding interval certificate."
+  },
+  "limitations": [
+    "The matrix has a fixed zero-padded Fourier cutoff and is not the infinite lattice.",
+    "Binary64 ODE solves, norm evaluations, dense sampling, and quadrature are not directed-rounding interval proofs.",
+    "The synthetic W^{2,1} function tests the BV lemma but is not a target coordinate of the triangular evolution.",
+    "No complete continuum root set, growing-dimensional IFT branch, three-dimensional turbulence, or Navier-Stokes endpoint theorem is certified."
+  ]
+}

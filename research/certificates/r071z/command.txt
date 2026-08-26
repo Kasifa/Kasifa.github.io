@@ -1,0 +1,11 @@
+Generate the 110-digit producer certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/r071z_exact_audit.py --output research/certificates/r071z/result.json
+
+Generate the independent finite-matrix certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071z_independent_audit.py --output research/certificates/r071z/independent-result.json
+
+Check both JSON results:
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -c 'import json, pathlib; root=pathlib.Path("research/certificates/r071z"); producer=json.loads((root/"result.json").read_text()); independent=json.loads((root/"independent-result.json").read_text()); assert producer["status"] == "passed"; assert independent["passed"] is True; assert all(item["passed"] for item in producer["checks"]); assert all(item["passed"] for item in independent["checks"]); print("R0.71Z certificates passed")'
+
+The independent checker imports neither the producer nor result.json.
+

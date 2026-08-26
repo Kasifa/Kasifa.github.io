@@ -43,27 +43,27 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("retains the corrected R0.71T release after the R0.71X site update", async () => {
+test("retains the corrected R0.71T release after the R0.71Y site update", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 148);
-  assert.match(home, /<strong>v1\.10<\/strong>网页版本/);
-  assert.match(home, /<strong>148<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71X<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71X<\/span>/);
-  assert.match(home, /展开 58 篇公开笔记/);
-  assert.match(home, /累计回顾收录 88 个节点；全站现有 148 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.71X 共 50 个完成版本/);
-  assert.match(home, /NEXT · R0\.71Y/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 149);
+  assert.match(home, /<strong>v1\.11<\/strong>网页版本/);
+  assert.match(home, /<strong>149<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71Y<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.71Y<\/span>/);
+  assert.match(home, /展开 59 篇公开笔记/);
+  assert.match(home, /累计回顾收录 89 个节点；全站现有 149 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.71Y 共 51 个完成版本/);
+  assert.match(home, /NEXT · R0\.71Z/);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71X">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71Y">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 58);
+  assert.equal(count(route[1], 'href="/notes/'), 59);
   assert.equal(count(route[1], 'href="/notes/r0-71t.html"'), 1);
   assert.equal(count(home, 'data-release="r071t"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71t.html"'), 2);
@@ -73,8 +73,8 @@ test("retains the corrected R0.71T release after the R0.71X site update", async 
   assert.match(recap, /回顾截止时公开笔记：144/);
   assert.match(recap, /R0\.70A–R0\.71T 完成版本/);
   assert.match(recap, /R0\.00–R0\.60 的内容保留在上一份阶段回顾中/);
-  assert.match(literature, /R0\.69P–R0\.71X/);
-  assert.match(literature, /开放接口 · R0\.71Y/);
+  assert.match(literature, /R0\.69P–R0\.71Y/);
+  assert.match(literature, /开放接口 · R0\.71Z/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -86,8 +86,8 @@ test("retains the corrected R0.71T release after the R0.71X site update", async 
     assert.doesNotMatch(page, /我们|攻关|主攻|三重审计/);
     assert.doesNotMatch(page, /千禧年问题已经解决|解决了千禧年问题/);
   }
-  assert.ok(home.includes('src="/i18n-en.js?v=1.10"'));
-  assert.ok(literature.includes('src="/i18n-en.js?v=1.10"'));
+  assert.ok(home.includes('src="/i18n-en.js?v=1.11"'));
+  assert.ok(literature.includes('src="/i18n-en.js?v=1.11"'));
   assert.ok(note.includes('src="/i18n-en.js?v=1.05"'));
   assert.ok(recap.includes('src="/i18n-en.js?v=1.05"'));
 });

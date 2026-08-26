@@ -64,42 +64,42 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("publishes R0.71R as v1.03 with 142 notes, route 52, recap 82, and R0.71S next", async () => {
+test("keeps historical R0.71R artifacts while v1.04 publishes R0.71S as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 142);
-  assert.match(home, /<strong>v1\.03<\/strong>网页版本/);
-  assert.match(home, /<strong>142<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71R<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71R<\/span>/);
-  assert.match(home, /展开 52 篇公开笔记/);
-  assert.match(home, /累计回顾收录 82 个节点；全站现有 142 篇公开研究笔记/);
-  assert.match(home, /NEXT · R0\.71S/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 143);
+  assert.match(home, /<strong>v1\.04<\/strong>网页版本/);
+  assert.match(home, /<strong>143<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71S<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.71S<\/span>/);
+  assert.match(home, /展开 53 篇公开笔记/);
+  assert.match(home, /累计回顾收录 83 个节点；全站现有 143 篇公开研究笔记/);
+  assert.match(home, /NEXT · R0\.71T/);
 
   const currentRoute = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71R">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71S">([\s\S]*?)<\/nav>/,
   );
   assert.ok(currentRoute);
-  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 52);
+  assert.equal(occurrenceCount(currentRoute[1], 'href="/notes/'), 53);
   assert.ok(occurrenceCount(recap, '<article class="phase">') >= 12);
   assert.match(recap, /收录节点：82/);
   assert.match(recap, /回顾截止时公开笔记：142/);
   assert.match(recap, /R0\.70A–R0\.71R 完成版本/);
-  assert.match(literature, /R0\.69P–R0\.71R/);
-  assert.match(literature, /开放接口 · R0\.71S/);
+  assert.match(literature, /R0\.69P–R0\.71S/);
+  assert.match(literature, /开放接口 · R0\.71T/);
 
-  for (const [page, minimum] of [
-    [home, 10],
-    [note, 14],
-    [recap, 8],
-    [literature, 49],
+  for (const [page, minimum, i18nVersion] of [
+    [home, 10, "1.04"],
+    [note, 14, "1.03"],
+    [recap, 8, "1.03"],
+    [literature, 49, "1.04"],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71R/);
-    assert.match(page, /src="\/i18n-en\.js\?v=1\.03"/);
+    assert.ok(page.includes('src="/i18n-en.js?v=' + i18nVersion + '"'));
   }
 });
 
@@ -120,12 +120,12 @@ test("ships one R0.71R release card and the complete reader-facing package", asy
     "research/r071r_gap_matrix.md",
     "research/r071r_independent_audit.md",
     "figures/r071r-parabolic-incidence/fig-r071r-parabolic-incidence",
-    'href="/recap-r0-61-r0-71r.html"',
-    'href="/recap-r0-61-r0-71r.pdf"',
+    'href="/recap-r0-61-r0-71s.html"',
+    'href="/recap-r0-61-r0-71s.pdf"',
   ]) {
     assert.ok(card.includes(token), token);
   }
-  assert.match(card, /下一步 R0\.71S/);
+  assert.match(card, /R0\.71S 已完成/);
 
   for (const token of [
     'href="/recap-r0-61-r0-71r.html"',
@@ -196,10 +196,9 @@ test("states the conditional theorem and every reviewed rigor boundary", async (
   assert.match(recap, /time-slice square-function estimate.*吸收同刻 batch/is);
   assert.match(literature, /time-slice square-function estimate.*吸收同刻 batch/is);
   assert.match(literature, /least admissible optimal upper comparison constant/is);
-  assert.match(literature, /uniform parabolicity.*coefficient regularity.*boundary hypotheses.*positive time/is);
   assert.match(note, /uniform parabolicity.*coefficient regularity.*boundary hypotheses.*positive time/is);
-  assert.match(literature, /theorem gates，不是右端因子/is);
-  assert.match(literature, /完整右端仍可能因 Gamma_2 与 M 而不一致/is);
+  assert.match(literature, /rho=2 是 minimal Leray-paid index/is);
+  assert.match(literature, /initial Fourier example.*只定义 Gamma_\{2,jet\} surrogate.*不给 positive-time upper comparison constant Gamma_2 下界/is);
 });
 
 test("verifies R0.71R certificates without promoting the initial jet", async () => {
@@ -282,7 +281,7 @@ test("ships hash-identical figure mirrors and 44 continuous completed releases",
   }
 
   const routeMatch = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71R">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71S">([\s\S]*?)<\/nav>/,
   );
   assert.ok(routeMatch);
   const releases = releaseSequence();

@@ -1,0 +1,17 @@
+Generate the exact certificate:
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 research/r071s_exact_audit.py --output research/certificates/r071s/result.json
+
+Generate the independent certificate:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071s_independent_audit.py --output research/certificates/r071s/independent-result.json
+
+The independent program imports neither the producer nor result.json.
+
+Figure commands:
+figures/r071s-signed-packet/fig-r071s-signed-packet/command.txt
+
+Validate the figure package:
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 research/validate_figure_package.py figures/r071s-signed-packet/fig-r071s-signed-packet
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071s/build_hashes.py
+(cd research/certificates/r071s && shasum -a 256 -c SHA256SUMS)

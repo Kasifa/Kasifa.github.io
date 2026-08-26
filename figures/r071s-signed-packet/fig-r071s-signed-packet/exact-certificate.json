@@ -1,0 +1,525 @@
+{
+  "release": "R0.71S",
+  "status": "passed",
+  "scope": "finite signed/bilinear time-packet method audit, exact Gram enclosures, and a genuine NSE initial-face scaling ledger; no NSE packet packing theorem, positive-time initial-face integration, continuation criterion, singularity, or global regularity claim",
+  "checks": {
+    "boxDiagonalScaling": {
+      "passed": true,
+      "packet": "psi_{b,h}=h^-1/2 1_[b,b+h), h=theta*K^-2",
+      "identity": "||psi/(integral psi)||_2^2=1/h=K^2/theta",
+      "rows": [
+        {
+          "K": 1,
+          "theta": "1/8",
+          "height": "1/8",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/8",
+          "constantReproductionDiagonal": "8",
+          "expectedKappaSquaredOverTheta": "8"
+        },
+        {
+          "K": 2,
+          "theta": "1/8",
+          "height": "1/32",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/32",
+          "constantReproductionDiagonal": "32",
+          "expectedKappaSquaredOverTheta": "32"
+        },
+        {
+          "K": 4,
+          "theta": "1/8",
+          "height": "1/128",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/128",
+          "constantReproductionDiagonal": "128",
+          "expectedKappaSquaredOverTheta": "128"
+        },
+        {
+          "K": 8,
+          "theta": "1/8",
+          "height": "1/512",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/512",
+          "constantReproductionDiagonal": "512",
+          "expectedKappaSquaredOverTheta": "512"
+        },
+        {
+          "K": 16,
+          "theta": "1/8",
+          "height": "1/2048",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/2048",
+          "constantReproductionDiagonal": "2048",
+          "expectedKappaSquaredOverTheta": "2048"
+        },
+        {
+          "K": 32,
+          "theta": "1/8",
+          "height": "1/8192",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/8192",
+          "constantReproductionDiagonal": "8192",
+          "expectedKappaSquaredOverTheta": "8192"
+        },
+        {
+          "K": 64,
+          "theta": "1/8",
+          "height": "1/32768",
+          "l2PacketNormSquared": "1",
+          "packetMeanSquared": "1/32768",
+          "constantReproductionDiagonal": "32768",
+          "expectedKappaSquaredOverTheta": "32768"
+        }
+      ],
+      "boundary": "This is a time-sampling diagonal cost, not an NSE estimate."
+    },
+    "finiteBoxGram": {
+      "passed": true,
+      "finiteIntervalEnclosure": "p-(p^2-1)/(3N) <= lambda_max <= p",
+      "periodicExactIdentity": "lambda_max=p=N*h/T for N equally spaced periodic box packets",
+      "rows": [
+        {
+          "N": 16,
+          "integerWindowOverlap": 1,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "1",
+          "numericalLargestEigenvalue": 1.0,
+          "exactMaximumRowSumUpperBound": "1",
+          "eigenResidualL2": 0.0,
+          "powerIterations": 2,
+          "periodicCirculantLargestEigenvalue": 1
+        },
+        {
+          "N": 16,
+          "integerWindowOverlap": 2,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "31/16",
+          "numericalLargestEigenvalue": 1.9829730996839015,
+          "exactMaximumRowSumUpperBound": "2",
+          "eigenResidualL2": 9.454231714680498e-12,
+          "powerIterations": 321,
+          "periodicCirculantLargestEigenvalue": 2
+        },
+        {
+          "N": 16,
+          "integerWindowOverlap": 4,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "59/16",
+          "numericalLargestEigenvalue": 3.847739577259405,
+          "exactMaximumRowSumUpperBound": "4",
+          "eigenResidualL2": 8.147729482319979e-12,
+          "powerIterations": 76,
+          "periodicCirculantLargestEigenvalue": 4
+        },
+        {
+          "N": 16,
+          "integerWindowOverlap": 8,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "107/16",
+          "numericalLargestEigenvalue": 6.988516184794138,
+          "exactMaximumRowSumUpperBound": "8",
+          "eigenResidualL2": 8.787750492812708e-12,
+          "powerIterations": 22,
+          "periodicCirculantLargestEigenvalue": 8
+        },
+        {
+          "N": 32,
+          "integerWindowOverlap": 8,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "235/32",
+          "numericalLargestEigenvalue": 7.679536522006463,
+          "exactMaximumRowSumUpperBound": "8",
+          "eigenResidualL2": 9.946642215132672e-12,
+          "powerIterations": 74,
+          "periodicCirculantLargestEigenvalue": 8
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 1,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "1",
+          "numericalLargestEigenvalue": 1.0,
+          "exactMaximumRowSumUpperBound": "1",
+          "eigenResidualL2": 0.0,
+          "powerIterations": 2,
+          "periodicCirculantLargestEigenvalue": 1
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 2,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "127/64",
+          "numericalLargestEigenvalue": 1.9988322268323275,
+          "exactMaximumRowSumUpperBound": "2",
+          "eigenResidualL2": 9.959482556236792e-12,
+          "powerIterations": 4182,
+          "periodicCirculantLargestEigenvalue": 2
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 4,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "251/64",
+          "numericalLargestEigenvalue": 3.988636492567813,
+          "exactMaximumRowSumUpperBound": "4",
+          "eigenResidualL2": 9.98176269339559e-12,
+          "powerIterations": 956,
+          "periodicCirculantLargestEigenvalue": 4
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 8,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "491/64",
+          "numericalLargestEigenvalue": 7.9098666839828455,
+          "exactMaximumRowSumUpperBound": "8",
+          "eigenResidualL2": 9.613061504899631e-12,
+          "powerIterations": 261,
+          "periodicCirculantLargestEigenvalue": 8
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 16,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "939/64",
+          "numericalLargestEigenvalue": 15.351088061032993,
+          "exactMaximumRowSumUpperBound": "16",
+          "eigenResidualL2": 7.571439358146393e-12,
+          "powerIterations": 76,
+          "periodicCirculantLargestEigenvalue": 16
+        },
+        {
+          "N": 64,
+          "integerWindowOverlap": 32,
+          "gramFormula": "G_kl=(1-|k-l|/p)_+",
+          "exactRayleighLowerBound": "1707/64",
+          "numericalLargestEigenvalue": 27.892334741239242,
+          "exactMaximumRowSumUpperBound": "32",
+          "eigenResidualL2": 8.25652307983906e-12,
+          "powerIterations": 23,
+          "periodicCirculantLargestEigenvalue": 32
+        }
+      ],
+      "boundary": "Common packet directions are used; orthogonal directions can reduce the Gram constant."
+    },
+    "backwardHeatConstants": {
+      "passed": true,
+      "packet": "1_[b,b+h](s) exp(-nu*K^2*(b+h-s))",
+      "normIdentity": "||p||_2^2=(1-exp(-2*nu*K^2*h))/(2*nu*K^2)",
+      "reproductionIdentity": "|integral(p/||p||)|^-2=(nu*K^2/2)coth(nu*theta/2)",
+      "translatedGramIdentity": "g(d)=exp(-nu*K^2*d)*(1-exp(-2*nu*K^2*(h-d)))/(1-exp(-2*nu*K^2*h)) for 0<=d<h",
+      "rows": [
+        {
+          "K": 1,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.125,
+          "unnormalizedPacketNormSquared": 0.11059960846429756,
+          "normalizedPacketMean": 0.353323496947238,
+          "inverseNormalizedMeanSquared": 8.010413955001848,
+          "closedFormNuK2Over2CothNuThetaOver2": 8.010413955001841,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 2,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.03125,
+          "unnormalizedPacketNormSquared": 0.02764990211607439,
+          "normalizedPacketMean": 0.176661748473619,
+          "inverseNormalizedMeanSquared": 32.04165582000739,
+          "closedFormNuK2Over2CothNuThetaOver2": 32.041655820007364,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 4,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.0078125,
+          "unnormalizedPacketNormSquared": 0.0069124755290185975,
+          "normalizedPacketMean": 0.0883308742368095,
+          "inverseNormalizedMeanSquared": 128.16662328002957,
+          "closedFormNuK2Over2CothNuThetaOver2": 128.16662328002946,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 8,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.001953125,
+          "unnormalizedPacketNormSquared": 0.0017281188822546494,
+          "normalizedPacketMean": 0.04416543711840475,
+          "inverseNormalizedMeanSquared": 512.6664931201183,
+          "closedFormNuK2Over2CothNuThetaOver2": 512.6664931201178,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 16,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.00048828125,
+          "unnormalizedPacketNormSquared": 0.00043202972056366235,
+          "normalizedPacketMean": 0.022082718559202377,
+          "inverseNormalizedMeanSquared": 2050.665972480473,
+          "closedFormNuK2Over2CothNuThetaOver2": 2050.6659724804713,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 32,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 0.0001220703125,
+          "unnormalizedPacketNormSquared": 0.00010800743014091559,
+          "normalizedPacketMean": 0.011041359279601188,
+          "inverseNormalizedMeanSquared": 8202.663889921892,
+          "closedFormNuK2Over2CothNuThetaOver2": 8202.663889921885,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        },
+        {
+          "K": 64,
+          "nu": 1.0,
+          "theta": 0.125,
+          "height": 3.0517578125e-05,
+          "unnormalizedPacketNormSquared": 2.7001857535228897e-05,
+          "normalizedPacketMean": 0.005520679639800594,
+          "inverseNormalizedMeanSquared": 32810.65555968757,
+          "closedFormNuK2Over2CothNuThetaOver2": 32810.65555968754,
+          "normalizedGramAtHalfWindowShift": 0.4990250244362674
+        }
+      ],
+      "boundary": "Duhamel with this packet gives an endpoint upper estimate, not an entry lower charge."
+    },
+    "bilinearMeanDichotomy": {
+      "passed": true,
+      "nonzeroMeanCase": "two L2-normalized box factors reproduce constants only after division by h, costing 1/h=K^2/theta",
+      "zeroMeanCase": "if either factor has zero time mean, the separable bilinear detector annihilates constant leading data exactly",
+      "rows": [
+        {
+          "K": 1,
+          "height": "1/8",
+          "boxMeanSquared": "1/8",
+          "rawProductOfTwoBoxMeans": "1/8",
+          "normalizedBilinearOperatorNorm": "8",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 2,
+          "height": "1/32",
+          "boxMeanSquared": "1/32",
+          "rawProductOfTwoBoxMeans": "1/32",
+          "normalizedBilinearOperatorNorm": "32",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 4,
+          "height": "1/128",
+          "boxMeanSquared": "1/128",
+          "rawProductOfTwoBoxMeans": "1/128",
+          "normalizedBilinearOperatorNorm": "128",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 8,
+          "height": "1/512",
+          "boxMeanSquared": "1/512",
+          "rawProductOfTwoBoxMeans": "1/512",
+          "normalizedBilinearOperatorNorm": "512",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 16,
+          "height": "1/2048",
+          "boxMeanSquared": "1/2048",
+          "rawProductOfTwoBoxMeans": "1/2048",
+          "normalizedBilinearOperatorNorm": "2048",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 32,
+          "height": "1/8192",
+          "boxMeanSquared": "1/8192",
+          "rawProductOfTwoBoxMeans": "1/8192",
+          "normalizedBilinearOperatorNorm": "8192",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        },
+        {
+          "K": 64,
+          "height": "1/32768",
+          "boxMeanSquared": "1/32768",
+          "rawProductOfTwoBoxMeans": "1/32768",
+          "normalizedBilinearOperatorNorm": "32768",
+          "zeroMeanHaarTimesBoxResponseToConstants": "0",
+          "boxTimesZeroMeanHaarResponseToConstants": "0"
+        }
+      ],
+      "boundary": "The dichotomy concerns separable time packets; it does not exclude a nonseparable NSE-specific bilinear identity."
+    },
+    "evenTouchCancellation": {
+      "passed": true,
+      "family": "C(t)=(t-b)^2 e, F(b)=e, Y(b)=1",
+      "softProfile": "a_eta(t)=(t-b)^4/((t-b)^4+eta)",
+      "limit": "signed atom 0; positive atom delta_b; negative atom delta_b; Jordan atom 2 delta_b",
+      "rows": [
+        {
+          "softEta": "1",
+          "shrinkingRadius": "1",
+          "rightSignedLayerMass": "1/2",
+          "leftSignedLayerMass": "-1/2",
+          "totalSignedMass": "0",
+          "totalJordanMass": "1"
+        },
+        {
+          "softEta": "1/256",
+          "shrinkingRadius": "1/2",
+          "rightSignedLayerMass": "16/17",
+          "leftSignedLayerMass": "-16/17",
+          "totalSignedMass": "0",
+          "totalJordanMass": "32/17"
+        },
+        {
+          "softEta": "1/65536",
+          "shrinkingRadius": "1/4",
+          "rightSignedLayerMass": "256/257",
+          "leftSignedLayerMass": "-256/257",
+          "totalSignedMass": "0",
+          "totalJordanMass": "512/257"
+        },
+        {
+          "softEta": "1/16777216",
+          "shrinkingRadius": "1/8",
+          "rightSignedLayerMass": "4096/4097",
+          "leftSignedLayerMass": "-4096/4097",
+          "totalSignedMass": "0",
+          "totalJordanMass": "8192/4097"
+        },
+        {
+          "softEta": "1/4294967296",
+          "shrinkingRadius": "1/16",
+          "rightSignedLayerMass": "65536/65537",
+          "leftSignedLayerMass": "-65536/65537",
+          "totalSignedMass": "0",
+          "totalJordanMass": "131072/65537"
+        },
+        {
+          "softEta": "1/281474976710656",
+          "shrinkingRadius": "1/64",
+          "rightSignedLayerMass": "16777216/16777217",
+          "leftSignedLayerMass": "-16777216/16777217",
+          "totalSignedMass": "0",
+          "totalJordanMass": "33554432/16777217"
+        },
+        {
+          "softEta": "1/18446744073709551616",
+          "shrinkingRadius": "1/256",
+          "rightSignedLayerMass": "4294967296/4294967297",
+          "leftSignedLayerMass": "-4294967296/4294967297",
+          "totalSignedMass": "0",
+          "totalJordanMass": "8589934592/4294967297"
+        }
+      ],
+      "boundary": "A discontinuous event-centered left/right test recovers the Jordan mass only by reinstating segmentation."
+    },
+    "genuineInitialFaceScaling": {
+      "passed": true,
+      "initialData": "u_{0,K}=K(0,cos(K*x1),cos(K*x2)) from u_{0,1}=(0,cos(x1),cos(x2))",
+      "multiplier": "m(K)=0, m(sqrt(2)K)=1, chi=1",
+      "exactLedger": "for covariant amplitude a_K=K: Y=K^4, ||F||^2=K^6/4, C_t=2K^2F, A_plus=K^2/4, K^-2 A_plus=1/4",
+      "timeScalingIdentity": "integral_0^(T/K^2) ||L_K||_{H^-1}^2/Y_K dt =K^-2 integral_0^T ||L||_{H^-1}^2/Y dt",
+      "rows": [
+        {
+          "K": 1,
+          "scaledAmplitude": "1",
+          "Y0": "1",
+          "normFSquared": "1/4",
+          "normLeadingCoefficientSquared": "1",
+          "pairingFWithLeadingDirection": "1/2",
+          "positiveInitialFaceAtom": "1/4",
+          "signedDirectionalAmplitudeSquared": "1/4",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1"
+        },
+        {
+          "K": 2,
+          "scaledAmplitude": "2",
+          "Y0": "16",
+          "normFSquared": "16",
+          "normLeadingCoefficientSquared": "1024",
+          "pairingFWithLeadingDirection": "128",
+          "positiveInitialFaceAtom": "1",
+          "signedDirectionalAmplitudeSquared": "1",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/4"
+        },
+        {
+          "K": 4,
+          "scaledAmplitude": "4",
+          "Y0": "256",
+          "normFSquared": "1024",
+          "normLeadingCoefficientSquared": "1048576",
+          "pairingFWithLeadingDirection": "32768",
+          "positiveInitialFaceAtom": "4",
+          "signedDirectionalAmplitudeSquared": "4",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/16"
+        },
+        {
+          "K": 8,
+          "scaledAmplitude": "8",
+          "Y0": "4096",
+          "normFSquared": "65536",
+          "normLeadingCoefficientSquared": "1073741824",
+          "pairingFWithLeadingDirection": "8388608",
+          "positiveInitialFaceAtom": "16",
+          "signedDirectionalAmplitudeSquared": "16",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/64"
+        },
+        {
+          "K": 16,
+          "scaledAmplitude": "16",
+          "Y0": "65536",
+          "normFSquared": "4194304",
+          "normLeadingCoefficientSquared": "1099511627776",
+          "pairingFWithLeadingDirection": "2147483648",
+          "positiveInitialFaceAtom": "64",
+          "signedDirectionalAmplitudeSquared": "64",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/256"
+        },
+        {
+          "K": 32,
+          "scaledAmplitude": "32",
+          "Y0": "1048576",
+          "normFSquared": "268435456",
+          "normLeadingCoefficientSquared": "1125899906842624",
+          "pairingFWithLeadingDirection": "549755813888",
+          "positiveInitialFaceAtom": "256",
+          "signedDirectionalAmplitudeSquared": "256",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/1024"
+        },
+        {
+          "K": 64,
+          "scaledAmplitude": "64",
+          "Y0": "16777216",
+          "normFSquared": "17179869184",
+          "normLeadingCoefficientSquared": "1152921504606846976",
+          "pairingFWithLeadingDirection": "140737488355328",
+          "positiveInitialFaceAtom": "1024",
+          "signedDirectionalAmplitudeSquared": "1024",
+          "kappaMinusTwoWeightedAtom": "1/4",
+          "relativeBareLerayTimeIntegral": "1/4096"
+        }
+      ],
+      "boundary": "This is a one-sided genuine NSE initial face at the observation boundary and an exact covariant scaling ledger. The time-integral equality follows from NSE covariance, not from positive-time numerical integration. It is not an internal even touch or a positive-time integration, and it is not an internal-entry theorem or a regularity result."
+    }
+  },
+  "decision": "A nonzero-mean parabolic packet retains constant signed directional data only at an inverse-height K^2 cost, while a zero-mean factor annihilates that data. Dense same-direction events additionally force the finite Gram constant to grow with temporal density."
+}

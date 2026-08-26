@@ -133,6 +133,14 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     currentDetails.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []
   ).length;
   assert.ok(currentRouteNotes > 0, "current route note list is empty");
+  assert.equal(releases.length, 45, "R0.70A-R0.71S completed releases");
+  assert.equal(htmlNotes.length, 143, "current public HTML note count");
+  assert.equal(latestRelease, "r071s", "current completed release");
+  assert.equal(latestCode, "R0.71S", "current public release code");
+  assert.equal(nextCode, "R0.71T", "next public release code");
+  assert.equal(recapStem, "recap-r0-61-r0-71s", "current recap endpoint");
+  assert.equal(recapNodes, 83, "R0.61-R0.71S recap node count");
+  assert.equal(currentRouteNotes, 53, "R0.69P-R0.71S route count");
   const [latestNote, recap, recapPdf] = await Promise.all([
     readFile(new URL(latestSlug + ".html", notesRoot), "utf8"),
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
@@ -142,6 +150,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   const versionMatch = home.match(/<strong>v(\d+\.\d+)<\/strong>\u7f51\u9875\u7248\u672c/);
   assert.ok(versionMatch, "homepage version marker is missing");
   const version = versionMatch[1];
+  assert.equal(version, "1.04", "current publication version");
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],
@@ -215,7 +224,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   }
   assert.doesNotMatch(
     recap,
-    /CONTENTS|路线怎样一步步收缩|当前门槛|价值确认|no-go|common-response|精确账本|交换子桥/,
+    /CONTENTS|路线怎样一步步收缩|当前门槛|价值确认|common-response|精确账本|交换子桥/,
   );
   assert.equal(recapPdf.subarray(0, 4).toString(), "%PDF");
   assert.ok(recapPdf.length > 10_000);

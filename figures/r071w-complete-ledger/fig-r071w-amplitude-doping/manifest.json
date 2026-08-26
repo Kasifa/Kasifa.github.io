@@ -1,0 +1,409 @@
+{
+  "analyticalQuestion": "Does amplitude doping in the exact unforced 2.5D recurrence family make a prescribed target-shell atom outgrow the complete normalized Leray-rotational ledger, and does the finite nonlinear Fourier-coset calculation follow the predicted powers?",
+  "asymptoticPowers": {
+    "analyticAtomToCompleteLedger": {
+      "logCoefficient": -10.873375503447242,
+      "power": 1.0025764339549603,
+      "rSquared": 0.9999982338119351
+    },
+    "nonlinearAtomProxy": {
+      "logCoefficient": -10.15718811547479,
+      "power": 1.0057133741402473,
+      "rSquared": 0.9999930447348307
+    },
+    "nonlinearRotationalCharge": {
+      "logCoefficient": -8.27882180966098,
+      "power": -1.0025090248838397,
+      "rSquared": 0.9999988694221281
+    }
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "Panel A is extracted from the exact/high-precision R0.71W certificate and its independent reconstruction. Panels B and C are a finite retained Fourier-coset DOP853 plus nonlinear least-squares corroboration. The retained-coset calculation includes every retained convolution mode and a stated time-tail upper bound. It is not DNS, does not prove spectral-truncation convergence or the uniform continuum implicit-function theorem, and does not prove any Navier-Stokes regularity claim. The amplitude-doped data have unbounded initial energy and enstrophy, so the result tests a data-uniform ledger only.",
+  "computation": {
+    "certificateExtraction": true,
+    "configuration": "R0.71W amplitude doping alpha=3/2; nu=.02; target=(1,1); d=8; roots=(.1,.2)/q^2; B_q=A_q q; analytic q=2^8..2^32 in steps of four powers; retained coset q=256..4096, R=40; q=1024 radius audit R=15,30,60 against R=40",
+    "continuumIftProof": false,
+    "dns": false,
+    "finiteRetainedCosetIntegration": true,
+    "fitBoundary": "displayed fitted powers are descriptive corroboration of the certificate's analytic orders; they do not prove continuum limits",
+    "fittedData": true,
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "data-analysis",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "q",
+        "rootResidual",
+        "atomProxy",
+        "rotationalCharge",
+        "normalizedSlope",
+        "elapsedSeconds",
+        "processUserCpuSeconds",
+        "processSystemCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "pdeTimeStepping": false,
+    "precision": "certificate extraction from the committed primary high-precision and independent ledgers, plus IEEE binary64 retained-coset output",
+    "producerWallSeconds": 0.003999500011559576,
+    "randomSeed": null,
+    "solver": "no solver rerun in the figure producer; committed nonlinear source uses SciPy DOP853 with nonlinear least-squares/root continuation",
+    "spectralConvergenceProof": false,
+    "validatorWallSeconds": 0.03273495798930526,
+    "wallTimeSeconds": 0.036734458000864834
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T20:12:51+08:00",
+  "data": [
+    {
+      "bytes": 1310,
+      "format": "json",
+      "path": "config.json",
+      "schema": "source certificates, parameters, q grids, truncation radii, figure dimensions, and claim classification",
+      "sha256": "0ea9a23165bdc1f148d99252feacdb6148fca368a0ead2ff2dfd1a31733a8cfc"
+    },
+    {
+      "bytes": 31479,
+      "format": "json",
+      "path": "results.json",
+      "schema": "complete analytic and retained-coset source rows, certificate checks, source hashes, and fitted powers",
+      "sha256": "6c6ff59827c5e50ebac7c1c9d75ed8b5405a7e31ac862e2fd25f044e67a85866"
+    },
+    {
+      "bytes": 8271,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel, series, q, x, y, unit, formula, evidence class, source, and note",
+      "sha256": "abe907e765738f37ee2695d28f2dd81ae294ea700bf862ae5e1bce3a54ecb5d4"
+    },
+    {
+      "bytes": 14276,
+      "format": "json",
+      "path": "data.json",
+      "schema": "lossless plot rows and evidence classes",
+      "sha256": "3d5b31c7fe19d987b2c5a4939a292a39e34ec6ea16ec9b4347e8584cc27fb151"
+    },
+    {
+      "bytes": 2829,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "source/data hashes, row count, evidence map, and claim boundary",
+      "sha256": "7863e832973c582036c0323f72a2f998eb79b03523fa3cbc86d79e5e217542ac"
+    },
+    {
+      "bytes": 5705,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "independent certificate/data reconstruction, log-log refits, raster/vector/PDF checks, and QA checks",
+      "sha256": "9a6d3d44ced5306e03715179334c3682c5d04d803730426ae2ee5382c1365662"
+    },
+    {
+      "bytes": 6547,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped extraction, case, plotting, QA, and validation events",
+      "sha256": "d53d65b90ea2efe431c989a12f43ab872082667e2d257b15fcbbb368dcd1ba39"
+    },
+    {
+      "bytes": 3681,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped wall time, process CPU, peak resident set, load, and logical CPU records",
+      "sha256": "46f9bc951a478f286cff7abfdffa2e9f550685cc623d3d93b2615272a86a1a63"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.3.5",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "poppler": "bundled runtime",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "evidenceMap": {
+    "A": "certified leading atom divided by complete-ledger proxy",
+    "B": "nonlinear finite-coset atom and all-retained-mode rotational charge",
+    "C": "nonlinear root slope and q=1024 truncation audit"
+  },
+  "figure": {
+    "heightMillimetres": 127.0,
+    "outputs": [
+      {
+        "bytes": 52539,
+        "path": "figure.pdf",
+        "sha256": "734fd579276379f861dddf3525a1210e4f5ab6ef894c7dfcdd1946a16854d2f6"
+      },
+      {
+        "bytes": 127415,
+        "path": "figure.svg",
+        "sha256": "9ea4adabc6cbb8df6337321104ed67cb5b1a388928830a3a843ea18ccf890ed2"
+      },
+      {
+        "archivalDpi": 600,
+        "bytes": 639035,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4206,
+          3000
+        ],
+        "sha256": "6a0c02b00875e36abcf8c19d0d81a590b6448b7b5faadffbf92eba37555e25e7"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178.05
+  },
+  "figureId": "fig-r071w-amplitude-doping",
+  "git": {
+    "certificateCommit": "a9e2009565ca06672383da38fa9359874190481a",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "scopeNote": "dirtyAtCertifiedRun refers only to committed research inputs and certificates; generated figure-package assets are downstream outputs",
+    "sourceCommit": "a9e2009565ca06672383da38fa9359874190481a"
+  },
+  "independentAsymptoticPowers": {
+    "analyticAtomToCompleteLedgerTailFour": 1.0025764339549603,
+    "nonlinearAtomProxy": 1.0057133741402473,
+    "nonlinearRotationalCharge": -1.0025090248838397
+  },
+  "outputs": [
+    {
+      "bytes": 1850,
+      "path": "README.md",
+      "sha256": "d80c1fb9c14bc3b106d4dcff53703bbe9daf7dea3a5a6775247197ba5854c187"
+    },
+    {
+      "bytes": 1388,
+      "path": "caption.md",
+      "sha256": "d577f2e87147122f095ef19b53b0f229d20b8af50110b4db709a50ff805799b0"
+    },
+    {
+      "bytes": 2442,
+      "path": "figure-contract.md",
+      "sha256": "179c64176989d98a9de2e8a1a8198557d5e554d9a5f55738f75710c9c375b265"
+    },
+    {
+      "bytes": 1990,
+      "path": "contract.json",
+      "sha256": "6bdc3b5051d5cd3853b3cef851263bcc349852f5f393053e6aa32dcc5646966b"
+    },
+    {
+      "bytes": 1310,
+      "path": "config.json",
+      "sha256": "0ea9a23165bdc1f148d99252feacdb6148fca368a0ead2ff2dfd1a31733a8cfc"
+    },
+    {
+      "bytes": 1084,
+      "path": "command.txt",
+      "sha256": "928784335ecc719d02fbfcbc50ce3c51b68fbe620f863436eb98e0c6d30e198b"
+    },
+    {
+      "bytes": 672,
+      "path": "environment.txt",
+      "sha256": "9186e6cfa21af7e9f1f24b7fc9712ae3c01c3e52e10c0add40188429faf2e006"
+    },
+    {
+      "bytes": 61,
+      "path": "requirements.txt",
+      "sha256": "ac57e1098cf2ce9aade8347d8b836b70f0defdb5b79d37682d0da0ebd967f428"
+    },
+    {
+      "bytes": 14980,
+      "path": "produce_data.py",
+      "sha256": "803c44141300c6a45cf597870da75b233af898e545ffd3c30685b4d5096fdf2f"
+    },
+    {
+      "bytes": 14181,
+      "path": "plot.py",
+      "sha256": "477e8d270f5878dc58a416f77a90667e0d99f3fb734a7bb9d1d410f5767eb17e"
+    },
+    {
+      "bytes": 6795,
+      "path": "qa_images.py",
+      "sha256": "3e918aaa0d3a8831836638ba8a2be8d4d3600832a541c5fedf9a2b13a2b869a8"
+    },
+    {
+      "bytes": 17559,
+      "path": "validate.py",
+      "sha256": "b1cd230f51a9000c493191e89218ac730d97a3a1762cf4eb38c73bfcac02409a"
+    },
+    {
+      "bytes": 12172,
+      "path": "build_manifest.py",
+      "sha256": "d49dff843f47ca9be1228a062da4f96f6e220b36af264c481746daf1de1d85d8"
+    },
+    {
+      "bytes": 31479,
+      "path": "results.json",
+      "sha256": "6c6ff59827c5e50ebac7c1c9d75ed8b5405a7e31ac862e2fd25f044e67a85866"
+    },
+    {
+      "bytes": 8271,
+      "path": "data.csv",
+      "sha256": "abe907e765738f37ee2695d28f2dd81ae294ea700bf862ae5e1bce3a54ecb5d4"
+    },
+    {
+      "bytes": 14276,
+      "path": "data.json",
+      "sha256": "3d5b31c7fe19d987b2c5a4939a292a39e34ec6ea16ec9b4347e8584cc27fb151"
+    },
+    {
+      "bytes": 2829,
+      "path": "figure-data-metadata.json",
+      "sha256": "7863e832973c582036c0323f72a2f998eb79b03523fa3cbc86d79e5e217542ac"
+    },
+    {
+      "bytes": 5705,
+      "path": "validation.json",
+      "sha256": "9a6d3d44ced5306e03715179334c3682c5d04d803730426ae2ee5382c1365662"
+    },
+    {
+      "bytes": 6547,
+      "path": "progress.ndjson",
+      "sha256": "d53d65b90ea2efe431c989a12f43ab872082667e2d257b15fcbbb368dcd1ba39"
+    },
+    {
+      "bytes": 3681,
+      "path": "resource-log.ndjson",
+      "sha256": "46f9bc951a478f286cff7abfdffa2e9f550685cc623d3d93b2615272a86a1a63"
+    },
+    {
+      "bytes": 52539,
+      "path": "figure.pdf",
+      "sha256": "734fd579276379f861dddf3525a1210e4f5ab6ef894c7dfcdd1946a16854d2f6"
+    },
+    {
+      "bytes": 127415,
+      "path": "figure.svg",
+      "sha256": "9ea4adabc6cbb8df6337321104ed67cb5b1a388928830a3a843ea18ccf890ed2"
+    },
+    {
+      "bytes": 639035,
+      "dpi": [
+        599.9988,
+        599.9988
+      ],
+      "path": "figure.png",
+      "pixels": [
+        4206,
+        3000
+      ],
+      "sha256": "6a0c02b00875e36abcf8c19d0d81a590b6448b7b5faadffbf92eba37555e25e7"
+    },
+    {
+      "bytes": 340314,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-original.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "5b7b815c6205d8b175b73300863be7faa26b8e912fcdd8d472302c7ad0528bbb"
+    },
+    {
+      "bytes": 134584,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-grayscale.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "53b2a9cad96046ffa8296b5a860bad755d10a46bda2c663c2f69e506ed00cae7"
+    },
+    {
+      "bytes": 153857,
+      "dpi": [
+        179.9844,
+        179.9844
+      ],
+      "path": "qa-pdf.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "7f6c49c566d1908abab0a8372f923d1ae8f40900476345a2042b55c5604d14f3"
+    },
+    {
+      "bytes": 1018,
+      "path": "qa-report.md",
+      "sha256": "36ad2ef5f478d4ff6b44bbbbc74655951c81e0b65ae94016b57969a8aa9d136b"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 22,
+    "automaticChecks": "validation.json",
+    "colorPreview": "qa-original.png",
+    "dataCrossChecked": true,
+    "evidenceBoundaryInspected": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentMethod": "Matplotlib-independent certificate/data reconstruction, independent log-log refits, Poppler page audit, SVG/XML audit, and Pillow raster audit",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "nonColorEncodingInspected": true,
+    "pdfRenderInspected": true,
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.71W",
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 259312,
+      "commit": "a9e2009565ca06672383da38fa9359874190481a",
+      "extractionCommand": "python figures/r071w-complete-ledger/fig-r071w-amplitude-doping/produce_data.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json",
+      "fileName": "result.json",
+      "label": "primary",
+      "location": "research/certificates/r071w",
+      "sha256": "c6a25f123f1028d2d5b369a559ddaf7092417f95793f16cff2345cf34cb5a45f",
+      "status": "passed"
+    },
+    {
+      "bytes": 11868,
+      "commit": "a9e2009565ca06672383da38fa9359874190481a",
+      "extractionCommand": "python figures/r071w-complete-ledger/fig-r071w-amplitude-doping/produce_data.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json",
+      "fileName": "independent-result.json",
+      "label": "independent",
+      "location": "research/certificates/r071w",
+      "sha256": "4a337210d7707f765ee3eb77901d78e63534cdca6ac86df5f51ccf0ff079bd22",
+      "status": "passed"
+    },
+    {
+      "bytes": 20730,
+      "commit": "a9e2009565ca06672383da38fa9359874190481a",
+      "extractionCommand": "python figures/r071w-complete-ledger/fig-r071w-amplitude-doping/produce_data.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json",
+      "fileName": "truncated-coset-result.json",
+      "label": "truncatedCoset",
+      "location": "research/certificates/r071w",
+      "sha256": "ab7102539a6585e7ed2e68648a620ed0862bdaa52fd0ee85e519f5c74f45c929",
+      "status": "passed"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "The certified leading ledger has atom-to-complete-ledger proxy order q^1 for alpha=3/2. Independently, the retained-coset nonlinear calculation has atom-proxy order q^1, rotational-charge order q^-1, a stable normalized second-root slope, and truncation agreement at q=1024."
+}

@@ -220,8 +220,11 @@ test("states the complete derivative, square-residual cancellation, second jet, 
 
   assert.match(home, /square|平方|second.?jet|二阶余项/i);
   assert.match(recap, /square|平方|second.?jet|二阶余项/i);
-  assert.match(literature, /bounded audit/i);
-  assert.match(literature, /不是原创性、优先权或不存在性结论/);
+  assert.match(literature, /bounded (?:audit|non-collision)/i);
+  assert.match(
+    literature,
+    /(?:不是原创性、优先权或不存在性结论|不作原创性、优先权或不存在性声明)/,
+  );
 });
 
 test("verifies exact and independent certificates, including opposite J signs and declared thresholds", async () => {

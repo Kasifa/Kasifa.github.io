@@ -1,0 +1,21 @@
+Generate the 90-digit producer certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/r071x_exact_audit.py --output research/certificates/r071x/result.json
+
+Generate the independent binary64 certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/r071x_independent_audit.py --output research/certificates/r071x/independent-result.json
+
+Generate the nonlinear retained-coset corroboration:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071x_truncated_coset_audit.py --output research/certificates/r071x/truncated-coset-result.json
+
+The independent program imports neither the producer nor `result.json`.  The
+truncated-coset program imports neither algebraic audit.
+
+Figure commands:
+figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/command.txt
+
+Validate the figure package:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/validate_figure_package.py figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r071x/build_hashes.py
+(cd research/certificates/r071x && shasum -a 256 -c SHA256SUMS)

@@ -1,0 +1,420 @@
+{
+  "analyticalQuestion": "At fixed small coupling A_q=delta q^2, do the certified and finite retained-coset ledgers display the q^6 data scale, q^2 prescribed atom-proxy scale, q-independent one-third endpoint proxy, and delta^(4/3) collapse?",
+  "asymptoticPowers": {
+    "deltaEndpointCollapse": {
+      "logCoefficient": -13.2138020034622,
+      "power": 1.3333333333333335,
+      "rSquared": 1.0
+    },
+    "finiteCosetEndpointAtomProxyRatio": {
+      "logCoefficient": -19.869548876612424,
+      "power": -0.00018595336344998656,
+      "rSquared": 0.8710522570808829
+    },
+    "fixedDeltaCompletePrescribedAtomProxySum": {
+      "logCoefficient": -19.49452200570242,
+      "power": 1.9999066613001997,
+      "rSquared": 0.9999999996776854
+    },
+    "fixedDeltaInitialDataD": {
+      "logCoefficient": 1.1250806127299808,
+      "power": 6.000277843990954,
+      "rSquared": 0.9999999996824415
+    },
+    "fullRetainedRotationalChargeUpper": {
+      "logCoefficient": -17.494105115819156,
+      "power": -0.0004968910482260437,
+      "rSquared": 0.8709049843591101
+    }
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "The figure extracts values from the committed R0.71X certificates. The atomProxy is not the multiplier-locked J_* atom; the missing fixed multiplier and kappa factor are not instantiated numerically. The retained-coset calculation is finite-dimensional corroboration, not DNS, and does not prove spectral convergence. The continuum implicit-function theorem provides an existential small-coupling radius, but delta=1/128 has not been proved to lie inside that radius. The figure proves no universal D^(1/3) estimate and no Navier-Stokes regularity statement.",
+  "computation": {
+    "actualMultiplierLockedJStar": false,
+    "certificateExtraction": true,
+    "configuration": "R0.71X A_q=delta q^2; fixed-delta finite-coset q=256..4096 at delta=1/128 and R=40; high-precision delta sweep at q=2048; q=1024 radius audit R=15,30,60 against R=40",
+    "continuumIftRadiusCertifiedAtFixedDelta": false,
+    "dns": false,
+    "finiteRetainedCosetIntegration": true,
+    "fitBoundary": "displayed regressions describe stored certificate rows and do not establish an unrecorded continuum limit",
+    "fittedData": true,
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "data-analysis",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "q",
+        "D",
+        "atomProxySum",
+        "elapsedSeconds",
+        "processUserCpuSeconds",
+        "processSystemCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "pdeTimeStepping": false,
+    "precision": "source extraction from a 90-digit Decimal certificate, an independent binary64 audit, and IEEE binary64 finite retained-coset output",
+    "producerWallSeconds": 0.002196167013607919,
+    "randomSeed": null,
+    "solver": "no scientific solver rerun in this package; committed finite-coset source used SciPy DOP853 and nonlinear least-squares continuation",
+    "spectralConvergenceProof": false,
+    "validatorWallSeconds": 0.058856416027992964,
+    "wallTimeSeconds": 0.06105258304160088
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T21:56:36+08:00",
+  "data": [
+    {
+      "bytes": 1188,
+      "format": "json",
+      "path": "config.json",
+      "schema": "source certificate paths, fixed delta, q and delta grids, truncation radii, figure dimensions, and claim classifications",
+      "sha256": "9a199cbcbb0bbc5a5dd4c582ab8fc82e9c15dbfe43a5a6cabb4ce7cef82c8d81"
+    },
+    {
+      "bytes": 99381,
+      "format": "json",
+      "path": "results.json",
+      "schema": "source rows, source hashes, independent limiting-algebra cross-check, no-extra-root counts, and fitted powers",
+      "sha256": "8e132a226f8893a55f7e5f39b26cd860118e073e2d26a1dc9e8dfe81b857232a"
+    },
+    {
+      "bytes": 14323,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel, series, q, delta, x, y, raw value, reference value, unit, formula, evidence class, source, and note",
+      "sha256": "f8bd72c687d3b4a68fe9703e0a0a454a182aa8ef5723485958ae7eda58653f59"
+    },
+    {
+      "bytes": 24945,
+      "format": "json",
+      "path": "data.json",
+      "schema": "lossless plot rows and evidence classes",
+      "sha256": "572bf8f78ed2d12b95ab5c301b5c4d3c480fa43781ad4c27fb5ca109f15316d3"
+    },
+    {
+      "bytes": 2956,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "source and data hashes, row count, evidence map, and claim boundary",
+      "sha256": "6ddbc2c97c66adfcfe8e0031c6230ba875ecf6456d440df8c2d35e6e34f6e1a3"
+    },
+    {
+      "bytes": 6598,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "independent source reconstruction, regressions, output checks, and final-size QA checks",
+      "sha256": "d243cff9739e309cfddcb42621de9779140bd40288d05f61ac7a86bbbb6e946f"
+    },
+    {
+      "bytes": 2473,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped extraction, plotting, QA, and validation events",
+      "sha256": "f97bad3a9570bac435d667133544a8d17f2f74919af346b8057a43cfd9ea7717"
+    },
+    {
+      "bytes": 2069,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped wall time, process CPU, peak resident set, load, and logical CPU records",
+      "sha256": "5f67db8fa5f1c96f28485714150555e04724544ef471b3335356687fe1ad60e9"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.3.5",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "poppler": "bundled runtime",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "evidenceMap": {
+    "A": "indexed finite retained-coset D and complete prescribed atomProxy sum; raw values retained",
+    "B": "two high-precision endpoint proxies and two separate finite retained-coset diagnostics",
+    "C": "high-precision delta collapse and finite retained-coset truncation comparison"
+  },
+  "figure": {
+    "heightMillimetres": 127.0,
+    "outputs": [
+      {
+        "bytes": 48544,
+        "path": "figure.pdf",
+        "sha256": "968399e21ea4765406c4869445512a07daa09047982423a45dd25be792308e8f"
+      },
+      {
+        "bytes": 199736,
+        "path": "figure.svg",
+        "sha256": "4e3869f2c6f729f7d1175045a424a5ab983213fcefa75f2f9f54bb927672532f"
+      },
+      {
+        "archivalDpi": 600,
+        "bytes": 807375,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4206,
+          3000
+        ],
+        "sha256": "f1b1c38449bda5049044aaf5b7dab88fe9347659d1890e6b3ef487fcf17ff215"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178.05
+  },
+  "figureId": "fig-r071x-endpoint-saturation",
+  "git": {
+    "certificateCommit": "45691a4bc1b562f305cd8f7b79d2c8c50957fb73",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "scopeNote": "dirtyAtCertifiedRun refers to the committed certificate inputs; this figure package is a deterministic downstream extraction",
+    "sourceCommit": "45691a4bc1b562f305cd8f7b79d2c8c50957fb73"
+  },
+  "independentAsymptoticPowers": {
+    "deltaEndpointCollapse": 1.3333333333333335,
+    "finiteCosetEndpointAtomProxyRatio": -0.00018595336344998656,
+    "fixedDeltaCompletePrescribedAtomProxySum": 1.9999066613001997,
+    "fixedDeltaInitialDataD": 6.000277843990954,
+    "fullRetainedRotationalChargeUpper": -0.0004968910482260437
+  },
+  "outputs": [
+    {
+      "bytes": 1948,
+      "path": "README.md",
+      "sha256": "bea459bfaa49a05c84ede2ff8aa081811065a675d05d7253731a2f93a5acdeba"
+    },
+    {
+      "bytes": 1527,
+      "path": "caption.md",
+      "sha256": "265bae9ae797b2451b461557d189f75b1981c88dbae5bb38dc498014e0652d13"
+    },
+    {
+      "bytes": 2483,
+      "path": "figure-contract.md",
+      "sha256": "1bbdd056f062fccf593d82682a58e3e1cc2246b7cce24e1d311c29e2a9d2ec84"
+    },
+    {
+      "bytes": 2215,
+      "path": "contract.json",
+      "sha256": "233b1c0d67d322d4c771a1fa09144827701993a6ff91c7b45ed84082bb5978df"
+    },
+    {
+      "bytes": 1188,
+      "path": "config.json",
+      "sha256": "9a199cbcbb0bbc5a5dd4c582ab8fc82e9c15dbfe43a5a6cabb4ce7cef82c8d81"
+    },
+    {
+      "bytes": 940,
+      "path": "command.txt",
+      "sha256": "810603714892fff54edd1dafbdf2b9c56d9a84386e003f89e536bf6f00a5d40e"
+    },
+    {
+      "bytes": 767,
+      "path": "environment.txt",
+      "sha256": "135c251c23ef402503fcae5f4c4f958021f6bc6c4ca60e825b0098bb030dba52"
+    },
+    {
+      "bytes": 61,
+      "path": "requirements.txt",
+      "sha256": "ac57e1098cf2ce9aade8347d8b836b70f0defdb5b79d37682d0da0ebd967f428"
+    },
+    {
+      "bytes": 19617,
+      "path": "produce_data.py",
+      "sha256": "b9e27695210dd782d5b29ce7d7bd77f7999a1077b3c956292c3735daf2b5cd07"
+    },
+    {
+      "bytes": 14641,
+      "path": "plot.py",
+      "sha256": "57eeec2f4e24e40bf2fa4b4f7b065db5b9a02592dfdf987e7ac75edf46ffebb3"
+    },
+    {
+      "bytes": 6341,
+      "path": "qa_images.py",
+      "sha256": "02da8c8f1ad3d12e7547d298107522cf0cf8fd50800c69d1b6d6f5a1e3cb9dbb"
+    },
+    {
+      "bytes": 18878,
+      "path": "validate.py",
+      "sha256": "7e7d034876613ed7ba3633a3c2557b78a7d1466d02f2fc45c0203177ae8c142b"
+    },
+    {
+      "bytes": 10891,
+      "path": "build_manifest.py",
+      "sha256": "51bf6e14347da9fef15d9e95d897da562c8c896a3cbe783a61609a59ffc778cf"
+    },
+    {
+      "bytes": 99381,
+      "path": "results.json",
+      "sha256": "8e132a226f8893a55f7e5f39b26cd860118e073e2d26a1dc9e8dfe81b857232a"
+    },
+    {
+      "bytes": 14323,
+      "path": "data.csv",
+      "sha256": "f8bd72c687d3b4a68fe9703e0a0a454a182aa8ef5723485958ae7eda58653f59"
+    },
+    {
+      "bytes": 24945,
+      "path": "data.json",
+      "sha256": "572bf8f78ed2d12b95ab5c301b5c4d3c480fa43781ad4c27fb5ca109f15316d3"
+    },
+    {
+      "bytes": 2956,
+      "path": "figure-data-metadata.json",
+      "sha256": "6ddbc2c97c66adfcfe8e0031c6230ba875ecf6456d440df8c2d35e6e34f6e1a3"
+    },
+    {
+      "bytes": 6598,
+      "path": "validation.json",
+      "sha256": "d243cff9739e309cfddcb42621de9779140bd40288d05f61ac7a86bbbb6e946f"
+    },
+    {
+      "bytes": 2473,
+      "path": "progress.ndjson",
+      "sha256": "f97bad3a9570bac435d667133544a8d17f2f74919af346b8057a43cfd9ea7717"
+    },
+    {
+      "bytes": 2069,
+      "path": "resource-log.ndjson",
+      "sha256": "5f67db8fa5f1c96f28485714150555e04724544ef471b3335356687fe1ad60e9"
+    },
+    {
+      "bytes": 48544,
+      "path": "figure.pdf",
+      "sha256": "968399e21ea4765406c4869445512a07daa09047982423a45dd25be792308e8f"
+    },
+    {
+      "bytes": 199736,
+      "path": "figure.svg",
+      "sha256": "4e3869f2c6f729f7d1175045a424a5ab983213fcefa75f2f9f54bb927672532f"
+    },
+    {
+      "bytes": 807375,
+      "dpi": [
+        599.9988,
+        599.9988
+      ],
+      "path": "figure.png",
+      "pixels": [
+        4206,
+        3000
+      ],
+      "sha256": "f1b1c38449bda5049044aaf5b7dab88fe9347659d1890e6b3ef487fcf17ff215"
+    },
+    {
+      "bytes": 410585,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-original.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "816361efd59af4b0be64d1492b33e67dba2521631020a19155513da3103ad3e5"
+    },
+    {
+      "bytes": 160560,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-grayscale.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "712286808242d728af5d493ee4f0826461845bed9f40598c6d866660e5268f79"
+    },
+    {
+      "bytes": 186234,
+      "dpi": [
+        179.9844,
+        179.9844
+      ],
+      "path": "qa-pdf.png",
+      "pixels": [
+        1262,
+        900
+      ],
+      "sha256": "1c888011d364e74ccf876df005520896e58fde619ca9945e7620f7ea8fcd4084"
+    },
+    {
+      "bytes": 1077,
+      "path": "qa-report.md",
+      "sha256": "31a10029bab7d2f13dc5f3fef2479eb9a9998be16f14247fe3cc7802f86f0a65"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 23,
+    "automaticChecks": "validation.json",
+    "colorPreview": "qa-original.png",
+    "dataCrossChecked": true,
+    "evidenceBoundaryInspected": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentMethod": "independent source-to-CSV reconstruction, independent log-log regressions, output-format checks, PDF/SVG/raster checks, and recorded manual final-size QA",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "nonColorEncodingInspected": true,
+    "pdfRenderInspected": true,
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.71X",
+  "schemaVersion": "1.0",
+  "sourceData": [
+    {
+      "bytes": 9345,
+      "commit": "45691a4bc1b562f305cd8f7b79d2c8c50957fb73",
+      "extractionCommand": "python figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/produce_data.py --config figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/config.json",
+      "fileName": "result.json",
+      "label": "primary",
+      "location": "research/certificates/r071x",
+      "sha256": "35cd489923abb3b1f007270e4daf72f142bcfd694b4a15faa1e3c37aa09834b5",
+      "status": "passed"
+    },
+    {
+      "bytes": 53090,
+      "commit": "45691a4bc1b562f305cd8f7b79d2c8c50957fb73",
+      "extractionCommand": "python figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/produce_data.py --config figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/config.json",
+      "fileName": "independent-result.json",
+      "label": "independent",
+      "location": "research/certificates/r071x",
+      "sha256": "73155b7be532fb053acc3b73941c72ff643a2fd452ad67315f7d227cb987a83a",
+      "status": "passed"
+    },
+    {
+      "bytes": 81803,
+      "commit": "45691a4bc1b562f305cd8f7b79d2c8c50957fb73",
+      "extractionCommand": "python figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/produce_data.py --config figures/r071x-one-third-boundary/fig-r071x-endpoint-saturation/config.json",
+      "fileName": "truncated-coset-result.json",
+      "label": "truncatedCoset",
+      "location": "research/certificates/r071x",
+      "sha256": "8e095535769effcf78ef86a580e9907e809f76237e3606de1bf938e0d5a24833",
+      "status": "passed"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "The source certificates give D proportional to q^6 and the complete prescribed atomProxy sum proportional to q^2. Their atomProxy/D^(1/3) endpoint ratio is q-independent to the recorded accuracy, and the high-precision delta sweep has fitted power 4/3. The separate finite retained-coset charge and truncation diagnostics remain explicitly segregated from the analytic proxy."
+}

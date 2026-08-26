@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71W：amplitude-doped exact triangular 2.5D NSE sequence 排除 data-independent complete first-row Leray ledger；初始数据依赖与三分之一次方端点仍开放。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71W｜振幅掺杂与完整第一行账本边界">
+  <meta property="og:description" content="固定壳原子发散，enstrophy ratio 有界，完整 projected rotational charge 消失；代价是初始数据无界。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-71w-amplitude-doping.png">
+  <title>R0.71W｜振幅掺杂与完整第一行账本边界</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.68rem,3.6vw,3rem)}pre{max-width:100%;overflow-x:auto}@media print{#reproduce{break-inside:avoid}pre{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.5pt}}</style>
+  <script defer src="/i18n-en.js?v=1.09"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#ledger">账本</a><a href="#class">2.5D 类</a><a href="#doping">构造</a><a href="#ift">IFT</a><a href="#atom">原子</a><a href="#enstrophy">enstrophy</a><a href="#rotational">旋转项</a><a href="#theorem">定理</a><a href="#data">数据边界</a><a href="#literature">文献</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71W · AMPLITUDE DOPING · COMPLETE FIRST-ROW LEDGER</div>
+        <h1>完整第一行 data-uniform 账本失败，<br>初始数据依赖仍是开放边界</h1>
+        <p class="lead">本节在 exact triangular 2.5D 不变类中构造 amplitude-doped 光滑无外力 NSE 序列。固定 target、固定宏观时间窗和指定的 \(m=2\) 根保持不变；固定壳原子发散，enstrophy ratio 有界，完整 projected rotational charge 趋于零。因此带固定 \(\nu^2\) baseline 的 complete first-row ledger 也不能用 data-independent 常数控制全部光滑解。代价是初始 energy/enstrophy 无界。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71W 完成</span><strong>data-uniform complete first-row no-go</strong><p>版本 v0.71W · 2026-08-26</p><p>exact audit: PASS</p><p>independent audit: PASS</p><p>truncated coset: corroboration</p><p>下一对象：data-dependent \(1/3\) boundary</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#ledger">01 · 完整账本</a></li><li><a href="#class">02 · 精确 2.5D 类</a></li><li><a href="#doping">03 · 振幅掺杂</a></li><li><a href="#ift">04 · 统一 IFT</a></li><li><a href="#atom">05 · 根斜率与原子</a></li><li><a href="#enstrophy">06 · enstrophy</a></li><li><a href="#rotational">07 · 旋转项</a></li><li><a href="#theorem">08 · no-go 定理</a></li><li><a href="#data">09 · 数据依赖</a></li><li><a href="#literature">10 · 文献边界</a></li><li><a href="#audit">11 · 计算审计</a></li><li><a href="#figure">12 · 正式附图</a></li><li><a href="#value">13 · 研究价值</a></li><li><a href="#next">14 · 下一步</a></li><li><a href="#claims">15 · 主张边界</a></li><li><a href="#reproduce">16 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>固定 baseline 与完整 rotational charge 不能救回 data-uniform 第一行估计</h2>
+          <div class="boundary"><strong>本节判断</strong><p>对每个 \(1&lt;\alpha&lt;2\)，存在 exact smooth global unforced 3D NSE 序列，使指定的 \(m=2\) fixed-shell atom 相对 complete first-row Leray ledger 发散。结论只排除 data-independent 常数；它不排除足够强的初始数据依赖。</p></div>
+          <p>这不是千禧年问题的解答。本节没有给出继续性判据、有限时奇性或全局正则性。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">01 / Candidate ledger</div><h2>R0.71V 留下的完整第一行对象</h2>
+          <p>在固定区间 \(I\) 上，令 \(Y=\|\omega\|_2^2\)、\(L=\mathbb P(u\times\omega)\)，并写</p>
+          <div class="equation result">\[
+            \Lambda_1(I;u)=\mathcal R_Y(I)\left[\nu^2+\frac1\ell\int_I\frac{\|L\|_{\dot H^{-1}}^2}{Y}\,dt\right],
+            \qquad \mathcal R_Y(I)=\frac{\sup_IY}{\inf_IY}.
+          \]</div>
+          <p>R0.71V 的 bounded-data diagonal 会被固定 \(\nu^2\) 项吸收。因此本节必须同时保持 atom 增长、\(\mathcal R_Y\) 有界，并控制完整而非 selected-shell rotational charge。</p>
+        </section>
+
+        <section id="class"><div class="section-no">02 / Exact triangular class</div><h2>压力梯度被精确分离，旋转项只剩一个分量</h2>
+          <p>取周期解</p>
+          <div class="equation result">\[
+            u=(f(y,z,t),0,v(y,t)),\qquad
+            v_t=\nu v_{yy},\qquad f_t+vf_z=\nu(f_{yy}+f_{zz}).
+          \]</div>
+          <p>其涡量为 \(\omega=(v_y,f_z,-f_y)\)，并且</p>
+          <div class="equation result">\[
+            u\times\omega=(-vf_z,0,0)+\nabla\frac{v^2+f^2}{2},
+            \qquad L=(-vf_z,0,0).
+          \]</div>
+          <p>这是原始三维不可压 NSE 的 exact invariant class，不是修改方程或外力模型。</p>
+        </section>
+
+        <section id="doping"><div class="section-no">03 / Amplitude doping</div><h2>小 rescaled coupling 与增长的物理振幅可以同时存在</h2>
+          <p>固定 target \(k_*=(0,K_y,K_z)\)、annular multiplier、macroscopic interval 与两个 rescaled root times。取 auxiliary frequencies \(n_l=d r_lq\)，并令</p>
+          <div class="equation result">\[
+            \mathscr A_q=q^\alpha,\qquad 1&lt;\alpha&lt;2,\qquad
+            \delta_q=\frac{\mathscr A_q}{q^2}=q^{\alpha-2}\to0.
+          \]</div>
+          <p>seed、shear 与一个不进入 target annulus 的 \(z\)-independent background 同步掺杂；background coefficient 取 \(B_q=b_0\mathscr A_qq\)。小量是 rescaled coupling \(\delta_q\)，不是 physical shear amplitude。</p>
+        </section>
+
+        <section id="ift"><div class="section-no">04 / Uniform rescaled IFT</div><h2>统一半径内产生两个 exact simple roots</h2>
+          <p>在 \(x=q^2(t-\sigma_q)\) 与 Fourier coset \(k_y=K_y+dqr\) 上，把 active scalar 写成 \(f^{\rm act}=\mathscr A_qF_q\)。演化成为</p>
+          <div class="equation result">\[
+            \partial_xF_q=D_qF_q+\delta_qV_z(x)F_q.
+          \]</div>
+          <p>\(D_q\) 在共同加权 \(\ell^2\) 定义域上自伴耗散，\(V_z(x)\) 一致有界且强连续。保留全部中间 semigroup 的 Dyson 展开给 factorial majorant；divided target map 的 \(C^2\) 控制和两组 Chebyshev blocks 给出 quantitative implicit-function theorem。由此得到有界参数 \(z_q(\delta_q)\)、指定的 exact roots 与统一 simple-slope 下界。</p>
+        </section>
+
+        <section id="atom"><div class="section-no">05 / Root slope and atom</div><h2>指定的 \(m=2\) filtered coefficient 斜率为 \(\mathscr A_q^2\) 量级</h2>
+          <p>filtered \(C_{*,t}\) 的 target coefficient 与 \(a_t\) 只相差固定非零 multiplier/eigenshell factors，因此在指定根上</p>
+          <div class="equation result">\[
+            |a_t(t_{m,q})|\asymp\mathscr A_q^2,
+            \qquad
+            J_{*,m,q}\asymp\frac{\mathscr A_q^4}{Y_q(t_{m,q})}.
+          \]</div>
+          <p>后面的 enstrophy 两侧界将它化为 \(J_{*,m,q}\asymp\mathscr A_q^2/q^2\)。这里只需要指定的 \(m=2\) 原子；不需要累计大量零点。</p>
+        </section>
+
+        <section id="enstrophy"><div class="section-no">06 / Uniform enstrophy ratio</div><h2>background 给出下界，分量方程给出无指数损失的上界</h2>
+          <p>\(f_z\) 仍满足 advection–diffusion；\(f_y\) 只多出 \(v_yf_z\) source。直接能量估计给</p>
+          <div class="equation result">\[
+            c\mathscr A_q^2q^2\le Y_q(t)\le C\mathscr A_q^2q^2
+            \quad(t\in I),\qquad \mathcal R_{Y_q}(I)=O(1).
+          \]</div>
+          <p>因此</p>
+          <div class="equation result">\[
+            J_{*,m,q}\asymp\frac{\mathscr A_q^2}{q^2}
+            =q^{2\alpha-2}\to\infty.
+          \]</div>
+        </section>
+
+        <section id="rotational"><div class="section-no">07 / Complete rotational charge</div><h2>full-frequency \(\dot H^{-1}\) payment 趋于零</h2>
+          <p>background 没有 \(z\)-导数，所以不进入 \(L=(-vf_z,0,0)\)。完整 heat-mode shear 满足 \(\int\|v\|_\infty^2dt\le C\mathscr A_q^2/q^2\)。结合 \(Y_q\gtrsim\mathscr A_q^2q^2\) 与 \(\|f_z\|_2\lesssim\mathscr A_q\)，得到</p>
+          <div class="equation result">\[
+            \frac1\ell\int_I\frac{\|L_q\|_{\dot H^{-1}}^2}{Y_q}\,dt
+            \le C\frac{\mathscr A_q^2}{q^4}
+            =Cq^{2\alpha-4}\to0.
+          \]</div>
+          <p>该估计保留所有 diagonal、off-diagonal 与 target-complement interactions，不是 selected-shell proxy。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">08 / Complete first-row no-go</div><h2>不存在只依赖固定几何、黏性和区间的统一常数</h2>
+          <div class="equation result">\[
+            \frac{J_{*,2,q}}{\Lambda_1(I;u_q)}\longrightarrow\infty.
+          \]</div>
+          <p>所以不存在 data-independent \(C_*\)，使每个 smooth unforced solution 的 positive fixed-shell atoms 都由 \(C_*\Lambda_1\) 统一控制。一个 singleton shell 和指定的 \(m=2\) 根已经失败。该结论不否定 R0.71U 的 second-time-jet theorem。</p>
+        </section>
+
+        <section id="data"><div class="section-no">09 / Data-dependent boundary</div><h2>代价是初始 energy/enstrophy 按 \(q^{2\alpha+2}\) 增长</h2>
+          <div class="equation result">\[
+            D_q:=\|u_q(\sigma_q)\|_2^2+\|\omega_q(\sigma_q)\|_2^2
+            \asymp\mathscr A_q^2q^2=q^{2\alpha+2},
+          \]</div>
+          <div class="equation result">\[
+            J_{*,2,q}\asymp D_q^{(\alpha-1)/(\alpha+1)}.
+          \]</div>
+          <p>让 \(\alpha\uparrow2\) 时指数从下方逼近 \(1/3\)。因此该族排除每个固定 \(\beta&lt;1/3\) 的 \(D^\beta\) payment，但不排除端点 \(D^{1/3}\)、更强数据依赖或结构不同的 charge。把观察窗缩到 \(q^{-2}\) 不能替代 background，因为 \(\ell^{-1}\) 会补回 \(q^2\)。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">10 / Primary-source boundary</div><h2>标准来源支持弱能量、2D3C 与 semigroup 工具，不给本节固定零层估计</h2>
+          <p><a href="https://doi.org/10.1007/BF02547354">Leray</a>与 <a href="https://doi.org/10.1137/1.9781611970050">Temam</a>给 weak-energy 与 semigroup 框架；<a href="https://doi.org/10.1063/1.4990082">Biferale–Buzzicotti–Linkmann</a>记录 2D3C reduction；<a href="https://link.springer.com/book/10.1007/978-1-4612-0915-5">Karlin–Studden</a>给 Chebyshev-system 背景。quantitative rescaled IFT 与 complete charge estimate 在报告中直接证明。</p>
+          <p>限定检索没有定位到 data-uniform fixed-zero quadratic trace 的 complete first-row Leray estimate。这不是原创性、优先权或不存在性声明。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">11 / Exact and independent audit</div><h2>高精度 producer、独立 binary64 与截断 coset 分别核对</h2>
+          <p>exact 与 independent certificates 都复核 \(\delta_q\)、atom、rotational upper bound、atom/ledger 与 enstrophy powers。finite nonlinear truncated-coset audit 复核 exact root residual、atom 与 retained full-coset \(\dot H^{-1}\) charge 的相反标度，并检查截断稳定性。</p>
+          <p>数值部分是有限维 corroboration，不是 DNS，也不承担 uniform Dyson convergence、IFT remainder、nonlinear enstrophy bounds 或 continuum proof。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">12 / Journal figure</div><h2>附图比较 atom、完整账本 proxy 与 nonlinear coset audit</h2>
+          <figure><img src="/figures/r0-71w-amplitude-doping.svg" alt="R0.71W 振幅掺杂序列的固定壳原子、完整第一行账本 proxy、旋转项和截断 coset 稳定性"><figcaption>图 R0.71W。解析尺度与两个独立 certificate 给出 atom \(q^{+1}\)、normalized rotational charge \(q^{-1}\) 和 atom/complete-ledger ratio \(q^{+1}\) 的 \(\alpha=3/2\) 实例；nonlinear truncated-coset 计算另复核 atom 与 retained full-coset rotational charge 的相反标度。附图只作可复现 corroboration，不替代解析 no-go 定理。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">13 / Research value</div><h2>完整第一行的 data-uniform 候选已经关闭，数据依赖成为下一条可检验边界</h2>
+          <p>R0.71V 尚不能排除固定 \(\nu^2\) baseline 与完整 projected rotational term。本节把两项一起保留后仍得到发散，因此 selected-shell omission、抽象时间路径和压力都不是这一 no-go 的原因。</p>
+          <p>研究价值是明确剪枝：若要替代 R0.71U 的 second-time row，必须加入足够强的初始数据依赖、persistence/noncollapse trace、更多时间正则信息，或改变 observable。它本身没有把一般奇性问题向结论推进。</p>
+        </section>
+
+        <section id="next"><div class="section-no">14 / Next finite gate</div><h2>R0.71X 检查 \(D^{1/3}\) 端点与 scale-compatible payment</h2>
+          <p>下一步比较 data-dependent energy/enstrophy charge 与 exact atom scaling，判断 \(1/3\) 是这类 triangular family 的特征，还是更普遍的结构边界。任何正面估计都必须在 bounded-data class 或明确的数据 prefactor 下陈述。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">15 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>uniform rescaled Fourier-lattice IFT；exact prescribed roots；root slope \(\asymp\mathscr A_q^2\)；\(Y_q\asymp\mathscr A_q^2q^2\)；完整 projected rotational charge 上界；data-uniform complete first-row no-go。</li>
+            <li><strong>未证明：</strong>任意初始数据依赖估计都失败；\(D^{1/3}\) sharp；R0.71U second-time theorem 失败；weak zero trace；single-trajectory infinite recurrence；继续性、有限时奇性或 global regularity。</li>
+            <li><strong>数据边界：</strong>本序列的初始 energy/enstrophy 无界，因此不能外推成 bounded-data no-go。</li>
+            <li><strong>计算边界：</strong>finite-response 与 truncated-coset outputs 只复核有限数据和标度，不承担解析证明。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">16 / Reproduce</div><h2>报告、文献、三组审计与期刊附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071w_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071w_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071w_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071w_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071w">exact / independent / truncated-coset 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071w-complete-ledger/fig-r071w-amplitude-doping">附图、数据、manifest、progress 与源代码包</a> · <a href="/figures/r0-71w-amplitude-doping.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-71w.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-71w.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71w.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071w_exact_audit.py --output research/certificates/r071w/result.json
+python3 research/r071w_independent_audit.py --output research/certificates/r071w/independent-result.json
+python3 research/r071w_truncated_coset_audit.py --output research/certificates/r071w/truncated-coset-result.json
+python3 figures/r071w-complete-ledger/fig-r071w-amplitude-doping/produce_data.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json
+python3 figures/r071w-complete-ledger/fig-r071w-amplitude-doping/plot.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json --output-stem figures/r071w-complete-ledger/fig-r071w-amplitude-doping/figure
+python3 figures/r071w-complete-ledger/fig-r071w-amplitude-doping/validate.py --config figures/r071w-complete-ledger/fig-r071w-amplitude-doping/config.json --output figures/r071w-complete-ledger/fig-r071w-amplitude-doping/validation.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71W · 2026-08-26 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71w.html">累计回顾</a></div></footer>
+</body>
+</html>

@@ -54,9 +54,10 @@ function publicReleaseId(file) {
 }
 
 test("publishes every completed research release from R0.70A onward", async () => {
-  const [releases, home, noteFiles] = await Promise.all([
+  const [releases, home, literature, noteFiles] = await Promise.all([
     completedReleaseIds(),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
+    readFile(new URL("literature-review.html", publicRoot), "utf8"),
     readdir(notesRoot),
   ]);
 
@@ -105,6 +106,10 @@ test("publishes every completed research release from R0.70A onward", async () =
     assert.ok(
       home.includes('href="/notes/' + slug + '.html"'),
       release + ": homepage link",
+    );
+    assert.ok(
+      literature.includes('href="/notes/' + slug + '.html"'),
+      release + ": literature-review direct link",
     );
     const cardMarker = 'data-release="' + release + '"';
     const markerMatches = home.match(new RegExp(cardMarker, "g")) ?? [];

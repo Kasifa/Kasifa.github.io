@@ -53,6 +53,25 @@ function publicReleaseId(file) {
   return release.localeCompare("r070a") >= 0 ? release : null;
 }
 
+test("keeps every synchronized public note PDF discoverable from its note", async () => {
+  const noteFiles = await readdir(notesRoot);
+  const notePdfs = noteFiles.filter((file) => /^r0-.+\.pdf$/.test(file)).sort();
+
+  assert.ok(notePdfs.length > 0, "public note PDF inventory is empty");
+  for (const pdf of notePdfs) {
+    const htmlFile = pdf.replace(/\.pdf$/, ".html");
+    assert.ok(
+      noteFiles.includes(htmlFile),
+      pdf + ": matching public HTML note is missing",
+    );
+    const html = await readFile(new URL(htmlFile, notesRoot), "utf8");
+    assert.ok(
+      html.includes('href="/notes/' + pdf + '"'),
+      pdf + ": synchronized PDF download link is missing from its note",
+    );
+  }
+});
+
 test("publishes every completed research release from R0.70A onward", async () => {
   const [releases, home, literature, noteFiles] = await Promise.all([
     completedReleaseIds(),

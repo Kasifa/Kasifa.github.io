@@ -1,0 +1,166 @@
+{
+  "checks": {
+    "eigenshellAtomIdentity": {
+      "APlus": "F2/Y",
+      "atom": "F2/(Y*kappa**2)",
+      "jet": "F2/(Y*kappa**2)",
+      "passed": true,
+      "r071tCoefficient": "kappa^-6/4"
+    },
+    "exact25DSubstitution": {
+      "convection": [
+        "v(y, t)*Derivative(f(y, z, t), z)",
+        "0",
+        "0"
+      ],
+      "divergence": "0",
+      "laplacian": [
+        "Derivative(f(y, z, t), (y, 2)) + Derivative(f(y, z, t), (z, 2))",
+        "0",
+        "Derivative(v(y, t), (y, 2))"
+      ],
+      "passed": true,
+      "reducedEquations": [
+        "v_t=nu*v_yy",
+        "f_t+v*f_z=nu*(f_yy+f_zz)"
+      ],
+      "velocity": "(f(y,z,t),0,v(y,t))"
+    },
+    "forcedPathStressTest": {
+      "boundary": "forced shell path, not an NSE trajectory",
+      "firstJetIntegralForIntegerN": "pi",
+      "forcing": "cos(N*t) + nu*sin(N*t)/N",
+      "passed": true,
+      "path": "N^-1*sin(N*t)",
+      "secondJetIntegralForIntegerN": "pi*N**2",
+      "slopeAtZeros": "absolute value 1",
+      "symbolicFirstIntegral": "pi + sin(4*pi*N)/(4*N)",
+      "symbolicSecondIntegral": "N*(pi*N - sin(4*pi*N)/4)"
+    },
+    "fullSupportIFTDerivative": {
+      "boundary": "target support must exclude the seed shell",
+      "determinant": "exp(-55*nu*tau)",
+      "diagonal": [
+        "exp(-2*nu*tau)",
+        "exp(-5*nu*tau)",
+        "exp(-8*nu*tau)",
+        "exp(-10*nu*tau)",
+        "exp(-13*nu*tau)",
+        "exp(-17*nu*tau)"
+      ],
+      "finiteSupportDimension": 6,
+      "invertibleFor": "nu>0 and tau>0",
+      "passed": true
+    },
+    "modularIsolation": {
+      "K": 1,
+      "L": 1,
+      "d": 8,
+      "gap": 4,
+      "isolatedModes": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "passed": true,
+      "supportRadius": 3
+    },
+    "responseMatrixAudit": {
+      "analyticProof": "extended Chebyshev system plus finite-dimensional IFT",
+      "determinantRows": [
+        {
+          "N": 1,
+          "log10AbsDeterminant": -1.6145977849737903,
+          "sign": 1
+        },
+        {
+          "N": 2,
+          "log10AbsDeterminant": -4.553384681500514,
+          "sign": -1
+        },
+        {
+          "N": 3,
+          "log10AbsDeterminant": -8.432061901556233,
+          "sign": -1
+        },
+        {
+          "N": 4,
+          "log10AbsDeterminant": -13.073533200957911,
+          "sign": 1
+        },
+        {
+          "N": 5,
+          "log10AbsDeterminant": -18.376397033820147,
+          "sign": 1
+        },
+        {
+          "N": 6,
+          "log10AbsDeterminant": -24.277688317130384,
+          "sign": -1
+        },
+        {
+          "N": 7,
+          "log10AbsDeterminant": -30.73737582986114,
+          "sign": -1
+        },
+        {
+          "N": 8,
+          "log10AbsDeterminant": -37.73050161330934,
+          "sign": 1
+        }
+      ],
+      "formalTimes": [
+        0.01,
+        0.03,
+        0.07
+      ],
+      "kernelCoefficients": [
+        1.0,
+        -2.457677230095963,
+        2.1821900878708185,
+        -0.7312033746952357
+      ],
+      "maximumTargetResidual": 1.674297936448645e-103,
+      "minimumSlopeMagnitude": 0.0032732677446102474,
+      "passed": true
+    },
+    "scaleLedger": {
+      "directWindowExponent": -2,
+      "exponents": {
+        "C_t_squared": 10,
+        "C_tt_squared": 14,
+        "Y": 4,
+        "intervalLength": -2,
+        "kappa": 1
+      },
+      "firstIntegralExponent": -2,
+      "firstTotal": 0,
+      "integerTorusDilation": true,
+      "inverseWindowExponent": 2,
+      "passed": true,
+      "secondIntegralExponent": 2,
+      "secondTotal": 0
+    },
+    "zeroSamplingAlgebra": {
+      "gapCoefficient": "h/3",
+      "gapIdentity": "X'(b)=h^-1 integral_a^b (s-a)X''(s) ds when X(a)=X(b)=0",
+      "kernelSquare": "h**3/3",
+      "passed": true,
+      "pointTraceConstants": [
+        "2/ell",
+        "2*ell"
+      ],
+      "polynomialRightSide": "3330436/109375",
+      "polynomialSampleSum": "4661/15625",
+      "summedSecondCoefficient": "7*ell/3"
+    }
+  },
+  "release": "R0.71U",
+  "scope": "finite symbolic and high-precision audit; continuum proof is in the report",
+  "status": "passed"
+}

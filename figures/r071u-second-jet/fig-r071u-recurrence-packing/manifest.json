@@ -1,0 +1,345 @@
+{
+  "analyticalQuestion": "Can one compact target annulus of a genuine smooth unforced NSE trajectory return to zero at three prescribed positive times, and how do its jet atoms scale on the local recurrence curve?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "The traces, roots, and cutoff comparison are finite Fourier-lattice corroboration. The exact 2.5D NSE reduction, modular annulus isolation, and existence of the infinite-dimensional recurrence curve are analytic results in the R0.71U report and are not inferred from this plot.",
+  "computation": {
+    "configuration": "exact 2.5D triangular NSE Fourier reduction; nu=0.02, K=L=1, d=8, seven real shear parameters, three prescribed times; primary mcut=24 and independent sparse mcut=36",
+    "dns": false,
+    "finiteGalerkin": true,
+    "fitBoundary": "three descriptive log-log slopes use five separately re-shot p1 samples; the analytic O(p1^2) theorem does not depend on the fit",
+    "fittedData": true,
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "simulation",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.1,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "p1",
+        "cutoff",
+        "completed",
+        "targetResidual",
+        "minimumSlope",
+        "elapsedSeconds",
+        "etaSeconds",
+        "processUserCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "pdeTimeStepping": true,
+    "precision": "IEEE binary64 complex Fourier coefficients",
+    "solver": "primary vectorized two-sided modular shifts and independent sparse shift matrices; SciPy DOP853 time integration and MINPACK hybr shooting of six real variables",
+    "wallTimeSeconds": 6.389906249998603
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T16:23:28+08:00",
+  "data": [
+    {
+      "bytes": 958,
+      "format": "json",
+      "path": "config.json",
+      "schema": "exact modular problem, p1 sweep, cutoffs, annulus radius, DOP853 tolerances, and classification flags",
+      "sha256": "8a757b1e73d3c2ed3735c79890555051bc99af98af1f8eb1cc5df5fdf39ce1ca"
+    },
+    {
+      "bytes": 299104,
+      "format": "json",
+      "path": "primary-results.json",
+      "schema": "vectorized mcut=24 shooting, target trace, root slopes, enstrophy, atoms, p1 sweep, and cutoff sweep",
+      "sha256": "3a1030ea864f54224d13945de9bd6c42193381ceafa1df43c04d13116fedfd5b"
+    },
+    {
+      "bytes": 3918,
+      "format": "json",
+      "path": "independent-results.json",
+      "schema": "fresh sparse-shift mcut=36 shooting, target residuals, slopes, atoms, PDE reduction check, and primary differences",
+      "sha256": "4032bee62585ade6cfad375cff95187242482763d6346f8c8a56bfa50b9de8d4"
+    },
+    {
+      "bytes": 4737,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped primary sweep, cutoff sweep, independent run, validation failure record, and final validation completion",
+      "sha256": "3c7b737fe1de88c53cb565dc8395718e730be93a47d0218b7d0701c2ce097ef9"
+    },
+    {
+      "bytes": 2615,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped local process CPU, system CPU, load average, logical CPU count, and peak-resident-set snapshots",
+      "sha256": "ab96c0c392416d8c5d863d315ec7047d610271083a6c91e49bf0983b4dccf1d8"
+    },
+    {
+      "bytes": 648852,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel,series,case,x,y,time,p1,cutoff,value,unit,formula,evidenceClass,note",
+      "sha256": "614dbcbf739909ed6ea202b0367806d64ada12bb9ef20039848d5051fad6467a"
+    },
+    {
+      "bytes": 1535,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "input hashes, row count, evidence map, annulus gap, classification, and claim boundary",
+      "sha256": "174cf85b4d047792247e5519f7b3e77e9d4f5dc4c6b654d2fafb4f4371589371"
+    },
+    {
+      "bytes": 8668,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "producer-side PDE, residual, passage, atom, small-curve, cutoff, annulus, and provenance checks",
+      "sha256": "5a3578806928e15fb8c1b72adfeec8d55b8eae438f997873ce065bfd029b60d0"
+    },
+    {
+      "bytes": 11741,
+      "format": "json",
+      "path": "independent-validation.json",
+      "schema": "standalone formula reconstruction, sparse-run checks, and PDF/SVG/PNG/QA validation",
+      "sha256": "a96cad348a9910635e610eb13a9b385d1f01fe02742966df93687b0f3e9cad95"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "python": "3.12.13",
+    "scipy": "1.18.0"
+  },
+  "evidenceMap": {
+    "A": "primary mcut=24 DOP853 target trace; prescribed roots and RHS slopes",
+    "B": "local complex-plane passages through the three prescribed target times",
+    "C": "five freshly shot p1 values; O(p1^2) sampling and the exact one-shell first-jet identity",
+    "D": "fixed-parameter cutoff sweep plus independent sparse mcut=36 reshooting"
+  },
+  "figure": {
+    "heightMillimetres": 134.11,
+    "outputs": [
+      {
+        "bytes": 64107,
+        "path": "figure.pdf",
+        "sha256": "a4efa4926b87c4d141829dfb24dcd6395a62dde3a7e1ac9255e7a05e032712e9"
+      },
+      {
+        "bytes": 161268,
+        "path": "figure.svg",
+        "sha256": "4e732846e417ac538b2e5c60efcecbb6f1566131a3f856ecddbe5fe741b832e4"
+      },
+      {
+        "bytes": 888662,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": "4206 by 3168",
+        "sha256": "7315bcdf3440a7cd41f1ea9e51fa094235659997df2c99cd7f0ce3cf4607af53"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178.05
+  },
+  "figureId": "fig-r071u-recurrence-packing",
+  "git": {
+    "certificateCommit": "pending",
+    "dirtyAtCertifiedRun": true,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "pending"
+  },
+  "outputs": [
+    {
+      "bytes": 3510,
+      "path": "README.md",
+      "sha256": "d70dddb81b982d2bf47d3a7eb80ca87dda07e0b3267d95546269f88153b24337"
+    },
+    {
+      "bytes": 2233,
+      "path": "caption.md",
+      "sha256": "c93daff7d4d1d84eacacdaa85d33b34b0ab61b88e2a802ef20dab0d821d01c3f"
+    },
+    {
+      "bytes": 2561,
+      "path": "figure-contract.md",
+      "sha256": "7b86849d0679291c8c91382b3b6f5f2607306ab9950e57d67c255abb404c2647"
+    },
+    {
+      "bytes": 1686,
+      "path": "contract.json",
+      "sha256": "a2f56bd477800f31ede6f580c2f717966d9772ddbf5b532c72854daa26bb2162"
+    },
+    {
+      "bytes": 958,
+      "path": "config.json",
+      "sha256": "8a757b1e73d3c2ed3735c79890555051bc99af98af1f8eb1cc5df5fdf39ce1ca"
+    },
+    {
+      "bytes": 3549,
+      "path": "command.txt",
+      "sha256": "0d0e85c8af52cb88e7d8c5c34fecf4a88dc4b2538c2ffe94fe864d82ee938b7d"
+    },
+    {
+      "bytes": 733,
+      "path": "environment.txt",
+      "sha256": "1eca69a240770a04a971cf6c6ecb91e8269306606f1a2c71cdbdcbfc28664ef5"
+    },
+    {
+      "bytes": 75,
+      "path": "requirements.txt",
+      "sha256": "c579cf471dff71d1f1e950137289d06d548ede1463818cb59de432c83cb6fe7a"
+    },
+    {
+      "bytes": 18888,
+      "path": "modular_solver.py",
+      "sha256": "3c654f105c0cc02d33e5bbeb11c0dfb0c5c3aaef1244468843b50b456494abc2"
+    },
+    {
+      "bytes": 12133,
+      "path": "independent_solver.py",
+      "sha256": "a13c2badd60d5dcac7c0010853ece754b318c46300e6cb8547e70dbe763b4ffc"
+    },
+    {
+      "bytes": 8413,
+      "path": "assemble_data.py",
+      "sha256": "185ff2b6091222f189171581027c70ccfb8c2973f3444dfad7709c9b06e65168"
+    },
+    {
+      "bytes": 11634,
+      "path": "validate_data.py",
+      "sha256": "0eb81a1be672f18882ec9fcc6bc6523701d9b65f6c4d3b9d60dd9122ff5f8f22"
+    },
+    {
+      "bytes": 16637,
+      "path": "independent_validate.py",
+      "sha256": "7ba3c11e915db593fed02bf525f2cb8fa0949d7620d47db7a23243f161a14d49"
+    },
+    {
+      "bytes": 11733,
+      "path": "plot.py",
+      "sha256": "a34633f830960f7a0e7a282dabff65d8abdd98dc5766353f45a1e62905741dca"
+    },
+    {
+      "bytes": 3117,
+      "path": "qa_images.py",
+      "sha256": "80ea0c8953ea2c0f104abba4752de9381525d31596b183193dd997f560aeb1e9"
+    },
+    {
+      "bytes": 10128,
+      "path": "build_manifest.py",
+      "sha256": "04b4315df13922175d38a4eae65844ff8a386af7d171e76906c178ddc9fcfb54"
+    },
+    {
+      "bytes": 299104,
+      "path": "primary-results.json",
+      "sha256": "3a1030ea864f54224d13945de9bd6c42193381ceafa1df43c04d13116fedfd5b"
+    },
+    {
+      "bytes": 3918,
+      "path": "independent-results.json",
+      "sha256": "4032bee62585ade6cfad375cff95187242482763d6346f8c8a56bfa50b9de8d4"
+    },
+    {
+      "bytes": 4737,
+      "path": "progress.ndjson",
+      "sha256": "3c7b737fe1de88c53cb565dc8395718e730be93a47d0218b7d0701c2ce097ef9"
+    },
+    {
+      "bytes": 2615,
+      "path": "resource-log.ndjson",
+      "sha256": "ab96c0c392416d8c5d863d315ec7047d610271083a6c91e49bf0983b4dccf1d8"
+    },
+    {
+      "bytes": 648852,
+      "path": "data.csv",
+      "sha256": "614dbcbf739909ed6ea202b0367806d64ada12bb9ef20039848d5051fad6467a"
+    },
+    {
+      "bytes": 1535,
+      "path": "figure-data-metadata.json",
+      "sha256": "174cf85b4d047792247e5519f7b3e77e9d4f5dc4c6b654d2fafb4f4371589371"
+    },
+    {
+      "bytes": 8668,
+      "path": "validation.json",
+      "sha256": "5a3578806928e15fb8c1b72adfeec8d55b8eae438f997873ce065bfd029b60d0"
+    },
+    {
+      "bytes": 11741,
+      "path": "independent-validation.json",
+      "sha256": "a96cad348a9910635e610eb13a9b385d1f01fe02742966df93687b0f3e9cad95"
+    },
+    {
+      "bytes": 64107,
+      "path": "figure.pdf",
+      "sha256": "a4efa4926b87c4d141829dfb24dcd6395a62dde3a7e1ac9255e7a05e032712e9"
+    },
+    {
+      "bytes": 161268,
+      "path": "figure.svg",
+      "sha256": "4e732846e417ac538b2e5c60efcecbb6f1566131a3f856ecddbe5fe741b832e4"
+    },
+    {
+      "bytes": 888662,
+      "path": "figure.png",
+      "pixels": "4206 by 3168",
+      "sha256": "7315bcdf3440a7cd41f1ea9e51fa094235659997df2c99cd7f0ce3cf4607af53"
+    },
+    {
+      "bytes": 899124,
+      "path": "qa-original.png",
+      "pixels": "2200 by 1657",
+      "sha256": "19ffbfa2f9c13380896de71231bc6ee4371b08b96417533c3d91a1b851a43e9e"
+    },
+    {
+      "bytes": 366140,
+      "path": "qa-grayscale.png",
+      "pixels": "2200 by 1657",
+      "sha256": "66a832305863936739955e3270e9f2127ec44d07c9466ad4434397d02e32df34"
+    },
+    {
+      "bytes": 210327,
+      "path": "qa-pdf.png",
+      "pixels": "1262 by 951",
+      "sha256": "ee516a5f332b1b6ec8c5cf7d1ee17769daa7ce3951f34f88b70d46bf9df1f5eb"
+    },
+    {
+      "bytes": 759,
+      "path": "qa-report.md",
+      "sha256": "ef34877b014fa01a8eafca5472d792d6e0f34cb8b323d11ff5503576698dc52e"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 29,
+    "automaticChecks": "validation.json",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentCheckCount": 30,
+    "independentChecks": "independent-validation.json",
+    "independentMethod": "standalone bundled-runtime reconstruction of analytic response, modular gap, raw residual/slope/atom/cutoff checks, and PDF/SVG/PNG/QA inspection",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "originalPreview": "qa-original.png",
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.71U",
+  "schemaVersion": "1.0",
+  "sourceData": [],
+  "status": "draft",
+  "supportedClaim": "In the audited finite modular lattices, six real shooting parameters produce three prescribed simple target returns. A separate sparse cutoff-36 implementation reproduces the parameters and slopes, while five re-shot p1 values exhibit the analytic quadratic atom-collapse boundary."
+}

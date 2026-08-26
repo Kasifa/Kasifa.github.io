@@ -1,0 +1,39 @@
+{
+  "release": "R0.71U",
+  "figureId": "fig-r071u-recurrence-packing",
+  "viscosity": 0.02,
+  "K": 1,
+  "L": 1,
+  "modulus": 8,
+  "recurrenceCount": 3,
+  "modeMultipliers": [1, 2, 3, 4, 5, 6, 7],
+  "initialAmplitudes": ["1j", "1j", "1j", "1j", "1", "1", "1"],
+  "targetTimes": [0.01, 0.03, 0.07],
+  "fixedP1": 0.002,
+  "p1Sweep": [0.00025, 0.0005, 0.001, 0.0015, 0.002],
+  "primaryCutoff": 24,
+  "independentCutoff": 36,
+  "convergenceCutoffs": [8, 10, 12, 16, 20, 24, 30, 36],
+  "annulusSupportRadius": 3.0,
+  "nominalKappa": 1.0,
+  "multiplierAtTarget": 1.0,
+  "primaryIntegrator": {
+    "method": "DOP853",
+    "rtol": 2e-12,
+    "atol": 2e-14,
+    "maxStep": 0.00025
+  },
+  "independentIntegrator": {
+    "method": "DOP853",
+    "rtol": 4e-13,
+    "atol": 4e-15,
+    "maxStep": 0.0002
+  },
+  "classification": {
+    "finiteGalerkin": true,
+    "pdeTimeStepping": true,
+    "dns": false,
+    "analyticProofFromNumerics": false
+  },
+  "randomSeed": null
+}

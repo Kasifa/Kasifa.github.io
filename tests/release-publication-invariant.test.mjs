@@ -133,14 +133,14 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     currentDetails.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []
   ).length;
   assert.ok(currentRouteNotes > 0, "current route note list is empty");
-  assert.equal(releases.length, 46, "R0.70A-R0.71T completed releases");
-  assert.equal(htmlNotes.length, 144, "current public HTML note count");
-  assert.equal(latestRelease, "r071t", "current completed release");
-  assert.equal(latestCode, "R0.71T", "current public release code");
-  assert.equal(nextCode, "R0.71U", "next public release code");
-  assert.equal(recapStem, "recap-r0-61-r0-71t", "current recap endpoint");
-  assert.equal(recapNodes, 84, "R0.61-R0.71T recap node count");
-  assert.equal(currentRouteNotes, 54, "R0.69P-R0.71T route count");
+  assert.equal(releases.length, 47, "R0.70A-R0.71U completed releases");
+  assert.equal(htmlNotes.length, 145, "current public HTML note count");
+  assert.equal(latestRelease, "r071u", "current completed release");
+  assert.equal(latestCode, "R0.71U", "current public release code");
+  assert.equal(nextCode, "R0.71V", "next public release code");
+  assert.equal(recapStem, "recap-r0-61-r0-71u", "current recap endpoint");
+  assert.equal(recapNodes, 85, "R0.61-R0.71U recap node count");
+  assert.equal(currentRouteNotes, 55, "R0.69P-R0.71U route count");
   const [latestNote, recap, recapPdf] = await Promise.all([
     readFile(new URL(latestSlug + ".html", notesRoot), "utf8"),
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
@@ -150,7 +150,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   const versionMatch = home.match(/<strong>v(\d+\.\d+)<\/strong>\u7f51\u9875\u7248\u672c/);
   assert.ok(versionMatch, "homepage version marker is missing");
   const version = versionMatch[1];
-  assert.equal(version, "1.05", "current publication version");
+  assert.equal(version, "1.06", "current publication version");
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],

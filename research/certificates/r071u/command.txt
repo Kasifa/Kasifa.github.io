@@ -1,0 +1,17 @@
+Generate the exact certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071u_exact_audit.py --output research/certificates/r071u/result.json
+
+Generate the independent certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071u_independent_audit.py --output research/certificates/r071u/independent-result.json
+
+The independent program imports neither the producer nor result.json.
+
+Figure commands:
+figures/r071u-second-jet/fig-r071u-recurrence-packing/command.txt
+
+Validate the figure package:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/validate_figure_package.py figures/r071u-second-jet/fig-r071u-recurrence-packing
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/certificates/r071u/build_hashes.py
+(cd research/certificates/r071u && shasum -a 256 -c SHA256SUMS)

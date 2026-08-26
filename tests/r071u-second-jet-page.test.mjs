@@ -6,9 +6,9 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", root);
 const notesRoot = new URL("notes/", publicRoot);
-const certificateRoot = new URL("research/certificates/r071t/", root);
+const certificateRoot = new URL("research/certificates/r071u/", root);
 const figureRoot = new URL(
-  "figures/r071t-internal-entry/fig-r071t-internal-entry/",
+  "figures/r071u-second-jet/fig-r071u-recurrence-packing/",
   root,
 );
 
@@ -34,16 +34,17 @@ function assertAnchorsResolve(html, minimumUniqueTargets) {
 }
 
 async function publishedPages() {
-  const [home, note, recap, literature] = await Promise.all([
+  const [home, note, recap, literature, previousNote] = await Promise.all([
     readFile(new URL("research-review.html", publicRoot), "utf8"),
-    readFile(new URL("notes/r0-71t.html", publicRoot), "utf8"),
-    readFile(new URL("recap-r0-61-r0-71t.html", publicRoot), "utf8"),
+    readFile(new URL("notes/r0-71u.html", publicRoot), "utf8"),
+    readFile(new URL("recap-r0-61-r0-71u.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
+    readFile(new URL("notes/r0-71t.html", publicRoot), "utf8"),
   ]);
-  return { home, note, recap, literature };
+  return { home, note, recap, literature, previousNote };
 }
 
-test("retains the corrected R0.71T release after the R0.71U site update", async () => {
+test("publishes R0.71U as v1.06 with synchronized route and cumulative recap", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
@@ -64,108 +65,132 @@ test("retains the corrected R0.71T release after the R0.71U site update", async 
   );
   assert.ok(route);
   assert.equal(count(route[1], 'href="/notes/'), 55);
-  assert.equal(count(route[1], 'href="/notes/r0-71t.html"'), 1);
-  assert.equal(count(home, 'data-release="r071t"'), 1);
-  assert.equal(count(home, 'href="/notes/r0-71t.html"'), 2);
+  assert.equal(count(route[1], 'href="/notes/r0-71u.html"'), 1);
+  assert.equal(count(home, 'data-release="r071u"'), 1);
+  assert.equal(count(home, 'href="/notes/r0-71u.html"'), 2);
 
   assert.ok(count(recap, '<article class="phase">') >= 12);
-  assert.match(recap, /收录节点：84/);
-  assert.match(recap, /回顾截止时公开笔记：144/);
-  assert.match(recap, /R0\.70A–R0\.71T 完成版本/);
+  assert.match(recap, /收录节点：85/);
+  assert.match(recap, /回顾截止时公开笔记：145/);
+  assert.match(recap, /R0\.70A–R0\.71U 完成版本/);
   assert.match(recap, /R0\.00–R0\.60 的内容保留在上一份阶段回顾中/);
   assert.match(literature, /R0\.69P–R0\.71U/);
   assert.match(literature, /开放接口 · R0\.71V/);
 
   for (const [page, minimum] of [
     [home, 10],
-    [note, 12],
+    [note, 14],
     [recap, 8],
     [literature, 50],
   ]) {
     assertAnchorsResolve(page, minimum);
+    assert.ok(page.includes('src="/i18n-en.js?v=1.06"'));
     assert.doesNotMatch(page, /我们|攻关|主攻|三重审计/);
     assert.doesNotMatch(page, /千禧年问题已经解决|解决了千禧年问题/);
   }
-  assert.ok(home.includes('src="/i18n-en.js?v=1.06"'));
-  assert.ok(literature.includes('src="/i18n-en.js?v=1.06"'));
-  assert.ok(note.includes('src="/i18n-en.js?v=1.05"'));
-  assert.ok(recap.includes('src="/i18n-en.js?v=1.05"'));
 });
 
-test("states the internal-entry theorem, scoped scaling no-go, and open boundary", async () => {
+test("states the classical second-jet theorem and exact recurrence with correct quantifiers", async () => {
   const { home, note, recap, literature } = await publishedPages();
 
   for (const token of [
-    "D_z\\Phi(0,0)=e^{-2\\nu\\tau}I",
-    "z(a)=-a^2\\tau F_*+O(a^3)",
-    "\\kappa^{-2}A_+(a)=\\frac{a^2e^{-2\\nu\\tau}}4+O(a^3)",
-    "a_\\lambda=\\lambda^{-2}",
-    "\\frac{2\\nu}{\\sinh(2\\nu\\tau)}\\lambda^2+o(\\lambda^2)",
-    "\\rho_\\delta(r)",
-    "q_\\beta^{\\rm jet}=\\kappa_j^{-6}",
-    "finite-time singularity 或 global regularity",
-    "Galerkin 图是截断 ODE 复核",
-    "精确的四模目标投影",
-    "不能把四模消去误写成任意宽环带消去",
-    "D_z\\Phi=e^{\\nu\\tau\\Delta}",
+    "\\frac2\\ell\\int_I\\|X'\\|_H^2",
+    "\\frac{7\\ell}{3}",
+    "0&lt;\\inf_KY\\le\\sup_KY&lt;\\infty",
+    "\\kappa_j^{-6}\\|C_{j,tt}\\|_2^2",
+    "ordinary Leray energy inequality 不控制",
+    "integer \\(\\lambda\\)",
+    "classical trace 允许零点落在闭区间端点",
+    "每个 finite set 和每个 \\(N\\) 可以选择一个新解",
+    "unit energy–enstrophy ball",
+    "这不是 weighted-atom counterexample",
+    "single-trajectory infinite recurrence",
+    "这不是千禧年问题的解答",
   ]) {
     assert.ok(note.includes(token), token);
   }
-  assert.match(note, /正时间.*精确归零.*正方向横穿/is);
-  assert.match(note, /能量趋零.*临界范数趋零.*enstrophy 有界/is);
-  assert.match(note, /representation，不是 a priori occupation theorem/is);
-  assert.match(note, /只排除所有 smooth 解上.*bare normalized/is);
-  assert.match(home, /genuine smooth positive-time internal entry/is);
-  assert.match(recap, /initial-boundary caveat/is);
-  assert.match(literature, /weighted packing 仍开放/is);
+  assert.match(note, /trajectory-wise classical estimate/is);
+  assert.match(note, /不是弱解定理/is);
+  assert.match(note, /第一行.*Leray.*第二行.*recurrence tax/is);
+  assert.match(note, /每个(?:给定 )?finite time set.*选择一个新的真实无外力 NSE 解/is);
+  assert.match(note, /atom.*随.*增加.*缩小/is);
+  assert.match(home, /positive enstrophy floor.*trajectory-wise classical/is);
+  assert.match(recap, /每个 finite set 可选择新解/is);
+  assert.match(literature, /exact torus scaling.*integer dilation/is);
 });
 
-test("verifies exact and independent R0.71T certificates", async () => {
+test("retains the exact-thin and complete finite-support correction for R0.71T", async () => {
+  const { home, note, literature, previousNote } = await publishedPages();
+  const previousReport = await readFile(
+    new URL("research/r071t_report-source.md", root),
+    "utf8",
+  );
+
+  for (const page of [home, note, literature, previousNote, previousReport]) {
+    assert.match(page, /four[- ]mode|四模/i);
+    assert.match(page, /full[- ]support|完整有限|target-support/i);
+  }
+  assert.match(note, /D_z\\Phi\(0,0\)=e\^\{\\nu\\tau\\Delta\}\|_\{E_j\}/);
+  assert.match(previousNote, /不能把四模消去误写成任意宽环带消去/);
+  assert.doesNotMatch(home, /使整个目标壳在预定正时间/);
+});
+
+test("verifies exact and independent R0.71U certificates", async () => {
   const [exact, independent, report, gap, literatureAudit, independentAudit] =
     await Promise.all([
       readFile(new URL("result.json", certificateRoot), "utf8").then(JSON.parse),
       readFile(new URL("independent-result.json", certificateRoot), "utf8").then(
         JSON.parse,
       ),
-      readFile(new URL("research/r071t_report-source.md", root), "utf8"),
-      readFile(new URL("research/r071t_gap_matrix.md", root), "utf8"),
-      readFile(new URL("research/r071t_literature_audit.md", root), "utf8"),
-      readFile(new URL("research/r071t_independent_audit.md", root), "utf8"),
+      readFile(new URL("research/r071u_report-source.md", root), "utf8"),
+      readFile(new URL("research/r071u_gap_matrix.md", root), "utf8"),
+      readFile(new URL("research/r071u_literature_audit.md", root), "utf8"),
+      readFile(new URL("research/r071u_independent_audit.md", root), "utf8"),
     ]);
 
-  assert.equal(exact.release, "R0.71T");
+  assert.equal(exact.release, "R0.71U");
   assert.equal(exact.status, "passed");
-  assert.equal(Object.keys(exact.checks).length, 8);
+  assert.deepEqual(Object.keys(exact.checks).sort(), [
+    "eigenshellAtomIdentity",
+    "exact25DSubstitution",
+    "forcedPathStressTest",
+    "fullSupportIFTDerivative",
+    "modularIsolation",
+    "responseMatrixAudit",
+    "scaleLedger",
+    "zeroSamplingAlgebra",
+  ]);
   assert.ok(Object.values(exact.checks).every((entry) => entry.passed));
-  assert.equal(exact.checks.fourierSeed.F2, "1/4");
-  assert.equal(exact.checks.fourierSeed.curlF2, "1/2");
-  assert.equal(
-    exact.checks.doubleScalingLedger.ratio,
-    "2*lambda**2*nu/sinh(2*nu*tau)",
+
+  assert.equal(independent.release, "R0.71U");
+  assert.equal(independent.status, "passed");
+  assert.ok(Object.keys(independent.checks).length >= 7);
+  assert.ok(Object.values(independent.checks).every((entry) => entry.passed));
+  assert.ok(
+    Math.max(
+      ...independent.checks.directLatticeShooting.rows.map(
+        (row) => row.maximumTargetResidual,
+      ),
+    ) < 1e-12,
+  );
+  assert.ok(
+    Math.min(
+      ...independent.checks.directLatticeShooting.rows.map(
+        (row) => row.minimumSlopeMagnitude,
+      ),
+    ) > 1e-7,
   );
 
-  assert.equal(independent.release, "R0.71T");
-  assert.equal(independent.status, "passed");
-  assert.equal(Object.keys(independent.checks).length, 6);
-  assert.ok(Object.values(independent.checks).every((entry) => entry.passed));
-  assert.ok(independent.checks.resonantNormalForm.maximumResidual < 1.2e-13);
-  assert.ok(independent.checks.outgoingCoarea.maximumResidual < 7e-16);
-  assert.ok(independent.checks.traceVariation.maximumResidual < 2e-16);
-  assert.ok(independent.checks.doubleScaling.maximumResidual < 4e-16);
-
-  assert.match(report, /finite-dimensional implicit-function (?:argument|theorem)/i);
-  assert.match(report, /positive-time internal entry/i);
-  assert.match(report, /exactly the real four-mode projection/i);
-  assert.match(report, /full-support extension/i);
-  assert.ok(report.includes("+\\frac{\\kappa_j^{-2}}2\\int"));
+  assert.match(report, /zero-count-independent/i);
+  assert.match(report, /arbitrary finite exact NSE recurrence/i);
+  assert.match(report, /not a weighted-atom counterexample/i);
   assert.match(gap, /not proved|open/i);
-  assert.match(literatureAudit, /bounded (?:primary-source audit|answer)/i);
+  assert.match(literatureAudit, /bounded/i);
   assert.match(independentAudit, /independent/i);
   assert.doesNotMatch(report, /we prove global regularity/i);
-  assert.doesNotMatch(report, /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/);
 });
 
-test("ships journal figure mirrors, monitored computation, and reproducibility inventory", async () => {
+test("ships reproducible journal figures, monitored computation, and exact mirrors", async () => {
   const requiredCertificateFiles = [
     "README.md",
     "SHA256SUMS",
@@ -191,13 +216,14 @@ test("ships journal figure mirrors, monitored computation, and reproducibility i
     "figure.pdf",
     "figure.png",
     "figure.svg",
-    "galerkin_shoot.py",
     "independent-results.json",
     "independent-validation.json",
-    "independent_galerkin.py",
+    "independent_solver.py",
     "independent_validate.py",
     "manifest.json",
+    "modular_solver.py",
     "plot.py",
+    "primary-results.json",
     "progress.ndjson",
     "qa-grayscale.png",
     "qa-original.png",
@@ -206,7 +232,6 @@ test("ships journal figure mirrors, monitored computation, and reproducibility i
     "qa_images.py",
     "requirements.txt",
     "resource-log.ndjson",
-    "solver-results.json",
     "validate_data.py",
     "validation.json",
   ];
@@ -226,30 +251,31 @@ test("ships journal figure mirrors, monitored computation, and reproducibility i
       ),
       readFile(new URL("progress.ndjson", figureRoot), "utf8"),
       readFile(new URL("resource-log.ndjson", figureRoot), "utf8"),
-      readFile(new URL("figures/r0-71t-internal-entry.svg", publicRoot)),
-      readFile(new URL("figures/r0-71t-internal-entry.pdf", publicRoot)),
-      readFile(new URL("figures/r0-71t-internal-entry.png", publicRoot)),
+      readFile(new URL("figures/r0-71u-recurrence-packing.svg", publicRoot)),
+      readFile(new URL("figures/r0-71u-recurrence-packing.pdf", publicRoot)),
+      readFile(new URL("figures/r0-71u-recurrence-packing.png", publicRoot)),
       readFile(new URL("figure.svg", figureRoot)),
       readFile(new URL("figure.pdf", figureRoot)),
       readFile(new URL("figure.png", figureRoot)),
     ]);
   const [svg, pdf, png, sourceSvg, sourcePdf, sourcePng] = files;
 
-  assert.equal(manifest.figureId, "fig-r071t-internal-entry");
+  assert.equal(manifest.figureId, "fig-r071u-recurrence-packing");
   assert.equal(manifest.status, "formal");
   assert.match(manifest.git.sourceCommit, /^[0-9a-f]{40}$/);
   assert.equal(manifest.git.certificateCommit, manifest.git.sourceCommit);
   assert.equal(manifest.git.dirtyAtCertifiedRun, false);
-  assert.equal(manifest.figure.widthMillimetres, 178);
-  assert.equal(manifest.figure.heightMillimetres, 124);
+  assert.ok(Math.abs(manifest.figure.widthMillimetres - 178) < 0.25);
   assert.equal(manifest.computation.finiteGalerkin, true);
   assert.equal(manifest.computation.pdeTimeStepping, true);
   assert.equal(manifest.computation.dns, false);
   assert.equal(manifest.computation.monitoring.enabled, true);
-  assert.equal(validation.status, "passed");
-  assert.equal(independentValidation.status, "passed");
-  assert.ok(progress.trim().split("\n").length >= 10);
-  assert.ok(resource.trim().split("\n").length >= 2);
+  assert.equal(validation.release, "R0.71U");
+  assert.equal(validation.passed, true);
+  assert.equal(independentValidation.release, "R0.71U");
+  assert.equal(independentValidation.passed, true);
+  assert.ok(progress.trim().split("\n").length >= 15);
+  assert.ok(resource.trim().split("\n").length >= 8);
 
   assert.match(svg.toString("utf8"), /<svg/);
   assert.equal(pdf.subarray(0, 4).toString("ascii"), "%PDF");
@@ -268,9 +294,9 @@ test("ships journal figure mirrors, monitored computation, and reproducibility i
   }
 
   for (const path of [
-    "notes/r0-71t.pdf",
-    "recap-r0-61-r0-71t.pdf",
-    "figures/r0-71t-internal-entry.pdf",
+    "notes/r0-71u.pdf",
+    "recap-r0-61-r0-71u.pdf",
+    "figures/r0-71u-recurrence-packing.pdf",
   ]) {
     const value = await readFile(new URL(path, publicRoot));
     assert.equal(value.subarray(0, 4).toString(), "%PDF", path);

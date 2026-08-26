@@ -34,16 +34,16 @@ For the seed
 
 the quadratic projected Lamb field lies on the Fourier shell \(|k|^2=2\),
 whereas \(U\) itself lies on \(|k|^2=1\).  Fix a small time \(\tau>0\).
-A finite-dimensional implicit-function argument changes only the initial
-target shell by
+A finite-dimensional implicit-function argument changes only the initial data
+in the exact real four-mode target space by
 
 \[
  z(a)=-a^2\tau F_*+O(a^3)
  \tag{0.2}
 \]
 
-so that the entire target shell vanishes exactly at time \(\tau\).  At that
-time its nonlinear forcing remains
+so that the exact real four-mode target projection vanishes at time \(\tau\).
+At that time its nonlinear forcing remains
 
 \[
  F_j(\tau)=a^2e^{-2\nu\tau}F_*+O(a^3)\ne0.
@@ -244,7 +244,7 @@ Let \(P_*\) be the real Fourier projection onto (2.4).  Then
 These identities are finite Fourier algebra.  The exact and independent
 certificates reconstruct them without using a time integrator.
 
-## 3. Prescribing a positive-time full-shell zero
+## 3. Prescribing a positive-time exact thin-target zero
 
 This section supplies the functional-analytic step that no finite script can
 replace.
@@ -322,6 +322,16 @@ to
 where \(u^a=S_t(aU+z(a))\) and \(T_*\) is the corresponding vorticity-shell
 projection.
 
+Here the declared target is exactly the real four-mode projection \(P_*\).
+It is not an unrelated broad radial annulus containing additional active
+lattice modes.  More generally, if a compact target multiplier has finite
+lattice support separated from the seed shell, take \(E_*\) to be the full
+real divergence-free space on that support.  Then
+\(D_z\Phi(0,0)=e^{\nu\tau\Delta}|_{E_*}\) is diagonal and invertible, so the
+same finite-dimensional IFT zeros every supported target mode.  This
+full-support extension still requires the target support to exclude the seed
+shell.
+
 The real/conjugate structure is preserved: \(E_*\), \(P_*\), the heat
 semigroup, and the NSE flow all commute with conjugation, so the IFT solution
 can be taken real valued.
@@ -343,7 +353,7 @@ The integrand is constant after the common heat factor is extracted.  Thus
 
 \[
  \Phi(a,z)
- =e^{-2\nu\tau}igl(z+a^2\tau F_*\bigr)
+ =e^{-2\nu\tau}\bigl(z+a^2\tau F_*\bigr)
  +O(\|z\|^2+|a|\|z\|+|a|^3)
  \tag{3.9}
 \]
@@ -465,7 +475,10 @@ This proves (0.4).
 
 ## 4. Global and localized transversality
 
-The construction above uses a full-shell zero.  It also exposes exactly which
+The construction above uses a global target-projection zero with \(\chi\equiv1\).
+Whenever the term *full-shell root* is used below, it means the full declared
+projection with no spatial cutoff, not every active lattice mode in an
+unrelated broad radial annulus.  The construction also exposes exactly which
 parts extend to arbitrary roots.
 
 ### Lemma 4.1 -- every positive global-shell entry is simple
@@ -892,7 +905,7 @@ Since \(|K_h|\le1/2\),
 \[
  \kappa_j^{-2}A_{\beta,+}
  \le\frac1{2\theta_\beta}\int_{I_\beta}q_\beta\,dt
-\frac{\kappa_j^{-2}}2\int_{I_\beta}|q_{\beta,t}|\,dt.
+ +\frac{\kappa_j^{-2}}2\int_{I_\beta}|q_{\beta,t}|\,dt.
  \tag{7.5}
 \]
 
@@ -1106,12 +1119,13 @@ It is not used to prove the continuum IFT theorem or the scaling no-go.
 ### Proved in R0.71T
 
 1. a finite-dimensional IFT construction of a genuine smooth positive-time
-   full-shell zero for the exact NSE flow;
+   zero of the exact four-mode target projection for the exact NSE flow, and
+   its extension to a complete finite target support separated from the seed;
 2. the quadratic precompensation and nonzero event-forcing expansions;
 3. a simple positive global entry with
    \(A_+(a)=a^2e^{-2\nu\tau}/4+O(a^3)\);
-4. at least one simple positive localized cell induced by the full-shell
-   root;
+4. at least one simple positive localized cell induced by the global
+   target-projection root;
 5. the lemma that every positive global-shell finite-order entry is simple;
 6. the two-parameter internal scaling no-go for the bare normalized
    Leray--Lamb time integral, with bounded initial energy and enstrophy;

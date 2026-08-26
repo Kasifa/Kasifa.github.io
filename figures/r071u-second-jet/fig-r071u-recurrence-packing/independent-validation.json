@@ -1,0 +1,412 @@
+{
+  "checkCount": 30,
+  "checks": [
+    {
+      "criterion": "six free real columns have full rank",
+      "name": "independent analytic response rank",
+      "observed": {
+        "beta": [
+          2.24,
+          9.6,
+          22.08,
+          39.68,
+          62.400000000000006,
+          90.24,
+          123.20000000000002
+        ],
+        "conditionNumber": 736.4981548400789,
+        "rank": 6
+      },
+      "passed": true
+    },
+    {
+      "criterion": "A_1,...,A_4=i give real columns; A_5,...,A_7=1 give imaginary columns",
+      "name": "real and imaginary response blocks",
+      "observed": {
+        "firstBlockImaginaryMaximum": 0.0,
+        "secondBlockRealMaximum": 0.0
+      },
+      "passed": true
+    },
+    {
+      "criterion": "div u=0 and (u dot grad)u=(v f_z,0,0), giving the two reduced equations",
+      "name": "PDE reduction formula",
+      "observed": {
+        "formula": {
+          "advection": "(u dot grad)u=(v f_z,0,0)",
+          "divergence": "partial_x f + partial_z v = 0",
+          "pressure": "constant",
+          "reducedEquations": [
+            "v_t=nu v_yy",
+            "f_t+v f_z=nu(f_yy+f_zz)"
+          ],
+          "velocity": "u=(f(y,z,t),0,v(y,t))"
+        },
+        "gridCheck": {
+          "maximumDivergenceResidual": 0.0,
+          "maximumFirstComponentReductionResidual": 0.0,
+          "maximumSecondComponentResidual": 0.0,
+          "maximumThirdComponentResidual": 0.0,
+          "sampleMaximumVelocityComponent": 1.3999706088298833
+        }
+      },
+      "passed": true
+    },
+    {
+      "criterion": "heat diagonal and both modular neighbors are present",
+      "name": "finite-lattice ODE includes both shifts",
+      "observed": "a_m'=-nu[(K+dm)^2+L^2]a_m-iL sum_l p_l exp(-nu(dl)^2t)(a_(m-l)+a_(m+l))",
+      "passed": true
+    },
+    {
+      "criterion": "fresh sparse mcut=36 shoot succeeds and max |a_0(t_m)| <= 1e-12",
+      "name": "independent prescribed roots",
+      "observed": {
+        "functionCalls": 12,
+        "linearJacobianConditionNumber": 736.4981548400789,
+        "message": "The solution converged.",
+        "reportedFunctionEvaluations": 12,
+        "success": true,
+        "targetResidualMaximum": 7.220703020761555e-20,
+        "targetValues": [
+          [
+            -1.001777760347658e-20,
+            -7.863385698082219e-23
+          ],
+          [
+            -2.832033451010763e-20,
+            -1.3625561434396599e-22
+          ],
+          [
+            -7.220682137908408e-20,
+            -1.7365981846734063e-22
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "three slopes with minimum magnitude at least 1e-7",
+      "name": "independent nonzero slopes",
+      "observed": {
+        "minimumMagnitude": 6.604227220313097e-06,
+        "slopes": [
+          [
+            6.547765007426481e-06,
+            8.61736958152395e-07
+          ],
+          [
+            -9.705824963955104e-06,
+            -5.554906159385915e-07
+          ],
+          [
+            3.8911540545876764e-05,
+            6.458075586742541e-07
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "mcut=36 versus primary max parameter difference <= 1e-9",
+      "name": "independent parameter replication",
+      "observed": {
+        "maximumAbsolute": 6.071532165918825e-18,
+        "maximumRelative": 2.1530786644235625e-15
+      },
+      "passed": true
+    },
+    {
+      "criterion": "maximum relative slope difference <= 1e-5",
+      "name": "independent slope replication",
+      "observed": 2.72160937826962e-13,
+      "passed": true
+    },
+    {
+      "criterion": "primary parameters evaluated at mcut=36 have max root residual <= 1e-10",
+      "name": "fixed primary parameters at independent cutoff",
+      "observed": {
+        "maximumTargetResidual": 3.2541290210774064e-20,
+        "targetValues": [
+          [
+            6.36494801844241e-21,
+            -9.548766196159013e-23
+          ],
+          [
+            1.6329634184586092e-20,
+            1.1562088217843148e-22
+          ],
+          [
+            3.254071394973101e-20,
+            1.9366007229448818e-22
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "J=2|a_0'|^2/Y at kappa=m_*=1",
+      "name": "independent atom formula",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "P=kappa^-6||C_t||^2/Y=8|a_0'|^2/Y",
+      "name": "independent first-jet trace formula",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "J=P/4 because rho^2=2 kappa^2",
+      "name": "one-shell atom identity",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "all three independent atoms are positive",
+      "name": "positive finite atoms",
+      "observed": [
+        1.0953382763073276e-14,
+        7.359201310296498e-14,
+        4.0347994340939164e-12
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "directional signs straddle zero and normalized linearization error is below 1e-2",
+      "name": "three first-order complex passages",
+      "observed": [
+        {
+          "leftLinearizationError": 0.0018777555387592885,
+          "leftProjection": -6.592447367763234e-10,
+          "rightLinearizationError": 0.001760024249329998,
+          "rightProjection": 6.615187939225867e-10,
+          "time": 0.01
+        },
+        {
+          "leftLinearizationError": 0.004376213245382863,
+          "leftProjection": -9.67921564049794e-10,
+          "rightLinearizationError": 0.004353341587692817,
+          "rightProjection": 9.763977485300241e-10,
+          "time": 0.03
+        },
+        {
+          "leftLinearizationError": 0.004263012486515287,
+          "leftProjection": -3.875100365122353e-09,
+          "rightLinearizationError": 0.004270464251993393,
+          "rightProjection": 3.90830849882084e-09,
+          "time": 0.07
+        }
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "five separately shot p1 cases and each descriptive exponent within 0.02 of two",
+      "name": "multi-shot quadratic boundary",
+      "observed": {
+        "exponents": [
+          2.0075461833708226,
+          2.0014898955062606,
+          2.0001588233110246
+        ],
+        "shootCount": 5
+      },
+      "passed": true
+    },
+    {
+      "criterion": "P is labeled as a first-jet trace, while Panel C uses the O(p1^2) alternative",
+      "name": "no C_tt ledger overclaim",
+      "observed": "firstJetTrace keys used; caption explicitly excludes a C_tt payment ledger",
+      "passed": true
+    },
+    {
+      "criterion": "d > R_* + |K|",
+      "name": "annulus modular inequality",
+      "observed": {
+        "RstarPlusAbsK": 4.0,
+        "d": 8
+      },
+      "passed": true
+    },
+    {
+      "criterion": "only the conjugate target pair lies inside R_*=3; nearest non-target squared radius is 50",
+      "name": "annulus modular isolation",
+      "observed": {
+        "inside": [
+          [
+            -1,
+            -1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "nearestNonTargetSquaredRadius": 50
+      },
+      "passed": true
+    },
+    {
+      "criterion": "fixed-parameter mcut=24 versus 36 target difference <= 1e-10",
+      "name": "cutoff target convergence",
+      "observed": 9.450367750350239e-21,
+      "passed": true
+    },
+    {
+      "criterion": "mcut=24 versus 36 relative slope difference <= 1e-5",
+      "name": "cutoff slope convergence",
+      "observed": 3.289764736106353e-14,
+      "passed": true
+    },
+    {
+      "criterion": "mcut=24 boundary coefficient <= 1e-14",
+      "name": "cutoff boundary tail",
+      "observed": 3.2252307060930563e-19,
+      "passed": true
+    },
+    {
+      "criterion": "CSV row count matches metadata and panels A-D are populated",
+      "name": "plot data integrity",
+      "observed": {
+        "metadataRows": 3738,
+        "panels": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ],
+        "rows": 3738
+      },
+      "passed": true
+    },
+    {
+      "criterion": "finiteGalerkin=true, pdeTimeStepping=true, dns=false, analyticProofFromNumerics=false",
+      "name": "claim classification",
+      "observed": {
+        "analyticProofFromNumerics": false,
+        "dns": false,
+        "finiteGalerkin": true,
+        "pdeTimeStepping": true
+      },
+      "passed": true
+    },
+    {
+      "criterion": "one page at 178.05 by 134.11 mm within 0.25 mm",
+      "name": "PDF page and physical size",
+      "observed": {
+        "heightMm": 134.112,
+        "pages": 1,
+        "widthMm": 178.054
+      },
+      "passed": true
+    },
+    {
+      "criterion": "PDF page declares font resources",
+      "name": "PDF vector font resources",
+      "observed": {
+        "hasFontResources": true,
+        "metadata": {
+          "/Author": "Kasifa",
+          "/CreationDate": "D:20260826154837+08'00'",
+          "/Creator": "Matplotlib v3.11.1, https://matplotlib.org",
+          "/Keywords": "Navier-Stokes, recurrence, Fourier lattice, jet atom",
+          "/Producer": "Matplotlib pdf backend v3.11.1",
+          "/Subject": "Finite Fourier-Galerkin corroboration with analytic claim boundary",
+          "/Title": "R0.71U modular exact-NSE recurrence packing"
+        }
+      },
+      "passed": true
+    },
+    {
+      "criterion": "archival dimensions at reported 600 dpi",
+      "name": "600 dpi PNG",
+      "observed": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4206,
+          3168
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "SVG has a viewBox and no embedded raster image",
+      "name": "SVG remains vector",
+      "observed": {
+        "bytes": 161268,
+        "containsRasterImage": false
+      },
+      "passed": true
+    },
+    {
+      "criterion": "all QA previews exist and manual checks are PASS",
+      "name": "visual QA assets and declarations",
+      "observed": {
+        "files": [
+          "qa-original.png",
+          "qa-grayscale.png",
+          "qa-pdf.png",
+          "qa-report.md"
+        ],
+        "passCount": 13,
+        "pending": false
+      },
+      "passed": true
+    },
+    {
+      "criterion": "timestamped primary and independent completion records are present",
+      "name": "progress monitoring",
+      "observed": {
+        "recordCount": 20,
+        "stages": [
+          "start",
+          "shooting-sweep",
+          "shooting-sweep",
+          "shooting-sweep",
+          "shooting-sweep",
+          "shooting-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "cutoff-sweep",
+          "complete-primary",
+          "start-independent",
+          "complete-independent",
+          "complete-independent-validation",
+          "complete-independent-validation",
+          "complete-independent-validation"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "resource log contains primary stages and independent completion",
+      "name": "resource monitoring",
+      "observed": {
+        "recordCount": 8,
+        "stages": [
+          "start",
+          "sweep-p1-0.00025",
+          "sweep-p1-0.0005",
+          "sweep-p1-0.001",
+          "sweep-p1-0.0015",
+          "sweep-p1-0.002",
+          "complete-primary",
+          "complete-independent"
+        ]
+      },
+      "passed": true
+    }
+  ],
+  "failedCount": 0,
+  "method": "standalone bundled-runtime reconstruction of analytic response, modular gap, raw residual/slope/atom/cutoff checks, and PDF/SVG/PNG/QA inspection",
+  "passed": true,
+  "release": "R0.71U"
+}

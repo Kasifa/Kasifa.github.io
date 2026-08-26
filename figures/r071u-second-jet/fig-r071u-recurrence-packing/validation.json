@@ -1,0 +1,310 @@
+{
+  "checkCount": 29,
+  "checks": [
+    {
+      "criterion": "finiteGalerkin=true, pdeTimeStepping=true, dns=false, analyticProofFromNumerics=false",
+      "name": "numerical classification",
+      "observed": {
+        "analyticProofFromNumerics": false,
+        "dns": false,
+        "finiteGalerkin": true,
+        "pdeTimeStepping": true
+      },
+      "passed": true
+    },
+    {
+      "criterion": "u=(f(y,z),0,v(y)) has div u=0",
+      "name": "PDE divergence reduction",
+      "observed": {
+        "advection": "(u dot grad)u=(v f_z,0,0)",
+        "divergence": "partial_x f + partial_z v = 0",
+        "pressure": "constant",
+        "reducedEquations": [
+          "v_t=nu v_yy",
+          "f_t+v f_z=nu(f_yy+f_zz)"
+        ],
+        "velocity": "u=(f(y,z,t),0,v(y,t))"
+      },
+      "passed": true
+    },
+    {
+      "criterion": "the only advective component is v f_z",
+      "name": "PDE nonlinear reduction",
+      "observed": "(u dot grad)u=(v f_z,0,0)",
+      "passed": true
+    },
+    {
+      "criterion": "diagonal heat decay plus both modular shifts",
+      "name": "lattice ODE formula",
+      "observed": "a_m'=-nu[(K+dm)^2+L^2]a_m-iL sum_l p_l exp(-nu(dl)^2t)(a_(m-l)+a_(m+l))",
+      "passed": true
+    },
+    {
+      "criterion": "matches the declared R0.71U corroboration instance",
+      "name": "fixed numerical problem",
+      "observed": {
+        "K": 1,
+        "L": 1,
+        "independentCutoff": 36,
+        "modulus": 8,
+        "primaryCutoff": 24,
+        "targetTimes": [
+          0.01,
+          0.03,
+          0.07
+        ],
+        "viscosity": 0.02
+      },
+      "passed": true
+    },
+    {
+      "criterion": "seven finite real numbers with p1=0.002",
+      "name": "real shooting parameters and fixed p1",
+      "observed": [
+        0.002,
+        -0.00491591839171114,
+        0.004363743153458543,
+        -0.0014612094328992358,
+        4.0914170006896386e-05,
+        -0.0001005834264260355,
+        6.249159781471781e-05
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "the six free-parameter response matrix has rank six",
+      "name": "analytic response Jacobian rank",
+      "observed": {
+        "beta": [
+          2.24,
+          9.6,
+          22.08,
+          39.68,
+          62.400000000000006,
+          90.24,
+          123.20000000000002
+        ],
+        "jacobianConditionNumber": 736.4981548400789,
+        "jacobianRank": 6,
+        "linearResidualInfinityNorm": 2.584875184252042e-20,
+        "mu": 0.04
+      },
+      "passed": true
+    },
+    {
+      "criterion": "max |a_0(t_m)| < 1e-16",
+      "name": "primary prescribed-time target residual",
+      "observed": 3.889246755127345e-20,
+      "passed": true
+    },
+    {
+      "criterion": "three slopes and min |a_0'(t_m)| > 1e-6",
+      "name": "three nonzero slopes",
+      "observed": {
+        "minimum": 6.604227220314877e-06,
+        "values": [
+          [
+            6.5477650074282785e-06,
+            8.617369581523893e-07
+          ],
+          [
+            -9.705824963954033e-06,
+            -5.554906159385872e-07
+          ],
+          [
+            3.8911540545874426e-05,
+            6.45807558674253e-07
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "rho^2 ||F_*||_2^2 is positive at every root",
+      "name": "positive entry pairing",
+      "observed": [
+        1.7446326871019193e-10,
+        3.780464322212366e-10,
+        6.0581002202242815e-09
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "projection of the local increment onto the root slope is positive",
+      "name": "directed complex passages",
+      "observed": [
+        4.354818917684442e-14,
+        9.44845067673755e-14,
+        1.5146660983894036e-12
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "d > R_* + |K|",
+      "name": "analytic modular gap inequality",
+      "observed": {
+        "RstarPlusAbsK": 4.0,
+        "d": 8
+      },
+      "passed": true
+    },
+    {
+      "criterion": "the invariant support meets |k|<=R_* only at the conjugate target pair",
+      "name": "full-annulus modular isolation",
+      "observed": [
+        [
+          -1,
+          -1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "nearest non-target radius is sqrt(50)",
+      "name": "nearest modular sideband",
+      "observed": 7.0710678118654755,
+      "passed": true
+    },
+    {
+      "criterion": "J=2|a_0'|^2/Y for kappa=m_*=1",
+      "name": "single-shell atom formula",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "kappa^-6 ||C_t||_2^2/Y=8|a_0'|^2/Y because rho^2=2",
+      "name": "first-jet trace formula",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "J/P=1/4",
+      "name": "atom-to-first-jet identity",
+      "observed": 0.0,
+      "passed": true
+    },
+    {
+      "criterion": "one strictly positive atom at each prescribed root",
+      "name": "three positive jet atoms",
+      "observed": [
+        1.095338276307919e-14,
+        7.359201310294882e-14,
+        4.0347994340934285e-12
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "each sampled log-log exponent is within 0.02 of two",
+      "name": "quadratic small-curve sampling",
+      "observed": [
+        2.0075461833708226,
+        2.0014898955062606,
+        2.0001588233110246
+      ],
+      "passed": true
+    },
+    {
+      "criterion": "mcut=24 versus 36 target difference < 1e-17",
+      "name": "cutoff target convergence",
+      "observed": 9.450367750350239e-21,
+      "passed": true
+    },
+    {
+      "criterion": "mcut=24 versus 36 maximum relative slope difference < 1e-10",
+      "name": "cutoff slope convergence",
+      "observed": 3.289764736106353e-14,
+      "passed": true
+    },
+    {
+      "criterion": "mcut=24 boundary coefficients < 1e-16",
+      "name": "boundary-tail decay",
+      "observed": 3.2252307060930563e-19,
+      "passed": true
+    },
+    {
+      "criterion": "independent mcut=36 shoot converges with residual < 1e-16",
+      "name": "independent reshooting residual",
+      "observed": {
+        "functionCalls": 12,
+        "linearJacobianConditionNumber": 736.4981548400789,
+        "message": "The solution converged.",
+        "reportedFunctionEvaluations": 12,
+        "success": true,
+        "targetResidualMaximum": 7.220703020761555e-20,
+        "targetValues": [
+          [
+            -1.001777760347658e-20,
+            -7.863385698082219e-23
+          ],
+          [
+            -2.832033451010763e-20,
+            -1.3625561434396599e-22
+          ],
+          [
+            -7.220682137908408e-20,
+            -1.7365981846734063e-22
+          ]
+        ]
+      },
+      "passed": true
+    },
+    {
+      "criterion": "max absolute parameter difference < 1e-12",
+      "name": "independent parameter agreement",
+      "observed": 6.071532165918825e-18,
+      "passed": true
+    },
+    {
+      "criterion": "max relative slope difference < 1e-9",
+      "name": "independent slope agreement",
+      "observed": 2.72160937826962e-13,
+      "passed": true
+    },
+    {
+      "criterion": "deterministic pointwise reduction residuals < 1e-14",
+      "name": "independent PDE reduction sample",
+      "observed": {
+        "maximumDivergenceResidual": 0.0,
+        "maximumFirstComponentReductionResidual": 0.0,
+        "maximumSecondComponentResidual": 0.0,
+        "maximumThirdComponentResidual": 0.0,
+        "sampleMaximumVelocityComponent": 1.3999706088298833
+      },
+      "passed": true
+    },
+    {
+      "criterion": "CSV and metadata row counts agree and include dense traces",
+      "name": "plot data row count",
+      "observed": {
+        "csv": 3738,
+        "metadata": 3738
+      },
+      "passed": true
+    },
+    {
+      "criterion": "panels A-D all have data rows",
+      "name": "all four panels populated",
+      "observed": {
+        "A": 3205,
+        "B": 486,
+        "C": 30,
+        "D": 17
+      },
+      "passed": true
+    },
+    {
+      "criterion": "metadata distinguishes numerical corroboration from analytic proof",
+      "name": "claim boundary retained",
+      "observed": "The traces, roots, and cutoff comparison are finite Fourier-lattice corroboration. The exact 2.5D NSE reduction, modular annulus isolation, and existence of the infinite-dimensional recurrence curve are analytic results in the R0.71U report and are not inferred from this plot.",
+      "passed": true
+    }
+  ],
+  "failedCount": 0,
+  "method": "producer-side formula, residual, slope, atom, modular-gap, cutoff, provenance, and boundary checks",
+  "passed": true,
+  "release": "R0.71U"
+}

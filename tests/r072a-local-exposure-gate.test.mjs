@@ -139,8 +139,8 @@ test("publishes the R0.72A note, full post-R0.60 recap, and literature boundary"
   assert.match(note, /physical root displacement/);
   assert.match(note, /相图给的是 upper bound 仍趋零的充分区域/);
   assert.match(note, /不是一般三维正则性定理/);
-  assert.match(note, /\/i18n-en\.js\?v=1\.13/);
-  assert.match(recap, /\/i18n-en\.js\?v=1\.13/);
+  assert.match(note, /\/i18n-en\.js\?v=1\.14/);
+  assert.match(recap, /\/i18n-en\.js\?v=1\.14/);
 
   const forbidden = /我们|攻关|主攻|研究纪律|三重审计|杀死错误想法|突破/;
   for (const [name, html] of Object.entries({ home, literature, note, recap })) {

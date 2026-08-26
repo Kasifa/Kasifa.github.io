@@ -66,7 +66,7 @@ test("keeps R0.71P reachable after R0.72A becomes current", async () => {
   ]);
 
   assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 151);
-  assert.match(home, /<strong>v1\.13<\/strong>网页版本/);
+  assert.match(home, /<strong>v1\.14<\/strong>网页版本/);
   assert.match(home, /<strong>151<\/strong>公开研究笔记/);
   assert.match(home, /<strong>R0\.72A<\/strong>最新研究节点/);
   assert.match(home, /<span class="route-range">R0\.69P–R0\.72A<\/span>/);
@@ -88,10 +88,10 @@ test("keeps R0.71P reachable after R0.72A becomes current", async () => {
   assert.match(literature, /开放接口 · R0\.72B/);
 
   for (const [page, minimum, i18nVersion] of [
-    [home, 10, "1.13"],
+    [home, 10, "1.14"],
     [note, 16, "1.01"],
     [recap, 8, "1.01"],
-    [literature, 49, "1.13"],
+    [literature, 49, "1.14"],
   ]) {
     assertLocalAnchorsResolve(page, minimum);
     assert.match(page, /R0\.71P/);

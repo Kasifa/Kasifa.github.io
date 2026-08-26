@@ -121,14 +121,14 @@ test("publishes the R0.72A note, full post-R0.60 recap, and literature boundary"
     readFile(resolve(publicRoot, "recap-r0-61-r0-72a.html"), "utf8"),
   ]);
 
-  assert.match(home, /<strong>151<\/strong>公开研究笔记/);
-  assert.match(home, /展开 61 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72B/);
+  assert.match(home, /<strong>152<\/strong>公开研究笔记/);
+  assert.match(home, /展开 62 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72C/);
   assert.equal((home.match(/href="\/notes\/r0-72a\.html"/g) ?? []).length, 2);
   assert.match(recap, /R0\.61–R0\.72A 的 91 节公开笔记/);
   assert.match(recap, /十八个研究阶段/);
   assert.match(recap, /R0\.70A–R0\.72A 完成版本/);
-  assert.match(literature, /开放接口 · R0\.72B/);
+  assert.match(literature, /开放接口 · R0\.72C/);
   assert.match(literature, /10\.4007\/annals\.2008\.168\.643/);
   assert.match(literature, /10\.1007\/s00205-017-1099-y/);
   assert.match(literature, /10\.1112\/jlms\.12782/);

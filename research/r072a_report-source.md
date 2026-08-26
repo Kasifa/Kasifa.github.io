@@ -910,7 +910,7 @@ audits.
    exposure factor, Bessel zero mass, finite-lattice strong-coupling roots,
    root shifts, and \(L_R\asymp R^{-3}\) scaling.
 2. The independent program imports neither the producer nor its output. It
-   uses a separate fixed-step exponential midpoint evolution and independent
+   uses a separate fixed-step classical RK4 evolution and independent
    bracketing of target zeros, then checks the same asymptotic quantities and
    the launch regularity identities.
 

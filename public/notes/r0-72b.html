@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.72B：在实剪切三角 Fourier-lattice 类中，以精确目标行范数改进 complete-root 账本，并对 exact-launch 同相可比 many-carrier family 证明 M^{-10/3} 归一化排除界；这不是一般三维正则性定理。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72B｜目标行参与率与同相 many-carrier 排除">
+  <meta property="og:description" content="complete-root 前因子从 MΩ² 收紧到 Mρ_A²；canonical coherent family 的充分消失区扩到 α&lt;min{5/2,(10+3β)/7}。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72b-row-coherence.png">
+  <title>R0.72B｜目标行参与率与同相 many-carrier 排除</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.15"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#row">目标行</a><a href="#roots">全部根</a><a href="#normalized">归一化</a><a href="#coherent">同相族</a><a href="#dissipation">耗散接口</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72B · TARGET ROW · PARTICIPATION · COHERENT EXCLUSION</div>
+        <h1>完整算子很大，<br>目标行只看见其中一部分</h1>
+        <p class="lead">R0.72A 用 \(\Omega=\sup\|V_z\|\) 支付 complete target-root mass。本节保留精确目标行范数 \(\rho_A=\|P_0V_z(A_0)\|\)，把前因子 \(M\Omega^2\) 收紧为 \(M\rho_A^2\)。对 exact launch、同相且幅度可比的 many-carrier family，target participation、载频二阶矩和 carrier counting 合起来给出 \(M^{-10/3}\)。若 \(\eta=M^\alpha\)、\(L=M^{-\beta}\)，完整 normalized upper ledger 在 \(\alpha&lt;\min\{5/2,(10+3\beta)/7\}\) 内趋零。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72B 完成</span><strong>target-row theorem + coherent exclusion</strong><p>版本 v0.72B · 2026-08-27</p><p>analytic audit: PASS</p><p>producer certificate: PASS</p><p>independent certificate: PASS</p><p>下一对象：incoherent phases / positive layer</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#row">01 · 目标行范数</a></li><li><a href="#roots">02 · complete roots</a></li><li><a href="#normalized">03 · 完整账本</a></li><li><a href="#coherent">04 · 同相排除</a></li><li><a href="#dissipation">05 · enhanced dissipation</a></li><li><a href="#audit">06 · 双路证书</a></li><li><a href="#figure">07 · 正式附图</a></li><li><a href="#value">08 · 研究价值</a></li><li><a href="#next">09 · 下一步</a></li><li><a href="#claims">10 · 主张边界</a></li><li><a href="#reproduce">11 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>最自然的同相 many-carrier Bessel 提升在一大片强耦合区域内被统一压回零</h2>
+          <div class="equation result">\[
+            \boxed{G_{\rm all}^{\rm ex}(I)
+            \le e^{2\lambda_0L}M\rho_A^2
+            \bigl[1+q_\rho(I)+\eta\ell_\times(I)\bigr],}
+          \]</div>
+          <div class="equation result">\[
+            q_\rho\le3,\qquad
+            \ell_\times(I)\le\min\{L,C_\times\},\qquad
+            C_\times=\frac{\pi}{\sqrt2\,45^{1/4}\nu d^2}.
+          \]</div>
+          <p>这个定理覆盖任意有限 carrier count \(M\)。R0.72B 新做的不是把 R0.72A 上界“推广到 many carriers”，而是把 one-carrier lower obstruction 的自然同相提升与完整 normalized charge 放进同一账本，并在声明区域给出 uniform exclusion。</p>
+          <div class="boundary"><strong>直接边界</strong><p>相图只说明上界在哪些尺度下趋零。等号线与外部区域没有 converse；也没有构造 normalized lower family。</p></div>
+        </section>
+
+        <section id="row"><div class="section-no">01 / Exact target row</div><h2>目标坐标只通过 \(2M\) 个行系数接收耦合</h2>
+          <p>沿用 real-shear triangular lattice，令</p>
+          <div class="equation result">\[
+            (V_z(x)F)_r=-iK_z\sum_{l=1}^Mz_le^{-\kappa r_l^2x}
+            (F_{r-r_l}+F_{r+r_l}),\qquad \kappa=\nu d^2.
+          \]</div>
+          <p>目标行的精确平方范数为</p>
+          <div class="equation result">\[
+            \rho(x)^2=\|P_0V_z(x)\|^2
+            =2K_z^2\sum_l|z_l|^2e^{-2\kappa r_l^2x},
+            \qquad \rho_A=\rho(A_0)\le\Omega.
+          \]</div>
+          <p>对 differentiated row \(Q=P_0[V_z'+V_z(D_q+\lambda_0)]\)，显式 \(\pm r_l\) 系数与耗散预算给</p>
+          <div class="equation result">\[
+            \int_{A_0}^{\infty}|QF|\,dx\le3\rho_A\sqrt M.
+          \]</div>
+          <p>第二项不再粗略使用 \(\|V_z\|^2\)，而保留 \(\rho(x)\|V_z(x)\|\)。两个半线平方积分经 Cauchy–Schwarz 给出 \(C_\times\)，实际观察层上的点态界再给出 \(L\)。</p>
+        </section>
+
+        <section id="roots"><div class="section-no">02 / Complete-root ledger</div><h2>第一根、全部后续根和退化支路都在同一 BV 证明里支付</h2>
+          <p>取 \(g=e^{\lambda_0(x-A)}F_0\)。则</p>
+          <div class="equation result">\[
+            \|g'\|_\infty\le e^{\lambda_0L}|\delta|\rho_A\sqrt M,
+          \]</div>
+          <div class="equation result">\[
+            \int_I|g''|
+            \le e^{\lambda_0L}|\delta|\rho_A\sqrt M
+            [q_\rho+\eta\ell_\times].
+          \]</div>
+          <p>R0.72A 的复值 BV zero lemma 用首个斜率与总变差支付任意有限零点子集。上界不含 root count 或 separation，所以对所有有限子集取单调上确界，得到 complete extended nonnegative sum。多重根的斜率为零；若 \(\rho_A=0\)，所有 shear coefficients 都为零，账本直接为零。</p>
+        </section>
+
+        <section id="normalized"><div class="section-no">03 / Full normalized charge</div><h2>原 amplitude optimizer 不变，只多出精确 participation factor</h2>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\mathcal J_{\rm all}}
+            {D^{1/3}\Lambda_1}
+            \le C\nu^{-2}e^{2\lambda_0L}
+            \frac M{K_s}\eta^{4/3}
+            \underbrace{\frac{\rho_A^2}{\Omega^2}}_{\chi_A}
+            \left(\frac{\Omega^2}{K_v}\right)^{1/3}
+            [1+q_\rho+\eta\ell_\times].}
+          \]</div>
+          <p>标量优化变量仍为 \(u=S^2K_s/(P^2K_v)\)，最大点仍是 \(u=3\)。full nonlinear rotational charge 继续保留在精确的 \(\Lambda_1\) 分母中；本节没有把它换成截断 proxy，也没有单独计算它。</p>
+          <p>若只知道 \(\chi_A\lesssim M^{-\gamma}\)，继续使用 \(\Omega^2/K_v=O(1)\) 的统一粗界，就得到</p>
+          <div class="equation result">\[
+            \alpha&lt;\min\left\{\frac32+\frac{3\gamma}{4},
+            \frac{6+3\gamma+3\beta}{7}\right\}.
+          \]</div>
+        </section>
+
+        <section id="coherent"><div class="section-no">04 / Coherent many-carrier exclusion</div><h2>exact launch 的同相峰值同时改善 row participation 与载频矩</h2>
+          <p>在 \(A_0=0\)、所有 \(z_l\) 同号且幅度可比时，\(\theta=0\) 给出 exact multiplier peak：</p>
+          <div class="equation result">\[
+            \Omega=2|K_z|\sum_l|z_l|,\qquad
+            \chi_0=\frac12\frac{\sum_l|z_l|^2}{(\sum_l|z_l|)^2}
+            =\frac1{2M_{\rm eff}}\asymp M^{-1}.
+          \]</div>
+          <p>distinct positive integer carriers 又给 \(K_s\gtrsim M^3\) 和 \(\Omega^2/K_v\lesssim M^{-1}\)。三项相乘：</p>
+          <div class="equation result">\[
+            \frac M{K_s}\,
+            \chi_0\,
+            \left(\frac{\Omega^2}{K_v}\right)^{1/3}
+            =O(M^{-10/3}).
+          \]</div>
+          <div class="equation result">\[
+            \boxed{
+            \frac{\mathcal J_{\rm all}}{D^{1/3}\Lambda_1}
+            \le C_*M^{-10/3}\eta^{4/3}
+            [4+\eta\min\{L,C_\times\}].}
+          \]</div>
+          <p>因此 \(\eta=M^\alpha\)、\(L=M^{-\beta}\) 时，充分消失区为</p>
+          <div class="equation result">\[
+            \boxed{\alpha&lt;\min\left\{\frac52,\frac{10+3\beta}{7}\right\}.}
+          \]</div>
+          <p>固定 \(A_0&gt;0\) 时，高频 heat weights 可以让 \(M_{\rm eff}(A_0)\) 坍缩到常数量级。本节没有把 exact-launch 的 \(M^{-1}\) gain 外推到每个正 pre-observation layer。</p>
+        </section>
+
+        <section id="dissipation"><div class="section-no">05 / Enhanced-dissipation interface</div><h2>终点衰减可以支付 tail，但不能抹去 launch 以来已经累计的根质量</h2>
+          <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a>、<a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a>处理 fixed profiles；<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a>处理临界点慢变的 time-dependent shears；<a href="https://arxiv.org/abs/2501.16905">Benthaus–Nobili</a>处理固定空间 profile 的时间调制；<a href="https://arxiv.org/abs/2603.14624">Benthaus–Coclite–Nobili</a>处理刚性平移正弦。这些结果没有直接给出随 \(M\) 改变的 heat-decaying trigonometric polynomial 的统一常数，也不估计 launch-inclusive root ledger。</p>
+          <div class="equation result">\[
+            G_{\rm all}^{\rm ex}([0,a+L])
+            =G_{\rm pre}^{\rm ex}([0,a])
+            +G_{\rm tail}^{\rm ex}((a,a+L]).
+          \]</div>
+          <p>若在 burn-in 时刻 \(a\) 已有合法的能量衰减 \(E_a\)，同一 row theorem 可用 \(E_a\rho_a^2\) 改善 tail。第一项非负，后来的 terminal decay 不能让它倒退。</p>
+          <p>R0.72A Bessel family 进一步给出 no-go：在 \(L_R\asymp R^{-3}\) 内，frozen ED exposure \(L_R\Gamma_R^{\rm fr}\to0\)、freezing error \(\Xi_R\to0\)、energy loss \(\to0\)，但 selected root mass 仍像 \(\log R\) 增长。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Independent certificates</div><h2>双路计算复核常数、相界和有限 profile；解析证明仍是主证据</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · 9/9</strong><p>从 row coefficients、mixed exposure、canonical coherent factors 与 Bessel diagnostics 直接生成 JSON；记录进度、资源、环境和 SHA-256。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · 9/9</strong><p>不导入 producer 或其结果，使用另一套公式与 finite multiplier sampling 重算同一不变量和代表性 profile。</p></div>
+          </div>
+          <p>等幅 canonical 序列的拟合尾指数，两路均为 <code>-3.333307683918</code>；两条互不相同的非等幅可比振幅序列分别给 <code>-3.33331070</code> 与 <code>-3.33331015</code>。在 \(M=2^{20}\) 时，\(M^{10/3}\) 倍 normalized carrier prefactor 为 <code>3.43413618</code>。这些有限检查支持 \(-10/3\) 幂次不依赖“所有幅度完全相等”的偶然结构。</p>
+          <p>Bessel 诊断在 \(R=512\) 时给 \(\Theta_R=7.890686\times10^{-5}\)、\(\Xi_R=9.429778\times10^{-6}\)，analytic energy-loss upper bound 为 <code>0.02028011</code>。三项都小不表示 root ledger 小；该行只核对 pre/tail 分离。</p>
+          <p>两条路径都不是 interval arithmetic。它们用于发现转置、幂次与常数错误，不替代 complete-root 解析证明，也不证明 infinite lattice、三维 DNS 或一般 NSE 正则性。</p>
+          <p>本次同时修正 R0.72A 的一处文档描述：independent finite evolution 实际使用 fixed-step classical RK4，不是 exponential midpoint；代码与归档配置一直一致。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>相界、participation factors 与 Bessel pre-dissipation 诊断分开呈现</h2>
+          <figure><img src="/figures/r0-72b-row-coherence.svg" alt="R0.72B participation phase boundaries, coherent many-carrier factors, and pre-dissipation Bessel diagnostics"><figcaption>图 R0.72B-1。A：R0.72A worst-case、participation-only 与 canonical coherent sufficient boundaries；曲线外没有 converse。B：\(r_l=l,z_l=1\) 的 \(\chi_0=1/(2M)\)、\(\Omega^2/K_v\asymp M^{-1}\) 与合并后的 normalized carrier prefactor。C：Bessel family 的 frozen ED exposure、coupling-weighted freezing error 与 energy-loss bound；三者趋零不消除此前累计的非负 root mass。附图只汇总解析量和可复核计算。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">08 / Research value</div><h2>这一节关闭了最自然的 coherent promotion，并把剩余风险压到 phase cancellation 与正时间退化</h2>
+          <p>第一，complete-root theorem 获得一个以前被 full operator norm 掩盖的 participation factor。第二，同相可比 family 不仅有 row gain，还从 \(K_v\) 得到额外 \(M^{-1/3}\)。第三，enhanced dissipation 的职责被分清：它可以改善 restart 后的 tail，不能支付已经发生的 root events。</p>
+          <p>对千禧年问题的价值仍是间接的。该结果排除 declared triangular 2.5D class 内一类 coherent many-carrier 逃逸机制，没有控制一般三维 vortex stretching，也没有缩小所有潜在奇性解的集合。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next finite gate</div><h2>R0.72C 检查 incoherent phases 与 positive pre-observation layer</h2>
+          <p>下一节优先检查两类剩余对象：一是 multiplier peak 因相位抵消而不再对应大 effective participation 的 profiles；二是 \(A_0&gt;0\) 后 heat weights 让有效 carrier count 坍缩的序列。</p>
+          <p>若构造 lower family，必须给 exact roots、full normalized charge 与严格误差；若继续得到上界，则要把 phase-stable participation quantity 写成 uniform exclusion theorem。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>target-row mixed-exposure complete-root theorem；\(q_\rho\le3\)；\(\ell_\times\le\min\{L,C_\times\}\)；完整 normalized participation factor；coherent exact-launch \(M^{-10/3}\) exclusion。</li>
+            <li><strong>已澄清：</strong>enhanced dissipation 只能在已有定理时支付 tail；terminal decay 不会消除 pre-ledger。</li>
+            <li><strong>仍开放：</strong>incoherent/sparse phases；每个正 \(A_0\) 的 uniform participation；changing-profile nonautonomous ED；normalized many-carrier lower family。</li>
+            <li><strong>没有得到：</strong>相界 converse、finite-time singularity、继续性判据、global regularity、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproduce</div><h2>证明、文献边界、双路证书与期刊附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072b_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072b_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072b_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072b_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072b">producer / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072b-row-coherence/fig-r072b-row-coherence">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-72b-row-coherence.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-72b.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72b.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-72b.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r072b_exact_audit.py --output research/certificates/r072b/result.json
+python3 research/r072b_independent_audit.py --output research/certificates/r072b/independent-result.json
+python3 figures/r072b-row-coherence/fig-r072b-row-coherence/build_figure.py --config figures/r072b-row-coherence/fig-r072b-row-coherence/config.json
+python3 figures/r072b-row-coherence/fig-r072b-row-coherence/qa_images.py --config figures/r072b-row-coherence/fig-r072b-row-coherence/config.json
+python3 figures/r072b-row-coherence/fig-r072b-row-coherence/validate.py --config figures/r072b-row-coherence/fig-r072b-row-coherence/config.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72B · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72b.html">累计回顾</a></div></footer>
+</body>
+</html>

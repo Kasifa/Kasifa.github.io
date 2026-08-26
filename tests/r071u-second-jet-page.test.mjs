@@ -44,27 +44,27 @@ async function publishedPages() {
   return { home, note, recap, literature, previousNote };
 }
 
-test("retains R0.71U while v1.14 publishes R0.72A as current", async () => {
+test("retains R0.71U while v1.15 publishes R0.72B as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 151);
-  assert.match(home, /<strong>v1\.14<\/strong>网页版本/);
-  assert.match(home, /<strong>151<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72A<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72A<\/span>/);
-  assert.match(home, /展开 61 篇公开笔记/);
-  assert.match(home, /累计回顾收录 91 个节点；全站现有 151 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.72A 共 53 个完成版本/);
-  assert.match(home, /NEXT · R0\.72B/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 152);
+  assert.match(home, /<strong>v1\.15<\/strong>网页版本/);
+  assert.match(home, /<strong>152<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72B<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72B<\/span>/);
+  assert.match(home, /展开 62 篇公开笔记/);
+  assert.match(home, /累计回顾收录 92 个节点；全站现有 152 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.72B 共 54 个完成版本/);
+  assert.match(home, /NEXT · R0\.72C/);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72A">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72B">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 61);
+  assert.equal(count(route[1], 'href="/notes/'), 62);
   assert.equal(count(route[1], 'href="/notes/r0-71u.html"'), 1);
   assert.equal(count(home, 'data-release="r071u"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71u.html"'), 2);
@@ -74,14 +74,14 @@ test("retains R0.71U while v1.14 publishes R0.72A as current", async () => {
   assert.match(recap, /回顾截止时公开笔记：145/);
   assert.match(recap, /R0\.70A–R0\.71U 完成版本/);
   assert.match(recap, /R0\.00–R0\.60 的内容保留在上一份阶段回顾中/);
-  assert.match(literature, /R0\.69P–R0\.72A/);
-  assert.match(literature, /开放接口 · R0\.72B/);
+  assert.match(literature, /R0\.69P–R0\.72B/);
+  assert.match(literature, /开放接口 · R0\.72C/);
 
   for (const [page, minimum, version] of [
-    [home, 10, "1.14"],
+    [home, 10, "1.15"],
     [note, 14, "1.06"],
     [recap, 8, "1.06"],
-    [literature, 50, "1.14"],
+    [literature, 50, "1.15"],
   ]) {
     assertAnchorsResolve(page, minimum);
     assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));

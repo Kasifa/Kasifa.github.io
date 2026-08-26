@@ -48,29 +48,29 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("retains R0.71Z while v1.14 publishes R0.72A with synchronized counts and route", async () => {
+test("retains R0.71Z while v1.15 publishes R0.72B with synchronized counts and route", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 151);
-  assert.match(home, /<strong>v1\.14<\/strong>网页版本/);
-  assert.match(home, /<strong>151<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72A<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72A<\/span>/);
-  assert.match(home, /展开 61 篇公开笔记/);
-  assert.match(home, /R0\.70A–R0\.72A 共 53 个完成版本/);
-  assert.match(home, /累计回顾收录 91 个节点；全站现有 151 篇公开研究笔记/);
-  assert.match(home, /NEXT · R0\.72B/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 152);
+  assert.match(home, /<strong>v1\.15<\/strong>网页版本/);
+  assert.match(home, /<strong>152<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72B<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72B<\/span>/);
+  assert.match(home, /展开 62 篇公开笔记/);
+  assert.match(home, /R0\.70A–R0\.72B 共 54 个完成版本/);
+  assert.match(home, /累计回顾收录 92 个节点；全站现有 152 篇公开研究笔记/);
+  assert.match(home, /NEXT · R0\.72C/);
   assert.equal(count(home, 'data-release="r071z"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71z.html"'), 2);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72A">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72B">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 61);
+  assert.equal(count(route[1], 'href="/notes/'), 62);
   assert.equal(count(route[1], 'href="/notes/r0-71z.html"'), 1);
 
   assert.equal(count(recap, '<article class="phase">'), 17);
@@ -83,19 +83,19 @@ test("retains R0.71Z while v1.14 publishes R0.72A with synchronized counts and r
   assert.equal(count(index, 'href="/notes/'), 90);
   assert.equal(count(index, 'href="/notes/r0-71z.html"'), 1);
 
-  assert.match(literature, /R0\.69P–R0\.72A/);
+  assert.match(literature, /R0\.69P–R0\.72B/);
   assert.match(literature, /<header><b>R0\.72A<\/b>/);
-  assert.match(literature, /开放接口 · R0\.72B/);
+  assert.match(literature, /开放接口 · R0\.72C/);
   for (const letter of "abcdefghijklmnopqrstuvwxyz") {
     assert.ok(literature.includes('href="/notes/r0-70' + letter + '.html"'));
     assert.ok(literature.includes('href="/notes/r0-71' + letter + '.html"'));
   }
 
   for (const [page, minimum, version] of [
-    [home, 10, "1.14"],
+    [home, 10, "1.15"],
     [note, 15, "1.12"],
     [recap, 8, "1.12"],
-    [literature, 50, "1.14"],
+    [literature, 50, "1.15"],
   ]) {
     assertAnchorsResolve(page, minimum);
     assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));

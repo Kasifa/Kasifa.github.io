@@ -220,7 +220,7 @@ test("states the complete derivative, square-residual cancellation, second jet, 
 
   assert.match(home, /square|平方|second.?jet|二阶余项/i);
   assert.match(recap, /square|平方|second.?jet|二阶余项/i);
-  assert.match(literature, /bounded negative finding/i);
+  assert.match(literature, /bounded audit/i);
   assert.match(literature, /不是原创性、优先权或不存在性结论/);
 });
 

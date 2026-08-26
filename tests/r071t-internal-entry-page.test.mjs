@@ -150,7 +150,7 @@ test("verifies exact and independent R0.71T certificates", async () => {
   assert.match(report, /finite-dimensional implicit-function (?:argument|theorem)/i);
   assert.match(report, /positive-time internal entry/i);
   assert.match(gap, /not proved|open/i);
-  assert.match(literatureAudit, /bounded negative/i);
+  assert.match(literatureAudit, /bounded (?:primary-source audit|answer)/i);
   assert.match(independentAudit, /independent/i);
   assert.doesNotMatch(report, /we prove global regularity/i);
 });

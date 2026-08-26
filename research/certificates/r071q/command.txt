@@ -1,0 +1,12 @@
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071q_exact_audit.py --output research/certificates/r071q/result.json
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/r071q_independent_audit.py --output research/certificates/r071q/independent-result.json
+
+Figure commands:
+figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit/command.txt
+
+Validate figure package:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/validate_figure_package.py figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit
+
+Build and verify hashes:
+PYTHONDONTWRITEBYTECODE=1 tmp/r068b-venv/bin/python research/certificates/r071q/build_hashes.py
+(cd research/certificates/r071q && shasum -a 256 -c SHA256SUMS)

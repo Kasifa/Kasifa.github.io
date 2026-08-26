@@ -1,0 +1,579 @@
+{
+  "release": "R0.71Q",
+  "status": "passed",
+  "scope": "finite quantitative Jensen/parabolic-window audit; no uniform NSE zero count, continuation criterion, singularity, or global regularity claim",
+  "checks": {
+    "temamLobeDisk": {
+      "passed": true,
+      "normalizedLobe": "Delta={x+iy:x>0,(x^2+y^2)^2<x^3}",
+      "temamScale": "T_1(R)=K_nu/(1+R^2)^2",
+      "extractedDisk": "D(T_1/4,T_1/64)",
+      "boundsAfterSettingT1ToOne": {
+        "xMin": "15/64",
+        "xMax": "17/64",
+        "absoluteYMax": "1/64",
+        "sFourthUpper": "21025/4194304",
+        "xCubedLower": "3375/262144",
+        "strictResidual": "32975/4194304"
+      },
+      "nestedJensenRadii": {
+        "largePdeDisk": "T_1/64",
+        "outerJensenDisk": "T_1/128",
+        "innerCountingDisk": "T_1/256",
+        "radiusMargin": "log 2"
+      },
+      "interpretation": "A two-sided disk can be extracted from a translated one-sided Temam lobe. Its radius remains proportional to (1+sup||u||_V^2)^-2."
+    },
+    "rationalBlaschkeFamily": {
+      "passed": true,
+      "family": "a_{N,k}=(2N^2-k)/(4N^2), B_N(z)=product_k (z-a_{N,k})/(1-a_{N,k}z)",
+      "outerDisk": "D(0,1)",
+      "innerCountingDisk": "D(0,1/2)",
+      "uniformComplexNorm": 1,
+      "boundaryIdentity": "|B_N(e^{i theta})|=1",
+      "centerAnchorIdentity": "|B_N(0)|=product_k a_{N,k}",
+      "jensenBound": "N_B(1/2)<=log(1/|B_N(0)|)/log 2",
+      "nearSharpness": "N <= Jensen bound <= N+1/log 2",
+      "upwardCrossings": "ceil(N/2)",
+      "positiveEntryVariant": "C_N=B_N^2 e has N even-order zeros and, for F=e and Y=1, every zero has A_plus=1",
+      "rows": [
+        {
+          "N": 1,
+          "zeroInterval": [
+            "1/4",
+            "1/4"
+          ],
+          "centerAnchor": "1/4",
+          "minusLogAnchor": 1.3862943611198906,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 2.0,
+          "boundMinusExactZeroCount": 1.0,
+          "distinctRealZeroCount": 1,
+          "positiveDerivativeZeroCount": 1,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "1/16",
+            "distinctEvenOrderZeroCount": 1,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 1,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 4.0
+          },
+          "derivativeSigns": [
+            1
+          ]
+        },
+        {
+          "N": 2,
+          "zeroInterval": [
+            "3/8",
+            "7/16"
+          ],
+          "centerAnchor": "21/128",
+          "minusLogAnchor": 1.807507826196194,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 2.6076825772212398,
+          "boundMinusExactZeroCount": 0.6076825772212398,
+          "distinctRealZeroCount": 2,
+          "positiveDerivativeZeroCount": 1,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "441/16384",
+            "distinctEvenOrderZeroCount": 2,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 2,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 5.2153651544424795
+          },
+          "derivativeSigns": [
+            1,
+            -1
+          ]
+        },
+        {
+          "N": 4,
+          "zeroInterval": [
+            "7/16",
+            "31/64"
+          ],
+          "centerAnchor": "94395/2097152",
+          "minusLogAnchor": 3.1008474071297076,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 4.47357717681943,
+          "boundMinusExactZeroCount": 0.4735771768194299,
+          "distinctRealZeroCount": 4,
+          "positiveDerivativeZeroCount": 2,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "8910416025/4398046511104",
+            "distinctEvenOrderZeroCount": 4,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 4,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 8.94715435363886
+          },
+          "derivativeSigns": [
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        {
+          "N": 8,
+          "zeroInterval": [
+            "15/32",
+            "127/256"
+          ],
+          "centerAnchor": "422209064536875/144115188075855872",
+          "minusLogAnchor": 5.832867571034631,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 8.415049118893716,
+          "boundMinusExactZeroCount": 0.415049118893716,
+          "distinctRealZeroCount": 8,
+          "positiveDerivativeZeroCount": 4,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "178260494177103078758234765625/20769187434139310514121985316880384",
+            "distinctEvenOrderZeroCount": 8,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 8,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 16.830098237787432
+          },
+          "derivativeSigns": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        {
+          "N": 16,
+          "zeroInterval": [
+            "31/64",
+            "511/1024"
+          ],
+          "centerAnchor": "520295910817923309211789834573507996875/44601490397061246283071436545296723011960832",
+          "minusLogAnchor": 11.358880124418539,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 16.38740002555084,
+          "boundMinusExactZeroCount": 0.3874000255508392,
+          "distinctRealZeroCount": 16,
+          "positiveDerivativeZeroCount": 8,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "270707834813852405622117689168310775911418025612597201990568959979575009765625/1989292945639146568621528992587283360401824603189390869761855907572637988050133502132224",
+            "distinctEvenOrderZeroCount": 16,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 16,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 32.77480005110168
+          },
+          "derivativeSigns": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        {
+          "N": 32,
+          "zeroInterval": [
+            "63/128",
+            "2047/4096"
+          ],
+          "centerAnchor": "3296590840108912509961625365087725200089692534240418190924229852752525783692092354694710321796875/18347988927920572092886567162416695526372519913346248989900710715095383008707878464560148424881005492436992",
+          "minusLogAnchor": 22.43989695450841,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 32.37392805432864,
+          "boundMinusExactZeroCount": 0.37392805432863696,
+          "distinctRealZeroCount": 32,
+          "positiveDerivativeZeroCount": 16,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "10867511167089985565413667794945842526489908829655389589945352184726859247296146609676909019969289919264222985640271191827455382215062936564989493835789359788619373059865888398617615728759765625/336648697699095904463423352504328234595221747380683127007889977796398857875013172615274658321765660878526910006795405933633243664011763447240180145321720374397134314952220454284266480504596653905362768111090008064",
+            "distinctEvenOrderZeroCount": 32,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 32,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 64.74785610865727
+          },
+          "derivativeSigns": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        },
+        {
+          "N": 64,
+          "zeroInterval": [
+            "127/256",
+            "8191/16384"
+          ],
+          "centerAnchor": "2407165955280969866348384212387979704801628024935988686518684363485161342979228494511319330758175703938435622981838383997387077612672972933249679607554072437468109975943065863037346795367580944194001914239341731317032652069091796875/57277807836949922408837567867349676981443478344341305058882899404622128010705808318690568531649256750858719018437999440148793721514146753400890052083129159241025748615958424204533602522957957552490080016463490494951861107213475167230717574212948590592",
+          "minusLogAnchor": 44.61599482144719,
+          "jensenMultiplicityBoundAtInnerRadiusOneHalf": 64.36727447322953,
+          "boundMinusExactZeroCount": 0.36727447322952855,
+          "distinctRealZeroCount": 64,
+          "positiveDerivativeZeroCount": 32,
+          "squaredFamily": {
+            "definition": "C_N(z)=B_N(z)^2 e",
+            "centerAnchor": "5794447936263744218388405356435496880322561975178464958011251584908832531508396619305121267400278747940970895543842131510927161928074827343660370837489787450295583441953380490343398042049207581949096681574261268746273168281805877167261408059689068560215591068635285846431828648697340164988012488681947298463107887060155250286655828913784051419042861117005630311861402962991975229758539345486129073293905659345778039571886230882464501887596444226801395416259765625/3280747270606561949281919233470138040955118160410104024945899344666936067460823999483335040969410048180900635096695479579307511562356523915948919511557334713970927587512944731564897017859744203484345361755192521067652489709329672866711252605222721813435820025422662515753065327917230758163537077489463051534712452908545992217689658007360928363488635662147915389775071689260869245778845588193325984556993000755965611404516133974928656920909834869945582057746297669100597616791098189558029851119230910464",
+            "distinctEvenOrderZeroCount": 64,
+            "positiveEntryCountForFEqualsEAndYEqualsOne": 64,
+            "eachLeadingCoefficientIsPositive": true,
+            "jensenMultiplicityBound": 128.73454894645906
+          },
+          "derivativeSigns": [
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            1,
+            -1
+          ]
+        }
+      ],
+      "methodBoundary": "Fixed analytic radius and fixed complex sup norm do not bound distinct real zeros or upward crossings without a quantitative nonzero anchor."
+    },
+    "observableUnionTax": {
+      "passed": true,
+      "outerDisk": "D(0,1)",
+      "innerDisk": "D(0,3/4)",
+      "uniformData": "M<=3/2 and |g_q(0)|>=1/4 for every q",
+      "uniformPerComponentBound": 6.228262518959629,
+      "rows": [
+        {
+          "componentCount": 1,
+          "distinctUnionZeroCount": 1,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "3/8",
+            "3/8"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 1
+        },
+        {
+          "componentCount": 2,
+          "distinctUnionZeroCount": 2,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "1/3",
+            "5/12"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 2
+        },
+        {
+          "componentCount": 4,
+          "distinctUnionZeroCount": 4,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "3/10",
+            "9/20"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 4
+        },
+        {
+          "componentCount": 8,
+          "distinctUnionZeroCount": 8,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "5/18",
+            "17/36"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 8
+        },
+        {
+          "componentCount": 16,
+          "distinctUnionZeroCount": 16,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "9/34",
+            "33/68"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 16
+        },
+        {
+          "componentCount": 32,
+          "distinctUnionZeroCount": 32,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "17/66",
+            "65/132"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 32
+        },
+        {
+          "componentCount": 64,
+          "distinctUnionZeroCount": 64,
+          "eachFunction": "g_q(z)=z-b_q",
+          "zeroInterval": [
+            "33/130",
+            "129/260"
+          ],
+          "uniformOuterDiskSupBound": 1.5,
+          "uniformCenterAnchorLowerBound": 0.25,
+          "uniformPerComponentJensenBound": 6.228262518959629,
+          "positiveDerivativeZeroCount": 64
+        }
+      ],
+      "conclusion": "The union of component zero sets grows linearly with the number of observables despite uniform per-component radius, norm, and anchor. Summing Jensen bounds or forming a product both pay the same truncation/component tax."
+    },
+    "localWindowCoverTax": {
+      "passed": true,
+      "family": "C_N(z)=(sin(pi*N*z)/(pi*N))^2 e on K=[0,1)",
+      "centers": "c_m=(m+1/2)/N",
+      "ownedCells": "E_m=[m/N,(m+1)/N)",
+      "uniformRelativeGrowthBound": 28.33169044521933,
+      "rows": [
+        {
+          "N": 1,
+          "entryCountOnHalfOpenUnitWindow": 1,
+          "ownedWindowCount": 1,
+          "outerRadius": "3/4",
+          "innerRadius": "5/8",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 0.10132118364233778,
+          "complexNormBound": 2.8706004104979344,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 2,
+          "entryCountOnHalfOpenUnitWindow": 2,
+          "ownedWindowCount": 2,
+          "outerRadius": "3/8",
+          "innerRadius": "5/16",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 0.025330295910584444,
+          "complexNormBound": 0.7176501026244836,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 4,
+          "entryCountOnHalfOpenUnitWindow": 4,
+          "ownedWindowCount": 4,
+          "outerRadius": "3/16",
+          "innerRadius": "5/32",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 0.006332573977646111,
+          "complexNormBound": 0.1794125256561209,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 8,
+          "entryCountOnHalfOpenUnitWindow": 8,
+          "ownedWindowCount": 8,
+          "outerRadius": "3/32",
+          "innerRadius": "5/64",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 0.0015831434944115277,
+          "complexNormBound": 0.044853131414030224,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 16,
+          "entryCountOnHalfOpenUnitWindow": 16,
+          "ownedWindowCount": 16,
+          "outerRadius": "3/64",
+          "innerRadius": "5/128",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 0.00039578587360288194,
+          "complexNormBound": 0.011213282853507556,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 32,
+          "entryCountOnHalfOpenUnitWindow": 32,
+          "ownedWindowCount": 32,
+          "outerRadius": "3/128",
+          "innerRadius": "5/256",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 9.894646840072048e-05,
+          "complexNormBound": 0.002803320713376889,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        },
+        {
+          "N": 64,
+          "entryCountOnHalfOpenUnitWindow": 64,
+          "ownedWindowCount": 64,
+          "outerRadius": "3/256",
+          "innerRadius": "5/512",
+          "outerToInnerRatio": 1.2,
+          "centerAnchor": 2.473661710018012e-05,
+          "complexNormBound": 0.0007008301783442223,
+          "uniformRelativeGrowthBound": 28.33169044521933,
+          "positiveEntryAtom": 1
+        }
+      ],
+      "conclusion": "Uniform local radius ratio and relative anchor data do not pay the global count; the number of owned windows remains N."
+    },
+    "lerayCoveringBudgetSeparation": {
+      "passed": true,
+      "pulse": "Y_N(t)=N(1-Nt)_+ on [0,1]",
+      "analyticScale": "T_1(sqrt(Y))=K_nu/(1+Y)^2",
+      "inverseScaleDensity": "K_nu^-1(1+Y)^2",
+      "rows": [
+        {
+          "N": 1,
+          "integralY": "1/2",
+          "integralYSquared": "1/3",
+          "integralOnePlusYQuantitySquared": "7/3"
+        },
+        {
+          "N": 2,
+          "integralY": "1/2",
+          "integralYSquared": "2/3",
+          "integralOnePlusYQuantitySquared": "8/3"
+        },
+        {
+          "N": 4,
+          "integralY": "1/2",
+          "integralYSquared": "4/3",
+          "integralOnePlusYQuantitySquared": "10/3"
+        },
+        {
+          "N": 8,
+          "integralY": "1/2",
+          "integralYSquared": "8/3",
+          "integralOnePlusYQuantitySquared": "14/3"
+        },
+        {
+          "N": 16,
+          "integralY": "1/2",
+          "integralYSquared": "16/3",
+          "integralOnePlusYQuantitySquared": "22/3"
+        },
+        {
+          "N": 32,
+          "integralY": "1/2",
+          "integralYSquared": "32/3",
+          "integralOnePlusYQuantitySquared": "38/3"
+        },
+        {
+          "N": 64,
+          "integralY": "1/2",
+          "integralYSquared": "64/3",
+          "integralOnePlusYQuantitySquared": "70/3"
+        }
+      ],
+      "scope": "This is an abstract budget separation, not an NSE enstrophy trajectory. It proves that an L1-in-time Y bound alone cannot pay a generic cover whose density is proportional to (1+Y)^2."
+    }
+  },
+  "decision": "The direct complex-time zero-count route remains conditional. Temam's radius is paid by a strong H1 bound, Jensen requires a lower observable anchor, and unions over observables pay a truncation tax."
+}

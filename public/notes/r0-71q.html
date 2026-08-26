@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71Q：复时间解析性在固定经典窗口上给出带锚点、截断、覆盖和批次包络代价的有限 Jensen 计数；这些代价尚不能由 Leray 预算统一支付。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71Q｜Jensen 给出有限条件计数，但四项 NSE 账本仍未支付">
+  <meta property="og:description" content="Temam 复时间瓣到显式圆盘、Hilbert 值 Jensen 定理、Blaschke 锚点障碍、分量并集税、窗口覆盖税和 NSE 预算审计。">
+  <meta property="og:image" content="https://kasifa.github.io/og.png">
+  <title>R0.71Q｜Jensen 给出有限条件计数，但四项 NSE 账本仍未支付</title>
+  <script>
+    window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+  </script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.68rem,3.6vw,3rem)}@media print{#reproduce{break-inside:avoid}}</style>
+  <script defer src="/i18n-en.js?v=1.02"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#interface">接口</a><a href="#jensen">Jensen</a><a href="#temam">复时间圆盘</a><a href="#theorem">条件定理</a><a href="#anchor">锚点障碍</a><a href="#union">并集税</a><a href="#cover">覆盖税</a><a href="#budget">NSE 账本</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71Q · COMPLEX TIME · JENSEN WINDOWS · METHOD AUDIT</div>
+        <h1>复时间解析性能够给出有限条件计数，<br>但不能免费关闭 NSE 的时间进入打包</h1>
+        <p class="lead">R0.71P 把同一时刻的全部 shell–cell entries 合成一个空间批次，剩下 distinct entry times 的计数测度。本节把 Temam 的复时间解析区、Hilbert 值 Jensen 公式和有限 ownership cover 严格接上。结果是一条可证明的有限定理；它同时暴露出 analytic radius、projection anchor、component union、window cover 和点态 batch envelope 的代价。现有 Leray 预算没有统一支付这些代价。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71Q 条件定理与方法不可能性审计完成</span><strong>finite conditional theorem；unconditional packing open</strong><p>版本 v0.71Q · 2026-08-26</p><p>exact rational/symbolic audit: PASS</p><p>independent numerical audit: PASS</p><p>无 PDE 时间推进</p><p>下一对象：NSE-specific incidence / Carleson packing</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#interface">01 · R0.71P 接口</a></li><li><a href="#jensen">02 · Jensen gate</a></li><li><a href="#temam">03 · Temam 圆盘</a></li><li><a href="#theorem">04 · 条件打包定理</a></li><li><a href="#anchor">05 · 锚点障碍</a></li><li><a href="#union">06 · 分量并集税</a></li><li><a href="#cover">07 · 窗口覆盖税</a></li><li><a href="#budget">08 · NSE 预算审计</a></li><li><a href="#audit">09 · 双重审计</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#literature">11 · 文献边界</a></li><li><a href="#value">12 · 研究价值</a></li><li><a href="#next">13 · 下一步</a></li><li><a href="#claims">14 · 主张边界</a></li><li><a href="#reproduce">15 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>解析性路线在有限经典窗口成立，但无条件路线到此停止</h2>
+          <div class="boundary"><strong>本节判断</strong><p>对固定有限截断和紧含于经典区间的半开窗口，Temam 复时间圆盘、有限 ownership cover 与 Jensen 公式给出一个显式 entry bound。这个界必须支付复解析半径、复域增长、非零投影锚点、分量/截断和窗口覆盖；加权目标还要支付每个窗口上的点态 batch envelope。有限 Blaschke、线性分量族和 sine-square 族分别证明锚点税、并集税和覆盖税不能在抽象解析函数层面删除。</p></div>
+          <p>所以本节没有证明 uniform NSE temporal packing。它关闭的是一个方法判断：仅靠“时间解析 + 复域上界”无法完成 R0.71P 的计数测度估计。</p>
+        </section>
+
+        <section id="interface"><div class="section-no">01 / Inherited interface</div><h2>剩余目标是批次权重对 distinct entry-time measure 的积分</h2>
+          <p>在有限 shell–cell 截断 \(\Lambda\) 上，R0.71P 已证明同刻 entries 满足</p>
+          <div class="equation result">\[
+            \mathsf e_\Lambda(t)
+            \le \mathcal H(t),\qquad
+            \mathcal H(t)=M_\chi C_T
+            \frac{\|L(t)\|_{\dot H^{-1}}^2}{Y(t)},
+          \]</div>
+          <div class="equation result">\[
+            \mathsf S_{\Lambda,+}(K)
+            \le \int_K\mathcal H(t)\,d\mathfrak n_\Lambda(t).
+          \]</div>
+          <p>这里 \(K=[a,b)\Subset I_{\rm strong}\)，\(\mathfrak n_\Lambda\) 只数不同进入时刻。每个 positive entry 都是某个 Hilbert 值观测量</p>
+          <div class="equation">\[
+            C_\alpha(t)=\operatorname{curl}\!\left(\chi_QT_j\omega(t)\right),
+            \qquad \alpha=(j,Q),
+          \]</div>
+          <p>的向量零点；反向不必成立。因此把所有分量零点作为上界是安全的，但会产生分量并集代价。</p>
+        </section>
+
+        <section id="jensen"><div class="section-no">02 / Hilbert-valued Jensen gate</div><h2>Jensen 的有效形式必然含有非零下锚点</h2>
+          <p>若 \(C:D(t_*,R)\to H_{\mathbb C}\) 强全纯，且</p>
+          <div class="equation">\[
+            \sup_{D(t_*,R)}\|C(z)\|_H\le M,
+            \qquad C(t_*)\ne0,
+          \]</div>
+          <p>由复 Hahn–Banach 选取 norming functional \(\ell\)，对 \(f=\ell\circ C\) 使用 Jensen 公式。每个向量零点都是 \(f\) 的标量零点，故</p>
+          <div class="equation result">\[
+            \boxed{N_C\!\left(\overline D(t_*,r)\right)
+            \le
+            \frac{\log\!\left(M/\|C(t_*)\|_H\right)}
+            {\log(R/r)}},\qquad 0&lt;r&lt;R.
+          \]</div>
+          <p>我把左端简记为 \(N_C(D(t_*,r))\)：它只数不同向量零点；右端标量零点按重数计，因此是安全上界。闭内盘通过中间外半径后取极限处理，不能把 \(r=R\) 代入。圆盘自同构、Poisson–Jensen、Cartan 小值集或 Blaschke 分解只会改写锚点，不会删除它。</p>
+        </section>
+
+        <section id="temam"><div class="section-no">03 / Quantitative complex-time disk</div><h2>从 Temam 的单侧瓣中抽取一个精确双侧圆盘</h2>
+          <p>从实时间 \(\tau\) 重新启动，Temam 的复时间瓣尺度为</p>
+          <div class="equation">\[
+            T_1(R)=\frac{K_\nu}{(1+R^2)^2},
+            \qquad
+            \Delta_R=\{x+iy:(x^2+y^2)^2&lt;x^3T_1(R),\ x&gt;0\}.
+          \]</div>
+          <p>精确有理数审计给出</p>
+          <div class="equation result">\[
+            \boxed{D(T/4,T/64)\subset\Delta_R},\qquad T=T_1(R).
+          \]</div>
+          <p>归一化 \(T=1\) 后，盘内 \(x\ge15/64\)、\(x^2+y^2\le290/4096\)，并且</p>
+          <div class="equation">\[
+            \left(\frac{290}{4096}\right)^2
+            &lt;\left(\frac{15}{64}\right)^3.
+          \]</div>
+          <p>于是从 \(\tau=t_*-T/4\) 启动，可在 \(t_*\) 周围得到真实双侧圆盘。再缩到 \(D(t_*,T/128)\)，Temam 的 \(Au\) 估计和固定算子 \(\mathcal O_\alpha u=C_\alpha\) 给出有限复域上界 \(M_\alpha\)。它对每个固定分量有效，但不自动对全壳、全小区一致。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">04 / Owned-window theorem</div><h2>有限 ownership cover 给出带整数 Jensen capacity 的条件定理</h2>
+          <p>取 \(K^\sharp=[a-\delta,b+\delta]\Subset I_{\rm strong}\)，令</p>
+          <div class="equation">\[
+            R_\sharp=\sup_{K^\sharp}\|u(t)\|_V,
+            \quad T_\sharp=\min\!\left\{\delta,
+            \frac{K_\nu}{(1+R_\sharp^2)^2}\right\},
+            \quad R_o=\frac{T_\sharp}{128},\quad r_i=\frac{T_\sharp}{256}.
+          \]</div>
+          <p>删除在连通经典区间上恒为零的分量；它们没有 entry。对剩余有限分量选择避开全部零点的实中心 \(t_m\)，让内区间覆盖 \(K\)，并用半开 ownership sets \(K_m\) 唯一分配每个时刻。空的 \(K_m\) 直接丢弃。可取</p>
+          <div class="equation">\[
+            J\le2+\left\lceil\frac{512|K|}{T_\sharp}\right\rceil.
+          \]</div>
+          <p>设</p>
+          <div class="equation">\[
+            a_{\alpha m}=\|C_\alpha(t_m)\|_2&gt;0,
+            \quad H_m=\sup_{t\in K_m}\mathcal H(t),
+            \quad J_{\alpha m}=\left\lfloor
+            \frac{\log(M_\alpha/a_{\alpha m})}{\log2}
+            \right\rfloor.
+          \]</div>
+          <p>在每个 entry time 选择一个真正进入的 witness component。ownership 使时间集合不交，Jensen 容量控制每个 witness 的零点数，R0.71P 的同刻 bound 控制其权重，因而</p>
+          <div class="equation result">\[
+            \boxed{
+            \mathsf S_{\Lambda,+}(K)
+            \le\sum_mH_m\sum_{\alpha\in\Lambda^*}J_{\alpha m}
+            \le\frac1{\log2}\sum_mH_m
+            \sum_{\alpha\in\Lambda^*}\log\frac{M_\alpha}{a_{\alpha m}}.}
+          \]</div>
+          <p>这是有限条件定理，也是定量、可审计的定理。右端尚未被 Leray data 控制。</p>
+        </section>
+
+        <section id="anchor"><div class="section-no">05 / Exact anchor obstruction</div><h2>有限 Blaschke 乘积证明锚点对数不可删除</h2>
+          <p>对 \(N\ge1\)，取</p>
+          <div class="equation">\[
+            a_{N,k}=\frac{2N^2-k}{4N^2},\qquad
+            B_N(z)=\prod_{k=1}^N\frac{z-a_{N,k}}{1-a_{N,k}z}.
+          \]</div>
+          <p>全部零点位于 \([1/4,1/2)\)，其中端点 \(1/4\) 只在 \(N=1\) 出现；同时 \(\|B_N\|_{H^\infty(\mathbb D)}=1\)，中心锚点满足</p>
+          <div class="equation result">\[
+            N\le\frac{\log(1/|B_N(0)|)}{\log2}
+            \le N+\frac1{\log2}.
+          \]</div>
+          <p>所以固定解析半径和固定复域上界允许任意多实零点，Jensen 的锚点对数与零点数同阶。简单零点中还有 \(\lceil N/2\rceil\) 个正导数穿越。若取</p>
+          <div class="equation">\[
+            \widetilde C_N(z)=B_N(z)^2e,\qquad F=e,\qquad Y=1,
+          \]</div>
+          <p>全部 N 个零点都变成偶阶正进入，并且每个零点都有 \(A_+=1\)。这直接对齐 R0.71P 的正进入定义。该族是解析 Hilbert 路径，不是 NSE 重复 face 构造。</p>
+        </section>
+
+        <section id="union"><div class="section-no">06 / Component-union tax</div><h2>每个观测量都受控，零点并集仍可随截断线性增长</h2>
+          <p>取互异 \(b_q\in(1/4,1/2)\) 和 \(g_q(z)=z-b_q\)。在单位盘上每个分量都有统一上界 \(&lt;3/2\) 和统一中心锚点 \(&gt;1/4\)，但 Q 个分量零点的并集恰有 Q 个点。</p>
+          <p>逐分量 Jensen 必须对 \(q\) 求和。乘积 \(\prod_qg_q\) 检测并集，却把中心锚点变成乘积，其对数仍是各分量税之和。张量积有相同问题。直接和则更糟：</p>
+          <div class="equation result">\[
+            \bigoplus_q g_q(z)=0
+            \quad\Longleftrightarrow\quad
+            g_q(z)=0\ \text{对所有 }q,
+          \]</div>
+          <p>它检测的是零点交集，不是 entry 所需的并集。同刻空间 batching 已经删除 cell multiplicity，但它不提供跨时零点集合的耦合。</p>
+        </section>
+
+        <section id="cover"><div class="section-no">07 / Window-cover tax</div><h2>局部相对数据一致，也不能省掉覆盖窗口数</h2>
+          <p>在 \(K=[0,1)\) 取</p>
+          <div class="equation">\[
+            C_N(z)=\left(\frac{\sin(\pi Nz)}{\pi N}\right)^2e,
+            \qquad F=e,\qquad Y=1.
+          \]</div>
+          <p>点 \(k/N\)、\(k=0,\ldots,N-1\) 是 \(N\) 个正进入，每个 \(A_+=1\)。给第 \(m\) 个 owned cell 取中心 \((m+1/2)/N\)、外半径 \(3/(4N)\)、内半径 \(5/(8N)\)，则半径比恒为 \(6/5\)，而</p>
+          <div class="equation result">\[
+            \frac{M_m}{\|C_N(c_m)\|}
+            \le\cosh^2(3\pi/4)
+          \]</div>
+          <p>与 \(m,N\) 无关；但仍需 \(N\) 个窗口。把窗口合并，只会把这笔代价转移到全局复增长中。覆盖必须逐点而非几乎处处，因为全部 entry atoms 可能落在 Lebesgue 零测集上。</p>
+        </section>
+
+        <section id="budget"><div class="section-no">08 / NSE ledger audit</div><h2>半径、锚点、并集和点态权重都不是 Leray 预算的免费输入</h2>
+          <p><strong>半径与覆盖。</strong>&nbsp;\(T_\sharp^{-1}\) 至少按 \((1+R_\sharp^2)^2\) 增长，而 \(R_\sharp\) 是 \(L_t^\infty H_x^1\) 强范数。Leray 只给相关的普通时间积分。抽象脉冲 \(Y_N(t)=N(1-Nt)_+\) 满足 \(\int Y_N=1/2\) 而 \(\int Y_N^2=N/3\)，说明 \(L^1\) 预算不能支付一般的 inverse-window density。</p>
+          <p><strong>复域增长。</strong>&nbsp;Temam 的上界包含 \(T_\sharp^{-1}\) 和固定 shell–cell 算子范数；它不是全 frame 一致估计。</p>
+          <p><strong>投影锚点。</strong>&nbsp;localized filtered observable 有非平凡核和符号抵消。R0.71P 的真实 smooth NSE initial jet 已有 \(Y(0)=1\)、\(C_\alpha(0)=0\)、\(C_{\alpha,t}(0)\ne0\)，故总 enstrophy 不会给指定投影的正下界。</p>
+          <p><strong>点态 batch envelope。</strong>&nbsp;即使零点数已知，目标仍按 \(\mathcal H(t)\) 加权。条件定理使用 \(H_m=\sup_{K_m}\mathcal H\)；普通 \(dt\) 积分不能控制原子事件集上的点态抽样。</p>
+          <div class="boundary"><strong>端点边界</strong><p>若解析半径和相应强界在 \(K\uparrow T^*\) 时保持统一，局部强理论会把解延拓过 \(T^*\)。因此端点一致复时间圆盘本身已经是 continuation-level input，不能作为 Leray 数据的无偿推论。</p></div>
+        </section>
+
+        <section id="audit"><div class="section-no">09 / Exact and independent audit</div><h2>代数证书与独立浮点重建分别通过</h2>
+          <p>exact producer 用有理数检查 Temam 瓣内圆盘，逐项验证 \(N=1,2,4,8,16,32,64\) 的 Blaschke 锚点、零点与正导数计数，并核对 squared positive-entry、component union、sine-square cover 和 \(L^1\)–inverse-window pulse。</p>
+          <p>independent checker 没有导入 exact producer。它对每个 Blaschke 乘积抽取 8,192 个单位圆边界点，最大模误差为 \(1.22\times10^{-14}\)；200,000 个随机点重检复时间圆盘，最小 lobe residual 为 \(9.86\times10^{-3}\)；规定零点 residual 和中心乘积对数误差均为零。两套证书都不进行 NSE 时间推进。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图把条件上界与三种不可删除的税分开显示</h2>
+          <figure><img src="/figures/r0-71q-jensen-window-audit.svg" alt="R0.71Q Temam 复时间圆盘、Jensen 锚点税、分量并集税和窗口覆盖税审计"><figcaption>图 R0.71Q。A：从 Temam 复时间瓣中抽取的显式双侧圆盘。B：有限 Blaschke 族在固定半径与上界下制造任意多零点，锚点对数与零点数同阶。C：逐分量数据一致时，零点并集仍按分量数增长。D：sine-square 族保持局部半径比与相对增长一致，但 ownership cover 数按 (N) 增长。</figcaption></figure>
+        </section>
+
+        <section id="literature"><div class="section-no">11 / Primary-source boundary</div><h2>已有文献支付解析半径与上界，没有支付完整进入计数</h2>
+          <p><a href="https://epubs.siam.org/doi/10.1137/1.9781611970050.ch7">Temam 第 7 章</a>给出周期强解的复时间瓣、强空间上界和重新启动；其尺度依赖强 \(V\)-norm。<a href="https://doi.org/10.1007/BF02417878">Jensen 1899</a>的零点公式保留中心值。<a href="https://archiv.saw-leipzig.de/saw-archive/publikationen-quellen/publikationen/berichte-ueber-die-verhandlungen-der-koeniglich-saechsischen-gesellschaft-der-wissenschaften-zu-leipzig-mathematisch-physische-klasse-bd-1/berichte-ueber-die-verhandlungen-der-koeniglich-saechsischen-gesellschaft-der-wissenschaften-zu-leipzig-mathematisch-physische-klasse-bd-67/eine-erweiterung-des-satzes-von-vitali-ueber-folgen-analytischer-funktionen">Blaschke 1915</a>给出所用有界零因子的原始背景。<a href="https://doi.org/10.1016/j.physd.2008.03.007">Giga–Jo–Mahalov–Yoneda</a>给出显式复时间扇区和模态不会突然生成的定性结论，不给反复零点或模态并集计数。</p>
+          <p><a href="https://doi.org/10.1016/j.jfa.2020.108563">Dong–Zhang</a>和<a href="https://doi.org/10.1016/j.jmaa.2022.126428">Wang–Gao–Xue</a>给出时间导数与联合解析估计；大数据常数依赖局部强解窗口，小数据一致情形已经处于全局正则类。<a href="https://doi.org/10.3792/pja/1195521421">Masuda</a>的唯一延拓要求完整速度场在空间开集消失，不能替代单个 filtered observable 的定量下锚点。</p>
+          <p>截至 2026-08-26 的两轮限定一手文献检索，没有找到从 Leray 数据支付 lower anchor、component-union tax 或完整 R0.71P entry-time measure 的定理。这是 bounded negative finding，不是不存在性、原创性或优先权声明。</p>
+        </section>
+
+        <section id="value"><div class="section-no">12 / Research value</div><h2>价值在于精确排除一条看似自然但不够强的路线</h2>
+          <div class="equation result">\[
+            \boxed{\text{complex-time analyticity}
+            +\text{upper growth}
+            \not\Rightarrow
+            \text{uniform entry-time packing}.}
+          \]</div>
+          <p>这不是对千禧年问题的直接推进定理，却是有研究价值的路线分类：有限 Jensen 结论被完整写出，失效位置被分解成可单独检验的账本，且每个主要抽象缺口都有显式反例族。以后任何声称用时间解析性关闭 temporal packing 的方案，都必须说明它从 NSE 动力学额外得到哪一种 anchor、zero-set coupling、cover density 或 event-weight control。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next finite gate</div><h2>R0.71R 转向 NSE-specific parabolic incidence / Carleson packing</h2>
+          <p>下一节不再重复 Jensen。我要在逐分量正部被选取之前，回到 signed precursor/source，检查 entry events 是否满足由 NSE 方程、热核传播或 parabolic geometry 强迫的 incidence law。候选结论必须同时通过三类压力测试：R0.71P 的 sequential path、R0.71Q 的 Blaschke anchor family，以及 all-observable union tax。</p>
+          <p>若只能在 transversality、quantitative unique continuation、有限维截断或额外强范数下成立，我会继续把条件保留在 theorem 中，不把它升级为 Leray 结论。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">14 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>显式 Temam 瓣内圆盘；Hilbert 值 Jensen zero count；有限 ownership-cover entry theorem；锚点、并集、覆盖和普通预算分离的精确反例族。</li>
+            <li><strong>未证明：</strong>统一 NSE zero count、无限 frame estimate、Leray 极限、潜在奇点端点覆盖、继续性判据、有限时奇性或全局正则性。</li>
+            <li><strong>反例边界：</strong>Blaschke、linear-component、sine-square 和 pulse families 是抽象解析/预算族，不是 Navier–Stokes 重复进入轨道。</li>
+            <li><strong>文献边界：</strong>限定检索没有发现直接定理，不等于证明文献中不存在，也不构成新颖性或优先权声明。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">15 / Reproduce</div><h2>报告、证书、图数据和两个独立 checker 全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071q_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071q">exact / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit">附图、数据、manifest 与源代码包</a> · <a href="/figures/r0-71q-jensen-window-audit.pdf">期刊附图 PDF</a> · <a href="/notes/r0-71q.pdf">同步研究笔记 PDF</a></p>
+          <p><a href="/recap-r0-61-r0-71q.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71q.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071q_exact_audit.py
+python3 research/r071q_independent_audit.py
+python3 figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit/validate_data.py
+python3 figures/r071q-jensen-window-audit/fig-r071q-jensen-window-audit/independent_validate.py</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71Q · 2026-08-26 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71q.html">累计回顾</a></div></footer>
+</body>
+</html>

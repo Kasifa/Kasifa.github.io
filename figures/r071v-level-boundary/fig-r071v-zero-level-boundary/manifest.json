@@ -1,0 +1,398 @@
+{
+  "analyticalQuestion": "For the exact two-root 2.5D recurrence tangent, can high auxiliary frequencies drive a fixed low target so that the atom remains two powers larger than the first-time-jet row, and what happens to the associated excursion non-collapse factors?",
+  "asymptoticPowers": {
+    "firstRow": -5.984522518405891,
+    "internalD": -2.034949064560819,
+    "secondRootAtom": -3.9672318636673394,
+    "secondRootAtomOverFirstRow": 2.0172906547385505,
+    "secondRootAtomOverSecondRow": -2.0332198058421893,
+    "secondRootAtomOverTerminalHeightSquare": 4.037891258602083,
+    "secondRow": -1.9340120578251487,
+    "terminalD": -4.037891258602083,
+    "terminalHeightSquare": -8.005123122269422,
+    "totalAtomAuxiliary": -3.936977131601929
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": "The figure evaluates exact response functions, the exact IFT tangent, and one-dimensional quadratures. The main atom is the second prescribed target-shell root, so the comparison remains after the first root is separately paid. It does not time-integrate the nonlinear trajectory, prove the IFT, prove a uniform asymptotic remainder, or constitute DNS. The target multiplier m_*=1, target frequency K_z=1, shell scale kappa_*=1, wave number rho^2=2, and macroscopic audit window stay fixed; this is not a covariant Navier-Stokes dilation.",
+  "computation": {
+    "configuration": "N=2; q=8,16,32,64,128,256; nu=.02; Ky=Kz=kappa*=m*=1; rho^2=2; d=8; A=.05; roots=.1,.2; ell=.5; background Q=4, B=.25; epsilon=q^-2",
+    "covariantDilation": false,
+    "dns": false,
+    "finiteGalerkin": false,
+    "fitBoundary": "tail-four log slopes are descriptive finite-q checks; analytic power orders do not depend on the fit",
+    "fittedData": true,
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "exact-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "q",
+        "targetResidualMaximum",
+        "secondRootAtom",
+        "firstRow",
+        "secondRow",
+        "internalD",
+        "terminalD",
+        "elapsedSeconds",
+        "processUserCpuSeconds",
+        "processSystemCpuSeconds",
+        "maximumResidentSetRaw"
+      ]
+    },
+    "nonlinearTrajectoryIntegration": false,
+    "pdeTimeStepping": false,
+    "precision": "IEEE binary64 producer and 80-digit mpmath independent interpolation reconstruction",
+    "producerWallSeconds": 0.11454295902512968,
+    "randomSeed": null,
+    "solver": "closed heat-response functions, 2 by 2 interpolation solve, adaptive one-dimensional quadrature, and critical-point search",
+    "validatorWallSeconds": 0.17858116695424542,
+    "wallTimeSeconds": 0.2931241259793751
+  },
+  "compute": {
+    "cpu": "Apple M5 Max",
+    "dgx": "not used",
+    "gpu": "not used",
+    "host": "local Mac workstation, Apple Silicon arm64",
+    "logicalCpuCount": 18,
+    "memoryGiB": 36,
+    "operatingSystem": "macOS 26.6.2 (build 25G83)",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-26T18:04:09+08:00",
+  "data": [
+    {
+      "bytes": 1200,
+      "format": "json",
+      "path": "config.json",
+      "schema": "fixed target, roots, q sweep, annular weights, background, quadrature, and output configuration",
+      "sha256": "c835b88a6a2f485d0143619f00453d6df41ca114d8149286a6d3eddc3ae0c008"
+    },
+    {
+      "bytes": 26786,
+      "format": "json",
+      "path": "results.json",
+      "schema": "complete producer response, root, atom, jet-row, excursion, prefactor, fit, timing, and check ledger",
+      "sha256": "99a050f11f8ca9cb63fa21a494dda2c6a108121d7dbc05449455bf79f5a96fd2"
+    },
+    {
+      "bytes": 760144,
+      "format": "csv",
+      "path": "data.csv",
+      "schema": "panel, series, q, scaled time, value, units, evidence class, event semantics, and fixed-target normalization",
+      "sha256": "f8dd90d2c72846319c35a2d664bb4129c4d224155d17b62155ca0944db8347a0"
+    },
+    {
+      "bytes": 1481503,
+      "format": "json",
+      "path": "data.json",
+      "schema": "lossless plot rows, field schema, fixed-target normalization, and claim boundary",
+      "sha256": "8701d518599e1b351cd2f722cddcca86e75596c4793a5fff0540a8f784f8f33d"
+    },
+    {
+      "bytes": 2341,
+      "format": "json",
+      "path": "figure-data-metadata.json",
+      "schema": "input hashes, evidence map, row count, fixed-target normalization, and claim boundary",
+      "sha256": "85ee97a502aff3d890f8d5489ece446da759460849e2a8f674a10566822443af"
+    },
+    {
+      "bytes": 25104,
+      "format": "json",
+      "path": "validation.json",
+      "schema": "standalone 80-digit reconstruction, quadrature, prefactor, exponent, artifact, and output checks",
+      "sha256": "4aca39dc9c7ae4d5ff9d4c409dee115e3982576ac6c4473c975555b67c8f77c7"
+    },
+    {
+      "bytes": 4281,
+      "format": "ndjson",
+      "path": "progress.ndjson",
+      "schema": "timestamped producer, q-case, plotting, QA, and independent-validation progress events",
+      "sha256": "6a41a1511e0c2b49f2717ff50ae2e5d680230f5c341cbe6d27766c7d7ce77912"
+    },
+    {
+      "bytes": 3471,
+      "format": "ndjson",
+      "path": "resource-log.ndjson",
+      "schema": "timestamped wall time, process CPU, peak resident set, host load, and logical CPU snapshots",
+      "sha256": "2175091f50075159f235ccca5b53ae17b87a75350ea35613138486deb3eda1d4"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.11.1",
+    "mpmath": "1.3.0",
+    "numpy": "2.3.5",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "evidenceMap": {
+    "A": "exact response functions and their q to infinity limit",
+    "B": "second prescribed-root atom plus deterministic singleton target-shell first/second jet and terminal-excursion quadratures",
+    "C": "second prescribed-root atom divided by the target-shell rows and terminal excursion charge",
+    "D": "exact excursion height, enstrophy, and root-slope identity"
+  },
+  "figure": {
+    "heightMillimetres": 134.11,
+    "outputs": [
+      {
+        "bytes": 63994,
+        "path": "figure.pdf",
+        "sha256": "a25f6f05f3249f891d66a61ca79578e0e05fec78bb351663d02a7495640d0a09"
+      },
+      {
+        "bytes": 180095,
+        "path": "figure.svg",
+        "sha256": "3939d3ec93b1a4387241c012a88fbb6afafe85805d9016c8285f8e0bba9c5279"
+      },
+      {
+        "archivalDpi": 600,
+        "bytes": 971345,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4206,
+          3168
+        ],
+        "sha256": "a5dd973cfb309e72ae73fe4608f83816556b23eec7a189ca49e0412f4b86cc8c"
+      }
+    ],
+    "profile": "journal-default",
+    "script": "plot.py",
+    "widthMillimetres": 178.05
+  },
+  "figureId": "fig-r071v-zero-level-boundary",
+  "fixedTargetNormalization": {
+    "kappaStar": 1,
+    "reducedAtomToJ": 2,
+    "reducedDToD": 1,
+    "reducedFirstIntegralToB1Star": 8,
+    "reducedHeightChargeToHSquare": 8,
+    "reducedSecondIntegralToB2Star": 8,
+    "rhoSquared": 2,
+    "targetKy": 1,
+    "targetKz": 1,
+    "targetMultiplierMStar": 1
+  },
+  "git": {
+    "certificateCommit": "pending",
+    "dirtyAtCertifiedRun": true,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "pending"
+  },
+  "independentAsymptoticPowers": {
+    "firstRow": -5.984522518405892,
+    "internalD": -2.0349490645608364,
+    "secondRootAtom": -3.967231863667344,
+    "secondRootAtomOverFirstRow": 2.0172906547385483,
+    "secondRootAtomOverSecondRow": -2.0332198058421938,
+    "secondRootAtomOverTerminalHeightSquare": 4.037891258602079,
+    "secondRow": -1.9340120578251472,
+    "terminalD": -4.037891258602079,
+    "terminalHeightSquare": -8.005123122269422
+  },
+  "mainEvent": {
+    "atomField": "secondRootAtom",
+    "firstRootMayBePaidSeparately": true,
+    "rootIndex": 2,
+    "scaledRoot": 0.2,
+    "totalAtomIsAuxiliaryOnly": true
+  },
+  "outputs": [
+    {
+      "bytes": 3312,
+      "path": "README.md",
+      "sha256": "7ae112610e1888a6ddee9df68b103706dde7e630ee1cc4f3d41944a29588892b"
+    },
+    {
+      "bytes": 1877,
+      "path": "caption.md",
+      "sha256": "995160b5a2a8ae8bd242195218126e48b94afddebdb0b9be91d6cd4840acde02"
+    },
+    {
+      "bytes": 3276,
+      "path": "figure-contract.md",
+      "sha256": "f1152b86faaaa29415a8a0e4cf9df9d35328617b2ad259d07fd222f4f406a5e8"
+    },
+    {
+      "bytes": 2089,
+      "path": "contract.json",
+      "sha256": "35bd65a3e4297d3841d55ff5246846d48cd2d9f6c5d7f5eebc2cd1b40dfb6963"
+    },
+    {
+      "bytes": 1200,
+      "path": "config.json",
+      "sha256": "c835b88a6a2f485d0143619f00453d6df41ca114d8149286a6d3eddc3ae0c008"
+    },
+    {
+      "bytes": 956,
+      "path": "command.txt",
+      "sha256": "e079d4f764336438931f0f52709b650d803747cb31a99f6fbecd4b216bb4739e"
+    },
+    {
+      "bytes": 621,
+      "path": "environment.txt",
+      "sha256": "9de4cc4aa26b827433bac3763203f58a7722b0aff420416957f02803061fc62f"
+    },
+    {
+      "bytes": 75,
+      "path": "requirements.txt",
+      "sha256": "be03777bb2cd791da347e9c156c50a85fa5bd9d35bd672ef2c59c6e03d9a65b0"
+    },
+    {
+      "bytes": 28901,
+      "path": "produce_data.py",
+      "sha256": "5d16e4660e81ba741417db36fabca27e650231575e8bc1765774b18fc2336f42"
+    },
+    {
+      "bytes": 14959,
+      "path": "plot.py",
+      "sha256": "d23a415833dbc5a370c7572c0ac4c684ce42ef6f5d93def49cf42b20349e01ec"
+    },
+    {
+      "bytes": 5848,
+      "path": "qa_images.py",
+      "sha256": "68b39d5213014c3e9adca01ce3b605bc29f3b1671f4be7636290db7e23dffa77"
+    },
+    {
+      "bytes": 30258,
+      "path": "validate.py",
+      "sha256": "8d789d46a8e5f2d5f82bd38a76fa2b0002239b88eb08fdd02ac70986ba6be947"
+    },
+    {
+      "bytes": 10645,
+      "path": "build_manifest.py",
+      "sha256": "30c02f44a9c4643999a01ad35fd62834c72cb637e5b42213fa1d77ee7f692b1f"
+    },
+    {
+      "bytes": 26786,
+      "path": "results.json",
+      "sha256": "99a050f11f8ca9cb63fa21a494dda2c6a108121d7dbc05449455bf79f5a96fd2"
+    },
+    {
+      "bytes": 760144,
+      "path": "data.csv",
+      "sha256": "f8dd90d2c72846319c35a2d664bb4129c4d224155d17b62155ca0944db8347a0"
+    },
+    {
+      "bytes": 1481503,
+      "path": "data.json",
+      "sha256": "8701d518599e1b351cd2f722cddcca86e75596c4793a5fff0540a8f784f8f33d"
+    },
+    {
+      "bytes": 2341,
+      "path": "figure-data-metadata.json",
+      "sha256": "85ee97a502aff3d890f8d5489ece446da759460849e2a8f674a10566822443af"
+    },
+    {
+      "bytes": 25104,
+      "path": "validation.json",
+      "sha256": "4aca39dc9c7ae4d5ff9d4c409dee115e3982576ac6c4473c975555b67c8f77c7"
+    },
+    {
+      "bytes": 4281,
+      "path": "progress.ndjson",
+      "sha256": "6a41a1511e0c2b49f2717ff50ae2e5d680230f5c341cbe6d27766c7d7ce77912"
+    },
+    {
+      "bytes": 3471,
+      "path": "resource-log.ndjson",
+      "sha256": "2175091f50075159f235ccca5b53ae17b87a75350ea35613138486deb3eda1d4"
+    },
+    {
+      "bytes": 63994,
+      "path": "figure.pdf",
+      "sha256": "a25f6f05f3249f891d66a61ca79578e0e05fec78bb351663d02a7495640d0a09"
+    },
+    {
+      "bytes": 180095,
+      "path": "figure.svg",
+      "sha256": "3939d3ec93b1a4387241c012a88fbb6afafe85805d9016c8285f8e0bba9c5279"
+    },
+    {
+      "bytes": 971345,
+      "dpi": [
+        599.9988,
+        599.9988
+      ],
+      "path": "figure.png",
+      "pixels": [
+        4206,
+        3168
+      ],
+      "sha256": "a5dd973cfb309e72ae73fe4608f83816556b23eec7a189ca49e0412f4b86cc8c"
+    },
+    {
+      "bytes": 481213,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-original.png",
+      "pixels": [
+        1262,
+        950
+      ],
+      "sha256": "a396083357ea1e16d26958e7d1b93a9582e5ebf5304ebf2fbe80090dabee529f"
+    },
+    {
+      "bytes": 191818,
+      "dpi": [
+        180.00979999999998,
+        180.00979999999998
+      ],
+      "path": "qa-grayscale.png",
+      "pixels": [
+        1262,
+        950
+      ],
+      "sha256": "67cf396da4e14ae8cc60277269b9d1b4f7652b0db006ebfb59b309d3498baf12"
+    },
+    {
+      "bytes": 227211,
+      "dpi": [
+        179.9844,
+        179.9844
+      ],
+      "path": "qa-pdf.png",
+      "pixels": [
+        1262,
+        951
+      ],
+      "sha256": "432f1e32f198867a6c157ea058e124448631409201ddfc90297aeabe0c9bbbcf"
+    },
+    {
+      "bytes": 829,
+      "path": "qa-report.md",
+      "sha256": "1b020af49f11ff6603e36695de46bb1923d3a0d622b8bafb42e4f19d004cc955"
+    }
+  ],
+  "qa": {
+    "automaticCheckCount": 21,
+    "automaticChecks": "validation.json",
+    "colorPreview": "qa-original.png",
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "independentMethod": "standalone 80-digit mpmath interpolation; independent SciPy quadrature and excursion reconstruction; fixed target-shell prefactor audit; CSV/JSON/hash and PDF/SVG/PNG/final-size QA",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "secondRootSemanticsInspected": true,
+    "status": "passed",
+    "targetShellPrefactorsInspected": true
+  },
+  "release": "R0.71V",
+  "schemaVersion": "1.0",
+  "sourceData": [],
+  "status": "provisional",
+  "supportedClaim": "Across q=8 to 256, the second prescribed root has atom order q^-4 while the target-shell first and second rows have orders q^-6 and q^-2. Its atom-to-first-row ratio grows as q^2 even after the first root is separately paid; internal and terminal excursion factors collapse as q^-2 and q^-4."
+}

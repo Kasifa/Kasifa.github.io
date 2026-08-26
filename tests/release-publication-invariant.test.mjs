@@ -133,14 +133,12 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     currentDetails.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []
   ).length;
   assert.ok(currentRouteNotes > 0, "current route note list is empty");
-  assert.equal(releases.length, 47, "R0.70A-R0.71U completed releases");
-  assert.equal(htmlNotes.length, 145, "current public HTML note count");
-  assert.equal(latestRelease, "r071u", "current completed release");
-  assert.equal(latestCode, "R0.71U", "current public release code");
-  assert.equal(nextCode, "R0.71V", "next public release code");
-  assert.equal(recapStem, "recap-r0-61-r0-71u", "current recap endpoint");
-  assert.equal(recapNodes, 85, "R0.61-R0.71U recap node count");
-  assert.equal(currentRouteNotes, 55, "R0.69P-R0.71U route count");
+  assert.ok(releases.length >= 1, "completed release list is empty");
+  assert.equal(
+    htmlNotes.length,
+    routeLinks.length,
+    "homepage route must enumerate every public HTML note exactly once",
+  );
   const [latestNote, recap, recapPdf] = await Promise.all([
     readFile(new URL(latestSlug + ".html", notesRoot), "utf8"),
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
@@ -150,7 +148,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   const versionMatch = home.match(/<strong>v(\d+\.\d+)<\/strong>\u7f51\u9875\u7248\u672c/);
   assert.ok(versionMatch, "homepage version marker is missing");
   const version = versionMatch[1];
-  assert.equal(version, "1.06", "current publication version");
+  assert.match(version, /^\d+\.\d+$/, "current publication version format");
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],

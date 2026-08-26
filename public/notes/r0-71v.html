@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71V：Leray–Hopf 层级的尺度零 excursion-height packing，以及固定目标、固定时间窗的真实无外力 2.5D NSE first-row-only sampling obstruction。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71V｜Leray-paid excursion 与零层边界">
+  <meta property="og:description" content="振幅 excursion 可由第一时间 jet 支付；二次零斜率原子仍是固定零层边界迹。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-71v-zero-level-boundary.png">
+  <title>R0.71V｜Leray-paid excursion 与零层边界</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.68rem,3.6vw,3rem)}@media print{#reproduce{break-inside:avoid}pre{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.5pt}}</style>
+  <script defer src="/i18n-en.js?v=1.07"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#excursion">excursion</a><a href="#conversion">转换</a><a href="#coarea">coarea</a><a href="#sine">压力测试</a><a href="#nse">真实 NSE</a><a href="#mollifier">零层</a><a href="#literature">文献</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71V · EXCURSION PACKING · ZERO-LEVEL BOUNDARY</div>
+        <h1>振幅 excursion 可以由 Leray 支付，<br>固定零层原子仍需额外边界信息</h1>
+        <p class="lead">本节把 R0.71U 的两个时间 jet 拆开检查。compact Fourier shells 在 Leray–Hopf 层级有绝对连续代表，归一化 excursion height 满足尺度零求和定理。另一方面，一个固定目标、固定宏观时间窗的真实无外力 2.5D NSE 序列使第二个指定零点的 atom 与 first-time-jet row 之比按 \(q^2\) 增长；second-time row 仍能支付该事件。结果说明 level-integrated height 与 fixed zero-level slope 不能直接互换。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71V 两条边界完成</span><strong>Leray excursion theorem；NSE first-row obstruction</strong><p>版本 v0.71V · 2026-08-26</p><p>exact audit: PASS</p><p>independent audit: PASS</p><p>closed-response figure: corroboration</p><p>下一对象：complete Leray ledger</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#excursion">01 · excursion 定理</a></li><li><a href="#conversion">02 · 原子转换</a></li><li><a href="#coarea">03 · level ledger</a></li><li><a href="#sine">04 · sine test</a></li><li><a href="#nse">05 · 真实 NSE 序列</a></li><li><a href="#mollifier">06 · mollifier 极限</a></li><li><a href="#literature">07 · 文献边界</a></li><li><a href="#audit">08 · 审计</a></li><li><a href="#figure">09 · 正式附图</a></li><li><a href="#value">10 · 研究价值</a></li><li><a href="#next">11 · 下一步</a></li><li><a href="#claims">12 · 主张边界</a></li><li><a href="#reproduce">13 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>第一行支付 excursion height，不支付任意固定零层斜率</h2>
+          <div class="boundary"><strong>本节判断</strong><p>尺度零 amplitude-excursion packing 在 Leray–Hopf 层级成立。若另有统一 excursion-to-atom noncollapse，则可删除 R0.71U 的 second-time tax；真实 2.5D NSE boundary layer 证明该 noncollapse 不能仅由光滑、无外力和有界初始 energy/enstrophy 推出。</p></div>
+          <p>这不是千禧年问题的解答。本节没有给出 weak zero-jet、继续性判据、有限时奇性或全局正则性。</p>
+        </section>
+
+        <section id="excursion"><div class="section-no">01 / Leray-paid excursion</div><h2>compact shell 的归一化 excursion height 可以统一求和</h2>
+          <p>令 \(r_j=\|C_j\|_2\)，\(K=[a,b]\) 长度为 \(\ell\)。对 \(\{r_j&gt;0\}\) 每个向右从零点出发的连通分支 \(E\)，定义</p>
+          <div class="equation result">\[
+            h_E=\sup_Er_j,\qquad Y_E=\int_EY\,dt,\qquad
+            H_E^2=\frac{\kappa_j^{-6}h_E^2}{\ell Y_E}.
+          \]</div>
+          <p>非空正 excursion 有 \(h_E&gt;0\)；连续性与 annular Bernstein 蕴含 \(Y_E&gt;0\)，所以归一化有定义。compact torus annulus 只含有限 lattice modes；Leray–Hopf 弱方程使每个 shell coefficient 属于 \(W^{1,1}(K)\)。加权 Cauchy–Schwarz 与 R0.71U 第一行给出</p>
+          <div class="equation result">\[
+            \sum_{j,E}H_E^2
+            \le \frac{B_1(K)}\ell
+            \le 2C_{\rm ann,T}\left[
+            \nu^2+\frac1\ell\int_K
+            \frac{\|L\|_{\dot H^{-1}}^2}{Y}\,dt\right].
+          \]</div>
+          <p>因此 \(\#\{(j,E):H_E\ge\delta\}\le\delta^{-2}B_1(K)/\ell\)。finite shell/component 结论由 Tonelli 与 monotone convergence 扩展到 countable family。若某个 component 在左端 \(a\) 已经为正，它不属于 right-rooted family，必须另付 initial trace。</p>
+        </section>
+
+        <section id="conversion"><div class="section-no">02 / Excursion-to-atom factor</div><h2>缺失量可以写成一个精确无量纲因子</h2>
+          <p>在 classical simple root \(t_E\) 上，令 \(s_E=\|C_{j,t}(t_E)\|_2\)，并定义</p>
+          <div class="equation result">\[
+            D_E=\frac{h_E^2Y(t_E)}{\ell Y_Es_E^2},\qquad
+            H_E^2=D_E\kappa_j^{-6}\frac{s_E^2}{Y(t_E)}.
+          \]</div>
+          <p>若所有目标事件满足统一 \(D_E\ge d_0&gt;0\)，则原子和由上一节的 Leray 右端支付，不再需要 \(C_{tt}\)。这个条件要求零点斜率持续形成非坍缩 excursion；它不是 R0.71V 的无条件输入。</p>
+        </section>
+
+        <section id="coarea"><div class="section-no">03 / Weighted area formula</div><h2>Leray 支付一次斜率，二次零斜率带来三次时间 occupation</h2>
+          <p>一维 weighted area formula 给出</p>
+          <div class="equation result">\[
+            \int_B\mathcal M(z)\,dz
+            =\int_K\sum_j\mathbf 1_{\{r_j(t)\in B\}}
+            \kappa_j^{-6}\frac{(r_{j,t})_+^2}{Y}\,dt
+            \le B_1(K).
+          \]</div>
+          <p>但若在每个 level 保留目标二次斜率 \(\mathcal Q(z)\)，则</p>
+          <div class="equation result">\[
+            \int_B\mathcal Q(z)\,dz
+            =\int_K\sum_j\mathbf 1_{\{r_j(t)\in B\}}
+            \kappa_j^{-6}\frac{(r_{j,t})_+^3}{Y}\,dt.
+          \]</div>
+          <p>在 Leray 层级，\(\mathcal M\) 与 \(\mathcal Q\) 只是 a.e.-\(z\) 等价类；只在 classical、finite-shell 且只有有限 isolated simple roots 时，\(\mathcal Q(0+)\) 才按点给出 jet mass。普通 \(L^1(dz)\) 控制不决定 distinguished zero-level boundary trace。</p>
+        </section>
+
+        <section id="sine"><div class="section-no">04 / Exact sine stress test</div><h2>level integral 保持有界时，零层迹仍可按根数增长</h2>
+          <p>时间圆上的 \(C_N=N^{-1}\sin(Nt)e\)、\(Y=\kappa=1\) 有 \(2N\) 个 simple roots。每个 component 满足</p>
+          <div class="equation result">\[
+            s_E=1,\quad h_E=N^{-1},\quad Y_E=\pi/N,\quad
+            D_E=H_E^2=\frac1{2\pi^2N}.
+          \]</div>
+          <p>于是 \(\sum_EH_E^2=1/\pi^2\)，而 zero-slope proxy sum 为 \(2N\)。同时 \(\int\mathcal Q_N=4/3\)、\(\int\mathcal M_N=\pi/2\)，二者零层迹仍是 \(2N\)。这是 shell-path method test，不是真实 NSE 轨迹。</p>
+        </section>
+
+        <section id="nse"><div class="section-no">05 / Genuine NSE obstruction</div><h2>固定目标与固定时间窗下，第二个零点击穿 first-row-only sampling</h2>
+          <p>精确不变类</p>
+          <div class="equation result">\[
+            u=(f(y,z,t),0,v(y,t)),\qquad
+            v_t=\nu v_{yy},\qquad f_t+vf_z=\nu(f_{yy}+f_{zz})
+          \]</div>
+          <p>取固定 target \(K_y=K_z=1\)。允许把 auxiliary shear frequencies 送到 \(q\to\infty\)，同时保持 target multiplier、macroscopic window、初始 energy/enstrophy 与 enstrophy ratio 统一有界。加入不进入 target annulus 的 decoupled background 后，指定第二个根相对所选 singleton target-shell rows 满足</p>
+          <div class="equation result">\[
+            \frac{J_{2,q}}{(2/\ell)B_{1,q}^{(*)}}\asymp q^2,\qquad
+            \frac{J_{2,q}}{(7\ell/3)B_{2,q}^{(*)}}\asymp q^{-2}.
+          \]</div>
+          <p>所以对任意 permissible finite shell selection，删除 second-time row 后仅保留同一 selected first row 的零点采样不能统一成立；singleton target-shell selection 已经失败。这不是对 complete fixed-frame ledger 的 no-go。该族让 selected second row 过度支付，不能据此声称 \(7\ell/3\) 最优；也没有排除保留完整 global \(\nu^2\) baseline 或另一 dynamical charge 的估计。</p>
+        </section>
+
+        <section id="mollifier"><div class="section-no">06 / Noncommuting limits</div><h2>先压振幅与先取零层极限给出不同结果</h2>
+          <p>对 outgoing occupation mollifier，\(\delta/|s|\to\infty\) 时 band 会越过整个坍缩 excursion，积分最终为零；\(\delta\asymp|s|\) 时得到依赖比例的 \(s^2\) profile；\(\delta/|s|\to0\) 才恢复 simple-root atom。两个极限不交换。这说明 exact coarea representation 仍需要 uniform endpoint control。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">07 / Primary-source boundary</div><h2>文献给出 area、variation 与 2D3C 背景，不给固定零层二次迹</h2>
+          <p><a href="https://doi.org/10.1007/978-3-642-62010-2">Federer</a>给 weighted area formula；<a href="https://eudml.org/doc/214571">Banach</a>把 variation 写成 level indicatrix 积分；<a href="https://arxiv.org/abs/1307.1288">Bertoin–Yor</a>与 <a href="https://arxiv.org/abs/1503.01746">Łochowski</a>处理 occupation、upward/downward crossings 与 truncated variation。<a href="https://arxiv.org/abs/1706.02371">Biferale–Buzzicotti–Linkmann</a>记录 2D3C reduction。Leray 与 Temam 给弱能量框架，不给 \(C_{tt}\)、\(\omega_t\) 或 \(L_t\) 控制。</p>
+          <p>限定检索没有定位到把 level-integrated control 提升为 fixed zero-level quadratic trace、同时不增加 reverse average 或 persistence 假设的定理。这不是原创性、优先权或不存在性声明。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">08 / Exact and independent audit</div><h2>解析证书与独立重建分别检查指数、极限与边界</h2>
+          <p>exact audit 检查 area algebra、sine constants、尺度指数、2.5D response asymptotics、IFT tangent、first/second-row powers 与 mollifier regimes；excursion inequality 本身由解析证明承担。research independent audit 不读取 producer certificate；figure package 的 <code>validate.py</code> 以独立重建完成 21 项 response、quadrature、prefactor 与 output checks。</p>
+          <p>数值部分只计算有限响应和一维求积，不 time-step NSE，也不承担 IFT remainder 或 continuum proof。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图比较 atom、两行 jet 与 excursion noncollapse</h2>
+          <figure><img src="/figures/r0-71v-zero-level-boundary.svg" alt="R0.71V 零层边界、first-time row、second-time row 与 excursion noncollapse"><figcaption>图 R0.71V。固定 target \(K_y=K_z=1\) 与 window 的 closed-response 计算复核 second prescribed root atom \(q^{-4}\)、selected singleton target-shell first row \(q^{-6}\)、second row \(q^{-2}\)、internal \(D_E\) 的 \(q^{-2}\) 和 terminal \(D_E\) 的 \(q^{-4}\) 标度。第一个 prescribed root 已另行支付。附图是可复现 corroboration，不代替 exact NSE diagonal argument。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">10 / Research value</div><h2>缺口从“是否有 excursion”收缩为“零点斜率能否持续”</h2>
+          <p>正面结果把一类尺度零、可在 Leray–Hopf 层级定义的 excursion mass 完整支付。负面结果说明同一支付不能自动读取 fixed zero-level slope；真实 NSE boundary layer 能把斜率压进越来越窄、越来越低的 excursion。</p>
+          <p>R0.71U 的 second-time row 因而不是单纯证明技术遗留：当前序列确实需要比 first row 更强的时间信息。不过本节没有证明现有 second-time coefficient sharp，也没有排除另一种完整 Leray 账本。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next finite gate</div><h2>R0.71W 检查完整 \(\nu^2\) baseline 与 projected rotational term</h2>
+          <p>下一步移除或平衡 decoupled background，量化 fixed-target high-frequency events 相对 complete Leray ledger 的大小。若得到负面结论，必须让 atom 相对完整账本保持非坍缩；若得到正面结论，需要新的 dynamical inequality，而不是从 \(L^1\) level occupation 直接读取 fixed boundary trace。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>Leray–Hopf compact-shell AC trace；scale-zero excursion-height packing；精确 \(D_E\) 因子；weighted area hierarchy；sine obstruction；固定 target/window 的真实无外力 2.5D repeated-root first-row obstruction。</li>
+            <li><strong>未证明：</strong>R0.71U second-time coefficient sharp；所有替代 Leray zero-atom estimate 都不可能；weak zero-jet；localized-cell theorem；single-trajectory infinite recurrence；继续性、有限时奇性或 global regularity。</li>
+            <li><strong>背景边界：</strong>真实 NSE 序列使用不进入目标 annulus 的 decoupled background 来保持正 enstrophy floor；完整 global \(\nu^2\) baseline 尚未被排除。</li>
+            <li><strong>计算边界：</strong>closed-response figure 是 corroboration，不是 DNS，也不承担解析证明。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduce</div><h2>报告、文献、证书与期刊附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071v_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071v_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071v_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071v_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071v">exact / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071v-level-boundary/fig-r071v-zero-level-boundary">附图、数据、manifest、progress 与源代码包</a> · <a href="/figures/r0-71v-zero-level-boundary.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-71v.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-71v.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71v.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071v_exact_audit.py --output research/certificates/r071v/result.json
+python3 research/r071v_independent_audit.py --output research/certificates/r071v/independent-result.json
+python3 figures/r071v-level-boundary/fig-r071v-zero-level-boundary/produce_data.py --config figures/r071v-level-boundary/fig-r071v-zero-level-boundary/config.json
+python3 figures/r071v-level-boundary/fig-r071v-zero-level-boundary/plot.py --data figures/r071v-level-boundary/fig-r071v-zero-level-boundary/data.csv --results figures/r071v-level-boundary/fig-r071v-zero-level-boundary/results.json --config figures/r071v-level-boundary/fig-r071v-zero-level-boundary/config.json --output-stem figures/r071v-level-boundary/fig-r071v-zero-level-boundary/figure
+python3 figures/r071v-level-boundary/fig-r071v-zero-level-boundary/validate.py --config figures/r071v-level-boundary/fig-r071v-zero-level-boundary/config.json --output figures/r071v-level-boundary/fig-r071v-zero-level-boundary/validation.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71V · 2026-08-26 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71v.html">累计回顾</a></div></footer>
+</body>
+</html>

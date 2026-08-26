@@ -44,27 +44,27 @@ async function publishedPages() {
   return { home, note, recap, literature, previousNote };
 }
 
-test("publishes R0.71U as v1.06 with synchronized route and cumulative recap", async () => {
+test("retains R0.71U while v1.07 publishes R0.71V as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 145);
-  assert.match(home, /<strong>v1\.06<\/strong>网页版本/);
-  assert.match(home, /<strong>145<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.71U<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.71U<\/span>/);
-  assert.match(home, /展开 55 篇公开笔记/);
-  assert.match(home, /累计回顾收录 85 个节点；全站现有 145 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.71U 共 47 个完成版本/);
-  assert.match(home, /NEXT · R0\.71V/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 146);
+  assert.match(home, /<strong>v1\.07<\/strong>网页版本/);
+  assert.match(home, /<strong>146<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.71V<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.71V<\/span>/);
+  assert.match(home, /展开 56 篇公开笔记/);
+  assert.match(home, /累计回顾收录 86 个节点；全站现有 146 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.71V 共 48 个完成版本/);
+  assert.match(home, /NEXT · R0\.71W/);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71U">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.71V">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 55);
+  assert.equal(count(route[1], 'href="/notes/'), 56);
   assert.equal(count(route[1], 'href="/notes/r0-71u.html"'), 1);
   assert.equal(count(home, 'data-release="r071u"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71u.html"'), 2);
@@ -74,17 +74,17 @@ test("publishes R0.71U as v1.06 with synchronized route and cumulative recap", a
   assert.match(recap, /回顾截止时公开笔记：145/);
   assert.match(recap, /R0\.70A–R0\.71U 完成版本/);
   assert.match(recap, /R0\.00–R0\.60 的内容保留在上一份阶段回顾中/);
-  assert.match(literature, /R0\.69P–R0\.71U/);
-  assert.match(literature, /开放接口 · R0\.71V/);
+  assert.match(literature, /R0\.69P–R0\.71V/);
+  assert.match(literature, /开放接口 · R0\.71W/);
 
-  for (const [page, minimum] of [
-    [home, 10],
-    [note, 14],
-    [recap, 8],
-    [literature, 50],
+  for (const [page, minimum, version] of [
+    [home, 10, "1.07"],
+    [note, 14, "1.06"],
+    [recap, 8, "1.06"],
+    [literature, 50, "1.07"],
   ]) {
     assertAnchorsResolve(page, minimum);
-    assert.ok(page.includes('src="/i18n-en.js?v=1.06"'));
+    assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));
     assert.doesNotMatch(page, /我们|攻关|主攻|三重审计/);
     assert.doesNotMatch(page, /千禧年问题已经解决|解决了千禧年问题/);
   }
@@ -114,9 +114,12 @@ test("states the classical second-jet theorem and exact recurrence with correct 
   assert.match(note, /第一行.*Leray.*第二行.*recurrence tax/is);
   assert.match(note, /每个(?:给定 )?finite time set.*选择一个新的真实无外力 NSE 解/is);
   assert.match(note, /atom.*随.*增加.*缩小/is);
-  assert.match(home, /positive enstrophy floor.*trajectory-wise classical/is);
+  assert.match(home, /R0\.71U 已完成.*classical second-time-jet.*不排除 weighted packing/is);
   assert.match(recap, /每个 finite set 可选择新解/is);
-  assert.match(literature, /exact torus scaling.*integer dilation/is);
+  assert.match(
+    literature,
+    /<b>R0\.71U<\/b>.*classical second-time jet.*raw count 无统一界/is,
+  );
 });
 
 test("retains the exact-thin and complete finite-support correction for R0.71T", async () => {

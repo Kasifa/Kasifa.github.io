@@ -1,0 +1,17 @@
+Generate the exact certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071v_exact_audit.py --output research/certificates/r071v/result.json
+
+Generate the independent certificate:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/r071v_independent_audit.py --output research/certificates/r071v/independent-result.json
+
+The independent program imports neither the producer nor result.json.
+
+Figure commands:
+figures/r071v-level-boundary/fig-r071v-zero-level-boundary/command.txt
+
+Validate the figure package:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/validate_figure_package.py figures/r071v-level-boundary/fig-r071v-zero-level-boundary
+
+Build and verify certificate hashes:
+PYTHONDONTWRITEBYTECODE=1 /Users/kasifa/Documents/Math/.codex-research-venv/bin/python research/certificates/r071v/build_hashes.py
+(cd research/certificates/r071v && shasum -a 256 -c SHA256SUMS)

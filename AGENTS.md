@@ -14,7 +14,7 @@ These rules apply to reader-facing text in `public/`, page metadata, research no
 
 - Publish this project only through the GitHub repository and its GitHub Pages site at `https://kasifa.github.io/`.
 - Do not mirror or deploy the project to another hosting service unless the user explicitly changes this rule.
-- Starting with R0.70A, a completed and certified research release is not publication-complete until its reader-facing HTML, synchronized PDF, homepage route entry, and homepage progress entry are present and the public-site tests pass.
+- Starting with R0.70A, a research section counts as completed only after its analytic proof or explicitly stated negative result, required certificates, independent audit, formal figure package, synchronized HTML/PDF, cumulative recap, literature boundary, bilingual dictionary, homepage route/progress entries, and publication tests all pass. Keep the same inventory in `research/release-manifest.json`.
 - Publish each newly completed section in the same release cycle. Do not let later research versions advance while an earlier certified section remains absent from the public route.
 - Keep the homepage's latest-version label, total public-note count, route-node counts, and recap endpoint derived from the actual published files; verify them before every GitHub Pages push.
 - After a phase recap, create the next cumulative recap from that endpoint onward instead of silently extending only the research cards.

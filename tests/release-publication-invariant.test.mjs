@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -37,13 +37,32 @@ test("rolls the publication code across an alphabet boundary", () => {
   assert.equal(nextPublicCode("r071z"), "R0.72A");
 });
 
+async function releaseManifest() {
+  return JSON.parse(
+    await readFile(new URL("research/release-manifest.json", root), "utf8"),
+  );
+}
+
 async function completedReleaseIds() {
-  const files = await readdir(new URL("research/", root));
-  const reports = files
-    .map((file) => file.match(/^(r0\d{2}[a-z])_report-source\.md$/)?.[1])
-    .filter(Boolean)
-    .filter((release) => release.localeCompare("r070a") >= 0);
-  return [...new Set(["r070a", ...reports])].sort();
+  const manifest = await releaseManifest();
+  const first = manifest.firstPdfRequiredRelease;
+  const latest = manifest.latestCompletedRelease;
+  assert.match(first, /^r0\d{2}[a-z]$/, "manifest first release");
+  assert.match(latest, /^r0\d{2}[a-z]$/, "manifest latest release");
+  assert.ok(
+    first.localeCompare(latest) <= 0,
+    "manifest release range must be nonempty",
+  );
+
+  const releases = [];
+  let current = first;
+  while (current.localeCompare(latest) <= 0) {
+    releases.push(current);
+    if (current === latest) break;
+    current = nextReleaseId(current);
+  }
+  assert.equal(releases.at(-1), latest, "manifest release range must close");
+  return releases;
 }
 
 function publicReleaseId(file) {
@@ -156,8 +175,9 @@ test("publishes every completed research release from R0.70A onward", async () =
 });
 
 test("derives homepage counts, latest release, route size, and recap endpoint", async () => {
-  const [releases, home, literature, noteFiles] = await Promise.all([
+  const [releases, manifest, home, literature, noteFiles] = await Promise.all([
     completedReleaseIds(),
+    releaseManifest(),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
     readdir(notesRoot),
@@ -225,6 +245,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(versionMatch, "homepage version marker is missing");
   const version = versionMatch[1];
   assert.match(version, /^\d+\.\d+$/, "current publication version format");
+  assert.equal(version, manifest.siteVersion, "manifest site version");
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],
@@ -258,6 +279,36 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     Number(homepageCountMatches[0][1]),
     htmlNotes.length,
     "homepage public-note count must equal public HTML notes",
+  );
+  assert.equal(
+    htmlNotes.length,
+    manifest.publicHtmlNoteCount,
+    "manifest public-note count",
+  );
+  assert.equal(
+    recapNodes,
+    manifest.postR060RecapNodeCount,
+    "manifest post-R0.60 recap count",
+  );
+  assert.equal(
+    releases.length,
+    manifest.postR070ASealedReleaseCount,
+    "manifest sealed-release count",
+  );
+  assert.equal(
+    nextReleaseId(latestRelease),
+    manifest.nextRelease,
+    "manifest next release",
+  );
+  assert.match(
+    manifest.latestReleaseGate,
+    /^tests\/r0\d{2}[a-z][a-z0-9-]*-gate\.test\.mjs$/,
+    "manifest latest-release gate path",
+  );
+  await access(new URL(manifest.latestReleaseGate, root));
+  assert.ok(
+    manifest.latestReleaseGate.startsWith("tests/" + latestRelease),
+    "latest-release gate must advance with the completed endpoint",
   );
   assert.ok(
     home.includes("<strong>" + latestCode + "</strong>最新研究节点"),

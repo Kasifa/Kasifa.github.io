@@ -44,14 +44,14 @@ async function publishedPages() {
   return { home, note, recap, literature, previousNote };
 }
 
-test("retains R0.71U while v1.13 publishes R0.72A as current", async () => {
+test("retains R0.71U while v1.14 publishes R0.72A as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
   assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 151);
-  assert.match(home, /<strong>v1\.13<\/strong>网页版本/);
+  assert.match(home, /<strong>v1\.14<\/strong>网页版本/);
   assert.match(home, /<strong>151<\/strong>公开研究笔记/);
   assert.match(home, /<strong>R0\.72A<\/strong>最新研究节点/);
   assert.match(home, /<span class="route-range">R0\.69P–R0\.72A<\/span>/);
@@ -78,10 +78,10 @@ test("retains R0.71U while v1.13 publishes R0.72A as current", async () => {
   assert.match(literature, /开放接口 · R0\.72B/);
 
   for (const [page, minimum, version] of [
-    [home, 10, "1.13"],
+    [home, 10, "1.14"],
     [note, 14, "1.06"],
     [recap, 8, "1.06"],
-    [literature, 50, "1.13"],
+    [literature, 50, "1.14"],
   ]) {
     assertAnchorsResolve(page, minimum);
     assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));

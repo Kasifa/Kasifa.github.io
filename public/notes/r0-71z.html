@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="研究笔记 R0.71Z：在声明的实剪切三角 Fourier-lattice 类中，用有界变差采样控制全部目标根的斜率质量，并用包含 launch 的完整账本消去逐根 enstrophy floor；这不是一般三维正则性定理。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.71Z｜全部根斜率质量与 launch-inclusive 账本">
+  <meta property="og:description" content="bounded observation coupling 下 complete all-root endpoint ratio 至多为 C M^(-2) delta_obs^(4/3)(1+delta_obs)。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-71z-all-root.png">
+  <title>R0.71Z｜全部根斜率质量与 launch-inclusive 账本</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.12"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#setting">设定</a><a href="#bv">BV</a><a href="#row">目标行</a><a href="#allroot">全部根</a><a href="#floor">账本</a><a href="#window">窗口</a><a href="#scaling">尺度</a><a href="#audit">审计</a><a href="#literature">文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.71Z · ALL ROOTS · BV SAMPLING · MIXED WINDOW</div>
+        <h1>不再数根：<br>全部根的斜率质量按 \(M^{-2}\) 被完整账本吸收</h1>
+        <p class="lead">R0.71Y 只控制 selected roots，留下 \(R\gtrsim M^2\) 额外根和 matched root-time floor 两个接口。本节把目标改成 complete squared-slope mass。对实 shear、单位模 launch phases、固定 target 与 \(A_0&gt;0\)，有界变差采样、exact \(\ell^2\) contraction 和 dissipative target row 给 \(G_{\rm all}^{\rm ex}\le C M\Omega^2(1+\delta_{\rm obs})\)。根仍在原观察区间计数，但 \(\Lambda_1\) 的付款区间包含 launch；\(\mathcal R_Y\) 随即把逐根分母换成 \(\sup Y\)。因此 bounded coupling 下 complete ratio 为 \(O(M^{-2})\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.71Z 完成</span><strong>all-root slope-mass closure</strong><p>版本 v0.71Z · 2026-08-27</p><p>analytic proof review: PASS</p><p>exact certificate: PASS</p><p>independent certificate: PASS</p><p>下一对象：strong coupling / shrinking layer</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#setting">01 · 精确设定</a></li><li><a href="#bv">02 · BV 采样</a></li><li><a href="#row">03 · 目标行</a></li><li><a href="#allroot">04 · 全部根定理</a></li><li><a href="#floor">05 · floor cancellation</a></li><li><a href="#window">06 · mixed window</a></li><li><a href="#scaling">07 · \(M^{-2}\) 尺度</a></li><li><a href="#audit">08 · 双重证书</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#next">12 · 下一步</a></li><li><a href="#claims">13 · 主张边界</a></li><li><a href="#reproduce">14 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>quadratic extra-root escape 在声明的 bounded-coupling 三角类中关闭</h2>
+          <div class="boundary"><strong>本节判断</strong><p>raw root count 不是正确对象。R0.71U 已经表明有限 recurrence 数可以任意大。本节改为对每个 exact root 的 squared slope 求和；多重根和聚点型零根的斜率为零，不产生 atom 质量。</p></div>
+          <div class="equation result">\[
+            \boxed{\frac{\mathcal J_{\rm all}(I)}
+            {D^{1/3}\Lambda_1(K)}
+            \le C\nu^{-2}
+            \frac{\delta_{\rm obs}^{4/3}(1+\delta_{\rm obs})}{M^2},
+            \qquad K=[\sigma_q,b]\supset I.}
+          \]</div>
+          <p>这是 declared exact triangular class 的 complete all-root upper bound，不是 general 3D NSE endpoint。</p>
+        </section>
+
+        <section id="setting"><div class="section-no">01 / Exact setting</div><h2>实剪切给 exact contraction，并把一次导数变成耗散预算</h2>
+          <div class="equation result">\[
+            F'=D_qF+\delta V_z(x)F,\qquad
+            \delta=P/q^2,\qquad \|F(0)\|_2^2=M.
+          \]</div>
+          <p>实 \(z_l\) 使 \(V_z\) skew-adjoint，\(D_q\) self-adjoint nonpositive。因此</p>
+          <div class="equation result">\[
+            \|F(x)\|_2\le\sqrt M,\qquad
+            \int_0^\infty-\langle D_qF,F\rangle\,dx\le M/2.
+          \]</div>
+          <p>观察耦合定义为 \(\delta_{\rm obs}=|\delta|\Omega\)，其中 \(\Omega=\sup_{x\ge A_0}\|V_z(x)\|\)。</p>
+        </section>
+
+        <section id="bv"><div class="section-no">02 / Bounded-variation sampling</div><h2>相邻两个零点让导数在间隔上的平均值精确为零</h2>
+          <p>若复标量 \(g\in W^{2,1}(a,b)\) 且 \(g(\tau_m)=0\)，则</p>
+          <div class="equation result">\[
+            \sum_m|g'(\tau_m)|^2
+            \le |g'(\tau_1)|^2+
+            \|g'\|_\infty\int_a^b|g''(x)|\,dx.
+          \]</div>
+          <p>证明只用 \(\int_{\tau_{m-1}}^{\tau_m}g'=0\) 和一次分部积分。常数不含 root count、minimum gap 或 fill distance，也不使用 vector-valued Rolle theorem。</p>
+        </section>
+
+        <section id="row"><div class="section-no">03 / Dissipative target row</div><h2>\(V_z'\) 与 \(V_z(D_q+\lambda_0)\) 必须合并后估计</h2>
+          <p>令 \(h=P_0V_zF\)。目标积分因子 \(g=e^{\lambda_0(x-A)}F_0\) 满足</p>
+          <div class="equation result">\[
+            g''=\delta e^{\lambda_0(x-A)}
+            \left\{QF+\delta P_0V_z^2F\right\},
+            \qquad Q=P_0[V_z'+V_z(D_q+\lambda_0)].
+          \]</div>
+          <p>\(Q\) 只取 \(F_{\pm r_l}\)，精确系数含 \(-2\nu d^2r_l^2\mp2\nu dr_lK_y/q\)。一个 \(r_l\) 由 shear heat decay 支付，另一个由 \(-\langle D_qF,F\rangle\) 支付，得到</p>
+          <div class="equation result">\[
+            \int_{A_0}^\infty|QF|\,dx\le3\Omega\sqrt M.
+          \]</div>
+          <p>这一步避免了全局 \(\|D_qF\|_2\) 和不必要的 second spectral moment。</p>
+        </section>
+
+        <section id="allroot"><div class="section-no">04 / Complete all-root theorem</div><h2>全部 exact roots 的 squared slope mass 与根数无关</h2>
+          <div class="equation result">\[
+            \int_{A_0}^\infty\|V_z(x)\|\,dx
+            \le C_\kappa\Omega,\qquad
+            C_\kappa=\frac{\pi^2}{\sqrt{45}\nu d^2}.
+          \]</div>
+          <p>结合 BV lemma、target-row estimate 和 \(\|F\|_2\le\sqrt M\)，对任意有限根子集都有</p>
+          <div class="equation result">\[
+            \sum_{F_0(\tau)=0}|F_0'(\tau)|^2
+            \le e^{2\lambda_0L}(4+C_\kappa\delta_{\rm obs})
+            \delta_{\rm obs}^2M,
+          \]</div>
+          <div class="equation result">\[
+            G_{\rm all}^{\rm ex}
+            \le e^{2\lambda_0L}(4+C_\kappa\delta_{\rm obs})
+            M\Omega^2.
+          \]</div>
+          <p>再对所有有限子集取上确界即可处理完整零集；不需要先证明 zero-count theorem。</p>
+        </section>
+
+        <section id="floor"><div class="section-no">05 / Enstrophy-floor cancellation</div><h2>先使用 \(\mathcal R_Y\)，再取黏性 baseline</h2>
+          <p>对包含所有 counted roots 的付款区间 \(K\)，公共因子 \(1/\mathcal R_Y(K)\) 可以线性分配进 atom sum：</p>
+          <div class="equation result">\[
+            \frac1{\mathcal R_Y(K)}
+            \sum_m\frac{|h_m|^2}{Y(t_m)}
+            \le\frac{\sum_m|h_m|^2}{\sup_KY}.
+          \]</div>
+          <p>若 \(K=[\sigma_q,b]\) 包含 launch，则 \(\sup_KY\ge Y(\sigma_q)\gtrsim q^2(S^2K_s+P^2K_v)\)。所以 normalized ledger 不再需要 matched persistent background 或每个根时刻的单独 floor。</p>
+        </section>
+
+        <section id="window"><div class="section-no">06 / Mixed-window boundary</div><h2>根仍在 \(I=[a,b]\) 计数，只有付款区间扩到 launch</h2>
+          <p>pre-observation layer 可能有其他根，并且不受 \(\Omega=\sup_{x\ge A_0}\|V_z(x)\|\) 控制。因此本节不把 root set 从 \(I\) 扩到 \(K\)。</p>
+          <p>若坚持只在 \(I\) 上计算 \(\Lambda_1\)，结果必须多付 retention factor</p>
+          <div class="equation result">\[
+            \theta_I^{-1},\qquad
+            \theta_I=\frac{\sup_IY}{q^2(S^2K_s+P^2K_v)}.
+          \]</div>
+          <p>exact heat shear 给 \(\theta_I\asymp e^{-2\nu d^2R^2A_0}\to0\)。它只否定 automatic retention，不是具有非零 target atom 的完整反例。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">07 / Endpoint scaling</div><h2>unit phases 的 \(K_s\gtrsim M^3\) 把 complete ratio 压到 \(M^{-2}\)</h2>
+          <p>amplitude ratio 的最大值仍在 \(S^2K_s/(P^2K_v)=3\)。再用</p>
+          <div class="equation result">\[
+            \frac{\Omega^2}{K_v}\le\frac{2\pi^2K_z^2}{3},
+            \qquad K_s\ge\frac{M(M+1)(2M+1)}6,
+          \]</div>
+          <p>得到 complete all-root \(M^{-2}\) suppression。大 coupling 下，这个 upper bound 的 nonvanishing diagnostic 是 \(\delta_{\rm obs}\asymp M^{6/7}\)；它不是 strong-coupling exact-root construction。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">08 / Independent certificates</div><h2>高精度代数和独立 finite-matrix 重建承担不同职责</h2>
+          <p>Decimal producer 与独立 binary64 / finite-matrix certificate 已分别通过。前者检查 \(M^{-2}\)、\(M^{6/7}\)、optimizer、floor identity 与 retention；后者重建 shift matrices、\(Q\) row、dissipative payment 和 complex BV zero sampler。</p>
+          <p>两组计算都不是 DNS，也不构造 growing-dimensional exact-root family。continuum theorem 由解析证明承担。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Primary-source boundary</div><h2>finite ECT、maximal regularity 与 time analyticity 都不能替代本节估计</h2>
+          <p><a href="https://doi.org/10.1090/S0025-5718-04-01708-9">Narcowich–Ward–Wendland</a>的 scattered-zero Sobolev inequality 支付 fill distance，不给本节的 discrete derivative mass。<a href="https://doi.org/10.1016/0022-1236(85)90050-3">Acquistapace–Terreni</a>和<a href="https://doi.org/10.1007/978-1-4612-5561-1">Pazy</a>提供抛物演化框架，但 bounded time dependence 本身不推出 \(H_t^2\)。</p>
+          <p><a href="https://doi.org/10.1007/s00365-008-9010-6">Aldaz–Kounchev–Render</a>的 ECT 是 fixed finite-dimensional kernel；<a href="https://doi.org/10.1090/S0002-9947-1953-0054167-3">Phillips</a>的 Dyson–Phillips 是 infinite iterated-integral series，不能直接继承统一根数。<a href="https://doi.org/10.3792/pja/1195521421">Masuda</a>与<a href="https://doi.org/10.1016/j.physd.2008.03.007">Giga–Jo–Mahalov–Yoneda</a>支持 time analyticity，但不给 \(M^{-2}\) all-root payment。</p>
+          <p>限定的一手检索没有发现同形定理；这不构成原创性、优先权或不存在性声明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>附图分开显示 lattice cost、all-root envelope、strong-coupling diagnostic 和 retention</h2>
+          <figure><img src="/figures/r0-71z-all-root.svg" alt="R0.71Z all-root M 的负二次方抑制、强耦合诊断和固定窗口 enstrophy retention"><figcaption>图 R0.71Z-1。A：exact \(M/K_s\) 按 \(M^{-2}\) 衰减。B：bounded \(\delta_{\rm obs}\) 的 complete all-root envelope 为 \(M^{-2}\)，旧 selected-root \(M^{-1}\) 仅作中性参考。C：bounded、\(M^{1/2}\) 与临界 \(M^{6/7}\) coupling laws。D：fixed-window heat retention 指数消失，而 launch-inclusive retention 为 1。图只画解析与证书数据，不是 DNS。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>R0.71Y 的两个具体漏洞在同一声明类中同时关闭</h2>
+          <p>第一，quadratically many extra roots 不再重要，因为 slope mass 直接求和。第二，matched floor 不再需要，因为 launch-inclusive \(\mathcal R_Y\) 自动把根分母转成一次 \(\sup Y\) retention。</p>
+          <p>这是一项严格的机制排除结果，但只覆盖 exact triangular 2.5D class。它没有缩小一般三维潜在奇性机制的集合，也没有给出继续性判据。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next finite gate</div><h2>R0.72A 检查 strong coupling 与 shrinking observation layer</h2>
+          <p>下一节优先判断 \(\delta_{\rm obs}\) 增长到 \(M^{6/7}\) 附近时，能否同时构造 exact roots、控制 full nonlinear rotational charge，并保持 IFT / Dyson certificate。</p>
+          <p>\(A_{0,M}\to0\)、sparse or non-unit phases 和 non-triangular geometry 分开登记，不把多个未闭合机制混成一个结论。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">13 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>declared triangular class 的 complete all-root squared-slope mass；launch-inclusive mixed-window floor cancellation；bounded coupling 下 \(M^{-2}\) endpoint suppression。</li>
+            <li><strong>已排除：</strong>在同一声明类中，仅靠 quadratic extra roots 或 matched background 逃逸。</li>
+            <li><strong>仍开放：</strong>strong coupling、\(A_0\to0\)、non-unit/sparse phases、complex shear、non-diagonal target 与不同 geometry。</li>
+            <li><strong>没有得到：</strong>raw zero-count theorem、universal endpoint、继续性判据、有限时奇性、global regularity、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduce</div><h2>证明、文献、双重证书与期刊附图包全部保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071z_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071z_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071z_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r071z_independent_audit.md">独立审计说明</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r071z">exact / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r071z-all-root-floorfree/fig-r071z-all-root">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-71z-all-root.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-71z.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-71z.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-71z.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r071z_exact_audit.py --output research/certificates/r071z/result.json
+python3 research/r071z_independent_audit.py --output research/certificates/r071z/independent-result.json
+python3 figures/r071z-all-root-floorfree/fig-r071z-all-root/produce_data.py --config figures/r071z-all-root-floorfree/fig-r071z-all-root/config.json
+python3 figures/r071z-all-root-floorfree/fig-r071z-all-root/plot.py --config figures/r071z-all-root-floorfree/fig-r071z-all-root/config.json --output-stem figures/r071z-all-root-floorfree/fig-r071z-all-root/figure
+python3 figures/r071z-all-root-floorfree/fig-r071z-all-root/validate.py --config figures/r071z-all-root-floorfree/fig-r071z-all-root/config.json --output figures/r071z-all-root-floorfree/fig-r071z-all-root/validation.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.71Z · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-71z.html">累计回顾</a></div></footer>
+</body>
+</html>

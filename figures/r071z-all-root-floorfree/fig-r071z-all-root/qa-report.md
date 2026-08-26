@@ -1,0 +1,21 @@
+# R0.71Z all-root figure QA
+
+- archival PNG pixel size 4206 x 3426: PASS
+- archival PNG density 599.999 x 599.999 dpi: PASS
+- final-size preview 1402 x 1142 at 200 dpi: PASS
+- true grayscale final-size preview generated: PASS
+- grayscale range 0--255, standard deviation 37.471: PASS
+- PDF rendered independently with Poppler at 200 dpi: PASS
+- PNG/PDF mean channel difference 6.014: PASS
+- final 178.00 mm print-size inspection: PASS
+- Panel A exact M/Ks identity, 3/M^2 bound, axes, and tail-fit label inspection: PASS
+- Panel B all-root M^-2 and neutral selected-root M^-1 distinction inspection: PASS
+- Panel C bounded, M^(1/2), and M^(6/7) coupling-law labels inspection: PASS
+- Panel D fixed-window and launch-inclusive retention labels inspection: PASS
+- analytic/certificate and not-DNS wording inspection: PASS
+- non-color line-style, marker-shape, and marker-fill distinction inspection: PASS
+- grayscale distinction and label fit inspection: PASS
+- PDF-specific clipping, font, formula, and legend inspection: PASS
+- complete slope-mass and not raw root-count footer visible: PASS
+- mixed-window and strong-coupling diagnostic boundaries visible: PASS
+- universal-endpoint and regularity non-claims visible: PASS

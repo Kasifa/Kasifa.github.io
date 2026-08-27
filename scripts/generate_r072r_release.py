@@ -123,7 +123,7 @@ NOTE_ARTICLE = r"""      <article>
         </section>
 
         <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>Arnol'd 已给一般 caustic 与 degree-three chamber 拓扑；本站只主张定量安全核</h2>
-          <p><a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry；<a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8">Arnol'd (1997)</a> 已研究 maximal-real-critical degree-three regions 的拓扑。存在 degree-three chamber 不是本站的新发现。</p>
+          <p><a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry；<a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_4">Arnol'd (1997)</a> 已研究 maximal-real-critical degree-three regions 的拓扑。存在 degree-three chamber 不是本站的新发现。</p>
           <p><a href="https://doi.org/10.1016/j.aim.2023.109275">Voorhaar</a> 给出 Laurent-polynomial Morse discriminant 的复代数背景；<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 给出时变非退化 shear 的半群输入。限定一手检索没有定位到这里的精确 rational polydisc、对所有 \(y\ge0\) 的 normalized root-localization margins 与 \(0\le y\le1\) 上 fixed-pattern commensurate 1:2:3 triangular affine-row ED corollary 的组合陈述；这不构成新颖性或优先权证明。</p>
         </section>
 
@@ -410,7 +410,7 @@ def update_literature() -> None:
     boundary = r'''
 
           <h3 id="r072r-boundary">R0.72R 的四实维安全核与 caustic 文献边界</h3>
-          <p><a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8">Arnol'd (1997)</a> 已研究实三角多项式 maximal-real-critical regions 的拓扑，degree three 的这类区域并非本站新发现。<a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及在 \(0\le y\le1\) 上支持 fixed-pattern commensurate \(1{:}2{:}3\) triangular affine-row ED 的统一 margins。</p>
+          <p><a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_4">Arnol'd (1997)</a> 已研究实三角多项式 maximal-real-critical regions 的拓扑，degree three 的这类区域并非本站新发现。<a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及在 \(0\le y\le1\) 上支持 fixed-pattern commensurate \(1{:}2{:}3\) triangular affine-row ED 的统一 margins。</p>
           <p><a href="https://doi.org/10.1016/j.aim.2023.109275">Voorhaar</a> 研究 univariate Laurent polynomial 的 caustic 与 Morse discriminant；complex discriminant 不能替代本站的 real self-inversive unit-circle incidence。<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 提供时变非退化 shear 的 semigroup input；polydisc、对所有 \(y\ge0\) 的 normalized root-localization margins、\(0\le y\le1\) 的 physical shape constants 与同窗 heat-path ledger，是本站为上述固定类供给的 family-uniform inputs。</p>
           <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1016/j.jfa.2022.109522">Albritton–Beekie–Novack</a> 给出 stationary degenerate critical points 的较慢 ED benchmarks；它们不等价于非自治 caustic crossing theorem，也说明 caustic 不是 ED 失败墙。</p>
           <div class="boundary"><strong>R0.72R 的主张边界</strong><p>证明的是 \(K\subset\mathbb C^2\cong\mathbb R^4\) 位于一个 nondegenerate complement component 内的 compact core；complement component 本身是开集，不能把 \(K\) 称为完整紧致胞腔。临界点计数对所有 \(y\ge0\) 成立；physical shape contract 与 fixed-pattern commensurate 1:2:3 triangular affine-row ED 只在 \(0\le y\le1\) 的 cell window 使用。没有完成整个四维 caustic 的 \(A_2/A_3\) stratification、全部 component count、\(K\) 的最大性或 wall-crossing ED。限定一手检索没有定位到该精确 polydisc 与全热路径定量组合，但不构成新颖性或优先权证明。</p></div>'''
@@ -418,7 +418,7 @@ def update_literature() -> None:
     if match is None:
         raise RuntimeError("R literature boundary: expected one R0.72Q boundary")
     html = once(html, match.group(1), match.group(1) + boundary, "R literature boundary")
-    references = '''            <li id="ref-105">V. I. Arnol'd. <a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8"><em>Topological Classification of Real Trigonometric Polynomials and Cyclic Serpents Polyhedron</em></a>. In <em>The Arnold–Gelfand Mathematical Seminars</em>, Birkhäuser (1997).</li>
+    references = '''            <li id="ref-105">V. I. Arnol'd. <a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_4"><em>Topological Classification of Real Trigonometric Polynomials and Cyclic Serpents Polyhedron</em></a>. In <em>The Arnold–Gelfand Mathematical Seminars</em>, Birkhäuser (1997).</li>
             <li id="ref-106">V. I. Arnol'd. <a href="https://doi.org/10.1070/RM2001v056n06ABEH000452"><em>Astroidal Geometry of Hypocycloids and the Hessian Topology of Hyperbolic Polynomials</em></a>. Russian Math. Surveys 56 (2001), 1019–1083.</li>
             <li id="ref-107">A. Voorhaar. <a href="https://doi.org/10.1016/j.aim.2023.109275"><em>The Newton Polytope of the Morse Discriminant of a Univariate Polynomial</em></a>. Adv. Math. 432 (2023), 109275.</li>
 '''

@@ -795,7 +795,7 @@ targets are:
 1. V. I. Arnol'd, *Topological Classification of Real Trigonometric
    Polynomials and Cyclic Serpents Polyhedron*, in *The Arnold--Gelfand
    Mathematical Seminars*, Birkh\"auser, 1997,
-   [primary chapter record](https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8).
+   [primary chapter record](https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_4).
 2. V. I. Arnol'd, *Astroidal Geometry of Hypocycloids and the Hessian
    Topology of Hyperbolic Polynomials*, *Russian Mathematical Surveys*
    **56** (2001), 1019--1083,

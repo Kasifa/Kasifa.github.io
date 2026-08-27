@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72S：incidence-preimage A2–A5 分类、restricted miniversal、pure-second 4/3/2 与 real-even 4/2/2 heat collisions。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72S｜exact singular strata 与两条 heat collision">
+  <meta property="og:description" content="局部 A2–A5 账本与两条全热路径已精确计数；global caustic 和 ED through collision 保持开放。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072s/fig-r072s-heat-collisions.png">
+  <title>R0.72S｜exact singular strata 与两条 heat collision</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.32"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#incidence">incidence</a><a href="#versal">versal</a><a href="#a2">A2 path</a><a href="#a3">A3 path</a><a href="#local">局部分支</a><a href="#counts">计数口径</a><a href="#pde">PDE 边界</a><a href="#certificate">证书</a><a href="#literature">文献边界</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#scope">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72S · EXACT SINGULAR STRATA · TWO HEAT COLLISIONS</div>
+        <h1>局部奇性账本已经闭合；<br>两条热路径给出不同的临界点碰撞</h1>
+        <p class="lead">对固定第一谐波的 complex \(1{:}2{:}3\) family，我把 incidence preimage 精确分成 \(A_2,A_3,A_4,A_5\)，并核对 coefficient-derivative jet determinant \(5400\)。一个 pure-second path 在 \(y_*=\log2\) 发生全系数切片中横截的 \(A_2\) fold，distinct count 为 \(4/3/2\)；另一个 real-even path 发生 symmetry-restricted \(A_3\)，distinct count 为 \(4/2/2\)，且只在实偶切片内横截。两者在碰撞时按重数都计为四。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72S exact local strata 与 heat collisions 完成</span><strong>marked singular strata and two exact heat paths: CLOSED</strong><p>版本 v0.72S · 2026-08-28</p><p>incidence-preimage \(A_2/A_3/A_4/A_5\) ledger: CLOSED</p><p>restricted miniversal modulo constants: CLOSED</p><p>pure-second \(A_2\) distinct count \(4/3/2\): CLOSED</p><p>real-even \(A_3\) distinct count \(4/2/2\): CLOSED</p><p>global caustic image classification: OPEN</p><p>ED through collision / Clay problem: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#incidence">01 · incidence preimages</a></li><li><a href="#versal">02 · restricted miniversal</a></li><li><a href="#a2">03 · pure-second A2</a></li><li><a href="#a3">04 · real-even A3</a></li><li><a href="#local">05 · 局部分支律</a></li><li><a href="#counts">06 · 计数口径</a></li><li><a href="#pde">07 · PDE 边界</a></li><li><a href="#certificate">08 · exact certificate</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#scope">12 · 主张边界</a></li><li><a href="#next">13 · R0.72T</a></li><li><a href="#reproduce">14 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>局部奇性与两条全热路径已精确计数，穿墙 PDE 仍开放</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · MARKED INCIDENCE STRATA</strong><p>每个 incidence preimage 恰为 \(A_2,A_3,A_4\) 或 \(A_5\)；该有限谐波族没有更高型。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · RESTRICTED MINIVERSAL</strong><p>四个系数方向对一至四阶导数 jet 的行列式为 \(5400\)，所以 modulo additive constants 局部余维依次为 \(1,2,3,4\)。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · TWO HEAT COLLISIONS</strong><p>pure-second \(A_2\) 路径的 distinct count 是 \(4/3/2\)；real-even \(A_3\) 路径是 \(4/2/2\)。两者碰撞时按重数均为四。</p></div>
+            <div class="verdict-card false"><strong>OPEN · GLOBAL IMAGE AND PDE</strong><p>没有分类完整四维 caustic image，也没有证明临界点数或重数改变时仍统一成立的 enhanced dissipation。</p></div>
+          </div>
+        </section>
+
+        <section id="incidence"><div class="section-no">01 / Incidence preimages</div><h2>先固定退化临界点，再分类它的 vanishing order</h2>
+          <p>在 \(z_3e^{3i\phi}=A+iB\) 下，\(f'=f''=0\) 等价于</p>
+          <div class="equation result">\[
+          z_3=(A+iB)e^{-3i\phi},\qquad
+          z_2=e^{-2i\phi}\left[-\frac{\cos\phi+9A}{4}
+          -\frac{i(\sin\phi+3B)}2\right].
+          \]</div>
+          <div class="equation result">\[
+          f'''=3(5B-\sin\phi),\quad f''''=3(15A-\cos\phi),
+          \]</div>
+          <div class="equation result">\[
+          f'''''=15(\sin\phi-13B),\quad
+          f''''''=15(\cos\phi-39A).
+          \]</div>
+          <p>因此 \(B\ne\sin\phi/5\) 给 \(A_2\)；再令 \(B=\sin\phi/5\) 得 \(A_3\) 条件；继续令 \(A=\cos\phi/15\) 得 \(A_4\)，其五阶 jet 为 \(-24\sin\phi\)。端点再退化时六阶 jet 为 \(-24\cos\phi\ne0\)，所以终止于 \(A_5\)。</p>
+        </section>
+
+        <section id="versal"><div class="section-no">02 / Restricted miniversality</div><h2>5400 控制 derivative jets，不包含函数值方向</h2>
+          <div class="equation result">\[
+          W_0=\begin{pmatrix}
+          0&-2&0&-3\\-4&0&-9&0\\0&8&0&27\\16&0&81&0
+          \end{pmatrix},\qquad \boxed{\det W_0=5400}.
+          \]</div>
+          <p>任意 \(\phi\) 只旋转二、三谐波的两个实系数块，行列式不变。这个结论给出 critical-point geometry modulo additive constants 的 restricted miniversal，也就是 \(R^+\)-versal。若连函数值一起记录，\(A_5\) 的 full miniversal deformation 还需要一个常数参数。</p>
+          <p>允许 marked state \(\phi\) 移动后，单个局部 \(A_k\) coefficient branch 的余维为 \(k-1\)。这是 preimage branch 的局部结论，不是完整 projected caustic 已经嵌入或没有 self-intersection 的证明。</p>
+        </section>
+
+        <section id="a2"><div class="section-no">03 / Pure-second A2 path</div><h2>一个二次方程给出全路径唯一退化与 \(4/3/2\)</h2>
+          <div class="equation result">\[
+          F_y(\phi)=\cos\phi-4e^{-3y}\sin2\phi,\qquad
+          F_y'=2k\sin^2\phi-\sin\phi-k,\quad k=8e^{-3y}.
+          \]</div>
+          <div class="equation result">\[
+          s_\pm(k)=\frac{1\pm\sqrt{1+8k^2}}{4k}.
+          \]</div>
+          <p>\(s_-\in(-1,0)\) 对全部 \(k&gt;0\) 成立；\(s_+\) 在 \(k&gt;1\) 时位于 \((0,1)\)，在 \(k=1\) 等于一，在 \(0&lt;k&lt;1\) 时离开实 sine range。结合 \(F_y''=\cos\phi(-1+4k\sin\phi)\)，全路径唯一退化点是 \(y_*=\log2,\phi_*=\pi/2\)。</p>
+          <div class="equation result">\[
+          N_{\rm distinct}(y)=
+          \begin{cases}4,&0\le y&lt;\log2,\\3,&y=\log2,\\2,&y&gt;\log2.
+          \end{cases}
+          \]</div>
+          <p>等号时一个 \(A_2\) 点为二重根，另有两个简单点，所以按重数仍为四。这个 representative 的第三 carrier 为零，但 \(F'''=\partial_yF'=-3\ne0\)，路径对 full four-real coefficient slice 的局部 codimension-one \(A_2\) wall 横截。</p>
+        </section>
+
+        <section id="a3"><div class="section-no">04 / Real-even A3 path</div><h2>对称轴保留中心临界点，两个 off-axis roots 并入它</h2>
+          <div class="equation result">\[
+          H_y(\phi)=\cos\phi-\frac{2563}{1280}e^{-3y}\cos2\phi
+          +\frac1{30}e^{-8y}\cos3\phi.
+          \]</div>
+          <p>写 \(t=e^{-y}\)、\(x=\cos\phi\)，则 \(H_y'=-\sin\phi\,q_t(x)\)，其中</p>
+          <div class="equation result">\[
+          q_t(x)=\frac25t^8x^2-\frac{2563}{320}t^3x+1-\frac1{10}t^8.
+          \]</div>
+          <p>\(q_t\) 在 \([-1,1]\) 上严格下降，\(q_t(-1)&gt;0\)，且 \(q_t(1)\) 恰在 \(t=1/2\) 变号。因此</p>
+          <div class="equation result">\[
+          N_{\rm distinct}(y)=
+          \begin{cases}4,&0\le y&lt;\log2,\\2,&y=\log2,\\2,&y&gt;\log2.
+          \end{cases}
+          \]</div>
+          <p>碰撞点 \(\phi=0\) 是 \(A_3\) 三重根，\(\phi=\pi\) 是简单根，所以按重数仍为四。这里 \(H''''=\partial_yH''=-1533/512\ne0\)。函数芽属于 ambient \(A_3\) stratum，但一参数路径只在 real-even 二维切片内横截 endpoint wall；不能称为 full-space transverse \(A_3\)。</p>
+        </section>
+
+        <section id="local"><div class="section-no">05 / Local branch laws</div><h2>两种碰撞都有平方根分支，但中心机制不同</h2>
+          <p>令 \(\delta=y-\log2\)。在 \(A_2\) 点取 \(\xi=\phi-\pi/2\)，在 \(A_3\) 点取 \(\phi\) 本身，则</p>
+          <div class="equation result">\[
+          F_y'=-3\delta-\frac32\xi^2
+          +O(\delta^2+|\delta|\xi^2+\xi^4),\qquad
+          \xi_\pm=\pm\sqrt{-2\delta}+O(|\delta|^{3/2}),
+          \]</div>
+          <div class="equation result">\[
+          H_y'=K\phi\left(\delta+\frac{\phi^2}{6}\right)
+          +O(\delta^2|\phi|+|\delta||\phi|^3+|\phi|^5),\quad
+          K=-\frac{1533}{512},\quad
+          \phi_\pm=\pm\sqrt{-6\delta}+O(|\delta|^{3/2}).
+          \]</div>
+          <p>第一条路径中碰撞点随后消失；第二条路径中反射对称性让中心点始终保留。附图只展示这两条已证明的局部分支，不替代全局单调性证明。</p>
+        </section>
+
+        <section id="counts"><div class="section-no">06 / Count convention</div><h2>distinct locations 与 root multiplicity 必须分开</h2>
+          <p>pure-second \(A_2\) 的 before/at/after distinct count 是 \(4/3/2\)，碰撞时重数分解为 \(2+1+1=4\)。real-even \(A_3\) 是 \(4/2/2\)，碰撞时为 \(3+1=4\)。把阈值时刻简写为“\(4\to2\)”会丢失两种局部机制的差别。</p>
+          <p>同样，incidence preimage 是带 marked \(\phi\) 的解；把它投影到 \((z_2,z_3)\) 后，多个 preimages 可以落在同一系数点。本节没有枚举这种 multisingularity，也没有给完整 chamber diagram。</p>
+        </section>
+
+        <section id="pde"><div class="section-no">07 / PDE boundary</div><h2>冻结 profile 的有限型速率不能拼成穿越碰撞的定理</h2>
+          <p>stationary finite-type 文献给 frozen \(A_2\) profile 的 \(\nu^{3/5}\) benchmark 和 frozen \(A_3\) profile 的 \(\nu^{2/3}\) benchmark。现有 nonautonomous 结果覆盖共同非退化临界点、固定空间 profile 的时间调制或保持临界点类型与数量的刚性平移；它们不覆盖这里的 creation、annihilation 或 multiplicity change。</p>
+          <p>因此 R0.72S 没有证明 ED through collision。把每个 frozen time 的速率逐点拼接，也不能替代一个统一的非自治 subelliptic 或 hypocoercive estimate。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">08 / Exact certificate</div><h2>Fraction 与 BigInt 双路只封存有限代数骨架</h2>
+          <p>Python rational producer 与独立 JavaScript BigInt audit 重建 incidence jets、determinant \(5400\)、两条路径的 exact sign guards、crossing jets 和 leading split coefficients \(-2,-6\)。comparator 要求 canonical payload 精确相同，正式证书还绑定同一 clean source commit。</p>
+          <p>唯一碰撞与全局 distinct/multiplicity counts 由连续 root-count proof 推出；机器证书只核对该证明使用的有限恒等式和符号守卫。它不分类全局 caustic image，也不证明穿墙 enhanced dissipation。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>一般奇性理论、degree-three 拓扑与本站精确路径是三件事</h2>
+          <p><a href="https://www.mathnet.ru/eng/rm4237">Arnol'd (1975)</a> 给出 \(A_k\) 与 versality 的标准局部框架；<a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_4">Arnol'd (1997)</a> 研究 real degree-three maximal-real-critical region 的拓扑。R0.72S 不把 degree-three region 本身主张为新发现。</p>
+          <p><a href="https://doi.org/10.1016/j.jfa.2022.109522">Albritton–Beekie–Novack</a> 与 <a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 给 stationary finite-type benchmarks；<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a>、<a href="https://arxiv.org/abs/2501.16905">Benthaus–Nobili</a> 和 <a href="https://arxiv.org/abs/2603.14624">Benthaus–Coclite–Nobili</a> 划定当前 nonautonomous 边界。限定一手检索没有定位到穿越这里 multiplicity-changing collision 的 ED theorem；这是 bounded-search absence，不是不存在性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>三联图分别展示 incidence spine、A2 branches 与 A3 branches</h2>
+          <p><img src="/assets/r072s/fig-r072s-heat-collisions.svg" alt="R0.72S exact singular strata and two heat-law critical-point collisions"></p>
+          <p><a href="/assets/r072s/fig-r072s-heat-collisions.pdf">下载 PDF</a> · <a href="/assets/r072s/fig-r072s-heat-collisions.png">下载 PNG</a> · <a href="/assets/r072s/fig-r072s-heat-collisions.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>下一道可检验问题已经从几何墙转成非自治局部模型</h2>
+          <p>R0.72S 的直接增量是一个可审计的局部 singular-strata ledger，以及两条全时间精确计数的 heat-law path。它给下一步 PDE 分析提供碰撞时间、jet constants 与 square-root branch scales，也明确说明现有 nondegenerate time-dependent theorem 在哪里失去假设。</p>
+          <p>对 Clay 问题的直接价值仍低。这里是有限谐波 scalar shear 与特殊 triangular reduction 的局部几何，没有一般三维 continuation estimate，也没有奇性构造或全局正则性证明。</p>
+        </section>
+
+        <section id="scope"><div class="section-no">12 / Scope boundary</div><h2>local marked strata 不等于 global caustic，也不等于 Clay 进展比例</h2>
+          <p>没有证明 incidence map injective、全部 self-intersections、multisingularities、完整 complement chambers、real \(A_{2j+1}^{\pm}\) refinement、two-parameter full-slice transverse \(A_3\)、任意相位 heat path、ED through collision、一般三维稳定性、有限时奇性或全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.72T：缩放 A2 spacetime normal form，并先证明模型估计</h2>
+          <p>下一节围绕 \(F'\sim-3\delta-(3/2)\xi^2\) 选择时空尺度，平衡 time drift、quadratic spatial degeneracy、transport frequency 与 diffusion。只有先得到 uniform nonautonomous model estimate，才讨论向 exact heat path 的 perturbative transfer。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduction</div><h2>报告、文献边界、独立审计、精确证书与正式附图包</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072s_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072s_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072s_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072s_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072s">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072s-heat-collisions/fig-r072s-heat-collisions">正式附图包</a> · <a href="/notes/r0-72s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72s.html">累计回顾</a> · <a href="/recap-r0-61-r0-72s.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72S · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

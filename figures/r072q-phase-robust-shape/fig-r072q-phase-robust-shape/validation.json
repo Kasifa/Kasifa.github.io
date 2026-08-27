@@ -1,0 +1,496 @@
+{
+  "allPassed": true,
+  "automaticChecksPassed": true,
+  "automaticOnly": false,
+  "checkCount": 18,
+  "checks": [
+    {
+      "name": "required_assets",
+      "passed": true,
+      "requirement": "all formal assets exist",
+      "value": []
+    },
+    {
+      "name": "png_600_dpi",
+      "passed": true,
+      "requirement": "PNG is final size at 600 dpi",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expected": [
+          4200,
+          1950
+        ],
+        "size": [
+          4200,
+          1950
+        ]
+      }
+    },
+    {
+      "name": "pdf_one_page_final_size",
+      "passed": true,
+      "requirement": "PDF is one page at 177.8 mm final width",
+      "value": {
+        "millimetres": [
+          177.79999999999998,
+          82.55
+        ],
+        "pages": 1
+      }
+    },
+    {
+      "name": "svg_editable_vector",
+      "passed": true,
+      "requirement": "SVG keeps editable text and contains no raster image",
+      "value": {
+        "rasterImages": 0,
+        "text": true
+      }
+    },
+    {
+      "name": "final_size_and_grayscale_qa",
+      "passed": true,
+      "requirement": "all QA surfaces match final size and grayscale contrast gate",
+      "value": {
+        "expected": [
+          1260,
+          585
+        ],
+        "grayStd": 38.309269087155855,
+        "sizes": {
+          "qa-final-size.png": [
+            1260,
+            585
+          ],
+          "qa-grayscale.png": [
+            1260,
+            585
+          ],
+          "qa-pdf.png": [
+            1260,
+            585
+          ]
+        }
+      }
+    },
+    {
+      "name": "runtime_lineage",
+      "passed": true,
+      "requirement": "report, five certificate JSON inputs, and flat ledger are canonical and hash-stable",
+      "value": {
+        "analyticSource": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": null,
+          "passed": true,
+          "statusMatches": true
+        },
+        "certificateLedger": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": null,
+          "passed": true,
+          "statusMatches": true
+        },
+        "crosscheck": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": "passed",
+          "passed": true,
+          "statusMatches": true
+        },
+        "independentConfig": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": "configuration",
+          "passed": true,
+          "statusMatches": true
+        },
+        "independentResult": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": "passed",
+          "passed": true,
+          "statusMatches": true
+        },
+        "producerConfig": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": "configuration",
+          "passed": true,
+          "statusMatches": true
+        },
+        "producerResult": {
+          "canonical": true,
+          "exists": true,
+          "hashMatches": true,
+          "inputOk": true,
+          "inputStatus": "passed",
+          "passed": true,
+          "statusMatches": true
+        }
+      }
+    },
+    {
+      "name": "source_certificate_and_build_commits",
+      "passed": true,
+      "requirement": "source blobs bind sourceCommit and certificate/package blobs bind clean build commit",
+      "value": {
+        "certificateBlobs": true,
+        "certificateCommit": "f28431a6eb78ebea9a8dc1bf16681a2d4a205377",
+        "sourceBlobs": true,
+        "sourceCommit": "943048554800c27d6f25cb93ca52c5c60460ca1b",
+        "trackedClean": true
+      }
+    },
+    {
+      "name": "flat_certificate_ledger",
+      "passed": true,
+      "requirement": "flat SHA256SUMS exactly, uniquely, and symlink-safely seals certificate bundle",
+      "value": {
+        "current": {
+          "directory": "/Users/kasifa/Documents/Math/navier-stokes-r072k/research/certificates/r072q",
+          "entries": [
+            {
+              "fileName": "README.md",
+              "sha256": "4a328802555e0f01497b0ea85816c35db0579ae4d3d9911b660942a27a2eb306"
+            },
+            {
+              "fileName": "build_hashes.py",
+              "sha256": "0cb71ad5a43169750b2454897e53caf7984c83eabeae4b482456d082a6b15171"
+            },
+            {
+              "fileName": "command.txt",
+              "sha256": "776e1ee8a36c96b4240c7018bff3f1942aae013804eabb73bb6cc6b76565f198"
+            },
+            {
+              "fileName": "crosscheck.json",
+              "sha256": "33130c8183c5d0e1376f6f79bc74ee36a80a47eba4500ded95a53c967cc6aaec"
+            },
+            {
+              "fileName": "environment.txt",
+              "sha256": "f21d79b0a282b59eab04f82c0360c21d7c1de21fbdf5d7cb7cc58dba1ff2012b"
+            },
+            {
+              "fileName": "independent-config.json",
+              "sha256": "4b3483e3c755fb0c691da8e07803086ed58778111d4c90f0bc4c10b42b83d9cf"
+            },
+            {
+              "fileName": "independent-monitor.log",
+              "sha256": "c2ca4b4188758f9aebec069ec8fa0c627192cf5803efe204da039319d3a0f467"
+            },
+            {
+              "fileName": "independent-payload.json",
+              "sha256": "87ef596aabe35eae3b5fe75ae36b0e3a82d9df5481ddafa3fb849f6c5578c674"
+            },
+            {
+              "fileName": "independent-progress.ndjson",
+              "sha256": "4771e81e7d0458731edca31e4d1614ae1679f92db621dd60dfd27f16d1781d54"
+            },
+            {
+              "fileName": "independent-resource.ndjson",
+              "sha256": "a63ca3790e83019ec7d54d006cec51d69a078b07fcbbc2a0884bafe9e5c957e5"
+            },
+            {
+              "fileName": "independent-result.json",
+              "sha256": "a75644a97bb86556f3b294804ae71af447cf74ac6402324124d0d2577bdd16be"
+            },
+            {
+              "fileName": "producer-config.json",
+              "sha256": "369ef943e92738e7bd86044ee65716e927edb60c216223fa748e2dd973972236"
+            },
+            {
+              "fileName": "producer-monitor.log",
+              "sha256": "3e5f9b008fb64b9d9da0bd0dc795078ea31270e517c08d263fb11f475fe9c90b"
+            },
+            {
+              "fileName": "producer-payload.json",
+              "sha256": "ce75c4717d8e174d05a811af8dbfb7358e07c197f3e93d5ca234c9c8f4b8bf5f"
+            },
+            {
+              "fileName": "producer-progress.ndjson",
+              "sha256": "e5902bdce2de2d003283c85d564664fbccb5f251e33c994fd4526378cf9235a1"
+            },
+            {
+              "fileName": "producer-resource.ndjson",
+              "sha256": "a1dccbf9041f54b2aa1228f6773476fa5da8c07b28ad2392d1c868b4e7a7399e"
+            },
+            {
+              "fileName": "producer-result.json",
+              "sha256": "fd0a779bf7113c7e3f529c4d26279f10bbcc87f7a5b1497dbcf91c893a25b0f9"
+            },
+            {
+              "fileName": "write_environment.py",
+              "sha256": "f2e2ffa41c6610c8c90443e915d80c51958ccd9fe7779b1f85011178b2972a55"
+            }
+          ],
+          "entryCount": 18,
+          "exactDirectoryCoverage": true,
+          "ledgerPath": "/Users/kasifa/Documents/Math/navier-stokes-r072k/research/certificates/r072q/SHA256SUMS",
+          "ledgerSha256": "8ea801de89a64f07129a6c4b756edbc656251fba948391cf60dbcaecede6ba57",
+          "requiredRuntimeJson": [
+            "crosscheck.json",
+            "independent-config.json",
+            "independent-result.json",
+            "producer-config.json",
+            "producer-result.json"
+          ],
+          "status": "passed",
+          "symlinksRejected": true,
+          "uniqueByteSortedRows": true
+        },
+        "recorded": {
+          "directory": "/Users/kasifa/Documents/Math/navier-stokes-r072k/research/certificates/r072q",
+          "entries": [
+            {
+              "fileName": "README.md",
+              "sha256": "4a328802555e0f01497b0ea85816c35db0579ae4d3d9911b660942a27a2eb306"
+            },
+            {
+              "fileName": "build_hashes.py",
+              "sha256": "0cb71ad5a43169750b2454897e53caf7984c83eabeae4b482456d082a6b15171"
+            },
+            {
+              "fileName": "command.txt",
+              "sha256": "776e1ee8a36c96b4240c7018bff3f1942aae013804eabb73bb6cc6b76565f198"
+            },
+            {
+              "fileName": "crosscheck.json",
+              "sha256": "33130c8183c5d0e1376f6f79bc74ee36a80a47eba4500ded95a53c967cc6aaec"
+            },
+            {
+              "fileName": "environment.txt",
+              "sha256": "f21d79b0a282b59eab04f82c0360c21d7c1de21fbdf5d7cb7cc58dba1ff2012b"
+            },
+            {
+              "fileName": "independent-config.json",
+              "sha256": "4b3483e3c755fb0c691da8e07803086ed58778111d4c90f0bc4c10b42b83d9cf"
+            },
+            {
+              "fileName": "independent-monitor.log",
+              "sha256": "c2ca4b4188758f9aebec069ec8fa0c627192cf5803efe204da039319d3a0f467"
+            },
+            {
+              "fileName": "independent-payload.json",
+              "sha256": "87ef596aabe35eae3b5fe75ae36b0e3a82d9df5481ddafa3fb849f6c5578c674"
+            },
+            {
+              "fileName": "independent-progress.ndjson",
+              "sha256": "4771e81e7d0458731edca31e4d1614ae1679f92db621dd60dfd27f16d1781d54"
+            },
+            {
+              "fileName": "independent-resource.ndjson",
+              "sha256": "a63ca3790e83019ec7d54d006cec51d69a078b07fcbbc2a0884bafe9e5c957e5"
+            },
+            {
+              "fileName": "independent-result.json",
+              "sha256": "a75644a97bb86556f3b294804ae71af447cf74ac6402324124d0d2577bdd16be"
+            },
+            {
+              "fileName": "producer-config.json",
+              "sha256": "369ef943e92738e7bd86044ee65716e927edb60c216223fa748e2dd973972236"
+            },
+            {
+              "fileName": "producer-monitor.log",
+              "sha256": "3e5f9b008fb64b9d9da0bd0dc795078ea31270e517c08d263fb11f475fe9c90b"
+            },
+            {
+              "fileName": "producer-payload.json",
+              "sha256": "ce75c4717d8e174d05a811af8dbfb7358e07c197f3e93d5ca234c9c8f4b8bf5f"
+            },
+            {
+              "fileName": "producer-progress.ndjson",
+              "sha256": "e5902bdce2de2d003283c85d564664fbccb5f251e33c994fd4526378cf9235a1"
+            },
+            {
+              "fileName": "producer-resource.ndjson",
+              "sha256": "a1dccbf9041f54b2aa1228f6773476fa5da8c07b28ad2392d1c868b4e7a7399e"
+            },
+            {
+              "fileName": "producer-result.json",
+              "sha256": "fd0a779bf7113c7e3f529c4d26279f10bbcc87f7a5b1497dbcf91c893a25b0f9"
+            },
+            {
+              "fileName": "write_environment.py",
+              "sha256": "f2e2ffa41c6610c8c90443e915d80c51958ccd9fe7779b1f85011178b2972a55"
+            }
+          ],
+          "entryCount": 18,
+          "exactDirectoryCoverage": true,
+          "ledgerPath": "/Users/kasifa/Documents/Math/navier-stokes-r072k/research/certificates/r072q/SHA256SUMS",
+          "ledgerSha256": "8ea801de89a64f07129a6c4b756edbc656251fba948391cf60dbcaecede6ba57",
+          "requiredRuntimeJson": [
+            "crosscheck.json",
+            "independent-config.json",
+            "independent-result.json",
+            "producer-config.json",
+            "producer-result.json"
+          ],
+          "status": "passed",
+          "symlinksRejected": true,
+          "uniqueByteSortedRows": true
+        }
+      }
+    },
+    {
+      "name": "package_source_hashes",
+      "passed": true,
+      "requirement": "all thirteen package sources retain build hashes",
+      "value": {
+        "changed": [],
+        "recorded": [
+          "README.md",
+          "build_manifest.py",
+          "caption.md",
+          "certificate_ledger.py",
+          "command.txt",
+          "config.json",
+          "contract.json",
+          "figure-contract.md",
+          "plot.py",
+          "publish_assets.py",
+          "qa_images.py",
+          "requirements.txt",
+          "validate.py"
+        ]
+      }
+    },
+    {
+      "name": "formal_parameters",
+      "passed": true,
+      "requirement": "formal W contract is (pi/12,81,36), with normalized F away gap greater than 1/12",
+      "value": {
+        "criticalLocalization": 0.2617993877991494,
+        "curvatureMu": 0.3660254037844386,
+        "curvatureZone": 0.5235987755982988,
+        "fixedMRequired": true,
+        "normalizedFAwayGapLower": 0.08333333333333333,
+        "normalizedFShapeC1": 12.0,
+        "oneTwoCausticFreeRadius": 0.25,
+        "oneTwoContractRadius": 0.125,
+        "oneTwoWallMaximumRadius": 0.5,
+        "q1Maximum": 0.25,
+        "q2Maximum": 0.5,
+        "shapeC0": 81.0,
+        "shapeC1": 36.0
+      }
+    },
+    {
+      "name": "sampling_and_claim_boundary",
+      "passed": true,
+      "requirement": "text separates exact samples from proof and retains all scope limits",
+      "value": [
+        "cannot replace the continuous proof",
+        "normalized f away gap",
+        "w=e^{-y}f",
+        "c1=36",
+        "fixed",
+        "growing",
+        "fast phase",
+        "three-dimensional navier"
+      ]
+    },
+    {
+      "name": "data_schema_and_counts",
+      "passed": true,
+      "requirement": "data table has exact three-panel schema and row counts",
+      "value": {
+        "counts": {
+          "A": 2163,
+          "B": 1441,
+          "C": 962
+        },
+        "expected": {
+          "A": 2163,
+          "B": 1441,
+          "C": 962
+        },
+        "rows": 4566
+      }
+    },
+    {
+      "name": "panel_a_caustic_and_disks",
+      "passed": true,
+      "requirement": "Panel A is exact caustic plus radii 1/4 and 1/8",
+      "value": {
+        "maxFormulaError": 1.1102230246251565e-16,
+        "maxImplicitResidual": 8.673617379884035e-18
+      }
+    },
+    {
+      "name": "panel_b_unique_phase_ray_wall",
+      "passed": true,
+      "requirement": "Panel B is exact one-wall radial graph with radius in [1/4,1/2]",
+      "value": {
+        "maxFormulaError": 8.881784197001252e-16,
+        "monotone": true,
+        "radiusRange": [
+          0.25,
+          0.5
+        ]
+      }
+    },
+    {
+      "name": "panel_c_fixed_m_margins",
+      "passed": true,
+      "requirement": "Panel C verifies normalized margins and conservative W C1=36",
+      "value": {
+        "formalWAwayLower": 0.030656620097620196,
+        "maxFormulaError": 0.0,
+        "mu": 0.3660254037844386,
+        "normalizedAwayAtPiOverSix": 0.24999999999999994
+      }
+    },
+    {
+      "name": "results_formula_and_no_fit_gate",
+      "passed": true,
+      "requirement": "results ledger records exact formulas and forbids proof by sampling",
+      "value": {
+        "continuousProofRequired": true,
+        "curvatureAtZoneBoundary": 0.3660254037844387,
+        "expectedCurvatureMu": 0.3660254037844386,
+        "maxCausticImplicitResidual": 1.0408340855860843e-17,
+        "maximumWallRadius": 0.5,
+        "minimumWallRadius": 0.25,
+        "normalizedAwayAtZoneBoundary": 0.24999999999999994,
+        "numericCurvesAreExactFormulaSamples": true,
+        "phaseParameterStrictlyMonotone": true,
+        "q2AtContractRadius": 0.5
+      }
+    },
+    {
+      "name": "public_byte_identity",
+      "passed": true,
+      "requirement": "public masters are byte-identical to archival masters",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "visual_inspection_declared",
+      "passed": true,
+      "requirement": "final-size, grayscale, and PDF-raster surfaces were explicitly inspected",
+      "value": true
+    }
+  ],
+  "figureId": "R0.72Q-1",
+  "schemaVersion": 1,
+  "status": "passed"
+}

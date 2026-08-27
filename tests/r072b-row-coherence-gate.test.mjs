@@ -218,7 +218,7 @@ test("archives and mirrors the formal R0.72B figure in three formats", async () 
   }
 });
 
-test("retains the R0.72B package while R0.72I is current", async () => {
+test("retains the R0.72B package while R0.72J is current", async () => {
   const [home, note, recap, literature, notePdf, recapPdf] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "notes/r0-72b.html"), "utf8"),
@@ -228,14 +228,14 @@ test("retains the R0.72B package while R0.72I is current", async () => {
     readFile(resolve(publicRoot, "recap-r0-61-r0-72b.pdf")),
   ]);
 
-  assert.match(home, /<strong>v1\.22<\/strong>网页版本/);
-  assert.match(home, /<strong>159<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72I<\/strong>最新研究节点/);
-  assert.match(home, /展开 69 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72J/);
-  assert.match(home, /R0\.70A–R0\.72I 共 61 个版本已公开；37 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /二十五个(?:问题)?阶段/);
-  assert.match(home, /累计回顾收录 99 个节点/);
+  assert.match(home, /<strong>v1\.23<\/strong>网页版本/);
+  assert.match(home, /<strong>160<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72J<\/strong>最新研究节点/);
+  assert.match(home, /展开 70 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72K/);
+  assert.match(home, /R0\.70A–R0\.72J 共 62 个版本已公开；38 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /二十六个(?:问题)?阶段/);
+  assert.match(home, /累计回顾收录 100 个节点/);
   assert.equal((home.match(/href="\/notes\/r0-72b\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072b"/g) ?? []).length, 1);
   assert.match(
@@ -243,7 +243,7 @@ test("retains the R0.72B package while R0.72I is current", async () => {
     /<div class="task-one" id="r072b" data-release="r072b"/,
   );
   assert.match(home, /M\^{-10\/3\}/);
-  assert.match(home, /recap-r0-61-r0-72i\.html/);
+  assert.match(home, /recap-r0-61-r0-72j\.html/);
 
   assert.ok(note.includes(String.raw`G_{\rm all}^{\rm ex}`));
   assert.ok(note.includes(String.raw`M\rho_A^2`));
@@ -295,8 +295,8 @@ test("retains the R0.72B package while R0.72I is current", async () => {
   assert.match(literature, /arxiv\.org\/abs\/2105\.12308/);
   assert.match(literature, /launch-inclusive root-slope ledger/);
 
-  assert.match(home, /src="\/i18n-en\.js\?v=1\.22"/);
-  assert.match(literature, /src="\/i18n-en\.js\?v=1\.22"/);
+  assert.match(home, /src="\/i18n-en\.js\?v=1\.23"/);
+  assert.match(literature, /src="\/i18n-en\.js\?v=1\.23"/);
   assert.match(note, /src="\/i18n-en\.js\?v=1\.15"/);
   assert.match(recap, /src="\/i18n-en\.js\?v=1\.15"/);
 

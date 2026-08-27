@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72J：gcd 约化后的载波 Cayley 图二分性具有精确分类；真正的 cubic 返回要求三角关系。common-band 与 coherent mixed-parity 族的真实 cubic 虽非零，物理归一化后仍衰减。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72J｜非二分不等于 cubic 反例">
+  <meta property="og:description" content="图论障碍、三角返回与物理归一化必须分开；当前 common-band 构造没有产生存活的 normalized cubic ledger。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72j-mixed-parity-cubic.png">
+  <title>R0.72J｜非二分不等于 cubic 反例</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.23"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#graph">图分类</a><a href="#triangle">三角返回</a><a href="#band">共同频带</a><a href="#coherent">相干族</a><a href="#root">根账本</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72J · CAYLEY GRAPH · TRIANGLE RETURN · TRUE CUBIC</div>
+        <h1>非二分图出现以后，<br>还要再问 cubic 是否真的存活</h1>
+        <p class="lead">R0.72I 的奇偶修复不是“原整数全奇”这一种写法，而是 gcd 约化后的 Cayley 图二分性。离开二分情形只说明存在某条奇闭路；真实 \(P_0V^2F\) 在 aligned launch 上立即返回，还需要三步有符号关系。共同频带内即使安排大量三角关系，raw cubic 可以增长，true cubic contribution 的归一化比仍然衰减。这个方向需要进入多尺度或强耦合，不能把 non-bipartite 直接写成反例。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72J 负结果完成</span><strong>graph classified, common-band counterroute closed</strong><p>版本 v0.72J · 2026-08-27</p><p>gcd-reduced bipartite test: CLOSED</p><p>triangle return criterion: CLOSED</p><p>common-band normalized counterfamily: NO-GO</p><p>complete complex-root ledger: OPEN</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 四句判断</a></li><li><a href="#graph">01 · gcd 约化图</a></li><li><a href="#triangle">02 · 三角返回</a></li><li><a href="#band">03 · 共同频带 no-go</a></li><li><a href="#coherent">04 · 相干稠密族</a></li><li><a href="#root">05 · 复目标根边界</a></li><li><a href="#audit">06 · 独立审计</a></li><li><a href="#figure">07 · 正式附图</a></li><li><a href="#value">08 · 研究价值</a></li><li><a href="#next">09 · R0.72K</a></li><li><a href="#claims">10 · 主张边界</a></li><li><a href="#reproduce">11 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Four statements</div><h2>图论、cubic 返回、物理尺度和根账本不能混成一句</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · EXACT GRAPH TEST</strong><p>令 \(g=\gcd(r_1,\ldots,r_M)\)。目标连通分支的 Cayley 图二分，当且仅当每个约化载波 \(r_j/g\) 都是奇数。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · TRIANGLE IS STRICTER</strong><p>non-bipartite 只保证某条奇闭路；aligned launch 的二步返回要求 \(R_1(0)\cap R_2(0)\ne\varnothing\)，等价于存在有符号三载波关系。</p></div>
+            <div class="verdict-card false"><strong>NO-GO · COMMON BAND</strong><p>在声明的 common-band perturbative scaling 下，true cubic contribution 的归一化比至多为 \(CR^{-4/9}(1+\log R)^{-2/3}\)，所以一致趋零。</p></div>
+            <div class="verdict-card false"><strong>OPEN · COMPLETE ROOTS</strong><p>mixed-parity aligned target 一般是复值。前几节依赖实标量 Rolle 归约的 complete-root ledger 没有自动延伸到这里。</p></div>
+          </div>
+        </section>
+
+        <section id="graph"><div class="section-no">01 / GCD-reduced Cayley graph</div><h2>真正的不变量是约化载波，不是原整数的表面奇偶</h2>
+          <p>对 carrier set \(S=\{r_1,\ldots,r_M\}\subset\mathbb N\)，令 \(g=\gcd S\)，并在目标连通分支 \(g\mathbb Z\) 上连边 \(n\leftrightarrow n\pm r_j\)。除以 \(g\) 后得到由 \(a_j=r_j/g\) 生成的连通 Cayley 图。</p>
+          <div class="equation result">\[
+            \boxed{\operatorname{Cay}(\mathbb Z;\{\pm a_j\})\text{ 二分}
+            \quad\Longleftrightarrow\quad a_j\equiv1\pmod2\ \text{对所有 }j.}
+          \]</div>
+          <p>若全部 \(a_j\) 为奇数，整数 parity 就是一组二着色，每条 carrier edge 都换色。反之，连通 Cayley 图的二着色从零点唯一延伸，并给出到 \(\mathbb Z_2\) 的群同态；每个生成元必须映到 1，因此不允许偶生成元。</p>
+          <p>所以 \(\{2,6\}\) 虽然原载波全偶，除以 \(g=2\) 后是 \(\{1,3\}\)，仍属于 R0.72I 的二分修复。混合 parity 也必须先约化再判断。</p>
+        </section>
+
+        <section id="triangle"><div class="section-no">02 / Sphere one versus sphere two</div><h2>奇闭路可能很长；cubic 只看长度三</h2>
+          <p>把带相位的 signed carrier coefficient 记为 \(c_s(x)\)，\(s\in\pm S\)。目标行的两个真实量为</p>
+          <div class="equation result">\[
+            h=(VF)_0=\sum_{s\in\pm S}c_sF_{-s},\qquad
+            b=(V^2F)_0=\sum_{s,t\in\pm S}c_sc_tF_{-(s+t)}.
+          \]</div>
+          <p>aligned launch 支持在第一球 \(R_1(0)=\pm S\)。因此 \(b\) 在零时刻读到 launch，当且仅当</p>
+          <div class="equation result">\[
+            R_1(0)\cap R_2(0)\ne\varnothing
+            \quad\Longleftrightarrow\quad
+            \exists\,s,t,u\in\pm S:\ s+t+u=0.
+          \]</div>
+          <p>这是载波 Cayley 图中的三角关系。它严格强于 non-bipartite。例如约化集合 \(\{1,4\}\) 的图非二分，但最短奇闭路长度为五，没有三载波关系，所以 aligned launch 不产生 leading cubic return。</p>
+        </section>
+
+        <section id="band"><div class="section-no">03 / Common-band perturbative no-go</div><h2>三角关系使 cubic 非零，却没有克服物理归一化</h2>
+          <p>对载波位于一个可比频带、系数和 launch 满足报告所列统一界的 mixed-parity family，真实 cubic payment 直接保留为</p>
+          <div class="equation result">\[
+            \mathcal C_{\times,R}=|\delta_R|\int_I|h_R(x)P_0V_R(x)^2F_R(x)|\,dx.
+          \]</div>
+          <p>不再使用 R0.72I 已排除的 \(B_AQ_*\) 分离。共同热时间 \(R^{-2}\)、aligned row 大小和 perturbative coupling window 联合给出</p>
+          <div class="equation result">\[
+            \boxed{\frac{2\Theta_R\mathcal C_{\times,R}}
+            {D_R^{1/3}[1+\Theta_RQ_{*,R}]}
+            \le C R^{-4/9}(1+\log R)^{-2/3}\longrightarrow0.}
+          \]</div>
+          <p>这是一条 common-band aligned perturbative no-go，不是 arbitrary-carrier 上界。它说明只在同一频带增加三角数，仍不能得到存活的 normalized cubic counterfamily。</p>
+        </section>
+
+        <section id="coherent"><div class="section-no">04 / Coherent dense family</div><h2>raw cubic 达到二次规模，true cubic contribution 的归一化比仍衰减</h2>
+          <p>取最直接的 mixed-parity 稠密集合 \(S_R=\{R,R+1,\ldots,3R-1\}\)。若 \(T_R\) 计数 \((s,t,u)\in(\pm S_R)^3\) 中满足 \(s+t+u=0\) 的有序有符号三元组，则</p>
+          <div class="equation result">\[
+            \boxed{T_R=3R(R+1).}
+          \]</div>
+          <p>正关系 \(a+b=c\) 的有序对共有 \(R(R+1)/2\) 个，再乘负项位置和整体符号的六种选择。相位对齐后，真实 raw cubic 满足 \(\mathcal C_{\times,R}\asymp R^2\)，不是被 parity 消掉的零量。</p>
+          <p>但相同数据的 physical lift、能量成本和 critical-log action 也同步增长。诊断缩放给</p>
+          <div class="equation result">\[
+            \boxed{\mathcal C_{\times,R}\asymp R^2,\qquad
+            \frac{2\Theta_R\mathcal C_{\times,R}}
+            {D_R^{1/3}[1+\Theta_RQ_{*,R}]}
+            \asymp R^{-2/3}\longrightarrow0.}
+          \]</div>
+          <p>因此“很多三角关系”是 raw interaction 的充分来源，却不是物理归一化反例的充分来源。</p>
+        </section>
+
+        <section id="root"><div class="section-no">05 / Complex target obstruction</div><h2>当前结果没有闭合 mixed-parity complete-root ledger</h2>
+          <p>R0.72G–I 的 Rolle–BV 归约使用兼容 gauge 把目标坐标和目标 row 变成实标量。mixed-parity coherent family 的 phase alignment 一般使目标轨道落在 \(\mathbb C\)，而复曲线的零点没有实函数符号交替。</p>
+          <p>所以本节严格控制的是 aligned true-cubic interaction 与其物理尺度，不把它升级成 complete temporal self-zero theorem。要得到根账本，还需要复目标的二维零点机制、额外相位锁定，或不依赖 Rolle 的全新归约。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Exact and independent audit</div><h2>组合计数、图分类和有限动力学由两条实现交叉核对</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · ARCHIVED PASS</strong><p>\(R=64\) 时 \(T_R=12480\)、\(|b(0)|=8824.692629208112\)，且 \(\mathcal C_{\times,R}=69.2166385023\)。末三档 raw 与 normalized 斜率分别为 1.9501881021 和 -0.7370277418。</p><p class="mini-kpi">finite corroboration only · analytic exponents proved separately</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · ARCHIVED PASS</strong><p>独立 edge-list/RK45 路线在 \(R=64\) 得到 \(\mathcal C_{\times,R}=69.2166385022\)、normalized true cubic \(1.0386272844\times10^{-6}\)。</p><p class="mini-kpi"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072j_independent_audit.md">独立逐式审计</a></p></div>
+          </div>
+          <p>五个共同规模上的最大相对差为：\(Q_*\) 的 \(1.53322\times10^{-6}\)、\(\mathcal C_{\times,R}\) 的 \(2.94064\times10^{-12}\)、normalized true cubic 的 \(7.28034\times10^{-9}\)。有限审计只核对离散代数、实现与有限尺度趋势；渐近 no-go 由报告中的解析估计承担。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>正式附图分开显示图分类、三角计数与归一化衰减</h2>
+          <p><img src="/figures/r0-72j-mixed-parity-cubic.svg" alt="R0.72J mixed-parity cubic interaction formal figure"></p>
+          <p><a href="/figures/r0-72j-mixed-parity-cubic.pdf">下载 PDF</a> · <a href="/figures/r0-72j-mixed-parity-cubic.png">下载 PNG</a> · <a href="/figures/r0-72j-mixed-parity-cubic.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">08 / Research value</div><h2>关闭的是一条看似直接的 mixed-parity 反族路线</h2>
+          <p>这一步把 R0.72I 的 parity observation 提升成精确的 gcd-reduced graph theorem，并识别出真正进入 cubic row 的长度三 additive relation。它阻止两种误判：原载波有偶数就一定失去修复；图非二分就一定有 leading cubic。</p>
+          <p>更关键的负结果是：即使选择三角数达到二次规模的 coherent block，true cubic contribution 的归一化比也没有存活。下一步必须改变尺度结构或耦合区间，而不是继续堆积同频带三角关系。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next gate</div><h2>R0.72K：多尺度、强耦合，或复目标根机制</h2>
+          <p>下一关只保留三个可能改变结论的接口：让 carrier triangles 跨多个热时间尺度；离开当前 perturbative coupling window 并重新支付完整能量与 action；或先建立 complex target 的 complete-root ledger。</p>
+          <p>验收标准仍是直接控制真实 \(|\delta|\int|hP_0V^2F|\) 或真实根斜率账本，并在完整物理归一化后给出闭合上界或存活反族。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>一般 Navier–Stokes 问题仍然开放</h2>
+          <p>图分类与 triangle-return 判据是精确离散结论。common-band no-go 和 coherent-family scaling 只覆盖报告中声明的 exact triangular 2.5D aligned perturbative families。</p>
+          <p>本节没有证明 arbitrary-carrier physical inequality，没有 complete complex-root theorem，没有构造有限时奇性，也没有证明一般三维 Navier–Stokes 全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproduction</div><h2>报告、双路证书、附图与累计回顾</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072j_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072j_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072j_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072j_independent_audit.md">独立审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072j">双路机器证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072j-mixed-parity-cubic/fig-r072j-mixed-parity-cubic">正式附图包</a> · <a href="/notes/r0-72j.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72j.html">累计回顾</a> · <a href="/recap-r0-61-r0-72j.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72J · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

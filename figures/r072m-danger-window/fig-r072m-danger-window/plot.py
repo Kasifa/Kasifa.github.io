@@ -169,16 +169,19 @@ def draw(rows: list[dict[str, Any]], config: dict[str, Any], summary: dict[str, 
         points = selected(rows, "A", series)
         ax.plot([p["x"] for p in points], [p["y"] for p in points], color=color, linestyle=linestyle, linewidth=1.25, label=series)
     kappa = 0.2; threshold = float(config["panels"]["A"]["thresholdOverV"])
-    maximum = 1.0 / (1.0 + kappa)
+    display_maximum = max(
+        1.0 / (1.0 + float(value))
+        for value in config["panels"]["A"]["kappaValues"]
+    )
     left = threshold * kappa / (1.0 - threshold)
     right = 1.0 / threshold - kappa
     ax.axhline(threshold, color=palette["ink"], linewidth=0.7, linestyle="-.")
-    ax.axvspan(left, right, color=palette["ochreLight"], hatch="////", edgecolor=palette["ochre"], alpha=0.55, linewidth=0)
-    ax.set_xscale("log"); ax.set_ylim(0, 1.03 * maximum)
+    ax.axvspan(left, right, facecolor=palette["ochreLight"], hatch="////", edgecolor=palette["ochre"], alpha=0.55, linewidth=0.4)
+    ax.set_xscale("log"); ax.set_ylim(0, 1.03 * display_maximum)
     ax.set_title("Exact scalar superlevel window", loc="left", pad=6)
     ax.set_xlabel(r"dimensionless action $x/H$"); ax.set_ylabel(r"$T(x)/V$")
     ax.legend(frameon=False, loc="lower center", ncol=3, handlelength=2.1)
-    ax.text(0.98, 0.90, r"shaded: $T>A$", transform=ax.transAxes, ha="right", fontsize=6.2, color=palette["ochre"])
+    ax.text(0.98, 0.90, r"shaded: $K/H=0.2$, $T/V>0.2$", transform=ax.transAxes, ha="right", fontsize=6.2, color=palette["ochre"])
 
     ax = axes[0, 1]
     style_axes(ax, palette); panel_label(ax, "B", palette)
@@ -201,9 +204,9 @@ def draw(rows: list[dict[str, Any]], config: dict[str, Any], summary: dict[str, 
     ax.axhline(constant, color=palette["ink"], linestyle=":", linewidth=1.0, label=r"theorem $16/\pi^2$")
     ax.set_xscale("log", base=2)
     ax.set_title("Frozen true-cubic coefficient", loc="left", pad=6)
-    ax.set_xlabel(r"coupling $\sigma$"); ax.set_ylabel(r"$\mathcal C_{\rm fr}/(a^2\log\sigma)$")
+    ax.set_xlabel(r"coupling $\sigma$"); ax.set_ylabel(r"$\mathcal{C}_{\rm fr}/(a^2\log\sigma)$")
     ax.legend(frameon=False, loc="lower right", handlelength=2.2)
-    ax.text(0.04, 0.91, "zero-diffusion reference", transform=ax.transAxes, fontsize=6.2, color=palette["muted"])
+    ax.text(0.04, 0.83, "zero-diffusion reference", transform=ax.transAxes, fontsize=6.2, color=palette["muted"])
 
     ax = axes[1, 1]
     style_axes(ax, palette); panel_label(ax, "D", palette)
@@ -212,7 +215,7 @@ def draw(rows: list[dict[str, Any]], config: dict[str, Any], summary: dict[str, 
         ax.plot([p["x"] for p in points], [p["y"] for p in points], color=color, linestyle=linestyle, linewidth=1.15, marker=marker, markersize=3.5, markerfacecolor=palette["paper"] if marker == "s" else color, markeredgecolor=color, label=series)
     ax.set_xscale("log", base=2)
     ax.set_title("Dissipative chain: finite diagnostic", loc="left", pad=6)
-    ax.set_xlabel(r"coupling $\sigma$"); ax.set_ylabel(r"finite $\mathcal C_{\rm diss}/\log\sigma$")
+    ax.set_xlabel(r"coupling $\sigma$"); ax.set_ylabel(r"finite $\mathcal{C}_{\rm diss}/\log\sigma$")
     ax.legend(frameon=False, loc="lower right", handlelength=2.2)
     ax.text(0.04, 0.91, "not a proved asymptotic", transform=ax.transAxes, fontsize=6.2, color=palette["ochre"])
 

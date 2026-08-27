@@ -14,7 +14,7 @@ point remains inside the `pi/6` curvature zone, where
 `|F''|>=mu=(sqrt(3)-1)/2`. The normalized profile has away gap `>1/12`.
 For the formal Coble shear `W=e^{-y}F` on `0<=y<=1`, the declared shape
 contract is `(r,C0,C1)=(pi/12,81,36)`. All plotted curves are exact-formula samples used for
-presentation and automated consistency checks; they do not replace the
+presentation and automated consistency checks; they cannot replace the
 continuous proof. The figure does not make the constants uniform in growing
 `M`, does not cover arbitrary fast phase modulation, and does not imply
 general three-dimensional Navier--Stokes regularity.

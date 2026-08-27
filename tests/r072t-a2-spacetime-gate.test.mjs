@@ -136,7 +136,8 @@ test("R0.72T certificate and formal figure remain fail-closed", async () => {
   assert.equal(manifest.release, "R0.72T");
   assert.equal(manifest.figureId, "fig-r072t-a2-spacetime-model");
   assert.equal(manifest.status, "formal");
-  assert.equal(manifest.pngDpi, 600);
+  const png = manifest.figure.outputs.find((output) => output.path === "figure.png");
+  assert.equal(png?.dpi, 600);
   assert.equal(manifest.qa.status, "passed");
   assert.equal(manifest.qa.visualInspectionExplicit, true);
   assert.equal(manifest.publication.publicCopiesComplete, true);

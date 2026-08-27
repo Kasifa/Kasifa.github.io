@@ -183,7 +183,7 @@ def validate_inputs() -> None:
                   "\\kappa=\\frac{\\varepsilon_c}{4}", "X=\\kappa^{1/5}x",
                   "S=\\kappa^{2/5}d", "X^3+6SX", "720", "6/7",
                   "T\\asymp |kA|^{-2/5}\\nu^{-3/5}", "V(S,X)=aSX+bX^3",
-                  "L^2_SH^{-1}_X", "not the missing observability",
+                  "L^2_SH^{-1}_X", "missing observability",
                   "blockContraction=OPEN", "periodicTransfer=OPEN", "Clay=OPEN"):
         if token not in report:
             raise RuntimeError(f"R0.72T report missing stable token: {token}")
@@ -278,6 +278,13 @@ def build_note() -> None:
 def build_recap() -> None:
     html = (PUBLIC / "recap-r0-61-r0-72s.html").read_text(encoding="utf-8")
     html = required(html, "/i18n-en.js?v=1.32", "/i18n-en.js?v=1.33", "T recap i18n")
+    html = required(
+        html,
+        "      .print-page-break{display:block;break-before:page;page-break-before:always;height:1px}",
+        "      .node-ref{break-inside:avoid;page-break-inside:avoid}\n"
+        "      .print-page-break{display:block;break-before:page;page-break-before:always;height:1px}",
+        "T recap print-safe node rows",
+    )
     for label, pattern, value in (
         ("description", r'<meta name="description" content=".*?">', '<meta name="description" content="R0.60 之后的研究回顾：完整覆盖 R0.61 到 R0.72T 的 110 个节点；最新一节固定 A2 spacetime normal form 与方法边界。">'),
         ("og title", r'<meta property="og:title" content=".*?">', '<meta property="og:title" content="R0.61–R0.72T｜R0.60 之后的研究回顾">'),
@@ -291,6 +298,8 @@ def build_recap() -> None:
     </div></header>'''
     html = section(html, r'    <header class="hero">.*?</header>', hero, "T recap hero")
     html = required(html, "02 · 109 节完整索引", "02 · 110 节完整索引", "T recap toc")
+    html = required(html, "01 · 二十八个研究阶段", "01 · 二十九个研究阶段", "T recap phase toc")
+    html = required(html, "R0.60 之后的路线分成二十八个阶段", "R0.60 之后的路线分成二十九个阶段", "T recap phase heading")
     result = r'''        <section id="result"><div class="section-no">00 / 回顾范围</div><h2>版本数、封存数和数学结论分开报告</h2>
           <div class="metrics"><div class="metric"><strong>110</strong><span>R0.61–R0.72T 研究节点</span></div><div class="metric"><strong>72</strong><span>R0.70A–R0.72T 已公开版本</span></div><div class="metric"><strong>48</strong><span>当前 formal-figure 合同下完整封存</span></div><div class="metric"><strong>24</strong><span>旧版附图档案待回补</span></div></div>
           <p>R0.00–R0.60 的内容保留在上一份阶段回顾中。后面的 110 个节点沿一般三维临界控制缺口推进；R0.70A–R0.72T 的 72 个版本已经公开，其中 48 个满足当前 formal-figure 完整封存合同。公开和封存不表示 Clay 问题已经解决。</p>

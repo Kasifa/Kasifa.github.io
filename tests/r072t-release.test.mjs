@@ -167,7 +167,7 @@ test("R0.72T public prose preserves the exact negative boundary and individual v
   assert.match(note, /derivative-versus-primitive/);
   assert.match(note, /CDZE/);
   assert.match(note, /Poincaré gap/);
-  assert.match(note, /compact \\(H\^1\\to L\^2\\)/);
+  assert.ok(note.includes("compact \\(H^1\\to L^2\\)"));
   assert.match(note, /step five/);
   assert.match(pages[3], /id="r072t-boundary"/);
   assert.match(pages[3], /开放接口 · R0\.72U/);

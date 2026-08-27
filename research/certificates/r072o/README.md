@@ -59,16 +59,15 @@ The exact commands are archived in `command.txt`. Build `SHA256SUMS` only
 after every other formal artifact is final. The hash ledger is sorted by
 file name, hashes exact bytes, and deliberately excludes itself.
 
-## Lineage placeholders
+## Frozen lineage
 
-- Source commit: `SOURCE_COMMIT_PLACEHOLDER`
-- Certificate commit: `CERTIFICATE_COMMIT_PLACEHOLDER`
+- Source commit: `8fc31ff1a15e9754d1e02977707b50464c391778`
+- Certificate commit: `af02960b39e05a921f1981468a6e0a04cb3247d2`
 
-At formal freeze, replace both placeholders with full 40-hex commit ids and
-rebuild `SHA256SUMS`. The source id must equal the `gitCommit` recorded by
-both audit routes. The certificate id is the immutable commit that first
-archives all dual-route payloads. A final lineage commit may update these
-two lines without trying to make a commit recursively encode its own id.
+The source id equals the `gitCommit` recorded by both audit routes. The
+certificate id is the immutable commit that first archived all dual-route
+payloads. This final lineage update deliberately does not try to make a
+commit recursively encode its own id.
 
 ## Claim boundary
 

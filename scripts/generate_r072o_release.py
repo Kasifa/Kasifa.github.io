@@ -233,6 +233,7 @@ HOME_RECAP = r'''          <div class="task-one" id="post-r060-recap" style="mar
             <p class="eyebrow">累计回顾 R0.61–R0.72O · 2026-08-27</p>
             <h3>R0.60 recap 之后的累计回顾收录 105 个节点；全站现有 165 篇公开研究笔记</h3>
             <p>累计回顾保持二十八个问题阶段，并给出 R0.61–R0.72O 的完整逐节点索引。R0.72O 把一载波 true cubic 严格回填物理账本，将 strong window 推进到 \(\varepsilon\lesssim R^{4/3}L_{R,\varepsilon}^2\)；多载波只在带统一常数的 full-superposition ED 假设下得到条件窗口。</p>
+            <p>R0.70A–R0.72O 共 67 个版本已公开；43 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单。</p>
             <p><strong>阶段判断：</strong>&nbsp;一载波 growing-geometry payment 已闭合；fixed geometry 与 multi-carrier propagation 仍开放。</p>
             <p><a href="/recap-r0-61-r0-72o.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-72o.pdf">下载同步 PDF</a></p>
           </div>'''

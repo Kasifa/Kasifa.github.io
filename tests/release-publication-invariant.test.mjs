@@ -1,10 +1,15 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { access, readdir, readFile } from "node:fs/promises";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("../public/", import.meta.url);
 const notesRoot = new URL("notes/", publicRoot);
+const execFileAsync = promisify(execFile);
 
 function releaseToSlug(release) {
   const match = release.match(/^r0(\d{2})([a-z])$/);
@@ -92,6 +97,70 @@ async function archivedFigureManifests(directory = new URL("figures/", root)) {
     }
   }
   return manifests;
+}
+
+async function verifyFlatHashLedger(directory) {
+  const ledger = (await readFile(new URL("SHA256SUMS", directory), "utf8"))
+    .trimEnd()
+    .split("\n");
+  const names = [];
+  for (const row of ledger) {
+    const match = row.match(/^([0-9a-f]{64})  ([^/\\\r\n]+)$/);
+    assert.ok(match, `malformed formal-figure SHA256SUMS row: ${row}`);
+    const [, expected, name] = match;
+    const payload = await readFile(new URL(name, directory));
+    assert.equal(createHash("sha256").update(payload).digest("hex"), expected, name);
+    names.push(name);
+  }
+  assert.deepEqual(names, [...new Set(names)].sort(), "formal-figure hash rows");
+  const entries = await readdir(directory, { withFileTypes: true });
+  assert.ok(entries.every((entry) => !entry.isSymbolicLink()), "formal-figure symlink");
+  const expectedNames = entries
+    .filter(
+      (entry) =>
+        entry.isFile() && !["SHA256SUMS", ".DS_Store"].includes(entry.name),
+    )
+    .map((entry) => entry.name)
+    .sort();
+  assert.deepEqual(names, expectedNames, "formal-figure hash coverage");
+}
+
+async function verifyLatestFormalFigure(record, latestCode) {
+  assert.ok(record, `${latestCode}: formal figure manifest is missing`);
+  const manifest = record.value;
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.release, latestCode);
+  const manifestUrl = new URL(record.path, root);
+  const packageUrl = new URL("./", manifestUrl);
+  const validator = new URL("research/validate_figure_package.py", root);
+  const { stdout } = await execFileAsync(
+    process.env.CODEX_PYTHON || "python3",
+    [fileURLToPath(validator), fileURLToPath(packageUrl)],
+    { cwd: fileURLToPath(root) },
+  );
+  assert.deepEqual(JSON.parse(stdout).errors, [], `${latestCode}: strict figure validator`);
+  await verifyFlatHashLedger(packageUrl);
+
+  assert.equal(manifest.publication?.publicCopiesComplete, true);
+  const publicAssets = manifest.publication?.assets ?? [];
+  assert.equal(publicAssets.length, 3, `${latestCode}: PDF/SVG/PNG public masters`);
+  const archivalOutputs = new Map(
+    (manifest.figure?.outputs ?? []).map((row) => [row.path.split(".").at(-1), row]),
+  );
+  for (const row of publicAssets) {
+    assert.match(row.path, /^public\/assets\//, `${latestCode}: public asset path`);
+    const suffix = row.path.split(".").at(-1);
+    const archival = archivalOutputs.get(suffix);
+    assert.ok(archival, `${latestCode}: missing archival ${suffix}`);
+    const [master, published] = await Promise.all([
+      readFile(new URL(archival.path, packageUrl)),
+      readFile(new URL(row.path, root)),
+    ]);
+    const hash = createHash("sha256").update(master).digest("hex");
+    assert.equal(hash, archival.sha256, `${latestCode}: archival ${suffix} hash`);
+    assert.equal(hash, row.sha256, `${latestCode}: public ${suffix} hash`);
+    assert.equal(Buffer.compare(master, published), 0, `${latestCode}: ${suffix} byte identity`);
+  }
 }
 
 function publicReleaseId(file) {
@@ -407,14 +476,14 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(archive.contractStart, "r070a");
   assert.equal(archive.latestPublishedRelease, releases.at(-1));
   assert.deepEqual(archive.publishedReleases, releases);
-  assert.equal(archive.latestPublishedRelease, "r072n");
+  assert.equal(archive.latestPublishedRelease, "r072o");
   assert.equal(archive.publishedReleaseCount, releases.length);
-  assert.equal(archive.publishedReleaseCount, 66);
+  assert.equal(archive.publishedReleaseCount, 67);
   assert.equal(
     archive.formalSealedReleaseCount,
     archive.formalSealedReleases.length,
   );
-  assert.equal(archive.formalSealedReleaseCount, 42);
+  assert.equal(archive.formalSealedReleaseCount, 43);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
 
   const formal = archive.formalSealedReleases;
@@ -458,6 +527,13 @@ test("separates the published inventory from the formal-sealed archive", async (
     formal,
     "formal-sealed releases must be backed by formal figure manifests",
   );
+  const latestCode = releaseToPublicCode(releases.at(-1));
+  await verifyLatestFormalFigure(
+    figureManifests.find(
+      ({ value }) => value.status === "formal" && value.release === latestCode,
+    ),
+    latestCode,
+  );
   assert.ok(formal.includes("r072f"), "R0.72F must remain formal-sealed");
   assert.ok(formal.includes("r072g"), "R0.72G must be formal-sealed");
   assert.ok(formal.includes("r072h"), "R0.72H must be formal-sealed");
@@ -467,6 +543,7 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.ok(formal.includes("r072l"), "R0.72L must be formal-sealed");
   assert.ok(formal.includes("r072m"), "R0.72M must be formal-sealed");
   assert.ok(formal.includes("r072n"), "R0.72N must be formal-sealed");
+  assert.ok(formal.includes("r072o"), "R0.72O must be formal-sealed");
 
   const explanatory = archive.legacyFormalFigureBacklog.filter(
     (row) => row.archiveState === "explanatory-package",

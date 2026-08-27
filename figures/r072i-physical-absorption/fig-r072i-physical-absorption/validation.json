@@ -1,0 +1,334 @@
+{
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "producer_passed",
+      "passed": true,
+      "requirement": "producer status is passed",
+      "value": "passed"
+    },
+    {
+      "name": "producer_checks",
+      "passed": true,
+      "requirement": "every producer check passes",
+      "value": {
+        "allOddCarriers": true,
+        "deltaEqualsM": true,
+        "evenParityScaleFinite": true,
+        "exactInteriorRoot": true,
+        "exactRootScalingConsistent": true,
+        "genericBRatioGrows": true,
+        "genericBStrictlyCoarserThanMeasuredHB": true,
+        "noncollapsedRootSlopeAtLargestM": true,
+        "oddEnergyScaleFinite": true,
+        "realCorrection": true
+      }
+    },
+    {
+      "name": "m_grid",
+      "passed": true,
+      "requirement": "producer M grid matches the contract",
+      "value": [
+        4,
+        8,
+        16,
+        32,
+        64,
+        128
+      ]
+    },
+    {
+      "name": "root_residual",
+      "passed": true,
+      "requirement": "all exact-root residuals satisfy the contract",
+      "value": 4.568556904310794e-16
+    },
+    {
+      "name": "root_rescaled_spread",
+      "passed": true,
+      "requirement": "rescaled exact-root ratio is stable",
+      "value": [
+        0.021669697410318305,
+        0.021832036646108464,
+        0.022021565803951194,
+        0.022225387779275792,
+        0.022429087526011277,
+        0.022624604433503413
+      ]
+    },
+    {
+      "name": "source_lineage",
+      "passed": true,
+      "requirement": "source hashes match",
+      "value": {
+        "current": {
+          "figures/r072i-physical-absorption/fig-r072i-physical-absorption/config.json": "4a6c2a92b9d3dc8b226c3441274a8fe55f59226f1bb47321fce23d9f1ddaeb46",
+          "figures/r072i-physical-absorption/fig-r072i-physical-absorption/contract.json": "195619083fe475dd54700e90353269f258e13b77ac78520a2fe5ff74c84107d2",
+          "research/certificates/r072i/independent-data.csv": "1971f4fbf1bdd0a844c14a0d8011cbac212c9e23d9b4c165324a90b1e9ce9b77",
+          "research/certificates/r072i/independent-result.json": "9bbf7ee10349f8c9ecc49a0fdbc9add272cf70108e833b8352428355f484c8fa",
+          "research/certificates/r072i/producer-data.csv": "74edffca0a7ad242f4ee9c23e485b350d2904b72c7a508b1ea633bacf4a3858a",
+          "research/certificates/r072i/result.json": "5556750f087903d4dbf80a2b99812747ff0b93f8b76cf12285bb1f8ca5e755bd"
+        },
+        "recorded": {
+          "figures/r072i-physical-absorption/fig-r072i-physical-absorption/config.json": "4a6c2a92b9d3dc8b226c3441274a8fe55f59226f1bb47321fce23d9f1ddaeb46",
+          "figures/r072i-physical-absorption/fig-r072i-physical-absorption/contract.json": "195619083fe475dd54700e90353269f258e13b77ac78520a2fe5ff74c84107d2",
+          "research/certificates/r072i/independent-data.csv": "1971f4fbf1bdd0a844c14a0d8011cbac212c9e23d9b4c165324a90b1e9ce9b77",
+          "research/certificates/r072i/independent-result.json": "9bbf7ee10349f8c9ecc49a0fdbc9add272cf70108e833b8352428355f484c8fa",
+          "research/certificates/r072i/producer-data.csv": "74edffca0a7ad242f4ee9c23e485b350d2904b72c7a508b1ea633bacf4a3858a",
+          "research/certificates/r072i/result.json": "5556750f087903d4dbf80a2b99812747ff0b93f8b76cf12285bb1f8ca5e755bd"
+        }
+      }
+    },
+    {
+      "name": "data_rows",
+      "passed": true,
+      "requirement": "data row counts agree",
+      "value": {
+        "metadata": 456,
+        "rows": 456,
+        "summary": 456
+      }
+    },
+    {
+      "name": "panel_coverage",
+      "passed": true,
+      "requirement": "all four panels have data",
+      "value": {
+        "A": 44,
+        "B": 11,
+        "C": 17,
+        "D": 384
+      }
+    },
+    {
+      "name": "independent_overlay_contract",
+      "passed": true,
+      "requirement": "independent data are overlaid exactly when present",
+      "value": {
+        "csvExists": true,
+        "plottedRows": 30
+      }
+    },
+    {
+      "name": "generic_B_growth",
+      "passed": true,
+      "requirement": "generic B ratio grows across M",
+      "value": [
+        0.8478804798937151,
+        1.3647115440598672,
+        2.20025483435856,
+        3.514264830938963,
+        5.55561390485862,
+        8.69825769204549
+      ]
+    },
+    {
+      "name": "generic_B_crosses_payment",
+      "passed": true,
+      "requirement": "generic B term crosses the unit payment",
+      "value": [
+        0.8478804798937151,
+        1.3647115440598672,
+        2.20025483435856,
+        3.514264830938963,
+        5.55561390485862,
+        8.69825769204549
+      ]
+    },
+    {
+      "name": "other_terms_decay",
+      "passed": true,
+      "requirement": "initial and mixed terms decrease",
+      "value": {
+        "first": [
+          0.01719925023248593,
+          0.010916018323054234,
+          0.006936358577010808,
+          0.004410075492652945,
+          0.0028036359407514083,
+          0.001781575960707235
+        ],
+        "mixed": [
+          0.07365834230306835,
+          0.04567484844019266,
+          0.028708183217187884,
+          0.018130732894584584,
+          0.011472898512982726,
+          0.007264437582425442
+        ]
+      }
+    },
+    {
+      "name": "parity_gap_growth",
+      "passed": true,
+      "requirement": "generic-to-measured cubic gap grows",
+      "value": [
+        57589.87312025378,
+        378323.0489687038,
+        2380389.119978405,
+        12354307.443774866,
+        49304081.54393038,
+        206158376.83253548
+      ]
+    },
+    {
+      "name": "measured_BV_decay",
+      "passed": true,
+      "requirement": "measured BV ledger decreases",
+      "value": [
+        0.034395824050674345,
+        0.021831646327932996,
+        0.01387266593820963,
+        0.008820146222392158,
+        0.005607271685007853,
+        0.003563151907706173
+      ]
+    },
+    {
+      "name": "exact_root_finite",
+      "passed": true,
+      "requirement": "exact-root atoms remain finite and small",
+      "value": [
+        1.217097769492059e-05,
+        0.00019759820473808543,
+        0.0008041850624118752,
+        0.0014381596495612087,
+        0.0015829140064399102,
+        0.0013347829471527278
+      ]
+    },
+    {
+      "name": "coupling_envelope_match",
+      "passed": true,
+      "requirement": "numeric coupling maximization matches the analytic envelope",
+      "value": 4.097485546178737e-16
+    },
+    {
+      "name": "coupling_envelope_decay",
+      "passed": true,
+      "requirement": "optimized coupling envelope decreases",
+      "value": [
+        0.22983326476000077,
+        0.0031969385909695336
+      ]
+    },
+    {
+      "name": "result_summary",
+      "passed": true,
+      "requirement": "result summary records passing sources",
+      "value": {
+        "independentMValues": [
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "independentOverlay": true,
+        "largestM": 128,
+        "largestMExactRootRatio": 0.0013347829471527278,
+        "largestMGenericBRatio": 8.69825769204549,
+        "largestMGenericToMeasured": 206158376.83253548,
+        "largestMMeasuredBvRatio": 0.003563151907706173,
+        "largestMRootResidual": 6.765421556309548e-17,
+        "mValues": [
+          4,
+          8,
+          16,
+          32,
+          64,
+          128
+        ],
+        "producerStatus": "passed",
+        "rowCount": 456
+      }
+    },
+    {
+      "name": "pdf_geometry",
+      "passed": true,
+      "requirement": "one-page PDF has contracted geometry",
+      "value": {
+        "heightMm": 130.0000222222222,
+        "pages": 1,
+        "widthMm": 177.79999999999998
+      }
+    },
+    {
+      "name": "png_geometry",
+      "passed": true,
+      "requirement": "PNG is 600 dpi at contracted size",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expected": [
+          4200,
+          3071
+        ],
+        "pixels": [
+          4200,
+          3070
+        ]
+      }
+    },
+    {
+      "name": "svg_vector",
+      "passed": true,
+      "requirement": "SVG is vector without embedded PNG",
+      "value": {
+        "bytes": 186136
+      }
+    },
+    {
+      "name": "qa_surfaces",
+      "passed": true,
+      "requirement": "QA surfaces share final aspect ratio",
+      "value": {
+        "final": [
+          1260,
+          921
+        ],
+        "gray": [
+          1260,
+          921
+        ],
+        "pdf": [
+          1260,
+          921
+        ]
+      }
+    },
+    {
+      "name": "grayscale_contrast",
+      "passed": true,
+      "requirement": "grayscale QA retains contrast",
+      "value": 39.24620519316074
+    },
+    {
+      "name": "caption_boundary",
+      "passed": true,
+      "requirement": "caption separates upper bounds, measured ledgers, and general claims",
+      "value": "r the coupling (g=|\\delta|a) agrees with the analytic envelope (m^{-4/9}(\\log m)^{-2/3}) for (q=x=1); the displayed (g=m) and (g=m^{3/2}) sections also decay. producer points are filled circles; an independent route, when present, is shown by open squares. the binary64 calculations corroborate the finite scaling audit. they do not prove a general physical trace theorem or three-dimensional navier--stokes regularity.\n"
+    },
+    {
+      "name": "claim_boundary",
+      "passed": true,
+      "requirement": "contract states the mathematical boundary",
+      "value": "The parity conclusion and scaling audit are confined to the all-odd compatible-real finite-carrier triangular 2.5D family. The growing generic B_A bound diagnoses a lossy factorization, not a growing physical Navier-Stokes root ledger. This figure does not prove a continuation criterion, blow-up, or general three-dimensional Navier-Stokes regularity."
+    },
+    {
+      "name": "local_only_publication",
+      "passed": true,
+      "requirement": "package build requires no writes outside its directory",
+      "value": {
+        "directory": "public/figures",
+        "requirePublicCopiesDuringPackageBuild": false,
+        "stem": "r0-72i-physical-absorption"
+      }
+    }
+  ],
+  "passedCount": 26,
+  "requiredCount": 26,
+  "schemaVersion": "r072i-figure-validation-v1"
+}

@@ -412,7 +412,7 @@ test("archives, validates, and mirrors the formal R0.72C figure", async () => {
   near(pngMetadata.dpiY, 600, 0.01, "PNG vertical dpi");
 });
 
-test("retains the R0.72C note and recap after the homepage advances to R0.72H", async () => {
+test("retains the R0.72C note and recap after the homepage advances to R0.72I", async () => {
   const [home, note, recap, literature, notePdf, recapPdf] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "notes/r0-72c.html"), "utf8"),
@@ -423,10 +423,10 @@ test("retains the R0.72C note and recap after the homepage advances to R0.72H", 
   ]);
 
   for (const [label, html, i18nVersion] of [
-    ["homepage", home, "1.21"],
+    ["homepage", home, "1.22"],
     ["note", note, "1.16"],
     ["recap", recap, "1.16"],
-    ["literature", literature, "1.21"],
+    ["literature", literature, "1.22"],
   ]) {
     assert.ok(
       html.includes(`src="/i18n-en.js?v=${i18nVersion}"`),
@@ -451,24 +451,24 @@ test("retains the R0.72C note and recap after the homepage advances to R0.72H", 
     );
   }
 
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.21">/);
-  assert.match(home, /src="\/site-refresh\.js\?v=1\.21"/);
-  assert.match(home, /<strong>v1\.21<\/strong>网页版本/);
-  assert.match(home, /<strong>158<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72H<\/strong>最新研究节点/);
-  assert.match(home, /展开 68 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72I/);
-  assert.match(home, /R0\.70A–R0\.72H 共 60 个版本已公开；36 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /二十四个(?:问题)?阶段/);
-  assert.match(home, /累计回顾收录 98 个节点/);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.22">/);
+  assert.match(home, /src="\/site-refresh\.js\?v=1\.22"/);
+  assert.match(home, /<strong>v1\.22<\/strong>网页版本/);
+  assert.match(home, /<strong>159<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72I<\/strong>最新研究节点/);
+  assert.match(home, /展开 69 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72J/);
+  assert.match(home, /R0\.70A–R0\.72I 共 61 个版本已公开；37 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /二十五个(?:问题)?阶段/);
+  assert.match(home, /累计回顾收录 99 个节点/);
   assert.equal((home.match(/href="\/notes\/r0-72c\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072c"/g) ?? []).length, 1);
   assert.match(
     home,
     /<div class="task-one" id="r072c" data-release="r072c"/,
   );
-  assert.match(home, /recap-r0-61-r0-72h\.html/);
-  assert.match(home, /recap-r0-61-r0-72h\.pdf/);
+  assert.match(home, /recap-r0-61-r0-72i\.html/);
+  assert.match(home, /recap-r0-61-r0-72i\.pdf/);
 
   assert.match(note, /producer certificate: 12\/12 PASS/);
   assert.match(note, /independent certificate: 11\/11 PASS/);
@@ -495,8 +495,8 @@ test("retains the R0.72C note and recap after the homepage advances to R0.72H", 
 
   assert.match(literature, /id="r072c-boundary"/);
   assert.match(literature, /href="\/notes\/r0-72c\.html"/);
-  assert.match(literature, /R0\.69P–R0\.72H/);
-  assert.match(literature, /开放接口 · R0\.72I/);
+  assert.match(literature, /R0\.69P–R0\.72I/);
+  assert.match(literature, /开放接口 · R0\.72J/);
   for (const arxiv of [
     "2309.15738",
     "2410.05657",
@@ -515,7 +515,7 @@ test("retains the R0.72C note and recap after the homepage advances to R0.72H", 
   }
 });
 
-test("keeps the current manifest and refresh contract synchronized after R0.72H", async () => {
+test("keeps the current manifest and refresh contract synchronized after R0.72I", async () => {
   const [manifest, siteVersion, siteRefresh, home, noteFiles] =
     await Promise.all([
       readJson(resolve(root, "research/release-manifest.json")),
@@ -527,17 +527,17 @@ test("keeps the current manifest and refresh contract synchronized after R0.72H"
 
   assert.equal(manifest.schemaVersion, "research-release-manifest-v1");
   assert.equal(manifest.firstPdfRequiredRelease, "r070a");
-  assert.equal(manifest.latestCompletedRelease, "r072h");
-  assert.equal(manifest.siteVersion, "1.21");
-  assert.equal(manifest.publicHtmlNoteCount, 158);
-  assert.equal(manifest.postR060RecapNodeCount, 98);
-  assert.equal(manifest.postR070APublishedReleaseCount, 60);
-  assert.equal(manifest.postR070AFormalSealedReleaseCount, 36);
+  assert.equal(manifest.latestCompletedRelease, "r072i");
+  assert.equal(manifest.siteVersion, "1.22");
+  assert.equal(manifest.publicHtmlNoteCount, 159);
+  assert.equal(manifest.postR060RecapNodeCount, 99);
+  assert.equal(manifest.postR070APublishedReleaseCount, 61);
+  assert.equal(manifest.postR070AFormalSealedReleaseCount, 37);
   assert.equal(manifest.legacyFormalFigureBacklogCount, 24);
-  assert.equal(manifest.nextRelease, "r072i");
+  assert.equal(manifest.nextRelease, "r072j");
   assert.equal(
     manifest.latestReleaseGate,
-    "tests/r072h-mixed-row-payment-gate.test.mjs",
+    "tests/r072i-physical-absorption-gate.test.mjs",
   );
   assert.match(manifest.completionRule, /certificates/);
   assert.match(manifest.completionRule, /independent audit/);
@@ -546,16 +546,16 @@ test("keeps the current manifest and refresh contract synchronized after R0.72H"
 
   assert.equal(siteVersion.schemaVersion, "research-site-version-v1");
   assert.equal(siteVersion.version, manifest.siteVersion);
-  assert.equal(siteVersion.latestRelease, "R0.72H");
+  assert.equal(siteVersion.latestRelease, "R0.72I");
   assert.equal(siteVersion.publicHtmlNoteCount, manifest.publicHtmlNoteCount);
   assert.equal(siteVersion.publishedDate, "2026-08-27");
   assert.equal(
     noteFiles.filter((file) => file.endsWith(".html")).length,
-    158,
+    159,
   );
   assert.equal(
     (home.match(/data-release="r0\d{2}[a-z]"/g) ?? []).length,
-    60,
+    61,
   );
 
   assert.match(siteRefresh, /document\.documentElement\.dataset\.siteVersion/);

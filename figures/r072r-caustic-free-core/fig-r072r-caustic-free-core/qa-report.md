@@ -17,7 +17,7 @@ Automatic-only run: `False`
 - [x] `data_schema_and_size` — data table has the exact schema, minimum size, and three panels
 - [x] `panel_a_exact_real_slice` — endpoint walls, internal arc, cone diamond, and K trace match exact formulas
 - [x] `panel_b_exact_heat_paths` — heat paths match the three exact envelopes and old boundary
-- [x] `panel_c_exact_shape_envelopes` — normalized and physical two-regime envelopes match the declared contract
+- [x] `panel_c_exact_shape_envelopes` — normalized all-y and physical 0<=y<=1 envelopes match their declared contracts
 - [x] `public_assets_byte_identical` — public PDF, SVG, and PNG are byte-identical to masters
 - [x] `claim_boundary_text` — figure text preserves proof, literature, and scope boundaries
 - [x] `results_contract` — results record no PDE, no fit, and exact data count

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72M：求出 scalar cubic 的精确 action danger window，并在完整一载波格点上证明 Bessel action 与 logarithmic true-cubic benchmark。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72M｜精确 action danger window">
+  <meta property="og:description" content="完整 Fourier 格点的 Bessel benchmark、action-poor placement 与耗散链开放边界。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072m/fig-r072m-danger-window.png">
+  <title>R0.72M｜精确 action danger window</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.26"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#window">危险窗</a><a href="#bessel">完整格点</a><a href="#action">作用量</a><a href="#cubic">cubic</a><a href="#placement">分支定位</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#literature">文献边界</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72M · EXACT DANGER WINDOW · FULL-LATTICE PHASE MIXING</div>
+        <h1>危险项只在中间 action 窗口出现；<br>完整一载波参考链落在窗口下方</h1>
+        <p class="lead">我先把 R0.72L 的 scalar cubic remainder 写成精确超水平区间，再在完整无限 Fourier 格点上求解一载波零扩散参考链。Bessel 解给出 \(\sigma^2\) 涡量尺度、\(\sigma^{4/3}\log\sigma\) lifted action 和 \((16/\pi^2)a^2\log\sigma\) 的 true-cubic 主项。这个参考链属于 action-poor 分支；耗散链的同类统一估计仍未证明。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72M 定理完成</span><strong>exact scalar window and frozen full-lattice screen</strong><p>版本 v0.72M · 2026-08-27</p><p>exact scalar superlevel theorem: CLOSED</p><p>full-lattice Bessel benchmark: CLOSED</p><p>frozen cubic coefficient: CLOSED</p><p>dissipative uniform theorem: OPEN</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#window">01 · 精确危险窗</a></li><li><a href="#bessel">02 · 完整格点</a></li><li><a href="#action">03 · 完整作用量</a></li><li><a href="#cubic">04 · true cubic</a></li><li><a href="#placement">05 · 分支定位</a></li><li><a href="#audit">06 · 双路审计</a></li><li><a href="#figure">07 · 正式附图</a></li><li><a href="#literature">08 · 文献边界</a></li><li><a href="#value">09 · 研究价值</a></li><li><a href="#next">10 · R0.72N</a></li><li><a href="#claims">11 · 主张边界</a></li><li><a href="#reproduce">12 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>R0.72L 的坏项不是随 action 单调变坏</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · EXACT WINDOW</strong><p>令 \(T(x)=\min\{U,Vx\}/(K+x)\)、\(H=U/V\)。当 \(A&lt;U/(K+H)\) 时，\(T(x)&gt;A\) 恰好等价于 \(\frac{AK}{V-A}&lt;x&lt;\frac UA-K\)；否则超水平集为空。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · FULL LATTICE</strong><p>零扩散参考链保留完整无限格点和 \(e^{-y}\) coupling envelope。对声明的反对称 launch，精确解为 \(f_n(s)=\sqrt2J_n'(2s)\)。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · ACTION-POOR PLACEMENT</strong><p>固定一载波几何下，\(x/H\asymp\sigma^{-2/3}\log\sigma\) 且 \(Vx/K\asymp\sigma^{-1/3}\log\sigma\)，所以该参考链位于危险窗口下方。</p></div>
+            <div class="verdict-card false"><strong>OPEN · DISSIPATIVE CHAIN</strong><p>删除 \(-n^2f_n\) 是基准操作，不是耗散方程的精确约化。有限数值曲线不替代统一解析估计。</p></div>
+          </div>
+        </section>
+
+        <section id="window"><div class="section-no">01 / Scalar theorem</div><h2>完整超水平集可以逐端点写出</h2>
+          <div class="equation result">\[
+            T(x)=\frac{\min\{U,Vx\}}{K+x},\qquad H=\frac UV,
+          \]</div>
+          <div class="equation result">\[
+            \boxed{\{x\ge0:T(x)>A\}=
+            \left(\frac{AK}{V-A},\,\frac UA-K\right)}
+          \]</div>
+          <p>上式要求 \(0&lt;A&lt;U/(K+H)\)。有 inherited floor \(x\ge Z\) 时，只需与 \([Z,\infty)\) 相交。\(T\) 在 \(H\) 左侧上升、右侧下降。因此 action 太少和 denominator 足够大都是安全分支，只有中间区间可能使这个 scalar term 变大。</p>
+        </section>
+
+        <section id="bessel"><div class="section-no">02 / Complete lattice</div><h2>参考模型使用完整无限格点，不使用三模闭包</h2>
+          <p>取与目标频率正交的一载波，写 \(\mu=q_*^2/R^2&gt;0\)。删去 relative diagonal heat 后，保留完整 coupling chain</p>
+          <div class="equation result">\[
+            \partial_yf_n=\sigma e^{-y}(f_{n-1}-f_{n+1}),\qquad
+            s=\sigma(1-e^{-y}).
+          \]</div>
+          <p>对 \(f_1(0)=2^{-1/2}\)、\(f_{-1}(0)=-2^{-1/2}\)，生成函数或 Bessel 传播子给出</p>
+          <div class="equation result">\[
+            \boxed{f_n(s)=\sqrt2J_n'(2s)},\qquad
+            \boxed{\sum_n n^2|f_n(s)|^2=1+s^2}.
+          \]</div>
+          <p>第二个恒等式把固定几何下的参考 enstrophy contrast 定位为 \(K_{\rm fr}\asymp\sigma^2\)。</p>
+        </section>
+
+        <section id="action"><div class="section-no">03 / Complete action</div><h2>negative-norm action 必须包含全格点，不等于一个目标行</h2>
+          <p>令 \(Bf=(f_{n-1}-f_{n+1})_n\)，并定义</p>
+          <div class="equation result">\[
+            q(s)=\sum_{n\in\mathbb Z}\frac{|(Bf(s))_n|^2}{\mu+n^2}.
+          \]</div>
+          <p>驻相、Airy 转折区和尾部估计给 \(q(s)\lesssim(1+s)^{-1}\)。因此</p>
+          <div class="equation result">\[
+            A_\sigma\sim A_0\sigma^{-2/3}\log\sigma,\qquad
+            A_0=\int_0^\infty s^{-1/3}q(s)\,ds\in(0,\infty).
+          \]</div>
+          <p>乘回 inherited \(\Theta\asymp\sigma^2\) 后，\(x_{\rm fr}\asymp\sigma^{4/3}\log\sigma\)。单独的 target row 只给同指数的正信号，不能替代 \(q(s)\) 或它的常数。</p>
+        </section>
+
+        <section id="cubic"><div class="section-no">04 / True cubic</div><h2>绝对 cubic variation 只有对数增长</h2>
+          <p>写 \(u(s)=f_1(s)=\sqrt2J_1'(2s)\)。恢复 carrier envelope 和 target heat 后，reference true-cubic mass 恰为</p>
+          <div class="equation result">\[
+            \mathcal C_{\rm fr}(\sigma)=4a^2
+            \int_0^{\sigma(1-e^{-1})}
+            \left(1-\frac{s}{\sigma}\right)^{2+2\mu}|u(s)u'(s)|\,ds.
+          \]</div>
+          <p>Bessel 导数的大参数展开及振荡绝对值平均给出尖锐主项</p>
+          <div class="equation result">\[
+            \boxed{\mathcal C_{\rm fr}(\sigma)
+            =\frac{16}{\pi^2}a^2\log\sigma+O(a^2)},\qquad
+            \frac{\mathcal C_{\rm fr}}{\sigma a^2}\to0.
+          \]</div>
+        </section>
+
+        <section id="placement"><div class="section-no">05 / Branch placement</div><h2>这个参考族已由原始 \(Vx\) 分支支付</h2>
+          <p>在 \(p=1\)、固定 \(R=R_0\) 的账本中，\(U\asymp\sigma^{7/3}\)、\(V\asymp\sigma^{1/3}\)、\(H\asymp\sigma^2\)。于是</p>
+          <div class="equation result">\[
+            \frac{x_{\rm fr}}H\asymp\sigma^{-2/3}\log\sigma\to0,\qquad
+            \frac{Vx_{\rm fr}}{K_{\rm fr}}\asymp
+            \sigma^{-1/3}\log\sigma\to0.
+          \]</div>
+          <p>因此 R0.72L 对所有 \(x\ge Z\) 的优化在这个 family 上不尖锐。这个结论只定位一个精确参考族，不说明所有 extreme-coupling 解都 action-poor。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Independent audit</div><h2>解析式和有限诊断走两套独立数值路线</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · PASS</strong><p>producer 使用 differentiated Bessel functions、Gauss quadrature 和 Fourier phase splitting，核对 exact window、Bessel moment、action scaling、frozen cubic 以及 dissipative finite diagnostic。</p><p class="mini-kpi">deterministic · binary64 · finite corroboration</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · PASS</strong><p>independent route 改用 Bessel recurrence、angular FFT Parseval、独立求积和 finite-chain Cayley split。crosscheck 对同名量分别设置精度门限。</p><p class="mini-kpi"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072m_independent_audit.md">独立逐式审计</a></p></div>
+          </div>
+          <p>耗散曲线只表明两种有限离散在声明网格上相互一致。它没有证明 \(\mathcal C_{\rm diss}=O(\log\sigma)\)。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>附图把解析定理、参考渐近和有限耗散诊断分开</h2>
+          <p><img src="/assets/r072m/fig-r072m-danger-window.svg" alt="R0.72M exact danger window and full-lattice phase-mixing formal figure"></p>
+          <p><a href="/assets/r072m/fig-r072m-danger-window.pdf">下载 PDF</a> · <a href="/assets/r072m/fig-r072m-danger-window.png">下载 PNG</a> · <a href="/assets/r072m/fig-r072m-danger-window.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="literature"><div class="section-no">08 / Literature boundary</div><h2>triad 几何、enhanced dissipation 和这里的 cubic action 不是同一结论</h2>
+          <p><a href="https://doi.org/10.1063/1.858309">Waleffe</a> 说明三波传递依赖几何与极化；<a href="https://doi.org/10.1017/jfm.2013.637">Moffatt</a> 说明截断 triad 与精确演化可以不同。这里的 Bessel wave 占据完整格点。</p>
+          <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a> 给出 shear enhanced-dissipation semigroup 结果，但不直接控制本节带绝对值的 project-specific cubic variation。本站结论只按当前报告与证书陈述，不据限定检索主张优先权。</p>
+        </section>
+
+        <section id="value"><div class="section-no">09 / Research value</div><h2>价值在于把“action 够不够大”改成一个可判定区间</h2>
+          <p>R0.72M 修正了上一节对 \(x\) 全区间优化造成的损失，并给出一个完整无限格点上的尖锐基准。它说明至少有一种真实 phase-mixing geometry 不会触发 scalar danger window，且 raw \(O(\sigma)\) cubic bound 在该参考模型上损失很大。</p>
+          <p>这仍没有建立一般 dissipative theorem，也没有导出 \(L_t^\infty L_x^3\) 或其他一般三维 continuation criterion。它对 Clay 问题的价值目前是筛选机制和缩小下一证明目标，而不是解决原问题。</p>
+        </section>
+
+        <section id="next"><div class="section-no">10 / Next gate</div><h2>R0.72N：回到带 \(-n^2f_n\) 的耗散链</h2>
+          <p>下一节并行检查两个可证目标：直接证明 \(\mathcal C_{\rm diss}(\sigma)\lesssim a^2[1+\log(1+\sigma)]\)，或证明 \(\sigma^{1/3}x_{\rm diss}=o(K_{\rm diss})\)。前者绕开 scalar window，后者把 action 放在窗口下方。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">11 / Claim boundary</div><h2>一般 Navier–Stokes 问题仍然开放</h2>
+          <p>本节没有把零扩散参考链当成耗散 PDE，没有从有限诊断外推连续统渐近，也没有完成任意强耦合、多载波、多尺度物理吸收、有限时奇性或全局光滑性证明。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">12 / Reproduction</div><h2>报告、双路证书、正式附图和累计回顾</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072m_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072m_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072m_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072m_independent_audit.md">独立审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072m">双路机器证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072m-danger-window/fig-r072m-danger-window">正式附图包</a> · <a href="/notes/r0-72m.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72m.html">累计回顾</a> · <a href="/recap-r0-61-r0-72m.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72M · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

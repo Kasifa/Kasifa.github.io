@@ -91,8 +91,8 @@ hash itself.
 
 ## Lineage placeholders
 
-- Source commit: `<SOURCE_COMMIT_40_HEX>`
-- Certificate commit: `<CERTIFICATE_COMMIT_40_HEX>`
+- Source commit: `5e57e5473ef95f533bdb71e2fca47aff67d3c6d3`
+- Certificate commit: `1da2a29ff8b95ba82a09244715d706a088f80807`
 
 At the formal freeze, the source commit must be the clean commit from which
 both audit routes were run and must agree with every archived `gitCommit`

@@ -422,14 +422,14 @@ def main() -> None:
                     kind="analytic-envelope", x=distance, y=value, distance=distance,
                     source="research/r072r_report-source.md", pointer="(4.5)-(4.12)",
                     status="proved", note=note)
-    ax.text(1.03, 0.93, r"$r=\pi/48$", transform=ax.get_xaxis_transform(),
-            fontsize=5.8, color=palette["ochre"], va="top")
+    ax.text(1.06, max(local_upper) * 0.63, r"$d=r=\pi/48$",
+            fontsize=5.8, color=palette["ochre"], va="center", ha="left")
     ax.set_xlim(0.0, float(panel_c["distanceMaximum"]) / r_value)
     ax.set_ylim(0.0, max(local_upper) * 1.08)
     ax.set_xlabel(r"distance from the critical set, $d/r$", fontsize=7.0)
     ax.set_ylabel(r"certified bound for $|\partial_\phi(\cdot)|$", fontsize=7.0)
-    title(ax, "C", "Quantitative shape contract", "normalized and physical lower envelopes remain separate", palette)
-    ax.legend(loc="upper left", fontsize=5.4, frameon=False, handlelength=2.2)
+    title(ax, "C", "Quantitative shape contract", "normalized and physical lower bounds kept distinct", palette)
+    ax.legend(loc="center right", fontsize=5.4, frameon=False, handlelength=2.2)
 
     fig.text(0.055, 0.055,
              "R0.72R  |  exact-formula presentation; no PDE solve or chamber fit  |  Clay problem remains open",

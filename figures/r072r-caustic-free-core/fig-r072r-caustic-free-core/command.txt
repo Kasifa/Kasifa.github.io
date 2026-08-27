@@ -1,0 +1,31 @@
+# Source-only static checks
+python3 -c 'import ast,json,pathlib; root=pathlib.Path("figures/r072r-caustic-free-core/fig-r072r-caustic-free-core"); [ast.parse((root/name).read_text()) for name in ("certificate_ledger.py","plot.py","qa_images.py","publish_assets.py","validate.py","build_manifest.py")]; [json.loads((root/name).read_text()) for name in ("config.json","contract.json")]; print("R0.72R source scaffold parses")'
+
+# Canonical formal inputs after the certificate bundle is sealed
+export R072R_REPORT_SOURCE=/absolute/path/to/research/r072r_report-source.md
+export R072R_PRODUCER_CONFIG=/absolute/path/to/research/certificates/r072r/producer-config.json
+export R072R_PRODUCER_RESULT=/absolute/path/to/research/certificates/r072r/producer-result.json
+export R072R_INDEPENDENT_CONFIG=/absolute/path/to/research/certificates/r072r/independent-config.json
+export R072R_INDEPENDENT_RESULT=/absolute/path/to/research/certificates/r072r/independent-result.json
+export R072R_CROSSCHECK=/absolute/path/to/research/certificates/r072r/crosscheck.json
+
+export PYTHONDONTWRITEBYTECODE=1
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/plot.py \
+  --analytic-source "$R072R_REPORT_SOURCE" \
+  --producer-config "$R072R_PRODUCER_CONFIG" \
+  --producer-result "$R072R_PRODUCER_RESULT" \
+  --independent-config "$R072R_INDEPENDENT_CONFIG" \
+  --independent-result "$R072R_INDEPENDENT_RESULT" \
+  --crosscheck "$R072R_CROSSCHECK"
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/qa_images.py
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/publish_assets.py
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/validate.py --automatic-only
+
+# Inspect qa-final-size.png, qa-grayscale.png, and qa-pdf.png at original size.
+export R072R_VISUAL_QA_INSPECTED=true
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/validate.py
+
+export R072R_SOURCE_COMMIT=40-hex-source-commit
+export R072R_CERTIFICATE_COMMIT=40-hex-certificate-and-figure-source-commit
+export R072R_DIRTY_AT_CERTIFIED_RUN=false
+python3 figures/r072r-caustic-free-core/fig-r072r-caustic-free-core/build_manifest.py --status formal

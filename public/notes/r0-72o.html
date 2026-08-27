@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72O：一载波次线性 cubic 的物理回填、加倍的 strong window 与条件性的多载波接口。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72O｜物理回填与多载波传播门槛">
+  <meta property="og:description" content="物理 numerator ε^(11/6)、一载波 growing-geometry window 与 full-superposition enhanced-dissipation gate。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072o/fig-r072o-physical-reinsertion.png">
+  <title>R0.72O｜物理回填与多载波传播门槛</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.28"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#identification">识别</a><a href="#reinsertion">回填</a><a href="#ledger">账本</a><a href="#window">窗口</a><a href="#fixed">固定几何</a><a href="#superposition">叠加</a><a href="#gate">交叉项</a><a href="#literature">文献边界</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72O · PHYSICAL REINSERTION · SUPERPOSITION INTERFACE</div>
+        <h1>次线性 cubic 已回填物理账本；<br>一载波窗口加倍，多载波仍有独立门槛</h1>
+        <p class="lead">R0.72N 的一载波 enhanced-dissipation cubic 在 exact-root correction 后仍满足 \(\mathcal C_\times\lesssim a^2\varepsilon^{1/2}\)。把它严格放回 R0.72L 的物理归一化后，正确 numerator 是 \(\varepsilon^{11/6}\)，强耦合窗口推进到 \(\varepsilon\lesssim R^{4/3}L_{R,\varepsilon}^2\)。多载波公式只有在带统一常数的 full-superposition integrated enhanced dissipation 下成立；common-band support 与逐载波估计都不能替代这个假设。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72O 定理与条件接口完成</span><strong>one-carrier reinsertion closed; superposition gate open</strong><p>版本 v0.72O · 2026-08-27</p><p>one-carrier exact correction: CLOSED</p><p>physical numerator \(\varepsilon^{11/6}\): CLOSED</p><p>growing-geometry strong window: CLOSED</p><p>fixed-geometry arbitrary coupling: OPEN</p><p>multi-carrier full-superposition ED: CONDITIONAL</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#identification">01 · raw cubic 识别</a></li><li><a href="#reinsertion">02 · 物理回填</a></li><li><a href="#ledger">03 · 完整账本</a></li><li><a href="#window">04 · strong window</a></li><li><a href="#fixed">05 · fixed geometry</a></li><li><a href="#superposition">06 · full superposition</a></li><li><a href="#gate">07 · cross-term gate</a></li><li><a href="#literature">08 · 文献边界</a></li><li><a href="#figure">09 · 正式附图</a></li><li><a href="#value">10 · 研究价值</a></li><li><a href="#next">11 · R0.72P</a></li><li><a href="#claims">12 · 主张边界</a></li><li><a href="#reproduce">13 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>一载波物理回填已经闭合，多载波结论仍严格带条件</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · CORRECTED ONE-CARRIER CUBIC</strong><p>对 R0.72L–N 的 fixed-background、row-aligned、phase-aligned、exact-root-corrected 一载波族，\(\mathcal C_\times\lesssim a^2\varepsilon^{1/2}\)。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · PHYSICAL REINSERTION</strong><p>物理 lift 给 \(U_{\rm ED}^{(1)}=\varepsilon^{11/6}\)，并把 strong window 推进到 \(\sqrt\varepsilon\lesssim R^{2/3}L_{R,\varepsilon}\)。</p></div>
+            <div class="verdict-card false"><strong>CONDITIONAL · MULTI-CARRIER</strong><p>若完整叠加满足 integrated enhanced dissipation，且常数对比较的参数与几何族一致，则 \(U_{\rm ED}=\varepsilon^{11/6}p^{4/3}\)；当前 common-band 假设本身不推出该传播估计。</p></div>
+            <div class="verdict-card false"><strong>OPEN · FIXED GEOMETRY</strong><p>窗口上沿只给统一有界，little-o 子区间才衰减；固定 \(R\) 下任意强耦合仍未闭合。</p></div>
+          </div>
+        </section>
+
+        <section id="identification"><div class="section-no">01 / Exact identification</div><h2>correction 前的 antisymmetric launch 上，raw cubic 与 R0.72N 耗散量完全相同</h2>
+          <p>对 correction 前的 antisymmetric one-carrier launch，\(h=P_0V_wF\)、\(b=P_0V_w^2F\)。以 \(y=R^2x\) 重标度后，R0.72L 的完整 cubic row 精确变成</p>
+          <div class="equation result">\[
+            \mathcal C_\times=4a^2\int_0^1\varepsilon e^{-(3+2\mu)y}
+            |f_1(f_0-f_2)|\,dy=\mathcal C_{\rm diss}.
+          \]</div>
+          <p>exact-root correction 加入 \(\widetilde G=G+\zeta e_0\)。Coble–He 半群估计对任意 \(L^2\) 初值成立，固定坐标泛函有统一范数，所以 correction 不破坏</p>
+          <div class="equation result">\[
+            \boxed{\mathcal C_\times(\widetilde G)\lesssim a^2\varepsilon^{1/2}.}
+          \]</div>
+        </section>
+
+        <section id="reinsertion"><div class="section-no">02 / Physical reinsertion</div><h2>平方根 raw exponent 经过物理 lift 后变成 \(11/6\)</h2>
+          <p>一载波满足 \(g=\varepsilon R^2\)、\(\Theta\asymp g^2/(a^2R^2)\) 与 \(D^{1/3}\asymp g^{2/3}R^{2/3}\)。因此</p>
+          <div class="equation result">\[
+            \frac{\Theta(a^2\varepsilon^{1/2})}{D^{1/3}}
+            \asymp\boxed{\varepsilon^{11/6}}.
+          \]</div>
+          <p>这里不能把 raw \(\varepsilon^{1/2}\) 直接写进 normalized ledger；\(11/6\) 才是物理 numerator 的正确指数。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">03 / Corrected ledger</div><h2>新分支与原有两条 cubic 分支共同进入完整账本</h2>
+          <div class="equation result">\[
+          \frac{\mathcal J_{\rm all}}{D^{1/3}\Lambda_{1,*}}
+          \le C\!\left[
+          \frac{\varepsilon^{4/3}}{K+x}
+          +\varepsilon^{1/3}R^{-1/3}L_R^{-1/2}\frac{\sqrt x}{K+x}
+          +\frac{\min\{\varepsilon^{7/3},\varepsilon^{1/3}Rx,
+          \varepsilon^{11/6}\}}{K+x}\right].
+          \]</div>
+          <p>exact-root launch 仍给 action floor
+          \(x\ge Z\gtrsim\varepsilon^2R^{2/3}(1+\varepsilon)^{-2/3}L_{R,\varepsilon}\)。</p>
+        </section>
+
+        <section id="window"><div class="section-no">04 / Strong-coupling window</div><h2>一载波 paid window 同时加倍 \(R\) 幂和 logarithm 幂</h2>
+          <p>对 \(\varepsilon\ge1\)，完整比值满足</p>
+          <div class="equation result">\[
+          \frac{\mathcal J_{\rm all}}{D^{1/3}\Lambda_{1,*}}
+          \lesssim
+          \frac1{R^{2/3}L_{R,\varepsilon}}
+          +\frac{\varepsilon^{-1/3}}{R^{2/3}(L_RL_{R,\varepsilon})^{1/2}}
+          +\frac{\varepsilon^{1/2}}{R^{2/3}L_{R,\varepsilon}}.
+          \]</div>
+          <div class="equation result">\[
+            \boxed{\sqrt\varepsilon\lesssim R^{2/3}L_{R,\varepsilon}},
+            \qquad
+            \boxed{\varepsilon\lesssim R^{4/3}L_{R,\varepsilon}^{\,2}}.
+          \]</div>
+          <p>沿固定 polynomial coupling，\(L_{R,\varepsilon}\asymp1+\log R\)。上沿只给 \(O(1)\)；little-o 版本才使比值趋零。</p>
+        </section>
+
+        <section id="fixed"><div class="section-no">05 / Fixed-geometry boundary</div><h2>次线性 raw cubic 仍没有支付固定几何上的任意强耦合</h2>
+          <div class="equation result">\[
+            \frac{\varepsilon^{11/6}}{K+x}
+            \lesssim\frac{\varepsilon^{1/2}}{\log\varepsilon}
+            \qquad(R\ \text{fixed}).
+          \]</div>
+          <p>这个已证上包络不衰减。因此 R0.72O 扩大的是 growing-geometry strong window，不是 fixed-geometry closure。</p>
+        </section>
+
+        <section id="superposition"><div class="section-no">06 / Full-superposition implication</div><h2>交叉项可以整体支付，但前提必须作用于完整叠加</h2>
+          <p>令 \(p=\sqrt N/B\)。若完整多载波传播满足</p>
+          <div class="equation result">\[
+            \int_0^1E(y)\,dy\le C_{\rm ED}\varepsilon^{-1/2}E(0),
+            \qquad E(1)\le C_{\rm ED}e^{-c_{\rm ED}\sqrt\varepsilon}E(0),
+          \]</div>
+          <p>这里 \(C_{\rm ED}\) 与 \(c_{\rm ED}\) 必须对所比较的 \(N,p,R,\varepsilon\) 和声明的载波几何族一致；否则只得到逐点蕴含，不能得到统一尺度律。</p>
+          <p>则不展开 carrierwise triples，直接由算子范数得到</p>
+          <div class="equation result">\[
+            \mathcal C_\times\lesssim a^2N^2\varepsilon^{1/2},
+            \quad U_{\rm ED}=\varepsilon^{11/6}p^{4/3},
+            \quad \sqrt\varepsilon\lesssim p^{2/3}R^{2/3}L_{R,\varepsilon}.
+          \]</div>
+          <p>这是带统一常数假设的条件蕴含，不是当前 common-band class 的无条件定理。</p>
+        </section>
+
+        <section id="gate"><div class="section-no">07 / Cross-term gate</div><h2>逐载波求和与 common-band support 都不足</h2>
+          <p>R0.72J 的 triangle-rich coherent block 有 \(3R(R+1)\) 个有序 signed Schur triples，并达到 \(\mathcal C_{\times,R}\asymp a^2N^2\)。因此把 \(N\) 个 one-carrier costs 相加会漏掉真实 cross cubics。</p>
+          <p>形状门也不能由频带自动推出。两载波剪切</p>
+          <div class="equation result">\[
+            U_R(\theta)=\sin(R\theta)-\frac{R}{R+1}\sin((R+1)\theta)
+          \]</div>
+          <p>在 \(\theta=0\) 满足 \(U_R'(0)=U_R''(0)=0\)、\(U_R'''(0)=R(2R+1)\ne0\)。组合剪切具有退化临界点，不能直接调用 Coble–He 的统一非退化定理。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">08 / Literature boundary</div><h2>published theorem 与项目新推论保持分开</h2>
+          <p><a href="https://arxiv.org/html/2309.15738">Coble–He, Theorem 1.2</a> 给足够小 \(\nu\) 下非退化时变剪切的 modewise \(e^{-c\nu^{1/2}|k|^{1/2}t}\) 衰减；本站再用 \(L^2\) 收缩补齐剩余紧参数区间。原论文不陈述这里的 cubic、物理回填或多载波结论。</p>
+          <p><a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a> 证明静态剪切的 rate 随临界点退化阶改变，支持保留 shape parameter；Couette 与 Kolmogorov 的非线性稳定理论只提供 flow-specific 方法先例。限定检索没有找到基于 \((R,N,B,p)\) 的 black-box full-superposition theorem，也不构成新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>附图只展示已证明的指数账本与条件分界</h2>
+          <p><img src="/assets/r072o/fig-r072o-physical-reinsertion.svg" alt="R0.72O physical reinsertion and full-superposition interface formal figure"></p>
+          <p><a href="/assets/r072o/fig-r072o-physical-reinsertion.pdf">下载 PDF</a> · <a href="/assets/r072o/fig-r072o-physical-reinsertion.png">下载 PNG</a> · <a href="/assets/r072o/fig-r072o-physical-reinsertion.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">10 / Research value</div><h2>物理付款不再停在 raw exponent，多载波缺口也被精确定位</h2>
+          <p>R0.72O 把 R0.72N 的 continuum enhanced-dissipation corollary 完整送入 normalized physical ledger，得到此前没有的 \(R^{4/3}(\log R)^2\) strong window。与此同时，剩余困难不再是简单 carrier counting，而是组合剪切的统一 shape control 或等价的 full-superposition flux estimate。</p>
+          <p>这仍是特殊 triangular 2.5D family 中的机制定理，不是一般三维 continuation criterion。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next gate</div><h2>R0.72P：先处理有统一 Morse margin 的有限 carrier pattern</h2>
+          <p>下一节直接证明 full-superposition integrated ED，或证明更弱但足够的 rowwise flux estimate。第一个诚实正类应固定有限 carrier pattern，并把临界点数、Morse margin 与 shape neighborhoods 写成显式参数。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>一般 Navier–Stokes 问题仍未解决</h2>
+          <p>本节没有从 common-band assumptions 推出 full-superposition ED，没有证明 logarithmic one-carrier cubic、fixed-geometry arbitrary coupling、multiscale physical absorption、任意三维继续性、有限时奇性或全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduction</div><h2>报告、审计、证书与正式附图包</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072o_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072o_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072o_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072o_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072o">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072o-physical-reinsertion/fig-r072o-physical-reinsertion">正式附图包</a> · <a href="/notes/r0-72o.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72o.html">累计回顾</a> · <a href="/recap-r0-61-r0-72o.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72O · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

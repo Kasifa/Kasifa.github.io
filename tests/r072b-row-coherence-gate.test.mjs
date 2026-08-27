@@ -228,14 +228,14 @@ test("retains the R0.72B package while R0.72K is current", async () => {
     readFile(resolve(publicRoot, "recap-r0-61-r0-72b.pdf")),
   ]);
 
-  assert.match(home, /<strong>v1\.27<\/strong>网页版本/);
-  assert.match(home, /<strong>164<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72N<\/strong>最新研究节点/);
-  assert.match(home, /展开 74 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72O/);
-  assert.match(home, /R0\.70A–R0\.72N 共 66 个版本已公开；42 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /<strong>v1\.28<\/strong>网页版本/);
+  assert.match(home, /<strong>165<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72O<\/strong>最新研究节点/);
+  assert.match(home, /展开 75 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72P/);
+  assert.match(home, /R0\.70A–R0\.72O 共 67 个版本已公开；43 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
   assert.match(home, /二十八个(?:问题)?阶段/);
-  assert.match(home, /累计回顾收录 104 个节点/);
+  assert.match(home, /累计回顾收录 105 个节点/);
   assert.equal((home.match(/href="\/notes\/r0-72b\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072b"/g) ?? []).length, 1);
   assert.match(
@@ -243,7 +243,7 @@ test("retains the R0.72B package while R0.72K is current", async () => {
     /<div class="task-one" id="r072b" data-release="r072b"/,
   );
   assert.match(home, /M\^{-10\/3\}/);
-  assert.match(home, /recap-r0-61-r0-72n\.html/);
+  assert.match(home, /recap-r0-61-r0-72o\.html/);
 
   assert.ok(note.includes(String.raw`G_{\rm all}^{\rm ex}`));
   assert.ok(note.includes(String.raw`M\rho_A^2`));
@@ -295,8 +295,8 @@ test("retains the R0.72B package while R0.72K is current", async () => {
   assert.match(literature, /arxiv\.org\/abs\/2105\.12308/);
   assert.match(literature, /launch-inclusive root-slope ledger/);
 
-  assert.match(home, /src="\/i18n-en\.js\?v=1\.27"/);
-  assert.match(literature, /src="\/i18n-en\.js\?v=1\.27"/);
+  assert.match(home, /src="\/i18n-en\.js\?v=1\.28"/);
+  assert.match(literature, /src="\/i18n-en\.js\?v=1\.28"/);
   assert.match(note, /src="\/i18n-en\.js\?v=1\.15"/);
   assert.match(recap, /src="\/i18n-en\.js\?v=1\.15"/);
 

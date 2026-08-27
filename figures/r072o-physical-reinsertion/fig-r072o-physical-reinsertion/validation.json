@@ -1,0 +1,277 @@
+{
+  "allPassed": true,
+  "checkCount": 24,
+  "checks": [
+    {
+      "name": "required_assets",
+      "passed": true,
+      "requirement": "all source, master, data, QA, and archive inputs exist",
+      "value": []
+    },
+    {
+      "name": "png_600_dpi",
+      "passed": true,
+      "requirement": "PNG metadata is 600 dpi",
+      "value": [
+        599.9988,
+        599.9988
+      ]
+    },
+    {
+      "name": "png_dimensions",
+      "passed": true,
+      "requirement": "PNG pixels match final size at 600 dpi",
+      "value": {
+        "actual": [
+          4200,
+          3120
+        ],
+        "expected": [
+          4200,
+          3120
+        ]
+      }
+    },
+    {
+      "name": "pdf_one_page",
+      "passed": true,
+      "requirement": "PDF has one page",
+      "value": 1
+    },
+    {
+      "name": "pdf_dimensions",
+      "passed": true,
+      "requirement": "PDF matches 177.8 x 132.08 mm",
+      "value": [
+        177.79999999999998,
+        132.07999999999998
+      ]
+    },
+    {
+      "name": "svg_vector_text",
+      "passed": true,
+      "requirement": "SVG is vector-only and keeps editable text",
+      "value": {
+        "image": false,
+        "svg": true,
+        "text": true
+      }
+    },
+    {
+      "name": "qa_dimensions",
+      "passed": true,
+      "requirement": "QA surfaces match final print size at 180 dpi",
+      "value": {
+        "qa-final-size.png": [
+          1260,
+          936
+        ],
+        "qa-grayscale.png": [
+          1260,
+          936
+        ],
+        "qa-pdf.png": [
+          1260,
+          936
+        ]
+      }
+    },
+    {
+      "name": "grayscale_contrast",
+      "passed": true,
+      "requirement": "grayscale standard deviation exceeds 20",
+      "value": 40.4448194000916
+    },
+    {
+      "name": "certificate_window_grid",
+      "passed": true,
+      "requirement": "both routes contain the exact 4 R x 2 regime x 3 level grid",
+      "value": {
+        "independent audit": 24,
+        "producer audit": 24
+      }
+    },
+    {
+      "name": "certificate_exact_degeneracy",
+      "passed": true,
+      "requirement": "both routes verify U'(0)=U''(0)=0 and U'''(0)=R(2R+1) != 0",
+      "value": {
+        "independent audit": true,
+        "producer audit": true
+      }
+    },
+    {
+      "name": "certificate_exact_exponents",
+      "passed": true,
+      "requirement": "independent exact ledgers agree and give the lifted one-carrier exponent 11/6",
+      "value": {
+        "independent audit": {
+          "epsilon": "11/6"
+        },
+        "producer audit": {
+          "epsilon": "11/6"
+        }
+      }
+    },
+    {
+      "name": "certificate_crosscheck",
+      "passed": true,
+      "requirement": "crosscheck passes and all route differences are <= 2e-12",
+      "value": {
+        "maxima": {
+          "LR": 0.0,
+          "LRepsilon": 0.0,
+          "ZExact": 0.0,
+          "edDirectNormalized": 0.0,
+          "edOverOld": 0.0,
+          "epsilon": 0.0,
+          "oldDirectNormalized": 0.0,
+          "p": 0.0,
+          "predictedWindowRatio": 0.0
+        },
+        "status": "passed"
+      }
+    },
+    {
+      "name": "certificate_ed_endpoint_order",
+      "passed": true,
+      "requirement": "ED equals old at epsilon=1, is strictly smaller for epsilon>1, and has ratio epsilon^(-1/2)",
+      "value": {
+        "independent audit": {
+          "allRowsPassed": true,
+          "epsilonGreaterThanOneRows": 23,
+          "epsilonOneRows": 1,
+          "equalityAtOne": true,
+          "maxRatioError": 4.149772662120718e-15,
+          "noLarger": true,
+          "strictAfterOne": true
+        },
+        "producer audit": {
+          "allRowsPassed": true,
+          "epsilonGreaterThanOneRows": 23,
+          "epsilonOneRows": 1,
+          "equalityAtOne": true,
+          "maxRatioError": 4.149772662120718e-15,
+          "noLarger": true,
+          "strictAfterOne": true
+        }
+      }
+    },
+    {
+      "name": "data_completeness",
+      "passed": true,
+      "requirement": "data.csv has all four panels and at least 900 traceable rows",
+      "value": {
+        "panels": {
+          "A": 490,
+          "B": 648,
+          "C": 182,
+          "D": 442
+        },
+        "rows": 1762
+      }
+    },
+    {
+      "name": "panel_a_scale_formulas",
+      "passed": true,
+      "requirement": "Panel A directly evaluates the old and ED one-carrier window formulas",
+      "value": {
+        "maxRelativeError": 0.0,
+        "rows": 482
+      }
+    },
+    {
+      "name": "panel_b_ed_endpoint_order",
+      "passed": true,
+      "requirement": "Panel B says no larger, equal at epsilon=1, and strictly smaller for every epsilon>1",
+      "value": {
+        "epsilonOneEqual": true,
+        "maxRatioError": 5.251604272976661e-15,
+        "samples": 321,
+        "strictForAllEpsilonAboveOne": true
+      }
+    },
+    {
+      "name": "panel_b_fixed_r_boundary",
+      "passed": true,
+      "requirement": "at fixed R the improved current bound still crosses the scale-one guide",
+      "value": {
+        "ed": 193.2375090182096,
+        "epsilonMaximum": 10000000000.0,
+        "old": 19323750.901821062
+      }
+    },
+    {
+      "name": "panel_c_claim_status",
+      "passed": true,
+      "requirement": "only the declared N=1 point is unconditional; the full multi-carrier curve is conditional",
+      "value": {
+        "conditionalRows": 181,
+        "unconditionalPanelCRows": 1
+      }
+    },
+    {
+      "name": "panel_d_exact_obstruction",
+      "passed": true,
+      "requirement": "Panel D encodes the exact flat critical point separately from the Morse reference",
+      "value": {
+        "rows": 442,
+        "statuses": {
+          "Morse quadratic reference": "reference",
+          "two-carrier flat critical point": "unconditional exact identity"
+        }
+      }
+    },
+    {
+      "name": "source_lineage",
+      "passed": true,
+      "requirement": "analytic, certificate, contract, caption, and plotting sources retain build hashes",
+      "value": {
+        "package": [],
+        "repository": []
+      }
+    },
+    {
+      "name": "public_byte_identity",
+      "passed": true,
+      "requirement": "public masters are byte-identical to archival masters",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "claim_boundary",
+      "passed": true,
+      "requirement": "caption and contract preserve endpoint, conditionality, fixed-R, and Clay-problem boundaries",
+      "value": [
+        "no larger",
+        "strictly smaller",
+        "conditional",
+        "fixed-r arbitrary-coupling",
+        "general three-dimensional",
+        "global navier"
+      ]
+    },
+    {
+      "name": "no_simulation_or_fit",
+      "passed": true,
+      "requirement": "the figure is exact-algebra extraction with no PDE evolution, regression, fit, or certificate interpolation",
+      "value": {
+        "formulaCurvesNotCertificateInterpolation": true,
+        "noFiniteFit": true,
+        "noPdeEvolution": true
+      }
+    },
+    {
+      "name": "visual_inspection_declared",
+      "passed": true,
+      "requirement": "final-size, grayscale, and PDF-raster surfaces were explicitly inspected",
+      "value": true
+    }
+  ],
+  "figureId": "R0.72O-1",
+  "schemaVersion": 1,
+  "status": "passed"
+}

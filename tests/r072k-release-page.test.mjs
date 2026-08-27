@@ -60,7 +60,7 @@ test("publishes the 101-node post-R0.60 recap in 27 phases", async () => {
   assert.doesNotMatch(recap, /千禧年问题(?:已经|已被|得到)(?:解决|证明)/);
 });
 
-test("synchronizes v1.24, latest K, next L, and archive counts", async () => {
+test("retains K while synchronizing v1.25, latest L, next M, and archive counts", async () => {
   const [home, literature, release, archive, site, files] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "literature-review.html"), "utf8"),
@@ -70,29 +70,29 @@ test("synchronizes v1.24, latest K, next L, and archive counts", async () => {
     readdir(resolve(publicRoot, "notes")),
   ]);
 
-  assert.equal(files.filter((name) => name.endsWith(".html")).length, 161);
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.24">/);
-  assert.match(home, /<strong>v1\.24<\/strong>网页版本/);
-  assert.match(home, /<strong>161<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72K<\/strong>最新研究节点/);
-  assert.match(home, /R0\.70A–R0\.72K：63 节已公开，39 节完整封存/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72K<\/span>/);
-  assert.match(home, /展开 71 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72L/);
-  assert.match(home, /累计回顾收录 101 个节点；全站现有 161 篇公开研究笔记/);
-  assert.match(home, /63 个版本已公开/);
-  assert.match(home, /39 个按当前 formal-figure 合同完整封存/);
+  assert.equal(files.filter((name) => name.endsWith(".html")).length, 162);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.25">/);
+  assert.match(home, /<strong>v1\.25<\/strong>网页版本/);
+  assert.match(home, /<strong>162<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72L<\/strong>最新研究节点/);
+  assert.match(home, /R0\.70A–R0\.72L：64 节已公开，40 节完整封存/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72L<\/span>/);
+  assert.match(home, /展开 72 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72M/);
+  assert.match(home, /累计回顾收录 102 个节点；全站现有 162 篇公开研究笔记/);
+  assert.match(home, /64 个版本已公开/);
+  assert.match(home, /40 个按当前 formal-figure 合同完整封存/);
   assert.match(home, /24 个旧版附图档案仍列入回补清单/);
   assert.equal((home.match(/data-release="r072k"/g) ?? []).length, 1);
-  assert.match(home, /recap-r0-61-r0-72k\.html/);
+  assert.match(home, /recap-r0-61-r0-72l\.html/);
   assert.match(home, /directional zero sampling/i);
   assert.match(home, /complete complex-target ledger/i);
-  assert.match(home, /strong-coupling continuous-row ledger/i);
+  assert.match(home, /moderate strong-coupling/i);
 
-  assert.match(literature, /本站 R0\.69P–R0\.72K 只列为研究笔记/);
-  assert.match(literature, /id="r072k-boundary"/);
-  assert.match(literature, /开放接口 · R0\.72L/);
-  assert.match(literature, /href="\/notes\/r0-72k\.html"/);
+  assert.match(literature, /本站 R0\.69P–R0\.72L 只列为研究笔记/);
+  assert.match(literature, /id="r072l-boundary"/);
+  assert.match(literature, /开放接口 · R0\.72M/);
+  assert.match(literature, /href="\/notes\/r0-72l\.html"/);
   for (const source of [
     "10.1017/S0013091500008786",
     "10.4064/ap-8-1-29-32",
@@ -115,48 +115,57 @@ test("synchronizes v1.24, latest K, next L, and archive counts", async () => {
       backlog: release.legacyFormalFigureBacklogCount,
     },
     {
-      latest: "r072k",
-      version: "1.24",
-      notes: 161,
-      recap: 101,
-      next: "r072l",
-      published: 63,
-      sealed: 39,
+      latest: "r072l",
+      version: "1.25",
+      notes: 162,
+      recap: 102,
+      next: "r072m",
+      published: 64,
+      sealed: 40,
       backlog: 24,
     },
   );
   assert.equal(
     release.latestReleaseGate,
-    "tests/r072k-directional-root-gate.test.mjs",
+    "tests/r072l-strong-coupling-gate.test.mjs",
   );
-  assert.equal(archive.latestPublishedRelease, "r072k");
-  assert.equal(archive.publishedReleaseCount, 63);
-  assert.equal(archive.formalSealedReleaseCount, 39);
+  assert.equal(archive.latestPublishedRelease, "r072l");
+  assert.equal(archive.publishedReleaseCount, 64);
+  assert.equal(archive.formalSealedReleaseCount, 40);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
   assert.ok(archive.publishedReleases.includes("r072k"));
   assert.ok(archive.formalSealedReleases.includes("r072k"));
-  assert.equal(archive.publishedReleases.length, 63);
-  assert.equal(archive.formalSealedReleases.length, 39);
+  assert.ok(archive.publishedReleases.includes("r072l"));
+  assert.ok(archive.formalSealedReleases.includes("r072l"));
+  assert.equal(archive.publishedReleases.length, 64);
+  assert.equal(archive.formalSealedReleases.length, 40);
   assert.deepEqual(site, {
     schemaVersion: "research-site-version-v1",
-    version: "1.24",
-    latestRelease: "R0.72K",
-    publicHtmlNoteCount: 161,
+    version: "1.25",
+    latestRelease: "R0.72L",
+    publicHtmlNoteCount: 162,
     publishedDate: "2026-08-27",
   });
 });
 
-test("all K-facing static pages use v1.24 and avoid control bytes", async () => {
-  const pages = await Promise.all(
-    [
-      "research-review.html",
-      "literature-review.html",
-      "notes/r0-72k.html",
-      "recap-r0-61-r0-72k.html",
-    ].map((name) => readFile(resolve(publicRoot, name), "utf8")),
+test("current shell uses v1.25 while historical K pages retain v1.24", async () => {
+  const currentPages = await Promise.all(
+    ["research-review.html", "literature-review.html"].map((name) =>
+      readFile(resolve(publicRoot, name), "utf8"),
+    ),
   );
-  for (const page of pages) {
+  const historicalPages = await Promise.all(
+    ["notes/r0-72k.html", "recap-r0-61-r0-72k.html"].map((name) =>
+      readFile(resolve(publicRoot, name), "utf8"),
+    ),
+  );
+  for (const page of currentPages) {
+    assert.match(page, /src="\/i18n-en\.js\?v=1\.25"/);
+  }
+  for (const page of historicalPages) {
     assert.match(page, /src="\/i18n-en\.js\?v=1\.24"/);
+  }
+  for (const page of [...currentPages, ...historicalPages]) {
     assert.doesNotMatch(page, /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/);
   }
 });

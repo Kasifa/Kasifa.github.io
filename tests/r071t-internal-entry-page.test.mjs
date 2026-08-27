@@ -49,21 +49,21 @@ test("retains the corrected R0.71T release after the R0.72K site update", async 
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 161);
-  assert.match(home, /<strong>v1\.24<\/strong>网页版本/);
-  assert.match(home, /<strong>161<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72K<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72K<\/span>/);
-  assert.match(home, /展开 71 篇公开笔记/);
-  assert.match(home, /累计回顾收录 101 个节点；全站现有 161 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.72K 共 63 个版本已公开；39 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /NEXT · R0\.72L/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 162);
+  assert.match(home, /<strong>v1\.25<\/strong>网页版本/);
+  assert.match(home, /<strong>162<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72L<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72L<\/span>/);
+  assert.match(home, /展开 72 篇公开笔记/);
+  assert.match(home, /累计回顾收录 102 个节点；全站现有 162 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.72L 共 64 个版本已公开；40 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /NEXT · R0\.72M/);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72K">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72L">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 71);
+  assert.equal(count(route[1], 'href="/notes/'), 72);
   assert.equal(count(route[1], 'href="/notes/r0-71t.html"'), 1);
   assert.equal(count(home, 'data-release="r071t"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71t.html"'), 2);
@@ -73,8 +73,8 @@ test("retains the corrected R0.71T release after the R0.72K site update", async 
   assert.match(recap, /回顾截止时公开笔记：144/);
   assert.match(recap, /R0\.70A–R0\.71T 完成版本/);
   assert.match(recap, /R0\.00–R0\.60 的内容保留在上一份阶段回顾中/);
-  assert.match(literature, /R0\.69P–R0\.72K/);
-  assert.match(literature, /开放接口 · R0\.72L/);
+  assert.match(literature, /R0\.69P–R0\.72L/);
+  assert.match(literature, /开放接口 · R0\.72M/);
 
   for (const [page, minimum] of [
     [home, 10],
@@ -86,8 +86,8 @@ test("retains the corrected R0.71T release after the R0.72K site update", async 
     assert.doesNotMatch(page, /我们|攻关|主攻|三重审计/);
     assert.doesNotMatch(page, /千禧年问题已经解决|解决了千禧年问题/);
   }
-  assert.ok(home.includes('src="/i18n-en.js?v=1.24"'));
-  assert.ok(literature.includes('src="/i18n-en.js?v=1.24"'));
+  assert.ok(home.includes('src="/i18n-en.js?v=1.25"'));
+  assert.ok(literature.includes('src="/i18n-en.js?v=1.25"'));
   assert.ok(note.includes('src="/i18n-en.js?v=1.05"'));
   assert.ok(recap.includes('src="/i18n-en.js?v=1.05"'));
 });

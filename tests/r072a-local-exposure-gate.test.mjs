@@ -121,20 +121,20 @@ test("publishes the R0.72A note, full post-R0.60 recap, and literature boundary"
     readFile(resolve(publicRoot, "recap-r0-61-r0-72a.html"), "utf8"),
   ]);
 
-  assert.match(home, /<strong>v1\.23<\/strong>网页版本/);
-  assert.match(home, /<strong>160<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72J<\/strong>最新研究节点/);
-  assert.match(home, /展开 70 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72K/);
-  assert.match(home, /R0\.70A–R0\.72J 共 62 个版本已公开；38 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /累计回顾收录 100 个节点/);
-  assert.match(home, /recap-r0-61-r0-72j\.html/);
+  assert.match(home, /<strong>v1\.24<\/strong>网页版本/);
+  assert.match(home, /<strong>161<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72K<\/strong>最新研究节点/);
+  assert.match(home, /展开 71 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72L/);
+  assert.match(home, /R0\.70A–R0\.72K 共 63 个版本已公开；39 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /累计回顾收录 101 个节点/);
+  assert.match(home, /recap-r0-61-r0-72k\.html/);
   assert.equal((home.match(/href="\/notes\/r0-72a\.html"/g) ?? []).length, 2);
   assert.match(recap, /R0\.61–R0\.72A 的 91 节公开笔记/);
   assert.match(recap, /十八个研究阶段/);
   assert.match(recap, /R0\.70A–R0\.72A 完成版本/);
-  assert.match(literature, /R0\.69P–R0\.72J/);
-  assert.match(literature, /开放接口 · R0\.72K/);
+  assert.match(literature, /R0\.69P–R0\.72K/);
+  assert.match(literature, /开放接口 · R0\.72L/);
   assert.match(literature, /10\.4007\/annals\.2008\.168\.643/);
   assert.match(literature, /10\.1007\/s00205-017-1099-y/);
   assert.match(literature, /10\.1112\/jlms\.12782/);

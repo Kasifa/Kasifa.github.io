@@ -1,0 +1,169 @@
+{
+  "claimBoundary": {
+    "allStartSemigroupEstimateProved": false,
+    "blockContractionProved": false,
+    "clayMillenniumProblemSolved": false,
+    "combinedCubicAndTimeDriftEstimateProved": false,
+    "fixedFormulaIdentityOnly": true,
+    "periodicTransferProved": false
+  },
+  "combinedFixedFunctionMagneticForm": {
+    "A_av": "A_av=a*T^2/24",
+    "A_r": "A_r(X)=M(X)*r+(a/2)*r^2",
+    "D_av": "D_av=partial_X-i*A_av",
+    "D_r": "D_r=partial_X-i*A_r(X)",
+    "M": "M(X)=a*c+3*b*X^2",
+    "blockContractionProved": false,
+    "centeredMagneticShift": "A_r-A_av=M(X)*r+(a/2)*(r^2-T^2/12)",
+    "fixedFunctionIdentity": "integral ||D_r f||_2^2 dr=T||D_av f||_2^2+integral_R[(M(X)^2*T^3/12)+(a^2*T^5/720)]|f(X)|^2 dX",
+    "identityOnlyNotEvolvingSolutionObservability": true,
+    "moments": {
+      "after_multiplying_by_(a/2)^2": "1/720",
+      "integral_centered_r_squared_squared_coefficient": "1/180",
+      "integral_r_squared_coefficient": "1/12",
+      "oddCross": "0/1"
+    },
+    "potential": "V(S,X)=a*S*X+b*X^3",
+    "symmetricInterval": "[-T/2,T/2]"
+  },
+  "cubicBracketCalibration": {
+    "brackets": [
+      "[X1,X0]=-(3*X^2+6*S)*partial_theta",
+      "[X0,[X1,X0]]=-6*partial_theta",
+      "[X1,[X1,X0]]=-6*X*partial_theta",
+      "[X1,[X1,[X1,X0]]]=-6*partial_theta",
+      "[partial_x,i*b*x^3]=3*i*b*x^2",
+      "[partial_x,[partial_x,i*b*x^3]]=6*i*b*x",
+      "[partial_x,[partial_x,[partial_x,i*b*x^3]]]=6*i*b"
+    ],
+    "vectorFields": {
+      "X0": "partial_S-(X^3+6*S*X)*partial_theta",
+      "X1": "partial_X"
+    }
+  },
+  "driftOnlyCalibration": {
+    "brackets": [
+      "[partial_x,i*q*t*x]=i*q*t",
+      "[partial_t,[partial_x,i*q*t*x]]=i*q"
+    ],
+    "equation": "partial_t f+i*q*t*x*f=nu*partial_x^2 f",
+    "exactL2OperatorNorm": "exp(-nu*q^2*(m^2*h^3/12+h^5/720))",
+    "frequencyActionBeforeMinimization": "integral_{-h/2}^{h/2}(eta+q*(m*tau+tau^2/2))^2 d tau",
+    "minimizingEta": "-q*h^2/24",
+    "minimumAction": "q^2*(m^2*h^3/12+h^5/720)",
+    "moments": {
+      "intOne": "h",
+      "intTau": "0/1",
+      "intTauCubed": "0/1",
+      "intTauFourth": "h^5/80",
+      "intTauSquared": "h^3/12"
+    },
+    "qZeroNorm": "1/1"
+  },
+  "exactChecks": {
+    "actionFifthCoefficient": true,
+    "centeredMagneticMomentIdentity": true,
+    "cubicCoefficient": true,
+    "driftOnlyZeroCoefficientNormOne": true,
+    "heatEquationFourierIdentity": true,
+    "heatPolynomialH3": true,
+    "heatPolynomialH5": true,
+    "heatPolynomialH7": true,
+    "linearTermCancelsAtCollision": true,
+    "mixedBracketCoefficient": true,
+    "physicalDriftScaledActionExponents": true,
+    "quinticCoefficient": true,
+    "septicCoefficient": true,
+    "symmetricFirstMomentCancels": true,
+    "symmetricThirdMomentCancels": true,
+    "timeOnlyPhaseGaugeRemovable": true,
+    "translatedBranchLaw": true,
+    "uniqueFrequencyBalance": true,
+    "uniqueNuBalance": true
+  },
+  "gaugeAndInviscid": {
+    "gauge": "f=exp(-i*k*integral(A))*g",
+    "netTxPhaseAtMZero": "0/1",
+    "symmetricCancellationIsViscousContraction": false,
+    "symmetricInterval": "[m-h/2,m+h/2]",
+    "timeOnlyPhaseRemovable": true,
+    "timeOnlyTerm": "A(t)"
+  },
+  "heatProfile": {
+    "collisionCoordinates": {
+      "phiStar": "pi/2",
+      "yStar": "log(2)"
+    },
+    "collisionTaylor": {
+      "x": "0/1",
+      "x^3": "-1/4",
+      "x^5": "1/16",
+      "x^7": "-1/160"
+    },
+    "formula": "W(d,x)=-(1/2)exp(-d)sin(x)+(1/4)exp(-4d)sin(2x)",
+    "heatIdentity": "partial_d W=partial_x^2 W",
+    "heatPolynomialExpansionThroughSeven": [
+      {
+        "coefficient": "-1/4",
+        "polynomial": "H3=x^3+6*d*x"
+      },
+      {
+        "coefficient": "1/16",
+        "polynomial": "H5=x^5+20*d*x^3+60*d^2*x"
+      },
+      {
+        "coefficient": "-1/160",
+        "polynomial": "H7=x^7+42*d*x^5+420*d^2*x^3+840*d^3*x"
+      }
+    ],
+    "leadingDerivative": "partial_x P3=-(3/4)(x^2+2*d)",
+    "leadingPrimitive": "P3=-(1/4)H3=-(1/4)x^3-(3/2)d*x",
+    "localVariables": {
+      "d": "y-log(2)",
+      "x": "phi-pi/2"
+    },
+    "translation": {
+      "differentiatedIdentity": "h*hPrime=-1",
+      "hPrime": "-1/h",
+      "hSquared": "-2*d"
+    }
+  },
+  "physicalDriftCoefficient": {
+    "AForTrueW": "-3/2",
+    "absKExponent": 1,
+    "definition": "a=k*A*nu",
+    "nuExponent": 1,
+    "scaledActionLedger": "nu*a^2*T^5 has nu exponent 0 and abs(k) exponent 0"
+  },
+  "scaling": {
+    "ansatz": {
+      "L": "nu^gamma*abs(k)^delta",
+      "T": "nu^alpha*abs(k)^beta"
+    },
+    "balanceEquations": [
+      "alpha+1-2*gamma=0",
+      "alpha+3*gamma=0",
+      "2*alpha+1+gamma=0",
+      "beta-2*delta=0",
+      "beta+1+3*delta=0",
+      "2*beta+1+delta=0"
+    ],
+    "normalizedCorrectionOrders": {
+      "H5OverLeading": "L^2",
+      "H7OverLeading": "L^4"
+    },
+    "physicalScales": {
+      "L": "nu^(1/5)*abs(k)^(-1/5)",
+      "T": "nu^(-3/5)*abs(k)^(-2/5)"
+    },
+    "solution": {
+      "alpha": "-3/5",
+      "beta": "-2/5",
+      "delta": "-1/5",
+      "gamma": "1/5"
+    }
+  },
+  "schemaVersion": 1,
+  "status": "passed",
+  "theoremId": "R0.72T-exact-local-heat-scaling-and-drift-calibration"
+}

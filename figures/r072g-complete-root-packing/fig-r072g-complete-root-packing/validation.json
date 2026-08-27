@@ -1,0 +1,224 @@
+{
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "producer_passed",
+      "passed": true,
+      "requirement": "producer certificate passes",
+      "value": true
+    },
+    {
+      "name": "independent_passed",
+      "passed": true,
+      "requirement": "independent certificate passes",
+      "value": true
+    },
+    {
+      "name": "producer_grid",
+      "passed": true,
+      "requirement": "producer R grid matches contract",
+      "value": [
+        8,
+        12,
+        16,
+        24,
+        32,
+        48,
+        64
+      ]
+    },
+    {
+      "name": "independent_grid",
+      "passed": true,
+      "requirement": "independent R grid matches contract",
+      "value": [
+        8,
+        12,
+        16,
+        24,
+        32
+      ]
+    },
+    {
+      "name": "common_root_counts",
+      "passed": true,
+      "requirement": "common root counts agree exactly",
+      "value": {
+        "8": [
+          443,
+          443
+        ],
+        "12": [
+          1052,
+          1052
+        ],
+        "16": [
+          1907,
+          1907
+        ],
+        "24": [
+          4351,
+          4351
+        ],
+        "32": [
+          7774,
+          7774
+        ]
+      }
+    },
+    {
+      "name": "cross_solver_mass",
+      "passed": true,
+      "requirement": "common mass gap <= 2e-6",
+      "value": 9.179804841673305e-07
+    },
+    {
+      "name": "producer_pressure",
+      "passed": true,
+      "requirement": "producer step, largest-radius, and horizon pressure pass",
+      "value": {
+        "horizon_mass_tail": 1.6716773691251578e-08,
+        "radius_pressure": 4.392915366848919e-08,
+        "step_pressure": 7.395454558979948e-07
+      }
+    },
+    {
+      "name": "independent_pressure",
+      "passed": true,
+      "requirement": "independent step, radius, and horizon pressure pass",
+      "value": {
+        "horizon_mass_tail": 1.8476052128747542e-08,
+        "radius_pressure": 0.0,
+        "step_pressure": 1.672379432743322e-07
+      }
+    },
+    {
+      "name": "diagnostic_log_slope",
+      "passed": true,
+      "requirement": "finite producer log slope is within 2 percent of diagnostic guide",
+      "value": {
+        "intercept": 0.3123787949879931,
+        "relativeSlopeDifferenceFromDiagnosticTarget": 0.005537887103792654,
+        "rmse": 0.0008730352278506709,
+        "slopeAgainstLogDelta": 0.4075416542406286,
+        "targetFourOverPiSquared": 0.4052847345693511
+      }
+    },
+    {
+      "name": "selected_contained",
+      "passed": true,
+      "requirement": "complete mass contains selected mass",
+      "value": 0.5027733749572152
+    },
+    {
+      "name": "data_row_count",
+      "passed": true,
+      "requirement": "data.csv has every contracted row and panel",
+      "value": {
+        "actual": 56,
+        "expected": 56,
+        "panels": {
+          "A": 26,
+          "B": 14,
+          "C": 16
+        }
+      }
+    },
+    {
+      "name": "data_lineage",
+      "passed": true,
+      "requirement": "source hashes match certificates and contract",
+      "value": {
+        "current": {
+          "figures/r072g-complete-root-packing/fig-r072g-complete-root-packing/config.json": "9c950169599542eadc944fb6345eb7ca2244b9b63b85004995e23588a329eb35",
+          "figures/r072g-complete-root-packing/fig-r072g-complete-root-packing/contract.json": "6decea5bedad2b7b7e5a48e0220605034aed73b1e6e7f3d7cdec4548207472ed",
+          "research/certificates/r072g/independent-result.json": "2d4eba6b234ca73ec6e3bc4c35d4a4578dd213573bb1cf1df2dae2990cdbe5bf",
+          "research/certificates/r072g/result.json": "d9367eb944c427275d43db2beb01b0ede3d1be1417a2b83dd7ad1cee263a21d6"
+        },
+        "recorded": {
+          "figures/r072g-complete-root-packing/fig-r072g-complete-root-packing/config.json": "9c950169599542eadc944fb6345eb7ca2244b9b63b85004995e23588a329eb35",
+          "figures/r072g-complete-root-packing/fig-r072g-complete-root-packing/contract.json": "6decea5bedad2b7b7e5a48e0220605034aed73b1e6e7f3d7cdec4548207472ed",
+          "research/certificates/r072g/independent-result.json": "2d4eba6b234ca73ec6e3bc4c35d4a4578dd213573bb1cf1df2dae2990cdbe5bf",
+          "research/certificates/r072g/result.json": "d9367eb944c427275d43db2beb01b0ede3d1be1417a2b83dd7ad1cee263a21d6"
+        }
+      }
+    },
+    {
+      "name": "pdf_geometry",
+      "passed": true,
+      "requirement": "one-page 177.8 x 97.79 mm PDF",
+      "value": {
+        "heightMm": 97.78999999999999,
+        "pages": 1,
+        "widthMm": 177.79999999999998
+      }
+    },
+    {
+      "name": "png_geometry",
+      "passed": true,
+      "requirement": "600 dpi PNG at contracted size",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4200,
+          2310
+        ]
+      }
+    },
+    {
+      "name": "svg_vector",
+      "passed": true,
+      "requirement": "SVG contains vector paths and no embedded PNG",
+      "value": {
+        "bytes": 81034
+      }
+    },
+    {
+      "name": "public_copies",
+      "passed": true,
+      "requirement": "public copies are byte-identical",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "qa_surfaces",
+      "passed": true,
+      "requirement": "final-size, grayscale, and PDF QA surfaces match",
+      "value": {
+        "final": [
+          1540,
+          847
+        ],
+        "gray": [
+          1540,
+          847
+        ],
+        "pdf": [
+          1540,
+          847
+        ]
+      }
+    },
+    {
+      "name": "grayscale_legibility",
+      "passed": true,
+      "requirement": "grayscale surface retains contrast",
+      "value": 51.09617988888035
+    },
+    {
+      "name": "claim_boundary",
+      "passed": true,
+      "requirement": "contract separates theorem, diagnostics, and NSE boundary",
+      "value": "The logarithmic order is proved only for the fixed-q0 exact real one-carrier triangular family. The finite root count, the 4/pi^2 guide, the selected-to-complete ratio, and the dyadic packets are binary64 diagnostics. The figure does not prove a multi-carrier trace theorem, a general Navier-Stokes estimate, a continuation criterion, singularity formation, or regularity."
+    }
+  ],
+  "passedCount": 19,
+  "requiredCount": 19,
+  "schemaVersion": "r072g-figure-validation-v1"
+}

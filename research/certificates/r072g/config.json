@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "r072g-certificate-config-v1",
+  "model": {
+    "q0": 4,
+    "mu": 0.0625,
+    "scaledEquation": "da_r/dtau=-(r^2+mu)*a_r/delta+exp(-tau/delta)*(a_(r-1)-a_(r+1))",
+    "initialState": "a_-1(0)=1; all other a_r(0)=0",
+    "target": "a_0",
+    "rootSlope": "h=exp(-tau/delta)*(a_-1-a_1)",
+    "deltaSequence": "delta=R^4",
+    "randomness": false
+  },
+  "producer": {
+    "method": "fixed-step real-lattice RK4 plus cubic Hermite and Brent",
+    "R": [8, 12, 16, 24, 32, 48, 64],
+    "step": 0.02,
+    "horizon": "12*sqrt(delta)",
+    "radius": "10*R+12",
+    "pressure": "R=32 step and horizon; R=64 radius 10R versus 14R"
+  },
+  "independent": {
+    "method": "time-dependent Fourier Strang split step with exact heat and integrated potential factors",
+    "R": [8, 12, 16, 24, 32],
+    "step": 0.04,
+    "horizon": "12*sqrt(delta)",
+    "radius": "at least 12*R+12 before power-of-two FFT padding",
+    "pressure": "R=24 step, radius, and horizon"
+  },
+  "scope": {
+    "intervalArithmetic": false,
+    "finiteWindow": true,
+    "finiteLattice": true,
+    "completeRootUpperBoundInExactOneCarrier": true,
+    "generalTriangularCompleteRootBound": false,
+    "arbitraryNSECompleteRootBound": false,
+    "continuationCriterion": false,
+    "provesNSERegularity": false,
+    "provesNSESingularity": false
+  }
+}

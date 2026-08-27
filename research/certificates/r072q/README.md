@@ -64,11 +64,18 @@ files before atomically replacing `SHA256SUMS`.
 
 ## Frozen lineage
 
-Source and certificate commits are intentionally pending at this source
-stage.  Do not add a source id until the report, both independent routes, and
-the comparator are frozen.  Do not claim a certificate commit until all
-generated artifacts and the flat SHA-256 ledger are archived in an immutable
-commit.
+The two formal routes and comparator were run from the clean tracked source
+commit
+
+```text
+943048554800c27d6f25cb93ca52c5c60460ca1b
+```
+
+Both route configurations and `crosscheck.json` record that same commit,
+`formalSourceReady=true`, and
+`temporaryUnsealedSourceAllowed=false`.  The certificate archive commit is
+assigned only after all generated artifacts and the rebuilt flat SHA-256
+ledger are committed together.
 
 ## Claim boundary
 

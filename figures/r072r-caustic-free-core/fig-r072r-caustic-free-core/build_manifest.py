@@ -519,7 +519,7 @@ def main(status: str) -> None:
         "claimBoundary": contract["claimBoundary"],
         "git": git_record,
         "computation": {
-            "kind": "exact-formula-figure-extraction",
+            "kind": "exact-audit plus high-precision presentation sampling",
             "configuration": (
                 "the complex polydisc K={|z2-3/20|<=1/100, |z3|<=1/1000} beyond the old Q2<=1/2 sufficient cone; exact real 1:2:3 unit-circle slice, exact heat envelopes crossing the old sufficient boundary without degeneracy, and the physical W=e^{-y}F shape contract (r,C0,C1)=(pi/48,144,240); the canonical R0.72R certificate directory is independently closed by its flat SHA256SUMS"
             ),

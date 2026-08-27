@@ -1,0 +1,39 @@
+# Source-only static checks. These parse source and JSON without creating package outputs.
+python3 -c 'import ast,json,pathlib; root=pathlib.Path("figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape"); [ast.parse((root/name).read_text()) for name in ("certificate_ledger.py","plot.py","qa_images.py","publish_assets.py","validate.py","build_manifest.py")]; [json.loads((root/name).read_text()) for name in ("config.json","contract.json")]; print("R0.72Q source scaffold parses")'
+
+# Deferred formal lineage inputs. Do not replace these with temporary files.
+export R072Q_REPORT_SOURCE=/absolute/path/to/research/r072q_report-source.md
+export R072Q_PRODUCER_CONFIG=/absolute/path/to/research/certificates/r072q/producer-config.json
+export R072Q_PRODUCER_RESULT=/absolute/path/to/research/certificates/r072q/producer-result.json
+export R072Q_INDEPENDENT_CONFIG=/absolute/path/to/research/certificates/r072q/independent-config.json
+export R072Q_INDEPENDENT_RESULT=/absolute/path/to/research/certificates/r072q/independent-result.json
+export R072Q_CROSSCHECK=/absolute/path/to/research/certificates/r072q/crosscheck.json
+
+# Deferred formal build. It must run at the clean tracked certificate commit.
+export PYTHONDONTWRITEBYTECODE=1
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/plot.py \
+  --analytic-source "$R072Q_REPORT_SOURCE" \
+  --producer-config "$R072Q_PRODUCER_CONFIG" \
+  --producer-result "$R072Q_PRODUCER_RESULT" \
+  --independent-config "$R072Q_INDEPENDENT_CONFIG" \
+  --independent-result "$R072Q_INDEPENDENT_RESULT" \
+  --crosscheck "$R072Q_CROSSCHECK"
+
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/qa_images.py
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/validate.py --automatic-only
+
+# Stop here. Inspect qa-final-size.png, qa-grayscale.png, and qa-pdf.png with
+# view_image at original detail. Only after all three pass may the visual gate
+# be set in the environment for the full validation run.
+export R072Q_VISUAL_QA_INSPECTED=true
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/validate.py
+
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/publish_assets.py
+export R072Q_SOURCE_COMMIT=40-hex-source-commit
+export R072Q_CERTIFICATE_COMMIT=40-hex-certificate-and-figure-source-commit
+export R072Q_DIRTY_AT_CERTIFIED_RUN=false
+python3 figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape/build_manifest.py --status formal
+
+# Follow with the repository-generic formal-figure validator and flat package
+# SHA256SUMS verification used by the release gate. None of these formal
+# commands belongs in the present source-only scaffold run.

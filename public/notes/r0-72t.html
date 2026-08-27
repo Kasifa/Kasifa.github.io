@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72T：exact A2 spacetime normal form、唯一 1/5–2/5 缩放、1/720 校准与 CDZE 6/7 方法边界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72T｜A2 spacetime normal form 与方法边界">
+  <meta property="og:description" content="模型与缩放已精确闭合；block contraction、periodic transfer 与 Clay 问题仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072t/fig-r072t-a2-spacetime-model.png">
+  <title>R0.72T｜A2 spacetime normal form 与方法边界</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.33"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#primitive">primitive</a><a href="#heat">heat polynomial</a><a href="#quadratic">wrong quadratic</a><a href="#scaling">缩放</a><a href="#model">模型</a><a href="#drift">1/720</a><a href="#mixing">混合</a><a href="#cdze">6/7 barrier</a><a href="#brackets">brackets</a><a href="#persistent">恒等式</a><a href="#boundary">PDE 边界</a><a href="#certificate">证书</a><a href="#literature">文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72T · A2 SPACETIME NORMAL FORM · METHOD BOUNDARY</div>
+        <h1>A2 碰撞的缩放已精确固定；<br>现有抽象混合路线仍到不了目标估计</h1>
+        <p class="lead">我从 heat identity \(W_d=W_{xx}\) 出发，先把临界点导数芽积分回速度芽，再得到唯一的四项平衡：\(X=\kappa^{1/5}x\)、\(S=\kappa^{2/5}d\)，主模型由 heat polynomial \(H_3=X^3+6SX\) 控制。drift-only 模型有精确 \(a^2T^5/720\) 校准，完整相位有 uniform \(H^1\to H^{-1}\) inviscid mixing；但直接套用 CDZE 只给耗散时间指数 \(6/7\)，没有得到目标 \(3/5\)。因此 block contraction 与 periodic transfer 仍明确开放。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72T exact model 与方法边界完成</span><strong>A2 normal form closed; dissipative transfer open</strong><p>版本 v0.72T · 2026-08-28</p><p>derivative-to-primitive correction: CLOSED</p><p>unique \(1/5,2/5\) scaling: CLOSED</p><p>inviscid mixing and CDZE \(6/7\) barrier: CLOSED</p><p>weighted bracket step five: CLOSED</p><p>block contraction / periodic transfer: OPEN</p><p>Clay problem: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#primitive">01 · derivative / primitive</a></li><li><a href="#heat">02 · heat polynomial</a></li><li><a href="#quadratic">02B · wrong quadratic model</a></li><li><a href="#scaling">03 · four-term balance</a></li><li><a href="#model">04 · parameter-free model</a></li><li><a href="#drift">05 · drift calibration</a></li><li><a href="#mixing">06 · inviscid mixing</a></li><li><a href="#cdze">07 · CDZE barrier</a></li><li><a href="#brackets">08 · weighted brackets</a></li><li><a href="#persistent">09 · persistent form</a></li><li><a href="#boundary">10 · PDE boundary</a></li><li><a href="#certificate">11 · certificate</a></li><li><a href="#literature">12 · literature</a></li><li><a href="#figure">13 · journal figure</a></li><li><a href="#value">14 · research value</a></li><li><a href="#next">15 · R0.72U</a></li><li><a href="#reproduce">16 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>模型已精确化；穿越碰撞的耗散定理尚未闭合</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · EXACT GERM</strong><p>heat identity 与 Hermite heat-polynomial 展开固定 A2 速度芽；使用临界点导数芽作为 transport potential 会丢失一次积分。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · UNIQUE SCALING</strong><p>漂移、三次空间项、扩散与时间导数同时平衡，只允许 \(X=\kappa^{1/5}x\)、\(S=\kappa^{2/5}d\)。</p></div>
+            <div class="verdict-card true"><strong>NO-GO · BLACK-BOX MIXING</strong><p>uniform cubic-phase mixing 成立，但 CDZE 的一般转换在这里停在 \(q=6/7\)，弱于 A2 目标 \(3/5\)。</p></div>
+            <div class="verdict-card false"><strong>OPEN · VISCOUS PROPAGATOR</strong><p>还没有 uniform nonautonomous block contraction，也没有把局部直线模型转移到周期 exact heat path。</p></div>
+          </div>
+        </section>
+
+        <section id="primitive"><div class="section-no">01 / Derivative versus primitive</div><h2>临界点方程的芽不是速度势的芽</h2>
+          <p>R0.72S 的未乘物理热因子的 profile 导数给出 fold；真正进入 Fourier-row 方程的 physical shear 还带 \(e^{-y_*}=1/2\)。因此这里的精确 leading derivative germ 是 \(W_x\sim-(3/2)d-(3/4)x^2\)。Fourier-mode transport 乘的是 \(W\)，还必须对 \(x\) 积分：</p>
+          <div class="equation result">\[W(d,x)-W(d,0)\sim-\frac32dx-\frac14x^3.\]</div>
+          <p>若直接把 derivative germ 放进 transport potential，会得到错误的空间次数与错误缩放。本节把这条 derivative-versus-primitive route 作为精确 no-go 记录。</p>
+        </section>
+
+        <section id="heat"><div class="section-no">02 / Exact heat polynomial</div><h2>heat identity 把时空 Taylor 系数锁在同一条链上</h2>
+          <p>归一化局部变量满足 \(W_d=W_{xx}\)。用 heat polynomials \(H_j\) 组织展开后，证书核对的前三个奇阶块为</p>
+          <div class="equation result">\[-\frac14H_3+\frac1{16}H_5-\frac1{160}H_7,\qquad H_3=X^3+6SX.\]</div>
+          <p>这不是三个任意 Taylor monomial 的拼接；每个 \(H_j\) 自身满足 heat identity。正式附图同时展示 exact germ、scaled model 与两条方法边界。</p>
+        </section>
+
+        <section id="quadratic"><div class="section-no">02B / Wrong-model calibration</div><h2>quadratic potential 有自己的半次尺度，但它不是 A2 collision model</h2>
+          <p>若误把模型写成 \(z_t+ik[A(t)+bx^2]z=\nu z_{xx}\)，\(A(t)\) 会被 scalar phase 完全消去。对 \(b\ne0\)，unitary dilation 只平衡 diffusion 与 quadratic potential，得到</p>
+          <div class="equation result">\[\boxed{T_{\rm quad}\asymp(\nu|kb|)^{-1/2}}.\]</div>
+          <p><a href="https://doi.org/10.1007/s00020-016-2303-4">Viola</a> 的 non-self-adjoint harmonic-oscillator semigroup 理论校准这个错误 quadratic model。它不处理 \(aSX+bX^3\)，也不能替代 A2 collision 的五次平衡。</p>
+        </section>
+
+        <section id="scaling"><div class="section-no">03 / Four-term balance</div><h2>两个分数指数由四项联立唯一决定</h2>
+          <p>令 \(\kappa=\varepsilon_c/4\)。在局部 Fourier mode 中同时平衡时间导数、横向扩散、\(dx\) 漂移与 \(x^3\) transport，得到</p>
+          <div class="equation result">\[\boxed{X=\kappa^{1/5}x,\qquad S=\kappa^{2/5}d}.\]</div>
+          <p>在固定 scaled window 上，\(H_5\) 与 \(H_7\) corrections 分别带 \(\kappa^{-2/5}\) 与 \(\kappa^{-4/5}\)。对 physical velocity germ \(A\nu(t-t_*)x+Bx^3\) 和 horizontal Fourier mode \(k\ne0\)，drift calibration 回填为</p>
+          <div class="equation result">\[\boxed{T\asymp |kA|^{-2/5}\nu^{-3/5}}.\]</div>
+          <p>这个 bounded-chart 渐近不能直接延伸到全直线，因为高阶 heat polynomials 在 \(|X|\to\infty\) 时增长。</p>
+        </section>
+
+        <section id="model"><div class="section-no">04 / Parameter-free model</div><h2>缩放后只剩 A2 heat polynomial</h2>
+          <p>消去符号、常数与纯时间相位后，局部问题归一到由 \(H_3=X^3+6SX\) 驱动的一维非自治 diffusion model。这个模型保留了碰撞前两个临界点、碰撞时二重临界点和碰撞后无局部临界点的同一时空几何。</p>
+          <p>“parameter-free”只指局部 blow-up 后的主模型。向原周期路径回传时仍要控制 cutoff、远场、remainder、相邻 Fourier modes 与时间拼接。</p>
+        </section>
+
+        <section id="drift"><div class="section-no">05 / Exact drift calibration</div><h2>线性时漂可以完全解出，常数是 1/720</h2>
+          <p>对 drift-only 方程，Fourier characteristic 给出任意起始时刻一致的精确最坏情形。优化初始 Fourier center 后，衰减指数含</p>
+          <div class="equation result">\[\boxed{\frac{\nu a^2T^5}{720}}.\]</div>
+          <p>这条恒等式校准 \(T^5\) 次数和窗口中心化常数，但它没有处理同阶三次势。因此它不能单独证明完整 A2 模型的 block contraction。</p>
+        </section>
+
+        <section id="mixing"><div class="section-no">06 / Inviscid mixing</div><h2>三阶 van der Corput 给 uniform \(H^1\to H^{-1}\)</h2>
+          <p>任意时间块的 inviscid phase 都是 linear-plus-cubic polynomial；线性系数依赖块起点，三阶导数却由块长唯一控制。三阶 van der Corput 因而给出对起点一致的 \(T^{-1/3}\) mixing estimate。</p>
+          <p>这一步是严格的 inviscid 结论。它不自动等于 viscous semigroup decay，尤其不能跳过 nonautonomous Duhamel error。</p>
+        </section>
+
+        <section id="cdze"><div class="section-no">07 / CDZE barrier</div><h2>一般 mixing-to-dissipation 定理在这里损失到 6/7</h2>
+          <p><a href="https://doi.org/10.1002/cpa.21831">Coti Zelati–Delgadino–Elgindi</a> 把定量混合转成 enhanced dissipation。把本节的 \(H^{-1}\) mixing 指数代入其一般 black-box 估计，只得到时间尺度指数 \(q=6/7\)，没有达到 A2 scaling 预示的 \(3/5\)。这里的 \(6/7\) 只是指数映射给出的 method ceiling；全直线模型缺少 Poincaré gap 与 compact \(H^1\to L^2\) 嵌入，定理假设本身没有直接满足，因此不能把 \(6/7\) 写成已经得到的粘性衰减率。</p>
+          <p>所以这篇文献支持的是一条可审计的方法障碍，不是穿越碰撞的目标定理。</p>
+        </section>
+
+        <section id="brackets"><div class="section-no">08 / Weighted brackets</div><h2>Hörmander bookkeeping 在加权意义下走到 step five</h2>
+          <p>对扩散方向与非自治 transport 做 commutator bookkeeping，最坏碰撞点需要五级加权链才产生非退化乘法方向。这个 step-five ledger 与 \(1/5,2/5\) scaling 一致。</p>
+          <p>bracket generation 是 hypoelliptic 结构证据，不等于带正确常数、正确时间方向和周期边界的 coercive estimate。</p>
+        </section>
+
+        <section id="persistent"><div class="section-no">09 / Persistent-form audit</div><h2>combined \(aSX+bX^3\) 对固定函数有精确恒等式，但还不是 solution observability</h2>
+          <p>令 block 以 \(S=c\) 为中心，\(r\in[-T/2,T/2]\)，并定义</p>
+          <div class="equation result">\[A_r(X)=(ac+3bX^2)r+\frac a2r^2,\qquad A_{\rm av}=\frac{aT^2}{24},\qquad D_r=\partial_X-iA_r.\]</div>
+          <p>对每个固定 \(f\in H^1(\mathbb R)\)，odd/even cancellation 给出</p>
+          <div class="equation result">\[\int_{-T/2}^{T/2}\!\|D_rf\|_2^2dr=T\|D_{\rm av}f\|_2^2+\int_{\mathbb R}\!\left[\frac{(ac+3bX^2)^2T^3}{12}+\frac{a^2T^5}{720}\right]|f(X)|^2dX.\]</div>
+          <p>这是固定 \(f\) 的 persistent coercivity。真实解随 \(r\) 演化，所以该恒等式不是 evolving-solution observability，也不证明 blockContraction。</p>
+        </section>
+
+        <section id="boundary"><div class="section-no">10 / PDE boundary</div><h2>block contraction 与 periodic transfer 是两个不同缺口</h2>
+          <p><strong>blockContraction=OPEN</strong>：尚缺参数自由模型在目标 \(T\asymp\nu^{-3/5}\) block 上的一致 \(L^2\) 收缩。</p>
+          <p><strong>periodicTransfer=OPEN</strong>：即使模型闭合，仍须把局部直线估计与 exact periodic heat path、远场和 remainder 拼接。两者不能由 frozen profile 逐时估计替代。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">11 / Certificate</div><h2>双路证书只封存已声明的有限恒等式</h2>
+          <p>精确 producer 与独立实现核对 heat-polynomial 系数、四项缩放线性系统、drift-only \(1/720\) 常数、mixing 指数代入、weighted bracket ledger 与 fixed-form identity。hash ledger 绑定同一 clean source commit。</p>
+          <p>证书不声称证明 block contraction、periodic transfer 或一般三维正则性。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">12 / Literature boundary</div><h2>stationary finite type、抽象 mixing 与 collision model 分开陈述</h2>
+          <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1016/j.jfa.2022.109522">Albritton–Beekie–Novack</a> 给 stationary finite-type benchmarks。<a href="https://doi.org/10.1002/cpa.21831">Coti Zelati–Delgadino–Elgindi</a> 给一般 mixing-to-dissipation 机制。<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 处理保持临界点类型与数量的 time-dependent shear。<a href="https://doi.org/10.1007/s00020-016-2303-4">Viola</a> 只校准 quadratic wrong model。</p>
+          <p>限定一手检索没有定位到覆盖本节 multiplicity-changing A2 collision 且给目标 \(3/5\) block contraction 的现成定理。这是 bounded-search absence，不是不存在性、新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">13 / Journal figure</div><h2>正式附图把闭合结论与开放缺口分栏</h2>
+          <p><img src="/assets/r072t/fig-r072t-a2-spacetime-model.svg" alt="R0.72T A2 spacetime normal form, scaling, and method barriers"></p>
+          <p><a href="/assets/r072t/fig-r072t-a2-spacetime-model.pdf">下载 PDF</a> · <a href="/assets/r072t/fig-r072t-a2-spacetime-model.png">下载 PNG</a> · <a href="/assets/r072t/fig-r072t-a2-spacetime-model.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">14 / Research value</div><h2>这一节把“该证什么”与“现成工具能证什么”精确分开</h2>
+          <p>R0.72T 的严格增量是 exact spacetime germ、唯一 scaling、parameter-free model、drift calibration、inviscid mixing 与两条独立的方法障碍。它把下一步从模糊的“穿墙 ED”缩成一个可检验的 block observability/coercivity 问题。</p>
+          <p>对 Clay 问题的直接价值仍低。这里没有一般三维 continuation estimate，也没有有限时奇性或全局光滑性证明。</p>
+        </section>
+
+        <section id="next"><div class="section-no">15 / Next gate</div><h2>R0.72U：先证明参数自由模型的 cutoff observability</h2>
+          <p>下一节检查能否对任意 interval center \(S_0\) 以统一常数证明</p>
+          <div class="equation result">\[\|\chi u\|_{L^2_SL^2_X}\le C\left[\|\partial_X(\chi u)\|_{L^2_SL^2_X}+\|(\partial_S-i\sigma H_3)(\chi u)\|_{L^2_SH^{-1}_X}\right].\]</div>
+          <p>还须用 endpoint control 把它升级为 evolving solutions 的 block contraction。只有这两步闭合后，才进入 periodic transfer。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">16 / Reproduction</div><h2>报告、文献边界、独立审计、证书与正式附图</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072t_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072t_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072t_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072t_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072t">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072t-a2-spacetime-model/fig-r072t-a2-spacetime-model">正式附图包</a> · <a href="/notes/r0-72t.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72t.html">累计回顾</a> · <a href="/recap-r0-61-r0-72t.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72T · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

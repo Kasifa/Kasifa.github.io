@@ -1,0 +1,6 @@
+SOURCE_COMMIT=$(python3 -c 'import json; print(json.load(open("research/certificates/r072t/manifest.json"))["sourceCommit"])')
+CERTIFICATE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072t/validate_certificate.py --require-formal
+python3 scripts/generate_r072t_figure.py --formal --visual-inspected --source-commit "$SOURCE_COMMIT" --certificate-commit "$CERTIFICATE_COMMIT"
+python3 figures/r072t-a2-spacetime-model/fig-r072t-a2-spacetime-model/validate.py --require-formal
+python3 research/validate_figure_package.py figures/r072t-a2-spacetime-model/fig-r072t-a2-spacetime-model

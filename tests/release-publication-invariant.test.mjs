@@ -407,8 +407,8 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(archive.contractStart, "r070a");
   assert.equal(archive.latestPublishedRelease, releases.at(-1));
   assert.deepEqual(archive.publishedReleases, releases);
-  assert.equal(archive.publishedReleaseCount, 59);
-  assert.equal(archive.formalSealedReleaseCount, 35);
+  assert.equal(archive.publishedReleaseCount, 60);
+  assert.equal(archive.formalSealedReleaseCount, 36);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
 
   const formal = archive.formalSealedReleases;
@@ -454,6 +454,7 @@ test("separates the published inventory from the formal-sealed archive", async (
   );
   assert.ok(formal.includes("r072f"), "R0.72F must remain formal-sealed");
   assert.ok(formal.includes("r072g"), "R0.72G must be formal-sealed");
+  assert.ok(formal.includes("r072h"), "R0.72H must be formal-sealed");
 
   const explanatory = archive.legacyFormalFigureBacklog.filter(
     (row) => row.archiveState === "explanatory-package",

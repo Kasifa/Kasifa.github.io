@@ -579,7 +579,7 @@ def main() -> None:
                 ),
             )
     ax.set_xlim(0.0, math.pi / 2.0)
-    ax.set_ylim(-0.28, 0.57)
+    ax.set_ylim(-0.28, 0.78)
     ax.set_xticks(
         [0.0, math.pi / 12.0, math.pi / 6.0, math.pi / 2.0],
         ["0", r"$\pi/12$", r"$\pi/6$", r"$\pi/2$"],

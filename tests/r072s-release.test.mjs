@@ -1,11 +1,9 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { access, readFile, readdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { promisify } from "node:util";
 import {
   collectSiteStrings,
   extractProtectedTokens,
@@ -13,9 +11,6 @@ import {
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const publicRoot = resolve(root, "public");
-const python = process.env.CODEX_PYTHON ||
-  "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3";
-const execFileAsync = promisify(execFile);
 
 async function text(relative) {
   return readFile(resolve(root, relative), "utf8");
@@ -33,20 +28,23 @@ async function absent(relative) {
 }
 
 async function inspectPdf(relative) {
-  const script = [
-    "import json,sys",
-    "from pypdf import PdfReader",
-    "reader=PdfReader(sys.argv[1])",
-    "text='\\n'.join((page.extract_text() or '') for page in reader.pages)",
-    "metadata=reader.metadata or {}",
-    "print(json.dumps({'pages':len(reader.pages),'title':metadata.get('/Title') or '', 'text':text}, ensure_ascii=False))",
-  ].join(";");
-  const { stdout } = await execFileAsync(
-    python,
-    ["-c", script, resolve(root, relative)],
-    { cwd: root, maxBuffer: 16 * 1024 * 1024 },
-  );
-  return JSON.parse(stdout);
+  const pdf = await readFile(resolve(root, relative));
+  const source = pdf.toString("latin1");
+  const pages = [...source.matchAll(/\/Type\s*\/Page\b/g)].length;
+  const titleHex = source.match(/\/Title\s*<([0-9a-f]+)>/i)?.[1];
+  assert.ok(titleHex, `${relative}: hexadecimal PDF title metadata`);
+  const titleBytes = Buffer.from(titleHex, "hex");
+  let title;
+  if (titleBytes[0] === 0xfe && titleBytes[1] === 0xff) {
+    const codeUnits = [];
+    for (let index = 2; index + 1 < titleBytes.length; index += 2) {
+      codeUnits.push(titleBytes.readUInt16BE(index));
+    }
+    title = String.fromCharCode(...codeUnits);
+  } else {
+    title = titleBytes.toString("latin1");
+  }
+  return { pages, title };
 }
 
 async function verifyFlatHashLedger(directory) {
@@ -275,8 +273,8 @@ test("keeps S artifacts absent at source stage and synchronizes HTML, PDF, and f
       `${label} PDF page count ${inspected.pages} is implausible`);
     for (const token of versionTokens) {
       assert.ok(
-        inspected.title.includes(token) || inspected.text.includes(token),
-        `${label} PDF must expose ${token} in metadata or extractable text`,
+        inspected.title.includes(token),
+        `${label} PDF title metadata must expose ${token}`,
       );
     }
   }

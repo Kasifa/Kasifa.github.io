@@ -589,7 +589,7 @@ def main() -> None:
     ax.legend(loc="lower right", frameon=False, fontsize=5.35, handlelength=1.45)
     panel_title(
         ax, "C", "Fixed-M analytic margins",
-        r"$\mu=(\sqrt3-1)/2$; formal $W$: $(C_0,C_1)=(81,36)$", config
+        r"$\mu=(\sqrt{3}-1)/2$; formal $W$: $(C_0,C_1)=(81,36)$", config
     )
 
     fig.text(0.062, 0.952, "PHASE-ROBUST MORSE SHAPE · EXACT CONTRACT",

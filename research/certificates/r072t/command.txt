@@ -1,0 +1,4 @@
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072t/independent_recompute.py
+python3 research/certificates/r072t/generate_certificate.py --formal --source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072t/validate_certificate.py --require-formal

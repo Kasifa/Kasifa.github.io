@@ -591,7 +591,7 @@ def main() -> None:
         r_value=fixed_r_c,
         p_value=1.0,
     )
-    ax.set_xlabel(r"coherence parameter $p=\sqrt N/B$", fontsize=7.4)
+    ax.set_xlabel(r"coherence parameter $p=\sqrt{N}/B$", fontsize=7.4)
     ax.set_ylabel(r"conditional ED window scale", fontsize=7.4)
     ax.legend(loc="upper left", frameon=False, fontsize=6.15, handlelength=2.0, labelspacing=0.3)
     panel_title(

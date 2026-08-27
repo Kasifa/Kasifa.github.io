@@ -2,13 +2,14 @@
 
 **Date:** 2026-08-28
 
-**Status:** a quantitative two-critical-point theorem, physical shape contract,
-and family-uniform enhanced-dissipation corollary for an explicit compact
-polydisc in the complex \(1{:}2{:}3\) coefficient space.  The whole initial
-polydisc lies strictly outside the sufficient coefficient cone used in
-R0.72Q.  The complete four-dimensional caustic stratification is not claimed.
-The result remains inside the triangular 2.5D Navier--Stokes class and is not
-a regularity theorem for general three-dimensional Navier--Stokes.
+**Status:** for every coefficient pair in the explicit compact polydisc, the
+normalized heat path has exactly two critical points for every \(y\ge0\).  On
+the declared physical cell \(0\le y\le1\), the shear has a uniform shape
+contract and the fixed commensurate \(1{:}2{:}3\) triangular affine-row
+reduction has a family-uniform enhanced-dissipation corollary.  The initial
+polydisc lies strictly outside the R0.72Q sufficient cone.  No complete
+four-dimensional caustic stratification or general three-dimensional
+Navier--Stokes theorem is claimed.
 
 **Keywords:** Navier--Stokes regularity, enhanced dissipation, trigonometric
 polynomial, caustic, Morse shear, complex harmonic coefficients, moving
@@ -75,8 +76,8 @@ Nevertheless, uniformly for every \((z_2,z_3)\in K\) and every
    \tag{0.5}
    \]
 
-4. the complete affine-row propagator has a coefficient-uniform
-   enhanced-dissipation estimate on \(K\).
+4. the fixed commensurate \(1{:}2{:}3\) triangular affine-row propagator has a
+   coefficient-uniform enhanced-dissipation estimate on \(K\).
 
 There is also a useful separation between a sufficient cone boundary and a
 true caustic.  Along each normalized heat path,
@@ -684,9 +685,10 @@ is not the same as failure of enhanced dissipation.  They do not treat a
 nonautonomous critical-point collision or passage through a wall.
 
 A bounded primary-source search did not locate this explicit four-real-
-dimensional rational polydisc, its full heat-path jet margins, and the
-associated family-uniform time-dependent enhanced-dissipation corollary as
-one result.  This negative search is not a novelty or priority proof.
+dimensional rational polydisc, its normalized jet margins valid for every
+\(y\ge0\), and its fixed-pattern enhanced-dissipation corollary on
+\(0\le y\le1\) as one result.  This negative search is not a novelty or
+priority proof.
 
 ---
 
@@ -723,11 +725,12 @@ caustic decomposition.
 
 1. an explicit compact \(K\subset\mathbb C^2\) with nonempty four-real-
    dimensional interior and \(Q_2(0)\ge14/25>1/2\);
-2. exactly two critical points along every heat path from \(K\);
+2. exactly two critical points along every heat path from \(K\) for every
+   \(y\ge0\);
 3. the physical contract
    \((r,\mathfrak C_0,\mathfrak C_1)=(\pi/48,144,240)\) on \(0\le y\le1\);
-4. a proof-level family-uniform Coble--He corollary for the complete
-   \(1{:}2{:}3\) affine-row superposition;
+4. on \(0\le y\le1\), a proof-level family-uniform Coble--He corollary for
+   the fixed commensurate \(1{:}2{:}3\) triangular affine-row superposition;
 5. exact incidence formulas for the real unit-circle degeneracy wall;
 6. the exact real-coefficient slice and its admissible unit-circle arc.
 
@@ -749,10 +752,11 @@ caustic decomposition.
 The strict mathematical increment over R0.72Q is not the existence of a
 degree-three trigonometric chamber; that topology was already studied by
 Arnol'd.  The increment is an explicit four-real-dimensional compact core
-outside the old weighted-jet cone, together with rational root-localization,
-Hessian, away-gradient, derivative, and slow-time margins that survive the
-entire heat path.  Those margins are strong enough to support the complete
-superposition enhanced-dissipation corollary.
+outside the old weighted-jet cone.  The normalized root-localization,
+Hessian, and away-gradient margins hold for every \(y\ge0\).  After restoring
+the physical heat envelope, the shape contract and the fixed-pattern
+commensurate \(1{:}2{:}3\) triangular affine-row enhanced-dissipation
+corollary are asserted only on \(0\le y\le1\).
 
 This is useful as a quantitative lemma for a paper on special triangular
 mechanisms and as a certified starting point for approaching a caustic wall.

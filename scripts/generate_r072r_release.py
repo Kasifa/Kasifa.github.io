@@ -38,9 +38,9 @@ NOTE_HERO = r'''    <header class="hero"><div class="hero-inner">
       <div>
         <div class="eyebrow">研究笔记 R0.72R · FOUR-REAL-DIMENSIONAL CORE · BEYOND THE OLD CONE</div>
         <h1>旧加权锥不是 caustic；<br>一个四实维紧致安全核已经越过它</h1>
-        <p class="lead">在 complex 1:2:3 coefficient space 中，显式 polydisc \(K=\{|z_2-3/20|\le1/100,\ |z_3|\le1/1000\}\) 的全部初始 profile 都满足 \(Q_2(0)\ge14/25>1/2\)，却沿整个声明热路径始终恰有两个临界点。实际 shear 在 \(0\le y\le1\) 具有统一 \((r,\mathfrak C_0,\mathfrak C_1)=(\pi/48,144,240)\)；同一 cell window 上得到系数一致的 full-superposition enhanced-dissipation corollary。</p>
+        <p class="lead">在 complex 1:2:3 coefficient space 中，显式 polydisc \(K=\{|z_2-3/20|\le1/100,\ |z_3|\le1/1000\}\) 的全部初始 profile 都满足 \(Q_2(0)\ge14/25>1/2\)，却沿整个声明热路径始终恰有两个临界点。实际 shear 在 \(0\le y\le1\) 具有统一 \((r,\mathfrak C_0,\mathfrak C_1)=(\pi/48,144,240)\)；同一 cell window 上，固定 commensurate 1:2:3 triangular affine-row propagator 得到系数一致的 full-superposition enhanced-dissipation corollary。</p>
       </div>
-      <div class="stamp"><span class="state">状态 · R0.72R 四实维 caustic-free core 完成</span><strong>explicit compact core beyond the old cone: CLOSED</strong><p>版本 v0.72R · 2026-08-28</p><p>four-real-dimensional compact polydisc: CLOSED</p><p>strict exit margin \(Q_2(0)-1/2\ge3/50\): CLOSED</p><p>two critical points on the full heat path: CLOSED</p><p>physical \((r,C_0,C_1)=(\pi/48,144,240)\): CLOSED</p><p>complete four-dimensional caustic stratification: OPEN</p><p>general 3D / Clay problem: OPEN</p></div>
+      <div class="stamp"><span class="state">状态 · R0.72R 四实维 caustic-free core 完成</span><strong>explicit compact core beyond the old cone: CLOSED</strong><p>版本 v0.72R · 2026-08-28</p><p>four-real-dimensional compact polydisc: CLOSED</p><p>strict exit margin \(Q_2(0)-1/2\ge3/50\): CLOSED</p><p>two critical points on the full heat path: CLOSED</p><p>physical \((r,C_0,C_1)=(\pi/48,144,240)\) on \(0\le y\le1\): CLOSED</p><p>complete four-dimensional caustic stratification: OPEN</p><p>general 3D / Clay problem: OPEN</p></div>
     </div></header>'''
 
 
@@ -124,7 +124,7 @@ NOTE_ARTICLE = r"""      <article>
 
         <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>Arnol'd 已给一般 caustic 与 degree-three chamber 拓扑；本站只主张定量安全核</h2>
           <p><a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry；<a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8">Arnol'd (1997)</a> 已研究 maximal-real-critical degree-three regions 的拓扑。存在 degree-three chamber 不是本站的新发现。</p>
-          <p><a href="https://doi.org/10.1016/j.aim.2023.109275">Voorhaar</a> 给出 Laurent-polynomial Morse discriminant 的复代数背景；<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 给出时变非退化 shear 的半群输入。限定一手检索没有定位到这里的精确 rational polydisc、全热路径 margins 与 family-uniform ED corollary 的组合陈述；这不构成新颖性或优先权证明。</p>
+          <p><a href="https://doi.org/10.1016/j.aim.2023.109275">Voorhaar</a> 给出 Laurent-polynomial Morse discriminant 的复代数背景；<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 给出时变非退化 shear 的半群输入。限定一手检索没有定位到这里的精确 rational polydisc、对所有 \(y\ge0\) 的 normalized root-localization margins 与 \(0\le y\le1\) 上 fixed-pattern ED corollary 的组合陈述；这不构成新颖性或优先权证明。</p>
         </section>
 
         <section id="figure"><div class="section-no">10 / Journal figure</div><h2>正式附图在实系数切片上区分旧充分锥、\(K\) 的实迹与真实 unit-circle caustic</h2>
@@ -133,7 +133,7 @@ NOTE_ARTICLE = r"""      <article>
         </section>
 
         <section id="value"><div class="section-no">11 / Research value</div><h2>这是从 phase-uniform 内锥到显式非锥安全核的严格扩张</h2>
-          <p>在本站这条研究路线中，R0.72R 给出一个整体处于旧 jet-safety cone 外、却具有统一 root localization、shape margins、heat-path ledger 与完整传播推论的四实维系数集。它可作为特殊 triangular mechanism 论文中的定量 lemma，也为逼近真实 caustic 提供有证书的起点。</p>
+          <p>在本站这条研究路线中，R0.72R 给出一个整体处于旧 jet-safety cone 外的四实维系数集：对所有 \(y\ge0\) 具有统一 root localization；在 \(0\le y\le1\) 上具有 physical shape margins、heat-path ledger 与 fixed-pattern commensurate 1:2:3 triangular affine-row full-superposition ED corollary。它可作为特殊 triangular mechanism 论文中的定量 lemma，也为逼近真实 caustic 提供有证书的起点。</p>
           <p>对 Clay 问题的直接价值仍低：第一谐波归一化、有限 commensurate pattern、affine-row invariance、triangular 2.5D reduction 与非退化 critical-point 条件仍远离任意三维初值。</p>
         </section>
 
@@ -319,7 +319,7 @@ def build_recap() -> None:
     retained = r'''            <li>R0.72R 的 four-real-dimensional caustic-free core：整个 \(K\) 严格位于旧 \(Q_2\le1/2\) 充分锥外，沿声明热路径对所有 \(y\ge0\) 仍恰有两个临界点；在 \(0\le y\le1\) 上，物理 shear 具有 shape constants \((\pi/48,144,240)\)，且声明的 fixed-pattern commensurate 1:2:3 triangular affine-row propagator 具有 coefficient-uniform ED corollary。</li>
 '''
     html = once(html, "          </ul>\n          <p>这些结果可以分别整理成", retained + "          </ul>\n          <p>这些结果可以分别整理成", "R recap retained")
-    html = section(html, r'        <section id="value">.*?</section>', r'''        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>旧安全锥已被严格越过，真实 caustic wall 仍是下一道边界</h2><p>截至 R0.72R，没有一般三维 continuation criterion，也没有证明有限时破裂或全局光滑性；不能把 108 个节点或 70 个公开版本解释成 Clay 问题完成比例。</p><p>新的严格增量是一个非空四实维紧致系数核：它整体位于 R0.72Q 加权锥外，具有 \(y\ge0\) 的全热路径 root localization，并在 \(0\le y\le1\) 具有物理 shape contract 和 family-uniform ED。</p></section>''', "R recap value")
+    html = section(html, r'        <section id="value">.*?</section>', r'''        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>旧安全锥已被严格越过，真实 caustic wall 仍是下一道边界</h2><p>截至 R0.72R，没有一般三维 continuation criterion，也没有证明有限时破裂或全局光滑性；不能把 108 个节点或 70 个公开版本解释成 Clay 问题完成比例。</p><p>新的严格增量是一个非空四实维紧致系数核：它整体位于 R0.72Q 加权锥外，具有 \(y\ge0\) 的全热路径 root localization，并在 \(0\le y\le1\) 具有物理 shape contract 和 fixed-pattern commensurate 1:2:3 triangular affine-row family-uniform ED。</p></section>''', "R recap value")
     html = section(html, r'        <section id="next">.*?</section>', r'''        <section id="next"><div class="section-no">05 / 下一步</div><h2>R0.72S 从安全核推进到声明的 caustic stratum</h2><p>先在明确紧系数盒上分离 generic \(A_2\)、\(A_3\) 与更高余维 strata，再研究一条逼近或穿越指定 wall 的热路径。</p></section>''', "R recap next")
     html = section(html, r'        <section id="claims">.*?</section>', r'''        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>公开、完整封存与问题解决继续分开计数</h2><p>R0.70A–R0.72R 的 70 节已公开；46 节按当前 formal-figure 合同完整封存；24 节旧档仍待回补。</p><p>R0.72R 证明的是固定 first harmonic、commensurate 1:2:3、triangular affine-row class 中的显式 caustic-free compact core，不是整个 \(\mathbb C^2\) coefficient space 的 chamber classification。caustic crossing、任意时变相位、增长 carrier ceiling 与 Clay 正式问题保持开放。</p></section>''', "R recap claims")
     html = section(html, r'        <section id="reproduce">.*?</section>', r'''        <section id="reproduce"><div class="section-no">07 / 原始资料</div><h2>逐节笔记、证书、正式附图和历史回顾</h2><p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-72q.html">保留 R0.72Q 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-72r.html">打开最新节点 R0.72R</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072r">查看 R0.72R 精确证书</a> · <a href="/assets/r072r/fig-r072r-caustic-free-core.pdf">下载期刊附图</a> · <a href="/recap-r0-61-r0-72r.pdf">下载同步 PDF</a> · <a href="/recap-r0-61-r0-72q.pdf">上一版累计回顾 PDF</a></p><p>完整节点索引保留 R0.69W、R0.70A 以后每个公开版本及其原始编号；状态标签只描述证据类型。</p></section>''', "R recap reproduce")
@@ -360,14 +360,14 @@ def update_home() -> None:
     html = section(html, r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>', '<div class="summary-item"><strong>我目前关注</strong><span>R0.72R 已闭合旧 Q2≤1/2 锥外的四实维 caustic-free core；下一关是指定 caustic stratum 的逼近或穿越。</span></div>', "R home focus")
     link_q = '<a class="milestone" href="/notes/r0-72q.html">R0.72Q</a>'
     html = once(html, link_q, link_q + '\n                  <a class="milestone" href="/notes/r0-72r.html">R0.72R</a>', "R home route link")
-    route_r = r'''              <p>R0.72R 严格离开旧加权锥：显式四实维 polydisc 整体满足 \(Q_2(0)\ge14/25>1/2\)，沿声明热路径对所有 \(y\ge0\) 保持恰好两个临界点；物理 shape constants \((\pi/48,144,240)\) 与 family-uniform ED 只在 \(0\le y\le1\) 的 cell window 使用。每条路径穿过 \(Q_2=1/2\) 时仍统一非退化；旧边界因此不是 caustic。这里只证明 caustic-free compact core，不作完整四维 chamber 分类。</p>
+    route_r = r'''              <p>R0.72R 严格离开旧加权锥：显式四实维 polydisc 整体满足 \(Q_2(0)\ge14/25>1/2\)，沿声明热路径对所有 \(y\ge0\) 保持恰好两个临界点；物理 shape constants \((\pi/48,144,240)\) 与 fixed-pattern commensurate 1:2:3 triangular affine-row family-uniform ED 只在 \(0\le y\le1\) 的 cell window 使用。每条路径穿过 \(Q_2=1/2\) 时仍统一非退化；旧边界因此不是 caustic。这里只证明 caustic-free compact core，不作完整四维 chamber 分类。</p>
 '''
     html = once(html, '              <details class="tree-notes" open>', route_r + '              <details class="tree-notes" open>', "R home route summary")
     html = section(html, r'            <article class="tree-node next">.*?</article>', HOME_NEXT, "R home next")
     recap = r'''          <div class="task-one" id="post-r060-recap" style="margin-top:2rem">
             <p class="eyebrow">累计回顾 R0.61–R0.72R · 2026-08-28</p>
             <h3>R0.60 recap 之后的累计回顾收录 108 个节点；全站现有 168 篇公开研究笔记</h3>
-            <p>累计回顾保持二十八个问题阶段，并给出 R0.61–R0.72R 的完整逐节点索引。R0.72R 给出旧加权锥外的四实维 caustic-free core、对所有 \(y\ge0\) 的全热路径 root localization，以及 \(0\le y\le1\) 上的物理 shape contract 与 coefficient-uniform full-superposition ED。</p>
+            <p>累计回顾保持二十八个问题阶段，并给出 R0.61–R0.72R 的完整逐节点索引。R0.72R 给出旧加权锥外的四实维 caustic-free core、对所有 \(y\ge0\) 的全热路径 root localization，以及 \(0\le y\le1\) 上的物理 shape contract 与 fixed-pattern commensurate 1:2:3 triangular affine-row coefficient-uniform full-superposition ED。</p>
             <p>R0.70A–R0.72R 共 70 个版本已公开；46 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单。</p>
             <p><strong>阶段判断：</strong>&nbsp;旧充分锥已被越过；完整四维 caustic stratification、wall crossing 与一般三维问题仍开放。</p>
             <p><a href="/recap-r0-61-r0-72r.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · <a href="/recap-r0-61-r0-72r.pdf">下载同步 PDF</a></p>
@@ -399,7 +399,7 @@ def update_literature() -> None:
     ):
         html = required(html, old, new, f"R literature {old}")
     overview_old = r'''R0.72O 将该 cubic 回填物理账本，得到 \(\varepsilon^{11/6}\) numerator 与 \(R^{4/3}L_{R,\varepsilon}^2\) window；多载波只在带统一常数的 full-superposition ED 假设下条件成立。一般 Navier–Stokes 正则性仍开放。'''
-    overview_new = r'''R0.72O 将该 cubic 回填物理账本，得到 \(\varepsilon^{11/6}\) numerator 与 \(R^{4/3}L_{R,\varepsilon}^2\) window；多载波只在带统一常数的 full-superposition ED 假设下条件成立。R0.72P 在 fixed real-collinear static-phase 1:2 正类上关闭完整传播门，R0.72Q 再证明 fixed-\(M\)、arbitrary-static-phase、\(Q_2\le1/2\) 的 two-critical-point shape gate，并给出精确 1:2 caustic。R0.72R 构造整体位于旧加权锥外的四实维 rational polydisc，闭合对所有 \(y\ge0\) 的全热路径 root localization，并在 \(0\le y\le1\) 闭合物理 \((\pi/48,144,240)\) shape contract 与 coefficient-uniform 1:2:3 enhanced dissipation；完整四维 caustic stratification 未完成。一般 Navier–Stokes 正则性仍开放。'''
+    overview_new = r'''R0.72O 将该 cubic 回填物理账本，得到 \(\varepsilon^{11/6}\) numerator 与 \(R^{4/3}L_{R,\varepsilon}^2\) window；多载波只在带统一常数的 full-superposition ED 假设下条件成立。R0.72P 在 fixed real-collinear static-phase 1:2 正类上关闭完整传播门，R0.72Q 再证明 fixed-\(M\)、arbitrary-static-phase、\(Q_2\le1/2\) 的 two-critical-point shape gate，并给出精确 1:2 caustic。R0.72R 构造整体位于旧加权锥外的四实维 rational polydisc，闭合对所有 \(y\ge0\) 的全热路径 root localization，并在 \(0\le y\le1\) 闭合物理 \((\pi/48,144,240)\) shape contract 与 coefficient-uniform fixed-pattern commensurate 1:2:3 triangular affine-row enhanced dissipation；完整四维 caustic stratification 未完成。一般 Navier–Stokes 正则性仍开放。'''
     html = once(html, overview_old, overview_new, "R literature route overview")
     old_open = '<div class="route-step pause"><header><b>开放接口 · R0.72R</b><strong>leave the dominant-first-harmonic cone</strong></header><p>研究受控 1:2:3 caustic 或逼近退化墙的 profile，定位 uniform shape contract 的新边界。</p></div>'
     new_steps = r'''<div class="route-step closed"><header><b>R0.72R</b><strong>four-real-dimensional caustic-free core beyond the old cone</strong></header><p>显式 rational polydisc 整体满足 \(Q_2(0)\ge14/25>1/2\)，沿热路径对所有 \(y\ge0\) 保持两个临界点；在 \(0\le y\le1\) 的 cell window 内具有 physical shape constants \((\pi/48,144,240)\)。旧锥 crossing 不是 caustic。<a href="/notes/r0-72r.html">研究笔记</a> <a href="/recap-r0-61-r0-72r.html">当前累计回顾</a> <a href="#r072r-boundary">方法边界</a></p></div>
@@ -411,7 +411,7 @@ def update_literature() -> None:
           <p><a href="https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8">Arnol'd (1997)</a> 已研究实三角多项式 maximal-real-critical regions 的拓扑，degree three 的这类区域并非本站新发现。<a href="https://doi.org/10.1070/RM2001v056n06ABEH000452">Arnol'd (2001)</a> 给出 \(A\cos\phi+B\sin\phi+g(\phi)\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及可支持热路径 ED 的统一 margins。</p>
           <p><a href="https://doi.org/10.1016/j.aim.2023.109275">Voorhaar</a> 研究 univariate Laurent polynomial 的 caustic 与 Morse discriminant；complex discriminant 不能替代本站的 real self-inversive unit-circle incidence。<a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 提供时变非退化 shear 的 semigroup input；polydisc、共同 shape constants 与 heat-path ledger 是本站供给的 family-uniform inputs。</p>
           <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1016/j.jfa.2022.109522">Albritton–Beekie–Novack</a> 给出 stationary degenerate critical points 的较慢 ED benchmarks；它们不等价于非自治 caustic crossing theorem，也说明 caustic 不是 ED 失败墙。</p>
-          <div class="boundary"><strong>R0.72R 的主张边界</strong><p>证明的是 \(K\subset\mathbb C^2\cong\mathbb R^4\) 位于一个 nondegenerate complement component 内的 compact core；complement component 本身是开集，不能把 \(K\) 称为完整紧致胞腔。没有完成整个四维 caustic 的 \(A_2/A_3\) stratification、全部 component count、\(K\) 的最大性或 wall-crossing ED。限定一手检索没有定位到该精确 polydisc 与全热路径定量组合，但不构成新颖性或优先权证明。</p></div>'''
+          <div class="boundary"><strong>R0.72R 的主张边界</strong><p>证明的是 \(K\subset\mathbb C^2\cong\mathbb R^4\) 位于一个 nondegenerate complement component 内的 compact core；complement component 本身是开集，不能把 \(K\) 称为完整紧致胞腔。临界点计数对所有 \(y\ge0\) 成立；physical shape contract 与 fixed-pattern commensurate 1:2:3 triangular affine-row ED 只在 \(0\le y\le1\) 的 cell window 使用。没有完成整个四维 caustic 的 \(A_2/A_3\) stratification、全部 component count、\(K\) 的最大性或 wall-crossing ED。限定一手检索没有定位到该精确 polydisc 与全热路径定量组合，但不构成新颖性或优先权证明。</p></div>'''
     match = re.search(r'(<h3 id="r072q-boundary">.*?<div class="boundary">.*?</div>)', html, flags=re.S)
     if match is None:
         raise RuntimeError("R literature boundary: expected one R0.72Q boundary")

@@ -23,10 +23,12 @@ The defensible R0.72R increment is narrower: an explicit rational polydisc
 \]
 
 in the fixed-first-harmonic four-real-dimensional coefficient slice, together
-with quantitative root localization, Hessian and away-gradient margins,
-derivative budgets, a certified heat path, and a family-uniform
-time-dependent enhanced-dissipation corollary.  The whole initial polydisc
-satisfies \(Q_2>1/2\), so it lies outside the sufficient cone of R0.72Q.
+with quantitative normalized root localization for every \(y\ge0\).  On the
+declared physical cell \(0\le y\le1\), it also supplies shape and derivative
+budgets plus a family-uniform enhanced-dissipation corollary for the fixed
+commensurate \(1{:}2{:}3\) triangular affine-row reduction.  The whole initial
+polydisc satisfies \(Q_2>1/2\), so it lies outside the sufficient cone of
+R0.72Q.
 
 ## 2. Primary-source overlap matrix
 
@@ -35,7 +37,7 @@ satisfies \(Q_2>1/2\), so it lies outside the sufficient cone of R0.72Q.
 | Periodic-function caustics | V. I. Arnol'd, *Astroidal Geometry of Hypocycloids and the Hessian Topology of Hyperbolic Polynomials*, RMS 56 (2001), [DOI](https://doi.org/10.1070/RM2001v056n06ABEH000452) | For \(G=A\cos\phi+B\sin\phi+g(\phi)\), solves \(G'=G''=0\) as a caustic parameterization and studies generic cusps | The fixed-first-harmonic \((z_2,z_3)\in\mathbb C^2\) coordinate slice, the explicit polydisc, rational margins, and heat path |
 | Degree-three real chamber topology | V. I. Arnol'd, *Topological Classification of Real Trigonometric Polynomials and Cyclic Serpents Polyhedron*, 1997, [chapter record](https://link.springer.com/chapter/10.1007/978-1-4612-4122-5_8) | Describes proper M-polynomial regions through cyclic-serpent polyhedra; for degree three the maximal region has the known product-of-simplices topology | No claim of discovering that chamber; R0.72R supplies one quantitative compact core and a dynamic certificate |
 | Laurent-polynomial caustic and Morse discriminant | A. Voorhaar, *The Newton Polytope of the Morse Discriminant of a Univariate Polynomial*, Adv. Math. 432 (2023), [DOI](https://doi.org/10.1016/j.aim.2023.109275) | Defines the caustic and studies its complex Newton-polytope structure | A complex resultant is not the real self-inversive unit-circle condition; the real incidence and margins are derived here |
-| Time-dependent nondegenerate shear ED | D. Coble and S. He, *A Note on Enhanced Dissipation of Time-Dependent Shear Flows*, CMS 22 (2024), [DOI](https://doi.org/10.4310/CMS.2024.v22.n6.a10) | Theorem 1.2 and Appendix A give \(\eta^{1/2}\)-scale decay under slow motion and uniform nondegenerate shape hypotheses | R0.72R verifies one common set of hypotheses over the full polydisc; the family statement is a proof-level extraction, not a verbatim theorem |
+| Time-dependent nondegenerate shear ED | D. Coble and S. He, *A Note on Enhanced Dissipation of Time-Dependent Shear Flows*, CMS 22 (2024), [DOI](https://doi.org/10.4310/CMS.2024.v22.n6.a10) | Theorem 1.2 and Appendix A give \(\eta^{1/2}\)-scale decay under slow motion and uniform nondegenerate shape hypotheses | On \(0\le y\le1\), R0.72R verifies one common set of hypotheses over the full polydisc for the fixed commensurate \(1{:}2{:}3\) triangular affine-row reduction; the family statement is a proof-level extraction, not a verbatim theorem |
 | Stationary degenerate shear ED | J. Bedrossian and M. Coti Zelati, ARMA 224 (2017), [DOI](https://doi.org/10.1007/s00205-017-1099-y) | Degeneracy-dependent stationary enhanced-dissipation scale, originally with logarithmic loss | Does not treat nonautonomous crossing of a caustic |
 | Sharp stationary finite-type scale | D. Albritton, R. Beekie, and M. Novack, JFA 283 (2022), [DOI](https://doi.org/10.1016/j.jfa.2022.109522) | Removes the logarithmic loss and gives the finite-type benchmark | Supplies the next-gate benchmark, not the present time-dependent family theorem |
 
@@ -79,7 +81,9 @@ separate transversality and self-intersection analysis.
 
 Coble--He's hypotheses exclude the collision of critical points because they
 require a fixed number of nondegenerate critical points and uniform local and
-away-from-critical geometry.  R0.72R stays uniformly inside those hypotheses.
+away-from-critical geometry.  On \(0\le y\le1\), R0.72R stays uniformly inside
+those hypotheses for the fixed commensurate \(1{:}2{:}3\) triangular affine-row
+reduction.
 
 The stationary literature shows that degeneracy changes the decay scale; it
 does not show that enhanced dissipation disappears.  Therefore the caustic
@@ -90,6 +94,6 @@ enhanced-dissipation failure wall.
 
 The search covered the primary sources above, their stated theorems, and the
 caustic/Morse-discriminant terminology.  It did not locate the exact R0.72R
-polydisc with its rational margins and full heat-path Coble--He extraction.
-That absence is a limited search result, not proof of global novelty.
-
+polydisc with its normalized margins for every \(y\ge0\) and its fixed-pattern
+Coble--He extraction on \(0\le y\le1\).  That absence is a limited search
+result, not proof of global novelty.

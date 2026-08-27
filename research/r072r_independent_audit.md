@@ -2,10 +2,11 @@
 
 **Date:** 2026-08-28
 
-**Status:** PASS for the declared compact polydisc, two-critical-point theorem,
-physical shape constants, slow-time ledger, and exact incidence formulas.
-The complete four-dimensional caustic decomposition is not part of this
-audit.
+**Status:** PASS for the declared compact polydisc, the two-critical-point
+theorem for every \(y\ge0\), physical shape constants on \(0\le y\le1\), the
+slow-time ledger, and exact incidence formulas.  The fixed-pattern
+enhanced-dissipation corollary uses the same physical cell.  The complete
+four-dimensional caustic decomposition is not part of this audit.
 
 ## 1. Coefficient domain and cone exit
 
@@ -161,4 +162,3 @@ polydisc, a caustic-crossing theorem, arbitrary time-dependent phases,
 growing carrier uniformity, or three-dimensional Navier--Stokes regularity.
 The finite machine certificate planned for release audits only the exact
 algebraic ledger; the continuum proof remains the analytic argument above.
-

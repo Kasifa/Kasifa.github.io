@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "audit": "R0.72O producer physical-reinsertion audit",
+  "status": "passed",
+  "checks": {
+    "exactExponentLedgerPassed": true,
+    "allDegeneracyCasesPassed": true,
+    "allScreenCasesPassed": true,
+    "oneCarrierExponentIsElevenSixths": true,
+    "generalPResultMarkedConditional": true,
+    "multiCarrierCrossTermScaleRetainsN2": true,
+    "epsilonOneEqualityHandled": true
+  },
+  "ledger": {
+    "actual": {
+      "U0": {
+        "epsilon": "4/3",
+        "p": "4/3"
+      },
+      "UED": {
+        "epsilon": "11/6",
+        "p": "4/3"
+      },
+      "UEDOneCarrier": {
+        "epsilon": "11/6"
+      },
+      "HED": {
+        "R": "-1/1",
+        "epsilon": "3/2",
+        "p": "1/1"
+      },
+      "ZStrong": {
+        "L": "1/1",
+        "R": "2/3",
+        "epsilon": "4/3",
+        "p": "2/1"
+      },
+      "UEDOverZ": {
+        "L": "-1/1",
+        "R": "-2/3",
+        "epsilon": "1/2",
+        "p": "-2/3"
+      },
+      "FullSuperpositionCrossCubic": {
+        "N": "2/1",
+        "a": "2/1",
+        "epsilon": "1/2"
+      }
+    },
+    "expected": {
+      "U0": {
+        "epsilon": "4/3",
+        "p": "4/3"
+      },
+      "UED": {
+        "epsilon": "11/6",
+        "p": "4/3"
+      },
+      "UEDOneCarrier": {
+        "epsilon": "11/6"
+      },
+      "HED": {
+        "R": "-1/1",
+        "epsilon": "3/2",
+        "p": "1/1"
+      },
+      "ZStrong": {
+        "L": "1/1",
+        "R": "2/3",
+        "epsilon": "4/3",
+        "p": "2/1"
+      },
+      "UEDOverZ": {
+        "L": "-1/1",
+        "R": "-2/3",
+        "epsilon": "1/2",
+        "p": "-2/3"
+      },
+      "FullSuperpositionCrossCubic": {
+        "N": "2/1",
+        "a": "2/1",
+        "epsilon": "1/2"
+      }
+    },
+    "exactExponentLedgerPassed": true,
+    "generalExponentTransfers": [
+      {
+        "name": "raw",
+        "alpha": "1/1",
+        "beta": "0/1",
+        "normalizedNumerator": {
+          "epsilon": "7/3",
+          "p": "4/3"
+        },
+        "relativeToLocalFloor": {
+          "L": "-1/1",
+          "R": "-2/3",
+          "epsilon": "1/1",
+          "p": "-2/3"
+        }
+      },
+      {
+        "name": "enhancedDissipation",
+        "alpha": "1/2",
+        "beta": "0/1",
+        "normalizedNumerator": {
+          "epsilon": "11/6",
+          "p": "4/3"
+        },
+        "relativeToLocalFloor": {
+          "L": "-1/1",
+          "R": "-2/3",
+          "epsilon": "1/2",
+          "p": "-2/3"
+        }
+      },
+      {
+        "name": "criticalLogTarget",
+        "alpha": "0/1",
+        "beta": "1/1",
+        "normalizedNumerator": {
+          "L": "1/1",
+          "epsilon": "4/3",
+          "p": "4/3"
+        },
+        "relativeToLocalFloor": {
+          "R": "-2/3",
+          "p": "-2/3"
+        }
+      }
+    ],
+    "claimContract": {
+      "multiCarrierStatus": "conditional",
+      "requiredHypothesis": "uniform full-superposition integrated ED",
+      "constantsUniformOver": [
+        "N",
+        "p",
+        "R",
+        "epsilon",
+        "declared geometry family"
+      ]
+    }
+  },
+  "degeneracyCases": 4,
+  "screenCases": 24,
+  "elapsedSeconds": 0.011259542021434754,
+  "maxRssMb": 21.421875,
+  "limitations": "The rational algebra audits the proof ledger. The finite grid is illustrative and does not prove enhanced dissipation, the action floor, or a general Navier-Stokes statement."
+}

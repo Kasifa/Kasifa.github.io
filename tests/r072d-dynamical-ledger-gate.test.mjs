@@ -273,10 +273,10 @@ test("retains R0.72D and its complete post-R0.60 recap", async () => {
       readFile(resolve(publicRoot, "recap-r0-61-r0-72d.pdf")),
     ]);
   for (const [label, html, i18nVersion] of [
-    ["homepage", home, "1.24"],
+    ["homepage", home, "1.25"],
     ["note", note, "1.17"],
     ["recap", recap, "1.17"],
-    ["literature", literature, "1.24"],
+    ["literature", literature, "1.25"],
   ]) {
     assert.ok(
       html.includes(`src="/i18n-en.js?v=${i18nVersion}"`),
@@ -290,15 +290,15 @@ test("retains R0.72D and its complete post-R0.60 recap", async () => {
     );
     assert.doesNotMatch(html, /\t/);
   }
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.24">/);
-  assert.match(home, /<strong>161<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72K<\/strong>最新研究节点/);
-  assert.match(home, /展开 71 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72L/);
-  assert.match(home, /R0\.70A–R0\.72K 共 63 个版本已公开；39 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /二十七个(?:问题)?阶段/);
-  assert.match(home, /累计回顾收录 101 个节点/);
-  assert.match(home, /recap-r0-61-r0-72k\.html/);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.25">/);
+  assert.match(home, /<strong>162<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72L<\/strong>最新研究节点/);
+  assert.match(home, /展开 72 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72M/);
+  assert.match(home, /R0\.70A–R0\.72L 共 64 个版本已公开；40 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /二十八个(?:问题)?阶段/);
+  assert.match(home, /累计回顾收录 102 个节点/);
+  assert.match(home, /recap-r0-61-r0-72l\.html/);
   assert.equal((home.match(/href="\/notes\/r0-72d\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072d"/g) ?? []).length, 1);
   assert.match(note, /PRODUCER · 11\/11 PASS/);
@@ -324,8 +324,8 @@ test("retains R0.72D and its complete post-R0.60 recap", async () => {
     94,
   );
   assert.match(literature, /id="r072d-boundary"/);
-  assert.match(literature, /R0\.69P–R0\.72K/);
-  assert.match(literature, /开放接口 · R0\.72L/);
+  assert.match(literature, /R0\.69P–R0\.72L/);
+  assert.match(literature, /开放接口 · R0\.72M/);
   assert.match(literature, /doi\.org\/10\.1515\/crll\.1988\.390\.79/);
   assert.ok(report.includes("D_M^{1/3}\\le C"));
   assert.match(report, /K_f=c_M\^2K_s/);
@@ -344,31 +344,31 @@ test("locks the current R0.72K manifest while retaining R0.72D", async () => {
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readdir(resolve(publicRoot, "notes")),
   ]);
-  assert.equal(manifest.latestCompletedRelease, "r072k");
-  assert.equal(manifest.siteVersion, "1.24");
-  assert.equal(manifest.publicHtmlNoteCount, 161);
-  assert.equal(manifest.postR060RecapNodeCount, 101);
-  assert.equal(manifest.postR070APublishedReleaseCount, 63);
-  assert.equal(manifest.postR070AFormalSealedReleaseCount, 39);
+  assert.equal(manifest.latestCompletedRelease, "r072l");
+  assert.equal(manifest.siteVersion, "1.25");
+  assert.equal(manifest.publicHtmlNoteCount, 162);
+  assert.equal(manifest.postR060RecapNodeCount, 102);
+  assert.equal(manifest.postR070APublishedReleaseCount, 64);
+  assert.equal(manifest.postR070AFormalSealedReleaseCount, 40);
   assert.equal(manifest.legacyFormalFigureBacklogCount, 24);
-  assert.equal(manifest.nextRelease, "r072l");
+  assert.equal(manifest.nextRelease, "r072m");
   assert.match(
     manifest.completionRule,
     /analytic proof or stated negative result.*formal figure package.*synchronized HTML\/PDF.*publication tests pass/,
   );
   assert.equal(
     manifest.latestReleaseGate,
-    "tests/r072k-directional-root-gate.test.mjs",
+    "tests/r072l-strong-coupling-gate.test.mjs",
   );
-  assert.equal(siteVersion.version, "1.24");
-  assert.equal(siteVersion.latestRelease, "R0.72K");
-  assert.equal(siteVersion.publicHtmlNoteCount, 161);
+  assert.equal(siteVersion.version, "1.25");
+  assert.equal(siteVersion.latestRelease, "R0.72L");
+  assert.equal(siteVersion.publicHtmlNoteCount, 162);
   assert.equal(
     noteFiles.filter((file) => file.endsWith(".html")).length,
-    161,
+    162,
   );
   assert.equal(
     (home.match(/data-release="r0\d{2}[a-z]"/g) ?? []).length,
-    63,
+    64,
   );
 });

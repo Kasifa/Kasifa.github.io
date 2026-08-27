@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72L：保留实际 enstrophy contrast 与 critical-log action，把 complete-root ledger 推进到随 R 增长的 moderate strong-coupling window，并分离 extreme strong remainder。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72L｜小耦合不是真实边界">
+  <meta property="og:description" content="完整 Fourier 格点的中强耦合闭合、局部 action floor 与 Galerkin 非嵌入边界。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072l/fig-r072l-strong-window.png">
+  <title>R0.72L｜小耦合不是真实边界</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.25"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#parameter">参数</a><a href="#ledger">账本</a><a href="#physical">物理量</a><a href="#floor">局部根</a><a href="#window">强耦合窗</a><a href="#galerkin">Galerkin</a><a href="#multiscale">多尺度</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72L · MODERATE STRONG COUPLING · ENSTROPHY-AWARE LEDGER</div>
+        <h1>小耦合不是共同频带的真实边界；<br>极强耦合缺口现在可以准确写出</h1>
+        <p class="lead">我把实际涡量对比 \(K=\mathcal R_Y\) 和实际 critical-log action \(x=\Theta Q_*\) 保留在分母里，并在长度 \((R^2+gB)^{-1}\) 的局部窗口构造精确目标根。完整复根账本因此从 \(gB/R^2\ll1\) 推进到一个随 \(R\) 增长的中强耦合区间。区间上沿只给统一有界；只有 little-o 子区间才给趋零。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72L 定理完成</span><strong>moderate strong coupling closes in the common band</strong><p>版本 v0.72L · 2026-08-27</p><p>coupling-uniform full-lattice upper bound: CLOSED</p><p>local exact root and action floor: CLOSED</p><p>moderate strong window: CLOSED</p><p>extreme strong coupling: OPEN</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 四句判断</a></li><li><a href="#parameter">01 · 强耦合参数</a></li><li><a href="#ledger">02 · 统一账本</a></li><li><a href="#physical">03 · 物理分母</a></li><li><a href="#floor">04 · 局部精确根</a></li><li><a href="#window">05 · 中强耦合窗</a></li><li><a href="#galerkin">06 · Galerkin 边界</a></li><li><a href="#multiscale">07 · 多尺度接口</a></li><li><a href="#audit">08 · 双路审计</a></li><li><a href="#figure">09 · 正式附图</a></li><li><a href="#value">10 · 研究价值</a></li><li><a href="#next">11 · R0.72M</a></li><li><a href="#claims">12 · 主张边界</a></li><li><a href="#reproduce">13 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Four decisions</div><h2>我得到一个真正越过扰动区的窗口，但没有把任意强耦合写成已解决</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · ALL COUPLINGS</strong><p>完整 Fourier 格点上，complete-root ledger 对每个 \(\varepsilon=gB/R^2&gt;0\) 都有一个保留实际 \(K\) 与 \(x\) 的统一上界。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · LOCAL FLOOR</strong><p>对声明的 phase-aligned、row-aligned、exact-corrected 构造族，在 \(\tau=c_*/(R^2+gB)\) 上产生精确根并保留目标行；这个 action floor 允许 common-band global exposure scale \(\varepsilon\) 任意大。</p></div>
+            <div class="verdict-card true"><strong>CLOSED · MODERATE STRONG</strong><p>当 \(1\lesssim\varepsilon\lesssim p^{2/3}R^{2/3}(1+\log R)\) 时，完整物理账本统一有界；little-o 子区间内才趋零。</p></div>
+            <div class="verdict-card false"><strong>OPEN · EXTREME STRONG</strong><p>超过该窗口后，仍缺一个 full-lattice enstrophy/action lower bound 或更强的 cubic mixing estimate。</p></div>
+          </div>
+        </section>
+
+        <section id="parameter"><div class="section-no">01 / Invariant parameter</div><h2>strong coupling 应由 common-band exposure scale 定义</h2>
+          <p>共同频带中的尺度不变量及其单边 exposure 比较是</p>
+          <div class="equation result">\[
+            \varepsilon:=\frac{gB}{R^2},\qquad g=|\delta|a,\qquad
+            |\delta|\int_0^\infty\|V_w(x)\|\,dx\lesssim\varepsilon,
+            \qquad
+            p=\frac{\sqrt N}{B}\in(0,1].
+          \]</div>
+          <p>这里只使用 \(\|V_w(x)\|\) 上界给出的单边比较，不假设反向估计；实际 Duhamel exposure 可以更小。同时改变 shear coefficient 与 \(\delta\) 的表示方式不会改变动力学，所以 bare \(\delta\) 不能定义强耦合。这里 \(B\) 记录 multiplier coherence，distinct integer carriers 给出 \(p\gtrsim R^{-1/2}\)。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">02 / Coupling-uniform ledger</div><h2>完整账本保留实际涡量对比和实际作用量</h2>
+          <p>令 \(K=\mathcal R_Y(I)\)、\(x=\Theta Q_*^I\)、\(L_R=1+\log R\)，并定义</p>
+          <div class="equation result">\[
+          \begin{aligned}
+          U_0&=\varepsilon^{4/3}p^{4/3},&
+          W&=\varepsilon^{1/3}p^{1/3}R^{-1/3}L_R^{-1/2},\\
+          U&=\varepsilon^{7/3}p^{4/3},&
+          V&=\varepsilon^{1/3}p^{1/3}R.
+          \end{aligned}
+          \]</div>
+          <div class="equation result">\[
+            \boxed{\frac{\mathcal J_{\rm all}}{D^{1/3}\Lambda_{1,*}}
+            \le C\left[\frac{U_0}{K+x}
+            +W\frac{\sqrt x}{K+x}
+            +\frac{\min\{U,Vx\}}{K+x}\right].}
+          \]</div>
+          <p>这个上界来自 R0.72K 的 complete-root sampling、R0.72H 的 mixed row 和 R0.72J 的 hybrid cubic minimum。它不要求 \(\varepsilon\ll1\)，但强耦合下只给单边 root lift，不能写成双边等价。</p>
+        </section>
+
+        <section id="physical"><div class="section-no">03 / Why the denominator pays</div><h2>\(\Lambda_{1,*}\) 至少包含 \(K+x\)</h2>
+          <p>固定 decoupled background 给出 \(\inf_IY\gtrsim E_{\rm phys}\)，所以每个 root atom 至多为 \(C\Theta|h|^2\)。另一方面，target Fourier sector 给 action lower bound，而 \(\inf Y\le Y(0)\lesssim E_{\rm phys}\)。两条方向不能混用，但合起来得到</p>
+          <div class="equation result">\[
+            \boxed{\mathcal J_{\rm all}\lesssim\Theta G_{\rm all}^{\rm ex},
+            \qquad \Lambda_{1,*}\gtrsim K+x.}
+          \]</div>
+          <p>如果 \(K\gtrsim\varepsilon^{7/3}p^{4/3}\)，enstrophy contrast 本身足以支付最强 cubic term。这只是充分分支；本节没有证明级联必然迫使 \(K\) 这样增长。</p>
+        </section>
+
+        <section id="floor"><div class="section-no">04 / Local exact root</div><h2>全局 exposure scale 很大时，一个 coupling-time 窗口仍然很小</h2>
+          <p>对 phase-aligned、row-aligned launch 与固定背景，令 \(\Omega=R^2+gB\)、\(\tau=c_*/\Omega\)。在这段时间里，heat change 与 coupling exposure 都是 \(O(c_*)\)。用 target coordinate 的一坐标线性 correction 可得</p>
+          <div class="equation result">\[
+            P_0F(\tau)=0,\qquad
+            \frac{|\zeta|}{\sqrt N}\lesssim
+            c_*\frac{\varepsilon p}{1+\varepsilon},\qquad
+            |h(x)|\ge caN\quad(0\le x\le\tau).
+          \]</div>
+          <p>因此 \(Q_*^I\gtrsim a^2N^2\Omega^{-2/3}[1+\log(2+\Omega)]\)，并且</p>
+          <div class="equation result">\[
+            \boxed{x\ge Z:=c\varepsilon^2p^2R^{2/3}(1+\varepsilon)^{-2/3}
+            [1+\log(2+R^2(1+\varepsilon))].}
+          \]</div>
+          <p>这个 floor 只属于带固定背景、相位与行对齐、exact-corrected 的构造族，不是任意初值的结论。</p>
+        </section>
+
+        <section id="window"><div class="section-no">05 / Moderate strong window</div><h2>从 fixed smallness 推进到随频率增长的强耦合区间</h2>
+          <div class="equation result">\[
+            \boxed{1\lesssim\varepsilon
+            \lesssim p^{2/3}R^{2/3}(1+\log R).}
+          \]</div>
+          <p>在这个区间内，first-root 和 mixed-row 项趋零，cubic 项在上沿保持 \(O(1)\)。如果 \(\varepsilon=o(p^{2/3}R^{2/3}(1+\log R))\)，三项才全部趋零。</p>
+          <p>当 \(B\asymp\sqrt N\) 时，窗口可达 \(R^{2/3}\log R\)；最相干的 \(B\asymp N\)、\(N\asymp R\) 情形仍可达 \(R^{1/3}\log R\)。</p>
+        </section>
+
+        <section id="galerkin"><div class="section-no">06 / Galerkin warning</div><h2>三模截断会线性增长，但它从第一个 coupling time 就漏掉高壳层</h2>
+          <p>单 carrier 的三模 projected ODE 有 \(\theta_y=\sigma e^{-y}-\tfrac12\sin2\theta\)。因此 root count、root-slope mass 与 cubic row 都可按 \(\sigma\) 线性增长。这个 countertheorem 对 projected ODE 是严格的。</p>
+          <p>完整卷积却没有非零有限 Fourier-support invariant subspace。对 \(u_R=(e_R+e_{-R})/\sqrt2\)，</p>
+          <div class="equation result">\[
+            W_Ru_R=-i\sqrt2a\,e_0-
+            \frac{ia}{\sqrt2}(e_{2R}+e_{-2R}),\qquad
+            \frac{\|(I-P)W_Ru_R\|}{\|PW_Ru_R\|}=\frac1{\sqrt2}.
+          \]</div>
+          <p>所以 Galerkin 轨道在大量旋转之前已经产生 \(O(1)\) 外壳层质量。它不是 full Fourier lattice，也不能作为 full triangular PDE 的反例。</p>
+        </section>
+
+        <section id="multiscale"><div class="section-no">07 / Multiscale raw interface</div><h2>dyadic Schur estimate 消除了额外的 shell-count 因子</h2>
+          <div class="equation result">\[
+            \boxed{\mathcal C_\times\lesssim|\delta|E_0
+            \left(\sum_j\frac{\sigma_j^4}{R_j^2}\right)^{1/2}
+            \left(\sum_k\frac{\beta_k^2}{R_k^2}\right)^{1/2}.}
+          \]</div>
+          <p>核 \(R_jR_k/(R_j^2+R_k^2)\lesssim2^{-|j-k|}\) 使常数与 shell 数无关。但显式 shell moments 尚未被一个 global \(D^{1/3}\Lambda_{1,*}\) 无条件吸收。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">08 / Two-route audit</div><h2>幂次、窗口与 Galerkin 边界分别核对</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · PASS</strong><p>生产证书逐项重建 \(U_0,W,U,V,H,Z\)，扫描窗口内外的归一化项，并数值核对 projected polar ODE。</p><p class="mini-kpi">deterministic · finite corroboration</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · PASS WITH QUALIFICATIONS</strong><p>独立路线重新推导 root/action lift 的不等式方向、局部 correction 与 little-o 边界；它明确禁止把上沿 \(O(1)\) 写成衰减。</p><p class="mini-kpi"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072l_independent_audit.md">独立逐式审计</a></p></div>
+          </div>
+        </section>
+
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>正式附图分开标出新窗口、三项付款与 Galerkin 泄漏</h2>
+          <p><img src="/assets/r072l/fig-r072l-strong-window.svg" alt="R0.72L moderate strong-coupling window and Galerkin non-embedding formal figure"></p>
+          <p><a href="/assets/r072l/fig-r072l-strong-window.pdf">下载 PDF</a> · <a href="/assets/r072l/fig-r072l-strong-window.png">下载 PNG</a> · <a href="/assets/r072l/fig-r072l-strong-window.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">10 / Research value</div><h2>价值在于扩大严格闭合区，并把下一缺口压成一个公式</h2>
+          <p>R0.72K 的 small-coupling 假设并非共同频带路线的真实终点。R0.72L 证明完整根账本能进入一个随 \(R\) 扩大的强耦合区间，同时把更极端区域的第一未付款项准确分离出来。</p>
+          <p>这仍是特殊 exact 2.5D class 内的证明机制压力测试。只有把账本连接到 \(L_t^\infty L_x^3\) 或另一个一般三维 continuation criterion，才会对 Clay 问题形成直接推进。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next gate</div><h2>R0.72M：量化 extreme strong coupling 的 full-lattice cascade</h2>
+          <p>下一步要证明 enstrophy contrast、all-time action 或 true cubic mixing 中至少一个足以支付 \(\varepsilon^{7/3}p^{4/3}\)。不能再用 finite Galerkin 轨道替代完整卷积链。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>一般 Navier–Stokes 问题仍然开放</h2>
+          <p>本节没有闭合任意强耦合，没有完成 multiscale physical absorption，也没有给出一般三维 continuation criterion、有限时奇性或全局光滑性证明。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduction</div><h2>报告、双路证书、附图与累计回顾</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072l_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072l_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072l_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072l_independent_audit.md">独立审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072l">双路机器证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072l-strong-window/fig-r072l-strong-window">正式附图包</a> · <a href="/notes/r0-72l.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72l.html">累计回顾</a> · <a href="/recap-r0-61-r0-72l.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72L · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

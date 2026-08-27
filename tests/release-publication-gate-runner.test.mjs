@@ -159,6 +159,10 @@ test("PR and Pages workflows invoke the same publication runner", async () => {
   ]);
   assert.match(pullRequest, /pull_request:/);
   for (const workflow of [pullRequest, pages]) {
+    assert.match(
+      workflow,
+      /uses: actions\/checkout@v6\s+with:\s+fetch-depth: 0/,
+    );
     assert.match(workflow, /actions\/setup-node@v4/);
     assert.match(workflow, /node-version: "22\.13\.0"/);
     assert.match(workflow, /node scripts\/run-release-publication-gate\.mjs/);

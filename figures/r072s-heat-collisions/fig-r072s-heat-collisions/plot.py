@@ -316,7 +316,7 @@ def main() -> None:
     ax.set_xlabel(r"incidence parameter $A$", fontsize=7.0)
     ax.set_ylabel(r"incidence parameter $B$", fontsize=7.0)
     panel_title(ax, "A", "Higher-stratum spine",
-                "projection of incidence preimages, not the global caustic image", palette)
+                "incidence projection; not the global image", palette)
     ax.legend(loc="lower center", fontsize=5.5, frameon=False, handlelength=2.2)
 
     # Panel B: the exact A2 colliding branches.
@@ -356,14 +356,12 @@ def main() -> None:
     ax.text(-0.27, 0.86, "4 distinct", fontsize=6.0, color=palette["blueDark"])
     ax.text(0.012, 0.08, "$A_2$\n3 distinct", fontsize=5.8, color=palette["red"])
     ax.text(0.075, 0.86, "2 distinct", fontsize=6.0, color=palette["muted"])
-    ax.text(-0.335, -0.98, "noncolliding simple pair omitted; included in counts",
-            fontsize=4.65, color=palette["muted"], ha="left")
     ax.set_xlim(float(panel_b["deltaMinimum"]), float(panel_b["deltaMaximum"]))
     ax.set_ylim(-1.05, 1.05)
     ax.set_xlabel(r"$\delta=y-\log 2$", fontsize=7.0)
     ax.set_ylabel(r"$\xi=\phi-\pi/2$", fontsize=7.0)
     panel_title(ax, "B", "Generic $A_2$ fold",
-                "one global event; distinct counts 4 / 3 / 2", palette)
+                "colliding pair shown; total counts 4 / 3 / 2", palette)
     ax.legend(loc="lower left", fontsize=5.5, frameon=False, handlelength=2.2)
 
     # Panel C: the exact real-even A3 branches and the persistent symmetry axis.
@@ -421,14 +419,12 @@ def main() -> None:
     ax.text(-0.27, 1.42, "4 distinct", fontsize=6.0, color=palette["blueDark"])
     ax.text(0.012, 0.12, "$A_3$\n2 distinct", fontsize=5.8, color=palette["red"])
     ax.text(0.075, 1.42, "2 distinct", fontsize=6.0, color=palette["muted"])
-    ax.text(-0.335, -1.53, r"simple $\phi=\pi$ branch omitted; included in counts",
-            fontsize=4.65, color=palette["muted"], ha="left")
     ax.set_xlim(float(panel_c["deltaMinimum"]), float(panel_c["deltaMaximum"]))
     ax.set_ylim(-1.65, 1.65)
     ax.set_xlabel(r"$\delta=y-\log 2$", fontsize=7.0)
     ax.set_ylabel(r"critical angle $\phi$", fontsize=7.0)
     panel_title(ax, "C", "Real-even $A_3$ collision",
-                "slice-transverse only; distinct counts 4 / 2 / 2", palette)
+                r"$\phi=\pi$ omitted; slice counts 4 / 2 / 2", palette)
     ax.legend(loc="lower left", fontsize=5.15, frameon=False, handlelength=2.0)
 
     fig.text(

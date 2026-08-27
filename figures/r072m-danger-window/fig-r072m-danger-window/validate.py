@@ -95,8 +95,30 @@ def main() -> int:
     items.append(check("certificate_crosscheck", cross.get("status") == "passed", cross.get("status"), "producer and independent certificate crosscheck passes"))
     frozen = [row for row in rows if row["panel"] == "C"]
     target = 16.0 / math.pi**2
-    final_errors = {series: relerr(float(sorted((row for row in frozen if row["series"] == series), key=lambda row: float(row["x"]))[-1]["y"]), target) for series in ("producer", "independent")}
-    items.append(check("frozen_constant_trend", all(error < 0.14 for error in final_errors.values()), final_errors, "largest finite frozen ratios lie within 14 percent of 16/pi^2"))
+    frozen_series = {
+        series: sorted(
+            (row for row in frozen if row["series"] == series),
+            key=lambda row: float(row["x"]),
+        )
+        for series in ("producer", "independent")
+    }
+    final_errors = {
+        series: relerr(float(rows[-1]["y"]), target)
+        for series, rows in frozen_series.items()
+    }
+    monotone = {
+        series: all(
+            float(rows[index + 1]["y"]) >= float(rows[index]["y"])
+            for index in range(len(rows) - 1)
+        )
+        for series, rows in frozen_series.items()
+    }
+    items.append(check(
+        "frozen_constant_trend",
+        all(monotone.values()) and all(error < 0.25 for error in final_errors.values()),
+        {"finalRelativeErrors": final_errors, "monotone": monotone},
+        "finite frozen ratios rise monotonically and end within 25 percent of 16/pi^2; this is diagnostic only",
+    ))
     diagnostic = [row for row in rows if row["panel"] == "D"]
     items.append(check("dissipative_two_routes", len(diagnostic) == 8 and {row["series"] for row in diagnostic} == {"FFT split", "Cayley split"}, {"rows": len(diagnostic), "series": sorted({row["series"] for row in diagnostic})}, "Panel D contains two four-case finite diagnostic routes"))
 

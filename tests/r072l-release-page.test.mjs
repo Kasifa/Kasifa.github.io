@@ -48,7 +48,7 @@ test("publishes the 102-node recap in 28 phases", async () => {
   }
 });
 
-test("retains L while synchronizing v1.26, latest M, next N, and archive counts", async () => {
+test("retains L while synchronizing v1.27, latest N, next O, and archive counts", async () => {
   const [home, literature, release, archive, site, files] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "literature-review.html"), "utf8"),
@@ -58,23 +58,23 @@ test("retains L while synchronizing v1.26, latest M, next N, and archive counts"
     readdir(resolve(publicRoot, "notes")),
   ]);
 
-  assert.equal(files.filter((name) => name.endsWith(".html")).length, 163);
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.26">/);
-  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
-  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
-  assert.match(home, /R0\.70A–R0\.72M：65 节已公开，41 节完整封存/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72M<\/span>/);
-  assert.match(home, /展开 73 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72N/);
-  assert.match(home, /累计回顾收录 103 个节点；全站现有 163 篇公开研究笔记/);
+  assert.equal(files.filter((name) => name.endsWith(".html")).length, 164);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.27">/);
+  assert.match(home, /<strong>v1\.27<\/strong>网页版本/);
+  assert.match(home, /<strong>164<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72N<\/strong>最新研究节点/);
+  assert.match(home, /R0\.70A–R0\.72N：66 节已公开，42 节完整封存/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72N<\/span>/);
+  assert.match(home, /展开 74 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72O/);
+  assert.match(home, /累计回顾收录 104 个节点；全站现有 164 篇公开研究笔记/);
   assert.equal((home.match(/data-release="r072l"/g) ?? []).length, 1);
   assert.match(home, /moderate strong-coupling window/i);
   assert.match(home, /exact action danger window/i);
 
-  assert.match(literature, /本站 R0\.69P–R0\.72M 只列为研究笔记/);
+  assert.match(literature, /本站 R0\.69P–R0\.72N 只列为研究笔记/);
   assert.match(literature, /id="r072l-boundary"/);
-  assert.match(literature, /开放接口 · R0\.72N/);
+  assert.match(literature, /开放接口 · R0\.72O/);
   assert.match(literature, /href="\/notes\/r0-72l\.html"/);
   for (const source of [
     "10.1063/1.4990082",
@@ -101,35 +101,35 @@ test("retains L while synchronizing v1.26, latest M, next N, and archive counts"
       backlog: release.legacyFormalFigureBacklogCount,
     },
     {
-      latest: "r072m",
-      version: "1.26",
-      notes: 163,
-      recap: 103,
-      next: "r072n",
-      published: 65,
-      sealed: 41,
+      latest: "r072n",
+      version: "1.27",
+      notes: 164,
+      recap: 104,
+      next: "r072o",
+      published: 66,
+      sealed: 42,
       backlog: 24,
     },
   );
   assert.equal(
     release.latestReleaseGate,
-    "tests/r072m-danger-window-gate.test.mjs",
+    "tests/r072n-dissipative-carrier-gate.test.mjs",
   );
-  assert.equal(archive.latestPublishedRelease, "r072m");
-  assert.equal(archive.publishedReleaseCount, 65);
-  assert.equal(archive.formalSealedReleaseCount, 41);
+  assert.equal(archive.latestPublishedRelease, "r072n");
+  assert.equal(archive.publishedReleaseCount, 66);
+  assert.equal(archive.formalSealedReleaseCount, 42);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
-  assert.equal(archive.publishedReleases.length, 65);
-  assert.equal(archive.formalSealedReleases.length, 41);
+  assert.equal(archive.publishedReleases.length, 66);
+  assert.equal(archive.formalSealedReleases.length, 42);
   assert.ok(archive.publishedReleases.includes("r072l"));
   assert.ok(archive.formalSealedReleases.includes("r072l"));
   assert.ok(archive.publishedReleases.includes("r072m"));
   assert.ok(archive.formalSealedReleases.includes("r072m"));
   assert.deepEqual(site, {
     schemaVersion: "research-site-version-v1",
-    version: "1.26",
-    latestRelease: "R0.72M",
-    publicHtmlNoteCount: 163,
+    version: "1.27",
+    latestRelease: "R0.72N",
+    publicHtmlNoteCount: 164,
     publishedDate: "2026-08-27",
   });
 });
@@ -192,7 +192,7 @@ test("keeps every R0.72L inline formula and formal-figure link intact", async ()
   );
   for (const [page, version] of pages.map((page, index) => [
     page,
-    index < 2 ? "1.26" : "1.25",
+    index < 2 ? "1.27" : "1.25",
   ])) {
     assert.match(page, new RegExp(`src="/i18n-en\\.js\\?v=${version}"`));
     assert.doesNotMatch(page, /\(varepsilon|\(mathcal|\(Theta|\(tau|\(Omega|\(1lesssim/);

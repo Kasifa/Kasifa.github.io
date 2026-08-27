@@ -53,7 +53,7 @@ test("publishes the 103-node post-R0.60 recap in 28 phases", async () => {
   }
 });
 
-test("synchronizes v1.26, latest M, next N, and all publication counts", async () => {
+test("retains M while synchronizing v1.27, latest N, next O, and all publication counts", async () => {
   const [home, literature, release, archive, site, files] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "literature-review.html"), "utf8"),
@@ -63,29 +63,30 @@ test("synchronizes v1.26, latest M, next N, and all publication counts", async (
     readdir(resolve(publicRoot, "notes")),
   ]);
 
-  assert.equal(files.filter((name) => name.endsWith(".html")).length, 163);
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.26">/);
-  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
-  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
-  assert.match(home, /R0\.70A–R0\.72M：65 节已公开，41 节完整封存/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72M<\/span>/);
-  assert.match(home, /展开 73 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72N/);
-  assert.match(home, /累计回顾收录 103 个节点；全站现有 163 篇公开研究笔记/);
+  assert.equal(files.filter((name) => name.endsWith(".html")).length, 164);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.27">/);
+  assert.match(home, /<strong>v1\.27<\/strong>网页版本/);
+  assert.match(home, /<strong>164<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72N<\/strong>最新研究节点/);
+  assert.match(home, /R0\.70A–R0\.72N：66 节已公开，42 节完整封存/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72N<\/span>/);
+  assert.match(home, /展开 74 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72O/);
+  assert.match(home, /累计回顾收录 104 个节点；全站现有 164 篇公开研究笔记/);
   assert.equal((home.match(/data-release="r072m"/g) ?? []).length, 1);
   assert.equal(
     (home.match(/href="\/notes\/r0-72m\.html"/g) ?? []).length,
     2,
   );
   assert.match(home, /exact action danger window/i);
-  assert.match(home, /dissipative one-carrier cubic\/action theorem/i);
+  assert.match(home, /dissipative one-carrier decision/i);
+  assert.match(home, /physical reinsertion and multi-carrier/i);
 
-  assert.match(literature, /本站 R0\.69P–R0\.72M 只列为研究笔记/);
+  assert.match(literature, /本站 R0\.69P–R0\.72N 只列为研究笔记/);
   assert.match(literature, /id="r072m-boundary"/);
-  assert.match(literature, /开放接口 · R0\.72N/);
+  assert.match(literature, /开放接口 · R0\.72O/);
   assert.match(literature, /href="\/notes\/r0-72m\.html"/);
-  assert.match(literature, /href="\/recap-r0-61-r0-72m\.html"/);
+  assert.match(literature, /href="\/recap-r0-61-r0-72n\.html"/);
   for (const source of [
     "10.1063/1.858309",
     "10.1017/jfm.2013.637",
@@ -112,33 +113,33 @@ test("synchronizes v1.26, latest M, next N, and all publication counts", async (
       backlog: release.legacyFormalFigureBacklogCount,
     },
     {
-      latest: "r072m",
-      version: "1.26",
-      notes: 163,
-      recap: 103,
-      next: "r072n",
-      gate: "tests/r072m-danger-window-gate.test.mjs",
-      published: 65,
-      sealed: 41,
+      latest: "r072n",
+      version: "1.27",
+      notes: 164,
+      recap: 104,
+      next: "r072o",
+      gate: "tests/r072n-dissipative-carrier-gate.test.mjs",
+      published: 66,
+      sealed: 42,
       backlog: 24,
     },
   );
 
-  assert.equal(archive.latestPublishedRelease, "r072m");
-  assert.equal(archive.publishedReleaseCount, 65);
-  assert.equal(archive.formalSealedReleaseCount, 41);
+  assert.equal(archive.latestPublishedRelease, "r072n");
+  assert.equal(archive.publishedReleaseCount, 66);
+  assert.equal(archive.formalSealedReleaseCount, 42);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
-  assert.equal(archive.publishedReleases.length, 65);
-  assert.equal(archive.formalSealedReleases.length, 41);
+  assert.equal(archive.publishedReleases.length, 66);
+  assert.equal(archive.formalSealedReleases.length, 42);
   assert.equal(archive.legacyFormalFigureBacklog.length, 24);
-  assert.equal(archive.publishedReleases.at(-1), "r072m");
-  assert.equal(archive.formalSealedReleases.at(-1), "r072m");
+  assert.equal(archive.publishedReleases.at(-1), "r072n");
+  assert.equal(archive.formalSealedReleases.at(-1), "r072n");
 
   assert.deepEqual(site, {
     schemaVersion: "research-site-version-v1",
-    version: "1.26",
-    latestRelease: "R0.72M",
-    publicHtmlNoteCount: 163,
+    version: "1.27",
+    latestRelease: "R0.72N",
+    publicHtmlNoteCount: 164,
     publishedDate: "2026-08-27",
   });
 });
@@ -153,8 +154,13 @@ test("ships synchronized M HTML/PDF, recap PDF, and three public figure assets",
     readFile(resolve(publicRoot, "literature-review.html"), "utf8"),
   ]);
 
-  for (const page of [note, recap, home, literature]) {
+  for (const page of [note, recap]) {
     assert.match(page, /src="\/i18n-en\.js\?v=1\.26"/);
+  }
+  for (const page of [home, literature]) {
+    assert.match(page, /src="\/i18n-en\.js\?v=1\.27"/);
+  }
+  for (const page of [note, recap, home, literature]) {
     assert.doesNotMatch(page, /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/);
   }
   assert.doesNotMatch(note, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);

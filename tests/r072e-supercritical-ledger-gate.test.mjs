@@ -545,10 +545,10 @@ test("retains R0.72E, its 95-node recap, and bilingual package after R0.72K", as
   ]);
 
   for (const [label, html, i18nVersion] of [
-    ["homepage", home, "1.26"],
+    ["homepage", home, "1.27"],
     ["note", note, "1.18"],
     ["recap", recap, "1.18"],
-    ["literature", literature, "1.26"],
+    ["literature", literature, "1.27"],
   ]) {
     assert.ok(
       html.includes(`src="/i18n-en.js?v=${i18nVersion}"`),
@@ -568,19 +568,19 @@ test("retains R0.72E, its 95-node recap, and bilingual package after R0.72K", as
     assert.doesNotMatch(html, /\t/, label);
   }
 
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.26">/);
-  assert.match(home, /src="\/site-refresh\.js\?v=1\.26"/);
-  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
-  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
-  assert.match(home, /展开 73 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72N/);
-  assert.match(home, /R0\.70A–R0\.72M 共 65 个版本已公开；41 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.27">/);
+  assert.match(home, /src="\/site-refresh\.js\?v=1\.27"/);
+  assert.match(home, /<strong>v1\.27<\/strong>网页版本/);
+  assert.match(home, /<strong>164<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72N<\/strong>最新研究节点/);
+  assert.match(home, /展开 74 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72O/);
+  assert.match(home, /R0\.70A–R0\.72N 共 66 个版本已公开；42 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
   assert.match(home, /二十八个(?:问题)?阶段/);
   assert.equal((home.match(/href="\/notes\/r0-72e\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072e"/g) ?? []).length, 1);
-  assert.match(home, /recap-r0-61-r0-72m\.html/);
-  assert.match(home, /recap-r0-61-r0-72m\.pdf/);
+  assert.match(home, /recap-r0-61-r0-72n\.html/);
+  assert.match(home, /recap-r0-61-r0-72n\.pdf/);
 
   assert.ok(
     note.includes(String.raw`候选 \(D^{1/3}\Lambda_1\) payment 被排除`),
@@ -625,8 +625,8 @@ test("retains R0.72E, its 95-node recap, and bilingual package after R0.72K", as
 
   assert.match(literature, /id="r072e-boundary"/);
   assert.match(literature, /href="\/notes\/r0-72e\.html"/);
-  assert.match(literature, /R0\.69P–R0\.72M/);
-  assert.match(literature, /开放接口 · R0\.72N/);
+  assert.match(literature, /R0\.69P–R0\.72N/);
+  assert.match(literature, /开放接口 · R0\.72O/);
   assert.match(literature, /doi\.org\/10\.15083\/00039520/);
   assert.match(literature, /dlmf\.nist\.gov\/10\.21/);
   assert.match(literature, /Kusuoka|Stroock/);
@@ -672,7 +672,7 @@ test("retains R0.72E, its 95-node recap, and bilingual package after R0.72K", as
   }
 });
 
-test("keeps the current R0.72K site version and split release inventory", async () => {
+test("keeps the current R0.72N site version and split release inventory", async () => {
   const [manifest, siteVersion, siteRefresh, home, noteFiles] =
     await Promise.all([
       readJson(resolve(root, "research/release-manifest.json")),
@@ -684,17 +684,17 @@ test("keeps the current R0.72K site version and split release inventory", async 
 
   assert.equal(manifest.schemaVersion, "research-release-manifest-v1");
   assert.equal(manifest.firstPdfRequiredRelease, "r070a");
-  assert.equal(manifest.latestCompletedRelease, "r072m");
-  assert.equal(manifest.siteVersion, "1.26");
-  assert.equal(manifest.publicHtmlNoteCount, 163);
-  assert.equal(manifest.postR060RecapNodeCount, 103);
-  assert.equal(manifest.postR070APublishedReleaseCount, 65);
-  assert.equal(manifest.postR070AFormalSealedReleaseCount, 41);
+  assert.equal(manifest.latestCompletedRelease, "r072n");
+  assert.equal(manifest.siteVersion, "1.27");
+  assert.equal(manifest.publicHtmlNoteCount, 164);
+  assert.equal(manifest.postR060RecapNodeCount, 104);
+  assert.equal(manifest.postR070APublishedReleaseCount, 66);
+  assert.equal(manifest.postR070AFormalSealedReleaseCount, 42);
   assert.equal(manifest.legacyFormalFigureBacklogCount, 24);
-  assert.equal(manifest.nextRelease, "r072n");
+  assert.equal(manifest.nextRelease, "r072o");
   assert.equal(
     manifest.latestReleaseGate,
-    "tests/r072m-danger-window-gate.test.mjs",
+    "tests/r072n-dissipative-carrier-gate.test.mjs",
   );
   assert.match(manifest.completionRule, /certificates/);
   assert.match(manifest.completionRule, /independent audit/);
@@ -703,19 +703,19 @@ test("keeps the current R0.72K site version and split release inventory", async 
   assert.match(manifest.completionRule, /publication tests pass/);
 
   assert.equal(siteVersion.schemaVersion, "research-site-version-v1");
-  assert.equal(siteVersion.version, "1.26");
-  assert.equal(siteVersion.latestRelease, "R0.72M");
-  assert.equal(siteVersion.publicHtmlNoteCount, 163);
+  assert.equal(siteVersion.version, "1.27");
+  assert.equal(siteVersion.latestRelease, "R0.72N");
+  assert.equal(siteVersion.publicHtmlNoteCount, 164);
   assert.equal(siteVersion.publishedDate, "2026-08-27");
   assert.equal(
     noteFiles.filter((file) => file.endsWith(".html")).length,
-    163,
+    164,
   );
   assert.equal(
     (home.match(/data-release="r0\d{2}[a-z]"/g) ?? []).length,
-    65,
+    66,
   );
-  assert.match(home, /NEXT · R0\.72N/);
+  assert.match(home, /NEXT · R0\.72O/);
 
   assert.match(siteRefresh, /document\.documentElement\.dataset\.siteVersion/);
   assert.match(siteRefresh, /\/site-version\.json\?check=/);

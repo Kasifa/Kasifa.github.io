@@ -43,32 +43,32 @@ async function publishedPages() {
   return { home, note, recap, literature };
 }
 
-test("retains R0.71V artifacts while v1.26 publishes R0.72M as current", async () => {
+test("retains R0.71V artifacts while v1.27 publishes R0.72N as current", async () => {
   const [{ home, note, recap, literature }, noteNames] = await Promise.all([
     publishedPages(),
     readdir(notesRoot),
   ]);
 
-  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 163);
-  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
-  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72M<\/span>/);
-  assert.match(home, /展开 73 篇公开笔记/);
+  assert.equal(noteNames.filter((name) => name.endsWith(".html")).length, 164);
+  assert.match(home, /<strong>v1\.27<\/strong>网页版本/);
+  assert.match(home, /<strong>164<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72N<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72N<\/span>/);
+  assert.match(home, /展开 74 篇公开笔记/);
   assert.match(
     home,
-    /<details class="tree-notes" open>[\s\S]*?aria-label="R0\.69P–R0\.72M"/,
+    /<details class="tree-notes" open>[\s\S]*?aria-label="R0\.69P–R0\.72N"/,
   );
-  assert.match(home, /href="#r070a">R0\.70A–R0\.72M：65 节已公开，41 节完整封存<\/a>/);
-  assert.match(home, /累计回顾收录 103 个节点；全站现有 163 篇公开研究笔记/);
-  assert.match(home, /R0\.70A–R0\.72M 共 65 个版本已公开；41 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
-  assert.match(home, /NEXT · R0\.72N/);
+  assert.match(home, /href="#r070a">R0\.70A–R0\.72N：66 节已公开，42 节完整封存<\/a>/);
+  assert.match(home, /累计回顾收录 104 个节点；全站现有 164 篇公开研究笔记/);
+  assert.match(home, /R0\.70A–R0\.72N 共 66 个版本已公开；42 个按当前 formal-figure 合同完整封存，24 个旧版附图档案仍列入回补清单/);
+  assert.match(home, /NEXT · R0\.72O/);
 
   const route = home.match(
-    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72M">([\s\S]*?)<\/nav>/,
+    /<nav class="route-note-links" aria-label="R0\.69P–R0\.72N">([\s\S]*?)<\/nav>/,
   );
   assert.ok(route);
-  assert.equal(count(route[1], 'href="/notes/'), 73);
+  assert.equal(count(route[1], 'href="/notes/'), 74);
   assert.equal(count(route[1], 'href="/notes/r0-71v.html"'), 1);
   assert.equal(count(home, 'data-release="r071v"'), 1);
   assert.equal(count(home, 'href="/notes/r0-71v.html"'), 2);
@@ -83,14 +83,14 @@ test("retains R0.71V artifacts while v1.26 publishes R0.72M as current", async (
   assert.match(recap, /收录节点：86/);
   assert.match(recap, /回顾截止时公开笔记：146/);
   assert.match(recap, /R0\.70A–R0\.71V 完成版本/);
-  assert.match(literature, /R0\.69P–R0\.72M/);
-  assert.match(literature, /开放接口 · R0\.72N/);
+  assert.match(literature, /R0\.69P–R0\.72N/);
+  assert.match(literature, /开放接口 · R0\.72O/);
 
   for (const [page, minimum, version] of [
-    [home, 10, "1.26"],
+    [home, 10, "1.27"],
     [note, 14, "1.08"],
     [recap, 8, "1.08"],
-    [literature, 50, "1.26"],
+    [literature, 50, "1.27"],
   ]) {
     assertAnchorsResolve(page, minimum);
     assert.ok(page.includes('src="/i18n-en.js?v=' + version + '"'));

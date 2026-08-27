@@ -1,0 +1,220 @@
+{
+  "claimBoundary": {
+    "arbitraryPhases": true,
+    "causticIsEDFailureCounterexample": false,
+    "commonBandWithoutJetDominanceStatus": "open",
+    "finiteCertificateIsProof": false,
+    "fixedMRequired": true,
+    "growingMStatus": "open",
+    "status": "proved-analytically-for-fixed-M-arbitrary-phase-shape-class",
+    "unnormalizedUniformCurvatureForUnboundedYClaimed": false
+  },
+  "passed": true,
+  "schemaVersion": 1,
+  "shapeContract": {
+    "boundedEnvelopeCertificate": {
+      "eUpperCertificate": "87/32",
+      "eUpperLessThanThree": true,
+      "eUpperReassembly": "65/24+1/96=87/32",
+      "expMinusOneLower": "1/3",
+      "normalizedAwaySlopeLower": "1/12",
+      "normalizedLocalSlopeLower": "1/3",
+      "partialSum": "65/24",
+      "partialSumDefinition": "sum_{n=0}^4 1/n!",
+      "partialSumExpected": "65/24",
+      "passed": true,
+      "physicalAwaySlopeLower": "1/36",
+      "physicalLocalSlopeLower": "1/9",
+      "piLowerInput": "pi>3 (inscribed regular hexagon)",
+      "tailMajorantDefinition": "sum_{k=0}^infinity 1/(5!*5^k)",
+      "tailUpper": "1/96",
+      "tailUpperExpected": "1/96"
+    },
+    "criticalGeometry": {
+      "C0": "81/1",
+      "C1": "36/1",
+      "arbitraryPhaseUniform": true,
+      "criticalCount": 2,
+      "criticalLocationBoxes": [
+        "dist(phi,0)<pi/12",
+        "dist(phi,pi)<pi/12"
+      ],
+      "criticalLocationReason": "at F_phi=0, abs(sin(phi))<=Q1<=1/4<sin(pi/12)",
+      "localCurvatureMargin": "(sqrt(3)-1)/2",
+      "localCurvatureMarginGreaterThan": "1/3",
+      "localCurvatureReason": "a radius-pi/12 tube about either critical point stays within pi/6 of 0 or pi, so abs(F_phiphi)>=cos(pi/6)-Q2",
+      "normalizedShapeConstants": {
+        "C0": "9/1",
+        "C1": "12/1",
+        "conservativeC0AlsoValid": "81/1"
+      },
+      "physicalWindowShapeConstants": {
+        "C0": "81/1",
+        "C1": "36/1",
+        "awaySlopeLower": "1/36",
+        "localSlopeLower": "1/9",
+        "yWindow": "0<=y<=1"
+      },
+      "radius": "pi/12",
+      "shapeConstantScope": "physical Coble shear W=e^(-y)F_y on 0<=y<=1; normalized F_y has the sharper C1=12 contract"
+    },
+    "derivativeSupremumBounds": {
+      "d0": "9/8",
+      "d1": "5/4",
+      "d2": "3/2",
+      "d3": "2/1",
+      "d3Symbolic": "1+M/2"
+    },
+    "exactChecks": {
+      "boundedHeatEnvelope": true,
+      "derivativeBoundsExact": true,
+      "ePartialSumExact": true,
+      "eTailMajorantExact": true,
+      "eUpperReassembled": true,
+      "localCurvatureMarginGreaterThanThird": true,
+      "q0FromQ2": true,
+      "q1FromQ2": true,
+      "sinRadiusGreaterThanQuarter": true,
+      "slowThresholdIdentity": true
+    },
+    "fixedM": true,
+    "jetBudgets": {
+      "Q0UpperDerived": "1/8",
+      "Q1UpperDerived": "1/4",
+      "Q2Upper": "1/2",
+      "QjDefinition": "Q_j=sup_y sum_{m=2}^M m^j abs(beta_m(y))",
+      "termwiseFacts": [
+        "m<=m^2/2 for m>=2",
+        "1<=m^2/4 for m>=2"
+      ]
+    },
+    "maxCarrier": 2,
+    "passed": true,
+    "phaseClass": "arbitrary phases",
+    "profile": "F_y(phi)=cos(phi)+sum_{m=2}^M Re(beta_m(y)*exp(i*m*phi))",
+    "proofSkeleton": [
+      "Q2<=1/2 implies Q1<=1/4 and Q0<=1/8 termwise.",
+      "Boundary signs at +/-pi/12 and pi+/-pi/12 give one zero in each box.",
+      "The Q2 curvature bound makes F_phi strictly monotone in each box.",
+      "Every zero lies in those boxes because abs(sin(phi))<=Q1.",
+      "The pi/12 tubes have curvature margin mu>1/3; fixed-M derivatives are bounded."
+    ],
+    "radicalCertificates": {
+      "curvatureMargin": {
+        "integerSquareComparison": "27>25",
+        "passed": true,
+        "reduction": "sqrt(3)>5/3",
+        "statement": "(sqrt(3)-1)/2>1/3"
+      },
+      "sinRadius": {
+        "identity": "sin(pi/12)^2=(2-sqrt(3))/4",
+        "integerSquareComparison": "48<49",
+        "passed": true,
+        "reduction": "sqrt(3)<7/4",
+        "statement": "sin(pi/12)>1/4"
+      }
+    },
+    "slowTime": {
+      "etaQuarterAtThreshold": "1/2",
+      "etaThreeQuartersAtThreshold": "1/8",
+      "etaThreshold": "1/16",
+      "etaThresholdSymbolic": "(1+M/2)^(-4)",
+      "leftAtThreshold": "1/8",
+      "mixedDerivativeCoefficient": "2/1",
+      "mixedDerivativeCoefficientSymbolic": "1+M/2",
+      "passed": true,
+      "reducedCondition": "(1+M/2)*eta^(1/4)<=1"
+    }
+  },
+  "theoremId": "R0.72Q-fixed-M-arbitrary-phase-shape-gate",
+  "twoCarrierCaustic": {
+    "classification": {
+      "cusps": [
+        {
+          "degeneratePhi": "pi",
+          "fourthDerivative": "3/1",
+          "relativePhase": "0",
+          "type": "A3",
+          "z": "1/4"
+        },
+        {
+          "degeneratePhi": "0",
+          "fourthDerivative": "-3/1",
+          "relativePhase": "pi",
+          "type": "A3",
+          "z": "-1/4"
+        }
+      ],
+      "genericWall": "A2 fold: f'''=-3*sin(phi) is nonzero",
+      "jetIdentities": [
+        "f'''=-3*sin(phi)",
+        "f''''=-3*cos(phi)"
+      ],
+      "wallMeaning": "Morse-applicability wall only"
+    },
+    "complexCoefficient": "z=a*exp(i*theta)",
+    "coordinateIdentities": {
+      "imaginaryPart": "Im(z)=sin(phi)^3/2",
+      "radiusSquared": "abs(z)^2=(1+3*sin(phi)^2)/16"
+    },
+    "degeneracyEquations": [
+      "sin(phi)+2*a*sin(2*phi+theta)=0",
+      "cos(phi)+4*a*cos(2*phi+theta)=0"
+    ],
+    "exactChecks": {
+      "cuspFourthJetsNonzero": true,
+      "implicitPolynomialIdentity": true,
+      "interiorDiskSeparated": true,
+      "parameterCoefficientsExact": true,
+      "radiusRangeExact": true,
+      "rayDerivativeFactorizationExact": true,
+      "rayEndpointValuesExact": true
+    },
+    "implicitEquation": "(abs(z)^2-1/16)^3=(27/1024)*(Im(z))^2",
+    "implicitIdentityBothSides": "(27/4096)*sin(phi)^6",
+    "interiorDisk": {
+      "conclusion": "no degeneracy and exactly two critical points",
+      "condition": "abs(z)<1/4"
+    },
+    "linearJetSolution": [
+      "a*cos(2*phi+theta)=-cos(phi)/4",
+      "a*sin(2*phi+theta)=-sin(phi)/2"
+    ],
+    "parametrization": "z(phi)=(1/8)*exp(-3*i*phi)-(3/8)*exp(-i*phi)",
+    "parametrizationCoefficients": {
+      "expMinus1iPhi": "-3/8",
+      "expMinus3iPhi": "1/8"
+    },
+    "passed": true,
+    "radiusRange": [
+      "1/4",
+      "1/2"
+    ],
+    "rayIntersection": {
+      "conclusion": "every phase ray has exactly one caustic intersection with s in [1/16,1/4]",
+      "derivative": "H'(s)=(s-1/16)^2*(2*s+1/16)/s^2",
+      "endpointValues": {
+        "H(1/16)": "0/1",
+        "H(1/4)": "27/1024"
+      },
+      "expandedDerivativeNumeratorCoefficients": [
+        "2/1",
+        "-3/16",
+        "0/1",
+        "1/4096"
+      ],
+      "factoredDerivativeNumeratorCoefficients": [
+        "2/1",
+        "-3/16",
+        "0/1",
+        "1/4096"
+      ],
+      "function": "H(s)=(s-1/16)^3/s",
+      "passed": true,
+      "radialSquaredVariable": "s=abs(z)^2",
+      "rayEquation": "H(s)=(27/1024)*sin(theta)^2",
+      "strictPositivityDomain": "s>1/16"
+    },
+    "twoCarrierProfile": "f(phi)=cos(phi)+a*cos(2*phi+theta)"
+  }
+}

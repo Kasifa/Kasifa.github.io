@@ -48,6 +48,74 @@ async function releaseManifest() {
   );
 }
 
+test("keeps a declared next-release source stage non-public and path-safe", async () => {
+  const manifest = await releaseManifest();
+  const stage = manifest.nextReleaseSourceStage;
+  if (stage === undefined) {
+    assert.equal(
+      manifest.nextRelease,
+      nextReleaseId(manifest.latestCompletedRelease),
+      "a completed endpoint without a source-stage block must point to its successor",
+    );
+    assert.ok(
+      manifest.latestReleaseGate.startsWith(
+        `tests/${manifest.latestCompletedRelease}`,
+      ),
+    );
+    assert.ok(
+      manifest.latestReleasePublicationTest.startsWith(
+        `tests/${manifest.latestCompletedRelease}`,
+      ),
+    );
+    return;
+  }
+  assert.equal(typeof stage, "object", "next-release source stage");
+  assert.equal(stage.release, manifest.nextRelease);
+  assert.equal(stage.stage, "source-freeze");
+  assert.equal(
+    stage.publicationStatus,
+    "pending-formal-certificate-figure-and-publication",
+  );
+  assert.equal(stage.publicCountersAdvanced, false);
+  assert.notEqual(stage.release, manifest.latestCompletedRelease);
+
+  const pathFields = [
+    "report",
+    "independentAudit",
+    "producer",
+    "independentProducer",
+    "comparator",
+    "certificateDirectory",
+    "figureDirectory",
+    "generator",
+    "translationScript",
+    "releaseGate",
+    "publicationTest",
+  ];
+  for (const field of pathFields) {
+    const relative = stage[field];
+    assert.equal(typeof relative, "string", `source-stage ${field}`);
+    assert.match(relative, /^(?:research|figures|scripts|tests)\/[A-Za-z0-9._/-]+$/);
+    assert.doesNotMatch(relative, /(?:^|\/)\.\.(?:\/|$)|\\|\0/);
+    const target = new URL(relative + (field.endsWith("Directory") ? "/" : ""), root);
+    assert.ok(target.href.startsWith(root.href), `source-stage path escape: ${field}`);
+    await access(target);
+  }
+  assert.equal(stage.report, `research/${stage.release}_report-source.md`);
+  assert.equal(stage.generator, `scripts/generate_${stage.release}_release.py`);
+  assert.equal(stage.translationScript, `scripts/add-${stage.release}-translations.mjs`);
+  assert.ok(stage.releaseGate.startsWith(`tests/${stage.release}-`));
+  assert.equal(stage.publicationTest, `tests/${stage.release}-release.test.mjs`);
+
+  // A source-stage declaration must not move any live publication pointer.
+  assert.ok(manifest.latestReleaseGate.startsWith(`tests/${manifest.latestCompletedRelease}`));
+  assert.ok(
+    manifest.latestReleasePublicationTest.startsWith(
+      `tests/${manifest.latestCompletedRelease}`,
+    ),
+  );
+});
+
 async function formalArchiveInventory() {
   return JSON.parse(
     await readFile(

@@ -1,0 +1,283 @@
+{
+  "allPassed": true,
+  "checkCount": 19,
+  "checks": [
+    {
+      "name": "source certificates passed and independent",
+      "passed": true,
+      "requirement": "both certificates passed and the independent audit imports no producer output",
+      "value": {
+        "independentImportsProducer": false,
+        "independentPassed": true,
+        "independentReadsProducerOutput": false,
+        "producerPassed": true
+      }
+    },
+    {
+      "name": "source hashes are current",
+      "passed": true,
+      "requirement": "metadata hashes match both certificates, contract, and config",
+      "value": {
+        "figures/r072f-critical-log-window/fig-r072f-critical-log-window/config.json": "d216d03931f6189f4200638c53eaa2149426ac4f11aadeb4642df810788fcf63",
+        "figures/r072f-critical-log-window/fig-r072f-critical-log-window/contract.json": "ad41b9d29da5b8857c768f3e023df3f44cadfceb0ff5a53275bfce20f178b852",
+        "research/certificates/r072f/independent-result.json": "26032147cf023eb27ef0419972d8a9dd6104d4c8a8db1cbe68846a26e8484a20",
+        "research/certificates/r072f/result.json": "62c6b27f46b8948c783f7a0b5aa5e316e11663c09c443965a3943287929b469d"
+      }
+    },
+    {
+      "name": "three-panel row contract",
+      "passed": true,
+      "requirement": "all analytic, numerical, and frontier rows are archived",
+      "value": {
+        "actual": {
+          "A": 10,
+          "B": 18,
+          "C": 3
+        },
+        "expected": {
+          "A": 10,
+          "B": 18,
+          "C": 3
+        },
+        "rows": 31
+      }
+    },
+    {
+      "name": "shared dyadic grids",
+      "passed": true,
+      "requirement": "both solvers and the plain-endpoint annotation use delta=16,...,512",
+      "value": {
+        "independent": [
+          16,
+          32,
+          64,
+          128,
+          256,
+          512
+        ],
+        "plainAnnotation": [
+          16,
+          32,
+          64,
+          128,
+          256,
+          512
+        ],
+        "producer": [
+          16,
+          32,
+          64,
+          128,
+          256,
+          512
+        ]
+      }
+    },
+    {
+      "name": "certificate values copied exactly",
+      "passed": true,
+      "requirement": "raw Q values and derived normalizations reproduce their source rows exactly",
+      "value": 0.0
+    },
+    {
+      "name": "critical normalization bounded",
+      "passed": true,
+      "requirement": "Q_* delta^(2/3)/log(delta) remains within a 1.10 finite spread",
+      "value": {
+        "independent": [
+          41.04301854207445,
+          41.616070430590256,
+          42.36086766052453,
+          43.06495879094774,
+          43.680177154259574,
+          44.210253270108595
+        ],
+        "independentSpread": 1.0771686596293428,
+        "producer": [
+          41.02348822068454,
+          41.597393699846734,
+          42.34345816887649,
+          43.048726193795645,
+          43.664938504352726,
+          44.19583638500246
+        ],
+        "producerSpread": 1.0773300443700051
+      }
+    },
+    {
+      "name": "producer-independent agreement",
+      "passed": true,
+      "requirement": "the two finite routes agree to less than 5e-4 relatively",
+      "value": 0.0004758500247706425
+    },
+    {
+      "name": "discretization diagnostics",
+      "passed": true,
+      "requirement": "producer refinement and independent quadrature defects stay below declared limits",
+      "value": {
+        "independentQuadrature": 5.527794356004463e-09,
+        "producerFineCoarse": 0.0012648223360552597
+      }
+    },
+    {
+      "name": "plain endpoint contrast",
+      "passed": true,
+      "requirement": "Q_(1/3,0)/Q_* decreases across the shared finite grid",
+      "value": [
+        0.21277590534330082,
+        0.1963418172264067,
+        0.18017030129648248,
+        0.1652916807345088,
+        0.15198543758458974,
+        0.14022091510370252
+      ]
+    },
+    {
+      "name": "critical weight L2 identity",
+      "passed": true,
+      "requirement": "both routes record the exact critical-weight L2 square 75",
+      "value": {
+        "independent": {
+          "exactTarget": 75,
+          "reportedQuadratureError": 7.843458846552421e-12,
+          "value": 75.0
+        },
+        "producer": 75
+      }
+    },
+    {
+      "name": "two-screen analytic window",
+      "passed": true,
+      "requirement": "the plot distinguishes the open interior, included log endpoint, and excluded energy boundary",
+      "value": {
+        "admissibleInterior": "1/3 < beta < 1/2, gamma >= 0",
+        "excludedEnergyBoundary": "beta=1/2 for gamma>=0",
+        "includedEndpointRay": "beta=1/3, gamma>=1",
+        "scope": "selected-family obstruction plus Leray energy payment only"
+      }
+    },
+    {
+      "name": "frontier vertices exact and distinct",
+      "passed": true,
+      "requirement": "the three rational vertices are exact and the root-atom vertex changes the LHS",
+      "value": [
+        {
+          "a": "1/3",
+          "alpha": "0",
+          "beta": "1/3",
+          "c": "0",
+          "gamma": 1,
+          "name": "critical-log-action",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "1",
+          "weightedFrontierSum": "1"
+        },
+        {
+          "a": "1/3",
+          "alpha": "0",
+          "beta": "0",
+          "c": "1/3",
+          "gamma": 0,
+          "name": "explicit-coupling",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "1",
+          "weightedFrontierSum": "1"
+        },
+        {
+          "a": "1/3",
+          "alpha": "4/9",
+          "beta": "0",
+          "c": "0",
+          "gamma": 0,
+          "name": "root-weight",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "2/3",
+          "weightedFrontierSum": "1"
+        }
+      ]
+    },
+    {
+      "name": "formal PNG dimensions and 600 dpi",
+      "passed": true,
+      "requirement": "178x94 mm nominal page at approximately 600 dpi",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4200,
+          2220
+        ]
+      }
+    },
+    {
+      "name": "vector PDF and SVG exports",
+      "passed": true,
+      "requirement": "one correctly sized vector PDF page and nontrivial labelled SVG",
+      "value": {
+        "pdfMillimetres": [
+          177.79999999999998,
+          93.97999999999999
+        ],
+        "pdfPages": 1,
+        "svgBytes": 133861
+      }
+    },
+    {
+      "name": "final-size, grayscale, and PDF QA surfaces",
+      "passed": true,
+      "requirement": "all QA surfaces share a readable 220 dpi final footprint with nontrivial contrast",
+      "value": {
+        "finalSize": [
+          1540,
+          814
+        ],
+        "grayscaleMode": "L",
+        "grayscaleStddev": 32.02684882916589,
+        "pdfSize": [
+          1540,
+          814
+        ]
+      }
+    },
+    {
+      "name": "public assets are byte-identical",
+      "passed": true,
+      "requirement": "public PDF, SVG, and PNG exactly match the formal package",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "claim boundary is explicit",
+      "passed": true,
+      "requirement": "selected/complete-root, analytic, and Millennium boundaries are stated",
+      "value": "Panel A is an analytic screen for the selected-root obstruction and the Leray energy payment only. The deterministic finite binary64 points in Panel B corroborate scaling and do not prove the continuum estimate. No panel supplies a complete-root upper bound, a restart argument, control of R_Y, Navier-Stokes regularity, singularity formation, or a Millennium-problem solution. The root-atom vertex changes the left-hand-side observable."
+    },
+    {
+      "name": "English-only visible figure text",
+      "passed": true,
+      "requirement": "the formal SVG contains no CJK figure text",
+      "value": {
+        "cjkInSvg": false
+      }
+    },
+    {
+      "name": "deterministic workflow",
+      "passed": true,
+      "requirement": "no random seed or fitted line supplies a plotted theorem claim",
+      "value": {
+        "configRandomness": false,
+        "finiteFitsAreDiagnostics": true,
+        "fitUsedForClaim": false,
+        "resultsRandomness": false
+      }
+    }
+  ],
+  "passedCheckCount": 19,
+  "schemaVersion": "r072f-figure-validation-v1",
+  "validatedAt": "2026-08-27T09:06:35+08:00"
+}

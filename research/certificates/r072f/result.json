@@ -1,0 +1,587 @@
+{
+  "allRequiredChecksPassed": true,
+  "auditId": "R0.72F-critical-log-producer",
+  "bessel": [
+    {
+      "R": 8,
+      "massOverLogR": 0.9345832823689635,
+      "maximumRootResidual": 2.4350087657968583e-16,
+      "relativeTargetError": 0.15299590960665754,
+      "selectedSlopeMass": 1.9434113015175187,
+      "targetEightOverPiSquared": 0.8105694691387022
+    },
+    {
+      "R": 16,
+      "massOverLogR": 0.8906587532365264,
+      "maximumRootResidual": 4.3766676975399043e-16,
+      "relativeTargetError": 0.09880619385149775,
+      "selectedSlopeMass": 2.4694304145877375,
+      "targetEightOverPiSquared": 0.8105694691387022
+    },
+    {
+      "R": 32,
+      "massOverLogR": 0.8693196266276321,
+      "maximumRootResidual": 6.393970149532844e-16,
+      "relativeTargetError": 0.0724801016146794,
+      "selectedSlopeMass": 3.0128322410118376,
+      "targetEightOverPiSquared": 0.8105694691387022
+    },
+    {
+      "R": 64,
+      "massOverLogR": 0.8572777371536614,
+      "maximumRootResidual": 8.779342994878153e-16,
+      "relativeTargetError": 0.05762401594596282,
+      "selectedSlopeMass": 3.5653178787892212,
+      "targetEightOverPiSquared": 0.8105694691387022
+    },
+    {
+      "R": 128,
+      "massOverLogR": 0.849633558431617,
+      "maximumRootResidual": 2.0876817253155563e-15,
+      "relativeTargetError": 0.04819338845123748,
+      "selectedSlopeMass": 4.122447738751922,
+      "targetEightOverPiSquared": 0.8105694691387022
+    }
+  ],
+  "checks": [
+    {
+      "name": "critical_weight_l2_identity",
+      "passed": true,
+      "requirement": "integral_0^1 s^(-2/3)(1+log(1/s))^2 ds equals 75",
+      "value": 75
+    },
+    {
+      "name": "positive_weighted_actions",
+      "passed": true,
+      "requirement": "every computed weighted action is positive",
+      "value": 0.36816348286240064
+    },
+    {
+      "name": "fine_coarse_stability",
+      "passed": true,
+      "requirement": "all weighted actions agree across discretizations within tolerance",
+      "value": 0.0012648223360552597
+    },
+    {
+      "name": "spectral_tail_negligible",
+      "passed": true,
+      "requirement": "outer spectral tail remains below 1e-10",
+      "value": 2.4883024055449823e-33
+    },
+    {
+      "name": "contractive_evolution",
+      "passed": true,
+      "requirement": "split-step evolution is contractive to tolerance",
+      "value": 1.0
+    },
+    {
+      "name": "regular_variation_normalizations",
+      "passed": true,
+      "requirement": "each theorem normalization varies by less than a factor 2.5",
+      "value": {
+        "beta-1-4": 1.7464622622267492,
+        "beta-2-5": 1.4940731644237613,
+        "beta-49-100": 1.3743277917645451,
+        "critical-log": 1.0773300443700056,
+        "plain-one-third": 1.5974292766124958
+      }
+    },
+    {
+      "name": "bessel_mass_asymptotic",
+      "passed": true,
+      "requirement": "R=128 frozen mass/log(R) is within 5 percent of 8/pi^2",
+      "value": 0.04819338845123748
+    },
+    {
+      "name": "bessel_root_residual",
+      "passed": true,
+      "requirement": "SciPy Bessel roots have residual below 2e-13",
+      "value": 2.0876817253155563e-15
+    },
+    {
+      "name": "frontier_vertices_exact",
+      "passed": true,
+      "requirement": "the three declared vertices satisfy the rational frontier exactly",
+      "value": [
+        {
+          "a": "1/3",
+          "alpha": "0",
+          "beta": "1/3",
+          "c": "0",
+          "gamma": 1,
+          "name": "critical-log-action",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "1",
+          "weightedFrontierSum": "1"
+        },
+        {
+          "a": "1/3",
+          "alpha": "0",
+          "beta": "0",
+          "c": "1/3",
+          "gamma": 0,
+          "name": "explicit-coupling",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "1",
+          "weightedFrontierSum": "1"
+        },
+        {
+          "a": "1/3",
+          "alpha": "4/9",
+          "beta": "0",
+          "c": "0",
+          "gamma": 0,
+          "name": "root-weight",
+          "onDeclaredBoundary": true,
+          "rawFrontierSum": "2/3",
+          "weightedFrontierSum": "1"
+        }
+      ]
+    }
+  ],
+  "createdAtUtc": "2026-08-27T00:54:00.150Z",
+  "environment": {
+    "logicalCpus": 18,
+    "numpy": "2.3.5",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+    "scipy": "1.16.1"
+  },
+  "fits": {
+    "beta-1-4": {
+      "QAgainstDelta": {
+        "intercept": 2.73878992028077,
+        "rSquared": 0.9971899425658863,
+        "slope": -0.5921158601642953
+      },
+      "expectedLeadingPower": -0.75,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.738789920280768,
+        "rSquared": 0.9618764802794467,
+        "slope": 0.15788413983570487
+      },
+      "normalizedSpread": 1.7464622622267492
+    },
+    "beta-2-5": {
+      "QAgainstDelta": {
+        "intercept": 2.9866903533889055,
+        "rSquared": 0.997304530415789,
+        "slope": -0.4865656974215386
+      },
+      "expectedLeadingPower": -0.6,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.986690353388907,
+        "rSquared": 0.9526277473629201,
+        "slope": 0.11343430257846131
+      },
+      "normalizedSpread": 1.4940731644237613
+    },
+    "beta-49-100": {
+      "QAgainstDelta": {
+        "intercept": 3.173651215013843,
+        "rSquared": 0.9974246358891496,
+        "slope": -0.4203116223310558
+      },
+      "expectedLeadingPower": -0.51,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 3.173651215013842,
+        "rSquared": 0.9463370137349009,
+        "slope": 0.08968837766894447
+      },
+      "normalizedSpread": 1.3743277917645451
+    },
+    "critical-log": {
+      "QAgainstDelta": {
+        "intercept": 4.0783297924099084,
+        "rSquared": 0.995360620552469,
+        "slope": -0.4130291646984359
+      },
+      "expectedLeadingPower": -0.6666666666666667,
+      "expectedLogPower": 1,
+      "normalizedAgainstDelta": {
+        "intercept": 3.6533251554550437,
+        "rSquared": 0.996672073707545,
+        "slope": 0.022030840714347376
+      },
+      "normalizedSpread": 1.0773300443700056
+    },
+    "plain-one-third": {
+      "QAgainstDelta": {
+        "intercept": 2.8679359479573026,
+        "rSquared": 0.9972395903811915,
+        "slope": -0.5341953476325696
+      },
+      "expectedLeadingPower": -0.6666666666666667,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.867935947957302,
+        "rSquared": 0.9569266024045933,
+        "slope": 0.132471319034097
+      },
+      "normalizedSpread": 1.5974292766124958
+    }
+  },
+  "frontier": {
+    "betaZeroRawNecessaryCondition": "2*a+c>=1 from the separate logarithmic endpoint law",
+    "positiveBetaRawNecessaryCondition": "2*a+c+beta>1, or equality with gamma>=1",
+    "vertices": [
+      {
+        "a": "1/3",
+        "alpha": "0",
+        "beta": "1/3",
+        "c": "0",
+        "gamma": 1,
+        "name": "critical-log-action",
+        "onDeclaredBoundary": true,
+        "rawFrontierSum": "1",
+        "weightedFrontierSum": "1"
+      },
+      {
+        "a": "1/3",
+        "alpha": "0",
+        "beta": "0",
+        "c": "1/3",
+        "gamma": 0,
+        "name": "explicit-coupling",
+        "onDeclaredBoundary": true,
+        "rawFrontierSum": "1",
+        "weightedFrontierSum": "1"
+      },
+      {
+        "a": "1/3",
+        "alpha": "4/9",
+        "beta": "0",
+        "c": "0",
+        "gamma": 0,
+        "name": "root-weight",
+        "onDeclaredBoundary": true,
+        "rawFrontierSum": "2/3",
+        "weightedFrontierSum": "1"
+      }
+    ],
+    "weightedNecessaryCondition": "2*a+c+beta+3*alpha/4>=1 for alpha>0"
+  },
+  "method": {
+    "coarse": {
+      "maximumStep": 0.02,
+      "modes": 256,
+      "phaseStep": 0.12
+    },
+    "evolution": "time-dependent Strang split-step Fourier",
+    "fine": {
+      "maximumStep": 0.01,
+      "modes": 512,
+      "phaseStep": 0.06
+    },
+    "weightedQuadrature": "exact weight moments against piecewise-linear integrand",
+    "weights": [
+      {
+        "beta": "1/4",
+        "gamma": 0,
+        "label": "beta-1-4"
+      },
+      {
+        "beta": "1/3",
+        "gamma": 0,
+        "label": "plain-one-third"
+      },
+      {
+        "beta": "1/3",
+        "gamma": 1,
+        "label": "critical-log"
+      },
+      {
+        "beta": "2/5",
+        "gamma": 0,
+        "label": "beta-2-5"
+      },
+      {
+        "beta": "49/100",
+        "gamma": 0,
+        "label": "beta-49-100"
+      }
+    ],
+    "xMaximum": 1.0
+  },
+  "schemaVersion": "r072f-producer-audit-v1",
+  "scope": {
+    "completeRootUpperBound": false,
+    "intervalArithmetic": false,
+    "provesNSERegularity": false,
+    "role": "finite corroboration of analytic exponents and constants"
+  },
+  "weightedActionRows": [
+    {
+      "actions": {
+        "beta-1-4": 2.836246596674486,
+        "beta-2-5": 4.921979525599452,
+        "beta-49-100": 7.179214653978015,
+        "critical-log": 17.913126088485964,
+        "plain-one-third": 3.8114816210063016
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 22.689972773395887,
+        "beta-2-5": 25.978363682762776,
+        "beta-49-100": 29.524199401146582,
+        "critical-log": 41.02348822068455,
+        "plain-one-third": 24.20139973897145
+      },
+      "coarseActions": {
+        "beta-1-4": 2.8349785928933935,
+        "beta-2-5": 4.917746255907591,
+        "beta-49-100": 7.171192569822447,
+        "critical-log": 17.890469166500672,
+        "plain-one-third": 3.80893026197773
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.07045650877730099,
+      "delta": 16.0,
+      "finalL2Squared": 0.006494844670187532,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.00044707106306592526,
+        "beta-2-5": 0.0008600746244155543,
+        "beta-49-100": 0.0011174041371117404,
+        "critical-log": 0.0012648223360552597,
+        "plain-one-third": 0.0006693877295669933
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 1.746246261732251e-47,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 15.700383669615842,
+        "beta-2-5": 27.24620879457831,
+        "beta-49-100": 39.741404942061024,
+        "critical-log": 99.16026083246548,
+        "plain-one-third": 21.09891427270569
+      },
+      "steps": 170
+    },
+    {
+      "actions": {
+        "beta-1-4": 2.023132167666127,
+        "beta-2-5": 3.723949598410066,
+        "beta-49-100": 5.635810453383057,
+        "critical-log": 14.303037164559147,
+        "plain-one-third": 2.8082843087463742
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 27.21991339799877,
+        "beta-2-5": 29.791596787280525,
+        "beta-49-100": 33.00523787943585,
+        "critical-log": 41.59739369984675,
+        "plain-one-third": 28.305732117432246
+      },
+      "coarseActions": {
+        "beta-1-4": 2.0222066499660944,
+        "beta-2-5": 3.7207356743925333,
+        "beta-49-100": 5.629462033924417,
+        "critical-log": 14.285675002051336,
+        "plain-one-third": 2.806393714827322
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.0847735930299199,
+      "delta": 32.0,
+      "finalL2Squared": 0.0009258477193865068,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.0004574677397870436,
+        "beta-2-5": 0.0008630417605289348,
+        "beta-49-100": 0.001126443039763443,
+        "critical-log": 0.001213879423513708,
+        "plain-one-third": 0.0006732202694591398
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 1.4030792978032999e-68,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 18.358936618473784,
+        "beta-2-5": 33.79302437095345,
+        "beta-49-100": 51.14222815544028,
+        "critical-log": 129.79307874815558,
+        "plain-one-third": 25.483808944822975
+      },
+      "steps": 338
+    },
+    {
+      "actions": {
+        "beta-1-4": 1.3758822403133466,
+        "beta-2-5": 2.7119114183561592,
+        "beta-49-100": 4.283711376837056,
+        "critical-log": 11.006343241843021,
+        "plain-one-third": 1.9830161780553608
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 31.132661191670607,
+        "beta-2-5": 32.88391250968913,
+        "beta-49-100": 35.72497951742567,
+        "critical-log": 42.3434581688765,
+        "plain-one-third": 31.72825884888578
+      },
+      "coarseActions": {
+        "beta-1-4": 1.3752988785440352,
+        "beta-2-5": 2.7096835493047595,
+        "beta-49-100": 4.279047700521365,
+        "critical-log": 10.994011607026723,
+        "plain-one-third": 1.9817602415515736
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.0989445577476694,
+      "delta": 64.0,
+      "finalL2Squared": 5.955819028841479e-05,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.00042399105985882967,
+        "beta-2-5": 0.0008215124713587241,
+        "beta-49-100": 0.0010886999392416604,
+        "critical-log": 0.0011204116158596003,
+        "plain-one-third": 0.0006333465746198915
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 4.5184955409640945e-51,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 21.017594241539722,
+        "beta-2-5": 41.42640419359393,
+        "beta-49-100": 65.43678298058728,
+        "critical-log": 168.12983666936978,
+        "plain-one-third": 30.29200332964874
+      },
+      "steps": 675
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.9052563512823081,
+        "beta-2-5": 1.9227493925740338,
+        "beta-49-100": 3.1829787374081184,
+        "critical-log": 8.223887484849278,
+        "plain-one-third": 1.3593401845422297
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 34.44919340308235,
+        "beta-2-5": 35.33854502914145,
+        "beta-49-100": 37.801655683947544,
+        "critical-log": 43.04872619379567,
+        "plain-one-third": 34.52508862279972
+      },
+      "coarseActions": {
+        "beta-1-4": 0.9049030485873774,
+        "beta-2-5": 1.9212502824945874,
+        "beta-49-100": 3.179640808871693,
+        "critical-log": 8.215400962593577,
+        "plain-one-third": 1.358533233347764
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.11307034797134388,
+      "delta": 128.0,
+      "finalL2Squared": 1.2834326386173035e-06,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.00039027916725496123,
+        "beta-2-5": 0.0007796700314852094,
+        "beta-49-100": 0.0010486807521508247,
+        "critical-log": 0.0010319355987464462,
+        "plain-one-third": 0.0005936344732848972
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 2.4883024055449823e-33,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 23.805237362683727,
+        "beta-2-5": 50.561927142897,
+        "beta-49-100": 83.70177602956792,
+        "critical-log": 216.26094458605897,
+        "plain-one-third": 35.746135007862165
+      },
+      "steps": 1350
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.5820302280669299,
+        "beta-2-5": 1.3381088878988543,
+        "beta-49-100": 2.328291743844022,
+        "critical-log": 6.005580471915459,
+        "plain-one-third": 0.9127607759735379
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 37.249934596283516,
+        "beta-2-5": 37.27652627558073,
+        "beta-49-100": 39.376742030931965,
+        "critical-log": 43.66493850435275,
+        "plain-one-third": 36.80020848535806
+      },
+      "coarseActions": {
+        "beta-1-4": 0.5818188360344334,
+        "beta-2-5": 1.337111322829192,
+        "beta-49-100": 2.3259274017516693,
+        "critical-log": 5.999829525129006,
+        "plain-one-third": 0.9122483063768139
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.12717204638609697,
+      "delta": 256.0,
+      "finalL2Squared": 5.959692212349935e-09,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.0003631976868256903,
+        "beta-2-5": 0.0007455036572014116,
+        "beta-49-100": 0.001015483604494151,
+        "critical-log": 0.0009576004873045138,
+        "plain-one-third": 0.0005614500646978678
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 1.3404913452540676e-37,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 26.83249105391018,
+        "beta-2-5": 61.68888320964469,
+        "beta-49-100": 107.33783981474504,
+        "critical-log": 276.8665208702503,
+        "plain-one-third": 42.07967932698794
+      },
+      "steps": 2698
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.36816348286240064,
+        "beta-2-5": 0.9192246906301672,
+        "beta-49-100": 1.684770613039939,
+        "critical-log": 4.307937100699656,
+        "plain-one-third": 0.6040628824692967
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 39.62718117968833,
+        "beta-2-5": 38.813576034056695,
+        "beta-49-100": 40.575927766593885,
+        "critical-log": 44.19583638500249,
+        "plain-one-third": 38.660024478035005
+      },
+      "coarseActions": {
+        "beta-1-4": 0.3680375007973798,
+        "beta-2-5": 0.9185639312413312,
+        "beta-49-100": 1.68310347776194,
+        "critical-log": 4.304073838424112,
+        "plain-one-third": 0.6037388955254048
+      },
+      "coarseModes": 256,
+      "criticalSelectedRatioProxy": 0.1412400754468676,
+      "delta": 512.0,
+      "finalL2Squared": 3.1754302539817196e-12,
+      "fineCoarseRelativeDifferences": {
+        "beta-1-4": 0.0003421905508970093,
+        "beta-2-5": 0.000718822498537383,
+        "beta-49-100": 0.0009895325008018568,
+        "critical-log": 0.0008967777813924024,
+        "plain-one-third": 0.0005363463859383464
+      },
+      "maximumL2Squared": 1.0,
+      "maximumSpectralTailFraction": 4.196926874340844e-35,
+      "modes": 512,
+      "physicalWeightedActions": {
+        "beta-1-4": 30.19752661983715,
+        "beta-2-5": 75.39670107719667,
+        "beta-49-100": 138.18835328273863,
+        "critical-log": 353.34586761170465,
+        "plain-one-third": 49.54648090462494
+      },
+      "steps": 5395
+    }
+  ]
+}

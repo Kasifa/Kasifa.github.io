@@ -94,9 +94,9 @@ test("English prose keeps the voice of one human researcher", async () => {
   assert.match(prose, /\bI\b/);
   assert.equal(
     dictionary[
-      "资料截止：2026-08-27。若后续论文状态、版本或官方判断发生变化，我会在此页更新并保留原来的证据标签。"
+      "资料截止：2026-08-28。若后续论文状态、版本或官方判断发生变化，我会在此页更新并保留原来的证据标签。"
     ],
-    "Sources checked through 2026-08-27. If publication status, versions, or official assessments change, I will update this page while preserving the original evidence labels.",
+    "Sources checked through 2026-08-28. If publication status, versions, or official assessments change, I will update this page while preserving the original evidence labels.",
   );
   assert.match(
     dictionary[

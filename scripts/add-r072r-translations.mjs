@@ -28,6 +28,8 @@ row("打开 108 节完整索引", "Open the complete 108-note index");
 row("给出 \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及在 \\(0\\le y\\le1\\) 上支持 fixed-pattern commensurate \\(1{:}2{:}3\\) triangular affine-row ED 的统一 margins。", "gives the general caustic formula for \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) and generic cusp geometry. The rigorous R0.72R increment is only an explicit rational compact core in the fixed-first-harmonic four-real-dimensional slice, together with uniform margins on \\(0\\le y\\le1\\) supporting fixed-pattern commensurate \\(1{:}2{:}3\\) triangular affine-row enhanced dissipation.");
 row("给出 stationary degenerate critical points 的较慢 ED benchmarks；它们不等价于非自治 caustic crossing theorem，也说明 caustic 不是 ED 失败墙。", "give slower enhanced-dissipation benchmarks for stationary degenerate critical points. They are not a nonautonomous caustic-crossing theorem, and they also show that a caustic is not a wall of enhanced-dissipation failure.");
 row("开放接口 · R0.72S", "Open interface · R0.72S");
+row("阶段后续 R0.72Q（已完成）：", "Historical next R0.72Q (now complete):");
+row("阶段后续 R0.72R（已完成）：", "Historical next R0.72R (now complete):");
 row("累计回顾与 108 节索引", "Cumulative recap and 108-note index");
 row("提供时变非退化 shear 的 semigroup input；polydisc、对所有 \\(y\\ge0\\) 的 normalized root-localization margins、\\(0\\le y\\le1\\) 的 physical shape constants 与同窗 heat-path ledger，是本站为上述固定类供给的 family-uniform inputs。", "provides the semigroup input for time-dependent nondegenerate shears; the polydisc, normalized root-localization margins for every \\(y\\ge0\\), physical shape constants on \\(0\\le y\\le1\\), and the heat-path ledger on that same window are the family-uniform inputs supplied here for the stated fixed class.");
 row("文献综述 · 资料截止 2026-08-28", "Literature review · Sources checked through 2026-08-28");
@@ -217,8 +219,8 @@ const translatedEntries = missing.map((entry, index) => {
   }
   return { ...entry, id: "r072r" + String(index + 1).padStart(3, "0"), en };
 });
-if (translatedEntries.length !== 124) {
-  throw new Error(`Expected 124 R0.72R English rows, found ${translatedEntries.length}`);
+if (translatedEntries.length !== 126) {
+  throw new Error(`Expected 126 R0.72R English rows, found ${translatedEntries.length}`);
 }
 
 const finalTranslations = [...retained, ...translatedEntries];

@@ -154,6 +154,9 @@ test("keeps R0.72R source work non-public and advances the formal endpoint atomi
   assert.equal(noteFiles.filter((name) => name.endsWith(".html")).length, 168);
   assert.match(home, /<strong>R0\.72R<\/strong>最新研究节点/);
   assert.match(home, /NEXT · R0\.72S/);
+  assert.match(home, /阶段后续 R0\.72Q（已完成）：/);
+  assert.match(home, /阶段后续 R0\.72R（已完成）：/);
+  assert.doesNotMatch(home, />下一步 R0\.72[QR]：/);
   assert.match(home, /累计回顾收录 108 个节点；全站现有 168 篇公开研究笔记/);
   assert.match(literature, /id="r072r-boundary"/);
   assert.match(literature, /开放接口 · R0\.72S/);

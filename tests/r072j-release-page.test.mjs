@@ -65,28 +65,28 @@ test("retains J while synchronizing v1.25, latest L, next M, and archive counts"
     readdir(resolve(publicRoot, "notes")),
   ]);
 
-  assert.equal(files.filter((name) => name.endsWith(".html")).length, 162);
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.25">/);
-  assert.match(home, /<strong>v1\.25<\/strong>网页版本/);
-  assert.match(home, /<strong>162<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72L<\/strong>最新研究节点/);
-  assert.match(home, /R0\.70A–R0\.72L：64 节已公开，40 节完整封存/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72L<\/span>/);
-  assert.match(home, /展开 72 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72M/);
-  assert.match(home, /累计回顾收录 102 个节点；全站现有 162 篇公开研究笔记/);
-  assert.match(home, /64 个版本已公开/);
-  assert.match(home, /40 个按当前 formal-figure 合同完整封存/);
+  assert.equal(files.filter((name) => name.endsWith(".html")).length, 163);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.26">/);
+  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
+  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
+  assert.match(home, /R0\.70A–R0\.72M：65 节已公开，41 节完整封存/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72M<\/span>/);
+  assert.match(home, /展开 73 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72N/);
+  assert.match(home, /累计回顾收录 103 个节点；全站现有 163 篇公开研究笔记/);
+  assert.match(home, /65 个版本已公开/);
+  assert.match(home, /41 个按当前 formal-figure 合同完整封存|41 个完整封存/);
   assert.match(home, /24 个旧版附图档案仍列入回补清单/);
   assert.equal((home.match(/data-release="r072k"/g) ?? []).length, 1);
   assert.equal((home.match(/data-release="r072j"/g) ?? []).length, 1);
-  assert.match(home, /recap-r0-61-r0-72l\.html/);
+  assert.match(home, /recap-r0-61-r0-72m\.html/);
   assert.match(home, /href="\/notes\/r0-72j\.html"/);
 
-  assert.match(literature, /本站 R0\.69P–R0\.72L 只列为研究笔记/);
+  assert.match(literature, /本站 R0\.69P–R0\.72M 只列为研究笔记/);
   assert.match(literature, /id="r072k-boundary"/);
   assert.match(literature, /id="r072j-boundary"/);
-  assert.match(literature, /开放接口 · R0\.72M/);
+  assert.match(literature, /开放接口 · R0\.72N/);
   assert.match(literature, /href="\/notes\/r0-72k\.html"/);
   assert.match(literature, /href="\/notes\/r0-72j\.html"/);
   for (const source of [
@@ -111,35 +111,35 @@ test("retains J while synchronizing v1.25, latest L, next M, and archive counts"
       backlog: release.legacyFormalFigureBacklogCount,
     },
     {
-      latest: "r072l",
-      version: "1.25",
-      notes: 162,
-      recap: 102,
-      next: "r072m",
-      published: 64,
-      sealed: 40,
+      latest: "r072m",
+      version: "1.26",
+      notes: 163,
+      recap: 103,
+      next: "r072n",
+      published: 65,
+      sealed: 41,
       backlog: 24,
     },
   );
   assert.equal(
     release.latestReleaseGate,
-    "tests/r072l-strong-coupling-gate.test.mjs",
+    "tests/r072m-danger-window-gate.test.mjs",
   );
-  assert.equal(archive.latestPublishedRelease, "r072l");
-  assert.equal(archive.publishedReleaseCount, 64);
-  assert.equal(archive.formalSealedReleaseCount, 40);
+  assert.equal(archive.latestPublishedRelease, "r072m");
+  assert.equal(archive.publishedReleaseCount, 65);
+  assert.equal(archive.formalSealedReleaseCount, 41);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
   assert.ok(archive.publishedReleases.includes("r072k"));
   assert.ok(archive.formalSealedReleases.includes("r072k"));
   assert.ok(archive.publishedReleases.includes("r072j"));
   assert.ok(archive.formalSealedReleases.includes("r072j"));
-  assert.equal(archive.publishedReleases.length, 64);
-  assert.equal(archive.formalSealedReleases.length, 40);
+  assert.equal(archive.publishedReleases.length, 65);
+  assert.equal(archive.formalSealedReleases.length, 41);
   assert.deepEqual(site, {
     schemaVersion: "research-site-version-v1",
-    version: "1.25",
-    latestRelease: "R0.72L",
-    publicHtmlNoteCount: 162,
+    version: "1.26",
+    latestRelease: "R0.72M",
+    publicHtmlNoteCount: 163,
     publishedDate: "2026-08-27",
   });
 });
@@ -156,7 +156,7 @@ test("current shell uses v1.25 while historical J pages retain v1.23", async () 
     ),
   );
   for (const page of currentPages) {
-    assert.match(page, /src="\/i18n-en\.js\?v=1\.25"/);
+    assert.match(page, /src="\/i18n-en\.js\?v=1\.26"/);
   }
   for (const page of historicalPages) {
     assert.match(page, /src="\/i18n-en\.js\?v=1\.23"/);

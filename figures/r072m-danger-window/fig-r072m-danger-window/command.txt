@@ -1,0 +1,12 @@
+From the repository root, after the producer and independent certificates have
+been generated in research/certificates/r072m:
+
+python3 figures/r072m-danger-window/fig-r072m-danger-window/plot.py
+python3 figures/r072m-danger-window/fig-r072m-danger-window/qa_images.py
+python3 figures/r072m-danger-window/fig-r072m-danger-window/publish_assets.py
+R072M_VISUAL_QA_INSPECTED=true python3 figures/r072m-danger-window/fig-r072m-danger-window/validate.py
+python3 figures/r072m-danger-window/fig-r072m-danger-window/build_manifest.py --status candidate
+
+For the formal seal, set full R072M_SOURCE_COMMIT and
+R072M_CERTIFICATE_COMMIT values, set R072M_DIRTY_AT_CERTIFIED_RUN=false, keep
+R072M_VISUAL_QA_INSPECTED=true, and pass --status formal.

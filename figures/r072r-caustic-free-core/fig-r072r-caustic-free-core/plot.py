@@ -408,13 +408,13 @@ def main() -> None:
     ax.plot(scaled_distance, normalized_lower, color=palette["ink"], lw=1.15,
             label=r"normalized $F$: certified lower")
     ax.plot(scaled_distance, physical_lower, color=palette["blue"], lw=1.2,
-            label=r"physical $W$: certified lower")
+            label=r"physical $W$ ($0\leq y\leq1$): certified lower")
     ax.plot(scaled_distance, local_upper, color=palette["muted"], lw=0.85,
             linestyle="--", label=r"local upper envelope")
     ax.axvline(1.0, color=palette["ochre"], lw=0.9, linestyle=":")
     for series, values, note in (
         ("normalized certified lower", normalized_lower, "d/4 locally; 1/80 away"),
-        ("physical certified lower", physical_lower, "d/12 locally; 1/240 away"),
+        ("physical W (0<=y<=1): certified lower", physical_lower, "d/12 locally; 1/240 away"),
         ("local upper envelope", local_upper, "(5/3)*min(d,r)"),
     ):
         for distance, value in zip(distances, values):

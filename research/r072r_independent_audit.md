@@ -5,8 +5,9 @@
 **Status:** PASS for the declared compact polydisc, the two-critical-point
 theorem for every \(y\ge0\), physical shape constants on \(0\le y\le1\), the
 slow-time ledger, and exact incidence formulas.  The fixed-pattern
-enhanced-dissipation corollary uses the same physical cell.  The complete
-four-dimensional caustic decomposition is not part of this audit.
+commensurate \(1{:}2{:}3\) triangular affine-row enhanced-dissipation
+corollary uses the same physical cell.  The complete four-dimensional
+caustic decomposition is not part of this audit.
 
 ## 1. Coefficient domain and cone exit
 

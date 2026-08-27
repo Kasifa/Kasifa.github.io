@@ -7,8 +7,9 @@ of the two endpoint walls and the filtered internal arc
 caustic.  **B,** The exact lower, center, and upper heat envelopes for
 \(Q_2(y)\) all start above \(1/2\) and enter the old cone by \(y=1\); the
 crossing is not a degeneracy.  **C,** The conservative two-regime gradient
-contracts for normalized \(F\) and physical \(W=e^{-y}F\) distinguish the
-local linear slope from the away floor.  Curves are presentation samples of
-exact formulas and do not replace the analytic proof.  The complete
+contracts for normalized \(F\) and, on \(0\le y\le1\), physical
+\(W=e^{-y}F\) distinguish the local linear slope from the away floor.  Curves
+are presentation samples of exact formulas and do not replace the analytic
+proof.  The complete
 four-dimensional caustic stratification and caustic-crossing enhanced
 dissipation remain open.

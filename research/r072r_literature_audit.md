@@ -95,5 +95,6 @@ enhanced-dissipation failure wall.
 The search covered the primary sources above, their stated theorems, and the
 caustic/Morse-discriminant terminology.  It did not locate the exact R0.72R
 polydisc with its normalized margins for every \(y\ge0\) and its fixed-pattern
-Coble--He extraction on \(0\le y\le1\).  That absence is a limited search
-result, not proof of global novelty.
+commensurate \(1{:}2{:}3\) triangular affine-row Coble--He extraction on
+\(0\le y\le1\).  That absence is a limited search result, not proof of global
+novelty.

@@ -12,6 +12,7 @@ const publicDirectory = resolve(root, "public");
 const translationPath = resolve(root, "translations/en.json");
 const snapshotPath = resolve(root, "scripts/i18n-snapshots/r072r-missing.json");
 const checkOnly = process.argv.includes("--check-only");
+const refreshSnapshot = process.argv.includes("--refresh-snapshot");
 
 const translations = JSON.parse(await readFile(translationPath, "utf8"));
 const retained = translations.filter((entry) => !/^r072r\d+$/.test(entry.id));
@@ -24,15 +25,15 @@ const englishByChinese = new Map();
 const row = (zh, en) => englishByChinese.set(zh, en);
 
 row("打开 108 节完整索引", "Open the complete 108-note index");
-row("给出 \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及可支持热路径 ED 的统一 margins。", "gives the general caustic formula for \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) and generic cusp geometry. The rigorous R0.72R increment is only an explicit rational compact core in the fixed-first-harmonic four-real-dimensional slice, together with uniform margins that support enhanced dissipation along the heat path.");
+row("给出 \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) 的一般 caustic 公式和 generic cusp geometry。R0.72R 的严格增量只是在 fixed-first-harmonic 四实维切片中给出一个显式 rational compact core，以及在 \\(0\\le y\\le1\\) 上支持 fixed-pattern commensurate \\(1{:}2{:}3\\) triangular affine-row ED 的统一 margins。", "gives the general caustic formula for \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) and generic cusp geometry. The rigorous R0.72R increment is only an explicit rational compact core in the fixed-first-harmonic four-real-dimensional slice, together with uniform margins on \\(0\\le y\\le1\\) supporting fixed-pattern commensurate \\(1{:}2{:}3\\) triangular affine-row enhanced dissipation.");
 row("给出 stationary degenerate critical points 的较慢 ED benchmarks；它们不等价于非自治 caustic crossing theorem，也说明 caustic 不是 ED 失败墙。", "give slower enhanced-dissipation benchmarks for stationary degenerate critical points. They are not a nonautonomous caustic-crossing theorem, and they also show that a caustic is not a wall of enhanced-dissipation failure.");
 row("开放接口 · R0.72S", "Open interface · R0.72S");
 row("累计回顾与 108 节索引", "Cumulative recap and 108-note index");
-row("提供时变非退化 shear 的 semigroup input；polydisc、共同 shape constants 与 heat-path ledger 是本站供给的 family-uniform inputs。", "provides the semigroup input for time-dependent nondegenerate shears; the polydisc, common shape constants, and heat-path ledger are the family-uniform inputs supplied here.");
+row("提供时变非退化 shear 的 semigroup input；polydisc、对所有 \\(y\\ge0\\) 的 normalized root-localization margins、\\(0\\le y\\le1\\) 的 physical shape constants 与同窗 heat-path ledger，是本站为上述固定类供给的 family-uniform inputs。", "provides the semigroup input for time-dependent nondegenerate shears; the polydisc, normalized root-localization margins for every \\(y\\ge0\\), physical shape constants on \\(0\\le y\\le1\\), and the heat-path ledger on that same window are the family-uniform inputs supplied here for the stated fixed class.");
 row("文献综述 · 资料截止 2026-08-28", "Literature review · Sources checked through 2026-08-28");
 row("文献综述 v1.31 · 2026-08-28", "Literature review v1.31 · 2026-08-28");
 row("我把已发表定理列为已知结果，2026 年预印本单独标记，本站 R0.69P–R0.72R 只列为研究笔记。我不把计算或笔记外推成正则性定理。", "I list published theorems as known results, mark 2026 preprints separately, and list R0.69P–R0.72R on this site only as research notes. I do not extrapolate computations or notes into regularity theorems.");
-row("显式 rational polydisc 整体满足 \\(Q_2(0)\\ge14/25>1/2\\)，沿热路径对所有 \\(y\\ge0\\) 保持两个临界点；在 \\(0\\le y\\le1\\) 的 cell window 内具有 physical shape constants \\((\\pi/48,144,240)\\)。旧锥 crossing 不是 caustic。", "The explicit rational polydisc satisfies \\(Q_2(0)\\ge14/25>1/2\\) throughout and retains two critical points for every \\(y\\ge0\\) along the heat path; it has physical shape constants \\((\\pi/48,144,240)\\) on the cell window \\(0\\le y\\le1\\). Crossing the old cone boundary is not a caustic.");
+row("显式 rational polydisc 整体满足 \\(Q_2(0)\\ge14/25>1/2\\)，沿热路径对所有 \\(y\\ge0\\) 保持两个临界点；在 \\(0\\le y\\le1\\) 的 cell window 内具有 physical shape constants \\((\\pi/48,144,240)\\)。旧锥 crossing 不是 caustic。", "The explicit rational polydisc satisfies \\(Q_2(0)\\ge14/25>1/2\\) throughout and retains two critical points for every \\(y\\ge0\\) along the heat path; on the cell window \\(0\\le y\\le1\\), it has physical shape constants \\((\\pi/48,144,240)\\). Crossing the old cone boundary is not a caustic.");
 row("研究 univariate Laurent polynomial 的 caustic 与 Morse discriminant；complex discriminant 不能替代本站的 real self-inversive unit-circle incidence。", "studies the caustic and Morse discriminant of a univariate Laurent polynomial; a complex discriminant cannot replace the real self-inversive unit-circle incidence used here.");
 row("已研究实三角多项式 maximal-real-critical regions 的拓扑，degree three 的这类区域并非本站新发现。", "already studies the topology of maximal-real-critical regions for real trigonometric polynomials; such a degree-three region is not a new discovery of this site.");
 row("在明确紧系数盒上分离 generic \\(A_2\\)、\\(A_3\\) 与更高余维 strata，并研究逼近或穿越指定 wall 的热路径。", "Separate generic \\(A_2\\), \\(A_3\\), and higher-codimension strata on a declared compact coefficient box, then study a heat path approaching or crossing a specified wall.");
@@ -56,7 +57,7 @@ row("等价地，若 \\(u=e^{i\\phi}\\)，则实 caustic 满足存在 \\(|u|=1\\
 row("对 Clay 问题的直接价值仍低：第一谐波归一化、有限 commensurate pattern、affine-row invariance、triangular 2.5D reduction 与非退化 critical-point 条件仍远离任意三维初值。", "The direct value for the Clay problem remains low: first-harmonic normalization, a finite commensurate pattern, affine-row invariance, the triangular 2.5D reduction, and nondegenerate critical-point hypotheses remain far from arbitrary three-dimensional data.");
 row("给出 \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) 的一般 caustic 公式和 generic cusp geometry；", "gives the general caustic formula for \\(A\\cos\\phi+B\\sin\\phi+g(\\phi)\\) and generic cusp geometry;");
 row("给出 Laurent-polynomial Morse discriminant 的复代数背景；", "gives the complex-algebraic background for the Laurent-polynomial Morse discriminant;");
-row("给出时变非退化 shear 的半群输入。限定一手检索没有定位到这里的精确 rational polydisc、对所有 \\(y\\ge0\\) 的 normalized root-localization margins 与 \\(0\\le y\\le1\\) 上 fixed-pattern ED corollary 的组合陈述；这不构成新颖性或优先权证明。", "provides the semigroup input for time-dependent nondegenerate shears. The bounded primary-source search did not locate a combined statement of the exact rational polydisc, normalized root-localization margins for every \\(y\\ge0\\), and the fixed-pattern enhanced-dissipation corollary on \\(0\\le y\\le1\\); this establishes neither novelty nor priority.");
+row("给出时变非退化 shear 的半群输入。限定一手检索没有定位到这里的精确 rational polydisc、对所有 \\(y\\ge0\\) 的 normalized root-localization margins 与 \\(0\\le y\\le1\\) 上 fixed-pattern commensurate 1:2:3 triangular affine-row ED corollary 的组合陈述；这不构成新颖性或优先权证明。", "provides the semigroup input for time-dependent nondegenerate shears. The bounded primary-source search did not locate a combined statement of the exact rational polydisc, normalized root-localization margins for every \\(y\\ge0\\), and the fixed-pattern commensurate 1:2:3 triangular affine-row enhanced-dissipation corollary on \\(0\\le y\\le1\\); this establishes neither novelty nor priority.");
 row("归一化 profile 的临界 tube 内有 Hessian 下界 \\(1/4\\)，tube 外有 away-gradient 下界 \\(1/80\\)。乘回 \\(e^{-y}\\) 后使用 \\(e^{-1}>1/3\\)，得到正式物理常数；它们没有被外推到 \\(y\\to\\infty\\)。", "The normalized profile has Hessian lower bound \\(1/4\\) inside the critical tubes and away-gradient lower bound \\(1/80\\) outside. Restoring \\(e^{-y}\\) and using \\(e^{-1}>1/3\\) gives the formal physical constants; they are not extrapolated to \\(y\\to\\infty\\).");
 row("紧致 polydisc \\(K\\subset\\mathbb C^2\\cong\\mathbb R^4\\) 有非空内部，并整体位于 R0.72Q 的 \\(Q_2\\le1/2\\) 锥外。", "The compact polydisc \\(K\\subset\\mathbb C^2\\cong\\mathbb R^4\\) has nonempty interior and lies entirely outside the R0.72Q cone \\(Q_2\\le1/2\\).");
 row("旧加权锥不是 caustic；", "The old weighted cone is not the caustic;");
@@ -71,7 +72,7 @@ row("实 caustic 包含两条 endpoint lines，以及 \\(a^2=3b(1-3b)\\) 上 \\(
 row("实切片", "Real slice");
 row("四个空间导数上界可取 \\(1161/1000,1323/1000,1649/1000,2307/1000\\)；若 \\(W^{3,\\infty}\\) 采用四项和范数，可取 \\(C_{\\rm sh}=161/25\\)。slow-reference 充分门槛为 \\(\\eta\\le(3/7)^4=81/2401\\)；完整阈值仍包含 Coble–He proof dependency \\(\\eta_{\\rm CH}\\)。Coble–He 输入使用 \\(0\\le t\\le\\eta^{-1}\\)，对应 cell window \\(0\\le y\\le1\\)。", "The four spatial-derivative bounds may be taken as \\(1161/1000,1323/1000,1649/1000,2307/1000\\). If \\(W^{3,\\infty}\\) uses the sum norm over these four terms, one may take \\(C_{\\rm sh}=161/25\\). A sufficient slow-reference threshold is \\(\\eta\\le(3/7)^4=81/2401\\); the complete threshold still contains the Coble–He proof dependency \\(\\eta_{\\rm CH}\\). The Coble–He input uses \\(0\\le t\\le\\eta^{-1}\\), corresponding to the cell window \\(0\\le y\\le1\\).");
 row("四维墙由实 unit-circle incidence 表达，而非复判别式替代", "The four-dimensional wall is expressed by real unit-circle incidence, not replaced by a complex discriminant");
-row("完整 1:2:3 affine row 保留全部交叉项", "The complete 1:2:3 affine row retains every cross term");
+row("固定 commensurate 1:2:3 triangular affine row 保留全部交叉项", "The fixed commensurate 1:2:3 triangular affine row retains every cross term");
 row("在 \\(0\\le y\\le1\\) 的 cell window 内，固定 commensurate 1:2:3 triangular affine-row propagator 对 \\(K\\) 内系数具有统一 enhanced-dissipation 常数。", "On the cell window \\(0\\le y\\le1\\), the fixed commensurate 1:2:3 triangular affine-row propagator has enhanced-dissipation constants uniform over coefficients in \\(K\\).");
 row("下一节先在一个明确紧系数盒上分离 generic \\(A_2\\)、\\(A_3\\) 与更高余维 strata，再构造逼近或穿越其中一个 stratum 的热路径；完整全局 chamber 分类继续单列，除非获得完备 semialgebraic certificate。", "The next section will first separate generic \\(A_2\\), \\(A_3\\), and higher-codimension strata on a declared compact coefficient box, then construct a heat path approaching or crossing one such stratum. A complete global chamber classification remains separate unless a complete semialgebraic certificate is obtained.");
 row("沿归一化热路径，\\(Q_2(y)=4|z_2|e^{-3y}+9|z_3|e^{-8y}\\) 严格下降，且 \\(Q_2(1)<20489/256000<1/2\\)。所以每条路径恰穿过旧边界一次，而临界点仍统一非退化；这次 crossing 不是 caustic。", "Along the normalized heat path, \\(Q_2(y)=4|z_2|e^{-3y}+9|z_3|e^{-8y}\\) decreases strictly and \\(Q_2(1)<20489/256000<1/2\\). Thus every path crosses the old boundary exactly once while its critical points remain uniformly nondegenerate; this crossing is not a caustic.");
@@ -177,7 +178,10 @@ if (JSON.stringify(missingFiles) !== JSON.stringify(expectedFiles)) {
 const expectedSnapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
 const snapshot = missing.map(({ zh, count, files }) => ({ zh, count, files }));
 if (JSON.stringify(expectedSnapshot) !== JSON.stringify(snapshot)) {
-  throw new Error("R0.72R missing-string snapshot is stale");
+  if (!refreshSnapshot) {
+    throw new Error("R0.72R missing-string snapshot is stale");
+  }
+  await writeFile(snapshotPath, JSON.stringify(snapshot, null, 2) + "\n");
 }
 
 const longRoute = missing.filter(
@@ -195,7 +199,7 @@ if (!oldRoute.en.endsWith(routeTail)) {
 englishByChinese.set(
   longRoute[0].zh,
   oldRoute.en.slice(0, -routeTail.length)
-    + " R0.72P closes the full propagation gate on the fixed real-collinear static-phase 1:2 positive class. R0.72Q then proves the fixed-\\(M\\), arbitrary-static-phase two-critical-point shape gate under \\(Q_2\\le1/2\\) and gives the exact 1:2 caustic. R0.72R constructs a four-real-dimensional rational polydisc lying entirely outside the old weighted cone, closes full-heat-path root localization for every \\(y\\ge0\\), and closes the physical shape contract \\((\\pi/48,144,240)\\) plus coefficient-uniform fixed-pattern commensurate 1:2:3 triangular affine-row enhanced dissipation on \\(0\\le y\\le1\\); the complete four-dimensional caustic stratification remains open."
+    + " R0.72P closes the full propagation gate on the fixed real-collinear static-phase 1:2 positive class. R0.72Q then proves the fixed-\\(M\\), arbitrary-static-phase two-critical-point shape gate under \\(Q_2\\le1/2\\) and gives the exact 1:2 caustic. R0.72R constructs a four-real-dimensional rational polydisc lying entirely outside the old weighted cone, closes full-heat-path root localization for every \\(y\\ge0\\), and on \\(0\\le y\\le1\\) closes the physical shape contract \\((\\pi/48,144,240)\\) plus coefficient-uniform fixed-pattern commensurate 1:2:3 triangular affine-row enhanced dissipation; the complete four-dimensional caustic stratification remains open."
     + routeTail,
 );
 
@@ -235,6 +239,7 @@ if (checkOnly) {
 
 console.log(JSON.stringify({
   checkOnly,
+  refreshSnapshot,
   added: translatedEntries.length,
   total: finalTranslations.length,
   liveStrings: source.length,

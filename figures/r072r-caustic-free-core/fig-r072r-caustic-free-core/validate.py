@@ -349,7 +349,7 @@ def formula_checks(config: dict[str, Any], rows: list[dict[str, str]]) -> list[d
                 normalized_local_lower * distance
                 if distance <= radius else normalized_away_gap
             ),
-            "physical certified lower": (
+            "physical W (0<=y<=1): certified lower": (
                 physical_local_lower * distance
                 if distance <= radius else physical_away_gap
             ),
@@ -359,7 +359,7 @@ def formula_checks(config: dict[str, Any], rows: list[dict[str, str]]) -> list[d
     checks.append(gate(
         "panel_c_exact_shape_envelopes", max(residuals_c, default=math.inf) <= tolerance,
         {"maxResidual": max(residuals_c, default=None)},
-        "normalized and physical two-regime envelopes match the declared contract",
+        "normalized and physical two-regime envelopes match the declared 0<=y<=1 contract",
     ))
     return checks
 

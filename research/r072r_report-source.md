@@ -686,9 +686,9 @@ nonautonomous critical-point collision or passage through a wall.
 
 A bounded primary-source search did not locate this explicit four-real-
 dimensional rational polydisc, its normalized jet margins valid for every
-\(y\ge0\), and its fixed-pattern enhanced-dissipation corollary on
-\(0\le y\le1\) as one result.  This negative search is not a novelty or
-priority proof.
+\(y\ge0\), and its fixed-pattern commensurate \(1{:}2{:}3\) triangular
+affine-row enhanced-dissipation corollary on \(0\le y\le1\) as one result.
+This negative search is not a novelty or priority proof.
 
 ---
 

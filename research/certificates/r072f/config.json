@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "r072f-certificate-config-v1",
+  "analyticModel": {
+    "fixedQ0": 4,
+    "scaledTimeMaximum": 1.0,
+    "weights": [
+      {"beta": "1/4", "gamma": 0},
+      {"beta": "1/3", "gamma": 0},
+      {"beta": "1/3", "gamma": 1},
+      {"beta": "2/5", "gamma": 0},
+      {"beta": "49/100", "gamma": 0}
+    ],
+    "weightedActionTarget": "Q_(beta,gamma) asymptotic to delta^(beta-1)*(log delta)^gamma",
+    "criticalWeight": "s^(-1/3)*(1+log(1/s))",
+    "criticalWeightL2Squared": 75,
+    "positiveBetaRawFrontier": "for 0<beta<1: 2*a+c+beta>1, or equality with gamma>=1",
+    "betaZeroRawFrontier": "for beta=0 under its separate logarithmic law: 2*a+c>=1",
+    "positiveBetaWeightedAtomFrontier": "for 0<beta<1: 2*a+c+beta+3*alpha/4>=1",
+    "betaZeroWeightedAtomFrontier": "for beta=0 under its separate logarithmic law: 2*a+c+3*alpha/4>=1"
+  },
+  "producer": {
+    "engine": "NumPy/SciPy binary64",
+    "method": "time-dependent Strang split-step Fourier",
+    "weightedQuadrature": "exact weight moments against a piecewise-linear integrand",
+    "deltas": [16, 32, 64, 128, 256, 512],
+    "fineModes": 512,
+    "coarseModes": 256,
+    "randomness": false
+  },
+  "independent": {
+    "engine": "NumPy/SciPy binary64",
+    "method": "adaptive implicit BDF on a real invariant lattice",
+    "weightedQuadrature": "BDF-mesh Gauss-Legendre with x=exp(-z) launch tail",
+    "deltas": [16, 32, 64, 128, 256, 512],
+    "primaryRadius": 64,
+    "pressureRadius": 88,
+    "randomness": false
+  },
+  "scope": {
+    "intervalArithmetic": false,
+    "completeRootUpperBound": false,
+    "provesNSERegularity": false,
+    "provesNSESingularity": false,
+    "claim": "finite corroboration only; the analytic proof is in r072f_report-source.md"
+  }
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72F：临界对数初始层权重同时通过 R0.72E selected-root 反例筛查与 Leray 能量支付；完整根估计仍开放。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72F｜临界对数初始层修正与可行窗口">
+  <meta property="og:description" content="selected-root 阈值为 1/3，能量支付阈值为 1/2；最小边界权重是 s^{-1/3}(1+log(1/s))。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72f-critical-log-window.png">
+  <title>R0.72F｜临界对数初始层修正与可行窗口</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.19"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#payment">能量支付</a><a href="#family">精确族</a><a href="#frontier">统一边界</a><a href="#audit">证书</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72F · CRITICAL LOG · INITIAL LAYER · ENERGY PAYMENT</div>
+        <h1>两道阈值之间，<br>只留下一个临界对数入口</h1>
+        <p class="lead">R0.72E 排除了无权候选 \(D^{1/3}\Lambda_1\)。这一节不任意加一个修正项，而是把初始层权重写成 \(w_{\beta,\gamma}(s)=s^{-\beta}[1+\log(1/s)]^\gamma\)，分别计算 exact Bessel family 的必要阈值和 Leray 能量可以支付的充分阈值。selected roots 强制 \(\beta\ge1/3\)，纯幂端点还缺一个对数；能量只允许 \(\beta<1/2\)。因此最小边界候选是 \(w_*(s)=s^{-1/3}[1+\log(1/s)]\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72F 完成</span><strong>critical-log repair selected</strong><p>版本 v0.72F · 2026-08-27</p><p>energy payment: CLOSED</p><p>selected-family frontier: CLOSED</p><p>complete-root estimate: OPEN</p><p>下一对象：all-root trace packing</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#payment">01 · Leray 支付</a></li><li><a href="#family">02 · 精确族阈值</a></li><li><a href="#frontier">03 · 统一边界</a></li><li><a href="#audit">04 · 双路证书</a></li><li><a href="#figure">05 · 正式附图</a></li><li><a href="#value">06 · 研究价值</a></li><li><a href="#next">07 · 下一步</a></li><li><a href="#claims">08 · 主张边界</a></li><li><a href="#reproduce">09 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>临界对数权重是两项有限筛查共同允许的最小边界候选</h2>
+          <p>对 \(I=[a,a+T]\)，令 \(Y=\|\omega\|_2^2\)、\(L=\mathbb P(u\times\omega)\)，并定义</p>
+          <div class="equation result">\[
+            \mathscr A_{\beta,\gamma}(I;u)=\frac1T\int_I
+            w_{\beta,\gamma}\!\left(\frac{t-a}{T}\right)
+            \frac{\|L(t)\|_{\dot H^{-1}}^2}{Y(t)}\,dt,
+            \qquad
+            \Lambda_{1,\beta,\gamma}=\mathcal R_Y[\nu^2+\mathscr A_{\beta,\gamma}].
+          \]</div>
+          <div class="equation result">\[
+            \boxed{\left\{\frac13<\beta<\frac12,\ \gamma\ge0\right\}
+            \cup\left\{\beta=\frac13,\ \gamma\ge1\right\}.}
+          \]</div>
+          <p>这里的“可行”只表示同时没有被当前 selected-root family 排除，而且新增 action 可由 Leray 能量支付。它不表示完整根估计已经成立。</p>
+          <div class="equation result">\[
+            \boxed{w_*(s)=s^{-1/3}[1+\log(1/s)],\qquad \|w_*\|_2^2=75.}
+          \]</div>
+        </section>
+
+        <section id="payment"><div class="section-no">01 / Leray payment</div><h2>能量级信息给出严格的 \(1/2\) 上端点</h2>
+          <p>Sobolev 对偶、Hölder 和周期 Gagliardo–Nirenberg 不等式给</p>
+          <div class="equation result">\[
+            \frac{\|\mathbb P(u\times\omega)\|_{\dot H^{-1}}^2}{\|\omega\|_2^2}
+            \le C_{\mathbb T^3}\|u\|_2\|\omega\|_2.
+          \]</div>
+          <p>在强能量不等式成立的每个 restart time \(a\)，Cauchy–Schwarz 随后给</p>
+          <div class="equation result">\[
+            \boxed{\mathscr A_{\beta,\gamma}([a,a+T];u)
+            \le C_{\mathbb T^3}\|w_{\beta,\gamma}\|_2
+            \frac{\|u(a)\|_2^2}{\sqrt{2\nu T}},\qquad \beta<\frac12.}
+          \]</div>
+          <p>仅凭 \(Y\in L_t^1\)，端点不能延长到 \(\beta\ge1/2\)。用于说明尖锐性的 \(Y(t)=t^{-p}\) 和 \(Y(t)=1/[t\log^2(e/t)]\) 只是标量预算轮廓，不是 Navier–Stokes 涡量轨道。</p>
+        </section>
+
+        <section id="family"><div class="section-no">02 / Exact family screen</div><h2>selected Bessel roots 强制 \(1/3\) 与一个端点对数</h2>
+          <p>沿用 R0.72E 的 exact triangular family，固定 \(q_0\)，取 \(\delta_R=R^4\)、\(P_R=q_0^2\delta_R\)、\(S_R^2=\delta_R/\log(2+\delta_R)\)。对每个固定 \(0<\beta<1\)、\(\gamma\ge0\)，解析上下界为</p>
+          <div class="equation result">\[
+            Q_{\beta,\gamma,\delta,q_0}(X)
+            \asymp\delta^{\beta-1}(\log\delta)^\gamma,
+            \qquad
+            \mathscr A_{\beta,\gamma}(u_R)
+            \asymp\delta_R^\beta(\log\delta_R)^{\gamma-1}.
+          \]</div>
+          <p>前 \(R\) 个 selected roots 的质量为 \(\mathcal J_{{\rm sel},R}\asymp\delta_R\)，而 \(D_R^{1/3}\asymp\delta_R^{2/3}\)。因此</p>
+          <div class="equation result">\[
+            \frac{\mathcal J_{{\rm sel},R}}
+            {D_R^{1/3}\Lambda_{1,\beta,\gamma}}
+            \asymp\delta_R^{1/3-\beta}(\log\delta_R)^{1-\gamma}.
+          \]</div>
+          <p>所有 \(\beta<1/3\) 失败；\(\beta=1/3\) 时 \(\gamma<1\) 失败。\(w_*\) 使这一个 selected ratio 保持常数量级，但没有控制 selected neighborhoods 之外的其他根。</p>
+        </section>
+
+        <section id="frontier"><div class="section-no">03 / Free-amplitude frontier</div><h2>三种修正位于同一个增广多项式边界</h2>
+          <p>把 active amplitude \(X_\delta=S_\delta^2\) 留作自由参数。对 \(0<\beta<1\)，选择 \(X_\delta=\delta^{1-\beta}(\log\delta)^{-\gamma}\) 让 action 保持有界。若数据坐标为 \(\mathfrak C\asymp\delta^2\)、coupling 坐标为 \(\Gamma\asymp\delta\)，则 raw selected ledger 强制</p>
+          <div class="equation result">\[
+            \boxed{2a+c+\beta>1,
+            \quad\text{或}\quad2a+c+\beta=1\ \text{且}\ \gamma\ge1.}
+          \]</div>
+          <p>在历史数据指数 \(a=1/3\) 上，三个边界顶点分别是 critical-log action、\(c=1/3\) coupling payment，以及改变左端根账本后的 \(\alpha=4/9\) atom weight。后两者使用 \(\beta=0\) 的独立对数律，不能被冒充为上式的正 \(\beta\) 端点。</p>
+          <p>固定初始 Fourier 支撑的有限个振幅归一化频率矩都趋向常数，因此看不见这一 amplitude-driven 时间尺度。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">04 / Independent certificates</div><h2>两种演化与两种奇点求积给出一致的有限审计</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · ALL CHECKS PASS</strong><p>512-mode time-dependent Strang split-step Fourier；每一步对奇异权重使用精确零阶和一阶矩。临界归一化从 41.0235 变到 44.1958；fine/coarse 最大相对差 \(1.27\times10^{-3}\)。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · ALL CHECKS PASS</strong><p>实不变格点上的 implicit BDF；沿自适应网格作 Gauss–Legendre 求积，并用 \(x=e^{-z}\) 处理 launch tail。临界归一化从 41.0430 变到 44.2103。</p></div>
+          </div>
+          <p>两路所有权重、所有六个 \(\delta\) 点的最大逐点相对差为 \(4.76\times10^{-4}\)。独立路径的半径压力小于 \(1.28\times10^{-7}\)，容差压力小于 \(6.64\times10^{-7}\)，最大格点边界能量分数小于 \(8.47\times10^{-42}\)。这些是 binary64 有限审计，不是区间证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">05 / Journal figure</div><h2>正式附图把两个阈值、有限渐近与三顶点边界分开</h2>
+          <figure><img src="/figures/r0-72f-critical-log-window.svg" alt="R0.72F critical-log admissible window, weighted action audit, and augmented frontier"><figcaption>图 R0.72F-1。左：selected-root 与 Leray-payment 阈值；中：producer 与 independent 的临界归一化；右：增广 frontier 的三个修正顶点。图中有限值只佐证解析标度。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">06 / Research value</div><h2>这一节把“怎么修”压成一个可证伪候选</h2>
+          <p>价值不在于增加一个任意强范数，而在于同时给出必要下端点、可支付上端点和最小边界权重。R0.72E 的失败现在被压缩成一个明确问题：critical-log action 是否足以支付完整 raw root ledger。</p>
+          <p>这仍没有缩小潜在奇性解的集合，也没有给出 continuation criterion。它只把下一次失败或成功变成一项边界清楚的 trace-packing 定理。</p>
+        </section>
+
+        <section id="next"><div class="section-no">07 / Next finite gate</div><h2>R0.72G 只检查完整根，不再移动候选</h2>
+          <p>下一步固定 \(w_*\)，先在 exact triangular class 内证明或否定</p>
+          <div class="equation result">\[
+            \mathcal J_{\rm all}(I)\stackrel{?}{\le}
+            C D^{1/3}\mathcal R_Y(I)[\nu^2+\mathscr A_{1/3,1}(I;u)].
+          \]</div>
+          <p>有限关口必须包含所有根、restart covering 和 left-end cost。只重复 selected Bessel roots 不算推进。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">08 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>Leray 支付、能量信息类的 \(1/2\) 尖锐性、exact family 的 regularly varying action 渐近、selected-family frontier 和 critical-log saturation。</li>
+            <li><strong>未证明：</strong>critical-log action 对 complete roots 的上界、restart/dyadic covering、\(\mathcal R_Y\) 的普适支付，以及向非三角形动力学的传递。</li>
+            <li><strong>没有得到：</strong>新继续性判据、有限时奇性、一般三维 global regularity、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">09 / Reproduce</div><h2>证明、文献、双路证书、附图和累计回顾完整保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072f_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072f_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072f_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072f_independent_audit.md">独立逐式审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072f">producer / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072f-critical-log-window/fig-r072f-critical-log-window">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-72f-critical-log-window.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-72f.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72f.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-72f.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r072f_exact_audit.py --output research/certificates/r072f/result.json
+python3 research/r072f_independent_audit.py --output research/certificates/r072f/independent-result.json
+python3 figures/r072f-critical-log-window/fig-r072f-critical-log-window/build_figure.py
+python3 figures/r072f-critical-log-window/fig-r072f-critical-log-window/qa_images.py
+python3 figures/r072f-critical-log-window/fig-r072f-critical-log-window/validate.py</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72F · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72f.html">累计回顾</a></div></footer>
+</body>
+</html>

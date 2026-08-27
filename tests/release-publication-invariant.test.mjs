@@ -43,7 +43,16 @@ async function releaseManifest() {
   );
 }
 
-async function completedReleaseIds() {
+async function formalArchiveInventory() {
+  return JSON.parse(
+    await readFile(
+      new URL("research/formal-archive-inventory.json", root),
+      "utf8",
+    ),
+  );
+}
+
+async function publishedReleaseIds() {
   const manifest = await releaseManifest();
   const first = manifest.firstPdfRequiredRelease;
   const latest = manifest.latestCompletedRelease;
@@ -63,6 +72,26 @@ async function completedReleaseIds() {
   }
   assert.equal(releases.at(-1), latest, "manifest release range must close");
   return releases;
+}
+
+async function archivedFigureManifests(directory = new URL("figures/", root)) {
+  const manifests = [];
+  const entries = await readdir(directory, { withFileTypes: true });
+  for (const entry of entries) {
+    const target = new URL(entry.name + (entry.isDirectory() ? "/" : ""), directory);
+    if (entry.isDirectory()) {
+      manifests.push(...(await archivedFigureManifests(target)));
+    } else if (entry.name === "manifest.json") {
+      manifests.push({
+        path: decodeURIComponent(target.pathname).replace(
+          decodeURIComponent(root.pathname),
+          "",
+        ),
+        value: JSON.parse(await readFile(target, "utf8")),
+      });
+    }
+  }
+  return manifests;
 }
 
 function publicReleaseId(file) {
@@ -91,9 +120,9 @@ test("keeps every synchronized public note PDF discoverable from its note", asyn
   }
 });
 
-test("publishes every completed research release from R0.70A onward", async () => {
+test("publishes every research release from R0.70A onward", async () => {
   const [releases, home, literature, noteFiles] = await Promise.all([
-    completedReleaseIds(),
+    publishedReleaseIds(),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
     readdir(notesRoot),
@@ -110,12 +139,12 @@ test("publishes every completed research release from R0.70A onward", async () =
   assert.deepEqual(
     publicReleases,
     releases,
-    "every R0.70A+ public note must correspond to a completed release",
+    "every R0.70A+ public note must correspond to a published release",
   );
   assert.deepEqual(
     progressReleases,
     releases,
-    "every R0.70A+ completed release must have exactly one progress card",
+    "every R0.70A+ published release must have exactly one progress card",
   );
 
   assert.equal(releases[0], "r070a");
@@ -124,7 +153,7 @@ test("publishes every completed research release from R0.70A onward", async () =
     assert.equal(
       releases[index],
       expected,
-      "a completed release is missing before " + expected,
+      "a published release is missing before " + expected,
     );
   }
 
@@ -176,7 +205,7 @@ test("publishes every completed research release from R0.70A onward", async () =
 
 test("derives homepage counts, latest release, route size, and recap endpoint", async () => {
   const [releases, manifest, home, literature, noteFiles] = await Promise.all([
-    completedReleaseIds(),
+    publishedReleaseIds(),
     releaseManifest(),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
@@ -213,7 +242,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     currentDetails.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []
   ).length;
   assert.ok(currentRouteNotes > 0, "current route note list is empty");
-  assert.ok(releases.length >= 1, "completed release list is empty");
+  assert.ok(releases.length >= 1, "published release list is empty");
   assert.equal(
     htmlNotes.length,
     routeLinks.length,
@@ -292,8 +321,8 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   );
   assert.equal(
     releases.length,
-    manifest.postR070ASealedReleaseCount,
-    "manifest sealed-release count",
+    manifest.postR070APublishedReleaseCount,
+    "manifest published-release count",
   );
   assert.equal(
     nextReleaseId(latestRelease),
@@ -308,7 +337,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   await access(new URL(manifest.latestReleaseGate, root));
   assert.ok(
     manifest.latestReleaseGate.startsWith("tests/" + latestRelease),
-    "latest-release gate must advance with the completed endpoint",
+    "latest-release gate must advance with the published endpoint",
   );
   assert.ok(
     home.includes("<strong>" + latestCode + "</strong>最新研究节点"),
@@ -362,4 +391,130 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   );
   assert.equal(recapPdf.subarray(0, 4).toString(), "%PDF");
   assert.ok(recapPdf.length > 10_000);
+});
+
+test("separates the published inventory from the formal-sealed archive", async () => {
+  const [releases, releaseIndex, archive, figureManifests, figureDirectories] =
+    await Promise.all([
+      publishedReleaseIds(),
+      releaseManifest(),
+      formalArchiveInventory(),
+      archivedFigureManifests(),
+      readdir(new URL("figures/", root), { withFileTypes: true }),
+    ]);
+
+  assert.equal(archive.schemaVersion, "formal-archive-inventory-v1");
+  assert.equal(archive.contractStart, "r070a");
+  assert.equal(archive.latestPublishedRelease, releases.at(-1));
+  assert.deepEqual(archive.publishedReleases, releases);
+  assert.equal(archive.publishedReleaseCount, 58);
+  assert.equal(archive.formalSealedReleaseCount, 34);
+  assert.equal(archive.legacyFormalFigureBacklogCount, 24);
+
+  const formal = archive.formalSealedReleases;
+  const backlog = archive.legacyFormalFigureBacklog.map((row) => row.release);
+  assert.equal(new Set(formal).size, formal.length, "unique formal releases");
+  assert.equal(new Set(backlog).size, backlog.length, "unique backlog releases");
+  assert.deepEqual(
+    [...formal, ...backlog].sort(),
+    releases,
+    "formal-sealed plus backlog must partition every published release",
+  );
+  assert.deepEqual(
+    formal.filter((release) => backlog.includes(release)),
+    [],
+    "formal and backlog inventories must be disjoint",
+  );
+
+  assert.equal(
+    releaseIndex.postR070APublishedReleaseCount,
+    archive.publishedReleaseCount,
+  );
+  assert.equal(
+    releaseIndex.postR070AFormalSealedReleaseCount,
+    archive.formalSealedReleaseCount,
+  );
+  assert.equal(
+    releaseIndex.legacyFormalFigureBacklogCount,
+    archive.legacyFormalFigureBacklogCount,
+  );
+
+  const currentFormal = figureManifests
+    .filter(
+      ({ value }) =>
+        value.status === "formal" &&
+        /^R0\.(?:70|71|72)[A-Z]$/.test(value.release ?? ""),
+    )
+    .map(({ value }) => value.release.toLowerCase().replace(".", ""))
+    .sort();
+  assert.deepEqual(
+    currentFormal,
+    formal,
+    "formal-sealed releases must be backed by formal figure manifests",
+  );
+  assert.ok(formal.includes("r072f"), "R0.72F must be formal-sealed");
+
+  const explanatory = archive.legacyFormalFigureBacklog.filter(
+    (row) => row.archiveState === "explanatory-package",
+  );
+  const missing = archive.legacyFormalFigureBacklog.filter(
+    (row) => row.archiveState === "missing-figure-directory",
+  );
+  assert.equal(explanatory.length, 10);
+  assert.equal(missing.length, 14);
+  assert.deepEqual(
+    explanatory.map((row) => row.release),
+    [
+      "r070c",
+      "r070d",
+      "r070e",
+      "r070f",
+      "r070g",
+      "r070h",
+      "r070i",
+      "r070j",
+      "r070k",
+      "r070l",
+    ],
+  );
+  assert.deepEqual(
+    missing.map((row) => row.release),
+    [
+      "r070a",
+      "r070b",
+      "r070p",
+      "r070q",
+      "r070r",
+      "r070s",
+      "r070t",
+      "r070u",
+      "r070v",
+      "r070w",
+      "r070x",
+      "r070y",
+      "r070z",
+      "r071a",
+    ],
+  );
+
+  for (const row of explanatory) {
+    const archived = figureManifests.find(({ path }) => path === row.manifest);
+    assert.ok(archived, row.release + ": explanatory manifest exists");
+    assert.equal(archived.value.status, "explanatory", row.release);
+    assert.equal(
+      archived.value.release.toLowerCase().replace(".", ""),
+      row.release,
+    );
+  }
+
+  const topLevelFigureDirectories = figureDirectories
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+  for (const row of missing) {
+    assert.equal(
+      topLevelFigureDirectories.some((name) => name.startsWith(row.release + "-")),
+      false,
+      row.release + ": inventory says the figure directory is absent",
+    );
+  }
 });

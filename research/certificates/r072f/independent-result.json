@@ -1,0 +1,584 @@
+{
+  "allRequiredChecksPassed": true,
+  "auditId": "R0.72F-critical-log-independent",
+  "checks": [
+    {
+      "name": "critical_weight_l2_quadrature",
+      "passed": true,
+      "requirement": "independent improper quadrature agrees with 75",
+      "value": {
+        "integral": 75.0,
+        "reportedError": 7.843458846552421e-12
+      }
+    },
+    {
+      "name": "positive_weighted_actions",
+      "passed": true,
+      "requirement": "all independent weighted actions are positive",
+      "value": 0.36820788679275135
+    },
+    {
+      "name": "quadrature_pressure",
+      "passed": true,
+      "requirement": "fine/coarse transformed Gauss quadrature differs by less than 2e-7",
+      "value": 1.4220123353772888e-08
+    },
+    {
+      "name": "tail_negligible",
+      "passed": true,
+      "requirement": "largest analytic z-tail is below 2e-10",
+      "value": 1.6359470359828359e-12
+    },
+    {
+      "name": "lattice_boundary_negligible",
+      "passed": true,
+      "requirement": "outer eight-mode energy fraction remains below 1e-12",
+      "value": 8.468744229734649e-42
+    },
+    {
+      "name": "contractive_evolution",
+      "passed": true,
+      "requirement": "BDF evolution is contractive to tolerance",
+      "value": 1.0
+    },
+    {
+      "name": "radius_stability",
+      "passed": true,
+      "requirement": "primary and larger-radius actions agree within 2e-5 relative",
+      "value": {
+        "beta-1-4": 1.2745630269336787e-07,
+        "beta-2-5": 8.529074658171899e-08,
+        "beta-49-100": 6.392289885871737e-08,
+        "critical-log": 6.401188317617056e-08,
+        "plain-one-third": 1.0306998343004337e-07
+      }
+    },
+    {
+      "name": "tolerance_stability",
+      "passed": true,
+      "requirement": "primary and tighter-tolerance actions agree within 2e-5 relative",
+      "value": {
+        "beta-1-4": 6.630451808377241e-07,
+        "beta-2-5": 4.4338383441331383e-07,
+        "beta-49-100": 3.323141055260515e-07,
+        "critical-log": 3.3250291849962836e-07,
+        "plain-one-third": 5.359180812667629e-07
+      }
+    },
+    {
+      "name": "regular_variation_normalizations",
+      "passed": true,
+      "requirement": "each asymptotic normalization varies by less than a factor 2.5",
+      "value": {
+        "beta-1-4": 1.746387447004089,
+        "beta-2-5": 1.4939820252187381,
+        "beta-49-100": 1.3742454049202486,
+        "critical-log": 1.0771686596293428,
+        "plain-one-third": 1.5973406210016814
+      }
+    }
+  ],
+  "createdAtUtc": "2026-08-27T00:52:14.249Z",
+  "criticalWeightL2": {
+    "exactTarget": 75,
+    "reportedQuadratureError": 7.843458846552421e-12,
+    "value": 75.0
+  },
+  "environment": {
+    "logicalCpus": 18,
+    "numpy": "2.3.5",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+    "scipy": "1.16.1"
+  },
+  "fits": {
+    "beta-1-4": {
+      "QAgainstDelta": {
+        "intercept": 2.738996064382819,
+        "slope": -0.5921295997679946
+      },
+      "expectedLeadingPower": -0.75,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.738996064382819,
+        "slope": 0.15787040023200524
+      }
+    },
+    "beta-2-5": {
+      "QAgainstDelta": {
+        "intercept": 2.9870681510289785,
+        "slope": -0.4865846790185499
+      },
+      "expectedLeadingPower": -0.6,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.987068151028978,
+        "slope": 0.11341532098145017
+      }
+    },
+    "beta-49-100": {
+      "QAgainstDelta": {
+        "intercept": 3.1741324681755043,
+        "slope": -0.42033033731733305
+      },
+      "expectedLeadingPower": -0.51,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 3.1741324681755034,
+        "slope": 0.08966966268266702
+      }
+    },
+    "critical-log": {
+      "QAgainstDelta": {
+        "intercept": 4.07892891980369,
+        "slope": -0.4130738055264888
+      },
+      "expectedLeadingPower": -0.6666666666666667,
+      "expectedLogPower": 1,
+      "normalizedAgainstDelta": {
+        "intercept": 3.6539242828488234,
+        "slope": 0.021986199886294744
+      }
+    },
+    "plain-one-third": {
+      "QAgainstDelta": {
+        "intercept": 2.8682354612736654,
+        "slope": -0.5342127309755321
+      },
+      "expectedLeadingPower": -0.6666666666666667,
+      "expectedLogPower": 0,
+      "normalizedAgainstDelta": {
+        "intercept": 2.868235461273665,
+        "slope": 0.13245393569113464
+      }
+    }
+  },
+  "method": {
+    "coarseGaussOrder": 6,
+    "evolution": "adaptive implicit BDF on a real invariant lattice",
+    "fineGaussOrder": 10,
+    "pressureRadius": 88,
+    "primaryRadius": 64,
+    "quadrature": "x=exp(-z), composite Gauss-Legendre, analytic tail",
+    "zMaximum": 60.0
+  },
+  "radiusPressure": {
+    "relativeDifferences": {
+      "beta-1-4": 1.2745630269336787e-07,
+      "beta-2-5": 8.529074658171899e-08,
+      "beta-49-100": 6.392289885871737e-08,
+      "critical-log": 6.401188317617056e-08,
+      "plain-one-third": 1.0306998343004337e-07
+    },
+    "row": {
+      "actions": {
+        "beta-1-4": 0.36820783986234146,
+        "beta-2-5": 0.919464275383536,
+        "beta-49-100": 1.68538660559944,
+        "critical-log": 4.309342093747021,
+        "plain-one-third": 0.6041788429075082
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 39.63195553389526,
+        "beta-2-5": 38.82369232133256,
+        "beta-49-100": 40.590763299339784,
+        "critical-log": 44.21025044012723,
+        "plain-one-third": 38.66744594608054
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 0.36820783979691396,
+        "beta-2-5": 0.9194642730407844,
+        "beta-49-100": 1.6853865872588536,
+        "critical-log": 4.3093420815935275,
+        "plain-one-third": 0.6041788424156967
+      },
+      "delta": 512.0,
+      "dimension": 177,
+      "elapsedSeconds": 2.4701672079972923,
+      "finalL2Squared": 3.1442865082599587e-12,
+      "maximumEdgeEnergyFraction": 1.8055285515376303e-89,
+      "maximumL2Squared": 1.0,
+      "nfev": 23948,
+      "njev": 2,
+      "nlu": 1469,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 1.7769175359823088e-10,
+        "beta-2-5": 2.5479528917609822e-09,
+        "beta-49-100": 1.0882124209373668e-08,
+        "critical-log": 2.8202665414929197e-09,
+        "plain-one-third": 8.140163896885247e-10
+      },
+      "radius": 88,
+      "rtol": 2e-09
+    }
+  },
+  "schemaVersion": "r072f-independent-audit-v1",
+  "scope": {
+    "completeRootUpperBound": false,
+    "importsProducer": false,
+    "intervalArithmetic": false,
+    "provesNSERegularity": false,
+    "readsProducerOutput": false
+  },
+  "tolerancePressure": {
+    "relativeDifferences": {
+      "beta-1-4": 6.630451808377241e-07,
+      "beta-2-5": 4.4338383441331383e-07,
+      "beta-49-100": 3.323141055260515e-07,
+      "critical-log": 3.3250291849962836e-07,
+      "plain-one-third": 5.359180812667629e-07
+    },
+    "row": {
+      "actions": {
+        "beta-1-4": 0.3682081309313781,
+        "beta-2-5": 0.9194647614811421,
+        "beta-49-100": 1.6853872734122017,
+        "critical-log": 4.309343802465515,
+        "plain-one-third": 0.6041792289707847
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 39.63198686303567,
+        "beta-2-5": 38.823712846440934,
+        "beta-49-100": 40.590779382907584,
+        "critical-log": 44.21026797015175,
+        "plain-one-third": 38.667470654130234
+      },
+      "atol": 4e-12,
+      "coarseActions": {
+        "beta-1-4": 0.3682081308976529,
+        "beta-2-5": 0.9194647601024712,
+        "beta-49-100": 1.6853872617257957,
+        "critical-log": 4.309343795481395,
+        "plain-one-third": 0.6041792286979143
+      },
+      "delta": 512.0,
+      "dimension": 129,
+      "elapsedSeconds": 3.1762182499514893,
+      "finalL2Squared": 3.168389632558593e-12,
+      "maximumEdgeEnergyFraction": 8.468724597716839e-42,
+      "maximumL2Squared": 1.0,
+      "nfev": 32786,
+      "njev": 2,
+      "nlu": 1976,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 9.159273376875107e-11,
+        "beta-2-5": 1.4994276038740875e-09,
+        "beta-49-100": 6.933958888523665e-09,
+        "critical-log": 1.6206922142165863e-09,
+        "plain-one-third": 4.5163815613555427e-10
+      },
+      "radius": 64,
+      "rtol": 4e-10
+    }
+  },
+  "weightedActionRows": [
+    {
+      "actions": {
+        "beta-1-4": 2.8367101937506787,
+        "beta-2-5": 4.92356313950007,
+        "beta-49-100": 7.1822705618511185,
+        "critical-log": 17.921654108037206,
+        "plain-one-third": 3.8124252800214036
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 22.69368155000543,
+        "beta-2-5": 25.986722047040676,
+        "beta-49-100": 29.53676668569588,
+        "critical-log": 41.04301854207446,
+        "plain-one-third": 24.20739160022454
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 2.836710192933228,
+        "beta-2-5": 4.9235631218363185,
+        "beta-49-100": 7.182270459718345,
+        "critical-log": 17.921654008969988,
+        "plain-one-third": 3.812425275380087
+      },
+      "delta": 16.0,
+      "dimension": 129,
+      "elapsedSeconds": 0.1354335840442218,
+      "finalL2Squared": 0.006497243900464792,
+      "maximumEdgeEnergyFraction": 1.0087199922806672e-184,
+      "maximumL2Squared": 1.0,
+      "nfev": 1180,
+      "njev": 1,
+      "nlu": 87,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 2.8816851065512883e-10,
+        "beta-2-5": 3.5875951724418166e-09,
+        "beta-49-100": 1.4220123353772888e-08,
+        "critical-log": 5.527794356004463e-09,
+        "plain-one-third": 1.2174183947041869e-09
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    },
+    {
+      "actions": {
+        "beta-1-4": 2.023463769775183,
+        "beta-2-5": 3.7251307651493457,
+        "beta-49-100": 5.638187180987165,
+        "critical-log": 14.309459056658074,
+        "plain-one-third": 2.808970823204449
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 27.224374886395502,
+        "beta-2-5": 29.801046121194762,
+        "beta-49-100": 33.01915681098919,
+        "critical-log": 41.61607043059027,
+        "plain-one-third": 28.31265174956653
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 2.0234637692837625,
+        "beta-2-5": 3.7251307533928535,
+        "beta-49-100": 5.638187108729961,
+        "critical-log": 14.30945899163457,
+        "plain-one-third": 2.808970820251945
+      },
+      "delta": 32.0,
+      "dimension": 129,
+      "elapsedSeconds": 0.2783813339774497,
+      "finalL2Squared": 0.0009260835395675038,
+      "maximumEdgeEnergyFraction": 2.057392431600902e-151,
+      "maximumL2Squared": 1.0,
+      "nfev": 2434,
+      "njev": 1,
+      "nlu": 156,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 2.428611222328391e-10,
+        "beta-2-5": 3.1559945047213407e-09,
+        "beta-49-100": 1.2815680192308525e-08,
+        "critical-log": 4.5440924457935845e-09,
+        "plain-one-third": 1.051098144081482e-09
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    },
+    {
+      "actions": {
+        "beta-1-4": 1.3760897906651053,
+        "beta-2-5": 2.712724631388429,
+        "beta-49-100": 4.2854452266460035,
+        "critical-log": 11.010868494362079,
+        "plain-one-third": 1.983469144990629
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 31.137357520027926,
+        "beta-2-5": 32.89377331341004,
+        "beta-49-100": 35.739439349907826,
+        "critical-log": 42.36086766052454,
+        "plain-one-third": 31.73550631985007
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 1.376089790372072,
+        "beta-2-5": 2.7127246236143496,
+        "beta-49-100": 4.285445175807033,
+        "critical-log": 11.010868452010627,
+        "plain-one-third": 1.9834691431259555
+      },
+      "delta": 64.0,
+      "dimension": 129,
+      "elapsedSeconds": 0.46681716601597145,
+      "finalL2Squared": 5.956803523446797e-05,
+      "maximumEdgeEnergyFraction": 1.7521539288028072e-119,
+      "maximumL2Squared": 1.0,
+      "nfev": 4692,
+      "njev": 1,
+      "nlu": 285,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 2.1294640606334027e-10,
+        "beta-2-5": 2.865782640907791e-09,
+        "beta-49-100": 1.1863171194146604e-08,
+        "critical-log": 3.846331662642466e-09,
+        "plain-one-third": 9.401071508504646e-10
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.905381572844855,
+        "beta-2-5": 1.9232948118741802,
+        "beta-49-100": 3.184215640502946,
+        "critical-log": 8.226988506978591,
+        "plain-one-third": 1.3596302412222045
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 34.45395866302259,
+        "beta-2-5": 35.34856938518724,
+        "beta-49-100": 37.81634537833838,
+        "critical-log": 43.06495879094777,
+        "plain-one-third": 34.532455603262484
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 0.905381572670491,
+        "beta-2-5": 1.923294806742251,
+        "beta-49-100": 3.18421560478523,
+        "critical-log": 8.22698847946819,
+        "plain-one-third": 1.3596302400467835
+      },
+      "delta": 128.0,
+      "dimension": 129,
+      "elapsedSeconds": 0.8078627919894643,
+      "finalL2Squared": 1.2835493563082437e-06,
+      "maximumEdgeEnergyFraction": 6.4040926898911375e-90,
+      "maximumL2Squared": 1.0,
+      "nfev": 8729,
+      "njev": 1,
+      "nlu": 520,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 1.9258616801850456e-10,
+        "beta-2-5": 2.6683008097420103e-09,
+        "beta-49-100": 1.121711590186578e-08,
+        "critical-log": 3.3439211741893396e-09,
+        "plain-one-third": 8.645152616892806e-10
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.5821049395594813,
+        "beta-2-5": 1.3384711648261753,
+        "beta-49-100": 2.3291663787850916,
+        "critical-log": 6.007676362610227,
+        "plain-one-third": 0.9129445974051728
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 37.2547161318068,
+        "beta-2-5": 37.28661844784148,
+        "beta-49-100": 39.39153410951782,
+        "critical-log": 43.680177154259596,
+        "plain-one-third": 36.80761970107449
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 0.5821049394557852,
+        "beta-2-5": 1.3384711614398772,
+        "beta-49-100": 2.3291663537002387,
+        "critical-log": 6.007676344763827,
+        "plain-one-third": 0.9129445966645854
+      },
+      "delta": 256.0,
+      "dimension": 129,
+      "elapsedSeconds": 1.4595232079736888,
+      "finalL2Squared": 5.958916266048028e-09,
+      "maximumEdgeEnergyFraction": 1.0686715282740194e-63,
+      "maximumL2Squared": 1.0,
+      "nfev": 15414,
+      "njev": 1,
+      "nlu": 912,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 1.781397900931585e-10,
+        "beta-2-5": 2.529974660478931e-09,
+        "beta-49-100": 1.0769884491743402e-08,
+        "critical-log": 2.97059941918539e-09,
+        "plain-one-third": 8.11207351807376e-10
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    },
+    {
+      "actions": {
+        "beta-1-4": 0.36820788679275135,
+        "beta-2-5": 0.9194643538053305,
+        "beta-49-100": 1.6853867133342375,
+        "critical-log": 4.3093423695961235,
+        "plain-one-third": 0.6041789051802116
+      },
+      "analyticTailContributions": {
+        "beta-1-4": 6.200655632943917e-19,
+        "beta-2-5": 6.2805541249672046e-15,
+        "beta-49-100": 1.6359470359828359e-12,
+        "critical-log": 6.470570327290219e-15,
+        "plain-one-third": 1.0352912523664352e-16
+      },
+      "asymptoticNormalizations": {
+        "beta-1-4": 39.63196058523778,
+        "beta-2-5": 38.82369563263426,
+        "beta-49-100": 40.59076589401904,
+        "critical-log": 44.210253270108616,
+        "plain-one-third": 38.667449931533554
+      },
+      "atol": 2e-11,
+      "coarseActions": {
+        "beta-1-4": 0.3682078867310905,
+        "beta-2-5": 0.9194643515711266,
+        "beta-49-100": 1.6853866957185517,
+        "critical-log": 4.30934235802978,
+        "plain-one-third": 0.604178904713652
+      },
+      "delta": 512.0,
+      "dimension": 129,
+      "elapsedSeconds": 2.40543887502281,
+      "finalL2Squared": 3.148073787319014e-12,
+      "maximumEdgeEnergyFraction": 8.468744229734649e-42,
+      "maximumL2Squared": 1.0,
+      "nfev": 24459,
+      "njev": 2,
+      "nlu": 1508,
+      "quadratureRelativeDefects": {
+        "beta-1-4": 1.6746203791342617e-10,
+        "beta-2-5": 2.429897280655749e-09,
+        "beta-49-100": 1.0452014163618578e-08,
+        "critical-log": 2.684015900007912e-09,
+        "plain-one-third": 7.722208848350976e-10
+      },
+      "radius": 64,
+      "rtol": 2e-09
+    }
+  ]
+}

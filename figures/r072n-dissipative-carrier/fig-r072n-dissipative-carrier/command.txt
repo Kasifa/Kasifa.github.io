@@ -1,0 +1,12 @@
+From the repository root, after the producer and independent certificates have
+been generated in research/certificates/r072n:
+
+python3 figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier/plot.py
+python3 figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier/qa_images.py
+python3 figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier/publish_assets.py
+R072N_VISUAL_QA_INSPECTED=true python3 figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier/validate.py
+R072N_VISUAL_QA_INSPECTED=true python3 figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier/build_manifest.py --status candidate
+
+For the formal seal, set full R072N_SOURCE_COMMIT and
+R072N_CERTIFICATE_COMMIT values, set R072N_DIRTY_AT_CERTIFIED_RUN=false, keep
+R072N_VISUAL_QA_INSPECTED=true, and pass --status formal.

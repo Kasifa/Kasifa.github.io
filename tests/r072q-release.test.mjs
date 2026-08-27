@@ -45,7 +45,7 @@ async function verifyFlatHashLedger(directory) {
   );
 }
 
-test("declares R0.72Q as source-frozen without advancing the live R0.72P endpoint", async () => {
+test("keeps the source stage non-public and advances the formal R0.72Q endpoint atomically", async () => {
   const [manifest, site, home, literature, noteFiles] = await Promise.all([
     json("research/release-manifest.json"),
     json("public/site-version.json"),
@@ -157,7 +157,7 @@ test("declares R0.72Q as source-frozen without advancing the live R0.72P endpoin
   });
 });
 
-test("does not publish Q HTML, PDFs, or public figure masters at source stage", async () => {
+test("keeps Q artifacts absent at source stage and complete after formal release", async () => {
   const manifest = await json("research/release-manifest.json");
   const publicArtifacts = [
     "public/notes/r0-72q.html",
@@ -187,10 +187,40 @@ test("does not publish Q HTML, PDFs, or public figure masters at source stage", 
   }
   assert.match(note, /Q_2\\le1\/2/);
   assert.match(note, /\\mathfrak C_1\)=36|C_1=36/);
+  assert.match(note, /r_m\(y\)=b_m e\^\{-\(m\^2-1\)y\}/);
+  assert.match(note, /\\eta_\\sharp\(M\)=\\min/);
+  assert.match(note, /class="threshold-ledger"/);
+  assert.match(note, /\.threshold-ledger mjx-container\{display:inline-block;max-width:100%;overflow-x:auto/);
+  assert.match(note, /任意时变相位或任意快速变化振幅的 ED/);
+  assert.ok(note.includes("正式有限证书取 \\(M=2\\)"));
+  assert.ok(note.includes("物理 cross-cubic/window 推论还要求 active modes 满足固定 \\(|\\beta_m|\\ge\\beta_->0\\)"));
+  assert.match(note, /real-collinear restriction，但所有相位仍保持静态/);
   assert.match(note, /z\(\\phi\)=\\frac18e\^{-3i\\phi\}-\\frac38e\^{-i\\phi\}/);
   assert.match(note, /R0\.72R/);
   assert.match(recap, /R0\.61–R0\.72Q 的 107 节公开笔记/);
   assert.match(recap, /R0\.70A–R0\.72Q 的 69 节已公开；45 节/);
+  assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 28);
+  assert.match(recap, /任意时变相位与任意快速变化振幅未证明/);
+  assert.match(recap, /\|\\beta_m\|/);
+  assert.ok(recap.includes("隐常数依赖 \\((M,\\beta_-)\\)"));
+  assert.match(recap, /再移除实共线与相位对齐限制，但相位仍保持静态/);
+  assert.match(recap, /arbitrary-static-phase/);
+  assert.doesNotMatch(recap, /再把静态相位限制移除/);
+  assert.match(literature, /0\\le y\\le1/);
+  assert.match(literature, /固定相位热衰减路径/);
+  assert.match(literature, /累计回顾与 107 节索引/);
+  assert.match(literature, /打开 107 节完整索引/);
+  assert.ok(literature.includes("reference shear \\(U\\) 的 \\(\\partial_{ty}U\\) 足够小；actual shear \\(V\\) 可快速变化"));
+  assert.ok(literature.includes("ED semigroup 结论覆盖 fixed real-collinear-phase 1:2、\\(B=2\\) 与 \\(|\\lambda|\\le1/8\\)，包括 \\(\\lambda=0\\)"));
+  assert.ok(literature.includes("固定 \\(0&lt;\\lambda_-\\le|\\lambda|\\)"));
+  assert.ok(literature.includes("物理 cross-cubic/window 推论还要求 active modes 满足固定 \\(|\\beta_m|\\ge\\beta_->0\\)"));
+  assert.doesNotMatch(literature, /id="ref-105"/);
+  assert.doesNotMatch(literature, /A Note on Enhanced Dissipation of Time-Dependent Shear Flows/);
+  assert.match(home, /arbitrary-static-phase fixed-M shape gate/);
+  assert.match(note, /ARBITRARY STATIC PHASES · EXACT CAUSTIC/);
+  assert.doesNotMatch(note, /ARBITRARY PHASES · EXACT CAUSTIC/);
+  assert.ok(home.includes("ED semigroup 结论覆盖 \\(R,2R\\)、\\(B=2\\) 与 \\(|\\lambda|\\le1/8\\)，包括 \\(\\lambda=0\\)"));
+  assert.ok(home.includes("只有 inherited amplitude-balanced physical comparison 另要求固定 \\(0&lt;\\lambda_-\\le|\\lambda|\\)"));
   for (const [label, pdf] of [["note", notePdf], ["recap", recapPdf]]) {
     assert.equal(pdf.subarray(0, 4).toString(), "%PDF", label);
     assert.ok(pdf.length > 10_000, `${label} PDF is unexpectedly small`);
@@ -265,7 +295,7 @@ test("deterministic Q generator advances only after formal certificate and figur
   assert.doesNotMatch(generator, /allow-unsealed-source|source-preview|skip-(?:seal|validation)/);
 });
 
-test("Q translation scaffold is check-only capable and bound to the four future pages", async () => {
+test("keeps the Q translation batch check-only capable and bound to four release pages", async () => {
   const [script, snapshot, manifest] = await Promise.all([
     text("scripts/add-r072q-translations.mjs"),
     json("scripts/i18n-snapshots/r072q-missing.json"),

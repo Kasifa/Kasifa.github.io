@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72Q：固定 M、任意静态相位与 Q2≤1/2 下的两临界点 shape gate，以及精确 1:2 caustic。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72Q｜任意静态相位 shape gate 与精确 caustic">
+  <meta property="og:description" content="固定 M 任意静态相位的统一 Morse shape contract 与 phase-uniform 半径 1/4。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072q/fig-r072q-phase-robust-shape.png">
+  <title>R0.72Q｜任意静态相位 shape gate 与精确 caustic</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.30"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#normalization">归一化</a><a href="#critical">临界点</a><a href="#shape">shape</a><a href="#fixedm">fixed M</a><a href="#ed">ED</a><a href="#caustic">caustic</a><a href="#wall">墙</a><a href="#certificate">证书</a><a href="#literature">文献边界</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#scope">边界</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72Q · ARBITRARY STATIC PHASES · EXACT CAUSTIC</div>
+        <h1>固定 \(M\) 的任意静态相位 shape gate 已闭合；<br>结论仍止于 \(Q_2\le1/2\) 的主谐波锥</h1>
+        <p class="lead">对固定有限 \(M\)，任意静态相对相位与 \(Q_2=\sum_{m=2}^M m^2b_m\le1/2\)，归一化 profile 恰有两个临界点。对声明的热衰减路径，实际 Coble shear 在 \(0\le y\le1\) 上具有 \((r,\mathfrak C_0,\mathfrak C_1)=(\pi/12,81,36)\) 的统一 shape contract；归一化 \(F\) 保留更尖锐的 away 常数 \(12\)。1:2 退化集由精确 nephroid 参数式给出，phase-uniform 安全圆盘半径恰为 \(1/4\)。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72Q 任意静态相位固定 M 正类完成</span><strong>phase-robust fixed-M shape gate: CLOSED</strong><p>版本 v0.72Q · 2026-08-28</p><p>fixed \(M\), arbitrary static relative phases: CLOSED</p><p>\(Q_2\le1/2\), two critical points: CLOSED</p><p>physical \((r,C_0,C_1)=(\pi/12,81,36)\) on \(0\le y\le1\): CLOSED</p><p>exact 1:2 caustic and disk radius \(1/4\): CLOSED</p><p>growing \(M\) / phases varying in time: OPEN</p><p>general 3D / Clay problem: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#normalization">01 · phase quotient</a></li><li><a href="#critical">02 · 临界点计数</a></li><li><a href="#shape">03 · shape contract</a></li><li><a href="#fixedm">04 · fixed-M 账本</a></li><li><a href="#ed">05 · full-superposition ED</a></li><li><a href="#caustic">06 · 精确 caustic</a></li><li><a href="#wall">07 · 墙分类</a></li><li><a href="#certificate">08 · 独立证书</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#scope">12 · 主张边界</a></li><li><a href="#next">13 · R0.72R</a></li><li><a href="#reproduce">14 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>相位限制被移除，但有限 carrier ceiling 与二阶矩小量仍是定理条件</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · ARBITRARY STATIC PHASES</strong><p>固定 \(M&lt;\infty\)，所有静态 relative phases 任意，且 \(Q_2\le1/2\)。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · TWO CRITICAL POINTS</strong><p>临界点各自在 \(0\) 与 \(\pi\) 的 \(\pi/12\) 邻域内，数量恰为二。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · PHYSICAL SHAPE</strong><p>对 \(W=e^{-y}F\)、\(0\le y\le1\)，取 \(r=\pi/12\)、\(C_0=81\)、\(C_1=36\)。</p></div>
+            <div class="verdict-card false"><strong>OPEN · OUTSIDE THE CONE</strong><p>增长 \(M\)、无 jet dominance、任意时变相位与一般 carrier 集仍开放。</p></div>
+          </div>
+        </section>
+
+        <section id="normalization"><div class="section-no">01 / Phase quotient</div><h2>全局平移只固定第一谐波，其余相位无需对齐</h2>
+          <div class="equation result">\[
+          F_y(\phi)=\cos\phi+\sum_{m=2}^{M}r_m(y)\cos(m\phi+\theta_m),
+          \quad r_m(y)=b_m e^{-(m^2-1)y},\quad
+          S_j(y)=\sum_{m=2}^{M}m^jr_m(y),
+          \]</div>
+          <p>这里 \(\theta_m\) 与 \(y\) 无关，只有热包络随 \(y\) 变化。从 \(Q_2\le1/2\) 逐项得到 \(S_2(y)\le1/2\)、\(S_1(y)\le1/4\) 与 \(S_0(y)\le1/8\)。点态 Morse/shape 证明只使用这些界；ED 还使用这条固定相位热衰减路径。</p>
+        </section>
+
+        <section id="critical"><div class="section-no">02 / Critical-point count</div><h2>边界符号、严格单调与全局排除共同给出恰好两个临界点</h2>
+          <p>精确比较 \(\sin(\pi/12)&gt;1/4\) 保证两个固定盒子的边界符号。盒内由 \(|F_y''|\ge\cos(\pi/12)-Q_2&gt;0\) 得严格单调；任一临界点又满足 \(|\sin\phi|\le Q_1\le1/4\)，因此盒外没有遗漏。</p>
+        </section>
+
+        <section id="shape"><div class="section-no">03 / Uniform shape contract</div><h2>归一化常数与实际 Coble shear 常数分账</h2>
+          <div class="equation result">\[
+          r=\frac\pi{12},\qquad
+          (C_0,C_1)_{W}=(81,36),\qquad
+          (C_1)_{F}=12.
+          \]</div>
+          <p>\(F\) 的局部 Hessian margin 大于 \(1/3\)。乘回 \(W=e^{-y}F\) 后，在 \(0\le y\le1\) 使用 \(e^{-1}&gt;1/3\)，得到局部 slope 下界 \(1/9\) 与 away 下界 \(1/36\)。正式 ED 调用使用 \(C_1=36\)，不能把归一化常数 \(12\) 直接代入物理 shear。</p>
+        </section>
+
+        <section id="fixedm"><div class="section-no">04 / Fixed-M ledger</div><h2>前三阶导数与 slow-time 门槛明确依赖固定 \(M\)</h2>
+          <div class="equation result">\[
+          \|F\|_\infty\le\frac98,\quad
+          \|F'\|_\infty\le\frac54,\quad
+          \|F''\|_\infty\le\frac32,\quad
+          \|F^{(3)}\|_\infty\le1+\frac M2,
+          \qquad \eta_{\rm slow}(M):=\left(1+\frac M2\right)^{-4}.
+          \]</div>
+          <p class="threshold-ledger">\(\eta_{\rm slow}\) 只是 slow-reference 条件，不是完整小黏性阈值。正式阈值为 \(\eta_\sharp(M)=\min\{1,\eta_{\rm slow}(M),\eta_{\rm CH}(2,\pi/12,81,36,C_{\rm sh}(M))\}\)。family-uniformity 来自 Coble–He Appendix A 与吸收参数的依赖追踪，不是仅凭 compactness；也没有得到 \(M\to\infty\) 的一致定理。</p>
+        </section>
+
+        <section id="ed"><div class="section-no">05 / Full-superposition ED</div><h2>R0.72P 的完整传播结论扩展到声明的任意静态相位热路径</h2>
+          <p>Coble–He 的 profile-by-profile 定理结合固定 critical boxes、cutoffs、shape bounds 与热衰减导数账本，给固定 \(M\)、任意静态相位的声明热路径一个 proof-level uniform corollary；紧 \(\eta\) 区间仍由精确 \(L^2\) 收缩补齐。</p>
+          <div class="equation result">\[
+          E(y)\le C_{\rm ED}e^{-c_{\rm ED}\sqrt\varepsilon y}E(0),
+          \qquad \int_0^1E(y)\,dy\le C_{\rm ED}\varepsilon^{-1/2}E(0).
+          \]</div>
+          <p>常数只依赖固定 \(M\) 与声明的 upper shape class，不依赖静态相位、\(R\)、\(\varepsilon\) 或初值。这里没有证明任意时变相位或任意快速变化振幅的 ED。</p>
+          <p>物理 cross-cubic/window 推论还要求 active modes 满足固定 \(|\beta_m|\ge\beta_->0\)，隐常数依赖 \((M,\beta_-)\)，不在 \(\beta_-\downarrow0\) 时一致。</p>
+        </section>
+
+        <section id="caustic"><div class="section-no">06 / Exact 1:2 caustic</div><h2>退化墙是一条精确 nephroid，而不是数值扫描曲线</h2>
+          <div class="equation result">\[
+          z(\phi)=\frac18e^{-3i\phi}-\frac38e^{-i\phi},\qquad
+          \left(|z|^2-\frac1{16}\right)^3=\frac{27}{1024}(\operatorname{Im}z)^2.
+          \]</div>
+          <p>其半径范围为 \([1/4,1/2]\)。因此 \(|z|&lt;1/4\) 内所有相位都非退化且恰有两个临界点；半径 \(1/4\) 对 phase-uniform 圆盘是尖锐的。</p>
+        </section>
+
+        <section id="wall"><div class="section-no">07 / Wall classification</div><h2>一般墙点是 fold，实轴端点是 cusp；二者都只标记 Morse 适用性</h2>
+          <p>墙上一般点满足 \(f^{(3)}=-3\sin\phi\ne0\)，属于 \(A_2\) fold；\(z=\pm1/4\) 的实轴端点满足三阶消失而四阶非零，属于 \(A_3\) cusp。这里没有证明 enhanced dissipation 在墙上失败。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">08 / Independent exact audit</div><h2>Python Fraction 与 JavaScript BigInt 双路只核验有限代数骨架</h2>
+          <p>两路独立重建 jet budget、radical comparisons、slow threshold 与 caustic ledger；comparator 要求 canonical payload 精确相等。正式有限证书取 \(M=2\)，只核验有限代数骨架，不替代对所有固定 \(M\) 的解析证明。hash builder 拒绝临时 crosscheck、脏 source lineage、缺件、多件与 symlink。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>半群输入来自一手文献，任意静态相位 family uniformity 是本站的 proof-level 抽取</h2>
+          <p><a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He</a> 提供时变非退化 shear 的 enhanced-dissipation 框架；<a href="https://arxiv.org/abs/2104.05123">Voorhaar</a> 提供 caustic 的 Laurent-polynomial 语境。两者都不逐字陈述本站固定 \(M\)、\(Q_2\le1/2\)、任意静态相位、声明热路径与 1:2 实系数 nephroid 的组合定理。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>正式附图区分任意静态相位安全锥、物理 shape 常数与精确 caustic</h2>
+          <p><img src="/assets/r072q/fig-r072q-phase-robust-shape.svg" alt="R0.72Q arbitrary-static-phase fixed-M shape gate and exact 1:2 caustic"></p>
+          <p><a href="/assets/r072q/fig-r072q-phase-robust-shape.pdf">下载 PDF</a> · <a href="/assets/r072q/fig-r072q-phase-robust-shape.png">下载 PNG</a> · <a href="/assets/r072q/fig-r072q-phase-robust-shape.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>这是从特殊两载波相位线到相位鲁棒有限模式锥的实质扩张</h2>
+          <p>R0.72Q 移除了 R0.72P 的 real-collinear restriction，但所有相位仍保持静态；临界点计数、uniform shape 与适用边界由此变成可审计的系数空间几何。它提高了机制类结果的稳健性，但仍不是一般三维稳定阈值。</p>
+        </section>
+
+        <section id="scope"><div class="section-no">12 / Scope boundary</div><h2>固定 \(M\) 与 \(Q_2\le1/2\) 是真实边界，不是排版备注</h2>
+          <p>没有闭合增长 \(M\)、跨越 caustic 的 profile、任意 time-dependent phases、无 dominant first harmonic 的有限 pattern、fixed-\(R\) arbitrary coupling、一般三维 continuation、有限时奇性或全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.72R：离开 dominant-first-harmonic cone</h2>
+          <p>下一节将研究受控的 1:2:3 caustic 或逼近退化墙的 profile，检验 uniform shape contract 在非主谐波锥中的首个失效或可延拓机制。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">14 / Reproduction</div><h2>报告、独立审计、精确证书与正式附图包</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072q_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072q_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072q_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072q_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072q">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072q-phase-robust-shape/fig-r072q-phase-robust-shape">正式附图包</a> · <a href="/notes/r0-72q.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72q.html">累计回顾</a> · <a href="/recap-r0-61-r0-72q.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72Q · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

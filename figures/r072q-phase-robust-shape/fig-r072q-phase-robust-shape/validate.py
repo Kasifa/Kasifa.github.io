@@ -390,12 +390,16 @@ def mathematical_checks(
         "formal W contract is (pi/12,81,36), with normalized F away gap greater than 1/12",
     ))
 
-    text = "\n".join([
-        (ROOT / "README.md").read_text(encoding="utf-8"),
-        (ROOT / "caption.md").read_text(encoding="utf-8"),
-        (ROOT / "figure-contract.md").read_text(encoding="utf-8"),
-        "\n".join(contract["analyticClaims"]), contract["claimBoundary"],
-    ]).lower().replace(chr(96), "")
+    text = re.sub(
+        r"\s+",
+        " ",
+        "\n".join([
+            (ROOT / "README.md").read_text(encoding="utf-8"),
+            (ROOT / "caption.md").read_text(encoding="utf-8"),
+            (ROOT / "figure-contract.md").read_text(encoding="utf-8"),
+            "\n".join(contract["analyticClaims"]), contract["claimBoundary"],
+        ]).lower().replace(chr(96), ""),
+    )
     terms = [
         "cannot replace the continuous proof", "normalized f away gap",
         "w=e^{-y}f", "c1=36", "fixed", "growing", "fast phase",

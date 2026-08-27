@@ -32,6 +32,10 @@
     }
   }
 
+  // Check once as soon as the page is interactive.  Historical cached pages
+  // should not sit on a stale release counter for fifteen seconds before the
+  // version endpoint is consulted.
+  window.setTimeout(refreshIfStale, 0);
   window.setTimeout(refreshIfStale, 15_000);
   window.addEventListener("focus", refreshIfStale);
   document.addEventListener("visibilitychange", refreshIfStale);

@@ -492,10 +492,12 @@ define
 Here \(\eta_{\rm CH}\) is a dependency label for the smallness threshold
 read from the proof of Coble--He; it is not a formula stated verbatim in that
 paper.  Because every input in (5.7) is uniform on \(K\), the proof produces
-constants \(C_R,c_R>0\) such that, for \(0<\eta\le\eta_R\),
+constants \(C_R,c_R>0\) such that, for \(0<\eta\le\eta_R\) and
+\(0\le t\le\eta^{-1}\),
 
 \[
- \|H(t)\|_2^2\le C_Re^{-c_R\eta^{1/2}t}\|H(0)\|_2^2.
+ \|H(t)\|_2^2\le C_Re^{-c_R\eta^{1/2}t}\|H(0)\|_2^2,
+ \qquad 0\le t\le\eta^{-1}.
  \tag{5.8}
 \]
 
@@ -503,6 +505,7 @@ Returning to \(G\) gives
 
 \[
  E(y)\le C_Re^{-c_R\sqrt{\varepsilon_c}\,y}E(0),
+ \qquad 0\le y\le1,
  \qquad
  \int_0^1E(y)\,dy
  \le C_R\varepsilon_c^{-1/2}E(0),

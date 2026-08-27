@@ -92,4 +92,16 @@ test("English prose keeps the voice of one human researcher", async () => {
   assert.doesNotMatch(prose, /[。；，：、]/);
   assert.doesNotMatch(prose, /\bEND\b/);
   assert.match(prose, /\bI\b/);
+  assert.equal(
+    dictionary[
+      "资料截止：2026-08-27。若后续论文状态、版本或官方判断发生变化，我会在此页更新并保留原来的证据标签。"
+    ],
+    "Sources checked through 2026-08-27. If publication status, versions, or official assessments change, I will update this page while preserving the original evidence labels.",
+  );
+  assert.match(
+    dictionary[
+      "因而只优化两组反对称角会漏掉一个严格下降方向。 我又取有理参数 \\(m=28/155\\)、\\(n=7/25\\)、\\(x=5377/5000\\)， 对 332 个聚合频率作精确比较，得到外部/目标比 \\(18.035985268234917\\ldots\\)，目标能量比例为 \\(5.2532085201\\ldots\\%\\)。"
+    ],
+    /^Therefore,.*\bI then took\b/,
+  );
 });

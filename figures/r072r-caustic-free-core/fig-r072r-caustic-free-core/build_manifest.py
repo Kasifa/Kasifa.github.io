@@ -509,7 +509,7 @@ def main(status: str) -> None:
     output_records = [asset(name) for name in PACKAGE_ASSETS]
     parameters = config["parameters"]
     payload = {
-        "schemaVersion": "1.0",
+        "schemaVersion": "1.1",
         "figureId": "fig-r072r-caustic-free-core",
         "release": "R0.72R",
         "status": status,

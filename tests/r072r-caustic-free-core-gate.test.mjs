@@ -445,7 +445,14 @@ test("R0.72R figure contract is source-only until the sealed formal package exis
   );
   assert.equal(figureManifest.release, "R0.72R");
   assert.equal(figureManifest.figureId, "fig-r072r-caustic-free-core");
+  assert.equal(figureManifest.schemaVersion, "1.1");
   assert.equal(figureManifest.status, "formal");
+  assert.equal(figureManifest.computation.fullHeatPathTwoCriticalClosed, true);
+  assert.equal(figureManifest.computation.physicalCellShapeClosed, true);
+  assert.equal(
+    Object.hasOwn(figureManifest.computation, "heatPathTwoCriticalShapeClosed"),
+    false,
+  );
   assert.equal(figureManifest.qa.status, "passed");
   assert.equal(figureManifest.qa.visualInspectionExplicit, true);
   assert.equal(figureManifest.publication.publicCopiesComplete, true);

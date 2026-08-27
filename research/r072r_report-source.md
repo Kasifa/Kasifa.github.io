@@ -7,9 +7,8 @@ normalized heat path has exactly two critical points for every \(y\ge0\).  On
 the declared physical cell \(0\le y\le1\), the shear has a uniform shape
 contract and the fixed commensurate \(1{:}2{:}3\) triangular affine-row
 reduction has a family-uniform enhanced-dissipation corollary.  The initial
-polydisc lies strictly outside the R0.72Q sufficient cone.  No complete
-four-dimensional caustic stratification or general three-dimensional
-Navier--Stokes theorem is claimed.
+polydisc lies strictly outside the R0.72Q sufficient cone.  The complete four-dimensional caustic stratification and any general three-dimensional
+Navier--Stokes theorem are not claimed.
 
 **Keywords:** Navier--Stokes regularity, enhanced dissipation, trigonometric
 polynomial, caustic, Morse shear, complex harmonic coefficients, moving

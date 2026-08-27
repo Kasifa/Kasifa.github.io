@@ -3,9 +3,9 @@
 ## Question
 
 Can a full-dimensional complex \(1{:}2{:}3\) coefficient core begin beyond
-the sufficient \(Q_2\le1/2\) cone, retain two critical points along the full
-normalized heat path, and retain a uniform physical Morse-shape contract on
-\(0\le y\le1\)?
+the sufficient \(Q_2\le1/2\) cone, cross that sufficient boundary under heat
+decay, retain two critical points along the full normalized heat path, and
+retain a uniform physical Morse-shape contract on \(0\le y\le1\)?
 
 ## Supported claim
 

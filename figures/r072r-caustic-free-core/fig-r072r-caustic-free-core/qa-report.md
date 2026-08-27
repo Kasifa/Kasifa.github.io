@@ -1,6 +1,6 @@
 # R0.72R figure QA report
 
-Status: **PASSED**
+Status: **FAILED**
 
 Automatic-only run: `False`
 
@@ -10,7 +10,7 @@ Automatic-only run: `False`
 - [x] `svg_editable_vector` — SVG retains editable text and no raster image
 - [x] `final_size_and_grayscale_qa` — QA surfaces match final size and grayscale contrast gate
 - [x] `runtime_lineage` — all runtime inputs are canonical, hash-stable repository files
-- [x] `source_certificate_and_build_commits` — source and certificate/package blobs bind clean declared commits
+- [ ] `source_certificate_and_build_commits` — source and certificate/package blobs bind clean declared commits
 - [x] `flat_certificate_ledger` — flat SHA256SUMS exactly seals the certificate bundle
 - [x] `package_source_hashes` — all package sources retain build hashes
 - [x] `r072r_parameter_and_contract_consistency` — config and contract encode the certified R0.72R core, heat path, and shape constants

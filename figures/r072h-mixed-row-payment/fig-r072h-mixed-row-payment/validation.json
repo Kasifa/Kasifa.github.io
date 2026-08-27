@@ -1,0 +1,264 @@
+{
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "producer_passed",
+      "passed": true,
+      "requirement": "producer status is passed",
+      "value": "passed"
+    },
+    {
+      "name": "independent_passed",
+      "passed": true,
+      "requirement": "independent status is passed",
+      "value": "passed"
+    },
+    {
+      "name": "producer_checks",
+      "passed": true,
+      "requirement": "every producer check passes",
+      "value": {
+        "actionOnlyDivergenceSlope": true,
+        "allOddCarriers": true,
+        "criticalActionSlope": true,
+        "envelopeComparator": true,
+        "exactInteriorRoot": true,
+        "mixedRowSlope": true,
+        "momentResolvedRatioFinite": true,
+        "noncollapsedRootSlope": true,
+        "profileMomentSlope": true,
+        "realCorrection": true
+      }
+    },
+    {
+      "name": "independent_checks",
+      "passed": true,
+      "requirement": "every independent check passes",
+      "value": {
+        "actionOnlyDivergenceSlope": true,
+        "allOddCarriers": true,
+        "criticalActionSlope": true,
+        "exactRealRoot": true,
+        "mixedRowSlope": true,
+        "momentResolvedStable": true,
+        "producerAgreement": true,
+        "profileMomentSlope": true,
+        "rootSlopeRecovers": true
+      }
+    },
+    {
+      "name": "m_grids",
+      "passed": true,
+      "requirement": "both M grids match the contract",
+      "value": {
+        "independent": [
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "producer": [
+          4,
+          8,
+          16,
+          32,
+          64
+        ]
+      }
+    },
+    {
+      "name": "cross_route",
+      "passed": true,
+      "requirement": "cross-route relative error is within contract",
+      "value": 3.3089545553009195e-06
+    },
+    {
+      "name": "root_residual",
+      "passed": true,
+      "requirement": "all evolved root residuals are within contract",
+      "value": 5.795574125659294e-17
+    },
+    {
+      "name": "data_rows",
+      "passed": true,
+      "requirement": "data.csv contains all contracted rows",
+      "value": {
+        "actual": 129,
+        "expected": 129
+      }
+    },
+    {
+      "name": "panel_coverage",
+      "passed": true,
+      "requirement": "all panel counts match",
+      "value": {
+        "A": 84,
+        "B": 30,
+        "C": 15
+      }
+    },
+    {
+      "name": "source_lineage",
+      "passed": true,
+      "requirement": "source hashes match",
+      "value": {
+        "current": {
+          "figures/r072h-mixed-row-payment/fig-r072h-mixed-row-payment/config.json": "d94c18ae65e95b935025767e48f20fae476736c3e5f034f13a903a5de48214b8",
+          "figures/r072h-mixed-row-payment/fig-r072h-mixed-row-payment/contract.json": "0e2244bce58da03fda3da0ffec55f732914ec6173e6be450abaa33ccf4b9bfa9",
+          "research/certificates/r072h/independent-result.json": "f4e33f41ffcfe34b65703e7cb12abd853c9f4621056c2b5ee8721e31e6868392",
+          "research/certificates/r072h/result.json": "405fa231d6f8bb9a3d165cb3c60909be1680a636d95bb2f67a940ffeb43a3109"
+        },
+        "recorded": {
+          "figures/r072h-mixed-row-payment/fig-r072h-mixed-row-payment/config.json": "d94c18ae65e95b935025767e48f20fae476736c3e5f034f13a903a5de48214b8",
+          "figures/r072h-mixed-row-payment/fig-r072h-mixed-row-payment/contract.json": "0e2244bce58da03fda3da0ffec55f732914ec6173e6be450abaa33ccf4b9bfa9",
+          "research/certificates/r072h/independent-result.json": "f4e33f41ffcfe34b65703e7cb12abd853c9f4621056c2b5ee8721e31e6868392",
+          "research/certificates/r072h/result.json": "405fa231d6f8bb9a3d165cb3c60909be1680a636d95bb2f67a940ffeb43a3109"
+        }
+      }
+    },
+    {
+      "name": "envelope_bounds",
+      "passed": true,
+      "requirement": "finite envelope ratio stays within analytic comparison bounds",
+      "value": {
+        "max": 1.6930843004389904,
+        "min": 0.42706628321453083
+      }
+    },
+    {
+      "name": "action_only_growth",
+      "passed": true,
+      "requirement": "action-only quotient grows across the sweep",
+      "value": [
+        2.797208133630068,
+        6.250856521975106,
+        13.944246260799192,
+        31.404477615018592,
+        71.44322190261278
+      ]
+    },
+    {
+      "name": "moment_ratio_stable",
+      "passed": true,
+      "requirement": "moment-resolved ratio remains stable",
+      "value": [
+        0.7168138708138145,
+        0.6981536878540785,
+        0.6900027049187551,
+        0.685254793649616,
+        0.6820420793555061
+      ]
+    },
+    {
+      "name": "result_summary",
+      "passed": true,
+      "requirement": "result summary matches data",
+      "value": {
+        "atLargestMActionOnlyScaledRatio": 1.1606406523104982,
+        "atLargestMMixedRowNormalized": 0.9999858726984875,
+        "atLargestMMomentResolvedRatio": 0.6820420793555061,
+        "atLargestMRootResidual": 8.673617379884035e-19,
+        "independentStatus": "passed",
+        "largestM": 64,
+        "mValues": [
+          4,
+          8,
+          16,
+          32,
+          64
+        ],
+        "maxCrossRouteRelativeError": 3.3089545553009195e-06,
+        "producerStatus": "passed",
+        "rowCount": 129
+      }
+    },
+    {
+      "name": "pdf_geometry",
+      "passed": true,
+      "requirement": "one-page PDF has contracted size",
+      "value": {
+        "heightMm": 96.00000555555555,
+        "pages": 1,
+        "widthMm": 177.79999999999998
+      }
+    },
+    {
+      "name": "png_geometry",
+      "passed": true,
+      "requirement": "PNG is 600 dpi within one raster pixel of the contracted size",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expected": [
+          4200,
+          2268
+        ],
+        "pixels": [
+          4200,
+          2267
+        ]
+      }
+    },
+    {
+      "name": "svg_vector",
+      "passed": true,
+      "requirement": "SVG is vector and contains no embedded PNG",
+      "value": {
+        "bytes": 74224
+      }
+    },
+    {
+      "name": "public_assets",
+      "passed": true,
+      "requirement": "public figure copies are byte-identical",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "qa_surfaces",
+      "passed": true,
+      "requirement": "final-size, grayscale, and PDF QA surfaces match",
+      "value": {
+        "final": [
+          1260,
+          680
+        ],
+        "gray": [
+          1260,
+          680
+        ],
+        "pdf": [
+          1260,
+          680
+        ]
+      }
+    },
+    {
+      "name": "grayscale_contrast",
+      "passed": true,
+      "requirement": "grayscale QA retains contrast",
+      "value": 37.199483326294676
+    },
+    {
+      "name": "caption_boundary",
+      "passed": true,
+      "requirement": "caption separates diagnostics from general claims",
+      "value": "e\n\\(\\sqrt{mm_*q_*}/\\mathcal e_q\\) remains bounded. the final exact-root\nresidual is below \\(10^{-18}\\). the plotted finite calculations corroborate\nthe analytic theorem; they do not establish a full physical\n\\(d^{1/3}\\lambda_{1,*}\\) estimate or general navier--stokes regularity.\n"
+    },
+    {
+      "name": "claim_boundary",
+      "passed": true,
+      "requirement": "contract states the mathematical boundary",
+      "value": "The analytic result is confined to the finite-carrier triangular 2.5D row problem. Binary64 diagnostics corroborate finite cases. The figure does not prove a full physical critical-log estimate, a continuation criterion, blow-up, or general three-dimensional Navier-Stokes regularity."
+    }
+  ],
+  "passedCount": 22,
+  "requiredCount": 22,
+  "schemaVersion": "r072h-figure-validation-v1"
+}

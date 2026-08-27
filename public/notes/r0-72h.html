@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72H：有限共轭配对多载波三角形 Navier–Stokes 系统的 mixed row 可由 critical-log action 与显式剪切矩支付，常数不依赖载波数；全奇数 Rudin–Shapiro 族证明该矩所编码的幂次尖锐。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72H｜多载波混合行的载波数无关支付">
+  <meta property="og:description" content="mixed-row gate 已在有限多载波模型中关闭；action-only payment 为假，物理尺度吸收仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72h-mixed-row-payment.png">
+  <title>R0.72H｜多载波混合行的载波数无关支付</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}.compact-table{width:100%;border-collapse:collapse}.compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}@media print{body{font-size:8.7pt}.topline{height:3px}}</style>
+  <script defer src="/i18n-en.js?v=1.21"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#lattice">格点</a><a href="#proof">证明</a><a href="#envelope">权重</a><a href="#sharp">尖锐性</a><a href="#root">精确根</a><a href="#complete">完整行</a><a href="#audit">证书</a><a href="#figure">附图</a><a href="#literature">文献</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72H · MIXED ROW · CRITICAL LOG · RUDIN–SHAPIRO</div>
+        <h1>多载波没有制造维数损失，<br>但它留下一个不能删掉的剪切尺度</h1>
+        <p class="lead">R0.72G 把完整根打包压到一个 mixed row。这里我在有限共轭配对多载波系统中证明：这行可由 critical-log action 与显式 reciprocal-weight shear moment 支付，常数不依赖载波数、位置和物理相位。全奇数 Rudin–Shapiro 族同时表明，若只保留 action，估计会按 \(M^{4/3}/\log M\) 失效；同族还达到该 moment 所编码的 \(M\)-幂次。有限多载波行级关口因此关闭，把数据因子统一吸收到物理 \(D^{1/3}\Lambda_{1,*}\) 仍未完成。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72H 完成</span><strong>finite-carrier mixed row closed</strong><p>版本 v0.72H · 2026-08-27</p><p>carrier-free row bound: CLOSED</p><p>action-only payment: FALSE</p><p>moment powers: SHARP</p><p>physical absorption: OPEN</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#lattice">01 · 有限载波格点</a></li><li><a href="#proof">02 · mixed-row 证明</a></li><li><a href="#envelope">03 · 临界包络</a></li><li><a href="#sharp">04 · RS 尖锐族</a></li><li><a href="#root">05 · 精确正时刻根</a></li><li><a href="#complete">06 · 完整实目标行</a></li><li><a href="#audit">07 · 双路证书</a></li><li><a href="#figure">08 · 正式附图</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#value">10 · 研究价值</a></li><li><a href="#next">11 · 下一步</a></li><li><a href="#claims">12 · 主张边界</a></li><li><a href="#reproduce">13 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>mixed row 有载波数无关的临界对数支付</h2>
+          <p>在重启窗 \(I=[A,A+X]\) 上，令</p>
+          <div class="equation result">\[
+            \mathfrak q=\lVert V_wF\rVert_{A_q^{-1}}^2,\qquad
+            Q_*^I=\int_Iw_*\!\left(\frac{x-A}{X}\right)\mathfrak q(x)\,dx,
+            \qquad w_*(s)=s^{-1/3}[1+\log(1/s)].
+          \]</div>
+          <p>定义 reciprocal-weight shear moment</p>
+          <div class="equation result">\[
+            m_*(A,X)=\sum_l r_l^2|w_l|^2e^{-2\kappa r_l^2A}
+            \sup_{0&lt;s\le1}\frac{s^{1/3}e^{-2\kappa Xr_l^2s}}{1+\log(1/s)}.
+          \]</div>
+          <p>若 \(E_A=\lVert F(A)\rVert_2^2\)，而</p>
+          <div class="equation result">\[
+            \mathcal E_Q(I)=\int_I|h(x)Q(x)F(x)|\,dx,\qquad
+            h=P_0V_wF,\quad Q=P_0[V_w'+V_w(D_q+\lambda_0)],
+          \]</div>
+          <p>则</p>
+          <div class="equation result">\[
+            \boxed{\mathcal E_Q(I)\le6\sqrt\nu\,d|K_z|
+            [\lambda_0E_A\,m_*(A,X)Q_*^I]^{1/2}.}
+          \]</div>
+          <p>数值常数不依赖载波数、载波位置或物理剪切相位。由于 \(w_*\ge1\)，也可用已有数据量 \(K_{v,A}=\sum_l r_l^2|w_l|^2e^{-2\kappa r_l^2A}\) 代替 \(m_*\)，但会丢掉热衰减带来的频率增益。</p>
+        </section>
+
+        <section id="lattice"><div class="section-no">01 / Physical finite-carrier lattice</div><h2>共轭配对保持 skew coupling 与能量收缩</h2>
+          <p>固定 \(\nu>0\)、\(d\ge1\)、目标频率 \(k_*=(K_y,K_z)\) 且 \(K_z\ne0\)，取 \(q\ge\max\{1,2|K_y|/d\}\)、互异正载波 \(r_l\) 与系数 \(w_l\in\mathbb C\)，格点指标为 \(r\in\mathbb Z\)。从有限支撑初值出发，有限载波系统为</p>
+          <div class="equation result">\[
+            (D_qF)_r=-\lambda_{q,r}F_r,\quad
+            \lambda_{q,r}=\nu\!\left[(dr+K_y/q)^2+(K_z/q)^2\right],
+          \]</div>
+          <div class="equation result">\[
+            (V_wF)_r=-iK_z\sum_l e^{-\kappa r_l^2x}
+            (w_lF_{r-r_l}+\overline{w_l}F_{r+r_l}),\qquad \kappa=\nu d^2.
+          \]</div>
+          <div class="equation result">\[
+            \partial_xF=D_qF+\delta V_wF,\qquad \delta\in\mathbb R,\qquad
+            A_q=-D_q,\quad P_0F=F_0,\quad \lambda_0=\lambda_{q,0},\quad
+            \mathcal D(x)=\sum_r\lambda_{q,r}|F_r(x)|^2.
+          \]</div>
+          <p>共轭配对使 \(V_w^*=-V_w\)，所以</p>
+          <div class="equation result">\[
+            \frac12\frac d{dx}\lVert F\rVert_2^2=-\mathcal D(x),\qquad
+            \int_A^\infty\mathcal D(x)\,dx\le\frac{E_A}{2}.
+          \]</div>
+          <p>目标坐标只是 \(V_wF\) 的一个分量，因此 \(|h|^2\le\lambda_0\mathfrak q\)。这两个恒等式使证明不必支付 \(\ell^1\) 载波和。</p>
+        </section>
+
+        <section id="proof"><div class="section-no">02 / Carrier-free row estimate</div><h2>一个载波导数与对角耗散配对</h2>
+          <p>逐项展开 \(QF\) 后，\(V_w'\) 给出 \(r_l^2\) 热导数，而 \(V_w(D_q+\lambda_0)\) 给出同一载波上的频率差。由 \(q\ge\max\{1,2|K_y|/d\}\)，</p>
+          <div class="equation result">\[
+            |QF|\le6\sqrt{2\nu}\,d|K_z|A_1(x)\mathcal D(x)^{1/2},\qquad
+            A_1(x)^2=\sum_l r_l^2|w_l|^2e^{-2\kappa r_l^2x}.
+          \]</div>
+          <p>把 \(A_1^2\) 拆成 critical-log weight 的倒数包络，再用 \(|h|\le\sqrt{\lambda_0\mathfrak q}\)、Cauchy–Schwarz 与 \(\int_I\mathcal D\le E_A/2\)，就得到主定理。全程只出现 \(\ell^2\) 载波矩，常数不随 \(M\) 增长。</p>
+          <p>另有不使用 weighted action 的粗界</p>
+          <div class="equation result">\[
+            \mathcal E_Q(I)\le3E_A\rho_A^2,\qquad
+            \rho_A^2=2K_z^2\sum_l|w_l|^2e^{-2\kappa r_l^2A}.
+          \]</div>
+        </section>
+
+        <section id="envelope"><div class="section-no">03 / Critical reciprocal envelope</div><h2>临界对数把高频矩降到 \(4/3\) 阶</h2>
+          <p>需要优化的一维包络是</p>
+          <div class="equation result">\[
+            \Phi(a)=\sup_{0&lt;s\le1}\frac{s^{1/3}e^{-as}}{1+\log(1/s)}
+            \asymp\frac{(1+a)^{-1/3}}{1+\log(2+a)}.
+          \]</div>
+          <p>因此一个高频载波对 \(m_*\) 的贡献满足</p>
+          <div class="equation result">\[
+            r^2\Phi(2\kappa Xr^2)\asymp(\kappa X)^{-1/3}
+            \frac{r^{4/3}}{1+\log(2+\kappa Xr^2)}.
+          \]</div>
+          <p>这正是 R0.72F 的 \(s^{-1/3}[1+\log(1/s)]\) 在 differentiated row 上留下的互补尺度。\((\kappa X)^{-1/3}\) 和对数分母都不能从 \(X\)-uniform 公式中省略。</p>
+        </section>
+
+        <section id="sharp"><div class="section-no">04 / All-odd Rudin–Shapiro stress test</div><h2>action-only payment 按 \(M^{4/3}/\log M\) 失效</h2>
+          <p>取 \(M=2^n\)，把 Rudin–Shapiro 符号 \(\varepsilon_j\in\{\pm1\}\) 放在全奇数高频块</p>
+          <div class="equation result">\[
+            r_j=2M+2j+1,\qquad w_j=a\varepsilon_j,\qquad
+            G_M=\frac{i}{\sqrt2}\sum_j\varepsilon_j(e_{r_j}+e_{-r_j}).
+          \]</div>
+          <p>相位平坦性给 \(\lVert V_M(x)\rVert\lesssim a\sqrt M e^{-cM^2x}\)，行对齐初值在 \(x\asymp M^{-2}\) 同时给 \(|h|\asymp aM\)、\(|QF|\asymp aM^3\)。严格尺度为</p>
+          <div class="equation result">\[
+            \boxed{\mathcal E_Q\asymp a^2M^2,\qquad
+            Q_*\asymp a^2M^{2/3}\log M,\qquad
+            m_*\asymp\frac{a^2M^{7/3}}{\log M}.}
+          \]</div>
+          <p>这里 \(E_0=\lVert G_M\rVert_2^2=M\)。于是 \(\mathcal E_Q/Q_*\asymp M^{4/3}/\log M\to\infty\)，统一的 action-only 估计不成立；而 \([E_0m_*Q_*]^{1/2}\asymp a^2M^2\) 与左边同阶。这证明 \(m_*\) 所编码的 \(M\)-尺度被达到，但不排除使用别的数据泛函建立其他估计。</p>
+        </section>
+
+        <section id="root"><div class="section-no">05 / Exact positive-time root</div><h2>全奇数块使目标修正保持实数</h2>
+          <p>混合奇偶载波会破坏所需的实目标 gauge。令 \(U_M(x,s)\) 为上述系统的演化算子，\(e_0\) 为目标坐标的标准基向量；取 \(\tau_M=M^{-3}\)，并加目标坐标修正</p>
+          <div class="equation result">\[
+            \zeta_M=-\frac{P_0U_M(\tau_M,0)G_M}{P_0U_M(\tau_M,0)e_0},
+            \qquad \zeta_M=O(|\delta|aM^{-2}).
+          \]</div>
+          <p>分子和分母在全奇数 gauge 中都为实数。修正后的归一化初值在 \(x=\tau_M>0\) 产生精确目标根，同时对固定非零 \(\delta\) 有 \(|h(\tau_M)|\gtrsim aM\)。所以尖锐尺度并非只来自 launch atom。</p>
+          <p>不过，这个族不是完整物理反例：固定耦合的单原子归一化尺度约为 \(M^{-2}\)；在扰动范围内取 \(\delta a=\gamma M^{3/2}\)、固定小 \(\gamma>0\)，现有单原子尺度至多为 \(M^{-2/3}/\log M\)。</p>
+        </section>
+
+        <section id="complete"><div class="section-no">06 / Compatible real complete row</div><h2>实目标 gauge 下，完整根归约的剩余项全部显式</h2>
+          <p>定义</p>
+          <div class="equation result">\[
+            B_A^2=K_z^2\sum_l|w_l|^2e^{-2\kappa r_l^2A}
+            (\lambda_{q,r_l}+\lambda_{q,-r_l}).
+          \]</div>
+          <p>把 \(G_{\rm all}^{\rm ex}(I)\) 定义为 \(I\) 内所有目标根 \(F_0(\tau)=0\) 上 \(|h(\tau)|^2\) 的扩展非负和。由 \(\int_I|hP_0V_w^2F|\le\sqrt{\lambda_0}B_AQ_*^I\)，若目标 gauge 为实且 \(\delta\ne0\)，Rolle–BV 完整根归约给出</p>
+          <div class="equation result">\[
+            \boxed{G_{\rm all}^{\rm ex}(I)\le E_A\rho_A^2+2\lambda_0^2Q_*^I
+            +12\sqrt\nu d|K_z|[\lambda_0E_Am_*Q_*^I]^{1/2}
+            +2|\delta|\sqrt{\lambda_0}B_AQ_*^I.}
+          \]</div>
+          <p>\(\delta\ne0\) 不可省：\((e^{\lambda_0x}F_0)'=\delta e^{\lambda_0x}h\)，Rolle 步要除以 \(\delta\)。在 \(\delta=0\) 时物理 slope ledger 为零，但除以 \(\delta^2\) 后的 raw \(h\)-ledger 不属于该 corollary。上式仍是 row-level 结论，尚不能直接改写成一般物理解上的 \(D^{1/3}\Lambda_{1,*}\)。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">07 / Independent finite audits</div><h2>两条独立实现都通过，失败尝试也保留</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · ALL CHECKS PASS</strong><p>覆盖 \(M=4,8,16,32,64\)。\(\mathcal E_Q/(a^2M^2)\) 依次为 0.996346、0.999092、0.999774、0.999943、0.999986；精确根残差低至 \(8.67\times10^{-19}\)。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · ALL CHECKS PASS</strong><p>独立 gauge、符号生成、卷积、积分与截断路线重算全部诊断；两路最大相对差 \(3.31\times10^{-6}\)。producer 最大 RSS 122 MB，independent 最大 RSS 80 MB。</p></div>
+          </div>
+          <p>\(M=64\) 时，mixed row 为 4095.9421，归一化值 0.99998587；\(Q_*=57.33143\)，\(m_*=2126.94965\)，moment-resolved ratio 为 0.68204208。第一次运行因小 \(M\) 阈值和 profile 容差过严而失败，第二次因长度检查错误停止；两次日志、原因和最终修正都随证书封存。有限审计只核对实现与尺度，不替代解析证明，也不是区间算术证书。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Journal figure</div><h2>正式附图同时显示临界包络、三重主尺度与两种支付比</h2>
+          <figure><img src="/figures/r0-72h-mixed-row-payment.svg" alt="R0.72H critical-log envelope, normalized mixed-row scales, and payment-ratio audit"><figcaption>图 R0.72H-1。左：reciprocal critical-log 包络与解析比较量之比，显示从低频到高频的有界过渡；中：producer 与 independent 两路有限审计分别按 \(\mathcal E_Q/(a^2M^2)\)、\(Q_* /(a^2M^{2/3}\log M)\) 和 \(m_* /(a^2M^{7/3}/\log M)\) 归一化；右：action-only 商随参考尺度 \(M^{4/3}/\log M\) 增长，而 moment-resolved 比保持有界，并标注 \(M=64\) 的精确根残差。有限点用于实现审计，解析结论来自逐式估计。</figcaption></figure>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>现成的 maximal regularity 或 Carleson embedding 不能替代这条行估计</h2>
+          <p>Kato–Ponce 的空间交换子、Haak–Ouhabaz 与 Trostorff–Waurick 的非自治 maximal regularity、Kharou 的 observation admissibility，以及 Carbonaro–Dragičević、Xu 的 bilinear 或 vector-valued square-function 结果都提供邻近结构；它们没有从这里的内部 negative-Sobolev action 同时控制 \(P_0V_wF\) 与含 \(V_w'\) 的时变目标行。</p>
+          <p>Nazarov–Pisier–Treil–Volberg 还提示，一般 operator-valued Carleson 化可能出现有限维对数损失。这里绕开该抽象，只用 scalar target coordinate、共同热因子、对角耗散和 reciprocal-weight moment。Stadje 的 BV indicatrix 与 Narcowich–Ward–Wendland 的 scattered-zero inequality 也不直接处理内生的单一时间零水平。</p>
+          <p>截至 2026-08-27 的限定一手来源检索中，我没有找到直接给出本节 mixed-row 定理的结果。这是 bounded non-collision check，不是原创性、优先权或穷尽性声明。</p>
+        </section>
+
+        <section id="value"><div class="section-no">10 / Research value</div><h2>障碍从“载波数损失”推进到“物理数据能否吸收”</h2>
+          <p>R0.72G 的一般化风险是：多载波 differentiated row 也许必须付 \(M\)、\(\sqrt M\) 或 \(\ell^1\) 代价。R0.72H 排除了这类维数损失，并给出可进入完整根账本的显式上界。</p>
+          <p>同一个尖锐族说明，结果不能压缩成 \(CQ_*^I\)：critical-log action 本身不够，必须加入某种额外数据控制。本路线自然产生 \(E_A,m_*,B_A,\rho_A\)，下一关就是判断物理账本能否支付它们。</p>
+          <p>这是一项有限三角形 2.5D 模型类内的解析定理，不是千禧年问题的部分解决；它没有产生新的无条件继续性判据，也没有缩小所有潜在奇性解的集合。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next finite gate</div><h2>R0.72I 检查物理归一化能否支付显式数据因子</h2>
+          <p>下一步固定本节的 row theorem，不再重做载波计数。我将逐项比较 \(E_A,m_*,B_A,\rho_A\) 与物理能量、full-frequency rotational charge、critical-log action 和 restart 几何，目标是得到统一的 \(D^{1/3}\Lambda_{1,*}\) 吸收。</p>
+          <p>有限关口只有两个可接受出口：完成该吸收并说明覆盖条件，或构造满足完整物理归一化的 growing-carrier 反族。若两者都做不到，就明确记录尚缺的数据接口。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>行级定理已闭合，物理传递仍开放</h2>
+          <table class="compact-table"><thead><tr><th>已证明</th><th>仍开放</th></tr></thead><tbody><tr><td>有限共轭配对载波的 skew 能量恒等式；载波数无关 mixed-row 上界；临界包络；action-only payment 的全奇数 RS 反族；moment-resolved \(M\)-幂次尖锐；\(\delta\ne0\) 且兼容实目标 gauge 的完整根行级估计。</td><td>把 \(E_A,m_*,B_A,\rho_A\) 全部吸收到最终物理 \(D^{1/3}\Lambda_{1,*}\)；任意复目标 gauge 的同强完整根归约；无限载波极限；从三角形 2.5D 类传到一般三维弱解；Navier–Stokes continuation 或 singularity theorem。</td></tr></tbody></table>
+          <p>所有构造解仍属于全局光滑的三角形 2.5D 类。本页没有构造有限时奇性，也没有证明一般三维解全局光滑；Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduce</div><h2>完整报告、主张矩阵、双路证书和正式附图全部公开</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072h_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072h_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072h_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072h_independent_audit.md">独立逐式审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072h">双路有限证书与失败尝试</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072h-mixed-row-payment/fig-r072h-mixed-row-payment">正式附图、数据、代码、环境与校验和</a> · <a href="/figures/r0-72h-mixed-row-payment.pdf">期刊附图 PDF</a> · <a href="/notes/r0-72h.pdf">同步研究笔记 PDF</a></p>
+          <p><a href="/recap-r0-61-r0-72h.html">阅读 R0.60 之后的完整累计回顾</a> · <a href="/recap-r0-61-r0-72h.pdf">下载累计回顾 PDF</a> · <a href="/notes/r0-72g.html">返回 R0.72G</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72H · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72h.html">累计回顾</a></div></footer>
+</body>
+</html>

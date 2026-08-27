@@ -407,8 +407,8 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(archive.contractStart, "r070a");
   assert.equal(archive.latestPublishedRelease, releases.at(-1));
   assert.deepEqual(archive.publishedReleases, releases);
-  assert.equal(archive.publishedReleaseCount, 60);
-  assert.equal(archive.formalSealedReleaseCount, 36);
+  assert.equal(archive.publishedReleaseCount, 61);
+  assert.equal(archive.formalSealedReleaseCount, 37);
   assert.equal(archive.legacyFormalFigureBacklogCount, 24);
 
   const formal = archive.formalSealedReleases;

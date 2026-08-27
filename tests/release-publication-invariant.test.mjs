@@ -408,6 +408,16 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     manifest.latestReleaseGate.startsWith("tests/" + latestRelease),
     "latest-release gate must advance with the published endpoint",
   );
+  assert.match(
+    manifest.latestReleasePublicationTest,
+    /^tests\/r0\d{2}[a-z][a-z0-9-]*\.test\.mjs$/,
+    "manifest latest-release publication test path",
+  );
+  await access(new URL(manifest.latestReleasePublicationTest, root));
+  assert.ok(
+    manifest.latestReleasePublicationTest.startsWith("tests/" + latestRelease),
+    "latest-release publication test must advance with the published endpoint",
+  );
   assert.ok(
     home.includes("<strong>" + latestCode + "</strong>最新研究节点"),
   );
@@ -476,15 +486,27 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(archive.contractStart, "r070a");
   assert.equal(archive.latestPublishedRelease, releases.at(-1));
   assert.deepEqual(archive.publishedReleases, releases);
-  assert.equal(archive.latestPublishedRelease, "r072o");
+  assert.equal(
+    archive.latestPublishedRelease,
+    releaseIndex.latestCompletedRelease,
+  );
   assert.equal(archive.publishedReleaseCount, releases.length);
-  assert.equal(archive.publishedReleaseCount, 67);
+  assert.equal(
+    archive.publishedReleaseCount,
+    releaseIndex.postR070APublishedReleaseCount,
+  );
   assert.equal(
     archive.formalSealedReleaseCount,
     archive.formalSealedReleases.length,
   );
-  assert.equal(archive.formalSealedReleaseCount, 43);
-  assert.equal(archive.legacyFormalFigureBacklogCount, 24);
+  assert.equal(
+    archive.formalSealedReleaseCount,
+    releaseIndex.postR070AFormalSealedReleaseCount,
+  );
+  assert.equal(
+    archive.legacyFormalFigureBacklogCount,
+    releaseIndex.legacyFormalFigureBacklogCount,
+  );
 
   const formal = archive.formalSealedReleases;
   const backlog = archive.legacyFormalFigureBacklog.map((row) => row.release);

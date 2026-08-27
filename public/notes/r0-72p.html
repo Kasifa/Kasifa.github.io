@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72P：固定实系数同一直线相位（同相或反相） 1:2 两载波的 full-superposition enhanced dissipation 与精确 Morse 适用边界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72P｜两载波完整传播门与 Morse 墙">
+  <meta property="og:description" content="固定 1:2 正类的统一 full-superposition ED、cross cubic 与 λ=±1/4 Morse applicability wall。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072p/fig-r072p-superposition-gate.png">
+  <title>R0.72P｜两载波完整传播门与 Morse 墙</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.29"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#reduction">约化</a><a href="#shape">形状</a><a href="#theorem">定理</a><a href="#compact">紧区间</a><a href="#cubic">交叉项</a><a href="#window">窗口</a><a href="#wall">Morse 墙</a><a href="#scope">边界</a><a href="#literature">文献边界</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72P · FULL-SUPERPOSITION ED · MORSE WALL</div>
+        <h1>完整两载波传播门已经闭合；<br>结论止于固定实系数同一直线相位（同相或反相） 1:2 正类</h1>
+        <p class="lead">对载波 \(R,2R\)、实系数同一直线相位（同相或反相）、\(B=2\) 与 \(0&lt;\lambda_-\le|\lambda|\le1/8\)，完整 affine-row propagator 满足常数对 \(R,\varepsilon\ge1,\lambda\) 一致的 enhanced-dissipation 估计。所有 self/cross terms 都留在同一传播子内，因此 R0.72O 的 full-superposition cubic gate 在这个固定正类上无条件闭合。\(\lambda=\pm1/4\) 只是一手 Morse 定理的精确适用边界，不是 enhanced dissipation 失败。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72P 固定两载波正类完成</span><strong>1:2 real-collinear-phase superposition gate: CLOSED</strong><p>版本 v0.72P · 2026-08-27</p><p>fixed carrier pattern \(R:2R\): CLOSED</p><p>full-superposition ED: CLOSED</p><p>uniform \(R,\varepsilon,\lambda\) constants: CLOSED</p><p>Morse applicability wall \(\lvert\lambda\rvert=1/4\): EXACT</p><p>arbitrary phases / carrier sets: OPEN</p><p>fixed-\(R\) arbitrary coupling / general 3D: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#reduction">01 · cell 约化</a></li><li><a href="#shape">02 · uniform shape</a></li><li><a href="#theorem">03 · 定理抽取</a></li><li><a href="#compact">04 · 紧参数补齐</a></li><li><a href="#cubic">05 · full cross cubic</a></li><li><a href="#window">06 · 物理窗口</a></li><li><a href="#wall">07 · Morse 墙</a></li><li><a href="#scope">08 · 主张边界</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#figure">10 · 正式附图</a></li><li><a href="#value">11 · 研究价值</a></li><li><a href="#next">12 · R0.72Q</a></li><li><a href="#reproduce">13 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>一个非平凡 full-superposition 正类已经从条件接口升级为定理</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>THEOREM · FIXED 1:2 CLASS</strong><p>\(r_1=R,r_2=2R,w_1=a,w_2=\lambda a\)，实系数同一直线相位（同相或反相），\(B=N=2\)、\(p=2^{-1/2}\)，且 \(0&lt;\lambda_-\le|\lambda|\le1/8\)。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · FULL PROPAGATOR</strong><p>\(E(y)\le C_{\rm ED}e^{-c_{\rm ED}\sqrt\varepsilon y}E(0)\)，常数只依赖固定 shape 上界，不依赖 \(R,\varepsilon,\lambda\) 或初值。</p></div>
+            <div class="verdict-card true"><strong>COROLLARY · CROSS CUBIC</strong><p>\(\mathcal C_\times\lesssim a^2N^2\sqrt\varepsilon=4a^2\sqrt\varepsilon\)，继承 \(U_{\rm ED}\asymp\varepsilon^{11/6}p^{4/3}\)。</p></div>
+            <div class="verdict-card false"><strong>OPEN · GENERAL SUPERPOSITION</strong><p>任意相位、任意 carrier 集、增长 \(N\)、fixed-\(R\) 任意耦合与一般三维问题都没有由本节闭合。</p></div>
+          </div>
+        </section>
+
+        <section id="reduction"><div class="section-no">01 / Exact cell reduction</div><h2>两个载波必须作为一个完整算子缩到固定圆周</h2>
+          <p>在 affine invariant row \(\Lambda_{R,q_*}=\{(nR,q_*):n\in\mathbb Z\}\) 上令 \(y=R^2x\)、\(\phi=R\theta\)。完整 convolution 精确化为</p>
+          <div class="equation result">\[
+          \partial_yG=(\partial_\phi^2-R^{-2})G-is\varepsilon W_\lambda(y,\phi)G,
+          \qquad W_\lambda=e^{-y}\cos\phi+\lambda e^{-4y}\cos2\phi.
+          \]</div>
+          <p>cell 与 \(R\) 无关，并保留全部 self/cross coupling；没有逐载波求和。</p>
+        </section>
+
+        <section id="shape"><div class="section-no">02 / Uniform shape lemma</div><h2>临界点固定为 \(0,\pi\)，Morse margin 对整个系数锥一致</h2>
+          <div class="equation result">\[
+          \partial_\phi W_\lambda=-e^{-y}\sin\phi\bigl(1+4\lambda e^{-3y}\cos\phi\bigr).
+          \]</div>
+          <p>当 \(|\lambda|\le1/8\) 时，括号始终位于 \([1/2,3/2]\)。临界集恰为 \({0,\pi}\)，fixed neighborhoods、cutoffs、二阶下界及 profile 范数可对 \(y\in[0,1]\) 和声明的 \(\lambda\)-族统一选择。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">03 / Uniform theorem extraction</div><h2>Coble–He 定理作用于完整 profile，统一常数来自固定 shape 数据</h2>
+          <p><a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He, Theorem 1.2</a> 对单个非退化时变剪切给 modewise \(e^{-c\eta^{1/2}|k|^{1/2}t}\) 衰减。本站固定 critical neighborhoods 与 cutoffs，并用上一节的 uniform shape bounds 控制 Appendix A 的吸收常数，从 proof 中抽取统一 \(\eta_0,C_{\rm ED},c_{\rm ED}\)。</p>
+          <p>这是声明 1:2 参数族的 proof-level corollary，不是原论文逐字陈述的 arbitrary-family theorem，也不覆盖任意 Fourier superposition。</p>
+        </section>
+
+        <section id="compact"><div class="section-no">04 / Compact parameter completion</div><h2>小扩散定理与 \(L^2\) 收缩共同覆盖全部 \(\varepsilon\ge1\)</h2>
+          <p>令 \(t=\varepsilon y\)、\(\eta=\varepsilon^{-1}\)。Coble–He 控制充分小 \(\eta\)；剩余紧区间由 skew transport 下的精确 \(L^2\) 收缩补齐，并扩大同一个固定 prefactor。</p>
+          <div class="equation result">\[
+          E(y)\le C_{\rm ED}e^{-c_{\rm ED}\sqrt\varepsilon y}E(0),\qquad
+          E(1)\le C_{\rm ED}e^{-c_{\rm ED}\sqrt\varepsilon}E(0),\qquad
+          \int_0^1E(y)\,dy\le C_{\rm ED}\varepsilon^{-1/2}E(0).
+          \]</div>
+        </section>
+
+        <section id="cubic"><div class="section-no">05 / Full cross cubic</div><h2>R0.72O 的条件门在这个 \(N=2\) 正类上变成无条件估计</h2>
+          <div class="equation result">\[
+          \mathcal C_\times\lesssim4a^2\sqrt\varepsilon,
+          \qquad U_{\rm ED}\asymp\varepsilon^{11/6}p^{4/3},
+          \qquad p=2^{-1/2}.
+          \]</div>
+          <p>这里估计完整 superposition propagator；结论不依赖把两个 one-carrier estimates 相加。</p>
+        </section>
+
+        <section id="window"><div class="section-no">06 / Physical window</div><h2>已证强耦合窗口保留精确 \(p\) 因子</h2>
+          <div class="equation result">\[
+          \boxed{\sqrt\varepsilon\lesssim p^{2/3}R^{2/3}L_{R,\varepsilon}},\qquad
+          \boxed{\varepsilon\lesssim p^{4/3}R^{4/3}L_{R,\varepsilon}^{2}},
+          \quad p=2^{-1/2}.
+          \]</div>
+          <p>窗口上沿仍只给统一有界；little-o 子区间才给 normalized ratio 衰减。fixed-\(R\) 任意强耦合没有闭合。</p>
+        </section>
+
+        <section id="wall"><div class="section-no">07 / Exact Morse wall</div><h2>\(\lambda=\pm1/4\) 是适用性墙，不是动力学反例</h2>
+          <p>在 \(y=0\)，\(\lambda=1/4\) 使 \(\phi=\pi\) 的前三个 \(\phi\)-导数消失；\(\lambda=-1/4\) 在 \(\phi=0\) 同样退化，第四导数非零。越过该值还会出现额外临界点。</p>
+          <p><strong>精确边界：</strong>&nbsp;\(|\lambda|=1/4\) 只证明当前 Morse-based theorem 不再可直接调用；它不证明 enhanced dissipation 失败，更不证明 Navier–Stokes 失稳。</p>
+        </section>
+
+        <section id="scope"><div class="section-no">08 / Scope boundary</div><h2>固定正类与一般多载波问题严格分开</h2>
+          <p>已闭合：fixed real-collinear-phase 1:2 pattern、\(B=2\)、声明的 \(\lambda\)-cone、完整 affine row、任意初值与 exact-root correction。</p>
+          <p>仍开放：任意相位、任意有限或增长 carrier 集、跨越 Morse wall 的 profile、fixed-\(R\) 任意 coupling、一般三维 continuation、有限时奇性与全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>一手来源提供半群框架，本站负责参数族统一化与物理回填</h2>
+          <p><a href="https://arxiv.org/abs/2309.15738">Coble–He</a> 是时变非退化剪切的直接输入；<a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a> 说明 profile 临界结构决定 enhanced-dissipation rate。</p>
+          <p>限定检索没有找到直接陈述本站 fixed real-collinear-phase 1:2 heat-decaying profile、\(R\)-uniform cell reduction、full cross cubic 与物理窗口的同一现成定理；这项检索不构成新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">10 / Journal figure</div><h2>正式附图同时标出正类、统一传播与适用性墙</h2>
+          <p><img src="/assets/r072p/fig-r072p-superposition-gate.svg" alt="R0.72P two-carrier full-superposition enhanced-dissipation gate and Morse applicability wall"></p>
+          <p><a href="/assets/r072p/fig-r072p-superposition-gate.pdf">下载 PDF</a> · <a href="/assets/r072p/fig-r072p-superposition-gate.png">下载 PNG</a> · <a href="/assets/r072p/fig-r072p-superposition-gate.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">11 / Research value</div><h2>在本项目中首次把 multi-carrier gate 在一个非平凡完整正类上严格关闭</h2>
+          <p>R0.72P 的增量不是再做一条 one-carrier estimate，而是证明 cross terms 共存时的完整传播子仍有 uniform enhanced dissipation，并把它接回 \(\varepsilon^{11/6}p^{4/3}\) 物理账本。</p>
+          <p>价值限于特殊 triangular 2.5D mechanism class；它不是一般三维稳定阈值，也不改变 Clay 问题仍开放的状态。</p>
+        </section>
+
+        <section id="next"><div class="section-no">12 / Next gate</div><h2>R0.72Q：测试相位扰动与更一般有限 pattern 的 uniform shape contract</h2>
+          <p>下一步先量化 real-collinear phase locus 附近的可容许相位锥，或给出首个使 fixed critical neighborhoods 失效的精确反族。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduction</div><h2>报告、审计、证书与正式附图包</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072p_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072p_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072p_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072p_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072p">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072p-superposition-gate/fig-r072p-superposition-gate">正式附图包</a> · <a href="/notes/r0-72p.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72p.html">累计回顾</a> · <a href="/recap-r0-61-r0-72p.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72P · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

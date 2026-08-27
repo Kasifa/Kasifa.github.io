@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "r072p-figure-config-v1",
+  "figure": {
+    "widthMillimetres": 177.8,
+    "heightMillimetres": 132.08,
+    "pngDpi": 600,
+    "qaDpi": 180
+  },
+  "runtimeInputs": {
+    "analyticSource": {
+      "argument": "--analytic-source",
+      "environment": "R072P_REPORT_SOURCE",
+      "placeholder": "path to the frozen R0.72P report source"
+    },
+    "producerConfig": {
+      "argument": "--producer-config",
+      "environment": "R072P_PRODUCER_CONFIG",
+      "placeholder": "path to the clean tracked producer configuration JSON"
+    },
+    "producerResult": {
+      "argument": "--producer-result",
+      "environment": "R072P_PRODUCER_RESULT",
+      "placeholder": "path to the passed producer result JSON"
+    },
+    "independentConfig": {
+      "argument": "--independent-config",
+      "environment": "R072P_INDEPENDENT_CONFIG",
+      "placeholder": "path to the clean tracked independent configuration JSON"
+    },
+    "independentResult": {
+      "argument": "--independent-result",
+      "environment": "R072P_INDEPENDENT_RESULT",
+      "placeholder": "path to the passed independent result JSON"
+    },
+    "crosscheck": {
+      "argument": "--crosscheck",
+      "environment": "R072P_CROSSCHECK",
+      "placeholder": "path to the passed producer-independent crosscheck JSON"
+    }
+  },
+  "formalGitBindings": {
+    "sourceCommitPaths": [
+      "research/r072p_report-source.md",
+      "research/r072p_exact_audit.py",
+      "research/r072p_independent_audit.mjs",
+      "research/r072p_compare_audits.py"
+    ],
+    "certificateCommitRoles": {
+      "producerConfig": "research/certificates/r072p/producer-config.json",
+      "producerResult": "research/certificates/r072p/producer-result.json",
+      "independentConfig": "research/certificates/r072p/independent-config.json",
+      "independentResult": "research/certificates/r072p/independent-result.json",
+      "crosscheck": "research/certificates/r072p/crosscheck.json"
+    },
+    "certificateLedgerPath": "research/certificates/r072p/SHA256SUMS"
+  },
+  "publication": {
+    "directory": "public/assets/r072p",
+    "stem": "fig-r072p-superposition-gate"
+  },
+  "parameters": {
+    "carrierMultipliers": [1, 2],
+    "carrierCount": 2,
+    "coherenceB": 2.0,
+    "p": 0.7071067811865476,
+    "lambdaSafe": 0.125,
+    "lambdaExample": 0.125,
+    "lambdaLowerMustBePositive": true,
+    "shapeRadius": 0.7853981633974483,
+    "shapeC0": 144.0,
+    "shapeC1": 12.0
+  },
+  "panels": {
+    "A": {
+      "phiMinimum": -3.141592653589793,
+      "phiMaximum": 3.141592653589793,
+      "samples": 241,
+      "ySlices": [0.0, 0.5, 1.0]
+    },
+    "B": {
+      "phiMinimum": -3.141592653589793,
+      "phiMaximum": 3.141592653589793,
+      "samples": 241,
+      "bracketLower": 0.5,
+      "bracketUpper": 1.5
+    },
+    "C": {
+      "yMinimum": 0.0,
+      "yMaximum": 1.0,
+      "samples": 241
+    },
+    "D": {
+      "rMinimum": 8.0,
+      "rMaximum": 4096.0,
+      "samples": 241,
+      "statusAnchors": [16.0, 64.0, 256.0, 1024.0],
+      "exactLedgerFactor": "L_(R,epsilon)^2",
+      "displayedRepresentativeAssumption": "fixed-polynomial coupling",
+      "displayedLRepresentative": "1+log R"
+    }
+  },
+  "validation": {
+    "minimumDataRows": 1900,
+    "minimumGrayscaleStandardDeviation": 20.0,
+    "maximumSvgRasterImages": 0,
+    "lineageStatus": "passed"
+  },
+  "palette": {
+    "paper": "#f5f0e6",
+    "ink": "#20252b",
+    "blue": "#315b75",
+    "ochre": "#9b7432",
+    "muted": "#74716a",
+    "grid": "#d5cec0",
+    "blueLight": "#dce7ec",
+    "ochreLight": "#eadfca",
+    "theoremFill": "#e5e1d8"
+  }
+}

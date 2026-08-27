@@ -228,6 +228,12 @@ test("temporary dual exact routes agree, expose every new guard, and remain unse
   const independentPayload = JSON.parse(
     await readFile(join(directory, "independent-payload.json"), "utf8"),
   );
+  const producerConfig = JSON.parse(
+    await readFile(join(directory, "producer-config.json"), "utf8"),
+  );
+  const independentConfig = JSON.parse(
+    await readFile(join(directory, "independent-config.json"), "utf8"),
+  );
   const crosscheck = JSON.parse(
     await readFile(join(directory, "crosscheck.json"), "utf8"),
   );
@@ -306,7 +312,11 @@ test("temporary dual exact routes agree, expose every new guard, and remain unse
     "a3FiniteGuardInputsExact",
     "heatEquationIdentityExact",
   ]) assert.equal(crosscheck.checks[name], true, name);
-  assert.equal(crosscheck.checks.formalSourceReady, false);
+  const formalSourceReady = [producerConfig, independentConfig].every(
+    (config) => config.sourceTracked === true && config.trackedChangesDirty === false,
+  );
+  assert.equal(crosscheck.checks.formalSourceReady, formalSourceReady);
+  assert.equal(crosscheck.checks.sourceReadyOrExplicitlyAllowed, true);
   assert.equal(crosscheck.temporaryUnsealedSourceAllowed, true);
 
   const scaffold = resolve(root, "research/certificates/r072s");

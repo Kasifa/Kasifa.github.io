@@ -1,0 +1,258 @@
+{
+  "allPassed": true,
+  "checkCount": 17,
+  "checks": [
+    {
+      "name": "source certificates passed",
+      "passed": true,
+      "requirement": "both complete certificates passed on their default grids",
+      "value": {
+        "independentPassed": true,
+        "independentSmokeMode": false,
+        "producerDefaultGridComplete": true,
+        "producerPassed": true
+      }
+    },
+    {
+      "name": "source hashes are current",
+      "passed": true,
+      "requirement": "metadata hashes match both certificates, contract, and config",
+      "value": {
+        "figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/config.json": "a0d92255bcd45e37b7f27fde46db749669d17bd654d50408a3a0e67c230980be",
+        "figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/contract.json": "412c6ac79d9d5cd955047aa05600cef1dc0b8ebb7063b5e9c96a1464aefa2d14",
+        "research/certificates/r072e/independent-result.json": "3bf9b42fe3e259b76ce0fd7bd2fca6dfe98b73905fa93d775cc91b791a4b72f0",
+        "research/certificates/r072e/result.json": "f9d419064219e58bdd510c6c30e649ec285967bca84b5a010f1345df009f0fa2"
+      }
+    },
+    {
+      "name": "three-panel row contract",
+      "passed": true,
+      "requirement": "all 32 plotted certificate and reference rows are archived",
+      "value": {
+        "actual": {
+          "A": 10,
+          "B": 10,
+          "C": 12
+        },
+        "expected": {
+          "A": 10,
+          "B": 10,
+          "C": 12
+        }
+      }
+    },
+    {
+      "name": "panel grids",
+      "passed": true,
+      "requirement": "every panel uses the declared finite checkpoint grids",
+      "value": {
+        "A": {
+          "independent dissipative-root mass": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "producer frozen Bessel mass": [
+            8,
+            16,
+            32,
+            64
+          ]
+        },
+        "B": {
+          "independent": [
+            16,
+            32,
+            64,
+            128
+          ],
+          "producer": [
+            16,
+            32,
+            64,
+            128,
+            256,
+            512
+          ]
+        },
+        "C": {
+          "analytic R^(4/3) reference": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "independent selected-ledger lower bound": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "producer selected-ledger proxy": [
+            8,
+            16,
+            32,
+            64
+          ]
+        }
+      }
+    },
+    {
+      "name": "certificate values copied exactly",
+      "passed": true,
+      "requirement": "raw and normalized CSV values are exact source-derived copies",
+      "value": 0.0
+    },
+    {
+      "name": "frozen Bessel cross-audit",
+      "passed": true,
+      "requirement": "producer and independent frozen Bessel masses agree to rounding",
+      "value": 8.881784197001252e-16
+    },
+    {
+      "name": "Bessel mass convergence",
+      "passed": true,
+      "requirement": "terminal mass coefficient is near 8/pi^2 and dissipative defect is small",
+      "value": {
+        "target": 0.8105694691387022,
+        "terminalMassOverLogR": 0.8572736995016847,
+        "terminalRelativeDissipativeDefect": -4.709852830282944e-06
+      }
+    },
+    {
+      "name": "action scales bounded on each finite window",
+      "passed": true,
+      "requirement": "each separately labeled horizon has bounded delta*Q/log(delta)",
+      "value": {
+        "independentQ01Normalized": [
+          7.65330986838601,
+          7.951694844720164,
+          8.091979772842654,
+          8.125230491984095
+        ],
+        "independentSpread": 1.0616622914417035,
+        "producerQ06Normalized": [
+          7.672840281655538,
+          7.954710681853011,
+          8.092127998745248,
+          8.12522369449192,
+          8.09229640322647,
+          8.021650175277712
+        ],
+        "producerSpread": 1.058959055086544
+      }
+    },
+    {
+      "name": "action horizons are not conflated",
+      "passed": true,
+      "requirement": "producer Q(0,6) and independent Q(0,1) remain separate sequences",
+      "value": "Producer Q(0,6) and independent Q(0,1) are separate finite-window sequences, not same-endpoint replications."
+    },
+    {
+      "name": "action discretization diagnostics",
+      "passed": true,
+      "requirement": "both action discretizations pass their declared refinement checks",
+      "value": {
+        "independentMaximumQuadratureRelativeDefect": 1.5677031640731335e-05,
+        "producerMaximumFineCoarseRelativeDifference": 2.5533493438267525e-05
+      }
+    },
+    {
+      "name": "selected-ledger growth and power reference",
+      "passed": true,
+      "requirement": "finite ratios rise near the declared non-fitted R^(4/3) power ledger",
+      "value": {
+        "analyticExponent": 1.3333333333333333,
+        "independentFiniteSlope": 1.2933304267303443,
+        "independentNormalized": [
+          1.0,
+          2.4056280389988784,
+          5.917566379108791,
+          14.705031374443658
+        ],
+        "producerFiniteSlope": 1.2924923530345966,
+        "producerNormalized": [
+          1.0,
+          2.4015463286279295,
+          5.90654581651781,
+          14.677396349211234
+        ]
+      }
+    },
+    {
+      "name": "formal PNG dimensions and 600 dpi",
+      "passed": true,
+      "requirement": "178x88 mm nominal page at approximately 600 dpi",
+      "value": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4200,
+          2076
+        ]
+      }
+    },
+    {
+      "name": "vector PDF and SVG exports",
+      "passed": true,
+      "requirement": "one correctly sized vector PDF page and nontrivial vector SVG",
+      "value": {
+        "pdfMillimetres": [
+          177.79999999999998,
+          87.884
+        ],
+        "pdfPages": 1,
+        "svgBytes": 72014
+      }
+    },
+    {
+      "name": "final-size, grayscale, and PDF QA surfaces",
+      "passed": true,
+      "requirement": "all QA surfaces use the same readable 220 dpi final footprint",
+      "value": {
+        "finalSize": [
+          1540,
+          761
+        ],
+        "grayscaleMode": "L",
+        "pdfSize": [
+          1540,
+          761
+        ]
+      }
+    },
+    {
+      "name": "public assets are byte-identical",
+      "passed": true,
+      "requirement": "public PDF, SVG, and PNG exactly match the formal package",
+      "value": {
+        "pdf": true,
+        "png": true,
+        "svg": true
+      }
+    },
+    {
+      "name": "claim boundary is explicit",
+      "passed": true,
+      "requirement": "finite evidence and every analytic/Millennium boundary are stated",
+      "value": "Every plotted point is a deterministic finite binary64 audit. The selected-root quantity is a lower bound for the complete nonnegative ledger, with the bounded Lambda1 factor and fixed multiplier constant omitted from the plotted normalization. The points corroborate but do not prove the infinite-lattice root theorem, the negative-Sobolev action theorem, the Malliavin density input, Navier-Stokes regularity, singularity formation, or a Millennium-problem solution."
+    },
+    {
+      "name": "deterministic workflow",
+      "passed": true,
+      "requirement": "no random seed or fitted line supplies a plotted theorem claim",
+      "value": {
+        "configRandomness": false,
+        "finiteFitsAreDiagnostics": true,
+        "fitUsedForClaim": false,
+        "resultsRandomness": false
+      }
+    }
+  ],
+  "passedCheckCount": 17,
+  "schemaVersion": "r072e-figure-validation-v1",
+  "validatedAt": "2026-08-27T08:05:47+08:00"
+}

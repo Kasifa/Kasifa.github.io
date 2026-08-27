@@ -218,7 +218,7 @@ test("archives and mirrors the formal R0.72B figure in three formats", async () 
   }
 });
 
-test("retains the R0.72B package while R0.72D is current", async () => {
+test("retains the R0.72B package while R0.72E is current", async () => {
   const [home, note, recap, literature, notePdf, recapPdf] = await Promise.all([
     readFile(resolve(publicRoot, "research-review.html"), "utf8"),
     readFile(resolve(publicRoot, "notes/r0-72b.html"), "utf8"),
@@ -228,13 +228,14 @@ test("retains the R0.72B package while R0.72D is current", async () => {
     readFile(resolve(publicRoot, "recap-r0-61-r0-72b.pdf")),
   ]);
 
-  assert.match(home, /<strong>v1\.17<\/strong>网页版本/);
-  assert.match(home, /<strong>154<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72D<\/strong>最新研究节点/);
-  assert.match(home, /展开 64 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72E/);
-  assert.match(home, /R0\.70A–R0\.72D 共 56 个已公开并封存版本/);
-  assert.match(home, /按二十一个阶段组织/);
+  assert.match(home, /<strong>v1\.18<\/strong>网页版本/);
+  assert.match(home, /<strong>155<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72E<\/strong>最新研究节点/);
+  assert.match(home, /展开 65 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72F/);
+  assert.match(home, /R0\.70A–R0\.72E 共 57 个已公开并封存版本/);
+  assert.match(home, /按二十二个阶段组织/);
+  assert.match(home, /累计回顾收录 95 个节点/);
   assert.equal((home.match(/href="\/notes\/r0-72b\.html"/g) ?? []).length, 2);
   assert.equal((home.match(/data-release="r072b"/g) ?? []).length, 1);
   assert.match(
@@ -242,7 +243,7 @@ test("retains the R0.72B package while R0.72D is current", async () => {
     /<div class="task-one" id="r072b" data-release="r072b"/,
   );
   assert.match(home, /M\^{-10\/3\}/);
-  assert.match(home, /recap-r0-61-r0-72d\.html/);
+  assert.match(home, /recap-r0-61-r0-72e\.html/);
 
   assert.ok(note.includes(String.raw`G_{\rm all}^{\rm ex}`));
   assert.ok(note.includes(String.raw`M\rho_A^2`));
@@ -294,8 +295,8 @@ test("retains the R0.72B package while R0.72D is current", async () => {
   assert.match(literature, /arxiv\.org\/abs\/2105\.12308/);
   assert.match(literature, /launch-inclusive root-slope ledger/);
 
-  assert.match(home, /src="\/i18n-en\.js\?v=1\.17"/);
-  assert.match(literature, /src="\/i18n-en\.js\?v=1\.17"/);
+  assert.match(home, /src="\/i18n-en\.js\?v=1\.18"/);
+  assert.match(literature, /src="\/i18n-en\.js\?v=1\.18"/);
   assert.match(note, /src="\/i18n-en\.js\?v=1\.15"/);
   assert.match(recap, /src="\/i18n-en\.js\?v=1\.15"/);
 

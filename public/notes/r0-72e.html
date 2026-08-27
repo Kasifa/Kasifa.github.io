@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72E：精确单载波三角形 NSE 家族在完整负 Sobolev 旋转电荷有界时，使 complete-root ledger 相对 D^{1/3}Λ₁ 以 R^{4/3} 发散。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72E｜单载波超临界根账本与候选 D^{1/3}Λ₁ payment 失效">
+  <meta property="og:description" content="Feynman–Kac、驻相和定量 Hörmander 密度给出完整 H^{-1} action；精确 Bessel 根族使候选归一化支付发散。">
+  <meta property="og:image" content="https://kasifa.github.io/figures/r0-72e-supercritical-ledger.png">
+  <title>R0.72E｜单载波超临界根账本与候选 D^{1/3}Λ₁ payment 失效</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>.hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}pre{max-width:100%;overflow-x:auto}.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}.audit-card{border:1px solid var(--line);padding:1rem}.audit-card strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}@media(max-width:760px){.audit-grid{grid-template-columns:1fr}}@media print{body{font-size:8.7pt}.topline{height:3px}pre{max-width:none;overflow:visible!important;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font-size:7.3pt}}</style>
+  <script defer src="/i18n-en.js?v=1.18"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#model">精确解</a><a href="#roots">根族</a><a href="#action">作用量</a><a href="#ledger">物理账本</a><a href="#entry">正进入</a><a href="#audit">审计</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72E · ONE CARRIER · FULL H⁻¹ ACTION · PAYMENT FAILURE</div>
+        <h1>一个载波已经足够：<br>候选 \(D^{1/3}\Lambda_1\) payment 被排除</h1>
+        <p class="lead">R0.72D 只把归一化 complete-root ledger 推到常数量级。我回到 R0.72A 的单载波 Bessel 家族，固定一个能隔离目标壳的整数 \(q_0\)，再直接估计全部 Fourier 模的负 Sobolev 旋转电荷。Feynman–Kac、驻相和定量漂移括号密度给出 \(Q_{\delta,q_0}=O(\log\delta/\delta)\)。取 \(\delta_R=R^4\) 后，完整 charge 保持有界，而 \(R\) 个正时间根使候选归一化比值按 \(R^{4/3}\) 发散。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72E 完成</span><strong>candidate D^{1/3}Λ₁ payment failure</strong><p>版本 v0.72E · 2026-08-27</p><p>analytic theorem: CLOSED</p><p>physical ledger: CLOSED</p><p>full-frequency charge: CLOSED</p><p>下一对象：frequency-sensitive repair</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 本节判断</a></li><li><a href="#model">01 · 精确三角形解</a></li><li><a href="#roots">02 · Bessel 根族</a></li><li><a href="#action">03 · 负 Sobolev action</a></li><li><a href="#ledger">04 · 完整物理账本</a></li><li><a href="#entry">05 · 正进入与发散</a></li><li><a href="#audit">06 · 双路证书</a></li><li><a href="#figure">07 · 正式附图</a></li><li><a href="#value">08 · 研究价值</a></li><li><a href="#next">09 · 下一步</a></li><li><a href="#claims">10 · 主张边界</a></li><li><a href="#reproduce">11 · 复现</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct verdict</div><h2>候选 \(D^{1/3}\Lambda_1\) 支付在精确光滑子类中失败</h2>
+          <div class="equation result">\[
+            \boxed{\frac{\mathcal J_{{\rm all},R}([0,T])}
+            {D_R^{1/3}\Lambda_1([0,T];u_R)}
+            \ge c_{T,q_0,T_*}R^{4/3}\longrightarrow\infty.}
+          \]</div>
+          <p>每个 \(u_R\) 都是无外力、全局光滑的三维 Navier–Stokes 解，属于 \(u=(f(y,z,t),0,v(y,t))\) 的精确三角形 2.5D 子类。这个定理严格排除的是 complete-root 账本的候选中间估计，不是正则性本身。</p>
+          <div class="boundary"><strong>直接边界</strong><p>该家族没有爆破；它反而始终光滑。结论说明候选 \(D^{1/3}\Lambda_1\) complete-root 中间估计不能再作为一般证明的桥，但不排除加入新频率项、初始层费用或更强数据因子的替代估计。</p></div>
+        </section>
+
+        <section id="model"><div class="section-no">01 / Exact triangular NSE</div><h2>固定 \(q_0\) 同时保留精确演化与目标壳隔离</h2>
+          <p>我取 \(\nu=d=K_z=r_1=1\)、\(K_y=0\)，并固定整数 \(q_0&gt;R_*\)。剪切和正 \(K_z\) sector 写成</p>
+          <div class="equation result">\[
+            v_R=P_Re^{-q_0^2t}(e^{iq_0y}+e^{-iq_0y}),\qquad
+            \widehat f_R(q_0r,1,t)=S_RF_{R,r}(q_0^2t).
+          \]</div>
+          <div class="equation result">\[
+            \partial_xF_R=D_qF_R+\delta_RV(x)F_R,\quad
+            (D_qF)_r=-(r^2+q_0^{-2})F_r,\quad
+            (VF)_r=-ie^{-x}(F_{r-1}+F_{r+1}).
+          \]</div>
+          <p>固定 \(q_0\) 不会改变根：精确标量共轭</p>
+          <div class="equation result">\[
+            \boxed{F_{q_0}(x)=e^{(1-q_0^{-2})x}F_1(x)}
+          \]</div>
+          <p>取 \(F_R(0)=ie_{-1}\)、\(P_R=q_0^2\delta_R\)。所有 \(r\ne0\) active modes 和剪切模都在固定 target multiplier 之外；壳内只剩 \(\pm(0,0,1)\)。这修复了 \(q=1\) 时 radial annulus 无法隔离目标的问题。</p>
+          <div class="equation result">\[
+            v_t=v_{yy},\qquad f_t+vf_z=f_{yy}+f_{zz},\qquad
+            \mathbb P(u\times\omega)=(-vf_z,0,0).
+          \]</div>
+        </section>
+
+        <section id="roots"><div class="section-no">02 / Exact Bessel roots</div><h2>前 \(R\) 个根在 \(O(R^{-3})\) 初始层内保持简单</h2>
+          <p>令 \(\delta_R=R^4\)、\(U_R(\tau)=F_R(\tau/\delta_R)\)。冻结系统的目标坐标是 \(P_0W(\tau)=J_1(2\tau)\)。增长窗口上的 \(C^1\) 比较误差为 \(O_{q_0}(R^{-1})\)，小于最弱 Bessel slope 的 \(R^{-1/2}\)。因此</p>
+          <div class="equation result">\[
+            0&lt;t_{k,R}=q_0^{-2}x_{k,R}\le C_{q_0}R^{-3},\qquad
+            \sum_{k=1}^R|P_0V(x_{k,R})F_R(x_{k,R})|^2
+            =\frac8{\pi^2}\log R+O_{q_0}(1).
+          \]</div>
+          <p>这些都是固定物理区间 \([0,T]\) 内的正时间内点；我没有把 launch endpoint 算入这 \(R\) 个根。</p>
+        </section>
+
+        <section id="action"><div class="section-no">03 / Negative Sobolev action</div><h2>Feynman–Kac 把完整 \(H^{-1}\) 作用量化成二维小球问题</h2>
+          <p>令 \(A_q=q_0^{-2}-\partial_\theta^2\) 和
+          \(Q_{\delta,q_0}(X)=\int_0^X\|V(x)\phi(x)\|_{A_q^{-1}}^2dx\)。
+          对 \(B_t=\sqrt2W_t\)、\(Z_t=\int_0^te^{-(t-s)}e^{iB_s}ds\)，正确的反向时间公式是</p>
+          <div class="equation result">\[
+            \phi(t,\theta)=ie^{-q_0^{-2}t}e^{-i\theta}
+            \mathbb E\!\left[e^{-iB_t}
+            e^{-2i\delta\operatorname{Re}(e^{i\theta}Z_t)}\right].
+          \]</div>
+          <p>固定相位驻相给 \(A_q^{-1}\) norm square \(\lesssim(1+\kappa)^{-1}\)。过程 \(dB=\sqrt2dW\)、\(dZ=(-Z+e^{iB})dt\) 的两个漂移括号在每一点都张成两个 \(Z\) 方向；它们与噪声场组成的绝对行列式恒为 \(4\)。Kusuoka–Stroock Part II 的定量密度界和 Brownian 反射原理给 \(\mathbb E|Z_t|^{-1}\le C_X/t\)，所以</p>
+          <div class="equation result">\[
+            \boxed{Q_{\delta,q_0}(X)
+            \le C_{X,q_0}\frac{1+\log(2+\delta)}{\delta},
+            \qquad\delta\ge1.}
+          \]</div>
+          <p>仅有 smooth density 不够；这里需要小时间多项式上界。常数也不对 \(q_0\to\infty\) 一致，所以 \(q_0\) 必须固定。</p>
+        </section>
+
+        <section id="ledger"><div class="section-no">04 / Full physical ledger</div><h2>所有 \(q_0\) 因子和全部 Lamb 频率都进入账本</h2>
+          <p>我选择 \(\delta_R=R^4\)、\(P_R=q_0^2\delta_R\)、\(S_R^2=\delta_R/\log(2+\delta_R)\)。精确数据和涡量分解为</p>
+          <div class="equation result">\[
+            D_R=2P_R^2(1+q_0^2)+2S_R^2(q_0^2+2),
+          \]</div>
+          <div class="equation result">\[
+            Y_R(t)=2q_0^2P_R^2e^{-2x}
+            +2S_R^2(\|F_R(x)\|_2^2
+            +q_0^2\|\partial_\theta\phi_R(x)\|_2^2).
+          \]</div>
+          <p>能量收缩与一阶矩屏障给 \(D_R\asymp_{q_0}\delta_R^2\) 和 \(\mathcal R_Y([0,T])=O_{T,q_0}(1)\)，不需要额外背景。完整 projected Lamb field 满足</p>
+          <div class="equation result">\[
+            \|\mathbb P(u_R\times\omega_R)\|_{\dot H^{-1}}^2
+            =2S_R^2P_R^2q_0^{-2}\|VF_R\|_{A_q^{-1}}^2.
+          \]</div>
+          <p>\(H^{-1}\) 权重、时间 Jacobian 和 shear-enstrophy denominator 各贡献 \(q_0^{-2}\)，故</p>
+          <div class="equation result">\[
+            \frac1T\int_0^T
+            \frac{\|\mathbb P(u_R\times\omega_R)\|_{\dot H^{-1}}^2}{Y_R(t)}dt
+            \le\frac{e^{2q_0^2T}S_R^2}{Tq_0^6}
+            Q_{\delta_R,q_0}(q_0^2T)=O_{T,q_0}(1).
+          \]</div>
+          <p>这是 full-frequency charge，不是 selected-shell proxy。</p>
+        </section>
+
+        <section id="entry"><div class="section-no">05 / Positive entries and divergence</div><h2>交替 crossing sign 不会损失一半根</h2>
+          <p>完整 target shell 的每个根都满足
+          \(C_{*,t}=-\Delta F_*\) 和
+          \(\langle F_*,C_{*,t}\rangle=\|\nabla F_*\|_2^2&gt;0\)。
+          因此全部 \(R\) 个根都是 positive right entries。求和给</p>
+          <div class="equation result">\[
+            \mathcal J_{{\rm all},R}\gtrsim_{q_0}
+            \frac{\delta_R}{\log(2+\delta_R)}\log R
+            \asymp_{q_0}\delta_R.
+          \]</div>
+          <p>结合 \(D_R^{1/3}\asymp\delta_R^{2/3}\) 与 bounded \(\Lambda_1\)，得到 \(\delta_R^{1/3}=R^{4/3}\) 发散。</p>
+        </section>
+
+        <section id="audit"><div class="section-no">06 / Independent certificates</div><h2>解析证明、producer 和独立 checker 分开承担责任</h2>
+          <div class="audit-grid">
+            <div class="audit-card"><strong>PRODUCER · 16/16 PASS</strong><p>Fourier split-step；action 窗口固定为 \(X=6\)。有限值为 \(Q_{16}=1.329601902\)、\(Q_{512}=0.097737613\)。同时重算 fixed-\(q_0\) Bessel roots、selected slope mass、first-moment barrier 和指数账本。</p></div>
+            <div class="audit-card"><strong>INDEPENDENT · 16/16 PASS</strong><p>不导入 producer，独立 action 窗口固定为 \(X=1\)：\(Q_{16}=1.326217539\)、\(Q_{128}=0.307998939\)。\(R=64\) root mass 为 \(3.565301087\)，相对 frozen 值偏差 \(-4.71\times10^{-6}\)。</p></div>
+          </div>
+          <p>两个 action 数列属于不同的 \(X\) 窗口，不能逐项互比。有限计算只核对符号、归一化和代表性截断；无限格根证明、驻相、Malliavin 密度与 \(R\to\infty\) 结论由解析报告承担。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>正式附图分开显示根质量、作用量和最终发散</h2>
+          <figure><img src="/figures/r0-72e-supercritical-ledger.svg" alt="R0.72E Bessel root mass, negative Sobolev action, and supercritical normalized ledger"><figcaption>图 R0.72E-1。有限截断展示 selected slope mass 的对数增长、负 Sobolev action 的衰减和最终 \(R^{4/3}\) 标度。数值曲线只作有限审计；极限结论来自解析定理。</figcaption></figure>
+        </section>
+
+        <section id="value"><div class="section-no">08 / Research value</div><h2>一条候选证明路线被真正关闭</h2>
+          <p>从 R0.71X 到 R0.72D，\(D^{1/3}\Lambda_1\) 一直是 complete-root ledger 的候选支付。当前家族把 exact roots、真实数据、固定物理区间、enstrophy contrast 和 full-frequency charge 放进同一个光滑 NSE 解中，仍使比值发散。因此继续证明这一候选估计已经没有意义。</p>
+          <p>对千禧年问题的价值仍是间接的：我排除了一座可能的桥，没有得到 continuation criterion。反例就在全局光滑不变子类中，也说明 raw zero-crossing ledger 可能比正则性所需的量更强。</p>
+        </section>
+
+        <section id="next"><div class="section-no">09 / Next finite gate</div><h2>R0.72F 寻找最小 frequency-sensitive repair</h2>
+          <p>我会依次测试 frequency-sensitive initial-layer charge、time-weighted rotational action 和直接记录 coupling scale 的数据项。候选先要阻断当前 exact family，再检查是否仍由 Leray 级信息支付；若它已经等价于未知临界范数，就停止该路线。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">10 / Claim boundary</div><h2>本节证明什么，也明确不证明什么</h2>
+          <ul>
+            <li><strong>已证明：</strong>fixed-\(q_0\) Bessel 根、定量 \(A_q^{-1}\) action decay、完整数据与 enstrophy、full-frequency charge 有界、normalized ledger 发散。</li>
+            <li><strong>已排除：</strong>声明子类内的 \(\mathcal J_{\rm all}\le CD^{1/3}\Lambda_1\)，其中 \(C\) 与光滑初值无关。</li>
+            <li><strong>仍开放：</strong>frequency-sensitive 修正、一般三维 critical-norm bridge、非三角形动力学中的对应结构。</li>
+            <li><strong>没有得到：</strong>有限时奇性、一般三维 global regularity、continuation criterion、原创性或优先权结论。</li>
+          </ul>
+        </section>
+
+        <section id="reproduce"><div class="section-no">11 / Reproduce</div><h2>证明、文献边界、证书、正式附图和累计回顾完整保留</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072e_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072e_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072e_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072e_independent_audit.md">独立逐式审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072e">producer / independent 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger">附图、数据、manifest、validation 与源代码包</a> · <a href="/figures/r0-72e-supercritical-ledger.pdf">期刊附图 PDF</a></p>
+          <p><a href="/notes/r0-72e.pdf">下载同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72e.html">阅读 R0.60 之后累计回顾</a> · <a href="/recap-r0-61-r0-72e.pdf">下载累计回顾 PDF</a></p>
+          <pre><code>python3 research/r072e_exact_audit.py --output research/certificates/r072e/result.json
+python3 research/r072e_independent_audit.py --output research/certificates/r072e/independent-result.json
+python3 figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/build_figure.py --config figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/config.json
+python3 figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/qa_images.py --config figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/config.json
+python3 figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/validate.py --config figures/r072e-supercritical-ledger/fig-r072e-supercritical-ledger/config.json</code></pre>
+        </section>
+      </article>
+    </div>
+  </main>
+  <footer><div>R0.72E · 2026-08-27 · 个人数学研究日志<br><a href="/">返回研究主页</a> · <a href="/literature-review.html">文献综述</a> · <a href="/recap-r0-61-r0-72e.html">累计回顾</a></div></footer>
+</body>
+</html>

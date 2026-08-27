@@ -41,7 +41,7 @@ the ledger exactly covers every directory file except itself and a regular
 `.DS_Store`; and no symlink or subdirectory is present.
 
 The intended archival masters are an editable-text SVG, a one-page PDF, and
-a 600 dpi PNG at 177.8 x 132.0 mm. Final-size, grayscale, and PDF-raster QA,
+a 600 dpi PNG at 177.8 x 132.08 mm. Final-size, grayscale, and PDF-raster QA,
 validation, byte-identical publication, and manifest sealing follow the
 R0.72O journal package structure.
 

@@ -81,7 +81,7 @@ manifest checks them against the certificate commit.
 ## Surface and QA
 
 The static Matplotlib figure uses the R0.72O journal footprint, 177.8 x
-132.0 mm, and exports editable-text SVG, one-page PDF, and 600 dpi PNG. The
+132.08 mm, and exports editable-text SVG, one-page PDF, and 600 dpi PNG. The
 palette is capped at blue and ochre plus warm neutrals, with line style and
 marker fill carrying status in grayscale. A research blossom is locked to
 the top-right header corner.

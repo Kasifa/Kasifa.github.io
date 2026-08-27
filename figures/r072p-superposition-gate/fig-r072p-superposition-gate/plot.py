@@ -452,7 +452,7 @@ def main() -> None:
         2,
         left=0.085,
         right=0.975,
-        bottom=0.105,
+        bottom=0.140,
         top=0.815,
         wspace=0.27,
         hspace=0.43,
@@ -578,7 +578,7 @@ def main() -> None:
     ax.fill_between(y_grid, display_floor, safe, color=palette["blueLight"], alpha=0.85)
     ax.scatter([0.0], [0.25], s=28, marker="s", facecolor=palette["paper"], edgecolor=palette["ochre"], linewidth=0.9, zorder=5)
     ax.text(0.035, 0.87, r"first wall: $|\lambda|=1/4$", transform=ax.transAxes, fontsize=6.3, color=palette["ochre"])
-    ax.text(0.62, 0.12, "shading lower edge is\na display cutoff only", transform=ax.transAxes, fontsize=5.8, color=palette["muted"], ha="center")
+    ax.text(0.38, 0.12, "shading lower edge is\na display cutoff only", transform=ax.transAxes, fontsize=5.8, color=palette["muted"], ha="center")
     for series, values, kind, status in (
         ("time-slice Morse wall", wall, "exact applicability boundary", "exact wall; not ED failure"),
         ("safe-cone ceiling", safe, "proved sufficient boundary", "proved safe cone"),
@@ -633,7 +633,7 @@ def main() -> None:
     ax.text(
         0.04,
         0.08,
-        r"full IED $\Rightarrow\ \mathcal C_\times\lesssim4a^2\sqrt\varepsilon$",
+        r"full IED $\Rightarrow\ \mathcal{C}_\times\lesssim4a^2\sqrt{\varepsilon}$",
         transform=ax.transAxes,
         fontsize=6.1,
         color=palette["blue"],

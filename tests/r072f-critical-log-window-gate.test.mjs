@@ -284,17 +284,17 @@ test("retains R0.72F after R0.72L advances the synchronized site counts", async 
     readdir(resolve(publicRoot, "notes")),
   ]);
 
-  assert.equal(noteFiles.filter((name) => name.endsWith(".html")).length, 162);
-  assert.match(home, /<html lang="zh-CN" data-site-version="1\.25">/);
-  assert.match(home, /<strong>v1\.25<\/strong>网页版本/);
-  assert.match(home, /<strong>162<\/strong>公开研究笔记/);
-  assert.match(home, /<strong>R0\.72L<\/strong>最新研究节点/);
-  assert.match(home, /<span class="route-range">R0\.69P–R0\.72L<\/span>/);
-  assert.match(home, /展开 72 篇公开笔记/);
-  assert.match(home, /NEXT · R0\.72M/);
-  assert.match(home, /累计回顾收录 102 个节点；全站现有 162 篇公开研究笔记/);
-  assert.match(home, /64 个版本已公开/);
-  assert.match(home, /40 个按当前 formal-figure 合同完整封存|40 个完整封存/);
+  assert.equal(noteFiles.filter((name) => name.endsWith(".html")).length, 163);
+  assert.match(home, /<html lang="zh-CN" data-site-version="1\.26">/);
+  assert.match(home, /<strong>v1\.26<\/strong>网页版本/);
+  assert.match(home, /<strong>163<\/strong>公开研究笔记/);
+  assert.match(home, /<strong>R0\.72M<\/strong>最新研究节点/);
+  assert.match(home, /<span class="route-range">R0\.69P–R0\.72M<\/span>/);
+  assert.match(home, /展开 73 篇公开笔记/);
+  assert.match(home, /NEXT · R0\.72N/);
+  assert.match(home, /累计回顾收录 103 个节点；全站现有 163 篇公开研究笔记/);
+  assert.match(home, /65 个版本已公开/);
+  assert.match(home, /41 个按当前 formal-figure 合同完整封存|41 个完整封存/);
   assert.match(home, /24 个旧版附图档案仍列入回补清单/);
   assert.doesNotMatch(home, /60 个已公开并封存版本/);
   assert.equal((home.match(/href="\/notes\/r0-72f\.html"/g) ?? []).length, 2);
@@ -317,34 +317,34 @@ test("retains R0.72F after R0.72L advances the synchronized site counts", async 
   assert.match(recap, /R0\.72F(?:–R0\.72G)? · 临界对数/);
   assert.match(recap, /R0\.72H/);
 
-  assert.match(literature, /R0\.69P–R0\.72L/);
+  assert.match(literature, /R0\.69P–R0\.72M/);
   assert.match(literature, /id="r072f-boundary"/);
   assert.match(literature, /href="\/notes\/r0-72f\.html"/);
-  assert.match(literature, /开放接口 · R0\.72M/);
+  assert.match(literature, /开放接口 · R0\.72N/);
   assert.match(literature, /bounded non-collision check/);
 
-  assert.equal(releaseManifest.latestCompletedRelease, "r072l");
-  assert.equal(releaseManifest.siteVersion, "1.25");
-  assert.equal(releaseManifest.publicHtmlNoteCount, 162);
-  assert.equal(releaseManifest.postR060RecapNodeCount, 102);
-  assert.equal(releaseManifest.postR070APublishedReleaseCount, 64);
-  assert.equal(releaseManifest.postR070AFormalSealedReleaseCount, 40);
+  assert.equal(releaseManifest.latestCompletedRelease, "r072m");
+  assert.equal(releaseManifest.siteVersion, "1.26");
+  assert.equal(releaseManifest.publicHtmlNoteCount, 163);
+  assert.equal(releaseManifest.postR060RecapNodeCount, 103);
+  assert.equal(releaseManifest.postR070APublishedReleaseCount, 65);
+  assert.equal(releaseManifest.postR070AFormalSealedReleaseCount, 41);
   assert.equal(releaseManifest.legacyFormalFigureBacklogCount, 24);
-  assert.equal(releaseManifest.nextRelease, "r072m");
+  assert.equal(releaseManifest.nextRelease, "r072n");
   assert.equal(
     releaseManifest.latestReleaseGate,
-    "tests/r072l-strong-coupling-gate.test.mjs",
+    "tests/r072m-danger-window-gate.test.mjs",
   );
-  assert.equal(archiveInventory.latestPublishedRelease, "r072l");
-  assert.equal(archiveInventory.publishedReleaseCount, 64);
-  assert.equal(archiveInventory.formalSealedReleaseCount, 40);
+  assert.equal(archiveInventory.latestPublishedRelease, "r072m");
+  assert.equal(archiveInventory.publishedReleaseCount, 65);
+  assert.equal(archiveInventory.formalSealedReleaseCount, 41);
   assert.equal(archiveInventory.legacyFormalFigureBacklogCount, 24);
-  assert.equal(siteVersion.version, "1.25");
-  assert.equal(siteVersion.latestRelease, "R0.72L");
-  assert.equal(siteVersion.publicHtmlNoteCount, 162);
+  assert.equal(siteVersion.version, "1.26");
+  assert.equal(siteVersion.latestRelease, "R0.72M");
+  assert.equal(siteVersion.publicHtmlNoteCount, 163);
 
   for (const page of [home, literature]) {
-    assert.match(page, /src="\/i18n-en\.js\?v=1\.25"/);
+    assert.match(page, /src="\/i18n-en\.js\?v=1\.26"/);
     assert.doesNotMatch(page, /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/);
   }
   assert.match(note, /src="\/i18n-en\.js\?v=1\.19"/);

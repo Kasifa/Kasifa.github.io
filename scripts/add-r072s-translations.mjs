@@ -304,7 +304,11 @@ for (const field of ["id", "zh"]) {
   }
 }
 
-const finalByChinese = new Map(finalTranslations.map((entry) => [entry.zh, entry.en]));
+// Keep the release checker byte-compatible with the canonical bundle builder,
+// which normalizes surrounding whitespace before serializing translations.
+const finalByChinese = new Map(
+  finalTranslations.map((entry) => [entry.zh, entry.en.trim()]),
+);
 const stillMissing = source.filter((entry) => !finalByChinese.has(entry.zh));
 if (stillMissing.length) {
   throw new Error("R0.72S live strings remain untranslated: " + stillMissing[0].zh);

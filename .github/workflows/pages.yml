@@ -26,12 +26,17 @@ jobs:
       - name: Verify publication completeness, links, and bilingual coverage
         run: |
           latest_gate="$(node -p "require('./research/release-manifest.json').latestReleaseGate")"
+          latest_publication_test="$(node -p "require('./research/release-manifest.json').latestReleasePublicationTest")"
+          test -n "$latest_gate"
+          test -n "$latest_publication_test"
           test -f "$latest_gate"
+          test -f "$latest_publication_test"
           node --test \
             tests/release-publication-invariant.test.mjs \
             tests/internal-public-links.test.mjs \
             tests/bilingual-content.test.mjs \
-            "$latest_gate"
+            "$latest_gate" \
+            "$latest_publication_test"
       - name: Prepare static artifact
         run: |
           mkdir -p _site

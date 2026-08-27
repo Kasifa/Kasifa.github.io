@@ -1,0 +1,56 @@
+From the repository root, set the six frozen lineage paths before the formal
+run. These variables are placeholders, not defaults:
+
+R072P_REPORT_SOURCE=/absolute/path/to/research/r072p_report-source.md
+R072P_PRODUCER_CONFIG=/absolute/path/to/producer-config.json
+R072P_PRODUCER_RESULT=/absolute/path/to/producer-result.json
+R072P_INDEPENDENT_CONFIG=/absolute/path/to/independent-config.json
+R072P_INDEPENDENT_RESULT=/absolute/path/to/independent-result.json
+R072P_CROSSCHECK=/absolute/path/to/crosscheck.json
+
+The five JSON paths above must resolve to their canonical files in
+research/certificates/r072p. That directory must already contain the sealed
+flat SHA256SUMS; the plot, validator, and manifest builder independently
+verify its format, unique byte ordering, exact directory coverage, all file
+digests, absence of symlinks/non-files, and inclusion of all five JSON files.
+Before plotting, both `git diff --quiet --` and
+`git diff --cached --quiet --` must pass. Untracked output files are allowed;
+tracked or staged drift is not. All figure sources must already be tracked at
+HEAD so the plot can record their Git blob ids.
+
+python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/plot.py --analytic-source "$R072P_REPORT_SOURCE" --producer-config "$R072P_PRODUCER_CONFIG" --producer-result "$R072P_PRODUCER_RESULT" --independent-config "$R072P_INDEPENDENT_CONFIG" --independent-result "$R072P_INDEPENDENT_RESULT" --crosscheck "$R072P_CROSSCHECK"
+python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/qa_images.py
+python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/publish_assets.py
+python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/validate.py --automatic-only
+
+MANDATORY HUMAN STOP. Use view_image to inspect all three files before setting
+R072P_VISUAL_QA_INSPECTED=true:
+
+/Users/kasifa/Documents/Math/navier-stokes-r072k/figures/r072p-superposition-gate/fig-r072p-superposition-gate/qa-final-size.png
+/Users/kasifa/Documents/Math/navier-stokes-r072k/figures/r072p-superposition-gate/fig-r072p-superposition-gate/qa-grayscale.png
+/Users/kasifa/Documents/Math/navier-stokes-r072k/figures/r072p-superposition-gate/fig-r072p-superposition-gate/qa-pdf.png
+
+Check final-size legibility, collisions, clipped labels, grayscale line/marker
+distinction, the wall/safe-cone separation, open/filled claim-status markers,
+and agreement between the PDF raster and PNG. Only after all three surfaces
+pass may the following commands be run:
+
+R072P_VISUAL_QA_INSPECTED=true python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/validate.py
+R072P_VISUAL_QA_INSPECTED=true python3 figures/r072p-superposition-gate/fig-r072p-superposition-gate/build_manifest.py --status candidate
+python3 research/validate_figure_package.py figures/r072p-superposition-gate/fig-r072p-superposition-gate
+(cd figures/r072p-superposition-gate/fig-r072p-superposition-gate && shasum -a 256 -c SHA256SUMS)
+
+The manifest builder reruns the custom validator immediately before hashing,
+rejects extra files, and fails if a package or public asset changes after that
+fresh validation.
+
+For a formal seal, also set full R072P_SOURCE_COMMIT and
+R072P_CERTIFICATE_COMMIT values, set R072P_DIRTY_AT_CERTIFIED_RUN=false, keep
+R072P_VISUAL_QA_INSPECTED=true, and pass --status formal. The plot must have
+been rebuilt with HEAD at R072P_CERTIFICATE_COMMIT. The formal manifest
+verifies report/audit-source blobs at R072P_SOURCE_COMMIT and the five runtime
+certificate JSON blobs plus the SHA256SUMS blob at
+R072P_CERTIFICATE_COMMIT; paths must be the canonical repository paths
+declared in config.json. The formal builder repeats both Git quiet checks and
+records `verifiedTrackedTreeClean=true`. After the formal builder run,
+repeat the generic validator and `shasum -a 256 -c SHA256SUMS` commands above.

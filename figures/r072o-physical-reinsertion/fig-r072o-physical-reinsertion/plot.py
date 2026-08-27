@@ -283,11 +283,11 @@ def main() -> None:
         2,
         2,
         left=0.085,
-        right=0.975,
-        bottom=0.105,
-        top=0.815,
+        right=0.970,
+        bottom=0.150,
+        top=0.805,
         wspace=0.27,
-        hspace=0.43,
+        hspace=0.50,
     )
     axes = [fig.add_subplot(grid[index // 2, index % 2]) for index in range(4)]
     for ax in axes:
@@ -554,7 +554,7 @@ def main() -> None:
     ax.annotate(
         "unconditional only at the\ndeclared one-carrier point",
         xy=(1.0, base_window),
-        xytext=(0.28, base_window * 0.48),
+        xytext=(0.52, base_window * 0.30),
         fontsize=6.15,
         color=palette["blue"],
         arrowprops={"arrowstyle": "-", "color": palette["blue"], "linewidth": 0.7},
@@ -666,18 +666,18 @@ def main() -> None:
     panel_title(
         ax,
         "D",
-        rf"Common band need not be Morse ($R={fixed_r_d}$)",
-        r"exact two-carrier obstruction: $U'(0)=U''(0)=0$",
+        "Common-band degeneracy",
+        rf"exact two-carrier obstruction: $U'(0)=U''(0)=0$ ($R={fixed_r_d}$)",
         config,
     )
 
     fig.text(
         0.085,
         0.952,
-        "PHYSICAL REINSERTION AND THE STRONG-COUPLING BOUNDARY",
+        "PHYSICAL REINSERTION · STRONG-COUPLING BOUNDARY",
         ha="left",
         va="top",
-        fontsize=12.1,
+        fontsize=11.8,
         fontweight="bold",
         color=palette["ink"],
     )
@@ -692,12 +692,20 @@ def main() -> None:
     )
     fig.text(
         0.085,
-        0.036,
-        "Blue/filled: proved one-carrier statement. Ochre/open/dashed: conditional multi-carrier implication or audit. "
-        "Scale curves suppress unknown absolute constants; no fitted exponents.",
+        0.030,
+        "Blue/filled = proved one-carrier; ochre/open/dashed = conditional multi-carrier.",
         ha="left",
         va="bottom",
-        fontsize=6.15,
+        fontsize=5.9,
+        color=palette["muted"],
+    )
+    fig.text(
+        0.085,
+        0.012,
+        "Scale curves suppress unknown constants; audit markers are not fitted exponents.",
+        ha="left",
+        va="bottom",
+        fontsize=5.9,
         color=palette["muted"],
     )
     research_blossom(fig, config)

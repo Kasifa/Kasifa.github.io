@@ -429,7 +429,22 @@ def update_literature() -> None:
           <p><a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He, Theorem 1.2</a> 给单个非退化 time-dependent shear 的 modewise enhanced dissipation。R0.72P 先把完整 (R,2R) convolution 缩到固定 cell，再利用 Appendix A 的 fixed critical neighborhoods、cutoffs 与 uniform shape bounds，从 proof 中抽取对声明 (\lambda)-family 一致的 constants；紧 (\eta)-区间由本站 (L^2) contraction 补齐。</p>
           <p><a href="https://doi.org/10.1007/s00205-017-1099-y">Bedrossian–Coti Zelati</a> 与 <a href="https://doi.org/10.1112/jlms.12782">Coti Zelati–Gallay</a> 提供 stationary profile 的 hypocoercive 与 degeneracy-dependent 背景，但不直接陈述本站 heat-decaying 1:2 profile 或 physical cubic corollary。</p>
           <div class="boundary"><strong>R0.72P 的主张边界</strong><p>正结果只覆盖 fixed real-collinear-phase 1:2、(B=2)、(0&lt;\lambda_-\le|\lambda|\le1/8)。(\lambda=\pm1/4) 只证明该 Morse theorem 的适用条件退化，不证明 enhanced dissipation 失败。任意相位、任意 carrier 集或增长 (N)、fixed-(R) arbitrary coupling 与一般三维问题仍开放；限定检索不构成新颖性或优先权证明。</p></div>'''
-    html = section(html, r'(<h3 id="r072o-boundary">.*?<div class="boundary">.*?</div>)', r'\1' + inline_math(boundary), "literature P boundary")
+    boundary_match = re.search(
+        r'(<h3 id="r072o-boundary">.*?<div class="boundary">.*?</div>)',
+        html,
+        flags=re.S,
+    )
+    if boundary_match is None:
+        raise RuntimeError("literature P boundary: expected one R0.72O boundary")
+    old_boundary = boundary_match.group(1)
+    html = once(
+        html,
+        old_boundary,
+        old_boundary + inline_math(boundary),
+        "literature P boundary",
+    )
+    if r"\1" in html:
+        raise RuntimeError("literature P boundary: literal regex backreference leaked")
     assert_clean(html, "R0.72P literature")
     assert_mathjax_clean(html, "R0.72P literature", check_naked=False)
     path.write_text(html, encoding="utf-8")

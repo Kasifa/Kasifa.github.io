@@ -486,15 +486,27 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(archive.contractStart, "r070a");
   assert.equal(archive.latestPublishedRelease, releases.at(-1));
   assert.deepEqual(archive.publishedReleases, releases);
-  assert.equal(archive.latestPublishedRelease, "r072o");
+  assert.equal(
+    archive.latestPublishedRelease,
+    releaseIndex.latestCompletedRelease,
+  );
   assert.equal(archive.publishedReleaseCount, releases.length);
-  assert.equal(archive.publishedReleaseCount, 67);
+  assert.equal(
+    archive.publishedReleaseCount,
+    releaseIndex.postR070APublishedReleaseCount,
+  );
   assert.equal(
     archive.formalSealedReleaseCount,
     archive.formalSealedReleases.length,
   );
-  assert.equal(archive.formalSealedReleaseCount, 43);
-  assert.equal(archive.legacyFormalFigureBacklogCount, 24);
+  assert.equal(
+    archive.formalSealedReleaseCount,
+    releaseIndex.postR070AFormalSealedReleaseCount,
+  );
+  assert.equal(
+    archive.legacyFormalFigureBacklogCount,
+    releaseIndex.legacyFormalFigureBacklogCount,
+  );
 
   const formal = archive.formalSealedReleases;
   const backlog = archive.legacyFormalFigureBacklog.map((row) => row.release);

@@ -1,0 +1,31 @@
+# Source-only static checks
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -c 'import ast,json,pathlib; root=pathlib.Path("figures/r072s-heat-collisions/fig-r072s-heat-collisions"); [ast.parse((root/name).read_text()) for name in ("certificate_ledger.py","plot.py","qa_images.py","publish_assets.py","validate.py","build_manifest.py")]; [json.loads((root/name).read_text()) for name in ("config.json","contract.json")]; print("R0.72S source scaffold parses")'
+
+# Canonical formal inputs after the certificate bundle is sealed
+export R072S_REPORT_SOURCE=/absolute/path/to/research/r072s_report-source.md
+export R072S_PRODUCER_CONFIG=/absolute/path/to/research/certificates/r072s/producer-config.json
+export R072S_PRODUCER_RESULT=/absolute/path/to/research/certificates/r072s/producer-result.json
+export R072S_INDEPENDENT_CONFIG=/absolute/path/to/research/certificates/r072s/independent-config.json
+export R072S_INDEPENDENT_RESULT=/absolute/path/to/research/certificates/r072s/independent-result.json
+export R072S_CROSSCHECK=/absolute/path/to/research/certificates/r072s/crosscheck.json
+
+export PYTHONDONTWRITEBYTECODE=1
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/plot.py \
+  --analytic-source "$R072S_REPORT_SOURCE" \
+  --producer-config "$R072S_PRODUCER_CONFIG" \
+  --producer-result "$R072S_PRODUCER_RESULT" \
+  --independent-config "$R072S_INDEPENDENT_CONFIG" \
+  --independent-result "$R072S_INDEPENDENT_RESULT" \
+  --crosscheck "$R072S_CROSSCHECK"
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/qa_images.py
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/publish_assets.py
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/validate.py --automatic-only
+
+# Inspect qa-final-size.png, qa-grayscale.png, and qa-pdf.png at original size.
+export R072S_VISUAL_QA_INSPECTED=true
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/validate.py
+
+export R072S_SOURCE_COMMIT=40-hex-source-commit
+export R072S_CERTIFICATE_COMMIT=40-hex-certificate-and-figure-source-commit
+export R072S_DIRTY_AT_CERTIFIED_RUN=false
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r072s-heat-collisions/fig-r072s-heat-collisions/build_manifest.py --status formal

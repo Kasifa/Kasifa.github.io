@@ -246,6 +246,13 @@ def build_recap() -> None:
     ]
     for old, new in changes:
         html = required(html, old, new, f"recap {old}")
+    html = required(
+        html,
+        "    @media(max-width:760px){.metric-grid{grid-template-columns:1fr}.node-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.links a,.node-index-grid a{font-size:.72rem}}",
+        "    @media(max-width:960px){.node-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n"
+        "    @media(max-width:760px){.metric-grid{grid-template-columns:1fr}.node-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.links a,.node-index-grid a{font-size:.72rem}}",
+        "recap tablet node grid",
+    )
     html = section(html, r'<meta name="description" content=".*?">', '<meta name="description" content="R0.60 之后的研究回顾：完整覆盖 R0.61 到 R0.72N 的 104 个研究节点；最新一节排除 action-poor 路线并证明一载波 true cubic 次线性。">', "recap description")
     html = section(html, r'<meta property="og:description" content=".*?">', '<meta property="og:description" content="二十八个阶段、104 个节点：从约化递推和时间迹账本，到 critical-log action、耗散链与 enhanced-dissipation corollary。">', "recap og description")
     html = section(html, r'<title>.*?</title>', '<title>R0.61–R0.72N｜R0.60 之后的研究回顾</title>', "recap title")

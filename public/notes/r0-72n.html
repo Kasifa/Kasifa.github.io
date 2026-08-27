@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72N：耗散一载波 action-poor 路线失效；Coble–He 映射给出本站的次线性 cubic 推论。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72N｜耗散 action no-go 与次线性 cubic">
+  <meta property="og:description" content="完整耗散链的矩障碍、action 下界、时变剪切映射与开放的 logarithmic sharpen。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072n/fig-r072n-dissipative-carrier.png">
+  <title>R0.72N｜耗散 action no-go 与次线性 cubic</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.27"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#chain">耗散链</a><a href="#moment">矩账本</a><a href="#action">action</a><a href="#screen">危险窗</a><a href="#mapping">剪切映射</a><a href="#cubic">cubic</a><a href="#diagnostics">诊断</a><a href="#figure">附图</a><a href="#literature">文献边界</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#claims">边界</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72N · DISSIPATIVE CHAIN · ENHANCED DISSIPATION</div>
+        <h1>action-poor 路线在耗散链上失效；<br>true cubic 仍保持次线性</h1>
+        <p class="lead">我回到带 diagonal heat 的完整一载波链。能量与二阶矩账本给 \(K_\sigma\lesssim1+\sigma^{2/3}\)，首耦合层却给 \(x_\sigma\gtrsim\sigma^{4/3}\log\sigma\)，所以声明 launch 上的 action-poor 条件不成立。把生成函数映到 Coble–He 的时变剪切方程后，我再由其 \(L^2\) 衰减推出本站推论 \(\mathcal C_{\rm diss}=O(a^2\sqrt\sigma)\)。对数 sharpen、多载波和一般三维问题仍开放。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72N 定理完成</span><strong>dissipative action no-go and sublinear cubic</strong><p>版本 v0.72N · 2026-08-27</p><p>action-poor route: DISPROVED FOR THIS LAUNCH</p><p>moment barrier: CLOSED</p><p>one-carrier sublinear cubic: CLOSED</p><p>logarithmic sharpen: OPEN</p><p>multi-carrier extension: OPEN</p><p>一般三维正则性：OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · 直接判断</a></li><li><a href="#chain">01 · 完整耗散链</a></li><li><a href="#moment">02 · 能量与二阶矩</a></li><li><a href="#action">03 · critical-log action</a></li><li><a href="#screen">04 · scalar screen</a></li><li><a href="#mapping">05 · 时变剪切映射</a></li><li><a href="#cubic">06 · 本站推论</a></li><li><a href="#diagnostics">07 · 有限诊断</a></li><li><a href="#figure">08 · 正式附图</a></li><li><a href="#literature">09 · 文献边界</a></li><li><a href="#value">10 · 研究价值</a></li><li><a href="#next">11 · R0.72O</a></li><li><a href="#claims">12 · 主张边界</a></li><li><a href="#reproduce">13 · 复现入口</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>同一个耗散 launch 给出一项否定和一项正面结论</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card false"><strong>THEOREM · ACTION-POOR NO-GO</strong><p>对声明的 row-aligned launch，\(\sigma^{1/3}x_\sigma/K_\sigma\gtrsim\sigma\log\sigma\to\infty\)。R0.72M 提出的 action-poor 充分路线在这个耗散族上不成立。</p></div>
+            <div class="verdict-card true"><strong>THEOREM · MOMENT BARRIER</strong><p>完整无限链满足 \(E'=-2D\) 与 \(D'\le-2D^2+4\sigma\sqrt D\)，从而 \(\sup D\le\max\{1,(2\sigma)^{2/3}\}\)。</p></div>
+            <div class="verdict-card true"><strong>COROLLARY · SUBLINEAR CUBIC</strong><p>Coble–He 的时变剪切半群定理应用于重标度生成函数；坐标投影与时间积分再给本站推论 \(\mathcal C_{\rm diss}\lesssim a^2\sigma^{1/2}=o(\sigma a^2)\)。</p></div>
+            <div class="verdict-card false"><strong>OPEN · SHARP RATE AND SUPERPOSITION</strong><p>有限曲线与 \(O(a^2\log\sigma)\) 相容，但没有证明该 sharpen。多载波交叉项和 multiscale physical absorption 也未闭合。</p></div>
+          </div>
+        </section>
+
+        <section id="chain"><div class="section-no">01 / Dissipative chain</div><h2>证明对象保留完整格点和 diagonal heat</h2>
+          <p>在 \(0\le y\le1\) 上取</p>
+          <div class="equation result">\[
+            \partial_y f_n^\sigma=-n^2f_n^\sigma+\sigma e^{-y}
+            (f_{n-1}^\sigma-f_{n+1}^\sigma),
+          \]</div>
+          <p>并固定 \(f_1^\sigma(0)=2^{-1/2}\)、\(f_{-1}^\sigma(0)=-2^{-1/2}\)，其余行初值为零。这里没有删除 \(-n^2f_n\)，也没有把无限链换成有限 Galerkin 轨道。</p>
+        </section>
+
+        <section id="moment"><div class="section-no">02 / Energy and moment</div><h2>skew coupling 不改变能量，但会抬高二阶矩</h2>
+          <p>令 \(E=\sum_n|f_n|^2\)、\(D=\sum_n n^2|f_n|^2\)、\(P=\sum_n n^4|f_n|^2\)。Galerkin 恒等式经抛物光滑极限给出</p>
+          <div class="equation result">\[
+            E'=-2D,\qquad D'\le-2D^2+4\sigma\sqrt D,
+            \qquad D\le\max\{1,(2\sigma)^{2/3}\}.
+          \]</div>
+          <p>加入 R0.72L 的固定解耦背景后，实际 enstrophy contrast 满足 \(K_\sigma\lesssim1+\sigma^{2/3}\)。这是上界，不是匹配渐近。</p>
+        </section>
+
+        <section id="action"><div class="section-no">03 / Critical-log action</div><h2>首耦合层已经排除 action-poor 条件</h2>
+          <p>对 R0.72F 的 critical-log weight，短时间 Duhamel 极限和全局能量界分别给</p>
+          <div class="equation result">\[
+            c\sigma^{-2/3}\log\sigma\le\mathscr A_\sigma\le C,
+            \qquad c\sigma^{4/3}\log\sigma\le x_\sigma\le C\sigma^2.
+          \]</div>
+          <p>因此</p>
+          <div class="equation result">\[
+            \boxed{\frac{\sigma^{1/3}x_\sigma}{K_\sigma}
+            \gtrsim\sigma\log\sigma\longrightarrow\infty.}
+          \]</div>
+          <p>这个 no-go 只覆盖声明的固定频带、row-aligned、one-carrier launch；它不是所有耗散数据的分类。</p>
+        </section>
+
+        <section id="screen"><div class="section-no">04 / Scalar screen</div><h2>实际 action 落入 R0.72M 的危险窗</h2>
+          <p>代入 \(U_\sigma\asymp\sigma^{7/3}\)、\(V_\sigma\asymp\sigma^{1/3}\) 后，两个 reciprocal branches 给出</p>
+          <div class="equation result">\[
+            \boxed{T_\sigma=
+            \frac{\min\{U_\sigma,V_\sigma x_\sigma\}}
+            {K_\sigma+x_\sigma}\asymp\sigma^{1/3}.}
+          \]</div>
+          <p>所以 action denominator 不能关闭这个 launch。否定一条付款路线，不等于否定原始不等式或构造奇性。</p>
+        </section>
+
+        <section id="mapping"><div class="section-no">05 / Shear mapping</div><h2>时间重标度把链变成时变剪切的一个 Fourier mode</h2>
+          <p>令 \(\nu=\sigma^{-1}\)、\(t=\sigma y\)，并以 \(F(t,\theta)=\sum_n f_n^\sigma(\nu t)e^{in\theta}\) 生成函数编码全链，则</p>
+          <div class="equation result">\[
+            \partial_tF=\nu\partial_\theta^2F
+            +2ie^{-\nu t}\sin\theta\,F.
+          \]</div>
+          <p>它对应 Coble–He 方程的 \(k=-2\)、horizontal diffusion switch \(=0\) 和 \(V(t,\theta)=e^{-\nu t}\sin\theta\)。在 \(0\le t\le\nu^{-1}\) 上，临界点固定、振幅在 \([e^{-1},1]\) 内，Theorem 1.2 的非退化常数可统一选择。</p>
+        </section>
+
+        <section id="cubic"><div class="section-no">06 / Project corollary</div><h2>published semigroup estimate 与本站 cubic 推论必须分开署名</h2>
+          <p><a href="https://doi.org/10.4310/CMS.2024.v22.n6.a10">Coble–He, Theorem 1.2</a> 给出声明时段内的半群衰减</p>
+          <div class="equation result">\[
+            \|F(t)\|_2\le Ce^{-c\nu^{1/2}t}\|F(0)\|_2.
+          \]</div>
+          <p>再用 \(|f_1(f_0-f_2)|\le\sqrt2\sum_n|f_n|^2\) 投影并积分，得到</p>
+          <div class="equation result">\[
+            \boxed{\mathcal C_{\rm diss}\lesssim
+            a^2\nu^{-1/2}=a^2\sigma^{1/2}=o(\sigma a^2).}
+          \]</div>
+          <p>最后一式是我在本站完成的 corollary，不是 Coble–He 原论文中的定理或原句。</p>
+        </section>
+
+        <section id="diagnostics"><div class="section-no">07 / Finite diagnostics</div><h2>有限曲线只保留为 sharpen 线索</h2>
+          <p>producer 与 independent route 在声明截断、步长和 \(\sigma\) 网格上互相吻合，并与 \(O(a^2\log\sigma)\) 曲线相容。这只能说明有限离散没有暴露冲突；它不证明 continuum logarithmic bound，也不决定尖锐常数。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">08 / Journal figure</div><h2>附图把 action no-go、published decay 和本站 corollary 分开</h2>
+          <p><img src="/assets/r072n/fig-r072n-dissipative-carrier.svg" alt="R0.72N dissipative one-carrier action no-go and enhanced-dissipation corollary formal figure"></p>
+          <p>彩图中的有限量是 fixed-geometry proxies：\(K_{\rm proxy}=1+D_{\max}\)、\(x_{\rm proxy}=\sigma^2\mathscr A_\sigma\)、\(U=\sigma^{7/3}\)、\(V=\sigma^{1/3}\)，并取 \(\mu=a=1\)，固定几何常数已压掉。它们不是实际物理常数；\(T/V\le1\) 是解析 ceiling。图中的 \(\sqrt\sigma\) 上界是本站从 Coble–He Theorem 1.2 推出的 corollary。</p>
+          <p><a href="/assets/r072n/fig-r072n-dissipative-carrier.pdf">下载 PDF</a> · <a href="/assets/r072n/fig-r072n-dissipative-carrier.png">下载 PNG</a> · <a href="/assets/r072n/fig-r072n-dissipative-carrier.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>published theorem、project corollary 与开放 sharpen 是三层结论</h2>
+          <p><a href="https://arxiv.org/abs/2309.15738">Coble–He</a> 直接支持非退化时变剪切的 \(L^2\) enhanced dissipation。它不陈述本站 cubic functional、\(O(a^2\sigma^{1/2})\) 推论或 logarithmic rowwise variation。</p>
+          <p><a href="https://doi.org/10.1002/cpa.21831">Coti Zelati–Delgadino–Elgindi</a> 给出 mixing 到 enhanced dissipation 的抽象方向；<a href="https://arxiv.org/abs/2511.18536">Albritton–Beekie</a> 的 fixed-shear sharp mixing 为 logarithmic sharpen 提供相邻线索。两者都不直接覆盖这里的时变振幅与 first-row total variation。限定检索不构成新颖性或优先权证明。</p>
+        </section>
+
+        <section id="value"><div class="section-no">10 / Research value</div><h2>价值是关闭错误分支，并留下一个可移植的次线性机制</h2>
+          <p>R0.72N 严格排除了“耗散会自动把 action 压到 danger window 下方”的想法，同时把 raw \(O(\sigma a^2)\) cubic estimate 改进为一载波类中的 \(O(a^2\sqrt\sigma)\)。这比有限拟合更弱，但已是连续方程上的统一次线性结论。</p>
+          <p>它没有闭合 R0.72L 的完整物理 ledger，也没有产生一般三维 continuation criterion。对 Clay 问题的作用仍是筛选机制和缩小接口，原问题保持开放。</p>
+        </section>
+
+        <section id="next"><div class="section-no">11 / Next gate</div><h2>R0.72O：回填物理账本并检查多载波稳定性</h2>
+          <p>下一节先把 \(O(a^2\sqrt\sigma)\) 重新代入 R0.72L 的 normalized physical ledger，确定一载波强耦合窗口；随后检查有限或 common-band 多载波叠加是否因 cross terms 丢失 \(\sigma^{1/2}\) 增益。logarithmic BV sharpen 保留为可并行但非必需的目标。</p>
+        </section>
+
+        <section id="claims"><div class="section-no">12 / Claim boundary</div><h2>一般 Navier–Stokes 问题仍未解决</h2>
+          <p>本节没有证明 matching asymptotic、logarithmic cubic、多载波、multiscale physical absorption、任意三维继续性、有限时奇性或全局光滑性。Clay 千禧年问题仍未解决。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">13 / Reproduction</div><h2>报告、主张矩阵、文献审计和双路证书</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072n_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072n_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072n_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072n_independent_audit.md">独立审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072n">双路机器证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072n-dissipative-carrier/fig-r072n-dissipative-carrier">正式附图包</a> · <a href="/notes/r0-72n.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72n.html">累计回顾</a> · <a href="/recap-r0-61-r0-72n.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72N · 2026-08-27<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

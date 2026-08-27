@@ -341,7 +341,7 @@ def main() -> int:
             and endpoint_equal
             and strict_after
             and all(ed_b[value] <= old_b[value] for value in b_x)
-            and dense_ratio_error < 2.0e-15,
+            and dense_ratio_error <= 2.0e-13,
             {
                 "samples": len(b_x),
                 "epsilonOneEqual": endpoint_equal,

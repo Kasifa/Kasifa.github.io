@@ -55,7 +55,7 @@ its horizontal line is explicitly a scale guide, not a certified threshold.
 
 ## Surface and QA
 
-The static Matplotlib figure is 177.8 x 132.0 mm, exported as editable-text
+The static Matplotlib figure is 177.8 x 132.08 mm, exported as editable-text
 SVG, one-page PDF, and 600 dpi PNG. The approved hard two-root palette is blue
 and ochre plus warm neutrals. A research blossom is locked to the top-right
 header corner.

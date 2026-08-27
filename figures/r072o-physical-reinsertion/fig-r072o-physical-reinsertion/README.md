@@ -31,7 +31,7 @@ interpolation is performed by this package.
 `data.csv` stores every plotted row with its panel, route, claim kind, source
 file, equation pointer, and boundary note. The archival masters are
 `figure.pdf`, `figure.svg`, and a 600 dpi `figure.png`, all at
-177.8 x 132.0 mm. Public copies in `public/assets/r072o/` must be
+177.8 x 132.08 mm. Public copies in `public/assets/r072o/` must be
 byte-identical to the masters.
 
 `manifest.json`, `SHA256SUMS`, `validation.json`, the three QA surfaces, and

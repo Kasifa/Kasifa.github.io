@@ -118,8 +118,8 @@ test("keeps one R0.71N card, exactly two homepage note links, and all release li
   ]) {
     assert.ok(homeCard.includes(token), token);
   }
-  assert.match(homeCard, /href="\/recap-r0-61-r0-72l\.html"/);
-  assert.match(homeCard, /href="\/recap-r0-61-r0-72l\.pdf"/);
+  assert.match(homeCard, /href="\/recap-r0-61-r0-72m\.html"/);
+  assert.match(homeCard, /href="\/recap-r0-61-r0-72m\.pdf"/);
   assert.match(homeCard, /<strong>结论边界：<\/strong>/);
   assert.match(homeCard, /(?:下一步 R0\.71O|R0\.71O 已完成)/);
 
@@ -409,7 +409,7 @@ test("ships synchronized PDFs and byte-identical three-format figure mirrors wit
   assert.match(note, /href="\/recap-r0-61-r0-71n\.pdf"/);
   assert.match(recap, /href="\/recap-r0-61-r0-71n\.pdf"/);
   assert.match(home, /href="\/notes\/r0-71n\.pdf"/);
-  assert.match(home, /href="\/recap-r0-61-r0-72l\.pdf"/);
+  assert.match(home, /href="\/recap-r0-61-r0-72m\.pdf"/);
   assert.match(home, /href="\/figures\/r0-71n-full-scalar\.pdf"/);
 
   assert.equal(notePdf.subarray(0, 5).toString("ascii"), "%PDF-");

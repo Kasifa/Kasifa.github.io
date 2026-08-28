@@ -1,0 +1,8 @@
+# Source-stage checks only; these commands do not write certificate outputs.
+python3 research/certificates/r072u/independent_recompute.py --self-test
+python3 research/certificates/r072u/generate_certificate.py --self-test
+
+# Later formal stage, only after all bound sources have a clean source commit.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072u/generate_certificate.py --formal --source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072u/validate_certificate.py --require-formal

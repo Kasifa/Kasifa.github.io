@@ -235,9 +235,9 @@ test("R0.72X source package binds the agreed release, figure, and test names", a
   assert.ok(generator.includes(`FIGURE_RELATIVE = f"figures/r072x-all-center/{FIGURE_ID}"`));
 });
 
-test("R0.72X source-stage manifest, when installed, is exact and counters stay at W", async () => {
+test("R0.72X manifest is exact at source or formal lifecycle", async () => {
   const manifest = await json("research/release-manifest.json");
-  assert.deepEqual({
+  const observed = {
     latest: manifest.latestCompletedRelease,
     version: manifest.siteVersion,
     notes: manifest.publicHtmlNoteCount,
@@ -248,17 +248,28 @@ test("R0.72X source-stage manifest, when installed, is exact and counters stay a
     published: manifest.postR070APublishedReleaseCount,
     sealed: manifest.postR070AFormalSealedReleaseCount,
     backlog: manifest.legacyFormalFigureBacklogCount,
-  }, {
-    latest: "r072w", version: "1.36", notes: 173, recap: 113,
-    next: "r072x",
-    gate: "tests/r072w-exact-periodic-gate.test.mjs",
-    publicationTest: "tests/r072w-release.test.mjs",
-    published: 75, sealed: 51, backlog: 24,
-  });
-  if (manifest.nextReleaseSourceStage !== undefined) {
+  };
+  if (observed.latest === "r072w") {
+    assert.deepEqual(observed, {
+      latest: "r072w", version: "1.36", notes: 173, recap: 113,
+      next: "r072x",
+      gate: "tests/r072w-exact-periodic-gate.test.mjs",
+      publicationTest: "tests/r072w-release.test.mjs",
+      published: 75, sealed: 51, backlog: 24,
+    });
     assert.deepEqual(manifest.nextReleaseSourceStage, expectedSourceStage);
+  } else {
+    assert.deepEqual(observed, {
+      latest: "r072x", version: "1.37", notes: 174, recap: 114,
+      next: "r072y",
+      gate: "tests/r072x-exact-path-gate.test.mjs",
+      publicationTest: "tests/r072x-release.test.mjs",
+      published: 76, sealed: 52, backlog: 24,
+    });
+    assert.equal(manifest.nextReleaseSourceStage, undefined);
   }
   if (process.env.R072X_REQUIRE_SOURCE_STAGE === "1") {
+    assert.equal(observed.latest, "r072w");
     assert.deepEqual(manifest.nextReleaseSourceStage, expectedSourceStage);
   }
 });

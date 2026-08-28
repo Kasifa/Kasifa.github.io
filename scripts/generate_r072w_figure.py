@@ -1226,6 +1226,9 @@ def build_archive(
     }
     write_json(PACKAGE / "results.json", results)
     usage = resource.getrusage(resource.RUSAGE_SELF)
+    memory_gib = usage.ru_maxrss / (
+        1024**3 if sys.platform == "darwin" else 1024**2
+    )
     (PACKAGE / "resource-log.ndjson").write_text(
         json.dumps({
             "event": "resource-summary",
@@ -1245,6 +1248,11 @@ def build_archive(
             "rows": len(rows),
             "numericalRows": EXPECTED_NUMERICAL_ROWS,
         }, sort_keys=True) + "\n")
+    progress_event_count = sum(
+        1
+        for row in (PACKAGE / "progress.ndjson").read_text(encoding="utf-8").splitlines()
+        if row.strip()
+    )
     (PACKAGE / "qa-report.md").write_text(
         "".join((
             "# R0.72W figure QA\n\n",
@@ -1323,7 +1331,16 @@ def build_archive(
             }
         ),
         "computation": {
-            "kind": "exact analytic presentation plus deterministic PDE diagnostic",
+            "kind": "simulation",
+            "configuration": (
+                "5 alpha values x 3 simultaneous spatial/time refinement levels; "
+                "32 fixed power iterations; full exact two-harmonic potential"
+            ),
+            "formalCommand": (
+                "python3 scripts/generate_r072w_figure.py --formal "
+                "--visual-inspected --source-commit <40-hex> "
+                "--certificate-commit <40-hex>; exact commits are recorded in manifest.git"
+            ),
             "pdeSimulation": True,
             "diagnosticOnly": True,
             "equation": "u_S=u_XX+i*V_alpha(S,X)*u on T_{2*pi/alpha}",
@@ -1342,8 +1359,25 @@ def build_archive(
             "wallTimeSeconds": wall_time_seconds,
             "monitoring": {
                 "enabled": True,
+                "reportIntervalSeconds": round(
+                    wall_time_seconds / max(1, progress_event_count - 1), 6
+                ),
+                "cadence": "event-based; interval is the mean wall-time spacing of archived events",
                 "progressLog": "progress.ndjson",
                 "resourceLog": "resource-log.ndjson",
+                "trackedFields": [
+                    "event",
+                    "alpha",
+                    "level",
+                    "resolution",
+                    "timeSteps",
+                    "iteration",
+                    "normEstimate",
+                    "powerResidual",
+                    "adjointDefect",
+                    "wallTimeSeconds",
+                    "maxResidentSetPlatformUnits",
+                ],
             },
         },
         "compute": {
@@ -1352,6 +1386,7 @@ def build_archive(
             "cpu": platform.machine(),
             "processes": 1,
             "threadsPerProcess": 1,
+            "memoryGiB": round(memory_gib, 6),
             "gpu": "not used",
             "dgx": "not used; deterministic CPU FFT diagnostic",
         },
@@ -1378,6 +1413,16 @@ def build_archive(
             "schema": "lineage, format, diagnostic, and visible-boundary checks",
             "sha256": sha256(PACKAGE / "validation.json"),
             "bytes": (PACKAGE / "validation.json").stat().st_size,
+        }, {
+            "path": "progress.ndjson",
+            "schema": "event-level build and numerical-diagnostic progress ledger",
+            "sha256": sha256(PACKAGE / "progress.ndjson"),
+            "bytes": (PACKAGE / "progress.ndjson").stat().st_size,
+        }, {
+            "path": "resource-log.ndjson",
+            "schema": "single-run CPU, memory, dependency, and wall-time resource summary",
+            "sha256": sha256(PACKAGE / "resource-log.ndjson"),
+            "bytes": (PACKAGE / "resource-log.ndjson").stat().st_size,
         }],
         "sourceData": [{
             "location": "repository",
@@ -1385,12 +1430,21 @@ def build_archive(
             "bytes": CERTIFICATE.stat().st_size,
             "sha256": sha256(CERTIFICATE),
             "role": "formalExactCertificate",
+            "extractionCommand": (
+                "python3 research/certificates/r072w/generate_certificate.py "
+                "--formal --source-commit <40-hex>"
+            ),
         }, {
             "location": "repository",
             "fileName": "scripts/generate_r072w_figure.py",
             "bytes": Path(__file__).stat().st_size,
             "sha256": sha256(Path(__file__)),
             "role": "analyticAndDiagnosticGenerator",
+            "extractionCommand": (
+                "python3 scripts/generate_r072w_figure.py --formal "
+                "--visual-inspected --source-commit <40-hex> "
+                "--certificate-commit <40-hex>"
+            ),
         }],
         "figure": {
             "widthMillimetres": WIDTH_MM,
@@ -1416,6 +1470,7 @@ def build_archive(
             "finalSizeInspected": visual_inspected,
             "grayscaleInspected": visual_inspected,
             "labelsAndLegendsInspected": visual_inspected,
+            "scalesAndUnitsInspected": visual_inspected,
             "dataCrossChecked": True,
             "diagnosticBoundaryInspected": visual_inspected,
             "finalSizePreview": "qa-final-size.png",

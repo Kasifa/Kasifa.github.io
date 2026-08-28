@@ -225,6 +225,14 @@ test("R0.72W source pins the exact deterministic forward-adjoint method", async 
     "randomSeed",
     "progress.ndjson",
     "resource-log.ndjson",
+    '"kind": "simulation"',
+    '"configuration"',
+    '"formalCommand"',
+    '"reportIntervalSeconds"',
+    '"trackedFields"',
+    '"memoryGiB"',
+    '"extractionCommand"',
+    '"scalesAndUnitsInspected"',
     '"coarse": (MUTED, "3,4", "N=512, NS=1000", 44)',
     '"medium": (GOLD, "9,5", "N=1024, NS=2000", 16)',
     '"fine": (BLUE, None, "N=2048, NS=4000", -14)',
@@ -345,6 +353,16 @@ test("R0.72W strict validator is fail-closed until a formal package exists", asy
   assert.equal(manifest.figureId, figureId);
   assert.equal(manifest.release, "R0.72W");
   assert.equal(manifest.qa.visualInspectionExplicit, true);
+  assert.equal(manifest.qa.scalesAndUnitsInspected, true);
+  assert.equal(manifest.computation.kind, "simulation");
+  assert.ok(manifest.computation.configuration);
+  assert.ok(manifest.computation.formalCommand);
+  assert.ok(manifest.computation.monitoring.reportIntervalSeconds > 0);
+  assert.ok(manifest.computation.monitoring.trackedFields.length > 0);
+  assert.ok(manifest.compute.memoryGiB > 0);
+  assert.ok(manifest.sourceData.every((record) => record.extractionCommand));
+  assert.ok(manifest.data.some((record) => record.path === "progress.ndjson"));
+  assert.ok(manifest.data.some((record) => record.path === "resource-log.ndjson"));
   assert.equal(manifest.publication.publicCopiesComplete, true);
   assert.notEqual(manifest.git.sourceCommit, manifest.git.certificateCommit);
   assert.equal(results.pdeSimulation, true);

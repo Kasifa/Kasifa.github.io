@@ -234,6 +234,46 @@ def validate_progress() -> None:
         raise RuntimeError("progress log does not end with archive-ready")
 
 
+def validate_archive_metadata(manifest: dict) -> None:
+    computation = manifest.get("computation", {})
+    monitoring = computation.get("monitoring", {})
+    if (
+        computation.get("kind") != "simulation"
+        or not computation.get("configuration")
+        or not computation.get("formalCommand")
+        or not computation.get("precision")
+        or not computation.get("solver")
+        or not isinstance(computation.get("wallTimeSeconds"), (int, float))
+        or computation.get("wallTimeSeconds", 0) <= 0
+        or monitoring.get("enabled") is not True
+        or not isinstance(monitoring.get("reportIntervalSeconds"), (int, float))
+        or monitoring.get("reportIntervalSeconds", 0) <= 0
+        or not monitoring.get("trackedFields")
+    ):
+        raise RuntimeError("formal computation and monitoring metadata are incomplete")
+    compute = manifest.get("compute", {})
+    if (
+        not isinstance(compute.get("memoryGiB"), (int, float))
+        or compute.get("memoryGiB", 0) <= 0
+    ):
+        raise RuntimeError("formal compute memory metadata are incomplete")
+    data_paths = {
+        record.get("path")
+        for record in manifest.get("data", [])
+        if isinstance(record, dict)
+    }
+    if not {"progress.ndjson", "resource-log.ndjson"}.issubset(data_paths):
+        raise RuntimeError("formal monitoring logs are absent from the data inventory")
+    source_data = manifest.get("sourceData", [])
+    if not source_data or any(
+        not isinstance(record, dict) or not record.get("extractionCommand")
+        for record in source_data
+    ):
+        raise RuntimeError("formal source-data extraction commands are incomplete")
+    if manifest.get("qa", {}).get("scalesAndUnitsInspected") is not True:
+        raise RuntimeError("formal scales-and-units QA is incomplete")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--require-formal", action="store_true")
@@ -271,6 +311,7 @@ def main() -> None:
         or manifest.get("computation", {}).get("randomSeed", "not-null") is not None
     ):
         raise RuntimeError("formal numerical diagnostic boundary drift")
+    validate_archive_metadata(manifest)
 
     certificate = validate_certificate_commit(manifest)
     validate_claim_boundary(contract, certificate)

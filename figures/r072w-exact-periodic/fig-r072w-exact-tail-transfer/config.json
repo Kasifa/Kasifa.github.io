@@ -1,0 +1,71 @@
+{
+  "figureId": "fig-r072w-exact-tail-transfer",
+  "heightMillimetres": 98,
+  "panelA": {
+    "coefficientCurve": {
+      "a0": "2*(cos(z)-cos(2*z))",
+      "a1": "2*(-cos(z)+4*cos(2*z))",
+      "zRange": [
+        -3.141592653589793,
+        3.141592653589793
+      ]
+    },
+    "noGoRatiosAtYPi": {
+      "combinedH5H7": "abs(-5*pi^2/12+7*pi^4/120)",
+      "exactMinusH3": "1+4/(3*pi^2)",
+      "exactTailAfterH7": "abs(-4-(3*pi^2-5*pi^4/4+7*pi^6/40))/(3*pi^2)",
+      "h5Over4": "5*pi^2/12"
+    }
+  },
+  "panelB": {
+    "compactCondition": "alpha*R -> 0",
+    "crudeAbsorptionRadius": "R=o(alpha^(-2/5))",
+    "escapingScale": "R=y/alpha",
+    "termwiseAbsorption": false,
+    "transfer": [
+      "exact compact-escaping cell theorem",
+      "full nonhomogeneous H^-1 direct sum",
+      "expanding-torus graph coercivity",
+      "exact scalar-row strict block contraction"
+    ]
+  },
+  "panelC": {
+    "alphas": [
+      1.0,
+      0.75,
+      0.5,
+      0.35,
+      0.25
+    ],
+    "diagnosticOnly": true,
+    "equation": "u_S=u_XX+i*V_alpha(S,X)*u",
+    "levels": [
+      {
+        "label": "coarse",
+        "spatialModes": 512,
+        "timeSteps": 1000
+      },
+      {
+        "label": "medium",
+        "spatialModes": 1024,
+        "timeSteps": 2000
+      },
+      {
+        "label": "fine",
+        "spatialModes": 2048,
+        "timeSteps": 4000
+      }
+    ],
+    "method": "Fourier Strang splitting plus fixed power iteration on discrete U*U",
+    "potential": "alpha^-3*(2*exp(-alpha^2*S)*sin(alpha*X)-exp(-4*alpha^2*S)*sin(2*alpha*X))",
+    "powerIterations": 32,
+    "precision": "float64/complex128",
+    "randomSeed": null,
+    "timeInterval": [
+      -1.0,
+      1.0
+    ]
+  },
+  "pngDpi": 600,
+  "widthMillimetres": 178
+}

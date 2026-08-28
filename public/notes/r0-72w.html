@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72W：保留解析尾项，以有界—逃逸胞元二分闭合精确周期标量碰撞块收缩。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72W｜Exact-tail periodic contraction through the compact–escaping cell dichotomy">
+  <meta property="og:description" content="exact periodic graph 与 collision-block contraction 已闭合；global termwise absorption 和 short-time uniformity 为 FALSE，outer/nonlinear/Clay 仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072w/fig-r072w-exact-tail-transfer.png">
+  <title>R0.72W｜Exact-tail periodic contraction through the compact–escaping cell dichotomy</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.36"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#model">精确势</a><a href="#weighted">weighted tail</a><a href="#core">core</a><a href="#no-go">no-go</a><a href="#derivatives">导数账本</a><a href="#probe">probe</a><a href="#dichotomy">胞元二分</a><a href="#cell">单位胞元</a><a href="#global">全球化</a><a href="#evolution">energy evolution</a><a href="#contraction">收缩</a><a href="#physical">物理回填</a><a href="#numerics">数值边界</a><a href="#certificate">证书与文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72W · EXACT ANALYTIC TAIL · PERIODIC COLLISION BLOCK</div>
+        <h1>保留解析尾项的精确周期块收缩：<br>有界—逃逸胞元二分</h1>
+        <p class="lead">有限的 \(H_5,H_7,R_9\) 展开在整条扩张周期上不能作为小扰动吸收。R0.72W 因而保留 exact trigonometric heat path，以 compact--escaping cell dichotomy 直接证明对 \(0&lt;\alpha\le1\) 一致的 unit-cell graph theorem，并经 nonhomogeneous \(H^{-1}\) direct sum 全球化到 whole line 和 expanding torus。对 every torus \(L^2\) datum 的独立能量演化随后给出 exact periodic scalar collision-block contraction。结论仍只是一个 exact linear scalar Fourier row。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72W exact periodic scalar block 完成</span><strong>exact-tail periodic contraction through the compact–escaping cell dichotomy</strong><p>版本 v0.72W · 2026-08-28</p><p>exactPeriodicGraphCoercivity: CLOSED</p><p>exactPeriodicBlockContraction: CLOSED</p><p>globalTermwiseRemainderAbsorption: FALSE</p><p>timeLengthUniformity: FALSE</p><p>outerTimeConcatenation: OPEN</p><p>nonlinearNavierStokes / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li><li><a href="#model">01 · exact heat path</a></li><li><a href="#weighted">02 · weighted envelope</a></li><li><a href="#core">03 · growing core</a></li><li><a href="#no-go">04 · global no-go</a></li><li><a href="#derivatives">05 · derivative ledger</a></li><li><a href="#probe">06 · scaled probe</a></li><li><a href="#dichotomy">07 · compact–escaping dichotomy</a></li><li><a href="#cell">08 · unit-cell theorem</a></li><li><a href="#global">09 · whole-line and torus</a></li><li><a href="#evolution">10 · all-L2 evolution</a></li><li><a href="#contraction">11 · periodic contraction</a></li><li><a href="#physical">12 · physical return</a></li><li><a href="#numerics">13 · numerical boundary</a></li><li><a href="#certificate">14 · certificate and literature</a></li><li><a href="#figure">15 · journal figure</a></li><li><a href="#value">16 · value</a></li><li><a href="#next">17 · R0.72X</a></li><li><a href="#reproduce">18 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>精确周期碰撞块已闭合；有限尾项的全局吸收路线被否定</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>CLOSED · EXACT PERIODIC GRAPH</strong><p>weightedNonabsorbedRemainderEstimate=CLOSED，growingCoreAbsorption=CLOSED；exactFamilyUnitCellCoercivity、exactWholeLineGraphCoercivity 与 exactPeriodicGraphCoercivity 均为 CLOSED。</p></div>
+            <div class="verdict-card true"><strong>CLOSED · COLLISION BLOCK</strong><p>exactPeriodicBlockContraction=CLOSED，且回到物理变量的 conjugacy 不使用任何 polynomial truncation。</p></div>
+            <div class="verdict-card false"><strong>FALSE · GLOBAL TERMWISE ABSORPTION</strong><p>globalTermwiseRemainderAbsorption=FALSE；整条周期依赖 full analytic cancellation。</p></div>
+            <div class="verdict-card false"><strong>OPEN · OUTER AND NONLINEAR</strong><p>outerTimeConcatenation=OPEN，complete linearized subsystem、nonlinear Navier--Stokes 与 Clay 均未闭合。</p></div>
+          </div>
+        </section>
+
+        <section id="model"><div class="section-no">01 / Exact heat path</div><h2>碰撞缩放保留完整双谐波势</h2>
+          <div class="equation result">\[V_\alpha(S,X)=\alpha^{-3}\left[2e^{-\alpha^2S}\sin(\alpha X)-e^{-4\alpha^2S}\sin(2\alpha X)\right],\qquad \partial_SV_\alpha=\partial_X^2V_\alpha.\]</div>
+          <p>势定义在 \(\mathbb T_\alpha=\mathbb R/(2\pi/\alpha)\mathbb Z\)，并在 bounded chart 上展开为 \(H_3-\alpha^2H_5/4+\alpha^4H_7/40-17\alpha^6H_9/12096+\cdots\)。</p>
+        </section>
+
+        <section id="weighted"><div class="section-no">02 / Weighted envelope</div><h2>全局解析尾项只有 weighted、nonabsorbed 控制</h2>
+          <div class="equation result">\[|\mathcal R_\alpha(S,X)|\le2(e^T+256e^{4T})\alpha^6\Omega_{9,T}(X).\]</div>
+          <p>R0.72V 的 whole-line graph theorem 因此给出带 \(W_{5,T}v\)、\(W_{7,T}v\) 与 \(\Omega_{9,T}v\) costs 的精确估计；“nonabsorbed”表示这些 weighted norms 没有被无条件移到左边。</p>
+        </section>
+
+        <section id="core"><div class="section-no">03 / Growing core</div><h2>有界乘子吸收只达到严格小于周期尺度的 collision core</h2>
+          <div class="equation result">\[R=o(\kappa^{2/25}),\qquad D_{\alpha,T}(r\kappa^{2/25})=\frac{r^5}{4}+o(1).\]</div>
+          <p>这个 core 在原坐标中的宽度为 \(r\kappa^{-3/25}\)，远小于扩张周期对应的 \(\kappa^{1/5}\) 尺度。</p>
+        </section>
+
+        <section id="no-go"><div class="section-no">04 / Global no-go</div><h2>全直线与一周期尺度都排除有限 Neumann 吸收</h2>
+          <p>translated bump 给 \(H_5\) correction 的相对成本 \(\asymp\alpha^2L^2\)。在 antipodal chart，exact slope difference 的相对极限是</p>
+          <div class="equation result">\[-1-\frac{4}{3\pi^2}\ne0,\qquad \frac{5\pi^2}{12}>4.\]</div>
+          <p>该 obstruction 使用 centered spatial variation，因而不被 time-only scalar gauge 消去。结论是 globalTermwiseRemainderAbsorption=FALSE，而不是证明 exact sine family 失去 coercivity。</p>
+        </section>
+
+        <section id="derivatives"><div class="section-no">05 / Exact derivative ledger</div><h2>第三、四阶导数控制逃逸方向的时间旋转</h2>
+          <div class="equation result">\[|V_{XXX}|\le2e^T+8e^{4T},\qquad |V_{XXXX}|\le\alpha(2e^T+16e^{4T}).\]</div>
+          <p>由 heat identity，\((V_X)_S=V_{XXX}\) 且 \((V_{XX}/2)_S=V_{XXXX}/2\)。可能很大的 slope 只以 \(O_T(1)\) 变化，curvature 只以 \(O_T(\alpha)\) 变化。</p>
+        </section>
+
+        <section id="probe"><div class="section-no">06 / Scaled probe</div><h2>变化胞元长度上的 adaptive variance 有统一正下界</h2>
+          <div class="equation result">\[\mu_{2,\ell}=\frac{\ell^2}{44},\qquad \mu_{4,\ell}=\frac{3\ell^4}{2288},\qquad \mu_{4,\ell}-\mu_{2,\ell}^2=\frac{5\ell^4}{6292}\ge\frac5{6292}.\]</div>
+          <p>这里 \(1\le\ell\le2\)。Poincare constants、multiplication norms 和 probe test norms 由这个紧长度区间统一控制。</p>
+        </section>
+
+        <section id="dichotomy"><div class="section-no">07 / Compact–escaping dichotomy</div><h2>有界系数收敛到 nonconstant chart；逃逸系数由端点账本排除</h2>
+          <p>若 cell slope 与 curvature 有界，\(\alpha\to0\) 时共同零点代数迫使 chart 回到 translated \(H_3\)；若 \(\alpha\) 不趋零，则得到 nonconstant exact trigonometric limit。</p>
+          <div class="equation result">\[U_n=\lambda_np_n+h_n,\qquad \|h_n\|_\infty\le R_T,\qquad \int p_n^2q_{\ell_n}\ge\frac5{6292}.\]</div>
+          <p>逃逸分支保留两个 scalar endpoints；除以 \(\lambda_n\) 后所有项趋零，不假设 \(\lambda_n\delta_n\to0\)。</p>
+        </section>
+
+        <section id="cell"><div class="section-no">08 / Unit-cell theorem</div><h2>一个常数覆盖所有参数、中心、胞元长度和符号</h2>
+          <div class="equation result">\[\|v\|_{L^2(I\times J_\ell)}\le C_T^{\rm cell}\left(\|v_y\|_2+\|(\partial_S-i\sigma\mathcal V_{\alpha,X_0})v\|_{L^2H_D^{-1}}\right).\]</div>
+          <p>这里 \(H_D^{-1}(J_\ell)=\bigl(H_0^1(J_\ell),\text{ full inherited }H^1\text{ norm}\bigr)^*\)。定理在 maximal graph class \(v\in L^2(I;H^1(J_\ell))\)、\(Qv\in L^2(I;H_D^{-1}(J_\ell))\) 上成立；该定义使后续 constant-one direct-sum estimate 自包含。</p>
+          <p>常数对 \(0&lt;\alpha\le1\)、\(X_0\in\mathbb R\)、\(1\le\ell\le2\) 和两个符号一致；不规定 spatial 或 temporal trace。</p>
+        </section>
+
+        <section id="global"><div class="section-no">09 / Whole-line and torus</div><h2>同一 nonhomogeneous negative-Sobolev direct sum 完成两次全球化</h2>
+          <p>whole line 用单位格；torus 取 \(N_\alpha=\lfloor2\pi/\alpha\rfloor\)，使每格长度 \(1\le\ell_\alpha&lt;2\)。零延拓和 Hilbert-space duality 给</p>
+          <div class="equation result">\[\sum_j\|g_j\|_{H_D^{-1}}^2\le\|g\|_{H^{-1}}^2.\]</div>
+          <p>exact whole-line 与 exact periodic graph theorems 都针对 full trigonometric potential，不是 finite heat-polynomial truncation。</p>
+        </section>
+
+        <section id="evolution"><div class="section-no">10 / All-L2 energy evolution</div><h2>graph coercivity 与 arbitrary-data energy theory 保持分离</h2>
+          <p>对 every \(u_-\in L^2(\mathbb T_\alpha)\)，smooth bounded real potential 给唯一</p>
+          <div class="equation">\[u\in C(\overline I;L^2(\mathbb T_\alpha))\cap L^2(I;H^1(\mathbb T_\alpha))\]</div>
+          <p>以及 exact energy identity。finite certificate 只核对能量代数，不 machine-check parabolic existence、compactness、trace 或 \(H^{-1}\) direct sum。</p>
+        </section>
+
+        <section id="contraction"><div class="section-no">11 / Periodic contraction</div><h2>observability 与能量单调性给统一严格收缩</h2>
+          <div class="equation result">\[E(T)\le\frac{(C_T^{\rm per})^2}{T+(C_T^{\rm per})^2}E(-T),\qquad q_T=\frac{C_T^{\rm per}}{\sqrt{T+(C_T^{\rm per})^2}}&lt;1.\]</div>
+          <p>\(C_T^{\rm per}\) 的存在是 nonconstructive；没有声称数值最优 \(q_T\)，也没有声称 \(T\downarrow0\) 时 uniformly away from one。</p>
+        </section>
+
+        <section id="physical"><div class="section-no">12 / Physical return</div><h2>物理碰撞行的端点比例由精确共轭保留</h2>
+          <div class="equation result">\[\|v(T\kappa^{-2/5})\|_{L^2(\mathbb T_{2\pi})}\le q_T\|v(-T\kappa^{-2/5})\|_{L^2(\mathbb T_{2\pi})}.\]</div>
+          <p>这里 \(V_\alpha=-4\alpha^{-3}W(\alpha^2S,\alpha X)\)，端点的 \(L^2\) scaling factor 相同并相消。只覆盖 R0.72T 声明的一个 scalar Fourier row。</p>
+        </section>
+
+        <section id="numerics"><div class="section-no">13 / Numerical diagnostic</div><h2>Strang splitting 只作为 stress test</h2>
+          <p>exact potential 的 Fourier Strang splitting 与 forward--adjoint power iteration 在测试网格上给出小于 \(0.12\) 的 norms，并通过分辨率加密。</p>
+          <p>numericalDiagnosticIsProof=FALSE，numericalDiagnosticDeterminesAnalyticConstant=FALSE；有限网格不是 infinite-dimensional propagator norm 的严格上界。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">14 / Certificate and literature</div><h2>有限精确代数、解析证明和限定检索各自保持边界</h2>
+          <p>双路证书核对 Taylor coefficients、heat identities、probe moments、common-zero algebra、torus partition 与 energy ratio；compact--escaping contradiction 和 nonautonomous graph theorem 仍是解析论证。</p>
+          <p>Coble--He 的主要 ED theorem 要求固定数量、保持分离的 nondegenerate critical points；该假设在 merger 处失效。限定的一手检索不构成不存在性、新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">15 / Journal figure</div><h2>正式附图记录 exact-tail transfer 与证据边界</h2>
+          <p><img src="/assets/r072w/fig-r072w-exact-tail-transfer.svg" alt="R0.72W exact-tail periodic contraction through the compact-escaping cell dichotomy"></p>
+          <p><a href="/assets/r072w/fig-r072w-exact-tail-transfer.pdf">下载 PDF</a> · <a href="/assets/r072w/fig-r072w-exact-tail-transfer.png">下载 PNG</a> · <a href="/assets/r072w/fig-r072w-exact-tail-transfer.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">16 / Research value</div><h2>碰撞块从 cubic germ 推进到 exact periodic row，但尚未形成完整时间历史</h2>
+          <p>严格增量是 nonperturbative：它证明 finite tail absorption 路线为 false，同时用 full sine cancellation 完成 expanding-torus collision block。</p>
+          <p>直接 Clay 价值仍低。缺少 outer \(A_1\) intervals 的一致拼接、所有 Fourier rows 的 normalization 和 summation、pressure、vortex stretching、nonlinear bootstrap 与 continuation criterion。</p>
+        </section>
+
+        <section id="next"><div class="section-no">17 / Next gate</div><h2>R0.72X：outer A1 与 A2 collision block 的精确时间拼接</h2>
+          <p>下一节必须保留物理 Fourier normalization、scalar gauges、energy factors 和 later row summation 所需常数，把 pre/post-collision \(A_1\) regions 与已完成的 \(A_2\) block 连接起来。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">18 / Reproduction</div><h2>完整证明、边界矩阵、独立审计、证书与正式附图</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072w_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072w_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072w_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072w_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072w">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072w-exact-periodic/fig-r072w-exact-tail-transfer">正式附图包</a> · <a href="/notes/r0-72w.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72w.html">累计回顾</a> · <a href="/recap-r0-61-r0-72w.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72W · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

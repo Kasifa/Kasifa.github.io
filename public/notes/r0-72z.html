@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72Z：Orr--Sommerfeld 压力反馈的 signed high-gap threshold 与 orientation-paid Squire history。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72Z｜OS pressure threshold and orientation-paid Squire transfer">
+  <meta property="og:description" content="high-gap q graph 为 CLOSED；low-gap physical row、nonlinear Navier--Stokes 与 Clay 保持 OPEN。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072z/fig-r072z-os-squire-threshold.png">
+  <title>R0.72Z｜OS pressure threshold and orientation-paid Squire transfer</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.39"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#form">pressure form</a><a href="#threshold">阈值</a><a href="#power">power</a><a href="#forcing">forcing</a><a href="#counter">反例</a><a href="#tangent">tangent</a><a href="#collision">collision</a><a href="#squire">Squire</a><a href="#orientation">方向</a><a href="#optimal">最优常数</a><a href="#kernel">kernel</a><a href="#rates">rates</a><a href="#graph">graph</a><a href="#literature">文献</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.72Z · ORR--SOMMERFELD · SQUIRE ORIENTATION</div>
+        <h1>压力反馈的高间隙阈值，<br>与必须支付的 Squire 方向代价</h1>
+        <p class="lead">我把 Orr--Sommerfeld 压力项写成精确有符号交换子形式，在 signed high-gap 类上得到 prefactor-one 衰减与受迫 graph estimates；同时把 Squire 传递拆成精确方向系数和历史卷积。结论明确停在 high-gap \(q\)-graph：low-gap physical row、完整 direct sum、非线性闭合与 Clay 问题仍为 OPEN。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.72Z scoped graph tier 完成</span><strong>high-gap OS and orientation-paid Squire</strong><p>版本 v0.72Z · 2026-08-28</p><p>high-gap q graph: CLOSED</p><p>orientation-paid history: CLOSED</p><p>all-row prefactor-one: FALSE</p><p>low-gap physical row: OPEN</p><p>nonlinear / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li>        <li><a href="#form">01 · exact pressure form</a></li>        <li><a href="#threshold">02 · signed threshold</a></li>        <li><a href="#power">03 · high-gap power</a></li>        <li><a href="#forcing">04 · forced graph</a></li>        <li><a href="#counter">05 · obstruction</a></li>        <li><a href="#tangent">06 · tangent mode</a></li>        <li><a href="#collision">07 · collision scaling</a></li>        <li><a href="#squire">08 · Squire history</a></li>        <li><a href="#orientation">09 · orientation</a></li>        <li><a href="#optimal">10 · exact coefficient</a></li>        <li><a href="#kernel">11 · strong kernel</a></li>        <li><a href="#rates">12 · damping rates</a></li>        <li><a href="#graph">13 · fixed-row graph</a></li>        <li><a href="#literature">14 · literature</a></li>        <li><a href="#evidence">15 · evidence</a></li>        <li><a href="#figure">16 · journal figure</a></li>        <li><a href="#value">17 · value</a></li>        <li><a href="#next">18 · R0.73A</a></li>        <li><a href="#reproduce">19 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>高间隙 \(q\)-graph 已闭合；低间隙物理行没有被外推</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · HIGH-GAP OS</strong><p>exactOSFeedbackCommutatorIdentity=CLOSED；signedRelativeFormOSAbsorption=CLOSED；highGapOSPrefactorOneDecay=CLOSED；highGapOSForcedScaleLedger=CLOSED；alphaMinusTwoOSGapSufficiency=CLOSED。</p></div><div class="verdict-card true"><strong>CLOSED · SQUIRE WITH PAYMENT</strong><p>exactSquireDuhamel=CLOSED；exactKineticOrientationNormalization=CLOSED；optimalInstantaneousSquireCoefficient=CLOSED；orientationUniformWithLambdaPayment=CLOSED；fixedRowOSSquireGraphRegularity=CLOSED。</p></div><div class="verdict-card false"><strong>FALSE · UNPAID UNIFORMITY</strong><p>allStrongRowsOSPrefactorOneContraction=FALSE；rawOrientationUniformFromCOnly=FALSE；epsilonOnlySquireTransfer=FALSE；uniformlyEquivalentLambdaIndependentContractiveNorm=FALSE。</p></div><div class="verdict-card false"><strong>OPEN · LOW GAP AND CLAY</strong><p>lowGapOSTransientA2Propagator=OPEN；unconditionalStrongFullRowA2Estimate=OPEN；BlochUniformPhysicalVelocityDirectSum=OPEN；nonlinearNavierStokes=OPEN；Clay=OPEN。</p></div></div></section>
+        <section id="form"><div class="section-no">01 / Exact pressure form</div><h2>压力反馈不是无结构的 bounded perturbation</h2><div class="equation result">\[q_d=(-\mathcal L-icW)q-icW_{xx}\mathcal L^{-1}q.\]</div><p>交换子恒等式把实部化成含 \(W_{xxx}\) 的有符号相对 form；它固定了符号，也避免把低间隙压力项错误当成普通 \(L^2\) forcing。</p></section>
+        <section id="threshold"><div class="section-no">02 / Signed threshold</div><h2>精确 signed threshold 与显式 sufficient majorant 分开记录</h2><div class="equation result">\[\Theta_K(c,\beta,\mu)=\sup_{d\in K}\lambda_{\max}(-cH_{\beta,\mu}(d))<1,\]</div><div class="equation result">\[\Theta_K\le\widehat\Theta_K:=|c|M_{3,K}g^{-3/2}s_{\beta,\mu},\qquad g=\operatorname{dist}(\beta,\mathbb Z)^2+\mu.\]</div><div class="equation result">\[\|U_{\rm OS}(d,s)\|_{2\to2}\le e^{-(1-\Theta_K)g(d-s)}.\]</div><p>这是一条 signed high-gap \(q\)-graph theorem，不是完整 physical kinetic-energy theorem。</p></section>
+        <section id="power"><div class="section-no">03 / Explicit high-gap class</div><h2>\(g\gtrsim |c|^{2/5}\) 是透明的充分条件</h2><div class="equation result">\[g\ge\left(\frac{|c|M_{3,K}}{\theta_0}\right)^{2/5}\quad\Longrightarrow\quad \widehat\Theta_K\le\theta_0<1.\]</div><p>在 \(|c|=4\alpha^{-5}\) 下，这给出 \(g\gtrsim\alpha^{-2}\)。该 \(2/5\) 指数对无权瞬时 coercivity 的高模二频 witness 是 sharp；它不宣称临界 low-gap propagator 已解决。</p></section>
+        <section id="forcing"><div class="section-no">04 / Forced graph ledger</div><h2>受迫尺度只在 signed high-gap 类继承</h2><p>指数 kernel 给出 \(L_d^2L_x^2\)、standard \(H^{-1}\) 与 semiclassical negative norm 的显式输入输出常数。每条估计都保留 \((1-\Theta_K)g\)；没有把 R0.72Y 的 scalar power 自动推广到全部 strong rows。</p></section>
+        <section id="counter"><div class="section-no">05 / Prefactor-one obstruction</div><h2>低模二频 witness 产生正的瞬时增长</h2><p>选择压力 form 的符号与二频数据，可使 \(d\|q\|_2^2/dd>0\)。因此 allStrongRowsOSPrefactorOneContraction=FALSE；仍可能存在带 transient prefactor 的 low-gap theorem。</p></section>
+        <section id="tangent"><div class="section-no">06 / Exact tangent mode</div><h2>gapless abstract OS 行精确沿 heat tangent 演化</h2><div class="equation result">\[q_*(d)=W_{xx}(d),\qquad \mathcal L_0^{-1}q_*=-W,\qquad (q_*)_d=W_{xxxx}.\]</div><p>两项非正规输运精确抵消，所以 abstractGaplessOSA2StrictContraction=FALSE。该 witness 属于 unprojected abstract mean-zero OS equation；我没有把它冒充 \(\mu=0\) physical velocity row。</p></section>
+        <section id="collision"><div class="section-no">07 / Collision scaling</div><h2>缩放后压力反馈仍是 leading order</h2><p>在 \(d=\alpha^2S,\ x=\alpha X\) 下，transport 与 \(V_{XX}\mathcal L_\alpha^{-1}\) 同阶。high-gap perturbation 因而不能直接穿过 collision；collisionScaleOSLimitingAbsorption 保持 OPEN。</p></section>
+        <section id="squire"><div class="section-no">08 / Exact Squire history</div><h2>终点值不能替代 \(q\) 的因果历史</h2><div class="equation result">\[\eta(d)=U_c(d,d_-)\eta_-+i\xi\Lambda\int_{d_-}^{d}U_c(d,s)W_x\mathcal L^{-1}q(s)\,ds.\]</div><p>instantaneousQEndpointAloneControlsEta=FALSE；正确输入是带 kernel 的历史范数。</p></section>
+        <section id="orientation"><div class="section-no">09 / Kinetic orientation</div><h2>方向归一化把不可避免的 \(\Lambda\) payment 写清</h2><div class="equation result">\[b_j(d)=\|M_{W_x(d)}\mathcal L^{-1/2}\|_{2\to2},\qquad a_j(d)=|\xi\Lambda|b_j(d),\]</div><div class="equation result">\[a_{j,K}\le |\Lambda|M_{1,K}\chi_j,\qquad \chi_j=\frac{|\xi|}{\sqrt g}\le1.\]</div><p>给定 \(|\Lambda|\) payment 后可对方向统一；只从 \(c=\gamma\Lambda\) 推出 angle-uniform bound 为 FALSE，因为 \(\gamma\to0\) 会暴露 transverse lift-up。</p></section>
+        <section id="optimal"><div class="section-no">10 / Exact instantaneous coefficient</div><h2>有限维方向矩阵的 induced norm 给出最优瞬时常数</h2><p>optimalInstantaneousSquireCoefficient=CLOSED。粗略 \(M_{1,K}g^{-1/2}\) 上界便于 direct estimates，但不被宣称在每一行都达到。</p></section>
+        <section id="kernel"><div class="section-no">11 / Strong-kernel transfer</div><h2>history payment 同时保留普通 gap 与 A2 block kernel</h2><div class="equation result">\[\ell_j=\min\{g^{-1},A_\vartheta\alpha^2\},\qquad m_j=\min\{(2g)^{-1/2},\sqrt{B_\vartheta}\alpha\}.\]</div><p>strongKernelConditionalSquireTransfer 是 conditional CLOSED：它以已经声明的 \(Q\)-history estimate 为输入，不反向证明 low-gap OS propagator。</p></section>
+        <section id="rates"><div class="section-no">12 / Damping-rate collision</div><h2>相等衰减率必须保留 transient polynomial</h2><div class="equation result">\[\int_0^\tau e^{-\lambda(\tau-s)}e^{-\omega s}\,ds=\frac{e^{-\omega\tau}-e^{-\lambda\tau}}{\lambda-\omega}\to\tau e^{-\lambda\tau}.\]</div><p>equalRateUniformGapDenominator=FALSE；分母不能在 \(\lambda=\omega\) 时被静态常数替代。</p></section>
+        <section id="graph"><div class="section-no">13 / Fixed-row graph theorem</div><h2>固定 high-gap OS--Squire graph tier 已闭合</h2><p>在 \(\Theta_K<1\)、\(\mu>0\) 且支付显式 orientation、gap 与 \(|\Lambda|\) 权重时，\(q\to\eta\to u\) 的固定行 graph regularity 为 CLOSED。该范数的等价常数随参数退化，所以不能直接求和成 uniform kinetic direct sum。</p></section>
+        <section id="literature"><div class="section-no">14 / Literature boundary</div><h2>固定几何 OS 与 Squire 先例存在；collision 组合没有被这些文献覆盖</h2><p>Jia、Beekie--Chen--Jia、Ding--Lin 处理 active OS pressure 的固定谱或临界几何；Li--Wei--Zhang 与 Jerome--Chomaz 显示三维 Squire orientation/lift-up 结构。我只报告有界 primary-source search，不把“未发现”写成首创性证明。</p></section>
+        <section id="evidence"><div class="section-no">15 / Evidence boundary</div><h2>解析证明、双路证书和附图各自限界</h2><p>解析报告承担无限维 form bounds、semigroup、sharpness limit 与 graph domain。双路证书核对符号、有限 Fourier pairs、指数算术、kernel 与方向矩阵。附图只展示已证明 threshold、witness 与 payment，不构成证明。</p></section>
+        <section id="figure"><div class="section-no">16 / Journal figure</div><h2>正式附图分开 high-gap closure、negative witnesses 与 Squire payment</h2><p><img src="/assets/r072z/fig-r072z-os-squire-threshold.svg" alt="R0.72Z signed OS threshold and orientation-paid Squire transfer"></p><p><a href="/assets/r072z/fig-r072z-os-squire-threshold.pdf">下载 PDF</a> · <a href="/assets/r072z/fig-r072z-os-squire-threshold.png">下载 PNG</a> · <a href="/assets/r072z/fig-r072z-os-squire-threshold.svg">打开 SVG</a></p></section>
+        <section id="value"><div class="section-no">17 / Research value</div><h2>本节把“压力项未处理”改成一个精确分区问题</h2><p>严格增量是 high-gap OS threshold、sharp obstruction、exact tangent mode 与 orientation-paid Squire history。直接 Clay 价值仍低：low-gap physical rows、Bloch-uniform direct sum、nonlinear convolution、vortex stretching bootstrap 与 continuation criterion 均未完成。</p></section>
+        <section id="next"><div class="section-no">18 / Next gate</div><h2>R0.73A：分离 tangent/lift-up 子空间，寻找带 transient prefactor 的 low-gap OS propagator</h2><p>下一节不再要求不可能的 all-row prefactor-one contraction；目标是识别有限维慢模、构造投影后 resolvent/propagator estimate，并保持 physical-row 与 abstract tangent witness 的边界。</p></section>
+        <section id="reproduce"><div class="section-no">19 / Reproduction</div><h2>完整报告、文献审计、边界矩阵、证书与附图</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072z_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072z_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072z_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072z_independent_audit.md">独立数学审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072z">确定性双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072z/fig-r072z-os-squire-threshold">正式附图包</a> · <a href="/notes/r0-72z.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72z.html">累计回顾</a> · <a href="/recap-r0-61-r0-72z.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72Z · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

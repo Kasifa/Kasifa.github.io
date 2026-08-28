@@ -1,0 +1,17 @@
+# Source stage: this is the only command permitted before the source commit.
+python3 scripts/generate_r072v_figure.py --self-test
+
+# Later certificate stage, after every bound source file is committed.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072v/generate_certificate.py --formal --source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072v/validate_certificate.py --require-formal
+
+# Later draft render in a disposable clean output state. No public copies.
+python3 scripts/generate_r072v_figure.py --draft
+
+# Later formal render from a clean, distinct commit containing the certificate.
+# All package-generated and target public files must be absent before this run.
+SOURCE_COMMIT=$(python3 -c 'import json; print(json.load(open("research/certificates/r072v/manifest.json"))["sourceCommit"])')
+CERTIFICATE_COMMIT=$(git rev-parse HEAD)
+python3 scripts/generate_r072v_figure.py --formal --visual-inspected --source-commit "$SOURCE_COMMIT" --certificate-commit "$CERTIFICATE_COMMIT"
+python3 figures/r072v-whole-line-transfer/fig-r072v-unit-chart-globalization/validate.py --require-formal

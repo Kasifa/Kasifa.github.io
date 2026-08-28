@@ -159,16 +159,55 @@ test("R0.72U release generator preflights the exact R0.72T source state before p
   await mkdir(join(fixture, "public", "notes"), { recursive: true });
   await Promise.all(Array.from({ length: 170 }, (_, index) =>
     writeFile(join(fixture, "public", "notes", `fixture-${index}.html`), "")));
-  for (const relative of [
-    "public/site-version.json",
-    "public/research-review.html",
-    "public/recap-r0-61-r0-72t.html",
-    "public/literature-review.html",
-    "research/formal-archive-inventory.json",
-  ]) {
-    await mkdir(dirname(join(fixture, relative)), { recursive: true });
-    await copyFile(join(root, relative), join(fixture, relative));
-  }
+  await writeFile(join(fixture, "public", "site-version.json"), JSON.stringify({
+    schemaVersion: "research-site-version-v1",
+    version: "1.33",
+    latestRelease: "R0.72T",
+    publicHtmlNoteCount: 170,
+    publishedDate: "2026-08-28",
+  }));
+  const routeLinks = Array.from(
+    { length: 80 },
+    (_, index) => `<a href="/notes/r0-fixture-${index}.html">fixture</a>`,
+  ).join("");
+  await writeFile(join(fixture, "public", "research-review.html"), [
+    '<main data-site-version="1.33">',
+    "<strong>170</strong>公开研究笔记",
+    "<strong>R0.72T</strong>最新研究节点",
+    `<nav class="route-note-links" aria-label="R0.69P–R0.72T">${routeLinks}</nav>`,
+    "</main>",
+  ].join(""));
+  await copyFile(
+    join(root, "public", "recap-r0-61-r0-72t.html"),
+    join(fixture, "public", "recap-r0-61-r0-72t.html"),
+  );
+  const literatureTOverview =
+    "这里没有完成 global caustic image，也没有证明 ED through collision。" +
+    "R0.72T 进一步固定 exact A2 spacetime germ 与唯一 scaling，核对 quadratic " +
+    "wrong-model calibration、physical 3/5 回填、combined fixed-f identity、" +
+    "inviscid mixing 和 CDZE 6/7 barrier；block contraction 与 periodic transfer " +
+    "仍开放。一般 Navier–Stokes 正则性仍开放。";
+  await writeFile(
+    join(fixture, "public", "literature-review.html"),
+    `${literatureTOverview}<p>开放接口 · R0.72U</p>`,
+  );
+  await writeFile(
+    join(fixture, "research", "formal-archive-inventory.json"),
+    JSON.stringify({
+      latestPublishedRelease: "r072t",
+      publishedReleaseCount: 72,
+      formalSealedReleaseCount: 48,
+      legacyFormalFigureBacklogCount: 24,
+      publishedReleases: [
+        ...Array.from({ length: 71 }, (_, index) => `fixture-p-${index}`),
+        "r072t",
+      ],
+      formalSealedReleases: [
+        ...Array.from({ length: 47 }, (_, index) => `fixture-f-${index}`),
+        "r072t",
+      ],
+    }),
+  );
   await writeFile(manifestPath, JSON.stringify({
     ...baseline,
     nextReleaseSourceStage: expectedSourceStage,

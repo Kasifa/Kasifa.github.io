@@ -331,7 +331,7 @@ test("R0.72W public prose is bilingual-ready, individual, and claim-neutral", as
   assert.match(note, /outerTimeConcatenation\s*[:=]\s*OPEN/);
   assert.match(note, /exact periodic scalar collision-block contraction/i);
   assert.match(note, /numericalDiagnosticIsProof=FALSE/);
-  assert.match(note, /every.*\(L\^2\)|every-torus-\(L\^2\)/i);
+  assert.match(note, /every.*\\?\(L\^2\\?\)|every-torus-\\?\(L\^2\\?\)/i);
   assert.match(note, /compact--escaping|compact–escaping/);
   assert.match(recap, /R0\.61–R0\.72W/);
   assert.match(recap, /exact periodic.*collision-block contraction/is);

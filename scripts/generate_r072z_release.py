@@ -256,6 +256,13 @@ def build_note() -> None:
     for index, (pattern, value) in enumerate(replacements):
         html = section(html, pattern, value, f"Z note metadata {index}")
     html = required(html, "/i18n-en.js?v=1.38", "/i18n-en.js?v=1.39", "Z note i18n")
+    html = required(
+        html,
+        "    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}",
+        "    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}\n"
+        "    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}",
+        "Z note long evidence keys wrap",
+    )
     nav = '<nav><a href="#result">结论</a><a href="#form">pressure form</a><a href="#threshold">阈值</a><a href="#power">power</a><a href="#forcing">forcing</a><a href="#counter">反例</a><a href="#tangent">tangent</a><a href="#collision">collision</a><a href="#squire">Squire</a><a href="#orientation">方向</a><a href="#optimal">最优常数</a><a href="#kernel">kernel</a><a href="#rates">rates</a><a href="#graph">graph</a><a href="#literature">文献</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>'
     html = section(html, r'<nav><a href="#result">.*?</nav>', nav, "Z note nav")
     html = section(html, r'    <header class="hero">.*?</header>', NOTE_HERO, "Z note hero")

@@ -121,6 +121,7 @@ test("R0.72Z release source freezes counters, boundaries, and write order", asyn
     '"routeNotes": 86',
     '"next": "R0.73A"',
     '(ROOT / "VERSION").write_text("1.39\\n"',
+    "overflow-wrap:anywhere",
   ]) assert.ok(generator.includes(token), token);
   const main = generator.slice(generator.indexOf("def main() -> None:"));
   const calls = [
@@ -261,6 +262,7 @@ test("formal R0.72Z pages preserve scoped boundaries and the cumulative route", 
   assert.match(note, /\\chi_j=\\frac\{\|\\xi\|\}\{\\sqrt g\}/);
   assert.match(note, /\/assets\/r072z\/fig-r072z-os-squire-threshold\.svg/);
   assert.match(note, /R0\.73A：分离 tangent\/lift-up 子空间/);
+  assert.match(note, /\.verdict-card p,[^{}]+\{overflow-wrap:anywhere;word-break:break-word\}/);
   const links = [...nodeIndex(recap).matchAll(/href="\/notes\/(r0-[^"]+)\.html"/g)].map((match) => match[1]);
   assert.equal(links.length, 116);
   assert.equal(new Set(links).size, 116);

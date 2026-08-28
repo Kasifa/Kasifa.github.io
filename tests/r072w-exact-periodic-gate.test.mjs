@@ -125,6 +125,16 @@ async function assertNoPublicFigure() {
   }
 }
 
+async function assertFormalPublicFigure() {
+  for (const extension of ["svg", "pdf", "png"]) {
+    const master = await readFile(resolve(root, `${figure}/figure.${extension}`));
+    const publication = await readFile(
+      resolve(root, `public/assets/r072w/${figureId}.${extension}`),
+    );
+    assert.deepEqual(publication, master, `public ${extension} must equal the formal master`);
+  }
+}
+
 test("R0.72W freezes the exact heat path and its claim labels", async () => {
   const [report, gap, audit] = await Promise.all([
     text("research/r072w_report-source.md"),
@@ -384,7 +394,7 @@ test("R0.72W certificate and figure lifecycle is fail-closed through formal seal
   await run(python, [`${figure}/validate.py`, "--require-formal"], { cwd: root });
 });
 
-test("R0.72W public counters stay frozen until atomic formal publication", async () => {
+test("R0.72W linked pages and counters stay frozen until atomic formal publication", async () => {
   const manifest = await json("research/release-manifest.json");
   assert.ok(["r072v", "r072w"].includes(manifest.latestCompletedRelease));
   if (manifest.latestCompletedRelease === "r072v") {
@@ -418,7 +428,13 @@ test("R0.72W public counters stay frozen until atomic formal publication", async
       "public/recap-r0-61-r0-72w.html",
       "public/recap-r0-61-r0-72w.pdf",
     ]) await absent(relative);
-    await assertNoPublicFigure();
+    const figureManifest = await maybeJson(`${figure}/manifest.json`);
+    if (figureManifest?.status === "formal") {
+      assert.equal(figureManifest.publication?.publicCopiesComplete, true);
+      await assertFormalPublicFigure();
+    } else {
+      await assertNoPublicFigure();
+    }
     return;
   }
 

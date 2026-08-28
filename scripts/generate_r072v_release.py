@@ -100,7 +100,7 @@ NOTE_HERO = r'''    <header class="hero"><div class="hero-inner">
         <h1>二参数单位图估计已全球化；<br>精确三次标量模型获得固定块收缩</h1>
         <p class="lead">对 \(P_{c,\sigma}=\partial_t-i\sigma[x^3+6(c+t)x]\)，先证明单位区间上的 graph estimate 对两个低阶多项式系数同时一致，再用互不相交的单位区间和 nonhomogeneous \(H^{-1}(\mathbb R)\) direct sum 得到 whole-line graph coercivity。另行构造的 all-\(L^2\) energy evolution 使 observability 可转成严格 fixed-block contraction。结论只覆盖 exact cubic linear scalar model；短时 \(T\)-一致性为 false，\(H_5,H_7,R_9\)、periodic、nonlinear/Clay 仍开放。</p>
       </div>
-      <div class="stamp"><span class="state">状态 · R0.72V exact cubic scalar theorem 完成</span><strong>whole-line graph and fixed-block contraction closed</strong><p>版本 v0.72V · 2026-08-28</p><p>wholeLineGraphCoercivity: CLOSED</p><p>allL2EnergyEvolution: CLOSED</p><p>wholeLineBlockContraction: CLOSED</p><p>timeLengthUniformity: FALSE</p><p>periodicTransfer / nonlinear / Clay: OPEN</p></div>
+      <div class="stamp"><span class="state">状态 · R0.72V exact cubic scalar theorem 完成</span><strong>whole-line graph and fixed-block contraction closed</strong><p>版本 v0.72V · 2026-08-28</p><p>wholeLineGraphCoercivity: CLOSED</p><p>allL2EnergyEvolution: CLOSED</p><p>whole-line block contraction: CLOSED (exact cubic energy model)</p><p>timeLengthUniformity: FALSE</p><p>periodic / Clay: OPEN</p><p>nonlinearNavierStokes: OPEN</p></div>
     </div></header>'''
 
 
@@ -167,6 +167,7 @@ NOTE_ARTICLE = r'''      <article>
         <section id="evolution"><div class="section-no">09 / All-L2 evolution</div><h2>时间迹与能量律来自一条独立构造</h2>
           <p>先截断实多项式势，再以 uniform energy bounds、local Aubin--Lions compactness 和 spatial-cutoff energy limit 构造每个 \(L^2\) 初值的唯一</p>
           <div class="equation">\[u\in C(\overline I;L^2(\mathbb R))\cap L^2(I;H^1(\mathbb R)).\]</div>
+          <p class="mini-kpi">scope: every (L^2) initial datum</p>
           <p>该构造给 exact energy identity。它是解析证明的一部分，不是 finite certificate 对 compactness、trace、direct sum 或 nonautonomous existence 的 machine check。</p>
         </section>
 
@@ -183,7 +184,7 @@ NOTE_ARTICLE = r'''      <article>
 
         <section id="short-time"><div class="section-no">12 / Short-time boundary</div><h2>固定 \(T\) 的定理不能升级成 \(T\downarrow0\) 一致结论</h2>
           <p>空间尺度 \(L=T^{-1/3}\) 的 exact kernel family 给 \(\|v_x\|_2/\|v\|_2\lesssim T^{1/3}\)，因此</p>
-          <div class="equation result">\[C_T\gtrsim T^{-1/3},\qquad0<T\le1.\]</div>
+          <div class="equation result">\[C_T\gtrsim T^{-1/3},\qquad0&lt;T\le1.\]</div>
           <p>这里只证明 lower bound；没有 matching upper bound、sharp asymptotic，也没有短块上远离一的 uniform contraction factor。</p>
         </section>
 
@@ -366,7 +367,7 @@ def validate_inputs() -> None:
         "cutoffCommutatorAbsorption",
         "timeLengthUniformity",
         "higherOrderRemainderStability",
-        "P_c",
+        "P_{c,\\sigma}",
         "H_D^{-1}",
         "periodicTransfer",
         "Clay",
@@ -577,12 +578,12 @@ def update_literature() -> None:
         "V literature overview",
     )
     old_open = '<div class="route-step pause"><header><b>开放接口 · R0.72V</b><strong>whole-line tail and commutator transfer</strong></header><p>控制 chart tails、boundary flux 与 spatial cutoff commutators，再检查 periodic exact-heat-path transfer。</p></div>'
-    new_steps = r'''<div class="route-step kept"><header><b>R0.72V</b><strong>coefficient-uniform unit charts and whole-line graph coercivity</strong></header><p>nonhomogeneous H^-1 direct sum 给 exact cubic scalar whole-line graph theorem；另行构造的 all-L2 energy evolution 给 fixed-block contraction。<a href="/notes/r0-72v.html">研究笔记</a> <a href="/recap-r0-61-r0-72v.html">当前累计回顾</a> <a href="#r072v-whole-line-boundary">文献边界</a></p></div>
-              <div class="route-step pause"><header><b>开放接口 · R0.72W</b><strong>weighted H5/H7/R9 remainder stability</strong></header><p>证明与 collision rescaling 兼容的 weighted whole-line absorption，再检查 periodic exact-heat-path transfer。</p></div>'''
+    new_steps = r'''<div class="route-step kept"><header><b>R0.72V</b><strong>coefficient-uniform unit charts and whole-line graph coercivity</strong></header><p>nonhomogeneous H^-1 direct sum 给 exact cubic scalar whole-line graph theorem；另行构造的 all-L2 energy evolution 给 fixed-block contraction。<a href="/notes/r0-72v.html">研究笔记</a> <a href="/recap-r0-61-r0-72v.html">当前累计回顾</a> <a href="#r072v-boundary">文献边界</a></p></div>
+              <div class="route-step pause"><header><b>开放接口 · R0.72W</b><strong>weighted H_5/H_7/R_9 remainder stability</strong></header><p>证明与 collision rescaling 兼容的 weighted whole-line absorption，再检查 periodic exact-heat-path transfer。</p></div>'''
     html = once(html, old_open, new_steps, "U literature route")
     boundary = r'''
 
-          <h3 id="r072v-whole-line-boundary">R0.72V 的 whole-line theorem 与文献边界</h3>
+          <h3 id="r072v-boundary">R0.72V 的 whole-line theorem 与文献边界</h3>
           <p>邻近自治 ED、纯虚半经典势、kinetic Poincare 与局部 subelliptic estimates 都不直接给 nonautonomous、whole-line、center-uniform、L2_t H^-1_x-forced theorem。限定检索不构成新颖性或优先权证明。</p>
           <div class="boundary"><strong>R0.72V 的主张边界</strong><p>wholeLineGraphCoercivity=CLOSED，allL2EnergyEvolution=CLOSED，wholeLineBlockContraction=CLOSED，timeLengthUniformity=FALSE。higherOrderRemainderStability=OPEN，periodicTransfer=OPEN，nonlinearNavierStokes=OPEN，Clay=OPEN。</p></div>'''
     match = re.search(r'(<h3 id="r072u-boundary">.*?<div class="boundary">.*?</div>)', html, flags=re.S)

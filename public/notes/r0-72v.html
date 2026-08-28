@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72V：exact cubic linear scalar model 的 whole-line graph coercivity、all-L2 energy evolution 与 fixed-block contraction。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72V｜whole-line graph coercivity and block contraction">
+  <meta property="og:description" content="whole-line graph 与 fixed-block contraction 已闭合；T-uniform、higher-order remainder、periodic 与 nonlinear/Clay 仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072v/fig-r072v-unit-chart-globalization.png">
+  <title>R0.72V｜whole-line graph coercivity and block contraction</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.35"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#model">模型</a><a href="#unit-chart">单位图</a><a href="#gauge">gauge</a><a href="#coefficients">系数</a><a href="#translation">平移</a><a href="#direct-sum">direct sum</a><a href="#whole-line">全直线</a><a href="#solutions">真实解</a><a href="#evolution">energy evolution</a><a href="#contraction">收缩</a><a href="#commutator">commutator</a><a href="#short-time">短时边界</a><a href="#certificate">证书</a><a href="#literature">文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72V · WHOLE-LINE GRAPH NORM · BLOCK CONTRACTION</div>
+        <h1>二参数单位图估计已全球化；<br>精确三次标量模型获得固定块收缩</h1>
+        <p class="lead">对 \(P_{c,\sigma}=\partial_t-i\sigma[x^3+6(c+t)x]\)，先证明单位区间上的 graph estimate 对两个低阶多项式系数同时一致，再用互不相交的单位区间和 nonhomogeneous \(H^{-1}(\mathbb R)\) direct sum 得到 whole-line graph coercivity。另行构造的 all-\(L^2\) energy evolution 使 observability 可转成严格 fixed-block contraction。结论只覆盖 exact cubic linear scalar model；短时 \(T\)-一致性为 false，\(H_5,H_7,R_9\)、periodic、nonlinear/Clay 仍开放。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72V exact cubic scalar theorem 完成</span><strong>whole-line graph and fixed-block contraction closed</strong><p>版本 v0.72V · 2026-08-28</p><p>wholeLineGraphCoercivity: CLOSED</p><p>allL2EnergyEvolution: CLOSED</p><p>whole-line block contraction: CLOSED (exact cubic energy model)</p><p>timeLengthUniformity: FALSE</p><p>periodic / Clay: OPEN</p><p>nonlinearNavierStokes: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li><li><a href="#model">01 · exact model</a></li><li><a href="#unit-chart">02 · unit-chart theorem</a></li><li><a href="#gauge">03 · scalar gauge</a></li><li><a href="#coefficients">04 · coefficient compactness</a></li><li><a href="#translation">05 · spatial translation</a></li><li><a href="#direct-sum">06 · H^-1 direct sum</a></li><li><a href="#whole-line">07 · whole-line theorem</a></li><li><a href="#solutions">08 · actual solutions</a></li><li><a href="#evolution">09 · all-L2 evolution</a></li><li><a href="#contraction">10 · energy contraction</a></li><li><a href="#commutator">11 · cutoff commutator</a></li><li><a href="#short-time">12 · short-time boundary</a></li><li><a href="#certificate">13 · certificate</a></li><li><a href="#literature">14 · literature</a></li><li><a href="#figure">15 · journal figure</a></li><li><a href="#value">16 · value</a></li><li><a href="#next">17 · R0.72W</a></li><li><a href="#reproduce">18 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>全直线图范数与固定块收缩闭合；外推边界保持明确</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>CLOSED · WHOLE-LINE GRAPH</strong><p>对每个固定 \(T>0\)，wholeLineGraphCoercivity=CLOSED，常数与碰撞中心 \(c\) 和符号 \(\sigma\) 无关。</p></div>
+            <div class="verdict-card true"><strong>CLOSED · ENERGY BLOCK</strong><p>另行构造的 all-\(L^2\) energy evolution 给 wholeLineSolutionObservability=CLOSED 与 wholeLineBlockContraction=CLOSED。</p></div>
+            <div class="verdict-card false"><strong>FALSE · SHORT-TIME UNIFORMITY</strong><p>timeLengthUniformity=FALSE；精确测试族给每个可行 graph constant 的下界 \(C_T\gtrsim T^{-1/3}\)。</p></div>
+            <div class="verdict-card false"><strong>OPEN · TRANSFER AND NONLINEAR</strong><p>higherOrderRemainderStability=OPEN、periodicTransfer=OPEN、Clay=OPEN；没有 nonlinear Navier--Stokes closure。</p></div>
+          </div>
+        </section>
+
+        <section id="model"><div class="section-no">01 / Exact model</div><h2>命题只针对 exact cubic linear scalar model</h2>
+          <p>固定 \(I=(-T,T)\)、\(T>0\)，考虑</p>
+          <div class="equation result">\[P_{c,\sigma}=\partial_t-i\sigma\bigl[x^3+6(c+t)x\bigr],\qquad c\in\mathbb R,\quad\sigma\in\{-1,1\}.\]</div>
+          <p>全直线负空间采用 nonhomogeneous \(H^{-1}(\mathbb R)=(H^1(\mathbb R))^*\)。势项与时间导数只要求作为整体 \(P_{c,\sigma}v\) 落入该负空间；不分别施加额外可积性。</p>
+        </section>
+
+        <section id="unit-chart"><div class="section-no">02 / Unit-chart theorem</div><h2>单位图常数对两个低阶系数同时一致</h2>
+          <p>在 \(J=(-1/2,1/2)\) 上令</p>
+          <div class="equation">\[Q_{a,b,\sigma}=\partial_t-i\sigma\bigl[y^3+ay^2+(b+6t)y\bigr].\]</div>
+          <p>存在只依赖固定 \(T\) 的 \(C_T^{\rm loc}\)，对全部 \((a,b,\sigma)\) 有</p>
+          <div class="equation result">\[\|v\|_{L^2(I\times J)}\le C_T^{\rm loc}\left(\|v_y\|_{L^2(I\times J)}+\|Q_{a,b,\sigma}v\|_{L^2(I;H_D^{-1}(J))}\right).\]</div>
+          <p>这条 twoParameterUnitChartCoercivity=CLOSED，不设空间或时间零迹；相对 R0.72U 的关键加强是对 \(a,b\) 同时一致。</p>
+        </section>
+
+        <section id="gauge"><div class="section-no">03 / Scalar gauge</div><h2>时间标量规范精确消去二次项的均值</h2>
+          <p>对 even normalized probe \(q_0\)，记 \(\mu_2=\int_Jy^2q_0\)。变换 \(w=e^{-i\sigma a\mu_2t}v\) 保持所用各范数，并把势改成</p>
+          <div class="equation result">\[\widetilde W_{a,b}=y^3+a(y^2-\mu_2)+(b+6t)y,\qquad\int_J\widetilde W_{a,b}q_0=0.\]</div>
+          <p>这是 time-only unitary gauge，不改变空间微分算子。</p>
+        </section>
+
+        <section id="coefficients"><div class="section-no">04 / Coefficient compactness</div><h2>有界与逃逸系数两种情形都闭合</h2>
+          <p>有界 \((a,b)\) 用 weighted Poincare 与 scalar compactness 排除非零空间常数极限。对 \(\lambda=(a^2+b^2)^{1/2}\to\infty\)，adaptive moment 给</p>
+          <div class="equation result">\[B'=i\sigma\bigl[\lambda\kappa_{\alpha,\beta}+\ell_{\alpha,\beta}(t)\bigr]A+E,\qquad \kappa_{\alpha,\beta}\ge\kappa_0>0.\]</div>
+          <p>端点只使用 scalar \(A,B\in H^1(I)\) traces。除以 \(\lambda\) 后 endpoint ledger 趋零，不假设 \(\lambda\delta\to0\)，也不使用 full-function \(L^2(J)\)-valued endpoint trace。</p>
+        </section>
+
+        <section id="translation"><div class="section-no">05 / Spatial translation</div><h2>每个全直线单位格都落入同一个二参数定理</h2>
+          <p>在 \(J_k=(k-1/2,k+1/2)\) 写 \(x=k+y\)。展开给出</p>
+          <div class="equation result">\[a_k=3k,\qquad b_{k,c}=3k^2+6c,\qquad k^3+6(c+t)k\ \text{为可消去的时间标量项}.\]</div>
+          <p>因此大 \(|k|\)、大 \(|c|\) 以及 \(3k^2\) 与 \(6c\) 的抵消都由同一 coefficient-uniform constant 覆盖。</p>
+        </section>
+
+        <section id="direct-sum"><div class="section-no">06 / Negative-Sobolev direct sum</div><h2>互不相交的单位格避免 tail 与 cutoff 损失</h2>
+          <p>零延拓把 \(\bigoplus_kH_0^1(J_k)\) 等距嵌入 \(H^1(\mathbb R)\)。对偶化后得到精确不等式</p>
+          <div class="equation result">\[\sum_{k\in\mathbb Z}\|g|_{J_k}\|_{H_D^{-1}(J_k)}^2\le\|g\|_{H^{-1}(\mathbb R)}^2.\]</div>
+          <p>这是 countable functional-analytic direct sum，不是有限代数证书的机器检查项。</p>
+        </section>
+
+        <section id="whole-line"><div class="section-no">07 / Whole-line theorem</div><h2>逐格平方求和直接给全直线 graph coercivity</h2>
+          <p>对 maximal distributional graph class 中每个 \(v\)，有</p>
+          <div class="equation result">\[\boxed{\|v\|_{L^2(I\times\mathbb R)}\le C_T\left(\|v_x\|_{L^2(I\times\mathbb R)}+\|P_{c,\sigma}v\|_{L^2(I;H^{-1}(\mathbb R))}\right).}\]</div>
+          <p>常数与 \(c,\sigma\) 无关，但依赖固定 \(T>0\)。证明不使用 spatial cutoff，因此没有 fixed-origin tail fraction 或 artificial boundary flux。</p>
+        </section>
+
+        <section id="solutions"><div class="section-no">08 / Actual solutions</div><h2>graph-class 解获得 whole-line spacetime observability</h2>
+          <p>若 \(P_{c,\sigma}u=u_{xx}\)，则 \(\|u_{xx}\|_{H^{-1}}\le\|u_x\|_2\)，所以</p>
+          <div class="equation result">\[\boxed{\|u\|_{L^2(I\times\mathbb R)}\le2C_T\|u_x\|_{L^2(I\times\mathbb R)}.}\]</div>
+          <p>这是 graph-class actual-solution a priori estimate；单靠 maximal graph membership 不提供时间迹、能量律或 arbitrary-data existence。</p>
+        </section>
+
+        <section id="evolution"><div class="section-no">09 / All-L2 evolution</div><h2>时间迹与能量律来自一条独立构造</h2>
+          <p>先截断实多项式势，再以 uniform energy bounds、local Aubin--Lions compactness 和 spatial-cutoff energy limit 构造每个 \(L^2\) 初值的唯一</p>
+          <div class="equation">\[u\in C(\overline I;L^2(\mathbb R))\cap L^2(I;H^1(\mathbb R)).\]</div>
+          <p class="mini-kpi">scope: every (L^2) initial datum</p>
+          <p>该构造给 exact energy identity。它是解析证明的一部分，不是 finite certificate 对 compactness、trace、direct sum 或 nonautonomous existence 的 machine check。</p>
+        </section>
+
+        <section id="contraction"><div class="section-no">10 / Energy contraction</div><h2>observability 与能量单调性给固定块严格收缩</h2>
+          <p>记 \(E(t)=\|u(t)\|_2^2\)。对上述已构造的 energy solution，重排两行 energy ledger 得到</p>
+          <div class="equation result">\[\boxed{E(T)\le\frac{C_T^2}{T+C_T^2}E(-T),\qquad\frac{C_T^2}{T+C_T^2}<1.}\]</div>
+          <p>这是 wholeLineBlockContraction=CLOSED 的全部范围：固定正时间块、exact cubic linear scalar model、all-\(L^2\) energy data。</p>
+        </section>
+
+        <section id="commutator"><div class="section-no">11 / Cutoff commutator</div><h2>全局定理之后，普通 cutoff commutator 可被吸收</h2>
+          <div class="equation result">\[2\eta'u_x+\eta''u=\partial_x(2\eta'u)-\eta''u.\]</div>
+          <p>该恒等式给直接 \(H^{-1}\) 支付；尺度 \(L\) 足够大时，square partition 的 \(L^{-1}\) 与 \(L^{-2}\) errors 可吸收。它不处理在空间无界增长的 \(H_5,H_7,R_9\) heat-polynomial remainders。</p>
+        </section>
+
+        <section id="short-time"><div class="section-no">12 / Short-time boundary</div><h2>固定 \(T\) 的定理不能升级成 \(T\downarrow0\) 一致结论</h2>
+          <p>空间尺度 \(L=T^{-1/3}\) 的 exact kernel family 给 \(\|v_x\|_2/\|v\|_2\lesssim T^{1/3}\)，因此</p>
+          <div class="equation result">\[C_T\gtrsim T^{-1/3},\qquad0&lt;T\le1.\]</div>
+          <p>这里只证明 lower bound；没有 matching upper bound、sharp asymptotic，也没有短块上远离一的 uniform contraction factor。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">13 / Certificate boundary</div><h2>机器证书只封存有限精确代数</h2>
+          <p>双路 rational ledger 核对 \(\mu_2=1/44\)、\(\mu_4=3/2288\)、\(\kappa_0=5/6292\)、\(T=1\) 的 sufficient threshold \(693/2\)、translation map 与 contraction ratio。</p>
+          <p>weighted Poincare、compactness、scalar endpoint traces、countable \(H^{-1}\) direct sum、all-\(L^2\) evolution existence 与 cutoff-energy limit 仍由数学报告和独立审计证明，不能写成 machine checked。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">14 / Literature boundary</div><h2>邻近文献不直接替代非自治 whole-line graph theorem</h2>
+          <p>自治 enhanced-dissipation、纯虚半经典势、kinetic Poincare 与局部 subelliptic estimates 提供尺度和方法基线，但没有直接给出本节同时需要的 nonautonomous、whole-line、center-uniform、\(L_t^2H_x^{-1}\)-forced theorem。</p>
+          <p>限定的一手检索不构成不存在性、新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">15 / Journal figure</div><h2>正式附图记录 moment floor、translation map 与收缩链</h2>
+          <p><img src="/assets/r072v/fig-r072v-unit-chart-globalization.svg" alt="R0.72V unit-chart globalization and exact cubic energy contraction"></p>
+          <p><a href="/assets/r072v/fig-r072v-unit-chart-globalization.pdf">下载 PDF</a> · <a href="/assets/r072v/fig-r072v-unit-chart-globalization.png">下载 PNG</a> · <a href="/assets/r072v/fig-r072v-unit-chart-globalization.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">16 / Research value</div><h2>线性模型链闭合，但离一般三维问题仍有多层缺口</h2>
+          <p>本节把 local chart theorem 升级为全直线 graph theorem，并为 exact cubic scalar energy evolution 给出严格块收缩。这比 local observability 更接近 collision-block transfer 的可用输入。</p>
+          <p>直接 Clay 价值仍低：没有 \(H_5,H_7,R_9\) perturbation stability、periodic transfer、pressure estimate、vortex-stretching control、nonlinear bootstrap 或 continuation criterion。</p>
+        </section>
+
+        <section id="next"><div class="section-no">17 / Next gate</div><h2>R0.72W：weighted remainder-stable whole-line theorem</h2>
+          <p>下一节先控制 full heat-path expansion 中的 \(H_5,H_7,R_9\) corrections，使吸收常数与 collision rescaling 兼容；该门通过后才检查 periodic exact-heat-path transfer。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">18 / Reproduction</div><h2>完整证明、边界矩阵、独立审计、证书与正式附图</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072v_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072v_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072v_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072v_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072v">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072v-whole-line-transfer/fig-r072v-unit-chart-globalization">正式附图包</a> · <a href="/notes/r0-72v.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72v.html">累计回顾</a> · <a href="/recap-r0-61-r0-72v.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72V · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

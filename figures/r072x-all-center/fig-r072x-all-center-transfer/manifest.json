@@ -1,0 +1,421 @@
+{
+  "analyticalQuestion": "How does the full exact collision family behave across every physical block center in the fixed heat history, and how do the shrinking A1 interface constants and exact A2 block arithmetic scale?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "certificateClaimBoundary": {
+    "allPhysicalRowsUniformContraction": false,
+    "analyticAllCenterExactFamilyGraphCoercivityProvedInBoundReport": true,
+    "analyticAllStartExactPathSemigroupProvedInBoundReport": true,
+    "analyticAllStartIntegratedA2ScaleProvedInBoundReport": true,
+    "analyticFixedMarginA1EnhancedDissipationImportedInBoundReport": true,
+    "analyticPeriodicRepresentativeA1A2A1ConcatenationProvedInBoundReport": true,
+    "analyticStrongRowDirectSumNoCountLossProvedInBoundReport": true,
+    "analyticUniformTwistedPeriodicGraphProvedInBoundReport": true,
+    "blochUniformFastA1ConcatenationProved": false,
+    "boundedCenterGraphLimitMachineChecked": false,
+    "clayMillenniumProblemSolved": false,
+    "cobleHeApplicationHypothesesMachineChecked": false,
+    "cobleHeTheoremMachineChecked": false,
+    "compactnessArgumentMachineChecked": false,
+    "completeLinearizedShearSubsystemProved": false,
+    "endpointIntegrationByPartsMachineChecked": false,
+    "finiteExactAlgebraCertified": true,
+    "forcedHMinusOneTransferProved": false,
+    "nonautonomousEvolutionExistenceMachineChecked": false,
+    "nonlinearNavierStokesClosureProved": false,
+    "prefactorOneAllGapExponential": false,
+    "scalarEndpointTracePassageMachineChecked": false,
+    "shrinkingInterfaceFixedShapeA1Hypotheses": false,
+    "twistedHMinusOneDirectSumMachineChecked": false
+  },
+  "claimBoundary": {
+    "a1A2A1ConcatenationBlochUniform": false,
+    "allCenterExactFamilyGraphCoercivityProvedInBoundReport": true,
+    "allPhysicalRowsUniformContraction": false,
+    "allStartExactPathSemigroupProvedInBoundReport": true,
+    "clayMillenniumProblemSolved": false,
+    "completeLinearizedShearSubsystemProved": false,
+    "exactA2PathBlochUniformProvedInBoundReport": true,
+    "fixedMarginA1EnhancedDissipationImportedInBoundReport": true,
+    "forcedHMinusOneTransferProved": false,
+    "nonlinearNavierStokesClosureProved": false,
+    "numericalDiagnosticEvaluatesAnalyticQ": false,
+    "numericalDiagnosticIsInfiniteDimensionalOperatorNorm": false,
+    "numericalDiagnosticIsProof": false,
+    "periodicRepresentativeBetaZeroExactA1A2A1ConcatenationProvedInBoundReport": true,
+    "shrinkingInterfaceFixedShapeA1HypothesesFalseInBoundReport": true
+  },
+  "compute": {
+    "cpu": "arm",
+    "dgx": "not used; local four-process deterministic CPU FFT sweep",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 0.138351,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 4,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-28T00:00:00+08:00",
+  "data": [
+    {
+      "bytes": 52908,
+      "path": "data.csv",
+      "rows": 170,
+      "schema": [
+        "panel",
+        "kind",
+        "series",
+        "physicalCenter",
+        "alpha",
+        "resolution",
+        "timeSteps",
+        "krylovDimension",
+        "normEstimate",
+        "ritzResidual",
+        "rayleighNormDefect",
+        "adjointDefect",
+        "relativeToFine",
+        "interfaceValue",
+        "expectedPower",
+        "blockHalfWidth",
+        "fullBlockCount",
+        "formula",
+        "status"
+      ],
+      "sha256": "901c9c03a317ab5d4afce81d199a1d51e2d72807ef5940327dcf1573fab72cf0"
+    },
+    {
+      "bytes": 2498,
+      "path": "results.json",
+      "schema": "panel meanings, numerical summary, claim boundary, and claims not made",
+      "sha256": "2a760cb96517be37481a5b0815b1bcc3277a07dbb9257616ffa192e515f6cb23"
+    },
+    {
+      "bytes": 1934,
+      "path": "validation.json",
+      "schema": "lineage, range, row, format, and visible-boundary checks",
+      "sha256": "0b6c73689871e9542cf1843bcdcafcf84c1c1617adf49b8457f490f7d1676059"
+    },
+    {
+      "bytes": 95923,
+      "path": "progress.ndjson",
+      "schema": "event-level parallel diagnostic progress ledger",
+      "sha256": "fc05cac35c80ace5f03870557fce3686336d113e810b8afe46e1280d3933beef"
+    },
+    {
+      "bytes": 28078,
+      "path": "resource-log.ndjson",
+      "schema": "event-level process, memory, and wall-time resource ledger",
+      "sha256": "a05a2dd0a4ed636001950a561fffa21fe29cb248ca7c71e0d7648dce33637683"
+    }
+  ],
+  "deterministic": true,
+  "diagnosticLimitations": [
+    "single fixed seed and a small actual Ritz residual do not certify the global largest singular value of the finite propagator",
+    "Krylov breakdown before dimension 8 is conservatively rejected even if it could be a happy exact closure"
+  ],
+  "environment": {
+    "numpy": "2.3.5",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "python": "3.12.13",
+    "reportlab": "pinned in requirements.txt"
+  },
+  "figure": {
+    "heightMillimetres": 150,
+    "layout": "2x2",
+    "outputs": [
+      {
+        "bytes": 11529,
+        "path": "figure.pdf",
+        "sha256": "58430867f18a927ca1f45d8be92613b75161a9ff33afb71176f5fc8ce8426e54"
+      },
+      {
+        "bytes": 36907,
+        "path": "figure.svg",
+        "sha256": "eb3a5cbd8c8cfdd3a8b3d63894320a032fcf2af418c23020de7289236b47ba7a"
+      },
+      {
+        "bytes": 407600,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4205,
+          3543
+        ],
+        "sha256": "526000efc8fc7c46294201d36d5ba2ed3d81c772619d90c134953ce52b019022"
+      }
+    ],
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r072x-all-center-transfer",
+  "git": {
+    "certificateCommit": "363585f2e08ccc0661dd087a8c80f838f467cec3",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "0526b02101d552265a784f29e6c97f2b8259957d"
+  },
+  "outputs": [
+    {
+      "bytes": 2085,
+      "path": "README.md",
+      "sha256": "000c46278055149f4bf86375c72bb3853c2861d38a2a6292eb9a35aa804a7ac9"
+    },
+    {
+      "bytes": 1669,
+      "path": "caption.md",
+      "sha256": "911aa079f34fd17713b793fbcf5dd1b26ce971ba9ea023764727148b69a3530c"
+    },
+    {
+      "bytes": 623,
+      "path": "command.txt",
+      "sha256": "7811a824f3849651ab34dc9fbf9c369fecef6a0ee1936537947afd2fb2b51220"
+    },
+    {
+      "bytes": 2370,
+      "path": "config.json",
+      "sha256": "b176ee9632dedf7ab53d2b61e56da0cb82c8eea6405db1d388fa3f3b74dbba66"
+    },
+    {
+      "bytes": 2430,
+      "path": "contract.json",
+      "sha256": "2a2bc925e4c9b6d96cdf4923cbed904c27464576aa693292d86abea5f6f6407c"
+    },
+    {
+      "bytes": 951,
+      "path": "environment.txt",
+      "sha256": "20aa37294532a73e3bfe2949db2d23065477c4e712cb0f54ff2e194d35adf307"
+    },
+    {
+      "bytes": 263,
+      "path": "plot.py",
+      "sha256": "b0b9b9f7658fbb8f1ee9744f87198777b43df8713688d02759ad04cbdce607ea"
+    },
+    {
+      "bytes": 1728,
+      "path": "qa-protocol.md",
+      "sha256": "53fbecb2526a0ebfa5dbdef35fe75d61461fecbfad54b653ecaac965e7cbe434"
+    },
+    {
+      "bytes": 45,
+      "path": "requirements.txt",
+      "sha256": "bf0a064030ae9f6fc9777cb0a6305ae442cb5c36c489c739023b8f5223bef0bd"
+    },
+    {
+      "bytes": 13285,
+      "path": "validate.py",
+      "sha256": "abed34e9f946f9195d06e56e8f5285afa85abc8ff39f45e034edf39371ec7b29"
+    },
+    {
+      "bytes": 52908,
+      "path": "data.csv",
+      "sha256": "901c9c03a317ab5d4afce81d199a1d51e2d72807ef5940327dcf1573fab72cf0"
+    },
+    {
+      "bytes": 2498,
+      "path": "results.json",
+      "sha256": "2a760cb96517be37481a5b0815b1bcc3277a07dbb9257616ffa192e515f6cb23"
+    },
+    {
+      "bytes": 1934,
+      "path": "validation.json",
+      "sha256": "0b6c73689871e9542cf1843bcdcafcf84c1c1617adf49b8457f490f7d1676059"
+    },
+    {
+      "bytes": 95923,
+      "path": "progress.ndjson",
+      "sha256": "fc05cac35c80ace5f03870557fce3686336d113e810b8afe46e1280d3933beef"
+    },
+    {
+      "bytes": 28078,
+      "path": "resource-log.ndjson",
+      "sha256": "a05a2dd0a4ed636001950a561fffa21fe29cb248ca7c71e0d7648dce33637683"
+    },
+    {
+      "bytes": 681,
+      "path": "qa-report.md",
+      "sha256": "b0b7c566f811d60abf56a170908adfe793ecdacfffd212c53de83069e324054f"
+    },
+    {
+      "bytes": 36907,
+      "path": "figure.svg",
+      "sha256": "eb3a5cbd8c8cfdd3a8b3d63894320a032fcf2af418c23020de7289236b47ba7a"
+    },
+    {
+      "bytes": 11529,
+      "path": "figure.pdf",
+      "sha256": "58430867f18a927ca1f45d8be92613b75161a9ff33afb71176f5fc8ce8426e54"
+    },
+    {
+      "bytes": 407600,
+      "path": "figure.png",
+      "sha256": "526000efc8fc7c46294201d36d5ba2ed3d81c772619d90c134953ce52b019022"
+    },
+    {
+      "bytes": 285538,
+      "path": "qa-final-size.png",
+      "sha256": "494424dbf19203491ebbdc6403bb6b86304d07ca8470aa20d401b10efa697ef0"
+    },
+    {
+      "bytes": 113645,
+      "path": "qa-grayscale.png",
+      "sha256": "1d8df3d04cb964585a952078760c35f576b3a53a48c29807c18dda5331ff0371"
+    },
+    {
+      "bytes": 184229,
+      "path": "qa-pdf.png",
+      "sha256": "42773677611345c63521e00949c9b4b42904e592eb855547a1363df38f92bfd9"
+    }
+  ],
+  "publication": {
+    "assets": [
+      {
+        "byteIdenticalToMaster": true,
+        "bytes": 11529,
+        "path": "public/assets/r072x/fig-r072x-all-center-transfer.pdf",
+        "sha256": "58430867f18a927ca1f45d8be92613b75161a9ff33afb71176f5fc8ce8426e54"
+      },
+      {
+        "byteIdenticalToMaster": true,
+        "bytes": 36907,
+        "path": "public/assets/r072x/fig-r072x-all-center-transfer.svg",
+        "sha256": "eb3a5cbd8c8cfdd3a8b3d63894320a032fcf2af418c23020de7289236b47ba7a"
+      },
+      {
+        "byteIdenticalToMaster": true,
+        "bytes": 407600,
+        "path": "public/assets/r072x/fig-r072x-all-center-transfer.png",
+        "sha256": "526000efc8fc7c46294201d36d5ba2ed3d81c772619d90c134953ce52b019022"
+      }
+    ],
+    "directory": "public/assets/r072x",
+    "publicCopiesComplete": true,
+    "stem": "fig-r072x-all-center-transfer"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "diagnosticBoundaryInspected": true,
+    "finalSizeInspected": true,
+    "finalSizePreview": "qa-final-size.png",
+    "grayscaleInspected": true,
+    "grayscalePreview": "qa-grayscale.png",
+    "labelsAndLegendsInspected": true,
+    "manualReport": "qa-report.md",
+    "pdfRenderPreview": "qa-pdf.png",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "release": "R0.72X",
+  "schemaVersion": "1.1",
+  "simulation": {
+    "alphas": [
+      1.0,
+      0.75,
+      0.5,
+      0.35,
+      0.25
+    ],
+    "configuration": "10 physical centers x 5 alpha values x 3 simultaneous spatial/time refinement levels; deterministic fully double-reorthogonalized Lanczos-Ritz on U*U; dimensions 8 through 32 checked every 4; full exact shifted two-harmonic potential",
+    "diagnosticOnly": true,
+    "equation": "u_tau=u_XX+i*V_{alpha,S0}(tau,X)*u on T_{2*pi/alpha}",
+    "formalCommand": "python3 scripts/generate_r072x_figure.py --formal --visual-inspected --source-commit <40-hex> --certificate-commit <40-hex>",
+    "initialVector": "fixed trigonometric polynomial recorded in generator",
+    "kind": "simulation",
+    "lanczosRitzPolicy": {
+      "checkEvery": 4,
+      "maxDimension": 32,
+      "minDimension": 8,
+      "relativeResidualTolerance": 1e-10,
+      "reorthogonalizationPasses": 2
+    },
+    "levels": [
+      {
+        "label": "coarse",
+        "spatialModes": 256,
+        "timeSteps": 400
+      },
+      {
+        "label": "medium",
+        "spatialModes": 512,
+        "timeSteps": 800
+      },
+      {
+        "label": "fine",
+        "spatialModes": 1024,
+        "timeSteps": 1600
+      }
+    ],
+    "monitoring": {
+      "cadence": "event-based; interval is mean wall-time spacing of archived events",
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.077932,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "event",
+        "physicalCenter",
+        "alpha",
+        "level",
+        "resolution",
+        "timeSteps",
+        "normEstimate",
+        "krylovDimension",
+        "ritzResidual",
+        "ritzCheckpoints",
+        "rayleighNormDefect",
+        "adjointDefect",
+        "completed",
+        "total",
+        "etaSeconds",
+        "elapsedSeconds",
+        "maxResidentSetPlatformUnits"
+      ]
+    },
+    "pdeSimulation": true,
+    "physicalCenters": [
+      -0.6931471805599453,
+      -0.5,
+      -0.25,
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125,
+      0.25,
+      0.3068528194400547
+    ],
+    "potential": "alpha^-3*(2*exp(-D0-alpha^2*tau)*sin(alpha*X)-exp(-4*D0-4*alpha^2*tau)*sin(2*alpha*X))",
+    "precision": "NumPy float64/complex128",
+    "randomSeed": null,
+    "solver": "Fourier Strang splitting; fully double-reorthogonalized Lanczos-Ritz on discrete U*U",
+    "timeInterval": [
+      -0.25,
+      0.25
+    ],
+    "wallTimeSeconds": 11.845590083976276
+  },
+  "sourceData": [
+    {
+      "bytes": 7762,
+      "extractionCommand": "python3 research/certificates/r072x/generate_certificate.py --formal --source-commit <40-hex>",
+      "fileName": "research/certificates/r072x/certificate.json",
+      "location": "repository",
+      "role": "formalExactCertificate",
+      "sha256": "bf027ceee89914ed1c23278a95009c8f6d5556574ac4415e9673985366ac9f7b"
+    },
+    {
+      "bytes": 83452,
+      "extractionCommand": "python3 scripts/generate_r072x_figure.py --formal --visual-inspected --source-commit <40-hex> --certificate-commit <40-hex>",
+      "fileName": "scripts/generate_r072x_figure.py",
+      "location": "repository",
+      "role": "fullExactDiagnosticAndFigureGenerator",
+      "sha256": "867ea0a9749d7dff053de28c61c477094ae322f774aacace9cf95a51005a320a"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "The bound analytic report supplies Bloch-uniform all-center exact A2 graph coercivity and all-start block tiling. Exact A1-A2-A1 concatenation is closed only for the periodic representative beta=0, not uniformly over Bloch twists. The displayed finite-grid propagator norms and scaling samples are deterministic diagnostics only; the single-seed Ritz residual does not certify the finite propagator's global largest singular value."
+}

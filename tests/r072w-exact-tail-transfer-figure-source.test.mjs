@@ -225,6 +225,10 @@ test("R0.72W source pins the exact deterministic forward-adjoint method", async 
     "randomSeed",
     "progress.ndjson",
     "resource-log.ndjson",
+    '"coarse": (MUTED, "3,4", "N=512, NS=1000", 44)',
+    '"medium": (GOLD, "9,5", "N=1024, NS=2000", 16)',
+    '"fine": (BLUE, None, "N=2048, NS=4000", -14)',
+    "+ label_offset",
   ]) assert.ok(generator.includes(token), token);
   assert.match(environment, /full\s+exact trigonometric potential/i);
   assert.match(environment, /no randomness/i);

@@ -666,12 +666,12 @@ def build_scene(numeric: list[dict[str, str]] | None) -> Scene:
         "estimated ||U_alpha(1,-1)||_2->2",
     )
     styles = {
-        "coarse": (MUTED, "3,4", "N=512, NS=1000"),
-        "medium": (GOLD, "9,5", "N=1024, NS=2000"),
-        "fine": (BLUE, None, "N=2048, NS=4000"),
+        "coarse": (MUTED, "3,4", "N=512, NS=1000", 44),
+        "medium": (GOLD, "9,5", "N=1024, NS=2000", 16),
+        "fine": (BLUE, None, "N=2048, NS=4000", -14),
     }
     if numeric:
-        for level, (color, dash, label) in styles.items():
+        for level, (color, dash, label, label_offset) in styles.items():
             selected = sorted(
                 (row for row in numeric if row["series"] == level),
                 key=lambda row: float(row["alpha"]),
@@ -686,7 +686,7 @@ def build_scene(numeric: list[dict[str, str]] | None) -> Scene:
             last = selected[-1]
             scene.text(
                 xc(float(last["alpha"])) - 5,
-                yc(float(last["normEstimate"])) - (10 if level == "fine" else -18),
+                yc(float(last["normEstimate"])) + label_offset,
                 label,
                 13,
                 color,

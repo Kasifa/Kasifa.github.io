@@ -1469,7 +1469,10 @@ def self_test() -> None:
             and config.get("heightMillimetres") == HEIGHT_MM
             and config.get("pngDpi") == PNG_DPI
         ),
-        "exactSourceInventory": package_files == set(SOURCE_FILES),
+        "exactLifecycleInventory": package_files in (
+            set(SOURCE_FILES),
+            set(SOURCE_FILES) | set(GENERATED_FILES),
+        ),
         "analyticRows": len(rows) == EXPECTED_ANALYTIC_ROWS,
         "panelSet": {row["panel"] for row in rows} == {"A", "B"},
         "coefficientGeometryNonzero": coefficient_floor > 0.5,

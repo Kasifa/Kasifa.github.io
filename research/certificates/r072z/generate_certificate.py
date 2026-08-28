@@ -15,6 +15,8 @@ import json
 import math
 from pathlib import Path
 import re
+import subprocess
+import sys
 from typing import Any
 
 
@@ -33,11 +35,31 @@ SOURCE_FILES = (
     "research/certificates/r072z/README.md",
     "research/certificates/r072z/command.txt",
     "research/certificates/r072z/environment.txt",
+    "research/release-manifest.json",
+    "scripts/generate_r072z_release.py",
+    "scripts/add-r072z-translations.mjs",
+    "figures/r072z/fig-r072z-os-squire-threshold/README.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/caption.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/command.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/config.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/contract.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/environment.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/figure-contract.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/manifest-draft.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/plot.py",
+    "figures/r072z/fig-r072z-os-squire-threshold/qa-protocol.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/requirements.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/validate.py",
     "tests/r072z-deterministic-certificate-source.test.mjs",
+    "tests/r072z-os-squire-figure-source.test.mjs",
+    "tests/r072z-os-squire-gate.test.mjs",
+    "tests/r072z-release.test.mjs",
 )
 GENERATED_FILES = (
     "certificate.json", "independent.json", "crosscheck.json", "manifest.json",
+    "SHA256SUMS",
 )
+MUTABLE_PUBLICATION_STATE = "research/release-manifest.json"
 
 CLOSED_KEYS = (
     "exactOSFeedbackCommutatorIdentity",
@@ -333,12 +355,321 @@ def payload() -> dict[str, Any]:
     return body
 
 
+FLAT_FILES_WITHOUT_HASH_LEDGER = {
+    "README.md", "command.txt", "environment.txt", "generate_certificate.py",
+    "independent_recompute.py", "validate_certificate.py", "certificate.json",
+    "independent.json", "crosscheck.json", "manifest.json",
+}
+SOURCE_BINDING_POLICY = {
+    "mutablePublicationState": MUTABLE_PUBLICATION_STATE,
+    "sourceCommitBlobPermanentlyBound": True,
+    "currentAdvanceAllowedOnlyAtCleanDescendantPublicationCommit": True,
+}
+CLAIM_COUNTS = {"closed": 15, "false": 10, "open": 8}
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def draft_source_bindings() -> list[dict[str, Any]]:
+    bindings = []
+    for relative in SOURCE_FILES:
+        path = REPOSITORY / relative
+        if not path.is_file() or path.is_symlink():
+            raise RuntimeError(f"draft source is absent or not a regular file: {relative}")
+        bindings.append({
+            "path": relative,
+            "sha256": sha256(path),
+            "bytes": path.stat().st_size,
+        })
+    return bindings
+
+
+def ensure_clean_head(source_commit: str) -> None:
+    if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        raise RuntimeError(
+            "--formal requires a full 40-character lowercase "
+            "--formal-source-commit"
+        )
+    if subprocess.run(
+        ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+        cwd=REPOSITORY,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode:
+        raise RuntimeError("formal source commit is not a valid Git commit object")
+    status = subprocess.check_output(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        cwd=REPOSITORY,
+        text=True,
+    )
+    if status:
+        raise RuntimeError("formal certificate requires a completely clean repository")
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=REPOSITORY, text=True
+    ).strip()
+    if head != source_commit:
+        raise RuntimeError("formal source commit must equal clean HEAD")
+
+
+def formal_source_bindings(source_commit: str) -> list[dict[str, Any]]:
+    bindings = []
+    for relative in SOURCE_FILES:
+        path = REPOSITORY / relative
+        if not path.is_file() or path.is_symlink():
+            raise RuntimeError(f"formal source is absent or not a regular file: {relative}")
+        try:
+            committed_blob = subprocess.check_output(
+                ["git", "rev-parse", f"{source_commit}:{relative}"],
+                cwd=REPOSITORY,
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except subprocess.CalledProcessError as error:
+            raise RuntimeError(
+                f"formal source is not frozen in {source_commit}: {relative}"
+            ) from error
+        working_blob = subprocess.check_output(
+            ["git", "hash-object", f"--path={relative}", str(path)],
+            cwd=REPOSITORY,
+            text=True,
+        ).strip()
+        if committed_blob != working_blob:
+            raise RuntimeError(f"working source differs from {source_commit}:{relative}")
+        committed_bytes = subprocess.check_output(
+            ["git", "cat-file", "blob", committed_blob], cwd=REPOSITORY
+        )
+        bindings.append({
+            "path": relative,
+            "commit": source_commit,
+            "gitBlob": committed_blob,
+            "sha256": hashlib.sha256(committed_bytes).hexdigest(),
+            "bytes": len(committed_bytes),
+            "workingTreeBlobMatches": True,
+        })
+    return bindings
+
+
+def self_test() -> None:
+    value = payload()
+    if value.get("status") != "passed" or not all(value.get("exactChecks", {}).values()):
+        raise RuntimeError("producer exact self-test failed")
+    subprocess.run(
+        [sys.executable, str(ROOT / "independent_recompute.py"), "--self-test"],
+        check=True,
+    )
+    print("R0.72Z certificate source self-test: passed (no outputs written)")
+
+
+def existing_status() -> str | None:
+    manifest_path = ROOT / "manifest.json"
+    if not manifest_path.exists():
+        return None
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    status = manifest.get("status")
+    if status == "formal":
+        raise RuntimeError("refusing to overwrite a formal R0.72Z certificate")
+    # A missing status is the legacy finite-hash schema and is intentionally
+    # upgradeable in one pass.  Draft and legacy bundles are both unsealed.
+    if status not in (None, "draft"):
+        raise RuntimeError("existing certificate manifest has an unknown status")
+    return status
+
+
+def make_crosscheck(
+    certificate: dict[str, Any],
+    independent: dict[str, Any],
+    *,
+    stage: str,
+    source_commit: str | None,
+    bindings: list[dict[str, Any]],
+) -> dict[str, Any]:
+    comparator_path = ROOT / "validate_certificate.py"
+    comparator_namespace: dict[str, Any] = {
+        "__name__": "r072z_certificate_comparator",
+        "__file__": str(comparator_path),
+    }
+    exec(
+        compile(
+            comparator_path.read_text(encoding="utf-8"),
+            str(comparator_path),
+            "exec",
+        ),
+        comparator_namespace,
+    )
+    exact_crosscheck = comparator_namespace["validate_payloads"](
+        certificate, independent
+    )
+    checks = {
+        "certificatePassed": certificate.get("status") == "passed",
+        "allProducerExactChecksPassed": all(certificate.get("exactChecks", {}).values()),
+        "independentRecomputationPassed": independent.get("status") == "passed",
+        "allIndependentChecksPassed": all(independent.get("checks", {}).values()),
+        "comparatorExactLedgerPassed": exact_crosscheck.get("status") == "passed",
+        "routesRemainDistinct": certificate.get("producerMethod") != independent.get("method"),
+        "sourceHashesAgree": certificate.get("sourceHashes") == independent.get("sourceHashes"),
+        "claimLedgerAgrees": certificate.get("claimLedger") == independent.get("claimLedger"),
+        "claimBoundaryAgrees": certificate.get("claimBoundary") == independent.get("claimBoundary"),
+        "claimCountsAreExact": {
+            key: len(certificate.get("claimLedger", {}).get(key, []))
+            for key in CLAIM_COUNTS
+        } == CLAIM_COUNTS,
+        "certificateStagePropagated": (
+            certificate.get("certificateStage") == stage
+            and independent.get("certificateStage") == stage
+            and certificate.get("sourceCommit") == source_commit
+            and independent.get("sourceCommit") == source_commit
+        ),
+        "lowGapAndPhysicalDirectSumRemainOpen": (
+            not certificate["claimBoundary"]["lowGapOSTransientA2PropagatorProved"]
+            and not certificate["claimBoundary"]["BlochUniformPhysicalVelocityDirectSumProved"]
+        ),
+        "nonlinearAndClayRemainFalse": (
+            not certificate["claimBoundary"]["nonlinearNavierStokesClosureProved"]
+            and not certificate["claimBoundary"]["clayMillenniumProblemSolved"]
+        ),
+    }
+    return {
+        "schemaVersion": 1,
+        "researchRelease": "R0.72Z",
+        "status": "passed" if all(checks.values()) else "failed",
+        "method": "producer direct-sum route versus independent Fourier-Poisson-quadrature route",
+        "temporaryUnsealedSourceAllowed": stage == "draft",
+        "formalSourceReady": stage == "formal",
+        "sourceCommit": source_commit,
+        "sourceBindings": bindings,
+        "sourceBindingPolicy": SOURCE_BINDING_POLICY,
+        "certificateSha256": sha256(ROOT / "certificate.json"),
+        "checkedSections": exact_crosscheck["checkedSections"],
+        "checks": checks,
+    }
+
+
+def ensure_flat_package_directory() -> set[str]:
+    unexpected = [
+        path.name for path in ROOT.iterdir()
+        if path.name != "SHA256SUMS" and (not path.is_file() or path.is_symlink())
+    ]
+    if unexpected:
+        raise RuntimeError(
+            f"certificate directory contains non-flat or linked entries: {sorted(unexpected)}"
+        )
+    actual = {
+        path.name for path in ROOT.iterdir()
+        if path.is_file() and path.name != "SHA256SUMS"
+    }
+    if actual != FLAT_FILES_WITHOUT_HASH_LEDGER:
+        raise RuntimeError("certificate directory has unexpected or missing flat files")
+    return actual
+
+
+def write_flat_hash_ledger() -> None:
+    actual = ensure_flat_package_directory()
+    for name in actual:
+        if (ROOT / name).is_symlink():
+            raise RuntimeError(f"certificate flat file is a symlink: {name}")
+    (ROOT / "SHA256SUMS").write_text(
+        "".join(f"{sha256(ROOT / name)}  {name}\n" for name in sorted(actual)),
+        encoding="utf-8",
+    )
+
+
+def build(stage: str, source_commit: str | None) -> None:
+    # Refuse ignored cache directories or any other non-flat entry before the
+    # first JSON output is touched.
+    ensure_flat_package_directory()
+    existing_status()
+    bindings = (
+        formal_source_bindings(str(source_commit))
+        if stage == "formal"
+        else draft_source_bindings()
+    )
+    independent_command = [
+        sys.executable,
+        str(ROOT / "independent_recompute.py"),
+        f"--{stage}",
+        "--output",
+        str(ROOT / "independent.json"),
+    ]
+    if stage == "formal":
+        independent_command.extend(["--formal-source-commit", str(source_commit)])
+    subprocess.run(independent_command, check=True)
+
+    certificate = payload()
+    certificate["certificateStage"] = stage
+    certificate["sourceCommit"] = source_commit
+    write_json(ROOT / "certificate.json", certificate)
+    independent = json.loads((ROOT / "independent.json").read_text(encoding="utf-8"))
+    crosscheck = make_crosscheck(
+        certificate,
+        independent,
+        stage=stage,
+        source_commit=source_commit,
+        bindings=bindings,
+    )
+    if crosscheck["status"] != "passed" or not all(crosscheck["checks"].values()):
+        raise RuntimeError(f"independent R0.72Z {stage} crosscheck failed")
+    write_json(ROOT / "crosscheck.json", crosscheck)
+    limitation_prefix = (
+        "Formally source-bound finite algebra only."
+        if stage == "formal"
+        else "Draft finite algebra only. Formal source-commit binding is absent."
+    )
+    manifest = {
+        "schemaVersion": 1,
+        "researchRelease": "R0.72Z",
+        "bundle": "R0.72Z deterministic OS--Squire finite-algebra ledger",
+        "status": stage,
+        "sourceCommit": source_commit,
+        "sourceBindings": bindings,
+        "sourceBindingPolicy": SOURCE_BINDING_POLICY,
+        "claimCounts": CLAIM_COUNTS,
+        "boundary": certificate["claimBoundary"],
+        "deterministic": True,
+        "createdAt": "2026-08-28T00:00:00+08:00",
+        "files": {
+            name: {"sha256": sha256(ROOT / name), "bytes": (ROOT / name).stat().st_size}
+            for name in ("certificate.json", "independent.json", "crosscheck.json")
+        },
+        "limitations": (
+            limitation_prefix
+            + " Low-gap OS propagation, collision-scale limiting absorption, "
+            "finite-to-infinite operator-norm passage, the Bloch-uniform physical "
+            "velocity direct sum, the complete linearized subsystem, nonlinear "
+            "Navier--Stokes closure, and Clay are not machine checked or claimed."
+        ),
+    }
+    write_json(ROOT / "manifest.json", manifest)
+    write_flat_hash_ledger()
+    print(f"R0.72Z {stage} deterministic certificate: passed and written")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=ROOT / "certificate.json")
+    parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--draft", action="store_true")
+    parser.add_argument("--formal", action="store_true")
+    parser.add_argument("--formal-source-commit")
     args = parser.parse_args()
-    args.output.write_text(json.dumps(payload(), indent=2, sort_keys=True) + "\n")
-    print(args.output)
+    if args.self_test:
+        if args.draft or args.formal or args.formal_source_commit:
+            parser.error("--self-test cannot be combined with output arguments")
+        self_test()
+        return
+    if args.draft and args.formal:
+        parser.error("choose exactly one of --draft or --formal")
+    if args.draft:
+        if args.formal_source_commit:
+            parser.error("--draft cannot be combined with --formal-source-commit")
+        build("draft", None)
+        return
+    if args.formal:
+        source_commit = str(args.formal_source_commit or "")
+        ensure_clean_head(source_commit)
+        build("formal", source_commit)
+        return
+    parser.error("use --self-test, --draft, or --formal --formal-source-commit <40-hex>")
 
 
 if __name__ == "__main__":

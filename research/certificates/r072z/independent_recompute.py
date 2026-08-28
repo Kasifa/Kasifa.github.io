@@ -15,6 +15,7 @@ import json
 import math
 from pathlib import Path
 import re
+import subprocess
 from typing import Any, Callable
 
 
@@ -33,7 +34,25 @@ INPUTS = (
     "research/certificates/r072z/README.md",
     "research/certificates/r072z/command.txt",
     "research/certificates/r072z/environment.txt",
+    "research/release-manifest.json",
+    "scripts/generate_r072z_release.py",
+    "scripts/add-r072z-translations.mjs",
+    "figures/r072z/fig-r072z-os-squire-threshold/README.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/caption.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/command.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/config.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/contract.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/environment.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/figure-contract.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/manifest-draft.json",
+    "figures/r072z/fig-r072z-os-squire-threshold/plot.py",
+    "figures/r072z/fig-r072z-os-squire-threshold/qa-protocol.md",
+    "figures/r072z/fig-r072z-os-squire-threshold/requirements.txt",
+    "figures/r072z/fig-r072z-os-squire-threshold/validate.py",
     "tests/r072z-deterministic-certificate-source.test.mjs",
+    "tests/r072z-os-squire-figure-source.test.mjs",
+    "tests/r072z-os-squire-gate.test.mjs",
+    "tests/r072z-release.test.mjs",
 )
 
 EXPECTED = {
@@ -308,12 +327,94 @@ def compute() -> dict[str, Any]:
     return result
 
 
+def ensure_formal_context(source_commit: str, output: Path) -> None:
+    if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        raise RuntimeError(
+            "--formal requires a full 40-character lowercase "
+            "--formal-source-commit"
+        )
+    expected = (HERE / "independent.json").resolve()
+    if output.resolve() != expected:
+        raise RuntimeError(f"formal independent output must be {expected}")
+    if subprocess.run(
+        ["git", "cat-file", "-e", f"{source_commit}^{{commit}}"],
+        cwd=REPO,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode:
+        raise RuntimeError("formal independent source commit is not a Git commit")
+    status = subprocess.check_output(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        cwd=REPO,
+        text=True,
+    )
+    if status:
+        raise RuntimeError(
+            "formal independent recomputation requires a completely clean repository"
+        )
+    head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
+    ).strip()
+    if head != source_commit:
+        raise RuntimeError("formal independent source commit must equal clean HEAD")
+    manifest_path = HERE / "manifest.json"
+    if manifest_path.exists():
+        prior = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if prior.get("status") == "formal":
+            raise RuntimeError("refusing to overwrite a formal independent result")
+        # status=None is the legacy finite-hash bundle and is intentionally
+        # accepted for a one-pass upgrade at the clean source commit.
+        if prior.get("status") not in (None, "draft"):
+            raise RuntimeError("existing certificate manifest has an unknown status")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=HERE / "independent.json")
+    parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--draft", action="store_true")
+    parser.add_argument("--formal", action="store_true")
+    parser.add_argument("--formal-source-commit")
+    parser.add_argument("--output")
     args = parser.parse_args()
-    args.output.write_text(json.dumps(compute(), indent=2, sort_keys=True) + "\n")
-    print(args.output)
+    value = compute()
+    if args.self_test:
+        if args.draft or args.formal or args.formal_source_commit or args.output:
+            parser.error("--self-test cannot be combined with output arguments")
+        print("R0.72Z independent recomputation self-test: passed (no outputs written)")
+        return
+    if args.draft and args.formal:
+        parser.error("choose exactly one of --draft or --formal")
+    if not args.output:
+        parser.error("draft or formal recomputation requires --output")
+    output = Path(args.output).resolve()
+    expected = (HERE / "independent.json").resolve()
+    if output != expected:
+        parser.error(f"independent output must be {expected}")
+    if args.formal:
+        source_commit = str(args.formal_source_commit or "")
+        ensure_formal_context(source_commit, output)
+        value["certificateStage"] = "formal"
+        value["sourceCommit"] = source_commit
+        output.write_text(
+            json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print("R0.72Z independent formal recomputation: passed and source-bound")
+        return
+    if not args.draft:
+        parser.error("use --self-test, --draft, or --formal")
+    if args.formal_source_commit:
+        parser.error("--draft cannot be combined with --formal-source-commit")
+    manifest_path = HERE / "manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("status") == "formal":
+            raise RuntimeError("refusing to overwrite a formal independent result")
+        if manifest.get("status") not in (None, "draft"):
+            raise RuntimeError("existing certificate manifest has an unknown status")
+    value["certificateStage"] = "draft"
+    value["sourceCommit"] = None
+    output.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print("R0.72Z independent draft recomputation: passed and written")
 
 
 if __name__ == "__main__":

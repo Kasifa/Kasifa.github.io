@@ -31,6 +31,7 @@ EXPECTED_SOURCE_FILES = (
     "research/release-manifest.json",
     "scripts/generate_r072z_release.py",
     "scripts/add-r072z-translations.mjs",
+    "scripts/i18n-snapshots/r072z-missing.json",
     "figures/r072z/fig-r072z-os-squire-threshold/README.md",
     "figures/r072z/fig-r072z-os-squire-threshold/caption.md",
     "figures/r072z/fig-r072z-os-squire-threshold/command.txt",

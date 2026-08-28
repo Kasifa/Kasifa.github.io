@@ -33,6 +33,7 @@ const completeBoundSources = [
   "research/release-manifest.json",
   "scripts/generate_r072z_release.py",
   "scripts/add-r072z-translations.mjs",
+  "scripts/i18n-snapshots/r072z-missing.json",
   "figures/r072z/fig-r072z-os-squire-threshold/README.md",
   "figures/r072z/fig-r072z-os-squire-threshold/caption.md",
   "figures/r072z/fig-r072z-os-squire-threshold/command.txt",
@@ -157,7 +158,7 @@ test("R0.72Z producer and independent algorithms agree in memory", async () => {
     "result=vm.validate_payloads(p,i)", 'assert result["status"]=="passed"',
     'assert p["producerMethod"]!=i["method"]',
     "assert pm.SOURCE_FILES == im.INPUTS == vm.EXPECTED_SOURCE_FILES",
-    "assert len(pm.SOURCE_FILES) == 31",
+    "assert len(pm.SOURCE_FILES) == 32",
     'print("R0.72Z source-stage dual-route comparison passed")',
   ].join("\n");
   const result = await run(python, ["-c", script], {
@@ -167,13 +168,13 @@ test("R0.72Z producer and independent algorithms agree in memory", async () => {
   assert.match(result.stdout, /dual-route comparison passed/);
 });
 
-test("R0.72Z formal lifecycle binds the complete 31-file source package", async () => {
+test("R0.72Z formal lifecycle binds the complete 32-file source package", async () => {
   const [producer, independent, validator] = await Promise.all([
     text(certificate + "/generate_certificate.py"),
     text(certificate + "/independent_recompute.py"),
     text(certificate + "/validate_certificate.py"),
   ]);
-  assert.equal(completeBoundSources.length, 31);
+  assert.equal(completeBoundSources.length, 32);
   for (const relative of completeBoundSources) {
     assert.ok(producer.includes('"' + relative + '"'), relative + " producer");
     assert.ok(independent.includes('"' + relative + '"'), relative + " independent");
@@ -279,6 +280,24 @@ test("R0.72Z strict validator handles legacy, draft, and formal stages fail-clos
   const manifest = await maybeJson(certificate + "/manifest.json");
   assert.ok(manifest, "legacy, draft, or formal certificate must exist");
   if (manifest.status === "formal") {
+    const boundPaths = manifest.sourceBindings?.map((row) => row.path) ?? [];
+    let frozenSourcesCurrent = JSON.stringify(boundPaths) === JSON.stringify(completeBoundSources);
+    if (frozenSourcesCurrent) {
+      for (const row of manifest.sourceBindings) {
+        if (row.path === "research/release-manifest.json") continue;
+        const path = resolve(root, row.path);
+        if (!existsSync(path) || await sha(row.path) !== row.sha256) {
+          frozenSourcesCurrent = false;
+          break;
+        }
+      }
+    }
+    if (!frozenSourcesCurrent) {
+      await assert.rejects(run(python, [
+        certificate + "/validate_certificate.py", "--require-formal",
+      ], { cwd: root }));
+      return;
+    }
     await verifyFlatHashLedger();
     const crosscheck = await maybeJson(certificate + "/crosscheck.json");
     assert.match(manifest.sourceCommit, /^[0-9a-f]{40}$/);

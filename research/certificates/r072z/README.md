@@ -47,7 +47,8 @@ as an unsealed input and can be upgraded in one formal pass.
 
 After the report, gap matrix, literature audit, three mathematical audits,
 six certificate-source files, release manifest, release and translation
-scripts, all twelve figure-source files, and all four R0.72Z tests are frozen
+scripts, the exact R0.72Z missing-string i18n snapshot, all twelve
+figure-source files, and all four R0.72Z tests are frozen
 in one completely clean commit, seal the certificate with:
 
 ```sh
@@ -58,7 +59,7 @@ python3 research/certificates/r072z/validate_certificate.py --require-formal
 ```
 
 Formal generation requires a full lowercase 40-character commit equal to the
-current clean `HEAD`.  Each of the 31 source bindings records the source
+current clean `HEAD`.  Each of the 32 source bindings records the source
 commit, Git blob, SHA-256, and byte count.  The formal manifest has
 `status=formal`; the crosscheck has `status=passed`,
 `formalSourceReady=true`, `temporaryUnsealedSourceAllowed=false`, the same

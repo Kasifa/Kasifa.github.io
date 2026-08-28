@@ -1,6 +1,6 @@
 # R0.72Y figure QA
 
-- manifest stage: draft
+- manifest stage: formal
 - explicit visual inspection: yes
 - final-size, grayscale, and independent PDF previews generated: yes
 - exact lift-up formula recomputed for every plotted mark: yes

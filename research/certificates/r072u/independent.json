@@ -1,0 +1,52 @@
+{
+  "claimBoundary": {
+    "boundedChartFunctionalAnalysisMachineChecked": false,
+    "clayMillenniumProblemSolved": false,
+    "exactRationalProbeCertified": true,
+    "fixedGaugeInviscidFloorCertified": true,
+    "nonlinearNavierStokesClosureProved": false,
+    "periodicTransferProved": false,
+    "twoMomentLargeCenterAlgebraCertified": true,
+    "wholeLineBlockContractionProved": false
+  },
+  "fixedGaugeInviscidCalibration": {
+    "centeredEvenComponent": "sigma*(3*s^2-T^2)",
+    "isViscousContraction": false,
+    "meanSquareIdentity": "min_a (1/(2*T))*integral_{-T}^{T}|a+sigma*(3*s*(X^2+2*c)+3*s^2)|^2 ds=3*T^2*(X^2+2*c)^2+(4/5)*T^4",
+    "minimizingPhaseGradient": "a=-sigma*T^2",
+    "oddComponent": "3*sigma*s*(X^2+2*c)",
+    "optimizedVariable": "one time-independent initial phase gradient a for each fixed X",
+    "orthogonalOnSymmetricBlock": true,
+    "timeHalfLengthT": "1/1",
+    "unitBlockFloor": "4/5"
+  },
+  "method": "beta-integral recurrence for rho moments; direct centered time moments for the fixed gauge",
+  "moments": {
+    "definition": "mu_j=integral_{-1}^{1} X^j*rho(X) dX",
+    "mu0": "1/1",
+    "mu2": "1/11",
+    "mu4": "3/143"
+  },
+  "probe": {
+    "formula": "rho(X)=(315/256)*(1-X^2)^4*1_{[-1,1]}(X)",
+    "momentRecurrence": "mu_(2n+2)/mu_(2n)=(2*n+1)/(2*n+11)",
+    "normalization": "1/1"
+  },
+  "schemaVersion": 1,
+  "status": "passed",
+  "twoMomentLargeCenter": {
+    "coefficient": "K_c(s)=3/143+6*(c+s)/11",
+    "conclusion": "if abs(c)>=27/13 and abs(s)<=1 then K_c has fixed sign and abs(K_c)>=3*mu2*abs(c)",
+    "generalThreshold": "C_*=2*T+mu4/(3*mu2)",
+    "negativeThresholdMaximum": "-81/143",
+    "positiveThresholdMinimum": "87/143",
+    "signs": {
+      "c<=-27/13": "negative",
+      "c>=27/13": "positive"
+    },
+    "threshold": "27/13",
+    "thresholdFloor": "81/143",
+    "timeHalfLengthT": "1/1",
+    "timeInterval": "[-1,1]"
+  }
+}

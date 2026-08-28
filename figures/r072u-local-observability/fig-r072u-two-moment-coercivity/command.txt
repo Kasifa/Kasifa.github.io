@@ -1,0 +1,16 @@
+# Source stage: this is the only command to run before the source commit exists.
+python3 scripts/generate_r072u_figure.py --self-test
+
+# Later certificate stage, after every bound source file has been committed.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072u/generate_certificate.py --formal --source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072u/validate_certificate.py --require-formal
+
+# Later draft rendering, after the formal certificate exists. No public copies.
+python3 scripts/generate_r072u_figure.py --draft
+
+# Later formal rendering from a clean commit containing the certificate.
+SOURCE_COMMIT=$(python3 -c 'import json; print(json.load(open("research/certificates/r072u/manifest.json"))["sourceCommit"])')
+CERTIFICATE_COMMIT=$(git rev-parse HEAD)
+python3 scripts/generate_r072u_figure.py --formal --visual-inspected --source-commit "$SOURCE_COMMIT" --certificate-commit "$CERTIFICATE_COMMIT"
+python3 figures/r072u-local-observability/fig-r072u-two-moment-coercivity/validate.py --require-formal

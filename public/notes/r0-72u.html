@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72U：未截断 fixed-chart graph coercivity 对 interval center 一致闭合，并给出 local actual-solution observability。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72U｜center-uniform local graph coercivity">
+  <meta property="og:description" content="local observability 已闭合；whole-line block contraction、periodic transfer 与 Clay 仍开放。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072u/fig-r072u-two-moment-coercivity.png">
+  <title>R0.72U｜center-uniform local graph coercivity</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.34"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#cutoff">cutoff audit</a><a href="#theorem">定理</a><a href="#trace">trace</a><a href="#poincare">Poincare</a><a href="#moments">moments</a><a href="#bounded">bounded centers</a><a href="#escaping">escaping centers</a><a href="#endpoint">endpoint</a><a href="#discriminator">nontriviality</a><a href="#solutions">solutions</a><a href="#global">global boundary</a><a href="#certificate">证书</a><a href="#literature">文献</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div>
+        <div class="eyebrow">研究笔记 R0.72U · LOCAL GRAPH COERCIVITY · TWO-MOMENT PROOF</div>
+        <h1>固定空间图上的未截断估计已闭合；<br>全直线传递仍待证明</h1>
+        <p class="lead">我先排除了原先的字面 cutoff 目标：若 \(\chi u\) 在 \(X\) 方向紧支撑，普通 Poincare inequality 已经控制 \(\|\chi u\|_2\)，不含 A2 信息。改正后的命题不设时间 cutoff，也不设空间零迹。对 \(P_{c,\sigma}=\partial_S-i\sigma[X^3+6(c+S)X]\)，固定有界空间图上的 graph estimate 对中心 \(c\) 一致成立，并直接给出局部真实解 observability。wholeLineBlockContraction、periodicTransfer 与 Clay 问题仍开放。</p>
+      </div>
+      <div class="stamp"><span class="state">状态 · R0.72U bounded-chart theorem 完成</span><strong>uncut local coercivity closed</strong><p>版本 v0.72U · 2026-08-28</p><p>literal spatial cutoff: Poincare-trivial</p><p>centerUniformLocalGraphCoercivity: CLOSED</p><p>localSolutionObservability: CLOSED</p><p>wholeLineBlockContraction: OPEN</p><p>periodicTransfer / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li><li><a href="#cutoff">01 · cutoff audit</a></li><li><a href="#theorem">02 · corrected theorem</a></li><li><a href="#trace">03 · graph-space trace</a></li><li><a href="#poincare">04 · Poincare reduction</a></li><li><a href="#moments">05 · two moments</a></li><li><a href="#bounded">06 · bounded centers</a></li><li><a href="#escaping">07 · escaping centers</a></li><li><a href="#endpoint">08 · endpoint correction</a></li><li><a href="#discriminator">09 · nontriviality</a></li><li><a href="#solutions">10 · actual solutions</a></li><li><a href="#global">11 · local-to-global</a></li><li><a href="#certificate">12 · certificate</a></li><li><a href="#literature">13 · literature</a></li><li><a href="#figure">14 · journal figure</a></li><li><a href="#value">15 · value</a></li><li><a href="#next">16 · R0.72V</a></li><li><a href="#reproduce">17 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>非平凡局部命题闭合；全局耗散命题没有被偷换</h2>
+          <div class="verdict-grid">
+            <div class="verdict-card true"><strong>CLOSED · UNCUT GRAPH ESTIMATE</strong><p>在固定 \(I\times J\) 上，不设时间零迹或空间 Dirichlet 迹，graph norm 以对中心 \(c\) 一致的常数控制 \(L^2\) norm。</p></div>
+            <div class="verdict-card true"><strong>CLOSED · LOCAL SOLUTIONS</strong><p>对 \(P_{c,\sigma}u=u_{XX}\)，负范数残差由 \(\|u_X\|_2\) 支付，得到 uncut local solution observability。</p></div>
+            <div class="verdict-card true"><strong>NO-GO · LITERAL CUTOFF</strong><p>若 \(\chi u\in H^1_0(J)\)，普通空间 Poincare 已证明原式；这个版本不能作为 A2 mixing certificate。</p></div>
+            <div class="verdict-card false"><strong>OPEN · WHOLE LINE</strong><p>局部定理没有控制 chart tails、边界 flux 或 cutoff commutators，不能直接写成 whole-line block contraction。</p></div>
+          </div>
+        </section>
+
+        <section id="cutoff"><div class="section-no">01 / Literal cutoff audit</div><h2>空间紧支撑版本被普通 Poincare 完全覆盖</h2>
+          <p>如果 \(v=\chi u\) 在 \(X\) 方向紧支撑于 \(J\)，那么 \(v\in H^1_0(J)\)，逐时已有</p>
+          <div class="equation result">\[\|v\|_{L^2(J)}\le\frac{|J|}{\pi}\|v_X\|_{L^2(J)}.\]</div>
+          <p>因此把 \(\|P_{c,\sigma}v\|_{H^{-1}}\) 加到右端不会增加数学内容。R0.72U 不把这条真但平凡的式子计为 observability 结果。</p>
+        </section>
+
+        <section id="theorem"><div class="section-no">02 / Corrected theorem</div><h2>未截断 fixed-chart graph estimate 对 interval center 一致</h2>
+          <p>令 \(I=(-T,T)\)、\(J=(-R,R)\)，并取 \(H_D^{-1}(J)=(H^1_0(J))^*\)。对任意 \(c\in\mathbb R\)、\(\sigma=\pm1\) 及</p>
+          <div class="equation">\[v\in L^2(I;H^1(J)),\qquad P_{c,\sigma}v\in L^2(I;H_D^{-1}(J)),\]</div>
+          <p>存在只依赖 \(R,T\) 的有限常数 \(C_{R,T}\)，使</p>
+          <div class="equation result">\[\boxed{\|v\|_{L^2(I\times J)}\le C_{R,T}\left[\|v_X\|_{L^2(I\times J)}+\|P_{c,\sigma}v\|_{L^2(I;H_D^{-1}(J))}\right].}\]</div>
+          <p>这里没有时间 cutoff，没有空间零迹，常数也不随 \(c\) 改变。定理只断言有限性与一致性，不给数值最优常数。</p>
+        </section>
+
+        <section id="trace"><div class="section-no">03 / Graph-space trace</div><h2>不能使用 \(L^2_X\) endpoint shortcut；两个 scalar traces 足够</h2>
+          <p>graph space 只直接给 \(v\in C(\overline I;H_D^{-1})\)，并不保证 \(v\in C(\overline I;L^2)\)。因此用 \(\|v(\pm T)\|_{L^2}\) 的证明是不合法的。</p>
+          <p>选取 even \(\rho\in C_c^\infty(J)\)，则 \(A(S)=\langle v,\rho\rangle\) 与 \(B(S)=\langle v,X\rho\rangle\) 都属于 \(H^1(I)\)。证明只对这两个标量做端点分部积分。</p>
+        </section>
+
+        <section id="poincare"><div class="section-no">04 / Poincare modulo constants</div><h2>空间导数把函数压到一个时间标量</h2>
+          <p>令 \(m(S)\) 是 \(v(S,\cdot)\) 的空间均值。固定图上的 mean-zero Poincare 给出</p>
+          <div class="equation result">\[\|v-m\|_{L^2(I\times J)}\le C_R\|v_X\|_{L^2(I\times J)}.\]</div>
+          <p>由于 \(\rho\) even 且归一化，\(A=m+O(\|v_X\|)\)，而 odd moment \(B=O(\|v_X\|)\)。所以只须排除非零的近常数模。</p>
+        </section>
+
+        <section id="moments"><div class="section-no">05 / Two scalar moments</div><h2>大中心项在两个 moment equations 中形成闭合交换</h2>
+          <p>记 \(L=6\sigma c\)、\(\mu_2=\int_JX^2\rho\,dX>0\)。配对方程后得到</p>
+          <div class="equation result">\[A'=iLB+E_0,\qquad B'=iL\mu_2A+iLF_2+E_1,\]</div>
+          <p>其中 \(B,F_2,E_0\) 都由 graph defect 控制，\(E_1\) 在 unit normalization 下有界。第一式阻止 \(A\) 以任意快的频率振荡；第二式把 escaping-center 强度送回 \(A\)。</p>
+        </section>
+
+        <section id="bounded"><div class="section-no">06 / Bounded centers</div><h2>紧性极限不允许非零空间常数模</h2>
+          <p>若 \(c_n\) 有界且 graph defect 趋零，Poincare reduction 与 \(A_n\) 的 \(H^1(I)\) 紧性给出强极限 \(m(S)\)。极限方程是</p>
+          <div class="equation">\[m'-i\sigma[X^3+6(c_*+S)X]m=0.\]</div>
+          <p>对 \(X\) 微分后，\([3X^2+6(c_*+S)]m=0\)。该多项式不可能在非退化区间 \(J\) 上恒为零，因此 \(m=0\)，与 unit normalization 矛盾。</p>
+        </section>
+
+        <section id="escaping"><div class="section-no">07 / Escaping centers</div><h2>大 \(|c|\) 不破坏常数，反而进入 coercive moment identity</h2>
+          <p>对 \(|c|\to\infty\)，积分 \(B'\overline A\) 并使用两条 moment equations，得到主项 \(|L|\mu_2\|A\|_2^2\) 与 \(|L|\|B\|_2^2\)。除端点项外，其余误差除以 \(|L|\) 后都趋零。</p>
+          <div class="equation result">\[\frac{|B(S)A(S)|}{|L|}\le C\left(\delta+\sqrt{\frac{\delta}{|L|}}\right),\qquad S=\pm T.\]</div>
+          <p>这里 \(\delta\) 是归一化 graph defect。该界不要求 \(|c|\delta\to0\)，所以 escaping-center 情形真正闭合。</p>
+        </section>
+
+        <section id="endpoint"><div class="section-no">08 / Endpoint correction</div><h2>端点不消失；标量 \(H^1\) trace 精确支付</h2>
+          <p>分部积分保留 \([B\overline A]_{-T}^{T}\)。证明使用 scalar inequality</p>
+          <div class="equation">\[|h(-T)|^2+|h(T)|^2\le C_T\left(\|h\|_2^2+\|h\|_2\|h'\|_2\right),\qquad h\in H^1(I).\]</div>
+          <p>这一步既不设 \(A(\pm T)=B(\pm T)=0\)，也不调用不存在的 \(L^2_X\)-valued trace。</p>
+        </section>
+
+        <section id="discriminator"><div class="section-no">09 / Nontriviality check</div><h2>未截断定理能区分 A2 模型与零 transport</h2>
+          <p>如果把整个乘法势删除，使算子退化为 \(\partial_S\)，未截断函数 \(v\equiv1\) 满足 \(v_X=0\)、\(\partial_Sv=0\)，graph coercivity 立即失败。相反，时间 compact cutoff 会产生 cutoff derivative，仍可能满足普通 parabolic Poincare。这个对照说明真正有内容的是 uncut theorem。</p>
+        </section>
+
+        <section id="solutions"><div class="section-no">10 / Actual solutions</div><h2>局部 evolving-solution observability 不再需要 endpoint patch</h2>
+          <p>对 \(P_{c,\sigma}u=u_{XX}\)，有 \(\|u_{XX}\|_{H_D^{-1}}\le\|u_X\|_2\)。因此定理直接给</p>
+          <div class="equation result">\[\boxed{\|u\|_{L^2(I\times J)}\le2C_{R,T}\|u_X\|_{L^2(I\times J)}.}\]</div>
+          <p>这是对 interval center 一致的 fixed-chart、all-start、actual-solution estimate；它不是 frozen-profile identity。</p>
+        </section>
+
+        <section id="global"><div class="section-no">11 / Local-to-global boundary</div><h2>局部 mass control 还没有支付 tails 与 boundary flux</h2>
+          <p><strong>wholeLineBlockContraction=OPEN</strong>：定理只控制 \(I\times(-R,R)\)。全直线质量可以留在 chart 外，局部能量还含 \(2\operatorname{Re}[u_X\overline u]_{\partial J}\)。</p>
+          <p><strong>periodicTransfer=OPEN</strong>：尚未吸收 spatial cutoff commutators、\(H_5,H_7,R_9\) remainders，也没有把非周期 polynomial chart 转回 exact periodic heat path。</p>
+        </section>
+
+        <section id="certificate"><div class="section-no">12 / Certificate</div><h2>机器证书只核对有限精确 ledger</h2>
+          <p>双路证书在 rational probe 假设 \(J\supset[-1,1]\) 下核对 moments \(\mu_2,\mu_4\)。large-center threshold \(27/13\) 与 fixed-gauge floor \(4/5\) 都是 \(T=1\) 的校准值；它们不是任意时间窗常数，也不是 functional theorem 的机器证明。</p>
+          <p>weighted Poincare reduction、compactness、bounded/escaping-center contradiction、endpoint trace 与 local-solution corollary 由完整数学报告和独立审计支持。证书不枚举未知最优常数，也不声称 whole-line contraction。</p>
+        </section>
+
+        <section id="literature"><div class="section-no">13 / Literature boundary</div><h2>Hörmander、kinetic Poincare 与 stationary ED 只作为邻近基线</h2>
+          <p>Hörmander 与 Bedrossian–Liss 支持局部 graph regularity；Albritton–Armstrong–Mourrat–Novack 给 kinetic strong/weak norm 先例；Albritton–Beekie–Novack 给 stationary cubic \(1/5\) benchmark。它们都不直接给本节 uncut、center-uniform、collision-crossing estimate。</p>
+          <p>限定一手检索没有找到可直接替代本节证明的定理。这个 bounded-search absence 不是不存在性、新颖性或优先权证明。</p>
+        </section>
+
+        <section id="figure"><div class="section-no">14 / Journal figure</div><h2>正式附图记录两条 moments 与局部—全局边界</h2>
+          <p><img src="/assets/r072u/fig-r072u-two-moment-coercivity.svg" alt="R0.72U two-moment coercivity and local-to-global boundary"></p>
+          <p><a href="/assets/r072u/fig-r072u-two-moment-coercivity.pdf">下载 PDF</a> · <a href="/assets/r072u/fig-r072u-two-moment-coercivity.png">下载 PNG</a> · <a href="/assets/r072u/fig-r072u-two-moment-coercivity.svg">打开 SVG</a></p>
+        </section>
+
+        <section id="value"><div class="section-no">15 / Research value</div><h2>本节把 local model 的 all-start solution observability 闭合</h2>
+          <p>R0.72U 的严格增量是：排除 cutoff 平凡化，证明 arbitrary-trace fixed-chart graph coercivity，对 escaping centers 保持统一，并把它转成真实解的 local observability。</p>
+          <p>对 Clay 问题的直接价值仍低。结果是线性局部模型定理，不是一般三维 continuation estimate，也不控制全空间 vortex stretching。</p>
+        </section>
+
+        <section id="next"><div class="section-no">16 / Next gate</div><h2>R0.72V：whole-line tail 与 commutator transfer</h2>
+          <p>下一节要证明对中心一致的 tail tightness，并控制空间 partition 产生的 flux 与 commutators。只有把局部 observability 拼成全直线 block estimate 后，才可检查 periodic exact-heat-path transfer。</p>
+        </section>
+
+        <section id="reproduce"><div class="section-no">17 / Reproduction</div><h2>完整证明、文献审计、独立审计、证书与正式附图</h2>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072u_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072u_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072u_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072u_independent_audit.md">独立数学审计</a></p>
+          <p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072u">精确双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072u-local-observability/fig-r072u-two-moment-coercivity">正式附图包</a> · <a href="/notes/r0-72u.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72u.html">累计回顾</a> · <a href="/recap-r0-61-r0-72u.pdf">累计回顾 PDF</a></p>
+        </section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72U · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

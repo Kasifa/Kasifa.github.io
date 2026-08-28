@@ -21,5 +21,10 @@ nonlinear Navier--Stokes estimate, or the Clay Millennium problem.  Those
 boundaries are mandatory false booleans and OPEN claim keys; deleting or
 flipping one makes validation fail.
 
+The formal figure is sealed separately through Git ancestry and visual QA.
+Its displayed high-mode range includes the complete declared sequence,
+including the (n=1) witness; the certificate does not treat the figure as
+analytic proof.
+
 Run the commands in `command.txt` from the repository root.  All outputs are
 deterministic for fixed source bytes and the bundled Python runtime.

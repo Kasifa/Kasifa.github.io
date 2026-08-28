@@ -334,7 +334,7 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
         scene.text(x + 20, panel_y + 72, subtitle, size=17.5, color=MID)
         scene.rect(x + 20, panel_y + 91, panel_w - 40, 34, fill=badge_fill,
                    stroke=badge_stroke, width=1.5, radius=7)
-        scene.text(x + 34, panel_y + 115, badge, size=17, bold=True, color=INK)
+        scene.text(x + 34, panel_y + 115, badge, size=15.5, bold=True, color=INK)
 
     def axes(x: float, y: float, width: float, height: float,
              x_label: str, y_label: str) -> None:
@@ -402,8 +402,8 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
     aqx, aqy, aqw, aqh = ax + 65, panel_y + 660, 430, 290
     axes(aqx, aqy, aqw, aqh, "mode n", "a_n mu^(5/2)")
     high_rows = [row for row in rows if row["kind"] == "high-mode-sharpness-sequence"]
-    hlo, hhi = 0.038, 0.055
-    for tick in (0.04, 0.045, 0.05, 0.055):
+    hlo, hhi = 0.025, 0.055
+    for tick in (0.03, 0.04, 0.05, 0.055):
         yy = map_y(tick, hlo, hhi, aqy, aqh)
         scene.line(aqx, yy, aqx + aqw, yy, color=GRID, width=1.2, dash=(4, 5))
         scene.text(aqx - 10, yy + 5, f"{tick:.3f}", size=14, color=MID,
@@ -605,10 +605,10 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
     scene.rect(cx0 + 20, panel_y + 1030, panel_w - 40, 105, fill=PALE,
                stroke=GRID, width=1.3, radius=7)
     scene.text(cx0 + 34, panel_y + 1058,
-               "S2 / (|Lambda| M1) = chi min(g^-1, A alpha^2)",
+               "L2_t / (|Lambda| M1) = chi min(g^-1, A alpha^2)",
                size=15.5, bold=True)
     scene.text(cx0 + 34, panel_y + 1084,
-               "Sinf / (|Lambda| M1) = chi min((2g)^-1/2, sqrt(B) alpha)",
+               "Linf_t / (|Lambda| M1) = chi min((2g)^-1/2, sqrt(B) alpha)",
                size=15.0, bold=True)
     scene.text(cx0 + 34, panel_y + 1110,
                "Conditional upper bounds; not terminal-Q closure.",

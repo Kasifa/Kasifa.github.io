@@ -81,7 +81,11 @@ test("R0.72Z source contract pins the exact three-panel claim boundary", async (
   for (const token of [
     "EXPECTED_FIELDS", "validate_data", "validate_svg", "validate_pdf",
     "validate_pngs", "validate_lineage", "validate_publication", "--require-formal",
+    "publicCopiesComplete", "byteIdenticalToMaster", "publication asset ledger mismatch",
   ]) assert.ok(validator.includes(token), token);
+  for (const token of ["publication_assets", "publicCopiesComplete", "byteIdenticalToMaster"]) {
+    assert.ok(plot.includes(token), token);
+  }
 });
 
 test("R0.72Z package inventory is exact at source or generated stage", async () => {

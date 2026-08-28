@@ -1146,6 +1146,15 @@ def build_manifest(status: str, source_commit: str, certificate_commit: str,
         "qa-final-size.png", "qa-grayscale.png", "qa-pdf.png",
     ]:
         outputs.append(file_record(name))
+    publication_assets = []
+    for suffix in ("pdf", "svg", "png"):
+        master = file_record(f"figure.{suffix}")
+        publication_assets.append({
+            "path": f"public/assets/r072z/{FIGURE_ID}.{suffix}",
+            "bytes": master["bytes"],
+            "sha256": master["sha256"],
+            "byteIdenticalToMaster": status == "formal",
+        })
     manifest = {
         "schemaVersion": 1,
         "figureId": FIGURE_ID,
@@ -1237,11 +1246,14 @@ def build_manifest(status: str, source_commit: str, certificate_commit: str,
         },
         "publication": {
             "directory": "public/assets/r072z",
+            "stem": FIGURE_ID,
             "files": [
                 f"{FIGURE_ID}.pdf",
                 f"{FIGURE_ID}.svg",
                 f"{FIGURE_ID}.png",
             ],
+            "assets": publication_assets,
+            "publicCopiesComplete": status == "formal",
             "byteIdenticalToArchive": status == "formal",
         },
         "outputs": outputs,

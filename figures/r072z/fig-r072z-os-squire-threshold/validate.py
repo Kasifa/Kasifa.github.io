@@ -319,11 +319,27 @@ def validate_publication(manifest: dict) -> None:
     expected = [f"{FIGURE_ID}.{suffix}" for suffix in ("pdf", "svg", "png")]
     if publication.get("files") != expected:
         fail("publication file list mismatch")
+    if publication.get("stem") != FIGURE_ID:
+        fail("publication stem mismatch")
+    assets = publication.get("assets")
+    if not isinstance(assets, list) or len(assets) != 3:
+        fail("publication asset ledger mismatch")
+    for suffix, row in zip(("pdf", "svg", "png"), assets, strict=True):
+        archive = PACKAGE / f"figure.{suffix}"
+        expected_path = f"public/assets/r072z/{FIGURE_ID}.{suffix}"
+        if row.get("path") != expected_path:
+            fail(f"public {suffix} path mismatch")
+        if row.get("bytes") != archive.stat().st_size or row.get("sha256") != sha256(archive):
+            fail(f"public {suffix} ledger differs from archival master")
     if manifest.get("status") != "formal":
-        if publication.get("byteIdenticalToArchive") is not False:
+        if (publication.get("byteIdenticalToArchive") is not False
+                or publication.get("publicCopiesComplete") is not False
+                or any(row.get("byteIdenticalToMaster") is not False for row in assets)):
             fail("draft publication must remain unsealed")
         return
-    if publication.get("byteIdenticalToArchive") is not True:
+    if (publication.get("byteIdenticalToArchive") is not True
+            or publication.get("publicCopiesComplete") is not True
+            or any(row.get("byteIdenticalToMaster") is not True for row in assets)):
         fail("formal publication identity is not sealed")
     for suffix in ("pdf", "svg", "png"):
         public = PUBLIC_DIR / f"{FIGURE_ID}.{suffix}"

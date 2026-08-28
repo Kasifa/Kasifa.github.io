@@ -1,0 +1,13 @@
+# Source-only checks; these commands write no outputs.
+python3 research/certificates/r072y/independent_recompute.py --self-test
+python3 research/certificates/r072y/generate_certificate.py --self-test
+
+# Deterministic draft generation and fail-closed validation.
+python3 research/certificates/r072y/generate_certificate.py --draft
+python3 research/certificates/r072y/validate_certificate.py --require-draft
+
+# Formal sealing, only after the complete R0.72Y source inventory belongs to
+# the current completely clean HEAD.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072y/generate_certificate.py --formal --formal-source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072y/validate_certificate.py --require-formal

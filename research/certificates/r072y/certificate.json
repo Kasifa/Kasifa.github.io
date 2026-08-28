@@ -1,0 +1,430 @@
+{
+  "blochLerayIdentity": {
+    "A_beta": "partial_x+i*beta",
+    "L": "-A_beta^2+mu",
+    "divergenceGradient": [
+      {
+        "coefficient": "-1/1",
+        "monomial": "gamma^2"
+      },
+      {
+        "coefficient": "-1/1",
+        "monomial": "xi^2"
+      },
+      {
+        "coefficient": "1/1",
+        "monomial": "A^2"
+      }
+    ],
+    "divergenceOfProjectionCoefficients": [
+      "1/1",
+      "-1/1"
+    ],
+    "divergenceOfProjectionSum": "0/1",
+    "gradient": "(i*xi,A_beta,i*gamma)",
+    "identityResidual": [],
+    "lerayProjection": "P_j=I+grad_j*L^(-1)*div_j",
+    "minusL": [
+      {
+        "coefficient": "-1/1",
+        "monomial": "gamma^2"
+      },
+      {
+        "coefficient": "-1/1",
+        "monomial": "xi^2"
+      },
+      {
+        "coefficient": "1/1",
+        "monomial": "A^2"
+      }
+    ],
+    "mu": "xi^2+gamma^2",
+    "projectionKillsGradientCoefficients": [
+      "1/1",
+      "-1/1"
+    ]
+  },
+  "causalKernel": {
+    "assumptions": [
+      "p>0",
+      "mu>=0",
+      "h>0",
+      "0<q<1"
+    ],
+    "blockIntegralForPositiveMu": "q^(p*n)*exp(-p*mu*n*h)*(1-exp(-p*mu*h))/(p*mu)",
+    "exactPositiveMuIntegral": "(1-exp(-p*mu*h))/(p*mu*(1-q^p*exp(-p*mu*h)))",
+    "exactZeroDampingIntegral": "h/(1-q^p)",
+    "finiteDegreesChecked": [
+      0,
+      64
+    ],
+    "finiteGeometricIdentity": "(1-z)*sum(n=0..N,z^n)=1-z^(N+1)",
+    "finiteGeometricIdentityChecked": true,
+    "geometricRatio": "q^p*exp(-p*mu*h)",
+    "infiniteSeriesConvergenceBoundary": "analytic-not-finitely-certified",
+    "kernel": "K(r)=exp(-mu*r)*q^floor(r/h)",
+    "limitLeadingCoefficientLedger": {
+      "oneMinusAExpMinusY": [
+        "1-a",
+        "a"
+      ],
+      "oneMinusExpMinusY": [
+        "0/1",
+        "1/1"
+      ],
+      "result": "h/(1-a), a=q^p",
+      "y": [
+        "0/1",
+        "1/1"
+      ]
+    },
+    "zeroDampingBlockIntegral": "h*q^(p*n)",
+    "zeroDampingLimit": "lim(mu->0+)=h/(1-q^p)"
+  },
+  "certificateStage": "formal",
+  "claimBoundary": {
+    "clayMillenniumProblemSolved": false,
+    "completeLinearizedShearSubsystemProved": false,
+    "endpointTraceMachineChecked": false,
+    "finiteExactAlgebraCertified": true,
+    "functionalAnalysisMachineChecked": false,
+    "galerkinLimitMachineChecked": false,
+    "infiniteSeriesConvergenceMachineChecked": false,
+    "nonautonomousEvolutionExistenceMachineChecked": false,
+    "nonlinearNavierStokesClosureProved": false,
+    "sharpnessProofsMachineChecked": false
+  },
+  "claimLedger": {
+    "analytic-not-finitely-certified": [
+      "strongRowL2ForcingDuhamelAlpha2",
+      "strongRowStandardHMinusOneTransferAlpha",
+      "strongRowSemiclassicalHMinusOneTransferAlpha2",
+      "strongForcedDirectSumNoCountLoss",
+      "weakZeroFiniteHistoryEnergyLedger",
+      "standardHMinusOneAlphaSharpness",
+      "semiclassicalHMinusOneAlpha2Sharpness",
+      "HMinusOneEndpointNoAlphaGainSharpness",
+      "galerkinVariationalLimit",
+      "nonautonomousEvolutionFamily"
+    ],
+    "finite-certified": [
+      "heatShearIdentity",
+      "pressurePoissonFactorTwo",
+      "blochLerayDivergenceIdentity",
+      "osSquireSignLedgerMuPositive",
+      "velocityReconstructionMuPositive",
+      "velocityEnergyIdentityMuPositive",
+      "zeroCouplingLiftUpResidual",
+      "zeroCouplingLiftUpNormFormula",
+      "causalKernelGeometricAlgebra",
+      "causalKernelZeroDampingAlgebra",
+      "standardSemiclassicalFourierWeightComparison",
+      "dampingGapAlgebra"
+    ],
+    "negative-result-keys": [
+      "scalarA2EqualsCompleteRow",
+      "epsilonOnlyFullRowClosure",
+      "allPhysicalRowsUniformStrictContraction",
+      "standardHMinusOneTransferAlpha2",
+      "HMinusOneEndpointAlphaGain",
+      "allRowsStrongScaleForcedGain"
+    ],
+    "open-keys": [
+      "strongFullRowA2Estimate",
+      "scaleSharpOSPressureAbsorption",
+      "orientationUniformSquireTransfer",
+      "lowGapWeakFullRows",
+      "completeLinearizedShearSubsystem",
+      "nonlinearNavierStokes",
+      "clayMillenniumProblem"
+    ]
+  },
+  "dampingGap": {
+    "couplingMagnitude": "K=abs(Lambda)*M_K",
+    "energyExponent": "2*(g_j-K/2)",
+    "energyExponentToNormExponent": "norm exponent is one half of the energy exponent",
+    "energyInequality": "(1/2)*E'+g_j*E<=(K/2)*E",
+    "exactRationalSamplesChecked": true,
+    "gap": "g_j=mu+dist(beta,Z)^2",
+    "normBound": "||u(d_2)||<=exp(-(g_j-K/2)*(d_2-d_1))*||u(d_1)||",
+    "normExponent": "g_j-K/2",
+    "positiveNormGapCondition": "g_j>K/2",
+    "youngIdentity": "a^2+b^2-2ab=(a-b)^2",
+    "youngIdentityResidual": [],
+    "youngRemainder": [
+      {
+        "coefficient": "1/1",
+        "monomial": "b^2"
+      },
+      {
+        "coefficient": "-2/1",
+        "monomial": "a*b"
+      },
+      {
+        "coefficient": "1/1",
+        "monomial": "a^2"
+      }
+    ]
+  },
+  "exactChecks": {
+    "blochLaplacianSign": true,
+    "causalKernelGeometricAlgebra": true,
+    "claimBoundaryHonest": true,
+    "claimKeysUnique": true,
+    "dampingGapYoungIdentity": true,
+    "fourierWeightInequality": true,
+    "heatIdentity": true,
+    "lerayDivergenceCancellation": true,
+    "liftUpNorm": true,
+    "liftUpResidual": true,
+    "osCoefficientCancellation": true,
+    "pressureFactorTwo": true,
+    "squirePressureCancellation": true,
+    "velocityDivergenceEtaRecovery": true,
+    "velocityMatrixIdentity": true
+  },
+  "fourierWeights": {
+    "definitions": {
+      "semiclassicalWeight": "1/(1+alpha^2*k^2)",
+      "standardWeight": "1/(1+k^2)"
+    },
+    "exactRationalGridChecked": true,
+    "lowerCrossMultipliedDifference": [
+      {
+        "coefficient": "1/1",
+        "monomial": "1"
+      },
+      {
+        "coefficient": "-1/1",
+        "monomial": "alpha^2"
+      }
+    ],
+    "normConsequence": "alpha*||F||_{H^-1_alpha,beta}<=||F||_{H^-1_beta}<=||F||_{H^-1_alpha,beta}",
+    "pointwiseInequality": "alpha^2/(1+alpha^2*k^2)<=1/(1+k^2)<=1/(1+alpha^2*k^2)",
+    "range": "0<alpha<=1, k real",
+    "rationalGridShape": [
+      16,
+      49
+    ],
+    "upperCrossMultipliedDifference": [
+      {
+        "coefficient": "1/1",
+        "monomial": "k^2"
+      },
+      {
+        "coefficient": "-1/1",
+        "monomial": "alpha^2*k^2"
+      }
+    ]
+  },
+  "heatShearIdentity": {
+    "allModesMatch": true,
+    "derivedIdentity": "(W_x)_d=W_xxx",
+    "identity": "W_d=W_xx",
+    "modeRows": [
+      {
+        "amplitude": "-1/2",
+        "dDerivativeAmplitude": "1/2",
+        "decayRate": 1,
+        "frequency": 1,
+        "matches": true,
+        "xxDerivativeAmplitude": "1/2"
+      },
+      {
+        "amplitude": "1/4",
+        "dDerivativeAmplitude": "-1/1",
+        "decayRate": 4,
+        "frequency": 2,
+        "matches": true,
+        "xxDerivativeAmplitude": "-1/1"
+      }
+    ],
+    "profile": "W(d,x)=-(1/2)*exp(-d)*sin(x)+(1/4)*exp(-4d)*sin(2x)"
+  },
+  "osSquireSignLedger": {
+    "commutator": "L(Wu)=W*L*u-2*W_x*A_beta*u-W_xx*u",
+    "definitions": [
+      "q=L*u_2",
+      "eta=i*gamma*u_1-i*xi*u_3"
+    ],
+    "domain": "mu>0",
+    "expectedOsSum": {
+      "W*q": -1,
+      "W_x*A_beta*u_2": 0,
+      "W_xx*u_2": -1
+    },
+    "orrSommerfeldCoefficientTableInUnitsOfIc": {
+      "minusAOfLPi": {
+        "W*q": 0,
+        "W_x*A_beta*u_2": -2,
+        "W_xx*u_2": -2
+      },
+      "minusIcLOfWu2": {
+        "W*q": -1,
+        "W_x*A_beta*u_2": 2,
+        "W_xx*u_2": 1
+      },
+      "sum": {
+        "W*q": -1,
+        "W_x*A_beta*u_2": 0,
+        "W_xx*u_2": -1
+      }
+    },
+    "orrSommerfeldEquation": "q_d=(-L-i*c*W)q-i*c*W_xx*L^(-1)q",
+    "pressureSubstitution": "-A_beta*L*pi=-2*i*c*A_beta(W_x*u_2)",
+    "squireEquation": "eta_d=(-L-i*c*W)eta+i*xi*Lambda*W_x*L^(-1)q",
+    "squireLiftCoefficient": 1,
+    "squirePressureCoefficients": {
+      "from_i_gamma_u1": 1,
+      "from_minus_i_xi_u3": -1
+    },
+    "squirePressureSum": 0
+  },
+  "pressurePoissonFactorTwo": {
+    "coefficientSum": 0,
+    "coefficientsInUnitsOfIcWxU2": {
+      "divergenceOfGradientPiAfterLPiEquals2icWxU2": -2,
+      "divergenceOfIcWTimesU": 1,
+      "divergenceOfLambdaWxU2E3": 1
+    },
+    "divergenceGradientSign": "div_j(grad_j*pi)=-L*pi",
+    "factorTwo": 2,
+    "normalisation": "c=Lambda*gamma",
+    "pressureEquation": "L*pi=2*i*c*W_x*u_2"
+  },
+  "producerMethod": "exact Fourier-mode arithmetic, commutative polynomial cancellation, and discrete noncommutative coefficient tables",
+  "schemaVersion": 1,
+  "sourceCommit": "16cbb9267fb5b40ea24b7dcea49dbb4da2cd3662",
+  "status": "passed",
+  "theoremId": "R0.72Y-full-row-forced-transfer-finite-ledger",
+  "velocityReconstruction": {
+    "domain": "mu=xi^2+gamma^2>0",
+    "energyIdentity": "||u||_2^2=||u_2||_2^2+mu^(-1)*(||A_beta*u_2||_2^2+||eta||_2^2)",
+    "formulas": {
+      "u_1": "(i/mu)*(xi*A_beta*u_2-gamma*eta)",
+      "u_3": "(i/mu)*(gamma*A_beta*u_2+xi*eta)"
+    },
+    "matrixIdentityResidual": [
+      [
+        [],
+        []
+      ],
+      [
+        [],
+        []
+      ]
+    ],
+    "reconstructedDivergenceNumerator": {
+      "A_beta_u2": [
+        {
+          "coefficient": "-1/1",
+          "monomial": "gamma^2"
+        },
+        {
+          "coefficient": "-1/1",
+          "monomial": "xi^2"
+        }
+      ],
+      "eta": []
+    },
+    "reconstructedEtaNumerator": {
+      "A_beta_u2": [],
+      "eta": [
+        {
+          "coefficient": "1/1",
+          "monomial": "gamma^2"
+        },
+        {
+          "coefficient": "1/1",
+          "monomial": "xi^2"
+        }
+      ]
+    },
+    "scaledRecoveryMatrix": [
+      [
+        "xi",
+        "-gamma"
+      ],
+      [
+        "gamma",
+        "xi"
+      ]
+    ],
+    "transposeTimesMatrix": [
+      [
+        [
+          {
+            "coefficient": "1/1",
+            "monomial": "gamma^2"
+          },
+          {
+            "coefficient": "1/1",
+            "monomial": "xi^2"
+          }
+        ],
+        []
+      ],
+      [
+        [],
+        [
+          {
+            "coefficient": "1/1",
+            "monomial": "gamma^2"
+          },
+          {
+            "coefficient": "1/1",
+            "monomial": "xi^2"
+          }
+        ]
+      ]
+    ]
+  },
+  "zeroCouplingLiftUp": {
+    "WxFourierCosineAmplitudes": [
+      "-1/2",
+      "1/2"
+    ],
+    "WxHeatRows": [
+      {
+        "decayRate": 1,
+        "frequency": 1,
+        "matches": true,
+        "thirdDerivativeFromWAmplitudeFactor": -1,
+        "timeDerivativeAmplitudeFactor": -1
+      },
+      {
+        "decayRate": 4,
+        "frequency": 2,
+        "matches": true,
+        "thirdDerivativeFromWAmplitudeFactor": -4,
+        "timeDerivativeAmplitudeFactor": -4
+      }
+    ],
+    "exactNormRatio": "exp(-2*xi^2*d)*(1+(Lambda^2*d^2/8)*(exp(-2d)+exp(-8d)))",
+    "initialData": "u_1=u_3=0 and u_2=v_0 constant in x",
+    "meanCosineSquare": "1/2",
+    "meanSquareCoefficientsForExpMinus2dAndExpMinus8d": [
+      "1/8",
+      "1/8"
+    ],
+    "meanSquareWx": "(1/8)*(exp(-2d)+exp(-8d))",
+    "orthogonalCrossMean": "0/1",
+    "row": "gamma=0, beta=0, xi>=0",
+    "solution": {
+      "u_2": "exp(-xi^2*d)*v_0",
+      "u_3": "-Lambda*d*exp(-xi^2*d)*W_x(d,x)*v_0"
+    },
+    "strictGrowthWitnessAtXiZero": "ratio=1+(Lambda^2*d^2/8)*(exp(-2d)+exp(-8d))>1 for Lambda!=0,d>0",
+    "u2ResidualCoefficient": 0,
+    "u3ResidualAfterCommonFactor": {
+      "left": {
+        "W_xxx": -1,
+        "xi^2*W_x": 1
+      },
+      "right": {
+        "W_xxx": -1,
+        "xi^2*W_x": 1
+      }
+    }
+  }
+}

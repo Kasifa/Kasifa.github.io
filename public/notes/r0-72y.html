@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.72Y：完整 Fourier--Leray row、精确 lift-up 边界，以及按空间范数区分的 scalar forced-transfer scales。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.72Y｜Full Fourier--Leray rows, forced transfer, and lift-up boundary">
+  <meta property="og:description" content="完整 row 恒等式与 scalar forcing scales 已闭合；uniform full-row contraction 为 FALSE，strong full-row A2 与 nonlinear/Clay 保持 OPEN。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r072y/fig-r072y-full-row-forced-transfer.png">
+  <title>R0.72Y｜Full Fourier--Leray rows, forced transfer, and lift-up boundary</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.38"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#physical">线性化</a><a href="#row">row</a><a href="#os">OS--Squire</a><a href="#recovery">恢复</a><a href="#embedding">标量嵌入</a><a href="#energy">能量</a><a href="#lift">lift-up</a><a href="#kernel">kernel</a><a href="#negative">negative norm</a><a href="#endpoint">端点</a><a href="#sharpness">sharpness</a><a href="#weak">弱行</a><a href="#literature">文献</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.72Y · FOURIER--LERAY ROWS · FORCED TRANSFER</div>
+        <h1>从标量碰撞行回到完整三维线性化：<br>受迫传递与 lift-up 边界</h1>
+        <p class="lead">我从 Navier--Stokes 重新推导完整 Fourier--Leray row，固定 pressure factor two、Orr--Sommerfeld--Squire 符号、velocity recovery 和特殊零行。R0.72X 的 scalar invariant row 给出三种不同的 forcing scale；exact lift-up 解同时排除只依赖 \(\varepsilon_j\) 的 full-row strict contraction。完整 low-gap 向量行仍未闭合。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.72Y row ledger 完成</span><strong>exact row identities and scoped scalar forcing</strong><p>版本 v0.72Y · 2026-08-28</p><p>complete row algebra: CLOSED</p><p>standard H^-1 spacetime: alpha</p><p>semiclassical H^-1 spacetime: alpha^2</p><p>uniform full-row contraction: FALSE</p><p>strong full-row A2: OPEN</p><p>nonlinear / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li><li><a href="#physical">01 · physical linearization</a></li><li><a href="#row">02 · Bloch--Leray row</a></li><li><a href="#os">03 · OS--Squire</a></li><li><a href="#recovery">04 · velocity recovery</a></li><li><a href="#embedding">05 · scalar embedding</a></li><li><a href="#energy">06 · full-row energy</a></li><li><a href="#lift">07 · lift-up obstruction</a></li><li><a href="#kernel">08 · causal kernel</a></li><li><a href="#negative">09 · negative Sobolev forcing</a></li><li><a href="#endpoint">10 · endpoint boundary</a></li><li><a href="#sharpness">11 · sharpness</a></li><li><a href="#weak">12 · weak and zero rows</a></li><li><a href="#literature">13 · literature boundary</a></li><li><a href="#evidence">14 · evidence boundary</a></li><li><a href="#figure">15 · journal figure</a></li><li><a href="#value">16 · value</a></li><li><a href="#next">17 · R0.72Z</a></li><li><a href="#reproduce">18 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result" data-claim-boundary="exactThreeDimensionalLinearization=CLOSED exactPressurePoissonFactorTwo=CLOSED exactOSSquireTriangularization=CLOSED exactVelocityReconstruction=CLOSED fullRowEnergyIdentity=CLOSED strongRowL2ForcingDuhamelAlpha2=CLOSED strongRowStandardHMinusOneTransferAlpha=CLOSED strongRowSemiclassicalHMinusOneTransferAlpha2=CLOSED strongForcedDirectSumNoCountLoss=CLOSED scalarA2EqualsCompleteRow=FALSE epsilonOnlyFullRowClosure=FALSE allPhysicalRowsUniformStrictContraction=FALSE standardHMinusOneTransferAlpha2=FALSE HMinusOneEndpointAlphaGain=FALSE strongFullRowA2Estimate=OPEN scaleSharpOSPressureAbsorption=OPEN orientationUniformSquireTransfer=OPEN completeLinearizedShearSubsystem=OPEN nonlinearNavierStokes=OPEN Clay=OPEN"><div class="section-no">00 / Direct decision</div><h2>完整 row 恒等式和标量受迫尺度已闭合；完整强耦合行仍开放</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · EXACT ROW LEDGER</strong><p>exactThreeDimensionalLinearization、exactPressurePoissonFactorTwo、exactOSSquireTriangularization、exactVelocityReconstruction 与 fullRowEnergyIdentity 均为 CLOSED。</p></div><div class="verdict-card true"><strong>CLOSED · SCALAR FORCING</strong><p>strongRowL2ForcingDuhamelAlpha2、strongRowStandardHMinusOneTransferAlpha、strongRowSemiclassicalHMinusOneTransferAlpha2 与 strongForcedDirectSumNoCountLoss 均为 CLOSED。</p></div><div class="verdict-card false"><strong>FALSE · UNSAFE EXTENSIONS</strong><p>scalarA2EqualsCompleteRow、epsilonOnlyFullRowClosure、allPhysicalRowsUniformStrictContraction、standardHMinusOneTransferAlpha2 与 HMinusOneEndpointAlphaGain 均为 FALSE。</p></div><div class="verdict-card false"><strong>OPEN · COMPLETE SYSTEM</strong><p>strongFullRowA2Estimate、scaleSharpOSPressureAbsorption、orientationUniformSquireTransfer、completeLinearizedShearSubsystem、nonlinearNavierStokes 与 Clay 均为 OPEN。</p></div></div></section>
+        <section id="physical"><div class="section-no">01 / Physical linearization</div><h2>压力右端的 factor two 来自两个不同散度项</h2><div class="equation result">\[\partial_tu+V\partial_{x_3}u+u_2V_ye_3+\nabla p=\nu\Delta u,\qquad \nabla\cdot u=0,\]</div><div class="equation result">\[\Delta_Kp=-2iK_zV_yu_2.\]</div><p>一份 \(iK_zV_yu_2\) 来自 background transport，另一份来自 shear-gradient term；符号与 \(+\nabla p\) 在左侧的约定一起冻结。</p></section>
+        <section id="row"><div class="section-no">02 / Bloch--Leray row</div><h2>完整 row label 同时保留水平方向与 residue class</h2><div class="equation result">\[j=(K_x,K_z,[r]_R),\quad A_\beta=\partial_x+i\beta,\quad \mathcal L=-A_\beta^2+\mu,\quad \mu=\xi^2+\gamma^2,\]</div><div class="equation result">\[\mathbb P_j=I+\nabla_j\mathcal L^{-1}\operatorname{div}_j,\qquad u_d=-\mathcal Lu-\mathbb P_j(icWu+\Lambda W_xu_2e_3).\]</div><p>orthogonal direct sum 是结构恒等式；它不会自动生成 row-uniform bound。</p></section>
+        <section id="os"><div class="section-no">03 / Orr--Sommerfeld--Squire</div><h2>μ&gt;0 时得到精确三角系统</h2><div class="equation result">\[q=\mathcal Lu_2,\qquad \eta=i\gamma u_1-i\xi u_3,\]</div><div class="equation result">\[q_d=(-\mathcal L-icW)q-icW_{xx}\mathcal L^{-1}q,\]</div><div class="equation result">\[\eta_d=(-\mathcal L-icW)\eta+i\xi\Lambda W_x\mathcal L^{-1}q.\]</div><p>pressure feedback 与 Squire transfer 的尺度不同；μ=0 不能套用这组逆公式。</p></section>
+        <section id="recovery"><div class="section-no">04 / Velocity recovery</div><h2>速度恢复与 kinetic energy identity 均保留方向权重</h2><div class="equation result">\[u_1=\frac{i}{\mu}(\xi A_\beta u_2-\gamma\eta),\qquad u_3=\frac{i}{\mu}(\gamma A_\beta u_2+\xi\eta),\]</div><div class="equation result">\[\|u\|_2^2=\|u_2\|_2^2+\mu^{-1}(\|A_\beta u_2\|_2^2+\|\eta\|_2^2).\]</div></section>
+        <section id="embedding"><div class="section-no">05 / Scalar embedding</div><h2>R0.72X scalar operator 是完整 row 的严格不变子空间</h2><div class="equation result">\[u=g(\gamma,0,-\xi)/\sqrt\mu,\qquad g_d=(A_\beta^2-\mu)g-icWg.\]</div><p>scalarA2InvariantEmbedding=CLOSED；scalarA2EqualsCompleteRow=FALSE。一般数据仍会激活 pressure feedback 与 Squire transfer。</p></section>
+        <section id="energy"><div class="section-no">06 / Full-row energy</div><h2>high-gap class 有显式衰减，low-gap class 没有被外推</h2><div class="equation result">\[\frac12\frac d{dd}\|u\|^2+\|A_\beta u\|^2+\mu\|u\|^2=-\Lambda\operatorname{Re}\langle W_xu_2,u_3\rangle.\]</div><p>若 \(g_j&gt;|\Lambda|M_K/2\)，则 norm exponent 是 \(g_j-|\Lambda|M_K/2\)。这是 damping-dominated full rows，不是完整 low-gap theorem。</p></section>
+        <section id="lift"><div class="section-no">07 / Exact lift-up obstruction</div><h2>zero coupling 仍可产生严格 transient growth</h2><div class="equation result">\[u_2(d)=e^{-\xi^2d}v_0,\qquad u_3(d)=-\Lambda d e^{-\xi^2d}W_x(d,x)v_0,\]</div><div class="equation result">\[\frac{\|u(d)\|^2}{\|u(0)\|^2}=e^{-2\xi^2d}\left[1+\frac{\Lambda^2d^2}{8}(e^{-2d}+e^{-8d})\right].\]</div><p>ξ=0 时任意非零 Λ 都增长；ξ&gt;0 给 spatially mean-zero 扰动，取足够大的 |Λ| 仍可增长。因此 epsilonOnlyFullRowClosure=FALSE，allPhysicalRowsUniformStrictContraction=FALSE。</p></section>
+        <section id="kernel"><div class="section-no">08 / Exact causal kernel</div><h2>几何 block envelope 直接给出 scalar L2 forcing 的 alpha-squared scale</h2><div class="equation result">\[\int_0^\infty\!\left(e^{-\mu r}q^{\lfloor r/h\rfloor}\right)^pdr=\frac{1-e^{-p\mu h}}{p\mu(1-q^pe^{-p\mu h})},\qquad h=2T\alpha^2.\]</div><p>\(\mu\to0\) 的极限是 \(h/(1-q^p)\)。Young convolution 给 \(L_d^2L_x^2\to L_d^2L_x^2\) 的 \(O(\alpha^2)\) bound。</p></section>
+        <section id="negative"><div class="section-no">09 / Negative Sobolev forcing</div><h2>standard 与 semiclassical negative norm 必须分开</h2><div class="equation result">\[\|G\|_{L_d^2L_x^2}\le C_q\alpha\|F\|_{L_d^2H^{-1}_\beta},\]</div><div class="equation result">\[\|G\|_{L_d^2L_x^2}\le C_q\alpha^2\|F\|_{L_d^2\mathcal H^{-1}_{\alpha,\beta}}.\]</div><p>两条结论来自 backward-adjoint energy 与 transposition；standardHMinusOneTransferAlpha2=FALSE。</p></section>
+        <section id="endpoint"><div class="section-no">10 / Endpoint boundary</div><h2>standard endpoint 只有 scale one；semiclassical endpoint 有 alpha</h2><div class="equation result">\[\max\{\|G\|_{L_d^\infty L_x^2},\|A_\beta G\|_{L_d^2L_x^2}\}\le C_q'\|F\|_{L_d^2H^{-1}_\beta}.\]</div><p>semiclassical 输入的右端另有一个 α。terminal high-frequency pulse 给 order-one endpoint response，所以 HMinusOneEndpointAlphaGain=FALSE。</p></section>
+        <section id="sharpness"><div class="section-no">11 / Sharpness</div><h2>collision-chart witness 分别饱和 alpha 与 alpha-squared</h2><p>compactly supported mean-zero witness 的 scaling ratios 分别是 standard \(H^{-1}\) 的 \(\alpha\) 和 semiclassical negative norm 的 \(\alpha^2\)；证明使用解析缩放与极限，不由有限证书代替。</p></section>
+        <section id="weak"><div class="section-no">12 / Weak and zero rows</div><h2>有限历史 energy ledger 闭合，但没有共同 strong scale</h2><p>weak/zero scalar rows 有 \(O_K(1)\) 的 finite-history bound；有 covariant gap 时还有 time-global estimate。gapless constant row 在持续 forcing 下线性增长。mean-zero 也不在 \(WG\) 下自动保持。</p></section>
+        <section id="literature"><div class="section-no">13 / Literature boundary</div><h2>已有 forced 与 vector 先例，但现有方法没有覆盖本节组合</h2><p>Wei--Zhang 已在 monotone Couette 邻域给出 nonautonomous forced 和三维向量闭合；该坐标法在 \(V_y=0\) 的 collision 处失效。Coble--He 的 fixed-shape homogeneous theorem 不含 forcing 或完整向量行。我只报告有界原始文献核验，不把“未发现”写成首创性证明。</p></section>
+        <section id="evidence"><div class="section-no">14 / Evidence boundary</div><h2>有限代数、函数分析和附图各有明确职责</h2><p>双路证书核对 heat identity、pressure factor、Leray signs、OS--Squire coefficients、velocity recovery、lift-up residual、kernel algebra 与 Fourier weights。Galerkin limit、duality、endpoint trace、sharpness limit 和 evolution-family existence 由解析报告承担。附图只可视化精确公式与已证明 power guides。</p></section>
+        <section id="figure"><div class="section-no">15 / Journal figure</div><h2>正式附图分开显示 row structure、lift-up 与 forcing powers</h2><p><img src="/assets/r072y/fig-r072y-full-row-forced-transfer.svg" alt="R0.72Y full Fourier row, exact lift-up counterexample, and forced-transfer scales"></p><p><a href="/assets/r072y/fig-r072y-full-row-forced-transfer.pdf">下载 PDF</a> · <a href="/assets/r072y/fig-r072y-full-row-forced-transfer.png">下载 PNG</a> · <a href="/assets/r072y/fig-r072y-full-row-forced-transfer.svg">打开 SVG</a></p></section>
+        <section id="value"><div class="section-no">16 / Research value</div><h2>本节把 scalar result 放回正确的完整线性边界</h2><p>严格价值在于不再把 scalar A2 estimate 与 complete vector row 混同，并固定了 forcing topology 对 α power 的影响。直接 Clay 价值仍低：low-gap vector estimate、nonlinear convolution、vortex stretching bootstrap 与 continuation criterion 都未完成。</p></section>
+        <section id="next"><div class="section-no">17 / Next gate</div><h2>R0.72Z：吸收 Orr--Sommerfeld feedback，并支付 orientation-dependent Squire transfer</h2><p>下一节直接研究 \(q\to\eta\) 三角系统，按 \(|\xi/\gamma|\)、damping gap 与 \(\mu=0\) exceptional rows 分区；任何结论都必须保留 lift-up transient prefactor。</p></section>
+        <section id="reproduce"><div class="section-no">18 / Reproduction</div><h2>完整报告、边界矩阵、独立审计、证书与附图</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072y_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072y_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072y_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r072y_independent_audit.md">独立数学审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r072y">确定性双路证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r072y/fig-r072y-full-row-forced-transfer">正式附图包</a> · <a href="/notes/r0-72y.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-72y.html">累计回顾</a> · <a href="/recap-r0-61-r0-72y.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.72Y · 2026-08-28<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

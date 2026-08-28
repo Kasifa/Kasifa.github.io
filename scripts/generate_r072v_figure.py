@@ -1156,7 +1156,7 @@ def build_archive(
             }
         ),
         "computation": {
-            "kind": "exact-analytic-presentation",
+            "kind": "exact-audit plus high-precision presentation sampling",
             "configuration": (
                 "adaptive kappa curve, three translated coefficient "
                 "parabolas with exact integer markers, and symbolic ratio"

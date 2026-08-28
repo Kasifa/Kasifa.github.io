@@ -144,11 +144,13 @@ test("R0.72W claim boundary is explicit and machine-honest", async () => {
   ]) assert.ok(producer.includes(token), token);
   for (const token of [
     "validate_claim_boundary",
+    "manifest claim boundary drift",
     '"analyticTorusGraphTheoremProvedInBoundReport"',
     '"torusHMinusOneDirectSumMachineChecked"',
     '"nonlinearNavierStokesClosureProved"',
     '"clayMillenniumProblemSolved"',
   ]) assert.ok(validator.includes(token), token);
+  assert.ok(producer.includes('"claimBoundary": certificate["claimBoundary"]'));
 });
 
 
@@ -168,7 +170,6 @@ test("R0.72W formal lifecycle binds the complete frozen source set", async () =>
     "research/r072w_gap_matrix.md",
     "research/r072w_literature_audit.md",
     "research/r072w_independent_audit.md",
-    "research/release-manifest.json",
     "scripts/generate_r072w_figure.py",
     "scripts/generate_r072w_release.py",
     "scripts/add-r072w-translations.mjs",
@@ -187,6 +188,7 @@ test("R0.72W formal lifecycle binds the complete frozen source set", async () =>
     "tests/r072w-exact-tail-transfer-figure-source.test.mjs",
     "tests/r072w-release.test.mjs",
   ]) assert.ok(producer.includes(token), token);
+  assert.ok(!producer.includes('"research/release-manifest.json"'));
   assert.ok(!producer.includes("figure-contract.md"));
   for (const token of [
     "EXPECTED_SOURCE_FILES",

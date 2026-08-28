@@ -105,7 +105,7 @@ NOTE_HERO = r'''    <header class="hero"><div class="hero-inner">
       <div>
         <div class="eyebrow">研究笔记 R0.72W · EXACT ANALYTIC TAIL · PERIODIC COLLISION BLOCK</div>
         <h1>保留解析尾项的精确周期块收缩：<br>有界—逃逸胞元二分</h1>
-        <p class="lead">有限的 \(H_5,H_7,R_9\) 展开在整条扩张周期上不能作为小扰动吸收。R0.72W 因而保留 exact trigonometric heat path，以 compact--escaping cell dichotomy 直接证明对 \(0&lt;\alpha\le1\) 一致的 unit-cell graph theorem，并经 nonhomogeneous \(H^{-1}\) direct sum 全球化到 whole line 和 expanding torus。对 every torus \(L^2\) datum 的独立能量演化随后给出一个 collision-scale block 上的严格收缩。结论仍只是一个 exact linear scalar Fourier row。</p>
+        <p class="lead">有限的 \(H_5,H_7,R_9\) 展开在整条扩张周期上不能作为小扰动吸收。R0.72W 因而保留 exact trigonometric heat path，以 compact--escaping cell dichotomy 直接证明对 \(0&lt;\alpha\le1\) 一致的 unit-cell graph theorem，并经 nonhomogeneous \(H^{-1}\) direct sum 全球化到 whole line 和 expanding torus。对 every torus \(L^2\) datum 的独立能量演化随后给出 exact periodic scalar collision-block contraction。结论仍只是一个 exact linear scalar Fourier row。</p>
       </div>
       <div class="stamp"><span class="state">状态 · R0.72W exact periodic scalar block 完成</span><strong>exact-tail periodic contraction through the compact–escaping cell dichotomy</strong><p>版本 v0.72W · 2026-08-28</p><p>exactPeriodicGraphCoercivity: CLOSED</p><p>exactPeriodicBlockContraction: CLOSED</p><p>globalTermwiseRemainderAbsorption: FALSE</p><p>timeLengthUniformity: FALSE</p><p>outerTimeConcatenation: OPEN</p><p>nonlinearNavierStokes / Clay: OPEN</p></div>
     </div></header>'''

@@ -24,7 +24,6 @@ EXPECTED_SOURCE_FILES = (
     "research/certificates/r072w/README.md",
     "research/certificates/r072w/command.txt",
     "research/certificates/r072w/environment.txt",
-    "research/release-manifest.json",
     "scripts/generate_r072w_figure.py",
     "scripts/generate_r072w_release.py",
     "scripts/add-r072w-translations.mjs",
@@ -219,6 +218,8 @@ def main() -> None:
         raise RuntimeError("formal deterministic manifest required")
     validate_source_bindings(manifest, crosscheck)
     validate_exact_ledger(certificate)
+    if manifest.get("claimBoundary") != certificate.get("claimBoundary"):
+        raise RuntimeError("manifest claim boundary drift")
 
     if independent.get("status") != "passed":
         raise RuntimeError("independent recomputation failed")

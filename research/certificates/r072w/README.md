@@ -47,5 +47,6 @@ python3 research/certificates/r072w/validate_certificate.py --require-formal
 Formal generation requires a completely clean repository, a full
 40-character source commit equal to `HEAD`, and byte-identical working copies
 of every bound source. The binding covers the research, audit, certificate,
-figure, release-page, translation, manifest, and release-gate sources. It
-refuses to overwrite any formal output.
+figure, release-page, translation, and release-gate sources. Mutable site
+publication state is validated separately by the release gate. Formal
+generation refuses to overwrite any existing output.

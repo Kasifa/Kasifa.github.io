@@ -34,7 +34,6 @@ SOURCE_FILES = (
     "research/certificates/r072w/README.md",
     "research/certificates/r072w/command.txt",
     "research/certificates/r072w/environment.txt",
-    "research/release-manifest.json",
     "scripts/generate_r072w_figure.py",
     "scripts/generate_r072w_release.py",
     "scripts/add-r072w-translations.mjs",
@@ -494,6 +493,7 @@ def formal_build(source_commit: str) -> None:
         "status": "formal",
         "sourceCommit": source_commit,
         "sourceBindings": bindings,
+        "claimBoundary": certificate["claimBoundary"],
         "deterministic": True,
         "createdAt": "2026-08-28T00:00:00+08:00",
         "files": {

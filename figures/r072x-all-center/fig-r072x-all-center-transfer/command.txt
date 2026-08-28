@@ -1,0 +1,12 @@
+# Zero-write source validation
+python3 scripts/generate_r072x_figure.py --self-test
+
+# Zero-write calibration on the legacy 96-step scan's top-three slow spectral clusters
+python3 scripts/generate_r072x_figure.py --calibration-test
+
+# Formal source/certificate-bound render
+python3 scripts/generate_r072x_figure.py --formal --visual-inspected --source-commit <40-hex> --certificate-commit <40-hex>
+
+# Independent package validation
+python3 figures/r072x-all-center/fig-r072x-all-center-transfer/validate.py --require-formal
+python3 research/validate_figure_package.py figures/r072x-all-center/fig-r072x-all-center-transfer

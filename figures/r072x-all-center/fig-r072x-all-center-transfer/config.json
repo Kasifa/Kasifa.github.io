@@ -1,0 +1,80 @@
+{
+  "figureId": "fig-r072x-all-center-transfer",
+  "widthMillimetres": 178,
+  "heightMillimetres": 150,
+  "pngDpi": 600,
+  "panelA": {
+    "analyticalQuestion": "How does the finest discrete full-exact block norm vary with physical center and alpha?",
+    "takeawayBoundary": "Finite-grid diagnostic only; no continuum constant is evaluated.",
+    "physicalCenters": [
+      -0.6931471805599453,
+      -0.5,
+      -0.25,
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125,
+      0.25,
+      0.3068528194400547
+    ],
+    "physicalCenterRange": [
+      -0.6931471805599453,
+      0.3068528194400547
+    ],
+    "alphas": [1.0, 0.75, 0.5, 0.35, 0.25],
+    "levels": [
+      {"label": "coarse", "spatialModes": 256, "timeSteps": 400},
+      {"label": "medium", "spatialModes": 512, "timeSteps": 800},
+      {"label": "fine", "spatialModes": 1024, "timeSteps": 1600}
+    ],
+    "blockHalfLengthScaledTime": 0.25,
+    "lanczosRitzPolicy": {
+      "minDimension": 8,
+      "maxDimension": 32,
+      "checkEvery": 4,
+      "relativeResidualTolerance": 1e-10,
+      "reorthogonalizationPasses": 2
+    },
+    "workers": 4,
+    "precision": "float64/complex128",
+    "randomSeed": null,
+    "diagnosticOnly": true
+  },
+  "panelB": {
+    "aggregation": "panel curves use maxima over physical centers at fixed alpha; release QA scalars use global maxima over the full alpha-center-resolution scan",
+    "qaThresholds": {
+      "maxRelativeToFine": 0.0005,
+      "maxAdjointDefect": 1e-10,
+      "maxRitzResidual": 1e-8,
+      "maxRayleighNormDefect": 1e-10
+    },
+    "metrics": [
+      "coarse relative-to-fine",
+      "medium relative-to-fine",
+      "adjoint defect",
+      "direct-versus-Rayleigh norm defect",
+      "actual Ritz residual"
+    ],
+    "scale": "base-10 logarithmic"
+  },
+  "panelC": {
+    "interfaceHalfWidth": "h=T*alpha^2",
+    "T": 0.25,
+    "preQuantities": ["critical separation", "Hessian floor"],
+    "postQuantity": "abs(W_x(h,0))",
+    "expectedPowers": {"pre": 1, "post": 2},
+    "guidesAreFits": false
+  },
+  "panelD": {
+    "physicalHistory": [
+      -0.6931471805599453,
+      0.3068528194400547
+    ],
+    "fixedMarginDelta": 0.125,
+    "fullBlockCount": "floor(L/(2*T*alpha^2))",
+    "allStartFactor": "q^floor(L/(2*T*alpha^2))",
+    "safeEnvelope": "q^-1*exp(-abs(log(q))*L/(2*T*alpha^2))",
+    "qEvaluatedNumerically": false
+  }
+}

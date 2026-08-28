@@ -1,0 +1,14 @@
+# Source-only checks; these commands write no outputs.
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/independent_recompute.py --self-test
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/generate_certificate.py --self-test
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --test tests/r072z-deterministic-certificate-source.test.mjs
+
+# Optional deterministic draft generation and fail-closed validation.
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/generate_certificate.py --draft
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/validate_certificate.py --require-draft
+
+# Formal sealing, only after the complete R0.72Z source inventory belongs to
+# the current completely clean HEAD.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/generate_certificate.py --formal --formal-source-commit "$SOURCE_COMMIT"
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 research/certificates/r072z/validate_certificate.py --require-formal

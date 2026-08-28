@@ -1,0 +1,15 @@
+Runtime: Codex bundled Python
+Precision: NumPy float64 / complex128
+Parallelism: four local worker processes, one numerical thread per process
+GPU: not used
+Randomness: none; randomSeed=null
+Spatial method: Fourier pseudospectral diffusion on z in [0,2*pi)
+Time method: symmetric Strang splitting on tau in [-1/4,1/4]
+Potential: full exact shifted two-harmonic V_alpha; no polynomial truncation
+Norm diagnostic: deterministic Lanczos-Ritz on U*U with two full reorthogonalization passes
+Krylov policy: minDimension=8, maxDimension=32, checkEvery=4
+Ritz gate: actual-space relative residual <=1e-10 at a declared checkpoint or fail
+Norm value: direct ||U v_Ritz||_2; relative Rayleigh-norm defect archived per row
+Finite-value gate: every norm/residual/defect/refinement scalar must be finite
+Figure renderer: deterministic custom SVG, ReportLab vector PDF, Pillow 600-dpi PNG
+Formal lineage: clean source commit plus distinct clean certificate commit

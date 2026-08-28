@@ -1,0 +1,14 @@
+Python 3.12 deterministic analytic and numerical figure generator.
+
+The source self-test uses only the Python standard library and writes nothing.
+Draft/formal rendering uses NumPy 2.3.5, Pillow 12.3.0, and ReportLab 4.4.9 as
+pinned in requirements.txt. The numerical panel uses NumPy float64/complex128,
+one process, one requested FFT/BLAS thread, no GPU, no DGX, no randomness, and
+fixed trigonometric initial and adjoint-probe vectors. It propagates the full
+exact trigonometric potential; no H3/H5/H7 truncation enters the PDE solve.
+
+The formal renderer records alpha, spatial modes, time steps, fixed power
+iterations, wall time, forward--adjoint defect, power residual, relative
+change to the finest level, environment versions, progress, and resource use.
+The calculation is a reproducible numerical diagnostic only and is not part
+of the analytic proof.

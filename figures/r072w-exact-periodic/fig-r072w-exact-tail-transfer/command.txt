@@ -1,0 +1,18 @@
+# Source stage: this is the only permitted command before the source commit.
+python3 scripts/generate_r072w_figure.py --self-test
+
+# Later certificate stage, after every bound source file is committed.
+SOURCE_COMMIT=$(git rev-parse HEAD)
+python3 research/certificates/r072w/generate_certificate.py --formal --source-commit "$SOURCE_COMMIT"
+python3 research/certificates/r072w/validate_certificate.py --require-formal
+
+# Later draft render in a disposable output state. This runs the deterministic
+# numerical diagnostic but creates no public copies.
+python3 scripts/generate_r072w_figure.py --draft
+
+# Later formal render from a clean, distinct commit containing the certificate.
+# All package-generated and target public files must be absent before this run.
+SOURCE_COMMIT=$(python3 -c 'import json; print(json.load(open("research/certificates/r072w/manifest.json"))["sourceCommit"])')
+CERTIFICATE_COMMIT=$(git rev-parse HEAD)
+python3 scripts/generate_r072w_figure.py --formal --visual-inspected --source-commit "$SOURCE_COMMIT" --certificate-commit "$CERTIFICATE_COMMIT"
+python3 figures/r072w-exact-periodic/fig-r072w-exact-tail-transfer/validate.py --require-formal

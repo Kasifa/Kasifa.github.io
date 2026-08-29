@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "r073c-experiment-contract-v1",
+  "release": "R0.73C",
+  "operator": "A_gamma(0)=-i gamma (W+W_xx L_gamma^-1)",
+  "profile": "W=-sin(x)/2+sin(2x)/4",
+  "phaseSpeedConvention": "c=i eta and sigma=gamma eta",
+  "formalBracket": {
+    "gamma": "1/2",
+    "etaLeft": "0.3407",
+    "etaRight": "0.3410",
+    "sigmaOpenInterval": ["0.17035", "0.17050"],
+    "requiredLeftSign": "negative",
+    "requiredRightSign": "positive"
+  },
+  "primaryIntervalRuns": [
+    {"id": "partition-a", "steps": 1024, "order": 10, "dps": 40},
+    {"id": "partition-b", "steps": 768, "order": 12, "dps": 55}
+  ],
+  "independentIntervalRun": {
+    "backend": "Python decimal directed rounding",
+    "pi": "Machin identity with alternating-series rational remainder",
+    "steps": 256,
+    "order": 8,
+    "precision": 80,
+    "importsPrimaryProducer": false,
+    "importsMpmath": false
+  },
+  "finiteDiagnostic": {
+    "activeN": 48,
+    "outerN": 192,
+    "contourSamples": 2048,
+    "quadraturePoints": 32768,
+    "independentWindingNodes": 512
+  },
+  "claimBoundary": {
+    "exactNeutralSpectrumChecked": true,
+    "intervalMonodromyEndpointSignsRequired": true,
+    "infiniteDimensionalFrozenEigenvalueProvedAfterAnalyticBridge": true,
+    "finiteFourierCutoffConvergenceIsProof": false,
+    "continuousFredholmContourEnclosed": false,
+    "rootUniquenessProved": false,
+    "algebraicSimplicityProved": false,
+    "viscousSpectralPersistenceProved": false,
+    "nonautonomousTransferProved": false,
+    "nonlinearNavierStokesProved": false,
+    "clayProblemSolved": false
+  }
+}
+

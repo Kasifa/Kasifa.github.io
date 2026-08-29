@@ -1,7 +1,7 @@
 # R0.73A figure QA
 
 - manifest stage: draft
-- explicit visual inspection: yes
+- explicit visual inspection: pending
 - final-size, grayscale, and independent PDF previews generated: yes
 - hidden-mean derivative, singular limit, J kernel, and envelope recomputed: yes
 - finite frozen metrics verified against pinned upstream data: yes
@@ -26,6 +26,7 @@
 - frozenDiagnosticsTransformed: PASS
 - panelCDomainsContainAllDataWithPadding: PASS
 - certificateRowsValidIfPresent: PASS
+- certificateTolerancePinned: PASS
 - targetSourceHashPinned: PASS
 - targetValidationHashPinned: PASS
 - normalizedBracketBoundaryVisible: PASS
@@ -36,6 +37,7 @@
 - panelBJLegendVisible: PASS
 - panelBEnvelopeLegendVisible: PASS
 - certificateDependencyVisible: PASS
+- certificateStageTextExact: PASS
 - finiteDimensionalBoundaryVisible: PASS
 - fixedProjectionBoundaryVisible: PASS
 - tailBoundaryVisible: PASS

@@ -8,11 +8,14 @@ separate:
 2. the proved analytic `X_mu` transient envelope; and
 3. independently validated finite Fourier--Galerkin frozen-time diagnostics.
 
-Panel B does not currently contain a certified nonautonomous `X_mu`
-propagator-gain grid because no such upstream artifact exists. The reserved
-overlay is visibly labelled `PENDING - NOT PLOTTED`. Draft rendering may retain
-that dependency label; formal rendering must fail until a certificate CSV with
-the declared schema and provenance is supplied.
+Panel B contains the complete 120-row deterministic nonautonomous `X_mu`
+propagator-gain grid supplied by the certificate package. Black cross markers
+and a direct legend distinguish the grid from the three analytic envelope
+curves in color and grayscale; exact point overlaps are deliberately retained.
+At source stage the CSV is reproducible but unsealed. Formal rendering requires
+the source-bound formal certificate and records distinct source and certificate
+commits in the generated manifest. Missing, stale, or unsealed dependencies
+still fail closed; no synthetic gain is substituted.
 
 Panel C reads the validated `N=40` target rows from
 `experiments/r073a/target_dynamics.csv`. These values are finite-dimensional

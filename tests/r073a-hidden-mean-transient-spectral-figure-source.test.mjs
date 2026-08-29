@@ -50,7 +50,7 @@ test("R0.73A source contract pins path-sensitive and finite-only boundaries", as
   assert.equal(config.panelB.sampleCountPerSeries, 81);
   assert.equal(config.panelB.certificateBoundTolerance, 2e-8);
   assert.equal(config.panelB.certificateOverlayRequiredForFormal, true);
-  assert.equal(config.panelB.certificateAvailableAtSourceFreeze, false);
+  assert.equal(config.panelB.certificateAvailableAtSourceFreeze, true);
   assert.equal(config.panelC.N, 40);
   assert.equal(config.panelC.expectedRows, 30);
   assert.deepEqual(config.panelC.displayDomains["frozen-spectral-edge"], [-0.25, 5]);
@@ -60,25 +60,26 @@ test("R0.73A source contract pins path-sensitive and finite-only boundaries", as
   assert.equal(config.panelC.minimumDisplayPadding, 0.2);
   assert.equal(config.panelC.finiteDimensionalOnly, true);
   assert.equal(config.panelC.galerkinTailBoundAvailable, false);
-  assert.equal(contract.stage, "source-pending-propagator-certificate");
+  assert.equal(contract.stage, "source-ready-for-formal-certificate");
   assert.equal(contract.chartContract.dataSufficiency,
-    "851 analytic/audited metric rows plus zero certificate-overlay rows at source freeze");
+    "851 analytic/audited metric rows plus 120 deterministic certificate-overlay rows at source freeze");
   assert.equal(contract.claimBoundary.exactNormalizedHiddenMeanBracketClosedInBoundDraft, true);
   assert.equal(contract.claimBoundary.nonzeroHiddenDerivativeLimitAlongCmuToNonzeroPath, true);
   assert.equal(contract.claimBoundary.fixedLambdaHiddenDerivativeLimitDecided, false);
   assert.equal(contract.claimBoundary.instantaneousLiftedLineInvariantAtPositiveGap, false);
   assert.equal(contract.claimBoundary.finiteFrozenGalerkinScreenValidated, true);
+  assert.equal(contract.claimBoundary.certifiedXmuPropagatorGainAvailableAtSourceFreeze, true);
   for (const key of [
     "rankOneAbstractTangentClosesPhysicalLongWaveLimit",
     "fixedProjectionUniformlyStabilizesFrozenScreen",
-    "certifiedXmuPropagatorGainAvailableAtSourceFreeze", "continuousTimeMaximumTransientGainProved",
+    "continuousTimeMaximumTransientGainProved",
     "infiniteDimensionalFrozenSpectrumProved", "galerkinTailBoundProved",
     "lowGapPhysicalKineticPropagatorProved", "BlochUniformPhysicalVelocityDirectSumProved",
     "nonlinearNavierStokesClosureProved", "clayMillenniumProblemSolved",
     "figureContainsSyntheticCertificateData", "figureIsAnalyticProof",
   ]) assert.equal(contract.claimBoundary[key], false, key);
   assert.equal(contract.palette.hardChromaticRootCap, 2);
-  assert.equal(draft.dependency.available, false);
+  assert.equal(draft.dependency.available, true);
   assert.equal(draft.dependency.syntheticSubstitutionAllowed, false);
   assert.equal(draft.dependency.formalBlocked, true);
   for (const prose of [caption, readme, figureContract]) {
@@ -86,6 +87,9 @@ test("R0.73A source contract pins path-sensitive and finite-only boundaries", as
     assert.match(prose, /fixed\s+`?Lambda`?.*(undecided|not decide)/is);
   }
   assert.match(caption, /instantaneous lifted line is not invariant/i);
+  assert.match(caption, /120 deterministic `X_mu` propagator-gain certificate rows/i);
+  assert.match(readme, /black cross markers/i);
+  assert.match(figureContract, /120 propagator-certificate rows \(971 total\)/i);
   for (const token of [
     "def hidden_mean", "def hidden_limit", "def transient_j",
     "def transient_envelope", "def signed_log", "def build_rows", "def build_scene",

@@ -12,10 +12,14 @@ physical/abstract mismatch or a numerical residual. For every positive gap the
 instantaneous lifted line is not invariant, so this identity is not a closed
 one-dimensional positive-gap model. (B) The exact kernel
 `J(s,d)=7/4(e^-s-e^-d)+1/2(e^-4s-e^-4d)` and the proved envelope
-`exp[-mu(d-s)+|c|J(s,d)]` are shown for declared parameters. No certified
-`X_mu` propagator-gain grid exists at source freeze, so no measured-gain curve
-is plotted; the reserved overlay remains visibly pending and formal sealing is
-blocked. (C) At the declared finite truncation `N=40`, spectral edge and
+`exp[-mu(d-s)+|c|J(s,d)]` are shown for declared parameters. Black crosses
+overlay all 120 deterministic `X_mu` propagator-gain certificate rows at
+`d-s in {0.1,0.75,1.5}`; exact overlaps are retained and no gain curve is
+fitted. The released formal manifest binds these rows to distinct source and
+certificate commits. This finite grid checks the declared analytic upper bound
+within the fixed `2e-8` numerical tolerance but does not establish the
+continuous-time maximum gain. (C) At the declared finite truncation `N=40`,
+spectral edge and
 numerical abscissa are compared across the unprojected matrix, deletion of the
 instantaneous `W_xx` direction, and deletion of
 `span{sin x,sin 2x}`. Fixed projection is not uniformly stabilizing, and a

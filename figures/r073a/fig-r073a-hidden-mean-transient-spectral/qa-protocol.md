@@ -6,8 +6,13 @@
    and fixed `Lambda` remains undecided.
 2. Recompute every Panel B `J(s,d)` and analytic envelope row. Confirm the
    envelope is an upper bound from the analytic proof, not observed gain.
-3. At source/draft stage require `CERTIFIED X_mu GAIN: PENDING - NOT PLOTTED`
-   and zero certificate rows. Formal mode must refuse this state.
+3. If the certificate CSV is absent, require
+   `CERTIFIED X_mu GAIN: PENDING - NOT PLOTTED`, zero certificate rows, and a
+   formal-mode refusal. If it is present, require all 120 rows, black cross
+   markers, the direct `certified X_mu grid (120 rows)` legend, and exact point
+   overlaps without jitter. Formal mode must additionally display
+   `FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED` and omit every pending
+   lineage label.
 4. Before formal mode, require the external certificate CSV schema
    `certificateId,s,d,mu,c,gain,bound,sourceCommit,certificateCommit`, validate
    `0 < gain <= bound + 2e-8`, where `2e-8` is a fixed numerical crosscheck
@@ -28,4 +33,5 @@
    value with at least `0.2` transformed-unit padding and retain a visible zero
    tick/reference. Reject any mark outside its axes.
 10. Require Panel A/B formulas outside their data rectangles and require compact
-    `J start` and envelope `mu/|c|/s` legends with matching dash/marker encodings.
+    `J start`, envelope `mu/|c|/s`, and certified-grid legends with matching
+    dash/marker encodings.

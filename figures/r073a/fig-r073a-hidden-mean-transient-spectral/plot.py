@@ -330,11 +330,17 @@ def add_marker(scene: Scene, x: float, y: float, marker: str, color: str,
     elif marker == "triangle":
         scene.polygon([(x, y - 1.2 * size), (x - size, y + size),
                        (x + size, y + size)], fill=fill, stroke=color, width=2.0)
+    elif marker == "cross":
+        scene.line(x - size, y - size, x + size, y + size,
+                   color=color, width=2.0)
+        scene.line(x - size, y + size, x + size, y - size,
+                   color=color, width=2.0)
     else:
         raise ValueError(f"unknown marker {marker}")
 
 
-def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
+def build_scene(rows: list[dict[str, str]], config: dict[str, Any],
+                formal: bool = False) -> Scene:
     scene = Scene([])
     scene.rect(0, 0, W, H, fill=PAPER, stroke=PAPER, width=0)
     scene.text(55, 52,
@@ -565,12 +571,20 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
             add_marker(scene, *points[index], marker, color, size=4.5,
                        filled=filled)
     if certificate_rows:
+        add_marker(scene, bqx + 262, bqy - 16, "cross", INK, size=4.2)
+        scene.text(bqx + 274, bqy - 11,
+                   "certified X_mu grid (120 rows)", size=12.3, color=INK)
+    if certificate_rows:
         for row in certificate_rows:
             xx = bqx + bqw * float(row["tau"]) / 6.0
             yy = map_y(float(row["displayValue"]), e_lo, e_hi, bqy, bqh)
-            add_marker(scene, xx, yy, "square", GOLD, size=5.5, filled=False)
+            add_marker(scene, xx, yy, "cross", INK, size=4.0)
         certificate_badge = "CERTIFIED X_mu GAIN: OVERLAY PRESENT"
-        certificate_note = "Certificate CSV only; formal lineage still required."
+        certificate_note = (
+            "FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED"
+            if formal else
+            "Certificate CSV only; formal lineage still required."
+        )
     else:
         certificate_badge = "CERTIFIED X_mu GAIN: PENDING - NOT PLOTTED"
         certificate_note = "FORMAL SEAL BLOCKED; NO SYNTHETIC CURVE"
@@ -581,7 +595,9 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any]) -> Scene:
     scene.text(bx + 34, panel_y + 1086, certificate_note,
                size=15.5, bold=True)
     scene.text(bx + 20, panel_y + 1170,
-               "Bound draft closed; maximum observed gain remains unclaimed.",
+               ("Formal analytic bound sealed; maximum observed gain remains unclaimed."
+                if formal else
+                "Bound draft closed; maximum observed gain remains unclaimed."),
                size=16, color=MID)
 
     # C: validated N=40 screening data; the finite-dimensional boundary is explicit.
@@ -1067,7 +1083,8 @@ def build_results(rows: list[dict[str, str]]) -> dict[str, Any]:
     }
 
 
-def basic_checks(rows: list[dict[str, str]], scene: Scene) -> dict[str, bool]:
+def basic_checks(rows: list[dict[str, str]], scene: Scene,
+                 formal: bool = False) -> dict[str, bool]:
     by_kind = {kind: [row for row in rows if row["kind"] == kind]
                for kind in {row["kind"] for row in rows}}
     tol = 5e-14
@@ -1142,10 +1159,20 @@ def basic_checks(rows: list[dict[str, str]], scene: Scene) -> dict[str, bool]:
                                                 and max(formula_y.values()) < 295.0),
         "panelBJLegendVisible": "J start:" in visible,
         "panelBEnvelopeLegendVisible": "E mu/|c|/s:" in visible,
-        "certificateDependencyVisible": (("CERTIFIED X_mu GAIN: OVERLAY PRESENT" in visible)
+        "certificateDependencyVisible": (("CERTIFIED X_mu GAIN: OVERLAY PRESENT" in visible
+                                           and "certified X_mu grid (120 rows)" in visible)
                                          if certificate_rows else
                                          ("CERTIFIED X_mu GAIN: PENDING - NOT PLOTTED" in visible
                                           and "FORMAL SEAL BLOCKED; NO SYNTHETIC CURVE" in visible)),
+        "certificateStageTextExact": (
+            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED" in visible
+             and "Formal analytic bound sealed; maximum observed gain remains unclaimed." in visible
+             and "formal lineage still required" not in visible
+             and "Bound draft closed" not in visible)
+            if formal else
+            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED" not in visible
+             and "Formal analytic bound sealed" not in visible)
+        ),
         "finiteDimensionalBoundaryVisible": "FINITE GALERKIN N=40 - NOT INFINITE-DIMENSIONAL" in visible,
         "fixedProjectionBoundaryVisible": "FIXED PROJECTION SUFFICIENT: FALSE IN SCREEN" in visible,
         "tailBoundaryVisible": "NO GALERKIN TAIL BOUND" in visible,
@@ -1406,8 +1433,8 @@ def main() -> int:
     args = parse_args()
     config = json.loads((PACKAGE / "config.json").read_text(encoding="utf-8"))
     rows = build_rows(config)
-    scene = build_scene(rows, config)
-    checks = basic_checks(rows, scene)
+    scene = build_scene(rows, config, formal=args.formal)
+    checks = basic_checks(rows, scene, formal=args.formal)
     if not all(checks.values()):
         failed = [key for key, value in checks.items() if not value]
         raise RuntimeError(f"self-test failed: {failed}")

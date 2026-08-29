@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { cp, mkdtemp, readFile, rm } from "node:fs/promises";
+import { cp, mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -13,6 +13,17 @@ import { promisify } from "node:util";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const directory = "research/certificates/r073e";
 const sourceCommit = "803279d72c24a54db27c40dcdad97593636788fc";
+const certificateCommit = "1c80e0bd666db16a116920ddb194b26bbec29f9a";
+const originalFigureGenerationBaseCommit = "645e862c06cf31c3d7551dac292af43eea3ec1b5";
+const originalFigurePackageCommit = "f55e54e97db96fb0e050e840d5f2db50d9bbc292";
+const figureDirectory = "figures/r073e/fig-r073e-complement-transfer";
+const figureManifestPath = `${figureDirectory}/manifest.json`;
+const migratedFigureMetadata = [
+  `${figureDirectory}/SHA256SUMS`,
+  `${figureDirectory}/command.txt`,
+  `${figureDirectory}/manifest.json`,
+  `${figureDirectory}/validate.py`,
+];
 const bundledPython = "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3";
 const python = process.env.CODEX_PYTHON || (existsSync(bundledPython) ? bundledPython : "python3");
 const run = promisify(execFile);
@@ -112,6 +123,21 @@ async function gitBytes(args) {
   return (await run("git", args, { cwd: root, encoding: "buffer", maxBuffer: 32 * 1024 * 1024 })).stdout;
 }
 
+async function gitText(args) {
+  return (await run("git", args, { cwd: root, encoding: "utf8", maxBuffer: 32 * 1024 * 1024 })).stdout;
+}
+
+async function gitJson(commit, relative) {
+  return JSON.parse(await gitText(["show", `${commit}:${relative}`]));
+}
+
+async function assertAncestor(ancestor, descendant, label) {
+  await assert.doesNotReject(
+    run("git", ["merge-base", "--is-ancestor", ancestor, descendant], { cwd: root }),
+    label,
+  );
+}
+
 function exactKeys(value, keys, label) {
   assert.ok(value && typeof value === "object" && !Array.isArray(value), `${label}: object`);
   assert.deepEqual(Object.keys(value).sort(), [...keys].sort(), `${label}: exact keys`);
@@ -170,16 +196,129 @@ test("R0.73E source bindings are exact Git blobs at the frozen commit", async ()
   assert.deepEqual(certificate.sourceBindings.map(({ path }) => path), sourcePaths);
   for (const binding of certificate.sourceBindings) {
     exactKeys(binding, ["path", "commit", "gitBlob", "sha256", "bytes", "workingTreeBytesMatch"], `binding ${binding.path}`);
-    const [working, committed] = await Promise.all([
+    const [working, committed, gitBlob] = await Promise.all([
       bytes(binding.path),
       gitBytes(["show", `${sourceCommit}:${binding.path}`]),
+      gitText(["rev-parse", `${sourceCommit}:${binding.path}`]),
     ]);
-    assert.deepEqual(working, committed, `${binding.path}: working bytes match source commit`);
     assert.equal(binding.commit, sourceCommit);
-    assert.equal(binding.sha256, sha256(working));
-    assert.equal(binding.bytes, working.length);
+    assert.equal(binding.gitBlob, gitBlob.trim(), `${binding.path}: exact Git blob id`);
+    assert.equal(binding.sha256, sha256(committed), `${binding.path}: frozen blob SHA-256`);
+    assert.equal(binding.bytes, committed.length, `${binding.path}: frozen blob byte count`);
     assert.equal(binding.workingTreeBytesMatch, true);
+    if (binding.path === figureManifestPath) {
+      assert.notDeepEqual(working, committed, "strict metadata migration must not rewrite the historical certificate");
+    } else {
+      assert.deepEqual(working, committed, `${binding.path}: current frozen bytes still match source commit`);
+    }
   }
+});
+
+test("R0.73E strict figure metadata migration preserves every scientific invariant", async () => {
+  const [current, original, originalAtSource, certificate, certificateAtCommit,
+    figureValidation, originalValidation] = await Promise.all([
+    json(figureManifestPath),
+    gitJson(originalFigurePackageCommit, figureManifestPath),
+    gitJson(sourceCommit, figureManifestPath),
+    json(`${directory}/certificate.json`),
+    gitJson(certificateCommit, `${directory}/certificate.json`),
+    json(`${figureDirectory}/validation.json`),
+    gitJson(originalFigurePackageCommit, `${figureDirectory}/validation.json`),
+  ]);
+
+  assert.deepEqual(originalAtSource, original, "the audited source commit retains the original figure manifest");
+  for (const key of [
+    "release", "figureId", "status", "analyticalQuestion", "supportedClaim",
+  ]) assert.deepEqual(current[key], original[key], `${key} is invariant`);
+  assert.deepEqual(current.inputs, original.inputs, "finite input bindings are invariant");
+  assert.deepEqual(current.inputBindings, original.inputs, "strict input bindings preserve the old inputs");
+  assert.deepEqual(current.sourceData, original.inputs.map(({ path, sha256: hash }) => ({ path, sha256: hash })),
+    "sourceData contains exactly the two actual figure inputs");
+  assert.deepEqual(current.outputs, original.outputs, "figure output bindings are invariant");
+  assert.deepEqual(current.figure.outputs, original.outputs, "strict figure outputs preserve the old outputs");
+  assert.deepEqual(current.claimBoundary, original.claimBoundary, "claim boundary is invariant");
+  assert.equal(current.supportedClaim, original.supportedClaim, "supported claim is invariant");
+  assert.deepEqual(figureValidation, originalValidation, "figure validation result is byte-semantically unchanged");
+  assert.deepEqual(await bytes(`${figureDirectory}/validation.json`),
+    await gitBytes(["show", `${sourceCommit}:${figureDirectory}/validation.json`]),
+    "figure validation bytes remain exactly frozen");
+  assert.deepEqual(certificate.formalFigure, certificateAtCommit.formalFigure,
+    "certificate formalFigure remains exactly as sealed");
+  assert.deepEqual(certificate.formalFigure, {
+    figureId: current.figureId,
+    pdf: current.outputs.find(({ path }) => path === "figure.pdf"),
+    png: current.outputs.find(({ path }) => path === "figure.png"),
+    status: current.status,
+    svg: current.outputs.find(({ path }) => path === "figure.svg"),
+    validationStatus: figureValidation.status,
+  }, "all three formal outputs still agree exactly with the certificate");
+  assert.deepEqual(certificate, certificateAtCommit,
+    "the historical analytic certificate is not reissued by a metadata migration");
+
+  assert.deepEqual(current.git, {
+    repository: "Kasifa/Kasifa.github.io",
+    sourceCommit,
+    certificateCommit,
+    dirtyAtCertifiedRun: false,
+    figureSourcesBoundBySha256: true,
+    dirtyAtFigureGeneration: true,
+    originalFigureGenerationBaseCommit,
+    originalFigurePackageCommit,
+    sourceCommitMeaning: (
+      "clean analytic, finite-diagnostic, and original formal-figure " +
+      "manifest source frozen by the R0.73E certificate"
+    ),
+  });
+  assert.equal(certificate.sourceCommit, current.git.sourceCommit);
+  assert.deepEqual(current.manifestMigration, {
+    kind: "metadata-schema-only",
+    previousManifestCommit: sourceCommit,
+    previousManifestSha256: "a2187a9790e48210e16b17d11790833994e7dc15c835ca48658ae8147458a441",
+    scientificInputsChanged: false,
+    formalOutputsChanged: false,
+  });
+
+  const packageNames = (await readdir(resolve(root, figureDirectory))).sort();
+  const originalNames = (await gitText([
+    "ls-tree", "-r", "--name-only", originalFigurePackageCommit, figureDirectory,
+  ])).trim().split("\n").map((path) => path.split("/").at(-1)).sort();
+  assert.deepEqual(packageNames, originalNames, "metadata migration adds or removes no figure-package file");
+  const changed = [];
+  for (const name of packageNames) {
+    const relative = `${figureDirectory}/${name}`;
+    const [working, originalBytes] = await Promise.all([
+      bytes(relative),
+      gitBytes(["show", `${originalFigurePackageCommit}:${relative}`]),
+    ]);
+    if (!working.equals(originalBytes)) changed.push(relative);
+  }
+  assert.deepEqual(changed, migratedFigureMetadata,
+    "only the four declared strict-metadata files may change");
+
+  await assertAncestor(originalFigureGenerationBaseCommit, originalFigurePackageCommit,
+    "figure package descends from its generation base");
+  await assertAncestor(originalFigurePackageCommit, sourceCommit,
+    "audited source descends from the original figure package");
+  await assertAncestor(sourceCommit, certificateCommit,
+    "certificate commit descends from the audited source");
+  const certificateBlob = await gitBytes(["show", `${certificateCommit}:${directory}/certificate.json`]);
+  assert.deepEqual(await bytes(`${directory}/certificate.json`), certificateBlob,
+    "manifest certificateCommit contains the exact certificate file still published");
+
+  for (const output of current.outputs) {
+    const extension = output.path.slice(output.path.lastIndexOf("."));
+    const publication = `public/assets/r073e/fig-r073e-complement-transfer${extension}`;
+    assert.deepEqual(await bytes(publication), await bytes(`${figureDirectory}/${output.path}`),
+      `${publication}: public copy is byte-identical to the figure master`);
+  }
+
+  const strict = await run(python, ["research/validate_figure_package.py", figureDirectory], {
+    cwd: root,
+    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+    maxBuffer: 32 * 1024 * 1024,
+  });
+  const strictResult = JSON.parse(strict.stdout);
+  assert.deepEqual(strictResult.errors, [], "site-wide strict figure validator passes");
 });
 
 test("R0.73E finite diagnostics and figure remain formally validated but fail closed", async () => {

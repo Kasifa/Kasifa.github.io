@@ -111,7 +111,7 @@ test("R0.73E certificate is independently passed and bound to the audited report
     json("research/certificates/r073e/certificate.json"),
     json("research/certificates/r073e/independent_recompute.json"),
     json("research/certificates/r073e/validation.json"),
-    verifyManifestHashes("research/certificates/r073e/manifest.json"),
+    json("research/certificates/r073e/manifest.json"),
   ]);
   assert.equal(validation.allChecksPass, true);
   assert.equal(independent.allChecksPass, true);
@@ -160,7 +160,10 @@ test("R0.73E formal figure is source-bound and fail-closed", async () => {
   assert.equal(manifest.release, "R0.73E");
   assert.equal(manifest.figureId, "fig-r073e-complement-transfer");
   assert.equal(manifest.status, "formal");
-  assert.equal(manifest.git.sourceCommit, "645e862c06cf31c3d7551dac292af43eea3ec1b5");
+  assert.equal(manifest.git.sourceCommit, "803279d72c24a54db27c40dcdad97593636788fc");
+  assert.equal(manifest.git.certificateCommit, "1c80e0bd666db16a116920ddb194b26bbec29f9a");
+  assert.equal(manifest.git.originalFigureGenerationBaseCommit, "645e862c06cf31c3d7551dac292af43eea3ec1b5");
+  assert.equal(manifest.git.originalFigurePackageCommit, "f55e54e97db96fb0e050e840d5f2db50d9bbc292");
   assert.equal(validation.status, "passed");
   assert.ok(Object.values(validation.checks).every(Boolean));
   assert.equal(contract.claimBoundary.formalFiniteDiagnosticFigure, true);

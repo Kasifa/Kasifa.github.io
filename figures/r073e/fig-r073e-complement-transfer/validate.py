@@ -17,6 +17,13 @@ from pypdf import PdfReader
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+SOURCE_COMMIT = "803279d72c24a54db27c40dcdad97593636788fc"
+CERTIFICATE_COMMIT = "1c80e0bd666db16a116920ddb194b26bbec29f9a"
+ORIGINAL_GENERATION_BASE_COMMIT = "645e862c06cf31c3d7551dac292af43eea3ec1b5"
+ORIGINAL_FIGURE_PACKAGE_COMMIT = "f55e54e97db96fb0e050e840d5f2db50d9bbc292"
+PREVIOUS_MANIFEST_SHA256 = "a2187a9790e48210e16b17d11790833994e7dc15c835ca48658ae8147458a441"
+FIGURE_RELATIVE = "figures/r073e/fig-r073e-complement-transfer"
+CERTIFICATE_RELATIVE = "research/certificates/r073e/certificate.json"
 
 
 def canonical(value: object) -> str:
@@ -30,6 +37,18 @@ def sha256(path: Path) -> str:
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
+
+
+def git_bytes(commit: str, relative: str) -> bytes:
+    return subprocess.check_output(["git", "show", f"{commit}:{relative}"], cwd=ROOT)
+
+
+def require_ancestor(older: str, newer: str, message: str) -> None:
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", older, newer], cwd=ROOT,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    require(result.returncode == 0, message)
 
 
 def record(path: Path) -> dict[str, object]:
@@ -74,6 +93,64 @@ def main() -> int:
             "source commit must be lowercase 40-hex")
     require(bool(re.fullmatch(r"[0-9a-f]{40}", args.certificate_commit)),
             "certificate commit must be lowercase 40-hex")
+    require(args.source_commit == SOURCE_COMMIT,
+            "source commit must be the R0.73E certificate source commit")
+    require(args.certificate_commit == CERTIFICATE_COMMIT,
+            "certificate commit must be the sealed R0.73E certificate commit")
+    require_ancestor(
+        ORIGINAL_GENERATION_BASE_COMMIT, ORIGINAL_FIGURE_PACKAGE_COMMIT,
+        "original generation base is not an ancestor of the figure-package commit",
+    )
+    require_ancestor(
+        ORIGINAL_FIGURE_PACKAGE_COMMIT, SOURCE_COMMIT,
+        "figure-package commit is not an ancestor of the certificate source",
+    )
+    require_ancestor(
+        SOURCE_COMMIT, CERTIFICATE_COMMIT,
+        "certificate source is not an ancestor of the certificate commit",
+    )
+
+    certificate_path = ROOT / CERTIFICATE_RELATIVE
+    require(certificate_path.is_file(), "sealed R0.73E certificate is missing")
+    committed_certificate = git_bytes(CERTIFICATE_COMMIT, CERTIFICATE_RELATIVE)
+    require(certificate_path.read_bytes() == committed_certificate,
+            "current certificate differs from the sealed certificate commit")
+    certificate = json.loads(committed_certificate)
+    require(certificate.get("sourceCommit") == SOURCE_COMMIT,
+            "sealed certificate source commit mismatch")
+
+    previous_manifest_bytes = git_bytes(
+        SOURCE_COMMIT, f"{FIGURE_RELATIVE}/manifest.json"
+    )
+    require(
+        hashlib.sha256(previous_manifest_bytes).hexdigest()
+        == PREVIOUS_MANIFEST_SHA256,
+        "previous figure manifest hash mismatch",
+    )
+    previous_manifest = json.loads(previous_manifest_bytes)
+
+    original_names = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", ORIGINAL_FIGURE_PACKAGE_COMMIT,
+         FIGURE_RELATIVE], cwd=ROOT, text=True,
+    ).splitlines()
+    original_names = sorted(Path(name).name for name in original_names)
+    current_names = sorted(path.name for path in HERE.iterdir() if path.is_file())
+    require(current_names == original_names,
+            "figure package inventory changed during metadata migration")
+    allowed_metadata_changes = {
+        "SHA256SUMS", "command.txt", "manifest.json", "validate.py",
+    }
+    for name in current_names:
+        if name not in allowed_metadata_changes:
+            require(
+                (HERE / name).read_bytes()
+                == git_bytes(
+                    ORIGINAL_FIGURE_PACKAGE_COMMIT,
+                    f"{FIGURE_RELATIVE}/{name}",
+                ),
+                "scientific figure-package file changed during metadata migration: "
+                + name,
+            )
 
     required_before_qa = [
         "README.md", "caption.md", "command.txt", "config.json", "contract.json",
@@ -237,6 +314,19 @@ def main() -> int:
             "dirtyAtCertifiedRun": False,
             "figureSourcesBoundBySha256": True,
             "dirtyAtFigureGeneration": True,
+            "originalFigureGenerationBaseCommit": ORIGINAL_GENERATION_BASE_COMMIT,
+            "originalFigurePackageCommit": ORIGINAL_FIGURE_PACKAGE_COMMIT,
+            "sourceCommitMeaning": (
+                "clean analytic, finite-diagnostic, and original formal-figure "
+                "manifest source frozen by the R0.73E certificate"
+            ),
+        },
+        "manifestMigration": {
+            "kind": "metadata-schema-only",
+            "previousManifestCommit": SOURCE_COMMIT,
+            "previousManifestSha256": PREVIOUS_MANIFEST_SHA256,
+            "scientificInputsChanged": False,
+            "formalOutputsChanged": False,
         },
         "computation": {
             "kind": "data-analysis",
@@ -254,10 +344,11 @@ def main() -> int:
                 "and matrix-exponential diagnostics"
             ),
             "timingBasis": (
-                "three-cutoff, five-viscosity diagnostic and independent "
-                "recomputation measured on 2026-08-30"
+                "primary three-cutoff, five-viscosity finite diagnostic measured "
+                "on 2026-08-30; no combined wall time is claimed for the "
+                "independent recomputation"
             ),
-            "scientificWallTimeSeconds": 36.85,
+            "scientificWallTimeSeconds": 36.84888412500732,
             "randomnessUsed": False,
             "gpuUsed": False,
             "finiteDimensionalOnly": True,
@@ -269,7 +360,7 @@ def main() -> int:
             "cpu": "Apple M5 Max arm64",
             "memoryGiB": 36.0,
             "processes": 1,
-            "threadsPerProcess": 1,
+            "threadsPerProcess": 4,
             "gpu": "not used",
         },
         "environment": {
@@ -325,6 +416,29 @@ def main() -> int:
         "sources": [record(HERE / name) for name in source_files],
         "files": [record(HERE / name) for name in source_files],
     }
+    for key in (
+        "release", "figureId", "status", "analyticalQuestion",
+        "supportedClaim", "claimBoundary", "inputs", "outputs",
+    ):
+        require(
+            manifest[key] == previous_manifest[key],
+            "metadata migration changed frozen figure field: " + key,
+        )
+    require(certificate["formalFigure"]["figureId"] == manifest["figureId"],
+            "certificate and figure identity differ")
+    require(certificate["formalFigure"]["status"] == manifest["status"],
+            "certificate and figure status differ")
+    require(certificate["formalFigure"]["validationStatus"] == validation["status"],
+            "certificate and figure validation status differ")
+    for name in ("pdf", "svg", "png"):
+        expected = certificate["formalFigure"][name]
+        observed = next(
+            row for row in outputs if row["path"] == f"figure.{name}"
+        )
+        require(
+            observed == expected,
+            "current formal output differs from the sealed certificate: " + name,
+        )
     (HERE / "manifest.json").write_text(canonical(manifest), encoding="utf-8")
 
     checksum_names = sorted(set(source_files + [

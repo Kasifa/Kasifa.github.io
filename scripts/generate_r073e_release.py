@@ -120,6 +120,56 @@ def verify_manifest_hashes(path: Path, label: str) -> dict:
     return payload
 
 
+def git_object_bytes(commit: str, relative: str) -> bytes:
+    return subprocess.run(
+        ["git", "show", f"{commit}:{relative}"], cwd=ROOT, check=True,
+        capture_output=True,
+    ).stdout
+
+
+def verify_historical_certificate_manifest(path: Path, label: str) -> dict:
+    """Verify immutable certificate sources at their frozen Git commit.
+
+    R0.73E later migrated only the figure manifest metadata schema.  The v1
+    certificate therefore remains bound to the historical manifest blob rather
+    than requiring every future working tree to reproduce that old metadata.
+    """
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    source_commit = str(payload.get("sourceCommit", ""))
+    if source_commit != CERTIFIED_REPORT_COMMIT:
+        raise RuntimeError(label + ": unexpected frozen source commit")
+    source_bindings = payload.get("sourceBindings", [])
+    if not source_bindings:
+        raise RuntimeError(label + ": source bindings are missing")
+    for row in source_bindings:
+        relative = str(row.get("path", ""))
+        if row.get("commit") != source_commit or not relative:
+            raise RuntimeError(label + ": malformed historical source binding")
+        frozen = git_object_bytes(source_commit, relative)
+        blob = subprocess.run(
+            ["git", "rev-parse", f"{source_commit}:{relative}"], cwd=ROOT,
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        if (
+            hashlib.sha256(frozen).hexdigest() != row.get("sha256")
+            or len(frozen) != row.get("bytes")
+            or blob != row.get("gitBlob")
+            or row.get("workingTreeBytesMatch") is not True
+        ):
+            raise RuntimeError(label + ": historical source binding failed " + relative)
+    for group in ("packageBindings", "outputBindings"):
+        for row in payload.get(group, []):
+            relative = str(row.get("path", ""))
+            candidate = ROOT / relative
+            if (
+                not candidate.is_file()
+                or digest(candidate) != row.get("sha256")
+                or candidate.stat().st_size != row.get("bytes")
+            ):
+                raise RuntimeError(f"{label}: stale {group} binding {relative}")
+    return payload
+
+
 def verify_root_relative_ledger(directory: Path, label: str) -> None:
     rows = (directory / "SHA256SUMS").read_text(encoding="utf-8").splitlines()
     declared: list[str] = []
@@ -241,8 +291,15 @@ def validate_inputs() -> None:
 
     certificate = ROOT / CERTIFICATE_RELATIVE
     verify_complete_flat_ledger(certificate, "R0.73E certificate", require_directory_complete=False)
-    subprocess.run([sys.executable, str(certificate / "validate_certificate.py")], cwd=ROOT, check=True)
-    verify_complete_flat_ledger(certificate, "R0.73E certificate after validation", require_directory_complete=False)
+    subprocess.run(
+        ["git", "cat-file", "-e", FIGURE_CERTIFICATE_COMMIT + "^{commit}"],
+        cwd=ROOT, check=True,
+    )
+    for current in certificate.iterdir():
+        if current.is_file():
+            relative = current.relative_to(ROOT).as_posix()
+            if current.read_bytes() != git_object_bytes(FIGURE_CERTIFICATE_COMMIT, relative):
+                raise RuntimeError("R0.73E sealed certificate package changed: " + relative)
     cert = json.loads((certificate / "certificate.json").read_text(encoding="utf-8"))
     validation = json.loads((certificate / "validation.json").read_text(encoding="utf-8"))
     if validation.get("allChecksPass") is not True:
@@ -255,7 +312,11 @@ def validate_inputs() -> None:
     for key in OPEN_KEYS:
         if boundary.get(key) not in (False, "OPEN"):
             raise RuntimeError("R0.73E certificate escaped OPEN boundary: " + key)
-    cert_manifest = verify_manifest_hashes(certificate / "manifest.json", "R0.73E certificate manifest")
+    cert_manifest = verify_historical_certificate_manifest(
+        certificate / "manifest.json", "R0.73E certificate manifest"
+    )
+    if cert.get("sourceBindings") != cert_manifest.get("sourceBindings"):
+        raise RuntimeError("R0.73E certificate source inventories differ")
     source_commit = str(cert.get("sourceCommit", cert_manifest.get("sourceCommit", "")))
     if source_commit != CERTIFIED_REPORT_COMMIT:
         raise RuntimeError("R0.73E certificate is not bound to the audited report commit")
@@ -285,11 +346,44 @@ def validate_inputs() -> None:
         or figure_manifest.get("status") != "formal"
     ):
         raise RuntimeError("R0.73E figure identity or formal status mismatch")
+    figure_git = figure_manifest.get("git", {})
+    if (
+        figure_git.get("sourceCommit") != source_commit
+        or figure_git.get("certificateCommit") != FIGURE_CERTIFICATE_COMMIT
+        or figure_git.get("originalFigureGenerationBaseCommit")
+        != "645e862c06cf31c3d7551dac292af43eea3ec1b5"
+        or figure_git.get("originalFigurePackageCommit") != FIGURE_DIRECTORY_COMMIT
+    ):
+        raise RuntimeError("R0.73E figure provenance chain is inconsistent")
+    migration = figure_manifest.get("manifestMigration", {})
+    if migration != {
+        "kind": "metadata-schema-only",
+        "previousManifestCommit": source_commit,
+        "previousManifestSha256": "a2187a9790e48210e16b17d11790833994e7dc15c835ca48658ae8147458a441",
+        "scientificInputsChanged": False,
+        "formalOutputsChanged": False,
+    }:
+        raise RuntimeError("R0.73E figure metadata migration record is not exact")
+    certificate_outputs = cert.get("formalFigure", {})
+    for suffix in ("pdf", "svg", "png"):
+        observed = next(
+            row for row in figure_manifest.get("outputs", [])
+            if row.get("path") == f"figure.{suffix}"
+        )
+        if observed != certificate_outputs.get(suffix):
+            raise RuntimeError(
+                "R0.73E migrated figure differs from sealed output: " + suffix
+            )
     subprocess.run(["git", "cat-file", "-e", FIGURE_DIRECTORY_COMMIT + "^{commit}"], cwd=ROOT, check=True)
     if subprocess.run(
         ["git", "merge-base", "--is-ancestor", FIGURE_DIRECTORY_COMMIT, "HEAD"], cwd=ROOT
     ).returncode != 0:
         raise RuntimeError("R0.73E formal figure commit is not an ancestor of HEAD")
+    if subprocess.run(
+        ["git", "merge-base", "--is-ancestor", source_commit, FIGURE_CERTIFICATE_COMMIT],
+        cwd=ROOT,
+    ).returncode != 0:
+        raise RuntimeError("R0.73E certificate commit does not descend from its source")
     if (
         figure_validation.get("status") != "passed"
         or not figure_validation.get("checks")
@@ -312,6 +406,10 @@ def validate_inputs() -> None:
             "--source-commit", figure_manifest["git"]["sourceCommit"],
             "--certificate-commit", FIGURE_CERTIFICATE_COMMIT,
         ],
+        cwd=ROOT, check=True,
+    )
+    subprocess.run(
+        [sys.executable, str(ROOT / "research/validate_figure_package.py"), str(figure)],
         cwd=ROOT, check=True,
     )
     verify_complete_flat_ledger(figure, "R0.73E figure")

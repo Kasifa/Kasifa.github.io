@@ -355,7 +355,7 @@ def update_home() -> None:
     html = path.read_text(encoding="utf-8")
     for old, new in (
         ('data-site-version="1.40"', 'data-site-version="1.41"'), ("/i18n-en.js?v=1.40", "/i18n-en.js?v=1.41"), ("/site-refresh.js?v=1.40", "/site-refresh.js?v=1.41"),
-        ("<strong>v1.40</strong>网页版本", "<strong>v1.41</strong>网页版本"), ("<strong>177</strong>公开研究笔记", "<strong>178</strong>公开研究笔记"), ("<strong>R0.73A</strong>最新研究节点", "<strong>R0.73B</strong>最新研究节点"),
+        ("<strong>2026-08-28</strong>最近修订", "<strong>2026-08-29</strong>最近修订"), ("<strong>v1.40</strong>网页版本", "<strong>v1.41</strong>网页版本"), ("<strong>177</strong>公开研究笔记", "<strong>178</strong>公开研究笔记"), ("<strong>R0.73A</strong>最新研究节点", "<strong>R0.73B</strong>最新研究节点"),
         ("Research topology · R0.1–R0.73A", "Research topology · R0.1–R0.73B"), ("R0.70A–R0.73A：79 节已公开，55 节完整封存", "R0.70A–R0.73B：80 节已公开，56 节完整封存"),
         ('<span class="route-range">R0.69P–R0.73A</span>', '<span class="route-range">R0.69P–R0.73B</span>'), ('aria-label="R0.69P–R0.73A"', 'aria-label="R0.69P–R0.73B"'),
         ("展开 87 篇公开笔记", "展开 88 篇公开笔记"), ("本站 R0.69P–R0.73A 路线", "本站 R0.69P–R0.73B 路线"),

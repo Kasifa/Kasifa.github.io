@@ -228,6 +228,8 @@ test("R0.73B final public pages are synchronized, complete, and preserve a uniqu
   assert.ok(recap.includes("R0.70A–R0.73B 的 80 节已公开"));
   assert.ok(recap.includes("56 节完整封存"));
   assert.equal((home.match(/data-release="r073b"/g) ?? []).length, 1);
+  assert.ok(home.includes("<strong>2026-08-29</strong>最近修订"));
+  assert.equal(home.includes("<strong>2026-08-28</strong>最近修订"), false);
   const route = home.match(/<nav class="route-note-links" aria-label="R0\.69P–R0\.73B">([\s\S]*?)<\/nav>/)?.[1] ?? "";
   assert.equal((route.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []).length, 88);
   assert.equal((home.match(/<strong style="color:var\(--gold\)">下一步 R0\.73C：/g) ?? []).length, 1);

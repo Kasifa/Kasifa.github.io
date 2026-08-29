@@ -1467,7 +1467,13 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
         "publication": {"allowed": status == "formal" and visual_inspected and all(checks.values()),
                         "directory": "public/assets/r073b",
                         "copiesWrittenByRenderer": False},
-        "claimBoundary": contract["claimBoundary"],
+        "claimBoundary": {
+            **contract["claimBoundary"],
+            # Compatibility alias retained for the release-wide invariant.  The
+            # contract's canonical field is ``nonlinearNavierStokesClosure``;
+            # both fields must remain explicitly false.
+            "nonlinearNavierStokes": False,
+        },
     }
 
 

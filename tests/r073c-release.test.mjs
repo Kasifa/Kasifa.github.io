@@ -104,6 +104,7 @@ test("R0.73C release source pins v1.43 counters, boundaries, visible latest stat
   assert.ok(calls.every((index) => index >= 0));
   assert.deepEqual(calls, [...calls].sort((left, right) => left - right));
   assert.ok(generator.indexOf("validate_inputs()") < generator.indexOf("publish_figure_assets()"));
+  assert.match(generator, /public figure copy ledger is incomplete/);
   assert.match(generator, /validate_certificate\.py"\), "--require-formal"/);
   assert.match(generator, /"--source-commit", source_commit/);
   assert.match(generator, /"--certificate-commit", certificate_commit/);

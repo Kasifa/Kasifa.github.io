@@ -70,6 +70,8 @@ test("R0.73C figure binds primary interval and independent finite diagnostics by
   assert.equal(manifest.figure.outputs.length, 3);
   assert.equal(manifest.qa.finalSizeInspected, true);
   assert.equal(manifest.qa.dataCrossChecked, true);
+  assert.equal(manifest.publication.publicCopiesComplete, true);
+  assert.equal(manifest.publication.assets.length, 3);
   const expected = new Set([
     "experiments/r073c/interval_run_b.json",
     "experiments/r073c/fourier_screen.json",

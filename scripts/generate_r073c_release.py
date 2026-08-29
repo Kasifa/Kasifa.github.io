@@ -346,6 +346,29 @@ def publish_figure_assets() -> None:
         shutil.copyfile(source, destination)
         if digest(destination) != digest(source):
             raise RuntimeError(f"R0.73C public {suffix} is not byte-identical")
+    certificate = ROOT / CERTIFICATE_RELATIVE
+    certificate_payload = json.loads(
+        (certificate / "certificate.json").read_text(encoding="utf-8")
+    )
+    source_commit = str(certificate_payload.get("sourceCommit", ""))
+    certificate_commit = subprocess.run(
+        [
+            "git", "log", "-1", "--format=%H", "--",
+            "research/certificates/r073c/certificate.json",
+        ],
+        cwd=ROOT, check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    subprocess.run(
+        [
+            sys.executable, str(figure / "validate.py"),
+            "--source-commit", source_commit,
+            "--certificate-commit", certificate_commit,
+        ],
+        cwd=ROOT, check=True,
+    )
+    manifest = json.loads((figure / "manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("publication", {}).get("publicCopiesComplete") is not True:
+        raise RuntimeError("R0.73C public figure copy ledger is incomplete")
 
 
 def build_note() -> None:

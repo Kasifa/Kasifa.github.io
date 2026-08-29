@@ -158,6 +158,25 @@ def main() -> int:
             ("validation.json", "R0.73C structural and visual-QA validation"),
         )
     ]
+    public_assets = []
+    public_copies_complete = True
+    for output in outputs:
+        suffix = Path(str(output["path"])).suffix
+        public_relative = (
+            "public/assets/r073c/" + config["figureId"] + suffix
+        )
+        public_path = ROOT / public_relative
+        if (
+            not public_path.is_file()
+            or public_path.stat().st_size != output["bytes"]
+            or sha256(public_path) != output["sha256"]
+        ):
+            public_copies_complete = False
+        public_assets.append({
+            "path": public_relative,
+            "bytes": output["bytes"],
+            "sha256": output["sha256"],
+        })
     manifest = {
         "schemaVersion": "r073c-figure-manifest-v1",
         "release": "R0.73C",
@@ -245,6 +264,8 @@ def main() -> int:
             "directory": "public/assets/r073c",
             "fileStem": config["figureId"],
             "byteIdentityRequired": True,
+            "publicCopiesComplete": public_copies_complete,
+            "assets": public_assets,
         },
         "qa": {
             "status": "passed",

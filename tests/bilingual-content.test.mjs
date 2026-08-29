@@ -37,8 +37,9 @@ test("every research page loads the shared language controls before MathJax", as
     assert.match(html, /href="\/bilingual\.css"/);
     assert.match(html, /src="\/i18n-en\.js(?:\?[^"]*)?"/);
     assert.match(html, /src="\/bilingual\.js"/);
+    const mathJaxIndex = html.indexOf("mathjax@3");
     assert.ok(
-      html.indexOf('src="/bilingual.js"') < html.indexOf("mathjax@3"),
+      mathJaxIndex < 0 || html.indexOf('src="/bilingual.js"') < mathJaxIndex,
       `${file} must translate content before MathJax typesets it`,
     );
   }

@@ -98,6 +98,7 @@ test("R0.73B release source pins counters, final boundaries, and fail-closed wri
     "allRowPrefactorOneKineticContraction=FALSE",
     "polynomiallySharpLambdaKineticPrefactor=OPEN",
     "completeOSSquireA2DirectSum=OPEN",
+    "transportedAdjointPressureA2Modulation=OPEN",
     "nonlinearNavierStokes=OPEN", "Clay=OPEN",
     "半开 Bloch cell", "selected carrier", "orthogonal direct integral",
     "\\(F_q=0\\)", "\\(\\mu>0\\)", "\\(0<g\\le1\\)",
@@ -107,6 +108,15 @@ test("R0.73B release source pins counters, final boundaries, and fail-closed wri
     '"phases": 37', '"routeNotes": 88', '"next": "R0.73C"',
     '(ROOT / "VERSION").write_text("1.41\\n"',
   ]) assert.ok(generator.includes(token), token);
+  for (const boundary of [
+    'R0.72T</a><span class="node-state kind-conditional">条件</span>',
+    "R0.72S 在 fixed-first-harmonic \\\\(1{:}2{:}3\\\\) family 内证明 incidence preimages",
+    "这不是四维 caustic image 的全局分类",
+    "fixed \\\\(\\\\Lambda\\\\) raw-\\\\(q\\\\) limit 与 kinetic/Squire/Bloch/nonlinear/Clay 保持 OPEN",
+    "该双谐波 heat path 上 complete linearized row 的 viscous-rate finite transient 已闭合；A2 与 nonlinear 门仍未闭合",
+    "没有 Galerkin tail enclosure，也不证明无限维收敛或 nonlinear convolution",
+    "completeOSSquireA2DirectSum、transportedAdjointPressureA2Modulation、nonlinearNavierStokes 与 Clay 为 OPEN",
+  ]) assert.ok(generator.includes(boundary), boundary);
   const article = generator.match(/NOTE_ARTICLE = r'''([\s\S]*?)'''/)?.[1] ?? "";
   assert.ok(article.length > 5000);
   for (const stale of [
@@ -125,7 +135,7 @@ test("R0.73B release source pins counters, final boundaries, and fail-closed wri
   assert.match(generator, /subprocess\.run\(\[sys\.executable, str\(figure \/ "validate\.py"\)\]/);
   assert.doesNotMatch(generator, /(?:weasyprint|wkhtmltopdf|playwright|chromium).*pdf/i);
   assert.match(translationScript, /R073B_RELEASE_ROOT/);
-  assert.match(translationScript, /i18n-en\.js\?v=1\.41/);
+  assert.match(translationScript, /i18n-en\.js\?v=1\.42/);
   assert.match(translationScript, /i18n-snapshots\/r073b-missing\.json/);
   assert.match(translationScript, /"r073b"\s*\+\s*String\(index \+ 1\)/);
   assert.match(translationScript, /\bwe\|our\|ours\|ourselves\|us\b/);
@@ -170,14 +180,14 @@ test("R0.73B source and publication lifecycles never mix public counters", async
       sealed: manifest.postR070AFormalSealedReleaseCount,
       backlog: manifest.legacyFormalFigureBacklogCount,
     }, {
-      latest: "r073b", version: "1.41", notes: 178, recap: 118,
+      latest: "r073b", version: "1.42", notes: 178, recap: 118,
       next: "r073c", published: 80, sealed: 56, backlog: 24,
     });
     assert.equal(manifest.nextReleaseSourceStage, undefined);
     assert.deepEqual(site, {
-      schemaVersion: "research-site-version-v1", version: "1.41",
+      schemaVersion: "research-site-version-v1", version: "1.42",
       latestRelease: "R0.73B", publicHtmlNoteCount: 178,
-      publishedDate: "2026-08-29",
+      publishedDate: "2026-08-30",
     });
     assert.deepEqual({
       latest: archive.latestPublishedRelease, published: archive.publishedReleaseCount,
@@ -202,11 +212,11 @@ test("R0.73B final public pages are synchronized, complete, and preserve a uniqu
     json("public/site-version.json"),
   ]);
   assert.equal((await readdir(resolve(publicRoot, "notes")))
-    .filter((name) => name.endsWith(".html")).length, 178);
+    .filter((name) => /^r0-[0-9a-z]+\.html$/.test(name)).length, 178);
   assert.deepEqual(version, {
-    schemaVersion: "research-site-version-v1", version: "1.41",
+    schemaVersion: "research-site-version-v1", version: "1.42",
     latestRelease: "R0.73B", publicHtmlNoteCount: 178,
-    publishedDate: "2026-08-29",
+    publishedDate: "2026-08-30",
   });
   for (const token of [
     "exactBlochNearCarrierCancellation=CLOSED",
@@ -214,6 +224,7 @@ test("R0.73B final public pages are synchronized, complete, and preserve a uniqu
     "completeOSSquireKineticFiniteTransient=CLOSED",
     "fixedCUniformLowGapKineticPropagator=FALSE",
     "polynomiallySharpLambdaKineticPrefactor=OPEN",
+    "transportedAdjointPressureA2Modulation=OPEN",
     "nonlinearNavierStokes=OPEN", "Clay=OPEN",
     "/assets/r073b/" + figureId + ".svg",
     "/notes/r0-73b.pdf", "/recap-r0-61-r0-73b.html",
@@ -225,11 +236,20 @@ test("R0.73B final public pages are synchronized, complete, and preserve a uniqu
   assert.equal(new Set(nodeLinks).size, 118);
   assert.equal(nodeLinks.at(-1), "r0-73b");
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 37);
+  assert.equal(recap.includes("kind-nogo"), false);
+  assert.ok(index.includes('<a href="/notes/r0-72t.html">R0.72T</a><span class="node-state kind-conditional">条件</span>'));
+  assert.ok(recap.includes("R0.72S 在 fixed-first-harmonic \\(1{:}2{:}3\\) family 内证明 incidence preimages"));
+  assert.ok(recap.includes("这不是四维 caustic image 的全局分类"));
+  assert.ok(recap.includes("fixed \\(\\Lambda\\) raw-\\(q\\) limit"));
+  assert.ok(recap.includes("该双谐波 heat path 上 complete linearized row 的 viscous-rate finite transient 已闭合"));
+  assert.ok(recap.includes("没有 Galerkin tail enclosure，也不证明无限维收敛或 nonlinear convolution"));
+  assert.ok(recap.includes("completeOSSquireA2DirectSum、transportedAdjointPressureA2Modulation、nonlinearNavierStokes 与 Clay 为 OPEN"));
+  assert.equal((recap.match(/transportedAdjointPressureA2Modulation/g) ?? []).length, 2);
   assert.ok(recap.includes("R0.70A–R0.73B 的 80 节已公开"));
   assert.ok(recap.includes("56 节完整封存"));
   assert.equal((home.match(/data-release="r073b"/g) ?? []).length, 1);
-  assert.ok(home.includes("<strong>2026-08-29</strong>最近修订"));
-  assert.equal(home.includes("<strong>2026-08-28</strong>最近修订"), false);
+  assert.ok(home.includes("<strong>2026-08-30</strong>最近修订"));
+  assert.equal(home.includes("<strong>2026-08-29</strong>最近修订"), false);
   const route = home.match(/<nav class="route-note-links" aria-label="R0\.69P–R0\.73B">([\s\S]*?)<\/nav>/)?.[1] ?? "";
   assert.equal((route.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []).length, 88);
   assert.equal((home.match(/<strong style="color:var\(--gold\)">下一步 R0\.73C：/g) ?? []).length, 1);
@@ -237,7 +257,7 @@ test("R0.73B final public pages are synchronized, complete, and preserve a uniqu
   assert.ok(literature.includes('id="r073b-boundary"'));
   assert.ok(literature.includes("开放接口 · R0.73C"));
   for (const [value, label] of [[note, "note"], [recap, "recap"], [home, "home"], [literature, "literature"]]) {
-    assert.ok(value.includes('/i18n-en.js?v=1.41'), label);
+    assert.ok(value.includes('/i18n-en.js?v=1.42'), label);
     assertPublicVoice(value, label);
   }
 });

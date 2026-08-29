@@ -6,6 +6,7 @@ import test from "node:test";
 
 import {
   GLOBAL_INVARIANT,
+  RETAINED_GLOBAL_TESTS,
   resolveReleasePublicationGate,
   runResolvedReleasePublicationGate,
 } from "../scripts/run-release-publication-gate.mjs";
@@ -34,9 +35,7 @@ async function fixture(overrides = {}) {
     GLOBAL_INVARIANT,
     "tests/r072p-superposition-gate.test.mjs",
     "tests/r072p-release.test.mjs",
-    "tests/internal-public-links.test.mjs",
-    "tests/bilingual-content.test.mjs",
-    "tests/release-publication-gate-runner.test.mjs",
+    ...RETAINED_GLOBAL_TESTS,
   ]) {
     await writeFile(join(directory, name), "// fixture\n");
   }
@@ -86,9 +85,7 @@ test("runs the fail-closed stages in the declared order", async () => {
       ["--test", manifest.latestReleaseGate],
       ["--test", manifest.latestReleasePublicationTest],
       [`scripts/add-${manifest.latestCompletedRelease}-translations.mjs`, "--check-only"],
-      ["--test", "tests/internal-public-links.test.mjs"],
-      ["--test", "tests/bilingual-content.test.mjs"],
-      ["--test", "tests/release-publication-gate-runner.test.mjs"],
+      ...RETAINED_GLOBAL_TESTS.map((testPath) => ["--test", testPath]),
     ],
   );
   assert.ok(calls.every(({ directory }) => directory === root));

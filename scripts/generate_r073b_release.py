@@ -115,7 +115,7 @@ HOME_NEXT = r'''            <article class="tree-node next">
 HOME_B_CARD = r'''          <div class="task-one" id="r073b" data-release="r073b" style="margin-top:2rem">
             <p class="eyebrow">研究笔记 R0.73B · 2026-08-29</p><h3>Bloch near-carrier cancellation 与 complete physical-kinetic finite transient</h3>
             <p>zero-lattice Bloch carrier 的 exact cancellation 把 coupling-side \(g^{-1}\) 化为 bounded physical orientation；primitive velocity energy 再覆盖 OS、Squire 与 exceptional rows。</p><p>每一行保留 \(e^{-g_j(d-s)}\) 并共同支付 \(e^{|\Lambda|K/2}\)，离散 rows 和连续 Bloch direct integral 都没有 row-count loss。</p>
-            <p><strong>结论边界：</strong>&nbsp;fixed-\(c\) low-gap uniformity 与 prefactor-one contraction 为 FALSE；sharp \(|\Lambda|\) law、complete A2 direct sum、nonlinearNavierStokes 与 Clay 保持 OPEN。</p>
+            <p><strong>结论边界：</strong>&nbsp;fixed-\(c\) low-gap uniformity 与 prefactor-one contraction 为 FALSE；sharp \(|\Lambda|\) law、complete A2 direct sum、transportedAdjointPressureA2Modulation、nonlinearNavierStokes 与 Clay 保持 OPEN。</p>
             <p><a href="/notes/r0-73b.html"><strong>阅读 R0.73B 研究笔记 →</strong></a><br><a href="/notes/r0-73b.pdf">下载同步研究笔记 PDF</a> · <a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">下载期刊附图 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">查看确定性证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073b_report-source.md">查看完整数学报告</a> · <a href="/recap-r0-61-r0-73b.html">打开累计回顾</a></p>
             <p><strong style="color:var(--gold)">下一步 R0.73C：</strong>&nbsp;sharp large-\(|\Lambda|\) transient law。</p>
           </div>'''
@@ -135,7 +135,7 @@ def preflight_release_state() -> None:
     expected_site = {"schemaVersion": "research-site-version-v1", "version": "1.40", "latestRelease": "R0.73A", "publicHtmlNoteCount": 177, "publishedDate": "2026-08-29"}
     if json.loads((PUBLIC / "site-version.json").read_text(encoding="utf-8")) != expected_site:
         raise RuntimeError("public site-version is not exactly at R0.73A")
-    if len(list((PUBLIC / "notes").glob("*.html"))) != 177:
+    if len(list((PUBLIC / "notes").glob("r0-*.html"))) != 177:
         raise RuntimeError("R0.73A preflight expected 177 public HTML notes")
     for relative in ("notes/r0-73b.html", "notes/r0-73b.pdf", "recap-r0-61-r0-73b.html", "recap-r0-61-r0-73b.pdf"):
         if (PUBLIC / relative).exists():
@@ -214,6 +214,7 @@ def validate_inputs() -> None:
         "nearCarrierInstantaneousKineticGrowth", "lambdaIndependentKineticPrefactor",
         "fixedCUniformLowGapKineticPropagator", "allRowPrefactorOneKineticContraction",
         "polynomiallySharpLambdaKineticPrefactor", "completeOSSquireA2DirectSum",
+        "transportedAdjointPressureA2Modulation",
         "nonlinearNavierStokes", "Clay", "\\texttt{ANALYTIC\\_PASS}", "\\texttt{FALSE}", "\\texttt{OPEN}",
     ):
         if token not in report:
@@ -324,7 +325,7 @@ def build_recap() -> None:
         html = required(html, old, new, "B recap counter")
     result = r'''        <section id="result"><div class="section-no">00 / 回顾范围</div><h2>版本数、封存数和数学结论分开报告</h2><div class="metrics"><div class="metric"><strong>118</strong><span>R0.61–R0.73B 研究节点</span></div><div class="metric"><strong>80</strong><span>R0.70A–R0.73B 已公开版本</span></div><div class="metric"><strong>56</strong><span>当前 formal-figure 合同下完整封存</span></div><div class="metric"><strong>24</strong><span>旧版附图档案待回补</span></div></div><p>R0.00–R0.60 的内容保留在上一份阶段回顾中。R0.70A–R0.73B 的 80 个版本已公开，其中 56 个满足当前 formal-figure 完整封存合同。公开和封存不表示 Clay 问题已经解决。</p></section>'''
     html = section(html, r'        <section id="result">.*?</section>', result, "B recap result")
-    phase = r'''            <article class="phase"><h3>R0.73B · Bloch carrier and complete physical-kinetic finite transient</h3><p>exact Bloch near-carrier cancellation、bounded orientation coefficient、complete primitive kinetic row estimate、forced Duhamel 与 row/direct-integral summation 为 CLOSED。</p><p>sharp OS shear coefficient 有 exact low-gap limit；载波—切向 growth witness、exact lift-up 与 fixed-\(c\) lower bound 分别排除 prefactor-one、\(\Lambda\)-independent 与 fixed-\(c\) uniformity。</p><p>sharp large-\(|\Lambda|\) law、complete OS--Squire A2 direct sum、nonlinearNavierStokes 与 Clay 保持 OPEN。</p><div class="links"><a href="/notes/r0-73b.html">R0.73B</a><a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">R0.73B 附图</a><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">R0.73B 证书</a></div></article>
+    phase = r'''            <article class="phase"><h3>R0.73B · Bloch carrier and complete physical-kinetic finite transient</h3><p>exact Bloch near-carrier cancellation、bounded orientation coefficient、complete primitive kinetic row estimate、forced Duhamel 与 row/direct-integral summation 为 CLOSED。</p><p>sharp OS shear coefficient 有 exact low-gap limit；载波—切向 growth witness、exact lift-up 与 fixed-\(c\) lower bound 分别排除 prefactor-one、\(\Lambda\)-independent 与 fixed-\(c\) uniformity。</p><p>sharp large-\(|\Lambda|\) law、complete OS--Squire A2 direct sum、transportedAdjointPressureA2Modulation、nonlinearNavierStokes 与 Clay 保持 OPEN。</p><div class="links"><a href="/notes/r0-73b.html">R0.73B</a><a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">R0.73B 附图</a><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">R0.73B 证书</a></div></article>
 '''
     marker = '          </div>\n        </section>\n\n        <section id="node-index">'
     html = once(html, marker, phase + marker, "B recap phase")
@@ -332,13 +333,31 @@ def build_recap() -> None:
     node_a = '            <span class="node-ref"><a href="/notes/r0-73a.html">R0.73A</a><span class="node-state kind-closed">闭</span></span>\n'
     node_b = '            <span class="node-ref"><a href="/notes/r0-73b.html">R0.73B</a><span class="node-state kind-closed">闭</span></span>\n'
     html = once(html, node_a, node_a + node_b, "B recap node")
+    html = required(
+        html,
+        '<span class="node-ref"><a href="/notes/r0-72t.html">R0.72T</a><span class="node-state kind-nogo">阻</span></span>',
+        '<span class="node-ref"><a href="/notes/r0-72t.html">R0.72T</a><span class="node-state kind-conditional">条件</span></span>',
+        "B recap R0.72T state",
+    )
+    html = required(
+        html,
+        '<li>R0.72S 的 marked singular-strata ledger：incidence preimage 止于 \\(A_5\\)，coefficient-derivative jet determinant 为 \\(5400\\)；pure-second \\(A_2\\) path 的 distinct count 是 \\(4/3/2\\)，real-even \\(A_3\\) path 是 \\(4/2/2\\)，且两者 crossing multiplicity 都为四。</li>',
+        '<li>R0.72S 在 fixed-first-harmonic \\(1{:}2{:}3\\) family 内证明 incidence preimages 止于 \\(A_5\\)，coefficient-derivative jet determinant 为 \\(5400\\)。pure-second \\(A_2\\) path 的 distinct count 是 \\(4/3/2\\)，real-even \\(A_3\\) path 是 \\(4/2/2\\)；两者只在碰撞时按重数计为四，A3 只在 real-even slice 内横截。这不是四维 caustic image 的全局分类。</li>',
+        "B recap R0.72S scope",
+    )
+    html = required(
+        html,
+        '<li>R0.73A 闭合 physical hidden-mean coordinate 与 \\(X_\\mu\\) finite-transient viscous-rate theorem，同时把 fixed-\\(\\Lambda\\) limit、kinetic/Squire/Bloch 与 nonlinear/Clay 保留为 OPEN。</li>',
+        '<li>R0.73A 用 \\(h=\\Pi_0q/\\mu\\) 记录 hidden physical mean，在 \\(X_\\mu\\) 中闭合 all-start finite-transient viscous-rate bound。lifted tangent line 对每个 \\(c_\\mu\\ne0\\) 的正 gap 不 invariant；nonzero limit 只沿 \\(c_\\mu\\to c_0\\ne0\\)，fixed \\(\\Lambda\\) raw-\\(q\\) limit 与 kinetic/Squire/Bloch/nonlinear/Clay 保持 OPEN。</li>',
+        "B recap R0.73A raw-q scope",
+    )
     retained = r'''            <li>R0.73B 闭合 Bloch near-carrier cancellation 与 complete linear physical-kinetic finite transient，同时把 fixed-\(c\) uniformity、sharp \(|\Lambda|\) law、A2 direct sum 与 nonlinear/Clay 明确分开。</li>
 '''
     html = once(html, "          </ul>\n          <p>这些结果可以分别整理成", retained + "          </ul>\n          <p>这些结果可以分别整理成", "B recap retained")
-    html = section(html, r'        <section id="value">.*?</section>', r'''        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>complete linear viscous-rate closure 已完成，但最关键的 A2 与 nonlinear 门仍未闭合</h2><p>不能把 118 个节点或 80 个公开版本解释成 Clay 问题完成比例。R0.73B 的严格增量是 exact Bloch carrier cancellation、physical kinetic direct sum、sharp shear-form low-gap limit 和路径限定的反例；直接 Clay 价值仍有限。</p></section>''', "B recap value")
+    html = section(html, r'        <section id="value">.*?</section>', r'''        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>该双谐波 heat path 上 complete linearized row 的 viscous-rate finite transient 已闭合；A2 与 nonlinear 门仍未闭合</h2><p>不能把 118 个节点或 80 个公开版本解释成 Clay 问题完成比例。R0.73B 的严格增量是 exact Bloch carrier cancellation、physical kinetic direct sum、sharp shear-form low-gap limit 和路径限定的反例；直接 Clay 价值仍有限。</p></section>''', "B recap value")
     html = section(html, r'        <section id="next">.*?</section>', r'''        <section id="next"><div class="section-no">05 / 下一步</div><h2>R0.73C 确定 sharp large-\(|\Lambda|\) transient law</h2><p>比较 exact lift-up lower bound、low-gap triangular limit 与 polynomial upper mechanism，再决定 complete OS--Squire A2 direct sum 的权重。</p></section>''', "B recap next")
-    html = section(html, r'        <section id="claims">.*?</section>', r'''        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>公开、完整封存与问题解决继续分开计数</h2><p>R0.70A–R0.73B 的 80 节已公开；56 节完整封存；24 节旧档待回补。</p><p>lambdaIndependentKineticPrefactor、fixedCUniformLowGapKineticPropagator 与 allRowPrefactorOneKineticContraction 为 FALSE；polynomiallySharpLambdaKineticPrefactor、completeOSSquireA2DirectSum、nonlinearNavierStokes 与 Clay 为 OPEN。</p></section>''', "B recap claims")
-    html = section(html, r'        <section id="reproduce">.*?</section>', r'''        <section id="reproduce"><div class="section-no">07 / 原始资料</div><h2>逐节笔记、证书、实验、正式附图和历史回顾</h2><p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-73a.html">保留 R0.73A 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-73b.html">打开最新节点 R0.73B</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">查看 R0.73B 确定性证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073b">查看 finite diagnostic</a> · <a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">下载期刊附图</a> · <a href="/recap-r0-61-r0-73b.pdf">下载同步 PDF</a></p><p>完整节点索引保留 R0.61 起的全部历史编号；状态标签只描述证据类型。</p></section>''', "B recap reproduce")
+    html = section(html, r'        <section id="claims">.*?</section>', r'''        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>公开、完整封存与问题解决继续分开计数</h2><p>R0.70A–R0.73B 的 80 节已公开；56 节完整封存；24 节旧档待回补。</p><p>lambdaIndependentKineticPrefactor、fixedCUniformLowGapKineticPropagator 与 allRowPrefactorOneKineticContraction 为 FALSE；polynomiallySharpLambdaKineticPrefactor、completeOSSquireA2DirectSum、transportedAdjointPressureA2Modulation、nonlinearNavierStokes 与 Clay 为 OPEN。</p></section>''', "B recap claims")
+    html = section(html, r'        <section id="reproduce">.*?</section>', r'''        <section id="reproduce"><div class="section-no">07 / 原始资料</div><h2>逐节笔记、证书、实验、正式附图和历史回顾</h2><p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-73a.html">保留 R0.73A 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-73b.html">打开最新节点 R0.73B</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">查看 R0.73B 确定性证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073b">查看 finite diagnostic</a> · <a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">下载期刊附图</a> · <a href="/recap-r0-61-r0-73b.pdf">下载同步 PDF</a></p><p>deterministic screen 包含 280 propagators、1960 primary norm rows 与 245 targeted rows。它复核 generator similarity、步长和模数收敛、符号对称、kinetic upper bound 与 fixed-\(\Lambda\) triangular limit。没有 Galerkin tail enclosure，也不证明无限维收敛或 nonlinear convolution。</p><p>完整节点索引保留 R0.61 起的全部历史编号；状态标签只描述证据类型。</p></section>''', "B recap reproduce")
     html = section(html, r'<footer>.*?</footer>', '<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>R0.61–R0.73B 回顾 · 2026-08-29<br><a href="/">返回研究主页</a></div></footer>', "B recap footer")
     start = html.index('<section id="node-index">')
     end = html.index("</section>", start)
@@ -414,7 +433,7 @@ def update_literature() -> None:
 
 
 def update_manifests() -> None:
-    if len(list((PUBLIC / "notes").glob("*.html"))) != 178:
+    if len(list((PUBLIC / "notes").glob("r0-*.html"))) != 178:
         raise RuntimeError("expected 178 public HTML notes after R0.73B")
     release_path = ROOT / "research/release-manifest.json"
     release = json.loads(release_path.read_text(encoding="utf-8"))

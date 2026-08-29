@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Reader-facing source fragments for the fail-closed R0.73F release."""
+
+FIGURE_ID = "fig-r073f-fixed-window-roughness"
+FIGURE_RELATIVE = f"figures/r073f/{FIGURE_ID}"
+CERTIFICATE_RELATIVE = "research/certificates/r073f"
+EXPERIMENT_RELATIVE = "experiments/r073f"
+
+R073E_RELEASE_BASELINE = {
+    "latestCompletedRelease": "r073e",
+    "siteVersion": "1.45",
+    "publicHtmlNoteCount": 181,
+    "postR060RecapNodeCount": 121,
+    "nextRelease": "r073f",
+    "latestReleaseGate": "tests/r073e-halfplane-transfer-gate.test.mjs",
+    "latestReleasePublicationTest": "tests/r073e-release.test.mjs",
+    "postR070APublishedReleaseCount": 83,
+    "postR070AFormalSealedReleaseCount": 59,
+    "legacyFormalFigureBacklogCount": 24,
+}
+
+R073F_RELEASE_TARGET = {
+    "latestCompletedRelease": "r073f",
+    "siteVersion": "1.46",
+    "publicHtmlNoteCount": 182,
+    "postR060RecapNodeCount": 122,
+    "nextRelease": "r073g",
+    "postR070APublishedReleaseCount": 84,
+    "postR070AFormalSealedReleaseCount": 60,
+    "legacyFormalFigureBacklogCount": 24,
+}
+
+CLOSED = (
+    "boundedPerturbationRoughnessWithNoninvertibleStableSemigroup=CLOSED；"
+    "movingProfileUniformSpectralStrip=CLOSED；movingProfileUniformContour=CLOSED；"
+    "movingInstantaneousProjectionNormC1=CLOSED；"
+    "movingProfileEvolutionDichotomy=CLOSED；"
+    "movingUnstableFiberStartsAtFrozenTopSpace=CLOSED；"
+    "fixedSmallEndpointExponentialLowerLaw=CLOSED；"
+    "fixedWindowExponentialLowerLaw=CLOSED；"
+    "fixedWindowLogGainThetaLambda=CLOSED"
+)
+
+FALSE = (
+    "frozenSpectralGapImpliesUniformDichotomy=FALSE；"
+    "spectralGapPlusBoundedC1PlusCommonDomainImpliesMovingDichotomy=FALSE；"
+    "instantaneousPositiveSpectralAbscissaImpliesFixedWindowGrowth=FALSE"
+)
+
+OPEN = (
+    "explicitWindowSize=OPEN；sharpExponentialRate=OPEN；"
+    "normalizedLogGainLimitExists=OPEN；arbitraryEndpointBeyondSmallWindow=OPEN；"
+    "dynamicProjectionEqualsInstantaneousRieszProjection=OPEN；"
+    "graphDomainKatoTransport=OPEN_NOT_USED；"
+    "singleEpsilonIndependentInitialOrbit=OPEN；"
+    "certifiedSigmaStarIsRightmost=OPEN；inviscidEigenvalueSimple=OPEN；"
+    "completeOSSquireA2DirectSum=OPEN；"
+    "matchingFixedWindowLowerAcrossAllRows=OPEN；"
+    "nonlinearNavierStokes=OPEN；Clay=OPEN"
+)
+
+NOTE_HERO = r'''    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73F · MOVING DICHOTOMY · FIXED-WINDOW GAIN</div>
+        <h1>移动剖面二分与<br>固定窗口指数增益</h1>
+        <p class="lead">对一条精确的周期线性 Fourier 行，R0.73F 把 R0.73E 的冻结 top-cluster 二分与精确的 \(49d/4\) 剖面漂移接合起来。Lyapunov--Perron 图构造允许稳定抛物半群不可逆，并给出固定正物理窗口内的 \(e^{c_D|\Lambda|}\) 算子范数下界。结论不覆盖全部 Fourier 行、非线性频率耦合、单一解的奇性或 Clay 问题。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73F 完成</span><strong>Fixed-window gain</strong><p>版本 v0.73F · 2026-08-30</p><p>ONE-ROW LINEAR THEOREM</p><p>9 项结论：CLOSED</p><p>3 个一般性捷径：FALSE</p><p>all-row / nonlinear：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>'''
+
+NOTE_ARTICLE = r'''      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>局部移动二分和固定窗口指数律已闭合；非线性门仍开放</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · ROUGHNESS</strong><p>带统一 prefactor 的冻结二分在足够小的有界非自治扰动下保持；稳定抛物半群不需要负时间逆。</p></div><div class="verdict-card true"><strong>CLOSED · MOVING BUNDLE</strong><p>精确热衰减剖面在一个与 \(\varepsilon\) 无关的局部物理区间上具有固定正维数的动力学不稳定束。</p></div><div class="verdict-card true"><strong>CLOSED · FIXED WINDOW</strong><p>每个固定 \(D&gt;0\) 都有 \(G_{1/2}(\Lambda;D)\ge K_1^{-1}e^{(\alpha+\eta)\min(D,d_0)|\Lambda|}\)。</p></div><div class="verdict-card false"><strong>OPEN · ALL-ROW / NONLINEAR</strong><p>完整 OS--Squire \(A_2\) 直和、全行匹配下界、非线性余项与 Clay 保持 OPEN。</p></div></div></section>
+        <section id="row"><div class="section-no">01 / Exact row</div><h2>定理只覆盖一条精确不变 Fourier 行</h2><div class="equation result">\[\beta=\xi=0,\quad\gamma=\tfrac12,\quad\varepsilon=|\Lambda|^{-1},\quad \widetilde B_\varepsilon(d)=\widetilde A(d)-\varepsilon L.\]</div><div class="equation result">\[W(d,x)=-\tfrac12e^{-d}\sin x+\tfrac14e^{-4d}\sin2x,\qquad L=-\partial_x^2+\tfrac14.\]</div><p>kinetic vorticity norm 通过 \(U=2L^{-1/2}\) 与 \(L^2\) 精确等距。R0.73C 的认证特征值只给出 \(a\ge\sigma_*&gt;0.17035\)；没有证明 \(\sigma_*\) 本身最右、简单或唯一。</p></section>
+        <section id="frozen"><div class="section-no">02 / Frozen input</div><h2>真正使用的是统一冻结二分，不是谱点位置</h2><div class="equation result">\[\|e^{tC_\varepsilon}Q_\varepsilon\|\le Ke^{-\nu t},\qquad \|e^{-tC_\varepsilon}P_\varepsilon\|\le Ke^{-\nu t},\quad t\ge0.\]</div><p>第二个负时间表达式只位于有限维 top block。R0.73E 提供共同的 \(K,\nu\)；若只有 pointwise spectral gap，则非正规瞬态可使 prefactor 随 \(\varepsilon^{-1}\) 发散。</p></section>
+        <section id="roughness"><div class="section-no">03 / Lyapunov--Perron roughness</div><h2>非可逆稳定部分由单侧积分处理</h2><div class="equation result">\[\eta=\frac{\nu}{2},\qquad \rho&lt;\frac{\nu}{16K^2},\qquad q=\frac{8K\rho}{3\nu}&lt;\frac1{6K}\le\frac16.\]</div><p>稳定图只对 \(QH\) 使用正时间半群，负时间只作用于有限维 \(PH\)。不稳定图同样不引入 \(e^{-tC}Q\)。两个图的范数小于 \(1/20\)，所以图互补、投影一致有界。</p></section>
+        <section id="graphs"><div class="section-no">04 / Complementarity and invariance</div><h2>图空间给出真正的 evolution dichotomy</h2><div class="equation result">\[(I-\Phi_s\Psi_s)\zeta=p_0-\Phi_sq_0,\qquad \xi=q_0-\Psi_s\zeta.\]</div><p>Neumann 级数给出互补分解。把固定点方程在中间时刻切分，再用唯一性，可得稳定图的正向不变性和不稳定图的双射传递；后向固定点给出稍后不稳定纤维的唯一原像。秩始终等于冻结 top block 的有限正整数 \(m\)。</p></section>
+        <section id="instantaneous"><div class="section-no">05 / Instantaneous contour</div><h2>局部瞬时谱隙与共同 Riesz 围道在 \(\mathcal B(H)\) 中闭合</h2><div class="equation result">\[\{z:|\operatorname{Re}z-\alpha|&lt;\eta\}\subset\rho(\widetilde B_\varepsilon(d)),\qquad 0\le d\le d_0.\]</div><div class="equation result">\[\sup_{\tau\in\mathbb R}\|(\alpha+i\tau-\widetilde B_\varepsilon(d))^{-1}\|\le\frac{2K_1}{\eta}.\]</div><p>左边竖线由稳定正时间与不稳定负时间 Laplace 公式控制；矩形其余三边由 dissipative factorization 与 Neumann 级数控制。固定围道可微分，得到 \(P_\varepsilon^{\rm inst}(d)\) 的统一 norm-\(C^1\) 界。这不等于未缩放 \(H^2\) graph-norm Kato transport，也没有证明瞬时投影等于移动动力学投影。</p></section>
+        <section id="clamp"><div class="section-no">06 / Exact clamped profile</div><h2>全时轴延拓只服务于粗糙性定理</h2><div class="equation result">\[\chi_{\varepsilon,d}(t)=0\ (t\le0),\quad \varepsilon t\ (0\le t\le d/\varepsilon),\quad d\ (t\ge d/\varepsilon).\]</div><div class="equation result">\[\sup_t\|\widetilde A(\chi_{\varepsilon,d}(t))-\widetilde A(0)\|\le\frac{49}{4}d\le\frac{49}{4}d_0&lt;\frac{\nu}{16K^2}.\]</div><p>延拓在物理区间上与精确热剖面完全一致，端点后的常值部分没有物理结论。由于负时间扰动严格为零，不稳定图在初始时刻满足 \(E^u_{\varepsilon,d}(0)=P_\varepsilon H\)，不是近似等式。</p></section>
+        <section id="gain"><div class="section-no">07 / Fixed-window lower law</div><h2>反向不稳定估计给出 \(e^{c_D|\Lambda|}\) 下界</h2><div class="equation result">\[\|U_\varepsilon(d/\varepsilon,0)v_\varepsilon\|\ge K_1^{-1}e^{(\alpha+\eta)d/\varepsilon},\qquad 0&lt;d\le d_0.\]</div><div class="equation result">\[G_{1/2}(\Lambda;D)\ge K_1^{-1}\exp\!\left((\alpha+\eta)\min(D,d_0)|\Lambda|\right).\]</div><p>初始单位向量可以依赖 \(\varepsilon\)，这符合算子范数下界的定义。当 \(D&gt;d_0\) 时，认证时刻是窗口内部的 \(d_0\)，并未证明任意给定大端点 \(D\) 上的相同下界。零 Squire forcing、精确 kinetic 等距与复共轭分别处理完整不变行、范数及 \(\Lambda\) 的两个符号。</p></section>
+        <section id="order"><div class="section-no">08 / Exponential order</div><h2>R0.73B 上界只闭合指数阶，不给出尖锐斜率</h2><div class="equation result">\[(\alpha+\eta)\min(D,d_0)\le\liminf\frac{\log G_{1/2}(\Lambda;D)}{|\Lambda|}\le\limsup\frac{\log G_{1/2}(\Lambda;D)}{|\Lambda|}\le\frac5{16}.\]</div><p>因此固定窗口的 logarithmic gain 为 \(\Theta(|\Lambda|)\)。归一化极限是否存在、尖锐指数是多少，以及 \(d_0\) 的显式数值仍为 OPEN。</p></section>
+        <section id="false"><div class="section-no">09 / Exact negative checks</div><h2>两个有限维解析反例拒绝无效捷径</h2><div class="equation result">\[D_N=\begin{pmatrix}-N&amp;N^2\\0&amp;-N\end{pmatrix},\qquad \|e^{D_N/N}\|\ge N/e.\]</div><p>第一个反例说明谱隙不能替代统一 prefactor。第二个正规对角例让三个正的瞬时候选方向轮换，但完整窗口后每个候选分量都等于 \(e^{-D/(4\varepsilon)}\)。这说明正的瞬时谱横坐标不能替代动力学不稳定束。</p></section>
+        <section id="finite"><div class="section-no">10 / Finite diagnostic boundary</div><h2>有限计算只用于诊断与正式附图</h2><table class="compact-table"><thead><tr><th>\(\varepsilon\)</th><th>\((\varepsilon/d_{\rm diag})\log\|U\|\)</th><th>finite top conorm rate</th></tr></thead><tbody><tr><td>\(10^{-2}\)</td><td>0.2404821013</td><td>0.1542183861</td></tr><tr><td>\(10^{-3}\)</td><td>0.2128370084</td><td>0.1670670398</td></tr><tr><td>\(10^{-4}\)</td><td>0.1737390383</td><td>0.1685756007</td></tr></tbody></table><p>归档计算在 \(N=96\)、\(d_{\rm diag}=10^{-2}\)、八个黏度和多个 Fourier cutoff 上比较完整传播子范数与有限 leading block 的 conorm。主计算约 17.6 秒，独立实现复算约 8.5 秒；最大 finest-step log-gain 差为 \(8.84\times10^{-12}\)，48/96 cutoff 的最大归一化差为 \(8.88\times10^{-16}\)。该 \(d_{\rm diag}\) 不是存在性证明中的 \(d_0\)；cutoff 一致不是尾部控制，采样传播不是连续时间定理，有限 leading block 也不是 continuum top cluster。图和实验不承担 Sections 03--08 的证明。</p></section>
+        <section id="literature"><div class="section-no">11 / Literature boundary</div><h2>一般理论用于校准假设，不替代本行证明</h2><p><a href="https://doi.org/10.1006/jdeq.1999.3668">Latushkin--Schnaubelt</a>给出允许稳定部分不可逆的 Banach-space dichotomy 定义及 evolution-semigroup 判据；<a href="https://doi.org/10.1007/BFb0067780">Coppel</a>是有限维 roughness 先例。<a href="https://iana.math.kit.edu/downloads/iana3/schnaubelt/Paper/ed.pdf">Schnaubelt 1999</a>的慢变解析半群定理需要完整的 (P1)、(ED) 与定量条件；<a href="https://doi.org/10.1142/S0129055X19500144">Schmid</a>和<a href="https://doi.org/10.1007/s00220-007-0299-y">Joye</a>也各有共同域、正则性、谱隙或解析性假设。R0.73F 不把这些条件压缩成“共同域加小漂移即可”，也不作原创性或优先权声明。</p></section>
+        <section id="audit"><div class="section-no">12 / Independent analytic audit</div><h2>初始 NOT PASS 的五个缺口已逐项修正</h2><p>最初缺少共同围道左边界的统一 resolvent 数值界，图不变性与不稳定双射写得过短，端点论证有错误交叉引用，瞬时投影、动力学投影与 graph-norm Kato 边界没有充分分离，并且 all-row 边界过宽。当前文本补入 \(2K_1/\eta\) 界、固定点切分与连续性论证、正确的 (4.14) 引用和明确 claim ledger。独立解析复核结论为 FINAL PASS，且该结论条件于 R0.73B/C/E 输入。</p></section>
+        <section id="figure"><div class="section-no">13 / Journal figure</div><h2>移动增益、收敛诊断与两个反例分面归档</h2><p><img src="/assets/r073f/__FIGURE_ID__.svg" alt="R0.73F finite moving-profile and roughness diagnostic"></p><p><a href="/assets/r073f/__FIGURE_ID__.pdf">下载 PDF</a> · <a href="/assets/r073f/__FIGURE_ID__.png">下载 600 dpi PNG</a> · <a href="/assets/r073f/__FIGURE_ID__.svg">打开 SVG</a></p></section>
+        <section id="boundary"><div class="section-no">14 / Exact boundary</div><h2>CLOSED、FALSE 与 OPEN 保持分离</h2><p>__CLOSED__。</p><p>__FALSE__。</p><p>__OPEN__。</p></section>
+        <section id="value"><div class="section-no">15 / Research value</div><h2>收缩物理时间上的超多项式增长已升级为固定窗口指数下界</h2><p>R0.73F 是一条结构化精确衰减剪切流族上的实质线性不稳定定理。它允许背景振幅随 \(|\Lambda|\) 变化，也允许最大化初始方向随参数变化；没有非线性 perturbation theorem、频率级联机制、先验正则性改进或单一解奇性构造。因此它对 Clay 问题只有间接的机制价值，不构成 Clay 结论。</p></section>
+        <section id="next"><div class="section-no">16 / Next gate</div><h2>R0.73G：精确衰减剪切流附近的非线性扰动 bootstrap</h2><p>下一门将冻结并审计一个可量化的非线性命题：明确 seed size、Sobolev topology、lifespan 与 mode-convolution remainder，检验线性 \(e^{c_D|\Lambda|}\) 放大能否在同一时间尺度内压过非线性余项。目标是给出完整 bootstrap 证明，或给出阻止闭合的否定障碍；不会预设全行估计或奇性结论。</p></section>
+        <section id="reproduce"><div class="section-no">17 / Reproduction</div><h2>报告、证明、缺口矩阵、文献与独立审计均提供直接入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_report-source.md">完整报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_moving_dichotomy_proof.md">解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_gap_matrix.md">缺口矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_literature_audit.md">文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_independent_analytic_audit.md">独立解析审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073f">正式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073f">有限实验与监控</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073f/__FIGURE_ID__">正式附图包</a> · <a href="/notes/r0-73f.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73f.html">122 节累计回顾</a> · <a href="/recap-r0-61-r0-73f.pdf">累计回顾 PDF</a></p></section>
+      </article>'''
+NOTE_ARTICLE = (
+    NOTE_ARTICLE
+    .replace("__FIGURE_ID__", FIGURE_ID)
+    .replace("__CLOSED__", CLOSED)
+    .replace("__FALSE__", FALSE)
+    .replace("__OPEN__", OPEN)
+)
+
+HOME_NEXT = r'''            <article class="tree-node next">
+              <div class="tree-node-head"><span class="route-range">NEXT · R0.73G</span><span class="tree-state current">下一检查点</span></div>
+              <h3>精确衰减剪切流附近的非线性扰动 bootstrap</h3><p>冻结 seed size、Sobolev topology、lifespan 与 mode-convolution remainder，证明线性放大可在同一尺度压过非线性余项，或给出无法闭合的否定障碍。</p>
+            </article>'''
+
+HOME_F_CARD = r'''          <div class="task-one" id="r073f" data-release="r073f" style="margin-top:2rem">
+            <p class="eyebrow">研究笔记 R0.73F · 2026-08-30</p><h3>移动剖面二分与固定窗口指数增益</h3>
+            <p>一条精确线性 Fourier 行上的冻结 top-cluster 二分在足够小的精确热剖面漂移下保持。稳定抛物半群不需要可逆，移动不稳定束保持有限正维数。</p>
+            <p>每个固定正观察窗口都得到 \(e^{c_D|\Lambda|}\) 算子范数下界，并与 R0.73B 上界合成 \(\log G_{1/2}=\Theta(|\Lambda|)\)。完整全行、非线性余项与 Clay 均未闭合。</p>
+            <p><strong>闭合结论：</strong>&nbsp;__CLOSED__。</p><p><strong>否定捷径：</strong>&nbsp;__FALSE__。</p><p><strong>开放边界：</strong>&nbsp;__OPEN__。</p>
+            <p><a href="/notes/r0-73f.html"><strong>阅读 R0.73F 研究笔记 →</strong></a><br><a href="/notes/r0-73f.pdf">下载同步 PDF</a> · <a href="/assets/r073f/__FIGURE_ID__.pdf">下载期刊附图 PDF</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073f">查看正式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073f_report-source.md">查看完整数学报告</a> · <a href="/recap-r0-61-r0-73f.html">打开累计回顾</a></p>
+            <p><strong style="color:var(--gold)">下一步 R0.73G：</strong>&nbsp;冻结并审计精确衰减剪切流附近的非线性 bootstrap，明确 seed size、Sobolev topology、lifespan 与 mode-convolution remainder。</p>
+          </div>'''
+HOME_F_CARD = (
+    HOME_F_CARD
+    .replace("__FIGURE_ID__", FIGURE_ID)
+    .replace("__CLOSED__", CLOSED)
+    .replace("__FALSE__", FALSE)
+    .replace("__OPEN__", OPEN)
+)
+
+HOME_LATEST_SPOTLIGHT = r'''    <section class="route-overview latest-release-spotlight" id="latest-release" aria-labelledby="latest-release-title">
+      <div class="route-overview-inner"><header class="route-map-header">
+        <div><p class="eyebrow">LATEST RELEASE · R0.73F · 2026-08-30</p><h2 class="route-map-title" id="latest-release-title">移动剖面二分与固定窗口指数增益</h2><p class="route-map-intro">九项一条精确线性行的结论已闭合，三个一般性捷径被精确反例否定。完整全行、非线性 bootstrap 与 Clay 保持 OPEN。</p></div>
+        <nav class="route-map-actions" aria-label="最新发布快捷入口"><a class="route-map-latest" href="/notes/r0-73f.pdf">阅读最新 R0.73F 研究笔记 →</a><a href="/recap-r0-61-r0-73f.html">122 节累计回顾</a><a href="/notes/">182 篇研究笔记总索引</a><a href="#r073f">查看首页完整 R0.73F 卡片</a></nav>
+      </header><div class="route-legend" aria-label="最新发布计数"><span><i class="route-legend-mark kept" aria-hidden="true"></i>R0.70A–R0.73F · 84 节已公开</span><span><i class="route-legend-mark kept" aria-hidden="true"></i>60 节完整封存</span><span><i class="route-legend-mark current" aria-hidden="true"></i>当前端点 R0.73F</span></div></div>
+    </section>'''

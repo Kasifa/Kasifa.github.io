@@ -236,7 +236,7 @@ def validate_inputs() -> None:
         "research/r073a_report-source.md", "research/r073a_problem_freeze.md", "research/r073a_literature_audit.md", "research/r073a_gap_matrix.md",
         "research/r073a_transient_proof.md", "research/r073a_projection_derivation_agent.md", "research/r073a_projection_independent_audit.md", "research/r073a_independent_analytic_audit.md", "research/r073a_spectral_audit_agent.md",
         "research/release-manifest.json", "research/certificates/r073a/generate_certificate.py", "research/certificates/r073a/independent_recompute.py", "research/certificates/r073a/validate_certificate.py",
-        "experiments/r073a/frozen_os_spectral_audit.py", "experiments/r073a/validate_frozen_os_spectral_audit.py", "experiments/r073a/manifest.json", "experiments/r073a/validation.json", "experiments/r073a/xmu_propagator_certificate.csv",
+        "experiments/r073a/frozen_os_spectral_audit.py", "experiments/r073a/validate_frozen_os_spectral_audit.py", "experiments/r073a/manifest.json", "experiments/r073a/validation.json",
         "scripts/generate_r073a_release.py", "scripts/add-r073a-translations.mjs", "scripts/i18n-snapshots/r073a-missing.json",
         "tests/r073a-hidden-mean-gate.test.mjs", "tests/r073a-release.test.mjs", "tests/r073a-deterministic-certificate-source.test.mjs", "tests/r073a-hidden-mean-transient-spectral-figure-source.test.mjs",
         f"{FIGURE_RELATIVE}/contract.json", f"{FIGURE_RELATIVE}/config.json", f"{FIGURE_RELATIVE}/caption.md", f"{FIGURE_RELATIVE}/README.md",
@@ -244,6 +244,16 @@ def validate_inputs() -> None:
     missing_bindings = expected_bound_sources - _binding_paths(certificate_manifest)
     if missing_bindings:
         raise RuntimeError(f"R0.73A formal source binding is incomplete: {sorted(missing_bindings)}")
+    external_csv = ROOT / EXPERIMENT_RELATIVE / "xmu_propagator_certificate.csv"
+    expected_external = [{
+        "path": f"{EXPERIMENT_RELATIVE}/xmu_propagator_certificate.csv",
+        "bytes": external_csv.stat().st_size,
+        "sha256": digest(external_csv),
+    }]
+    if certificate_manifest.get("externalOutputs") != expected_external:
+        raise RuntimeError("R0.73A external propagator CSV binding is missing or stale")
+    if crosscheck.get("independentCsv") != expected_external[0]:
+        raise RuntimeError("R0.73A crosscheck external CSV binding is missing or stale")
     subprocess.run([sys.executable, str(certificate / "validate_certificate.py"), "--require-formal"], cwd=ROOT, check=True)
     _verify_experiment_manifest()
 

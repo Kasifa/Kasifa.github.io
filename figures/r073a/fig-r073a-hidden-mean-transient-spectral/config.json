@@ -1,0 +1,55 @@
+{
+  "figureId": "fig-r073a-hidden-mean-transient-spectral",
+  "widthMillimetres": 178,
+  "heightMillimetres": 145,
+  "pngDpi": 600,
+  "layout": "three equal journal panels with paired analytic or audited insets",
+  "panelA": {
+    "muRange": [1e-6, 1.0],
+    "muSampleCount": 61,
+    "dSeries": [0.0, 0.25, 1.0, 2.0],
+    "limitDRange": [0.0, 3.0],
+    "limitSampleCount": 61,
+    "hiddenMeanFormula": "exp(-2*d)/(8*(1+mu))+exp(-8*d)/(8*(4+mu))",
+    "abstractLimitFormula": "exp(-2*d)/8+exp(-8*d)/32",
+    "abstractHiddenCoordinateAbsent": true
+  },
+  "panelB": {
+    "tauRange": [0.0, 6.0],
+    "sampleCountPerSeries": 81,
+    "jStartSeries": [0.0, 0.5, 1.0],
+    "jFormula": "7*(exp(-s)-exp(-(s+tau)))/4+(exp(-4*s)-exp(-4*(s+tau)))/2",
+    "envelopeSeries": [
+      {"label": "mu=0.01, |c|=4, s=0", "mu": 0.01, "cAbs": 4.0, "s": 0.0},
+      {"label": "mu=0.1, |c|=4, s=0.5", "mu": 0.1, "cAbs": 4.0, "s": 0.5},
+      {"label": "mu=1, |c|=1, s=1", "mu": 1.0, "cAbs": 1.0, "s": 1.0}
+    ],
+    "envelopeFormula": "exp(-mu*tau+cAbs*J(s,s+tau))",
+    "certificateCsv": "experiments/r073a/xmu_propagator_certificate.csv",
+    "certificateRequiredSchema": ["certificateId", "s", "d", "mu", "c", "gain", "bound", "sourceCommit", "certificateCommit"],
+    "certificateBoundTolerance": 2e-8,
+    "certificateOverlayRequiredForFormal": true,
+    "certificateAvailableAtSourceFreeze": true
+  },
+  "panelC": {
+    "sourceCsv": "experiments/r073a/target_dynamics.csv",
+    "sourceSha256": "005ec291572a1dc6aefcdb4f12f1e47e0d52e69098f8cf97f7cfa5b93f4efff5",
+    "validationJson": "experiments/r073a/validation.json",
+    "validationSha256": "c49a3bf6f1bc72daf6ba91741e2153dbef01daccf574e3efe34d9923b37fe5e7",
+    "N": 40,
+    "expectedRows": 30,
+    "projections": ["unprojected", "qstar-Wxx", "span-sin1-sin2"],
+    "displayTransform": "sign(value)*log10(1+abs(value))",
+    "displayDomains": {
+      "frozen-spectral-edge": [-0.25, 5.0],
+      "frozen-numerical-abscissa": [-0.25, 8.0]
+    },
+    "displayTicks": {
+      "frozen-spectral-edge": [0.0, 1.0, 2.0, 3.0, 4.0, 5.0],
+      "frozen-numerical-abscissa": [0.0, 2.0, 4.0, 6.0, 8.0]
+    },
+    "minimumDisplayPadding": 0.2,
+    "finiteDimensionalOnly": true,
+    "galerkinTailBoundAvailable": false
+  }
+}

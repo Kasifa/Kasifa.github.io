@@ -29,6 +29,7 @@ COMPUTATION_KINDS = {
     "exact-audit",
     "data-analysis",
     "exact-audit plus high-precision presentation sampling",
+    "closed-form sampling plus validated finite CSV ingestion",
 }
 
 
@@ -205,6 +206,28 @@ def validate(package: Path) -> dict[str, Any]:
         for index, record in enumerate(source_data):
             if not isinstance(record, dict):
                 errors.append(f"manifest.sourceData[{index}] must be an object")
+                continue
+            if "path" in record:
+                relative = require(
+                    record,
+                    "path",
+                    f"manifest.sourceData[{index}]",
+                    errors if final else warnings,
+                )
+                expected = require(
+                    record,
+                    "sha256",
+                    f"manifest.sourceData[{index}]",
+                    errors if final else warnings,
+                )
+                if relative:
+                    records.append(
+                        (
+                            f"sourceData[{index}]",
+                            package.parents[2] / relative,
+                            expected or "",
+                        )
+                    )
                 continue
             for key in ("location", "fileName", "bytes", "sha256", "extractionCommand"):
                 require(

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73A：physical hidden mean、X_mu finite-transient viscous-rate bound 与精确 projection boundary。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73A｜Hidden physical mean and finite-transient X_mu bound">
+  <meta property="og:description" content="physical beta=xi=0 row 在 X_mu 中闭合；kinetic、Squire、Bloch、nonlinear 与 Clay 保持 OPEN。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073a/fig-r073a-hidden-mean-transient-spectral.png">
+  <title>R0.73A｜Hidden physical mean and finite-transient X_mu bound</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.40"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#coordinate">坐标</a><a href="#cancellation">抵消</a><a href="#system">系统</a><a href="#transient">transient</a><a href="#forcing">forcing</a><a href="#path">路径</a><a href="#quotient">quotient</a><a href="#orthogonal">投影</a><a href="#two-mode">two-mode</a><a href="#dual">dual</a><a href="#spectral">finite screen</a><a href="#norms">范数</a><a href="#literature">文献</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73A · PHYSICAL LONG WAVE · HIDDEN MEAN</div>
+        <h1>我把长波零模改写成壁法向平均速度，<br>得到有限瞬态的黏性速率界</h1>
+        <p class="lead">我在 \(\beta=\xi=0\)、\(\mu=\gamma^2\in(0,1]\) 的物理行上使用 \(h=\mu^{-1}\Pi_0q\)、\(r=Q_0q\)。精确均值抵消把齐次生成元中的 \(\mu^{-1}\) 消去，并在 \(X_\mu\) 范数中给出 all-start finite-transient bound。它只有 viscous rate；physical kinetic、Squire、Bloch、nonlinear 与 Clay 仍为 OPEN。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73A scoped physical row 完成</span><strong>hidden mean and finite transient</strong><p>版本 v0.73A · 2026-08-29</p><p>physical mean cancellation: CLOSED</p><p>X_mu viscous-rate bound: CLOSED</p><p>lifted tangent line: NOT INVARIANT</p><p>fixed-Lambda raw-q limit: OPEN</p><p>kinetic / Squire / Bloch: OPEN</p><p>nonlinear / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li>        <li><a href="#coordinate">01 · physical coordinate</a></li>        <li><a href="#cancellation">02 · exact cancellation</a></li>        <li><a href="#system">03 · regular system</a></li>        <li><a href="#transient">04 · all-start transient</a></li>        <li><a href="#forcing">05 · forced Duhamel</a></li>        <li><a href="#path">06 · parameter path</a></li>        <li><a href="#quotient">07 · moving quotient</a></li>        <li><a href="#orthogonal">08 · orthogonal blocks</a></li>        <li><a href="#two-mode">09 · two-mode carrier</a></li>        <li><a href="#dual">10 · dual cost</a></li>        <li><a href="#spectral">11 · finite diagnostic</a></li>        <li><a href="#norms">12 · three norms</a></li>        <li><a href="#literature">13 · literature</a></li>        <li><a href="#evidence">14 · evidence</a></li>        <li><a href="#figure">15 · journal figure</a></li>        <li><a href="#value">16 · value</a></li>        <li><a href="#next">17 · R0.73B</a></li>        <li><a href="#reproduce">18 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>正间隙物理行在 \(X_\mu\) 中闭合；更强范数与更快速率没有被外推</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · PHYSICAL COORDINATE</strong><p>exactPhysicalMeanOSCancellation=CLOSED；exactMeanVelocityZeroMeanVorticitySystem=CLOSED；renormalizedPhysicalLongWaveOSTransientPropagator=CLOSED；renormalizedPhysicalLongWaveOSForcedDuhamel=CLOSED。</p></div><div class="verdict-card true"><strong>CLOSED · EXACT PROJECTION ALGEBRA</strong><p>exactPhysicalTangentLiftedLineNoninvariance=CLOSED；exactMovingTangentQuotientAlgebra=CLOSED；orthogonalTangentProjectionSpeed=CLOSED；explicitOrthogonalTangentBlocks=CLOSED。</p></div><div class="verdict-card false"><strong>FALSE · PRECISE ONE-DIMENSIONAL CLAIMS</strong><p>rankOneAbstractTangentClosesPhysicalLongWaveLimit=FALSE 只按 lifted one-dimensional invariant-state meaning 表示 lifted line \(h=0\)、\(r\in\operatorname{span}\{W_{xx}\}\) 不是充分的不变物理状态；fixedTwoHarmonicOSInvariance=FALSE 只在 \(c\ne0\) 的完整 \(\mathscr A_0\) 演化中使用；twoSidedInvariantOrthogonalTangentSplit=FALSE。positive-gap dual 的负结论只针对 normalized dual 与 raw \(Q^*\mathscr B^*\psi\) 的 unweighted bound；实际 OS off-block 另乘 \(|c|\)。</p></div><div class="verdict-card false"><strong>OPEN · STRONGER PHYSICAL THEOREMS</strong><p>lowGapOSTransientA2Propagator=OPEN；lowGapPhysicalKineticPropagator=OPEN；generalBlochLowGapOSPropagator=OPEN；lowGapOSSquirePropagator=OPEN；BlochUniformPhysicalVelocityDirectSum=OPEN；nonlinearNavierStokes=OPEN；Clay=OPEN。</p></div></div></section>
+        <section id="coordinate"><div class="section-no">01 / Physical coordinate</div><h2>raw mean 不是低间隙的正则坐标</h2><div class="equation result">\[h=\mu^{-1}\Pi_0q=\Pi_0(\mathcal L_\mu^{-1}q),\qquad r=Q_0q,\qquad q=\mu h+r.\]</div><p>我把 mean wall-normal velocity 与 mean-zero OS vorticity 分开，并定义 \(\|(h,r)\|_{X_\mu}^2=|h|^2+\|r\|_2^2\)。</p></section>
+        <section id="cancellation"><div class="section-no">02 / Exact cancellation</div><h2>两次周期分部积分精确消去零模奇性</h2><div class="equation result">\[\Pi_0\!\left(Wr+W_{xx}\mathcal L_\mu^{-1}r\right)=\mu\Pi_0\!\left(W\mathcal L_\mu^{-1}r\right).\]</div><p>这是对每个 mean-zero \(r\) 的恒等式，不是有限 Fourier 近似，也不是 \(\mu\) 的渐近展开。</p></section>
+        <section id="system"><div class="section-no">03 / Regular system</div><h2>齐次 \((h,r)\) 生成元不再含负次 \(\mu\)</h2><div class="equation result">\[\begin{aligned}h_d&=-\mu h-ic\Pi_0(W\mathcal L_\mu^{-1}r),\\r_d&=-\mathcal L_\mu r-icQ_0(Wr+W_{xx}\mathcal L_\mu^{-1}r)-ic\,h(W_{xx}+\mu W).\end{aligned}\]</div><p>这项 regularity 属于 singular coordinate \(X_\mu\)，不表示 raw \(L^2_q\) 或 kinetic norm 已经统一。</p></section>
+        <section id="transient"><div class="section-no">04 / All-start transient</div><h2>显式积分 majorant 给出有限 transient prefactor</h2><div class="equation result">\[J(s,d)=\frac74(e^{-s}-e^{-d})+\frac12(e^{-4s}-e^{-4d})\le\frac94e^{-s}.\]</div><div class="equation result">\[\boxed{\|U_\mu(d,s)\|_{X_\mu\to X_\mu}\le e^{-\mu(d-s)+|c|J(s,d)}}.\]</div><p>当 \(|c|\le4\) 时，我得到 \(e^9e^{-\mu(d-s)}\)。\(e^9\) 是透明但未优化的上界；速率是 \(\mu\)，不是 enhanced-dissipation 或 scalar \(A_2\) rate。</p></section>
+        <section id="forcing"><div class="section-no">05 / Forced Duhamel</div><h2>受迫结论保留 mean forcing 的 \(\mu^{-1}\) payment</h2><div class="equation result">\[\mathfrak F_\mu=(\mu^{-1}\Pi_0F_q,Q_0F_q)\in L^1_{\rm loc}(X_\mu).\]</div><p>variation of constants 使用同一 transient kernel；删除 \(\mu^{-1}\Pi_0F_q\) 会改变物理变量或范数。</p></section>
+        <section id="path"><div class="section-no">06 / Parameter-path boundary</div><h2>正间隙 noninvariance 与 \(\mu\to0\) 路径必须分开</h2><div class="equation result">\[h_d(s)=ic_\mu\left[\frac{e^{-2s}}{8(1+\mu)}+\frac{e^{-8s}}{8(4+\mu)}\right],\qquad c_\mu=\gamma\Lambda_\mu.\]</div><p>对每个 \(\mu>0\)、\(c_\mu\ne0\)，lifted tangent line 都不 invariant。只有沿 \(c_\mu\to c_0\ne0\) 的路径，上式才有非零极限；这要求 \(|\Lambda_\mu|\asymp|\gamma|^{-1}\)。固定 \(\Lambda\) 时 \(c_\mu\to0\)，raw-\(q\) singular limit 仍为 OPEN。</p></section>
+        <section id="quotient"><div class="section-no">07 / Moving quotient</div><h2>不变一维物理状态失败，不等于 moving quotient 代数失败</h2><div class="equation result">\[Q\mathscr AP=P_dP,\qquad z_d=(Q\mathscr AQ-P_dQ)z.\]</div><p>tangent amplitude 不强迫 complement；complement 仍可强迫 amplitude。两侧都 invariant 当且仅当 \(\psi_d=-\mathscr A^*\psi\)，其 gapless OS 版本是 forward anti-parabolic。</p><p>以上恒等式只在完整报告列明的 common dense domain \(D\)、strong \(C^1\) solution 与 adjoint-domain compatibility 下逐点成立；它们不单独断言 standalone quotient 的 well-posedness。</p></section>
+        <section id="orthogonal"><div class="section-no">08 / Orthogonal blocks</div><h2>投影转速有界，但 pressure block 不消失</h2><div class="equation result">\[\|(P_\perp)_d\|\le\frac32,\qquad \psi_{\perp,d}+\mathscr A_0^*\psi_\perp=\frac{2\zeta+icG}{N}.\]</div><p>因此 bounded kinematic rotation 不推出 small projected generator；\(|c|G\) 是显式非零的 complement-to-tangent coupling。</p></section>
+        <section id="two-mode"><div class="section-no">09 / Two-mode carrier</div><h2>\(\operatorname{span}\{\sin x,\sin2x\}\) 运动学自然；当 \(c\ne0\) 时不是完整 OS 不变子空间</h2><div class="equation result">\[\mathscr B_0q=-\frac3{16}(a x_2+2b x_1)(\cos x-\cos3x).\]</div><p>无条件的代数事实是 \(\mathscr B_0\) 的泄漏公式及其 kernel 恰为 tangent line；乘上 \(-ic\) 后，\(c\ne0\) 才得到完整 \(\mathscr A_0\) 的 noninvariance、return coupling 与更高 harmonic。有限维删除不是该非零耦合演化的不变 quotient。</p></section>
+        <section id="dual"><div class="section-no">10 / Positive-gap dual cost</div><h2>固定 \(d\)，归一化 dual 强制 raw pressure vector 的常数模 \(g^{-1}\)</h2><div class="equation result">\[\frac1g\le\|\mathscr B_{\beta,\mu}^*\psi_{\beta,\mu}\|_2+\|W\|_\infty\|\psi_{\beta,\mu}\|_2,\qquad g=\beta^2+\mu.\]</div><div class="equation result">\[\|Q^*\mathscr B_{\beta,\mu}^*\psi\|_2\ge\frac1g-\|W\|_\infty M-C_d(|\beta|+g)M^2\quad(\|\psi\|_2\le M).\]</div><p>uniform dichotomy 只在固定 \(d\)，或满足 \(\inf_d\|\phi(d)\|_2>0\) 的 compact \(d\)-interval 上表述。实际 OS off-block 还乘 \(|c|\)，因此其发散结论只沿 \(|c|/g\to\infty\) 的路径成立。这不声称无共同空间识别时 \(g=0\) 与 \(g>0\) 的算子范数不连续，也不排除像 \(X_\mu\) 那样明确支付权重的 theorem。</p></section>
+        <section id="spectral"><div class="section-no">11 / Finite diagnostic</div><h2>冻结谱 screen 只负责筛错，不承担无限维证明</h2><p>有限 Fourier--Galerkin 审计记录 448 个 broad cases 与 150 个 target rows。删除 \(W_{xx}\) 或两谐波空间并不统一改善 finite spectral edge；stable compression 也可有正 numerical abscissa 与 sampled gain。没有 Galerkin tail bound、continuous-time maximum 或 nonautonomous concatenation theorem。</p></section>
+        <section id="norms"><div class="section-no">12 / Three norms</div><h2>raw、hybrid 与 kinetic 三种账本不能互换</h2><div class="equation result">\[\|q\|_2^2=\mu^2|h|^2+\|r\|_2^2,\qquad \|(h,r)\|_{X_\mu}^2=|h|^2+\|r\|_2^2.\]</div><div class="equation result">\[Q_{\rm kin}^2=|h|^2+\mu^{-1}\|\mathcal L_\mu^{-1/2}r\|_2^2.\]</div><p>raw 到 \(X_\mu\) 在一个方向损失 \(\mu^{-1}\)；kinetic multiplier 也不与 \(X_\mu\) 统一等价。</p></section>
+        <section id="literature"><div class="section-no">13 / Literature boundary</div><h2>已有 long-wave、投影与 transient 工具；组合接口仍未由引用文献覆盖</h2><p>Colombo--Dolce--Montalto--Ventura 提供 stationary physical long-wave mode；Chen--Dai--Wang--Wang 处理 parameter-uniform Riesz projection；Li--Zhao、Li--Wei--Zhang 与 Beekie--Chen--Jia 给出不同几何中的 nonautonomous、pseudospectral 或 periodic OS 工具。我只报告有界 primary-source search，不把未覆盖的组合写成新颖性证明。</p></section>
+        <section id="evidence"><div class="section-no">14 / Evidence boundary</div><h2>无限维证明、有限证书与附图各自承担不同任务</h2><p>解析报告证明 cancellation、energy estimate、Duhamel 与 projection identities。双路证书核对有限 Fourier algebra 和 deterministic \(X_\mu\) grid；冻结谱实验仍是 finite diagnostic。附图只展示已绑定的公式、envelope 和 finite screen，不构成证明。</p></section>
+        <section id="figure"><div class="section-no">15 / Journal figure</div><h2>隐藏均值、analytic envelope 与 finite spectral screen 分面展示</h2><p><img src="/assets/r073a/fig-r073a-hidden-mean-transient-spectral.svg" alt="R0.73A hidden mean, X_mu transient envelope, and finite frozen spectral audit"></p><p><a href="/assets/r073a/fig-r073a-hidden-mean-transient-spectral.pdf">下载 PDF</a> · <a href="/assets/r073a/fig-r073a-hidden-mean-transient-spectral.png">下载 PNG</a> · <a href="/assets/r073a/fig-r073a-hidden-mean-transient-spectral.svg">打开 SVG</a></p></section>
+        <section id="value"><div class="section-no">16 / Research value</div><h2>这是一条真实但严格受限的 linear low-gap coordinate theorem</h2><p>我把 raw constant-mode singularity 改写成 physical hidden coordinate，并证明 time-dependent heat path 在 \(X_\mu\) 中只有有限 transient payment。它距离 Millennium 问题仍远：kinetic direct sum、Squire、Bloch summation、nonlinear convolution、vortex stretching 与 continuation 均未闭合。</p></section>
+        <section id="next"><div class="section-no">17 / Next gate</div><h2>R0.73B：把 physical mean、tangent carrier 与 adjoint pressure cost 放进同一 weighted modulation</h2><p>下一步先寻求明确支付 \(g\)、\(|c|\)、\(|\Lambda|\) 与 orientation 的 physical kinetic estimate，再讨论任何 \(A_2\)-scale improvement。</p></section>
+        <section id="reproduce"><div class="section-no">18 / Reproduction</div><h2>完整报告、审计、证书、实验和附图</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073a_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073a_literature_audit.md">文献边界审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073a_gap_matrix.md">主张—证据矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073a_independent_analytic_audit.md">独立解析审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073a">确定性证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073a">有限诊断与 propagator grid</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073a/fig-r073a-hidden-mean-transient-spectral">正式附图包</a> · <a href="/notes/r0-73a.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73a.html">累计回顾</a> · <a href="/recap-r0-61-r0-73a.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.73A · 2026-08-29<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

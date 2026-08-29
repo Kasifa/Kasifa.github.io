@@ -607,10 +607,10 @@ test("separates the published inventory from the formal-sealed archive", async (
   const currentFormal = figureManifests
     .filter(
       ({ value }) =>
-        value.status === "formal" &&
-        /^R0\.(?:70|71|72)[A-Z]$/.test(value.release ?? ""),
+        value.status === "formal" && typeof value.release === "string",
     )
     .map(({ value }) => value.release.toLowerCase().replace(".", ""))
+    .filter((release) => releases.includes(release))
     .sort();
   assert.deepEqual(
     currentFormal,

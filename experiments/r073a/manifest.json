@@ -1,0 +1,140 @@
+{
+  "command": "command.txt",
+  "configuration": {
+    "broadCases": 448,
+    "broadN": 18,
+    "epsilonRelative": 0.01,
+    "projections": [
+      "unprojected",
+      "qstar-Wxx",
+      "span-sin1-sin2"
+    ],
+    "pseudospectrum": "10 right-edge offsets x adaptive 21-point-plus-edge-imaginary grid",
+    "targetCases": [
+      [
+        "T01-lowest-gap-c4",
+        0.0,
+        0.0,
+        1e-06,
+        4.0
+      ],
+      [
+        "T02-near-bloch-c128",
+        0.0,
+        0.0001,
+        1e-06,
+        128.0
+      ],
+      [
+        "T03-near-bloch-c4096",
+        0.0,
+        0.001,
+        0.0001,
+        4096.0
+      ],
+      [
+        "T04-strong-c131072",
+        0.0,
+        0.01,
+        0.01,
+        131072.0
+      ],
+      [
+        "T05-post-collision",
+        0.25,
+        0.0,
+        0.0001,
+        4096.0
+      ],
+      [
+        "T06-late-weak-bloch",
+        1.0,
+        0.01,
+        0.0001,
+        128.0
+      ],
+      [
+        "T07-off-axis",
+        0.05,
+        0.25,
+        0.0001,
+        4096.0
+      ],
+      [
+        "T08-edge-bloch",
+        0.25,
+        0.49,
+        0.01,
+        128.0
+      ],
+      [
+        "T09-collision-alpha025",
+        0.0625,
+        0.0,
+        0.0625,
+        4096.0
+      ],
+      [
+        "T10-collision-alpha0125",
+        0.015625,
+        0.0,
+        0.015625,
+        131072.0
+      ]
+    ],
+    "targetN": [
+      12,
+      18,
+      24,
+      32,
+      40
+    ],
+    "timeGrid": "unique union of 0, 13 geometric, and 11 linear samples on [0,8 alpha^2]"
+  },
+  "finiteDimensionalOnly": true,
+  "limitations": [
+    "finite Fourier-Galerkin compression is not an infinite-dimensional proof",
+    "projected matrices are modified compressed generators, not proved invariant quotients",
+    "sampled transient gain is not the continuous-time global maximum",
+    "sampled pseudospectral and Kreiss quantities are lower-resolution diagnostics",
+    "no Galerkin tail error bound is supplied"
+  ],
+  "outputs": [
+    {
+      "bytes": 307546,
+      "path": "broad_spectral.csv",
+      "sha256": "916f92c7f8c3f549842d76e61dfd5e99af21e6b0a9f974c5dcba1d7045cc3724"
+    },
+    {
+      "bytes": 56645,
+      "path": "target_dynamics.csv",
+      "sha256": "005ec291572a1dc6aefcdb4f12f1e47e0d52e69098f8cf97f7cfa5b93f4efff5"
+    },
+    {
+      "bytes": 363723,
+      "path": "all_rows.csv",
+      "sha256": "5edb8284a27cab993c254abfcd8d8a965a722debc8c7269c257e84ba0c9974ff"
+    },
+    {
+      "bytes": 11280,
+      "path": "summary.json",
+      "sha256": "c5efb5661ed8809bafbd19040e835af2748e87142761d83e0f04d84d1a3e80c2"
+    },
+    {
+      "bytes": 2310,
+      "path": "environment.json",
+      "sha256": "c2b427b87ef5e4b85e4c80b9efedf8a2647f952d7949af20aa7e577855cc3e4e"
+    },
+    {
+      "bytes": 4603,
+      "path": "progress.ndjson",
+      "sha256": "b930f9fc15e55248ebee6bf64bac526c86bb13ccc94becd07589d6e706bfa127"
+    }
+  ],
+  "requirements": "requirements.txt",
+  "schemaVersion": 1,
+  "source": "frozen_os_spectral_audit.py",
+  "sourceSha256": "7ce8ac673814d2edb333532879af12ee7e28ab44039cf0b84cc4e143a6593ca7",
+  "status": "completed",
+  "validator": "validate_frozen_os_spectral_audit.py"
+}

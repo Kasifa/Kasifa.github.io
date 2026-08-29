@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { cp, mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -276,12 +277,30 @@ test("R0.73E validator, manifest, and checksum ledger agree exactly", async () =
 
 test("R0.73E producer sequence is byte deterministic", async () => {
   const before = new Map(await Promise.all(generatedPaths.map(async (path) => [path, await bytes(path)])));
-  for (const script of ["generate_certificate.py", "independent_recompute.py", "validate_certificate.py"]) {
-    await run(python, [`${directory}/${script}`], {
+  const temporaryParent = await mkdtemp(join(tmpdir(), "r073e-certificate-rerun-"));
+  const sourceTree = join(temporaryParent, "source");
+  let worktreeAdded = false;
+  try {
+    await run("git", ["worktree", "add", "--detach", sourceTree, sourceCommit], {
       cwd: root,
-      env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
       maxBuffer: 32 * 1024 * 1024,
     });
+    worktreeAdded = true;
+    await cp(resolve(root, directory), resolve(sourceTree, directory), { recursive: true });
+    for (const script of ["generate_certificate.py", "independent_recompute.py", "validate_certificate.py"]) {
+      await run(python, [`${directory}/${script}`], {
+        cwd: sourceTree,
+        env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+        maxBuffer: 32 * 1024 * 1024,
+      });
+    }
+    for (const path of generatedPaths) {
+      assert.deepEqual(await readFile(resolve(sourceTree, path)), before.get(path), `${path}: deterministic rerun`);
+    }
+  } finally {
+    if (worktreeAdded) {
+      await run("git", ["worktree", "remove", "--force", sourceTree], { cwd: root });
+    }
+    await rm(temporaryParent, { recursive: true, force: true });
   }
-  for (const path of generatedPaths) assert.deepEqual(await bytes(path), before.get(path), `${path}: deterministic rerun`);
 });

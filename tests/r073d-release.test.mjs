@@ -140,7 +140,12 @@ test("R0.73D frozen translation snapshot is complete and claim-safe", async () =
   }
 });
 
-test("R0.73D manifests advance every public counter exactly once", async () => {
+test("R0.73D manifests advance every public counter exactly once", async (context) => {
+  const activeManifest = await json("research/release-manifest.json");
+  if (activeManifest.latestCompletedRelease !== "r073d") {
+    context.skip("R0.73D current-site transaction is preserved by the R0.73D source and archive tests");
+    return;
+  }
   const [manifest, site, archive, version] = await Promise.all([
     json("research/release-manifest.json"),
     json("public/site-version.json"),
@@ -179,7 +184,12 @@ test("R0.73D manifests advance every public counter exactly once", async () => {
   assert.equal(archive.formalSealedReleases.filter((value) => value === "r073d").length, 1);
 });
 
-test("R0.73D note, cumulative recap, homepage, index, and literature are synchronized", async () => {
+test("R0.73D note, cumulative recap, homepage, index, and literature are synchronized", async (context) => {
+  const activeManifest = await json("research/release-manifest.json");
+  if (activeManifest.latestCompletedRelease !== "r073d") {
+    context.skip("R0.73D is no longer the current-site endpoint");
+    return;
+  }
   const [note, recap, home, literature, noteIndex] = await Promise.all([
     text("public/notes/r0-73d.html"),
     text("public/recap-r0-61-r0-73d.html"),
@@ -271,7 +281,12 @@ test("R0.73D public figure assets and synchronized PDFs are complete", async () 
   assert.ok(recapPdf.bytes > 50000 && recapPdf.pages >= 4, JSON.stringify(recapPdf));
 });
 
-test("R0.73D English dictionary covers every live string and remains reproducible", async () => {
+test("R0.73D English dictionary covers every live string and remains reproducible", async (context) => {
+  const activeManifest = await json("research/release-manifest.json");
+  if (activeManifest.latestCompletedRelease !== "r073d") {
+    context.skip("R0.73D frozen translation snapshot is covered by its dedicated historical test");
+    return;
+  }
   const source = await collectSiteStrings(publicRoot);
   const translations = await json("translations/en.json");
   const byChinese = new Map(translations.map((entry) => [entry.zh, entry.en]));

@@ -1,0 +1,75 @@
+{
+  "figureId": "fig-r073b-bloch-kinetic-transient",
+  "release": "R0.73B",
+  "widthMillimetres": 178,
+  "heightMillimetres": 150,
+  "pngDpi": 600,
+  "layout": "two-by-two journal panels with a data-free top-right research blossom",
+  "upstream": {
+    "mainRows": "experiments/r073b/weighted_propagator_rows.csv",
+    "targetedRows": "experiments/r073b/targeted_asymptotics.csv",
+    "experimentContract": "experiments/r073b/contract.json",
+    "experimentValidation": "experiments/r073b/validation.json",
+    "experimentManifest": "experiments/r073b/manifest.json",
+    "certificate": "research/certificates/r073b/certificate.json",
+    "certificateValidation": "research/certificates/r073b/validation.json",
+    "certificateManifest": "research/certificates/r073b/manifest.json"
+  },
+  "panelA": {
+    "start": 0.0,
+    "end": 0.75,
+    "N": 10,
+    "minimumDistinctMuPerSeries": 13,
+    "series": [
+      {"id": "fixed-c-kinetic", "p": 0.0, "pathId": "p0-k1", "norm": "kinetic", "label": "fixed c=1 | kinetic"},
+      {"id": "fixed-Lambda-kinetic", "p": 0.5, "pathId": "p0.5-k1", "norm": "kinetic", "label": "fixed Lambda=1 | kinetic"},
+      {"id": "fixed-Lambda-raw-q", "p": 0.5, "pathId": "p0.5-k1", "norm": "raw_q", "label": "fixed Lambda=1 | raw q"}
+    ],
+    "muDomain": [1e-14, 1e-2],
+    "gainDomain": [1.0, 1e8]
+  },
+  "panelB": {
+    "start": 0.0,
+    "end": 0.75,
+    "mu": 1e-8,
+    "N": 10,
+    "lambdaValues": [0.25, 1.0, 4.0, 16.0],
+    "relativeLimitTolerance": 8e-9,
+    "gainDomain": [1.0, 25.0],
+    "heatShearPrimitive": "K(s,d)=(e^-s-e^-d)/2+(e^-4s-e^-4d)/8",
+    "energyEnvelope": "exp[-mu*(d-s)+abs(Lambda)*K(s,d)/2]"
+  },
+  "panelC": {
+    "d": 0.0,
+    "muDomain": [1e-12, 1.0],
+    "muSampleCount": 61,
+    "rhoDomain": [0.2, 0.52],
+    "elementaryFormula": "||W_x||_infinity/2",
+    "blockFormula": "min(M/2,(delta+sqrt(delta^2+m^2))/2)",
+    "deltaFormula": "delta=M*sqrt(mu/(1+mu))",
+    "lowGapFormula": "||W_x||_2/2"
+  },
+  "panelD": {
+    "weights": [0.0, 0.5, 1.0, 1.5],
+    "normByWeight": {
+      "0": "hminus1",
+      "0.5": "kinetic_under",
+      "1": "kinetic",
+      "1.5": "kinetic_over"
+    },
+    "pValues": [0.0, 0.5],
+    "predictionSampleCount": 61,
+    "exponentDomain": [0.0, 0.8],
+    "predictionFormula": "max(a/2-p,0)",
+    "fitMuRange": [1e-14, 1e-11]
+  },
+  "palette": {
+    "blue": "#285F8F",
+    "gold": "#A6781F",
+    "ink": "#20262D",
+    "mid": "#5D6670",
+    "quiet": "#8A939D",
+    "grid": "#D9DEE3",
+    "paper": "#FFFFFF"
+  }
+}

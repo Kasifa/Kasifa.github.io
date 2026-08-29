@@ -1,0 +1,11 @@
+# Zero-write source, upstream, and formula self-test
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073b/fig-r073b-bloch-kinetic-transient/plot.py --self-test
+
+# Source-stage draft render; certificate lineage stays visibly unsealed
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073b/fig-r073b-bloch-kinetic-transient/plot.py --draft --visual-inspected
+
+# Formal render after the distinct certificate commit exists
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073b/fig-r073b-bloch-kinetic-transient/plot.py --formal --visual-inspected --source-commit <40-hex> --certificate-commit <40-hex>
+
+# Independent package validation
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073b/fig-r073b-bloch-kinetic-transient/validate.py

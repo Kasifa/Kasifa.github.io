@@ -1,0 +1,46 @@
+{
+  "claimBoundary": {
+    "blochDirectSumProved": false,
+    "finiteFourierMatricesMeasured": true,
+    "galerkinTailBoundProved": false,
+    "infiniteDimensionalPropagatorProved": false,
+    "nonlinearNavierStokesProved": false,
+    "squireRowIntegrated": false
+  },
+  "expected": {
+    "caseCount": 280,
+    "finiteDimensionalOnly": true,
+    "primaryRowCount": 1960,
+    "targetedRowCount": 245
+  },
+  "norms": {
+    "balanced_l2": {"a": 1.0, "b": 0.0},
+    "hminus1": {"a": 0.0, "b": 1.0},
+    "kinetic": {"a": 1.0, "b": 1.0},
+    "kinetic_over": {"a": 1.5, "b": 1.0},
+    "kinetic_under": {"a": 0.5, "b": 1.0},
+    "raw_q": {"a": -2.0, "b": 0.0, "special": "q_0=mu*h"},
+    "xmu": {"a": 0.0, "b": 0.0}
+  },
+  "numericPolicy": {
+    "arithmetic": "complex128",
+    "integrator": "classical fixed-step RK4",
+    "maximumStep": 0.0025,
+    "modeCutoff": 10,
+    "randomness": "none",
+    "requestedThreads": 1
+  },
+  "primaryData": {
+    "file": "weighted_propagator_rows.csv",
+    "identityFields": ["caseId", "family", "pathId", "N", "start", "end", "mu", "c", "Lambda", "norm"],
+    "metricFields": ["gain", "logGain", "xmuLogBound", "kineticLogBound", "boundMargin"],
+    "orientationFields": ["inputMeanFraction", "inputK1Fraction", "inputK2Fraction", "inputTailFraction", "outputMeanFraction", "outputK1Fraction", "outputK2Fraction", "outputTailFraction"]
+  },
+  "release": "R0.73B",
+  "schemaVersion": 1,
+  "targetedData": {
+    "file": "targeted_asymptotics.csv",
+    "muRange": [1e-14, 1e-08],
+    "pValues": [0.0, 0.25, 0.5, 0.75, 1.0]
+  }
+}

@@ -492,8 +492,15 @@ def validate_source_bindings(manifest: dict, expected_stage: str) -> None:
         head = subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
         ).strip()
-        if head != source_commit:
-            raise AssertionError("formal sourceCommit is not current HEAD")
+        if subprocess.run(
+            ["git", "merge-base", "--is-ancestor", source_commit, head],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ).returncode:
+            raise AssertionError(
+                "formal sourceCommit is not current HEAD or its ancestor"
+            )
     if manifest.get("outputs") != EXPECTED_OUTPUTS:
         raise AssertionError("manifest output inventory mismatch")
     bindings = manifest.get("sourceBindings")

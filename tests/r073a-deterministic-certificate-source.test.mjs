@@ -229,6 +229,9 @@ test("R0.73A current certificate validates at exactly its declared stage", async
     cwd: root, env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" }, maxBuffer: 8 * 1024 * 1024,
   });
   assert.match(result.stdout, new RegExp(`strict ${manifest.status} certificate validation passed`));
+  const validatorSource = await text(`${certificate}/validate_certificate.py`);
+  assert.match(validatorSource, /merge-base", "--is-ancestor"/);
+  assert.match(validatorSource, /current HEAD or its ancestor/);
   await verifyFlatHashLedger();
   assert.equal((await text(csvPath)).split("\n", 1)[0], "certificateId,s,d,mu,c,gain,bound,sourceCommit,certificateCommit");
 });

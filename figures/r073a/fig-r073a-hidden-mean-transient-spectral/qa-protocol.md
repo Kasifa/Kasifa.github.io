@@ -11,7 +11,7 @@
    formal-mode refusal. If it is present, require all 120 rows, black cross
    markers, the direct `certified X_mu grid (120 rows)` legend, and exact point
    overlaps without jitter. Formal mode must additionally display
-   `FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED` and omit every pending
+   `FORMAL LINEAGE SEALED; CERTIFICATE COMMIT BOUND` and omit every pending
    lineage label.
 4. Before formal mode, require the external certificate CSV schema
    `certificateId,s,d,mu,c,gain,bound,sourceCommit,certificateCommit`, validate

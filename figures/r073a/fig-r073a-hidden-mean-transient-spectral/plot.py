@@ -581,7 +581,7 @@ def build_scene(rows: list[dict[str, str]], config: dict[str, Any],
             add_marker(scene, xx, yy, "cross", INK, size=4.0)
         certificate_badge = "CERTIFIED X_mu GAIN: OVERLAY PRESENT"
         certificate_note = (
-            "FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED"
+            "FORMAL LINEAGE SEALED; CERTIFICATE COMMIT BOUND"
             if formal else
             "Certificate CSV only; formal lineage still required."
         )
@@ -1165,12 +1165,12 @@ def basic_checks(rows: list[dict[str, str]], scene: Scene,
                                          ("CERTIFIED X_mu GAIN: PENDING - NOT PLOTTED" in visible
                                           and "FORMAL SEAL BLOCKED; NO SYNTHETIC CURVE" in visible)),
         "certificateStageTextExact": (
-            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED" in visible
+            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT BOUND" in visible
              and "Formal analytic bound sealed; maximum observed gain remains unclaimed." in visible
              and "formal lineage still required" not in visible
              and "Bound draft closed" not in visible)
             if formal else
-            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT RECORDED" not in visible
+            ("FORMAL LINEAGE SEALED; CERTIFICATE COMMIT BOUND" not in visible
              and "Formal analytic bound sealed" not in visible)
         ),
         "finiteDimensionalBoundaryVisible": "FINITE GALERKIN N=40 - NOT INFINITE-DIMENSIONAL" in visible,

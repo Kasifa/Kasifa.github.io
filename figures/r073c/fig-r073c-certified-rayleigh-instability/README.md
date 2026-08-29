@@ -13,3 +13,5 @@ The archival masters are PDF and SVG.  The PNG is rendered at 600 dpi.  The
 figure does not claim uniqueness of the unstable root, viscous persistence,
 nonautonomous transfer, nonlinear regularity, or a Clay solution.
 
+The formal validator requires the sealed source and certificate commits and
+emits metadata compatible with the repository-wide formal-figure archive.

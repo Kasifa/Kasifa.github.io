@@ -63,6 +63,13 @@ test("R0.73C figure binds primary interval and independent finite diagnostics by
   assert.equal(manifest.release, "R0.73C");
   assert.equal(manifest.figureId, figureId);
   assert.equal(manifest.status, "formal");
+  assert.equal(manifest.git.repository, "Kasifa/Kasifa.github.io");
+  assert.match(manifest.git.sourceCommit, /^[0-9a-f]{40}$/);
+  assert.match(manifest.git.certificateCommit, /^[0-9a-f]{40}$/);
+  assert.equal(manifest.git.dirtyAtCertifiedRun, false);
+  assert.equal(manifest.figure.outputs.length, 3);
+  assert.equal(manifest.qa.finalSizeInspected, true);
+  assert.equal(manifest.qa.dataCrossChecked, true);
   const expected = new Set([
     "experiments/r073c/interval_run_b.json",
     "experiments/r073c/fourier_screen.json",

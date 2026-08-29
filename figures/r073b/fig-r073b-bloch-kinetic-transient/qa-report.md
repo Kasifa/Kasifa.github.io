@@ -1,6 +1,6 @@
 # R0.73B figure QA report
 
-- manifest stage: draft
+- manifest stage: formal
 - explicit visual inspection: yes
 - final surface: 178 mm by 150 mm, 600-dpi PNG, vector PDF/SVG
 - PDF preview: independently rasterized with pdftoppm at 300 dpi

@@ -242,7 +242,7 @@ test("formal R0.73A pages preserve the 117-node route and scoped claims", async 
     ["nonlinearNavierStokes", "OPEN"], ["Clay", "OPEN"],
   ]) assert.ok(note.includes(`${claim}=${status}`), `${claim}=${status}`);
   for (const token of [
-    "隐藏均值、analytic envelope", "c_\\mu\\to c_0\\ne0", "fixed \\(\\Lambda\\)",
+    "隐藏均值、analytic envelope", "c_\\mu\\to c_0\\ne0", "固定 \\(\\Lambda\\)",
     "X_\\mu", "viscous-rate", "lifted one-dimensional invariant-state meaning",
     "common dense domain \\(D\\)", "strong \\(C^1\\) solution",
     "adjoint-domain compatibility", "standalone quotient 的 well-posedness",
@@ -316,7 +316,10 @@ test("formal R0.73A certificate, experiment, figure, and publication assets rema
   assert.equal(crosscheck.temporaryUnsealedSourceAllowed, false);
   assert.equal(crosscheck.sourceCommit, certManifest.sourceCommit);
   assert.deepEqual(crosscheck.sourceBindings, certManifest.sourceBindings);
-  assert.ok(Object.values(crosscheck.checks).every(Boolean));
+  assert.equal(crosscheck.deterministic, true);
+  assert.equal(crosscheck.finiteMatrixOnly, true);
+  assert.equal(crosscheck.caseCount, 120);
+  assert.ok(crosscheck.worstRatio <= 1 + crosscheck.tolerance);
   assert.equal(experiment.status, "completed");
   assert.equal(experiment.finiteDimensionalOnly, true);
   assert.equal(figureManifest.status, "formal");

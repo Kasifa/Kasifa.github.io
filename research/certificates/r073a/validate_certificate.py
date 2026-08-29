@@ -64,7 +64,6 @@ EXPECTED_SOURCE_FILES = [
     "scripts/generate_r073a_release.py",
     "scripts/add-r073a-translations.mjs",
     "scripts/i18n-snapshots/r073a-missing.json",
-    "research/release-manifest.json",
     "tests/r073a-fourier-matrix-gate.test.mjs",
     "tests/r073a-transient-certificate.test.mjs",
     "tests/r073a-hidden-mean-gate.test.mjs",

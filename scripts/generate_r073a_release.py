@@ -235,7 +235,7 @@ def validate_inputs() -> None:
     expected_bound_sources = {
         "research/r073a_report-source.md", "research/r073a_problem_freeze.md", "research/r073a_literature_audit.md", "research/r073a_gap_matrix.md",
         "research/r073a_transient_proof.md", "research/r073a_projection_derivation_agent.md", "research/r073a_projection_independent_audit.md", "research/r073a_independent_analytic_audit.md", "research/r073a_spectral_audit_agent.md",
-        "research/release-manifest.json", "research/certificates/r073a/generate_certificate.py", "research/certificates/r073a/independent_recompute.py", "research/certificates/r073a/validate_certificate.py",
+        "research/certificates/r073a/generate_certificate.py", "research/certificates/r073a/independent_recompute.py", "research/certificates/r073a/validate_certificate.py",
         "experiments/r073a/frozen_os_spectral_audit.py", "experiments/r073a/validate_frozen_os_spectral_audit.py", "experiments/r073a/manifest.json", "experiments/r073a/validation.json",
         "scripts/generate_r073a_release.py", "scripts/add-r073a-translations.mjs", "scripts/i18n-snapshots/r073a-missing.json",
         "tests/r073a-hidden-mean-gate.test.mjs", "tests/r073a-release.test.mjs", "tests/r073a-deterministic-certificate-source.test.mjs", "tests/r073a-hidden-mean-transient-spectral-figure-source.test.mjs",

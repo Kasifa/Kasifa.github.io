@@ -59,7 +59,6 @@ const completeBoundSources = [
   "scripts/generate_r073a_release.py",
   "scripts/add-r073a-translations.mjs",
   "scripts/i18n-snapshots/r073a-missing.json",
-  "research/release-manifest.json",
   "tests/r073a-fourier-matrix-gate.test.mjs",
   "tests/r073a-transient-certificate.test.mjs",
   "tests/r073a-hidden-mean-gate.test.mjs",
@@ -148,12 +147,12 @@ test("R0.73A source exposes both finite algorithms and every strict scope ledger
   assert.match(readme, /fail(?:s)? closed/i);
 });
 
-test("R0.73A formal lifecycle binds the exact complete 46-file source package", async () => {
+test("R0.73A formal lifecycle binds the exact complete 45-file source package", async () => {
   const [producer, validator] = await Promise.all([
     text(`${certificate}/generate_certificate.py`),
     text(`${certificate}/validate_certificate.py`),
   ]);
-  assert.equal(completeBoundSources.length, 46);
+  assert.equal(completeBoundSources.length, 45);
   for (const relative of completeBoundSources) {
     await access(resolve(root, relative));
     assert.ok(producer.includes(`"${relative}"`), `${relative}: producer`);

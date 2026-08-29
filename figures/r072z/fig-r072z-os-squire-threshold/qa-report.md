@@ -1,0 +1,51 @@
+# R0.72Z figure QA
+
+- manifest stage: formal
+- explicit visual inspection: yes
+- final-size, grayscale, and independent PDF previews generated: yes
+- signed threshold and high-mode sequence recomputed: yes
+- low-mode, tangent, orientation, and history formulas recomputed: yes
+- simulation or fitted exponent used: no
+- two chromatic roots plus redundant non-color encodings: yes
+- visible proof and open-claim boundaries present: yes
+- PDF vector, embedded-font, one-page, and page-size checks: see validation.json
+- low-gap OS, physical direct sum, nonlinear, and Clay claims remain open: yes
+
+## Machine checks
+
+- rowCount: PASS
+- panelARecordCount: PASS
+- panelBRecordCount: PASS
+- panelCRecordCount: PASS
+- signedEnvelopeRecomputed: PASS
+- highModeSequenceRecomputed: PASS
+- highModeLimitApproached: PASS
+- lowModeGrowthRecomputed: PASS
+- eachGrowthSeriesCrossesZero: PASS
+- tangentRatioRecomputed: PASS
+- tangentApproachesOneAtSmallAlpha: PASS
+- orientationRecomputedAndBounded: PASS
+- historyMultipliersRecomputed: PASS
+- noFittedExponents: PASS
+- falseBoundaryVisible: PASS
+- tangentBoundaryVisible: PASS
+- lambdaPaymentVisible: PASS
+- openBoundaryVisible: PASS
+- noSimulationBoundaryVisible: PASS
+- hardTwoChromaticRootCap: PASS
+- redundantEncoding: PASS
+- threePanels: PASS
+- vectorSvg: PASS
+- vectorPdf: PASS
+- pngAt600Dpi: PASS
+- finalSizePreviewGenerated: PASS
+- grayscalePreviewGenerated: PASS
+- independentPdfPreviewGenerated: PASS
+- pdfOnePage: PASS
+- pdfPhysicalDimensions: PASS
+- pdfEmbeddedFonts: PASS
+- pdfNoRasterImages: PASS
+- svgPhysicalDimensions: PASS
+- pngPhysicalDimensions: PASS
+- pngDpiMetadata: PASS
+- outerCornersWhite: PASS

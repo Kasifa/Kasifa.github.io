@@ -107,7 +107,7 @@ test("R0.73C release source pins v1.43 counters, boundaries, visible latest stat
   assert.match(generator, /validate_certificate\.py"\), "--require-formal"/);
   assert.match(generator, /"--source-commit", source_commit/);
   assert.match(generator, /"--certificate-commit", certificate_commit/);
-  assert.ok(generator.includes('href="#r073c">查看首页完整 R0.73C 卡片'));
+  assert.ok(generator.includes('href="/notes/r0-73c.pdf">阅读最新 R0.73C 研究笔记 →'));
   assert.match(translationScript, /R073C_RELEASE_ROOT/);
   assert.match(translationScript, /i18n-en\.js\?v=1\.43/);
   assert.match(translationScript, /i18n-snapshots\/r073c-missing\.json/);

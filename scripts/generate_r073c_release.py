@@ -119,7 +119,7 @@ HOME_LATEST_SPOTLIGHT = r'''    <section class="route-overview latest-release-sp
       <div class="route-overview-inner">
         <header class="route-map-header">
           <div><p class="eyebrow">LATEST RELEASE · R0.73C · 2026-08-30</p><h2 class="route-map-title" id="latest-release-title">三次中性谱与无穷维冻结 Rayleigh 不稳定</h2><p class="route-map-intro">C3 exact neutral spectrum 与 C4 infinite-dimensional frozen Rayleigh instability 已闭合。C5 viscous fast-time transfer 仍为 OPEN，C6 super-polynomial complete-row no-go 只为 CONDITIONAL；Clay 问题仍未解决。</p></div>
-          <nav class="route-map-actions" aria-label="最新发布快捷入口"><a class="route-map-latest" href="#r073c">查看首页完整 R0.73C 卡片</a><a href="/recap-r0-61-r0-73c.html">119 节累计回顾</a><a href="/notes/">179 篇研究笔记总索引</a><a href="/notes/r0-73c.pdf">下载同步研究笔记 PDF</a></nav>
+          <nav class="route-map-actions" aria-label="最新发布快捷入口"><a class="route-map-latest" href="/notes/r0-73c.pdf">阅读最新 R0.73C 研究笔记 →</a><a href="/recap-r0-61-r0-73c.html">119 节累计回顾</a><a href="/notes/">179 篇研究笔记总索引</a><a href="#r073c">查看首页完整 R0.73C 卡片</a></nav>
         </header>
         <div class="route-legend" aria-label="最新发布计数"><span><i class="route-legend-mark kept" aria-hidden="true"></i>R0.70A–R0.73C · 81 节已公开</span><span><i class="route-legend-mark kept" aria-hidden="true"></i>57 节完整封存</span><span><i class="route-legend-mark current" aria-hidden="true"></i>当前端点 R0.73C</span></div>
       </div>

@@ -22,11 +22,13 @@ family has the structure
 \]
 
 For every fixed \(b>0\) whose boundary line avoids the inviscid spectrum,
-all spectrum in \(\operatorname{Re}z\ge b\) is captured by finitely many
-continued inviscid clusters.  There is no additional viscous spectrum in that
-fixed half-plane, the total Riesz projection and finite spectral block converge
-in operator norm, and the extended complementary resolvent is uniformly
-bounded.
+there exists \(\varepsilon_b>0\) such that, for every
+\(0<\varepsilon<\varepsilon_b\), all spectrum in
+\(\operatorname{Re}z\ge b\) is captured by finitely many continued inviscid
+clusters.  There is no additional viscous spectrum in that fixed half-plane,
+the total Riesz projection and finite spectral block converge in operator norm,
+and the extended complementary resolvent is uniformly bounded.  No constant
+is uniform as \(b\downarrow0\).
 
 Let
 
@@ -653,11 +655,12 @@ while the finite complement still contains
  \tag{11.2}
 \]
 
-Thus the rank-one finite complement is not stable.  This is why the analytic
-theorem selects the complete top cluster and proves a relative, not absolute,
-dichotomy.
+Thus the finite complement obtained after removing the rank-one leading
+cluster is not stable.  This is why the analytic theorem selects the complete
+top cluster and proves a relative, not absolute, dichotomy.
 
-For the same largest row, the sampled complement-resolvent peaks are:
+For the same largest-cutoff, smallest-viscosity case, the sampled
+complement-resolvent peaks are:
 
 | \(\operatorname{Re}z\) | maximum sampled/refined norm | peak \(|\operatorname{Im}z|\) |
 |---:|---:|---:|
@@ -686,9 +689,11 @@ The fixed inviscid complement illustrates long-time leakage:
 
 All 15 primary rows and the independently coded contour, inverse-resolvent,
 and semigroup recomputations pass.  The maximum primary algebraic residual is
-\(6.2431\times10^{-14}\); the largest independent resolvent and semigroup
-relative errors are below \(1.71\times10^{-13}\) and
-\(2.38\times10^{-13}\), respectively.
+\(6.2430\times10^{-14}\).  The largest independent resolvent relative error
+is below \(1.71\times10^{-13}\); the intrinsic and moving-complement
+semigroup sentinels are reproduced within \(2.38\times10^{-13}\), while the
+fixed-complement endpoint comparisons are reproduced within
+\(1.74\times10^{-11}\).
 
 These are IEEE-754 binary64 finite observations.  They do not prove an
 additional continuum eigenpair, a continuum resolvent bound, a continuous-
@@ -713,7 +718,8 @@ The primary-source audit records the following distinctions.
   lower bound.
 - Grenier--Nguyen obtain genuine uniform semigroup estimates in a different
   no-slip half-space setting and different norms.
-- Kato--Schmid adiabatic theory and the Latushkin--Schnaubelt/Popescu
+- Kato's and Schmid's adiabatic theories and the
+  Latushkin--Schnaubelt/Popescu
   dichotomy literature require regularity, domain, gap, or pre-existing
   evolution-family hypotheses that are not imported here.
 
@@ -735,8 +741,8 @@ every fixed positive half-plane is spectrally complete
 + every fixed-degree polynomial row upper bound is excluded.
 ```
 
-This is a substantial linear-instability result for one exact row.  Its
-direct value for the Clay problem remains limited because no nonlinear
+This is a linear-instability theorem for one exact row.  Its direct value for
+the Clay problem remains limited because no nonlinear
 frequency interaction, energy closure, continuation criterion, or blow-up
 construction has been obtained.
 

@@ -3,6 +3,17 @@
   "caption": {
     "english": "caption.md"
   },
+  "certificateBinding": {
+    "commit": "5f9c21f5443e5d5b7350a6d71df8ba417890291c",
+    "figureLedgerField": "journalFigure",
+    "figureStatusAtCertificateRun": "validated",
+    "formalFigureFieldPresent": false,
+    "formalStatusAttestedByCertificate": false,
+    "outputsBoundBySha256": true,
+    "path": "research/certificates/r073f/certificate.json",
+    "validationStatusAtCertificateRun": "passed",
+    "visualQaStatusAtCertificateRun": "passed"
+  },
   "claimBoundary": {
     "clayProblemSolved": false,
     "counterexamplesDescribeExactFourierRow": false,
@@ -16,12 +27,15 @@
     "sampledTimeIsContinuousTimeBound": false
   },
   "computation": {
-    "command": "python3 plot.py --deps /tmp/r073c-deps; python3 validate.py --deps /tmp/r073c-deps --qa-status passed --qa-note <note>",
     "configuration": "config.json",
     "diagnosticOnly": true,
     "finiteDimensionalOnly": true,
+    "formalCommand": "python3 validate.py --source-commit <S> --figure-package-commit <F> --certificate-commit <C>",
     "kind": "data-analysis",
+    "metadataOnlySeal": true,
+    "originalGenerationCommand": "python3 plot.py --deps /tmp/r073c-deps; python3 validate.py --deps /tmp/r073c-deps --qa-status passed --qa-note <note>",
     "precision": "IEEE-754 binary64 finite diagnostics; exact formulas in panels C-D",
+    "scientificComputationRerun": false,
     "solver": "CSV/JSON ingestion and deterministic Matplotlib rendering",
     "wallTimeSeconds": 26.071998082916252
   },
@@ -33,6 +47,11 @@
     "operatingSystem": "Darwin 25.6.0 arm64",
     "processes": 1,
     "threadsPerProcess": 4
+  },
+  "contract": {
+    "bytes": 736,
+    "path": "figures/r073f/fig-r073f-fixed-window-roughness/contract.json",
+    "sha256": "6752e06c532857eb4914a5fafca341b93bee9965c57977315f80cab90101a480"
   },
   "createdAt": "2026-08-30T00:00:00+08:00",
   "data": [
@@ -93,14 +112,19 @@
       "sha256": "a17b79d5bc576845389e8706e652a13a2f3ea83c72c255f15734c8509892631f"
     },
     {
-      "bytes": 753,
+      "bytes": 587,
       "path": "figures/r073f/fig-r073f-fixed-window-roughness/command.txt",
-      "sha256": "4247dd74177be6523a7dee399c8febe08e8dea7a96eb6abbdb5857c8e8134df7"
+      "sha256": "e8c20494e144358614c0555c9ebd06e0f855210041e2bfae1e5fe413b82cfe4b"
     },
     {
       "bytes": 740,
       "path": "figures/r073f/fig-r073f-fixed-window-roughness/config.json",
       "sha256": "8ffb95a4121ef30ec93add5f6c15d582c539c1098bb746f45e48665b47b5f10a"
+    },
+    {
+      "bytes": 736,
+      "path": "figures/r073f/fig-r073f-fixed-window-roughness/contract.json",
+      "sha256": "6752e06c532857eb4914a5fafca341b93bee9965c57977315f80cab90101a480"
     },
     {
       "bytes": 10688,
@@ -118,9 +142,9 @@
       "sha256": "91a23ba1bd7bdb0202898b1049b4f61f375fd03303551cd2fffe943dfb2db07e"
     },
     {
-      "bytes": 13606,
+      "bytes": 25989,
       "path": "figures/r073f/fig-r073f-fixed-window-roughness/validate.py",
-      "sha256": "0dbc186962fc0b07b772f37ad146861e4edc3bcca9d1f0d1439983d8b1d61157"
+      "sha256": "05259a13add4e21337f2fb8100959318246c3311a0ed218ec3757a0b19e88073"
     },
     {
       "bytes": 3820,
@@ -128,9 +152,9 @@
       "sha256": "220f84002795a1e265518e447a90c46ad6d9c3cf8af304b4804d2ef97a0f0745"
     },
     {
-      "bytes": 1104,
+      "bytes": 1992,
       "path": "figures/r073f/fig-r073f-fixed-window-roughness/validation.json",
-      "sha256": "6cb904f67172e1087b5e117279d850d2c38de3d9146d48183039360799e05b5c"
+      "sha256": "c454ad8cc4641fa44be34d2943edb1c11ccbc31a8fd747181688b99e4770bf7a"
     },
     {
       "bytes": 476,
@@ -169,23 +193,115 @@
     }
   ],
   "git": {
-    "contentAddressedUnsealed": true,
-    "generationBaseCommit": "5edb1702314feca3e9d47a186b30fc53079cd67a",
-    "reasonUnsealed": "new R0.73F sources are not yet committed; do not claim a clean certified Git run",
+    "certificateAttestsFormalStatus": false,
+    "certificateBindsFigureOutputsBySha256": true,
+    "certificateCommit": "5f9c21f5443e5d5b7350a6d71df8ba417890291c",
+    "certificateCommitMeaning": "certificate package C binds the journalFigure outputs by SHA-256 and records passed validation and visual QA; it does not contain a formalFigure field or attest this later metadata-only status change",
+    "certificateFigureLedger": "journalFigure",
+    "certificateFormalFigureFieldPresent": false,
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtCertifiedRunMeaning": "certified provenance is read only from immutable S, F, and C Git blobs",
+    "dirtyAtFigureGeneration": true,
+    "figurePackageCommit": "3a34494445de938c5cf01862b1db258e6a6d5ecf",
+    "figurePackageCommitMeaning": "original validated figure package F; all scientific, figure, and QA blobs remain byte-identical",
+    "figureSourcesBoundBySha256": true,
+    "formalSealKind": "metadata-only",
+    "originalFigureGenerationBaseCommit": "5edb1702314feca3e9d47a186b30fc53079cd67a",
     "repository": "Kasifa/Kasifa.github.io",
-    "sourceCommit": "5edb1702314feca3e9d47a186b30fc53079cd67a"
+    "sourceCommit": "5edb1702314feca3e9d47a186b30fc53079cd67a",
+    "sourceCommitMeaning": "clean analytic sources frozen at S and named by the C certificate"
   },
+  "inputs": [
+    {
+      "bytes": 3173,
+      "path": "experiments/r073f/summary.json",
+      "sha256": "1d182a0b194736860c3e04dde19a0a84db9dcaed68afc7af32f849f158a10e48"
+    },
+    {
+      "bytes": 4401,
+      "path": "experiments/r073f/independent_validation.json",
+      "sha256": "d85fa0a18108e93b661591a70cec7713b4ac54ff9890e032f5a4237930056655"
+    },
+    {
+      "bytes": 34646,
+      "path": "experiments/r073f/moving_gain_rows.csv",
+      "sha256": "391850f13b07dbc6066cb935a749da498e285968d0921da67ced0bba094d1bad"
+    },
+    {
+      "bytes": 1559,
+      "path": "experiments/r073f/convergence_rows.csv",
+      "sha256": "0e9209ff0c4063459f70c9c897ed072a0c8c3a7de4d09a8c208a072a9c62edf8"
+    },
+    {
+      "bytes": 624,
+      "path": "experiments/r073f/counterexample_nonnormal_rows.csv",
+      "sha256": "aff9b0737e582616d05ebd2603fe499238a1bf1561b8a93fd6dd4be083837167"
+    },
+    {
+      "bytes": 115305,
+      "path": "experiments/r073f/counterexample_rotating_rows.csv",
+      "sha256": "1f418452a63bffba4d9b14053744558598f5580257de2b3246c286e7dcd7896d"
+    }
+  ],
   "inventoryPolicy": {
     "cacheDirectoriesForbidden": true,
     "manifestFilesExcludes": [
       "manifest.json",
       "SHA256SUMS"
     ],
+    "originalInventoryExtendedOnlyBy": [
+      "contract.json"
+    ],
     "scope": "all regular files directly inside the figure package",
     "sha256LedgerExcludes": [
       "SHA256SUMS"
     ]
   },
+  "manifestMigration": {
+    "addedMetadataFiles": [
+      "contract.json"
+    ],
+    "certificatePayloadChanged": false,
+    "changedMetadataFiles": [
+      "SHA256SUMS",
+      "command.txt",
+      "manifest.json",
+      "validate.py",
+      "validation.json"
+    ],
+    "currentStatus": "formal",
+    "formalOutputsChanged": false,
+    "kind": "metadata-schema-only",
+    "plotOrResultsChanged": false,
+    "previousManifestCommit": "3a34494445de938c5cf01862b1db258e6a6d5ecf",
+    "previousManifestSha256": "7f0296900cd6a65c01206d7344a7e6db9f869deeec5f42dfeb95ed526cd64366",
+    "previousStatus": "validated",
+    "qaArtifactsChanged": false,
+    "scientificInputsChanged": false,
+    "sealKind": "metadata-only"
+  },
+  "outputs": [
+    {
+      "bytes": 39790,
+      "path": "figure.pdf",
+      "sha256": "6d0c041e9bceb0148368b74b756b9e778a4fec18456f2995b5bcbb68157de005"
+    },
+    {
+      "bytes": 110532,
+      "path": "figure.svg",
+      "sha256": "c11e3c12ddd2271b75e44f32218ca8714b39813e38a20203ca4aa69506ab1476"
+    },
+    {
+      "bytes": 755515,
+      "dpi": 600,
+      "path": "figure.png",
+      "pixels": [
+        4204,
+        3118
+      ],
+      "sha256": "5d4c4f4361f79107530841bc97b039edf61cf0fb571468d85bf56e621f6483ff"
+    }
+  ],
   "qa": {
     "dataCrossChecked": true,
     "finalSize": "qa-final-size.png",
@@ -200,6 +316,7 @@
     "status": "passed",
     "visualInspectionExplicit": true
   },
+  "release": "R0.73F",
   "schemaVersion": "r073f-figure-manifest-v1",
   "sourceBindings": [
     {
@@ -271,6 +388,11 @@
       "sha256": "1f418452a63bffba4d9b14053744558598f5580257de2b3246c286e7dcd7896d"
     }
   ],
-  "status": "validated",
-  "supportedClaim": "The declared N=96 binary64 endpoint gains and finite top-block conorms are reproducible under step halving and an independent explicit-Fourier construction; two exact examples show why spectral edge data alone do not control a uniform prefactor or transported direction. No continuum claim follows."
+  "status": "formal",
+  "supportedClaim": "The declared N=96 binary64 endpoint gains and finite top-block conorms are reproducible under step halving and an independent explicit-Fourier construction; two exact examples show why spectral edge data alone do not control a uniform prefactor or transported direction. No continuum claim follows.",
+  "validation": {
+    "bytes": 1992,
+    "path": "figures/r073f/fig-r073f-fixed-window-roughness/validation.json",
+    "sha256": "c454ad8cc4641fa44be34d2943edb1c11ccbc31a8fd747181688b99e4770bf7a"
+  }
 }

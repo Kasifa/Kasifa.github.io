@@ -1,8 +1,7 @@
-From the repository root, using the bundled scientific environment:
+From the repository root, run the metadata-only formal seal. This command does
+not invoke plot.py or rewrite scientific, figure, or QA artifacts.
 
-env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073f/fig-r073f-fixed-window-roughness/plot.py --deps /tmp/r073c-deps
+R073F_DEPS_DIR=/tmp/r073c-deps
+PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
 
-PATH=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:$PATH /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073f/fig-r073f-fixed-window-roughness/validate.py --deps /tmp/r073c-deps --qa-status pending
-
-After explicit inspection of all QA rasters, rerun the second command with
-`--qa-status passed --qa-note "final-size, grayscale, and PDF raster inspected"`.
+env PYTHONPATH="$R073F_DEPS_DIR" "$PYTHON" figures/r073f/fig-r073f-fixed-window-roughness/validate.py --deps "$R073F_DEPS_DIR" --source-commit 5edb1702314feca3e9d47a186b30fc53079cd67a --figure-package-commit 3a34494445de938c5cf01862b1db258e6a6d5ecf --certificate-commit 5f9c21f5443e5d5b7350a6d71df8ba417890291c

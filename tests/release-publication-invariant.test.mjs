@@ -6,10 +6,43 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
+import {
+  extractTranslatableStrings,
+  listSiteHtmlFiles,
+} from "../scripts/i18n-lib.mjs";
+
 const root = new URL("../", import.meta.url);
 const publicRoot = new URL("../public/", import.meta.url);
 const notesRoot = new URL("notes/", publicRoot);
 const execFileAsync = promisify(execFile);
+
+function isPublicNoteHtml(file) {
+  return /^r0-[0-9a-z]+\.html$/.test(file);
+}
+
+function naturalNoteParts(file) {
+  return file
+    .replace(/^r0-/, "")
+    .replace(/\.(?:html|pdf)$/, "")
+    .match(/\d+|[a-z]+/g)
+    .map((part) => (/^\d+$/.test(part) ? Number(part) : part));
+}
+
+function compareNaturalNotes(left, right) {
+  const leftParts = naturalNoteParts(left);
+  const rightParts = naturalNoteParts(right);
+  const length = Math.max(leftParts.length, rightParts.length);
+  for (let index = 0; index < length; index += 1) {
+    if (leftParts[index] === undefined) return -1;
+    if (rightParts[index] === undefined) return 1;
+    if (leftParts[index] === rightParts[index]) continue;
+    if (typeof leftParts[index] === "number") {
+      return leftParts[index] - rightParts[index];
+    }
+    return leftParts[index].localeCompare(rightParts[index], "en");
+  }
+  return 0;
+}
 
 function releaseToSlug(release) {
   const match = release.match(/^r0(\d{2})([a-z])$/);
@@ -257,6 +290,118 @@ test("keeps every synchronized public note PDF discoverable from its note", asyn
   }
 });
 
+test("keeps the complete research-note index deterministic, latest-first, and count-safe", async () => {
+  const [manifest, noteFiles, index, generatorResult, i18nFiles] = await Promise.all([
+    releaseManifest(),
+    readdir(notesRoot),
+    readFile(new URL("index.html", notesRoot), "utf8"),
+    execFileAsync(
+      process.env.CODEX_PYTHON || "python3",
+      ["scripts/generate_note_index.py", "--check"],
+      { cwd: fileURLToPath(root) },
+    ),
+    listSiteHtmlFiles(fileURLToPath(publicRoot)),
+  ]);
+  const htmlNotes = noteFiles
+    .filter(isPublicNoteHtml)
+    .sort(compareNaturalNotes)
+    .reverse();
+  const pdfNotes = noteFiles
+    .filter((file) => /^r0-[0-9a-z]+\.pdf$/.test(file))
+    .sort(compareNaturalNotes)
+    .reverse();
+  const latestCode = releaseToPublicCode(manifest.latestCompletedRelease);
+  const latestHtml = releaseToSlug(manifest.latestCompletedRelease) + ".html";
+  const htmlOnlyNotes = htmlNotes.length - pdfNotes.length;
+  const summary = JSON.parse(generatorResult.stdout);
+  assert.deepEqual(summary, {
+    htmlNotes: htmlNotes.length,
+    htmlOnlyNotes,
+    latest: latestCode,
+    oldest: "R0.1",
+    output: "public/notes/index.html",
+    pdfNotes: pdfNotes.length,
+    schemaVersion: "research-note-index-v1",
+    status: "current",
+  });
+
+  assert.ok(htmlNotes.length > 60);
+  assert.ok(pdfNotes.length > 0);
+  assert.ok(htmlOnlyNotes >= 0);
+  assert.equal(htmlNotes.length, manifest.publicHtmlNoteCount);
+  assert.equal(htmlNotes[0], latestHtml);
+  assert.equal(htmlNotes.at(-1), "r0-1.html");
+
+  const entries = [
+    ...index.matchAll(
+      /<li class="note-entry" data-note="([^"]+)">([\s\S]*?)<\/li>/g,
+    ),
+  ];
+  const indexedSlugs = entries.map((match) => match[1]);
+  const expectedSlugs = htmlNotes.map((file) => file.replace(/\.html$/, ""));
+  assert.deepEqual(indexedSlugs, expectedSlugs);
+  assert.equal(new Set(indexedSlugs).size, htmlNotes.length);
+
+  const htmlLinks = [
+    ...index.matchAll(/href="\/notes\/(r0-[0-9a-z]+)\.html"/g),
+  ].map((match) => match[1]);
+  const pdfLinks = [
+    ...index.matchAll(/href="\/notes\/(r0-[0-9a-z]+)\.pdf"/g),
+  ].map((match) => match[1]);
+  const missingPdfMarkers = [
+    ...index.matchAll(/data-pdf-missing="(r0-[0-9a-z]+)"/g),
+  ].map((match) => match[1]);
+  assert.deepEqual(htmlLinks, expectedSlugs, "one latest-first HTML link per note");
+  assert.deepEqual(
+    pdfLinks,
+    pdfNotes.map((file) => file.replace(/\.pdf$/, "")),
+    "only existing synchronized PDFs may be linked",
+  );
+  assert.equal(missingPdfMarkers.length, htmlOnlyNotes);
+  assert.equal(new Set(missingPdfMarkers).size, htmlOnlyNotes);
+
+  const availablePdfs = new Set(pdfLinks);
+  for (const [, slug, body] of entries) {
+    assert.ok(
+      body.includes(`href="/notes/${slug}.html"`),
+      `${slug}: HTML link`,
+    );
+    if (availablePdfs.has(slug)) {
+      assert.ok(body.includes(`href="/notes/${slug}.pdf"`), `${slug}: PDF link`);
+      assert.equal(body.includes(`data-pdf-missing="${slug}"`), false);
+    } else {
+      assert.ok(
+        body.includes(`data-pdf-missing="${slug}"`),
+        `${slug}: explicit historical HTML-only marker`,
+      );
+      assert.equal(body.includes(`href="/notes/${slug}.pdf"`), false);
+    }
+  }
+
+  assert.ok(index.includes("索引页本身不计入研究笔记总数"));
+  assert.ok(index.includes(`${htmlOnlyNotes} 篇早期笔记尚无同名 PDF`));
+  assert.ok(index.includes("PDF 未生成 · 历史笔记"));
+  assert.ok(index.includes("@media (prefers-color-scheme: dark)"));
+  assert.ok(index.includes("color-scheme: light dark"));
+  assert.ok(index.includes('href="/bilingual.css"'));
+  assert.ok(index.includes('src="/i18n-en.js?v='));
+  assert.ok(index.includes('src="/bilingual.js"'));
+  assert.ok(
+    i18nFiles.includes(fileURLToPath(new URL("index.html", notesRoot))),
+    "the bilingual source collector must include the note index",
+  );
+  const indexTranslationKeys = new Set(extractTranslatableStrings(index));
+  const versionSpecificUiKeys = [...indexTranslationKeys].filter((key) =>
+    /^(?:R0\.\S+ 文件|阅读 R0\.|下载 R0\.|\d+ 篇$)/.test(key),
+  );
+  assert.deepEqual(
+    versionSpecificUiKeys,
+    [],
+    "version-specific UI labels must not create hundreds of translation keys",
+  );
+  assert.doesNotMatch(index, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);
+});
+
 test("publishes every research release from R0.70A onward", async () => {
   const [releases, home, literature, noteFiles] = await Promise.all([
     publishedReleaseIds(),
@@ -349,7 +494,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     readdir(notesRoot),
   ]);
 
-  const htmlNotes = noteFiles.filter((file) => file.endsWith(".html"));
+  const htmlNotes = noteFiles.filter(isPublicNoteHtml);
   const latestRelease = releases.at(-1);
   const latestSlug = releaseToSlug(latestRelease);
   const latestCode = releaseToPublicCode(latestRelease);

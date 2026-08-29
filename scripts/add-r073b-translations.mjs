@@ -15,6 +15,7 @@ const snapshotPath = resolve(root, "scripts/i18n-snapshots/r073b-missing.json");
 const checkOnly = process.argv.includes("--check-only");
 const activePages = [
   "literature-review.html",
+  "notes/index.html",
   "notes/r0-73b.html",
   "recap-r0-61-r0-73b.html",
   "research-review.html",
@@ -22,8 +23,8 @@ const activePages = [
 
 for (const relative of activePages) {
   const html = await readFile(resolve(publicDirectory, relative), "utf8");
-  if (!html.includes('/i18n-en.js?v=1.41')) {
-    throw new Error(relative + ": expected i18n cache version v1.41");
+  if (!html.includes('/i18n-en.js?v=1.42')) {
+    throw new Error(relative + ": expected i18n cache version v1.42");
   }
 }
 

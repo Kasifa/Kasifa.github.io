@@ -11,6 +11,7 @@ const defaultRoot = resolve(scriptDirectory, "..");
 export const GLOBAL_INVARIANT =
   "tests/release-publication-invariant.test.mjs";
 export const RETAINED_GLOBAL_TESTS = [
+  "tests/site-route-current-boundary.test.mjs",
   "tests/internal-public-links.test.mjs",
   "tests/bilingual-content.test.mjs",
   "tests/release-publication-gate-runner.test.mjs",

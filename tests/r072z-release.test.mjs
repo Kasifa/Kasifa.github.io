@@ -269,6 +269,8 @@ test("formal R0.72Z pages preserve scoped boundaries and the cumulative route", 
   assert.equal(links.at(-1), "r0-72z");
   assert.equal([...recap.matchAll(/<article class="phase">/g)].length, 35);
   assert.match(recap, /R0\.61–R0\.72Z/);
+  assert.match(recap, /data-current-route="R0\.69P–R0\.72Z"/);
+  assert.doesNotMatch(recap, /data-current-route="R0\.69P–R0\.72Y"/);
   assert.match(recap, /78 节已公开；54 节完整封存；24 节旧档待回补/);
   assert.match(recap, /lowGapOSTransientA2Propagator/);
   assert.match(home, /data-site-version="1\.39"/);

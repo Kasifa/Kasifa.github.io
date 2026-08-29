@@ -279,6 +279,12 @@ def build_note() -> None:
 def build_recap() -> None:
     html = (PUBLIC / "recap-r0-61-r0-72y.html").read_text(encoding="utf-8")
     html = required(html, "/i18n-en.js?v=1.38", "/i18n-en.js?v=1.39", "Z recap i18n")
+    html = required(
+        html,
+        'data-current-route="R0.69P–R0.72Y"',
+        'data-current-route="R0.69P–R0.72Z"',
+        "Z recap current route",
+    )
     for label, pattern, value in (
         ("description", r'<meta name="description" content=".*?">', '<meta name="description" content="R0.60 之后的研究回顾：完整覆盖 R0.61 到 R0.72Z 的 116 个节点；最新一节闭合 high-gap OS graph 与 orientation-paid Squire history。">'),
         ("og title", r'<meta property="og:title" content=".*?">', '<meta property="og:title" content="R0.61–R0.72Z｜R0.60 之后的研究回顾">'),

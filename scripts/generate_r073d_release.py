@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -288,9 +289,9 @@ def validate_inputs() -> None:
         ["git", "show", certificate_commit + ":research/certificates/r073d/certificate.json"],
         cwd=ROOT, check=True, capture_output=True,
     ).stdout
-    if digest(ROOT / "research/certificates/r073d/certificate.json") != __import__(
-        "hashlib"
-    ).sha256(committed_certificate).hexdigest():
+    if digest(ROOT / "research/certificates/r073d/certificate.json") != hashlib.sha256(
+        committed_certificate
+    ).hexdigest():
         raise RuntimeError("certificate commit does not contain the bound certificate")
     subprocess.run(
         [
@@ -429,7 +430,7 @@ def build_recap() -> None:
     )
     html = section(html, r'        <section id="value">.*?</section>', r'''        <section id="value"><div class="section-no">04 / 目前的判断</div><h2>冻结不稳定与静态黏性持续都已成为定理；全局动力学仍缺补空间控制</h2><p>不能把 120 个节点或 82 个公开版本解释成 Clay 完成比例。R0.73D 的严格增量是 fixed-cluster operator theorem，不是有限矩阵外推；一般 abstract persistence 已有 Shvydkoy--Friedlander 先例。本节对后续快时间路线有必要价值，但仍只覆盖一条冻结二维线性行。</p></section>''', "D recap value")
     html = section(html, r'        <section id="next">.*?</section>', r'''        <section id="next"><div class="section-no">05 / 下一步</div><h2>R0.73E 检查 complement resolvent、semigroup dichotomy 与 fixed-projection transfer</h2><p>先在固定右半平面带中排除围道外谱污染并控制 complement semigroup，再检查缓慢 profile drift 的 Volterra 传递。</p></section>''', "D recap next")
-    html = section(html, r'        <section id="claims">.*?</section>', r'''        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>公开、完整封存与问题解决继续分开计数</h2><p>R0.70A–R0.73D 的 82 节已公开；58 节完整封存；24 节旧档待回补。</p><p>staticVanishingViscosityPersistence、fixedClusterRieszProjectionNormConvergence、fixedClusterAlgebraicMultiplicityPreserved 与 fixedClusterEigenvaluesConverge 为 CLOSED。inviscidEigenvalueSimple、quantitativeEigenvalueRate、globalRightHalfPlaneNoPollution、uniformComplementaryDichotomy、movingProfileUniformContour、logFastTimeTransfer、completeOSSquireA2DirectSum、nonlinearNavierStokes 与 Clay 为 OPEN。</p></section>''', "D recap claims")
+    html = section(html, r'        <section id="claims">.*?</section>', r'''        <section id="claims"><div class="section-no">06 / 说明边界</div><h2>公开、完整封存与问题解决继续分开计数</h2><p>R0.70A–R0.73D 的 82 节已公开；58 节完整封存；24 节旧档待回补。</p><p>staticVanishingViscosityPersistence、fixedContourResolventUniform、fixedClusterRieszProjectionNormConvergence、fixedClusterAlgebraicMultiplicityPreserved 与 fixedClusterEigenvaluesConverge 为 CLOSED。inviscidRootUnique、inviscidEigenvalueSimple、explicitContourRadius、explicitViscosityThreshold、quantitativeEigenvalueRate、globalRightHalfPlaneNoPollution、uniformComplementaryDichotomy、movingProfileUniformContour、graphDomainKatoTransport、logFastTimeTransfer、completeOSSquireA2DirectSum、nonlinearNavierStokes 与 Clay 为 OPEN；superPolynomialCompleteRowNoGo 为 CONDITIONAL。</p></section>''', "D recap claims")
     html = section(html, r'        <section id="reproduce">.*?</section>', r'''        <section id="reproduce"><div class="section-no">07 / 原始资料</div><h2>逐节笔记、证明、证书、有限诊断、附图和历史回顾</h2><p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · <a href="/recap-r0-61-r0-73c.html">保留 R0.73C 历史回顾</a> · <a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · <a href="/notes/r0-73d.html">打开最新节点 R0.73D</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research">浏览完整 research 档案</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073d_viscous_persistence_proof.md">查看 R0.73D 证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073d">查看 R0.73D 正式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073d">查看有限诊断与监控记录</a> · <a href="/assets/r073d/fig-r073d-viscous-cluster-persistence.pdf">下载期刊附图</a> · <a href="/recap-r0-61-r0-73d.pdf">下载同步 PDF</a></p><p>continuum theorem 来自 compact-Fredholm 解析证明。Fourier cutoff 只做诊断和附图，不证明无穷维谱持续。</p></section>''', "D recap reproduce")
     html = section(html, r'<footer>.*?</footer>', '<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>R0.61–R0.73D 回顾 · 2026-08-30<br><a href="/">返回研究主页</a></div></footer>', "D recap footer")
     start = html.index('<section id="node-index">')
@@ -454,6 +455,15 @@ def replace_all(html: str, old: str, new: str, label: str) -> str:
 def update_home() -> None:
     path = PUBLIC / "research-review.html"
     html = path.read_text(encoding="utf-8")
+    html = required(
+        html,
+        "      .task-one { padding: 24px 20px; }\n"
+        "      .task-one mjx-container[display=\"true\"]",
+        "      .task-one { padding: 24px 20px; }\n"
+        "      .task-one p, .task-one li { overflow-wrap: anywhere; word-break: break-word; }\n"
+        "      .task-one mjx-container[display=\"true\"]",
+        "D home mobile claim wrapping",
+    )
     html = section(
         html,
         r'    <section class="route-overview latest-release-spotlight".*?</section>',
@@ -467,7 +477,10 @@ def update_home() -> None:
         ("<strong>v1.43</strong>网页版本", "<strong>v1.44</strong>网页版本"),
         ("<strong>179</strong>公开研究笔记", "<strong>180</strong>公开研究笔记"),
         ("<strong>R0.73C</strong>最新研究节点", "<strong>R0.73D</strong>最新研究节点"),
+        ("nonautonomous enhanced dissipation through singular collision", "complement resolvent / semigroup dichotomy / fixed-projection transfer"),
         ("Research topology · R0.1–R0.73C", "Research topology · R0.1–R0.73D"),
+        ('<a class="route-map-latest" href="#r073c">阅读 R0.73C 研究笔记 →</a>',
+         '<a class="route-map-latest" href="#r073d">跳到首页 R0.73D 卡片 →</a>'),
         ("R0.70A–R0.73C：81 节已公开，57 节完整封存", "R0.70A–R0.73D：82 节已公开，58 节完整封存"),
         ('<span class="route-range">R0.69P–R0.73C</span>', '<span class="route-range">R0.69P–R0.73D</span>'),
         ('aria-label="R0.69P–R0.73C"', 'aria-label="R0.69P–R0.73D"'),
@@ -548,15 +561,29 @@ def update_literature() -> None:
     new_steps = r'''<div class="route-step kept"><header><b>R0.73D</b><strong>static viscous persistence of the certified Rayleigh cluster</strong></header><p>fixed contour、Riesz projection norm convergence、cluster multiplicity 与 cluster eigenvalue convergence 已闭合。一般先例属于 Shvydkoy--Friedlander；不作首创声明。<a href="/notes/r0-73d.html">研究笔记</a> <a href="/recap-r0-61-r0-73d.html">当前累计回顾</a> <a href="#r073d-boundary">文献边界</a></p></div>
               <div class="route-step pause"><header><b>开放接口 · R0.73E</b><strong>complement resolvent and fixed-projection transfer</strong></header><p>先控制右半平面 complement resolvent 与 semigroup dichotomy，再检查缓慢 profile drift 的 Volterra 传递。</p></div>'''
     html = once(html, old_open, new_steps, "D literature route")
+    html = required(
+        html,
+        "      .exclusion-row { grid-template-columns: 1fr; }\n    }\n    @media print {",
+        "      .exclusion-row { grid-template-columns: 1fr; }\n"
+        "      .boundary p { overflow-wrap: anywhere; word-break: break-word; }\n"
+        "    }\n    @media print {",
+        "D literature mobile claim wrapping",
+    )
     boundary = r'''
 
           <h3 id="r073d-boundary">R0.73D 的无黏到黏性谱持续与固定谱簇边界</h3>
-          <p>Shvydkoy--Friedlander 2008 的 Theorem 2.1(ii)--(iii) 是一般周期无黏到黏性不稳定谱持续、代数重数与 Riesz 谱子空间的决定性先例。Li 2005 给出周期 Kolmogorov-flow 例子；Li--Lin 2011 在 no-slip channel 中用 Wasow 渐近与 Rouché 定理处理 Orr--Sommerfeld 延拓。R0.73D 的增量是认证 double-harmonic row 在精确 kinetic space 中的自包含 compact-Fredholm 实现，并明确证明固定谱簇投影的算子范数收敛；不作一般首创、严格强化或优先权声明。</p>
-          <div class="boundary"><strong>R0.73D 的主张边界</strong><p>staticVanishingViscosityPersistence、fixedClusterRieszProjectionNormConvergence、fixedClusterAlgebraicMultiplicityPreserved 与 fixedClusterEigenvaluesConverge 为 CLOSED。inviscidEigenvalueSimple、quantitativeEigenvalueRate、globalRightHalfPlaneNoPollution、uniformComplementaryDichotomy、movingProfileUniformContour、logFastTimeTransfer、completeOSSquireA2DirectSum、nonlinearNavierStokes 与 Clay 为 OPEN。有限 Fourier 曲线不承担 continuum proof。</p></div>'''
+          <p><a href="https://doi.org/10.1016/j.anihpc.2007.05.004">Shvydkoy--Friedlander 2008</a> 的 Theorem 2.1(ii)--(iii) 是一般周期无黏到黏性不稳定谱持续、代数重数与 Riesz 谱子空间的决定性先例。<a href="https://doi.org/10.4310/DPDE.2005.v2.n2.a4">Li 2005</a> 给出周期 Kolmogorov-flow 例子；<a href="https://doi.org/10.1137/100794912">Li--Lin 2011</a> 在 no-slip channel 中用 Wasow 渐近与 Rouché 定理处理 Orr--Sommerfeld 延拓。R0.73D 的增量是认证 double-harmonic row 在精确 kinetic space 中的自包含 compact-Fredholm 实现，并明确证明固定谱簇投影的算子范数收敛；不作一般首创、严格强化或优先权声明。</p>
+          <div class="boundary"><strong>R0.73D 的主张边界</strong><p>staticVanishingViscosityPersistence、fixedContourResolventUniform、fixedClusterRieszProjectionNormConvergence、fixedClusterAlgebraicMultiplicityPreserved 与 fixedClusterEigenvaluesConverge 为 CLOSED。inviscidRootUnique、inviscidEigenvalueSimple、explicitContourRadius、explicitViscosityThreshold、quantitativeEigenvalueRate、globalRightHalfPlaneNoPollution、uniformComplementaryDichotomy、movingProfileUniformContour、graphDomainKatoTransport、logFastTimeTransfer、completeOSSquireA2DirectSum、nonlinearNavierStokes 与 Clay 为 OPEN；superPolynomialCompleteRowNoGo 为 CONDITIONAL。有限 Fourier 曲线不承担 continuum proof。</p></div>'''
     match = re.search(r'(<h3 id="r073c-boundary">.*?<div class="boundary">.*?</div>)', html, flags=re.S)
     if match is None:
         raise RuntimeError("D literature expected R0.73C boundary")
     html = once(html, match.group(1), match.group(1) + boundary, "D literature boundary")
+    references = r'''            <li id="ref-110">R. Shvydkoy and S. Friedlander. <a href="https://doi.org/10.1016/j.anihpc.2007.05.004"><em>The unstable spectrum of the Navier--Stokes operator in the limit of vanishing viscosity</em></a>. Ann. Inst. H. Poincaré C 25 (2008), 713--724; <a href="https://www.numdam.org/articles/10.1016/j.anihpc.2007.05.004/">NUMDAM</a>; <a href="https://arxiv.org/abs/math/0509538">arXiv</a>.</li>
+            <li id="ref-111">Y. Charles Li. <a href="https://doi.org/10.4310/DPDE.2005.v2.n2.a4"><em>Invariant Manifolds and Their Zero-Viscosity Limits for Navier--Stokes Equations</em></a>. Dynamics of PDE 2 (2005), 159--186; <a href="https://arxiv.org/abs/math/0505390">arXiv</a>.</li>
+            <li id="ref-112">Y. Charles Li and Z. Lin. <a href="https://doi.org/10.1137/100794912"><em>A Resolution of the Sommerfeld Paradox</em></a>. SIAM J. Math. Anal. 43 (2011), 1923--1954; <a href="https://arxiv.org/abs/0904.4676">arXiv</a>.</li>
+'''
+    html = once(html, "          </ol>\n          <p class=\"source-note\">", references + "          </ol>\n          <p class=\"source-note\">", "D literature references")
+    html = required(html, "资料截止：2026-08-28。", "资料截止：2026-08-30。", "D literature source date")
     terminal = "R0.73C 随后用 exact cubic neutral spectrum 与 validated periodic-ODE monodromy sign certificate 证明一条 infinite-dimensional frozen Rayleigh instability；viscous fast-time transfer 仍为 OPEN，super-polynomial complete-row no-go 只为 CONDITIONAL。"
     terminal_d = terminal + "R0.73D 再在精确 kinetic space 中证明认证无黏谱簇的 static vanishing-viscosity persistence、Riesz 投影算子范数收敛和代数重数保持；一般先例属于 Shvydkoy--Friedlander，补空间与快时间传递仍为 OPEN。"
     html = required(html, terminal, terminal_d, "D literature deck terminal")

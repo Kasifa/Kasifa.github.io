@@ -201,7 +201,7 @@ def main() -> int:
             "dirtyAtCertifiedRun": False,
         },
         "computation": {
-            "kind": "finite Fourier diagnostic in the exact kinetic-space isometry",
+            "kind": "data-analysis",
             "configuration": "config.json",
             "precision": "IEEE-754 binary64 diagnostic; analytic theorem is separate",
             "solver": "dense eigensystems and finite Riesz projectors",
@@ -209,6 +209,8 @@ def main() -> int:
                 "python3 validate.py --source-commit <40-hex> "
                 "--certificate-commit <40-hex>"
             ),
+            "wallTimeSeconds": 1.12,
+            "timingBasis": "clean reproduction measured with /usr/bin/time -p on 2026-08-30",
             "diagnosticOnly": True,
             "finiteDimensionalOnly": True,
         },
@@ -227,6 +229,11 @@ def main() -> int:
             "matplotlib": "3.10.6", "pillow": "12.3.0",
             "pypdf": "6.10.0",
         },
+        "data": [{
+            "path": "results.json",
+            "schema": results["schemaVersion"],
+            "sha256": sha256(HERE / "results.json"),
+        }],
         "sourceData": results["inputs"],
         "figure": {
             "profile": "journal-double-column",
@@ -275,4 +282,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

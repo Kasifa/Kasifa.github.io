@@ -191,10 +191,13 @@ test("R0.73B current certificate validates exactly at its declared stage", async
 });
 
 test("R0.73B formal mode fails closed on a stale or incomplete source commit", async () => {
-  const head = (await run("git", ["rev-parse", "HEAD"], { cwd: root })).stdout.trim();
+  const incomplete = (await run("git", ["rev-list", "--max-parents=0", "HEAD"], {
+    cwd: root,
+  })).stdout.trim().split("\n")[0];
+  assert.match(incomplete, /^[0-9a-f]{40}$/);
   const before = await snapshot();
   await assert.rejects(run(python, [
-    certificate + "/generate_certificate.py", "--formal", "--source-commit", head,
+    certificate + "/generate_certificate.py", "--formal", "--source-commit", incomplete,
   ], {
     cwd: root, env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
     maxBuffer: 8 * 1024 * 1024,

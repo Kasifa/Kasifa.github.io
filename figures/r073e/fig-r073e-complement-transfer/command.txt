@@ -1,0 +1,6 @@
+R073E_DEPS_DIR=/tmp/r073c-deps
+PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env PYTHONPATH="$R073E_DEPS_DIR" "$PYTHON" figures/r073e/fig-r073e-complement-transfer/plot.py --deps "$R073E_DEPS_DIR" --diagnostic experiments/r073e/complement_diagnostic.json --independent-validation experiments/r073e/independent_validation.json --output-dir figures/r073e/fig-r073e-complement-transfer
+
+env PYTHONPATH="$R073E_DEPS_DIR" "$PYTHON" figures/r073e/fig-r073e-complement-transfer/validate.py --source-commit 803279d72c24a54db27c40dcdad97593636788fc --certificate-commit 1c80e0bd666db16a116920ddb194b26bbec29f9a

@@ -1,0 +1,6 @@
+R073E_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073e/diagnose_complement.py --deps "$R073E_DEPS_DIR" --output experiments/r073e/complement_diagnostic.json --environment experiments/r073e/environment.json --progress experiments/r073e/progress.ndjson
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073e/independent_validate.py --deps "$R073E_DEPS_DIR" --primary experiments/r073e/complement_diagnostic.json --output experiments/r073e/independent_validation.json

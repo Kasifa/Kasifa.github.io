@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73B：Bloch near-carrier cancellation 与完整 physical-kinetic viscous-rate finite transient。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73B｜Bloch cancellation and physical kinetic transient">
+  <meta property="og:description" content="完整线性速度行可求和；A2、sharp Lambda law、nonlinear 与 Clay 保持 OPEN。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073b/fig-r073b-bloch-kinetic-transient.png">
+  <title>R0.73B｜Bloch cancellation and physical kinetic transient</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.41"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#bloch">Bloch</a><a href="#cancellation">抵消</a><a href="#hybrid">hybrid</a><a href="#energy">能量</a><a href="#primitive">primitive</a><a href="#propagator">propagator</a><a href="#forcing">forcing</a><a href="#ossquire">OS--Squire</a><a href="#sharp">sharp coefficient</a><a href="#growth">growth</a><a href="#liftup">lift-up</a><a href="#fixedc">路径</a><a href="#finite">finite</a><a href="#literature">文献</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73B · BLOCH CARRIER · PHYSICAL KINETIC ENERGY</div>
+        <h1>我把近零 Bloch 载波的奇性压成方向因子，<br>并闭合完整线性速度行的有限瞬态界</h1>
+        <p class="lead">zero-lattice Bloch carrier 的精确抵消把耦合侧的 \(g^{-1}\) 化为 \(\omega=2\gamma\beta/g\)，满足 \(|\omega|\le1\)。更重要的是，primitive velocity kinetic energy 直接覆盖 Orr--Sommerfeld、Squire 与 exceptional rows，并在 viscous row rate 上无行数损失地求和。A2、sharp \(|\Lambda|\) law、nonlinear 与 Clay 仍为 OPEN。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73B scoped linear theorem 完成</span><strong>Bloch cancellation and kinetic transient</strong><p>版本 v0.73B · 2026-08-29</p><p>Bloch carrier cancellation: CLOSED</p><p>physical kinetic direct sum: CLOSED</p><p>fixed-c low-gap uniformity: FALSE</p><p>prefactor-one contraction: FALSE</p><p>A2 / sharp Lambda law: OPEN</p><p>nonlinear / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li>        <li><a href="#bloch">01 · Bloch carrier</a></li>        <li><a href="#cancellation">02 · exact cancellation</a></li>        <li><a href="#hybrid">03 · hybrid transient</a></li>        <li><a href="#energy">04 · kinetic identity</a></li>        <li><a href="#primitive">05 · heat primitive</a></li>        <li><a href="#propagator">06 · complete row</a></li>        <li><a href="#forcing">07 · Duhamel</a></li>        <li><a href="#ossquire">08 · OS--Squire</a></li>        <li><a href="#sharp">09 · sharp coefficient</a></li>        <li><a href="#growth">10 · growth witness</a></li>        <li><a href="#liftup">11 · lift-up</a></li>        <li><a href="#fixedc">12 · parameter path</a></li>        <li><a href="#finite">13 · finite diagnostic</a></li>        <li><a href="#literature">14 · literature</a></li>        <li><a href="#evidence">15 · evidence</a></li>        <li><a href="#figure">16 · journal figure</a></li>        <li><a href="#value">17 · value</a></li>        <li><a href="#next">18 · R0.73C</a></li>        <li><a href="#reproduce">19 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>完整线性速度系统在黏性行速率上有有限瞬态；这不是 enhanced-dissipation 或 nonlinear theorem</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · EXACT BLOCH ALGEBRA</strong><p>exactBlochNearCarrierCancellation=CLOSED；exactBlochCarrierSystem=CLOSED；boundedBlochOrientationCoefficient=CLOSED；blochNearCarrierFiniteTransient=CLOSED。</p></div><div class="verdict-card true"><strong>CLOSED · COMPLETE LINEAR KINETIC ROW</strong><p>exactHeatShearGradientPrimitive=CLOSED；completePhysicalKineticFiniteTransient=CLOSED；completeOSSquireKineticFiniteTransient=CLOSED；blochUniformPhysicalVelocityDirectSumAtViscousRates=CLOSED；physicalKineticForcedDuhamel=CLOSED。</p></div><div class="verdict-card false"><strong>FALSE · UNIFORMITY CLAIMS</strong><p>lambdaIndependentKineticPrefactor=FALSE；fixedCUniformLowGapKineticPropagator=FALSE；allRowPrefactorOneKineticContraction=FALSE。fixed \(c\ne0\) 对应 \(|\Lambda|=|c|/\sqrt\mu\to\infty\)，不能与 fixed \(\Lambda\) 混写。</p></div><div class="verdict-card false"><strong>OPEN · STRONGER TARGETS</strong><p>polynomiallySharpLambdaKineticPrefactor=OPEN；completeOSSquireA2DirectSum=OPEN；transportedAdjointPressureA2Modulation=OPEN；nonlinearNavierStokes=OPEN；Clay=OPEN。</p></div></div></section>
+        <section id="bloch"><div class="section-no">01 / Bloch carrier</div><h2>零格点载波是精确坐标；端点处不是唯一最低模</h2><div class="equation result">\[h=\Pi_0(\mathcal L^{-1}q),\qquad r=Q_0q,\qquad q=gh+r,\quad g=\beta^2+\xi^2+\gamma^2.\]</div><p>我在半开 Bloch cell \([-1/2,1/2)\) 上选 zero-lattice carrier。包含端点 \(\beta=-1/2\) 有最低特征值重数二，所以只声明 selected carrier，不声明 unique slow mode。</p></section>
+        <section id="cancellation"><div class="section-no">02 / Exact cancellation</div><h2>两次周期分部积分把 raw inverse gap 化为物理方向</h2><div class="equation result">\[\boxed{\Pi_0(Wr+W_{xx}\mathcal L^{-1}r)=g\Pi_0(W\mathcal L^{-1}r)+2i\beta\Pi_0(W_x\mathcal L^{-1}r).}\]</div><div class="equation result">\[\frac{2c\beta}{g}=\Lambda\frac{2\gamma\beta}{\beta^2+\xi^2+\gamma^2},\qquad \left|\frac{2c\beta}{g}\right|\le|\Lambda|.\]</div><p>抵消只正则化 homogeneous coupling；受迫均值仍支付 \(g^{-1}\Pi_0F_q\)。</p></section>
+        <section id="hybrid"><div class="section-no">03 / Hybrid transient</div><h2>\(X_g\) 中得到全起点、有限瞬态的黏性速率界</h2><div class="equation result">\[\|U(d,s)\|_{X_g}\le\exp\{-g(d-s)+|c|J_c(s,d)+|\Lambda|J_\Lambda(s,d)\}.\]</div><p>\(J_c\) 与 \(J_\Lambda\) 都由 \(e^{-d}\)、\(e^{-4d}\) 显式积分，因而在整个 heat path 上有限。该 homogeneous \(X_g\) theorem 明确要求 \(F_q=0\)、\(\mu>0\)、\(0&lt;g\le1\)；它不外推成 kinetic norm 的 \(A_2\) 速率。</p></section>
+        <section id="energy"><div class="section-no">04 / Primitive kinetic identity</div><h2>完整 divergence-free velocity 行直接给出统一能量账本</h2><div class="equation result">\[\frac12\frac d{dd}\|u\|_2^2+\|A_\beta u\|_2^2+\mu\|u\|_2^2=-\Lambda\operatorname{Re}\langle W_xv,u_3\rangle+\operatorname{Re}\langle F,u\rangle.\]</div><p>primitive components 覆盖 \(\mu=0\) 的 exceptional rows；当 \(\mu>0\) 时它与 exact Orr--Sommerfeld--Squire kinetic identity 一致。</p></section>
+        <section id="primitive"><div class="section-no">05 / Heat primitive</div><h2>剪切梯度沿热路径可积，而且常数精确</h2><div class="equation result">\[\|W_x(d)\|_\infty=\frac12(e^{-d}+e^{-4d}),\quad K(s,d)=\frac12(e^{-s}-e^{-d})+\frac18(e^{-4s}-e^{-4d}).\]</div><p>等号在 \(x=\pi\) 取得；因此 \(K(0,\infty)=5/8\)。</p></section>
+        <section id="propagator"><div class="section-no">06 / Complete row propagator</div><h2>每一行都保留自己的黏性衰减，并只支付共同 transient</h2><div class="equation result">\[\boxed{\|U_j(d,s)\|_{L^2_u\to L^2_u}\le\exp[-g_j(d-s)+\tfrac{|\Lambda|}{2}K(s,d)].}\]</div><div class="equation result">\[\|U(d,s)\|_{L^2_\sigma\to L^2_\sigma}\le e^{|\Lambda|K(s,d)/2}\le e^{5|\Lambda|e^{-s}/16}.\]</div><p>离散 Fourier rows 用有限部分和与单调收敛求和；连续 Bloch 参数用 orthogonal direct integral。没有 row-count factor。</p></section>
+        <section id="forcing"><div class="section-no">07 / Forced Duhamel</div><h2>投影后的物理 forcing 使用同一 kernel</h2><div class="equation result">\[\|u_j(d)\|\le G_j(d,s)\|u_j(s)\|+\int_s^dG_j(d,\tau)\|F_j(\tau)\|\,d\tau.\]</div><p>结论要求 \(F_j\in L^1_{\rm loc}L^2\)，先对 smooth divergence-free data 证明，再由密度传到 mild solutions。</p></section>
+        <section id="ossquire"><div class="section-no">08 / OS--Squire metric</div><h2>正横向间隙时，完整 kinetic metric 精确分解</h2><div class="equation result">\[\|u\|_2^2=\mu^{-1}\bigl(\|\mathcal L^{-1/2}q\|_2^2+\|\eta\|_2^2\bigr).\]</div><p>这表明 Squire 不是被删除，而是已包含在物理速度能量中；它仍没有得到 complete \(A_2\) direct-sum rate。</p></section>
+        <section id="sharp"><div class="section-no">09 / Sharp shear form</div><h2>二维物理行的最佳 instantaneous shear coefficient 有精确低间隙极限</h2><div class="equation result">\[\rho_\mu=\sqrt\mu\|\mathcal L_\mu^{-1/2}S\mathcal L_\mu^{-1/2}\|,\quad S=-i(W_x\partial_x+\tfrac12W_{xx}).\]</div><div class="equation result">\[\boxed{\rho_\mu(d)\to\tfrac12\|W_x(d)\|_2=\frac{\sqrt{e^{-2d}+e^{-8d}}}{4\sqrt2}.}\]</div><p>integrated low-gap coefficient 为 \(0.188106027072\ldots\)，小于 elementary all-row coefficient \(5/16\)。它是 logarithmic-norm limit，不是 exact maximum transient gain。</p></section>
+        <section id="growth"><div class="section-no">10 / Instantaneous growth witness</div><h2>载波—切向二维试验平面排除 prefactor-one contraction</h2><div class="equation result">\[\lambda_{\rm trial}>0\quad\Longleftrightarrow\quad \Lambda^2A^2>4\mu B.\]</div><p>对每个 fixed nonzero \(\Lambda\)，充分小的 \(\mu\) 都出现严格 instantaneous kinetic growth。这个 witness 由两个方向组成，不应误称为只含两个 Fourier modes。</p></section>
+        <section id="liftup"><div class="section-no">11 / Exact lift-up lower bound</div><h2>\(\Lambda\)-independent transient prefactor 被显式解排除</h2><div class="equation result">\[\frac{\|u(d)\|^2}{\|u(s)\|^2}=1+\frac{\Lambda^2(d-s)^2}{8}(e^{-2d}+e^{-8d}).\]</div><p>这只否定 \(\Lambda\)-independent prefactor，不否定本节的 \(e^{C|\Lambda|}\) upper bound，也没有给出 sharp 大参数阶。</p></section>
+        <section id="fixedc"><div class="section-no">12 / Parameter path</div><h2>fixed \(\Lambda\) 与 fixed \(c\) 是不同的低间隙命题</h2><p>fixed bounded \(\Lambda\) 时，physical kinetic propagator 在 \(\mu\downarrow0\) 保持有限。fixed nonzero \(c\) 时，\(\Lambda=c/\sqrt\mu\)，由 regular-system continuity 与非零低模投影得到至少 \(C\mu^{-1/2}\) 的 kinetic growth。因此 fixedCUniformLowGapKineticPropagator=FALSE。</p></section>
+        <section id="finite"><div class="section-no">13 / Finite diagnostic</div><h2>有限矩阵验证参数路径与权重阈值，但不承担无限维证明</h2><p>deterministic screen 包含 280 propagators、1960 primary norm rows 与 245 targeted rows。它复核 generator similarity、步长和模数收敛、符号对称、kinetic upper bound 与 fixed-\(\Lambda\) triangular limit。没有 Galerkin tail enclosure，也没有 nonlinear convolution。</p></section>
+        <section id="literature"><div class="section-no">14 / Literature boundary</div><h2>已有 OS--Squire、lift-up、Riesz projection 与 nonautonomous propagator 工具；本节只报告组合接口</h2><p>Colombo--Dolce--Montalto--Ventura、Jerome--Chomaz、Bedrossian--Germain--Masmoudi、Li--Wei--Zhang、Li--Zhao、Wei--Zhang--Zhao 与 Bedrossian--Coti Zelati 分别覆盖相邻工具。bounded primary-source search 没有发现同一来源同时处理本项目的双谐波 heat path、near carrier、physical velocity、Squire 与 Bloch direct sum；这不是 novelty 或 priority proof。</p></section>
+        <section id="evidence"><div class="section-no">15 / Evidence boundary</div><h2>解析证明、确定性证书、有限 screen 与附图分工明确</h2><p>无限维结论由 energy identity、operator-norm tail bound、Gronwall 与 direct-sum argument 承担。证书复核精确代数和绑定的 finite rows；附图展示已审计公式和有限诊断，不构成证明。</p></section>
+        <section id="figure"><div class="section-no">16 / Journal figure</div><h2>Bloch 抵消、kinetic envelope、sharp coefficient 与参数路径分面展示</h2><p><img src="/assets/r073b/fig-r073b-bloch-kinetic-transient.svg" alt="R0.73B Bloch cancellation and physical kinetic finite-transient audit"></p><p><a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.pdf">下载 PDF</a> · <a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.png">下载 PNG</a> · <a href="/assets/r073b/fig-r073b-bloch-kinetic-transient.svg">打开 SVG</a></p></section>
+        <section id="value"><div class="section-no">17 / Research value</div><h2>这是 complete linearized viscous-rate closure，不是 Millennium problem 的直接解</h2><p>严格增量是：near-carrier inverse gap 被物理方向吸收；完整 velocity/Squire rows 获得可求和的有限 transient；fixed-\(c\) singular path 与 fixed-\(\Lambda\) path 被分开。A2-scale pressure modulation、nonlinear frequency transfer、vortex stretching 和 continuation criterion 都未闭合。</p></section>
+        <section id="next"><div class="section-no">18 / Next gate</div><h2>R0.73C：先确定大 \(|\Lambda|\) transient 的 sharp 量级</h2><p>下一节比较 exact lift-up lower bound、triangular low-gap limit 与可构造的 polynomial upper mechanism；只有在 \(|\Lambda|\) 依赖清楚后，才尝试 complete OS--Squire \(A_2\) direct sum。</p></section>
+        <section id="reproduce"><div class="section-no">19 / Reproduction</div><h2>完整报告、独立审计、证书、实验和正式附图</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073b_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073b_kinetic_form_proof.md">kinetic shear-form proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073b_independent_analytic_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073b_literature_audit.md">文献边界审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073b">确定性证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073b">有限诊断</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073b/fig-r073b-bloch-kinetic-transient">正式附图包</a> · <a href="/notes/r0-73b.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73b.html">累计回顾</a> · <a href="/recap-r0-61-r0-73b.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.73B · 2026-08-29<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

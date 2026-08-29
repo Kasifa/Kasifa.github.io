@@ -1,0 +1,8 @@
+python3 experiments/r073c/build_package.py
+python3 research/certificates/r073c/independent_recompute.py
+python3 research/certificates/r073c/generate_certificate.py --source-stage
+python3 research/certificates/r073c/validate_certificate.py --require-source-stage
+
+# After committing every bound source, replace <40-hex-commit>:
+python3 research/certificates/r073c/generate_certificate.py --formal --source-commit <40-hex-commit>
+python3 research/certificates/r073c/validate_certificate.py --require-formal

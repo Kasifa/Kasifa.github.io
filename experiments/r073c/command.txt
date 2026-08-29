@@ -1,0 +1,9 @@
+R073C_DEPS_DIR=/tmp/r073c-deps
+PYTHON="${CODEX_PYTHON:-python3}"
+
+env PYTHONPATH="$R073C_DEPS_DIR" "$PYTHON" research/r073c_interval_monodromy.py --eta 0.3407 --eta 0.3410 --steps 1024 --order 10 --dps 40 --run-id partition-a --require-bracket --output experiments/r073c/interval_run_a.json --progress experiments/r073c/interval_progress_a.ndjson
+env PYTHONPATH="$R073C_DEPS_DIR" "$PYTHON" research/r073c_interval_monodromy.py --eta 0.3407 --eta 0.3410 --steps 768 --order 12 --dps 55 --run-id partition-b --require-bracket --output experiments/r073c/interval_run_b.json --progress experiments/r073c/interval_progress_b.ndjson
+"$PYTHON" experiments/r073c/independent_decimal_monodromy_validator.py --eta-low 0.3407 --eta-high 0.3410 --steps 256 --order 8 --precision 80 --run-id decimal-independent --output experiments/r073c/decimal_interval_validation.json --progress experiments/r073c/decimal_progress.ndjson
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONPATH="$R073C_DEPS_DIR" "$PYTHON" research/r073c_spectral_screen_agent.py --deps "$R073C_DEPS_DIR" --active-N 48 --outer-N 192 --contour-samples 2048 --quadrature 32768 --output experiments/r073c/fourier_screen.json --progress experiments/r073c/fourier_progress.ndjson
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONPATH="$R073C_DEPS_DIR" "$PYTHON" experiments/r073c/independent_fourier_spectral_validator.py --deps "$R073C_DEPS_DIR" --primary experiments/r073c/fourier_screen.json --winding-nodes 512 --quadrature 8192 --output experiments/r073c/independent_fourier_validation.json
+"$PYTHON" experiments/r073c/build_package.py

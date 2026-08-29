@@ -1,5 +1,8 @@
 {
   "analyticalQuestion": "What do the stored finite compressions show about removing only one leading cluster, complementary resolvent peaks, semigroup growth, and fixed-projection leakage?",
+  "caption": {
+    "english": "caption.md"
+  },
   "claimBoundary": {
     "additionalContinuumEigenpairProvedHere": false,
     "clayProblemSolved": false,
@@ -14,65 +17,77 @@
     "sampledSemigroupIsContinuousTimeBound": false
   },
   "computation": {
+    "configuration": "config.json",
     "diagnosticOnly": true,
     "finiteDimensionalOnly": true,
+    "formalCommand": "python3 validate.py --source-commit <40-hex> --certificate-commit <40-hex>",
     "gpuUsed": false,
-    "kind": "data visualization of sealed finite diagnostics",
-    "precision": "IEEE-754 binary64 diagnostic inputs",
-    "randomnessUsed": false
+    "kind": "data-analysis",
+    "precision": "IEEE-754 binary64 finite diagnostics; analytic continuum theorems are certified separately",
+    "randomnessUsed": false,
+    "scientificWallTimeSeconds": 36.85,
+    "solver": "dense finite eigensystems, resolvent singular values, and matrix-exponential diagnostics",
+    "timingBasis": "three-cutoff, five-viscosity diagnostic and independent recomputation measured on 2026-08-30"
+  },
+  "compute": {
+    "cpu": "Apple M5 Max arm64",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS 26.6.2 build 25G83 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
   },
   "created": "2026-08-30",
+  "createdAt": "2026-08-30T00:00:00+08:00",
+  "data": [
+    {
+      "bytes": 5520,
+      "path": "results.json",
+      "schema": "r073e-figure-results-v1",
+      "sha256": "308c1bcd4da4c0c9f606996ad7a1b67995e3b93267c0abf7fad59fd592096dcf"
+    }
+  ],
   "environment": {
     "matplotlib": "3.10.6",
     "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
     "pillow": "12.3.0",
     "pypdf": "6.10.0",
     "python": "3.12.13"
   },
-  "figureId": "fig-r073e-complement-transfer",
-  "git": {
-    "dirtyAtFigureGeneration": true,
-    "figureSourcesBoundBySha256": true,
-    "repository": "Kasifa/Kasifa.github.io",
-    "sourceCommit": "645e862c06cf31c3d7551dac292af43eea3ec1b5"
+  "figure": {
+    "heightMillimetres": 132,
+    "layout": "four-panel finite operator-diagnostic figure",
+    "outputs": [
+      {
+        "bytes": 39002,
+        "path": "figure.pdf",
+        "sha256": "79df34d0f473ff8aa8463ff875b27a08b0782a190b36386dd166dde60ab99d9c"
+      },
+      {
+        "bytes": 151562,
+        "path": "figure.svg",
+        "sha256": "2fe2320a08bc333331483554188c46b0e189ceaa4d3aa07198ec0c7a0adb02d1"
+      },
+      {
+        "bytes": 754262,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4204,
+          3118
+        ],
+        "sha256": "b950c675100c03ad6b6754b7185b35a11d7ba25b0e7ecb8c43fa1f6505496076"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178
   },
-  "inputs": [
-    {
-      "bytes": 504736,
-      "path": "experiments/r073e/complement_diagnostic.json",
-      "sha256": "59a604d2eda9b7e8c0ce060126798826bbb07490680dd13ca68bc0976ee7e6b3"
-    },
-    {
-      "bytes": 12969,
-      "path": "experiments/r073e/independent_validation.json",
-      "sha256": "fae22e75ca4e073eeb91058336eccf8f5dcb802475280b456e33ea3af7b5f2aa"
-    }
-  ],
-  "outputs": [
-    {
-      "bytes": 39002,
-      "path": "figure.pdf",
-      "sha256": "79df34d0f473ff8aa8463ff875b27a08b0782a190b36386dd166dde60ab99d9c"
-    },
-    {
-      "bytes": 151562,
-      "path": "figure.svg",
-      "sha256": "2fe2320a08bc333331483554188c46b0e189ceaa4d3aa07198ec0c7a0adb02d1"
-    },
-    {
-      "bytes": 754262,
-      "dpi": 600,
-      "path": "figure.png",
-      "pixels": [
-        4204,
-        3118
-      ],
-      "sha256": "b950c675100c03ad6b6754b7185b35a11d7ba25b0e7ecb8c43fa1f6505496076"
-    }
-  ],
-  "release": "R0.73E",
-  "schemaVersion": "r073e-figure-manifest-v1",
-  "sources": [
+  "figureId": "fig-r073e-complement-transfer",
+  "files": [
     {
       "bytes": 932,
       "path": "figures/r073e/fig-r073e-complement-transfer/README.md",
@@ -84,9 +99,9 @@
       "sha256": "54e2cb9cc01e2f67290f9aff45aa3c256d703bc270f06e6247666ed52c861665"
     },
     {
-      "bytes": 592,
+      "bytes": 654,
       "path": "figures/r073e/fig-r073e-complement-transfer/command.txt",
-      "sha256": "213a4f1960abdd50ffd4bae009b37b34dcc9d7e96ca428882758d04a5da5195e"
+      "sha256": "c06246c6be562a29634dc57d8c9443eee413fd495f9edd3ee1d59526f90eb197"
     },
     {
       "bytes": 359,
@@ -129,9 +144,223 @@
       "sha256": "71aa4145b94cbec55cd76c24712a094f4a7c3db436f699f11cd8669bf754290e"
     },
     {
-      "bytes": 10379,
+      "bytes": 14114,
       "path": "figures/r073e/fig-r073e-complement-transfer/validate.py",
-      "sha256": "d1a0f52ee8e8f53476360002fdb5aba7841d2f7f3f2fae3da3af2e9c77203e0a"
+      "sha256": "ea2eb70c5c284406e211494205fc7509af3b375bad9bad44395c2eaadb142584"
+    },
+    {
+      "bytes": 39002,
+      "path": "figures/r073e/fig-r073e-complement-transfer/figure.pdf",
+      "sha256": "79df34d0f473ff8aa8463ff875b27a08b0782a190b36386dd166dde60ab99d9c"
+    },
+    {
+      "bytes": 151562,
+      "path": "figures/r073e/fig-r073e-complement-transfer/figure.svg",
+      "sha256": "2fe2320a08bc333331483554188c46b0e189ceaa4d3aa07198ec0c7a0adb02d1"
+    },
+    {
+      "bytes": 754262,
+      "path": "figures/r073e/fig-r073e-complement-transfer/figure.png",
+      "sha256": "b950c675100c03ad6b6754b7185b35a11d7ba25b0e7ecb8c43fa1f6505496076"
+    },
+    {
+      "bytes": 5520,
+      "path": "figures/r073e/fig-r073e-complement-transfer/results.json",
+      "sha256": "308c1bcd4da4c0c9f606996ad7a1b67995e3b93267c0abf7fad59fd592096dcf"
+    },
+    {
+      "bytes": 336046,
+      "path": "figures/r073e/fig-r073e-complement-transfer/qa-final-size.png",
+      "sha256": "adbbadd5181344df6c11287b7d78378e3050a8c4a079963249305858f93f08fc"
+    },
+    {
+      "bytes": 158271,
+      "path": "figures/r073e/fig-r073e-complement-transfer/qa-grayscale.png",
+      "sha256": "7c1afacff56bfcf3ef8a62e30462ac298adcf64a79f75a6501d1738351b96f59"
+    },
+    {
+      "bytes": 171511,
+      "path": "figures/r073e/fig-r073e-complement-transfer/qa-pdf.png",
+      "sha256": "f89c33ad5275fd8a36295de2dfe356b8d6298f3b9e093ec2e1afe798b180947b"
+    },
+    {
+      "bytes": 1139,
+      "path": "figures/r073e/fig-r073e-complement-transfer/validation.json",
+      "sha256": "623e14d35835c3c92493c5310e6896b7e7b4651235eff607785784afa29e1262"
+    },
+    {
+      "bytes": 1134,
+      "path": "figures/r073e/fig-r073e-complement-transfer/qa-report.md",
+      "sha256": "e3b53d4bfda5825f9b889b64d19335411888bf08b540640b1c8dd66de2a6abe8"
+    }
+  ],
+  "git": {
+    "certificateCommit": "1c80e0bd666db16a116920ddb194b26bbec29f9a",
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtFigureGeneration": true,
+    "figureSourcesBoundBySha256": true,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "645e862c06cf31c3d7551dac292af43eea3ec1b5"
+  },
+  "inputBindings": [
+    {
+      "bytes": 504736,
+      "path": "experiments/r073e/complement_diagnostic.json",
+      "sha256": "59a604d2eda9b7e8c0ce060126798826bbb07490680dd13ca68bc0976ee7e6b3"
+    },
+    {
+      "bytes": 12969,
+      "path": "experiments/r073e/independent_validation.json",
+      "sha256": "fae22e75ca4e073eeb91058336eccf8f5dcb802475280b456e33ea3af7b5f2aa"
+    }
+  ],
+  "inputs": [
+    {
+      "bytes": 504736,
+      "path": "experiments/r073e/complement_diagnostic.json",
+      "sha256": "59a604d2eda9b7e8c0ce060126798826bbb07490680dd13ca68bc0976ee7e6b3"
+    },
+    {
+      "bytes": 12969,
+      "path": "experiments/r073e/independent_validation.json",
+      "sha256": "fae22e75ca4e073eeb91058336eccf8f5dcb802475280b456e33ea3af7b5f2aa"
+    }
+  ],
+  "masters": [
+    "figure.pdf",
+    "figure.svg",
+    "figure.png"
+  ],
+  "outputs": [
+    {
+      "bytes": 39002,
+      "path": "figure.pdf",
+      "sha256": "79df34d0f473ff8aa8463ff875b27a08b0782a190b36386dd166dde60ab99d9c"
+    },
+    {
+      "bytes": 151562,
+      "path": "figure.svg",
+      "sha256": "2fe2320a08bc333331483554188c46b0e189ceaa4d3aa07198ec0c7a0adb02d1"
+    },
+    {
+      "bytes": 754262,
+      "dpi": 600,
+      "path": "figure.png",
+      "pixels": [
+        4204,
+        3118
+      ],
+      "sha256": "b950c675100c03ad6b6754b7185b35a11d7ba25b0e7ecb8c43fa1f6505496076"
+    }
+  ],
+  "publication": {
+    "assets": [
+      {
+        "bytes": 39002,
+        "path": "public/assets/r073e/fig-r073e-complement-transfer.pdf",
+        "sha256": "79df34d0f473ff8aa8463ff875b27a08b0782a190b36386dd166dde60ab99d9c"
+      },
+      {
+        "bytes": 151562,
+        "path": "public/assets/r073e/fig-r073e-complement-transfer.svg",
+        "sha256": "2fe2320a08bc333331483554188c46b0e189ceaa4d3aa07198ec0c7a0adb02d1"
+      },
+      {
+        "bytes": 754262,
+        "path": "public/assets/r073e/fig-r073e-complement-transfer.png",
+        "sha256": "b950c675100c03ad6b6754b7185b35a11d7ba25b0e7ecb8c43fa1f6505496076"
+      }
+    ],
+    "byteIdentityRequired": true,
+    "directory": "public/assets/r073e",
+    "fileStem": "fig-r073e-complement-transfer",
+    "publicCopiesComplete": true
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSize": "qa-final-size.png",
+    "finalSizeInspected": true,
+    "grayscale": "qa-grayscale.png",
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRaster": "qa-pdf.png",
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "release": "R0.73E",
+  "schemaVersion": "r073e-figure-manifest-v1",
+  "sourceData": [
+    {
+      "path": "experiments/r073e/complement_diagnostic.json",
+      "sha256": "59a604d2eda9b7e8c0ce060126798826bbb07490680dd13ca68bc0976ee7e6b3"
+    },
+    {
+      "path": "experiments/r073e/independent_validation.json",
+      "sha256": "fae22e75ca4e073eeb91058336eccf8f5dcb802475280b456e33ea3af7b5f2aa"
+    }
+  ],
+  "sources": [
+    {
+      "bytes": 932,
+      "path": "figures/r073e/fig-r073e-complement-transfer/README.md",
+      "sha256": "c9e475ab8210cc472c97630e919a77363ad702dfec61f669beb8ed8253aa0d83"
+    },
+    {
+      "bytes": 1270,
+      "path": "figures/r073e/fig-r073e-complement-transfer/caption.md",
+      "sha256": "54e2cb9cc01e2f67290f9aff45aa3c256d703bc270f06e6247666ed52c861665"
+    },
+    {
+      "bytes": 654,
+      "path": "figures/r073e/fig-r073e-complement-transfer/command.txt",
+      "sha256": "c06246c6be562a29634dc57d8c9443eee413fd495f9edd3ee1d59526f90eb197"
+    },
+    {
+      "bytes": 359,
+      "path": "figures/r073e/fig-r073e-complement-transfer/config.json",
+      "sha256": "4a37572f8aea3c912653bf9796fd4e0873352ebddd2a3bb31033f0fab7970314"
+    },
+    {
+      "bytes": 795,
+      "path": "figures/r073e/fig-r073e-complement-transfer/contract.json",
+      "sha256": "d08846abd50ecbfef56f20b2c46849c0e14a6c99e1c9e1b11263fd88a9bfce80"
+    },
+    {
+      "bytes": 291,
+      "path": "figures/r073e/fig-r073e-complement-transfer/environment.txt",
+      "sha256": "5202bad58cc126bba097c1d5578a520f9abc814c8c86665da80391b14850009f"
+    },
+    {
+      "bytes": 851,
+      "path": "figures/r073e/fig-r073e-complement-transfer/figure-contract.md",
+      "sha256": "b3692f29baf33069cb061451fd4cb8e27bab6cdf02b2d2e6b802772f99a23498"
+    },
+    {
+      "bytes": 402,
+      "path": "figures/r073e/fig-r073e-complement-transfer/manifest-draft.json",
+      "sha256": "910bc8322344b79c6ba6b2f5ebb0fdb934de08b40d11e114be258e6b03d5f3ba"
+    },
+    {
+      "bytes": 13070,
+      "path": "figures/r073e/fig-r073e-complement-transfer/plot.py",
+      "sha256": "9c8760eb6ea95f4497111d7b1d07714b29ac555f31075d1ec29435b0c1013871"
+    },
+    {
+      "bytes": 631,
+      "path": "figures/r073e/fig-r073e-complement-transfer/qa-protocol.md",
+      "sha256": "b29edac454395707bdc34b8a67d42e17d212cbe132875be2d8a636a658f809eb"
+    },
+    {
+      "bytes": 61,
+      "path": "figures/r073e/fig-r073e-complement-transfer/requirements.txt",
+      "sha256": "71aa4145b94cbec55cd76c24712a094f4a7c3db436f699f11cd8669bf754290e"
+    },
+    {
+      "bytes": 14114,
+      "path": "figures/r073e/fig-r073e-complement-transfer/validate.py",
+      "sha256": "ea2eb70c5c284406e211494205fc7509af3b375bad9bad44395c2eaadb142584"
     },
     {
       "bytes": 39002,

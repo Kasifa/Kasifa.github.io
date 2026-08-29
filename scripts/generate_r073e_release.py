@@ -37,6 +37,7 @@ ROOT = Path(os.environ.get(
 PUBLIC = ROOT / "public"
 CERTIFIED_REPORT_COMMIT = "803279d72c24a54db27c40dcdad97593636788fc"
 FIGURE_DIRECTORY_COMMIT = "f55e54e97db96fb0e050e840d5f2db50d9bbc292"
+FIGURE_CERTIFICATE_COMMIT = "1c80e0bd666db16a116920ddb194b26bbec29f9a"
 
 CLOSED_KEYS = (
     "fixedPositiveHalfPlaneNoPollution",
@@ -306,7 +307,11 @@ def validate_inputs() -> None:
         if claims.get(key) is not False:
             raise RuntimeError("R0.73E figure escaped boundary: " + key)
     subprocess.run(
-        [sys.executable, str(figure / "validate.py"), "--source-commit", figure_manifest["git"]["sourceCommit"]],
+        [
+            sys.executable, str(figure / "validate.py"),
+            "--source-commit", figure_manifest["git"]["sourceCommit"],
+            "--certificate-commit", FIGURE_CERTIFICATE_COMMIT,
+        ],
         cwd=ROOT, check=True,
     )
     verify_complete_flat_ledger(figure, "R0.73E figure")
@@ -324,13 +329,22 @@ def publish_figure_assets() -> None:
             raise RuntimeError("R0.73E public figure copy is not byte-identical: " + suffix)
     manifest = json.loads((figure / "manifest.json").read_text(encoding="utf-8"))
     subprocess.run(
-        [sys.executable, str(figure / "validate.py"), "--source-commit", manifest["git"]["sourceCommit"]],
+        [
+            sys.executable, str(figure / "validate.py"),
+            "--source-commit", manifest["git"]["sourceCommit"],
+            "--certificate-commit", FIGURE_CERTIFICATE_COMMIT,
+        ],
         cwd=ROOT, check=True,
     )
     verify_complete_flat_ledger(figure, "R0.73E published figure")
-    manifest = json.loads((figure / "manifest.json").read_text(encoding="utf-8"))
-    if manifest.get("publication", {}).get("publicCopiesComplete") is not True:
+    expected_public = [f"{FIGURE_ID}.{suffix}" for suffix in ("pdf", "png", "svg")]
+    actual_public = sorted(path.name for path in target.iterdir() if path.is_file())
+    if actual_public != sorted(expected_public):
         raise RuntimeError("R0.73E public figure copy ledger is incomplete")
+    source_outputs = {row["path"]: row["sha256"] for row in manifest["outputs"]}
+    for suffix in ("pdf", "png", "svg"):
+        if digest(target / f"{FIGURE_ID}.{suffix}") != source_outputs[f"figure.{suffix}"]:
+            raise RuntimeError("R0.73E public figure copy ledger is incomplete: " + suffix)
 
 
 def build_note() -> None:
@@ -415,6 +429,7 @@ def update_home() -> None:
         ("<strong>v1.44</strong>网页版本", "<strong>v1.45</strong>网页版本"),
         ("<strong>180</strong>公开研究笔记", "<strong>181</strong>公开研究笔记"),
         ("<strong>R0.73D</strong>最新研究节点", "<strong>R0.73E</strong>最新研究节点"),
+        ('<a class="route-map-latest" href="#r073d">跳到首页 R0.73D 卡片 →</a>', '<a class="route-map-latest" href="#r073e">跳到首页 R0.73E 卡片 →</a>'),
         ("complement resolvent / semigroup dichotomy / fixed-projection transfer", "moving-profile top-bundle gap / evolution dichotomy / fixed-window exponential test"),
         ("Research topology · R0.1–R0.73D", "Research topology · R0.1–R0.73E"),
         ("R0.70A–R0.73D：82 节已公开，58 节完整封存", "R0.70A–R0.73E：83 节已公开，59 节完整封存"),

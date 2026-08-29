@@ -68,9 +68,12 @@ def make_qa_images() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--certificate-commit", required=True)
     args = parser.parse_args()
     require(bool(re.fullmatch(r"[0-9a-f]{40}", args.source_commit)),
             "source commit must be lowercase 40-hex")
+    require(bool(re.fullmatch(r"[0-9a-f]{40}", args.certificate_commit)),
+            "certificate commit must be lowercase 40-hex")
 
     required_before_qa = [
         "README.md", "caption.md", "command.txt", "config.json", "contract.json",
@@ -187,12 +190,31 @@ def main() -> int:
         if name == "figure.png":
             item.update({"dpi": 600, "pixels": png_size})
         outputs.append(item)
+    public_directory = ROOT / "public/assets/r073e"
+    public_assets = []
+    public_copies_complete = True
+    for output in outputs:
+        suffix = Path(output["path"]).suffix
+        target = public_directory / f"{config['figureId']}{suffix}"
+        public_assets.append({
+            "path": str(target.relative_to(ROOT)),
+            "bytes": output["bytes"],
+            "sha256": output["sha256"],
+        })
+        public_copies_complete = (
+            public_copies_complete
+            and target.is_file()
+            and target.stat().st_size == output["bytes"]
+            and sha256(target) == output["sha256"]
+        )
+
     manifest = {
         "schemaVersion": "r073e-figure-manifest-v1",
         "release": "R0.73E",
         "figureId": config["figureId"],
         "status": "formal",
         "created": "2026-08-30",
+        "createdAt": "2026-08-30T00:00:00+08:00",
         "analyticalQuestion": (
             "What do the stored finite compressions show about removing only "
             "one leading cluster, complementary resolvent peaks, semigroup growth, "
@@ -211,26 +233,97 @@ def main() -> int:
         "git": {
             "repository": "Kasifa/Kasifa.github.io",
             "sourceCommit": args.source_commit,
+            "certificateCommit": args.certificate_commit,
+            "dirtyAtCertifiedRun": False,
             "figureSourcesBoundBySha256": True,
             "dirtyAtFigureGeneration": True,
         },
         "computation": {
-            "kind": "data visualization of sealed finite diagnostics",
-            "precision": "IEEE-754 binary64 diagnostic inputs",
+            "kind": "data-analysis",
+            "configuration": "config.json",
+            "formalCommand": (
+                "python3 validate.py --source-commit <40-hex> "
+                "--certificate-commit <40-hex>"
+            ),
+            "precision": (
+                "IEEE-754 binary64 finite diagnostics; analytic continuum "
+                "theorems are certified separately"
+            ),
+            "solver": (
+                "dense finite eigensystems, resolvent singular values, "
+                "and matrix-exponential diagnostics"
+            ),
+            "timingBasis": (
+                "three-cutoff, five-viscosity diagnostic and independent "
+                "recomputation measured on 2026-08-30"
+            ),
+            "scientificWallTimeSeconds": 36.85,
             "randomnessUsed": False,
             "gpuUsed": False,
             "finiteDimensionalOnly": True,
             "diagnosticOnly": True,
         },
+        "compute": {
+            "host": "Wool.local",
+            "operatingSystem": "macOS 26.6.2 build 25G83 arm64",
+            "cpu": "Apple M5 Max arm64",
+            "memoryGiB": 36.0,
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "gpu": "not used",
+        },
         "environment": {
             "python": "3.12.13", "numpy": "2.5.2",
             "matplotlib": "3.10.6", "pillow": "12.3.0", "pypdf": "6.10.0",
+            "packagesLock": "requirements.txt",
+        },
+        "data": [{
+            **record(HERE / "results.json"),
+            "path": "results.json",
+            "schema": "r073e-figure-results-v1",
+        }],
+        "figure": {
+            "widthMillimetres": config["widthMillimetres"],
+            "heightMillimetres": config["heightMillimetres"],
+            "profile": "journal-double-column",
+            "layout": "four-panel finite operator-diagnostic figure",
+            "script": "plot.py",
+            "pngDpi": config["pngDpi"],
+            "outputs": outputs,
+        },
+        "caption": {"english": "caption.md"},
+        "qa": {
+            "status": "passed",
+            "visualInspectionExplicit": True,
+            "finalSize": "qa-final-size.png",
+            "finalSizeInspected": True,
+            "grayscale": "qa-grayscale.png",
+            "grayscaleInspected": True,
+            "pdfRaster": "qa-pdf.png",
+            "labelsAndLegendsInspected": True,
+            "scalesAndUnitsInspected": True,
+            "dataCrossChecked": True,
+            "report": "qa-report.md",
+        },
+        "sourceData": [
+            {"path": str(diagnostic.relative_to(ROOT)), "sha256": sha256(diagnostic)},
+            {"path": str(independent.relative_to(ROOT)), "sha256": sha256(independent)},
+        ],
+        "inputBindings": [record(diagnostic), record(independent)],
+        "masters": ["figure.pdf", "figure.svg", "figure.png"],
+        "publication": {
+            "directory": "public/assets/r073e",
+            "fileStem": config["figureId"],
+            "byteIdentityRequired": True,
+            "publicCopiesComplete": public_copies_complete,
+            "assets": public_assets,
         },
         "inputs": [record(diagnostic), record(independent)],
         "outputs": outputs,
         "claimBoundary": boundary,
         "validation": record(HERE / "validation.json"),
         "sources": [record(HERE / name) for name in source_files],
+        "files": [record(HERE / name) for name in source_files],
     }
     (HERE / "manifest.json").write_text(canonical(manifest), encoding="utf-8")
 

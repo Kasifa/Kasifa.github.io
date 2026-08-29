@@ -1,7 +1,7 @@
 # R0.73A figure QA
 
-- manifest stage: draft
-- explicit visual inspection: pending
+- manifest stage: formal
+- explicit visual inspection: yes
 - final-size, grayscale, and independent PDF previews generated: yes
 - hidden-mean derivative, singular limit, J kernel, and envelope recomputed: yes
 - finite frozen metrics verified against pinned upstream data: yes

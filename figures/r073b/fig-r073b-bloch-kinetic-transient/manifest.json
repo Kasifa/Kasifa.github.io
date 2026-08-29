@@ -1,0 +1,451 @@
+{
+  "analyticalQuestion": "Which low-gap parameter paths and velocity weights remain uniformly bounded, and how do the proved kinetic envelope and sharp OS shear coefficient compare with deterministic finite propagators?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "clayMillenniumProblemSolved": false,
+    "enhancedDissipationA2DirectSum": false,
+    "exactMaximumTransientGain": false,
+    "finiteDimensionalRowsAreTheorem": false,
+    "fixedCUniformKineticTheorem": false,
+    "galerkinTailBound": false,
+    "nonlinearNavierStokes": false,
+    "nonlinearNavierStokesClosure": false,
+    "physicalKineticFixedLambdaUniformAnalyticTheorem": true,
+    "prefactorOneContraction": false,
+    "sharpOSCoefficientLowGapLimit": true
+  },
+  "computation": {
+    "configuration": "config.json",
+    "diagnosticOnly": true,
+    "finiteDimensionalOnly": true,
+    "formalCommand": "python3 plot.py --formal --visual-inspected --source-commit <40-hex> --certificate-commit <40-hex>",
+    "kind": "closed-form sampling plus validated finite CSV ingestion",
+    "precision": "IEEE-754 binary64 presentation sampling; upstream complex128",
+    "randomSeed": null,
+    "solver": "direct analytic formula evaluation, independent scalar 5x5 power iteration, and read-only validated finite N=10 CSV ingestion",
+    "syntheticDataAllowed": false,
+    "wallTimePolicy": "renderer wall time is not used in a mathematical claim; zero records the deterministic exact-audit sampler policy",
+    "wallTimeSeconds": 0.0
+  },
+  "compute": {
+    "cpu": "arm",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "Darwin-25.6.0-arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-29T00:00:00+08:00",
+  "data": [
+    {
+      "bytes": 143777,
+      "path": "data.csv",
+      "rows": 364,
+      "schema": [
+        "panel",
+        "kind",
+        "id",
+        "series",
+        "x",
+        "y",
+        "value",
+        "mu",
+        "Lambda",
+        "p",
+        "a",
+        "norm",
+        "N",
+        "start",
+        "end",
+        "gain",
+        "finiteGain",
+        "triangularGain",
+        "energyEnvelope",
+        "observedExponent",
+        "predictedExponent",
+        "sourcePath",
+        "sourceSha256",
+        "sourceRowId",
+        "formula",
+        "status",
+        "note"
+      ],
+      "sha256": "867be1f4ece4e18324757ebd07b9406b9883efae3ea7b8bcef586ab858c70745"
+    },
+    {
+      "bytes": 2749,
+      "path": "results.json",
+      "schema": "panel summaries, finite diagnostics, and claim boundary ledger",
+      "sha256": "07b601b6a0db84158aaf023c5c7ea5aa4396c432a7320f826c72040c556cee68"
+    },
+    {
+      "bytes": 1623,
+      "path": "validation.json",
+      "schema": "formula, provenance, vector/raster, and visible-boundary checks",
+      "sha256": "d4c476b2dedae8ccacfa091a5a6205aa6c8e9660202dfa6436644a43b9ea2151"
+    }
+  ],
+  "deterministic": true,
+  "environment": {
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "python": "3.12.13",
+    "reportlab": "4.4.9"
+  },
+  "figure": {
+    "heightMillimetres": 150,
+    "layout": "178 mm by 150 mm journal double-column figure with final-size, grayscale, and independent PDF previews",
+    "outputs": [
+      {
+        "bytes": 76219,
+        "path": "figure.pdf",
+        "sha256": "ead71b78d39f72800ff8efabc8e2af5061f677dbba633e8ddf836e4f6202f343"
+      },
+      {
+        "bytes": 46075,
+        "path": "figure.svg",
+        "sha256": "a13e1c05be407da95a358854d43d99bce0fe357786faee32d8789c3bfa793304"
+      },
+      {
+        "bytes": 390514,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4205,
+          3543
+        ],
+        "sha256": "f920d9e31cb853518a0a7f727c29a087c34aa10fcbeb8f3e1a3e561a1d13daac"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
+  "figureId": "fig-r073b-bloch-kinetic-transient",
+  "git": {
+    "certificateCommit": "78280191b2d337b04a1d3d1fd333c2368f167a07",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "fe5ce5d9e699edc55f92a4e0bec154b5a51d3f58"
+  },
+  "lineage": {
+    "certificateCommit": "78280191b2d337b04a1d3d1fd333c2368f167a07",
+    "distinct": true,
+    "formalBlocked": false,
+    "sourceCommit": "fe5ce5d9e699edc55f92a4e0bec154b5a51d3f58"
+  },
+  "outputs": [
+    {
+      "bytes": 1913,
+      "path": "README.md",
+      "sha256": "fe11488dd1557ac82fa497cbbb3d8b9796cacbddb6ca215093b4b541ced4727c"
+    },
+    {
+      "bytes": 1224,
+      "path": "caption.md",
+      "sha256": "25d7d6cccd0058e262caaafbbcb6b6b5d3a620b7d02b6d78e12757d66cbd5f8b"
+    },
+    {
+      "bytes": 1196,
+      "path": "command.txt",
+      "sha256": "38cf1fac6d6e8511742fa483d2f34635f6f71981a9ebbbc6f1bbeadc9f851d88"
+    },
+    {
+      "bytes": 2494,
+      "path": "config.json",
+      "sha256": "2c777a92c0f2c7c6220f571e124627153d4100150ad98edb9af28a5532c508c5"
+    },
+    {
+      "bytes": 2757,
+      "path": "contract.json",
+      "sha256": "92813923fb9b0d450275c168f05d9eadb5863ca5aacb009b98e88a0c8615283a"
+    },
+    {
+      "bytes": 683,
+      "path": "environment.txt",
+      "sha256": "2aab96deb63ca3909608e0290c0cafff9f5bb4b2c054ec5ffae13cea94ec6772"
+    },
+    {
+      "bytes": 3627,
+      "path": "figure-contract.md",
+      "sha256": "efe00d33776a1d270e319728121465098bf03a58222dd73f972571a6401a808e"
+    },
+    {
+      "bytes": 789,
+      "path": "manifest-draft.json",
+      "sha256": "e0cda11ebc3c52cf0a09d87e9c11164ab0d02c427f0339557a2b0e2f0a1db5d0"
+    },
+    {
+      "bytes": 76388,
+      "path": "plot.py",
+      "sha256": "6027bba6dc3b8d271d6a14f15e42fa9897445dd0bbca21540e5525c01d2627d7"
+    },
+    {
+      "bytes": 1865,
+      "path": "qa-protocol.md",
+      "sha256": "15b8a4dfc582326ac6aaac1ff8311fa6a2285d00d0625e6ebaf59b5f2d54d888"
+    },
+    {
+      "bytes": 46,
+      "path": "requirements.txt",
+      "sha256": "71085db0ee325c2bc2ea2a7aaa8272b4a7a3c06170c50b76aa19ea6c259a124e"
+    },
+    {
+      "bytes": 21006,
+      "path": "validate.py",
+      "sha256": "71acdd9df9e3f11faf79df9505ec6897a45aede23e1d7d82bc28834fef0eff4c"
+    },
+    {
+      "bytes": 143777,
+      "path": "data.csv",
+      "sha256": "867be1f4ece4e18324757ebd07b9406b9883efae3ea7b8bcef586ab858c70745"
+    },
+    {
+      "bytes": 2749,
+      "path": "results.json",
+      "sha256": "07b601b6a0db84158aaf023c5c7ea5aa4396c432a7320f826c72040c556cee68"
+    },
+    {
+      "bytes": 1623,
+      "path": "validation.json",
+      "sha256": "d4c476b2dedae8ccacfa091a5a6205aa6c8e9660202dfa6436644a43b9ea2151"
+    },
+    {
+      "bytes": 46075,
+      "path": "figure.svg",
+      "sha256": "a13e1c05be407da95a358854d43d99bce0fe357786faee32d8789c3bfa793304"
+    },
+    {
+      "bytes": 76219,
+      "path": "figure.pdf",
+      "sha256": "ead71b78d39f72800ff8efabc8e2af5061f677dbba633e8ddf836e4f6202f343"
+    },
+    {
+      "bytes": 390514,
+      "path": "figure.png",
+      "sha256": "f920d9e31cb853518a0a7f727c29a087c34aa10fcbeb8f3e1a3e561a1d13daac"
+    },
+    {
+      "bytes": 562002,
+      "path": "qa-final-size.png",
+      "sha256": "f1c0e9eb850e99c8a909db0a4c1f78283ac412246bf3eff042d25835e043d29c"
+    },
+    {
+      "bytes": 481561,
+      "path": "qa-grayscale.png",
+      "sha256": "5ec91cb39af41741a5d5b161b5bdb0fd2c5c3518b61a67fea580231e214272b1"
+    },
+    {
+      "bytes": 294465,
+      "path": "qa-pdf.png",
+      "sha256": "67e46c9d9e4b57ccc0e82be7cf52963fae2478ed5dfb0ebcbe14c06454d6d6e2"
+    },
+    {
+      "bytes": 1290,
+      "path": "qa-report.md",
+      "sha256": "8acc42de8c29ec6e7b715d424992efe3982023594bc8ed3eea533e3bc7a535c4"
+    }
+  ],
+  "publication": {
+    "allowed": true,
+    "copiesWrittenByRenderer": false,
+    "directory": "public/assets/r073b"
+  },
+  "qa": {
+    "checks": {
+      "allSourcesHashed": true,
+      "allValuesFinitePositiveWhereNeeded": true,
+      "blossomTopRightAndDataFree": true,
+      "finiteRowsExplicitlyN10": true,
+      "fourPanels": true,
+      "hardTwoChromaticRootCap": true,
+      "lineageStageVisible": true,
+      "nonColorRedundancy": true,
+      "oppositeLineageStageAbsent": true,
+      "outerCornersWhite": true,
+      "panelAThirteenDistinctMu": true,
+      "panelBFourTriplets": true,
+      "panelC61PerCurve": true,
+      "panelCounts": true,
+      "panelDPredictionAndObservedCounts": true,
+      "pdfEmbeddedFonts": true,
+      "pdfNoRasterImages": true,
+      "pdfOnePage": true,
+      "pdfPhysicalDimensions": true,
+      "pngDpiMetadata": true,
+      "pngPhysicalDimensions": true,
+      "requiredVisibleBoundaries": true,
+      "svgPhysicalDimensions": true,
+      "totalRowCount": true
+    },
+    "croppingInspected": true,
+    "dataCrossChecked": true,
+    "details": {
+      "pdf": {
+        "embeddedFontCount": 2,
+        "heightMillimetres": 150.0000175,
+        "pages": 1,
+        "rasterImageCount": 0,
+        "widthMillimetres": 177.9999897222222
+      },
+      "png": {
+        "corners": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "pixels": [
+          4205,
+          3543
+        ]
+      }
+    },
+    "finalSizeInspected": true,
+    "fontEmbeddingInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "previews": [
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png"
+    ],
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "randomSeed": null,
+  "release": "R0.73B",
+  "renderer": "custom SVG + ReportLab vector PDF + Pillow raster",
+  "runtime": {
+    "environmentThreadCaps": {
+      "OMP_NUM_THREADS": "unset",
+      "OPENBLAS_NUM_THREADS": "unset",
+      "VECLIB_MAXIMUM_THREADS": "unset"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "requestedThreads": 1
+  },
+  "schemaVersion": 1,
+  "sourceData": [
+    {
+      "bytes": 772869,
+      "path": "experiments/r073b/weighted_propagator_rows.csv",
+      "role": "validated 1,960-row finite N=10 propagator screen",
+      "sha256": "6c69ddb4112cf06c91fe03eb23f4a782b330ad2825007db8746676f4a78dd241"
+    },
+    {
+      "bytes": 15907,
+      "path": "experiments/r073b/targeted_asymptotics.csv",
+      "role": "validated 245-row targeted asymptotic screen",
+      "sha256": "8103339924a008a58ee643325aa0c0c715d897b0f1bdff160a1878765d0ebf31"
+    },
+    {
+      "bytes": 1555,
+      "path": "experiments/r073b/contract.json",
+      "role": "finite experiment data contract",
+      "sha256": "a7d82e89ebfcd41b109ffb0772d562cf01212b8350e831290e9edeb4bd945b2a"
+    },
+    {
+      "bytes": 26767,
+      "path": "experiments/r073b/validation.json",
+      "role": "independent experiment validation",
+      "sha256": "93e9dd55a8fe701509b949a683f5d66dce8faf38ff54bf9a1d766c0f4c407342"
+    },
+    {
+      "bytes": 1353,
+      "path": "experiments/r073b/manifest.json",
+      "role": "finite experiment provenance manifest",
+      "sha256": "74420bbc734392dffcd68d17b77c609f6821b682a1e6f8c74433fc1669d74b8e"
+    },
+    {
+      "bytes": 16057,
+      "path": "research/certificates/r073b/certificate.json",
+      "role": "R0.73B algebra and finite-crosscheck certificate",
+      "sha256": "649bc56599de57836b092359e49498987a4c2afb792e22e5d70d2901e4410401"
+    },
+    {
+      "bytes": 1169,
+      "path": "research/certificates/r073b/validation.json",
+      "role": "independent certificate validation",
+      "sha256": "9bfc13dc5ce32691e3648d540df9ae02f3e077a6ef8f87088d0d826abe322316"
+    },
+    {
+      "bytes": 15779,
+      "path": "research/certificates/r073b/manifest.json",
+      "role": "certificate source-binding manifest",
+      "sha256": "aef4bce6aa554877e17f863a91aa21ed18ae0ff55caae6df3744acf9c1c093b3"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Physical kinetic energy is the critical diagonal weight on the fixed-Lambda low-gap path: the analytic complete-row envelope is uniform in the gap, while fixed nonzero c and raw q have singular low-gap scaling. The plotted propagator gains and exponent fits are validated finite N=10 diagnostics only; the triangular curve is an explicit finite-matrix low-gap limit and no Galerkin tail, exact maximum transient, A2 direct sum, nonlinear closure, or Clay implication is claimed.",
+  "upstream": {
+    "certificate": {
+      "bytes": 16057,
+      "path": "research/certificates/r073b/certificate.json",
+      "sha256": "649bc56599de57836b092359e49498987a4c2afb792e22e5d70d2901e4410401"
+    },
+    "certificateManifest": {
+      "bytes": 15779,
+      "path": "research/certificates/r073b/manifest.json",
+      "sha256": "aef4bce6aa554877e17f863a91aa21ed18ae0ff55caae6df3744acf9c1c093b3"
+    },
+    "certificateValidation": {
+      "bytes": 1169,
+      "path": "research/certificates/r073b/validation.json",
+      "sha256": "9bfc13dc5ce32691e3648d540df9ae02f3e077a6ef8f87088d0d826abe322316"
+    },
+    "experimentContract": {
+      "bytes": 1555,
+      "path": "experiments/r073b/contract.json",
+      "sha256": "a7d82e89ebfcd41b109ffb0772d562cf01212b8350e831290e9edeb4bd945b2a"
+    },
+    "experimentManifest": {
+      "bytes": 1353,
+      "path": "experiments/r073b/manifest.json",
+      "sha256": "74420bbc734392dffcd68d17b77c609f6821b682a1e6f8c74433fc1669d74b8e"
+    },
+    "experimentValidation": {
+      "bytes": 26767,
+      "path": "experiments/r073b/validation.json",
+      "sha256": "93e9dd55a8fe701509b949a683f5d66dce8faf38ff54bf9a1d766c0f4c407342"
+    },
+    "mainRows": {
+      "bytes": 772869,
+      "path": "experiments/r073b/weighted_propagator_rows.csv",
+      "sha256": "6c69ddb4112cf06c91fe03eb23f4a782b330ad2825007db8746676f4a78dd241"
+    },
+    "targetedRows": {
+      "bytes": 15907,
+      "path": "experiments/r073b/targeted_asymptotics.csv",
+      "sha256": "8103339924a008a58ee643325aa0c0c715d897b0f1bdff160a1878765d0ebf31"
+    }
+  }
+}

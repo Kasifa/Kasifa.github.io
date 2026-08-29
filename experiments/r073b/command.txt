@@ -1,0 +1,12 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073B_DEPS=/private/tmp/r073a-scipy.9Zltb9
+
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONPATH=$R073B_DEPS \
+$CODEX_PYTHON experiments/r073b/weighted_kinetic_screen.py \
+  --out experiments/r073b --N 10 --dt 0.0025 --overwrite
+
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONPATH=$R073B_DEPS \
+$CODEX_PYTHON experiments/r073b/validate_weighted_kinetic_screen.py \
+  --directory experiments/r073b --overwrite

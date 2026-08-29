@@ -1,0 +1,12 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+$CODEX_PYTHON research/certificates/r073b/independent_recompute.py
+$CODEX_PYTHON research/certificates/r073b/generate_certificate.py --self-test
+$CODEX_PYTHON research/certificates/r073b/validate_certificate.py --self-test
+
+$CODEX_PYTHON research/certificates/r073b/generate_certificate.py --source-stage
+$CODEX_PYTHON research/certificates/r073b/validate_certificate.py --require-source-stage
+
+$CODEX_PYTHON research/certificates/r073b/generate_certificate.py \
+  --formal --source-commit <40-lowercase-hex>
+$CODEX_PYTHON research/certificates/r073b/validate_certificate.py --require-formal

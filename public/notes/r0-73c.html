@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73C：三次中性谱与经区间认证的无穷维冻结 Rayleigh 不稳定；黏性快时间传递仍开放。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73C｜Certified frozen Rayleigh instability">
+  <meta property="og:description" content="C3 与 C4 CLOSED；C5 OPEN；C6 CONDITIONAL；nonlinear 与 Clay 保持 OPEN。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073c/fig-r073c-certified-rayleigh-instability.png">
+  <title>R0.73C｜Certified frozen Rayleigh instability</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.43"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">结论</a><a href="#operator">算子</a><a href="#neutral">中性谱</a><a href="#singular">奇异边界</a><a href="#monodromy">单值矩阵</a><a href="#interval">区间证明</a><a href="#independent">独立复算</a><a href="#finite">有限诊断</a><a href="#transfer">C5</a><a href="#conditional">条件推论</a><a href="#evidence">证据</a><a href="#figure">附图</a><a href="#value">价值</a><a href="#next">下一步</a><a href="#reproduce">复现</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73C · CUBIC NEUTRAL LEVEL · CERTIFIED RAYLEIGH INSTABILITY</div>
+        <h1>我闭合了三次零点的精确中性谱，<br>并认证一条真正的无穷维冻结不稳定行</h1>
+        <p class="lead">双谐波碰撞剖面在 \(\gamma_0=\sqrt7/2\) 有唯一负奇异阈值；在 \(\gamma=1/2\) 上，周期单值矩阵的严格区间异号进一步给出 \(\sigma_*\in(0.17035,0.17050)\) 的正实特征值。它不是 Fourier 截断外推。黏性谱延拓和非自治快时间传递仍为 OPEN。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73C frozen Rayleigh theorem 完成</span><strong>Certified frozen instability</strong><p>版本 v0.73C · 2026-08-30</p><p>C3 exact neutral spectrum: CLOSED</p><p>C4 frozen Rayleigh instability: CLOSED</p><p>C5 fast-time transfer: OPEN</p><p>C6 super-polynomial no-go: CONDITIONAL</p><p>A2 / nonlinear / Clay: OPEN</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct decision</a></li>        <li><a href="#operator">01 · frozen operator</a></li>        <li><a href="#neutral">02 · cubic neutral level</a></li>        <li><a href="#singular">03 · singular boundary</a></li>        <li><a href="#monodromy">04 · periodic monodromy</a></li>        <li><a href="#interval">05 · interval theorem</a></li>        <li><a href="#independent">06 · independent arithmetic</a></li>        <li><a href="#finite">07 · finite diagnostic</a></li>        <li><a href="#transfer">08 · C5 correction</a></li>        <li><a href="#conditional">09 · conditional consequence</a></li>        <li><a href="#evidence">10 · evidence boundary</a></li>        <li><a href="#figure">11 · journal figure</a></li>        <li><a href="#value">12 · value</a></li>        <li><a href="#next">13 · R0.73D</a></li>        <li><a href="#reproduce">14 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct decision</div><h2>冻结无穷维 Rayleigh 不稳定已经闭合；黏性传递与 Clay 没有闭合</h2><div class="verdict-grid"><div class="verdict-card true"><strong>CLOSED · EXACT CUBIC LEVEL</strong><p>exactCubicNeutralSpectrum=CLOSED；\(\gamma_0=\sqrt7/2\)，奇异 Sturm--Liouville 算子的唯一负阈值为 \(-7/4\)。</p></div><div class="verdict-card true"><strong>CLOSED · INFINITE-DIMENSIONAL FROZEN MODE</strong><p>infiniteDimensionalFrozenRayleighInstability=CLOSED；\(\gamma=1/2\) 时存在 \(\sigma_*\in(0.17035,0.17050)\) 的正实点谱。</p></div><div class="verdict-card false"><strong>OPEN / CONDITIONAL · TRANSFER</strong><p>frozenInstabilityFastTimeTransfer=OPEN；superPolynomialCompleteRowNoGo=CONDITIONAL。小系数乘无界黏性算子不能当作有界小扰动。</p></div><div class="verdict-card false"><strong>OPEN · STRONGER TARGETS</strong><p>sharpLargeLambdaGrowthLaw=OPEN；completeOSSquireA2DirectSum=OPEN；nonlinearNavierStokes=OPEN；Clay=OPEN。</p></div></div></section>
+        <section id="operator"><div class="section-no">01 / Frozen operator</div><h2>先固定一条二维 Fourier 行和相速度号约定</h2><div class="equation result">\[A_\gamma(0)=-i\gamma\bigl(M_{W_0}+M_{W_0''}L_{\gamma^2}^{-1}\bigr),\qquad W_0=-\tfrac12\sin x+\tfrac14\sin2x.\]</div><div class="equation result">\[(W_0-c)(\phi''-\gamma^2\phi)-W_0''\phi=0,\qquad \sigma=-i\gamma c.\]</div><p>取 \(c=i\eta\)、\(\eta>0\) 时，时间特征值为 \(\sigma=\gamma\eta>0\)。本节只研究这个冻结线性行。</p></section>
+        <section id="neutral"><div class="section-no">02 / Exact cubic neutral level</div><h2>周期 Sobolev 模态与 Pöschl--Teller 谱把 C3 完整闭合</h2><div class="equation result">\[W_0=-2\sin^3(x/2)\cos(x/2),\qquad \phi_0=|\sin(x/2)|^3\in C^2\cap H^2_{\rm per}.\]</div><div class="equation result">\[\left(-\partial_x^2+\frac{W_0''}{W_0}\right)\phi_0=-\frac74\phi_0,\qquad \sigma(H_0)=\left\{\frac{(n+3)^2-16}{4}\right\}_{n\ge0}.\]</div><p>因此 \(-7/4\) 是唯一负奇异阈值，\(\gamma_0=\sqrt7/2\) 给出精确中性模态。周期延拓不是 \(C^3\)，但端点一阶导数匹配，不产生 delta 质量。</p></section>
+        <section id="singular"><div class="section-no">03 / Singular boundary</div><h2>三次零点阻止直接套用正则 Tollmien--Lin 延拓</h2><div class="equation result">\[W_0(x)=-\frac{x^3}{4}+O(x^5),\qquad -\frac{W_0''}{W_0}=-\frac6{x^2}+O(1).\]</div><p>中性相速度嵌在本质谱内，有效势既无界也不局部可积。C4 因而不从中性模态自动推出，而改在无奇点的 \(c=i\eta\) 线上直接认证。</p></section>
+        <section id="monodromy"><div class="section-no">04 / Periodic monodromy</div><h2>周期单值矩阵的实迹把谱问题降为一个连续实函数的零点</h2><div class="equation result">\[\phi''=Q_\eta\phi,\qquad Q_\eta=\frac14+\frac{W_0''}{W_0-i\eta},\qquad M(\eta)=Y_\eta(2\pi).\]</div><div class="equation result">\[\det M=1,\qquad M^{-1}=S\overline M S,\qquad F(\eta)=\operatorname{tr}M(\eta)-2\in\mathbb R.\]</div><p>又有 \(\det(M-I)=2-\operatorname{tr}M\)，所以存在非零周期解当且仅当 \(F(\eta)=0\)。</p></section>
+        <section id="interval"><div class="section-no">05 / Validated interval theorem</div><h2>两组 Picard--Taylor 区间运行在同一对端点给出严格异号</h2><div class="equation result">\[F(0.3407)&lt;0,\qquad F(0.3410)&gt;0.\]</div><p>主程序把三角函数和两列基本解自治化为十二维实系统；每一步先验证整步 Picard 包含，再用正规化 Taylor 系数和区间 Lagrange 余项封住终点。运行 A 使用 1024 步、10 阶、40 位；运行 B 使用 768 步、12 阶、55 位。两次都给严格异号。</p><div class="equation result">\[\exists\eta_*\in(0.3407,0.3410),\qquad \sigma_*=\eta_*/2\in(0.17035,0.17050).\]</div></section>
+        <section id="independent"><div class="section-no">06 / Independent arithmetic</div><h2>标准库 Decimal 内核独立复算同一严格符号</h2><p>独立验证器不导入主程序、mpmath、NumPy 或 SciPy；它用 ROUND_FLOOR / ROUND_CEILING、Machin 公式的 \(\pi\) 包含和另一套 Picard--Taylor 实现，在 256 步、8 阶、80 位下重算两个端点。两份正式 JSON 字节一致，determinant 与 imaginary-trace sentinels 同时通过。</p></section>
+        <section id="finite"><div class="section-no">07 / Finite diagnostic</div><h2>Fourier--Galerkin 只做独立定位，不承担 C4 证明</h2><div class="equation result">\[\sigma_N\approx0.170407976920434\qquad(N=32,48,64,96,128).\]</div><p>这个值落在严格区间内。独立有限验证复核特征值、残差、投影和 sampled winding；由于没有无穷维 tail enclosure，它只标为 finite diagnostic。</p></section>
+        <section id="transfer"><div class="section-no">08 / C5 correction</div><h2>无界黏性算子使“冻结模态直接传递”这一步失效</h2><div class="equation result">\[\partial_\theta q=\operatorname{sgn}(\Lambda)A_{1/2}(\theta/|\Lambda|)q-|\Lambda|^{-1}L_{1/4}q.\]</div><p>在 physical kinetic space 中，\(-|\Lambda|^{-1}L_{1/4}\) 对每个有限 \(|\Lambda|\) 都是无界算子。下一关必须建立黏性特征值延拓、统一 Riesz 围道、补空间 dichotomy 与 graph-domain-compatible Kato transport；这些条件目前没有被证明。</p></section>
+        <section id="conditional"><div class="section-no">09 / Conditional consequence</div><h2>超多项式 complete-row no-go 只在 C5 闭合后成立</h2><div class="equation result">\[\|U_{\varepsilon,+}(M\log(1/\varepsilon),0)q_\varepsilon\|_{\mathcal K_{1/4}}\ge c_M\varepsilon^{-M\sigma_*+o_M(1)}.\]</div><p>这是明确列出谱延拓、投影、dichotomy 与 Kato 条件后的条件推论；现在不能把它写成无条件 large-\(|\Lambda|\) 增长定理，也没有证明根唯一或代数单性。</p></section>
+        <section id="evidence"><div class="section-no">10 / Evidence boundary</div><h2>解析桥、区间证书、独立复算和有限诊断各自承担不同任务</h2><p>C3 由精确奇异谱承担；C4 由实迹、周期判据、连续性和严格端点异号共同承担；Decimal 复算验证算术独立性；Fourier screen 只用于定位和排错。任何有限 contour sampling 都不被称为无穷维 Riesz 证书。</p></section>
+        <section id="figure"><div class="section-no">11 / Journal figure</div><h2>中性谱、单值迹异号、有限交叉验证与下一缺口分面展示</h2><p><img src="/assets/r073c/fig-r073c-certified-rayleigh-instability.svg" alt="R0.73C certified cubic neutral spectrum and frozen Rayleigh instability"></p><p><a href="/assets/r073c/fig-r073c-certified-rayleigh-instability.pdf">下载 PDF</a> · <a href="/assets/r073c/fig-r073c-certified-rayleigh-instability.png">下载 PNG</a> · <a href="/assets/r073c/fig-r073c-certified-rayleigh-instability.svg">打开 SVG</a></p></section>
+        <section id="value"><div class="section-no">12 / Research value</div><h2>这把大参数路线从纯非正规瞬态问题改写成谱不稳定与黏性延拓问题</h2><p>严格增量是一个固定、可复核的无穷维不稳定行和增长率区间。它为下一节提供具体谱目标，也暴露真正缺口是 vanishing-viscosity persistence，而不是继续扩大有限矩阵扫描。它仍只是一条冻结二维线性行，离三维 nonlinear closure 和 Clay 很远。</p></section>
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.73D：冻结黏性 Evans/Riesz 延拓问题</h2><p>先证明 \(B_{\varepsilon,+}(0)=A_{1/2}(0)-\varepsilon L_{1/4}\) 存在 \(\lambda_\varepsilon\to\sigma_*\) 的特征值，并在共同围道上统一控制 Riesz 投影；只有随后闭合补空间 resolvent，才进入非自治 Kato transport。</p></section>
+        <section id="reproduce"><div class="section-no">14 / Reproduction</div><h2>完整报告、解析证明、双区间内核、有限诊断和正式附图</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073c_report-source.md">完整数学报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073c_monodromy_proof.md">单值迹证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073c_independent_analytic_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073c_literature_audit.md">文献边界审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073c">正式证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073c">区间与有限实验</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073c/fig-r073c-certified-rayleigh-instability">正式附图包</a> · <a href="/notes/r0-73c.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73c.html">累计回顾</a> · <a href="/recap-r0-61-r0-73c.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录推导、反例和未解决的问题。</div><div>研究笔记 R0.73C · 2026-08-30<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

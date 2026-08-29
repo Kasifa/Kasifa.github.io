@@ -1,4 +1,8 @@
 {
+  "analyticalQuestion": "Does the cubic collision profile have an exact neutral level and a rigorously certified infinite-dimensional frozen Rayleigh unstable mode?",
+  "caption": {
+    "english": "caption.md"
+  },
   "claimBoundary": {
     "algebraicSimplicity": false,
     "clayMillenniumProblemSolved": false,
@@ -11,13 +15,84 @@
     "smoothTraceCurveItselfIsCertified": false,
     "viscousSpectralPersistence": false
   },
+  "computation": {
+    "configuration": "config.json",
+    "diagnosticOnly": false,
+    "finiteDimensionalOnly": false,
+    "formalCommand": "python3 validate.py --source-commit <40-hex> --certificate-commit <40-hex>",
+    "kind": "closed-form sampling plus validated finite CSV ingestion",
+    "precision": "outward-rounded interval inputs with IEEE-754 binary64 presentation sampling",
+    "scientificWallTimeSeconds": 0.0,
+    "solver": "validated periodic-ODE endpoint ingestion, closed-form neutral mode evaluation, and diagnostic finite Fourier ingestion"
+  },
+  "compute": {
+    "cpu": "arm64",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS 26.6.2 build 25G83 arm64",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
   "created": "2026-08-30",
+  "createdAt": "2026-08-30T00:00:00+08:00",
+  "data": [
+    {
+      "bytes": 1096,
+      "path": "results.json",
+      "schema": "R0.73C plotted-value and claim-boundary ledger",
+      "sha256": "9a7e4046e46d0c421e6018f35a322f641ecabad3280bd6981166907ed07871b7"
+    },
+    {
+      "bytes": 948,
+      "path": "validation.json",
+      "schema": "R0.73C structural and visual-QA validation",
+      "sha256": "1ec4efdb8973976f4b005d0cba8a449a154bd81761aa4ea8a2b0c33e5cb2cd0b"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "python": "3.12.13",
+    "scipy": "1.16.1"
+  },
+  "figure": {
+    "heightMillimetres": 132,
+    "layout": "four-panel theorem, certificate, diagnostic, and boundary figure",
+    "outputs": [
+      {
+        "bytes": 33701,
+        "path": "figure.pdf",
+        "sha256": "16a518129f0d21fc9273eb7f13d6e10b0166183a1f0e5614943cda9e4d8e4c5a"
+      },
+      {
+        "bytes": 76878,
+        "path": "figure.svg",
+        "sha256": "c39da52b4d610c2d393c4ab24a2d3b3057a651962f3504366b29e29eddd0dc5b"
+      },
+      {
+        "bytes": 751422,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4200,
+          3114
+        ],
+        "sha256": "082fc316979b7e830b79446e86ca51469439fc9c9577284f19dd84b46d4e0660"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178
+  },
   "figureId": "fig-r073c-certified-rayleigh-instability",
   "files": [
     {
-      "bytes": 718,
+      "bytes": 868,
       "path": "figures/r073c/fig-r073c-certified-rayleigh-instability/README.md",
-      "sha256": "75259f834e5b81601e55a5b12a46dac47fe4bef202e6097b91f3ccb31ce15cb9"
+      "sha256": "01965c4b41e02d0bb463865a3c31ba30d73686506cd57b71dd71df1e25554372"
     },
     {
       "bytes": 905,
@@ -25,9 +100,9 @@
       "sha256": "2cdae4fa1b211658c1553d81c8a87ed5270481c86d109feec80b79a7b7f13a95"
     },
     {
-      "bytes": 373,
+      "bytes": 427,
       "path": "figures/r073c/fig-r073c-certified-rayleigh-instability/command.txt",
-      "sha256": "2bce8723b553951085879259c264b0262b87c60a28b6101b6c9c7c0e912dcc92"
+      "sha256": "a94a3f4c2b4491c88fdbf3f7eb64969f4e169ad3b65d0ec8926218e6ad9edc9b"
     },
     {
       "bytes": 365,
@@ -70,9 +145,9 @@
       "sha256": "022a837a50dfd2e14d075adad7dec6554b89f84fb2a07feb391ee6510f2263eb"
     },
     {
-      "bytes": 5642,
+      "bytes": 11149,
       "path": "figures/r073c/fig-r073c-certified-rayleigh-instability/validate.py",
-      "sha256": "a0fda42479be1a42c921f1370efc6fe68e3ccf908aba1a663ef0d4ff4f363edf"
+      "sha256": "7d50ced07a7aece7ec949fb3757f1a95cecdf1b1c26d276e975e37f248baa3c3"
     },
     {
       "bytes": 33701,
@@ -120,6 +195,12 @@
       "sha256": "1ec4efdb8973976f4b005d0cba8a449a154bd81761aa4ea8a2b0c33e5cb2cd0b"
     }
   ],
+  "git": {
+    "certificateCommit": "f5b8b78d070bc0c3732c06c947231c692284d536",
+    "dirtyAtCertifiedRun": false,
+    "repository": "Kasifa/Kasifa.github.io",
+    "sourceCommit": "f5ee8b4f0891c35ec449a18227dc54525e767999"
+  },
   "inputBindings": [
     {
       "path": "experiments/r073c/interval_run_b.json",
@@ -140,19 +221,65 @@
     "figure.png"
   ],
   "publication": {
+    "assets": [
+      {
+        "bytes": 33701,
+        "path": "public/assets/r073c/fig-r073c-certified-rayleigh-instability.pdf",
+        "sha256": "16a518129f0d21fc9273eb7f13d6e10b0166183a1f0e5614943cda9e4d8e4c5a"
+      },
+      {
+        "bytes": 76878,
+        "path": "public/assets/r073c/fig-r073c-certified-rayleigh-instability.svg",
+        "sha256": "c39da52b4d610c2d393c4ab24a2d3b3057a651962f3504366b29e29eddd0dc5b"
+      },
+      {
+        "bytes": 751422,
+        "path": "public/assets/r073c/fig-r073c-certified-rayleigh-instability.png",
+        "sha256": "082fc316979b7e830b79446e86ca51469439fc9c9577284f19dd84b46d4e0660"
+      }
+    ],
     "byteIdentityRequired": true,
     "directory": "public/assets/r073c",
-    "fileStem": "fig-r073c-certified-rayleigh-instability"
+    "fileStem": "fig-r073c-certified-rayleigh-instability",
+    "publicCopiesComplete": true
   },
   "qa": {
+    "dataCrossChecked": true,
     "finalSize": "qa-final-size.png",
+    "finalSizeInspected": true,
     "grayscale": "qa-grayscale.png",
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
     "pdfRaster": "qa-pdf.png",
+    "previews": [
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png"
+    ],
     "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
     "status": "passed",
     "visualInspectionExplicit": true
   },
   "release": "R0.73C",
   "schemaVersion": "r073c-figure-manifest-v1",
-  "status": "formal"
+  "sourceData": [
+    {
+      "path": "experiments/r073c/interval_run_b.json",
+      "role": "certified input or independent finite diagnostic",
+      "sha256": "6a9282b7006ddefd0b1da2340db4679ae8d4cb248e8de3d0d5674b283d718eb0"
+    },
+    {
+      "path": "experiments/r073c/fourier_screen.json",
+      "role": "certified input or independent finite diagnostic",
+      "sha256": "b9906f0a7d513c672e4e9bc847172af0e22bbe2fdd6ef21f4106c3432c6a57e0"
+    },
+    {
+      "path": "experiments/r073c/independent_fourier_validation.json",
+      "role": "certified input or independent finite diagnostic",
+      "sha256": "5199a025b788fe356c236295b24c418346d67777a136114e0c4002db5ee6e7c9"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "The exact cubic neutral spectrum is closed and a positive frozen Rayleigh point eigenvalue exists with sigma in (0.17035,0.17050). Finite Fourier rows are diagnostic only; viscous persistence, nonautonomous transfer, nonlinear Navier--Stokes closure, and the Clay problem remain open."
 }

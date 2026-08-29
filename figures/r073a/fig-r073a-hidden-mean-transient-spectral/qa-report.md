@@ -1,0 +1,60 @@
+# R0.73A figure QA
+
+- manifest stage: draft
+- explicit visual inspection: yes
+- final-size, grayscale, and independent PDF previews generated: yes
+- hidden-mean derivative, singular limit, J kernel, and envelope recomputed: yes
+- finite frozen metrics verified against pinned upstream data: yes
+- simulation, fitted curve, or synthetic certificate used: no
+- two chromatic roots plus redundant non-color encodings: yes
+- finite-dimensional, certificate, and open-claim boundaries visible: yes
+- PDF vector, embedded-font, one-page, and page-size checks: see validation.json
+- maximum gain, tail, physical direct sum, nonlinear, and Clay claims remain open: yes
+
+## Machine checks
+
+- rowCount: PASS
+- panelARecordCount: PASS
+- panelBAnalyticRecordCount: PASS
+- panelBRecordCountIncludesCertificate: PASS
+- panelCRecordCount: PASS
+- hiddenMeanRecomputed: PASS
+- singularLimitRecomputed: PASS
+- singularLimitNonzeroAtDZero: PASS
+- transientJRecomputed: PASS
+- analyticEnvelopeRecomputed: PASS
+- frozenDiagnosticsTransformed: PASS
+- panelCDomainsContainAllDataWithPadding: PASS
+- certificateRowsValidIfPresent: PASS
+- targetSourceHashPinned: PASS
+- targetValidationHashPinned: PASS
+- normalizedBracketBoundaryVisible: PASS
+- abstractTangentBoundaryVisible: PASS
+- fixedLambdaBoundaryVisible: PASS
+- bracketFactorExclusionVisible: PASS
+- formulaAnnotationsOutsideDataRects: PASS
+- panelBJLegendVisible: PASS
+- panelBEnvelopeLegendVisible: PASS
+- certificateDependencyVisible: PASS
+- finiteDimensionalBoundaryVisible: PASS
+- fixedProjectionBoundaryVisible: PASS
+- tailBoundaryVisible: PASS
+- openBoundaryVisible: PASS
+- noSimulationBoundaryVisible: PASS
+- hardTwoChromaticRootCap: PASS
+- redundantEncoding: PASS
+- threePanels: PASS
+- vectorSvg: PASS
+- vectorPdf: PASS
+- pngAt600Dpi: PASS
+- finalSizePreviewGenerated: PASS
+- grayscalePreviewGenerated: PASS
+- independentPdfPreviewGenerated: PASS
+- pdfOnePage: PASS
+- pdfPhysicalDimensions: PASS
+- pdfEmbeddedFonts: PASS
+- pdfNoRasterImages: PASS
+- svgPhysicalDimensions: PASS
+- pngPhysicalDimensions: PASS
+- pngDpiMetadata: PASS
+- outerCornersWhite: PASS

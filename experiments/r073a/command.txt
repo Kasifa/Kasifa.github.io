@@ -1,0 +1,13 @@
+# Install wheels outside the repository.
+R073A_DEPS_DIR=$(mktemp -d /tmp/r073a-scipy.XXXXXX)
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m pip install --disable-pip-version-check --no-input --target "$R073A_DEPS_DIR" -r experiments/r073a/requirements.txt
+
+# Deterministic one-thread audit.
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
+experiments/r073a/frozen_os_spectral_audit.py \
+--deps "$R073A_DEPS_DIR" --target-N 12,18,24,32,40 --overwrite
+
+# Independent validation.
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
+experiments/r073a/validate_frozen_os_spectral_audit.py --deps "$R073A_DEPS_DIR"

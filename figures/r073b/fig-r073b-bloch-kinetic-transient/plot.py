@@ -1222,9 +1222,14 @@ def check_formal_lineage(source_commit: str, certificate_commit: str,
                 "existing formal outputs are never overwritten")
 
 
-def file_record(name: str) -> dict[str, Any]:
+def file_record(name: str, **extra: Any) -> dict[str, Any]:
     path = PACKAGE / name
-    return {"path": name, "bytes": path.stat().st_size, "sha256": sha256(path)}
+    return {
+        "path": name,
+        "bytes": path.stat().st_size,
+        "sha256": sha256(path),
+        **extra,
+    }
 
 
 def build_results(rows: list[dict[str, str]], evidence: dict[str, Any]) -> dict[str, Any]:
@@ -1304,6 +1309,24 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
                    certificate_commit: str, rows: list[dict[str, str]],
                    evidence: dict[str, Any], checks: dict[str, bool],
                    details: dict[str, Any]) -> dict[str, Any]:
+    contract = read_json(PACKAGE / "contract.json")
+    chart_contract = contract["chartContract"]
+    package_versions = {
+        "pillow": __import__("PIL").__version__,
+        "reportlab": __import__("reportlab").Version,
+        "pypdf": __import__("pypdf").__version__,
+    }
+    try:
+        memory_gib: float | str = round(
+            os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")
+            / (1024 ** 3),
+            3,
+        )
+    except (AttributeError, OSError, ValueError):
+        memory_gib = "unavailable"
+    with Image.open(PACKAGE / "figure.png") as figure_png:
+        png_pixels = [figure_png.width, figure_png.height]
+    qa_passed = visual_inspected and all(checks.values())
     outputs = [file_record(name) for name in SOURCE_FILES]
     for name in ("data.csv", "results.json", "validation.json", "figure.svg",
                  "figure.pdf", "figure.png", "qa-final-size.png",
@@ -1315,9 +1338,64 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
         "release": RELEASE,
         "status": status,
         "createdAt": "2026-08-29T00:00:00+08:00",
+        "analyticalQuestion": chart_contract["analyticalQuestion"],
+        "supportedClaim": (
+            "Physical kinetic energy is the critical diagonal weight on the "
+            "fixed-Lambda low-gap path: the analytic complete-row envelope is "
+            "uniform in the gap, while fixed nonzero c and raw q have singular "
+            "low-gap scaling. The plotted propagator gains and exponent fits are "
+            "validated finite N=10 diagnostics only; the triangular curve is an "
+            "explicit finite-matrix low-gap limit and no Galerkin tail, exact "
+            "maximum transient, A2 direct sum, nonlinear closure, or Clay "
+            "implication is claimed."
+        ),
         "deterministic": True,
         "randomSeed": None,
         "renderer": "custom SVG + ReportLab vector PDF + Pillow raster",
+        "git": {
+            "repository": "Kasifa/Kasifa.github.io",
+            "sourceCommit": source_commit,
+            "certificateCommit": certificate_commit,
+            "dirtyAtCertifiedRun": False if status == "formal" else "pending",
+        },
+        "computation": {
+            "kind": "closed-form sampling plus validated finite CSV ingestion",
+            "configuration": "config.json",
+            "precision": "IEEE-754 binary64 presentation sampling; upstream complex128",
+            "solver": (
+                "direct analytic formula evaluation, independent scalar 5x5 "
+                "power iteration, and read-only validated finite N=10 CSV ingestion"
+            ),
+            "formalCommand": (
+                "python3 plot.py --formal --visual-inspected "
+                "--source-commit <40-hex> --certificate-commit <40-hex>"
+            ),
+            "wallTimeSeconds": 0.0,
+            "wallTimePolicy": (
+                "renderer wall time is not used in a mathematical claim; "
+                "zero records the deterministic exact-audit sampler policy"
+            ),
+            "randomSeed": None,
+            "diagnosticOnly": True,
+            "finiteDimensionalOnly": True,
+            "syntheticDataAllowed": False,
+        },
+        "compute": {
+            "host": platform.node() or "local-host",
+            "operatingSystem": (
+                f"{platform.system()}-{platform.release()}-{platform.machine()}"
+            ),
+            "cpu": platform.processor() or platform.machine() or "unknown",
+            "memoryGiB": memory_gib,
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "gpu": "not used",
+        },
+        "environment": {
+            "python": platform.python_version(),
+            "packagesLock": "requirements.txt",
+            **package_versions,
+        },
         "runtime": {"python": platform.python_version(),
                     "platform": platform.platform(),
                     "requestedThreads": 1,
@@ -1333,27 +1411,63 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
                             "bytes": path.stat().st_size,
                             "sha256": evidence["hashes"][key]}
                      for key, path in evidence["paths"].items()},
-        "data": {"rows": len(rows), "path": "data.csv",
-                 "sha256": sha256(PACKAGE / "data.csv")},
-        "figure": {"widthMillimetres": WIDTH_MM,
+        "data": [
+            file_record("data.csv", rows=len(rows), schema=FIELDS),
+            file_record(
+                "results.json",
+                schema="panel summaries, finite diagnostics, and claim boundary ledger",
+            ),
+            file_record(
+                "validation.json",
+                schema="formula, provenance, vector/raster, and visible-boundary checks",
+            ),
+        ],
+        "sourceData": [
+            {
+                "path": str(path.relative_to(ROOT)),
+                "bytes": path.stat().st_size,
+                "sha256": evidence["hashes"][key],
+                "role": {
+                    "mainRows": "validated 1,960-row finite N=10 propagator screen",
+                    "targetedRows": "validated 245-row targeted asymptotic screen",
+                    "experimentContract": "finite experiment data contract",
+                    "experimentValidation": "independent experiment validation",
+                    "experimentManifest": "finite experiment provenance manifest",
+                    "certificate": "R0.73B algebra and finite-crosscheck certificate",
+                    "certificateValidation": "independent certificate validation",
+                    "certificateManifest": "certificate source-binding manifest",
+                }[key],
+            }
+            for key, path in evidence["paths"].items()
+        ],
+        "figure": {"profile": "journal-double-column",
+                   "layout": chart_contract["finalSurface"],
+                   "script": "plot.py",
+                   "widthMillimetres": WIDTH_MM,
                    "heightMillimetres": HEIGHT_MM,
                    "pngDpi": PNG_DPI,
-                   "outputs": [file_record(name) for name in
-                               ("figure.pdf", "figure.svg", "figure.png")]},
-        "qa": {"status": "passed" if visual_inspected and all(checks.values()) else "pending visual inspection",
+                   "outputs": [
+                       file_record("figure.pdf"),
+                       file_record("figure.svg"),
+                       file_record("figure.png", dpi=PNG_DPI, pixels=png_pixels),
+                   ]},
+        "caption": {"english": "caption.md"},
+        "qa": {"status": "passed" if qa_passed else "pending visual inspection",
                "visualInspectionExplicit": visual_inspected,
+               "finalSizeInspected": visual_inspected,
+               "grayscaleInspected": visual_inspected,
+               "labelsAndLegendsInspected": visual_inspected,
+               "scalesAndUnitsInspected": visual_inspected,
+               "dataCrossChecked": all(checks.values()),
+               "fontEmbeddingInspected": visual_inspected,
+               "croppingInspected": visual_inspected,
                "previews": ["qa-final-size.png", "qa-grayscale.png", "qa-pdf.png"],
                "checks": checks, "details": details, "report": "qa-report.md"},
         "outputs": outputs,
         "publication": {"allowed": status == "formal" and visual_inspected and all(checks.values()),
                         "directory": "public/assets/r073b",
                         "copiesWrittenByRenderer": False},
-        "claimBoundary": {"finiteN10Only": True,
-                          "galerkinTailBound": False,
-                          "exactMaximumTransientGain": False,
-                          "completeA2DirectSum": False,
-                          "nonlinearNavierStokes": False,
-                          "clayMillenniumProblemSolved": False},
+        "claimBoundary": contract["claimBoundary"],
     }
 
 

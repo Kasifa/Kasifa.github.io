@@ -1,0 +1,8 @@
+From the repository root, using the bundled scientific environment:
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073f/fig-r073f-fixed-window-roughness/plot.py --deps /tmp/r073c-deps
+
+PATH=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:$PATH /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 figures/r073f/fig-r073f-fixed-window-roughness/validate.py --deps /tmp/r073c-deps --qa-status pending
+
+After explicit inspection of all QA rasters, rerun the second command with
+`--qa-status passed --qa-note "final-size, grayscale, and PDF raster inspected"`.

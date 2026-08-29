@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "r073f-finite-config-v1",
+  "release": "R0.73F",
+  "diagnosticPhysicalEndpoint": 0.01,
+  "diagnosticEndpointIsCertifiedD0": false,
+  "primaryCutoff": 96,
+  "primaryEpsilons": [0.01, 0.005, 0.002, 0.001, 0.0005, 0.0003, 0.0002, 0.0001],
+  "cutoffComparison": {
+    "cutoffs": [24, 48, 96],
+    "epsilons": [0.01, 0.001, 0.0001]
+  },
+  "physicalSnapshots": [0.0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01],
+  "driftSamplePhysicalTimes": [0.001, 0.0025, 0.005, 0.0075, 0.01],
+  "primaryFastStep": 0.25,
+  "stepHalving": {
+    "cutoff": 96,
+    "epsilons": [0.01, 0.001, 0.0001],
+    "fastSteps": [0.5, 0.25, 0.125]
+  },
+  "independentSentinels": [
+    {"N": 96, "epsilon": 0.01},
+    {"N": 96, "epsilon": 0.001},
+    {"N": 96, "epsilon": 0.0001},
+    {"N": 48, "epsilon": 0.0001}
+  ],
+  "finiteTopRealTolerance": 1e-08,
+  "counterexampleSizes": [4, 8, 16, 32, 64, 128, 256],
+  "counterexamplePhaseGridCount": 1201,
+  "tolerances": {
+    "matrixConstructionMaximumAbsolute": 5e-13,
+    "projectorIdempotence": 5e-10,
+    "projectorCommutator": 5e-10,
+    "signGeneratorConjugacy": 5e-13,
+    "signGainAbsoluteLog": 2e-09,
+    "compositionRelative": 2e-08,
+    "independentLogGainAbsolute": 5e-07,
+    "independentNormalizedRateAbsolute": 5e-05,
+    "upperBoundSlack": 2e-09,
+    "driftRatioExcess": 2e-12,
+    "exactCounterexampleResidual": 2e-12
+  },
+  "claimBoundary": {
+    "finiteBinary64Diagnostic": true,
+    "diagnosticDIsCertifiedD0": false,
+    "finiteTopEqualsContinuumTop": false,
+    "ordinaryCutoffAgreementIsTailProof": false,
+    "finiteGainProvesContinuumDichotomy": false,
+    "sampledTimeIsContinuousTimeBound": false,
+    "finiteRateEqualsAnalyticKappa": false,
+    "counterexamplesDescribeExactFourierRow": false,
+    "nonlinearNavierStokes": false,
+    "Clay": false
+  }
+}

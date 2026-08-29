@@ -1,0 +1,8 @@
+R073F_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073f/moving_profile_diagnostic.py --deps "$R073F_DEPS_DIR" --config experiments/r073f/config.json --output-dir experiments/r073f
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073f/independent_validate.py --deps "$R073F_DEPS_DIR" --config experiments/r073f/config.json --primary experiments/r073f/summary.json --output experiments/r073f/independent_validation.json
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" experiments/r073f/finalize_package.py --directory experiments/r073f

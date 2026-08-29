@@ -69,6 +69,20 @@ EXPECTED_SOURCE_FILES = [
     "tests/r073b-bloch-kinetic-transient-figure-source.test.mjs",
 ]
 EXPECTED_OUTPUTS = ["certificate.json", "crosscheck.json", "manifest.json", "progress.ndjson"]
+EXPECTED_PACKAGE_FILES = [
+    "README.md",
+    "certificate.json",
+    "command.txt",
+    "crosscheck.json",
+    "environment.txt",
+    "generate_certificate.py",
+    "independent_recompute.json",
+    "independent_recompute.py",
+    "manifest.json",
+    "progress.ndjson",
+    "validate_certificate.py",
+    "validation.json",
+]
 
 
 def parse_args() -> argparse.Namespace:
@@ -86,6 +100,14 @@ def canonical(value: object) -> str:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_sums() -> None:
+    require(all((HERE / name).is_file() for name in EXPECTED_PACKAGE_FILES),
+            "certificate package inventory is incomplete")
+    rows = [f"{sha256(HERE / name)}  {name}"
+            for name in sorted(EXPECTED_PACKAGE_FILES)]
+    (HERE / "SHA256SUMS").write_text("\n".join(rows) + "\n")
 
 
 def require(condition: bool, message: str) -> None:
@@ -279,12 +301,15 @@ def main() -> int:
             "crosscheck file differs from embedded certificate")
 
     sums = {}
-    for line in (HERE / "SHA256SUMS").read_text().splitlines():
+    ledger_lines = (HERE / "SHA256SUMS").read_text().splitlines()
+    for line in ledger_lines:
         digest, name = line.split("  ", 1)
         sums[name] = digest
-    require(set(sums) == set(EXPECTED_OUTPUTS), "SHA256SUMS scope mismatch")
-    require(all(sha256(HERE / name) == sums[name] for name in EXPECTED_OUTPUTS),
-            "certificate output hash mismatch")
+    require(list(sums) == sorted(set(EXPECTED_PACKAGE_FILES)),
+            "SHA256SUMS scope or order mismatch")
+    require(all(sha256(HERE / name) == sums[name]
+                for name in EXPECTED_PACKAGE_FILES),
+            "certificate package hash mismatch")
 
     experiment = ROOT / "experiments/r073b"
     validation = json.loads((experiment / "validation.json").read_text())
@@ -398,6 +423,7 @@ def main() -> int:
         },
     }
     (HERE / "validation.json").write_text(canonical(result), encoding="utf-8")
+    write_sums()
     print(canonical(result), end="")
     return 0
 

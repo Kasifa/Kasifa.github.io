@@ -36,6 +36,12 @@ async function snapshot() {
 }
 
 async function verifyFlatHashLedger() {
+  const expected = [
+    "README.md", "certificate.json", "command.txt", "crosscheck.json",
+    "environment.txt", "generate_certificate.py", "independent_recompute.json",
+    "independent_recompute.py", "manifest.json", "progress.ndjson",
+    "validate_certificate.py", "validation.json",
+  ].sort();
   const rows = (await text(certificate + "/SHA256SUMS")).trimEnd().split("\n");
   const names = [];
   for (const row of rows) {
@@ -44,7 +50,7 @@ async function verifyFlatHashLedger() {
     assert.equal(await sha(certificate + "/" + match[2]), match[1], match[2]);
     names.push(match[2]);
   }
-  assert.deepEqual(names, [...new Set(names)].sort());
+  assert.deepEqual(names, expected);
 }
 
 test("R0.73B producer and validator independently pin exact algebra and finite-only boundaries", async () => {

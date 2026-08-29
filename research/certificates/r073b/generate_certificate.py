@@ -69,6 +69,20 @@ SOURCE_FILES = [
     "tests/r073b-bloch-kinetic-transient-figure-source.test.mjs",
 ]
 OUTPUTS = ["certificate.json", "crosscheck.json", "manifest.json", "progress.ndjson"]
+PACKAGE_FILES = [
+    "README.md",
+    "certificate.json",
+    "command.txt",
+    "crosscheck.json",
+    "environment.txt",
+    "generate_certificate.py",
+    "independent_recompute.json",
+    "independent_recompute.py",
+    "manifest.json",
+    "progress.ndjson",
+    "validate_certificate.py",
+    "validation.json",
+]
 
 Entry = Dict[str, Fraction]
 Matrix = List[List[Entry]]
@@ -556,7 +570,9 @@ def all_exact_pass(records: dict) -> bool:
 
 
 def write_sums() -> None:
-    lines = [f"{sha256(HERE / name)}  {name}" for name in OUTPUTS]
+    if not all((HERE / name).is_file() for name in PACKAGE_FILES):
+        raise AssertionError("certificate package inventory is incomplete")
+    lines = [f"{sha256(HERE / name)}  {name}" for name in sorted(PACKAGE_FILES)]
     (HERE / "SHA256SUMS").write_text("\n".join(lines) + "\n")
 
 

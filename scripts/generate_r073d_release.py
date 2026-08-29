@@ -19,7 +19,6 @@ from generate_r072o_release import (
     once,
     required,
     section,
-    verify_flat_hash_ledger,
 )
 from generate_r072p_release import assert_mathjax_clean
 from r073d_release_content import (
@@ -40,6 +39,30 @@ ROOT = Path(os.environ.get(
     "R073D_RELEASE_ROOT", Path(__file__).resolve().parents[1]
 )).resolve()
 PUBLIC = ROOT / "public"
+
+
+def verify_complete_flat_ledger(
+    directory: Path, label: str, *, require_directory_complete: bool = True
+) -> None:
+    rows = (directory / "SHA256SUMS").read_text(encoding="utf-8").splitlines()
+    names: list[str] = []
+    for row in rows:
+        match = re.fullmatch(r"([0-9a-f]{64})  ([^/\\\r\n]+)", row)
+        if match is None:
+            raise RuntimeError(label + ": malformed SHA256SUMS row")
+        name = match.group(2)
+        if name in names:
+            raise RuntimeError(label + ": duplicate SHA256SUMS entry " + name)
+        path = directory / name
+        if not path.is_file() or digest(path) != match.group(1):
+            raise RuntimeError(label + ": hash mismatch " + name)
+        names.append(name)
+    actual = sorted(
+        path.name for path in directory.iterdir()
+        if path.is_file() and path.name != "SHA256SUMS"
+    )
+    if require_directory_complete and sorted(names) != actual:
+        raise RuntimeError(label + ": SHA256SUMS inventory is incomplete")
 
 
 def git_commit_for(relative: str) -> str:
@@ -164,19 +187,24 @@ def validate_inputs() -> None:
     audit = (ROOT / "research/r073d_independent_analytic_audit.md").read_text(
         encoding="utf-8"
     )
-    for token in ("PASS", "operator norm", "algebraic multiplicity", "OPEN"):
+    for token in ("PASS", "operator norm", "algebraic multiplicity", "right half-plane"):
         if token not in audit:
             raise RuntimeError("R0.73D independent audit missing token: " + token)
 
     certificate = ROOT / CERTIFICATE_RELATIVE
     figure = ROOT / FIGURE_RELATIVE
-    verify_flat_hash_ledger(certificate, "R0.73D certificate")
-    verify_flat_hash_ledger(figure, "R0.73D figure")
+    verify_complete_flat_ledger(
+        certificate, "R0.73D certificate", require_directory_complete=False
+    )
+    verify_complete_flat_ledger(figure, "R0.73D figure")
     subprocess.run(
         [sys.executable, str(certificate / "validate_certificate.py")],
         cwd=ROOT, check=True,
     )
-    verify_flat_hash_ledger(certificate, "R0.73D certificate after validation")
+    verify_complete_flat_ledger(
+        certificate, "R0.73D certificate after validation",
+        require_directory_complete=False,
+    )
     certificate_payload = json.loads(
         (certificate / "certificate.json").read_text(encoding="utf-8")
     )
@@ -297,7 +325,7 @@ def publish_figure_assets() -> None:
         ],
         cwd=ROOT, check=True,
     )
-    verify_flat_hash_ledger(figure, "R0.73D published figure")
+    verify_complete_flat_ledger(figure, "R0.73D published figure")
     manifest = json.loads((figure / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("publication", {}).get("publicCopiesComplete") is not True:
         raise RuntimeError("R0.73D public figure copy ledger is incomplete")
@@ -641,4 +669,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

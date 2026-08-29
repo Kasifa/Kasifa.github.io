@@ -31,6 +31,7 @@ from reportlab.pdfgen import canvas
 PACKAGE = Path(__file__).resolve().parent
 ROOT = PACKAGE.parents[2]
 REL_PACKAGE = PACKAGE.relative_to(ROOT)
+PUBLIC_DIR = ROOT / "public/assets/r073b"
 FIGURE_ID = "fig-r073b-bloch-kinetic-transient"
 RELEASE = "R0.73B"
 WIDTH_MM = 178
@@ -1332,6 +1333,15 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
                  "figure.pdf", "figure.png", "qa-final-size.png",
                  "qa-grayscale.png", "qa-pdf.png", "qa-report.md"):
         outputs.append(file_record(name))
+    publication_assets = []
+    for suffix in ("pdf", "svg", "png"):
+        master = file_record(f"figure.{suffix}")
+        publication_assets.append({
+            "path": f"public/assets/r073b/{FIGURE_ID}.{suffix}",
+            "bytes": master["bytes"],
+            "sha256": master["sha256"],
+            "byteIdenticalToMaster": status == "formal",
+        })
     return {
         "schemaVersion": 1,
         "figureId": FIGURE_ID,
@@ -1464,9 +1474,16 @@ def build_manifest(status: str, visual_inspected: bool, source_commit: str,
                "previews": ["qa-final-size.png", "qa-grayscale.png", "qa-pdf.png"],
                "checks": checks, "details": details, "report": "qa-report.md"},
         "outputs": outputs,
-        "publication": {"allowed": status == "formal" and visual_inspected and all(checks.values()),
-                        "directory": "public/assets/r073b",
-                        "copiesWrittenByRenderer": False},
+        "publication": {
+            "allowed": status == "formal" and qa_passed,
+            "directory": "public/assets/r073b",
+            "stem": FIGURE_ID,
+            "files": [f"{FIGURE_ID}.{suffix}" for suffix in ("pdf", "svg", "png")],
+            "assets": publication_assets,
+            "publicCopiesComplete": status == "formal",
+            "byteIdenticalToArchive": status == "formal",
+            "copiesWrittenByRenderer": status == "formal",
+        },
         "claimBoundary": {
             **contract["claimBoundary"],
             # Compatibility alias retained for the release-wide invariant.  The
@@ -1541,6 +1558,14 @@ def main() -> int:
     render_checks, details = inspect_outputs()
     checks.update(render_checks)
     require(all(checks.values()), "rendered-output self-check failed")
+    if status == "formal":
+        PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
+        for suffix in ("pdf", "svg", "png"):
+            master = PACKAGE / f"figure.{suffix}"
+            public = PUBLIC_DIR / f"{FIGURE_ID}.{suffix}"
+            shutil.copyfile(master, public)
+            require(sha256(public) == sha256(master),
+                    f"public {suffix} copy is not byte-identical")
     validation = {"schemaVersion": 1, "figureId": FIGURE_ID,
                   "release": RELEASE, "status": "passed",
                   "stage": status, "visualInspectionExplicit": args.visual_inspected,

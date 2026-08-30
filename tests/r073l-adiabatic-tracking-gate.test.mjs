@@ -142,11 +142,13 @@ test("R0.73L formal figure is sealed, vector, 600 dpi, and diagnostic-only", asy
   assert.equal(validation.allChecksPass, true);
   assert.ok(Object.values(validation.checks).every(Boolean));
 
+  const python = process.env.CODEX_PYTHON || "python3";
   const run = spawnSync(
-    "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    python,
     ["research/validate_figure_package.py", figureRoot],
     { cwd: root, encoding: "utf8" },
   );
+  assert.ifError(run.error);
   assert.equal(run.status, 0, run.stderr || run.stdout);
   const report = JSON.parse(run.stdout);
   assert.deepEqual(report.errors, []);

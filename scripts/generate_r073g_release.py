@@ -38,6 +38,7 @@ ROOT = Path(os.environ.get(
 PUBLIC = ROOT / "public"
 
 CERTIFIED_REPORT_COMMIT = "21c11ba3eef7f2b5dc3f107957e0744a0471745d"
+EXPERIMENT_PACKAGE_COMMIT = "0679192b65a294bb211c96decc47bb046ab60b93"
 FIGURE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PACKAGE_COMMIT"
 CERTIFICATE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_CERTIFICATE_COMMIT"
 FIGURE_METADATA_SEAL_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_SEAL_COMMIT"
@@ -433,14 +434,29 @@ def verify_named_files_at_commit(
 
 
 def checks_pass(payload: dict) -> bool:
-    if payload.get("allChecksPass") is True:
-        return True
     checks = payload.get("checks")
-    return (
-        payload.get("status") == "passed"
-        and isinstance(checks, dict)
+    exact_checks_pass = (
+        isinstance(checks, dict)
         and bool(checks)
-        and all(checks.values())
+        and all(value is True for value in checks.values())
+    )
+    validations = payload.get("validations")
+    exact_validations_pass = (
+        isinstance(validations, list)
+        and bool(validations)
+        and all(
+            isinstance(row, dict) and row.get("pass") is True
+            for row in validations
+        )
+    )
+    if "allChecksPass" in payload:
+        return (
+            payload.get("allChecksPass") is True
+            and (exact_checks_pass or exact_validations_pass)
+        )
+    return (
+        payload.get("status") in {"passed", "validated"}
+        and exact_checks_pass
     )
 
 
@@ -577,13 +593,16 @@ def verify_release_commit_chain() -> None:
     ensure_release_commits_ready()
     commits = (
         CERTIFIED_REPORT_COMMIT,
+        EXPERIMENT_PACKAGE_COMMIT,
         FIGURE_PACKAGE_COMMIT,
         CERTIFICATE_PACKAGE_COMMIT,
         FIGURE_METADATA_SEAL_COMMIT,
         FIGURE_PUBLICATION_COMMIT,
     )
     if len(set(commits)) != len(commits):
-        raise RuntimeError("R0.73G source/F/C/S/P commits must be strictly distinct")
+        raise RuntimeError(
+            "R0.73G source/E/F/C/S/P commits must be strictly distinct"
+        )
     for commit in commits:
         subprocess.run(
             ["git", "cat-file", "-e", commit + "^{commit}"],
@@ -592,6 +611,8 @@ def verify_release_commit_chain() -> None:
         )
     for ancestor, descendant, label in (
         (CERTIFIED_REPORT_COMMIT, FIGURE_PACKAGE_COMMIT, "source < F"),
+        (CERTIFIED_REPORT_COMMIT, EXPERIMENT_PACKAGE_COMMIT, "source < E"),
+        (EXPERIMENT_PACKAGE_COMMIT, FIGURE_PACKAGE_COMMIT, "E < F"),
         (FIGURE_PACKAGE_COMMIT, CERTIFICATE_PACKAGE_COMMIT, "F < C"),
         (CERTIFICATE_PACKAGE_COMMIT, FIGURE_METADATA_SEAL_COMMIT, "C < S"),
         (FIGURE_METADATA_SEAL_COMMIT, FIGURE_PUBLICATION_COMMIT, "S < P"),
@@ -606,6 +627,7 @@ def verify_release_commit_chain() -> None:
         text=True,
     ).stdout.strip()
     for commit, label in (
+        (EXPERIMENT_PACKAGE_COMMIT, "E"),
         (FIGURE_PACKAGE_COMMIT, "F"),
         (CERTIFICATE_PACKAGE_COMMIT, "C"),
         (FIGURE_METADATA_SEAL_COMMIT, "S"),
@@ -852,7 +874,7 @@ def validate_experiment() -> None:
             raise RuntimeError("missing R0.73G experiment input: " + name)
     verify_complete_flat_ledger(directory, "R0.73G experiment")
     verify_sealed_directory(
-        directory, FIGURE_PACKAGE_COMMIT, "R0.73G experiment"
+        directory, EXPERIMENT_PACKAGE_COMMIT, "R0.73G experiment"
     )
     summary = json.loads(
         (directory / "nonlinear_row_leakage_summary.json").read_text(
@@ -959,12 +981,16 @@ def validate_certificate() -> dict:
         or manifest.get("release") != "R0.73G"
         or manifest.get("status") != "validated-content-addressed-unsealed"
         or manifest.get("sourceCommit") != CERTIFIED_REPORT_COMMIT
-        or certificate.get("experimentCommit") != FIGURE_PACKAGE_COMMIT
-        or independent.get("experimentCommit") != FIGURE_PACKAGE_COMMIT
-        or validation.get("experimentCommit") != FIGURE_PACKAGE_COMMIT
-        or manifest.get("experimentCommit") != FIGURE_PACKAGE_COMMIT
+        or certificate.get("experimentCommit") != EXPERIMENT_PACKAGE_COMMIT
+        or independent.get("experimentCommit") != EXPERIMENT_PACKAGE_COMMIT
+        or validation.get("experimentCommit") != EXPERIMENT_PACKAGE_COMMIT
+        or manifest.get("experimentCommit") != EXPERIMENT_PACKAGE_COMMIT
+        or certificate.get("figurePackageCommit") != FIGURE_PACKAGE_COMMIT
+        or independent.get("figurePackageCommit") != FIGURE_PACKAGE_COMMIT
+        or validation.get("figurePackageCommit") != FIGURE_PACKAGE_COMMIT
+        or manifest.get("figurePackageCommit") != FIGURE_PACKAGE_COMMIT
     ):
-        raise RuntimeError("R0.73G certificate sourceCommit is not exact")
+        raise RuntimeError("R0.73G certificate provenance commits are not exact")
     verify_source_bindings(manifest, "R0.73G certificate manifest")
 
     ledgers = certificate.get("claimLedgers")

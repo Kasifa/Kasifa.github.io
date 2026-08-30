@@ -18,6 +18,8 @@ SOURCE_COMMIT = "21c11ba3eef7f2b5dc3f107957e0744a0471745d"
 FIGURE_PACKAGE_COMMIT = "0d311d22a62cfbc9253e95580de10d33898ecddc"
 FIGURE_RELATIVE = "figures/r073g/fig-r073g-nonlinear-row-leakage"
 CERTIFICATE_RELATIVE = "research/certificates/r073g/certificate.json"
+CERTIFICATE_DIRECTORY_RELATIVE = "research/certificates/r073g"
+EXPERIMENT_COMMIT = "0679192b65a294bb211c96decc47bb046ab60b93"
 CHANGED_METADATA = {
     "SHA256SUMS",
     "command.txt",
@@ -27,6 +29,136 @@ CHANGED_METADATA = {
 }
 ADDED_METADATA = {"contract.json"}
 EXPECTED_IMMUTABLE_COUNT = 14
+
+CERTIFICATE_PACKAGE_FILES = (
+    "README.md",
+    "SHA256SUMS",
+    "certificate.json",
+    "generate_certificate.py",
+    "independent_recompute.json",
+    "independent_recompute.py",
+    "manifest.json",
+    "progress.ndjson",
+    "validate_certificate.py",
+    "validation.json",
+)
+CERTIFICATE_PACKAGE_SOURCE_FILES = (
+    "README.md",
+    "generate_certificate.py",
+    "independent_recompute.py",
+    "validate_certificate.py",
+)
+CERTIFICATE_GENERATED_FILES = (
+    "certificate.json",
+    "independent_recompute.json",
+    "progress.ndjson",
+    "validation.json",
+)
+CERTIFICATE_LEDGER_FILES = tuple(
+    name for name in CERTIFICATE_PACKAGE_FILES if name != "SHA256SUMS"
+)
+CERTIFICATE_TOP_LEVEL_KEYS = {
+    "schemaVersion", "release", "created", "status", "evidenceClass",
+    "sourceCommit", "experimentCommit", "figurePackageCommit", "sourceBindings",
+    "experimentBindings", "figureBindings", "checks", "exactSentinels",
+    "claimLedgers", "theorem", "finiteDiagnostic", "journalFigure",
+    "claimBoundary", "sealState",
+}
+CERTIFICATE_MANIFEST_KEYS = {
+    "schemaVersion", "release", "created", "status", "sourceCommit",
+    "experimentCommit", "figurePackageCommit", "sourceBindingKind",
+    "experimentBindingKind", "figureBindingKind", "sourceBindings",
+    "experimentBindings", "figureBindings", "journalFigure",
+    "packageSourceBindings", "outputBindings", "files", "outputs",
+    "sealState", "inventoryPolicy", "limitations",
+}
+CERTIFICATE_INDEPENDENT_KEYS = {
+    "schemaVersion", "release", "sourceCommit", "experimentCommit",
+    "figurePackageCommit", "sourceBindings", "experimentBindings", "figureBindings",
+    "checks", "allChecksPass", "exactSentinels", "claimLedgers",
+    "finiteDiagnostic", "journalFigure", "claimBoundary",
+}
+CERTIFICATE_VALIDATION_KEYS = {
+    "schemaVersion", "release", "sourceCommit", "experimentCommit",
+    "figurePackageCommit", "checks", "allChecksPass", "claimLedgers",
+    "claimBoundary", "journalFigure",
+}
+CERTIFICATE_CHECK_KEYS = frozenset("""
+    adversarialAuditFinalPass allAnalyticSourceBlobsBound
+    allModeRemainderAndHalfGainAnchorsPresent
+    analyticSourceBlobsUnchangedAtExperimentCommit analyticSourceCommitResolvedExactly
+    boundedLiteratureSearchMakesNoPriorityClaim cubicKzParityCanReturnToLaunchingRows
+    diagnosticSourceUnchangedFromAnalyticCommit
+    experimentCommitDescendsFromAnalyticSourceCommit
+    experimentCommitDistinctFromAnalyticSourceCommit
+    experimentComparisonInventoryExactUniqueGrid
+    experimentConvergenceCsvMatchesSummaryExactly experimentGridMatchesFormalContract
+    experimentManifestCoreValidated experimentManifestFileBindingsExact
+    experimentManifestScientificBindingsExact experimentOutputBindingsMatchCommittedBytes
+    experimentRowInventoryExactUniqueGrid experimentRowsCsvMatchesSummaryExactly
+    experimentSha256LedgerExact experimentSourceProvenanceMatchesAnalyticCommit
+    experimentTreeInventoryExact figureCommitDescendsFromExperimentCommit
+    figureCommitDistinctFromExperimentCommit figurePackageManifestFileBindingsExact
+    figurePackageManifestValidated figurePackageOutputsBoundExactly
+    figurePackageResultsBoundExactly figurePackageSha256LedgerExact
+    figurePackageTreeInventoryExact figurePackageValidationPassed
+    figurePackageVisualQaPassed finiteClaimBoundaryExactFailClosed
+    formalExperimentNotSmoke formalExperimentSchema gapDecisionLedgerExact
+    h3LambdaSquaredLedgerAnchorsPresent halfGainArithmetic
+    independentAnalyticAuditPassesAllSevenGates
+    independentValidationInventoryAndThresholdRecomputed
+    kernelErrorThresholdRecomputedFromCommittedRows kzParityAnchorsPresent
+    normalizedDiffusionCoefficientIsOne normalizedShearCoefficientIsOneHalf
+    physicalBackgroundHeatFactorsAgree physicalProfileTimeIsFourTimesPhysicalTime
+    physicalScalingAnchorsPresent planarVorticityAndNoStretchingAnchorsPresent
+    planarVorticityStretchingZero positivePartBothBranchesAudited
+    positivePartBranchMGeKappaReducesToKappa positivePartBranchMLtKappaReducesToM
+    quadraticH3CostAndSeedPowerCancel quadraticKzParityExcludesLaunchingRows
+    realPairNormalizationIsOne reportDecisionLedgerExact
+    riccatiComparisonMultiplierBelowTwo riccatiDenominatorAtLeastThreeQuarters
+    riccatiThresholdAnchorsPresent rowIsometryAnchorsPresent
+    rowIsometryPolynomialIdentity summaryObservedRangesRecomputed
+    twoEllipticLiftsGiveLambdaSquared
+""".split())
+CERTIFICATE_INDEPENDENT_CHECK_KEYS = frozenset("""
+    allEightSourceBlobsRecomputed auditContainsSevenPassVerdicts
+    experimentCommitExistsAndResolvesExactly figureCommitExistsAndResolvesExactly
+    gapStatesRecomputedExactly independentAnalyticBlobsUnchangedAtExperimentCommit
+    independentCommittedOutputsMatchSummary independentComparisonsCsvSummaryIdentity
+    independentExactUniqueComparisonGrid independentExactUniqueRowGrid
+    independentExperimentCommitIsLaterDescendant independentExperimentManifestCore
+    independentExperimentManifestFiles independentExperimentSchemaAndMode
+    independentExperimentScientificBindings independentExperimentScriptBlobUnchanged
+    independentExperimentSha256Ledger independentExperimentSourceProvenance
+    independentExperimentTreeInventoryExact independentFigureCommitIsLaterDescendant
+    independentFigureManifestFileBindings independentFigureManifestValidated
+    independentFigureOutputsBound independentFigureResultsBound
+    independentFigureSha256Ledger independentFigureTreeInventoryExact
+    independentFigureValidationPassed independentFigureVisualQaPassed
+    independentFiniteBoundaryExact independentFormalGrid independentH3ExponentLedger
+    independentHalfGainLedger independentKernelThresholdRecomputed independentKzParity
+    independentPhysicalHeatIdentity independentPlanarStretchingIdentity
+    independentPositivePartTwoBranches independentRiccatiLedger
+    independentRowIsometryIdentity independentRowsCsvSummaryIdentity
+    independentValidatorThresholdRecomputed proofContainsH3RiccatiAndAllModeRemainder
+    proofContainsPhysicalBackgroundAndEndpoint reportStatesRecomputedExactly
+    sourceCommitExistsAndResolvesExactly
+""".split())
+CERTIFICATE_VALIDATION_CHECK_KEYS = frozenset("""
+    analyticBlobsPreservedAtExperimentCommit certificateSchemasExact
+    certificateTopLevelKeysExact claimBoundaryExactFailClosed
+    claimLedgersAgreeIndependently commitChainExact exactSentinelsAgreeIndependently
+    experimentBindingsIndependentAgreement experimentCommitParameterAgreement
+    figureBindingsIndependentAgreement figureCommitParameterAgreement
+    finiteDiagnosticRecordsAgreeIndependently finiteEvidenceBoundaryFailClosed
+    gapBoundaryNamesAndStatesExact h3ExponentLedgerExact
+    halfGainAndPositivePartBranchesExact independentAllChecksPass
+    independentTopLevelKeysExact journalFigureExactAndNoFormalFigure
+    kzParitySentinelExact physicalScalingSentinelExact planarStretchingSentinelExact
+    primaryAllChecksPass reportBoundaryNamesAndStatesExact riccatiSentinelExact
+    rowIsometrySentinelExact sealStateHonest sourceBindingsIndependentAgreement
+    sourceCommitAgreement
+""".split())
 
 
 def canonical(value: object) -> str:
@@ -101,6 +233,232 @@ def package_names(commit: str) -> list[str]:
     require(all("/" not in name for name in names),
             "F figure package unexpectedly contains a subdirectory")
     return names
+
+
+def json_object(payload: bytes, label: str) -> dict[str, object]:
+    def reject_nonfinite(value: str) -> object:
+        raise ValueError("non-finite JSON constant: " + value)
+
+    def unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+        result: dict[str, object] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate JSON key: " + key)
+            result[key] = value
+        return result
+
+    try:
+        parsed = json.loads(
+            payload,
+            parse_constant=reject_nonfinite,
+            object_pairs_hook=unique_object,
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        raise RuntimeError(label + " is not strict JSON") from exc
+    require(isinstance(parsed, dict), label + " must be a JSON object")
+    return parsed
+
+
+def exact_true_checks(value: object, expected: frozenset[str], label: str) -> None:
+    require(isinstance(value, dict), label + " check ledger is missing")
+    require(set(value) == expected, label + " check-key inventory mismatch")
+    require(bool(value) and all(item is True for item in value.values()),
+            label + " contains a failed or non-boolean check")
+
+
+def certificate_package_tree(commit: str) -> list[str]:
+    rows = subprocess.check_output(
+        ["git", "ls-tree", "-r", commit, CERTIFICATE_DIRECTORY_RELATIVE],
+        cwd=ROOT,
+        text=True,
+    ).splitlines()
+    expected_paths = [
+        f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        for name in CERTIFICATE_PACKAGE_FILES
+    ]
+    observed_paths: list[str] = []
+    for row in rows:
+        require("\t" in row, "C certificate tree row is malformed")
+        metadata, relative = row.split("\t", 1)
+        require(metadata.startswith("100644 blob "),
+                "C certificate package contains a non-regular Git entry: " + relative)
+        observed_paths.append(relative)
+    require(observed_paths == expected_paths,
+            "C certificate package inventory is not the fixed 10-file flat package")
+    return observed_paths
+
+
+def verify_certificate_binding_rows(
+    manifest: dict[str, object],
+    key: str,
+    names: tuple[str, ...],
+    commit: str,
+) -> None:
+    rows = manifest.get(key)
+    require(isinstance(rows, list), "C manifest " + key + " is missing")
+    expected_paths = [
+        f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}" for name in names
+    ]
+    require(
+        [row.get("path") for row in rows if isinstance(row, dict)] == expected_paths
+        and len(rows) == len(expected_paths),
+        "C manifest " + key + " inventory mismatch",
+    )
+    for row, relative in zip(rows, expected_paths):
+        require(isinstance(row, dict), "C manifest binding row is not an object")
+        require(set(row) == {"path", "bytes", "sha256"},
+                "C manifest binding row schema mismatch: " + relative)
+        payload = git_bytes(commit, relative)
+        require(row["bytes"] == len(payload),
+                "C manifest binding size mismatch: " + relative)
+        require(row["sha256"] == sha256_bytes(payload),
+                "C manifest binding hash mismatch: " + relative)
+
+
+def verify_certificate_package(commit: str) -> dict[str, object]:
+    certificate_package_tree(commit)
+    directory = ROOT / CERTIFICATE_DIRECTORY_RELATIVE
+    require(directory.is_dir() and not directory.is_symlink(),
+            "working C certificate package is missing or not a regular directory")
+    current_names = sorted(path.name for path in directory.iterdir())
+    require(current_names == list(CERTIFICATE_PACKAGE_FILES),
+            "working C certificate inventory differs from the fixed 10-file package")
+    for name in CERTIFICATE_PACKAGE_FILES:
+        current = directory / name
+        require(current.is_file() and not current.is_symlink(),
+                "working C certificate entry is not a regular file: " + name)
+        relative = f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        require(current.read_bytes() == git_bytes(commit, relative),
+                "working C certificate file differs from C: " + name)
+
+    ledger_payload = git_bytes(
+        commit, f"{CERTIFICATE_DIRECTORY_RELATIVE}/SHA256SUMS"
+    )
+    ledger_rows: list[tuple[str, str]] = []
+    try:
+        ledger_lines = ledger_payload.decode("utf-8").splitlines()
+    except UnicodeDecodeError as exc:
+        raise RuntimeError("C SHA256SUMS is not UTF-8") from exc
+    for line in ledger_lines:
+        match = re.fullmatch(r"([0-9a-f]{64})  ([^/\\\r\n]+)", line)
+        require(match is not None, "C SHA256SUMS contains a malformed row")
+        ledger_rows.append((match.group(2), match.group(1)))
+    require([name for name, _ in ledger_rows] == list(CERTIFICATE_LEDGER_FILES),
+            "C SHA256SUMS inventory is not the exact sorted 9-file ledger")
+    for name, expected_hash in ledger_rows:
+        relative = f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        require(sha256_bytes(git_bytes(commit, relative)) == expected_hash,
+                "C SHA256SUMS hash mismatch: " + name)
+
+    certificate = json_object(
+        git_bytes(commit, CERTIFICATE_RELATIVE), "C certificate.json"
+    )
+    independent = json_object(
+        git_bytes(
+            commit,
+            f"{CERTIFICATE_DIRECTORY_RELATIVE}/independent_recompute.json",
+        ),
+        "C independent_recompute.json",
+    )
+    manifest = json_object(
+        git_bytes(commit, f"{CERTIFICATE_DIRECTORY_RELATIVE}/manifest.json"),
+        "C manifest.json",
+    )
+    validation = json_object(
+        git_bytes(commit, f"{CERTIFICATE_DIRECTORY_RELATIVE}/validation.json"),
+        "C validation.json",
+    )
+
+    require(set(certificate) == CERTIFICATE_TOP_LEVEL_KEYS,
+            "C certificate top-level schema mismatch")
+    require(set(independent) == CERTIFICATE_INDEPENDENT_KEYS,
+            "C independent recompute top-level schema mismatch")
+    require(set(manifest) == CERTIFICATE_MANIFEST_KEYS,
+            "C manifest top-level schema mismatch")
+    require(set(validation) == CERTIFICATE_VALIDATION_KEYS,
+            "C validation top-level schema mismatch")
+    exact_true_checks(
+        certificate.get("checks"), CERTIFICATE_CHECK_KEYS, "C certificate"
+    )
+    exact_true_checks(
+        independent.get("checks"),
+        CERTIFICATE_INDEPENDENT_CHECK_KEYS,
+        "C independent recompute",
+    )
+    exact_true_checks(
+        validation.get("checks"),
+        CERTIFICATE_VALIDATION_CHECK_KEYS,
+        "C validation",
+    )
+
+    identities = (
+        (certificate, "r073g-planar-nonlinear-shadowing-certificate-v1", "validated"),
+        (independent, "r073g-independent-certificate-recompute-v1", None),
+        (manifest, "r073g-certificate-manifest-v1",
+         "validated-content-addressed-unsealed"),
+        (validation, "r073g-certificate-validation-v1", None),
+    )
+    for payload, schema, status in identities:
+        require(payload.get("schemaVersion") == schema,
+                "C package schemaVersion mismatch: " + schema)
+        require(payload.get("release") == "R0.73G",
+                "C package release mismatch: " + schema)
+        require(payload.get("sourceCommit") == SOURCE_COMMIT,
+                "C package source commit mismatch: " + schema)
+        require(payload.get("experimentCommit") == EXPERIMENT_COMMIT,
+                "C package experiment commit mismatch: " + schema)
+        require(payload.get("figurePackageCommit") == FIGURE_PACKAGE_COMMIT,
+                "C package figure commit mismatch: " + schema)
+        if status is not None:
+            require(payload.get("status") == status,
+                    "C package status mismatch: " + schema)
+    require(independent.get("allChecksPass") is True,
+            "C independent recompute allChecksPass is not true")
+    require(validation.get("allChecksPass") is True,
+            "C validation allChecksPass is not true")
+
+    verify_certificate_binding_rows(
+        manifest, "packageSourceBindings", CERTIFICATE_PACKAGE_SOURCE_FILES, commit
+    )
+    verify_certificate_binding_rows(
+        manifest, "outputBindings", CERTIFICATE_GENERATED_FILES, commit
+    )
+    require(
+        manifest.get("files")
+        == [*CERTIFICATE_PACKAGE_SOURCE_FILES, *CERTIFICATE_GENERATED_FILES],
+        "C manifest file inventory is not exact",
+    )
+    require(
+        manifest.get("outputs")
+        == [
+            *CERTIFICATE_GENERATED_FILES,
+            "manifest.json",
+            "SHA256SUMS",
+        ],
+        "C manifest output inventory is not exact",
+    )
+    require(manifest.get("inventoryPolicy") == {
+        "cacheDirectoriesForbidden": True,
+        "manifestFilesExcludes": ["manifest.json", "SHA256SUMS"],
+        "scope": "all regular files directly inside research/certificates/r073g",
+        "sha256LedgerExcludes": ["SHA256SUMS"],
+    }, "C manifest inventory policy mismatch")
+
+    for key in (
+        "sourceBindings", "experimentBindings", "figureBindings", "journalFigure"
+    ):
+        require(independent.get(key) == certificate.get(key),
+                "C independent payload disagrees with certificate: " + key)
+        require(manifest.get(key) == certificate.get(key),
+                "C manifest disagrees with certificate: " + key)
+    for key in (
+        "claimLedgers", "claimBoundary", "journalFigure"
+    ):
+        require(validation.get(key) == certificate.get(key),
+                "C validation disagrees with certificate: " + key)
+        require(independent.get(key) == certificate.get(key),
+                "C independent payload disagrees with certificate: " + key)
+    return certificate
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -188,22 +546,13 @@ def preflight(args: argparse.Namespace) -> tuple[str, dict[str, object]]:
             "immutable working file differs from F: " + name,
         )
 
-    certificate_blob = git_bytes(args.certificate_commit, CERTIFICATE_RELATIVE)
-    certificate_path = ROOT / CERTIFICATE_RELATIVE
-    require(certificate_path.is_file(), "R0.73G certificate is missing")
-    require(certificate_path.read_bytes() == certificate_blob,
-            "working certificate differs from C")
-    certificate = json.loads(certificate_blob)
+    certificate = verify_certificate_package(args.certificate_commit)
     require(certificate.get("sourceCommit") == SOURCE_COMMIT,
             "certificate source commit mismatch")
     require(certificate.get("figurePackageCommit") == args.figure_package_commit,
             "certificate figure-package commit mismatch")
     require(certificate.get("status") == "validated",
             "certificate is not validated")
-    checks = certificate.get("checks")
-    require(isinstance(checks, dict) and checks
-            and all(value is True for value in checks.values()),
-            "certificate contains a failed or empty check ledger")
     require("formalFigure" not in certificate,
             "historical C unexpectedly contains formalFigure")
     journal = certificate.get("journalFigure")
@@ -282,6 +631,8 @@ CERTIFICATE_COMMIT = "@@CERTIFICATE_COMMIT@@"
 PREVIOUS_MANIFEST_SHA256 = "@@PREVIOUS_MANIFEST_SHA256@@"
 FIGURE_RELATIVE = "figures/r073g/fig-r073g-nonlinear-row-leakage"
 CERTIFICATE_RELATIVE = "research/certificates/r073g/certificate.json"
+CERTIFICATE_DIRECTORY_RELATIVE = "research/certificates/r073g"
+EXPERIMENT_COMMIT = "0679192b65a294bb211c96decc47bb046ab60b93"
 ANALYTIC_PATHS = (
     "research/r073g_problem_freeze.md",
     "research/r073g_nonlinear_shadowing_proof.md",
@@ -301,6 +652,62 @@ CHANGED_METADATA = {
 }
 ADDED_METADATA = {"contract.json"}
 EXPECTED_IMMUTABLE_COUNT = 14
+CERTIFICATE_PACKAGE_FILES = (
+    "README.md",
+    "SHA256SUMS",
+    "certificate.json",
+    "generate_certificate.py",
+    "independent_recompute.json",
+    "independent_recompute.py",
+    "manifest.json",
+    "progress.ndjson",
+    "validate_certificate.py",
+    "validation.json",
+)
+CERTIFICATE_PACKAGE_SOURCE_FILES = (
+    "README.md",
+    "generate_certificate.py",
+    "independent_recompute.py",
+    "validate_certificate.py",
+)
+CERTIFICATE_GENERATED_FILES = (
+    "certificate.json",
+    "independent_recompute.json",
+    "progress.ndjson",
+    "validation.json",
+)
+CERTIFICATE_LEDGER_FILES = tuple(
+    name for name in CERTIFICATE_PACKAGE_FILES if name != "SHA256SUMS"
+)
+CERTIFICATE_TOP_LEVEL_KEYS = {
+    "schemaVersion", "release", "created", "status", "evidenceClass",
+    "sourceCommit", "experimentCommit", "figurePackageCommit", "sourceBindings",
+    "experimentBindings", "figureBindings", "checks", "exactSentinels",
+    "claimLedgers", "theorem", "finiteDiagnostic", "journalFigure",
+    "claimBoundary", "sealState",
+}
+CERTIFICATE_MANIFEST_KEYS = {
+    "schemaVersion", "release", "created", "status", "sourceCommit",
+    "experimentCommit", "figurePackageCommit", "sourceBindingKind",
+    "experimentBindingKind", "figureBindingKind", "sourceBindings",
+    "experimentBindings", "figureBindings", "journalFigure",
+    "packageSourceBindings", "outputBindings", "files", "outputs",
+    "sealState", "inventoryPolicy", "limitations",
+}
+CERTIFICATE_INDEPENDENT_KEYS = {
+    "schemaVersion", "release", "sourceCommit", "experimentCommit",
+    "figurePackageCommit", "sourceBindings", "experimentBindings", "figureBindings",
+    "checks", "allChecksPass", "exactSentinels", "claimLedgers",
+    "finiteDiagnostic", "journalFigure", "claimBoundary",
+}
+CERTIFICATE_VALIDATION_KEYS = {
+    "schemaVersion", "release", "sourceCommit", "experimentCommit",
+    "figurePackageCommit", "checks", "allChecksPass", "claimLedgers",
+    "claimBoundary", "journalFigure",
+}
+CERTIFICATE_CHECK_KEYS = frozenset(@@CERTIFICATE_CHECK_KEYS@@)
+CERTIFICATE_INDEPENDENT_CHECK_KEYS = frozenset(@@INDEPENDENT_CHECK_KEYS@@)
+CERTIFICATE_VALIDATION_CHECK_KEYS = frozenset(@@VALIDATION_CHECK_KEYS@@)
 
 
 def configure_dependencies(path: str | None) -> None:
@@ -411,6 +818,240 @@ def package_names_at_figure_commit() -> list[str]:
     require(all("/" not in name for name in names),
             "original figure package unexpectedly contains subdirectories")
     return names
+
+
+def json_object(payload: bytes, label: str) -> dict[str, Any]:
+    def reject_nonfinite(value: str) -> object:
+        raise ValueError("non-finite JSON constant: " + value)
+
+    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("duplicate JSON key: " + key)
+            result[key] = value
+        return result
+
+    try:
+        parsed = json.loads(
+            payload,
+            parse_constant=reject_nonfinite,
+            object_pairs_hook=unique_object,
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        raise AssertionError(label + " is not strict JSON") from exc
+    require(isinstance(parsed, dict), label + " must be a JSON object")
+    return parsed
+
+
+def exact_true_checks(value: object, expected: frozenset[str], label: str) -> None:
+    require(isinstance(value, dict), label + " check ledger is missing")
+    require(set(value) == expected, label + " check-key inventory mismatch")
+    require(bool(value) and all(item is True for item in value.values()),
+            label + " contains a failed or non-boolean check")
+
+
+def certificate_package_tree() -> list[str]:
+    rows = subprocess.check_output(
+        [
+            "git", "ls-tree", "-r", CERTIFICATE_COMMIT,
+            CERTIFICATE_DIRECTORY_RELATIVE,
+        ],
+        cwd=ROOT,
+        text=True,
+    ).splitlines()
+    expected_paths = [
+        f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        for name in CERTIFICATE_PACKAGE_FILES
+    ]
+    observed_paths: list[str] = []
+    for row in rows:
+        require("\t" in row, "C certificate tree row is malformed")
+        metadata, relative = row.split("\t", 1)
+        require(metadata.startswith("100644 blob "),
+                "C certificate package contains a non-regular Git entry: " + relative)
+        observed_paths.append(relative)
+    require(observed_paths == expected_paths,
+            "C certificate package inventory is not the fixed 10-file flat package")
+    return observed_paths
+
+
+def verify_certificate_binding_rows(
+    manifest: dict[str, Any], key: str, names: tuple[str, ...]
+) -> None:
+    rows = manifest.get(key)
+    require(isinstance(rows, list), "C manifest " + key + " is missing")
+    expected_paths = [
+        f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}" for name in names
+    ]
+    require(
+        [row.get("path") for row in rows if isinstance(row, dict)] == expected_paths
+        and len(rows) == len(expected_paths),
+        "C manifest " + key + " inventory mismatch",
+    )
+    for row, relative in zip(rows, expected_paths):
+        require(isinstance(row, dict), "C manifest binding row is not an object")
+        require(set(row) == {"path", "bytes", "sha256"},
+                "C manifest binding row schema mismatch: " + relative)
+        payload = git_bytes(CERTIFICATE_COMMIT, relative)
+        require(row["bytes"] == len(payload),
+                "C manifest binding size mismatch: " + relative)
+        require(row["sha256"] == sha256_bytes(payload),
+                "C manifest binding hash mismatch: " + relative)
+
+
+def verify_certificate_package() -> dict[str, Any]:
+    certificate_package_tree()
+    directory = ROOT / CERTIFICATE_DIRECTORY_RELATIVE
+    require(directory.is_dir() and not directory.is_symlink(),
+            "working C certificate package is missing or not a regular directory")
+    current_names = sorted(path.name for path in directory.iterdir())
+    require(current_names == list(CERTIFICATE_PACKAGE_FILES),
+            "working C certificate inventory differs from the fixed 10-file package")
+    for name in CERTIFICATE_PACKAGE_FILES:
+        current = directory / name
+        require(current.is_file() and not current.is_symlink(),
+                "working C certificate entry is not a regular file: " + name)
+        relative = f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        require(current.read_bytes() == git_bytes(CERTIFICATE_COMMIT, relative),
+                "working C certificate file differs from C: " + name)
+
+    ledger_payload = git_bytes(
+        CERTIFICATE_COMMIT,
+        f"{CERTIFICATE_DIRECTORY_RELATIVE}/SHA256SUMS",
+    )
+    ledger_rows: list[tuple[str, str]] = []
+    try:
+        ledger_lines = ledger_payload.decode("utf-8").splitlines()
+    except UnicodeDecodeError as exc:
+        raise AssertionError("C SHA256SUMS is not UTF-8") from exc
+    for line in ledger_lines:
+        match = re.fullmatch(r"([0-9a-f]{64})  ([^/\\\r\n]+)", line)
+        require(match is not None, "C SHA256SUMS contains a malformed row")
+        ledger_rows.append((match.group(2), match.group(1)))
+    require([name for name, _ in ledger_rows] == list(CERTIFICATE_LEDGER_FILES),
+            "C SHA256SUMS inventory is not the exact sorted 9-file ledger")
+    for name, expected_hash in ledger_rows:
+        relative = f"{CERTIFICATE_DIRECTORY_RELATIVE}/{name}"
+        require(
+            sha256_bytes(git_bytes(CERTIFICATE_COMMIT, relative)) == expected_hash,
+            "C SHA256SUMS hash mismatch: " + name,
+        )
+
+    certificate = json_object(
+        git_bytes(CERTIFICATE_COMMIT, CERTIFICATE_RELATIVE),
+        "C certificate.json",
+    )
+    independent = json_object(
+        git_bytes(
+            CERTIFICATE_COMMIT,
+            f"{CERTIFICATE_DIRECTORY_RELATIVE}/independent_recompute.json",
+        ),
+        "C independent_recompute.json",
+    )
+    manifest = json_object(
+        git_bytes(
+            CERTIFICATE_COMMIT,
+            f"{CERTIFICATE_DIRECTORY_RELATIVE}/manifest.json",
+        ),
+        "C manifest.json",
+    )
+    validation = json_object(
+        git_bytes(
+            CERTIFICATE_COMMIT,
+            f"{CERTIFICATE_DIRECTORY_RELATIVE}/validation.json",
+        ),
+        "C validation.json",
+    )
+
+    require(set(certificate) == CERTIFICATE_TOP_LEVEL_KEYS,
+            "C certificate top-level schema mismatch")
+    require(set(independent) == CERTIFICATE_INDEPENDENT_KEYS,
+            "C independent recompute top-level schema mismatch")
+    require(set(manifest) == CERTIFICATE_MANIFEST_KEYS,
+            "C manifest top-level schema mismatch")
+    require(set(validation) == CERTIFICATE_VALIDATION_KEYS,
+            "C validation top-level schema mismatch")
+    exact_true_checks(
+        certificate.get("checks"), CERTIFICATE_CHECK_KEYS, "C certificate"
+    )
+    exact_true_checks(
+        independent.get("checks"),
+        CERTIFICATE_INDEPENDENT_CHECK_KEYS,
+        "C independent recompute",
+    )
+    exact_true_checks(
+        validation.get("checks"),
+        CERTIFICATE_VALIDATION_CHECK_KEYS,
+        "C validation",
+    )
+
+    identities = (
+        (certificate, "r073g-planar-nonlinear-shadowing-certificate-v1", "validated"),
+        (independent, "r073g-independent-certificate-recompute-v1", None),
+        (manifest, "r073g-certificate-manifest-v1",
+         "validated-content-addressed-unsealed"),
+        (validation, "r073g-certificate-validation-v1", None),
+    )
+    for payload, schema, status in identities:
+        require(payload.get("schemaVersion") == schema,
+                "C package schemaVersion mismatch: " + schema)
+        require(payload.get("release") == "R0.73G",
+                "C package release mismatch: " + schema)
+        require(payload.get("sourceCommit") == SOURCE_COMMIT,
+                "C package source commit mismatch: " + schema)
+        require(payload.get("experimentCommit") == EXPERIMENT_COMMIT,
+                "C package experiment commit mismatch: " + schema)
+        require(payload.get("figurePackageCommit") == FIGURE_PACKAGE_COMMIT,
+                "C package figure commit mismatch: " + schema)
+        if status is not None:
+            require(payload.get("status") == status,
+                    "C package status mismatch: " + schema)
+    require(independent.get("allChecksPass") is True,
+            "C independent recompute allChecksPass is not true")
+    require(validation.get("allChecksPass") is True,
+            "C validation allChecksPass is not true")
+
+    verify_certificate_binding_rows(
+        manifest, "packageSourceBindings", CERTIFICATE_PACKAGE_SOURCE_FILES
+    )
+    verify_certificate_binding_rows(
+        manifest, "outputBindings", CERTIFICATE_GENERATED_FILES
+    )
+    require(
+        manifest.get("files")
+        == [*CERTIFICATE_PACKAGE_SOURCE_FILES, *CERTIFICATE_GENERATED_FILES],
+        "C manifest file inventory is not exact",
+    )
+    require(
+        manifest.get("outputs")
+        == [
+            *CERTIFICATE_GENERATED_FILES,
+            "manifest.json",
+            "SHA256SUMS",
+        ],
+        "C manifest output inventory is not exact",
+    )
+    require(manifest.get("inventoryPolicy") == {
+        "cacheDirectoriesForbidden": True,
+        "manifestFilesExcludes": ["manifest.json", "SHA256SUMS"],
+        "scope": "all regular files directly inside research/certificates/r073g",
+        "sha256LedgerExcludes": ["SHA256SUMS"],
+    }, "C manifest inventory policy mismatch")
+
+    for key in (
+        "sourceBindings", "experimentBindings", "figureBindings", "journalFigure"
+    ):
+        require(independent.get(key) == certificate.get(key),
+                "C independent payload disagrees with certificate: " + key)
+        require(manifest.get(key) == certificate.get(key),
+                "C manifest disagrees with certificate: " + key)
+    for key in ("claimLedgers", "claimBoundary", "journalFigure"):
+        require(validation.get(key) == certificate.get(key),
+                "C validation disagrees with certificate: " + key)
+        require(independent.get(key) == certificate.get(key),
+                "C independent payload disagrees with certificate: " + key)
+    return certificate
 
 
 def current_package_names() -> list[str]:
@@ -530,22 +1171,13 @@ def main() -> int:
             and all(value is True for value in previous_checks.values()),
             "historical F validation contains a failed or empty check ledger")
 
-    certificate_path = ROOT / CERTIFICATE_RELATIVE
-    require(certificate_path.is_file(), "R0.73G certificate is missing")
-    committed_certificate = git_bytes(CERTIFICATE_COMMIT, CERTIFICATE_RELATIVE)
-    require(certificate_path.read_bytes() == committed_certificate,
-            "current certificate differs from C")
-    certificate = json.loads(committed_certificate)
+    certificate = verify_certificate_package()
     require(certificate.get("sourceCommit") == SOURCE_COMMIT,
             "certificate source commit mismatch")
     require(certificate.get("figurePackageCommit") == FIGURE_PACKAGE_COMMIT,
             "certificate figure-package commit mismatch")
     require(certificate.get("status") == "validated",
             "certificate is not validated")
-    certificate_checks = certificate.get("checks")
-    require(isinstance(certificate_checks, dict) and certificate_checks
-            and all(value is True for value in certificate_checks.values()),
-            "certificate contains a failed or empty check ledger")
     require("formalFigure" not in certificate,
             "historical C unexpectedly contains a formalFigure field")
     journal_figure = certificate.get("journalFigure")
@@ -963,6 +1595,13 @@ def validator_source(
         "@@FIGURE_PACKAGE_COMMIT@@": figure_package_commit,
         "@@CERTIFICATE_COMMIT@@": certificate_commit,
         "@@PREVIOUS_MANIFEST_SHA256@@": previous_manifest_sha256,
+        "@@CERTIFICATE_CHECK_KEYS@@": repr(sorted(CERTIFICATE_CHECK_KEYS)),
+        "@@INDEPENDENT_CHECK_KEYS@@": repr(
+            sorted(CERTIFICATE_INDEPENDENT_CHECK_KEYS)
+        ),
+        "@@VALIDATION_CHECK_KEYS@@": repr(
+            sorted(CERTIFICATE_VALIDATION_CHECK_KEYS)
+        ),
     }
     result = VALIDATOR_TEMPLATE
     for marker, value in substitutions.items():

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "r073k-uniform-viscous-branch-figure-contract-v1",
+  "figureId": "fig-r073k-uniform-viscous-branch",
+  "release": "R0.73K",
+  "evidenceClass": "independently-recomputed-finite-dimensional-diagnostic",
+  "analyticalQuestion": "On the frozen R0.73K grid, does the largest Fourier cutoff show a d-uniform discrete viscous branch with the expected first-order drift, controlled projector conditioning, and closed cutoff diagnostics?",
+  "supportedTakeaway": "At N=160 and epsilon at most 10^-3, every sampled d node retains one numerically real eigenvalue in the fixed circle; the drift quotient approaches the independently derived inviscid-adjoint formula, projector diagnostics remain finite, and adjacent-cutoff discrepancies close to roundoff by N=160.",
+  "chartFamily": "trend plus uncertainty-and-benchmark plus convergence",
+  "staticRenderer": "Matplotlib",
+  "dataSufficiency": {
+    "primaryRows": 1190,
+    "crossCutoffRows": 952,
+    "displayCutoffCoreRows": 204,
+    "dNodes": 17,
+    "coreEpsilonLevels": 12,
+    "fallback": "Fail closed if any configured row, d node, epsilon level, or adjacent-cutoff pair is absent."
+  },
+  "panels": {
+    "A": {
+      "variant": "highlighted multi-series line",
+      "grain": "17 d nodes at N=160 for four core epsilon levels",
+      "scaleNote": "The focused vertical scale is declared in the panel subtitle."
+    },
+    "B": {
+      "variant": "log-x line with d-range bands and a first-order benchmark band",
+      "grain": "11 positive core epsilon levels, each summarized over all 17 d nodes",
+      "scaleNote": "The plotted rate is minus the real finite-difference quotient."
+    },
+    "C": {
+      "variant": "stacked log-x uncertainty bands",
+      "grain": "projector difference and projector norm over all 17 d nodes at N=160",
+      "scaleNote": "The inviscid projector-norm range is shown as a neutral benchmark."
+    },
+    "D": {
+      "variant": "log-scale cutoff convergence line-dot plot",
+      "grain": "maximum core embedded residuals at five cutoffs and four adjacent-cutoff projector differences",
+      "scaleNote": "Values below 10^-15 are floored only for display; source-data.csv retains the unfloored values."
+    }
+  },
+  "palettePolicy": {
+    "policy": "hard two-root cap",
+    "chromaticRoots": ["#285f8f", "#b35806"],
+    "neutralSeriesAllowed": true,
+    "nonColorEncoding": [
+      "solid, dashed, dash-dot, and dotted strokes",
+      "filled and open circle, square, triangle, and diamond markers",
+      "direct panel titles, legends, and fixed panel positions"
+    ]
+  },
+  "output": {
+    "finalWidthMillimetres": 178.0,
+    "finalHeightMillimetres": 118.0,
+    "requiredFormats": ["PDF vector", "SVG vector", "PNG 600 dpi"],
+    "qaSurfaces": ["final-size raster", "grayscale final-size raster", "PDF raster"]
+  },
+  "researchBlossom": {
+    "lockedAnchor": "top-right-header",
+    "petalCount": 5,
+    "carriesData": false
+  },
+  "claimBoundary": {
+    "formalValidatedDiagnosticFigure": true,
+    "finiteDimensionalDiagnostic": true,
+    "independentFiniteRecomputationPassed": true,
+    "continuumViscousBranchCertifiedByFigure": false,
+    "explicitContinuumViscosityThresholdCertified": false,
+    "adiabaticRemainderCertified": false,
+    "nonlinearNavierStokesCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  }
+}

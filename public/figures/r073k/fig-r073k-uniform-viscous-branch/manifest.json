@@ -1,0 +1,421 @@
+{
+  "analyticalQuestion": "On the frozen R0.73K grid, does the largest Fourier cutoff show a d-uniform discrete viscous branch with the expected first-order drift, controlled projector conditioning, and closed cutoff diagnostics?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "adiabaticRemainderCertified": false,
+    "clayProblemSolved": false,
+    "continuumViscousBranchCertifiedByFigure": false,
+    "explicitContinuumViscosityThresholdCertified": false,
+    "finiteDimensionalDiagnostic": true,
+    "finiteTimeSingularityCertified": false,
+    "formalValidatedDiagnosticFigure": true,
+    "independentFiniteRecomputationPassed": true,
+    "nonlinearNavierStokesCertified": false,
+    "transverseThreeDimensionalClosureCertified": false
+  },
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "data-analysis",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "timestamp",
+        "elapsedSeconds",
+        "stage",
+        "rows",
+        "pid",
+        "processes",
+        "threadsPerProcess",
+        "maximumResidentSetMiB",
+        "gpu"
+      ]
+    },
+    "precision": "binary64 presentation derived losslessly from the upstream JSON decimal renderings",
+    "solver": "no new eigenvalue solve; deterministic extraction from the passed R0.73K finite diagnostic",
+    "wallTimeSeconds": 0.7400318749714643
+  },
+  "compute": {
+    "cpu": "arm64",
+    "dgx": "not used; deterministic static rendering is local CPU work",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "machine": "arm64",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-30T16:59:47.027836+00:00",
+  "data": [
+    {
+      "bytes": 101191,
+      "path": "source-data.csv",
+      "schema": "204 N=160 core records, five cutoff summaries, and four adjacent-cutoff summaries",
+      "sha256": "8f70f7123a9885c977590a18d3d2d1d1e5b272059d031a6c7f87d61b2635351d"
+    },
+    {
+      "bytes": 3608,
+      "path": "results.json",
+      "schema": "input bindings, row counts, finite decisions, and claim boundary",
+      "sha256": "3518087ffc2d2e740eb7e97feb52b3b9f20f1ebe51421c9752698069064400c1"
+    },
+    {
+      "bytes": 3895,
+      "path": "validation.json",
+      "schema": "independent data, format, QA, and boundary checks",
+      "sha256": "9802b84bcb28810e75bd2d4961ee7d0251fa59af89033c01c510baafdd6aaad5"
+    },
+    {
+      "bytes": 1037,
+      "path": "environment.json",
+      "schema": "runtime, dependency, host, thread, and git metadata",
+      "sha256": "24de8769c2da63ebb71e083ab2b6f4c16d7dbd9e9c4ffb8175ab97e3174f11da"
+    },
+    {
+      "bytes": 677,
+      "path": "progress.ndjson",
+      "schema": "timestamped deterministic render stages",
+      "sha256": "ccd00b19cff46322006cf7a5e9447ee6510a1fbfeef996e8d4194a1c88b14dfa"
+    },
+    {
+      "bytes": 1053,
+      "path": "resource-log.ndjson",
+      "schema": "per-stage process, thread, memory, and GPU record",
+      "sha256": "d8b32cf4a93b4073f86d595f3e48623c8db810fb4160f53d5d3ffbcbdc5c340d"
+    }
+  ],
+  "environment": {
+    "Pillow": "12.3.0",
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "poppler": "pdftoppm version 26.05.0",
+    "pypdf": "6.10.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 118.0,
+    "layout": "four-panel branch, drift, projector, and cutoff diagnostic",
+    "outputs": [
+      {
+        "bytes": 42488,
+        "path": "figure.pdf",
+        "sha256": "d4069f071bf1f3c20b305fd0ad9e5a270329569e41673cff7493288f5e99cd24"
+      },
+      {
+        "bytes": 153773,
+        "path": "figure.svg",
+        "sha256": "db6c996501793e89c4aa4c1eacba356d0f1215ba7b35d7ccf711e736b1355024"
+      },
+      {
+        "bytes": 779702,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4204,
+          2787
+        ],
+        "sha256": "064971bfd72c27dd5e7c98b03492d51c94a2541874fc17838acb992f2be4cb5d"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073k-uniform-viscous-branch",
+  "files": [
+    {
+      "bytes": 2378,
+      "path": "README.md",
+      "sha256": "c592eb65e7656f4471977b4dc1e201f587b4bccc4259900b77f31c6df25a58dc"
+    },
+    {
+      "bytes": 1118,
+      "path": "caption.md",
+      "sha256": "0934f622999c932c4067f079f9fb65e829420a9206d18827cdbcd923e508cb98"
+    },
+    {
+      "bytes": 1418,
+      "path": "command.txt",
+      "sha256": "91d32e1a6b3e0b2aacff0d56f6abf094cf4509532e28e3df66f32d37558d4af0"
+    },
+    {
+      "bytes": 1344,
+      "path": "config.json",
+      "sha256": "7eba9c360f73b90dde0e64d7e0ceb8c67b0a5374eea9dafa66dda3263b28b420"
+    },
+    {
+      "bytes": 3438,
+      "path": "contract.json",
+      "sha256": "5359a1080afbd4ec3bbcad56794a17d71629e4a2679567a69aac7ccc6b5b7a64"
+    },
+    {
+      "bytes": 1037,
+      "path": "environment.json",
+      "sha256": "24de8769c2da63ebb71e083ab2b6f4c16d7dbd9e9c4ffb8175ab97e3174f11da"
+    },
+    {
+      "bytes": 42488,
+      "path": "figure.pdf",
+      "sha256": "d4069f071bf1f3c20b305fd0ad9e5a270329569e41673cff7493288f5e99cd24"
+    },
+    {
+      "bytes": 779702,
+      "path": "figure.png",
+      "sha256": "064971bfd72c27dd5e7c98b03492d51c94a2541874fc17838acb992f2be4cb5d"
+    },
+    {
+      "bytes": 153773,
+      "path": "figure.svg",
+      "sha256": "db6c996501793e89c4aa4c1eacba356d0f1215ba7b35d7ccf711e736b1355024"
+    },
+    {
+      "bytes": 36567,
+      "path": "plot.py",
+      "sha256": "ead5a8d54564932196ea687aa226bd2fe58ec7b0e0531fe81abb00983635a3fe"
+    },
+    {
+      "bytes": 677,
+      "path": "progress.ndjson",
+      "sha256": "ccd00b19cff46322006cf7a5e9447ee6510a1fbfeef996e8d4194a1c88b14dfa"
+    },
+    {
+      "bytes": 334277,
+      "path": "qa-final-size.png",
+      "sha256": "68adec3d1bcacd56ad7ecf8a33cb4e192e32ba878e83b0728b3854aa84666371"
+    },
+    {
+      "bytes": 149137,
+      "path": "qa-grayscale.png",
+      "sha256": "905bf6e2f85eea95086cb58260dab559655498f7cc29029ff154597852e920c6"
+    },
+    {
+      "bytes": 182778,
+      "path": "qa-pdf.png",
+      "sha256": "11a9481897817e675a3ea832b0bab689b3622434a5fde3640508d68518d441c8"
+    },
+    {
+      "bytes": 992,
+      "path": "qa-protocol.md",
+      "sha256": "cf51c3485996cbff6142bca1226a976ba948d62d43fa13e0083ca50015b37c3f"
+    },
+    {
+      "bytes": 2675,
+      "path": "qa-report.md",
+      "sha256": "7af3d41649d93884c910214e158ced41943958847b446f42060915eb1dea30ae"
+    },
+    {
+      "bytes": 128,
+      "path": "requirements.txt",
+      "sha256": "fe132699f10b8786ec874b3cb00eafb35af2344a6552409f591f5375c5e969ae"
+    },
+    {
+      "bytes": 1053,
+      "path": "resource-log.ndjson",
+      "sha256": "d8b32cf4a93b4073f86d595f3e48623c8db810fb4160f53d5d3ffbcbdc5c340d"
+    },
+    {
+      "bytes": 3608,
+      "path": "results.json",
+      "sha256": "3518087ffc2d2e740eb7e97feb52b3b9f20f1ebe51421c9752698069064400c1"
+    },
+    {
+      "bytes": 101191,
+      "path": "source-data.csv",
+      "sha256": "8f70f7123a9885c977590a18d3d2d1d1e5b272059d031a6c7f87d61b2635351d"
+    },
+    {
+      "bytes": 48256,
+      "path": "validate.py",
+      "sha256": "6a4a15cffd52dcd8bfba3ed33a10a04499aa8ba1b5dd5efc1260120320c6182e"
+    },
+    {
+      "bytes": 3895,
+      "path": "validation.json",
+      "sha256": "9802b84bcb28810e75bd2d4961ee7d0251fa59af89033c01c510baafdd6aaad5"
+    }
+  ],
+  "git": {
+    "baseCommit": "ce0cfc6ad54060c1ac4fb1fa449e367f361f95ea",
+    "certificateCommit": "ce0cfc6ad54060c1ac4fb1fa449e367f361f95ea",
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtCertifiedRunMeaning": "the finite diagnostic inputs and rendered figure masters are read from immutable committed blobs; generated publication mirrors and unrelated working-tree files are excluded",
+    "publicationCommitAssigned": false,
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "567c72e323e1395c441b2fb76e4e0a1eae7d5662",
+    "wholeWorktreeCleanAtRun": false,
+    "workingTreeBoundByInputAndPackageHashes": true,
+    "workingTreeDirtyAtRender": false
+  },
+  "inputBindings": [
+    {
+      "bytes": 2441670,
+      "path": "experiments/r073k/viscous_branch_diagnostic.json",
+      "sha256": "2842cbc7c7785ec4151efb172edce27e68f53d4ba077e0cca91e348627bf73c1"
+    },
+    {
+      "bytes": 5247,
+      "path": "experiments/r073k/independent_validation.json",
+      "sha256": "3a7726c4671118158eba7238878b690af94316bd5efb23cba7ea4b30d6ed5abb"
+    },
+    {
+      "bytes": 1788,
+      "path": "experiments/r073k/config.json",
+      "sha256": "3a9f4611f6738c26b1cf096dac64924887dc4995c1423f883b411d72255654c2"
+    },
+    {
+      "bytes": 649,
+      "path": "experiments/r073k/environment.json",
+      "sha256": "2818d2ee4fc64560a479438d5231df66df91ca27f6b9cd05d0b526ef5fc1f542"
+    },
+    {
+      "bytes": 1104,
+      "path": "experiments/r073k/package_validation.json",
+      "sha256": "9be49320436a06f0e86a49b432ed5ef4822159c698fb547d3a26c1a61c63abbc"
+    },
+    {
+      "bytes": 991767,
+      "path": "experiments/r073k/progress.ndjson",
+      "sha256": "6bcb95140de7c212f69caf10dbce9811c867cdba1e361da7d126e1f0361a70ef"
+    },
+    {
+      "bytes": 387432,
+      "path": "experiments/r073k/resources.ndjson",
+      "sha256": "598d5addca4f4b9d1b09ef62d37c8e3c1d5e6ca49d5441fbd89be75305ee7af3"
+    },
+    {
+      "bytes": 198374,
+      "path": "experiments/r073k/independent_progress.ndjson",
+      "sha256": "6608a588687073080fbb9847230ba5ed088c0e98eb81c2bb197e38a8380f2069"
+    },
+    {
+      "bytes": 381603,
+      "path": "experiments/r073k/independent_resources.ndjson",
+      "sha256": "5c9978149125ca7429ba65964359e6e9dd5f437766feca2a74f44a49072df5d5"
+    }
+  ],
+  "masters": [
+    "figure.pdf",
+    "figure.svg",
+    "figure.png"
+  ],
+  "publication": {
+    "assets": [
+      {
+        "bytes": 42488,
+        "path": "public/assets/r073k/fig-r073k-uniform-viscous-branch.pdf",
+        "sha256": "d4069f071bf1f3c20b305fd0ad9e5a270329569e41673cff7493288f5e99cd24"
+      },
+      {
+        "bytes": 153773,
+        "path": "public/assets/r073k/fig-r073k-uniform-viscous-branch.svg",
+        "sha256": "db6c996501793e89c4aa4c1eacba356d0f1215ba7b35d7ccf711e736b1355024"
+      },
+      {
+        "bytes": 779702,
+        "path": "public/assets/r073k/fig-r073k-uniform-viscous-branch.png",
+        "sha256": "064971bfd72c27dd5e7c98b03492d51c94a2541874fc17838acb992f2be4cb5d"
+      }
+    ],
+    "byteIdentityRequired": true,
+    "directory": "public/assets/r073k",
+    "fileStem": "fig-r073k-uniform-viscous-branch",
+    "publicCopiesComplete": true
+  },
+  "publicationStatus": "prepublication",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSize": "qa-final-size.png",
+    "finalSizeInspected": true,
+    "grayscale": "qa-grayscale.png",
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRaster": "qa-pdf.png",
+    "qaDpi": 180,
+    "records": [
+      {
+        "bytes": 334277,
+        "path": "qa-final-size.png",
+        "sha256": "68adec3d1bcacd56ad7ecf8a33cb4e192e32ba878e83b0728b3854aa84666371"
+      },
+      {
+        "bytes": 149137,
+        "path": "qa-grayscale.png",
+        "sha256": "905bf6e2f85eea95086cb58260dab559655498f7cc29029ff154597852e920c6"
+      },
+      {
+        "bytes": 182778,
+        "path": "qa-pdf.png",
+        "sha256": "11a9481897817e675a3ea832b0bab689b3622434a5fde3640508d68518d441c8"
+      },
+      {
+        "bytes": 2675,
+        "path": "qa-report.md",
+        "sha256": "7af3d41649d93884c910214e158ced41943958847b446f42060915eb1dea30ae"
+      }
+    ],
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "release": "R0.73K",
+  "schemaVersion": "r073k-uniform-viscous-branch-figure-manifest-v1",
+  "sourceData": [
+    {
+      "bytes": 2441670,
+      "path": "experiments/r073k/viscous_branch_diagnostic.json",
+      "sha256": "2842cbc7c7785ec4151efb172edce27e68f53d4ba077e0cca91e348627bf73c1"
+    },
+    {
+      "bytes": 5247,
+      "path": "experiments/r073k/independent_validation.json",
+      "sha256": "3a7726c4671118158eba7238878b690af94316bd5efb23cba7ea4b30d6ed5abb"
+    },
+    {
+      "bytes": 1788,
+      "path": "experiments/r073k/config.json",
+      "sha256": "3a9f4611f6738c26b1cf096dac64924887dc4995c1423f883b411d72255654c2"
+    },
+    {
+      "bytes": 649,
+      "path": "experiments/r073k/environment.json",
+      "sha256": "2818d2ee4fc64560a479438d5231df66df91ca27f6b9cd05d0b526ef5fc1f542"
+    },
+    {
+      "bytes": 1104,
+      "path": "experiments/r073k/package_validation.json",
+      "sha256": "9be49320436a06f0e86a49b432ed5ef4822159c698fb547d3a26c1a61c63abbc"
+    },
+    {
+      "bytes": 991767,
+      "path": "experiments/r073k/progress.ndjson",
+      "sha256": "6bcb95140de7c212f69caf10dbce9811c867cdba1e361da7d126e1f0361a70ef"
+    },
+    {
+      "bytes": 387432,
+      "path": "experiments/r073k/resources.ndjson",
+      "sha256": "598d5addca4f4b9d1b09ef62d37c8e3c1d5e6ca49d5441fbd89be75305ee7af3"
+    },
+    {
+      "bytes": 198374,
+      "path": "experiments/r073k/independent_progress.ndjson",
+      "sha256": "6608a588687073080fbb9847230ba5ed088c0e98eb81c2bb197e38a8380f2069"
+    },
+    {
+      "bytes": 381603,
+      "path": "experiments/r073k/independent_resources.ndjson",
+      "sha256": "5c9978149125ca7429ba65964359e6e9dd5f437766feca2a74f44a49072df5d5"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "At N=160 and epsilon at most 10^-3, every sampled d node retains one numerically real eigenvalue in the fixed circle; the drift quotient approaches the independently derived inviscid-adjoint formula, projector diagnostics remain finite, and adjacent-cutoff discrepancies close to roundoff by N=160.",
+  "supportedTakeaway": "At N=160 and epsilon at most 10^-3, every sampled d node retains one numerically real eigenvalue in the fixed circle; the drift quotient approaches the independently derived inviscid-adjoint formula, projector diagnostics remain finite, and adjacent-cutoff discrepancies close to roundoff by N=160.",
+  "validatedAt": "2026-08-30T17:22:15.035829+00:00"
+}

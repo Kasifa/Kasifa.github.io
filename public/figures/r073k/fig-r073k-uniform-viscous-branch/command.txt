@@ -1,0 +1,16 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073K_FIGURE_DEPS=/tmp/r073c-deps
+CODEX_RUNTIME_BIN=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override
+
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073k/fig-r073k-uniform-viscous-branch/plot.py --deps "$R073K_FIGURE_DEPS" --overwrite
+
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073k/fig-r073k-uniform-viscous-branch/validate.py --deps "$R073K_FIGURE_DEPS"
+
+# Inspect figure.png, qa-final-size.png, qa-grayscale.png, and qa-pdf.png at
+# original resolution. Record the observations in qa-report.md and change its
+# Status to passed only if every visible check passes. Then explicitly rebuild
+# the formal records:
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073k/fig-r073k-uniform-viscous-branch/validate.py --deps "$R073K_FIGURE_DEPS" --require-formal
+
+# Recommended routine release/CI gate: strictly read-only.
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073k/fig-r073k-uniform-viscous-branch/validate.py --deps "$R073K_FIGURE_DEPS" --check-formal

@@ -1,0 +1,174 @@
+{
+  "allChecksPass": true,
+  "checks": {
+    "allComparisonChecksPass": true,
+    "claimBoundaryFailClosed": true,
+    "endpointRolesFailClosed": true,
+    "finiteEigenResidualsPass": true,
+    "finiteTopDimensionOneOnComputedGrid": true,
+    "finiteWkbIdentityPass": true,
+    "threeDeclaredWindowsPresent": true
+  },
+  "claimBoundary": {
+    "analyticUpperBoundEqualsD0": false,
+    "clayProblemSolved": false,
+    "finiteActionIsContinuumAction": false,
+    "finiteBinary64GalerkinDiagnostic": true,
+    "finiteWkbCorrectionIsAsymptoticTheorem": false,
+    "matchingContinuumGainActionEstablished": false,
+    "oneOver450IsTheoremEndpoint": false,
+    "ordinaryCutoffAgreementIsTailProof": false,
+    "prescribedActionSeedDepartureEstablished": false,
+    "selectedFiniteBranchIsContinuumBranch": false
+  },
+  "configuration": {
+    "action": {
+      "cutoffs": [
+        24,
+        48,
+        96
+      ],
+      "primaryQuadratureOrder": 64,
+      "quadratureOrders": [
+        32,
+        64
+      ]
+    },
+    "commandLine": [
+      "experiments/r073i/selected_gain_action_diagnostic.py",
+      "--deps",
+      "/tmp/r073c-deps",
+      "--config",
+      "experiments/r073i/config.json",
+      "--output-dir",
+      "experiments/r073i",
+      "--overwrite"
+    ],
+    "configBinding": {
+      "bytes": 2062,
+      "path": "experiments/r073i/config.json",
+      "sha256": "617df77e3b4e5fc900b1b565d7f0964e97f6e480f53efb70ebed480d55d860f9"
+    },
+    "gain": {
+      "cutoffComparison": {
+        "cutoffs": [
+          24,
+          48,
+          96
+        ],
+        "fastStep": 0.25,
+        "lambda": 100000
+      },
+      "independentRk4": {
+        "cutoff": 24,
+        "fastStep": 0.05,
+        "lambda": 100000
+      },
+      "lambdas": [
+        10000,
+        50000,
+        100000,
+        500000,
+        1000000
+      ],
+      "primaryCutoff": 48,
+      "primaryFastStep": 0.25,
+      "stepComparison": {
+        "cutoff": 48,
+        "fastSteps": [
+          0.5,
+          0.25,
+          0.125
+        ],
+        "lambda": 100000
+      }
+    },
+    "smokeMode": false,
+    "tolerances": {
+      "actionFinestCutoffAbsolute": 1e-12,
+      "actionQuadratureAbsolute": 1e-12,
+      "independentRk4LogAbsolute": 1e-06,
+      "selectedGainFinestCutoffLogAbsolute": 1e-07,
+      "selectedGainStepLogAbsolute": 1e-08,
+      "topEigenResidualRelative": 1e-10,
+      "wkbFinestCutoffAbsolute": 1e-10
+    },
+    "windows": [
+      {
+        "endpoint": 0.0001,
+        "expression": "1e-4",
+        "id": "explicit-pilot",
+        "role": "explicit finite pilot; not a theorem endpoint"
+      },
+      {
+        "endpoint": 0.0008288090429259324,
+        "expression": "sqrt(19/180)/392",
+        "id": "analytic-upper-bound",
+        "role": "finite route diagnostic at a strict analytic upper bound for d0; not d0"
+      },
+      {
+        "endpoint": 0.0022222222222222222,
+        "expression": "1/450",
+        "id": "one-over-450",
+        "role": "legacy finite comparison; not the currently known theorem endpoint D=d0"
+      }
+    ]
+  },
+  "counts": {
+    "actionRows": 18,
+    "comparisonRows": 36,
+    "gainRows": 36,
+    "windowCount": 3
+  },
+  "createdUtc": "2026-08-30T11:54:30.259643Z",
+  "dataFiles": [
+    "action_rows.csv",
+    "gain_rows.csv",
+    "comparison_rows.csv",
+    "environment.json",
+    "progress.ndjson"
+  ],
+  "diagnosticOnly": true,
+  "evidenceClass": "finite-binary64-galerkin-diagnostic-only",
+  "release": "R0.73I-finite-diagnostic",
+  "schemaVersion": "r073i-finite-summary-v1",
+  "sourceCommit": "f8a0879edb8a2a3772bf3bd34f60d900bc367e71",
+  "windowSummaries": [
+    {
+      "endpoint": 0.0001,
+      "largestLambda": 1000000,
+      "largestLambdaNormalizedLogGain": 1.7038946352535356e-05,
+      "largestLambdaResidual": -0.00017884222019048934,
+      "largestLambdaResidualMinusWkb": 8.642346159754076e-07,
+      "primaryAction": 1.7039125194755544e-05,
+      "primaryAverageRate": 0.17039125194755542,
+      "primaryWkbCorrection": -0.00017970645480646475,
+      "role": "explicit finite pilot; not a theorem endpoint",
+      "windowId": "explicit-pilot"
+    },
+    {
+      "endpoint": 0.0008288090429259324,
+      "largestLambda": 1000000,
+      "largestLambdaNormalizedLogGain": 0.0001411193868150679,
+      "largestLambdaResidual": -0.0014877823343795171,
+      "largestLambdaResidualMinusWkb": 8.647968098999051e-07,
+      "primaryAction": 0.00014112087459740226,
+      "primaryAverageRate": 0.17026946774036794,
+      "primaryWkbCorrection": -0.001488647131189417,
+      "role": "finite route diagnostic at a strict analytic upper bound for d0; not d0",
+      "windowId": "analytic-upper-bound"
+    },
+    {
+      "endpoint": 0.0022222222222222222,
+      "largestLambda": 1000000,
+      "largestLambdaNormalizedLogGain": 0.0003778563688301261,
+      "largestLambdaResidual": -0.003986547577198962,
+      "largestLambdaResidualMinusWkb": 8.658644239899205e-07,
+      "primaryAction": 0.0003778603553777033,
+      "primaryAverageRate": 0.17003715991996649,
+      "primaryWkbCorrection": -0.003987413441622952,
+      "role": "legacy finite comparison; not the currently known theorem endpoint D=d0",
+      "windowId": "one-over-450"
+    }
+  ]
+}

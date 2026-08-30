@@ -949,6 +949,12 @@ def build_recap() -> str:
     node_l = '            <span class="node-ref"><a href="/notes/r0-73l.html">R0.73L</a><span class="node-state kind-closed">闭</span></span>\n'
     node_m = '            <span class="node-ref"><a href="/notes/r0-73m.html">R0.73M</a><span class="node-state kind-closed">闭</span></span>\n'
     html = once(html, node_l, node_l + node_m, "L recap node")
+    html = required(
+        html,
+        "<li>R0.73L 闭合共同定义域演化",
+        '<li style="break-inside:avoid;page-break-inside:avoid">R0.73L 闭合共同定义域演化',
+        "L recap print keep",
+    )
     retained = (
         '            <li>R0.73M 闭合 physical/kinetic selected-gain 共轭、固定端点 forward localization、'
         'prescribed-action seed window、二维非线性固定距离偏离和 selected planar orbit 全局光滑；'
@@ -1000,6 +1006,9 @@ def update_home() -> str:
         ("<strong>v1.52</strong>网页版本", "<strong>v1.53</strong>网页版本"),
         ("<strong>188</strong>公开研究笔记", "<strong>189</strong>公开研究笔记"),
         ("<strong>R0.73L</strong>最新研究节点", "<strong>R0.73M</strong>最新研究节点"),
+        ("<strong>2026-08-30</strong>最近修订", "<strong>2026-08-31</strong>最近修订"),
+        ("<strong>non-selfadjoint adiabatic tracking / bounded prefactor</strong>当前方向",
+         "<strong>prescribed-action planar departure / fixed-background feasibility audit</strong>当前方向"),
         ('<a class="route-map-latest" href="#r073l">跳到首页 R0.73L 卡片 →</a>',
          '<a class="route-map-latest" href="#r073m">跳到首页 R0.73M 卡片 →</a>'),
         ("Research topology · R0.1–R0.73L", "Research topology · R0.1–R0.73M"),

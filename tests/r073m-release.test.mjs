@@ -206,6 +206,7 @@ test("R0.73M five-page route and exact claim boundary are complete", async () =>
     "28/28",
     "0.9960745297",
     "0.9965850278",
+    "故终点 selected-pair 范数 \\(\\ge(c_L/2)\\rho\\)",
     "R0.73N",
   ]) assert.ok(note.includes(token), `note token ${token}`);
   for (const href of [
@@ -227,6 +228,9 @@ test("R0.73M five-page route and exact claim boundary are complete", async () =>
   assert.ok(recap.includes("R0.70A–R0.73M 的 91 个版本已经公开"));
   assert.ok(recap.includes("67 节完整封存"));
   assert.ok(recap.includes("24 节旧档待回补"));
+  assert.ok(recap.includes(
+    '<li style="break-inside:avoid;page-break-inside:avoid">R0.73L 闭合共同定义域演化',
+  ));
   for (const token of [...closedClaims, ...finiteClaims, ...openClaims, "R0.73N"]) {
     assert.ok(recap.includes(token), `recap token ${token}`);
   }
@@ -234,6 +238,15 @@ test("R0.73M five-page route and exact claim boundary are complete", async () =>
   assert.ok(home.includes("LATEST RELEASE · R0.73M"));
   assert.ok(home.includes("当前端点 R0.73M"));
   assert.ok(home.includes("NEXT · R0.73N"));
+  assert.ok(home.includes("<strong>2026-08-31</strong>最近修订"));
+  assert.ok(home.includes(
+    "<strong>prescribed-action planar departure / fixed-background feasibility audit</strong>当前方向",
+  ));
+  assert.equal(home.includes("<strong>2026-08-30</strong>最近修订"), false);
+  assert.equal(
+    home.includes("<strong>non-selfadjoint adiabatic tracking / bounded prefactor</strong>当前方向"),
+    false,
+  );
   assert.ok(home.includes('data-release="r073m"'));
   assert.ok(home.includes("finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks"));
   assert.equal(home.match(/data-release="r073m"/g)?.length, 1);

@@ -17,6 +17,14 @@ const publicRoot = resolve(root, "public");
 const figure = "figures/r073f/fig-r073f-fixed-window-roughness";
 const figureId = "fig-r073f-fixed-window-roughness";
 const sourceCommit = "5edb1702314feca3e9d47a186b30fc53079cd67a";
+const sourcePaths = [
+  "research/r073f_problem_freeze.md",
+  "research/r073f_moving_dichotomy_proof.md",
+  "research/r073f_report-source.md",
+  "research/r073f_gap_matrix.md",
+  "research/r073f_literature_audit.md",
+  "research/r073f_independent_analytic_audit.md",
+];
 const run = promisify(execFile);
 const text = (relative) => readFile(resolve(root, relative), "utf8");
 const json = async (relative) => JSON.parse(await text(relative));
@@ -61,7 +69,12 @@ async function inspectPdf(relative) {
 }
 
 async function assertSourceBindings(rows, label) {
-  assert.ok(Array.isArray(rows) && rows.length >= 6, label);
+  assert.ok(Array.isArray(rows), label);
+  assert.deepEqual(
+    rows.map((row) => row.path).sort(),
+    [...sourcePaths].sort(),
+    `${label}: exact six-source inventory`,
+  );
   for (const row of rows) {
     const commit = row.sourceCommit ?? row.commit;
     assert.equal(commit, sourceCommit, `${label}: ${row.path}`);
@@ -98,6 +111,7 @@ test("R0.73F release source pins the v1.46 transaction and GitHub-only contract"
     "FIGURE_PACKAGE_COMMIT",
     "CERTIFICATE_PACKAGE_COMMIT",
     "FIGURE_METADATA_SEAL_COMMIT",
+    "FIGURE_PUBLICATION_COMMIT",
   ]) assert.ok(source.includes(token), token);
   for (const token of [
     "boundedPerturbationRoughnessWithNoninvertibleStableSemigroup=CLOSED",
@@ -274,7 +288,7 @@ test("R0.73F note, homepage card, route 92, recap 122/41, index, and literature 
   }
 });
 
-test("R0.73F formal figure/certificate manifests preserve source/F/C/S provenance", async () => {
+test("R0.73F formal figure/certificate/publication preserve A/F/C/S/P provenance", async () => {
   const [figureManifest, figureValidation, certificateManifest, certificate, certificateValidation, generator] = await Promise.all([
     json(`${figure}/manifest.json`),
     json(`${figure}/validation.json`),
@@ -286,37 +300,118 @@ test("R0.73F formal figure/certificate manifests preserve source/F/C/S provenanc
   const figureCommit = generator.match(/FIGURE_PACKAGE_COMMIT\s*=\s*"([0-9a-f]{40})"/)?.[1];
   const certificateCommit = generator.match(/CERTIFICATE_PACKAGE_COMMIT\s*=\s*"([0-9a-f]{40})"/)?.[1];
   const figureSealCommit = generator.match(/FIGURE_METADATA_SEAL_COMMIT\s*=\s*"([0-9a-f]{40})"/)?.[1];
+  const publicationCommit = generator.match(/FIGURE_PUBLICATION_COMMIT\s*=\s*"([0-9a-f]{40})"/)?.[1];
   assert.ok(figureCommit);
   assert.ok(certificateCommit);
   assert.ok(figureSealCommit);
-  assert.equal(new Set([sourceCommit, figureCommit, certificateCommit, figureSealCommit]).size, 4);
+  assert.ok(publicationCommit);
+  assert.equal(
+    new Set([
+      sourceCommit,
+      figureCommit,
+      certificateCommit,
+      figureSealCommit,
+      publicationCommit,
+    ]).size,
+    5,
+  );
   for (const [ancestor, descendant, label] of [
     [sourceCommit, figureCommit, "source < F"],
     [figureCommit, certificateCommit, "F < C"],
     [certificateCommit, figureSealCommit, "C < S"],
-    [figureSealCommit, "HEAD", "S < release HEAD"],
+    [figureSealCommit, publicationCommit, "S < P"],
+    [publicationCommit, "HEAD", "P <= release HEAD"],
   ]) {
     await assert.doesNotReject(
       run("git", ["merge-base", "--is-ancestor", ancestor, descendant], { cwd: root }),
       label,
     );
   }
-  const sealedTree = (await run(
+
+  const immutableAtF = [
+    "README.md",
+    "caption.md",
+    "config.json",
+    "figure.pdf",
+    "figure.png",
+    "figure.svg",
+    "plot.py",
+    "qa-final-size.png",
+    "qa-grayscale.png",
+    "qa-pdf.png",
+    "qa-protocol.md",
+    "qa-report.md",
+    "requirements.txt",
+    "results.json",
+  ];
+  assert.equal(immutableAtF.length, 14);
+  for (const name of immutableAtF) {
+    const relative = `${figure}/${name}`;
+    const [frozenBlob, currentBlob] = await Promise.all([
+      run("git", ["rev-parse", `${figureCommit}:${relative}`], { cwd: root }),
+      run("git", ["hash-object", relative], { cwd: root }),
+    ]);
+    assert.equal(currentBlob.stdout.trim(), frozenBlob.stdout.trim(), `${name}: differs from F`);
+  }
+
+  for (const name of ["contract.json", "command.txt", "validate.py", "validation.json"]) {
+    const relative = `${figure}/${name}`;
+    const [sealedBlob, currentBlob] = await Promise.all([
+      run("git", ["rev-parse", `${figureSealCommit}:${relative}`], { cwd: root }),
+      run("git", ["hash-object", relative], { cwd: root }),
+    ]);
+    assert.equal(currentBlob.stdout.trim(), sealedBlob.stdout.trim(), `${name}: differs from S`);
+  }
+
+  const publicationFreeManifest = { ...figureManifest };
+  assert.ok(Object.hasOwn(publicationFreeManifest, "publication"));
+  delete publicationFreeManifest.publication;
+  const sealedManifest = await run(
     "git",
-    ["ls-tree", "-r", "--name-only", figureSealCommit, "--", figure],
+    ["show", `${figureSealCommit}:${figure}/manifest.json`],
+    { cwd: root, maxBuffer: 16 * 1024 * 1024 },
+  );
+  assert.equal(
+    `${JSON.stringify(publicationFreeManifest, null, 2)}\n`,
+    sealedManifest.stdout,
+    "removing publication from the current manifest must recover S exactly",
+  );
+  const stripManifestHashRow = (value, label) => {
+    const pattern = /^[0-9a-f]{64}  manifest\.json\r?\n?/gm;
+    assert.equal((value.match(pattern) ?? []).length, 1, label);
+    return value.replace(pattern, "");
+  };
+  const [currentLedger, sealedLedger] = await Promise.all([
+    text(`${figure}/SHA256SUMS`),
+    run(
+      "git",
+      ["show", `${figureSealCommit}:${figure}/SHA256SUMS`],
+      { cwd: root },
+    ).then((result) => result.stdout),
+  ]);
+  assert.equal(
+    stripManifestHashRow(currentLedger, "current manifest hash row"),
+    stripManifestHashRow(sealedLedger, "S manifest hash row"),
+    "only the manifest hash row may differ from the S ledger",
+  );
+
+  const publicationTree = (await run(
+    "git",
+    ["ls-tree", "-r", "--name-only", publicationCommit, "--", figure],
     { cwd: root },
   )).stdout.trim().split("\n").filter(Boolean).sort();
   const currentEntries = await readdir(resolve(root, figure), { withFileTypes: true });
   assert.ok(currentEntries.every((entry) => entry.isFile()), "the formal figure package must remain flat");
   const currentTree = currentEntries.map((entry) => `${figure}/${entry.name}`).sort();
-  assert.deepEqual(currentTree, sealedTree, "the current formal figure ledger must equal seal S");
-  for (const relative of sealedTree) {
-    const [sealedBlob, currentBlob] = await Promise.all([
-      run("git", ["rev-parse", `${figureSealCommit}:${relative}`], { cwd: root }),
+  assert.deepEqual(currentTree, publicationTree, "the current figure directory must equal publication P");
+  for (const relative of publicationTree) {
+    const [publishedBlob, currentBlob] = await Promise.all([
+      run("git", ["rev-parse", `${publicationCommit}:${relative}`], { cwd: root }),
       run("git", ["hash-object", relative], { cwd: root }),
     ]);
-    assert.equal(currentBlob.stdout.trim(), sealedBlob.stdout.trim(), `${relative}: differs from seal S`);
+    assert.equal(currentBlob.stdout.trim(), publishedBlob.stdout.trim(), `${relative}: differs from P`);
   }
+
   assert.equal(figureManifest.figureId, figureId);
   assert.equal(figureManifest.status, "formal");
   assert.equal(figureManifest.git.sourceCommit, sourceCommit);
@@ -328,8 +423,39 @@ test("R0.73F formal figure/certificate manifests preserve source/F/C/S provenanc
   assert.equal(certificateValidation.allChecksPass, true);
   await assertSourceBindings(figureManifest.sourceBindings, "figure source bindings");
   await assertSourceBindings(certificateManifest.sourceBindings, "certificate source bindings");
+
+  assert.equal(figureManifest.publication.byteIdentityRequired, true);
+  assert.equal(figureManifest.publication.publicCopiesComplete, true);
+  assert.equal(figureManifest.publication.directory, "public/assets/r073f");
+  assert.equal(figureManifest.publication.fileStem, figureId);
+  assert.equal(figureManifest.publication.assets.length, 3);
+  assert.deepEqual(
+    figureManifest.publication.assets.map((row) => row.path).sort(),
+    ["pdf", "png", "svg"].map(
+      (suffix) => `public/assets/r073f/${figureId}.${suffix}`,
+    ).sort(),
+  );
   for (const suffix of ["pdf", "png", "svg"]) {
-    assert.equal(await sha(`${figure}/figure.${suffix}`), await sha(`public/assets/r073f/${figureId}.${suffix}`), suffix);
+    const sourcePath = `${figure}/figure.${suffix}`;
+    const publicPath = `public/assets/r073f/${figureId}.${suffix}`;
+    const [sourceBytes, publicBytes] = await Promise.all([
+      readFile(resolve(root, sourcePath)),
+      readFile(resolve(root, publicPath)),
+    ]);
+    assert.deepEqual(publicBytes, sourceBytes, `${suffix}: public bytes differ`);
+    const row = figureManifest.publication.assets.find((asset) => asset.path === publicPath);
+    const output = figureManifest.outputs.find((asset) => asset.path === `figure.${suffix}`);
+    assert.ok(row, `${suffix}: publication row`);
+    assert.ok(output, `${suffix}: output row`);
+    assert.equal(row.bytes, publicBytes.length, `${suffix}: publication bytes`);
+    assert.equal(row.sha256, await sha(publicPath), `${suffix}: publication hash`);
+    assert.equal(output.bytes, row.bytes, `${suffix}: output/publication bytes`);
+    assert.equal(output.sha256, row.sha256, `${suffix}: output/publication hash`);
+    const [publishedBlob, currentBlob] = await Promise.all([
+      run("git", ["rev-parse", `${publicationCommit}:${publicPath}`], { cwd: root }),
+      run("git", ["hash-object", publicPath], { cwd: root }),
+    ]);
+    assert.equal(currentBlob.stdout.trim(), publishedBlob.stdout.trim(), `${suffix}: public asset differs from P`);
   }
   const note = await inspectPdf("public/notes/r0-73f.pdf");
   const recap = await inspectPdf("public/recap-r0-61-r0-73f.pdf");

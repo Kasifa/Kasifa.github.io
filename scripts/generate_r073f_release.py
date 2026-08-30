@@ -41,6 +41,7 @@ CERTIFIED_REPORT_COMMIT = "5edb1702314feca3e9d47a186b30fc53079cd67a"
 FIGURE_PACKAGE_COMMIT = "3a34494445de938c5cf01862b1db258e6a6d5ecf"
 CERTIFICATE_PACKAGE_COMMIT = "5f9c21f5443e5d5b7350a6d71df8ba417890291c"
 FIGURE_METADATA_SEAL_COMMIT = "b17905719d2293a8d356fd94ffcd086554075e75"
+FIGURE_PUBLICATION_COMMIT = "affbd8c744f69cbc12183cbea82d4ee5be48b2a9"
 CERTIFICATE_COMMIT_PLACEHOLDER = "TO_BE_FILLED_AFTER_CERTIFICATE_COMMIT"
 FIGURE_SEAL_COMMIT_PLACEHOLDER = "TO_BE_FILLED_AFTER_FIGURE_SEAL_COMMIT"
 
@@ -131,6 +132,13 @@ FIGURE_IMMUTABLE_FILES = (
     "qa-report.md",
     "requirements.txt",
     "results.json",
+)
+
+FIGURE_METADATA_CORE_FILES = (
+    "contract.json",
+    "command.txt",
+    "validate.py",
+    "validation.json",
 )
 
 PUBLIC_VOICE_BANS = (
@@ -264,11 +272,15 @@ def verify_manifest_hashes(path: Path, label: str) -> dict:
 
 def verify_source_bindings(payload: dict, label: str) -> None:
     rows = payload.get("sourceBindings", payload.get("analyticSourceBindings", []))
+    if not isinstance(rows, list) or len(rows) != len(SOURCE_PATHS):
+        raise RuntimeError(label + ": source binding inventory is not exactly six files")
     by_path = {
         str(row.get("path", "")): row
         for row in rows
         if isinstance(row, dict)
     }
+    if set(by_path) != set(SOURCE_PATHS) or len(by_path) != len(rows):
+        raise RuntimeError(label + ": source binding path set is not exact")
     default_commit = str(payload.get("sourceCommit", ""))
     for relative in SOURCE_PATHS:
         row = by_path.get(relative)
@@ -308,6 +320,85 @@ def verify_sealed_directory(directory: Path, commit: str, label: str) -> None:
             raise RuntimeError(label + ": file absent from sealed commit " + relative) from exc
         if current.read_bytes() != frozen:
             raise RuntimeError(label + ": sealed file changed " + relative)
+
+
+def verify_exact_flat_directory_at_commit(
+    directory: Path,
+    commit: str,
+    label: str,
+) -> None:
+    subprocess.run(
+        ["git", "cat-file", "-e", commit + "^{commit}"],
+        cwd=ROOT,
+        check=True,
+    )
+    prefix = directory.relative_to(ROOT).as_posix()
+    frozen = subprocess.run(
+        ["git", "ls-tree", "-r", "--name-only", commit, "--", prefix],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    current = [
+        path.relative_to(ROOT).as_posix()
+        for path in directory.iterdir()
+        if path.is_file() and not path.is_symlink()
+    ]
+    if sorted(frozen) != sorted(current):
+        raise RuntimeError(label + ": sealed directory inventory changed")
+    verify_sealed_directory(directory, commit, label)
+
+
+def strip_manifest_hash_row(payload: bytes, label: str) -> bytes:
+    rows = payload.splitlines(keepends=True)
+    matches = [
+        index
+        for index, row in enumerate(rows)
+        if re.fullmatch(rb"[0-9a-f]{64}  manifest\.json\r?\n?", row)
+    ]
+    if len(matches) != 1:
+        raise RuntimeError(label + ": expected exactly one manifest hash row")
+    return b"".join(row for index, row in enumerate(rows) if index != matches[0])
+
+
+def verify_metadata_overlay(directory: Path) -> None:
+    if len(FIGURE_IMMUTABLE_FILES) != 14 or len(set(FIGURE_IMMUTABLE_FILES)) != 14:
+        raise RuntimeError("R0.73F F inventory must contain exactly 14 immutable files")
+    verify_named_files_at_commit(
+        directory,
+        FIGURE_METADATA_SEAL_COMMIT,
+        FIGURE_METADATA_CORE_FILES,
+        "R0.73F figure metadata core",
+    )
+
+    manifest_path = directory / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if "publication" not in manifest:
+        raise RuntimeError("R0.73F figure manifest is missing publication overlay")
+    without_publication = dict(manifest)
+    del without_publication["publication"]
+    relative_manifest = manifest_path.relative_to(ROOT).as_posix()
+    if json_bytes(without_publication) != git_object_bytes(
+        FIGURE_METADATA_SEAL_COMMIT,
+        relative_manifest,
+    ):
+        raise RuntimeError("R0.73F publication-free manifest differs from seal S")
+
+    ledger_path = directory / "SHA256SUMS"
+    current_ledger = strip_manifest_hash_row(
+        ledger_path.read_bytes(),
+        "R0.73F current figure ledger",
+    )
+    sealed_ledger = strip_manifest_hash_row(
+        git_object_bytes(
+            FIGURE_METADATA_SEAL_COMMIT,
+            ledger_path.relative_to(ROOT).as_posix(),
+        ),
+        "R0.73F seal-S figure ledger",
+    )
+    if current_ledger != sealed_ledger:
+        raise RuntimeError("R0.73F SHA ledger changed beyond the manifest hash row")
 
 
 def verify_named_files_at_commit(
@@ -384,6 +475,55 @@ def require_output_record(manifest: dict, figure: Path, suffix: str) -> dict:
     return row
 
 
+def validate_publication_assets(manifest: dict, directory: Path) -> None:
+    publication = manifest.get("publication")
+    if not isinstance(publication, dict):
+        raise RuntimeError("R0.73F figure publication binding is missing")
+    if (
+        publication.get("byteIdentityRequired") is not True
+        or publication.get("publicCopiesComplete") is not True
+        or publication.get("directory") != "public/assets/r073f"
+        or publication.get("fileStem") != FIGURE_ID
+    ):
+        raise RuntimeError("R0.73F figure publication contract is inconsistent")
+    rows = publication.get("assets")
+    if not isinstance(rows, list) or len(rows) != 3:
+        raise RuntimeError("R0.73F publication must bind exactly three assets")
+    by_path = {
+        str(row.get("path", "")): row
+        for row in rows
+        if isinstance(row, dict)
+    }
+    expected_paths = {
+        f"public/assets/r073f/{FIGURE_ID}.{suffix}"
+        for suffix in ("pdf", "svg", "png")
+    }
+    if set(by_path) != expected_paths or len(by_path) != len(rows):
+        raise RuntimeError("R0.73F publication asset path set is not exact")
+
+    for suffix in ("pdf", "svg", "png"):
+        relative = f"public/assets/r073f/{FIGURE_ID}.{suffix}"
+        public_path = ROOT / relative
+        source_path = directory / f"figure.{suffix}"
+        if (
+            not public_path.is_file()
+            or public_path.is_symlink()
+            or public_path.read_bytes() != source_path.read_bytes()
+        ):
+            raise RuntimeError("R0.73F public asset is not byte-identical: " + suffix)
+        payload = public_path.read_bytes()
+        row = by_path[relative]
+        output = require_output_record(manifest, directory, suffix)
+        if (
+            row.get("bytes") != len(payload)
+            or row.get("sha256") != sha256_bytes(payload)
+            or output.get("bytes") != row.get("bytes")
+            or output.get("sha256") != row.get("sha256")
+            or git_object_bytes(FIGURE_PUBLICATION_COMMIT, relative) != payload
+        ):
+            raise RuntimeError("R0.73F public asset binding mismatch: " + suffix)
+
+
 def ensure_certificate_commit_ready() -> None:
     if CERTIFICATE_PACKAGE_COMMIT == CERTIFICATE_COMMIT_PLACEHOLDER:
         raise RuntimeError(
@@ -420,9 +560,10 @@ def verify_release_commit_chain() -> None:
         FIGURE_PACKAGE_COMMIT,
         CERTIFICATE_PACKAGE_COMMIT,
         FIGURE_METADATA_SEAL_COMMIT,
+        FIGURE_PUBLICATION_COMMIT,
     )
     if len(set(commits)) != len(commits):
-        raise RuntimeError("R0.73F source/F/C/S commits must be strictly distinct")
+        raise RuntimeError("R0.73F source/F/C/S/P commits must be strictly distinct")
     for commit in commits:
         subprocess.run(
             ["git", "cat-file", "-e", commit + "^{commit}"],
@@ -433,6 +574,7 @@ def verify_release_commit_chain() -> None:
         (CERTIFIED_REPORT_COMMIT, FIGURE_PACKAGE_COMMIT, "source < F"),
         (FIGURE_PACKAGE_COMMIT, CERTIFICATE_PACKAGE_COMMIT, "F < C"),
         (CERTIFICATE_PACKAGE_COMMIT, FIGURE_METADATA_SEAL_COMMIT, "C < S"),
+        (FIGURE_METADATA_SEAL_COMMIT, FIGURE_PUBLICATION_COMMIT, "S < P"),
     ):
         if not is_commit_ancestor(ancestor, descendant):
             raise RuntimeError("R0.73F commit order is invalid: " + label)
@@ -447,6 +589,7 @@ def verify_release_commit_chain() -> None:
         (FIGURE_PACKAGE_COMMIT, "F"),
         (CERTIFICATE_PACKAGE_COMMIT, "C"),
         (FIGURE_METADATA_SEAL_COMMIT, "S"),
+        (FIGURE_PUBLICATION_COMMIT, "P"),
     ):
         if not is_commit_ancestor(commit, head):
             raise RuntimeError(f"R0.73F {label} commit is not an ancestor of HEAD")
@@ -821,10 +964,11 @@ def validate_figure(certificate: dict) -> dict:
         FIGURE_IMMUTABLE_FILES,
         "R0.73F figure",
     )
-    verify_sealed_directory(
+    verify_metadata_overlay(directory)
+    verify_exact_flat_directory_at_commit(
         directory,
-        FIGURE_METADATA_SEAL_COMMIT,
-        "R0.73F formal figure metadata seal",
+        FIGURE_PUBLICATION_COMMIT,
+        "R0.73F figure publication seal",
     )
     manifest = verify_manifest_hashes(
         directory / "manifest.json", "R0.73F figure manifest"
@@ -895,6 +1039,7 @@ def validate_figure(certificate: dict) -> dict:
     png_record = require_output_record(manifest, directory, "png")
     if png_record.get("dpi") not in (None, 600):
         raise RuntimeError("R0.73F figure manifest does not declare 600 dpi")
+    validate_publication_assets(manifest, directory)
     return manifest
 
 

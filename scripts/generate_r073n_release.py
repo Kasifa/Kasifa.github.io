@@ -621,6 +621,8 @@ def build_recap(content: ReleaseContent) -> str:
     value = decode_baseline("public/recap-r0-61-r0-73m.html")
     value = value.replace("/i18n-en.js?v=1.53", "/i18n-en.js?v=1.54")
     value = value.replace("R0.61–R0.73M", "R0.61–R0.73N")
+    value = value.replace("R0.61 到 R0.73M", "R0.61 到 R0.73N")
+    value = value.replace("R0.69P–R0.73M", "R0.69P–R0.73N")
     value = value.replace("R0.70A–R0.73M", "R0.70A–R0.73N")
     value = value.replace("回顾截止节点：R0.73M", "回顾截止节点：R0.73N")
     value = value.replace("收录节点：129", "收录节点：130")
@@ -628,13 +630,100 @@ def build_recap(content: ReleaseContent) -> str:
     value = value.replace("129 节", "130 节").replace("129 个节点", "130 个节点")
     value = value.replace("91 个版本", "92 个版本").replace("91 节", "92 节")
     value = value.replace("67 个满足", "68 个满足").replace("67 节", "68 节")
+    value = value.replace("<strong>129</strong>", "<strong>130</strong>")
+    value = value.replace("<strong>91</strong>", "<strong>92</strong>")
+    value = value.replace("<strong>67</strong>", "<strong>68</strong>")
+    value = replace_regex(
+        value,
+        r'(<header class="hero">.*?<p class="lead">)(.*?)(</p>)',
+        lambda match: match.group(1) + match.group(2) + " "
+        + html.escape(content.recap_zh) + match.group(3),
+        "recap hero current result",
+    )
+    value = replace_regex(
+        value,
+        r'<meta name="description" content="[^"]*">',
+        '<meta name="description" content="R0.60 之后的完整研究回顾：R0.61 到 '
+        'R0.73N 共 130 个节点；最新一节分开固定成员稳定性与变背景族非一致放大。">',
+        "recap description",
+    )
+    value = replace_regex(
+        value,
+        r'<meta property="og:description" content="[^"]*">',
+        '<meta property="og:description" content="48 个阶段、130 个节点：从约化递推和环带排除到固定成员有限应变稳定性与族转移障碍。">',
+        "recap OG description",
+    )
     value = replace_once(value, "          </div>\n        </section>\n\n        <section id=\"node-index\"",
                          content.recap_phase + "\n          </div>\n        </section>\n\n        <section id=\"node-index\"", "recap phase append")
     node = '<span class="node-ref"><a href="/notes/r0-73n.html">R0.73N</a><span class="node-state kind-closed">闭</span></span>'
     value = replace_once(value, "          </div>\n        </section>\n\n        <section id=\"retained\"",
                          f"            {node}\n          </div>\n        </section>\n\n        <section id=\"retained\"", "recap node append")
+    retained = (
+        '<li>R0.73N 把 R0.73M 的变背景族结论与固定成员问题严格分开：每个固定有限 '
+        '\\(\\Lambda\\) 具有正的全三维同步 \\(H^3,H^3\\) 稳定管，平面子系统具有真正的 '
+        '\\(L^2\\) 初值小性；全三维 FPS \\(H^3,L^2\\) 仍为 OPEN。</li>'
+    )
+    value = replace_once(
+        value,
+        '          </ul>\n          <p>这些结果可以分别整理成条件定理、精确恒等式、反例或计算辅助分析。',
+        f'            {retained}\n          </ul>\n          <p>这些结果可以分别整理成条件定理、精确恒等式、反例或计算辅助分析。',
+        "recap retained result append",
+    )
+    value = replace_regex(
+        value,
+        r'<section id="value">.*?</section>',
+        '<section id="value"><div class="section-no">04 / 目前的判断</div>'
+        '<h2>变背景族与固定成员的量词边界已经分开</h2>'
+        f'<p>{html.escape(content.recap_zh)}</p>'
+        '<p>不能把 130 个节点或 92 个公开版本解释成 Clay 完成比例。'
+        '本节关闭的是一条错误的族到单成员推理，不是一般固定背景不稳定性、横向三维增长、'
+        '有限时奇性或全局正则性。</p></section>',
+        "recap current value",
+    )
+    value = replace_regex(
+        value,
+        r'<section id="next">.*?</section>',
+        '<section id="next"><div class="section-no">05 / 下一步</div>'
+        f'<h2>{html.escape(content.next_release)}：冻结结构不同的固定背景候选问题</h2>'
+        f'<p>{html.escape(content.math_next_gate_zh)}</p></section>',
+        "recap next gate",
+    )
+    value = replace_regex(
+        value,
+        r'<section id="claims">.*?</section>',
+        '<section id="claims"><div class="section-no">06 / 说明边界</div>'
+        '<h2>连续定理、有限诊断和开放问题分开列示</h2>'
+        '<p>R0.70A–R0.73N 的 92 节已公开；68 节完整封存；24 节旧档待回补。</p>'
+        f'<p>{html.escape(content.closed_ledger)}</p>'
+        f'<p>{html.escape(content.finite_ledger)}</p>'
+        f'<p>{html.escape(content.open_ledger)}</p>'
+        '<p>605 行 R0.73N 有限源数据和正式附图只作复现与错误探测；不认证连续证明、'
+        '固定成员最优半径、横向三维、奇性或 Clay。NOT CLAY。</p></section>',
+        "recap exact boundary",
+    )
+    value = replace_regex(
+        value,
+        r'<section id="reproduce">.*?</section>',
+        '<section id="reproduce"><div class="section-no">07 / 原始资料</div>'
+        '<h2>逐节笔记、证明、审计、证书、附图和历史回顾</h2>'
+        '<p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · '
+        '<a href="/recap-r0-61-r0-73m.html">保留 R0.73M 历史回顾</a> · '
+        '<a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · '
+        '<a href="/notes/r0-73n.html">打开最新节点 R0.73N</a></p>'
+        '<p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_report-source.md">查看 canonical report</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_fixed_background_no_go_proof.md">查看连续证明</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_literature_audit.md">查看有界文献审计</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073n">查看有限诊断包</a> · '
+        f'<a href="/assets/r073n/{FIGURE_ID}.pdf">下载期刊附图</a> · '
+        '<a href="/recap-r0-61-r0-73n.pdf">下载同步 PDF</a></p>'
+        '<p>连续定理由解析证明承担；有限诊断只作可复现错误探测。</p></section>',
+        "recap reproduction",
+    )
     value = value.replace("/recap-r0-61-r0-73m.pdf", "/recap-r0-61-r0-73n.pdf")
     value = value.replace("R0.73M 回顾", "R0.73N 回顾")
+    for stale in ("<strong>129</strong>", "<strong>91</strong>", "<strong>67</strong>"):
+        if stale in value:
+            raise RuntimeError("R0.73N recap retained stale metric " + stale)
     assert_public_html(value, "R0.73N recap")
     return value
 
@@ -650,6 +739,77 @@ def update_home(content: ReleaseContent) -> str:
     value = value.replace("NEXT · R0.73N", "NEXT · R0.73O")
     value = value.replace("R0.70A–R0.73M：91 节已公开，67 节完整封存",
                           "R0.70A–R0.73N：92 节已公开，68 节完整封存")
+    value = value.replace("Research topology · R0.1–R0.73M", "Research topology · R0.1–R0.73N")
+    value = value.replace('<a class="route-map-latest" href="#r073m">跳到首页 R0.73M 卡片 →</a>',
+                          '<a class="route-map-latest" href="#r073n">跳到首页 R0.73N 卡片 →</a>')
+    value = value.replace('/recap-r0-61-r0-73m.html">阅读 R0.60 之后的累计回顾',
+                          '/recap-r0-61-r0-73n.html">阅读 R0.60 之后的累计回顾')
+    value = value.replace('<span class="route-range">R0.69P–R0.73M</span>',
+                          '<span class="route-range">R0.69P–R0.73N</span>')
+    value = value.replace('R0.73M：prescribed-action 平面非线性固定距离偏离已闭合',
+                          'R0.73N：固定成员有限应变稳定性与族转移障碍已闭合')
+    value = value.replace('<span>R0.72R–R0.73M：</span>', '<span>R0.72R–R0.73N：</span>')
+    value = value.replace(
+        '→ prescribed-action planar nonlinear fixed-distance departure</p>',
+        '→ prescribed-action planar nonlinear fixed-distance departure → fixed-member finite-strain stability / family-transfer obstruction</p>',
+    )
+    current_paragraph = (
+        f'<p>{html.escape(content.recap_zh)}<span>fixed-member finite-strain stability</span>；'
+        '<span>family-transfer obstruction</span>。有限诊断与正式附图只作复现与错误探测。</p>'
+    )
+    value = replace_once(
+        value,
+        '              <details class="tree-notes" open>',
+        '              ' + current_paragraph + '\n              <details class="tree-notes" open>',
+        "home route current paragraph",
+    )
+    value = value.replace('<summary>展开 99 篇公开笔记</summary>', '<summary>展开 100 篇公开笔记</summary>')
+    value = value.replace('aria-label="R0.69P–R0.73M"', 'aria-label="R0.69P–R0.73N"')
+    value = replace_once(
+        value,
+        '                  <a class="milestone" href="/notes/r0-73m.html">R0.73M</a>',
+        '                  <a class="milestone" href="/notes/r0-73m.html">R0.73M</a>\n'
+        '                  <a class="milestone" href="/notes/r0-73n.html">R0.73N</a>',
+        "home route R0.73N link",
+    )
+    value = replace_regex(
+        value,
+        r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>',
+        '<div class="summary-item"><strong>我目前关注</strong><span>'
+        + html.escape(content.recap_zh) + ' 下一关是 ' + html.escape(content.next_release)
+        + '：' + html.escape(content.math_next_gate_zh) + '</span></div>',
+        "home focus summary",
+    )
+    recap_card = (
+        '<div class="task-one" id="post-r060-recap" style="margin-top:2rem">'
+        '<p class="eyebrow">累计回顾 R0.61–R0.73N · 2026-08-31</p>'
+        '<h3>R0.60 recap 之后的累计回顾收录 130 个节点；全站现有 190 篇公开研究笔记</h3>'
+        '<p>累计回顾现分 48 个阶段，完整保留 R0.61–R0.73N；最新节点分开记录固定成员连续证明、'
+        '两份解析审计、有界文献边界、有限诊断和正式附图。</p>'
+        '<p>R0.70A–R0.73N 共 92 个版本已公开；68 个按当前 formal-figure 合同完整封存，'
+        '24 个旧版附图档案仍列入回补清单。</p>'
+        f'<p><strong>阶段判断：</strong>&nbsp;{html.escape(content.recap_zh)} '
+        '横向三维临界增长、奇性与 Clay 保持 OPEN。</p>'
+        '<p><a href="/recap-r0-61-r0-73n.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · '
+        '<a href="/recap-r0-61-r0-73n.pdf">下载同步 PDF</a></p></div>'
+    )
+    value = replace_regex(
+        value,
+        r'<div class="task-one" id="post-r060-recap".*?</div>',
+        recap_card,
+        "home cumulative recap card",
+    )
+    value = value.replace(
+        '<h3>固定背景 Lyapunov 不稳定性的可行性与障碍审计</h3><p>辨认变背景 family-level theorem 能否转化成固定基流问题；不预设闭合，结构性失败就封存为 no-go。横向三维与 Clay 保持为更后的 OPEN 接口。</p>',
+        f'<h3>冻结结构不同的固定背景候选问题</h3><p>{html.escape(content.math_next_gate_zh)}</p>',
+    )
+    for stale in (
+        "Research topology · R0.1–R0.73M",
+        "累计回顾收录 129 个节点；全站现有 189 篇公开研究笔记",
+        '<summary>展开 99 篇公开笔记</summary>',
+    ):
+        if stale in value:
+            raise RuntimeError("R0.73N home retained stale latest marker " + stale)
     assert_public_html(value, "R0.73N home")
     return value
 

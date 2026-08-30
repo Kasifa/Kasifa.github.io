@@ -119,6 +119,14 @@ class ReleaseContent:
         return self.release_title_en.replace(" | ", "｜", 1)
 
     @property
+    def math_next_gate_zh(self) -> str:
+        """Keep the mathematical R0.73O gate, without the pre-deploy handoff."""
+        marker = f"数学上的下一发布门是 {self.next_release}："
+        if marker not in self.next_gate_zh:
+            raise CanonicalSourceError("R0.73N mathematical next-gate marker drift")
+        return self.next_gate_zh.split(marker, 1)[1].strip()
+
+    @property
     def note_hero(self) -> str:
         return (
             '    <header class="hero"><div class="hero-inner">\n'
@@ -206,7 +214,7 @@ class ReleaseContent:
             'research/r073n_report-source.md">查看 canonical report</a> · '
             '<a href="/recap-r0-61-r0-73n.html">打开累计回顾</a></p>\n'
             f'            <p><strong style="color:var(--gold)">下一发布门（{html.escape(self.next_release)}）：</strong>'
-            f'&nbsp;{html.escape(self.next_gate_zh)}</p>\n'
+            f'&nbsp;{html.escape(self.math_next_gate_zh)}</p>\n'
             '          </div>'
         )
 

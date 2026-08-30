@@ -231,6 +231,27 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   }
   assert.ok((await text("public/note-retro.css")).includes("prefers-color-scheme: dark"));
 
+  for (const token of [
+    "<strong>130</strong><span>R0.61–R0.73N 研究节点</span>",
+    "<strong>92</strong><span>R0.70A–R0.73N 已公开版本</span>",
+    "<strong>68</strong><span>当前 formal-figure 合同下完整封存</span>",
+    "R0.73O：冻结结构不同的固定背景候选问题",
+    "变背景族与固定成员的量词边界已经分开",
+  ]) assert.ok(pages.recap.includes(token), `recap: ${token}`);
+  for (const stale of ["<strong>129</strong>", "<strong>91</strong>", "<strong>67</strong>"]) {
+    assert.equal(pages.recap.includes(stale), false, `recap stale metric: ${stale}`);
+  }
+  for (const token of [
+    "Research topology · R0.1–R0.73N",
+    'href="#r073n">跳到首页 R0.73N 卡片 →',
+    '<span class="route-range">R0.69P–R0.73N</span>',
+    "<summary>展开 100 篇公开笔记</summary>",
+    'href="/notes/r0-73n.html">R0.73N</a>',
+    "累计回顾收录 130 个节点；全站现有 190 篇公开研究笔记",
+  ]) assert.ok(pages.home.includes(token), `home: ${token}`);
+  assert.equal(pages.home.includes("Research topology · R0.1–R0.73M"), false);
+  assert.equal(pages.home.includes("累计回顾收录 129 个节点；全站现有 189 篇公开研究笔记"), false);
+
   for (const relative of [
     "public/notes/r0-73n.pdf", "public/recap-r0-61-r0-73n.pdf",
     "research/r073n_pdf_bindings.json", "scripts/i18n-snapshots/r073n-missing.json",

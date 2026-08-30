@@ -241,6 +241,21 @@ def verify_exact_paths(commit: str, paths: tuple[str, ...], label: str) -> None:
             raise RuntimeError(label + ": worktree differs from pin at " + relative)
 
 
+def verify_pinned_paths_exist(commit: str, paths: tuple[str, ...], label: str) -> None:
+    """Verify immutable baseline inputs without requiring stale worktree bytes.
+
+    Release targets are deliberately regenerated from the pinned baseline, so
+    their current worktree copies may be either the old baseline or a prior
+    deterministic apply.  The baseline manifests and page markers are checked
+    again when the staged target is assembled.
+    """
+    for relative in paths:
+        try:
+            git_bytes(commit, relative)
+        except subprocess.CalledProcessError as exc:
+            raise RuntimeError(label + ": path absent from pin at " + relative) from exc
+
+
 def normalized_release_generator(payload: bytes) -> bytes:
     try:
         value = payload.decode("utf-8")
@@ -521,7 +536,7 @@ def verify_inputs() -> ReleaseContent:
     verify_exact_roots(FINITE_PACKAGE_COMMIT, FINITE_EXACT_ROOTS, "finite package")
     verify_exact_roots(FIGURE_PACKAGE_COMMIT, FIGURE_EXACT_ROOTS, "figure package")
     verify_exact_paths(FINAL_CONTENT_COMMIT, FINAL_CONTENT_EXACT_PATHS, "final content")
-    verify_exact_paths(RELEASE_BASELINE_COMMIT, BASELINE_EXACT_PATHS, "release baseline")
+    verify_pinned_paths_exist(RELEASE_BASELINE_COMMIT, BASELINE_EXACT_PATHS, "release baseline")
     verify_release_source(RELEASE_SOURCE_COMMIT)
     certificate_manifest = validate_certificate_package()
     validate_figure_package(certificate_manifest)

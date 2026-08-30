@@ -97,6 +97,8 @@ test("R0.73N release pins admit only skeleton, source-freeze, or fully bound sta
   assert.match(generator, /seal_package\.py/);
   assert.match(generator, /FIGURE_SOURCE_RELATIVE/);
   assert.match(generator, /--verify-only/);
+  assert.match(generator, /verify_pinned_paths_exist\(RELEASE_BASELINE_COMMIT/);
+  assert.doesNotMatch(generator, /verify_exact_paths\(RELEASE_BASELINE_COMMIT/);
 });
 
 test("R0.73N command help is side-effect-free", () => {

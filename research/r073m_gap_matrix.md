@@ -1,7 +1,7 @@
 # R0.73M claim-evidence gap matrix
 
-**Status:** analytic theorem and three independent audits PASS; finite and
-publication evidence classes remain open
+**Status:** analytic theorem, three independent audits, and sealed finite
+diagnostic PASS; publication evidence class remains open
 
 | ID | Claim | Evidence route | Current state | Cannot be supplied by |
 |---|---|---|---|---|
@@ -14,8 +14,8 @@ publication evidence classes remain open
 | M6 | fixed-distance endpoint from vanishing \(H^3\) data | parity, fourth-order remainder, \(H^3\) eigenvector cost | CLOSED; independent audit PASS | finite nonlinear trajectories |
 | M7 | selected orbit is global and exactly planar | invariant \(\mathcal S_{2D}\), 2D vorticity energy | CLOSED upstream | 3D continuation theory |
 | M8 | literature and theorem boundary are correctly delimited | bounded primary-source audit plus explicit open ledger | CLOSED; Deep Research and independent source audit PASS | an absolute novelty assertion |
-| F1 | finite diagnostic checks action-seed recoding and harmonic response | primary and independent implementations with convergence/cutoff checks | not started | continuum proof status |
-| P1 | formal figure, synchronized HTML/PDF, recap, bilingual and release gates | reproducible publication package | not started | local source files alone |
+| F1 | finite diagnostic checks action-seed recoding and harmonic response | primary and independent implementations with convergence/cutoff checks | CLOSED; sealed package and 28/28 validator PASS | continuum proof status |
+| P1 | formal figure, synchronized HTML/PDF, recap, bilingual and release gates | reproducible publication package | IN PROGRESS | local source files alone |
 | M9 | explicit numerical \(\rho_0\) or \(c_*\) | quantitative upstream constants | OPEN, outside theorem | existential prefactors |
 | M10 | convergence of the bounded gain prefactor | a next-order asymptotic theorem | OPEN | two-sided bounded factors |
 | M11 | two-term WKB expansion for the selected gain | a controlled corrector and endpoint expansion | OPEN | the leading action theorem |

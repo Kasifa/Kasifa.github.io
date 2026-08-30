@@ -11,8 +11,8 @@ time; the proof candidate was not treated as an authority
 
 **Verdict:** **MATHEMATICAL FINAL PASS**
 
-Publication remains conditional on the finite diagnostic, formal figure,
-PDF/HTML synchronization, and release transaction.
+The finite diagnostic subsequently passed.  Publication remains conditional
+on the formal figure, PDF/HTML synchronization, and release transaction.
 
 ## 1. Kinetic-to-physical norm
 

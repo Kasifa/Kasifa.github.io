@@ -1,8 +1,8 @@
 # R0.73M problem freeze: prescribed-action planar nonlinear departure
 
-**Status:** frozen contract; continuum proof and independent analytic,
-adversarial, and literature audits PASS; the release remains incomplete until
-the finite diagnostic and publication gates pass
+**Status:** frozen contract; continuum proof, independent analytic,
+adversarial and literature audits, and sealed finite diagnostic PASS; the
+release remains incomplete until the figure and publication gates pass
 
 **Slow endpoint:** \(D_*:=1/450\)
 

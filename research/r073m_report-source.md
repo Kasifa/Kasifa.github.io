@@ -1,8 +1,8 @@
 # R0.73M report source: prescribed-action planar nonlinear departure
 
-**Status:** analytic report source frozen after continuum, independent,
-adversarial, and Deep Research audits; finite diagnostic and publication
-artifacts are not yet appended
+**Status:** continuum theorem, independent and adversarial audits, Deep
+Research boundary, and sealed finite diagnostic PASS; formal figure and
+public release are pending
 
 **Date:** 2026-08-31 (Asia/Shanghai)
 
@@ -115,10 +115,64 @@ fixed-distance endpoint.  This is not an absolute priority or novelty claim.
 | prescribed-action endpoint | CLOSED | bounded-prefactor recoding |
 | planar global smoothness | CLOSED | invariant 2D vorticity equation |
 | literature boundary | CLOSED within bounded search | Deep Research plus independent source audit |
-| finite diagnostic | PENDING | must use inviscid finite action, not the viscous action |
+| finite diagnostic | CLOSED | sealed 15-case package, two independent implementations, and 28/28 validator |
 | formal figure and public release | PENDING | separate release gates |
 
-## 5. Exact boundary for the public note
+## 5. Sealed finite diagnostic
+
+The formal finite grid uses
+
+\[
+ N\in\{40,48,64\},\qquad
+ \varepsilon\in\{10^{-3},5\times10^{-4},2.5\times10^{-4},
+ 1.25\times10^{-4},6.25\times10^{-5}\}.
+\]
+
+The first preflight at (N=32,48,64) failed closed because the outer-three
+shell mass of (V_3) at the smallest viscosity exceeded (10^{-8}).  The
+lowest cutoff was raised to (N=40), the tolerance was not changed, and the
+complete package was rerun from a new source commit.
+
+For the finite inviscid action proxy
+
+\[
+ A_{N,0}:=\int_0^{D_*}\lambda_{N,0}(d)\,\mathrm d d,
+\]
+
+the prescribed-action recoding gives
+
+\[
+ 0.9960745296895327
+ \le G_{N,\varepsilon}e^{-A_{N,0}/\varepsilon}
+ \le0.9965850277770183.
+\]
+
+The finite physical gain itself ranges from (1.4541761769) to
+(420.6631904678).  At (N=64), the two smallest viscosities give
+
+\[
+ {\|b\|_2\over\varepsilon}=0.907135,\ 0.912201,
+\]
+
+and
+
+\[
+ {\|\Pi_{\pm1}c\|_2\over\varepsilon^2}=0.842574,\ 0.855484.
+\]
+
+The corresponding signed cubic alignments divided by (\varepsilon^2)
+are (-0.622203) and (-0.640395).  These are finite observations
+consistent with the analytic hierarchy; they are not coefficient-limit or
+WKB theorems.
+
+All primary gates passed.  The independent midpoint matrix-exponential
+reconstruction had maximum gain error (2.083\times10^{-9}).  The
+independent scalar-vorticity, alias-free FFT hierarchy had maximum coefficient
+error (8.320\times10^{-10}).  The package validator passed 28/28 checks,
+and post-seal verification passed.  Full details are recorded in
+`r073m_finite_diagnostic_audit.md`.
+
+## 6. Exact boundary for the public note
 
 The public note may state that the selected seed is specified by the full
 inviscid action rather than the unknown exact gain.  It must also state all

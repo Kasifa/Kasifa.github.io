@@ -47,7 +47,7 @@ ANALYTIC_SOURCE_COMMIT = "f8a0879edb8a2a3772bf3bd34f60d900bc367e71"
 EXPERIMENT_PACKAGE_COMMIT = "5180ab1f9c4f5955647e0f2a1fcadb070fc407ad"
 FIGURE_PACKAGE_COMMIT = "e04f6bf569a91a6814be04fc74409ef02075dc23"
 CERTIFICATE_PACKAGE_COMMIT = "4ab51d1251cb5f5ca85c82731ac7f8e7b512c368"
-RELEASE_SOURCE_COMMIT = "TO_BE_FILLED_AFTER_RELEASE_SOURCE_COMMIT"
+RELEASE_SOURCE_COMMIT = "8e1df08edc5c072590d455470f1fb606cc7036a3"
 
 COMMIT_PLACEHOLDERS = (
     ANALYTIC_SOURCE_COMMIT,
@@ -433,7 +433,7 @@ def validate_analytic_sources() -> None:
     for token in theorem_tokens:
         if token not in report and token not in upper and token not in tangent:
             raise RuntimeError("R0.73I theorem source missing token: " + token)
-    for token in ("aD", "\\kappa D^2", "\\varepsilon^{-1}", "FALSE AS INFERENCE"):
+    for token in ("aD", "\\kappa D^2", "\\varepsilon^{-1}", "FALSE_AS_INFERENCE"):
         if token not in no_go and token not in report:
             raise RuntimeError("R0.73I no-go source missing token: " + token)
     if "MATHEMATICAL FINAL PASS" not in independent:

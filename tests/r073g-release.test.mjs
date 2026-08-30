@@ -17,6 +17,10 @@ const publicRoot = resolve(root, "public");
 const figure = "figures/r073g/fig-r073g-nonlinear-row-leakage";
 const figureId = "fig-r073g-nonlinear-row-leakage";
 const sourceCommit = "21c11ba3eef7f2b5dc3f107957e0744a0471745d";
+const experimentCommit = "0679192b65a294bb211c96decc47bb046ab60b93";
+const figureCommit = "0d311d22a62cfbc9253e95580de10d33898ecddc";
+const certificateCommit = "589e366ccec6a316b25594542a7eb8cb879156fd";
+const sealCommit = "339c9c27207571cfbade35c3288aae6a70c4193d";
 const sourcePaths = [
   "research/r073g_problem_freeze.md",
   "research/r073g_nonlinear_shadowing_proof.md",
@@ -45,6 +49,35 @@ function nodeIndex(recap) {
   const end = recap.indexOf("</section>", start);
   assert.ok(start >= 0 && end > start);
   return recap.slice(start, end);
+}
+
+function expectedPostR070A() {
+  const result = [];
+  for (const major of [70, 71, 72]) {
+    for (let code = 97; code <= 122; code += 1) {
+      result.push(`r0-${major}${String.fromCharCode(code)}`);
+    }
+  }
+  for (let code = 97; code <= 103; code += 1) {
+    result.push(`r0-73${String.fromCharCode(code)}`);
+  }
+  return result;
+}
+
+function expectedPostR060() {
+  return [
+    "r0-61", "r0-62", "r0-63", "r0-64", "r0-65", "r0-66", "r0-67",
+    "r0-67b", "r0-67c1", "r0-67c2", "r0-68a", "r0-68b1", "r0-68b2",
+    "r0-68b2de", "r0-68b2fgh",
+    ...Array.from({ length: 23 }, (_, index) =>
+      `r0-69${String.fromCharCode(97 + index)}`),
+    ...expectedPostR070A(),
+  ];
+}
+
+function assertUniqueIds(value, label) {
+  const ids = [...value.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(new Set(ids).size, ids.length, `${label}: duplicate id`);
 }
 
 function accountingTokens(value) {
@@ -112,7 +145,7 @@ async function verifyFlatHashLedger(relative) {
   );
 }
 
-test("R0.73G release source pins the v1.46-to-v1.47 transaction and four fail-closed commits", async () => {
+test("R0.73G release source pins the v1.46-to-v1.47 transaction and source/E/F/C/S/P chain", async () => {
   const [generator, content, translation, agents] = await Promise.all([
     text("scripts/generate_r073g_release.py"),
     text("scripts/r073g_release_content.py"),
@@ -139,12 +172,22 @@ test("R0.73G release source pins the v1.46-to-v1.47 transaction and four fail-cl
     "123 unique nodes", "42 phases", "93 note links",
     "verify_complete_flat_ledger", "verify_source_bindings",
     `CERTIFIED_REPORT_COMMIT = "${sourceCommit}"`,
-    'FIGURE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PACKAGE_COMMIT"',
-    'CERTIFICATE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_CERTIFICATE_COMMIT"',
-    'FIGURE_METADATA_SEAL_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_SEAL_COMMIT"',
-    'FIGURE_PUBLICATION_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PUBLICATION_COMMIT"',
-    "source < F", "F < C", "C < S", "S < P",
+    `EXPERIMENT_PACKAGE_COMMIT = "${experimentCommit}"`,
+    `FIGURE_PACKAGE_COMMIT = "${figureCommit}"`,
+    `CERTIFICATE_PACKAGE_COMMIT = "${certificateCommit}"`,
+    `FIGURE_METADATA_SEAL_COMMIT = "${sealCommit}"`,
+    "source < E", "E < F", "F < C", "C < S", "S < P",
   ]) assert.ok(source.includes(token), token);
+  const publicationCommit = generator.match(
+    /FIGURE_PUBLICATION_COMMIT = "([0-9a-f]{40}|TO_BE_FILLED_AFTER_FIGURE_PUBLICATION_COMMIT)"/,
+  )?.[1];
+  assert.ok(publicationCommit, "P binding is placeholder-sealed or a full commit");
+  const preflight = generator.slice(
+    generator.indexOf("def preflight_release_state()"),
+    generator.indexOf("def validate_analytic_sources()"),
+  );
+  assert.doesNotMatch(preflight, /assets\/r073g/,
+    "P-first lifecycle must allow sealed public assets before HTML generation");
   for (const token of [
     "exactDecayingShearPerturbationEquation=CLOSED",
     "selectedSeedPlanarInvariantClass=CLOSED",
@@ -220,7 +263,12 @@ test("R0.73G analytic sources are byte-locked at the exact source commit", async
   assert.match(independent, /\*\*Correction obligations:\*\* none/);
 });
 
-test("R0.73G in-memory builders have unique note anchors, post-R0.60 recap semantics, and route 93", async () => {
+test("R0.73G source-stage builders have unique note anchors, post-R0.60 recap semantics, and route 93", async (context) => {
+  const manifest = await json("research/release-manifest.json");
+  if (manifest.latestCompletedRelease !== "r073f") {
+    context.skip("final stage: builder transaction was already materialized");
+    return;
+  }
   const probe = String.raw`
 import json, re, sys
 sys.path.insert(0, "scripts")
@@ -266,7 +314,14 @@ print(json.dumps({
   });
 });
 
-test("R0.73G generator remains read-only while publication commits are placeholders", async () => {
+test("R0.73G generator remains read-only while publication commit P is a placeholder", async (context) => {
+  const generator = await text("scripts/generate_r073g_release.py");
+  if (!generator.includes(
+    'FIGURE_PUBLICATION_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PUBLICATION_COMMIT"',
+  )) {
+    context.skip("P is pinned: placeholder-only safety test no longer applies");
+    return;
+  }
   const watched = [
     "research/release-manifest.json", "research/formal-archive-inventory.json",
     "public/site-version.json", "public/research-review.html",
@@ -281,7 +336,7 @@ test("R0.73G generator remains read-only while publication commits are placehold
       maxBuffer: 16 * 1024 * 1024,
     }),
     (error) => {
-      assert.match(error.stderr, /TO_BE_FILLED_AFTER_FIGURE_PACKAGE_COMMIT/);
+      assert.match(error.stderr, /TO_BE_FILLED_AFTER_FIGURE_PUBLICATION_COMMIT/);
       assert.match(error.stderr, /intentionally sealed shut/);
       return true;
     },
@@ -378,9 +433,8 @@ test("R0.73G final pages synchronize note 183, recap 123/42, route 93, and next 
   ]) assert.ok(note.includes(token), token);
   const nodes = [...nodeIndex(recap).matchAll(/href="\/notes\/(r0-[^"]+)\.html"/g)]
     .map((match) => match[1]);
-  assert.equal(nodes.length, 123);
-  assert.equal(new Set(nodes).size, 123);
-  assert.equal(nodes.at(-1), "r0-73g");
+  assert.deepEqual(nodes, expectedPostR060());
+  await Promise.all(nodes.map((slug) => access(resolve(publicRoot, `notes/${slug}.html`))));
   assert.equal((recap.match(/<article class="phase">/g) ?? []).length, 42);
   assert.ok(recap.includes("85 个版本已经公开"));
   assert.ok(recap.includes("61 个满足当前完整封存合同"));
@@ -388,22 +442,46 @@ test("R0.73G final pages synchronize note 183, recap 123/42, route 93, and next 
   const route = home.match(
     /<nav class="route-note-links" aria-label="R0\.69P–R0\.73G">([\s\S]*?)<\/nav>/,
   )?.[1] ?? "";
-  assert.equal((route.match(/href="\/notes\/r0-[^"]+\.html"/g) ?? []).length, 93);
+  const routeSlugs = [...route.matchAll(/href="\/notes\/(r0-[^"]+)\.html"/g)]
+    .map((match) => match[1]);
+  const expectedRoute = [
+    ...Array.from({ length: 8 }, (_, index) =>
+      `r0-69${String.fromCharCode(112 + index)}`),
+    ...expectedPostR070A(),
+  ];
+  assert.deepEqual(routeSlugs, expectedRoute);
+  await Promise.all(routeSlugs.map((slug) =>
+    access(resolve(publicRoot, `notes/${slug}.html`))));
+  const cards = [...home.matchAll(
+    /<div class="task-one" id="(r0\d+[a-z])" data-release="\1"[\s\S]*?<\/div>/g,
+  )];
+  const expectedCardIds = expectedPostR070A().map((slug) => slug.replace("r0-", "r0"));
+  assert.deepEqual(cards.map((match) => match[1]), expectedCardIds);
+  for (const match of cards) {
+    const noteSlug = match[1].replace(/^r0(\d+)/, "r0-$1");
+    assert.ok(match[0].includes(`href="/notes/${noteSlug}.html"`), noteSlug);
+  }
   assert.equal((home.match(/<strong style="color:var\(--gold\)">下一步 R0\.73H：/g) ?? []).length, 1);
   assert.ok(literature.includes('id="r073g-boundary"'));
   assert.ok(literature.includes("开放接口 · R0.73H"));
   assert.ok(noteIndex.includes('data-note="r0-73g"'));
+  assert.ok(noteIndex.includes('href="/notes/r0-73g.pdf"'));
   assert.ok(noteIndex.includes("183 篇公开研究笔记"));
+  assert.ok(note.includes("28 个正式网格点"));
+  assert.ok(note.includes("5 个预注册哨兵点"));
+  assert.ok(note.includes("5.21\\times10^{-16}"));
+  assert.ok(note.includes("6.01\\times10^{-16}"));
   for (const [value, label] of [
     [note, "note"], [recap, "recap"], [home, "home"],
     [literature, "literature"], [noteIndex, "index"],
   ]) {
+    assertUniqueIds(value, label);
     assert.ok(value.includes('/i18n-en.js?v=1.47'), label);
     assertPublicVoice(value, label);
   }
 });
 
-test("R0.73G formal lifecycle preserves A/F/C/S/P and public byte identity", async (context) => {
+test("R0.73G formal lifecycle preserves A/E/F/C/S/P and public byte identity", async (context) => {
   const release = await json("research/release-manifest.json");
   if (release.latestCompletedRelease !== "r073g") {
     context.skip("source stage: formal publication artifacts are not yet complete");
@@ -414,15 +492,18 @@ test("R0.73G formal lifecycle preserves A/F/C/S/P and public byte identity", asy
     json("research/certificates/r073g/manifest.json"),
   ]);
   const commits = Object.fromEntries([
-    ["F", "FIGURE_PACKAGE_COMMIT"], ["C", "CERTIFICATE_PACKAGE_COMMIT"],
+    ["E", "EXPERIMENT_PACKAGE_COMMIT"], ["F", "FIGURE_PACKAGE_COMMIT"],
+    ["C", "CERTIFICATE_PACKAGE_COMMIT"],
     ["S", "FIGURE_METADATA_SEAL_COMMIT"], ["P", "FIGURE_PUBLICATION_COMMIT"],
   ].map(([label, name]) => [
     label, generator.match(new RegExp(`${name}\\s*=\\s*"([0-9a-f]{40})"`))?.[1],
   ]));
   for (const [label, commit] of Object.entries(commits)) assert.ok(commit, label);
-  assert.equal(new Set([sourceCommit, ...Object.values(commits)]).size, 5);
+  assert.equal(commits.E, experimentCommit);
+  assert.equal(new Set([sourceCommit, ...Object.values(commits)]).size, 6);
   for (const [ancestor, descendant, label] of [
-    [sourceCommit, commits.F, "A < F"], [commits.F, commits.C, "F < C"],
+    [sourceCommit, commits.E, "A < E"], [commits.E, commits.F, "E < F"],
+    [commits.F, commits.C, "F < C"],
     [commits.C, commits.S, "C < S"], [commits.S, commits.P, "S < P"],
     [commits.P, "HEAD", "P <= HEAD"],
   ]) await assert.doesNotReject(

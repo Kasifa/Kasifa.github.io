@@ -39,9 +39,9 @@ PUBLIC = ROOT / "public"
 
 CERTIFIED_REPORT_COMMIT = "21c11ba3eef7f2b5dc3f107957e0744a0471745d"
 EXPERIMENT_PACKAGE_COMMIT = "0679192b65a294bb211c96decc47bb046ab60b93"
-FIGURE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PACKAGE_COMMIT"
-CERTIFICATE_PACKAGE_COMMIT = "TO_BE_FILLED_AFTER_CERTIFICATE_COMMIT"
-FIGURE_METADATA_SEAL_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_SEAL_COMMIT"
+FIGURE_PACKAGE_COMMIT = "0d311d22a62cfbc9253e95580de10d33898ecddc"
+CERTIFICATE_PACKAGE_COMMIT = "589e366ccec6a316b25594542a7eb8cb879156fd"
+FIGURE_METADATA_SEAL_COMMIT = "339c9c27207571cfbade35c3288aae6a70c4193d"
 FIGURE_PUBLICATION_COMMIT = "TO_BE_FILLED_AFTER_FIGURE_PUBLICATION_COMMIT"
 FIGURE_PACKAGE_COMMIT_PLACEHOLDER = "TO_BE_FILLED_AFTER_FIGURE_PACKAGE_COMMIT"
 CERTIFICATE_COMMIT_PLACEHOLDER = "TO_BE_FILLED_AFTER_CERTIFICATE_COMMIT"
@@ -871,9 +871,6 @@ def preflight_release_state() -> None:
         "notes/r0-73g.pdf",
         "recap-r0-61-r0-73g.html",
         "recap-r0-61-r0-73g.pdf",
-        f"assets/r073g/{FIGURE_ID}.pdf",
-        f"assets/r073g/{FIGURE_ID}.svg",
-        f"assets/r073g/{FIGURE_ID}.png",
     )
     for relative in forbidden:
         if (PUBLIC / relative).exists():
@@ -1802,7 +1799,7 @@ def build_note_index(site_payload: bytes) -> str:
         code="R0.73G",
         title="Nonlinear relative amplification and the exact planar barrier",
         major=73,
-        has_pdf=False,
+        has_pdf=True,
     )
     notes = [latest] + existing
     target_site = json.loads(site_payload.decode("utf-8"))

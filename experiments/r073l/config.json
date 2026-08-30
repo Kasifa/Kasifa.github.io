@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "r073l-adiabatic-diagnostic-config-v1",
+  "release": "R0.73L",
+  "gamma": 0.5,
+  "cutoffs": [32, 48, 64],
+  "epsilons": [0.001, 0.0005, 0.00025, 0.000125, 0.0000625],
+  "slowEnd": 0.0022222222222222222,
+  "sampleCount": 65,
+  "fixedContour": {
+    "centerReal": 0.17,
+    "centerImag": 0.0,
+    "radius": 0.003
+  },
+  "solver": {
+    "method": "DOP853",
+    "rtol": 1e-10,
+    "atol": 1e-12,
+    "maxStep": 0.000008680555555555556
+  },
+  "tolerances": {
+    "numericalReality": 1e-10,
+    "cutoffNormalizedGain": 0.0005,
+    "cutoffLeakage": 0.000005
+  },
+  "independentValidation": {
+    "cutoff": 32,
+    "stepCounts": [256, 512],
+    "tolerances": {
+      "primaryNormalizedGain": 0.000002,
+      "primaryLeakage": 0.000002,
+      "refinementNormalizedGain": 0.000002,
+      "refinementLeakage": 0.000002
+    }
+  },
+  "claimBoundary": {
+    "finiteDimensionalOnly": true,
+    "continuumAdiabaticTheoremCertifiedByConfiguration": false,
+    "finiteScalingUsedAsProof": false
+  }
+}

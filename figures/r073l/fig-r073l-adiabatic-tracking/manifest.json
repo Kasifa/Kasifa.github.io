@@ -1,0 +1,416 @@
+{
+  "analyticalQuestion": "On the complete slow interval, do the finite selected orbits retain bounded action-normalized gain, develop asymptotically linear-in-epsilon complementary leakage, satisfy the forward-orbit backward-action bound, and pass cutoff and independent-integrator checks?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "clayProblemSolved": false,
+    "continuumAdiabaticTheoremCertifiedByFigure": false,
+    "explicitContinuumEpsilonThresholdCertified": false,
+    "finiteDimensionalDiagnostic": true,
+    "finiteTimeSingularityCertified": false,
+    "formalValidatedDiagnosticFigure": true,
+    "independentFiniteRecomputationPassed": true,
+    "nonlinearNavierStokesCertified": false,
+    "prefactorLimitCertified": false,
+    "transverseThreeDimensionalClosureCertified": false
+  },
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "data-analysis",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 1,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "timestampUtc",
+        "elapsedSeconds",
+        "stage",
+        "maximumResidentSetMiB",
+        "processes",
+        "gpu"
+      ]
+    },
+    "precision": "binary64 finite trajectories and deterministic static presentation",
+    "solver": "no new trajectory solve; deterministic extraction from the passed DOP853 package and independent midpoint-exponential reconstruction",
+    "wallTimeSeconds": 0.7882667089579627
+  },
+  "compute": {
+    "cpu": "arm64",
+    "dgx": "not used; deterministic static rendering is local CPU work",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "machine": "arm64",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-30T18:50:47.272145+00:00",
+  "data": [
+    {
+      "bytes": 131525,
+      "path": "source-data.csv",
+      "schema": "325 display trajectories, 15 terminal cases, and 6 validation metrics",
+      "sha256": "e5b1a85d4adc227f7fa2bb4b6c6289e3bb4b45caae9c9b3cea6dd50df85fed81"
+    },
+    {
+      "bytes": 2115,
+      "path": "results.json",
+      "schema": "finite result summary and fail-closed claim boundary",
+      "sha256": "25e74c29967ec17e42d5e8780333f4f19caf8bd5f121d9104b755a9d5b0e18ee"
+    },
+    {
+      "bytes": 1010,
+      "path": "validation.json",
+      "schema": "data, provenance, format, margin, and manual-QA checks",
+      "sha256": "98393345962d459f4282121db8409b8bd292086ee5ad21622678cfcfd136d7b1"
+    },
+    {
+      "bytes": 1825,
+      "path": "environment.json",
+      "schema": "runtime versions and SHA-256 upstream bindings",
+      "sha256": "75e2f33ef82131d3c0675ce636d7e136c233e2bdf796b2b0481f20826fbdde5d"
+    },
+    {
+      "bytes": 634,
+      "path": "progress.ndjson",
+      "schema": "timestamped deterministic render stages",
+      "sha256": "c80f28342212ab2a37f96c51971f47afb5da133422aa66038127d2a836581012"
+    },
+    {
+      "bytes": 943,
+      "path": "resource-log.ndjson",
+      "schema": "per-stage process, memory, and GPU record",
+      "sha256": "17c69bd996b995897ba7e3f1bd06be4322903bca029cb2b984901cc6d340c5a9"
+    }
+  ],
+  "environment": {
+    "Pillow": "12.3.0",
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pypdf": "6.10.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 128.0,
+    "layout": "four-panel gain, leakage, localization, and validation diagnostic",
+    "outputs": [
+      {
+        "bytes": 44887,
+        "path": "figure.pdf",
+        "sha256": "2edc2b5539a8e5460643de7e6e0036ca143d9728733d0d0764b91643c123b10f"
+      },
+      {
+        "bytes": 90861,
+        "path": "figure.svg",
+        "sha256": "baad8373207fdbc15aec67508af1c3b0373047afbc2d7ce5207a1c64dbc0da5d"
+      },
+      {
+        "bytes": 784359,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4204,
+          3023
+        ],
+        "sha256": "bef30a1ddd2b2890db3222bc94c2936f4b44dffacfee95a9338eaece96f2461a"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073l-adiabatic-tracking",
+  "files": [
+    {
+      "bytes": 530,
+      "path": "README.md",
+      "sha256": "d536cc742bac3259e1053e63da5669c335280fd8ee0f308159fc0619f20a398c"
+    },
+    {
+      "bytes": 1117,
+      "path": "caption.md",
+      "sha256": "6aeb110d41019259a660833888b127967cc13925ccac52ee31adaf728f30e6c1"
+    },
+    {
+      "bytes": 423,
+      "path": "command.txt",
+      "sha256": "de93480ce05a2b6e10b1297de03ec9983e9015868af89db65b039bd3957ed4ac"
+    },
+    {
+      "bytes": 713,
+      "path": "config.json",
+      "sha256": "8701627cb5766462bfd375b48684b9ef5b38de8d172632f8a7b1abdb4918cf26"
+    },
+    {
+      "bytes": 3546,
+      "path": "contract.json",
+      "sha256": "37655ecf8306c80b55b2c1e85eafdb21c5cd6e17b2e4a2be3319f5bbc1019fd5"
+    },
+    {
+      "bytes": 1825,
+      "path": "environment.json",
+      "sha256": "75e2f33ef82131d3c0675ce636d7e136c233e2bdf796b2b0481f20826fbdde5d"
+    },
+    {
+      "bytes": 44887,
+      "path": "figure.pdf",
+      "sha256": "2edc2b5539a8e5460643de7e6e0036ca143d9728733d0d0764b91643c123b10f"
+    },
+    {
+      "bytes": 784359,
+      "path": "figure.png",
+      "sha256": "bef30a1ddd2b2890db3222bc94c2936f4b44dffacfee95a9338eaece96f2461a"
+    },
+    {
+      "bytes": 90861,
+      "path": "figure.svg",
+      "sha256": "baad8373207fdbc15aec67508af1c3b0373047afbc2d7ce5207a1c64dbc0da5d"
+    },
+    {
+      "bytes": 23603,
+      "path": "plot.py",
+      "sha256": "d05c9e6ca6485318ba9581125aee219dca666a4736a433bf432226b5ed40516b"
+    },
+    {
+      "bytes": 634,
+      "path": "progress.ndjson",
+      "sha256": "c80f28342212ab2a37f96c51971f47afb5da133422aa66038127d2a836581012"
+    },
+    {
+      "bytes": 645829,
+      "path": "qa-final-size.png",
+      "sha256": "3b81224af6835ab001d5000c90d1cc040437942ddf990b94d960fcbf69901e2e"
+    },
+    {
+      "bytes": 259572,
+      "path": "qa-grayscale.png",
+      "sha256": "a75ab89421a3db9fef67ede4d47d3927a4eb8e186375dc885c0365e69f457a99"
+    },
+    {
+      "bytes": 394137,
+      "path": "qa-pdf.png",
+      "sha256": "b6c103aea16abcb175f1318b05798a9003ccd83ba93d8abab8da39fb39261d42"
+    },
+    {
+      "bytes": 683,
+      "path": "qa-protocol.md",
+      "sha256": "fd42a651b2169cdb1229874055cf4d05c4868dc9c716237cf47dd5f16669aebe"
+    },
+    {
+      "bytes": 1187,
+      "path": "qa-report.md",
+      "sha256": "198dab63b219b5c88916032497d608fc7143b6977d0fcc93bfa42f86782ed816"
+    },
+    {
+      "bytes": 41,
+      "path": "requirements.txt",
+      "sha256": "9d9eb23c27326bbda355df3b7f13b119cb3858cb3f94dacb28ab6df808e5d8f2"
+    },
+    {
+      "bytes": 943,
+      "path": "resource-log.ndjson",
+      "sha256": "17c69bd996b995897ba7e3f1bd06be4322903bca029cb2b984901cc6d340c5a9"
+    },
+    {
+      "bytes": 2115,
+      "path": "results.json",
+      "sha256": "25e74c29967ec17e42d5e8780333f4f19caf8bd5f121d9104b755a9d5b0e18ee"
+    },
+    {
+      "bytes": 131525,
+      "path": "source-data.csv",
+      "sha256": "e5b1a85d4adc227f7fa2bb4b6c6289e3bb4b45caae9c9b3cea6dd50df85fed81"
+    },
+    {
+      "bytes": 21288,
+      "path": "validate.py",
+      "sha256": "64c718c8076596db84a1aa1b6cd6248f460917851aca9def4097560ad35c6186"
+    },
+    {
+      "bytes": 1010,
+      "path": "validation.json",
+      "sha256": "98393345962d459f4282121db8409b8bd292086ee5ad21622678cfcfd136d7b1"
+    }
+  ],
+  "git": {
+    "certificateCommit": "2cb20e3303595c76643743403892a868688ffef9",
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtCertifiedRunMeaning": "all computational sources and upstream inputs are bound to the immutable source commit; generated outputs are bound by the package hashes",
+    "publicationCommitAssigned": false,
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "2cb20e3303595c76643743403892a868688ffef9",
+    "wholeWorktreeCleanAtRun": false,
+    "workingTreeBoundByInputAndPackageHashes": true
+  },
+  "inputBindings": [
+    {
+      "bytes": 780208,
+      "path": "experiments/r073l/adiabatic_diagnostic.json",
+      "sha256": "8bd647eebe0249a5a4d1281d8d32f6fa760eb436aa68a6e56a0cd4ddd6e99fbe"
+    },
+    {
+      "bytes": 6646,
+      "path": "experiments/r073l/independent_validation.json",
+      "sha256": "94f99d202ba9fbbb93acf5256e5e779d52bc2367cd823224610546be0a8a5e85"
+    },
+    {
+      "bytes": 1004,
+      "path": "experiments/r073l/config.json",
+      "sha256": "659ca582883440ca88268ee2251083f0bb204ac97b7a1b1b2b1dd9d1df502071"
+    },
+    {
+      "bytes": 646,
+      "path": "experiments/r073l/environment.json",
+      "sha256": "4c1953673f8f6a4efdd2b5e543821f8f0d40102644e8bb1c7adc1337ea4812b8"
+    },
+    {
+      "bytes": 612,
+      "path": "experiments/r073l/package_validation.json",
+      "sha256": "a07bacf3138db097a8768619f7340ca0ac204b62a3e566990470dbab25cde2a0"
+    },
+    {
+      "bytes": 21412,
+      "path": "experiments/r073l/progress.ndjson",
+      "sha256": "af4cd04af06ab1e72e33ce3f818a84cfb11e0303cf5d1c69d0258cf33c19d773"
+    },
+    {
+      "bytes": 5543,
+      "path": "experiments/r073l/resources.ndjson",
+      "sha256": "cd11c76d43646d1c9cad60078d3b79d4064717a11bc14fd323c5f02b9f2c8f78"
+    },
+    {
+      "bytes": 2818,
+      "path": "experiments/r073l/independent_progress.ndjson",
+      "sha256": "155a186e38eb54f9e6805038c50d612aaeeddc6df21e4f050e37950423d0ac8f"
+    },
+    {
+      "bytes": 1687,
+      "path": "experiments/r073l/independent_resources.ndjson",
+      "sha256": "986d02c3f403f3881285791b51f6a5c53f4549af6972f49d0674eaa7ff88dc2a"
+    }
+  ],
+  "masters": [
+    "figure.pdf",
+    "figure.svg",
+    "figure.png"
+  ],
+  "publication": {
+    "assets": [
+      {
+        "bytes": 44887,
+        "path": "public/assets/r073l/fig-r073l-adiabatic-tracking.pdf",
+        "sha256": "2edc2b5539a8e5460643de7e6e0036ca143d9728733d0d0764b91643c123b10f"
+      },
+      {
+        "bytes": 90861,
+        "path": "public/assets/r073l/fig-r073l-adiabatic-tracking.svg",
+        "sha256": "baad8373207fdbc15aec67508af1c3b0373047afbc2d7ce5207a1c64dbc0da5d"
+      },
+      {
+        "bytes": 784359,
+        "path": "public/assets/r073l/fig-r073l-adiabatic-tracking.png",
+        "sha256": "bef30a1ddd2b2890db3222bc94c2936f4b44dffacfee95a9338eaece96f2461a"
+      }
+    ],
+    "byteIdentityRequired": true,
+    "directory": "public/assets/r073l",
+    "fileStem": "fig-r073l-adiabatic-tracking",
+    "publicCopiesComplete": false
+  },
+  "publicationStatus": "prepublication",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSize": "qa-final-size.png",
+    "finalSizeInspected": true,
+    "grayscale": "qa-grayscale.png",
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRaster": "qa-pdf.png",
+    "qaDpi": 300,
+    "records": [
+      {
+        "bytes": 645829,
+        "path": "qa-final-size.png",
+        "sha256": "3b81224af6835ab001d5000c90d1cc040437942ddf990b94d960fcbf69901e2e"
+      },
+      {
+        "bytes": 259572,
+        "path": "qa-grayscale.png",
+        "sha256": "a75ab89421a3db9fef67ede4d47d3927a4eb8e186375dc885c0365e69f457a99"
+      },
+      {
+        "bytes": 394137,
+        "path": "qa-pdf.png",
+        "sha256": "b6c103aea16abcb175f1318b05798a9003ccd83ba93d8abab8da39fb39261d42"
+      },
+      {
+        "bytes": 1187,
+        "path": "qa-report.md",
+        "sha256": "198dab63b219b5c88916032497d608fc7143b6977d0fcc93bfa42f86782ed816"
+      }
+    ],
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "release": "R0.73L",
+  "schemaVersion": "r073l-adiabatic-tracking-figure-manifest-v1",
+  "sourceData": [
+    {
+      "bytes": 780208,
+      "path": "experiments/r073l/adiabatic_diagnostic.json",
+      "sha256": "8bd647eebe0249a5a4d1281d8d32f6fa760eb436aa68a6e56a0cd4ddd6e99fbe"
+    },
+    {
+      "bytes": 6646,
+      "path": "experiments/r073l/independent_validation.json",
+      "sha256": "94f99d202ba9fbbb93acf5256e5e779d52bc2367cd823224610546be0a8a5e85"
+    },
+    {
+      "bytes": 1004,
+      "path": "experiments/r073l/config.json",
+      "sha256": "659ca582883440ca88268ee2251083f0bb204ac97b7a1b1b2b1dd9d1df502071"
+    },
+    {
+      "bytes": 646,
+      "path": "experiments/r073l/environment.json",
+      "sha256": "4c1953673f8f6a4efdd2b5e543821f8f0d40102644e8bb1c7adc1337ea4812b8"
+    },
+    {
+      "bytes": 612,
+      "path": "experiments/r073l/package_validation.json",
+      "sha256": "a07bacf3138db097a8768619f7340ca0ac204b62a3e566990470dbab25cde2a0"
+    },
+    {
+      "bytes": 21412,
+      "path": "experiments/r073l/progress.ndjson",
+      "sha256": "af4cd04af06ab1e72e33ce3f818a84cfb11e0303cf5d1c69d0258cf33c19d773"
+    },
+    {
+      "bytes": 5543,
+      "path": "experiments/r073l/resources.ndjson",
+      "sha256": "cd11c76d43646d1c9cad60078d3b79d4064717a11bc14fd323c5f02b9f2c8f78"
+    },
+    {
+      "bytes": 2818,
+      "path": "experiments/r073l/independent_progress.ndjson",
+      "sha256": "155a186e38eb54f9e6805038c50d612aaeeddc6df21e4f050e37950423d0ac8f"
+    },
+    {
+      "bytes": 1687,
+      "path": "experiments/r073l/independent_resources.ndjson",
+      "sha256": "986d02c3f403f3881285791b51f6a5c53f4549af6972f49d0674eaa7ff88dc2a"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Across five epsilon values and three cutoffs, the finite selected gain remains within 0.0007 of its instantaneous viscous action, the three smallest epsilon values give leakage slope 1.028, the backward-action residual remains below 0.000672, and all cutoff and independent-integrator discrepancies are far below their frozen tolerances.",
+  "supportedTakeaway": "Across five epsilon values and three cutoffs, the finite selected gain remains within 0.0007 of its instantaneous viscous action, the three smallest epsilon values give leakage slope 1.028, the backward-action residual remains below 0.000672, and all cutoff and independent-integrator discrepancies are far below their frozen tolerances.",
+  "validatedAt": "2026-08-30T18:50:47.597235+00:00"
+}

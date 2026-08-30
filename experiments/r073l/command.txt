@@ -1,0 +1,10 @@
+R073L_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 R073L_DEPS="$R073L_DEPS_DIR" "$CODEX_PYTHON" research/r073l_adiabatic_diagnostic.py --deps "$R073L_DEPS_DIR" --config experiments/r073l/config.json --output experiments/r073l/adiabatic_diagnostic.json --progress experiments/r073l/progress.ndjson --resources experiments/r073l/resources.ndjson --environment experiments/r073l/environment.json
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 R073L_DEPS="$R073L_DEPS_DIR" "$CODEX_PYTHON" experiments/r073l/independent_validate.py --deps "$R073L_DEPS_DIR" --config experiments/r073l/config.json --primary experiments/r073l/adiabatic_diagnostic.json --output experiments/r073l/independent_validation.json --progress experiments/r073l/independent_progress.ndjson --resources experiments/r073l/independent_resources.ndjson
+
+"$CODEX_PYTHON" experiments/r073l/seal_package.py
+
+"$CODEX_PYTHON" experiments/r073l/validate_package.py --output experiments/r073l/package_validation.json

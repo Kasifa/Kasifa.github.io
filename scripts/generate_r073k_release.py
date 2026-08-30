@@ -892,7 +892,7 @@ def build_recap() -> str:
     html = once(html, node_j, node_j + node_k, "K recap node")
     retained = (
         '            <li>R0.73K 闭合共同小黏度范围内、共同圆内唯一的实代数简单黏性谱支、'
-        'Riesz 投影在算子范数下的一致收敛、特征值偏移的 \(O(\\varepsilon)\) 上界、条件数、固定半平面内无其他谱点，'
+        'Riesz 投影在算子范数下的一致收敛、特征值偏移的 \\(O(\\varepsilon)\\) 上界、条件数、固定半平面内无其他谱点，'
         '以及补空间 reduced-resolvent 与半群增长上界；显式黏度阈值、绝热跟踪、三维闭合、奇性与 Clay 保持 OPEN。</li>\n'
     )
     html = once(
@@ -991,7 +991,7 @@ def update_home() -> str:
     html = required(
         html,
         "endpoint audit / continuum upper action / zero-window tangent → unique simple rightmost spectral branch of the continuum operator</p>",
-        "endpoint audit / continuum upper action / zero-window tangent → unique simple rightmost continuum branch → parameter-uniform viscous rank-one branch</p>",
+        "endpoint audit / continuum upper action / zero-window tangent → unique simple rightmost spectral branch of the continuum operator → parameter-uniform viscous rank-one branch</p>",
         "K home path tail",
     )
     link_j = '<a class="milestone" href="/notes/r0-73j.html">R0.73J</a>'

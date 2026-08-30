@@ -1,0 +1,17 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073N_DEPS_DIR=/tmp/r073n-deps
+
+env PYTHONPATH="$R073N_DEPS_DIR" "$CODEX_PYTHON" -c 'import mpmath; assert mpmath.__version__ == "1.3.0"'
+
+env PYTHONPATH="$R073N_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073n/compute_diagnostic.py --deps "$R073N_DEPS_DIR"
+"$CODEX_PYTHON" -B research/certificates/r073n/independent_validate.py
+"$CODEX_PYTHON" -B research/certificates/r073n/assemble_certificate.py
+env PYTHONPATH="$R073N_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073n/validate_certificate.py --deps "$R073N_DEPS_DIR"
+"$CODEX_PYTHON" -B research/certificates/r073n/seal_package.py
+env PYTHONPATH="$R073N_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073n/validate_certificate.py --deps "$R073N_DEPS_DIR" --verify-only
+"$CODEX_PYTHON" -B research/certificates/r073n/seal_package.py --verify-only
+
+# Final seal, only after the R0.73N theorem sources have an immutable commit:
+# R073N_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$CODEX_PYTHON" -B research/certificates/r073n/seal_package.py --source-commit "$R073N_SOURCE_COMMIT"
+# "$CODEX_PYTHON" -B research/certificates/r073n/seal_package.py --source-commit "$R073N_SOURCE_COMMIT" --verify-only

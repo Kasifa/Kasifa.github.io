@@ -4,6 +4,12 @@ import test from "node:test";
 
 const repositoryRoot = new URL("../", import.meta.url);
 const publicRoot = new URL("public/", repositoryRoot);
+const ENDPOINTS = Object.freeze({
+  r073g: { version: "1.47", code: "R0.73G", slug: "r0-73g", next: "R0.73H" },
+  r073h: { version: "1.48", code: "R0.73H", slug: "r0-73h", next: "R0.73I" },
+  r073i: { version: "1.49", code: "R0.73I", slug: "r0-73i", next: "R0.73J" },
+  r073j: { version: "1.50", code: "R0.73J", slug: "r0-73j", next: "R0.73K" },
+});
 
 async function page(name) {
   return readFile(new URL(name, publicRoot), "utf8");
@@ -13,30 +19,38 @@ async function repositoryJson(name) {
   return JSON.parse(await readFile(new URL(name, repositoryRoot), "utf8"));
 }
 
-function claimBoundary(html, id) {
-  const heading = html.indexOf(`<h3 id="${id}">`);
-  const start = html.indexOf('<div class="boundary">', heading);
-  const end = html.indexOf("</div>", start);
-  assert.ok(heading >= 0 && start > heading && end > start, `claim boundary #${id}`);
-  return html.slice(start, end);
+async function currentEndpoint() {
+  const manifest = await repositoryJson("research/release-manifest.json");
+  const endpoint = ENDPOINTS[manifest.latestCompletedRelease];
+  assert.ok(endpoint, `unsupported current endpoint: ${manifest.latestCompletedRelease}`);
+  return { release: manifest.latestCompletedRelease, ...endpoint };
+}
+
+function claimBoundary(html, release) {
+  const heading = `<h3 id="${release}-boundary">`;
+  const start = html.indexOf(heading);
+  assert.ok(start >= 0, `${release} boundary heading`);
+  const tail = html.slice(start + heading.length);
+  const next = tail.search(/<h3 id="r0\d{2}[a-z]-boundary">/);
+  const section = next < 0 ? tail : tail.slice(0, next);
+  const blocks = [...section.matchAll(/<div class="boundary">([\s\S]*?)<\/div>/g)];
+  assert.equal(blocks.length, 1, `${release} must have one claim boundary`);
+  return blocks[0][1];
 }
 
 test("homepage current route reaches the materialized G, H, I, or J boundary without duplication", async () => {
-  const [home, manifest] = await Promise.all([
+  const [home, endpoint] = await Promise.all([
     page("research-review.html"),
-    repositoryJson("research/release-manifest.json"),
+    currentEndpoint(),
   ]);
-  const isG = manifest.latestCompletedRelease === "r073g";
-  const isH = manifest.latestCompletedRelease === "r073h";
-  const isI = manifest.latestCompletedRelease === "r073i";
-  const isJ = manifest.latestCompletedRelease === "r073j";
-  assert.equal(
-    [isG, isH, isI, isJ].filter(Boolean).length,
-    1,
-    `unsupported current release ${manifest.latestCompletedRelease}`,
+  const isH = endpoint.release === "r073h";
+  const isI = endpoint.release === "r073i";
+  const isJ = endpoint.release === "r073j";
+  assert.deepEqual(
+    [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
+    [endpoint.version],
+    "homepage has exactly the manifest version",
   );
-  const expectedVersion = isJ ? "1.50" : isI ? "1.49" : isH ? "1.48" : "1.47";
-  assert.ok(home.includes(`data-site-version="${expectedVersion}"`), "homepage version matches manifest");
   const match = home.match(
     /<article class="tree-node current">([\s\S]*?)<details class="tree-notes" open>/,
   );
@@ -57,7 +71,7 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
     false,
   );
   for (const token of [
-    isJ ? "R0.72R–R0.73J：" : isI ? "R0.72R–R0.73I：" : isH ? "R0.72R–R0.73H：" : "R0.72R–R0.73G：",
+    `R0.72R–${endpoint.code}：`,
     "caustic-free core",
     "marked \\(A_2\\)–\\(A_5\\) collisions",
     "exact scalar \\(A_2\\) block",
@@ -88,29 +102,17 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
   }
 
   assert.ok(
-    home.includes(isJ
-      ? '<a class="route-map-latest" href="/notes/r0-73j.pdf">阅读最新 R0.73J 研究笔记 →</a>'
-      : isI
-        ? '<a class="route-map-latest" href="/notes/r0-73i.pdf">阅读最新 R0.73I 研究笔记 →</a>'
-        : isH
-          ? '<a class="route-map-latest" href="/notes/r0-73h.pdf">阅读最新 R0.73H 研究笔记 →</a>'
-          : '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>'),
+    home.includes(`<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`),
   );
   assert.ok(
-    home.includes(isJ
-      ? '<a class="route-map-latest" href="#r073j">跳到首页 R0.73J 卡片 →</a>'
-      : isI
-        ? '<a class="route-map-latest" href="#r073i">跳到首页 R0.73I 卡片 →</a>'
-        : isH
-          ? '<a class="route-map-latest" href="#r073h">跳到首页 R0.73H 卡片 →</a>'
-          : '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>'),
+    home.includes(`<a class="route-map-latest" href="#${endpoint.release}">跳到首页 ${endpoint.code} 卡片 →</a>`),
   );
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
 
   const routeStart = home.indexOf('<section class="route-overview"');
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
   const route = home.slice(routeStart, routeEnd);
-  const latestSlug = isJ ? "r0-73j" : isI ? "r0-73i" : isH ? "r0-73h" : "r0-73g";
+  const latestSlug = endpoint.slug;
   assert.equal(
     (route.match(new RegExp(`href="/notes/${latestSlug}\\.html"`, "g")) ?? []).length,
     1,
@@ -119,24 +121,21 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
 });
 
 test("literature route records the materialized G, H, I, or J boundary", async () => {
-  const [literature, manifest] = await Promise.all([
+  const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
-    repositoryJson("research/release-manifest.json"),
+    currentEndpoint(),
   ]);
-  const isG = manifest.latestCompletedRelease === "r073g";
-  const isH = manifest.latestCompletedRelease === "r073h";
-  const isI = manifest.latestCompletedRelease === "r073i";
-  const isJ = manifest.latestCompletedRelease === "r073j";
-  assert.equal(
-    [isG, isH, isI, isJ].filter(Boolean).length,
-    1,
-    `unsupported current release ${manifest.latestCompletedRelease}`,
-  );
+  const isH = endpoint.release === "r073h";
+  const isI = endpoint.release === "r073i";
+  const isJ = endpoint.release === "r073j";
   const match = literature.match(
-    /<section id="route">([\s\S]*?)<figure class="topology"/,
+    /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
   assert.ok(match, "literature route section");
   const intro = match[1];
+  const topology = match[2];
+  const boundary = claimBoundary(literature, endpoint.release);
+  assert.ok(topology.includes(`开放接口 · ${endpoint.next}`));
 
   for (const token of [
     "R0.72Z 在 high-gap \\(q\\)-graph 上闭合 signed OS pressure",
@@ -169,28 +168,28 @@ test("literature route records the materialized G, H, I, or J boundary", async (
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
   if (isJ) {
-    const boundary = claimBoundary(literature, "r073j-boundary");
-    assert.ok(literature.includes("开放接口 · R0.73K"));
     for (const token of [
       "periodicRayleighContinuumBridge=CLOSED",
       "uniqueAlgebraicallySimpleRightmostBranch=CLOSED",
       "uniformSpectralGapAtLeastOneOverTwenty=CLOSED",
       "kineticOverlapAndFixedPhaseAnchor=CLOSED",
+      "contourFullBallChebyshevPowerBernstein=FAILED_WITH_LEDGER",
+      "overlapDirectIntervalClenshaw=FAILED_WITH_LEDGER",
+      "naturalBoxFirstRound=76_PASS_7_WRAPPING_INCONCLUSIVE",
+      "naturalBoxDepthTwo=1_RESOLVED_6_WRAPPING_INCONCLUSIVE",
+      "naturalBoxAdaptiveDepthFive=PASS_7_OF_7_PARENTS_2896_OF_2896_LEAVES",
       "independentOverlapRawOdeRecomputation=NOT_RUN",
       "fullyIndependentRawGridAudit=OPEN",
       "uniformRankOneViscousBranch=OPEN",
+      "nonselfadjointAdiabaticRemainder=OPEN",
       "Clay=OPEN",
       "NOT CLAY",
     ]) assert.ok(boundary.includes(token), `R0.73J boundary ${token}`);
   } else if (isI) {
-    const boundary = claimBoundary(literature, "r073i-boundary");
-    assert.ok(literature.includes("开放接口 · R0.73J"));
     assert.ok(boundary.includes("inheritedEndpointStrictlyBelowOneOver450=CLOSED"));
     assert.ok(boundary.includes("zeroWindowTangentAction=CLOSED"));
     assert.ok(boundary.includes("matchingSelectedGainAction=OPEN"));
   } else if (isH) {
-    const boundary = claimBoundary(literature, "r073h-boundary");
-    assert.ok(literature.includes("开放接口 · R0.73I"));
     assert.ok(boundary.includes("gainNormalizedFixedDistanceDeparture=CLOSED"));
     assert.ok(boundary.includes("uniformTaylorRadiusAtNaturalEndpoint=OPEN"));
     assert.ok(boundary.includes("d=0.01"));

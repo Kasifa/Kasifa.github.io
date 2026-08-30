@@ -90,7 +90,11 @@ test("R0.73J pins the v1.50 accounting endpoint", async () => {
 
 test("R0.73J release source pins every executable and global-gate dependency", async () => {
   const generator = await text("scripts/generate_r073j_release.py");
-  for (const relative of [
+  const block = generator.match(/RELEASE_SOURCE_EXACT_PATHS = \(\n([\s\S]*?)\n\)/);
+  assert.ok(block, "RELEASE_SOURCE_EXACT_PATHS block");
+  const pinnedPaths = [...block[1].matchAll(/^\s+"([^"]+)",$/gm)]
+    .map((match) => match[1]);
+  assert.deepEqual(pinnedPaths, [
     ".github/workflows/pages.yml",
     ".github/workflows/release-publication-gate.yml",
     "research/validate_figure_package.py",
@@ -108,7 +112,7 @@ test("R0.73J release source pins every executable and global-gate dependency", a
     "tests/r073j-continuum-branch-gate.test.mjs",
     "tests/r073j-release.test.mjs",
     "tests/site-route-current-boundary.test.mjs",
-  ]) assert.ok(generator.includes(JSON.stringify(relative)), `release-source pin ${relative}`);
+  ]);
   assert.match(generator, /RELEASE_BASELINE_COMMIT = "[0-9a-f]{40}"/);
   assert.match(generator, /normalized_release_generator\(git_bytes\(RELEASE_SOURCE_COMMIT, generator_relative\)\)/);
 });

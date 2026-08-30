@@ -9,6 +9,7 @@ const ENDPOINTS = Object.freeze({
   r073h: { version: "1.48", code: "R0.73H", slug: "r0-73h", next: "R0.73I" },
   r073i: { version: "1.49", code: "R0.73I", slug: "r0-73i", next: "R0.73J" },
   r073j: { version: "1.50", code: "R0.73J", slug: "r0-73j", next: "R0.73K" },
+  r073k: { version: "1.51", code: "R0.73K", slug: "r0-73k", next: "R0.73L" },
 });
 
 async function page(name) {
@@ -38,7 +39,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G, H, I, or J boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through K boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -46,6 +47,7 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
   const isH = endpoint.release === "r073h";
   const isI = endpoint.release === "r073i";
   const isJ = endpoint.release === "r073j";
+  const isK = endpoint.release === "r073k";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -57,8 +59,10 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isJ
-    ? "<h3>R0.73J：周期 Rayleigh 连续算子上的唯一简单最右谱支已认证</h3>"
+  assert.ok(current.includes(isK
+    ? "<h3>R0.73K：参数一致黏性 rank-one 谱支与补空间控制已闭合</h3>"
+    : isJ
+      ? "<h3>R0.73J：周期 Rayleigh 连续算子上的唯一简单最右谱支已认证</h3>"
     : isI
       ? "<h3>R0.73I：端点校正、连续体上作用量与零窗口切向速率已闭合</h3>"
       : isH
@@ -91,14 +95,18 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ) {
+  if (isH || isI || isJ || isK) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ) {
+  if (isI || isJ || isK) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ) {
+  if (isJ || isK) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
+  }
+  if (isK) {
+    assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
+    assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
 
   assert.ok(
@@ -120,7 +128,7 @@ test("homepage current route reaches the materialized G, H, I, or J boundary wit
   );
 });
 
-test("literature route records the materialized G, H, I, or J boundary", async () => {
+test("literature route records the materialized G through K boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -128,6 +136,7 @@ test("literature route records the materialized G, H, I, or J boundary", async (
   const isH = endpoint.release === "r073h";
   const isI = endpoint.release === "r073i";
   const isJ = endpoint.release === "r073j";
+  const isK = endpoint.release === "r073k";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -167,7 +176,31 @@ test("literature route records the materialized G, H, I, or J boundary", async (
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isJ) {
+  if (isK) {
+    assert.ok(literature.includes('id="r073j-boundary"'));
+    for (const token of [
+      "uniformRankOneViscousBranch=CLOSED",
+      "uniformProjectionNormConvergence=CLOSED",
+      "uniformEigenvalueOepsilon=CLOSED",
+      "uniformProjectionConditioning=CLOSED",
+      "fixedHalfPlaneNoPollution=CLOSED",
+      "uniformReducedResolvent=CLOSED",
+      "uniformComplementSemigroup=CLOSED",
+      "finiteDiagnosticPackage=CLOSED",
+      "primarySpectralStates=1190",
+      "crossCutoffComparisons=952",
+      "independentFiniteReconstruction=PASS",
+      "finiteDimensionDoesNotCertifyContinuum=TRUE",
+      "explicitViscosityThreshold=OPEN",
+      "nonselfadjointAdiabaticTracking=OPEN",
+      "matchingSelectedGainAction=OPEN",
+      "nonlinearNavierStokes=OPEN",
+      "transverseThreeDimensionalClosure=OPEN",
+      "finiteTimeSingularity=OPEN",
+      "Clay=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73K boundary ${token}`);
+  } else if (isJ) {
     for (const token of [
       "periodicRayleighContinuumBridge=CLOSED",
       "uniqueAlgebraicallySimpleRightmostBranch=CLOSED",

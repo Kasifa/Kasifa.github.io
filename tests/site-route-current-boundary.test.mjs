@@ -8,7 +8,7 @@ async function page(name) {
   return readFile(new URL(name, publicRoot), "utf8");
 }
 
-test("homepage current route reaches R0.73F without duplicating the note route", async () => {
+test("homepage current route reaches R0.73G without duplicating the note route", async () => {
   const home = await page("research-review.html");
   const match = home.match(
     /<article class="tree-node current">([\s\S]*?)<details class="tree-notes" open>/,
@@ -18,17 +18,17 @@ test("homepage current route reaches R0.73F without duplicating the note route",
 
   assert.ok(
     current.includes(
-      "<h3>R0.73F：移动剖面二分与固定窗口指数增益已闭合</h3>",
+      "<h3>R0.73G：过小种子的非线性相对放大与精确二维屏障已闭合</h3>",
     ),
   );
   assert.equal(
     current.includes(
-      "<h3>R0.73E：固定正半平面分裂与对数快时间传递已闭合</h3>",
+      "<h3>R0.73F：移动剖面二分与固定窗口指数增益已闭合</h3>",
     ),
     false,
   );
   for (const token of [
-    "R0.72R–R0.73F：",
+    "R0.72R–R0.73G：",
     "caustic-free core",
     "marked \\(A_2\\)–\\(A_5\\) collisions",
     "exact scalar \\(A_2\\) block",
@@ -44,18 +44,19 @@ test("homepage current route reaches R0.73F without duplicating the note route",
     "Shvydkoy--Friedlander",
     "完整 top cluster 相对二分",
     "moving-profile fixed-window dichotomy",
+    "over-small-seed nonlinear relative amplification / exact planar barrier",
   ]) {
     assert.ok(current.includes(token), token);
   }
 
   assert.ok(
     home.includes(
-      '<a class="route-map-latest" href="/notes/r0-73f.pdf">阅读最新 R0.73F 研究笔记 →</a>',
+      '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>',
     ),
   );
   assert.ok(
     home.includes(
-      '<a class="route-map-latest" href="#r073f">跳到首页 R0.73F 卡片 →</a>',
+      '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>',
     ),
   );
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
@@ -64,13 +65,13 @@ test("homepage current route reaches R0.73F without duplicating the note route",
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
   const route = home.slice(routeStart, routeEnd);
   assert.equal(
-    (route.match(/href="\/notes\/r0-73f\.html"/g) ?? []).length,
+    (route.match(/href="\/notes\/r0-73g\.html"/g) ?? []).length,
     1,
-    "R0.73F keeps one canonical note link in the route tree",
+    "R0.73G keeps one canonical note link in the route tree",
   );
 });
 
-test("literature route records the R0.72Z to R0.73F boundary", async () => {
+test("literature route records the R0.72Z to R0.73G boundary", async () => {
   const literature = await page("literature-review.html");
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"/,
@@ -97,12 +98,17 @@ test("literature route records the R0.72Z to R0.73F boundary", async () => {
     "一条精确线性行的 fixed-window exponential lower law",
     "complete OS--Squire A2 direct sum",
     "nonlinear Navier--Stokes 与 Clay 保持 OPEN",
+    "R0.73G 再用显式强范数 bootstrap 与全模态余项能量估计",
+    "过小种子的 nonlinear relative amplification",
+    "所选真实轨道严格留在全局光滑二维子空间",
+    "自然种子、order-one departure、横向三维与 Clay 保持 OPEN",
   ]) {
     assert.ok(intro.includes(token), token);
   }
   assert.ok(literature.includes('id="r073d-boundary"'));
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
-  assert.ok(literature.includes("开放接口 · R0.73G"));
-  assert.equal(literature.includes("开放接口 · R0.73F"), false);
+  assert.ok(literature.includes('id="r073g-boundary"'));
+  assert.ok(literature.includes("开放接口 · R0.73H"));
+  assert.equal(literature.includes("开放接口 · R0.73G"), false);
 });

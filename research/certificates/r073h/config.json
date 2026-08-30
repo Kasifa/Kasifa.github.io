@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "r073h-harmonic-duhamel-config-v1",
+  "release": "R0.73H",
+  "evidenceClass": "finite-binary64-galerkin-diagnostic-only",
+  "diagnosticOnly": true,
+  "pilotInformed": true,
+  "normalization": {
+    "launchAmplitudeSymbol": "rho",
+    "viscousEpsilonDefinition": "epsilonNu=1/absoluteLambda",
+    "launch": "L2-unit real conjugate pair",
+    "profileTime": "d=4t",
+    "fastTime": "theta=d/epsilonNu"
+  },
+  "formalGrid": {
+    "cutoffs": [24, 32, 48, 64],
+    "viscousEpsilons": [0.01, 0.005, 0.002, 0.001, 0.0005, 0.0002, 0.0001],
+    "profileTimeSnapshots": [0.0, 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01],
+    "primaryFastStep": 0.05
+  },
+  "stepConvergence": {
+    "cutoff": 64,
+    "viscousEpsilons": [0.01, 0.001, 0.0001],
+    "fastSteps": [0.1, 0.05, 0.025]
+  },
+  "independentSentinels": [
+    {"cutoff": 24, "viscousEpsilon": 0.01, "fastStep": 0.05},
+    {"cutoff": 32, "viscousEpsilon": 0.001, "fastStep": 0.05},
+    {"cutoff": 48, "viscousEpsilon": 0.0002, "fastStep": 0.05},
+    {"cutoff": 64, "viscousEpsilon": 0.0001, "fastStep": 0.025}
+  ],
+  "holdout": {
+    "cutoff": 64,
+    "viscousEpsilon": 0.000075,
+    "fastStep": 0.025,
+    "notUsedToFitPilotScaling": true,
+    "predictions": {
+      "quadraticCompensatedMinimum": 0.9,
+      "quadraticCompensatedMaximum": 0.95,
+      "targetCubicCompensatedMinimum": 0.84,
+      "targetCubicCompensatedMaximum": 0.92,
+      "signedParallelCompensatedMinimum": -0.72,
+      "signedParallelCompensatedMaximum": -0.58
+    }
+  },
+  "fitWindowViscousEpsilons": [0.001, 0.0005, 0.0002, 0.0001],
+  "tolerances": {
+    "generatorRelative": 5e-12,
+    "eigenResidualRelative": 5e-12,
+    "divergenceRelative": 5e-11,
+    "realityRelative": 5e-11,
+    "forbiddenParityRelative": 5e-11,
+    "stepRelative": 1e-7,
+    "finestCutoffRelative": 1e-6,
+    "outerThreeMassFraction": 1e-8,
+    "independentCoefficientRelative": 2e-8,
+    "independentForbiddenParityRelative": 5e-10,
+    "quadraticSlopeMinimum": 0.8,
+    "quadraticSlopeMaximum": 1.2,
+    "targetCubicSlopeMinimum": 1.7,
+    "targetCubicSlopeMaximum": 2.3
+  },
+  "claimBoundary": {
+    "amplitudeHierarchyAndKzParityAreExactAlgebra": true,
+    "actualFiniteTopEigenprofileUsed": true,
+    "finiteBinary64GalerkinDiagnostic": true,
+    "ordinaryCutoffAgreementIsTailProof": false,
+    "diagnosticEndpointIsCertifiedAnalyticD0": false,
+    "finiteTopEqualsContinuumTop": false,
+    "finiteScalingIsUniformSemigroupEstimate": false,
+    "fourthAndHigherAmplitudeOrdersControlled": false,
+    "uniformTaylorRadiusEstablished": false,
+    "naturalSeedOrderOneDepartureEstablished": false,
+    "threeDimensionalVortexStretchingPresent": false,
+    "generalThreeDimensionalRegularityConclusion": false,
+    "clayProblemSolved": false
+  }
+}

@@ -8,19 +8,18 @@ async function page(name) {
   return readFile(new URL(name, publicRoot), "utf8");
 }
 
-test("homepage current route reaches R0.73G without duplicating the note route", async () => {
+test("homepage current route reaches the materialized G or H boundary without duplication", async () => {
   const home = await page("research-review.html");
+  const isH = home.includes('data-site-version="1.48"');
   const match = home.match(
     /<article class="tree-node current">([\s\S]*?)<details class="tree-notes" open>/,
   );
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(
-    current.includes(
-      "<h3>R0.73G：过小种子的非线性相对放大与精确二维屏障已闭合</h3>",
-    ),
-  );
+  assert.ok(current.includes(isH
+    ? "<h3>R0.73H：按实际增益归一化的平面固定距离偏离已闭合</h3>"
+    : "<h3>R0.73G：过小种子的非线性相对放大与精确二维屏障已闭合</h3>"));
   assert.equal(
     current.includes(
       "<h3>R0.73F：移动剖面二分与固定窗口指数增益已闭合</h3>",
@@ -28,7 +27,7 @@ test("homepage current route reaches R0.73G without duplicating the note route",
     false,
   );
   for (const token of [
-    "R0.72R–R0.73G：",
+    isH ? "R0.72R–R0.73H：" : "R0.72R–R0.73G：",
     "caustic-free core",
     "marked \\(A_2\\)–\\(A_5\\) collisions",
     "exact scalar \\(A_2\\) block",
@@ -48,31 +47,36 @@ test("homepage current route reaches R0.73G without duplicating the note route",
   ]) {
     assert.ok(current.includes(token), token);
   }
+  if (isH) {
+    assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
+  }
 
   assert.ok(
-    home.includes(
-      '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>',
-    ),
+    home.includes(isH
+      ? '<a class="route-map-latest" href="/notes/r0-73h.pdf">阅读最新 R0.73H 研究笔记 →</a>'
+      : '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>'),
   );
   assert.ok(
-    home.includes(
-      '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>',
-    ),
+    home.includes(isH
+      ? '<a class="route-map-latest" href="#r073h">跳到首页 R0.73H 卡片 →</a>'
+      : '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>'),
   );
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
 
   const routeStart = home.indexOf('<section class="route-overview"');
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
   const route = home.slice(routeStart, routeEnd);
+  const latestSlug = isH ? "r0-73h" : "r0-73g";
   assert.equal(
-    (route.match(/href="\/notes\/r0-73g\.html"/g) ?? []).length,
+    (route.match(new RegExp(`href="/notes/${latestSlug}\\.html"`, "g")) ?? []).length,
     1,
-    "R0.73G keeps one canonical note link in the route tree",
+    `${latestSlug} keeps one canonical note link in the route tree`,
   );
 });
 
-test("literature route records the R0.72Z to R0.73G boundary", async () => {
+test("literature route records the materialized G or H boundary", async () => {
   const literature = await page("literature-review.html");
+  const isH = literature.includes('id="r073h-boundary"');
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"/,
   );
@@ -109,6 +113,13 @@ test("literature route records the R0.72Z to R0.73G boundary", async () => {
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  assert.ok(literature.includes("开放接口 · R0.73H"));
+  if (isH) {
+    assert.ok(literature.includes("开放接口 · R0.73I"));
+    assert.ok(literature.includes("gainNormalizedFixedDistanceDeparture=CLOSED"));
+    assert.ok(literature.includes("uniformTaylorRadiusAtNaturalEndpoint=OPEN"));
+    assert.ok(literature.includes("d=0.01"));
+  } else {
+    assert.ok(literature.includes("开放接口 · R0.73H"));
+  }
   assert.equal(literature.includes("开放接口 · R0.73G"), false);
 });

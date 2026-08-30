@@ -1,0 +1,37 @@
+# Run from the repository root after committing this exact source package.
+# Replace SOURCE_COMMIT with the full lowercase 40-character source commit.
+
+python3 -B research/certificates/r073h/exact_q2_certificate.py \
+  --source-commit SOURCE_COMMIT \
+  --output research/certificates/r073h/exact_q2_certificate.json
+
+python3 -B research/certificates/r073h/independent_exact_q2.py \
+  --source-commit SOURCE_COMMIT \
+  --output research/certificates/r073h/independent_exact_q2.json
+
+python3 -B research/certificates/r073h/primary_diagnostic.py \
+  --deps /tmp/r073c-deps \
+  --config research/certificates/r073h/config.json \
+  --output-dir research/certificates/r073h \
+  --source-commit SOURCE_COMMIT
+
+python3 -B research/certificates/r073h/independent_validate.py \
+  --deps /tmp/r073c-deps \
+  --config research/certificates/r073h/config.json \
+  --primary-dir research/certificates/r073h \
+  --output research/certificates/r073h/independent_validation.json \
+  --source-commit SOURCE_COMMIT
+
+python3 -B research/certificates/r073h/generate_certificate.py \
+  --source-commit SOURCE_COMMIT
+
+python3 -B research/certificates/r073h/validate_certificate.py \
+  --source-commit SOURCE_COMMIT \
+  --output research/certificates/r073h/validation.json
+
+python3 -B research/certificates/r073h/seal_package.py \
+  --source-commit SOURCE_COMMIT
+
+python3 -B research/certificates/r073h/validate_certificate.py \
+  --source-commit SOURCE_COMMIT \
+  --verify-only

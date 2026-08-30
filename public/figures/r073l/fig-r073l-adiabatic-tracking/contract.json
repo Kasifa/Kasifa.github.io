@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "r073l-adiabatic-tracking-figure-contract-v1",
+  "figureId": "fig-r073l-adiabatic-tracking",
+  "release": "R0.73L",
+  "evidenceClass": "independently-recomputed-finite-dimensional-diagnostic",
+  "analyticalQuestion": "On the complete slow interval, do the finite selected orbits retain bounded action-normalized gain, develop asymptotically linear-in-epsilon complementary leakage, satisfy the forward-orbit backward-action bound, and pass cutoff and independent-integrator checks?",
+  "supportedTakeaway": "Across five epsilon values and three cutoffs, the finite selected gain remains within 0.0007 of its instantaneous viscous action, the three smallest epsilon values give leakage slope 1.028, the backward-action residual remains below 0.000672, and all cutoff and independent-integrator discrepancies are far below their frozen tolerances.",
+  "chartFamily": "trend plus relationship plus uncertainty-and-benchmark",
+  "staticRenderer": "Matplotlib",
+  "dataSufficiency": {
+    "primaryCases": 15,
+    "trajectoryRows": 975,
+    "displayTrajectoryRows": 325,
+    "slowTimeNodesPerTrajectory": 65,
+    "epsilonLevels": 5,
+    "cutoffs": 3,
+    "fallback": "Fail closed if any configured case, slow-time node, cutoff comparison, or independent reconstruction is absent."
+  },
+  "panels": {
+    "A": {
+      "variant": "highlighted multi-series line",
+      "grain": "65 slow-time nodes for each of five epsilon values at N=64",
+      "scaleNote": "Focused vertical scale; the neutral benchmark is one."
+    },
+    "B": {
+      "variant": "log-log line-dot relationship with slope-one benchmark",
+      "grain": "terminal complement-to-selected ratio at five epsilon values and N=48,64",
+      "scaleNote": "The annotated fitted slope uses only the three smallest epsilon values."
+    },
+    "C": {
+      "variant": "multi-series residual trend",
+      "grain": "forward-orbit backward-action residual at 65 slow-time nodes and five epsilon values",
+      "scaleNote": "No backward parabolic evolution is computed."
+    },
+    "D": {
+      "variant": "log-scale validation margin dot plot",
+      "grain": "six maximum discrepancy-to-tolerance ratios from cutoff, independent-solver, and step-refinement checks",
+      "scaleNote": "The neutral line at one is the fail threshold."
+    }
+  },
+  "palettePolicy": {
+    "policy": "hard two-root cap",
+    "chromaticRoots": ["#285f8f", "#b07a00"],
+    "neutralSeriesAllowed": true,
+    "nonColorEncoding": [
+      "five distinct line styles and marker shapes",
+      "filled versus open markers for cutoff comparison",
+      "neutral dashed benchmark lines",
+      "fixed panel positions and direct annotations"
+    ]
+  },
+  "output": {
+    "finalWidthMillimetres": 178.0,
+    "finalHeightMillimetres": 128.0,
+    "requiredFormats": ["PDF vector", "SVG vector", "PNG 600 dpi"],
+    "qaSurfaces": ["final-size raster", "grayscale final-size raster", "PDF raster"]
+  },
+  "researchBlossom": {
+    "lockedAnchor": "top-right-header",
+    "petalCount": 5,
+    "carriesData": false
+  },
+  "claimBoundary": {
+    "formalValidatedDiagnosticFigure": true,
+    "finiteDimensionalDiagnostic": true,
+    "independentFiniteRecomputationPassed": true,
+    "continuumAdiabaticTheoremCertifiedByFigure": false,
+    "explicitContinuumEpsilonThresholdCertified": false,
+    "prefactorLimitCertified": false,
+    "nonlinearNavierStokesCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  }
+}
+

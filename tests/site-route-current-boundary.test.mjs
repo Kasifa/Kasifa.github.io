@@ -8,8 +8,9 @@ async function page(name) {
   return readFile(new URL(name, publicRoot), "utf8");
 }
 
-test("homepage current route reaches the materialized G, H, or I boundary without duplication", async () => {
+test("homepage current route reaches the materialized G, H, I, or J boundary without duplication", async () => {
   const home = await page("research-review.html");
+  const isJ = home.includes('data-site-version="1.50"');
   const isI = home.includes('data-site-version="1.49"');
   const isH = home.includes('data-site-version="1.48"');
   const match = home.match(
@@ -18,11 +19,13 @@ test("homepage current route reaches the materialized G, H, or I boundary withou
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isI
-    ? "<h3>R0.73I：端点校正、连续体上作用量与零窗口切向速率已闭合</h3>"
-    : isH
-      ? "<h3>R0.73H：按实际增益归一化的平面固定距离偏离已闭合</h3>"
-      : "<h3>R0.73G：过小种子的非线性相对放大与精确二维屏障已闭合</h3>"));
+  assert.ok(current.includes(isJ
+    ? "<h3>R0.73J：周期 Rayleigh 连续算子上的唯一简单最右谱支已认证</h3>"
+    : isI
+      ? "<h3>R0.73I：端点校正、连续体上作用量与零窗口切向速率已闭合</h3>"
+      : isH
+        ? "<h3>R0.73H：按实际增益归一化的平面固定距离偏离已闭合</h3>"
+        : "<h3>R0.73G：过小种子的非线性相对放大与精确二维屏障已闭合</h3>"));
   assert.equal(
     current.includes(
       "<h3>R0.73F：移动剖面二分与固定窗口指数增益已闭合</h3>",
@@ -30,7 +33,7 @@ test("homepage current route reaches the materialized G, H, or I boundary withou
     false,
   );
   for (const token of [
-    isI ? "R0.72R–R0.73I：" : isH ? "R0.72R–R0.73H：" : "R0.72R–R0.73G：",
+    isJ ? "R0.72R–R0.73J：" : isI ? "R0.72R–R0.73I：" : isH ? "R0.72R–R0.73H：" : "R0.72R–R0.73G：",
     "caustic-free core",
     "marked \\(A_2\\)–\\(A_5\\) collisions",
     "exact scalar \\(A_2\\) block",
@@ -50,34 +53,40 @@ test("homepage current route reaches the materialized G, H, or I boundary withou
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH) {
+  if (isH || isI || isJ) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI) {
-    assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
+  if (isI || isJ) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
+  }
+  if (isJ) {
+    assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
 
   assert.ok(
-    home.includes(isI
-      ? '<a class="route-map-latest" href="/notes/r0-73i.pdf">阅读最新 R0.73I 研究笔记 →</a>'
-      : isH
-        ? '<a class="route-map-latest" href="/notes/r0-73h.pdf">阅读最新 R0.73H 研究笔记 →</a>'
-        : '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>'),
+    home.includes(isJ
+      ? '<a class="route-map-latest" href="/notes/r0-73j.pdf">阅读最新 R0.73J 研究笔记 →</a>'
+      : isI
+        ? '<a class="route-map-latest" href="/notes/r0-73i.pdf">阅读最新 R0.73I 研究笔记 →</a>'
+        : isH
+          ? '<a class="route-map-latest" href="/notes/r0-73h.pdf">阅读最新 R0.73H 研究笔记 →</a>'
+          : '<a class="route-map-latest" href="/notes/r0-73g.pdf">阅读最新 R0.73G 研究笔记 →</a>'),
   );
   assert.ok(
-    home.includes(isI
-      ? '<a class="route-map-latest" href="#r073i">跳到首页 R0.73I 卡片 →</a>'
-      : isH
-        ? '<a class="route-map-latest" href="#r073h">跳到首页 R0.73H 卡片 →</a>'
-        : '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>'),
+    home.includes(isJ
+      ? '<a class="route-map-latest" href="#r073j">跳到首页 R0.73J 卡片 →</a>'
+      : isI
+        ? '<a class="route-map-latest" href="#r073i">跳到首页 R0.73I 卡片 →</a>'
+        : isH
+          ? '<a class="route-map-latest" href="#r073h">跳到首页 R0.73H 卡片 →</a>'
+          : '<a class="route-map-latest" href="#r073g">跳到首页 R0.73G 卡片 →</a>'),
   );
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
 
   const routeStart = home.indexOf('<section class="route-overview"');
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
   const route = home.slice(routeStart, routeEnd);
-  const latestSlug = isI ? "r0-73i" : isH ? "r0-73h" : "r0-73g";
+  const latestSlug = isJ ? "r0-73j" : isI ? "r0-73i" : isH ? "r0-73h" : "r0-73g";
   assert.equal(
     (route.match(new RegExp(`href="/notes/${latestSlug}\\.html"`, "g")) ?? []).length,
     1,
@@ -85,8 +94,9 @@ test("homepage current route reaches the materialized G, H, or I boundary withou
   );
 });
 
-test("literature route records the materialized G, H, or I boundary", async () => {
+test("literature route records the materialized G, H, I, or J boundary", async () => {
   const literature = await page("literature-review.html");
+  const isJ = literature.includes('id="r073j-boundary"');
   const isI = literature.includes('id="r073i-boundary"');
   const isH = literature.includes('id="r073h-boundary"');
   const match = literature.match(
@@ -125,7 +135,14 @@ test("literature route records the materialized G, H, or I boundary", async () =
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isI) {
+  if (isJ) {
+    assert.ok(literature.includes("开放接口 · R0.73K"));
+    assert.ok(literature.includes("periodicRayleighContinuumBridge=CLOSED"));
+    assert.ok(literature.includes("uniqueAlgebraicallySimpleRightmostBranch=CLOSED"));
+    assert.ok(literature.includes("kineticOverlapAndFixedPhaseAnchor=CLOSED"));
+    assert.ok(literature.includes("independentOverlapRawOdeRecomputation=NOT_RUN"));
+    assert.ok(literature.includes("uniformRankOneViscousBranch=OPEN"));
+  } else if (isI) {
     assert.ok(literature.includes("开放接口 · R0.73J"));
     assert.ok(literature.includes("inheritedEndpointStrictlyBelowOneOver450=CLOSED"));
     assert.ok(literature.includes("zeroWindowTangentAction=CLOSED"));

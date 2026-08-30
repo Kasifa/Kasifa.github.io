@@ -63,8 +63,14 @@ RELEASE_SOURCE_EXACT_PATHS = (
     "scripts/generate_r072p_release.py",
     "scripts/generate_note_index.py",
     "scripts/i18n-lib.mjs",
+    "scripts/run-release-publication-gate.mjs",
+    "tests/bilingual-content.test.mjs",
+    "tests/internal-public-links.test.mjs",
+    "tests/release-publication-gate-runner.test.mjs",
+    "tests/release-publication-invariant.test.mjs",
     "tests/r073j-continuum-branch-gate.test.mjs",
     "tests/r073j-release.test.mjs",
+    "tests/site-route-current-boundary.test.mjs",
 )
 
 SOURCE_PATHS = (

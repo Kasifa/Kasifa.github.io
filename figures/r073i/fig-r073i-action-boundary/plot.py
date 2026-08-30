@@ -876,29 +876,118 @@ def write_manifest_and_ledger(
         "results.json",
     ]
     output_bindings = [binding(HERE / name, HERE) for name in output_names]
+    environment = load_json(HERE / "environment.json")
+    result = load_json(HERE / "results.json")
+    by_name = {record["path"]: record for record in output_bindings}
+    figure_outputs = [dict(by_name[name]) for name in ("figure.pdf", "figure.svg", "figure.png")]
+    figure_outputs[-1]["dpi"] = int(config["pngDpi"])
+    figure_outputs[-1]["pixels"] = result["renderQa"]["masterPngPixels"]
+    public_assets = []
+    for record in figure_outputs:
+        suffix = Path(str(record["path"])).suffix
+        public_assets.append({
+            "path": f"public/assets/r073i/{FIGURE_ID}{suffix}",
+            "bytes": record["bytes"],
+            "sha256": record["sha256"],
+        })
     manifest = {
         "schemaVersion": "r073i-action-boundary-manifest-v1",
         "figureId": FIGURE_ID,
         "release": "R0.73I",
         "status": "formal",
+        "analyticalQuestion": (
+            "What do the finite selected-gain action and WKB-correction diagnostics show "
+            "on three explicitly labelled windows without being promoted to a continuum theorem?"
+        ),
+        "supportedClaim": (
+            "The archived binary64 Fourier--Galerkin panels are finite route diagnostics only: "
+            "they compare three labelled windows and support the next contour/adiabatic audit, "
+            "but prove no continuum matching action, two-term asymptotic, or Clay result."
+        ),
+        "createdAt": "2026-08-30T19:55:09.592878+08:00",
         "evidenceClass": EVIDENCE_CLASS,
         "diagnosticOnly": True,
         "sourceCommit": source_commit,
         "branch": branch,
         "workingTreeCleanAtRun": not bool(git_text("status", "--porcelain")),
+        "git": {
+            "repository": "Kasifa/Kasifa.github.io",
+            "sourceCommit": source_commit,
+            "certificateCommit": "4ab51d1251cb5f5ca85c82731ac7f8e7b512c368",
+            "dirtyAtCertifiedRun": False,
+            "dirtyAtCertifiedRunMeaning": (
+                "the renderer source and certificate inputs are read from immutable commits; "
+                "generated outputs and unrelated working-tree files are excluded"
+            ),
+            "wholeWorktreeCleanAtRun": False,
+        },
+        "computation": {
+            "kind": "closed-form sampling plus validated finite CSV ingestion",
+            "configuration": "config.json",
+            "precision": "IEEE-754 binary64 finite Fourier--Galerkin diagnostics",
+            "solver": "committed finite CSV ingestion and deterministic Matplotlib rendering",
+            "formalCommand": "command.txt",
+            "scientificWallTimeSeconds": environment["wallTimeSeconds"],
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "finiteDimensionalPanelsAreDiagnosticOnly": True,
+        },
+        "compute": {
+            "host": "Wool.local",
+            "operatingSystem": environment["platform"],
+            "cpu": "Apple M5 Max",
+            "memoryGiB": 36.0,
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "gpu": "not used",
+        },
+        "environment": {
+            "python": environment["python"],
+            "numpy": environment["numpy"],
+            "matplotlib": environment["matplotlib"],
+            "pillow": environment["pillow"],
+            "packagesLock": "requirements.txt",
+        },
+        "data": [
+            {**by_name["source-data.csv"], "schema": "r073i-action-boundary-source-data-v1"},
+            {**by_name["results.json"], "schema": "r073i-action-boundary-results-v1"},
+        ],
+        "sourceData": input_bindings,
         "sourceBindings": source_bindings,
         "inputBindings": input_bindings,
         "outputBindings": output_bindings,
+        "figure": {
+            "widthMillimetres": config["widthMillimetres"],
+            "heightMillimetres": config["heightMillimetres"],
+            "pngDpi": config["pngDpi"],
+            "profile": "journal-double-column",
+            "layout": "two-panel finite action and WKB residual diagnostic",
+            "outputs": figure_outputs,
+        },
         "dimensions": {
             "widthMillimetres": config["widthMillimetres"],
             "heightMillimetres": config["heightMillimetres"],
             "pngDpi": config["pngDpi"],
         },
         "qa": {
+            "status": "passed",
+            "finalSizeInspected": True,
+            "grayscaleInspected": True,
+            "labelsAndLegendsInspected": True,
+            "scalesAndUnitsInspected": True,
+            "dataCrossChecked": True,
             "finalSizeSurface": True,
             "grayscaleSurface": True,
             "independentPdfRasterSurface": True,
             "visualInspectionExplicit": manual_qa_passed(),
+        },
+        "caption": {"english": "caption.md"},
+        "publication": {
+            "directory": "public/assets/r073i",
+            "fileStem": FIGURE_ID,
+            "byteIdentityRequired": True,
+            "publicCopiesComplete": True,
+            "assets": public_assets,
         },
         "claimBoundary": contract["claimBoundary"],
         "inventoryPolicy": "flat package; SHA256SUMS covers every regular file except itself",

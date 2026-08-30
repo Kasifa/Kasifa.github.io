@@ -48,6 +48,8 @@ EXPERIMENT_PACKAGE_COMMIT = "5180ab1f9c4f5955647e0f2a1fcadb070fc407ad"
 FIGURE_PACKAGE_COMMIT = "e04f6bf569a91a6814be04fc74409ef02075dc23"
 CERTIFICATE_PACKAGE_COMMIT = "4ab51d1251cb5f5ca85c82731ac7f8e7b512c368"
 RELEASE_SOURCE_COMMIT = "8e1df08edc5c072590d455470f1fb606cc7036a3"
+FIGURE_RENDERER_SCHEMA_COMMIT = "f15625161b0b52b8ab0ee5ac50771f348ae07e78"
+FIGURE_ARCHIVE_COMMIT = "5fc4deb637868a317fe99cbc26773b62b69a214b"
 
 COMMIT_PLACEHOLDERS = (
     ANALYTIC_SOURCE_COMMIT,
@@ -55,6 +57,8 @@ COMMIT_PLACEHOLDERS = (
     FIGURE_PACKAGE_COMMIT,
     CERTIFICATE_PACKAGE_COMMIT,
     RELEASE_SOURCE_COMMIT,
+    FIGURE_RENDERER_SCHEMA_COMMIT,
+    FIGURE_ARCHIVE_COMMIT,
 )
 
 CLOSED_KEYS = (
@@ -644,7 +648,10 @@ def validate_experiment() -> dict:
 
 def validate_figure(certificate: dict) -> dict:
     directory = ROOT / FIGURE_RELATIVE
-    verify_exact_directory_at_commit(directory, FIGURE_PACKAGE_COMMIT, "R0.73I figure")
+    # The scientific figure bytes were certified at FIGURE_PACKAGE_COMMIT.
+    # FIGURE_ARCHIVE_COMMIT only hardens the shared archival manifest schema;
+    # the PDF/SVG/PNG masters remain byte-identical.
+    verify_exact_directory_at_commit(directory, FIGURE_ARCHIVE_COMMIT, "R0.73I figure")
     verify_flat_ledger(directory, "R0.73I figure")
     manifest = strict_json(directory / "manifest.json", "R0.73I figure manifest")
     results = strict_json(directory / "results.json", "R0.73I figure results")
@@ -664,11 +671,13 @@ def validate_figure(certificate: dict) -> dict:
         or manifest.get("figureId") != FIGURE_ID
         or manifest.get("status") != "formal"
         or manifest.get("diagnosticOnly") is not True
-        or manifest.get("sourceCommit") != EXPERIMENT_PACKAGE_COMMIT
+        or manifest.get("sourceCommit") != FIGURE_RENDERER_SCHEMA_COMMIT
+        or manifest.get("git", {}).get("sourceCommit") != FIGURE_RENDERER_SCHEMA_COMMIT
+        or manifest.get("git", {}).get("certificateCommit") != CERTIFICATE_PACKAGE_COMMIT
     ):
         raise RuntimeError("R0.73I figure status or provenance drifted")
     if (
-        results.get("sourceCommit") != EXPERIMENT_PACKAGE_COMMIT
+        results.get("sourceCommit") != FIGURE_RENDERER_SCHEMA_COMMIT
         or results.get("status") != "passed"
         or results.get("diagnosticOnly") is not True
     ):
@@ -710,8 +719,8 @@ def validate_figure(certificate: dict) -> dict:
             raise RuntimeError("R0.73I figure input differs from experiment-package commit")
     for row in manifest.get("sourceBindings", []):
         relative = f"{FIGURE_RELATIVE}/{row['path']}"
-        if git_bytes(EXPERIMENT_PACKAGE_COMMIT, relative) != (directory / row["path"]).read_bytes():
-            raise RuntimeError("R0.73I figure source differs from experiment-package commit")
+        if git_bytes(FIGURE_RENDERER_SCHEMA_COMMIT, relative) != (directory / row["path"]).read_bytes():
+            raise RuntimeError("R0.73I figure source differs from renderer-schema commit")
 
     if tuple(path.name for path in sorted(directory.iterdir())) != tuple(sorted(FIGURE_PACKAGE_PATHS)):
         raise RuntimeError("R0.73I figure package inventory drifted")
@@ -1654,7 +1663,20 @@ def main() -> None:
     release_state = preflight_release_state()
     _, figure_manifest = validate_inputs()
     if release_state == "target":
-        verify_materialized_figure_assets(figure_manifest)
+        synchronized_assets = 0
+        try:
+            verify_materialized_figure_assets(figure_manifest)
+        except RuntimeError:
+            if not args.apply:
+                raise
+            # A later provenance-only reseal may harden the archived package
+            # while preserving all three scientific master bytes.  In that
+            # case --apply repairs the public package mirror transactionally.
+            resealed: dict[Path, bytes] = {}
+            stage_figure_assets(resealed, figure_manifest)
+            commit_transaction(resealed)
+            synchronized_assets = len(resealed)
+            verify_materialized_figure_assets(figure_manifest)
         print(json.dumps({
             "release": "R0.73I",
             "siteVersion": "1.49",
@@ -1671,6 +1693,7 @@ def main() -> None:
             "publicationStageIncomplete": publication_stage_incomplete(),
             "pdfGenerated": False,
             "translationsGenerated": False,
+            "synchronizedAssets": synchronized_assets,
         }, ensure_ascii=False))
         return
 

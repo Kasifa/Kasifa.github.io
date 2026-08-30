@@ -88,7 +88,7 @@ EXPECTED_EXACT_RATIONALS = {
     "threeRateMargin": "1/1000",
     "fourRateMargin": "21/125",
 }
-EXPECTED_CONFIG_SHA256 = "100775fd92e34b939c563546b83b838eda60f677f7452a13459cf6ef2b2252fb"
+EXPECTED_CONFIG_SHA256 = "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
 
 EXPECTED_TOLERANCES = {
     "numericalReality": 1e-10,
@@ -113,15 +113,15 @@ EXPECTED_TOLERANCES = {
 }
 
 EXPECTED_LINEAR_SENTINELS = [
-    {"cutoff": 32, "viscousEpsilon": 0.001},
-    {"cutoff": 32, "viscousEpsilon": 0.0000625},
+    {"cutoff": 40, "viscousEpsilon": 0.001},
+    {"cutoff": 40, "viscousEpsilon": 0.0000625},
     {"cutoff": 48, "viscousEpsilon": 0.00025},
     {"cutoff": 64, "viscousEpsilon": 0.0005},
     {"cutoff": 64, "viscousEpsilon": 0.0000625},
 ]
 
 EXPECTED_HIERARCHY_SENTINELS = [
-    {"cutoff": 32, "viscousEpsilon": 0.001, "fastStep": 0.05},
+    {"cutoff": 40, "viscousEpsilon": 0.001, "fastStep": 0.05},
     {"cutoff": 48, "viscousEpsilon": 0.00025, "fastStep": 0.05},
     {"cutoff": 64, "viscousEpsilon": 0.0000625, "fastStep": 0.025},
 ]
@@ -386,7 +386,7 @@ def validate_config(config: Mapping[str, Any]) -> None:
             "profile-to-physical time rule drift")
     require(config.get("exactRationals") == EXPECTED_EXACT_RATIONALS,
             "exact rational configuration drift")
-    require([int(x) for x in config["cutoffs"]] == [32, 48, 64],
+    require([int(x) for x in config["cutoffs"]] == [40, 48, 64],
             "formal cutoffs changed")
     require([float(x) for x in config["viscousEpsilons"]] ==
             [0.001, 0.0005, 0.00025, 0.000125, 0.0000625],

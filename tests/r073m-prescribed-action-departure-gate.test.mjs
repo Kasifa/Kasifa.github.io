@@ -85,15 +85,15 @@ const expectedClaimBoundary = {
 };
 
 const expectedLinearSentinels = [
-  { cutoff: 32, viscousEpsilon: 0.001 },
-  { cutoff: 32, viscousEpsilon: 0.0000625 },
+  { cutoff: 40, viscousEpsilon: 0.001 },
+  { cutoff: 40, viscousEpsilon: 0.0000625 },
   { cutoff: 48, viscousEpsilon: 0.00025 },
   { cutoff: 64, viscousEpsilon: 0.0005 },
   { cutoff: 64, viscousEpsilon: 0.0000625 },
 ];
 
 const expectedHierarchySentinels = [
-  { cutoff: 32, viscousEpsilon: 0.001, fastStep: 0.05 },
+  { cutoff: 40, viscousEpsilon: 0.001, fastStep: 0.05 },
   { cutoff: 48, viscousEpsilon: 0.00025, fastStep: 0.05 },
   { cutoff: 64, viscousEpsilon: 0.0000625, fastStep: 0.025 },
 ];
@@ -229,7 +229,7 @@ test("R0.73M finite source contract freezes grids, fields, hashes, and fail-clos
   assert.equal(config.schemaVersion, "r073m-prescribed-action-finite-config-v1");
   assert.equal(config.release, "R0.73M");
   assert.equal(config.diagnosticOnly, true);
-  assert.deepEqual(config.cutoffs, [32, 48, 64]);
+  assert.deepEqual(config.cutoffs, [40, 48, 64]);
   assert.deepEqual(config.viscousEpsilons,
     [0.001, 0.0005, 0.00025, 0.000125, 0.0000625]);
   assert.equal(config.cutoffs.length * config.viscousEpsilons.length, 15);

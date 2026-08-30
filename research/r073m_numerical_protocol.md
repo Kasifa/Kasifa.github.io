@@ -50,7 +50,7 @@ Renaming the quantity in (1.2) as (1.1) is a release-stopping error.
 The primary grid is the Cartesian product
 
 \[
- N\in\{32,48,64\},\qquad
+ N\in\{40,48,64\},\qquad
  \varepsilon\in
  \{10^{-3},5\!\times\!10^{-4},2.5\!\times\!10^{-4},
  1.25\!\times\!10^{-4},6.25\!\times\!10^{-5}\}.
@@ -70,15 +70,56 @@ Independent linear/action recomputation covers five preregistered sentinels:
 
 | cutoff | \(\varepsilon\) |
 |---:|---:|
-| 32 | \(10^{-3}\) |
-| 32 | \(6.25\times10^{-5}\) |
+| 40 | \(10^{-3}\) |
+| 40 | \(6.25\times10^{-5}\) |
 | 48 | \(2.5\times10^{-4}\) |
 | 64 | \(5\times10^{-4}\) |
 | 64 | \(6.25\times10^{-5}\) |
 
 Independent harmonic recomputation covers
-\((32,10^{-3})\), \((48,2.5\times10^{-4})\), and
+\((40,10^{-3})\), \((48,2.5\times10^{-4})\), and
 \((64,6.25\times10^{-5})\).
+
+### 2.1 Resolution amendment after the first formal preflight
+
+The first source freeze, commit
+`7f8a06b0989f53bd79d71bb470058559d001904a`, used the preregistered
+lowest cutoff \(N=32\).  Its formal primary run completed all fifteen cases
+but returned exit status 2 because exactly one quality gate failed:
+
+\[
+ \max \operatorname{outer3}(V_j)
+ =1.5202609437020391\times10^{-7}>10^{-8}.
+\]
+
+The maximum occurred for \(V_3\) at
+\((N,\varepsilon)=(32,6.25\times10^{-5})\).  The failed
+`primary_results.json` had SHA-256
+`ffe80e7bc434b7c9d67fb66ef64a688b400c60ac84a6578ac9d324bbdf04f8d1`.
+All other primary gates passed.  Repeating the worst case with fast-time
+steps \(0.1,0.05,0.025\) gave respectively
+\(1.5202608030\times10^{-7}\),
+\(1.5202609437\times10^{-7}\), and
+\(1.5202609527\times10^{-7}\), so the failure was not removed by time-step
+refinement.
+
+An in-memory cutoff probe at the same smallest viscosity gave
+
+| cutoff | outer-three mass fraction of \(V_3\) |
+|---:|---:|
+| 34 | \(3.6347903\times10^{-8}\) |
+| 36 | \(8.2963922\times10^{-9}\) |
+| 38 | \(1.8058142\times10^{-9}\) |
+| 40 | \(3.7440487\times10^{-10}\) |
+| 44 | \(1.3852278\times10^{-11}\) |
+| 48 | \(4.1719607\times10^{-13}\) |
+
+Although \(N=36\) was the first integer probe to pass, its margin was only
+about \(1.21\).  The protocol therefore replaces \(N=32\) by \(N=40\),
+which leaves a factor \(26.7\) margin at the worst viscosity.  The tolerance
+is not relaxed.  The upper pair \(N=48,64\) and every other numerical
+contract remain unchanged.  These empirical tail values are resolution
+diagnostics, not an analytic Fourier-tail proof.
 
 ## 3. Primary coefficients
 

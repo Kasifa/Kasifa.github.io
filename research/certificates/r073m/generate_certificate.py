@@ -51,7 +51,7 @@ OPERATIONAL_INPUTS = (
     "independent_hierarchy_progress.ndjson",
     "independent_hierarchy_resources.ndjson",
 )
-EXPECTED_CONFIG_SHA256 = "100775fd92e34b939c563546b83b838eda60f677f7452a13459cf6ef2b2252fb"
+EXPECTED_CONFIG_SHA256 = "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
 EXPECTED_CLAIM_BOUNDARY = {
     "finiteInviscidActionProxyComputed": True,
     "finiteViscousActionComputedSeparately": True,

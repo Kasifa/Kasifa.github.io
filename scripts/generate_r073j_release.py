@@ -57,6 +57,9 @@ COMMIT_PLACEHOLDERS = (
 )
 
 RELEASE_SOURCE_EXACT_PATHS = (
+    ".github/workflows/pages.yml",
+    ".github/workflows/release-publication-gate.yml",
+    "research/validate_figure_package.py",
     "scripts/r073j_release_content.py",
     "scripts/add-r073j-translations.mjs",
     "scripts/generate_r072o_release.py",

@@ -88,17 +88,26 @@ test("R0.73J pins the v1.50 accounting endpoint", async () => {
   assert.equal(version, "1.50\n");
 });
 
-test("R0.73J release source pins every executable generation helper", async () => {
+test("R0.73J release source pins every executable and global-gate dependency", async () => {
   const generator = await text("scripts/generate_r073j_release.py");
   for (const relative of [
+    ".github/workflows/pages.yml",
+    ".github/workflows/release-publication-gate.yml",
+    "research/validate_figure_package.py",
     "scripts/r073j_release_content.py",
     "scripts/add-r073j-translations.mjs",
     "scripts/generate_r072o_release.py",
     "scripts/generate_r072p_release.py",
     "scripts/generate_note_index.py",
     "scripts/i18n-lib.mjs",
+    "scripts/run-release-publication-gate.mjs",
+    "tests/bilingual-content.test.mjs",
+    "tests/internal-public-links.test.mjs",
+    "tests/release-publication-gate-runner.test.mjs",
+    "tests/release-publication-invariant.test.mjs",
     "tests/r073j-continuum-branch-gate.test.mjs",
     "tests/r073j-release.test.mjs",
+    "tests/site-route-current-boundary.test.mjs",
   ]) assert.ok(generator.includes(JSON.stringify(relative)), `release-source pin ${relative}`);
   assert.match(generator, /normalized_release_generator\(git_bytes\(RELEASE_SOURCE_COMMIT, generator_relative\)\)/);
 });

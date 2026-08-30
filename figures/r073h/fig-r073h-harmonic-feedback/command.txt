@@ -1,0 +1,10 @@
+From the repository root, use the bundled scientific Python runtime and replace
+<RENDERER_SOURCE_COMMIT> with the source-before-run commit created for this
+package.
+
+R073H_DEPS_DIR=/tmp/r073c-deps
+PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env PYTHONPATH="$R073H_DEPS_DIR" "$PYTHON" figures/r073h/fig-r073h-harmonic-feedback/plot.py --deps "$R073H_DEPS_DIR" --renderer-source-commit <RENDERER_SOURCE_COMMIT> --certificate-commit a2414fbf40908381acff0aa6f6ebf088e392a9b8
+
+env PYTHONPATH="$R073H_DEPS_DIR" "$PYTHON" figures/r073h/fig-r073h-harmonic-feedback/validate.py --deps "$R073H_DEPS_DIR" --renderer-source-commit <RENDERER_SOURCE_COMMIT> --certificate-commit a2414fbf40908381acff0aa6f6ebf088e392a9b8 --qa-status passed --qa-note "Final-size, grayscale, and PDF-raster views inspected; labels, scales, signs, legends, exact/finite boundary, and input bindings passed."

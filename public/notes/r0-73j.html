@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73J：周期 Rayleigh 唯一简单最右谱支、统一谱隙、重叠和相位锚在连续算子层面闭合。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73J｜Periodic Rayleigh continuum-operator spectral-branch certificate">
+  <meta property="og:description" content="A unique algebraically simple rightmost spectral branch of the continuum operator is certified, with an explicit gap, overlap, phase anchor, and audit boundary.">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073j/fig-r073j-continuum-branch-certificate.png">
+  <title>R0.73J｜Periodic Rayleigh continuum-operator spectral-branch certificate</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.50"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">direct result</a><a href="#bridge">analytic bridge</a><a href="#contours">contour certificate</a><a href="#overlap">overlap and phase</a><a href="#independence">audit boundary</a><a href="#natural">natural-box audit</a><a href="#failures">failed methods</a><a href="#figure">journal figure</a><a href="#boundary">exact boundary</a><a href="#literature">literature boundary</a><a href="#value">value</a><a href="#next">R0.73K</a><a href="#reproduce">reproduction</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73J · PERIODIC RAYLEIGH · CONTINUUM-OPERATOR SPECTRAL CERTIFICATE</div>
+        <h1>周期 Rayleigh 唯一简单最右谱支的连续算子认证</h1>
+        <p class="lead">R0.73J 在完整区间 \(0\le d\le1/450\) 上认证一个实、代数简单且唯一的最右谱支 \(\lambda_0(d)\in(0.167,0.173)\)。其余谱点满足 \(\operatorname{Re}\lambda\le0.11\)，所以谱隙严格大于 \(0.057\)，并可固定取 \(g_*=1/20\)。证书还给出左右本征向量的统一重叠与固定相位锚。自然参数盒首轮和 depth-two 的 wrapping 历史完整保留；继续自适应细分到 depth five 后，7/7 原失败父盒与 2896/2896 最终叶盒均通过。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73J 完成</span><strong>Fail-closed continuum-operator certificate</strong><p>版本 v0.73J · 2026-08-30</p><p>主围道绕数：1</p><p>局部围道绕数：1</p><p>各审计共享对应原始网格</p><p>3D / CLAY：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct result</a></li>        <li><a href="#bridge">01 · analytic bridge</a></li>        <li><a href="#contours">02 · contour certificate</a></li>        <li><a href="#overlap">03 · overlap and phase</a></li>        <li><a href="#independence">04 · audit boundary</a></li>        <li><a href="#natural">05 · natural-box audit</a></li>        <li><a href="#failures">06 · failed methods</a></li>        <li><a href="#figure">07 · journal figure</a></li>        <li><a href="#boundary">08 · exact boundary</a></li>        <li><a href="#literature">09 · literature boundary</a></li>        <li><a href="#value">10 · value</a></li>        <li><a href="#next">11 · R0.73K</a></li>        <li><a href="#reproduce">12 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct result</div><h2>唯一简单最右谱支在连续算子层面闭合</h2><div class="equation result">\[\lambda_0:[0,1/450]\to(0.167,0.173),\qquad \sup\operatorname{Re}\!\left(\sigma(A_X(d))\setminus\{\lambda_0(d)\}\right)\le0.11.\]</div><p>因此 \(\lambda_0(d)\) 是实、代数简单的特征值，也是唯一满足 \(\operatorname{Re}\lambda>0.11\) 的谱点。严格谱隙大于 \(0.057\)，后续可统一采用 \(g_*=1/20\)。</p></section>
+        <section id="bridge"><div class="section-no">01 / Analytic bridge</div><h2>Rayleigh 铅笔、Evans 零点与动力生成元的代数重数一致</h2><p>解析证明把动能空间生成元、普通 \(L^2\) 实现和周期 Rayleigh 边值问题连接起来。右半平面的 Evans 零点阶数等于生成元特征值的代数重数；Howard 圆盘保证每个满足 \(\operatorname{Re}\lambda>0.11\) 的谱点都落在全局计数矩形内。</p></section>
+        <section id="contours"><div class="section-no">02 / Contour certificate</div><h2>64 个围道面板全部非零，两个绕数都等于 1</h2><div class="equation result">\[\inf_{[0,1/450]\times\partial\Omega}|E|>5.49948,\qquad \inf_{[0,1/450]\times\partial B_{\rm loc}}|E|>0.164355.\]</div><p>全局外矩形由 56 个面板覆盖，局部根圆由 8 个面板覆盖。每个参数端点与每个围道单元均进入证书；基点全局、局部绕数均为 1。非零同伦把计数延拓到整个参数区间。</p></section>
+        <section id="overlap"><div class="section-no">03 / Overlap and phase</div><h2>左右重叠和固定相位锚远离零</h2><div class="equation result">\[\frac{|\langle\ell_d,h_d\rangle_X|}{\|\ell_d\|_X\|h_d\|_X}>0.585343,\qquad |M_{12}(d,\lambda_0(d))|>1.84154.\]</div><p>主区间计算覆盖 128 个重叠单元。第二种中心—Lipschitz 后处理复核全部单元，给出独立下界 \(0.585009>1/2\)。这允许固定连续相位并排除左右配对退化。</p></section>
+        <section id="independence"><div class="section-no">04 / Audit boundary</div><h2>两项第二实现各自共用对应的冻结原始 ODE 网格</h2><p>围道证书的第二套 range 与 winding 实现共用对应的冻结围道网格；重叠证书的第二套 center--Lipschitz 实现共用另一批对应的冻结重叠网格。两者都能发现后处理、索引和舍入错误，但都没有独立重算原始 ODE 数据。因此这里写作“共享对应原始网格的独立后处理”，不写成完全独立的数值复现。完整独立 raw-grid 审计仍为 OPEN。</p></section>
+        <section id="natural"><div class="section-no">05 / Natural-box audit</div><h2>自然参数盒最终通过，但仍只是辅助复核</h2><p>首轮 83 个自然盒中 76 个通过，7 个因 Evans 区间 wrapping 无法判定。depth-two 仅解析 1/7 个父盒，留下 96 个未决叶盒。继续自适应细分后，depth three 为 64/384、depth four 为 768/1280、depth five 为 2048/2048；最终 7/7 个父盒、83/83 个选定自然盒与 2896/2896 个最终叶盒全部覆盖通过，最小 Evans 下界大于 \(0.00714950\)。这仍是抽样辅助复核，不替代主围道的完整参数一致证书。</p></section>
+        <section id="failures"><div class="section-no">06 / Failed methods</div><h2>失败的区间路线保留在方法账本</h2><p>围道证书的 full-ball Chebyshev--power--Bernstein 转换发生过度 wrapping；重叠证书的直接区间 Clenshaw 在参数端点丢失共享变量依赖。失败输入、范围和原因保存在 <code>failure_ledger.json</code>。这些记录说明正式证书为何改用各自通过验证的替代范围方法，而不是把未决范围静默丢弃。</p></section>
+        <section id="figure"><div class="section-no">07 / Journal figure</div><h2>围道与重叠证书以期刊格式归档</h2><p><img src="/assets/r073j/fig-r073j-continuum-branch-certificate.svg" alt="R0.73J continuum-operator spectral-branch contour and overlap certificate"></p><p><a href="/assets/r073j/fig-r073j-continuum-branch-certificate.pdf">下载矢量 PDF</a> · <a href="/assets/r073j/fig-r073j-continuum-branch-certificate.png">下载 600 dpi PNG</a> · <a href="/assets/r073j/fig-r073j-continuum-branch-certificate.svg">打开 SVG</a></p></section>
+        <section id="boundary"><div class="section-no">08 / Exact boundary</div><h2>CLOSED、失败历史、审计状态与 OPEN 分列</h2><p>periodicRayleighContinuumBridge=CLOSED；uniqueAlgebraicallySimpleRightmostBranch=CLOSED；uniformSpectralGapAtLeastOneOverTwenty=CLOSED；kineticOverlapAndFixedPhaseAnchor=CLOSED。</p><p>contourFullBallChebyshevPowerBernstein=FAILED_WITH_LEDGER；overlapDirectIntervalClenshaw=FAILED_WITH_LEDGER；naturalBoxFirstRound=76_PASS_7_WRAPPING_INCONCLUSIVE；naturalBoxDepthTwo=1_RESOLVED_6_WRAPPING_INCONCLUSIVE。</p><p>naturalBoxAdaptiveDepthFive=PASS_7_OF_7_PARENTS_2896_OF_2896_LEAVES；independentOverlapRawOdeRecomputation=NOT_RUN。</p><p>fullyIndependentRawGridAudit=OPEN；uniformRankOneViscousBranch=OPEN；nonselfadjointAdiabaticRemainder=OPEN；matchingSelectedGainAction=OPEN；twoTermSelectedGainAsymptotic=OPEN；actionResolvedBackwardLocalization=OPEN；prescribedActionSeedDeparture=OPEN；fixedBackgroundLyapunovInstability=OPEN；transverseThreeDimensionalClosure=OPEN；finiteTimeSingularity=OPEN；Clay=OPEN。</p><p>有限 Galerkin 诊断中实部约为 \(0.04\) 的较弱不稳定共轭对不承担连续算子上的存在性或重数证明权重；它不与“\(\operatorname{Re}\lambda>0.11\) 区域内唯一”的定理冲突。</p><p>本节是特定周期剪切剖面的连续算子谱支认证，不是三维 Navier--Stokes 正则性或奇性证明。NOT CLAY。</p></section>
+        <section id="literature"><div class="section-no">09 / Literature boundary</div><h2>周期 Evans 计数与验证数值工作提供方法先例</h2><p>文献审计区分周期 Evans 零点理论、验证围道计算、Howard 包络以及退化临界层问题。相邻工作不自动给出本算子的统一参数证书；本节的重数桥接与全部数值边界均由随附材料单独核验。</p></section>
+        <section id="value"><div class="section-no">10 / Research value</div><h2>下一阶段所需的谱支选择条件已经具备</h2><p>这一结果关闭了固定正窗口上的谱支唯一性、简单性、统一谱隙、左右重叠与相位选择门槛。它为黏性谱支延拓和非自伴绝热估计提供输入，但尚未证明这两步，也没有推出非线性增长或三维奇性。</p></section>
+        <section id="next"><div class="section-no">11 / Next gate</div><h2>R0.73K：黏性谱支与统一投影控制</h2><p>下一节检查小黏性扰动下的唯一谱支、Riesz 投影与补空间半群界，并保持参数和大频率常数可追踪。</p></section>
+        <section id="reproduce"><div class="section-no">12 / Reproduction</div><h2>定理、证明、审计、文献、实验和附图均有直接入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_continuum_branch_theorem.md">定理</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_analytic_proof.md">解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_overlap_analytic_proof.md">重叠证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_analytic_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_adversarial_audit.md">敌对证据审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073j_literature_audit.md">文献审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/experiments/r073j">正式实验包</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073j/fig-r073j-continuum-branch-certificate">正式附图包</a> · <a href="/notes/r0-73j.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73j.html">126 节累计回顾</a> · <a href="/recap-r0-61-r0-73j.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录定理、有限计算、反例和未解决的问题。</div><div>研究笔记 R0.73J · 2026-08-30<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

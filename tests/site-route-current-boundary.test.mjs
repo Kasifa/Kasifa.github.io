@@ -11,6 +11,7 @@ const ENDPOINTS = Object.freeze({
   r073j: { version: "1.50", code: "R0.73J", slug: "r0-73j", next: "R0.73K" },
   r073k: { version: "1.51", code: "R0.73K", slug: "r0-73k", next: "R0.73L" },
   r073l: { version: "1.52", code: "R0.73L", slug: "r0-73l", next: "R0.73M" },
+  r073m: { version: "1.53", code: "R0.73M", slug: "r0-73m", next: "R0.73N" },
 });
 
 async function page(name) {
@@ -40,7 +41,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through L boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through M boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -50,6 +51,7 @@ test("homepage current route reaches the materialized G through L boundary witho
   const isJ = endpoint.release === "r073j";
   const isK = endpoint.release === "r073k";
   const isL = endpoint.release === "r073l";
+  const isM = endpoint.release === "r073m";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -61,8 +63,10 @@ test("homepage current route reaches the materialized G through L boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isL
-    ? "<h3>R0.73L：非自伴绝热跟踪与匹配作用量已闭合</h3>"
+  assert.ok(current.includes(isM
+    ? "<h3>R0.73M：prescribed-action 平面非线性固定距离偏离已闭合</h3>"
+    : isL
+      ? "<h3>R0.73L：非自伴绝热跟踪与匹配作用量已闭合</h3>"
     : isK
       ? "<h3>R0.73K：参数一致黏性 rank-one 谱支与补空间控制已闭合</h3>"
     : isJ
@@ -99,23 +103,30 @@ test("homepage current route reaches the materialized G through L boundary witho
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ || isK || isL) {
+  if (isH || isI || isJ || isK || isL || isM) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ || isK || isL) {
+  if (isI || isJ || isK || isL || isM) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ || isK || isL) {
+  if (isJ || isK || isL || isM) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
-  if (isK || isL) {
+  if (isK || isL || isM) {
     assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
     assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
-  if (isL) {
+  if (isL || isM) {
     assert.ok(current.includes("non-selfadjoint adiabatic tracking / matching selected action"));
     assert.ok(current.includes("parameter-uniform nonselfadjoint adiabatic tracking"));
     assert.ok(current.includes("finite diagnostic: 15 primary / 5 independent / 346 figure rows"));
+  }
+  if (isM) {
+    assert.ok(current.includes("prescribed-action planar nonlinear fixed-distance departure"));
+    assert.ok(current.includes("prescribed-action planar nonlinear departure"));
+    assert.ok(current.includes(
+      "finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks",
+    ));
   }
 
   assert.ok(
@@ -137,7 +148,7 @@ test("homepage current route reaches the materialized G through L boundary witho
   );
 });
 
-test("literature route records the materialized G through L boundary", async () => {
+test("literature route records the materialized G through M boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -147,6 +158,7 @@ test("literature route records the materialized G through L boundary", async () 
   const isJ = endpoint.release === "r073j";
   const isK = endpoint.release === "r073k";
   const isL = endpoint.release === "r073l";
+  const isM = endpoint.release === "r073m";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -186,7 +198,40 @@ test("literature route records the materialized G through L boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isL) {
+  if (isM) {
+    assert.ok(literature.includes('id="r073j-boundary"'));
+    assert.ok(literature.includes('id="r073k-boundary"'));
+    assert.ok(literature.includes('id="r073l-boundary"'));
+    assert.ok(literature.includes('class="route-r073m-deck-update"'));
+    for (let number = 167; number <= 174; number += 1) {
+      assert.equal(
+        [...literature.matchAll(new RegExp('id="ref-' + number + '"', "g"))].length,
+        1,
+        `R0.73M reference ref-${number}`,
+      );
+    }
+    for (const token of [
+      "physicalKineticSelectedGainConjugacy=CLOSED",
+      "fixedEndpointBackwardLocalization=CLOSED",
+      "prescribedActionSeedWindow=CLOSED",
+      "twoDimensionalNonlinearDeparture=CLOSED",
+      "fixedDistanceEndpoint=CLOSED",
+      "selectedPlanarOrbitGlobalSmoothness=CLOSED",
+      "finiteDiagnosticPackage=CLOSED",
+      "primaryPrescribedActionCases=15",
+      "independentLinearSentinels=5",
+      "independentHierarchySentinels=3",
+      "formalFigurePackage=PASS",
+      "finiteDimensionDoesNotCertifyContinuum=TRUE",
+      "prefactorLimit=OPEN",
+      "twoTermWKB=OPEN",
+      "singleFixedBackgroundLyapunovInstability=OPEN",
+      "transverseThreeDimensionalClosure=OPEN",
+      "finiteTimeSingularity=OPEN",
+      "Clay=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73M boundary ${token}`);
+  } else if (isL) {
     assert.ok(literature.includes('id="r073j-boundary"'));
     assert.ok(literature.includes('id="r073k-boundary"'));
     assert.ok(literature.includes('class="route-r073l-deck-update"'));

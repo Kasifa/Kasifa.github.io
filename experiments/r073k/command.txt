@@ -1,0 +1,10 @@
+R073K_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 R073K_DEPS="$R073K_DEPS_DIR" "$CODEX_PYTHON" research/r073k_viscous_branch_diagnostic.py --deps "$R073K_DEPS_DIR" --config experiments/r073k/config.json --output experiments/r073k/viscous_branch_diagnostic.json --progress experiments/r073k/progress.ndjson --resources experiments/r073k/resources.ndjson --environment experiments/r073k/environment.json
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" experiments/r073k/independent_validate.py --deps "$R073K_DEPS_DIR" --config experiments/r073k/config.json --primary experiments/r073k/viscous_branch_diagnostic.json --output experiments/r073k/independent_validation.json --progress experiments/r073k/independent_progress.ndjson --resources experiments/r073k/independent_resources.ndjson
+
+"$CODEX_PYTHON" experiments/r073k/seal_package.py
+
+"$CODEX_PYTHON" experiments/r073k/validate_package.py --output experiments/r073k/package_validation.json

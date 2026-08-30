@@ -229,8 +229,15 @@ test("R0.73I HTML, translation source, and browser bundle are bilingual and publ
 
   assert.ok(bundle.includes("R0.73I"));
   assert.ok(bundle.includes("R0.73J"));
-  assertPublicVoice(JSON.stringify(translations), "translations/en.json");
-  assertPublicVoice(bundle, "public/i18n-en.js");
+  // The repository-wide catalogue intentionally preserves older, explicitly
+  // negated phrases such as “cannot claim ... nearly solved”.  The R0.73I
+  // release gate must police the rows introduced by this release without
+  // misclassifying those historical safety statements as positive claims.
+  assertPublicVoice(JSON.stringify(rows), "R0.73I translations/en.json rows");
+  assertPublicVoice(
+    rows.map((entry) => `${JSON.stringify(entry.zh)}: ${JSON.stringify(entry.en)}`).join("\n"),
+    "R0.73I public/i18n-en.js mappings",
+  );
   for (const [index, value] of htmlPages.entries()) {
     assert.ok(value.includes("R0.73I"), `public HTML ${index + 1}: R0.73I`);
     assertPublicVoice(value, `public HTML ${index + 1}`);

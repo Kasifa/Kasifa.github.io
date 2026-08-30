@@ -159,7 +159,12 @@ test("R0.73H help and default CLI paths are read-only", async () => {
   for (const relative of watched) assert.equal(await sha(relative), before.get(relative), relative);
 });
 
-test("R0.73H read-only evidence preflight validates every sealed input", async () => {
+test("R0.73H read-only evidence preflight validates every sealed input", async (context) => {
+  const release = await json("research/release-manifest.json");
+  if (!["r073g", "r073h"].includes(release.latestCompletedRelease)) {
+    context.skip("historical R0.73H transition is already superseded");
+    return;
+  }
   const probe = [
     "import json, sys",
     "sys.path.insert(0, 'scripts')",
@@ -301,11 +306,15 @@ test("R0.73H source-stage builders produce exact counts without writing public",
   ]) await absent(relative);
 });
 
-test("R0.73H source and final lifecycles preserve exact G or H counters", async () => {
+test("R0.73H source and final lifecycles preserve exact G or H counters", async (context) => {
   const [release, site, inventory, version] = await Promise.all([
     json("research/release-manifest.json"), json("public/site-version.json"),
     json("research/formal-archive-inventory.json"), text("VERSION"),
   ]);
+  if (!["r073g", "r073h"].includes(release.latestCompletedRelease)) {
+    context.skip("historical R0.73H counters are superseded by a later release");
+    return;
+  }
   if (release.latestCompletedRelease === "r073g") {
     assert.deepEqual({
       version: release.siteVersion, notes: release.publicHtmlNoteCount,

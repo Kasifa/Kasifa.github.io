@@ -539,7 +539,8 @@ test("R0.73G formal lifecycle preserves A/E/F/C/S/P and public byte identity", a
   const sealedManifest = await run("git", ["show", `${commits.S}:${figure}/manifest.json`], {
     cwd: root, maxBuffer: 16 * 1024 * 1024,
   });
-  assert.equal(`${JSON.stringify(publicationFree, null, 2)}\n`, sealedManifest.stdout);
+  assert.deepEqual(publicationFree, JSON.parse(sealedManifest.stdout),
+    "publication overlay removal must recover the exact S manifest object");
   const stripManifestRow = (value) => {
     const rows = value.match(/^[0-9a-f]{64}  manifest\.json\r?\n?/gm) ?? [];
     assert.equal(rows.length, 1);
@@ -618,6 +619,15 @@ test("R0.73G final English dictionary is complete, neutral, and token-preserving
     assert.deepEqual(accountingTokens(entry.en), accountingTokens(entry.zh), entry.zh);
     assert.deepEqual(boundaryTokens(entry.en), boundaryTokens(entry.zh), entry.zh);
   }
+  const finiteScope = batch.find((entry) => entry.zh.startsWith("主程序在 28 个正式网格点上"));
+  assert.ok(finiteScope, "finite-diagnostic scope translation");
+  assert.match(finiteScope.en, /28 formal grid points.*main program/i);
+  assert.match(finiteScope.en, /5 pre-?registered sentinel points.*independent FFT\/Leray/i);
+  assert.ok(finiteScope.en.includes("\\(5.21\\times10^{-16}\\)"));
+  assert.ok(finiteScope.en.includes("\\(6.01\\times10^{-16}\\)"));
+  const phaseRows = batch.filter((entry) => entry.zh.includes("四十二"));
+  assert.ok(phaseRows.length >= 3);
+  assert.ok(phaseRows.every((entry) => /forty-two/i.test(entry.en)));
   const result = await run(process.execPath, [
     "scripts/add-r073g-translations.mjs", "--check-only",
   ], { cwd: root, maxBuffer: 16 * 1024 * 1024 });

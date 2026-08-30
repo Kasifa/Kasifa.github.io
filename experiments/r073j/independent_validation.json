@@ -1,0 +1,1100 @@
+{
+  "classification": "independent-postprocessing-from-shared-raw-grid",
+  "completedAt": "2026-08-30T14:21:03.539841+00:00",
+  "environment": {
+    "arithmetic": "python-flint Arb/Acb ball arithmetic",
+    "auditPrecisionDecimalDigits": 100,
+    "python": "3.9.6",
+    "pythonFlintVersion": "0.6.0",
+    "pythonImplementation": "CPython"
+  },
+  "independentDecisions": {
+    "globalBaseHomotopyMinimumAbsoluteLower": "[5.64261041420162101095426584965510509604086039647897619247182890488118728426738026622365417 +/- 4.72e-90]",
+    "globalBasePositiveOrientationWinding": 1,
+    "globalBoundaryNonzeroForAllD": true,
+    "globalMinimumAbsoluteLower": "[5.49739860185146715126999430350809697742809422937217914279306683156325738000030286613915500 +/- 1.17e-90]",
+    "localBaseHomotopyMinimumAbsoluteLower": "[0.170178214674438957195139353414491314021420978293512594537318245690195973827514725660442948 +/- 4.14e-91]",
+    "localBasePositiveOrientationWinding": 1,
+    "localBoundaryNonzeroForAllD": true,
+    "localMinimumAbsoluteLower": "[0.164339779846808632199038609335312706978086108360360708483057084890812146025408293092929596 +/- 1.39e-91]"
+  },
+  "inputDigests": {
+    "checkpointSha256": "f706eecf8318a72954ca5582dabd58cd56f200cec6f67aeeb4eb80f9c2fc3df9",
+    "configurationSha256": "168051f8915fda82e76037707e6c7f6a00f8ad31cd55697a5041e35bab4dd8c5",
+    "independentAuditorSha256": "0fa6d54748746dadf13119903fa65a641a86f490077cb7a05b8c76f3a10ca7d0",
+    "primaryCertificateSha256": "60c770beaf0dc9a3da99ba6ab7bff234b506aa7d8bc72a0aad7b55471b571a38"
+  },
+  "limitations": {
+    "classification": "independent-postprocessing-from-shared-raw-grid",
+    "consequence": "this audit can detect post-processing, provenance, completeness, margin, homotopy, and winding errors, but shared raw values prevent it from being a fully independent numerical proof",
+    "independentlyReimplemented": [
+      "configuration, source-ledger, and full tensor-grid validation",
+      "direct two-dimensional Chebyshev DCT and node reconstruction check",
+      "reverse-order d-then-s interval Clenshaw on complete exact dyadic covers",
+      "ellipse majorants, Lebesgue bounds, and interpolation remainders",
+      "all primary range-box and decision-margin reductions",
+      "curve-to-polygon homotopy and exact rational winding"
+    ],
+    "notIndependentlyEstablished": [
+      "the interval monodromy/Picard/Taylor computation that produced raw Evans balls",
+      "that each serialized raw Evans ball was evaluated at its declared (d,s) node",
+      "the mathematical implementation inside the primary ODE source"
+    ]
+  },
+  "naturalBoxSpotCheck": {
+    "acceptance": "every direct natural-box Evans enclosure and every Picard audit margin is strictly separated from zero",
+    "conservativeResourceEstimate": {
+      "cpuWallTime": "5-30 minutes with 16 CPU workers; 0.5-3 CPU-hours",
+      "gpuOrDgx": "Arb is CPU arbitrary-precision arithmetic; DGX GPU use is not expected to help unless a separately audited GPU interval kernel is written",
+      "peakMemory": "below 4 GiB if workers serialize only final boxes"
+    },
+    "hashSelectedPrimarySubdivisionBoxes": {
+      "count": 32,
+      "mappingRule": "reduce selectors modulo the ordered panel count and that panel's configured dyadic d/s cell counts",
+      "selectionSeed": "f95fdac894a7ded9042c58950ea0f79603a5ef69341a01c91a36edc093de1729",
+      "selectors": [
+        {
+          "dCellSelector": 3568360227,
+          "ordinal": 0,
+          "panelSelector": 2607356906,
+          "sCellSelector": 3401474215
+        },
+        {
+          "dCellSelector": 79706092,
+          "ordinal": 1,
+          "panelSelector": 3087871979,
+          "sCellSelector": 2997340315
+        },
+        {
+          "dCellSelector": 3758612735,
+          "ordinal": 2,
+          "panelSelector": 381451109,
+          "sCellSelector": 134074001
+        },
+        {
+          "dCellSelector": 4118265565,
+          "ordinal": 3,
+          "panelSelector": 2290152124,
+          "sCellSelector": 1601629361
+        },
+        {
+          "dCellSelector": 3146972833,
+          "ordinal": 4,
+          "panelSelector": 1049827640,
+          "sCellSelector": 3998813138
+        },
+        {
+          "dCellSelector": 1356590244,
+          "ordinal": 5,
+          "panelSelector": 2392625421,
+          "sCellSelector": 1793489238
+        },
+        {
+          "dCellSelector": 732332838,
+          "ordinal": 6,
+          "panelSelector": 14635932,
+          "sCellSelector": 3309401956
+        },
+        {
+          "dCellSelector": 1981298856,
+          "ordinal": 7,
+          "panelSelector": 604524362,
+          "sCellSelector": 680560129
+        },
+        {
+          "dCellSelector": 3379770410,
+          "ordinal": 8,
+          "panelSelector": 1467526868,
+          "sCellSelector": 3483751321
+        },
+        {
+          "dCellSelector": 2580805244,
+          "ordinal": 9,
+          "panelSelector": 1032847355,
+          "sCellSelector": 3678425919
+        },
+        {
+          "dCellSelector": 621252953,
+          "ordinal": 10,
+          "panelSelector": 72992337,
+          "sCellSelector": 101881998
+        },
+        {
+          "dCellSelector": 2316968457,
+          "ordinal": 11,
+          "panelSelector": 2208343576,
+          "sCellSelector": 859617912
+        },
+        {
+          "dCellSelector": 1467160898,
+          "ordinal": 12,
+          "panelSelector": 2607776894,
+          "sCellSelector": 738625183
+        },
+        {
+          "dCellSelector": 4144371045,
+          "ordinal": 13,
+          "panelSelector": 830488611,
+          "sCellSelector": 4096514420
+        },
+        {
+          "dCellSelector": 3421496336,
+          "ordinal": 14,
+          "panelSelector": 533920133,
+          "sCellSelector": 4230505071
+        },
+        {
+          "dCellSelector": 2728160193,
+          "ordinal": 15,
+          "panelSelector": 746419617,
+          "sCellSelector": 2655997043
+        },
+        {
+          "dCellSelector": 2551486305,
+          "ordinal": 16,
+          "panelSelector": 754497631,
+          "sCellSelector": 619455316
+        },
+        {
+          "dCellSelector": 442710163,
+          "ordinal": 17,
+          "panelSelector": 1245245660,
+          "sCellSelector": 1154056859
+        },
+        {
+          "dCellSelector": 4250162257,
+          "ordinal": 18,
+          "panelSelector": 2031310723,
+          "sCellSelector": 433456074
+        },
+        {
+          "dCellSelector": 4288560625,
+          "ordinal": 19,
+          "panelSelector": 605265760,
+          "sCellSelector": 3832023549
+        },
+        {
+          "dCellSelector": 3365366462,
+          "ordinal": 20,
+          "panelSelector": 1887463631,
+          "sCellSelector": 786424281
+        },
+        {
+          "dCellSelector": 431527551,
+          "ordinal": 21,
+          "panelSelector": 1249551447,
+          "sCellSelector": 776109182
+        },
+        {
+          "dCellSelector": 1156240630,
+          "ordinal": 22,
+          "panelSelector": 1503442006,
+          "sCellSelector": 1263489726
+        },
+        {
+          "dCellSelector": 732609192,
+          "ordinal": 23,
+          "panelSelector": 2869727516,
+          "sCellSelector": 4258426101
+        },
+        {
+          "dCellSelector": 1784594144,
+          "ordinal": 24,
+          "panelSelector": 3699509581,
+          "sCellSelector": 4087641545
+        },
+        {
+          "dCellSelector": 1285882950,
+          "ordinal": 25,
+          "panelSelector": 2491531196,
+          "sCellSelector": 1743288419
+        },
+        {
+          "dCellSelector": 1492260057,
+          "ordinal": 26,
+          "panelSelector": 483329682,
+          "sCellSelector": 1531527062
+        },
+        {
+          "dCellSelector": 3654116955,
+          "ordinal": 27,
+          "panelSelector": 2536376501,
+          "sCellSelector": 1830537923
+        },
+        {
+          "dCellSelector": 4199343440,
+          "ordinal": 28,
+          "panelSelector": 2403765731,
+          "sCellSelector": 153074172
+        },
+        {
+          "dCellSelector": 1450105973,
+          "ordinal": 29,
+          "panelSelector": 3729228553,
+          "sCellSelector": 4106928201
+        },
+        {
+          "dCellSelector": 3470910781,
+          "ordinal": 30,
+          "panelSelector": 4163544709,
+          "sCellSelector": 1376922276
+        },
+        {
+          "dCellSelector": 2176135699,
+          "ordinal": 31,
+          "panelSelector": 2783568526,
+          "sCellSelector": 781945259
+        }
+      ]
+    },
+    "independenceRequirements": [
+      "new direct interval monodromy implementation with no primary imports",
+      "Taylor order 14, 120 decimal digits",
+      "2048 steps on global boxes and 1024 steps on local boxes",
+      "fresh Picard tube and normalized Taylor remainder checks for every step",
+      "record denominator lower bounds and componentwise tube slack"
+    ],
+    "interpretation": "success is corroborative only; 83 spot boxes do not cover either full contour and cannot replace the uniform certificate",
+    "mandatoryGlobalLeftBoxes": {
+      "boxCount": 27,
+      "dCenters": [
+        "0/1",
+        "1/900",
+        "1/450"
+      ],
+      "dHalfWidthBeforeEndpointClipping": "1/29491200",
+      "imaginaryHalfWidth": "19/819200",
+      "lambdaImaginaryCenters": [
+        "-19/50",
+        "-57/200",
+        "-19/100",
+        "-19/200",
+        "0/1",
+        "19/200",
+        "19/100",
+        "57/200",
+        "19/50"
+      ],
+      "lambdaReal": "11/100"
+    },
+    "mandatoryLocalCircleBoxes": {
+      "boxCount": 24,
+      "dCenters": [
+        "0/1",
+        "1/900",
+        "1/450"
+      ],
+      "dHalfWidthBeforeEndpointClipping": "1/29491200",
+      "thetaCentersInUnitsOfPi": [
+        "0/1",
+        "1/4",
+        "1/2",
+        "3/4",
+        "1/1",
+        "5/4",
+        "3/2",
+        "7/4"
+      ],
+      "thetaHalfWidthInUnitsOfPi": "1/16384"
+    },
+    "maximumValidatedOdeSteps": 145408,
+    "purpose": "algorithmically distinct corroboration by integrating directly over small physical (d, lambda) boxes, without Chebyshev reconstruction",
+    "status": "design-only-not-executed",
+    "totalBoxes": 83
+  },
+  "panels": [
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-00",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[37.6347945391308970622614620949758245186060316664698616192230626326435780208836394446347949 +/- 3.39e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.22947770408480176423648770710002847779094139908242909766987022723385245372004455555112059e-7 +/- 2.54e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-01",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[31.6277319894685213069838178151596780212671424128057035667171041678487719084125681095096848 +/- 1.70e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[4.17055078391275763322054745790723229929992671340516287654085573505694703578651564465950404e-8 +/- 3.17e-98]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-02",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[27.6600528782596515932974638062328014519496914559872383034850750594169455488403758757330443 +/- 2.51e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[9.90780136526183504799055444219193131347441462764219565515901080084202137920029943766083873e-9 +/- 2.18e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-03",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[24.9487438732260971311916496812116972771462867865111198303236132147902310549978994829433944 +/- 3.53e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.36519109196551000163711831901230190778802545506948168238009298345704043605249474996197908e-9 +/- 1.80e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-04",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[23.0427669517535802675733006063946785476329632275733793117246575234042779953134250747863619 +/- 4.99e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.44015095019118640035057433637728141119316697200706741724328244425505380816726795335292713e-9 +/- 3.37e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-05",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[21.6757056855123708587401853238823590305647290021038038460867230515748672226050336136681741 +/- 2.28e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.22971841040307125663893863792912556109630518638468463272030381639140591148266294945079432e-10 +/- 3.87e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-06",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[20.6832402654139206906113128678767233886736912995152376527977461011503852495219090934288453 +/- 2.11e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[4.07443911915783807452257390165145632810950196459258960880981364574617642988705833815220430e-10 +/- 3.03e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-07",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[19.9589872001654626746369337852385615370610802670463576038245130916118934566690871546249615 +/- 2.76e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[2.50486549053842711641519802986956296061043174645057609253095367966622974438845167211281954e-10 +/- 3.89e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-bottom-08",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[19.4309164928307769537136776847242005242003255612366960822780678827930819842694465000656127 +/- 2.27e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.64717523959679208302303129840295895405787321538092351080860470761720787611384757363707741e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-00",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[18.1086327741692746372428179842623848998534029393363621758109490892919032322230047323337667 +/- 3.50e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-01",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[16.6830907330448840382894247453079133245130189782998570754778101544965856773653174690072651 +/- 3.93e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-02",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[15.2305413876507894656945526875022347142375123400464156150894922342452192920097481614369319 +/- 5.01e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-03",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[13.8261765215616693150932942444951125189318143350667827147105165443454078532329000888850244 +/- 1.86e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-04",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[12.5369427333761285322084485169667542507892601370161432820734778886069550473132768072738349 +/- 2.93e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-05",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[11.4180142722011057010386298341941489086266589352810289906843248591769776376401985969490583 +/- 1.01e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-06",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[10.5171423314202347809983042471104197380183203567984897619141849758005370919620798401574662 +/- 2.08e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-07",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[9.87981550860306801060442146170060584029083038630682878361522308679297749469348738424584613 +/- 3.46e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-08",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[9.54777998862555293827155994791098198996927864452504724094094071228967993893602420736301817 +/- 3.49e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-09",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[9.50687910868581217859480017056901529098658389752039727866651724213989439104432540500543748 +/- 2.93e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-10",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[9.54777996548206166568475300513088794018275545310412302584309737908477934843281219737126865 +/- 3.86e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-11",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[9.87981546201199555814710371019357884651786963109312164203831796641800410062403715701668362 +/- 2.60e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-12",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[10.5171422658137561322619364466975061870207606546437604283111466774392873684276483247985441 +/- 3.47e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-13",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[11.4180141941121591049116152057446617217597298193474288109698124580415363418657407288573643 +/- 2.42e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-14",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[12.5369426500214793310079880803357936785348726940909864018927430726983597499083691278023231 +/- 2.55e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-15",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[13.8261764373310657161907310669826151615218487165247984364895658498958133408459381505926024 +/- 1.20e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-16",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[15.2305413076418166405029025085155622559993026811297501232246843693467173075735631525821944 +/- 4.41e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-17",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[16.6830906609001413341845701388389997079638907710679783931759050630562024881273060997178182 +/- 1.58e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-right-18",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[18.1086327123791532453164740994891210574390825272857283589294652684946705274478238313823679 +/- 4.22e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.16678644339830837434923984627523676682348821905073495061094642320461202331628504121399996e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-00",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[19.4309164162720643966624570407845121126625328945866170504556512315746549500786450179184942 +/- 2.66e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.64717523959679208302303129840295895405787321538092351080860470761720787611384757363707741e-10 +/- 4.50e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-01",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[19.9589870531514406498727399024267656939728675700825157491937091859704392305026445350922611 +/- 2.57e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[2.50486549053842711641519802986956296061043174645057609253095367966622974438845167211281954e-10 +/- 3.89e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-02",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[20.6832399685200555207820253145398069956129211717271147435202648713622773701717658890889381 +/- 3.12e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[4.07443911915783807452257390165145632810950196459258960880981364574617642988705833815220430e-10 +/- 3.03e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-03",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[21.6757050577446517203824024889396711319843941480076842394237209042686730049309493775291479 +/- 3.91e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.22971841040307125663893863792912556109630518638468463272030381639140591148266294945079432e-10 +/- 3.87e-100]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-04",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[23.0427655361431954322761842381459267509501511984212246145841250413563307990425882441618727 +/- 1.07e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[1.44015095019118640035057433637728141119316697200706741724328244425505380816726795335292713e-9 +/- 3.37e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-05",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[24.9487404023237353917970716862112115121169668494743910944119154673397243844029911035182598 +/- 3.51e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.36519109196551000163711831901230190778802545506948168238009298345704043605249474996197908e-9 +/- 1.80e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-06",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[27.6600435899806280950112278237064027690503610438402525373920678500059503198149162310267844 +/- 4.21e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[9.90780136526183504799055444219193131347441462764219565515901080084202137920029943766083873e-9 +/- 2.18e-99]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-07",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[31.6277034807269782078185869455771929699194626483368595449491162209243401142396344060853118 +/- 2.66e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[4.17055078391275763322054745790723229929992671340516287654085573505694703578651564465950404e-8 +/- 3.17e-98]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-top-08",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[37.6346935122934080117770347232777522471239642808016067806626683907699311357439862496776485 +/- 1.48e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.22947770408480176423648770710002847779094139908242909766987022723385245372004455555112059e-7 +/- 2.54e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-00",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[43.8994211871446460126848217448780341018246032280431214004585536105661861167801779103035586 +/- 2.94e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-01",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[32.9372877085276633430385683119869539537861928354373888723051582203367400323834236596755971 +/- 6.64e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-02",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[20.3589314260653935275392452683697393583395304712274332287603275511091244190935652697715771 +/- 7.48e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-03",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[11.5665410369739153602484348320849841862116764468905227726755318591705518649562720324510392 +/- 3.82e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-04",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[7.36349631860359560476449336323831440559671203136764807792433023494596568824994058961735726 +/- 3.23e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-05",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.35572048913639975216616283088572584602481178912235674844609586832782504230367456462211526 +/- 3.66e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-06",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.35336118294611680748409739938798719745785775679224288506730669261551890319129989686921735 +/- 3.96e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-07",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.19369842319123662553086463981640109412276952410347495217932762230304665666190033747036336 +/- 7.80e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-08",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[5.51711378535456407748385512400191234037608147948792625536119874509483302268400369139220105 +/- 1.40e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-09",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[5.49739860185146715126999430350809697742809422937217914279306683156325738000030286613915500 +/- 1.17e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-10",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[5.50274592439319615537809608434662403000427334794531119983707592991611001377343115884462540 +/- 1.81e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-11",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.15559191659500977624257555589535605898885826471819453938935334847393278572535261419897915 +/- 4.42e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-12",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.31505308285887258757010252315927848899453480071955065125631354442492242351671656976872389 +/- 4.29e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-13",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[6.32407488254788318579951186385960286231155670690900943510672962341066189733070529479257566 +/- 1.47e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-14",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[7.34167371036285147287129426489507999444271714564430134854427272780448964595980792846805337 +/- 1.06e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-15",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[11.5586339360093326726726294097874738046770251822850468635954133606451319062227442978649776 +/- 1.85e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-16",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[20.3589358835382501661366179337995616486899717825155538599785180262323382874562826100539882 +/- 2.35e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-17",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[32.9383070396497166888932882654599192290133036358159866356331299075994014595179131495028723 +/- 3.40e-89]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 128,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "global",
+      "id": "G-left-18",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[43.8997780009536361606216445776768564612734454200521767399153513132665864934896957430819010 +/- 1.73e-90]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[7.30983515179034995484602787619326604613597818618878270711155000724328774079745898395630838e-7 +/- 1.14e-97]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-00",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.164339779846808632199038609335312706978086108360360708483057084890812146025408293092929596 +/- 1.39e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-01",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.169575654344135033572267265536425373695790276580133024681579428929911526687534816549635493 +/- 2.94e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-02",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.173852178631964295644952654698332749159089111929721867796580508065528881140567889059108598 +/- 1.27e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-03",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.170343818245719731008207606529401832960078714908585250170027625526810626814088152625535151 +/- 2.17e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-04",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.170364764578089662050401972985057496537502673662244663221802565148828386064368147223315122 +/- 2.67e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-05",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.173920130773173470842773922879220688459514842989204064083540052783153546541365043226083973 +/- 3.47e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-06",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.169635315636889968065184803307247069269997613142907727745345036905934537659738179939286737 +/- 6.38e-92]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    },
+    {
+      "cellCount": 512,
+      "dctGridContainmentChecked": true,
+      "exactCoveredNormalizedArea": "4/1",
+      "family": "local",
+      "id": "L-circle-07",
+      "maximumExtraDyadicDepth": 0,
+      "minimumAbsoluteLower": "[0.164354592488702145699729069539891629113686873360084082483354387521650392415306111291868174 +/- 3.88e-91]",
+      "rangeMethod": "independent reverse-order d-then-s interval Clenshaw",
+      "reverseClenshawCrossCheckPoints": 9,
+      "tensorInterpolationError": "[3.85837201734540199249503749293891309776635738908984474355568262537740821925141111270974896e-5 +/- 3.40e-95]"
+    }
+  ],
+  "primaryDecisionReaudit": {
+    "allPrimaryOrderCellsIndependentlyReplayedAndContainedBySerializedBoxes": true,
+    "allSerializedBoxesRemainStrictlyNonzero": true,
+    "globalBaseHomotopyMinimumAbsoluteLower": "[5.59498568714502296121761208815628330042567732461922486971468458553393117658860170000000000 +/- 4.82e-80]",
+    "globalBasePositiveOrientationWinding": 1,
+    "globalIndependentCurveToPrimaryPolygonMinimumAbsoluteLower": "[5.64261041420162101095426584965510509604086039647897619247182890488118728426738026622365417 +/- 4.72e-90]",
+    "globalMinimumAbsoluteLower": "[5.49948446580668552447808240764868779671158799860651002529297390092430971239373730000000000 +/- 4.37e-80]",
+    "localBaseHomotopyMinimumAbsoluteLower": "[0.164355201467909916874773961089912609952871508053148839944970680379377742673251500000000000 +/- 1.47e-81]",
+    "localBasePositiveOrientationWinding": 1,
+    "localIndependentCurveToPrimaryPolygonMinimumAbsoluteLower": "[0.170178214674438957195139353414491314021420978293512594537318245690195973827514725660442948 +/- 4.14e-91]",
+    "localMinimumAbsoluteLower": "[0.164355178305153494064082249472031456978086108360360708483057084890812146025408290000000000 +/- 8.14e-82]"
+  },
+  "schemaVersion": "r073j-independent-shared-grid-postprocessing-clenshaw-v2",
+  "sourceDigest": "736ebbcdad0f0897a1be100352aec7163f0483a1f323e6a4f1466dd43d7353f8",
+  "status": "passed",
+  "validatedInput": {
+    "configCheckpointCertificateIdentical": true,
+    "gridIndexLatticesComplete": true,
+    "maximumPicardInflationAttempt": 4,
+    "minimumPicardComponentSlack": "[2.46447379885106832140209392151595106517279411769993631667111528638577087178723110000000000e-10 +/- 2.90e-90]",
+    "minimumRayleighDenominatorLower": "[0.218192850727718905545771121978759765625000000000000000000000000000000000000000000000000000 +/- 4.13e-82]",
+    "panelCount": 64,
+    "rawGridPointCount": 21632,
+    "sourceLedgerCurrentAndComplete": true
+  }
+}

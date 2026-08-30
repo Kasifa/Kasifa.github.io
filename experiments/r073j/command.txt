@@ -1,0 +1,17 @@
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_contours.py --smoke
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_contours.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_contours.py --analyze-only
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/analyze_contours_clenshaw.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/independent_validate.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_overlap.py --smoke
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_overlap.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/certify_overlap.py --analyze-only
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/analyze_overlap_midpoint_bernstein.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/independent_validate_overlap.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/independent_natural_box_validate.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/independent_natural_box_refine.py
+PYTHONPATH=tmp/r073j-pydeps /usr/bin/python3 experiments/r073j/independent_natural_box_refine_deep.py
+# After committing every source/evidence file, replace SOURCE_COMMIT with that
+# immutable commit and seal the package.
+PYTHONPATH=experiments/r073j /usr/bin/python3 experiments/r073j/seal_package.py --source-commit SOURCE_COMMIT
+PYTHONPATH=experiments/r073j /usr/bin/python3 experiments/r073j/validate_package.py --require-commit

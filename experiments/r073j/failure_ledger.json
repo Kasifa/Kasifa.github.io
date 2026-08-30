@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "r073j-failure-ledger-v1",
+  "release": "R0.73J",
+  "entries": [
+    {
+      "stage": "contour embedded Bernstein analysis after the complete 21632-point grid",
+      "source": "experiments/r073j/certify_contours.py",
+      "outcome": "rejected-range-method",
+      "observedFailure": "uniform contour enclosure contains zero: G-bottom-00 d=0 s=9; the reported rectangular image had radii approximately 70.3 and 83.0",
+      "interpretation": "The full ball-valued Chebyshev-to-power-to-Bernstein conversion magnified coefficient radii. This was a wrapping failure, not an Evans zero and not a failed ODE enclosure.",
+      "rawGridPreserved": "experiments/r073j/contour_grid_checkpoint.json",
+      "replacement": "experiments/r073j/analyze_contours_clenshaw.py",
+      "replacementDecision": "passed"
+    },
+    {
+      "stage": "overlap embedded interval-Clenshaw analysis after the complete 841-point grid",
+      "source": "experiments/r073j/certify_overlap.py",
+      "outcome": "rejected-range-method",
+      "observedFailure": "overlap cell has a nonpositive factor: d=0 lambda=0",
+      "interpretation": "Direct interval Clenshaw near a parameter endpoint lost the shared-variable dependency and produced a large artificial energy range. This was not a nonpositive physical energy and not a failed ODE enclosure.",
+      "rawGridPreserved": "experiments/r073j/overlap_grid_checkpoint.json",
+      "replacement": "experiments/r073j/analyze_overlap_midpoint_bernstein.py",
+      "replacementDecision": "passed"
+    }
+  ],
+  "claimBoundary": {
+    "failedRangeMethodCountsAsCertificateFailure": true,
+    "failedRangeMethodCountsAsDetectedSpectralZero": false,
+    "rawGridWasSilentlyOverwritten": false,
+    "replacementAnalysisHasASeparateSourceLedger": true
+  }
+}

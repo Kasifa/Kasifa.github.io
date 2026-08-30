@@ -3,6 +3,19 @@
   "caption": {
     "english": "caption.md"
   },
+  "certificateBinding": {
+    "commit": "589e366ccec6a316b25594542a7eb8cb879156fd",
+    "figureLedgerField": "journalFigure",
+    "figurePackageCommit": "0d311d22a62cfbc9253e95580de10d33898ecddc",
+    "figureStatusAtCertificateRun": "validated",
+    "formalFigureFieldPresent": false,
+    "formalStatusAttestedByCertificate": false,
+    "fullFigurePackageBound": true,
+    "outputsBoundBySha256": true,
+    "path": "research/certificates/r073g/certificate.json",
+    "validationStatusAtCertificateRun": "passed",
+    "visualQaStatusAtCertificateRun": "passed"
+  },
   "claimBoundary": {
     "clayProblemSolved": false,
     "finiteH3CostProvesUniformContinuumH3Bound": false,
@@ -14,12 +27,15 @@
     "transitionThresholdEstablished": false
   },
   "computation": {
-    "command": "python3 plot.py --deps /tmp/r073c-deps; python3 validate.py --deps /tmp/r073c-deps --source-commit <S> --experiment-commit <E> --renderer-source-commit <R> --qa-status passed --qa-note <note>",
     "configuration": "config.json",
     "diagnosticOnly": true,
     "finiteDimensionalOnly": true,
+    "formalCommand": "python3 validate.py --source-commit <S> --figure-package-commit <F> --certificate-commit <C>",
     "kind": "data-analysis",
+    "metadataOnlySeal": true,
+    "originalGenerationCommand": "python3 plot.py --deps /tmp/r073c-deps; python3 validate.py --deps /tmp/r073c-deps --source-commit <S> --experiment-commit <E> --renderer-source-commit <R> --qa-status passed --qa-note <note>",
     "precision": "IEEE-754 binary64 finite Fourier diagnostics",
+    "scientificComputationRerun": false,
     "solver": "committed CSV/JSON ingestion and deterministic Matplotlib rendering"
   },
   "compute": {
@@ -30,6 +46,11 @@
     "operatingSystem": "Darwin 25.6.0 arm64",
     "processes": 1,
     "threadsPerProcess": 4
+  },
+  "contract": {
+    "bytes": 691,
+    "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/contract.json",
+    "sha256": "ec00fa4ecf6b024ab0f53ee010ac6fcbb285425bca2d8b549085e514f3abed8c"
   },
   "createdAt": "2026-08-30T00:00:00+08:00",
   "data": [
@@ -102,14 +123,19 @@
       "sha256": "27747d30f03be788776a35ec7ca034425bd44156232a041ee8435dae56341a67"
     },
     {
-      "bytes": 907,
+      "bytes": 586,
       "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/command.txt",
-      "sha256": "2b1d66b45a2fcc41cce3697d1f807ca75c2f5e4952f5b0fdfd975b98cd808135"
+      "sha256": "c81fe7f8faf127d9a3f124079ac5b5c0608d7b6993bebf2e15878d316ba4e50b"
     },
     {
       "bytes": 508,
       "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/config.json",
       "sha256": "5fb7972095dba930e322bd5f4bf067de58f5da78303cfaa2e92d7dbaab86cdbc"
+    },
+    {
+      "bytes": 691,
+      "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/contract.json",
+      "sha256": "ec00fa4ecf6b024ab0f53ee010ac6fcbb285425bca2d8b549085e514f3abed8c"
     },
     {
       "bytes": 40258,
@@ -167,35 +193,121 @@
       "sha256": "e64667f089f5dd843c4f7b766aad84d71e21ae280c10394b77493ac405288929"
     },
     {
-      "bytes": 17758,
+      "bytes": 45878,
       "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/validate.py",
-      "sha256": "3f2b993b7a437b1d66e2e62dbc584d2b278f797e153ad4e3104d664de10ec777"
+      "sha256": "3c9fc6cf2e285a85ddab9fcd9f90343059f35669bc5a08b6b36199309e563bdd"
     },
     {
-      "bytes": 1093,
+      "bytes": 1995,
       "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/validation.json",
-      "sha256": "313eb7cc7466cd8d11a39d482356fbb13740b5f5bbed10e9f5c1588833f0d5d9"
+      "sha256": "1c07de71bef0cba91b8df7e410217ef2562b06e79e04676b56dbe94d5de7688f"
     }
   ],
   "git": {
-    "contentAddressedUnsealed": true,
+    "certificateAttestsFormalStatus": false,
+    "certificateBindsFigureOutputsBySha256": true,
+    "certificateBindsFigurePackage": true,
+    "certificateCommit": "589e366ccec6a316b25594542a7eb8cb879156fd",
+    "certificateCommitMeaning": "certificate package C binds the full F package and the journalFigure outputs by SHA-256; it does not contain a formalFigure field or attest this later metadata-only formal status",
+    "certificateFigureLedger": "journalFigure",
+    "certificateFormalFigureFieldPresent": false,
+    "certificateJournalFigureGitSealed": false,
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtCertifiedRunMeaning": "certified provenance is read only from immutable S, F, and C Git blobs",
+    "dirtyAtFigureGeneration": true,
     "experimentCommit": "0679192b65a294bb211c96decc47bb046ab60b93",
-    "reasonUnsealed": "the generated figure package F and certificate C have not yet been committed",
+    "figurePackageCommit": "0d311d22a62cfbc9253e95580de10d33898ecddc",
+    "figurePackageCommitMeaning": "original validated figure package F; all scientific, figure, and QA blobs remain byte-identical",
+    "figureSourcesBoundBySha256": true,
+    "formalSealKind": "metadata-only",
+    "originalFigureGenerationBaseCommit": "21c11ba3eef7f2b5dc3f107957e0744a0471745d",
     "rendererSourceCommit": "a3a5cfdfc7f6244057abdfe4fbb5bf3af69b1e6c",
     "repository": "Kasifa/Kasifa.github.io",
-    "sourceCommit": "21c11ba3eef7f2b5dc3f107957e0744a0471745d"
+    "sourceCommit": "21c11ba3eef7f2b5dc3f107957e0744a0471745d",
+    "sourceCommitMeaning": "clean analytic sources frozen at S and named by the C certificate"
   },
+  "inputs": [
+    {
+      "bytes": 14784,
+      "path": "experiments/r073g/nonlinear_row_leakage_rows.csv",
+      "sha256": "49108b4d6f920919e1cf995822b4939fa42aacb05442581f5ccbf8f78f2f4371"
+    },
+    {
+      "bytes": 4687,
+      "path": "experiments/r073g/nonlinear_row_leakage_convergence.csv",
+      "sha256": "147da7ce9448700d0243d017fcd1350d8c3edb504200a16cadad842d093928ff"
+    },
+    {
+      "bytes": 59119,
+      "path": "experiments/r073g/nonlinear_row_leakage_summary.json",
+      "sha256": "1221d1f8d0c604d0442a2d3b3c4d0f2374038f1bcce82be2a763c95231f6d147"
+    },
+    {
+      "bytes": 6115,
+      "path": "experiments/r073g/independent_validation.json",
+      "sha256": "48dedf04b0297c57fd3e3f1c63cfbe2136508e2ef597d2cfa3d4e72d899d1221"
+    }
+  ],
   "inventoryPolicy": {
     "cacheDirectoriesForbidden": true,
     "manifestFilesExcludes": [
       "manifest.json",
       "SHA256SUMS"
     ],
+    "originalInventoryExtendedOnlyBy": [
+      "contract.json"
+    ],
     "scope": "all regular files directly inside the figure package",
     "sha256LedgerExcludes": [
       "SHA256SUMS"
     ]
   },
+  "manifestMigration": {
+    "addedMetadataFiles": [
+      "contract.json"
+    ],
+    "certificatePayloadChanged": false,
+    "changedMetadataFiles": [
+      "SHA256SUMS",
+      "command.txt",
+      "manifest.json",
+      "validate.py",
+      "validation.json"
+    ],
+    "currentStatus": "formal",
+    "formalOutputsChanged": false,
+    "immutableOriginalFilesVerified": 14,
+    "kind": "metadata-schema-only",
+    "plotOrResultsChanged": false,
+    "previousManifestCommit": "0d311d22a62cfbc9253e95580de10d33898ecddc",
+    "previousManifestSha256": "ac44709cda2d5d2d955f5b571f5431fda1303c17084867d97da16a17828218de",
+    "previousStatus": "validated",
+    "qaArtifactsChanged": false,
+    "scientificInputsChanged": false,
+    "sealKind": "metadata-only"
+  },
+  "outputs": [
+    {
+      "bytes": 40258,
+      "path": "figure.pdf",
+      "sha256": "c6381a054c80f55ca3eb149107cb9ac9e50155661fed6c74e316e9fca43a48b1"
+    },
+    {
+      "bytes": 100740,
+      "path": "figure.svg",
+      "sha256": "12f61ba3a5e4f2d55ee6685a72b225e0b6924ff556ee6facaab8f621766e3ffd"
+    },
+    {
+      "bytes": 558621,
+      "dpi": 600,
+      "path": "figure.png",
+      "pixels": [
+        4204,
+        3118
+      ],
+      "sha256": "3d0d8c20fd577d852fa9ea992d3b3390b52d647674e095a83737adf294348fc1"
+    }
+  ],
   "qa": {
     "dataCrossChecked": true,
     "finalSize": "qa-final-size.png",
@@ -210,6 +322,7 @@
     "status": "passed",
     "visualInspectionExplicit": true
   },
+  "release": "R0.73G",
   "schemaVersion": "r073g-figure-manifest-v1",
   "sourceBindings": [
     {
@@ -283,6 +396,11 @@
       "sha256": "48dedf04b0297c57fd3e3f1c63cfbe2136508e2ef597d2cfa3d4e72d899d1221"
     }
   ],
-  "status": "validated",
-  "supportedClaim": "The declared 28 finite Fourier compressions reproduce a positive frozen top row, its physical H3 cost, and nonzero quadratic leakage to Kz=0 and Kz=2 under two independent kernels. The finite checks do not supply a continuum tail bound, a transition threshold, three-dimensional stretching, or a Clay-problem conclusion."
+  "status": "formal",
+  "supportedClaim": "The declared 28 finite Fourier compressions reproduce a positive frozen top row, its physical H3 cost, and nonzero quadratic leakage to Kz=0 and Kz=2 under two independent kernels. The finite checks do not supply a continuum tail bound, a transition threshold, three-dimensional stretching, or a Clay-problem conclusion.",
+  "validation": {
+    "bytes": 1995,
+    "path": "figures/r073g/fig-r073g-nonlinear-row-leakage/validation.json",
+    "sha256": "1c07de71bef0cba91b8df7e410217ef2562b06e79e04676b56dbe94d5de7688f"
+  }
 }

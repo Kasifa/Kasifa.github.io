@@ -245,6 +245,8 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   }
   for (const token of [
     "Research topology · R0.1–R0.73N",
+    "<strong>v1.54</strong>网页版本",
+    "<strong>R0.73N</strong>最新研究节点",
     'href="#r073n">跳到首页 R0.73N 卡片 →',
     '<span class="route-range">R0.69P–R0.73N</span>',
     "<summary>展开 100 篇公开笔记</summary>",
@@ -253,6 +255,17 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   ]) assert.ok(pages.home.includes(token), `home: ${token}`);
   assert.equal(pages.home.includes("Research topology · R0.1–R0.73M"), false);
   assert.equal(pages.home.includes("累计回顾收录 129 个节点；全站现有 189 篇公开研究笔记"), false);
+  assert.equal(pages.home.includes("<strong>v1.53</strong>网页版本"), false);
+  assert.equal(pages.home.includes("<strong>R0.73M</strong>最新研究节点"), false);
+  assert.equal(pages.home.includes("/recap-r0-61-r0-73m.html"), false);
+  assert.equal(pages.home.includes("/recap-r0-61-r0-73m.pdf"), false);
+  for (const token of [
+    '<div class="route-step kept"><header><b>R0.73N</b>',
+    "开放接口 · R0.73O",
+    'id="r073n-boundary"',
+    "R0.73N 的主张边界",
+  ]) assert.ok(pages.literature.includes(token), `literature: ${token}`);
+  assert.equal(pages.literature.includes("开放接口 · R0.73N"), false);
 
   for (const relative of [
     "public/notes/r0-73n.pdf", "public/recap-r0-61-r0-73n.pdf",

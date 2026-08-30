@@ -751,6 +751,12 @@ def update_home(content: ReleaseContent) -> str:
     marker = '<div class="task-one" id="r073m" data-release="r073m"'
     value = replace_once(value, marker, content.home_card + "\n          " + marker, "home card insert")
     value = value.replace("<strong>189</strong>公开研究笔记", "<strong>190</strong>公开研究笔记")
+    value = value.replace("<strong>v1.53</strong>网页版本", "<strong>v1.54</strong>网页版本")
+    value = value.replace("<strong>R0.73M</strong>最新研究节点", "<strong>R0.73N</strong>最新研究节点")
+    value = value.replace(
+        "<strong>prescribed-action planar departure / fixed-background feasibility audit</strong>当前方向",
+        "<strong>fixed-member finite-strain stability / family-transfer obstruction</strong>当前方向",
+    )
     value = value.replace("NEXT · R0.73N", "NEXT · R0.73O")
     value = value.replace("R0.70A–R0.73M：91 节已公开，67 节完整封存",
                           "R0.70A–R0.73N：92 节已公开，68 节完整封存")
@@ -759,6 +765,8 @@ def update_home(content: ReleaseContent) -> str:
                           '<a class="route-map-latest" href="#r073n">跳到首页 R0.73N 卡片 →</a>')
     value = value.replace('/recap-r0-61-r0-73m.html">阅读 R0.60 之后的累计回顾',
                           '/recap-r0-61-r0-73n.html">阅读 R0.60 之后的累计回顾')
+    value = value.replace("/recap-r0-61-r0-73m.html", "/recap-r0-61-r0-73n.html")
+    value = value.replace("/recap-r0-61-r0-73m.pdf", "/recap-r0-61-r0-73n.pdf")
     value = value.replace('<span class="route-range">R0.69P–R0.73M</span>',
                           '<span class="route-range">R0.69P–R0.73N</span>')
     value = value.replace('R0.73M：prescribed-action 平面非线性固定距离偏离已闭合',
@@ -818,10 +826,16 @@ def update_home(content: ReleaseContent) -> str:
         '<h3>固定背景 Lyapunov 不稳定性的可行性与障碍审计</h3><p>辨认变背景 family-level theorem 能否转化成固定基流问题；不预设闭合，结构性失败就封存为 no-go。横向三维与 Clay 保持为更后的 OPEN 接口。</p>',
         f'<h3>冻结结构不同的固定背景候选问题</h3><p>{html.escape(content.math_next_gate_zh)}</p>',
     )
+    value = value.replace(
+        "本站 R0.69P–R0.73M 路线放在同一张图中",
+        "本站 R0.69P–R0.73N 路线放在同一张图中",
+    )
     for stale in (
         "Research topology · R0.1–R0.73M",
         "累计回顾收录 129 个节点；全站现有 189 篇公开研究笔记",
         '<summary>展开 99 篇公开笔记</summary>',
+        "<strong>v1.53</strong>网页版本",
+        "<strong>R0.73M</strong>最新研究节点",
     ):
         if stale in value:
             raise RuntimeError("R0.73N home retained stale latest marker " + stale)
@@ -842,6 +856,47 @@ def update_literature(content: ReleaseContent) -> str:
     value = value.replace("/recap-r0-61-r0-73m.html", "/recap-r0-61-r0-73n.html")
     value = value.replace("129 节", "130 节")
     value = value.replace("R0.69P–R0.73M", "R0.69P–R0.73N")
+    route_step = (
+        '<div class="route-step kept"><header><b>R0.73N</b>'
+        '<strong>fixed-member finite-strain stability and family-transfer obstruction</strong></header>'
+        f'<p>{html.escape(content.recap_zh)} <a href="/notes/r0-73n.html">研究笔记</a> '
+        '<a href="/recap-r0-61-r0-73n.html">当前累计回顾</a> '
+        '<a href="#r073n-boundary">文献边界</a></p></div>'
+        '<div class="route-step pause"><header><b>开放接口 · R0.73O</b>'
+        '<strong>Structurally different fixed backgrounds</strong></header>'
+        f'<p>{html.escape(content.math_next_gate_zh)} 横向三维与 Clay 保持为更后的 OPEN 接口。</p></div>'
+    )
+    value = replace_regex(
+        value,
+        r'<div class="route-step pause"><header><b>开放接口 · R0\.73N</b>.*?</div>',
+        route_step,
+        "literature current route step",
+    )
+    literature_boundary = (
+        '<h3 id="r073n-boundary">R0.73N 的固定成员稳定性与族转移文献边界</h3>'
+        '<p><a href="#ref-125">Friedlander–Pavlović–Shvydkoy</a>固定了单个自治平衡态的 '
+        'FPS 稳定/不稳定量词；<a href="#ref-126">Grenier</a>、<a href="#ref-127">Desjardins–Grenier</a>'
+        '与<a href="#ref-129">Grenier–Nguyen</a>给出参数族或边界层不稳定构造先例；'
+        '<a href="#ref-135">Li–Masmoudi–Zhao</a>展示奇异参数极限中的阈值与瞬态增长。'
+        '这些结果都不能把跨无界背景族的非一致放大改写成一个固定无外力轨道的 Lyapunov 不稳定。</p>'
+        '<p><a href="#ref-136">Li–Zhao 的热演化稳定结果</a>、'
+        '<a href="#ref-137">其无边界剪切谱转变工作</a>与<a href="#ref-134">Lin–Xu 的周期衰减流结果</a>'
+        '提供相邻的稳定或谱转变比较，但不证明这里的显式固定成员稳定管。R0.73N 的连续结论来自内部相对能量、'
+        '交换子、bootstrap 与延拓证明；文献只固定定义、相邻先例和不可外推边界。</p>'
+        '<div class="boundary"><strong>R0.73N 的主张边界</strong>'
+        f'<p>{html.escape(content.closed_ledger)}</p>'
+        f'<p>{html.escape(content.finite_ledger)}</p>'
+        f'<p>{html.escape(content.open_ledger)}</p>'
+        '<p>有界两轮原始来源检索不是穷尽性、原创性或优先权声明；有限诊断不承担连续证明权重。NOT CLAY。</p></div>'
+    )
+    value = replace_once(
+        value,
+        '          <ol class="criteria">',
+        '          ' + literature_boundary + '\n          <ol class="criteria">',
+        "literature R0.73N boundary",
+    )
+    if "开放接口 · R0.73N" in value or 'id="r073n-boundary"' not in value:
+        raise RuntimeError("R0.73N literature route/boundary was not advanced")
     assert_public_html(value, "R0.73N literature")
     if "bounded" not in value.lower() or "优先权" not in value:
         raise RuntimeError("R0.73N literature lost bounded/non-priority boundary")

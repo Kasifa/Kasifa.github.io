@@ -1,0 +1,6 @@
+R073G_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+env PYTHONHASHSEED=0 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073g/nonlinear_row_leakage_diagnostic.py --deps "$R073G_DEPS_DIR" --output-dir experiments/r073g --overwrite
+
+env PYTHONHASHSEED=0 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" experiments/r073g/independent_validation.py --deps "$R073G_DEPS_DIR" --primary experiments/r073g/nonlinear_row_leakage_summary.json --output experiments/r073g/independent_validation.json

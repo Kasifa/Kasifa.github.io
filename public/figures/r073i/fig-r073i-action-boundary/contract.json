@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "r073i-action-boundary-contract-v1",
+  "figureId": "fig-r073i-action-boundary",
+  "release": "R0.73I",
+  "evidenceClass": "finite-binary64-galerkin-diagnostic-only",
+  "analyticalQuestion": "How do the archived finite selected-branch average actions compare across the three declared windows, and does the finite selected-gain residual approach the computed Berry-plus-viscous correction as Lambda increases?",
+  "supportedTakeaway": "On the archived finite grids, A_N(D)/D decreases across the three ordered windows, ordinary cutoff differences are visually negligible, and the selected-gain residual minus C_N decreases approximately along a Lambda-inverse guide over the sampled Lambda grid.",
+  "chartFamily": "uncertainty-and-benchmark plus convergence diagnostic",
+  "staticRenderer": "Matplotlib",
+  "panels": {
+    "A": {
+      "variant": "broken-axis categorical line-dot comparison with two benchmark lines",
+      "grain": "three declared endpoints by three Fourier cutoffs at Gauss-Legendre order 64",
+      "rowCount": 9,
+      "scaleNote": "A visible broken y axis separates c_H(0) from the magnified finite-action and r-reference band."
+    },
+    "B": {
+      "variant": "log-log multi-series convergence plot with a slope-minus-one visual guide",
+      "grain": "three declared endpoints by five Lambda values at cutoff N=48",
+      "rowCount": 15,
+      "scaleNote": "All archived residual-minus-C_N values are positive on the plotted finite grid."
+    }
+  },
+  "palettePolicy": {
+    "policy": "hard two-root cap",
+    "chromaticRoots": ["#285f8f", "#b35806"],
+    "neutralSeriesAllowed": true,
+    "nonColorEncoding": [
+      "circle-square-triangle markers",
+      "solid-dashed-dotted lines",
+      "open-versus-filled marker faces",
+      "direct endpoint qualifiers"
+    ]
+  },
+  "output": {
+    "finalWidthMillimetres": 178.0,
+    "finalHeightMillimetres": 96.0,
+    "requiredFormats": ["PDF vector", "SVG vector", "PNG 600 dpi"],
+    "qaSurfaces": ["final-size raster", "grayscale final-size raster", "PDF raster"]
+  },
+  "researchBlossom": {
+    "lockedAnchor": "top-right-header",
+    "petalCount": 5,
+    "carriesData": false
+  },
+  "claimBoundary": {
+    "formalFiniteDiagnosticFigure": true,
+    "experimentInputsPassedTheirFiniteValidator": true,
+    "finiteActionIsContinuumAction": false,
+    "finiteWkbCorrectionIsAsymptoticTheorem": false,
+    "ordinaryCutoffAgreementIsTailProof": false,
+    "inverseLambdaGuideIsFittedRateOrProof": false,
+    "analyticUpperBoundEqualsD0": false,
+    "oneOver450IsTheoremEndpoint": false,
+    "matchingContinuumGainActionEstablished": false,
+    "clayProblemSolved": false
+  }
+}

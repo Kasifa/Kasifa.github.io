@@ -1274,6 +1274,39 @@ def validate_figure(certificate: dict) -> dict:
         or figure_git.get("certificateCommit") != CERTIFICATE_PACKAGE_COMMIT
     ):
         raise RuntimeError("R0.73G figure provenance chain is inconsistent")
+    computation = manifest.get("computation", {})
+    experiment_manifest = load_strict_json(
+        ROOT / EXPERIMENT_RELATIVE / "manifest.json",
+        "R0.73G experiment manifest for figure wall time",
+    )
+    producer_wall_time = experiment_manifest.get(
+        "producerRecordedWallTimeSeconds"
+    )
+    independent_wall_time = experiment_manifest.get(
+        "independentValidationWallTimeSeconds"
+    )
+    expected_components = {
+        "producerRecordedWallTimeSeconds": producer_wall_time,
+        "independentValidationWallTimeSeconds": independent_wall_time,
+        "aggregation": "sum of the two E-manifest wall-time records",
+        "experimentManifestCommit": EXPERIMENT_PACKAGE_COMMIT,
+    }
+    if (
+        not all(
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and value > 0
+            for value in (producer_wall_time, independent_wall_time)
+        )
+        or computation.get("scientificWallTimeSeconds")
+        != round(producer_wall_time + independent_wall_time, 6)
+        or computation.get("scientificWallTimeComponents")
+        != expected_components
+        or computation.get("scientificComputationRerun") is not False
+    ):
+        raise RuntimeError(
+            "R0.73G figure wall time is not bound to experiment commit E"
+        )
     verify_source_bindings(manifest, "R0.73G figure manifest")
     if not checks_pass(validation):
         raise RuntimeError("R0.73G figure validation is not passed")

@@ -573,6 +573,14 @@ test("R0.73G formal lifecycle preserves A/E/F/C/S/P and public byte identity", a
   assert.equal(figureManifest.git.sourceCommit, sourceCommit);
   assert.equal(figureManifest.git.figurePackageCommit, commits.F);
   assert.equal(figureManifest.git.certificateCommit, commits.C);
+  assert.equal(figureManifest.computation.scientificWallTimeSeconds, 4.958266);
+  assert.deepEqual(figureManifest.computation.scientificWallTimeComponents, {
+    producerRecordedWallTimeSeconds: 4.844696,
+    independentValidationWallTimeSeconds: 0.11357,
+    aggregation: "sum of the two E-manifest wall-time records",
+    experimentManifestCommit: commits.E,
+  });
+  assert.equal(figureManifest.computation.scientificComputationRerun, false);
   assert.equal(certificateManifest.sourceCommit, sourceCommit);
   await assertSourceBindings(figureManifest.sourceBindings, "figure source bindings");
   await assertSourceBindings(certificateManifest.sourceBindings, "certificate source bindings");

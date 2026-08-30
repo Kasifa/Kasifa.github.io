@@ -174,6 +174,33 @@ def json_bytes(payload: object) -> bytes:
     ).encode("utf-8")
 
 
+def reject_json_constant(value: str) -> None:
+    raise ValueError("non-finite JSON constant is forbidden: " + value)
+
+
+def unique_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON key: " + key)
+        result[key] = value
+    return result
+
+
+def load_strict_json(path: Path, label: str) -> dict:
+    try:
+        payload = json.loads(
+            path.read_bytes(),
+            object_pairs_hook=unique_json_object,
+            parse_constant=reject_json_constant,
+        )
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise RuntimeError(label + ": invalid strict JSON") from exc
+    if not isinstance(payload, dict):
+        raise RuntimeError(label + ": expected a JSON object")
+    return payload
+
+
 def assert_public_voice(value: str, label: str) -> None:
     for phrase in PUBLIC_VOICE_BANS:
         if phrase in value:
@@ -195,9 +222,128 @@ def git_object_bytes(commit: str, relative: str) -> bytes:
     ).stdout
 
 
+def require_commit_object(commit: str, label: str) -> None:
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise RuntimeError(label + ": expected a full lowercase Git object ID")
+    object_type = subprocess.run(
+        ["git", "cat-file", "-t", commit],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if object_type.returncode != 0 or object_type.stdout.strip() != "commit":
+        raise RuntimeError(label + ": object is not a commit directly")
+    resolved = subprocess.run(
+        ["git", "rev-parse", commit + "^{commit}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if resolved.returncode != 0 or resolved.stdout.strip() != commit:
+        raise RuntimeError(label + ": commit does not resolve exactly to itself")
+
+
+def require_real_directory(directory: Path, label: str) -> None:
+    try:
+        relative = directory.relative_to(ROOT)
+    except ValueError as exc:
+        raise RuntimeError(label + ": directory escapes repository") from exc
+    cursor = ROOT
+    if not cursor.is_dir() or cursor.is_symlink():
+        raise RuntimeError(label + ": repository root is not a real directory")
+    for component in relative.parts:
+        cursor /= component
+        if cursor.is_symlink():
+            raise RuntimeError(
+                label + ": directory path contains symlink " + str(cursor)
+            )
+    if not directory.is_dir():
+        raise RuntimeError(label + ": directory is missing or not a directory")
+
+
+def current_flat_regular_paths(directory: Path, label: str) -> list[str]:
+    require_real_directory(directory, label)
+    paths: list[str] = []
+    for path in directory.iterdir():
+        if not path.is_file() or path.is_symlink():
+            raise RuntimeError(label + ": non-regular entry " + path.name)
+        paths.append(path.relative_to(ROOT).as_posix())
+    if len(paths) != len(set(paths)):
+        raise RuntimeError(label + ": duplicate working-tree entries")
+    return sorted(paths)
+
+
+def git_flat_regular_paths(directory: Path, commit: str, label: str) -> list[str]:
+    require_commit_object(commit, label + " commit")
+    prefix = directory.relative_to(ROOT).as_posix()
+    raw = subprocess.run(
+        [
+            "git", "ls-tree", "-r", "-z", "--full-tree",
+            commit, "--", prefix,
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    ).stdout
+    paths: list[str] = []
+    expected_prefix = prefix + "/"
+    for item in raw.split(b"\0"):
+        if not item:
+            continue
+        try:
+            metadata, encoded_path = item.split(b"\t", 1)
+            mode, object_type, _object_id = metadata.decode("ascii").split(" ")
+            relative = encoded_path.decode("utf-8")
+        except (UnicodeDecodeError, ValueError) as exc:
+            raise RuntimeError(label + ": malformed Git tree entry") from exc
+        if mode not in {"100644", "100755"} or object_type != "blob":
+            raise RuntimeError(label + ": non-regular Git tree entry " + relative)
+        if not relative.startswith(expected_prefix):
+            raise RuntimeError(label + ": out-of-scope Git tree entry " + relative)
+        name = relative.removeprefix(expected_prefix)
+        if not name or "/" in name:
+            raise RuntimeError(label + ": Git tree is not flat at " + relative)
+        paths.append(relative)
+    if not paths or len(paths) != len(set(paths)):
+        raise RuntimeError(label + ": empty or duplicate Git tree inventory")
+    return sorted(paths)
+
+
+def git_regular_blob_bytes(commit: str, relative: str, label: str) -> bytes:
+    require_commit_object(commit, label + " commit")
+    raw = subprocess.run(
+        ["git", "ls-tree", "-z", "--full-tree", commit, "--", relative],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    ).stdout
+    items = [item for item in raw.split(b"\0") if item]
+    if len(items) != 1:
+        raise RuntimeError(label + ": expected exactly one Git tree entry")
+    try:
+        metadata, encoded_path = items[0].split(b"\t", 1)
+        mode, object_type, object_id = metadata.decode("ascii").split(" ")
+        actual_path = encoded_path.decode("utf-8")
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise RuntimeError(label + ": malformed Git tree entry") from exc
+    if (
+        actual_path != relative
+        or mode not in {"100644", "100755"}
+        or object_type != "blob"
+    ):
+        raise RuntimeError(label + ": path is not a regular Git blob")
+    return subprocess.run(
+        ["git", "cat-file", "blob", object_id],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
 def verify_complete_flat_ledger(directory: Path, label: str) -> None:
+    require_real_directory(directory, label)
     ledger = directory / "SHA256SUMS"
-    if not ledger.is_file():
+    if not ledger.is_file() or ledger.is_symlink():
         raise RuntimeError(label + ": SHA256SUMS is missing")
     declared: list[str] = []
     for row in ledger.read_text(encoding="utf-8").splitlines():
@@ -311,17 +457,14 @@ def verify_source_bindings(payload: dict, label: str) -> None:
 
 
 def verify_sealed_directory(directory: Path, commit: str, label: str) -> None:
-    subprocess.run(
-        ["git", "cat-file", "-e", commit + "^{commit}"],
-        cwd=ROOT,
-        check=True,
-    )
-    for current in directory.iterdir():
-        if not current.is_file():
-            continue
+    require_commit_object(commit, label + " commit")
+    for relative in current_flat_regular_paths(directory, label):
+        current = ROOT / relative
         relative = current.relative_to(ROOT).as_posix()
         try:
-            frozen = git_object_bytes(commit, relative)
+            frozen = git_regular_blob_bytes(
+                commit, relative, label + " sealed file " + relative
+            )
         except subprocess.CalledProcessError as exc:
             raise RuntimeError(label + ": file absent from sealed commit " + relative) from exc
         if current.read_bytes() != frozen:
@@ -333,25 +476,9 @@ def verify_exact_flat_directory_at_commit(
     commit: str,
     label: str,
 ) -> None:
-    subprocess.run(
-        ["git", "cat-file", "-e", commit + "^{commit}"],
-        cwd=ROOT,
-        check=True,
-    )
-    prefix = directory.relative_to(ROOT).as_posix()
-    frozen = subprocess.run(
-        ["git", "ls-tree", "-r", "--name-only", commit, "--", prefix],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.splitlines()
-    current = [
-        path.relative_to(ROOT).as_posix()
-        for path in directory.iterdir()
-        if path.is_file() and not path.is_symlink()
-    ]
-    if sorted(frozen) != sorted(current):
+    frozen = git_flat_regular_paths(directory, commit, label)
+    current = current_flat_regular_paths(directory, label)
+    if frozen != current:
         raise RuntimeError(label + ": sealed directory inventory changed")
     verify_sealed_directory(directory, commit, label)
 
@@ -371,6 +498,15 @@ def strip_manifest_hash_row(payload: bytes, label: str) -> bytes:
 def verify_metadata_overlay(directory: Path) -> None:
     if len(FIGURE_IMMUTABLE_FILES) != 14 or len(set(FIGURE_IMMUTABLE_FILES)) != 14:
         raise RuntimeError("R0.73G F inventory must contain exactly 14 immutable files")
+    sealed_paths = git_flat_regular_paths(
+        directory,
+        FIGURE_METADATA_SEAL_COMMIT,
+        "R0.73G figure metadata seal",
+    )
+    if sealed_paths != current_flat_regular_paths(
+        directory, "R0.73G working figure package"
+    ):
+        raise RuntimeError("R0.73G figure inventory differs from seal S")
     verify_named_files_at_commit(
         directory,
         FIGURE_METADATA_SEAL_COMMIT,
@@ -379,15 +515,16 @@ def verify_metadata_overlay(directory: Path) -> None:
     )
 
     manifest_path = directory / "manifest.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest = load_strict_json(manifest_path, "R0.73G figure manifest")
     if "publication" not in manifest:
         raise RuntimeError("R0.73G figure manifest is missing publication overlay")
     without_publication = dict(manifest)
     del without_publication["publication"]
     relative_manifest = manifest_path.relative_to(ROOT).as_posix()
-    if json_bytes(without_publication) != git_object_bytes(
+    if json_bytes(without_publication) != git_regular_blob_bytes(
         FIGURE_METADATA_SEAL_COMMIT,
         relative_manifest,
+        "R0.73G seal-S manifest",
     ):
         raise RuntimeError("R0.73G publication-free manifest differs from seal S")
 
@@ -397,9 +534,10 @@ def verify_metadata_overlay(directory: Path) -> None:
         "R0.73G current figure ledger",
     )
     sealed_ledger = strip_manifest_hash_row(
-        git_object_bytes(
+        git_regular_blob_bytes(
             FIGURE_METADATA_SEAL_COMMIT,
             ledger_path.relative_to(ROOT).as_posix(),
+            "R0.73G seal-S ledger",
         ),
         "R0.73G seal-S figure ledger",
     )
@@ -413,18 +551,17 @@ def verify_named_files_at_commit(
     names: tuple[str, ...],
     label: str,
 ) -> None:
-    subprocess.run(
-        ["git", "cat-file", "-e", commit + "^{commit}"],
-        cwd=ROOT,
-        check=True,
-    )
+    require_commit_object(commit, label + " commit")
+    require_real_directory(directory, label)
     for name in names:
         current = directory / name
-        if not current.is_file():
+        if not current.is_file() or current.is_symlink():
             raise RuntimeError(label + ": immutable file is missing " + name)
         relative = current.relative_to(ROOT).as_posix()
         try:
-            frozen = git_object_bytes(commit, relative)
+            frozen = git_regular_blob_bytes(
+                commit, relative, label + " immutable file " + name
+            )
         except subprocess.CalledProcessError as exc:
             raise RuntimeError(
                 label + ": immutable file absent from package commit " + name
@@ -497,9 +634,22 @@ def require_output_record(manifest: dict, figure: Path, suffix: str) -> dict:
 
 
 def validate_publication_assets(manifest: dict, directory: Path) -> None:
+    require_real_directory(directory, "R0.73G figure package")
+    public_directory = ROOT / "public/assets/r073g"
+    require_real_directory(public_directory, "R0.73G public asset directory")
     publication = manifest.get("publication")
     if not isinstance(publication, dict):
         raise RuntimeError("R0.73G figure publication binding is missing")
+    if set(publication) != {
+        "byteIdentityRequired",
+        "publicCopiesComplete",
+        "directory",
+        "fileStem",
+        "assets",
+    }:
+        raise RuntimeError(
+            "R0.73G figure publication field inventory is not exact"
+        )
     if (
         publication.get("byteIdentityRequired") is not True
         or publication.get("publicCopiesComplete") is not True
@@ -510,6 +660,12 @@ def validate_publication_assets(manifest: dict, directory: Path) -> None:
     rows = publication.get("assets")
     if not isinstance(rows, list) or len(rows) != 3:
         raise RuntimeError("R0.73G publication must bind exactly three assets")
+    if any(
+        not isinstance(row, dict)
+        or set(row) != {"path", "bytes", "sha256"}
+        for row in rows
+    ):
+        raise RuntimeError("R0.73G publication asset fields are not exact")
     by_path = {
         str(row.get("path", "")): row
         for row in rows
@@ -540,7 +696,11 @@ def validate_publication_assets(manifest: dict, directory: Path) -> None:
             or row.get("sha256") != sha256_bytes(payload)
             or output.get("bytes") != row.get("bytes")
             or output.get("sha256") != row.get("sha256")
-            or git_object_bytes(FIGURE_PUBLICATION_COMMIT, relative) != payload
+            or git_regular_blob_bytes(
+                FIGURE_PUBLICATION_COMMIT,
+                relative,
+                "R0.73G P public asset " + suffix,
+            ) != payload
         ):
             raise RuntimeError("R0.73G public asset binding mismatch: " + suffix)
 
@@ -603,12 +763,8 @@ def verify_release_commit_chain() -> None:
         raise RuntimeError(
             "R0.73G source/E/F/C/S/P commits must be strictly distinct"
         )
-    for commit in commits:
-        subprocess.run(
-            ["git", "cat-file", "-e", commit + "^{commit}"],
-            cwd=ROOT,
-            check=True,
-        )
+    for commit, label in zip(commits, ("source", "E", "F", "C", "S", "P")):
+        require_commit_object(commit, "R0.73G " + label)
     for ancestor, descendant, label in (
         (CERTIFIED_REPORT_COMMIT, FIGURE_PACKAGE_COMMIT, "source < F"),
         (CERTIFIED_REPORT_COMMIT, EXPERIMENT_PACKAGE_COMMIT, "source < E"),
@@ -626,6 +782,7 @@ def verify_release_commit_chain() -> None:
         capture_output=True,
         text=True,
     ).stdout.strip()
+    require_commit_object(head, "R0.73G HEAD")
     for commit, label in (
         (EXPERIMENT_PACKAGE_COMMIT, "E"),
         (FIGURE_PACKAGE_COMMIT, "F"),

@@ -110,14 +110,28 @@ def git_bytes(commit: str, relative: str) -> bytes:
 
 
 def require_commit(commit: str) -> None:
-    result = subprocess.run(
-        ["git", "cat-file", "-e", commit + "^{commit}"],
+    object_type = subprocess.run(
+        ["git", "cat-file", "-t", commit],
         cwd=ROOT,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
         check=False,
     )
-    require(result.returncode == 0, "figure seal is not an existing Git commit")
+    require(
+        object_type.returncode == 0 and object_type.stdout.strip() == "commit",
+        "figure seal must name a Git commit object directly",
+    )
+    resolved = subprocess.run(
+        ["git", "rev-parse", commit + "^{commit}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    require(
+        resolved.returncode == 0 and resolved.stdout.strip() == commit,
+        "figure seal commit must resolve exactly to the supplied object ID",
+    )
 
 
 def current_head() -> str:
@@ -129,6 +143,25 @@ def current_head() -> str:
         "current HEAD is not a full Git commit",
     )
     return value
+
+
+def require_real_directory(path: Path, label: str) -> None:
+    try:
+        relative = path.relative_to(ROOT)
+    except ValueError as exc:
+        raise RuntimeError(label + " escapes the repository") from exc
+    cursor = ROOT
+    require(
+        cursor.is_dir() and not cursor.is_symlink(),
+        "repository root is not a real directory",
+    )
+    for component in relative.parts:
+        cursor /= component
+        require(
+            not cursor.is_symlink(),
+            label + " contains a symlink component: " + str(cursor),
+        )
+    require(path.is_dir(), label + " is missing or is not a directory")
 
 
 def require_strict_ancestor(older: str, newer: str) -> None:
@@ -191,10 +224,7 @@ def sealed_package_names(commit: str) -> list[str]:
 
 
 def current_package_names() -> list[str]:
-    require(
-        FIGURE_DIRECTORY.is_dir() and not FIGURE_DIRECTORY.is_symlink(),
-        "working R0.73G figure package is missing or is a symlink",
-    )
+    require_real_directory(FIGURE_DIRECTORY, "working R0.73G figure package")
     names: list[str] = []
     for path in FIGURE_DIRECTORY.iterdir():
         require(
@@ -450,15 +480,9 @@ def verify_publication_contract(
 
 
 def require_target_parent() -> bool:
-    require(
-        PUBLIC_PARENT.is_dir() and not PUBLIC_PARENT.is_symlink(),
-        "public/assets is missing, not a directory, or a symlink",
-    )
+    require_real_directory(PUBLIC_PARENT, "public/assets")
     if os.path.lexists(PUBLIC_DIRECTORY):
-        require(
-            PUBLIC_DIRECTORY.is_dir() and not PUBLIC_DIRECTORY.is_symlink(),
-            "public/assets/r073g is not a real directory",
-        )
+        require_real_directory(PUBLIC_DIRECTORY, "public/assets/r073g")
         return False
     return True
 
@@ -600,18 +624,20 @@ def publish(figure_seal_commit: str) -> None:
         if create_public_directory:
             PUBLIC_DIRECTORY.mkdir(mode=0o755)
             created_public_directory = True
-        require(
-            PUBLIC_DIRECTORY.is_dir() and not PUBLIC_DIRECTORY.is_symlink(),
-            "public asset directory changed during staging",
+        require_real_directory(
+            PUBLIC_DIRECTORY, "public asset directory during staging"
         )
 
         for target, _payload in planned:
+            require_real_directory(
+                target.parent, "transaction target parent"
+            )
             require(
                 snapshot_is_unchanged(target, backups[target]),
                 "transaction target changed during staging: " + str(target),
             )
-            os.replace(staged[target], target)
             applied.append(target)
+            os.replace(staged[target], target)
 
         for path, payload in public_payloads.items():
             require(

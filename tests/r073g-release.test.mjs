@@ -20,7 +20,7 @@ const sourceCommit = "21c11ba3eef7f2b5dc3f107957e0744a0471745d";
 const experimentCommit = "0679192b65a294bb211c96decc47bb046ab60b93";
 const figureCommit = "0d311d22a62cfbc9253e95580de10d33898ecddc";
 const certificateCommit = "589e366ccec6a316b25594542a7eb8cb879156fd";
-const sealCommit = "339c9c27207571cfbade35c3288aae6a70c4193d";
+const sealCommit = "aa0bde23aa83a1a33a43bad1e11a38ae30a80744";
 const sourcePaths = [
   "research/r073g_problem_freeze.md",
   "research/r073g_nonlinear_shadowing_proof.md",

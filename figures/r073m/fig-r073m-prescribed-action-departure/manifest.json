@@ -1,0 +1,455 @@
+{
+  "analyticalQuestion": "On the sealed 15-case finite grid, does the gain remain bounded after normalization by the separately computed finite inviscid action proxy, do the registered a/b/c coefficients exhibit their expected epsilon hierarchy, and do the requested numerical discrepancy families remain below their frozen gates?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "clayProblemSolved": false,
+    "continuumActionCertifiedByFiniteComputation": false,
+    "continuumGainPrefactorCertifiedByFiniteComputation": false,
+    "finiteABCoefficientsComputed": true,
+    "finiteCutoffAgreementIsTailProof": false,
+    "finiteDimensionalDiagnostic": true,
+    "finiteInviscidActionProxyComputed": true,
+    "finitePrescribedActionRecodingComputed": true,
+    "finiteTimeSingularityCertified": false,
+    "formalValidatedDiagnosticFigure": true,
+    "fourthOrderRemainderCertified": false,
+    "fullNonlinearNavierStokesTrajectoryComputed": false,
+    "independentFiniteRecomputationPassed": true,
+    "prefactorLimitCertified": false,
+    "sealedUpstreamCertificatePassed": true,
+    "singleFixedBackgroundLyapunovInstabilityCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "twoTermWKBCertified": false,
+    "uniformTaylorRadiusCertified": false
+  },
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "commands recorded in command.txt",
+    "kind": "data-analysis",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "timestampUtc",
+        "elapsedSeconds",
+        "stage",
+        "maximumResidentSetMiB",
+        "processes",
+        "gpu"
+      ]
+    },
+    "precision": "binary64 finite diagnostics and deterministic static presentation",
+    "solver": "no new PDE solve; deterministic extraction from the sealed R0.73M package",
+    "wallTimeSeconds": 0.7224810409825295
+  },
+  "compute": {
+    "cpu": "arm64",
+    "dgx": "not used; deterministic static rendering is local CPU work",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "machine": "arm64",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-30T21:27:32.902425+00:00",
+  "data": [
+    {
+      "bytes": 9743,
+      "path": "source-data.csv",
+      "schema": "15 finite cases and 12 numerical gate components",
+      "sha256": "89e690c319c3026d0655ae8c78b6f9368b4155de53a2502ffa4aefbfad949656"
+    },
+    {
+      "bytes": 2812,
+      "path": "results.json",
+      "schema": "finite result summary and fail-closed claim boundary",
+      "sha256": "d3bceabd9aee977f7f6d6725b69897b20a9c6317f4a4ed8eddd59f6bc594f08d"
+    },
+    {
+      "bytes": 1414,
+      "path": "validation.json",
+      "schema": "data, provenance, format, margin, and visual-QA checks",
+      "sha256": "67eaeef9f338b5c15d2cbd64f884a866b1234fdeceb28fcf2b0b082350ac5f6d"
+    },
+    {
+      "bytes": 1526,
+      "path": "environment.json",
+      "schema": "runtime versions and SHA-256 upstream bindings",
+      "sha256": "3f77b6ae17666fa5152b72f74d5ab3e20538748e7ccb6e35bdf0b51625ca3b8e"
+    },
+    {
+      "bytes": 633,
+      "path": "progress.ndjson",
+      "schema": "timestamped deterministic render stages",
+      "sha256": "9a5408295982e512958bb1a3c071512cdcfcaa595a39f7414392c8669e310669"
+    },
+    {
+      "bytes": 938,
+      "path": "resource-log.ndjson",
+      "schema": "per-stage process, memory, and GPU record",
+      "sha256": "0953a0f6bab70867e65381ec3294f8c245e01500c0ec40413c33e0a33a81c144"
+    },
+    {
+      "bytes": 3255,
+      "path": "chart-contract-and-source-data.md",
+      "schema": "analytical question, chart map, derivation, and boundary",
+      "sha256": "28450eeb97980db761d3ca2875ed76401cdd134b22aef2c6fefc2f3703702ebf"
+    }
+  ],
+  "environment": {
+    "Pillow": "12.3.0",
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pypdf": "6.10.0",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "heightMillimetres": 128.0,
+    "layout": "four-panel gain, hierarchy, signed-alignment, and gate diagnostic",
+    "outputs": [
+      {
+        "bytes": 36133,
+        "path": "figure.pdf",
+        "sha256": "96a1880c7557663f8eded326f092812b5ed4c55179e4b03a5130e13df0b8f44b"
+      },
+      {
+        "bytes": 88212,
+        "path": "figure.svg",
+        "sha256": "fd89c79754dd2005fde48e13525df665284b1410f34e997e76de7e4b70d5a684"
+      },
+      {
+        "bytes": 615320,
+        "dpi": 600,
+        "path": "figure.png",
+        "pixels": [
+          4204,
+          3023
+        ],
+        "sha256": "e0a9f598454bee9f60a0325484a096fd76d10c8a906fc45733e5a5e43ff4406d"
+      }
+    ],
+    "pngDpi": 600,
+    "profile": "journal-double-column",
+    "script": "plot.py",
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073m-prescribed-action-departure",
+  "files": [
+    {
+      "bytes": 850,
+      "path": "README.md",
+      "sha256": "ccef1f3b4632484a326786db1662dad9b3f10f63219ed5502ccfbabbed72af53"
+    },
+    {
+      "bytes": 1195,
+      "path": "caption.md",
+      "sha256": "4b81ed1dff6998c052249dcf63d519240ce8c8722eb362c5c708afe0e622f3e6"
+    },
+    {
+      "bytes": 3255,
+      "path": "chart-contract-and-source-data.md",
+      "sha256": "28450eeb97980db761d3ca2875ed76401cdd134b22aef2c6fefc2f3703702ebf"
+    },
+    {
+      "bytes": 448,
+      "path": "command.txt",
+      "sha256": "30bf11b53d1063a7b2915fc6aa71a813b9c61f10bc74266864024b8820190aba"
+    },
+    {
+      "bytes": 1461,
+      "path": "config.json",
+      "sha256": "adee0ef4f72f0f430a6dfc4ed16f64e3058fc49b072b5818bf3a9f1fef2a7e72"
+    },
+    {
+      "bytes": 4120,
+      "path": "contract.json",
+      "sha256": "497f3dadcdb46ae0003d49bfe7a9cd38e60868d57573b883e93736502e8d731a"
+    },
+    {
+      "bytes": 1526,
+      "path": "environment.json",
+      "sha256": "3f77b6ae17666fa5152b72f74d5ab3e20538748e7ccb6e35bdf0b51625ca3b8e"
+    },
+    {
+      "bytes": 36133,
+      "path": "figure.pdf",
+      "sha256": "96a1880c7557663f8eded326f092812b5ed4c55179e4b03a5130e13df0b8f44b"
+    },
+    {
+      "bytes": 615320,
+      "path": "figure.png",
+      "sha256": "e0a9f598454bee9f60a0325484a096fd76d10c8a906fc45733e5a5e43ff4406d"
+    },
+    {
+      "bytes": 88212,
+      "path": "figure.svg",
+      "sha256": "fd89c79754dd2005fde48e13525df665284b1410f34e997e76de7e4b70d5a684"
+    },
+    {
+      "bytes": 27795,
+      "path": "plot.py",
+      "sha256": "11f7257683903409313d41be0bd0286192f65aced2159f5caeec349563bd26b9"
+    },
+    {
+      "bytes": 633,
+      "path": "progress.ndjson",
+      "sha256": "9a5408295982e512958bb1a3c071512cdcfcaa595a39f7414392c8669e310669"
+    },
+    {
+      "bytes": 551982,
+      "path": "qa-final-size.png",
+      "sha256": "f5cfa8cd5f26b31f6ab73ef608b39c6120ca2ba8df7d0419a4942058bfd18882"
+    },
+    {
+      "bytes": 227332,
+      "path": "qa-grayscale.png",
+      "sha256": "9531387a219f8fb9e78905f0268bd0e4ff5dfabf534b8b79f4d2fe72c100bd80"
+    },
+    {
+      "bytes": 328243,
+      "path": "qa-pdf.png",
+      "sha256": "c27a94fe2bf119514db3202d3f6fe20e3b3998640df74bc8f0d18ed1c0f7e64a"
+    },
+    {
+      "bytes": 904,
+      "path": "qa-protocol.md",
+      "sha256": "dafc31ea3eca07a0dbd0f485ec68d52707914f3065b94f77a6f61e14808c3153"
+    },
+    {
+      "bytes": 1520,
+      "path": "qa-report.md",
+      "sha256": "7b599e8cec0fb58eaad3389fad43d1ff3c141bcb05d6ab74a65ab81abc36b792"
+    },
+    {
+      "bytes": 41,
+      "path": "requirements.txt",
+      "sha256": "9d9eb23c27326bbda355df3b7f13b119cb3858cb3f94dacb28ab6df808e5d8f2"
+    },
+    {
+      "bytes": 938,
+      "path": "resource-log.ndjson",
+      "sha256": "0953a0f6bab70867e65381ec3294f8c245e01500c0ec40413c33e0a33a81c144"
+    },
+    {
+      "bytes": 2812,
+      "path": "results.json",
+      "sha256": "d3bceabd9aee977f7f6d6725b69897b20a9c6317f4a4ed8eddd59f6bc594f08d"
+    },
+    {
+      "bytes": 9743,
+      "path": "source-data.csv",
+      "sha256": "89e690c319c3026d0655ae8c78b6f9368b4155de53a2502ffa4aefbfad949656"
+    },
+    {
+      "bytes": 37349,
+      "path": "validate.py",
+      "sha256": "1f7c6d2bb28504e1ee56c143adaab1758af416f07f78408b11b17ef6f27ae6ec"
+    },
+    {
+      "bytes": 1414,
+      "path": "validation.json",
+      "sha256": "67eaeef9f338b5c15d2cbd64f884a866b1234fdeceb28fcf2b0b082350ac5f6d"
+    }
+  ],
+  "git": {
+    "certificateCommit": "aa4ca025c2ac01e24a9828101e9499f2f8e9052c",
+    "dirtyAtCertifiedRun": false,
+    "dirtyAtCertifiedRunMeaning": "all numerical sources and upstream certificate inputs are bound to immutable commits; the figure-source payload is bound by the 25-file package hashes before its parent release assigns a figure commit",
+    "figureSourceCommitAssigned": false,
+    "figureSourceCommitAssignedMeaning": "the parent release records the immutable figure-package commit after this no-commit generation task",
+    "figureSourcesBoundByManifestHashes": true,
+    "publicationCommitAssigned": false,
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "aa4ca025c2ac01e24a9828101e9499f2f8e9052c",
+    "upstreamBaselineCommit": "aa4ca025c2ac01e24a9828101e9499f2f8e9052c",
+    "upstreamCertificateSourceCommit": "7a4d7706d7a50525611b6267061aea0a79f9fd04",
+    "wholeWorktreeCleanAtRun": false,
+    "workingTreeBoundByInputAndPackageHashes": true
+  },
+  "inputBindings": [
+    {
+      "bytes": 93462,
+      "path": "research/certificates/r073m/primary_results.json",
+      "sha256": "78b3abb6ea59dbdd8f76b2752be581335c599b483e7f2954a24f5e1992d97381"
+    },
+    {
+      "bytes": 14062,
+      "path": "research/certificates/r073m/independent_linear.json",
+      "sha256": "6a64f83b23e8e3d315c5729b4176827bb1cf880adc76ecd7bfa40bd38c8be21f"
+    },
+    {
+      "bytes": 8466,
+      "path": "research/certificates/r073m/independent_hierarchy.json",
+      "sha256": "8e52fcafe6ec49927c644901ac5330c47c6c3175e772ba9cb09c6ca61c81796f"
+    },
+    {
+      "bytes": 6736,
+      "path": "research/certificates/r073m/config.json",
+      "sha256": "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
+    },
+    {
+      "bytes": 8259,
+      "path": "research/certificates/r073m/certificate.json",
+      "sha256": "fa15d7af33d924984c418ca12e0448d94a1a743e359d01414f981ceeb26c579d"
+    },
+    {
+      "bytes": 8180,
+      "path": "research/certificates/r073m/validation.json",
+      "sha256": "02aa29f3fdc4157323fb46530c87a4d0720cef492cdbe21710d682aa1a640742"
+    },
+    {
+      "bytes": 8059,
+      "path": "research/certificates/r073m/manifest.json",
+      "sha256": "f93b6f4a7f6a3f888a4fee71ad7c80739b4e63d2403da56a5d925fae753f4dbc"
+    }
+  ],
+  "masters": [
+    "figure.pdf",
+    "figure.svg",
+    "figure.png"
+  ],
+  "packageInventory": {
+    "chartContractSourceDataNote": "chart-contract-and-source-data.md",
+    "expectedFileCount": 25,
+    "generatedFileCount": 15,
+    "paths": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "sourceFileCount": 10
+  },
+  "publication": {
+    "archiveDirectory": "public/figures/r073m/fig-r073m-prescribed-action-departure",
+    "assets": [
+      {
+        "bytes": 36133,
+        "path": "public/assets/r073m/fig-r073m-prescribed-action-departure.pdf",
+        "sha256": "96a1880c7557663f8eded326f092812b5ed4c55179e4b03a5130e13df0b8f44b"
+      },
+      {
+        "bytes": 88212,
+        "path": "public/assets/r073m/fig-r073m-prescribed-action-departure.svg",
+        "sha256": "fd89c79754dd2005fde48e13525df665284b1410f34e997e76de7e4b70d5a684"
+      },
+      {
+        "bytes": 615320,
+        "path": "public/assets/r073m/fig-r073m-prescribed-action-departure.png",
+        "sha256": "e0a9f598454bee9f60a0325484a096fd76d10c8a906fc45733e5a5e43ff4406d"
+      }
+    ],
+    "byteIdentityRequired": true,
+    "directory": "public/assets/r073m",
+    "fileStem": "fig-r073m-prescribed-action-departure",
+    "publicCopiesComplete": true
+  },
+  "publicationStatus": "published",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSize": "qa-final-size.png",
+    "finalSizeInspected": true,
+    "grayscale": "qa-grayscale.png",
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRaster": "qa-pdf.png",
+    "qaDpi": 300,
+    "records": [
+      {
+        "bytes": 551982,
+        "path": "qa-final-size.png",
+        "sha256": "f5cfa8cd5f26b31f6ab73ef608b39c6120ca2ba8df7d0419a4942058bfd18882"
+      },
+      {
+        "bytes": 227332,
+        "path": "qa-grayscale.png",
+        "sha256": "9531387a219f8fb9e78905f0268bd0e4ff5dfabf534b8b79f4d2fe72c100bd80"
+      },
+      {
+        "bytes": 328243,
+        "path": "qa-pdf.png",
+        "sha256": "c27a94fe2bf119514db3202d3f6fe20e3b3998640df74bc8f0d18ed1c0f7e64a"
+      },
+      {
+        "bytes": 1520,
+        "path": "qa-report.md",
+        "sha256": "7b599e8cec0fb58eaad3389fad43d1ff3c141bcb05d6ab74a65ab81abc36b792"
+      }
+    ],
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "scalesSignsAndUnitsInspected": true,
+    "status": "passed",
+    "visualInspectionExplicit": true
+  },
+  "release": "R0.73M",
+  "schemaVersion": "r073m-prescribed-action-figure-manifest-v1",
+  "sourceData": [
+    {
+      "bytes": 93462,
+      "path": "research/certificates/r073m/primary_results.json",
+      "sha256": "78b3abb6ea59dbdd8f76b2752be581335c599b483e7f2954a24f5e1992d97381"
+    },
+    {
+      "bytes": 14062,
+      "path": "research/certificates/r073m/independent_linear.json",
+      "sha256": "6a64f83b23e8e3d315c5729b4176827bb1cf880adc76ecd7bfa40bd38c8be21f"
+    },
+    {
+      "bytes": 8466,
+      "path": "research/certificates/r073m/independent_hierarchy.json",
+      "sha256": "8e52fcafe6ec49927c644901ac5330c47c6c3175e772ba9cb09c6ca61c81796f"
+    },
+    {
+      "bytes": 6736,
+      "path": "research/certificates/r073m/config.json",
+      "sha256": "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
+    },
+    {
+      "bytes": 8259,
+      "path": "research/certificates/r073m/certificate.json",
+      "sha256": "fa15d7af33d924984c418ca12e0448d94a1a743e359d01414f981ceeb26c579d"
+    },
+    {
+      "bytes": 8180,
+      "path": "research/certificates/r073m/validation.json",
+      "sha256": "02aa29f3fdc4157323fb46530c87a4d0720cef492cdbe21710d682aa1a640742"
+    },
+    {
+      "bytes": 8059,
+      "path": "research/certificates/r073m/manifest.json",
+      "sha256": "f93b6f4a7f6a3f888a4fee71ad7c80739b4e63d2403da56a5d925fae753f4dbc"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Across five epsilon values and three finite cutoffs, the action-normalized gain lies between 0.9960745 and 0.9965851; at N=64 the registered b/epsilon and target-c/epsilon-squared ratios remain below 0.913 and 0.856, both cubic path alignments retain negative sign, and the largest gate-family ratio is below 0.116.",
+  "supportedTakeaway": "Across five epsilon values and three finite cutoffs, the action-normalized gain lies between 0.9960745 and 0.9965851; at N=64 the registered b/epsilon and target-c/epsilon-squared ratios remain below 0.913 and 0.856, both cubic path alignments retain negative sign, and the largest gate-family ratio is below 0.116.",
+  "validatedAt": "2026-08-30T21:27:33.059089+00:00"
+}

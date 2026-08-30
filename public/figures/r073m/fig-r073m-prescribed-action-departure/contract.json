@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "r073m-prescribed-action-figure-contract-v1",
+  "figureId": "fig-r073m-prescribed-action-departure",
+  "release": "R0.73M",
+  "evidenceClass": "independently-recomputed-finite-binary64-diagnostic",
+  "analyticalQuestion": "On the sealed 15-case finite grid, does the gain remain bounded after normalization by the separately computed finite inviscid action proxy, do the registered a/b/c coefficients exhibit their expected epsilon hierarchy, and do the requested numerical discrepancy families remain below their frozen gates?",
+  "supportedTakeaway": "Across five epsilon values and three finite cutoffs, the action-normalized gain lies between 0.9960745 and 0.9965851; at N=64 the registered b/epsilon and target-c/epsilon-squared ratios remain below 0.913 and 0.856, both cubic path alignments retain negative sign, and the largest gate-family ratio is below 0.116.",
+  "chartFamily": "trend plus relationship plus signed comparison plus uncertainty-and-benchmark",
+  "staticRenderer": "Matplotlib",
+  "dataSufficiency": {
+    "primaryCases": 15,
+    "epsilonLevels": 5,
+    "cutoffs": 3,
+    "gateComponents": 12,
+    "gateFamilies": 4,
+    "fallback": "Fail closed if any configured finite case, gate component, family maximum, independent result, or sealed-package binding is absent."
+  },
+  "panels": {
+    "A": {
+      "variant": "highlighted multi-series line with nested markers",
+      "grain": "five epsilon values for each of N=40,48,64",
+      "scaleNote": "Logarithmic epsilon axis and focused vertical scale; one is a neutral benchmark."
+    },
+    "B": {
+      "variant": "two-series line-dot relationship",
+      "grain": "b/epsilon and target-c/epsilon-squared at five epsilon values and N=64",
+      "scaleNote": "Division by the registered powers is explicit; no asymptotic limit is inferred."
+    },
+    "C": {
+      "variant": "signed two-series line-dot relationship",
+      "grain": "mean-path and doubled-path signed cubic alignments divided by epsilon-squared at five epsilon values and N=64",
+      "scaleNote": "The zero line is retained to make the sign visible."
+    },
+    "D": {
+      "variant": "log-scale validation-margin dot plot",
+      "grain": "the maximum component ratio in each of four requested numerical gate families",
+      "scaleNote": "The neutral line at one is the fail threshold; stems are distance guides rather than uncertainty intervals."
+    }
+  },
+  "palettePolicy": {
+    "policy": "hard two-root cap",
+    "chromaticRoots": ["#285f8f", "#b07a00"],
+    "neutralSeriesAllowed": true,
+    "nonColorEncoding": [
+      "distinct line styles and nested marker shapes for cutoffs",
+      "open versus filled markers for coefficient paths",
+      "zero and fail-threshold reference lines",
+      "fixed panel positions and direct annotations"
+    ]
+  },
+  "output": {
+    "finalWidthMillimetres": 178.0,
+    "finalHeightMillimetres": 128.0,
+    "requiredFormats": ["PDF vector", "SVG vector", "PNG 600 dpi"],
+    "qaSurfaces": ["final-size raster", "grayscale final-size raster", "PDF raster"]
+  },
+  "researchBlossom": {
+    "lockedAnchor": "top-right-header",
+    "petalCount": 5,
+    "carriesData": false
+  },
+  "claimBoundary": {
+    "formalValidatedDiagnosticFigure": true,
+    "finiteDimensionalDiagnostic": true,
+    "sealedUpstreamCertificatePassed": true,
+    "independentFiniteRecomputationPassed": true,
+    "finiteInviscidActionProxyComputed": true,
+    "finitePrescribedActionRecodingComputed": true,
+    "finiteABCoefficientsComputed": true,
+    "continuumActionCertifiedByFiniteComputation": false,
+    "continuumGainPrefactorCertifiedByFiniteComputation": false,
+    "prefactorLimitCertified": false,
+    "twoTermWKBCertified": false,
+    "uniformTaylorRadiusCertified": false,
+    "fourthOrderRemainderCertified": false,
+    "fullNonlinearNavierStokesTrajectoryComputed": false,
+    "finiteCutoffAgreementIsTailProof": false,
+    "singleFixedBackgroundLyapunovInstabilityCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  }
+}
+

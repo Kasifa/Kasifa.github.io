@@ -8,15 +8,25 @@ import csv
 from fractions import Fraction
 import hashlib
 import json
+import os
 from pathlib import Path
+import platform
 import subprocess
 import sys
+import time
 from typing import Any
 
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 PACKAGE_RELATIVE = "figures/r073h/fig-r073h-harmonic-feedback"
+THREAD_ENVIRONMENT = (
+    "OMP_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "VECLIB_MAXIMUM_THREADS",
+    "MKL_NUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+)
 SOURCE_FILES = (
     "README.md",
     "caption.md",
@@ -44,6 +54,34 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def compute_record(processes: int, threads_per_process: int) -> dict[str, Any]:
+    product = subprocess.check_output(
+        ["sw_vers", "-productName"], text=True,
+    ).strip()
+    version = subprocess.check_output(
+        ["sw_vers", "-productVersion"], text=True,
+    ).strip()
+    build = subprocess.check_output(
+        ["sw_vers", "-buildVersion"], text=True,
+    ).strip()
+    cpu = subprocess.check_output(
+        ["sysctl", "-n", "machdep.cpu.brand_string"], text=True,
+    ).strip()
+    memory_bytes = int(subprocess.check_output(
+        ["sysctl", "-n", "hw.memsize"], text=True,
+    ).strip())
+    return {
+        "host": platform.node(),
+        "operatingSystem": f"{product} {version} ({build}) {platform.machine()}",
+        "kernel": f"Darwin {platform.release()}",
+        "cpu": cpu,
+        "memoryGiB": memory_bytes / (1024 ** 3),
+        "processes": processes,
+        "threadsPerProcess": threads_per_process,
+        "gpu": "not used",
+    }
 
 
 def normalize_svg(path: Path) -> None:
@@ -191,11 +229,14 @@ def add_blossom(fig: Any, plt: Any, colors: dict[str, str]) -> None:
 
 
 def main() -> int:
+    started = time.monotonic()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--deps", default="")
     parser.add_argument("--renderer-source-commit", required=True)
     parser.add_argument("--certificate-commit", required=True)
     args = parser.parse_args()
+    for name in THREAD_ENVIRONMENT:
+        require(os.environ.get(name) == "1", name + " must be pinned to 1")
     if args.deps:
         sys.path.insert(0, args.deps)
 
@@ -533,6 +574,12 @@ def main() -> int:
             },
         },
         "claimBoundary": contract["claimBoundary"],
+        "compute": compute_record(1, 1),
+        "runtime": {
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "wallTimeSeconds": time.monotonic() - started,
+        },
     }
     (HERE / "results.json").write_text(canonical(result), encoding="utf-8")
     return 0

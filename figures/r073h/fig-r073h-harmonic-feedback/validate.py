@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 import shutil
 import subprocess
@@ -160,6 +161,9 @@ def main() -> int:
     import pypdf
 
     require(len(args.qa_note.strip()) >= 60, "QA note is too short")
+    qa_note_lower = args.qa_note.lower()
+    for sentinel in ("final-size", "grayscale", "labels", "scales", "input bindings"):
+        require(sentinel in qa_note_lower, "QA note is missing attestation: " + sentinel)
     require_commit(args.renderer_source_commit, "renderer source commit")
     require_commit(args.certificate_commit, "certificate commit")
     require_ancestor(args.certificate_commit, args.renderer_source_commit,
@@ -198,6 +202,28 @@ def main() -> int:
         "naturalSeedOrderOneDepartureEstablishedByFigure": False,
         "threeDimensionalVortexStretchingPresent": False,
     }, "claim boundary is not the exact fail-closed ledger")
+    runtime = results.get("runtime")
+    require(isinstance(runtime, dict), "results runtime is missing")
+    require(runtime.get("processes") == 1, "renderer process count changed")
+    require(runtime.get("threadsPerProcess") == 1, "renderer thread count changed")
+    wall_time = runtime.get("wallTimeSeconds")
+    require(isinstance(wall_time, (int, float)) and not isinstance(wall_time, bool)
+            and math.isfinite(float(wall_time)) and float(wall_time) > 0.0,
+            "renderer wall time must be finite and positive")
+    compute = results.get("compute")
+    require(isinstance(compute, dict), "renderer compute record is missing")
+    for key in ("host", "operatingSystem", "kernel", "cpu", "gpu"):
+        require(isinstance(compute.get(key), str) and bool(compute[key].strip()),
+                "renderer compute record is missing " + key)
+    require(isinstance(compute.get("memoryGiB"), (int, float))
+            and not isinstance(compute["memoryGiB"], bool)
+            and math.isfinite(float(compute["memoryGiB"]))
+            and float(compute["memoryGiB"]) > 0.0,
+            "renderer memory record must be finite and positive")
+    require(compute.get("processes") == runtime["processes"],
+            "renderer compute/process count mismatch")
+    require(compute.get("threadsPerProcess") == runtime["threadsPerProcess"],
+            "renderer compute/thread count mismatch")
     require(certificate["claimLedger"]["fullContinuumHarmonicResolvedSemigroupEstimate"]
             == "OPEN", "continuum semigroup estimate must remain open")
     require(certificate["claimLedger"]["finiteCutoffAgreementAsTailProof"]
@@ -331,22 +357,55 @@ def main() -> int:
     pre_manifest_files = tuple(sorted(SOURCE_FILES + FIGURE_FILES + QA_FILES + (
         "qa-report.md", "results.json",
     )))
+    figure_outputs = [record(HERE / name) for name in FIGURE_FILES]
+    for output in figure_outputs:
+        if output["path"] == "figure.png":
+            output["dpi"] = int(config["pngDpi"])
+            output["pixels"] = list(Image.open(HERE / "figure.png").size)
+    public_directory = ROOT / "public" / "assets" / "r073h"
+    public_assets = []
+    for name in FIGURE_FILES:
+        public_name = "fig-r073h-harmonic-feedback" + Path(name).suffix
+        public_path = public_directory / public_name
+        require(public_path.is_file() and not public_path.is_symlink(),
+                "missing public figure asset: " + public_name)
+        require(public_path.read_bytes() == (HERE / name).read_bytes(),
+                "public figure asset is not byte-identical: " + public_name)
+        public_assets.append(record(public_path, ROOT))
     manifest = {
-        "schemaVersion": "r073h-formal-figure-manifest-v1",
+        "schemaVersion": "r073h-formal-figure-manifest-v2",
         "status": "formal",
         "release": "R0.73H",
         "figureId": config["figureId"],
         "createdAt": config["createdAt"],
         "analyticalQuestion": contract["analyticalQuestion"],
+        "supportedClaim": contract["supportedTakeaway"],
         "supportedTakeaway": contract["supportedTakeaway"],
         "claimBoundary": contract["claimBoundary"],
         "git": {
             "repository": "Kasifa/Kasifa.github.io",
+            "sourceCommit": args.renderer_source_commit,
             "certificateCommit": args.certificate_commit,
+            "dirtyAtCertifiedRun": False,
+            "dirtyAtCertifiedRunMeaning": "the sourceBindings and certificate inputs are read from immutable clean commits; this field does not assert whole-worktree cleanliness",
+            "dirtyAtCertifiedRunScope": "sourceBindings and certificate inputs only; generated outputs and unrelated working-tree files are excluded",
+            "wholeWorktreeCleanAtRun": False,
             "rendererSourceCommit": args.renderer_source_commit,
             "certificateCommitIsAncestorOfRendererSourceCommit": True,
             "outputCommitSelfReferenceIntentionallyAbsent": True,
         },
+        "computation": {
+            "kind": "closed-form sampling plus validated finite CSV ingestion",
+            "configuration": "config.json",
+            "precision": "exact rational subcertificate plus IEEE-754 binary64 finite diagnostics",
+            "solver": "committed exact JSON/finite CSV ingestion and deterministic Matplotlib rendering",
+            "formalCommand": "command.txt: pinned single-thread plot.py generation followed by validate.py formal sealing",
+            "scientificWallTimeSeconds": wall_time,
+            "processes": runtime["processes"],
+            "threadsPerProcess": runtime["threadsPerProcess"],
+            "finiteDimensionalPanelsAreDiagnosticOnly": True,
+        },
+        "compute": compute,
         "evidence": {
             "exactPanel": "exact rational finite block plus analytic tail/cross/Schur/time-perturbation continuum subcertificate",
             "finitePanels": "binary64 finite Fourier diagnostics only",
@@ -354,18 +413,39 @@ def main() -> int:
             "independentCertificateValidationStatus": "passed",
         },
         "inputs": input_bindings,
+        "sourceData": input_bindings,
         "sourceBindings": source_bindings,
+        "data": [{
+            **record(HERE / "results.json"),
+            "schema": results["schemaVersion"],
+        }],
+        "publication": {
+            "byteIdentityRequired": True,
+            "publicCopiesComplete": True,
+            "directory": "public/assets/r073h",
+            "fileStem": "fig-r073h-harmonic-feedback",
+            "assets": public_assets,
+        },
         "figure": {
             "profile": "journal-double-column",
             "layout": "four-panel exact-subcertificate and finite-diagnostic comparison",
             "widthMillimetres": config["widthMillimetres"],
             "heightMillimetres": config["heightMillimetres"],
             "pngDpi": config["pngDpi"],
-            "outputs": [record(HERE / name) for name in FIGURE_FILES],
+            "outputs": figure_outputs,
         },
         "qa": {
             "status": args.qa_status,
             "note": args.qa_note.strip(),
+            "finalSize": "qa-final-size.png",
+            "grayscale": "qa-grayscale.png",
+            "pdfRaster": "qa-pdf.png",
+            "report": "qa-report.md",
+            "finalSizeInspected": True,
+            "grayscaleInspected": True,
+            "labelsAndLegendsInspected": True,
+            "scalesAndUnitsInspected": True,
+            "dataCrossChecked": True,
             "finalSizeDpi": config["qaDpi"],
             "pdfRasterDpi": 180,
             "pdfPngMeanAbsoluteDifference": pdf_png_mean_absolute_difference,
@@ -374,6 +454,7 @@ def main() -> int:
         "observations": observations,
         "environment": {
             "python": sys.version.split()[0],
+            "packagesLock": "requirements.txt",
             "matplotlib": matplotlib.__version__,
             "numpy": numpy.__version__,
             "pillow": PIL.__version__,

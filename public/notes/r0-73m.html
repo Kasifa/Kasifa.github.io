@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73M：由完整无黏作用量指定种子的平面非线性固定距离偏离、严格二维边界、独立审计与有限诊断。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73M｜Prescribed-action planar nonlinear departure">
+  <meta property="og:description" content="For the sealed periodic shear family, a perturbation prescribed by the full inviscid action reaches a fixed L2 distance at a fixed physical time inside an exactly invariant planar subsystem.">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073m/fig-r073m-prescribed-action-departure.png">
+  <title>R0.73M｜Prescribed-action planar nonlinear departure</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.53"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#result">direct result</a><a href="#background">exact background</a><a href="#action">action recoding</a><a href="#localization">forward localization</a><a href="#hierarchy">nonlinear hierarchy</a><a href="#endpoint">fixed-distance endpoint</a><a href="#global">dimensional boundary</a><a href="#audits">independent audits</a><a href="#diagnostic">finite diagnostic</a><a href="#figure">journal figure</a><a href="#literature">Deep Research boundary</a><a href="#boundary">exact boundary</a><a href="#value">value</a><a href="#next">R0.73N</a><a href="#reproduce">reproduction</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73M · PRESCRIBED-ACTION PLANAR DEPARTURE</div>
+        <h1>由完整作用量指定种子的平面非线性固定距离偏离</h1>
+        <p class="lead">R0.73M 把 R0.73L 的两侧 action 估计接到 R0.73H 的谐波能量层级：对一族精确、无外力、随热流演化的周期剪切背景，初始扰动可以直接写成 \(\rho e^{-\Lambda\mathcal A_*}\phi_\Lambda\)，并在固定物理时刻 \(T_*=1/1800\) 到达与 \(\rho\) 同阶的 \(L^2\) 距离。所有构造轨道都留在精确二维不变子空间；这不是单一固定背景的 Lyapunov 不稳定性，也不是三维奇性结论。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73M 完成</span><strong>Continuum theorem + independent audits</strong><p>版本 v0.73M · 2026-08-31</p><p>解析门：M1–M8 CLOSED</p><p>有限主案例：15</p><p>独立线性 / 层级：5 / 3</p><p>验证器：28 / 28 PASS</p><p>正式附图：PASS</p><p>FIXED BACKGROUND / 3D / CLAY：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol>
+        <li><a href="#result">00 · direct result</a></li>        <li><a href="#background">01 · exact background</a></li>        <li><a href="#action">02 · action recoding</a></li>        <li><a href="#localization">03 · forward localization</a></li>        <li><a href="#hierarchy">04 · nonlinear hierarchy</a></li>        <li><a href="#endpoint">05 · fixed-distance endpoint</a></li>        <li><a href="#global">06 · dimensional boundary</a></li>        <li><a href="#audits">07 · independent audits</a></li>        <li><a href="#diagnostic">08 · finite diagnostic</a></li>        <li><a href="#figure">09 · journal figure</a></li>        <li><a href="#literature">10 · Deep Research boundary</a></li>        <li><a href="#boundary">11 · exact boundary</a></li>        <li><a href="#value">12 · value</a></li>        <li><a href="#next">13 · R0.73N</a></li>        <li><a href="#reproduce">14 · reproduction</a></li>
+      </ol></aside>
+      <article>
+        <section id="result"><div class="section-no">00 / Direct result</div><h2>指数小的 prescribed-action 种子在固定时刻产生固定距离</h2><div class="equation result">\[\left\|\Pi_{\{K_z=\pm1\}}\bigl(U_\Lambda^\rho(T_*)-\bar U_\Lambda(T_*)\bigr)\right\|_2\ge c_*\rho,\qquad \|U_\Lambda^\rho(0)-\bar U_\Lambda(0)\|_{H^3}\le C\rho\Lambda^2e^{-\Lambda\mathcal A_*}\to0.\]</div><p>这里 \(D_*=1/450\)、\(T_*=D_*/4=1/1800\)，且 \(167/450000<\mathcal A_*<173/450000\)。常数 \(c_*\)、\(\rho_0\) 和 \(\Lambda_0\) 是连续证明中的存在性常数，没有从有限计算中拟合。</p></section>
+        <section id="background"><div class="section-no">01 / Exact background</div><h2>背景是精确的无外力热流，但随 \(\Lambda\) 改变</h2><div class="equation result">\[\bar U_\Lambda(t,y)=(0,0,2\Lambda W(4t,2y)),\qquad W(d,x)=-\tfrac12e^{-d}\sin x+\tfrac14e^{-4d}\sin2x.\]</div><p>由于 \(W_d=W_{xx}\)，每个背景都是光滑的精确 Navier–Stokes 解。背景振幅随 \(\Lambda\) 增长，因此结论是 family-level departure，不是对一个固定基流的 Lyapunov 不稳定性。</p></section>
+        <section id="action"><div class="section-no">02 / Action recoding</div><h2>两侧 bounded prefactor 把未知实际增益换成完整无黏作用量</h2><div class="equation result">\[c_Le^{\Lambda\mathcal A_*}\le G_\Lambda^*\le C_Le^{\Lambda\mathcal A_*},\qquad \delta_\Lambda=\rho G_\Lambda^*e^{-\Lambda\mathcal A_*}\in[c_L\rho,C_L\rho].\]</div><p>这一步只使用 R0.73L 的两侧界，不假设 prefactor 收敛。若只知道 \(\Lambda^{-1}\log G_\Lambda^*\to\mathcal A_*\)，就不能保证有效 Taylor 振幅留在统一半径内。</p></section>
+        <section id="localization"><div class="section-no">03 / Forward localization</div><h2>固定端点上的局部化速率严格越过二次与三次门槛</h2><p>端点归一化轨道满足 \(\|a_\Lambda(s)\|_2\le C_Le^{-\mu_*\Lambda(D_*-s)}\)，其中 \(\mu_*=167/1000>1/6\)。这是同一条前向轨道的商，不是反向求解抛物方程。</p></section>
+        <section id="hierarchy"><div class="section-no">04 / Nonlinear hierarchy</div><h2>二次、三次与四阶余项在完整固定窗口上闭合</h2><div class="equation result">\[2\mu_*-\tfrac13=\tfrac1{1500},\qquad3\mu_*-\tfrac12=\tfrac1{1000},\qquad4\mu_*-\tfrac12=\tfrac{21}{125}.\]</div><p>三个严格正裕度分别控制 doubled row、cubic rows 与四阶 remainder。证明沿精确 Fourier–Leray 行和 Stieltjes 能量账本工作，没有插入全空间高 Sobolev 半群界。</p></section>
+        <section id="endpoint"><div class="section-no">05 / Fixed-distance endpoint</div><h2>选定谐波的线性主项压过立方修正与四阶余项</h2><p>对 \(0<\rho\le\rho_0\)，有效振幅 \(\delta_\Lambda\) 保持统一小，奇偶谐波结构排除二次项直接返回 \(K_z=\pm1\)。故终点 selected-pair 范数 \(\ge(c_L/2)\rho\)。</p></section>
+        <section id="global"><div class="section-no">06 / Exact dimensional boundary</div><h2>全局光滑性来自精确二维不变子空间</h2><p>背景和实值 launch 都属于 \(\mathcal S_{2D}=\{(0,u_2(y,z),u_3(y,z)): \partial_yu_2+\partial_zu_3=0\}\)。二维涡量能量恒等式给出每条 selected orbit 的全局光滑性；这里没有控制横向三维扰动或 vortex stretching。</p></section>
+        <section id="audits"><div class="section-no">07 / Independent audits</div><h2>独立解析、对抗与文献边界审计均为 PASS</h2><p>审计逐项核对物理/kinetic 范数、\(d=4t\) 因子、行支持、三个严格裕度、bounded-prefactor 而非 prefactor-limit 的用法，以及量词次序。对抗审计没有找到能保留全部封存假设的反例。</p></section>
+        <section id="diagnostic"><div class="section-no">08 / Finite diagnostic</div><h2>15 个主案例、5 个线性哨兵与 3 个层级哨兵独立通过</h2><p>有限网格为 \(N=40,48,64\) 与五个 \(\varepsilon\) 水平，共 1,170 行 action 数据。有限 inviscid-action prefactor 位于 \([0.9960745297,0.9965850278]\)；独立线性重算的最大 gain 差为 \(2.083\times10^{-9}\)，独立 cubic hierarchy 的最大系数相对差为 \(8.320\times10^{-10}\)。验证器 28/28 PASS。</p><p>有限量 \(A_{N,0}\) 与连续量 \(\mathcal A_*\) 分开命名；有限 cutoff agreement 不认证连续 Fourier tail，也不认证 prefactor 极限。</p></section>
+        <section id="figure"><div class="section-no">09 / Journal figure</div><h2>作用量归一化、谐波层级、带符号 cubic return 与门限裕度已归档</h2><p><img src="/assets/r073m/fig-r073m-prescribed-action-departure.svg" alt="R0.73M finite prescribed-action departure diagnostic"></p><p><a href="/assets/r073m/fig-r073m-prescribed-action-departure.pdf">下载矢量 PDF</a> · <a href="/assets/r073m/fig-r073m-prescribed-action-departure.png">下载 600 dpi PNG</a> · <a href="/assets/r073m/fig-r073m-prescribed-action-departure.svg">打开 SVG</a></p></section>
+        <section id="literature"><div class="section-no">10 / Deep Research boundary</div><h2>邻近文献提供机制先例，但没有可直接代入的同构定理</h2><p>Friedlander–Pavlović–Shvydkoy 处理自治谱不稳定到非线性不稳定；Grenier 系方法处理高阶 corrector 和边界层；Li–Masmoudi–Zhao 证明精确无外力 near-Couette 热流的瞬态非线性放大；Li–Zhao 研究无边界热演化剪切的谱转变。限定检索没有发现一条现成定理同时包含这里的移动黏性谱线、完整慢窗 action、谐波返回、零外力和固定距离终点。这只是 bounded-search gap，不是绝对原创性或优先权声明。</p></section>
+        <section id="boundary"><div class="section-no">11 / Exact boundary</div><h2>连续定理、有限诊断和开放问题分开列示</h2><p>physicalKineticSelectedGainConjugacy=CLOSED；fixedEndpointBackwardLocalization=CLOSED；prescribedActionSeedWindow=CLOSED；twoDimensionalNonlinearDeparture=CLOSED；fixedDistanceEndpoint=CLOSED；selectedPlanarOrbitGlobalSmoothness=CLOSED。</p><p>finiteDiagnosticPackage=CLOSED；primaryPrescribedActionCases=15；independentLinearSentinels=5；independentHierarchySentinels=3；formalFigurePackage=PASS；finiteDimensionDoesNotCertifyContinuum=TRUE。</p><p>prefactorLimit=OPEN；twoTermWKB=OPEN；singleFixedBackgroundLyapunovInstability=OPEN；transverseThreeDimensionalClosure=OPEN；finiteTimeSingularity=OPEN；Clay=OPEN。</p><p>本节没有 prefactor 极限、两项 WKB、固定背景 Lyapunov 不稳定、横向三维闭合、有限时间奇性或 Clay 结论。NOT CLAY。</p></section>
+        <section id="value"><div class="section-no">12 / Research value</div><h2>初始尺度不再依赖未知实际增益</h2><p>严格增量是把 gain-normalized departure 升级为 full-action-prescribed departure，并把终点固定在 \(T_*=1/1800\)。这使结果更接近可比较、可引用的非自治不稳定定理，但 family-level 与二维边界仍是决定性限制。</p></section>
+        <section id="next"><div class="section-no">13 / Next gate</div><h2>R0.73N：固定背景 Lyapunov 不稳定性的可行性与障碍审计</h2><p>下一节只做 feasibility/obstruction gate：先辨认变背景幅度 \(O(\Lambda)\) 是否能通过重标度、时间平移或嵌入机制变成一个固定基流问题，并逐条检验量词与范数。它不预设可闭合；若结构性障碍成立，就以 no-go 定理封存。横向三维与 Clay 仍是更后的 OPEN 接口。</p></section>
+        <section id="reproduce"><div class="section-no">14 / Reproduction</div><h2>证明、审计、文献、证书和附图均有直接入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073m_prescribed_action_departure_proof.md">解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073m_independent_analytic_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073m_adversarial_audit.md">对抗审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073m_literature_audit.md">Deep Research 文献审计</a></p><p><a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073m">有限诊断包</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/figures/r073m/fig-r073m-prescribed-action-departure">正式附图包</a> · <a href="/notes/r0-73m.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73m.html">129 节累计回顾</a> · <a href="/recap-r0-61-r0-73m.pdf">累计回顾 PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>我按原编号记录定理、有限计算、反例和未解决的问题。</div><div>研究笔记 R0.73M · 2026-08-31<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

@@ -45,6 +45,16 @@ try {
       if (href?.startsWith("/")) anchor.href = new URL(href, origin).href;
     }
   }, publicOrigin);
+  await page.addStyleTag({
+    content: `
+      @media print {
+        .metric {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+      }
+    `,
+  });
   if (screenshot) {
     await page.screenshot({ path: screenshot, fullPage: true });
   }

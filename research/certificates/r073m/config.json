@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "r073m-prescribed-action-finite-config-v1",
+  "release": "R0.73M",
+  "evidenceClass": "finite-binary64-prescribed-action-and-harmonic-diagnostic-only",
+  "diagnosticOnly": true,
+  "gamma": 0.5,
+  "profileTimeEnd": 0.0022222222222222222,
+  "physicalTimeEnd": 0.0005555555555555556,
+  "profileToPhysicalTimeRule": "d=4t",
+  "exactRationals": {
+    "profileTimeEnd": "1/450",
+    "physicalTimeEnd": "1/1800",
+    "muStar": "167/1000",
+    "twoRateMargin": "1/1500",
+    "threeRateMargin": "1/1000",
+    "fourRateMargin": "21/125"
+  },
+  "cutoffs": [32, 48, 64],
+  "viscousEpsilons": [0.001, 0.0005, 0.00025, 0.000125, 0.0000625],
+  "fixedContour": {
+    "centerReal": 0.17,
+    "centerImag": 0.0,
+    "radius": 0.003
+  },
+  "actionSampleCount": 65,
+  "primaryLinearSolver": {
+    "method": "DOP853",
+    "rtol": 1e-10,
+    "atol": 1e-12,
+    "maxStep": 0.000008680555555555556
+  },
+  "hierarchy": {
+    "profileTimeSnapshots": [0.0, 0.0022222222222222222],
+    "primaryFastStep": 0.05,
+    "stepConvergence": {
+      "cutoff": 64,
+      "viscousEpsilons": [0.001, 0.0000625],
+      "fastSteps": [0.1, 0.05, 0.025]
+    }
+  },
+  "displayRhos": [0.02, 0.05],
+  "independentLinear": {
+    "stepCounts": [256, 512],
+    "sentinels": [
+      {"cutoff": 32, "viscousEpsilon": 0.001},
+      {"cutoff": 32, "viscousEpsilon": 0.0000625},
+      {"cutoff": 48, "viscousEpsilon": 0.00025},
+      {"cutoff": 64, "viscousEpsilon": 0.0005},
+      {"cutoff": 64, "viscousEpsilon": 0.0000625}
+    ]
+  },
+  "independentHierarchy": {
+    "sentinels": [
+      {"cutoff": 32, "viscousEpsilon": 0.001, "fastStep": 0.05},
+      {"cutoff": 48, "viscousEpsilon": 0.00025, "fastStep": 0.05},
+      {"cutoff": 64, "viscousEpsilon": 0.0000625, "fastStep": 0.025}
+    ]
+  },
+  "tolerances": {
+    "numericalReality": 1e-10,
+    "eigenResidualRelative": 5e-12,
+    "generatorRelative": 5e-12,
+    "divergenceRelative": 5e-10,
+    "realityRelative": 5e-10,
+    "forbiddenParityRelative": 5e-10,
+    "aEndpointNormalizationAbsolute": 5e-10,
+    "outerThreeMassFraction": 1e-8,
+    "physicalKineticGainRelative": 2e-7,
+    "largestCutoffActionProxyAbsolute": 2e-12,
+    "largestCutoffPrefactorAbsolute": 2e-6,
+    "hierarchyFinestCutoffRelative": 1e-6,
+    "hierarchyStepRelative": 1e-7,
+    "independentLinearActionRelative": 2e-6,
+    "independentLinearGainRelative": 2e-6,
+    "independentLinearPrefactorAbsolute": 2e-6,
+    "independentLinearRefinement": 2e-6,
+    "independentHierarchyCoefficientRelative": 2e-8,
+    "independentHierarchyForbiddenParityRelative": 5e-10
+  },
+  "upstreamBindings": [
+    {
+      "role": "primary selected finite kinetic evolution algorithm",
+      "path": "research/r073l_adiabatic_diagnostic.py",
+      "sha256": "68d3751a2b2eef3befcf92214bd8846fc4fcf8de22f6d89ceed647014642f824"
+    },
+    {
+      "role": "independent midpoint matrix-exponential algorithm",
+      "path": "experiments/r073l/independent_validate.py",
+      "sha256": "f7ad15bbda05a965149888d3ddc3a4cc93d75ca8bbc1373d4ad2324105355a05"
+    },
+    {
+      "role": "primary physical-velocity harmonic hierarchy algorithm",
+      "path": "research/certificates/r073h/primary_diagnostic.py",
+      "sha256": "c7e3d7709f4ebcf003a8d960827703ffe7fa6c8d41647e5104618959527a206f"
+    },
+    {
+      "role": "independent vorticity FFT hierarchy algorithm",
+      "path": "research/certificates/r073h/independent_validate.py",
+      "sha256": "e91ccabaf5c39bc2e6c22bd1bac17536f5802fa83c74131abad5b0d7558212c8"
+    },
+    {
+      "role": "sealed upstream harmonic and doubled-row certificate",
+      "path": "research/certificates/r073h/certificate.json",
+      "sha256": "d97ae98ef8309adfc109c33b857d3efe04a8b36b40d9fe8cc3b7a6b1e60c38f1"
+    },
+    {
+      "role": "sealed upstream adiabatic finite package manifest",
+      "path": "experiments/r073l/manifest.json",
+      "sha256": "3c9171bd8e1fcb7e59fdf4358862c124c8694616a25d9b0143b7636b12051e1a"
+    }
+  ],
+  "claimBoundary": {
+    "finiteInviscidActionProxyComputed": true,
+    "finiteViscousActionComputedSeparately": true,
+    "finitePrescribedActionRecodingComputed": true,
+    "finiteABCoefficientsComputed": true,
+    "continuumActionCertifiedByFiniteComputation": false,
+    "continuumGainPrefactorCertifiedByFiniteComputation": false,
+    "prefactorLimitCertified": false,
+    "twoTermWKBCertified": false,
+    "uniformTaylorRadiusCertified": false,
+    "fourthOrderRemainderCertified": false,
+    "fullNonlinearNavierStokesTrajectoryComputed": false,
+    "finiteCutoffAgreementIsTailProof": false,
+    "singleFixedBackgroundLyapunovInstabilityCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  },
+  "outputSchema": {
+    "caseScalars": [
+      {
+        "path": "linear.finiteInviscidActionProxy",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "integral_0^D lambda_(N,0)(d) dd"
+      },
+      {
+        "path": "linear.finiteViscousAction",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "integral_0^D lambda_(N,epsilon)(d) dd"
+      },
+      {
+        "path": "hierarchy.actualPhysicalLinearGain",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "G_(N,epsilon)=norm(V1(D))_L2"
+      },
+      {
+        "path": "finiteInviscidActionPrefactor",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "G_(N,epsilon)*exp(-A_(N,0)/epsilon)"
+      },
+      {
+        "path": "hierarchy.aEndpointL2",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "norm(V1/G)_L2"
+      },
+      {
+        "path": "hierarchy.bEndpointL2",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "norm(V2/G^2)_L2"
+      },
+      {
+        "path": "hierarchy.cTargetEndpointL2",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "norm(Pi_(Kz=+-1)V3/G^3)_L2"
+      },
+      {
+        "path": "hierarchy.cTotalSignedParallel",
+        "dtype": "float64",
+        "shape": [],
+        "normalization": "Re inner(V1,Pi_(Kz=+-1)V3)/G^4"
+      }
+    ],
+    "coefficientArchive": {
+      "file": "coefficient_endpoints.npz",
+      "dtype": "complex128",
+      "shape": [5, 7, "2*N+1", 2],
+      "normalization": "raw endpoint physical-velocity Taylor coefficient paths",
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ]
+    },
+    "thirdOrderTargetDiagnostics": {
+      "rhoValues": [0.02, 0.05],
+      "delta": "rho*finiteInviscidActionPrefactor",
+      "target": "delta*a+delta^3*Pi_(Kz=+-1)c",
+      "dtype": "float64",
+      "diagnosticOnly": true
+    }
+  }
+}

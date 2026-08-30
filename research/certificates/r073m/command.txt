@@ -1,0 +1,38 @@
+# Run from the repository root after committing this exact source package.
+# Replace SOURCE_COMMIT by the full lowercase 40-character source commit.
+
+R073M_DEPS_DIR=/tmp/r073c-deps
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+# Dependency version guard.  This must pass before smoke or formal execution.
+env PYTHONPATH="$R073M_DEPS_DIR" "$CODEX_PYTHON" -c 'import numpy, scipy; assert numpy.__version__ == "2.5.2"; assert scipy.__version__ == "1.16.1"'
+
+# Unique smoke sequence.  It writes only under a fresh temporary directory.
+R073M_SMOKE_DIR=$(mktemp -d /tmp/r073m-smoke.XXXXXX)
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/primary_diagnostic.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --output-dir "$R073M_SMOKE_DIR" --smoke
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/independent_linear.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --primary-dir "$R073M_SMOKE_DIR" --output "$R073M_SMOKE_DIR/independent_linear.json" --progress "$R073M_SMOKE_DIR/independent_linear_progress.ndjson" --resources "$R073M_SMOKE_DIR/independent_linear_resources.ndjson" --smoke
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/independent_hierarchy.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --primary-dir "$R073M_SMOKE_DIR" --output "$R073M_SMOKE_DIR/independent_hierarchy.json" --progress "$R073M_SMOKE_DIR/independent_hierarchy_progress.ndjson" --resources "$R073M_SMOKE_DIR/independent_hierarchy_resources.ndjson" --smoke
+"$CODEX_PYTHON" -B research/certificates/r073m/exact_identities.py --config research/certificates/r073m/config.json --output "$R073M_SMOKE_DIR/exact_identities.json" --smoke
+"$CODEX_PYTHON" -B research/certificates/r073m/generate_certificate.py --config research/certificates/r073m/config.json --package-dir "$R073M_SMOKE_DIR" --smoke
+"$CODEX_PYTHON" -B research/certificates/r073m/validate_certificate.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --package-dir "$R073M_SMOKE_DIR" --output "$R073M_SMOKE_DIR/validation.json" --smoke
+"$CODEX_PYTHON" -B research/certificates/r073m/seal_package.py --config research/certificates/r073m/config.json --package-dir "$R073M_SMOKE_DIR" --smoke
+"$CODEX_PYTHON" -B research/certificates/r073m/validate_certificate.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --package-dir "$R073M_SMOKE_DIR" --smoke --verify-only
+
+# Formal sequence.  Replace SOURCE_COMMIT only after the complete source and
+# protocol commit exists.
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/primary_diagnostic.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --output-dir research/certificates/r073m --source-commit SOURCE_COMMIT
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/independent_linear.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --primary-dir research/certificates/r073m --output research/certificates/r073m/independent_linear.json --progress research/certificates/r073m/independent_linear_progress.ndjson --resources research/certificates/r073m/independent_linear_resources.ndjson --source-commit SOURCE_COMMIT
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 "$CODEX_PYTHON" -B research/certificates/r073m/independent_hierarchy.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --primary-dir research/certificates/r073m --output research/certificates/r073m/independent_hierarchy.json --progress research/certificates/r073m/independent_hierarchy_progress.ndjson --resources research/certificates/r073m/independent_hierarchy_resources.ndjson --source-commit SOURCE_COMMIT
+
+"$CODEX_PYTHON" -B research/certificates/r073m/exact_identities.py --config research/certificates/r073m/config.json --output research/certificates/r073m/exact_identities.json --source-commit SOURCE_COMMIT
+
+"$CODEX_PYTHON" -B research/certificates/r073m/generate_certificate.py --config research/certificates/r073m/config.json --package-dir research/certificates/r073m --source-commit SOURCE_COMMIT
+
+"$CODEX_PYTHON" -B research/certificates/r073m/validate_certificate.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --package-dir research/certificates/r073m --source-commit SOURCE_COMMIT --output research/certificates/r073m/validation.json
+
+"$CODEX_PYTHON" -B research/certificates/r073m/seal_package.py --config research/certificates/r073m/config.json --package-dir research/certificates/r073m --source-commit SOURCE_COMMIT
+
+"$CODEX_PYTHON" -B research/certificates/r073m/validate_certificate.py --deps "$R073M_DEPS_DIR" --config research/certificates/r073m/config.json --package-dir research/certificates/r073m --source-commit SOURCE_COMMIT --verify-only

@@ -47,12 +47,14 @@ PUBLIC = ROOT / "public"
 ANALYTIC_SOURCE_COMMIT = "ec321d9612389e1f5b056561f12023b5314bcbf3"
 EXPERIMENT_PACKAGE_COMMIT = "5fa1c04d01dd639bc97f3dadcd93122d618b8053"
 FIGURE_PACKAGE_COMMIT = "e1ef753a3b4af6204a243147b36975cfe614643e"
+RELEASE_BASELINE_COMMIT = "4560d00cf3f1261cadfa5b000091e8a0524d75b5"
 RELEASE_SOURCE_COMMIT = "4560d00cf3f1261cadfa5b000091e8a0524d75b5"
 
 COMMIT_PLACEHOLDERS = (
     ANALYTIC_SOURCE_COMMIT,
     EXPERIMENT_PACKAGE_COMMIT,
     FIGURE_PACKAGE_COMMIT,
+    RELEASE_BASELINE_COMMIT,
     RELEASE_SOURCE_COMMIT,
 )
 
@@ -287,6 +289,7 @@ def ensure_commits_ready() -> None:
     chain = (("analytic source", ANALYTIC_SOURCE_COMMIT),
              ("complete experiment package", EXPERIMENT_PACKAGE_COMMIT),
              ("complete figure package", FIGURE_PACKAGE_COMMIT),
+             ("release baseline", RELEASE_BASELINE_COMMIT),
              ("release source", RELEASE_SOURCE_COMMIT))
     for label, commit in chain:
         require_commit(commit, "R0.73J " + label)
@@ -581,7 +584,7 @@ def preflight_release_state() -> str:
             raise RuntimeError("R0.73J target formal archive is not exact")
 
         baseline_inventory = json.loads(git_bytes(
-            RELEASE_SOURCE_COMMIT, "research/formal-archive-inventory.json"
+            RELEASE_BASELINE_COMMIT, "research/formal-archive-inventory.json"
         ))
         expected_inventory = json.loads(json.dumps(baseline_inventory))
         for key in ("publishedReleases", "formalSealedReleases"):

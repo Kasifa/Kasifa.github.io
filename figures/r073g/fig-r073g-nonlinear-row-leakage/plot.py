@@ -75,11 +75,12 @@ def main() -> int:
     style = ROOT / "figures" / "journal.mplstyle"
     if style.exists():
         plt.style.use(style)
+    matplotlib.rcParams["figure.constrained_layout.use"] = False
 
     width = float(config["widthMillimetres"]) / 25.4
     height = float(config["heightMillimetres"]) / 25.4
     fig, axes = plt.subplots(2, 2, figsize=(width, height))
-    fig.subplots_adjust(left=0.105, right=0.985, bottom=0.145, top=0.965,
+    fig.subplots_adjust(left=0.105, right=0.985, bottom=0.165, top=0.965,
                         wspace=0.31, hspace=0.43)
 
     ax = axes[0, 0]
@@ -175,7 +176,7 @@ def main() -> int:
     for axis in axes.flat:
         axis.tick_params(pad=2)
     fig.text(
-        0.105, 0.025,
+        0.105, 0.018,
         "Finite binary64 Fourier compressions; diagnostic only.  "
         "Normalized positive physical row has unit L2 norm.",
         ha="left", va="bottom", fontsize=6.2, color="#252525",

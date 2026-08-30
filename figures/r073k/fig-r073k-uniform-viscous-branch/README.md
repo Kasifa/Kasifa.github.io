@@ -31,6 +31,13 @@ Run `command.txt` from the repository root. The archival outputs are vector
 PDF, vector SVG, and a 600 dpi PNG. The QA surfaces are a final-size raster, a
 grayscale raster, and an independently rasterized PDF.
 
+For routine release gates and CI, use `validate.py --check-formal`. This mode
+is strictly read-only: it recomputes input, CSV, format, QA, manifest, public
+copy, and 23-file checksum bindings without changing any package byte.
+`--require-formal` is reserved for an explicit rebuild of `validation.json`,
+`manifest.json`, QA rasters, and `SHA256SUMS` after an authorized source or QA
+change.
+
 This is a finite-dimensional diagnostic, not a continuum proof. It does not
 certify an explicit continuum viscosity threshold, an adiabatic estimate,
 nonlinear or three-dimensional Navier–Stokes control, finite-time

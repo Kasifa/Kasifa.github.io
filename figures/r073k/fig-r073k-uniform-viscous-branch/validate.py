@@ -38,6 +38,12 @@ from pypdf import PdfReader, __version__ as pypdf_version
 HERE = Path(__file__).resolve().parent
 REPOSITORY = HERE.parents[2]
 FIGURE_ID = "fig-r073k-uniform-viscous-branch"
+FIGURE_SOURCE_COMMIT = "567c72e323e1395c441b2fb76e4e0a1eae7d5662"
+EXPERIMENT_CERTIFICATE_COMMIT = "ce0cfc6ad54060c1ac4fb1fa449e367f361f95ea"
+CANONICAL_REPOSITORY = "https://github.com/Kasifa/Kasifa.github.io.git"
+RECORDED_MEMORY_GIB = 36.0
+PUBLIC_DIRECTORY = "public/assets/r073k"
+PUBLIC_FILE_STEM = FIGURE_ID
 PRIMARY_PATH = REPOSITORY / "experiments/r073k/viscous_branch_diagnostic.json"
 INDEPENDENT_PATH = REPOSITORY / "experiments/r073k/independent_validation.json"
 EXPERIMENT_CONFIG_PATH = REPOSITORY / "experiments/r073k/config.json"
@@ -121,6 +127,16 @@ def input_record(path: Path) -> dict[str, object]:
 
 def file_record(path: Path) -> dict[str, object]:
     return {"path": path.name, "bytes": path.stat().st_size, "sha256": sha256(path)}
+
+
+def require_commit(commit: str, label: str) -> None:
+    require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
+            f"{label} is not a full commit hash")
+    result = subprocess.run(
+        ["git", "cat-file", "-e", commit + "^{commit}"], cwd=REPOSITORY,
+        text=True, capture_output=True, check=False,
+    )
+    require(result.returncode == 0, f"{label} does not resolve to a commit")
 
 
 def float_text(value: object) -> str:
@@ -647,6 +663,8 @@ def build_manifest(
     formal: bool,
 ) -> dict:
     environment = load_json(HERE / "environment.json")
+    require_commit(FIGURE_SOURCE_COMMIT, "figure source commit")
+    require_commit(EXPERIMENT_CERTIFICATE_COMMIT, "experiment certificate commit")
     figure_records = []
     for name in ("figure.pdf", "figure.svg", "figure.png"):
         record = file_record(HERE / name)
@@ -655,16 +673,30 @@ def build_manifest(
                 record["pixels"] = list(image.size)
                 record["dpi"] = int(config["pngDpi"])
         figure_records.append(record)
+    publication_records = []
+    for record in figure_records:
+        extension = Path(str(record["path"])).suffix
+        publication_records.append({
+            "path": f"{PUBLIC_DIRECTORY}/{PUBLIC_FILE_STEM}{extension}",
+            "bytes": record["bytes"],
+            "sha256": record["sha256"],
+        })
+    qa_records = [
+        file_record(HERE / name)
+        for name in ("qa-final-size.png", "qa-grayscale.png", "qa-pdf.png", "qa-report.md")
+    ]
     package_names = sorted((SOURCE_FILES | GENERATED_FILES) - {"manifest.json", "SHA256SUMS"})
     files = [file_record(HERE / name) for name in package_names]
     manifest = {
         "schemaVersion": "r073k-uniform-viscous-branch-figure-manifest-v1",
         "figureId": FIGURE_ID,
         "release": "R0.73K",
-        "status": "sealed" if formal else "pending-manual-inspection",
+        "status": "formal" if formal else "draft",
+        "publicationStatus": "prepublication",
         "createdAt": results["renderedAt"],
         "validatedAt": utc_now(),
         "analyticalQuestion": contract["analyticalQuestion"],
+        "supportedClaim": contract["supportedTakeaway"],
         "supportedTakeaway": contract["supportedTakeaway"],
         "claimBoundary": contract["claimBoundary"],
         "inputBindings": results["inputBindings"],
@@ -676,6 +708,14 @@ def build_manifest(
             "pngDpi": config["pngDpi"],
             "script": "plot.py",
             "outputs": figure_records,
+        },
+        "masters": ["figure.pdf", "figure.svg", "figure.png"],
+        "publication": {
+            "directory": PUBLIC_DIRECTORY,
+            "fileStem": PUBLIC_FILE_STEM,
+            "byteIdentityRequired": True,
+            "publicCopiesComplete": True,
+            "assets": publication_records,
         },
         "data": [
             file_record(HERE / "source-data.csv") | {
@@ -727,13 +767,243 @@ def build_manifest(
             "host": environment["host"],
             "machine": environment["machine"],
             "operatingSystem": environment["platform"],
+            "cpu": environment["machine"],
+            "memoryGiB": RECORDED_MEMORY_GIB,
         },
-        "git": environment["git"],
+        "git": {
+            "repository": CANONICAL_REPOSITORY,
+            "baseCommit": EXPERIMENT_CERTIFICATE_COMMIT,
+            "sourceCommit": FIGURE_SOURCE_COMMIT,
+            "certificateCommit": EXPERIMENT_CERTIFICATE_COMMIT,
+            "dirtyAtCertifiedRun": False,
+            "dirtyAtCertifiedRunMeaning": (
+                "the finite diagnostic inputs and rendered figure masters are read "
+                "from immutable committed blobs; generated publication mirrors and "
+                "unrelated working-tree files are excluded"
+            ),
+            "workingTreeDirtyAtRender": environment["git"].get(
+                "trackedWorktreeDirtyAtRender", False
+            ),
+            "wholeWorktreeCleanAtRun": False,
+            "workingTreeBoundByInputAndPackageHashes": True,
+            "publicationCommitAssigned": False,
+        },
+        "sourceData": results["inputBindings"],
+        "qa": {
+            "status": "passed" if formal else "pending-manual-inspection",
+            "visualInspectionExplicit": formal,
+            "finalSizeInspected": formal,
+            "grayscaleInspected": formal,
+            "labelsAndLegendsInspected": formal,
+            "scalesAndUnitsInspected": formal,
+            "dataCrossChecked": True,
+            "finalSize": "qa-final-size.png",
+            "grayscale": "qa-grayscale.png",
+            "pdfRaster": "qa-pdf.png",
+            "report": "qa-report.md",
+            "records": qa_records,
+            "qaDpi": qa["qaDpi"],
+        },
         "caption": {"english": "caption.md"},
         "files": files,
     }
     (HERE / "manifest.json").write_text(canonical(manifest), encoding="utf-8")
     return manifest
+
+
+def verify_formal_manifest_contract(
+    manifest: dict,
+    contract: dict,
+    results: dict,
+    formal: bool,
+) -> None:
+    expected_status = "formal" if formal else "draft"
+    require(manifest.get("status") == expected_status, "manifest status drift")
+    require(manifest.get("release") == "R0.73K", "manifest release drift")
+    require(manifest.get("supportedClaim") == contract["supportedTakeaway"],
+            "manifest supported claim drift")
+    require(manifest.get("sourceData") == results["inputBindings"],
+            "manifest source-data binding drift")
+    require(manifest.get("masters") == ["figure.pdf", "figure.svg", "figure.png"],
+            "manifest master list drift")
+
+    git = manifest.get("git", {})
+    require(git.get("repository") == CANONICAL_REPOSITORY, "git repository drift")
+    require(git.get("sourceCommit") == FIGURE_SOURCE_COMMIT,
+            "git source commit drift")
+    require(git.get("certificateCommit") == EXPERIMENT_CERTIFICATE_COMMIT,
+            "git certificate commit drift")
+    require(git.get("dirtyAtCertifiedRun") is False,
+            "formal git dirtiness must be false")
+    require(git.get("workingTreeBoundByInputAndPackageHashes") is True,
+            "git binding declaration is absent")
+
+    compute = manifest.get("compute", {})
+    for key in (
+        "host", "operatingSystem", "cpu", "memoryGiB",
+        "processes", "threadsPerProcess", "gpu", "dgx",
+    ):
+        require(compute.get(key) not in (None, "", [], {}),
+                "manifest compute field is absent: " + key)
+    require(float(compute["memoryGiB"]) == RECORDED_MEMORY_GIB,
+            "recorded physical memory drift")
+
+    qa = manifest.get("qa", {})
+    require(qa.get("status") == ("passed" if formal else "pending-manual-inspection"),
+            "manifest QA status drift")
+    for key in (
+        "finalSizeInspected", "grayscaleInspected",
+        "labelsAndLegendsInspected", "scalesAndUnitsInspected",
+    ):
+        require(qa.get(key) is formal, "manifest QA declaration drift: " + key)
+    require(qa.get("dataCrossChecked") is True, "manifest data QA is not passed")
+    require(len(qa.get("records", [])) == 4, "manifest QA record count drift")
+    for record in qa["records"]:
+        path = HERE / str(record["path"])
+        require(path.is_file(), "manifest QA record is absent: " + str(path))
+        require(record["bytes"] == path.stat().st_size and
+                record["sha256"] == sha256(path),
+                "manifest QA record binding drift: " + path.name)
+
+    publication = manifest.get("publication", {})
+    require(publication.get("directory") == PUBLIC_DIRECTORY,
+            "publication directory drift")
+    require(publication.get("fileStem") == PUBLIC_FILE_STEM,
+            "publication file stem drift")
+    require(publication.get("byteIdentityRequired") is True,
+            "publication byte-identity requirement is absent")
+    require(publication.get("publicCopiesComplete") is True,
+            "publication public-copy declaration is not complete")
+    assets = publication.get("assets", [])
+    outputs = manifest["figure"]["outputs"]
+    require(len(assets) == len(outputs) == 3, "publication asset count drift")
+    output_by_extension = {Path(record["path"]).suffix: record for record in outputs}
+    for extension in (".pdf", ".svg", ".png"):
+        master = output_by_extension[extension]
+        expected_path = f"{PUBLIC_DIRECTORY}/{PUBLIC_FILE_STEM}{extension}"
+        asset = next((record for record in assets if record.get("path") == expected_path), None)
+        require(asset is not None, "publication asset path is absent: " + expected_path)
+        require(asset["bytes"] == master["bytes"] and
+                asset["sha256"] == master["sha256"],
+                "publication asset does not bind its master: " + extension)
+        public_path = REPOSITORY / expected_path
+        if public_path.is_file():
+            require(public_path.stat().st_size == asset["bytes"] and
+                    sha256(public_path) == asset["sha256"],
+                    "existing public copy is not byte-identical: " + expected_path)
+
+
+def verify_existing_qa(config: dict, validation: dict) -> dict[str, object]:
+    qa = validation.get("qa", {})
+    require(isinstance(qa, dict), "validation QA record must be an object")
+    require(qa.get("qaDpi") == int(config["qaDpi"]), "validation QA DPI drift")
+    expected_pixels = [
+        round(float(config["widthMillimetres"]) / 25.4 * int(config["qaDpi"])),
+        round(float(config["heightMillimetres"]) / 25.4 * int(config["qaDpi"])),
+    ]
+    require(qa.get("expectedPixels") == expected_pixels,
+            "validation QA expected-pixel drift")
+    for key, expected_name, expected_mode in (
+        ("finalSize", "qa-final-size.png", "RGB"),
+        ("grayscale", "qa-grayscale.png", "L"),
+        ("pdfRaster", "qa-pdf.png", "RGB"),
+    ):
+        record = qa.get(key, {})
+        require(record.get("path") == expected_name, "validation QA path drift: " + key)
+        path = HERE / expected_name
+        require(path.is_file() and not path.is_symlink(), "QA surface is absent: " + expected_name)
+        require(record.get("sha256") == sha256(path), "QA surface hash drift: " + expected_name)
+        with Image.open(path) as image:
+            require(record.get("pixels") == list(image.size),
+                    "QA surface pixel drift: " + expected_name)
+            require(record.get("mode") == image.mode == expected_mode,
+                    "QA surface mode drift: " + expected_name)
+    require(qa["finalSize"]["pixels"] == expected_pixels,
+            "final-size QA dimensions drift")
+    require(qa["grayscale"]["pixels"] == expected_pixels,
+            "grayscale QA dimensions drift")
+    pdf_pixels = qa["pdfRaster"]["pixels"]
+    require(abs(pdf_pixels[0] - expected_pixels[0]) <= 2 and
+            abs(pdf_pixels[1] - expected_pixels[1]) <= 2,
+            "PDF-raster QA dimensions drift")
+    require(qa.get("grayscaleExtrema") == [0, 255],
+            "grayscale QA tonal-range drift")
+    require(manual_qa_passed(), "qa-report.md does not record a passed inspection")
+    return qa
+
+
+def verify_manifest_file_bindings(manifest: dict) -> None:
+    for section in ("data", "files"):
+        records = manifest.get(section, [])
+        require(isinstance(records, list) and records,
+                "manifest file-record section is absent: " + section)
+        for record in records:
+            path = HERE / str(record["path"])
+            require(path.is_file() and not path.is_symlink(),
+                    f"manifest {section} target is absent: {path.name}")
+            require(record.get("bytes") == path.stat().st_size and
+                    record.get("sha256") == sha256(path),
+                    f"manifest {section} binding drift: {path.name}")
+    for record in manifest["figure"]["outputs"]:
+        path = HERE / str(record["path"])
+        require(path.is_file() and record.get("bytes") == path.stat().st_size and
+                record.get("sha256") == sha256(path),
+                "manifest figure-output binding drift: " + path.name)
+    for record in manifest["sourceData"]:
+        path = REPOSITORY / str(record["path"])
+        require(path.is_file() and record.get("bytes") == path.stat().st_size and
+                record.get("sha256") == sha256(path),
+                "manifest source-data binding drift: " + str(record["path"]))
+
+
+def check_formal_read_only() -> dict[str, object]:
+    verify_inventory_before_qa()
+    for name in ("validation.json", "manifest.json", "SHA256SUMS"):
+        path = HERE / name
+        require(path.is_file() and not path.is_symlink(),
+                "formal package record is absent: " + name)
+    config = load_json(HERE / "config.json")
+    contract = load_json(HERE / "contract.json")
+    results = load_json(HERE / "results.json")
+    validation = load_json(HERE / "validation.json")
+    manifest = load_json(HERE / "manifest.json")
+    verify_contract(config, contract, results)
+    primary, independent, _package_validation = verify_inputs(results)
+    data = verify_source_data(primary, config, results)
+    decisions = verify_decisions(primary, independent, results)
+    formats = verify_formats(config)
+    qa = verify_existing_qa(config, validation)
+    require(validation.get("figureId") == FIGURE_ID and
+            validation.get("release") == "R0.73K",
+            "validation identity or release drift")
+    require(validation.get("status") == "passed" and
+            validation.get("automaticStatus") == "passed" and
+            validation.get("allChecksPass") is True,
+            "formal validation status is not passed")
+    require(all(validation.get("checks", {}).values()),
+            "a stored formal validation check is false")
+    require(validation.get("data") == data | decisions,
+            "stored formal validation data drift")
+    require(validation.get("formats") == formats,
+            "stored formal validation format drift")
+    require(validation.get("claimBoundary") == contract["claimBoundary"],
+            "stored formal validation boundary drift")
+    verify_formal_manifest_contract(manifest, contract, results, True)
+    require(manifest.get("qa", {}).get("qaDpi") == qa["qaDpi"],
+            "manifest QA summary drift")
+    verify_manifest_file_bindings(manifest)
+    verify_sha256s()
+    return {
+        "figureId": FIGURE_ID,
+        "release": "R0.73K",
+        "status": "formal",
+        "validationStatus": "passed",
+        "allChecksPass": True,
+        "sourceRows": data["rowCount"],
+        "checksumCount": len((HERE / "SHA256SUMS").read_text(encoding="utf-8").splitlines()),
+        "publicationCopiesComplete": manifest["publication"]["publicCopiesComplete"],
+        "readOnly": True,
+    }
 
 
 def write_sha256s() -> int:
@@ -764,11 +1034,20 @@ def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--deps", help="directory containing pinned Python packages")
     parser.add_argument("--require-formal", action="store_true")
+    parser.add_argument(
+        "--check-formal", action="store_true",
+        help="verify the existing formal package without writing any file",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     arguments = parse_arguments()
+    require(not (arguments.require_formal and arguments.check_formal),
+            "--require-formal and --check-formal are mutually exclusive")
+    if arguments.check_formal:
+        print(canonical(check_formal_read_only()), end="")
+        return 0
     verify_inventory_before_qa()
     config = load_json(HERE / "config.json")
     contract = load_json(HERE / "contract.json")
@@ -784,10 +1063,14 @@ def main() -> int:
         require(manual, "formal validation requires qa-report.md Status: passed")
     validation = write_validation(contract, data, decisions, formats, qa, manual)
     manifest = build_manifest(config, contract, results, validation, qa, manual)
+    verify_formal_manifest_contract(manifest, contract, results, manual)
     checksum_count = write_sha256s()
     verify_sha256s()
-    require(manifest["status"] == ("sealed" if manual else "pending-manual-inspection"),
-            "manifest status drift")
+    if arguments.require_formal:
+        require(validation["status"] == "passed" and validation["allChecksPass"] is True,
+                "formal validation checks are incomplete")
+        require(manifest["status"] == "formal" and manifest["qa"]["status"] == "passed",
+                "formal manifest contract is incomplete")
     output = {
         "figureId": FIGURE_ID,
         "status": validation["status"],
@@ -797,6 +1080,7 @@ def main() -> int:
         "sourceRows": data["rowCount"],
         "checksumCount": checksum_count,
         "manifestStatus": manifest["status"],
+        "publicationCopiesComplete": manifest["publication"]["publicCopiesComplete"],
     }
     print(canonical(output), end="")
     return 0

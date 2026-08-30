@@ -209,7 +209,7 @@ const boundaryTokens = (value) =>
   value.match(/\b(?:FALSE_AS_INFERENCE|CONDITIONAL|INCONCLUSIVE|NOT_RUN|FAILED|CLOSED|OPEN|PASS|FALSE)\b/g) ?? [];
 const machineLedgerTokens = (value) =>
   [...value.matchAll(
-    /\b([A-Za-z][A-Za-z0-9]*)=([A-Z][A-Z0-9_]*)\b/g,
+    /\b([A-Za-z][A-Za-z0-9]*)=([A-Z0-9][A-Z0-9_]*)\b/g,
   )].map((match) => `${match[1]}=${match[2]}`);
 const accountingTokens = (value) =>
   [...value.matchAll(

@@ -40,7 +40,7 @@ function assertPublicVoice(value, label) {
 }
 
 function machineLedgerAssignments(value) {
-  return [...value.matchAll(/\b([A-Za-z][A-Za-z0-9]*)=([A-Z][A-Z0-9_]*)\b/g)]
+  return [...value.matchAll(/\b([A-Za-z][A-Za-z0-9]*)=([A-Z0-9][A-Z0-9_]*)\b/g)]
     .map((match) => match[0]);
 }
 
@@ -116,7 +116,7 @@ test("R0.73J public route, recap, and claim boundary are complete", async () => 
     "2896/2896", "0.00714950", "0.04", "不承担连续算子上的存在性或重数证明权重",
     "NOT CLAY",
   ]) assert.ok(note.includes(token), `note token ${token}`);
-  assert.ok(note.includes("共享原始网格"));
+  assert.ok(note.includes("共享对应原始网格"));
   assert.ok(note.includes("independentOverlapRawOdeRecomputation=NOT_RUN"));
   for (const key of [
     "fullyIndependentRawGridAudit=OPEN", "uniformRankOneViscousBranch=OPEN",
@@ -239,11 +239,17 @@ test("R0.73J translations and browser bundle are synchronized and public-safe", 
     assert.deepEqual(machineLedgerAssignments(entry.en), machineLedgerAssignments(entry.zh), `${label}: machine ledgers`);
     assert.ok(bundle.includes(`${JSON.stringify(entry.zh)}: ${JSON.stringify(entry.en)}`), `${label}: browser bundle`);
   }
-  const machineLedgers = rows.flatMap((entry) => machineLedgerAssignments(entry.zh));
-  for (const status of [
-    "FAILED_WITH_LEDGER", "76_PASS_7_WRAPPING_INCONCLUSIVE",
-    "PASS_7_OF_7_PARENTS_2896_OF_2896_LEAVES",
-  ]) assert.ok(machineLedgers.some((assignment) => assignment.endsWith(`=${status}`)), `machine ledger ${status}`);
+  assert.deepEqual(
+    machineLedgerAssignments(
+      "a=FAILED_WITH_LEDGER; b=76_PASS_7_WRAPPING_INCONCLUSIVE; " +
+      "c=PASS_7_OF_7_PARENTS_2896_OF_2896_LEAVES",
+    ),
+    [
+      "a=FAILED_WITH_LEDGER", "b=76_PASS_7_WRAPPING_INCONCLUSIVE",
+      "c=PASS_7_OF_7_PARENTS_2896_OF_2896_LEAVES",
+    ],
+    "compound machine-ledger states are extracted without truncation",
+  );
   assertPublicVoice(JSON.stringify(rows), "R0.73J translations");
   for (const [index, value] of htmlPages.entries()) assertPublicVoice(value, `public HTML ${index + 1}`);
 });

@@ -1241,6 +1241,36 @@ def main() -> int:
 
     config = json.loads((HERE / "config.json").read_text(encoding="utf-8"))
     results = json.loads((HERE / "results.json").read_text(encoding="utf-8"))
+    experiment_binding = previous_manifest.get("experimentManifestBinding")
+    require(isinstance(experiment_binding, dict),
+            "historical experiment manifest binding is missing")
+    require(set(experiment_binding) == {
+        "path", "bytes", "sha256", "sourceCommit",
+    }, "historical experiment manifest binding schema changed")
+    experiment_relative = experiment_binding["path"]
+    experiment_payload = git_bytes(EXPERIMENT_COMMIT, experiment_relative)
+    require(experiment_binding["sourceCommit"] == EXPERIMENT_COMMIT,
+            "experiment manifest binding commit changed")
+    require(experiment_binding["bytes"] == len(experiment_payload),
+            "experiment manifest binding size changed")
+    require(experiment_binding["sha256"] == sha256_bytes(experiment_payload),
+            "experiment manifest binding hash changed")
+    experiment_manifest = json.loads(experiment_payload)
+    producer_wall_time = experiment_manifest.get(
+        "producerRecordedWallTimeSeconds"
+    )
+    independent_wall_time = experiment_manifest.get(
+        "independentValidationWallTimeSeconds"
+    )
+    for value, label in (
+        (producer_wall_time, "producer wall time"),
+        (independent_wall_time, "independent-validation wall time"),
+    ):
+        require(isinstance(value, (int, float)) and not isinstance(value, bool)
+                and value > 0, label + " is not a positive finite number")
+    scientific_wall_time = round(
+        producer_wall_time + independent_wall_time, 6
+    )
     for item in results["inputs"]:
         path = ROOT / item["path"]
         require(path.is_file(), "missing source-data input: " + item["path"])
@@ -1362,6 +1392,7 @@ def main() -> int:
         "qaArtifactsByteIdenticalToFigureCommit": True,
         "visualQaPassedAtFigureCommitAndCertificateRun": True,
         "formalContractPassed": True,
+        "scientificWallTimeBoundToExperimentCommit": True,
     }
     validation = {
         "schemaVersion": "r073g-figure-validation-v1",
@@ -1417,6 +1448,13 @@ def main() -> int:
         "originalGenerationCommand": previous_computation["command"],
         "metadataOnlySeal": True,
         "scientificComputationRerun": False,
+        "scientificWallTimeSeconds": scientific_wall_time,
+        "scientificWallTimeComponents": {
+            "producerRecordedWallTimeSeconds": producer_wall_time,
+            "independentValidationWallTimeSeconds": independent_wall_time,
+            "aggregation": "sum of the two E-manifest wall-time records",
+            "experimentManifestCommit": EXPERIMENT_COMMIT,
+        },
     })
 
     previous_git = previous_manifest["git"]

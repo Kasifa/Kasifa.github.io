@@ -31,11 +31,12 @@ ANALYTIC_PATHS = (
     "research/r073g_gap_matrix.md",
     "research/r073g_report-source.md",
 )
-TRUE_BOUNDARY_KEYS = {
+TRUE_DIAGNOSTIC_FACT_KEYS = {
     "actualFiniteTopEigenprofileUsed",
     "finiteBinary64Diagnostic",
     "twoIndependentFourierKernelsCrossChecked",
 }
+TRUE_BOUNDARY_KEYS = {"formalFiniteDiagnosticFigure"}
 
 
 def canonical(value: object) -> str:
@@ -194,6 +195,10 @@ def main() -> int:
     require(experiment_manifest["grid"]["rowCount"] == 28,
             "formal finite grid no longer has 28 rows")
 
+    facts = results["diagnosticFacts"]
+    require(set(facts) == TRUE_DIAGNOSTIC_FACT_KEYS,
+            "diagnostic-fact inventory changed")
+    require(all(facts.values()), "a declared diagnostic fact is false")
     boundary = results["claimBoundary"]
     require(set(boundary) == TRUE_BOUNDARY_KEYS | {
         "clayProblemSolved",
@@ -369,6 +374,7 @@ def main() -> int:
         },
         "caption": {"english": "caption.md"},
         "qa": qa,
+        "diagnosticFacts": facts,
         "claimBoundary": boundary,
         "files": file_records,
         "inventoryPolicy": {

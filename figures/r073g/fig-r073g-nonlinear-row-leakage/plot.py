@@ -208,6 +208,11 @@ def main() -> int:
         "schemaVersion": "r073g-formal-figure-results-v1",
         "figureId": config["figureId"],
         "evidenceClass": "finite-binary64-diagnostic-only",
+        "diagnosticFacts": {
+            "actualFiniteTopEigenprofileUsed": True,
+            "finiteBinary64Diagnostic": True,
+            "twoIndependentFourierKernelsCrossChecked": True,
+        },
         "inputs": [binding(path) for path in inputs.values()],
         "configBinding": binding(str(config_path.relative_to(ROOT))),
         "outputs": outputs,
@@ -218,7 +223,16 @@ def main() -> int:
             "independentMaximumScaleOneError": independent["maximumScaleOneError"],
             "allChecksPass": True,
         },
-        "claimBoundary": summary["claimBoundary"],
+        "claimBoundary": {
+            "formalFiniteDiagnosticFigure": True,
+            "clayProblemSolved": False,
+            "finiteH3CostProvesUniformContinuumH3Bound": False,
+            "finiteLeakageProvesNonlinearInstability": False,
+            "finiteTopEqualsContinuumTop": False,
+            "ordinaryCutoffAgreementIsTailBound": False,
+            "threeDimensionalVortexStretchingPresentInThisPlanarRow": False,
+            "transitionThresholdEstablished": False,
+        },
     }
     (HERE / "results.json").write_text(canonical(result), encoding="utf-8")
     return 0

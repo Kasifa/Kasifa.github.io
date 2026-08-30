@@ -1,0 +1,2449 @@
+{
+  "schemaVersion": "r073m-primary-finite-diagnostic-v1",
+  "release": "R0.73M",
+  "status": "passed",
+  "smokeMode": false,
+  "sourceProvenance": {
+    "enforced": true,
+    "sourceCommit": "7a4d7706d7a50525611b6267061aea0a79f9fd04",
+    "allSourceBlobsMatch": true,
+    "bindings": [
+      {
+        "path": "research/r073m_numerical_protocol.md",
+        "bytes": 10646,
+        "sha256": "f17d35eb501191b0a4435d227059abc0567f6340a06cca47ecbcc3bd84890bf0"
+      },
+      {
+        "path": "research/certificates/r073m/README.md",
+        "bytes": 3972,
+        "sha256": "a7d8df908cea2464d1aae6e3edc7ba44b7ff5ceaf30998da8352597bfcca8f3d"
+      },
+      {
+        "path": "research/certificates/r073m/command.txt",
+        "bytes": 5291,
+        "sha256": "347213f263d35d501fce62f7dc04f5c79a74088af6aed3b459275ae43f8fb9a6"
+      },
+      {
+        "path": "research/certificates/r073m/config.json",
+        "bytes": 6736,
+        "sha256": "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
+      },
+      {
+        "path": "research/certificates/r073m/requirements.txt",
+        "bytes": 27,
+        "sha256": "5a130bd7ab67726a28edd225ab7a91b1fdcca4ca1278b06c544cf83d84d9cbe4"
+      },
+      {
+        "path": "research/certificates/r073m/primary_diagnostic.py",
+        "bytes": 66801,
+        "sha256": "f8599839d4fc28b1eb9b9ca36248c424002045e1f2611347d2b0645d998b72af"
+      },
+      {
+        "path": "research/certificates/r073m/independent_linear.py",
+        "bytes": 23638,
+        "sha256": "bfc60d55d6cfd8e712d047ad6c96d5cce24f407e89dd9cb09a011c4251f6679f"
+      },
+      {
+        "path": "research/certificates/r073m/independent_hierarchy.py",
+        "bytes": 27860,
+        "sha256": "de5c0aa5ec719b92e36c5ab4b18ca5602502ba44c74c2feb1328ed85e1f14ee4"
+      },
+      {
+        "path": "research/certificates/r073m/exact_identities.py",
+        "bytes": 9616,
+        "sha256": "f338ee5ce07ef1b7037ac023aad9533b34281c12b049d3c3d2b8298e102736e4"
+      },
+      {
+        "path": "research/certificates/r073m/generate_certificate.py",
+        "bytes": 11884,
+        "sha256": "713894c56b6e7897e206a370b0d4c2095d7fae2c0d5508037508f6edf595ca07"
+      },
+      {
+        "path": "research/certificates/r073m/validate_certificate.py",
+        "bytes": 39155,
+        "sha256": "37ab18f1997b8488bdd9372eb48b117d88d9fe0d1feca21226a121d2673ef55a"
+      },
+      {
+        "path": "research/certificates/r073m/seal_package.py",
+        "bytes": 9777,
+        "sha256": "aafd274350b47f658bd9d831fd74108ddf00fc340e24a7f0a9975b5e062bd8e2"
+      }
+    ]
+  },
+  "configurationBinding": {
+    "path": "research/certificates/r073m/config.json",
+    "bytes": 6736,
+    "sha256": "d0f757c41ce96971e64860e028e55d9378166ef1df6de28b7c0c2527c6bbb7d4"
+  },
+  "upstreamBindings": [
+    {
+      "role": "primary selected finite kinetic evolution algorithm",
+      "path": "research/r073l_adiabatic_diagnostic.py",
+      "bytes": 23644,
+      "sha256": "68d3751a2b2eef3befcf92214bd8846fc4fcf8de22f6d89ceed647014642f824"
+    },
+    {
+      "role": "independent midpoint matrix-exponential algorithm",
+      "path": "experiments/r073l/independent_validate.py",
+      "bytes": 11483,
+      "sha256": "f7ad15bbda05a965149888d3ddc3a4cc93d75ca8bbc1373d4ad2324105355a05"
+    },
+    {
+      "role": "primary physical-velocity harmonic hierarchy algorithm",
+      "path": "research/certificates/r073h/primary_diagnostic.py",
+      "bytes": 42730,
+      "sha256": "c7e3d7709f4ebcf003a8d960827703ffe7fa6c8d41647e5104618959527a206f"
+    },
+    {
+      "role": "independent vorticity FFT hierarchy algorithm",
+      "path": "research/certificates/r073h/independent_validate.py",
+      "bytes": 21002,
+      "sha256": "e91ccabaf5c39bc2e6c22bd1bac17536f5802fa83c74131abad5b0d7558212c8"
+    },
+    {
+      "role": "sealed upstream harmonic and doubled-row certificate",
+      "path": "research/certificates/r073h/certificate.json",
+      "bytes": 10846,
+      "sha256": "d97ae98ef8309adfc109c33b857d3efe04a8b36b40d9fe8cc3b7a6b1e60c38f1"
+    },
+    {
+      "role": "sealed upstream adiabatic finite package manifest",
+      "path": "experiments/r073l/manifest.json",
+      "bytes": 3026,
+      "sha256": "3c9171bd8e1fcb7e59fdf4358862c124c8694616a25d9b0143b7636b12051e1a"
+    }
+  ],
+  "parameters": {
+    "gamma": 0.5,
+    "profileTimeEnd": 0.0022222222222222222,
+    "physicalTimeEnd": 0.0005555555555555556,
+    "profileToPhysicalTimeRule": "d=4t",
+    "cutoffs": [
+      40,
+      48,
+      64
+    ],
+    "viscousEpsilons": [
+      0.001,
+      0.0005,
+      0.00025,
+      0.000125,
+      6.25e-05
+    ],
+    "actionSampleCount": 65,
+    "fixedContour": {
+      "centerReal": 0.17,
+      "centerImag": 0.0,
+      "radius": 0.003
+    },
+    "hierarchyFastStep": 0.05
+  },
+  "normalization": {
+    "finiteInviscidActionProxy": "integral of lambda_(N,0) on [0,D*]",
+    "finiteViscousAction": "integral of lambda_(N,epsilon) on [0,D*]",
+    "finiteInviscidActionPrefactor": "actualPhysicalLinearGain*exp(-A_(N,0)/epsilon)",
+    "a": "V1/actualPhysicalLinearGain",
+    "b": "V2/actualPhysicalLinearGain^2",
+    "c": "V3/actualPhysicalLinearGain^3"
+  },
+  "caseCount": 15,
+  "cases": [
+    {
+      "N": 40,
+      "epsilon": 0.001,
+      "archiveKey": "N40_epsilon_1p00000000em03",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 40,
+        "epsilon": 0.001,
+        "dimension": 81,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.00037461106351576156,
+        "finiteInviscidExponent": 0.3778603553777033,
+        "finiteViscousExponent": 0.37461106351576157,
+        "kineticGain": 1.4541761769230614,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9965850277926023,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9998284900372016,
+        "terminalSelectedNorm": 1.453354709600592,
+        "terminalComplementNorm": 0.0032497783621957908,
+        "terminalComplementToSelectedRatio": 0.0022360531401786204,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.412631559391272e-16,
+        "maximumEigenResidualRelative": 9.793448855240237e-16,
+        "minimumLeftRightOverlap": 0.6143504863129937,
+        "initialPhaseAnchor": {
+          "real": 0.27356928016377946,
+          "imag": -2.0369169719667816e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 1.4541761769003219,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.0005349894835594229,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.000414116721853098,
+        "bDoubleEndpointL2": 0.0003387050164978693,
+        "cEndpointL2": 2.494942691308904e-07,
+        "cTargetEndpointL2": 2.2636304211154378e-07,
+        "cTripleEndpointL2": 1.0491502988211267e-07,
+        "cMeanPathTargetEndpointL2": 1.448921306480492e-07,
+        "cDoublePathTargetEndpointL2": 9.872429307819675e-08,
+        "cMeanPathSignedParallel": -1.0036106215940868e-07,
+        "cDoublePathSignedParallel": -6.471241898231116e-08,
+        "cTotalSignedParallel": -1.6507348114171984e-07,
+        "cMeanPathCosineWithA": -0.6926605448517499,
+        "cDoublePathCosineWithA": -0.6554862735867276,
+        "cTotalCosineWithA": -0.7292421925500427,
+        "v1OuterThreeMassFraction": 3.378601955563396e-33,
+        "v2OuterThreeMassFraction": 2.9799490414404977e-26,
+        "v3OuterThreeMassFraction": 1.1459355295375593e-22,
+        "maximumDivergenceRelative": 5.551115123125783e-17,
+        "maximumRealityRelative": 5.551115123125783e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 45,
+      "generatorRelativeDefect": 4.6120115827395616e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 4.6120115827395616e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 4.329797342420511e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 3.906704154272845e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.5637436750262193e-11,
+      "finiteInviscidActionPrefactor": 0.9965850277770183,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9998284900215669,
+      "effectiveTaylorAmplitudePerRho": 0.9965850277770183,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019931700555540367,
+          "targetRowL2": 0.019931700554233264,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.049829251388850915,
+          "targetRowL2": 0.049829251368427405,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 40,
+      "epsilon": 0.0005,
+      "archiveKey": "N40_epsilon_5p00000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 40,
+        "epsilon": 0.0005,
+        "dimension": 81,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.0003762323134106901,
+        "finiteInviscidExponent": 0.7557207107554066,
+        "finiteViscousExponent": 0.7524646268213802,
+        "kineticGain": 2.1215896265898944,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9964512326263356,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9997010494428584,
+        "terminalSelectedNorm": 2.1206733641931432,
+        "terminalComplementNorm": 0.00390644961799136,
+        "terminalComplementToSelectedRatio": 0.0018420798242437747,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.412631559391272e-16,
+        "maximumEigenResidualRelative": 9.793448855240237e-16,
+        "minimumLeftRightOverlap": 0.6057595213240705,
+        "initialPhaseAnchor": {
+          "real": 0.27119665787887737,
+          "imag": 2.227250341821051e-18
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 2.1215896265221246,
+        "aEndpointL2": 0.9999999999999998,
+        "bEndpointL2": 0.0003776191825825391,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.00030362161687440845,
+        "bDoubleEndpointL2": 0.00022452207201269762,
+        "cEndpointL2": 1.3557495429618226e-07,
+        "cTargetEndpointL2": 1.2494887612780726e-07,
+        "cTripleEndpointL2": 5.261507946216358e-08,
+        "cMeanPathTargetEndpointL2": 8.467381384347409e-08,
+        "cDoublePathTargetEndpointL2": 5.241173058055534e-08,
+        "cMeanPathSignedParallel": -6.13519459853739e-08,
+        "cDoublePathSignedParallel": -2.824744750225305e-08,
+        "cTotalSignedParallel": -8.959939348762694e-08,
+        "cMeanPathCosineWithA": -0.7245681185305718,
+        "cDoublePathCosineWithA": -0.5389527723920035,
+        "cTotalCosineWithA": -0.7170884305992304,
+        "v1OuterThreeMassFraction": 9.901596144924864e-27,
+        "v2OuterThreeMassFraction": 1.395642368496102e-21,
+        "v3OuterThreeMassFraction": 2.088679228299561e-18,
+        "maximumDivergenceRelative": 1.1102230246251565e-16,
+        "maximumRealityRelative": 1.0408340855860843e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 89,
+      "generatorRelativeDefect": 7.272345129291356e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.3996895145919117e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 7.272345129291356e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 3.2810986823063436e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 3.194293040020549e-11,
+      "finiteInviscidActionPrefactor": 0.9964512325945061,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9997010494109251,
+      "effectiveTaylorAmplitudePerRho": 0.9964512325945061,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019929024651890122,
+          "targetRowL2": 0.01992902465118093,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04982256162972531,
+          "targetRowL2": 0.0498225616186442,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 40,
+      "epsilon": 0.00025,
+      "archiveKey": "N40_epsilon_2p50000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 40,
+        "epsilon": 0.00025,
+        "dimension": 81,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.00037704548591681693,
+        "finiteInviscidExponent": 1.5114414215108132,
+        "finiteViscousExponent": 1.5081819436672677,
+        "kineticGain": 4.516352022888313,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9962701451445675,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9995227636481209,
+        "terminalSelectedNorm": 4.515220513726549,
+        "terminalComplementNorm": 0.0058826228517414,
+        "terminalComplementToSelectedRatio": 0.001302842869768567,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.412631559391272e-16,
+        "maximumEigenResidualRelative": 9.793448855240237e-16,
+        "minimumLeftRightOverlap": 0.6004632893889214,
+        "initialPhaseAnchor": {
+          "real": 0.2700167172840702,
+          "imag": 1.8224843834529028e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 4.516352022597015,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.00021925794004186896,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.00018514760119581983,
+        "bDoubleEndpointL2": 0.00011744960639711596,
+        "cEndpointL2": 5.021042527845612e-08,
+        "cTargetEndpointL2": 4.724984099685125e-08,
+        "cTripleEndpointL2": 1.6986445549781796e-08,
+        "cMeanPathTargetEndpointL2": 3.499309737977043e-08,
+        "cDoublePathTargetEndpointL2": 1.897429538149358e-08,
+        "cMeanPathSignedParallel": -2.6916814645949674e-08,
+        "cDoublePathSignedParallel": -6.441820590784885e-09,
+        "cTotalSignedParallel": -3.335863523673456e-08,
+        "cMeanPathCosineWithA": -0.7692035475976566,
+        "cDoublePathCosineWithA": -0.3395024933082817,
+        "cTotalCosineWithA": -0.7060052379638186,
+        "v1OuterThreeMassFraction": 4.1113057663836925e-22,
+        "v2OuterThreeMassFraction": 3.875230145101556e-18,
+        "v3OuterThreeMassFraction": 5.941154411904231e-15,
+        "maximumDivergenceRelative": 1.3492873864358716e-16,
+        "maximumRealityRelative": 3.373218466089679e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 178,
+      "generatorRelativeDefect": 4.4289966681289696e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.571326813569537e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 3.5386864154898573e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 4.4289966681289696e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 6.449843838337424e-11,
+      "finiteInviscidActionPrefactor": 0.9962701450803096,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9995227635836532,
+      "effectiveTaylorAmplitudePerRho": 0.9962701450803096,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019925402901606194,
+          "targetRowL2": 0.0199254029013423,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04981350725401548,
+          "targetRowL2": 0.049813507249892135,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 40,
+      "epsilon": 0.000125,
+      "archiveKey": "N40_epsilon_1p25000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 40,
+        "epsilon": 0.000125,
+        "dimension": 81,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.00037745270859777954,
+        "finiteInviscidExponent": 3.0228828430216264,
+        "finiteViscousExponent": 3.019621668782236,
+        "kineticGain": 20.47079855966516,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9961240978841835,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993779349124047,
+        "terminalSelectedNorm": 20.468671354970056,
+        "terminalComplementNorm": 0.01398098572823514,
+        "terminalComplementToSelectedRatio": 0.0006830431485158599,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.685248429377483e-16,
+        "maximumEigenResidualRelative": 9.793448855240237e-16,
+        "minimumLeftRightOverlap": 0.5974225218403229,
+        "initialPhaseAnchor": {
+          "real": 0.2694283628076816,
+          "imag": 1.8162231234463324e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 20.470798557007416,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.0001133918890012801,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 9.70624162706166e-05,
+        "bDoubleEndpointL2": 5.862258812939056e-05,
+        "cEndpointL2": 1.3775673338445762e-08,
+        "cTargetEndpointL2": 1.3165219427808263e-08,
+        "cTripleEndpointL2": 4.0553881867492244e-09,
+        "cMeanPathTargetEndpointL2": 1.0262197883812254e-08,
+        "cDoublePathTargetEndpointL2": 4.972384146052041e-09,
+        "cMeanPathSignedParallel": -8.172046871072268e-09,
+        "cDoublePathSignedParallel": -1.549868330200548e-09,
+        "cTotalSignedParallel": -9.721915201272816e-09,
+        "cMeanPathCosineWithA": -0.7963252086536918,
+        "cDoublePathCosineWithA": -0.31169521192989647,
+        "cTotalCosineWithA": -0.7384544750342468,
+        "v1OuterThreeMassFraction": 3.409105339959232e-19,
+        "v2OuterThreeMassFraction": 1.0468557901326891e-15,
+        "v3OuterThreeMassFraction": 1.0154451575569808e-12,
+        "maximumDivergenceRelative": 1.1901073428851052e-16,
+        "maximumRealityRelative": 1.1901073428851052e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 356,
+      "generatorRelativeDefect": 5.84558360417416e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 5.84558360417416e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 3.344407076643092e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 4.686692008498987e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.298309131810431e-10,
+      "finiteInviscidActionPrefactor": 0.9961240977548559,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993779347826546,
+      "effectiveTaylorAmplitudePerRho": 0.9961240977548559,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.01992248195509712,
+          "targetRowL2": 0.019922481955020242,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.049806204887742796,
+          "targetRowL2": 0.04980620488654163,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 40,
+      "epsilon": 6.25e-05,
+      "archiveKey": "N40_epsilon_6p25000000em05",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 40,
+        "epsilon": 6.25e-05,
+        "dimension": 81,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.0003776564789842912,
+        "finiteInviscidExponent": 6.045765686043253,
+        "finiteViscousExponent": 6.0425036637486595,
+        "kineticGain": 420.66319057746375,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9960745299491625,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993290525496833,
+        "terminalSelectedNorm": 420.64042221806193,
+        "terminalComplementNorm": 0.13176756781991905,
+        "terminalComplementToSelectedRatio": 0.0003132546490066286,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.412631559391272e-16,
+        "maximumEigenResidualRelative": 9.793448855240237e-16,
+        "minimumLeftRightOverlap": 0.5957677378469386,
+        "initialPhaseAnchor": {
+          "real": 0.2691345921546,
+          "imag": 5.3819170633738046e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 420.6631904678167,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 5.701258194233677e-05,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 4.865029649966981e-05,
+        "bDoubleEndpointL2": 2.972512658048542e-05,
+        "cEndpointL2": 3.4869755742933463e-09,
+        "cTargetEndpointL2": 3.3417347620624755e-09,
+        "cTripleEndpointL2": 9.958952935633679e-10,
+        "cMeanPathTargetEndpointL2": 2.601288233129272e-09,
+        "cDoublePathTargetEndpointL2": 1.2549665904076282e-09,
+        "cMeanPathSignedParallel": -2.07738141144361e-09,
+        "cDoublePathSignedParallel": -4.2416070918088985e-10,
+        "cTotalSignedParallel": -2.5015421206245002e-09,
+        "cMeanPathCosineWithA": -0.7985971661989115,
+        "cDoublePathCosineWithA": -0.3379856582820403,
+        "cTotalCosineWithA": -0.7485759040554675,
+        "v1OuterThreeMassFraction": 1.58743352997426e-17,
+        "v2OuterThreeMassFraction": 1.8108374335282526e-13,
+        "v3OuterThreeMassFraction": 3.7440487358925926e-10,
+        "maximumDivergenceRelative": 4.478751100023093e-16,
+        "maximumRealityRelative": 4.478751100023093e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 712,
+      "generatorRelativeDefect": 6.123926973837218e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 4.183073081380862e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 5.2352169867307304e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 6.123926973837218e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 2.60652786463393e-10,
+      "finiteInviscidActionPrefactor": 0.9960745296895328,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993290522892054,
+      "effectiveTaylorAmplitudePerRho": 0.9960745296895328,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019921490593790656,
+          "targetRowL2": 0.01992149059377088,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.049803726484476646,
+          "targetRowL2": 0.04980372648416762,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 48,
+      "epsilon": 0.001,
+      "archiveKey": "N48_epsilon_1p00000000em03",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 48,
+        "epsilon": 0.001,
+        "dimension": 97,
+        "finiteInviscidActionProxy": 0.00037786035537770317,
+        "finiteViscousAction": 0.00037461106351576167,
+        "finiteInviscidExponent": 0.3778603553777032,
+        "finiteViscousExponent": 0.3746110635157617,
+        "kineticGain": 1.4541761769230606,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9965850277926018,
+        "kineticGainNormalizedByFiniteViscousAction": 0.999828490037201,
+        "terminalSelectedNorm": 1.4533547096005897,
+        "terminalComplementNorm": 0.003249778362196334,
+        "terminalComplementToSelectedRatio": 0.0022360531401789977,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.09126627097602e-16,
+        "maximumEigenResidualRelative": 8.469146704186823e-16,
+        "minimumLeftRightOverlap": 0.6143504863129918,
+        "initialPhaseAnchor": {
+          "real": 0.27356928016377924,
+          "imag": -1.587038212643461e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 1.454176176900321,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.0005349894835594227,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.00041411672185309766,
+        "bDoubleEndpointL2": 0.00033870501649786944,
+        "cEndpointL2": 2.4949426913089017e-07,
+        "cTargetEndpointL2": 2.2636304211154357e-07,
+        "cTripleEndpointL2": 1.0491502988211279e-07,
+        "cMeanPathTargetEndpointL2": 1.448921306480489e-07,
+        "cDoublePathTargetEndpointL2": 9.872429307819691e-08,
+        "cMeanPathSignedParallel": -1.003610621594086e-07,
+        "cDoublePathSignedParallel": -6.471241898231117e-08,
+        "cTotalSignedParallel": -1.6507348114171977e-07,
+        "cMeanPathCosineWithA": -0.6926605448517507,
+        "cDoublePathCosineWithA": -0.6554862735867268,
+        "cTotalCosineWithA": -0.729242192550043,
+        "v1OuterThreeMassFraction": 2.780506018949931e-36,
+        "v2OuterThreeMassFraction": 7.734974412618103e-33,
+        "v3OuterThreeMassFraction": 1.6759735771038253e-29,
+        "maximumDivergenceRelative": 1.1102230246251565e-16,
+        "maximumRealityRelative": 5.551115123125783e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 45,
+      "generatorRelativeDefect": 8.543832663413728e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.7605291674848405e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 5.439923730851074e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 8.543832663413728e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.5637436750262202e-11,
+      "finiteInviscidActionPrefactor": 0.9965850277770179,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9998284900215663,
+      "effectiveTaylorAmplitudePerRho": 0.9965850277770179,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019931700555540357,
+          "targetRowL2": 0.01993170055423325,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.049829251388850894,
+          "targetRowL2": 0.04982925136842738,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 48,
+      "epsilon": 0.0005,
+      "archiveKey": "N48_epsilon_5p00000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 48,
+        "epsilon": 0.0005,
+        "dimension": 97,
+        "finiteInviscidActionProxy": 0.00037786035537770317,
+        "finiteViscousAction": 0.00037623231341069003,
+        "finiteInviscidExponent": 0.7557207107554064,
+        "finiteViscousExponent": 0.75246462682138,
+        "kineticGain": 2.121589626589894,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9964512326263356,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9997010494428583,
+        "terminalSelectedNorm": 2.120673364193145,
+        "terminalComplementNorm": 0.003906449617990387,
+        "terminalComplementToSelectedRatio": 0.0018420798242433146,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.09126627097602e-16,
+        "maximumEigenResidualRelative": 8.469146704186823e-16,
+        "minimumLeftRightOverlap": 0.6057595213240732,
+        "initialPhaseAnchor": {
+          "real": 0.2711966578788768,
+          "imag": -5.221678804444405e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 2.121589626522123,
+        "aEndpointL2": 0.9999999999999997,
+        "bEndpointL2": 0.0003776191825825391,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.0003036216168744085,
+        "bDoubleEndpointL2": 0.0002245220720126974,
+        "cEndpointL2": 1.3557495429618255e-07,
+        "cTargetEndpointL2": 1.2494887612780757e-07,
+        "cTripleEndpointL2": 5.261507946216358e-08,
+        "cMeanPathTargetEndpointL2": 8.467381384347431e-08,
+        "cDoublePathTargetEndpointL2": 5.241173058055527e-08,
+        "cMeanPathSignedParallel": -6.135194598537383e-08,
+        "cDoublePathSignedParallel": -2.824744750225299e-08,
+        "cTotalSignedParallel": -8.959939348762685e-08,
+        "cMeanPathCosineWithA": -0.724568118530569,
+        "cDoublePathCosineWithA": -0.5389527723920031,
+        "cTotalCosineWithA": -0.7170884305992279,
+        "v1OuterThreeMassFraction": 2.448821222565562e-35,
+        "v2OuterThreeMassFraction": 6.3702930572371035e-28,
+        "v3OuterThreeMassFraction": 2.2774584116267975e-24,
+        "maximumDivergenceRelative": 1.1102230246251565e-16,
+        "maximumRealityRelative": 2.7755575615628914e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 89,
+      "generatorRelativeDefect": 6.478221134251322e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.291641179052198e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 6.478221134251322e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 5.836959874973896e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 3.19435583574753e-11,
+      "finiteInviscidActionPrefactor": 0.9964512325945054,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9997010494109243,
+      "effectiveTaylorAmplitudePerRho": 0.9964512325945054,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019929024651890108,
+          "targetRowL2": 0.019929024651180915,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04982256162972527,
+          "targetRowL2": 0.04982256161864416,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 48,
+      "epsilon": 0.00025,
+      "archiveKey": "N48_epsilon_2p50000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 48,
+        "epsilon": 0.00025,
+        "dimension": 97,
+        "finiteInviscidActionProxy": 0.00037786035537770317,
+        "finiteViscousAction": 0.00037704548591681737,
+        "finiteInviscidExponent": 1.5114414215108127,
+        "finiteViscousExponent": 1.5081819436672694,
+        "kineticGain": 4.516352022888315,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9962701451445684,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9995227636481194,
+        "terminalSelectedNorm": 4.5152205137265575,
+        "terminalComplementNorm": 0.005882622851738938,
+        "terminalComplementToSelectedRatio": 0.0013028428697680191,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.09126627097602e-16,
+        "maximumEigenResidualRelative": 8.469146704186823e-16,
+        "minimumLeftRightOverlap": 0.6004632893889218,
+        "initialPhaseAnchor": {
+          "real": 0.27001671728408544,
+          "imag": -5.8242330089384545e-18
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 4.516352022597018,
+        "aEndpointL2": 0.9999999999999999,
+        "bEndpointL2": 0.000219257940041869,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.00018514760119581983,
+        "bDoubleEndpointL2": 0.00011744960639711603,
+        "cEndpointL2": 5.0210425278456083e-08,
+        "cTargetEndpointL2": 4.7249840996851197e-08,
+        "cTripleEndpointL2": 1.6986445549781813e-08,
+        "cMeanPathTargetEndpointL2": 3.4993097379770394e-08,
+        "cDoublePathTargetEndpointL2": 1.897429538149361e-08,
+        "cMeanPathSignedParallel": -2.6916814645949694e-08,
+        "cDoublePathSignedParallel": -6.441820590784891e-09,
+        "cTotalSignedParallel": -3.335863523673458e-08,
+        "cMeanPathCosineWithA": -0.7692035475976579,
+        "cDoublePathCosineWithA": -0.3395024933082816,
+        "cTotalCosineWithA": -0.70600523796382,
+        "v1OuterThreeMassFraction": 1.399949823698235e-28,
+        "v2OuterThreeMassFraction": 5.284205783653705e-23,
+        "v3OuterThreeMassFraction": 7.233492627177819e-20,
+        "maximumDivergenceRelative": 2.6985747728717417e-16,
+        "maximumRealityRelative": 6.746436932179354e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 178,
+      "generatorRelativeDefect": 8.106277920329418e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 6.2258180972963e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 3.4612827965067677e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 8.106277920329418e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 6.449824172500588e-11,
+      "finiteInviscidActionPrefactor": 0.9962701450803106,
+      "finiteViscousActionNormalizedPhysicalGain": 0.999522763583652,
+      "effectiveTaylorAmplitudePerRho": 0.9962701450803106,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.01992540290160621,
+          "targetRowL2": 0.019925402901342315,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04981350725401554,
+          "targetRowL2": 0.04981350724989218,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 48,
+      "epsilon": 0.000125,
+      "archiveKey": "N48_epsilon_1p25000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 48,
+        "epsilon": 0.000125,
+        "dimension": 97,
+        "finiteInviscidActionProxy": 0.00037786035537770317,
+        "finiteViscousAction": 0.00037745270859777965,
+        "finiteInviscidExponent": 3.0228828430216255,
+        "finiteViscousExponent": 3.019621668782237,
+        "kineticGain": 20.470798559665134,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9961240978841832,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993779349124027,
+        "terminalSelectedNorm": 20.468671354970056,
+        "terminalComplementNorm": 0.01398098572825538,
+        "terminalComplementToSelectedRatio": 0.0006830431485168487,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.09126627097602e-16,
+        "maximumEigenResidualRelative": 8.469146704186823e-16,
+        "minimumLeftRightOverlap": 0.5974225218403219,
+        "initialPhaseAnchor": {
+          "real": 0.26942836280853205,
+          "imag": -1.4967337370923385e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 20.470798557007377,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.0001133918890012801,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 9.706241627061658e-05,
+        "bDoubleEndpointL2": 5.8622588129390595e-05,
+        "cEndpointL2": 1.3775673338445764e-08,
+        "cTargetEndpointL2": 1.3165219427808267e-08,
+        "cTripleEndpointL2": 4.055388186749227e-09,
+        "cMeanPathTargetEndpointL2": 1.026219788381224e-08,
+        "cDoublePathTargetEndpointL2": 4.972384146052036e-09,
+        "cMeanPathSignedParallel": -8.172046871072268e-09,
+        "cDoublePathSignedParallel": -1.5498683302005557e-09,
+        "cTotalSignedParallel": -9.721915201272825e-09,
+        "cMeanPathCosineWithA": -0.796325208653693,
+        "cDoublePathCosineWithA": -0.3116952119298983,
+        "cTotalCosineWithA": -0.7384544750342473,
+        "v1OuterThreeMassFraction": 5.199297876990698e-24,
+        "v2OuterThreeMassFraction": 1.1374786358172966e-20,
+        "v3OuterThreeMassFraction": 7.930905844727877e-17,
+        "maximumDivergenceRelative": 1.190107342885108e-16,
+        "maximumRealityRelative": 3.570322028655324e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 356,
+      "generatorRelativeDefect": 5.199009852904014e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 5.199009852904014e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 4.678465940257705e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 4.647680089014165e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.298316073823307e-10,
+      "finiteInviscidActionPrefactor": 0.9961240977548548,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993779347826518,
+      "effectiveTaylorAmplitudePerRho": 0.9961240977548548,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019922481955097097,
+          "targetRowL2": 0.01992248195502022,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04980620488774274,
+          "targetRowL2": 0.049806204886541576,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 48,
+      "epsilon": 6.25e-05,
+      "archiveKey": "N48_epsilon_6p25000000em05",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 48,
+        "epsilon": 6.25e-05,
+        "dimension": 97,
+        "finiteInviscidActionProxy": 0.00037786035537770317,
+        "finiteViscousAction": 0.00037765647898429085,
+        "finiteInviscidExponent": 6.045765686043251,
+        "finiteViscousExponent": 6.042503663748653,
+        "kineticGain": 420.6631905774633,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9960745299491631,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993290525496884,
+        "terminalSelectedNorm": 420.6404222180613,
+        "terminalComplementNorm": 0.13176756782004673,
+        "terminalComplementToSelectedRatio": 0.0003132546490069326,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.568242124968821e-16,
+        "maximumEigenResidualRelative": 8.679624975628164e-16,
+        "minimumLeftRightOverlap": 0.5957677378469197,
+        "initialPhaseAnchor": {
+          "real": 0.2691345921640039,
+          "imag": -8.013747406759621e-19
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 420.66319046781666,
+        "aEndpointL2": 0.9999999999999999,
+        "bEndpointL2": 5.701258194233675e-05,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 4.865029649966981e-05,
+        "bDoubleEndpointL2": 2.972512658048539e-05,
+        "cEndpointL2": 3.4869755742955396e-09,
+        "cTargetEndpointL2": 3.3417347620645674e-09,
+        "cTripleEndpointL2": 9.958952935640224e-10,
+        "cMeanPathTargetEndpointL2": 2.60128823312921e-09,
+        "cDoublePathTargetEndpointL2": 1.2549665904105622e-09,
+        "cMeanPathSignedParallel": -2.0773814114436097e-09,
+        "cDoublePathSignedParallel": -4.2416070918089083e-10,
+        "cTotalSignedParallel": -2.501542120624501e-09,
+        "cMeanPathCosineWithA": -0.7985971661989305,
+        "cDoublePathCosineWithA": -0.33798565828125093,
+        "cTotalCosineWithA": -0.7485759040549992,
+        "v1OuterThreeMassFraction": 2.887842025430878e-21,
+        "v2OuterThreeMassFraction": 9.642022511069148e-17,
+        "v3OuterThreeMassFraction": 4.1719607296870754e-13,
+        "maximumDivergenceRelative": 3.0791413812658773e-16,
+        "maximumRealityRelative": 5.038594987525981e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 712,
+      "generatorRelativeDefect": 5.701535043350225e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 4.72183495208503e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 5.701535043350225e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 4.1962366343105975e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 2.6065184056667373e-10,
+      "finiteInviscidActionPrefactor": 0.9960745296895345,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993290522892114,
+      "effectiveTaylorAmplitudePerRho": 0.9960745296895345,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.01992149059379069,
+          "targetRowL2": 0.019921490593770914,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04980372648447673,
+          "targetRowL2": 0.0498037264841677,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 64,
+      "epsilon": 0.001,
+      "archiveKey": "N64_epsilon_1p00000000em03",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 64,
+        "epsilon": 0.001,
+        "dimension": 129,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.00037461106351576096,
+        "finiteInviscidExponent": 0.3778603553777033,
+        "finiteViscousExponent": 0.37461106351576096,
+        "kineticGain": 1.4541761769230586,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9965850277926004,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9998284900372003,
+        "terminalSelectedNorm": 1.4533547096005868,
+        "terminalComplementNorm": 0.0032497783622008956,
+        "terminalComplementToSelectedRatio": 0.002236053140182141,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.543400356531845e-16,
+        "maximumEigenResidualRelative": 6.833924728668483e-16,
+        "minimumLeftRightOverlap": 0.6143504863129927,
+        "initialPhaseAnchor": {
+          "real": 0.2735692801637765,
+          "imag": -9.99261440570381e-18
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 1.4541761769003196,
+        "aEndpointL2": 0.9999999999999998,
+        "bEndpointL2": 0.0005349894835594229,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.0004141167218530974,
+        "bDoubleEndpointL2": 0.00033870501649786993,
+        "cEndpointL2": 2.4949426913088943e-07,
+        "cTargetEndpointL2": 2.2636304211154285e-07,
+        "cTripleEndpointL2": 1.0491502988211242e-07,
+        "cMeanPathTargetEndpointL2": 1.4489213064804862e-07,
+        "cDoublePathTargetEndpointL2": 9.87242930781966e-08,
+        "cMeanPathSignedParallel": -1.0036106215940839e-07,
+        "cDoublePathSignedParallel": -6.471241898231135e-08,
+        "cTotalSignedParallel": -1.6507348114171974e-07,
+        "cMeanPathCosineWithA": -0.6926605448517508,
+        "cDoublePathCosineWithA": -0.6554862735867306,
+        "cTotalCosineWithA": -0.7292421925500453,
+        "v1OuterThreeMassFraction": 1.6419246803842435e-39,
+        "v2OuterThreeMassFraction": 3.1579190569459694e-36,
+        "v3OuterThreeMassFraction": 3.4088653833696195e-33,
+        "maximumDivergenceRelative": 5.551115123125783e-17,
+        "maximumRealityRelative": 6.938893903907228e-18,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 45,
+      "generatorRelativeDefect": 7.330616657254785e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 5.638708617630232e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 5.80513784980838e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 7.330616657254785e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.5636978666967128e-11,
+      "finiteInviscidActionPrefactor": 0.9965850277770167,
+      "finiteViscousActionNormalizedPhysicalGain": 0.999828490021566,
+      "effectiveTaylorAmplitudePerRho": 0.9965850277770167,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019931700555540336,
+          "targetRowL2": 0.019931700554233225,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04982925138885084,
+          "targetRowL2": 0.049829251368427314,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 64,
+      "epsilon": 0.0005,
+      "archiveKey": "N64_epsilon_5p00000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 64,
+        "epsilon": 0.0005,
+        "dimension": 129,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.0003762323134106893,
+        "finiteInviscidExponent": 0.7557207107554066,
+        "finiteViscousExponent": 0.7524646268213786,
+        "kineticGain": 2.1215896265898935,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9964512326263352,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9997010494428595,
+        "terminalSelectedNorm": 2.120673364193148,
+        "terminalComplementNorm": 0.003906449617988422,
+        "terminalComplementToSelectedRatio": 0.0018420798242423852,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.543400356531845e-16,
+        "maximumEigenResidualRelative": 6.833924728668483e-16,
+        "minimumLeftRightOverlap": 0.6057595213240713,
+        "initialPhaseAnchor": {
+          "real": 0.27119665787887876,
+          "imag": -1.6365043247901318e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 2.1215896265221232,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.0003776191825825393,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.00030362161687440866,
+        "bDoubleEndpointL2": 0.0002245220720126976,
+        "cEndpointL2": 1.3557495429618287e-07,
+        "cTargetEndpointL2": 1.249488761278078e-07,
+        "cTripleEndpointL2": 5.261507946216381e-08,
+        "cMeanPathTargetEndpointL2": 8.467381384347437e-08,
+        "cDoublePathTargetEndpointL2": 5.2411730580555495e-08,
+        "cMeanPathSignedParallel": -6.135194598537381e-08,
+        "cDoublePathSignedParallel": -2.82474475022531e-08,
+        "cTotalSignedParallel": -8.95993934876269e-08,
+        "cMeanPathCosineWithA": -0.7245681185305682,
+        "cDoublePathCosineWithA": -0.5389527723920028,
+        "cTotalCosineWithA": -0.7170884305992269,
+        "v1OuterThreeMassFraction": 6.030774954379194e-40,
+        "v2OuterThreeMassFraction": 1.1620779775717356e-36,
+        "v3OuterThreeMassFraction": 1.4821459762213303e-33,
+        "maximumDivergenceRelative": 1.1102230246251565e-16,
+        "maximumRealityRelative": 1.3877787807814457e-17,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 89,
+      "generatorRelativeDefect": 4.695738373027992e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.931179314830176e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 4.176719564326375e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 4.695738373027992e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 3.1943139719295437e-11,
+      "finiteInviscidActionPrefactor": 0.9964512325945054,
+      "finiteViscousActionNormalizedPhysicalGain": 0.999701049410926,
+      "effectiveTaylorAmplitudePerRho": 0.9964512325945054,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019929024651890108,
+          "targetRowL2": 0.019929024651180915,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04982256162972527,
+          "targetRowL2": 0.04982256161864417,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 64,
+      "epsilon": 0.00025,
+      "archiveKey": "N64_epsilon_2p50000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 64,
+        "epsilon": 0.00025,
+        "dimension": 129,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.000377045485916817,
+        "finiteInviscidExponent": 1.5114414215108132,
+        "finiteViscousExponent": 1.5081819436672679,
+        "kineticGain": 4.516352022888315,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9962701451445679,
+        "kineticGainNormalizedByFiniteViscousAction": 0.999522763648121,
+        "terminalSelectedNorm": 4.515220513726554,
+        "terminalComplementNorm": 0.005882622851729817,
+        "terminalComplementToSelectedRatio": 0.0013028428697660001,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.543400356531845e-16,
+        "maximumEigenResidualRelative": 6.833924728668483e-16,
+        "minimumLeftRightOverlap": 0.6004632893889218,
+        "initialPhaseAnchor": {
+          "real": 0.2700167172840837,
+          "imag": -3.278938152252085e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 4.516352022597014,
+        "aEndpointL2": 1.0,
+        "bEndpointL2": 0.00021925794004186896,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 0.0001851476011958198,
+        "bDoubleEndpointL2": 0.00011744960639711593,
+        "cEndpointL2": 5.021042527845628e-08,
+        "cTargetEndpointL2": 4.7249840996851395e-08,
+        "cTripleEndpointL2": 1.6986445549781842e-08,
+        "cMeanPathTargetEndpointL2": 3.499309737977048e-08,
+        "cDoublePathTargetEndpointL2": 1.8974295381493627e-08,
+        "cMeanPathSignedParallel": -2.6916814645949637e-08,
+        "cDoublePathSignedParallel": -6.441820590784916e-09,
+        "cTotalSignedParallel": -3.335863523673456e-08,
+        "cMeanPathCosineWithA": -0.7692035475976544,
+        "cDoublePathCosineWithA": -0.3395024933082825,
+        "cTotalCosineWithA": -0.7060052379638164,
+        "v1OuterThreeMassFraction": 2.1235914673249964e-40,
+        "v2OuterThreeMassFraction": 2.275285791532972e-34,
+        "v3OuterThreeMassFraction": 1.6828207715870835e-30,
+        "maximumDivergenceRelative": 1.3492873864358709e-16,
+        "maximumRealityRelative": 1.0119655398269032e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 178,
+      "generatorRelativeDefect": 7.156485452201393e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.517875353981138e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 7.156485452201393e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 6.851525164489175e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 6.449902835847926e-11,
+      "finiteInviscidActionPrefactor": 0.9962701450803094,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9995227635836527,
+      "effectiveTaylorAmplitudePerRho": 0.9962701450803094,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019925402901606187,
+          "targetRowL2": 0.019925402901342294,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.049813507254015475,
+          "targetRowL2": 0.049813507249892135,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 64,
+      "epsilon": 0.000125,
+      "archiveKey": "N64_epsilon_1p25000000em04",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 64,
+        "epsilon": 0.000125,
+        "dimension": 129,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.0003774527085977793,
+        "finiteInviscidExponent": 3.0228828430216264,
+        "finiteViscousExponent": 3.0196216687822344,
+        "kineticGain": 20.470798559665095,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9961240978841804,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993779349124035,
+        "terminalSelectedNorm": 20.468671354970006,
+        "terminalComplementNorm": 0.013980985728204096,
+        "terminalComplementToSelectedRatio": 0.000683043148514345,
+        "maximumSelectedEigenvalueImaginaryAbs": 6.136717466481094e-16,
+        "maximumEigenResidualRelative": 6.833924728668483e-16,
+        "minimumLeftRightOverlap": 0.5974225218403192,
+        "initialPhaseAnchor": {
+          "real": 0.2694283628085335,
+          "imag": -2.825985056527087e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 20.470798557007353,
+        "aEndpointL2": 0.9999999999999999,
+        "bEndpointL2": 0.00011339188900128012,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 9.706241627061661e-05,
+        "bDoubleEndpointL2": 5.862258812939058e-05,
+        "cEndpointL2": 1.3775673338445762e-08,
+        "cTargetEndpointL2": 1.3165219427808267e-08,
+        "cTripleEndpointL2": 4.0553881867492286e-09,
+        "cMeanPathTargetEndpointL2": 1.0262197883812237e-08,
+        "cDoublePathTargetEndpointL2": 4.972384146052035e-09,
+        "cMeanPathSignedParallel": -8.172046871072267e-09,
+        "cDoublePathSignedParallel": -1.5498683302005497e-09,
+        "cTotalSignedParallel": -9.72191520127282e-09,
+        "cMeanPathCosineWithA": -0.7963252086536929,
+        "cDoublePathCosineWithA": -0.31169521192989713,
+        "cTotalCosineWithA": -0.7384544750342467,
+        "v1OuterThreeMassFraction": 8.449128196790043e-36,
+        "v2OuterThreeMassFraction": 1.2795495112625992e-28,
+        "v3OuterThreeMassFraction": 1.0416820361534147e-24,
+        "maximumDivergenceRelative": 2.38021468577022e-16,
+        "maximumRealityRelative": 1.19010734288511e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 356,
+      "generatorRelativeDefect": 4.177174797324937e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 4.177174797324937e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 3.776743893085569e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 3.5327293536159246e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 1.298309131810435e-10,
+      "finiteInviscidActionPrefactor": 0.9961240977548528,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993779347826532,
+      "effectiveTaylorAmplitudePerRho": 0.9961240977548528,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019922481955097056,
+          "targetRowL2": 0.019922481955020183,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04980620488774264,
+          "targetRowL2": 0.04980620488654148,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    },
+    {
+      "N": 64,
+      "epsilon": 6.25e-05,
+      "archiveKey": "N64_epsilon_6p25000000em05",
+      "profileTimeEnd": 0.0022222222222222222,
+      "physicalTimeEnd": 0.0005555555555555556,
+      "profileToPhysicalTimeRule": "d=4t",
+      "linear": {
+        "N": 64,
+        "epsilon": 6.25e-05,
+        "dimension": 129,
+        "finiteInviscidActionProxy": 0.0003778603553777033,
+        "finiteViscousAction": 0.0003776564789842913,
+        "finiteInviscidExponent": 6.045765686043253,
+        "finiteViscousExponent": 6.04250366374866,
+        "kineticGain": 420.6631905774633,
+        "kineticGainNormalizedByFiniteInviscidAction": 0.9960745299491613,
+        "kineticGainNormalizedByFiniteViscousAction": 0.9993290525496813,
+        "terminalSelectedNorm": 420.64042221806113,
+        "terminalComplementNorm": 0.13176756782014978,
+        "terminalComplementToSelectedRatio": 0.0003132546490071777,
+        "maximumSelectedEigenvalueImaginaryAbs": 5.543400356531845e-16,
+        "maximumEigenResidualRelative": 6.833924728668483e-16,
+        "minimumLeftRightOverlap": 0.5957677378469189,
+        "initialPhaseAnchor": {
+          "real": 0.2691345921640901,
+          "imag": -1.6191361977465463e-17
+        },
+        "solver": {
+          "success": true,
+          "nfev": 3269,
+          "message": "The solver successfully reached the end of the integration interval."
+        },
+        "finiteCompressionOnly": true
+      },
+      "hierarchy": {
+        "actualPhysicalLinearGain": 420.66319046781666,
+        "aEndpointL2": 0.9999999999999999,
+        "bEndpointL2": 5.701258194233675e-05,
+        "bTargetEndpointL2": 0.0,
+        "bMeanEndpointL2": 4.86502964996698e-05,
+        "bDoubleEndpointL2": 2.972512658048538e-05,
+        "cEndpointL2": 3.486975574295537e-09,
+        "cTargetEndpointL2": 3.3417347620645666e-09,
+        "cTripleEndpointL2": 9.9589529356402e-10,
+        "cMeanPathTargetEndpointL2": 2.601288233129209e-09,
+        "cDoublePathTargetEndpointL2": 1.2549665904105624e-09,
+        "cMeanPathSignedParallel": -2.0773814114436092e-09,
+        "cDoublePathSignedParallel": -4.2416070918089073e-10,
+        "cTotalSignedParallel": -2.5015421206245002e-09,
+        "cMeanPathCosineWithA": -0.7985971661989306,
+        "cDoublePathCosineWithA": -0.3379856582812508,
+        "cTotalCosineWithA": -0.7485759040549992,
+        "v1OuterThreeMassFraction": 4.2697981962163206e-30,
+        "v2OuterThreeMassFraction": 1.3103230158938063e-24,
+        "v3OuterThreeMassFraction": 3.6394244639211803e-20,
+        "maximumDivergenceRelative": 2.7798330387170145e-16,
+        "maximumRealityRelative": 3.3590633250173203e-16,
+        "forbiddenParityRelative": 0.0
+      },
+      "hierarchyFastStep": 0.05,
+      "hierarchyStepCount": 712,
+      "generatorRelativeDefect": 6.092775040217016e-17,
+      "generatorRelativeDefectSamples": [
+        {
+          "d": 0.0,
+          "relativeDefect": 3.525771178539168e-17
+        },
+        {
+          "d": 0.0011111111111111111,
+          "relativeDefect": 6.092775040217016e-17
+        },
+        {
+          "d": 0.0022222222222222222,
+          "relativeDefect": 5.811734162534213e-17
+        }
+      ],
+      "physicalKineticGainRelativeDifference": 2.6065184056667373e-10,
+      "finiteInviscidActionPrefactor": 0.9960745296895327,
+      "finiteViscousActionNormalizedPhysicalGain": 0.9993290522892043,
+      "effectiveTaylorAmplitudePerRho": 0.9960745296895327,
+      "thirdOrderTargetDiagnostics": [
+        {
+          "rho": 0.02,
+          "delta": 0.019921490593790656,
+          "targetRowL2": 0.01992149059377088,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        },
+        {
+          "rho": 0.05,
+          "delta": 0.04980372648447664,
+          "targetRowL2": 0.04980372648416761,
+          "diagnosticOnly": true,
+          "visualizationChoiceIsCertifiedContinuumTaylorRadius": false,
+          "fullNonlinearTrajectoryComputed": false
+        }
+      ],
+      "normalization": {
+        "a": "V1/actualPhysicalLinearGain",
+        "b": "V2/actualPhysicalLinearGain^2",
+        "c": "V3/actualPhysicalLinearGain^3"
+      },
+      "claimBoundary": {
+        "finiteInviscidActionProxyComputed": true,
+        "finiteViscousActionComputedSeparately": true,
+        "finitePrescribedActionRecodingComputed": true,
+        "finiteABCoefficientsComputed": true,
+        "continuumActionCertifiedByFiniteComputation": false,
+        "continuumGainPrefactorCertifiedByFiniteComputation": false,
+        "prefactorLimitCertified": false,
+        "twoTermWKBCertified": false,
+        "uniformTaylorRadiusCertified": false,
+        "fourthOrderRemainderCertified": false,
+        "fullNonlinearNavierStokesTrajectoryComputed": false,
+        "finiteCutoffAgreementIsTailProof": false,
+        "singleFixedBackgroundLyapunovInstabilityCertified": false,
+        "transverseThreeDimensionalClosureCertified": false,
+        "finiteTimeSingularityCertified": false,
+        "clayProblemSolved": false
+      }
+    }
+  ],
+  "cutoffComparisons": [
+    {
+      "smallN": 40,
+      "largeN": 48,
+      "epsilon": 0.001,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 4.440892098500626e-16,
+      "selectedObservableHierarchyMaximumRelativeDifference": 1.135337885729793e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 40,
+      "largeN": 48,
+      "epsilon": 0.0005,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 6.661338147750939e-16,
+      "selectedObservableHierarchyMaximumRelativeDifference": 2.5421385534949356e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 40,
+      "largeN": 48,
+      "epsilon": 0.00025,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 9.992007221626409e-16,
+      "selectedObservableHierarchyMaximumRelativeDifference": 1.120417721763798e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 40,
+      "largeN": 48,
+      "epsilon": 0.000125,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.1102230246251565e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 1.9090535407290194e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 40,
+      "largeN": 48,
+      "epsilon": 6.25e-05,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.6653345369377348e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 6.572042903629882e-13,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 48,
+      "largeN": 64,
+      "epsilon": 0.001,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.1102230246251565e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 3.532162311159356e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 48,
+      "largeN": 64,
+      "epsilon": 0.0005,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 0.0,
+      "selectedObservableHierarchyMaximumRelativeDifference": 4.276209955669059e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 48,
+      "largeN": 64,
+      "epsilon": 0.00025,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.2212453270876722e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 4.201566456614229e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 48,
+      "largeN": 64,
+      "epsilon": 0.000125,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.9984014443252818e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 1.2148522531911966e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    },
+    {
+      "smallN": 48,
+      "largeN": 64,
+      "epsilon": 6.25e-05,
+      "finiteInviscidActionProxyAbsoluteDifference": 1.0842021724855044e-19,
+      "finiteInviscidActionPrefactorAbsoluteDifference": 1.7763568394002505e-15,
+      "selectedObservableHierarchyMaximumRelativeDifference": 2.4917698212814717e-15,
+      "finiteCutoffAgreementIsTailProof": false
+    }
+  ],
+  "stepComparisons": [
+    {
+      "N": 64,
+      "epsilon": 0.001,
+      "coarseFastStep": 0.1,
+      "fineFastStep": 0.05,
+      "selectedObservableMaximumRelativeDifference": 9.338829528428334e-09
+    },
+    {
+      "N": 64,
+      "epsilon": 0.001,
+      "coarseFastStep": 0.05,
+      "fineFastStep": 0.025,
+      "selectedObservableMaximumRelativeDifference": 5.840839239035702e-10
+    },
+    {
+      "N": 64,
+      "epsilon": 6.25e-05,
+      "coarseFastStep": 0.1,
+      "fineFastStep": 0.05,
+      "selectedObservableMaximumRelativeDifference": 1.1582529656770108e-08
+    },
+    {
+      "N": 64,
+      "epsilon": 6.25e-05,
+      "coarseFastStep": 0.05,
+      "fineFastStep": 0.025,
+      "selectedObservableMaximumRelativeDifference": 7.445779914987398e-10
+    }
+  ],
+  "archiveIndex": [
+    {
+      "archiveKey": "N40_epsilon_1p00000000em03",
+      "N": 40,
+      "epsilon": 0.001,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        81,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N40_epsilon_5p00000000em04",
+      "N": 40,
+      "epsilon": 0.0005,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        81,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N40_epsilon_2p50000000em04",
+      "N": 40,
+      "epsilon": 0.00025,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        81,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N40_epsilon_1p25000000em04",
+      "N": 40,
+      "epsilon": 0.000125,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        81,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N40_epsilon_6p25000000em05",
+      "N": 40,
+      "epsilon": 6.25e-05,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        81,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N48_epsilon_1p00000000em03",
+      "N": 48,
+      "epsilon": 0.001,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        97,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N48_epsilon_5p00000000em04",
+      "N": 48,
+      "epsilon": 0.0005,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        97,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N48_epsilon_2p50000000em04",
+      "N": 48,
+      "epsilon": 0.00025,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        97,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N48_epsilon_1p25000000em04",
+      "N": 48,
+      "epsilon": 0.000125,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        97,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N48_epsilon_6p25000000em05",
+      "N": 48,
+      "epsilon": 6.25e-05,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        97,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N64_epsilon_1p00000000em03",
+      "N": 64,
+      "epsilon": 0.001,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        129,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N64_epsilon_5p00000000em04",
+      "N": 64,
+      "epsilon": 0.0005,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        129,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N64_epsilon_2p50000000em04",
+      "N": 64,
+      "epsilon": 0.00025,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        129,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N64_epsilon_1p25000000em04",
+      "N": 64,
+      "epsilon": 0.000125,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        129,
+        2
+      ]
+    },
+    {
+      "archiveKey": "N64_epsilon_6p25000000em05",
+      "N": 64,
+      "epsilon": 6.25e-05,
+      "stateOrder": [
+        "V1",
+        "V2_Kz0",
+        "V2_KzPlusMinus2",
+        "V3_via_Kz0",
+        "V3_via_KzPlusMinus2"
+      ],
+      "shape": [
+        5,
+        7,
+        129,
+        2
+      ]
+    }
+  ],
+  "maximums": {
+    "selectedEigenvalueImaginaryAbs": 6.685248429377483e-16,
+    "eigenResidualRelative": 9.793448855240237e-16,
+    "generatorRelativeDefect": 8.543832663413728e-17,
+    "divergenceRelative": 4.478751100023093e-16,
+    "realityRelative": 5.038594987525981e-16,
+    "forbiddenParityRelative": 0.0,
+    "physicalKineticGainRelative": 2.60652786463393e-10,
+    "largestCutoffActionProxyAbsolute": 1.0842021724855044e-19,
+    "largestCutoffPrefactorAbsolute": 1.9984014443252818e-15,
+    "hierarchyFinestCutoffRelative": 4.276209955669059e-15,
+    "hierarchyStepRelative": 1.1582529656770108e-08,
+    "aEndpointNormalizationAbsolute": 3.3306690738754696e-16,
+    "outerThreeMassFraction": 3.7440487358925926e-10,
+    "minimumPhaseAnchorAbs": 0.2688410933415651
+  },
+  "checks": {
+    "selectedEigenvalueNumericallyReal": true,
+    "eigenResidualRelative": true,
+    "generatorRelativeDefect": true,
+    "divergenceRelative": true,
+    "realityRelative": true,
+    "forbiddenParityRelative": true,
+    "physicalKineticGainRelative": true,
+    "largestCutoffActionProxyAbsolute": true,
+    "largestCutoffPrefactorAbsolute": true,
+    "hierarchyFinestCutoffRelative": true,
+    "hierarchyStepRelative": true,
+    "aEndpointNormalizationAbsolute": true,
+    "outerThreeMassFraction": true,
+    "allPhaseAnchorsNonzero": true,
+    "allFixedContourCountsOne": true,
+    "allLinearSolversSucceeded": true,
+    "profileEndpointExact": true,
+    "physicalEndpointExact": true,
+    "quadraticTargetRowsZero": true,
+    "aEndpointNormalizedByActualGain": true
+  },
+  "allChecksPass": true,
+  "claimBoundary": {
+    "finiteInviscidActionProxyComputed": true,
+    "finiteViscousActionComputedSeparately": true,
+    "finitePrescribedActionRecodingComputed": true,
+    "finiteABCoefficientsComputed": true,
+    "continuumActionCertifiedByFiniteComputation": false,
+    "continuumGainPrefactorCertifiedByFiniteComputation": false,
+    "prefactorLimitCertified": false,
+    "twoTermWKBCertified": false,
+    "uniformTaylorRadiusCertified": false,
+    "fourthOrderRemainderCertified": false,
+    "fullNonlinearNavierStokesTrajectoryComputed": false,
+    "finiteCutoffAgreementIsTailProof": false,
+    "singleFixedBackgroundLyapunovInstabilityCertified": false,
+    "transverseThreeDimensionalClosureCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  },
+  "continuumConclusion": "none; finite action proxy and finite cubic hierarchy only"
+}

@@ -1,9 +1,8 @@
 # R0.73N | Fixed-member finite-strain stability and the family-transfer obstruction
 
-**Status:** continuum proof and independent analytic, adversarial, symmetry,
-compactness, and bounded literature audits PASS; finite diagnostic validated
-pre-seal but not yet final release evidence; source-commit binding, final
-seal, formal figure, and public release PENDING
+**Status:** continuum proof and independent analytic and adversarial audits,
+direct symmetry/compactness audit, bounded literature audit, sealed finite
+diagnostic, and formal figure PASS; public release content READY
 
 **Date:** 2026-08-31 (Asia/Shanghai)
 
@@ -363,16 +362,18 @@ or priority claim.
 | independent analytic audit | PASS | complete rederivation of estimates, quantifiers, moduli, and transformations |
 | adversarial audit | PASS | factor-of-two, lifespan, topology, bootstrap, modulus, and same-map attacks |
 | bounded literature boundary | PASS | two-wave primary-source audit and internal claim-boundary reconciliation |
-| finite diagnostic | VALIDATED PRE-SEAL; RELEASE PENDING | primary and independent checks pass, but source-commit binding and final seal are incomplete |
-| formal figure | **PENDING** | no formal figure package is asserted yet |
-| public release | **PENDING** | downstream rendering and publication gates remain |
+| finite diagnostic | CLOSED / PASS | 19-file package; primary, independent, and 19-check final validation; sealed to the immutable source commit |
+| formal figure | PASS | 25-file package; PDF/SVG/600-dpi PNG, 605 source rows, 12 programmatic checks, and visual QA |
+| public release content | READY | report, dictionary, figure, and claim-state vocabulary are frozen; deployment remains a separate transactional gate |
 
-## 11. Validated pre-seal finite diagnostic
+## 11. Sealed finite diagnostic
 
 The current R0.73N diagnostic package has passed its primary and independent
-checks as a theorem-relevant error-detection layer. It remains pre-seal:
-`sourceCommitAssigned=false` and `finalSeal=false`, so it is not yet final
-release evidence. Its current checks cover:
+checks as a theorem-relevant error-detection layer. Its 9 source files are
+byte-bound to source commit
+`23526aa667aba1880a768ff4c1db35536edce737`; the 19-file package has
+`sourceCommitAssigned=true`, `finalSeal=true`, and a passing 19-check final
+validator. Its checks cover:
 
 - the exact normalized strain envelope \(e^{-4t}+e^{-16t}\), including its
   equality witness;
@@ -385,27 +386,30 @@ release evidence. Its current checks cover:
 The bound \(\mathcal A_*<173/450000\) is inherited from the sealed R0.73M
 continuum theorem and is not recomputed by the finite package.
 
-The pre-seal source-data file has exactly 605 rows: 241 strain samples, 243
+The sealed source-data file has exactly 605 rows: 241 strain samples, 243
 cumulative samples, and 121 marked-basepoint samples. The primary validation
 and the independent Decimal/Fraction reconstruction both report
 `allChecksPass=true`; the latter evaluates six sentinel times without
-importing the primary producer. These are pre-seal observations until the
-parent release binds the final source commit and completes the final seal.
+importing the primary producer.
 
 These facts are finite checks, not proof of the continuum energy inequality,
 the \(H^3\) stability tube, the inherited action interval, a sharp flow-map
 modulus, or any open statement.
 
-## 12. Formal figure placeholder
+## 12. Formal journal figure
 
-**Status:** `PENDING`
+**Status:** `PASS`
 
-No formal R0.73N figure package, frozen figure identifier, caption, file
-inventory, or visual QA result is claimed in this source. A later figure may
-visualize the exact strain envelope, cumulative \(j(T)\), and the lower/upper
-pointed exponent factors only after its source-data binding and publication QA
-are completed. Until then, the diagnostic CSV is not to be described as a
-released journal figure.
+The frozen figure identifier is `fig-r073n-finite-strain-bracket`. Its
+25-file archive contains 10 source files and 15 generated files, including a
+row-for-row binding to all 605 certificate rows, PDF/SVG/600-dpi PNG masters,
+code, environment records, monitoring logs, hashes, and a QA report. The
+figure sources and upstream certificate are sealed to the same immutable
+commit. Twelve programmatic checks pass; color, grayscale, final-size, and
+independently rendered PDF surfaces were visually inspected and found
+legible and unclipped. The figure evaluates exact formulas at different
+marked basepoints and is not a measured sharp modulus or a fixed-background
+instability certificate.
 
 ## 13. Public release copy (zh)
 
@@ -446,11 +450,11 @@ R0.73M 证明：当 \(\Lambda\to\infty\) 且背景随之改变时，按完整作
 
 ### Next
 
-下一发布步骤是先把已经通过内部校验的预封存有限诊断绑定到最终核心源提交，
-完成 final seal，再制作正式附图并完成图注、源数据绑定、视觉 QA 与公开页面
-检查；在这些门禁完成前，有限诊断发布证据、正式附图和公开发布均为 PENDING。
-若继续数学研究，应为强迫、非衰减或无限累积应变等结构不同的固定背景重新
-冻结问题，而不能把 R0.73M 的现有背景族直接重新标记。
+R0.73N 的证书、正式附图与发布内容已经完成封存；公开页面仍须经过事务式生成、
+翻译、同步 PDF、全站测试和线上字节一致性检查。数学上的下一发布门是 R0.73O：
+为强迫、非衰减或无限累积应变等结构不同的固定背景重新冻结候选问题，先寻找
+能够逃离本节有限总应变稳定管的必要结构，而不能把 R0.73M 的现有背景族直接
+重新标记。
 
 ## 14. Exact public boundary
 
@@ -506,10 +510,10 @@ arbitraryFixedBackgroundInstability=OPEN
 transverseCriticalNormGrowth=OPEN
 finiteTimeSingularity=OPEN
 Clay=OPEN
-finiteDiagnosticValidation=VALIDATED_PRESEAL
-finiteDiagnosticPackage=PENDING
-sourceCommitAssigned=FALSE
-finalSeal=FALSE
-formalFigurePackage=PENDING
-publicRelease=PENDING
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
 ```

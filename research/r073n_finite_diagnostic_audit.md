@@ -2,17 +2,17 @@
 
 **Audit date:** 2026-08-31
 
-**Status:** **PRESEAL PASS / IMMUTABLE SOURCE COMMIT PENDING**
+**Status:** **FINAL SEAL PASS**
 
 **Scope:** exact and high-precision checks of the finite-strain coefficient,
 the endpoint exponent bracket, the marked-basepoint sensitivity source data,
 and the associated journal-figure package
 
 **Verdict:** the finite diagnostic and figure packages pass their mathematical,
-independent-recomputation, provenance, format, and visual-QA gates.  They are
-currently SHA-256-bound but uncommitted.  No source commit is claimed, no
-public copy was created, and final sealing remains a separate post-commit
-operation.
+independent-recomputation, provenance, format, and visual-QA gates. Both are
+sealed to immutable source commit
+`23526aa667aba1880a768ff4c1db35536edce737`. No public copy is claimed by
+this audit; public release remains a separate transactional operation.
 
 ## 1. Exact analytical quantities
 
@@ -124,15 +124,16 @@ manifest: 9 source files and 10 generated files.  The primary diagnostic,
 independent implementation, certificate assembly, and independent validator
 all pass.  `SHA256SUMS` binds the 18 non-ledger files.
 
-Current provenance state:
+Final provenance state:
 
-- `status = hash-bound-uncommitted`;
-- `sourceCommitAssigned = false`;
-- `finalSeal = false`;
+- `status = sealed`;
+- `sourceCommitAssigned = true`;
+- `sourceCommit = 23526aa667aba1880a768ff4c1db35536edce737`;
+- `finalSeal = true`;
 - `allPrerequisiteChecksPass = true`.
 
-The package deliberately does not infer a source commit from the current
-repository `HEAD`.
+The package verified every one of its 9 source blobs against the explicit
+commit; it did not infer a commit from repository `HEAD`.
 
 ## 4. Journal figure package
 
@@ -153,16 +154,15 @@ inventory contains 10 source files and 15 generated files, including the
 chart-contract/source-data note, code, validation, manifest, monitoring logs,
 QA report, and hashes.
 
-Current preseal master outputs:
+Final sealed master outputs:
 
 | Output | Technical property | SHA-256 |
 | --- | --- | --- |
-| `figure.pdf` | one vector page; 178.0000000000147 mm by 96.00000000001111 mm; zero raster image XObjects | `4c5675b645ceedeef2d72cae6cdbd2c73b20ce63484453f4bd6d92ad315c41d5` |
-| `figure.svg` | vector; text preserved; zero embedded raster images | `7d3396e5c89290a95ac709613c62ac0bb8f90f103cc779a0cc88597c7f6f3517` |
+| `figure.pdf` | one vector page; 178.0000000000147 mm by 96.00000000001111 mm; zero raster image XObjects | `88f0cc5fecac93c21f6dad8ab75b65805951ed0f6897d58b76625e8598094a95` |
+| `figure.svg` | vector; text preserved; zero embedded raster images | `868a2fa7d7752ddbd09857460257fc46bc21e86eee2a98df347b3adf9e7b1194` |
 | `figure.png` | 4204 by 2267 pixels; 599.9988 dpi metadata | `43aed593c7fcd17640fa6f3ff1e755cd392397da1965e7278bb74aaf29283b48` |
 
-These are preseal hashes.  The required post-commit rerender and its newly
-sealed manifest supersede them.
+These hashes are bound by the final figure manifest and `SHA256SUMS`.
 
 The color final-size raster, grayscale raster, and independently rasterized
 PDF were visually inspected after the last render.  Labels, legends, scales,
@@ -171,9 +171,10 @@ unclipped.  Line styles and fills remain distinguishable in grayscale.  The
 PDF raster agrees with the PNG layout.  Twelve programmatic figure checks and
 the explicit manual visual-QA gate pass.
 
-The figure package remains `hash-bound-uncommitted`, with
-`publicationStatus = not-published`, `sourceCommitAssigned = false`, and
-`finalSeal = false`.
+The figure package has `status = sealed`, `publicationStatus = not-published`,
+`sourceCommitAssigned = true`, and `finalSeal = true`. Its 10 source files,
+the upstream certificate, and the figure manifest all name the same source
+commit.
 
 ## 5. Evidence boundary
 
@@ -192,22 +193,27 @@ In particular it does not certify:
 The marked-basepoint curves evaluate formulas at different backgrounds.  They
 are not one fixed-background orbit and are not a measured sharp modulus.
 
-## 6. Post-commit final-seal handoff
+## 6. Completed final-seal chain
 
-Final sealing must wait for a new immutable R0.73N theorem-source commit that
-contains byte-identical copies of all 9 certificate source files and all 10
-figure source files.  Let its explicit full hash be
-`R073N_SOURCE_COMMIT`.  The required order is:
+The final chain used source commit
+`23526aa667aba1880a768ff4c1db35536edce737` explicitly:
 
-1. run the certificate sealer with
-   `--source-commit R073N_SOURCE_COMMIT`, then run its `--verify-only` form;
-2. rerun the plotter so the figure environment binds the newly sealed
-   certificate manifest and source-data SHA;
-3. inspect the regenerated color, grayscale, and PDF QA surfaces;
-4. run the figure validator with `--confirm-visual-qa --source-commit
-   R073N_SOURCE_COMMIT`, then run its `--verify-only` form.
+1. the certificate sealer checked all 9 source blobs, wrote the final seal,
+   and passed both the 19-check scientific validator and seal verifier;
+2. the plotter regenerated the figure after the certificate seal;
+3. the color, grayscale, final-size, internal PDF raster, and an independent
+   Poppler PDF raster were visually inspected;
+4. the figure validator checked all 10 figure source blobs, the upstream
+   certificate commit, 605 source rows, 12 programmatic checks, and the
+   explicit visual-QA confirmation before writing and verifying its seal.
 
-Both final-seal paths fail closed unless the explicit commit exists, every
-required source blob matches the current file bytes, and the certificate and
-figure use the same source commit.  No current or future `HEAD` is substituted
-implicitly.
+```text
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+```
+
+Neither path substituted the then-current `HEAD`; both used and verified the
+explicit immutable source commit.

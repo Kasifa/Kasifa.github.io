@@ -4,14 +4,14 @@
 
 **Scope:** continuum theorem, synchronized-trajectory definitions, independent
 and adversarial audits, symmetry and compactness obstruction, bounded
-literature audit, validated pre-seal finite diagnostic, formal figure
-placeholder, and public-release language
+literature audit, sealed finite diagnostic, formal figure, and release-ready
+public language
 
 **Release title:** *R0.73N | Fixed-member finite-strain stability and the family-transfer obstruction*
 
 **Public title (zh):** *R0.73N｜固定成员有限应变稳定性与族转移障碍*
 
-**Next release:** PENDING
+**Next release:** R0.73O
 
 This ledger fixes the bilingual vocabulary for R0.73N. It does not enlarge
 the mathematical theorem and must not be used to merge distinct input and
@@ -141,10 +141,9 @@ These brackets are not sharp-exponent or prefactor-limit theorems.
 | `CLOSED` | A continuum obligation is closed by the analytic proof. |
 | `CLOSED_AS_COROLLARY` | A consequence follows from a stronger proved estimate but must retain its own topology label. |
 | `PASS` | An independent audit, finite validator, or other frozen gate passed its stated checks. |
-| `VALIDATED_PRESEAL` | Internal validators passed, but the package has not yet been bound to the final source commit or granted release-evidence status. |
 | `FALSE_AS_INFERENCE` | The proposed implication is invalid; this does not negate unrelated statements. |
 | `OPEN` | No theorem is claimed in this release. |
-| `PENDING` | The artifact or publication gate has not been completed and must not be described as released. |
+| `READY` | Canonical release content is frozen; deployment and live-byte verification remain separate gates. |
 
 The canonical claim-state ledger is
 
@@ -168,11 +167,10 @@ Clay=OPEN
 
 ## 6. Finite diagnostic and figure language
 
-The current R0.73N finite diagnostic is `VALIDATED_PRESEAL`, not sealed release
-evidence. Its primary and independent validators passed, but
-`sourceCommitAssigned=false` and `finalSeal=false`; therefore the package
-remains `PENDING` for release. The following may be recorded only as pre-seal
-observations:
+The R0.73N finite diagnostic is sealed release evidence. Its primary and
+independent implementations pass, the final validator passes 19 checks, and
+all 9 source files are byte-identical to source commit
+`23526aa667aba1880a768ff4c1db35536edce737`. The following may be recorded:
 
 - the package contains 605 source-data rows: 241 strain samples, 243
   cumulative-\(j\) samples, and 121 marked-basepoint samples;
@@ -182,20 +180,20 @@ observations:
 - the package is diagnostic only and does not prove the continuum energy
   estimate, the \(H^3\) tube, a sharp modulus, or any open statement.
 
-The 605 rows and validation outputs do not become publication evidence until
-the parent release binds the final source commit and completes the final seal.
-
-The formal figure package is `PENDING`. No figure identifier, caption, file
-count, visual QA result, or publication status is frozen in R0.73N at this
-stage. Do not infer a formal figure from the diagnostic CSV alone.
+The formal figure package `fig-r073n-finite-strain-bracket` passes. Its
+25-file archive contains 10 source files and 15 generated files, including
+PDF/SVG/600-dpi PNG masters and all 605 upstream-bound source rows. Twelve
+programmatic checks and explicit color, grayscale, final-size, and rendered-
+PDF visual QA pass. The figure remains finite/illustrative and does not prove
+the continuum theorem or any open claim.
 
 ```text
-finiteDiagnosticValidation=VALIDATED_PRESEAL
-finiteDiagnosticPackage=PENDING
-sourceCommitAssigned=FALSE
-finalSeal=FALSE
-formalFigurePackage=PENDING
-publicRelease=PENDING
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
 ```
 
 ## 7. Literature and public-voice boundary

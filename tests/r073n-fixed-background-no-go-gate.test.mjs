@@ -68,11 +68,12 @@ test("R0.73N continuum sources close only the synchronized finite-strain route",
   assert.match(values.ledger, /fixedMemberPlanarL2SynchronizedStability=CLOSED/);
   assert.match(values.gap,
     /\| G10 \|[^\n]+\| \*\*OPEN\*\* \|/);
-  assert.match(values.dictionary, /finiteDiagnosticPackage=PENDING/);
-  assert.match(values.dictionary, /sourceCommitAssigned=FALSE/);
-  assert.match(values.dictionary, /finalSeal=FALSE/);
-  assert.match(values.report, /formalFigurePackage=PENDING/);
-  assert.match(values.report, /publicRelease=PENDING/);
+  assert.match(values.dictionary, /finiteDiagnosticValidation=PASS/);
+  assert.match(values.dictionary, /finiteDiagnosticPackage=CLOSED/);
+  assert.match(values.dictionary, /sourceCommitAssigned=TRUE/);
+  assert.match(values.dictionary, /finalSeal=TRUE/);
+  assert.match(values.report, /formalFigurePackage=PASS/);
+  assert.match(values.report, /publicReleaseContent=READY/);
 
   const joined = Object.values(values).join("\n");
   assert.doesNotMatch(joined,

@@ -1,0 +1,7 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073I_DEPS_DIR=/tmp/r073c-deps
+CODEX_RUNTIME_BIN=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override
+
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073i/fig-r073i-action-boundary/plot.py --deps "$R073I_DEPS_DIR" --overwrite
+
+env PATH="$CODEX_RUNTIME_BIN:$PATH" OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" figures/r073i/fig-r073i-action-boundary/validate.py --deps "$R073I_DEPS_DIR" --require-formal

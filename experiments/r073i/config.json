@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "r073i-finite-config-v1",
+  "release": "R0.73I-finite-diagnostic",
+  "evidenceClass": "finite-binary64-galerkin-diagnostic-only",
+  "diagnosticOnly": true,
+  "windows": [
+    {
+      "id": "explicit-pilot",
+      "expression": "1e-4",
+      "role": "explicit finite pilot; not a theorem endpoint"
+    },
+    {
+      "id": "analytic-upper-bound",
+      "expression": "sqrt(19/180)/392",
+      "role": "finite route diagnostic at a strict analytic upper bound for d0; not d0"
+    },
+    {
+      "id": "one-over-450",
+      "expression": "1/450",
+      "role": "legacy finite comparison; not the currently known theorem endpoint D=d0"
+    }
+  ],
+  "action": {
+    "cutoffs": [24, 48, 96],
+    "quadratureOrders": [32, 64],
+    "primaryQuadratureOrder": 64
+  },
+  "gain": {
+    "primaryCutoff": 48,
+    "lambdas": [10000, 50000, 100000, 500000, 1000000],
+    "primaryFastStep": 0.25,
+    "cutoffComparison": {
+      "cutoffs": [24, 48, 96],
+      "lambda": 100000,
+      "fastStep": 0.25
+    },
+    "stepComparison": {
+      "cutoff": 48,
+      "lambda": 100000,
+      "fastSteps": [0.5, 0.25, 0.125]
+    },
+    "independentRk4": {
+      "cutoff": 24,
+      "lambda": 100000,
+      "fastStep": 0.05
+    }
+  },
+  "finiteTopRealTolerance": 1e-8,
+  "tolerances": {
+    "actionQuadratureAbsolute": 1e-12,
+    "actionFinestCutoffAbsolute": 1e-12,
+    "wkbFinestCutoffAbsolute": 1e-10,
+    "selectedGainFinestCutoffLogAbsolute": 1e-7,
+    "selectedGainStepLogAbsolute": 1e-8,
+    "independentRk4LogAbsolute": 1e-6,
+    "topEigenResidualRelative": 1e-10
+  },
+  "claimBoundary": {
+    "finiteBinary64GalerkinDiagnostic": true,
+    "selectedFiniteBranchIsContinuumBranch": false,
+    "ordinaryCutoffAgreementIsTailProof": false,
+    "finiteActionIsContinuumAction": false,
+    "finiteWkbCorrectionIsAsymptoticTheorem": false,
+    "analyticUpperBoundEqualsD0": false,
+    "oneOver450IsTheoremEndpoint": false,
+    "matchingContinuumGainActionEstablished": false,
+    "prescribedActionSeedDepartureEstablished": false,
+    "clayProblemSolved": false
+  }
+}

@@ -1,0 +1,7 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073I_DEPS_DIR=/tmp/r073c-deps
+
+env OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 VECLIB_MAXIMUM_THREADS=4 "$CODEX_PYTHON" experiments/r073i/selected_gain_action_diagnostic.py --deps "$R073I_DEPS_DIR" --config experiments/r073i/config.json --output-dir experiments/r073i --overwrite
+
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" experiments/r073i/validate.py --directory experiments/r073i
+

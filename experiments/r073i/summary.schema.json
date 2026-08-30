@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kasifa.github.io/schemas/r073i-finite-summary-v1.json",
+  "title": "R0.73I finite selected-gain action diagnostic summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "release",
+    "evidenceClass",
+    "diagnosticOnly",
+    "createdUtc",
+    "sourceCommit",
+    "configuration",
+    "counts",
+    "windowSummaries",
+    "checks",
+    "allChecksPass",
+    "claimBoundary",
+    "dataFiles"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "r073i-finite-summary-v1"},
+    "release": {"const": "R0.73I-finite-diagnostic"},
+    "evidenceClass": {"const": "finite-binary64-galerkin-diagnostic-only"},
+    "diagnosticOnly": {"const": true},
+    "createdUtc": {"type": "string"},
+    "sourceCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "configuration": {"type": "object"},
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actionRows", "gainRows", "comparisonRows", "windowCount"],
+      "properties": {
+        "actionRows": {"type": "integer", "minimum": 1},
+        "gainRows": {"type": "integer", "minimum": 1},
+        "comparisonRows": {"type": "integer", "minimum": 1},
+        "windowCount": {"type": "integer", "minimum": 1}
+      }
+    },
+    "windowSummaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "windowId",
+          "endpoint",
+          "role",
+          "primaryAction",
+          "primaryAverageRate",
+          "primaryWkbCorrection",
+          "largestLambda",
+          "largestLambdaNormalizedLogGain",
+          "largestLambdaResidual",
+          "largestLambdaResidualMinusWkb"
+        ]
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": {"type": "boolean"},
+      "minProperties": 1
+    },
+    "allChecksPass": {"type": "boolean"},
+    "claimBoundary": {
+      "type": "object",
+      "required": [
+        "finiteBinary64GalerkinDiagnostic",
+        "selectedFiniteBranchIsContinuumBranch",
+        "ordinaryCutoffAgreementIsTailProof",
+        "finiteActionIsContinuumAction",
+        "finiteWkbCorrectionIsAsymptoticTheorem",
+        "analyticUpperBoundEqualsD0",
+        "oneOver450IsTheoremEndpoint",
+        "matchingContinuumGainActionEstablished",
+        "prescribedActionSeedDepartureEstablished",
+        "clayProblemSolved"
+      ]
+    },
+    "dataFiles": {
+      "type": "array",
+      "minItems": 5,
+      "items": {"type": "string"}
+    }
+  }
+}

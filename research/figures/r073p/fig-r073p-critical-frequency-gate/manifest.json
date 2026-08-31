@@ -1,0 +1,302 @@
+{
+  "allPrerequisiteChecksPass": true,
+  "analyticalQuestion": "How does the high-frequency penalty change between direct H3 entry and critical homogeneous-H1/2 entry, and what can the linear heat benchmark show without nonlinear control?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "clayProblemSolved": false,
+    "closedFormThresholdComparison": true,
+    "continuousLinearUpperBound": true,
+    "delayedNonlinearSmoothing": false,
+    "exactSampledLinearLatticeMaximum": true,
+    "finiteTimeSingularity": false,
+    "generalL2FrequencyLocalization": false,
+    "globalRegularityTheorem": false,
+    "navierStokesSimulation": false,
+    "nonlinearDuhamelControl": false,
+    "nonlinearEntryCertificate": false,
+    "pureModeSobolevScaling": true
+  },
+  "computation": {
+    "command": "plot.py --render-final",
+    "configuration": "config.json",
+    "kind": "exact-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.0,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "elapsedSeconds",
+        "maximumResidentSetMiB"
+      ]
+    },
+    "precision": "IEEE-754 binary64 for sampled values; exact integer enumeration of three-square radii",
+    "solver": "closed-form evaluation plus exhaustive integer lattice-radius audit",
+    "wallTimeSeconds": 3.075870916014537
+  },
+  "compute": {
+    "cpu": "arm",
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-31T05:08:55.765138+00:00",
+  "data": [
+    {
+      "bytes": 74765,
+      "path": "source-data.csv",
+      "schema": "mixed threshold, Sobolev-power, and heat-lattice rows",
+      "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a"
+    },
+    {
+      "bytes": 3278,
+      "path": "results.json",
+      "schema": "formula facts and output inventory",
+      "sha256": "30b17c097d29367745773fafc705d98030208cff14073a26b2f96bb9191f8661"
+    },
+    {
+      "bytes": 701,
+      "path": "environment.json",
+      "schema": "runtime and hardware record",
+      "sha256": "f8538decb0f99f14176b1ab63787a61b064cb02809427f0704f0aa6c2e12e5c4"
+    },
+    {
+      "bytes": 1161,
+      "path": "progress.ndjson",
+      "schema": "timestamped generation stages",
+      "sha256": "59b4db346d6143ae050e09d6911d9ba020cb4078d3f05b483fa3264a11e998ae"
+    },
+    {
+      "bytes": 1764,
+      "path": "resource-log.ndjson",
+      "schema": "timestamped process resource observations",
+      "sha256": "883644d02d7d50cded6011f050bdd9f3a6611e553c503c60f943259dc174ce16"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "pypdfium2": "5.13.0",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]"
+  },
+  "figure": {
+    "heightMillimetres": 86.0,
+    "outputs": [
+      {
+        "bytes": 49780,
+        "format": "PDF vector",
+        "path": "figure.pdf",
+        "sha256": "b2446891346996a8ba270405bcf0673316c4e61df79ce3084536a606d31c7ab6"
+      },
+      {
+        "bytes": 155215,
+        "format": "SVG vector",
+        "path": "figure.svg",
+        "sha256": "e68bd35e28cffc5c92630af427bc341d0d4fcf9ee8a8e0e98b6f6faeae99dc3d"
+      },
+      {
+        "bytes": 573331,
+        "dpi": 600,
+        "format": "PNG",
+        "path": "figure.png",
+        "sha256": "367d21a3431652d07f8b04786dd0131806f5af486ee928a09345d40bd4927ab3"
+      }
+    ],
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073p-critical-frequency-gate",
+  "formulaAudit": {
+    "panelA": {
+      "frequencyRange": [
+        1,
+        100000
+      ],
+      "maximumRelativeFormulaError": 0.0,
+      "rowCount": 198
+    },
+    "panelB": {
+      "endpointStatement": "At gamma=1/2, critical Hdot1/2 size is the fixed prefactor and requires a strict radius inequality.",
+      "interiorSampleCount": 249,
+      "maximumAbsoluteFormulaError": 0.0,
+      "openStrip": [
+        0.5,
+        3.0
+      ],
+      "rowCount": 351
+    },
+    "panelC": {
+      "continuousPeakNormSquaredAtMinimumTau": 1500.0,
+      "cutoffNormSquared": 4096,
+      "discreteToContinuousRatioRange": [
+        0.0035023537984809018,
+        1.0
+      ],
+      "latticeHalfWidth": 64,
+      "maximumRelativeFormulaError": 0.0,
+      "representableRadiusCount": 3414,
+      "rowCount": 241,
+      "tauRange": [
+        0.001,
+        10.0
+      ]
+    },
+    "pdf": {
+      "pageSizeMillimetres": [
+        178.0000000000147,
+        86.00000000001583
+      ],
+      "qaPdfPixels": [
+        2103,
+        1016
+      ]
+    },
+    "surfaces": {
+      "expectedQaPixels": [
+        2102,
+        1016
+      ],
+      "figurePng": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expectedPixels": [
+          4204,
+          2031
+        ],
+        "mode": "RGBA",
+        "pixels": [
+          4204,
+          2031
+        ]
+      },
+      "qaRasters": {
+        "qa-final-size.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1016
+          ]
+        },
+        "qa-grayscale.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1016
+          ]
+        }
+      },
+      "svgBytes": 155215
+    }
+  },
+  "git": {
+    "certificateCommit": "c087845e65034d2ba92b8a8330d90e36e77704d3",
+    "dirtyAtCertifiedRun": false,
+    "repository": "https://github.com/kasifa/kasifa.github.io",
+    "sourceCommit": "c087845e65034d2ba92b8a8330d90e36e77704d3"
+  },
+  "pdfGenerated": true,
+  "preflightChecksPass": true,
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRasterInspected": true,
+    "qaArtifacts": [
+      {
+        "bytes": 494818,
+        "path": "qa-final-size.png",
+        "sha256": "7cfe854a095fc69c357a4e657302d9f043a7a201baad11a22c50c04fec7c1399"
+      },
+      {
+        "bytes": 408577,
+        "path": "qa-grayscale.png",
+        "sha256": "34353815c4bc06d1f2ad70d21b653282f6937444d4c11a3e647e4fc0fd35c9a8"
+      },
+      {
+        "bytes": 298921,
+        "path": "qa-pdf.png",
+        "sha256": "73af1ba527b22d329ec9eab23f759934b8cb2b62d7953bdba0d5b6cb942858ed"
+      }
+    ],
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "research-figure-manifest-v1",
+  "sourceBindings": [
+    {
+      "bytes": 1587,
+      "gitBlobObjectId": "5a7bc6208af16e79919af5d86c774c0fb5b7f8ff",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/README.md",
+      "sha256": "74bc3cb43204bb56a8d6a5c098f9bfa20ca05588898ab4536cf72d19d79a9792"
+    },
+    {
+      "bytes": 1526,
+      "gitBlobObjectId": "ab88910ca7a7446ea3b7d9b0874f1d88e532d78d",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/caption.md",
+      "sha256": "e1cb458cca468975903134f159dcd7e8662fe5b77f77ce7fd1cfdea9bfd96853"
+    },
+    {
+      "bytes": 3503,
+      "gitBlobObjectId": "66e254f41ed7400c8b756ce46e61f05046c6fcf7",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/chart-contract-and-source-data.md",
+      "sha256": "026c31f6a0c1cf49871d4fb6078d3621e6fc7d39c7e30399d35b93890443af38"
+    },
+    {
+      "bytes": 1797,
+      "gitBlobObjectId": "bfe082ee1c0daeeedde16b1737384298b56353a0",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/command.txt",
+      "sha256": "d58992d57ebebd36f8986b452b39bfbc9fde76d3a0404747954e710d59e978e3"
+    },
+    {
+      "bytes": 884,
+      "gitBlobObjectId": "18f30d681b7feac57a0d0b6ba3afed8a383b09bd",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/config.json",
+      "sha256": "d2ce92de2d32a34f417a45c7d1d0acd5eedd095303f039aeebdd86b44118ada4"
+    },
+    {
+      "bytes": 2740,
+      "gitBlobObjectId": "8b33a961fd7026ad75695a0f050e998eab9faf14",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/contract.json",
+      "sha256": "c6627934cf383a572b55d2c22c58614fb4de53cbaf791721511723624f6045be"
+    },
+    {
+      "bytes": 23920,
+      "gitBlobObjectId": "3a4309d1a08851f5bd46bf23264ea2fc1e0a5424",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/plot.py",
+      "sha256": "1ee508292eca5b3114df2dc039374b9a5f4daad08236125aeb38ec1e8f3fe41b"
+    },
+    {
+      "bytes": 2539,
+      "gitBlobObjectId": "151a2d236a506e95475fc04cbe618abbdd679909",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/qa-protocol.md",
+      "sha256": "20dce6473d46e54332b91c080c173171fa37abfd7e4134625ff88448ac2b9507"
+    },
+    {
+      "bytes": 79,
+      "gitBlobObjectId": "e7173c3a8a9d00bcbd2408a88d033594453fbf70",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/requirements.txt",
+      "sha256": "c0dfebb8e4ce0a39b1565a51b94cb2ad8adf09d7910be44490446710102cf92f"
+    },
+    {
+      "bytes": 32521,
+      "gitBlobObjectId": "97190f0bbb667e5d45a0a013818ca1d35f4fc750",
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/validate.py",
+      "sha256": "1b4066523ff4bd7c6e997b7f2cb76455501a15c99501a7d45b9a48ddcd66080c"
+    }
+  ],
+  "sourceCommitAssigned": true,
+  "sourceData": [],
+  "status": "formal",
+  "supportedClaim": "Normalized sufficient thresholds scale as N^-3 and N^-1/2; for a_N=cN^-gamma, 1/2<gamma<3 gives L2 and homogeneous H1/2 decay but homogeneous H3 growth. The heat panel is linear only."
+}

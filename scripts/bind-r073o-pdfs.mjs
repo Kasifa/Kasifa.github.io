@@ -46,7 +46,7 @@ function canonicalTitles(dictionary) {
   const releaseTitle = dictionary.match(/^\*\*Release title:\*\*\s*\*?(.+?)\*?\s*$/m)?.[1]
     ?.replace(/^\*|\*$/g, "").trim();
   const synchronized = dictionary.match(
-    /^## 7\. Synchronized title\s*\n\s*```text\s*\n([^\n]+)\n([^\n]+)\n```/m,
+    /^## \d+\. Synchronized title\s*\n\s*```text\s*\n([^\n]+)\n([^\n]+)\n```/m,
   );
   if (!synchronized) throw new Error("R0.73O synchronized-title ledger missing");
   if (synchronized[1].trim() !== releaseTitle) {

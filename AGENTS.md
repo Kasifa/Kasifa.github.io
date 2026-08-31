@@ -30,6 +30,10 @@ These rules apply to reader-facing text in `public/`, page metadata, research no
 
 # Compute resources
 
+- Perform ordinary translation directly on the local workstation.  Do not
+  route routine translation through DGX; reserve DGX for genuinely
+  compute-intensive numerical simulation unless the user explicitly asks for
+  a different translation workflow.
 - Local numerical work may use the workstation's available CPU cores, memory, and GPU aggressively. Keep the interactive desktop responsive, but do not default to single-core execution for independent simulations or parameter sweeps.
 - Record hardware, thread/process counts, precision, solver tolerances, and wall time in each experiment manifest.
 - Long simulations must expose progress rather than run as a silent process. Preserve a timestamped solver log and a resource log, report meaningful stage/step/residual/CFL/checkpoint/ETA information to the user, and record failures or restarts instead of overwriting them.

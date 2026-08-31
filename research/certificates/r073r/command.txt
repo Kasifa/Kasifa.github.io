@@ -1,0 +1,14 @@
+R073R_CERT_PYTHON="${R073R_CERT_PYTHON:-python3}"
+
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/compute_formula_diagnostic.py
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/independent_validate.py
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/assemble_certificate.py
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/validate_certificate.py
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/seal_package.py
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/validate_certificate.py --verify-only
+"$R073R_CERT_PYTHON" -B research/certificates/r073r/seal_package.py --verify-only
+
+# Final seal only after a parent release commits the nine R0.73R source files:
+# R073R_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$R073R_CERT_PYTHON" -B research/certificates/r073r/seal_package.py --source-commit "$R073R_SOURCE_COMMIT"
+# "$R073R_CERT_PYTHON" -B research/certificates/r073r/seal_package.py --source-commit "$R073R_SOURCE_COMMIT" --verify-only

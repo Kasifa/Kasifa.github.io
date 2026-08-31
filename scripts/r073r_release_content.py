@@ -839,7 +839,18 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
     if REPORT_SOURCE in texts:
         lead_zh = _paragraph_under(report, r"1\.\s+直接结论", "direct conclusion")
         home_zh = _paragraph_under(report, r"4\.\s+同一能谱，不同临界热流迹", "matched pair")
-        recap_zh = _paragraph_under(report, r"8\.\s+研究价值与下一道门", "value recap")
+        recap_intro = _paragraph_under(
+            report, r"8\.\s+研究价值与下一道门", "value recap"
+        )
+        recap_suffix = "它有三项可保留价值："
+        if not recap_intro.endswith(recap_suffix):
+            raise CanonicalSourceError("value recap lost its three-item lead-in")
+        recap_zh = (
+            recap_intro[:-len(recap_suffix)]
+            + "可保留之处是：分层拆开能量、加法几何与高阶相位；"
+            "给出有限 Fourier 数据可复算的严格证书；"
+            "用同谱确定性族证明二次能谱不足。"
+        )
         literature_zh = _paragraph_under(report, r"7\.\s+文献边界", "literature boundary")
         next_gate_zh = _one(
             r"(?ms)(下一发布门\s+R0\.73S\s+将优先检查：.*?形式发布。)",

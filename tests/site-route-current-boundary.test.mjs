@@ -250,7 +250,7 @@ test("homepage current route reaches the materialized G through V boundary witho
       "signed cross-covariance scale PDE",
       "pressure-aware Germano interface",
       "selected quartic next-level remainder",
-      "带符号 production",
+      "带符号的 production \\(-\\tau_s:\\nabla v_s\\)",
       "R0.70A–R0.73V · 100 节已公开",
       "76 节完整封存",
       "138 节累计回顾",
@@ -385,7 +385,7 @@ test("literature route records the materialized G through V boundary", async () 
     for (const token of [
       "开放接口 · R0.73W",
       "quantitative control at the exact next-level boundary",
-      "带符号 production",
+      "\\(-\\tau_s:\\nabla v_s\\)",
     ]) assert.ok(topology.includes(token), `R0.73W interface ${token}`);
     assert.equal(topology.includes("开放接口 · R0.73V"), false);
   } else if (isU) {

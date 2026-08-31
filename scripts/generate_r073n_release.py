@@ -778,6 +778,7 @@ def update_home(content: ReleaseContent) -> str:
                           '/recap-r0-61-r0-73n.html">阅读 R0.60 之后的累计回顾')
     value = value.replace("/recap-r0-61-r0-73m.html", "/recap-r0-61-r0-73n.html")
     value = value.replace("/recap-r0-61-r0-73m.pdf", "/recap-r0-61-r0-73n.pdf")
+    value = value.replace("综述 v1.53 ·", "综述 v1.54 ·")
     value = value.replace('<span class="route-range">R0.69P–R0.73M</span>',
                           '<span class="route-range">R0.69P–R0.73N</span>')
     value = value.replace('R0.73M：prescribed-action 平面非线性固定距离偏离已闭合',
@@ -1019,18 +1020,105 @@ def build_note_index(content: ReleaseContent, site_payload: bytes) -> str:
     return value
 
 
+def formal_figure_payloads(source: Path) -> dict[str, bytes]:
+    source_manifest = strict_json_file(
+        f"{FIGURE_SOURCE_RELATIVE}/manifest.json", "R0.73N sealed figure manifest"
+    )
+    environment = strict_json_file(
+        f"{FIGURE_SOURCE_RELATIVE}/environment.json", "R0.73N figure environment"
+    )
+    package = source_manifest.get("packageInventory")
+    expected = package.get("paths") if isinstance(package, dict) else None
+    actual = sorted(
+        path.name for path in source.iterdir()
+        if path.is_file() and not path.is_symlink()
+    )
+    if not isinstance(expected, list) or sorted(expected) != actual or len(actual) != 25:
+        raise RuntimeError("R0.73N sealed figure inventory is not the expected 25 files")
+
+    formal = json.loads(json.dumps(source_manifest))
+    outputs = formal.get("figure", {}).get("outputs", [])
+    output_rows = {
+        str(row.get("path")): row for row in outputs if isinstance(row, dict)
+    }
+    public_assets: list[dict[str, object]] = []
+    for suffix in ("pdf", "svg", "png"):
+        name = f"figure.{suffix}"
+        row = output_rows.get(name)
+        if not isinstance(row, dict):
+            raise RuntimeError("R0.73N formal archive lost " + name)
+        public_assets.append({
+            "path": f"public/assets/r073n/{FIGURE_ID}.{suffix}",
+            "bytes": row.get("bytes"),
+            "sha256": row.get("sha256"),
+        })
+
+    computation = formal.get("computation")
+    if not isinstance(computation, dict):
+        raise RuntimeError("R0.73N formal figure computation metadata is missing")
+    computation.update({
+        "kind": "data-analysis",
+        "configuration": "config.json",
+        "formalCommand": "commands recorded in command.txt",
+        "wallTimeSeconds": computation.get("monitoring", {}).get("wallTimeSeconds"),
+    })
+    qa = formal.get("qa")
+    if not isinstance(qa, dict):
+        raise RuntimeError("R0.73N formal figure QA metadata is missing")
+    qa["labelsAndLegendsInspected"] = True
+    qa["scalesAndUnitsInspected"] = True
+    formal.update({
+        "status": "formal",
+        "publicationStatus": "published",
+        "createdAt": environment.get("createdUtc"),
+        "supportedClaim": formal.get("supportedTakeaway"),
+        "sourceData": formal.get("inputBindings"),
+        "git": {
+            "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+            "sourceCommit": ANALYTIC_SOURCE_COMMIT,
+            "certificateCommit": FINITE_PACKAGE_COMMIT,
+            "dirtyAtCertifiedRun": False,
+        },
+        "compute": {
+            "host": "Wool.local",
+            "operatingSystem": environment.get("platform"),
+            "cpu": environment.get("machine"),
+            "memoryGiB": 36.0,
+            "processes": 1,
+            "threadsPerProcess": 1,
+            "gpu": "not used",
+        },
+        "publication": {
+            "archiveDirectory": f"public/{FIGURE_ARCHIVE_RELATIVE}",
+            "directory": "public/assets/r073n",
+            "fileStem": FIGURE_ID,
+            "byteIdentityRequired": True,
+            "publicCopiesComplete": True,
+            "assets": public_assets,
+        },
+    })
+    payloads = {
+        name: (json_bytes(formal) if name == "manifest.json" else (source / name).read_bytes())
+        for name in actual if name != "SHA256SUMS"
+    }
+    payloads["SHA256SUMS"] = "".join(
+        f"{sha256(payloads[name])}  {name}\n" for name in sorted(payloads)
+    ).encode("utf-8")
+    if sorted(payloads) != actual:
+        raise RuntimeError("R0.73N formal figure staging changed the package inventory")
+    return payloads
+
+
 def stage_figure_assets(staged: dict[Path, bytes]) -> None:
     source = ROOT / FIGURE_SOURCE_RELATIVE
-    files = sorted(path for path in source.iterdir() if path.is_file() and not path.is_symlink())
-    if not files or not (source / "manifest.json").is_file():
+    if not source.is_dir() or source.is_symlink() or not (source / "manifest.json").is_file():
         raise RuntimeError("R0.73N formal figure package is incomplete")
-    for path in files:
-        staged[PUBLIC / FIGURE_ARCHIVE_RELATIVE / path.name] = path.read_bytes()
+    payloads = formal_figure_payloads(source)
+    for name, payload in payloads.items():
+        staged[ROOT / FIGURE_ARCHIVE_RELATIVE / name] = payload
+        staged[PUBLIC / FIGURE_ARCHIVE_RELATIVE / name] = payload
     for suffix in ("pdf", "svg", "png"):
-        master = source / f"figure.{suffix}"
-        if not master.is_file() or master.is_symlink():
-            raise RuntimeError("R0.73N figure master missing: " + master.name)
-        staged[PUBLIC / f"assets/r073n/{FIGURE_ID}.{suffix}"] = master.read_bytes()
+        staged[PUBLIC / f"assets/r073n/{FIGURE_ID}.{suffix}"] = payloads[f"figure.{suffix}"]
 
 
 def build_staged(content: ReleaseContent) -> dict[Path, bytes]:

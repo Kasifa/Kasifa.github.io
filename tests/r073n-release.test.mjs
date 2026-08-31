@@ -280,10 +280,25 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   for (const relative of [
     "public/notes/r0-73n.pdf", "public/recap-r0-61-r0-73n.pdf",
     "research/r073n_pdf_bindings.json", "scripts/i18n-snapshots/r073n-missing.json",
+    "figures/r073n/fig-r073n-finite-strain-bracket/manifest.json",
+    "public/figures/r073n/fig-r073n-finite-strain-bracket/manifest.json",
     "public/assets/r073n/fig-r073n-finite-strain-bracket.pdf",
     "public/assets/r073n/fig-r073n-finite-strain-bracket.svg",
     "public/assets/r073n/fig-r073n-finite-strain-bracket.png",
   ]) assert.equal(await exists(relative), true, relative);
+
+  const formalFigure = await json(
+    "figures/r073n/fig-r073n-finite-strain-bracket/manifest.json",
+  );
+  assert.equal(formalFigure.status, "formal");
+  assert.equal(formalFigure.publicationStatus, "published");
+  assert.equal(formalFigure.publication.publicCopiesComplete, true);
+  assert.equal(formalFigure.publication.assets.length, 3);
+  for (const name of formalFigure.packageInventory.paths) {
+    const archived = await bytes(`figures/r073n/fig-r073n-finite-strain-bracket/${name}`);
+    const published = await bytes(`public/figures/r073n/fig-r073n-finite-strain-bracket/${name}`);
+    assert.equal(sha256(archived), sha256(published), `formal figure archive ${name}`);
+  }
 
   for (const suffix of ["pdf", "svg", "png"]) {
     const sealed = await bytes(

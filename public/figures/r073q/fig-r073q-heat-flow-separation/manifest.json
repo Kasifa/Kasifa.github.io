@@ -1,0 +1,372 @@
+{
+  "allFormulaAndVisualChecksPass": true,
+  "allPrerequisiteChecksPass": true,
+  "analyticalQuestion": "Does the exact smooth shear family vanish in L2 and heat-flow trace while diverging in H1/2, and what scalar endpoint sequence blocks the bare Kato-sup proof route?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "arbitraryL2SmallDataSafe": false,
+    "clayProblemSolved": false,
+    "exactEndpointCounterexample": true,
+    "exactShearNormConstants": true,
+    "finiteTimeSingularity": false,
+    "fullKochTataruTheoryRefuted": false,
+    "globalRegularityTheorem": false,
+    "navierStokesSimulation": false,
+    "nonlinearPdeCertificate": false,
+    "oldAndNewRadiiOrdered": false,
+    "strictStructuredDomainSeparation": true
+  },
+  "computation": {
+    "command": "plot.py --render-preseal",
+    "configuration": "config.json",
+    "kind": "exact-formula-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.0,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "elapsedSeconds",
+        "maximumResidentSetMiB"
+      ]
+    },
+    "precision": "IEEE-754 binary64 evaluations of closed-form constants and powers",
+    "solver": "none; direct formula evaluation only",
+    "wallTimeSeconds": 0.8119122079806402
+  },
+  "compute": {
+    "cpu": "arm",
+    "dgxUsed": false,
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-31T06:25:34.214289+00:00",
+  "data": [
+    {
+      "bytes": 6802,
+      "path": "source-data.csv",
+      "schema": "exact shear-norm and endpoint-counterexample rows",
+      "sha256": "af0b7e28f61ec434405f9b25b996dfd0b574d802b9599e97139204ffa4d977d1"
+    },
+    {
+      "bytes": 3171,
+      "path": "results.json",
+      "schema": "closed-form facts and output inventory",
+      "sha256": "e5066a2aa078adee55711b83ce6f815ca8c8f908335a3fd38eb831d6b092d459"
+    },
+    {
+      "bytes": 720,
+      "path": "environment.json",
+      "schema": "runtime and hardware record",
+      "sha256": "57f9b247b977c5078a01aac0e99d8d2699e6fe395de8f79b61dbee8e3b0e6000"
+    },
+    {
+      "bytes": 965,
+      "path": "progress.ndjson",
+      "schema": "timestamped generation stages",
+      "sha256": "6f1739423e2eae789deb30d7887efafa92839f947037b6548b19872c21ee0613"
+    },
+    {
+      "bytes": 1470,
+      "path": "resource-log.ndjson",
+      "schema": "timestamped process resource observations",
+      "sha256": "b6f64617b0326cba12945869d5c0b8d13cd0ba9e03e005735ddf76acd4b3780d"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "pypdfium2": "5.13.0",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]"
+  },
+  "figure": {
+    "heightMillimetres": 90.0,
+    "outputs": [
+      {
+        "bytes": 43715,
+        "format": "PDF vector",
+        "path": "figure.pdf",
+        "sha256": "70343895028322a6d922d51042a5d854750cce1b62374d854a4e40eee998fc31"
+      },
+      {
+        "bytes": 105599,
+        "format": "SVG vector",
+        "path": "figure.svg",
+        "sha256": "ad73f7571d0037c2b4a398cfeaeb5f3fa2873d1a2b001d98a79c94667d52c620"
+      },
+      {
+        "bytes": 484437,
+        "dpi": 600,
+        "format": "PNG",
+        "path": "figure.png",
+        "sha256": "4f47ab80bb0f9ebf83adc61a0701b6929bac7fe5a23c5e0665059868482d77fa"
+      }
+    ],
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073q-heat-flow-separation",
+  "formulaAudit": {
+    "endpoint": {
+      "exponentRange": [
+        1,
+        20
+      ],
+      "fractionalOutputRange": [
+        1.0989278511313518,
+        32767.978339150606
+      ],
+      "gNormRange": [
+        0.8990817264839728,
+        0.9999998347407931
+      ],
+      "maximumRelativeFormulaError": 0.0,
+      "nRange": [
+        2,
+        1048576
+      ],
+      "rowCount": 20
+    },
+    "shear": {
+      "constants": {
+        "c6": 0.8237744862210329,
+        "heatTrace": 0.5824965253753565,
+        "l2": 0.7071067811865476
+      },
+      "exponentRange": [
+        0,
+        32
+      ],
+      "firstValues": {
+        "heatTrace": 0.5824965253753565,
+        "hhalf": 0.7071067811865476,
+        "l2": 0.7071067811865476
+      },
+      "frequencyRange": [
+        1,
+        4294967296
+      ],
+      "lastValues": {
+        "heatTrace": 3.471949847789743e-08,
+        "hhalf": 181.01933598375618,
+        "l2": 0.0027621358640099515
+      },
+      "maximumRelativeFormulaError": 0.0,
+      "rowCount": 33
+    },
+    "surfaces": {
+      "expectedQaPixels": [
+        2102,
+        1063
+      ],
+      "figurePng": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expectedPixels": [
+          4204,
+          2125
+        ],
+        "mode": "RGBA",
+        "pixels": [
+          4204,
+          2125
+        ]
+      },
+      "pdf": {
+        "embeddedImageObjectCount": 0,
+        "pageSizeMillimetres": [
+          178.0000000000147,
+          89.99999999999278
+        ],
+        "qaMode": "RGB",
+        "qaPixels": [
+          2103,
+          1063
+        ]
+      },
+      "qaRasters": {
+        "qa-final-size.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1063
+          ]
+        },
+        "qa-grayscale.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1063
+          ]
+        }
+      },
+      "svgBytes": 105599
+    }
+  },
+  "git": {
+    "certificateCommit": "cb9511c3af08a4beb0b31284e96e2a9c47a23d04",
+    "dirtyAtCertifiedRun": false,
+    "repository": "https://github.com/kasifa/kasifa.github.io",
+    "sourceCommit": "cb9511c3af08a4beb0b31284e96e2a9c47a23d04"
+  },
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "independentFormulaRecomputation": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRasterInspected": true,
+    "qaArtifacts": [
+      {
+        "bytes": 432191,
+        "path": "qa-final-size.png",
+        "sha256": "cf0c134d963d2cf6c146f34de81ede0a81b629340e2876155b2b87f1e2680667"
+      },
+      {
+        "bytes": 359341,
+        "path": "qa-grayscale.png",
+        "sha256": "b7f769f1584ad9d2f13cb9c125f54a1fe1b146186a343ea3ffc4bb47b731b981"
+      },
+      {
+        "bytes": 248886,
+        "path": "qa-pdf.png",
+        "sha256": "30c406cea0a45e90f6eb4f769a72abd0d06a6cf57ee7b2bafcd8b5ceea2ad136"
+      }
+    ],
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "research-figure-manifest-v1",
+  "sourceBindings": [
+    {
+      "bytes": 1540,
+      "gitBlobObjectId": "d8bc259b41bcfb9f7b2c9078af7d1985f64f1eb1",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/README.md",
+      "sha256": "91d06ee2572f3e150f43dfc992857ead1aa4549d743c366e2911e51df892e931"
+    },
+    {
+      "bytes": 1250,
+      "gitBlobObjectId": "ac87a80c266dd620f828f338ccf1ac3deb5c7e61",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/caption.md",
+      "sha256": "c621f27152a38667048827719ea51da339b8a7476f0390796c31ecb8b013ea36"
+    },
+    {
+      "bytes": 3345,
+      "gitBlobObjectId": "262cf16dd57118312fab12794c1ddd114ec2c291",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/chart-contract-and-source-data.md",
+      "sha256": "db5375a484f60f9b1624b175f3ddeb37a8d53a032f3dac31ab6dfd5c62ab5019"
+    },
+    {
+      "bytes": 1747,
+      "gitBlobObjectId": "c888c1c7c40aac2a728f74b57c2add32fe6c2263",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/command.txt",
+      "sha256": "30c1a357186ec3b49dd684a67893a12a54afde550046876e2f209b029949a09e"
+    },
+    {
+      "bytes": 704,
+      "gitBlobObjectId": "5f1179f925e1c080a9c76fd8fe8649e148daaaa8",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/config.json",
+      "sha256": "982727bf33e4494a8469f86ab9a3fb11c5eb68791f6ed2f18768d0865299d474"
+    },
+    {
+      "bytes": 2284,
+      "gitBlobObjectId": "66b9b901bf5e20a07ba9ce599e278958a5a9c51e",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/contract.json",
+      "sha256": "386f2627ea028fcf24b71e9f5081ca1667dec0826b3ddfdb7e1e32d0a1b5d26f"
+    },
+    {
+      "bytes": 20096,
+      "gitBlobObjectId": "cb92946c2ea61c3fd45e34e7df8ca3bbe57ee2c8",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/plot.py",
+      "sha256": "764585cb4d87dfa3bd9f6376261b948ccaf6fae3ade9d5e53decd19d41c7fcd2"
+    },
+    {
+      "bytes": 1958,
+      "gitBlobObjectId": "025edac2ec68f606bd872c00333be950224ce493",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/qa-protocol.md",
+      "sha256": "0b8a03c911a386a86e0564c1a374ff6efb2a159a3bc9d91bc3d8150d9227087d"
+    },
+    {
+      "bytes": 79,
+      "gitBlobObjectId": "e7173c3a8a9d00bcbd2408a88d033594453fbf70",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/requirements.txt",
+      "sha256": "c0dfebb8e4ce0a39b1565a51b94cb2ad8adf09d7910be44490446710102cf92f"
+    },
+    {
+      "bytes": 30606,
+      "gitBlobObjectId": "6779ad8db9de90e46a212c2c1e34f0803bd88552",
+      "path": "research/figures/r073q/fig-r073q-heat-flow-separation/validate.py",
+      "sha256": "50a7fb543e2495d319bffd942ac73c6a453eb7c819e845a089e5eb9482010acf"
+    }
+  ],
+  "sourceCommitAssigned": true,
+  "status": "formal",
+  "supportedClaim": "The exact structured shear sequence tends to zero in L2 and heat-flow trace while diverging in H1/2; the exact endpoint sequence has bounded L4 input and divergent fractional output.",
+  "release": "R0.73Q",
+  "publicationStatus": "published",
+  "publication": {
+    "archiveDirectory": "public/figures/r073q/fig-r073q-heat-flow-separation",
+    "directory": "public/assets/r073q",
+    "fileStem": "fig-r073q-heat-flow-separation",
+    "byteIdentityRequired": true,
+    "publicCopiesComplete": true,
+    "assets": [
+      {
+        "path": "public/assets/r073q/fig-r073q-heat-flow-separation.pdf",
+        "bytes": 43715,
+        "sha256": "70343895028322a6d922d51042a5d854750cce1b62374d854a4e40eee998fc31"
+      },
+      {
+        "path": "public/assets/r073q/fig-r073q-heat-flow-separation.svg",
+        "bytes": 105599,
+        "sha256": "ad73f7571d0037c2b4a398cfeaeb5f3fa2873d1a2b001d98a79c94667d52c620"
+      },
+      {
+        "path": "public/assets/r073q/fig-r073q-heat-flow-separation.png",
+        "bytes": 484437,
+        "sha256": "4f47ab80bb0f9ebf83adc61a0701b6929bac7fe5a23c5e0665059868482d77fa"
+      }
+    ]
+  },
+  "packageInventory": {
+    "paths": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "expectedFileCount": 25
+  }
+}

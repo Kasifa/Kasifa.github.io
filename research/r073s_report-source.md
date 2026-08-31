@@ -1,8 +1,8 @@
 # R0.73S | From triple convolution to autocorrelation: one computable certificate and two hard limits
 
 **Status:** analytic proof, primary-source collision audit, independent
-no-go audit, and exact finite certificate pre-seal passed; immutable source
-commit seal, formal figure, and public release remain pending
+no-go audit, finite-certificate final seal, and formal-figure QA passed;
+public HTML/PDF publication has not yet been applied
 
 **Public title (zh):** R0.73S｜把三重卷积降到自相关：一个可算证书，两条不能越过的边界
 
@@ -384,8 +384,16 @@ Navier--Stokes 动力学，研究逐壳
 ## 9. 证书边界
 
 R0.73S 的有限证书使用 43 行源数据、226 项主检查、54 项独立重建和
-289 项封包前结构检查。所有有限公式都用整数或有理数作通过判定；
-GPU 与 DGX 均未使用。
+289 项最终结构检查。正式附图使用 179 行源数据并通过 236 项最终检查；
+彩色、灰度和独立 PDF 栅格面都已目视复核。证书和附图共同绑定源提交
+`72e4c12760dc3b837dec328ee96a29736fe93c99`，生成物保存在提交
+`4bb49ecc380e4b41d33e3102af4f47de016b5653`。有限记录摘要为
+`e25f71da5a9e72ce7a44300d4b965d8a4389c7d7d7b1502c11a0fc569c305718`；
+证书与附图 manifest 分别为
+`ac85441e327d2c8c839473e96ce9fe88ef410eddc9766bcfcd6e720f01ae55f6`
+和 `cae1d77095554beda5c3bffee77f1551112d638fd3c50c02a010dd50470f2e97`。
+所有有限公式都用整数或有理数作通过判定；GPU 与 DGX 均未使用。普通
+发布翻译按 `LOCAL_DIRECT_NO_DGX` 约束由本机直接执行，不经过 DGX。
 
 证书不计算连续热流积分，不做 Navier--Stokes 仿真，不使用区间算术，
 不认证完整 PDE 证明，也不证明运行时间下界。

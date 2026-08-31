@@ -1,7 +1,18 @@
 # R0.73S claim--source ledger
 
-**Status:** analytic, no-go, literature, and finite-formula gates closed;
-formal figure and public rendering remain pending
+**Status:** analytic, no-go, literature, final finite-certificate seal, and
+formal-figure QA closed; public HTML/PDF publication has not yet been applied
+
+**Finite seal:** 43 rows; 226 primary, 54 independent, and 289 structural
+checks; source commit `72e4c12760dc3b837dec328ee96a29736fe93c99`.
+
+**Formal figure:** 179 rows; 236/236 checks; color, grayscale, and independent
+PDF-raster visual QA passed; generated artifacts are preserved in commit
+`4bb49ecc380e4b41d33e3102af4f47de016b5653`.
+
+**Public boundary:** HTML/PDF generation, local direct translation, and
+deployment verification remain release-transaction work;
+`translationPath=LOCAL_DIRECT_NO_DGX`.
 
 | ID | Claim | Evidence class | Exact source or proof | Release use |
 | --- | --- | --- | --- | --- |
@@ -42,3 +53,8 @@ formal figure and public rendering remain pending
    bound.
 6. The R0.73Q conclusion always retains one fixed a priori global orbit and
    a sufficient radius; it does not extend to arbitrary data.
+7. The exact packages bind source commit
+   `72e4c12760dc3b837dec328ee96a29736fe93c99`; their generated artifacts are
+   preserved in commit `4bb49ecc380e4b41d33e3102af4f47de016b5653`.
+8. Ordinary bilingual release translation is performed directly on the local
+   workstation (`LOCAL_DIRECT_NO_DGX`).

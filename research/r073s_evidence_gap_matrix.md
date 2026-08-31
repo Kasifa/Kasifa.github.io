@@ -1,7 +1,8 @@
 # R0.73S evidence gap matrix
 
-**Status:** analytic, primary-literature, no-go, and finite-formula gates
-closed; figure and public release gates remain open
+**Status:** analytic, primary-literature, no-go, finite-formula, and
+formal-figure gates closed; the fail-closed public release transaction is the
+remaining delivery step
 
 | Claim slot | Current evidence | Confidence | Main risk or contradiction | Release treatment |
 |---|---|---:|---|---|
@@ -16,12 +17,12 @@ closed; figure and public release gates remain open
 | The proxy is universally faster | Only naive sparse loop counts are available | low / forbidden | FFT and structured factorization destroy a universal runtime comparison | Do not claim a complexity theorem or lower bound |
 | The local package is historically first | No identical PDE/certificate package found in bounded search | low / not needed | Absence from a bounded search is not novelty proof | Call it local synthesis and auditable architecture |
 | A large proxy indicates blow-up or danger | Sharpness examples have zero nonlinearity and exact global heat evolution | contradicted | Sufficient threshold failure is not a dynamical diagnosis | Include the safe-shear exclusion in text and figure |
+| Ordinary release translation route | Locked to `LOCAL_DIRECT_NO_DGX` | planned / locked | Mistaking a route constraint for completed translation or publication | Apply and verify only inside the release transaction |
 | Arbitrary 3D regularity | No implication from the finite certificate | open | Public narrative may overread “toward Clay” | Explicitly state not a Clay result |
 
 ## Remaining release work
 
-1. freeze a canonical report source with the classical/local/open boundary;
-2. generate one formal figure showing the upper certificate, sharp
-   (D_C^{1/2}) obstruction, and matched-pair transfer;
-3. bind the figure and certificate into bilingual HTML/PDF;
-4. run translation, link, PDF, viewport, and deployment hash gates.
+1. bind the final-sealed figure and certificate into bilingual HTML/PDF;
+2. translate ordinary release copy directly on the local workstation
+   (`LOCAL_DIRECT_NO_DGX`);
+3. run link, PDF, viewport, publication, and deployment-hash gates.

@@ -41,6 +41,10 @@ AUTHORITATIVE_SOURCE_COMMIT = "84e808dae473f6381cbf9df55a71f5fe81a1cfce"
 SUPERSEDED_SOURCE_COMMIT = "72493751370aa948947000df169e21199fc5c95d"
 CERTIFICATE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 REPOSITORY_URL = "https://github.com/Kasifa/Kasifa.github.io.git"
+RUNTIME_EVIDENCE_COMMIT = "3d23297f072b2059da3981b69ce5a8301ed690d7"
+RUNTIME_EVIDENCE_PATH = (
+    "figures/r073t/fig-r073t-dynamic-autocorrelation/manifest.json"
+)
 ANALYTIC_SOURCE_FILES = {
     "research/r073u_problem_freeze.md",
     "research/r073u_tensor_heat_hierarchy.md",
@@ -179,6 +183,35 @@ def ndjson_elapsed_seconds(path: Path) -> float:
         elapsed.append(float(seconds))
     require(bool(elapsed), "NDJSON is empty: " + path.name)
     return max(elapsed)
+
+
+def same_host_compute_evidence(execution: dict[str, Any]) -> tuple[dict[str, Any], dict[str, object]]:
+    payload = git_blob(RUNTIME_EVIDENCE_COMMIT, RUNTIME_EVIDENCE_PATH)
+    evidence = json.loads(payload.decode("utf-8"), object_pairs_hook=reject_duplicate_keys)
+    require(isinstance(evidence, dict), "runtime evidence root is not an object")
+    compute = evidence.get("compute")
+    require(isinstance(compute, dict), "runtime evidence compute block missing")
+    require(compute.get("host") == execution.get("host"),
+            "runtime evidence host does not match the R0.73U run")
+    require(compute.get("operatingSystem") == execution.get("operatingSystem"),
+            "runtime evidence operating system does not match the R0.73U run")
+    require(compute.get("processes") == execution.get("processes")
+            and compute.get("threadsPerProcess") == execution.get("threadsPerProcess"),
+            "runtime evidence process topology does not match the R0.73U run")
+    require(isinstance(compute.get("cpu"), str) and bool(compute.get("cpu")),
+            "runtime evidence CPU field missing")
+    require(isinstance(compute.get("memoryGiB"), (int, float))
+            and float(compute["memoryGiB"]) > 0,
+            "runtime evidence memory field missing")
+    provenance = {
+        "captureMode": "sealed same-host predecessor evidence",
+        "notOriginalRunEmission": True,
+        "evidencePath": RUNTIME_EVIDENCE_PATH,
+        "evidenceCommit": RUNTIME_EVIDENCE_COMMIT,
+        "evidenceSha256": hashlib.sha256(payload).hexdigest(),
+        "hostAndOperatingSystemCrossChecked": True,
+    }
+    return compute, provenance
 
 
 def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
@@ -426,6 +459,7 @@ trajectory-symmetry claim.
     environment_payload = load_json(HERE / "environment.json")
     execution = environment_payload["execution"]
     packages = environment_payload["packages"]
+    compute_evidence, compute_provenance = same_host_compute_evidence(execution)
 
     def data_record(name: str, schema: str) -> dict[str, object]:
         return {**record(HERE / name), "schema": schema}
@@ -498,16 +532,13 @@ trajectory-symmetry claim.
         "compute": {
             "host": execution["host"],
             "operatingSystem": execution["operatingSystem"],
-            "cpu": (
-                f'{execution["machine"]} / '
-                f'{execution["logicalCpuCount"]} logical CPUs'
-            ),
-            "memoryGiB": 36.0,
+            "cpu": compute_evidence["cpu"],
+            "memoryGiB": compute_evidence["memoryGiB"],
             "processes": execution["processes"],
             "threadsPerProcess": execution["threadsPerProcess"],
             "gpu": execution["gpu"],
             "dgxUsed": execution["dgxUsed"],
-            "metadataProvenance": "same-host post-run manifest backfill",
+            "metadataProvenance": compute_provenance,
         },
         "environment": {
             "python": execution["python"],

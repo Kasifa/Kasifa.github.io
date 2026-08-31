@@ -52,5 +52,8 @@ python3 ../../../validate_figure_package.py .
 ```
 
 The CPU and memory fields are an explicitly labelled same-host post-run
-metadata backfill; the original exact run's wall time and resource samples
-remain bound to `progress.ndjson` and `resource-log.ndjson`.
+metadata backfill.  They are read from the sealed R0.73T predecessor manifest
+at commit `3d23297f072b2059da3981b69ce5a8301ed690d7`, and the host, operating
+system, process count, and thread count are cross-checked against this
+package's `environment.json`.  The original exact run's wall time and resource
+samples remain bound to `progress.ndjson` and `resource-log.ndjson`.

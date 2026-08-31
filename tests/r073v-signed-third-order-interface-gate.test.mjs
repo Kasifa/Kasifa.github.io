@@ -22,9 +22,9 @@ const publicTitle =
 const analyticCommit = "25636c886f1ee2449418b5548b42f9f0fa269b47";
 const certificateSourceCommit = "7c445c522a241bdc8b867b6fce0f0fed9b82e97d";
 const certificatePackageCommit = "b34d91ea96c257b943f11d134e8024138e5f3cb0";
-const figureSourceCommit = "680fde5a24834b8e1c877f651eb20b119c671f49";
-const figurePackageCommit = "b413586aa7a7389f8943acb2469eb28cdbbf31f3";
-const finalContentCommit = "5d5b0ae7ba9bc35acbb729f97052c7673c351904";
+const figureSourceCommit = "f94915332ff405ae723711e8041acc2af07e896b";
+const figurePackageCommit = "ae679d5afa5f3cfacfe79c4d7b8a462baca2c195";
+const finalContentCommit = "482905ed7a9dcc3cc337d5ba17f73af5ac61c60f";
 const figureId = "fig-r073v-signed-third-order-interface";
 
 const canonicalPaths = [
@@ -201,6 +201,21 @@ test("the source-bound formal figure has 158 rows, 147 checks, and all no-go fla
   assert.equal(validation.required, 147);
   assert.equal(validation.checks.length, 147);
   assert.ok(validation.checks.every(({ pass }) => pass === true));
+  assert.deepEqual(
+    validation.checks.find(({ id }) => id === "csv-evidence-aware-reconstruction"),
+    {
+      exactRows: 57,
+      id: "csv-evidence-aware-reconstruction",
+      pass: true,
+      rendererRows: 101,
+      rendererYAbsoluteTolerance: "2e-16",
+      rendererYMaximumUlpDistance: 256,
+    },
+  );
+  assert.equal(
+    validation.checks.some(({ id }) => id === "csv-exact-reconstruction"),
+    false,
+  );
   assert.equal(validation.visualQaConfirmed, true);
   assert.equal(results.schemaVersion,
     "r073v-signed-third-order-interface-figure-results-v1");

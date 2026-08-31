@@ -26,9 +26,9 @@ const pins = Object.freeze({
   analytic: "25636c886f1ee2449418b5548b42f9f0fa269b47",
   finiteSource: "7c445c522a241bdc8b867b6fce0f0fed9b82e97d",
   finitePackage: "b34d91ea96c257b943f11d134e8024138e5f3cb0",
-  figureSource: "680fde5a24834b8e1c877f651eb20b119c671f49",
-  figurePackage: "b413586aa7a7389f8943acb2469eb28cdbbf31f3",
-  finalContent: "5d5b0ae7ba9bc35acbb729f97052c7673c351904",
+  figureSource: "f94915332ff405ae723711e8041acc2af07e896b",
+  figurePackage: "ae679d5afa5f3cfacfe79c4d7b8a462baca2c195",
+  finalContent: "482905ed7a9dcc3cc337d5ba17f73af5ac61c60f",
 });
 
 const generator = read("scripts/generate_r073v_release.py");

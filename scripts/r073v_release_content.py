@@ -557,7 +557,7 @@ def _figure_final(root: Path) -> tuple[bool, str]:
         and seal.get("figureSourceCommitAssigned") is True
         and seal.get("requiresParentFigureSourceCommitFinalReseal") is False
         and seal.get("figureSourceCommit")
-        == "680fde5a24834b8e1c877f651eb20b119c671f49"
+        == "f94915332ff405ae723711e8041acc2af07e896b"
         and seal.get("state") == "formal-figure-source-seal"
         and isinstance(qa, dict)
         and qa.get("status") == "passed"

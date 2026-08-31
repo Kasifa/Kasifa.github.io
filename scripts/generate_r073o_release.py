@@ -57,8 +57,8 @@ ANALYTIC_SOURCE_COMMIT = "f139c5e707ffdfe855ca114faac669d12e431e59"
 FINITE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 FIGURE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 RELEASE_BASELINE_COMMIT = "d6d12469c266d16f08834320e2cae869af0aa479"
-FINAL_CONTENT_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
-RELEASE_SOURCE_COMMIT = "928e9a3911bccb109c1a830d2aa151391dc36983"
+FINAL_CONTENT_COMMIT = "007e4b17570c6659b20b1c929918fff74a2bc0c8"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73N release baseline", RELEASE_BASELINE_COMMIT),
@@ -605,7 +605,9 @@ def build_recap(content: ReleaseContent) -> str:
     value = value.replace("130 节", "131 节").replace("130 个节点", "131 个节点")
     value = value.replace("92 个版本", "93 个版本").replace("92 节", "93 节")
     value = value.replace("68 个满足", "69 个满足").replace("68 节", "69 节")
-    value = value.replace("48 个阶段", "49 个阶段")
+    # The R0.73N baseline contains 49 phase articles despite displaying 48;
+    # appending R0.73O therefore makes the exact public count 50.
+    value = value.replace("48 个阶段", "50 个阶段")
     value = value.replace("<strong>130</strong>", "<strong>131</strong>")
     value = value.replace("<strong>92</strong>", "<strong>93</strong>")
     value = value.replace("<strong>68</strong>", "<strong>69</strong>")
@@ -626,7 +628,7 @@ def build_recap(content: ReleaseContent) -> str:
     value = replace_regex(
         value,
         r'<meta property="og:description" content="[^"]*">',
-        '<meta property="og:description" content="49 个阶段、131 个节点：从约化递推和环带排除到全局轨道稳定管与强迫 Kolmogorov 对照。">',
+        '<meta property="og:description" content="50 个阶段、131 个节点：从约化递推和环带排除到全局轨道稳定管与强迫 Kolmogorov 对照。">',
         "recap OG description",
     )
     value = replace_once(value, "          </div>\n        </section>\n\n        <section id=\"node-index\"",
@@ -701,6 +703,10 @@ def build_recap(content: ReleaseContent) -> str:
     for stale in ("<strong>130</strong>", "<strong>92</strong>", "<strong>68</strong>"):
         if stale in value:
             raise RuntimeError("R0.73O recap retained stale metric " + stale)
+    if value.count('<article class="phase">') != 50:
+        raise RuntimeError("R0.73O recap must contain exactly 50 phase articles")
+    if "48 个阶段" in value or "49 个阶段" in value:
+        raise RuntimeError("R0.73O recap retained a stale displayed phase count")
     assert_public_html(value, "R0.73O recap")
     return value
 
@@ -722,6 +728,10 @@ def update_home(content: ReleaseContent) -> str:
         "<strong>global-orbit stability / forced Kolmogorov contrast</strong>当前方向",
     )
     value = value.replace("NEXT · R0.73O", "NEXT · R0.73P")
+    value = value.replace(
+        '<h3>冻结结构不同的固定背景候选问题</h3><p>为强迫、非衰减或无限累积应变等结构不同的固定背景重新冻结候选问题，先寻找 能够逃离本节有限总应变稳定管的必要结构，而不能把 R0.73M 的现有背景族直接 重新标记。</p>',
+        f'<h3>检查 L2-only / 高频输入接口</h3><p>{html.escape(content.math_next_gate_zh)}</p>',
+    )
     value = value.replace("R0.70A–R0.73N：92 节已公开，68 节完整封存",
                           "R0.70A–R0.73O：93 节已公开，69 节完整封存")
     value = value.replace("Research topology · R0.1–R0.73N", "Research topology · R0.1–R0.73O")
@@ -772,7 +782,7 @@ def update_home(content: ReleaseContent) -> str:
         '<div class="task-one" id="post-r060-recap" style="margin-top:2rem">'
         '<p class="eyebrow">累计回顾 R0.61–R0.73O · 2026-08-31</p>'
         '<h3>R0.60 recap 之后的累计回顾收录 131 个节点；全站现有 191 篇公开研究笔记</h3>'
-        '<p>累计回顾现分 49 个阶段，完整保留 R0.61–R0.73O；最新节点分开记录无强迫连续证明、'
+        '<p>累计回顾现分 50 个阶段，完整保留 R0.61–R0.73O；最新节点分开记录无强迫连续证明、'
         '强迫组合谱链、独立解析复核、有界文献边界、有限诊断和正式附图。</p>'
         '<p>R0.70A–R0.73O 共 93 个版本已公开；69 个按当前 formal-figure 合同完整封存，'
         '24 个旧版附图档案仍列入回补清单。</p>'
@@ -803,6 +813,7 @@ def update_home(content: ReleaseContent) -> str:
         "<strong>R0.73N</strong>最新研究节点",
         'data-site-version="1.54"',
         "/site-refresh.js?v=1.54",
+        "冻结结构不同的固定背景候选问题",
     ):
         if stale in value:
             raise RuntimeError("R0.73O home retained stale latest marker " + stale)

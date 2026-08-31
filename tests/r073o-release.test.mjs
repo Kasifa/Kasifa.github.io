@@ -208,6 +208,8 @@ test("materialized R0.73O publication has exact accounting and boundaries", asyn
     assert.ok(pages.note.includes(token), `note: ${token}`);
   assert.ok(pages.note.includes("经典路线闭合"));
   assert.ok(pages.note.includes("有限谱计算不证明无限维正实谱"));
+  assert.ok(pages.note.includes("这些发布步骤不增加数学证明强度"));
+  assert.equal(pages.note.includes("网页仍须"), false);
   assert.ok(pages.note.includes("/note-retro.css"));
   for (const suffix of ["pdf", "svg", "png"])
     assert.ok(pages.note.includes(`/assets/r073o/fig-r073o-kolmogorov-spectrum.${suffix}`));
@@ -215,12 +217,18 @@ test("materialized R0.73O publication has exact accounting and boundaries", asyn
   for (const token of ["<strong>131</strong><span>R0.61–R0.73O 研究节点</span>",
     "<strong>93</strong><span>R0.70A–R0.73O 已公开版本</span>",
     "<strong>69</strong><span>当前 formal-figure 合同下完整封存</span>",
+    "50 个阶段、131 个节点", "R0.60 之后的路线分成 50 个阶段",
     "检查 L2-only / 高频输入接口"])
     assert.ok(pages.recap.includes(token), `recap: ${token}`);
+  assert.equal((pages.recap.match(/<article class="phase">/g) ?? []).length, 50);
+  assert.equal(pages.recap.includes("48 个阶段"), false);
+  assert.equal(pages.recap.includes("49 个阶段"), false);
   for (const token of ["Research topology · R0.1–R0.73O", "<strong>v1.55</strong>网页版本",
     "<strong>R0.73O</strong>最新研究节点", "<summary>展开 101 篇公开笔记</summary>",
-    "累计回顾收录 131 个节点；全站现有 191 篇公开研究笔记"])
+    "累计回顾收录 131 个节点；全站现有 191 篇公开研究笔记",
+    "累计回顾现分 50 个阶段", "NEXT · R0.73P", "检查 L2-only / 高频输入接口"])
     assert.ok(pages.home.includes(token), `home: ${token}`);
+  assert.equal(pages.home.includes("冻结结构不同的固定背景候选问题"), false);
   for (const token of ['<div class="route-step kept"><header><b>R0.73O</b>',
     "开放接口 · R0.73P", 'id="r073o-boundary"',
     "R0.73O 的全局轨道稳定与强迫对照文献边界"])

@@ -1,0 +1,15 @@
+R073U_CERT_PYTHON="${R073U_CERT_PYTHON:-python3}"
+
+"$R073U_CERT_PYTHON" -B research/certificates/r073u/compute_exact_certificate.py
+"$R073U_CERT_PYTHON" -B research/certificates/r073u/compute_exact_certificate.py --check-only
+"$R073U_CERT_PYTHON" -B research/certificates/r073u/seal_package.py
+"$R073U_CERT_PYTHON" -B research/certificates/r073u/seal_package.py --check-only
+
+# The analytic source commit is frozen internally as:
+# 84e808dae473f6381cbf9df55a71f5fe81a1cfce
+# The obsolete 72493751370aa948947000df169e21199fc5c95d is rejected.
+
+# Final seal only after a parent release commits all six certificate sources:
+# R073U_CERTIFICATE_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$R073U_CERT_PYTHON" -B research/certificates/r073u/seal_package.py --certificate-source-commit "$R073U_CERTIFICATE_SOURCE_COMMIT"
+# "$R073U_CERT_PYTHON" -B research/certificates/r073u/seal_package.py --certificate-source-commit "$R073U_CERTIFICATE_SOURCE_COMMIT" --check-only

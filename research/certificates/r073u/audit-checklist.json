@@ -1,0 +1,395 @@
+{
+  "certificate": "R0.73U exact four-site tensor-heat parity witness",
+  "requiredChecks": [
+    {
+      "expected": "T_ij(h)=hat(u_i*u_j)(h)",
+      "id": "definition-T",
+      "path": "witness.definitions.T"
+    },
+    {
+      "expected": "F_ell,ij(h)=hat(u_ell*u_i*u_j)(h)",
+      "id": "definition-F",
+      "path": "witness.definitions.F"
+    },
+    {
+      "expected": "A_ij(h)=-i*h_ell*F_ell,ij(h)",
+      "id": "definition-A",
+      "path": "witness.definitions.A"
+    },
+    {
+      "expected": "B_ij(h)=-hat(u_j*partial_i(p)+u_i*partial_j(p))(h)",
+      "id": "definition-B",
+      "path": "witness.definitions.B"
+    },
+    {
+      "expected": "K=A+B, the nonlinear coefficient of partial_t(T)",
+      "id": "definition-K",
+      "path": "witness.definitions.K"
+    },
+    {
+      "expected": "V_ij(h)=hat(Delta(T_ij)-2*partial_ell(u_i)*partial_ell(u_j))(h)",
+      "id": "definition-V",
+      "path": "witness.definitions.V"
+    },
+    {
+      "expected": 4,
+      "id": "four-site-velocity-count",
+      "path": "witness.field.siteCount"
+    },
+    {
+      "expected": 2,
+      "id": "two-conjugate-pairs",
+      "path": "witness.field.positivePairCount"
+    },
+    {
+      "expected": true,
+      "id": "velocity-real-conjugacy",
+      "path": "witness.field.realConjugacy"
+    },
+    {
+      "expected": true,
+      "id": "velocity-mean-zero",
+      "path": "witness.field.meanZero"
+    },
+    {
+      "expected": true,
+      "id": "velocity-divergence-free",
+      "path": "witness.field.divergenceFree"
+    },
+    {
+      "expected": {
+        "-1,-1,0": ["i", "-i", "0"],
+        "-1,0,0": ["0", "i", "0"],
+        "1,0,0": ["0", "-i", "0"],
+        "1,1,0": ["-i", "i", "0"]
+      },
+      "id": "velocity-complete-coefficients",
+      "path": "witness.field.coefficients"
+    },
+    {
+      "expected": ["2*sin(x+y)", "2*sin(x)-2*sin(x+y)", "0"],
+      "id": "physical-field",
+      "path": "witness.field.physical"
+    },
+    {
+      "expected": [1, 2, 0],
+      "id": "target-mode",
+      "path": "witness.target.mode"
+    },
+    {
+      "expected": 5,
+      "id": "target-norm-squared",
+      "path": "witness.target.normSquared"
+    },
+    {
+      "expected": [["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"]],
+      "id": "target-T-zero",
+      "path": "witness.target.T"
+    },
+    {
+      "expected": {
+        "1": [["0", "-i", "0"], ["-i", "2*i", "0"], ["0", "0", "0"]],
+        "2": [["-i", "2*i", "0"], ["2*i", "-3*i", "0"], ["0", "0", "0"]],
+        "3": [["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"]]
+      },
+      "id": "target-F-complete",
+      "path": "witness.target.F"
+    },
+    {
+      "expected": [["-2", "3", "0"], ["3", "-4", "0"], ["0", "0", "0"]],
+      "id": "target-A",
+      "path": "witness.target.A"
+    },
+    {
+      "expected": [["0", "-2", "0"], ["-2", "4", "0"], ["0", "0", "0"]],
+      "id": "target-B",
+      "path": "witness.target.B"
+    },
+    {
+      "expected": [["-2", "1", "0"], ["1", "0", "0"], ["0", "0", "0"]],
+      "id": "target-K",
+      "path": "witness.target.K"
+    },
+    {
+      "expected": [["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"]],
+      "id": "target-V-zero",
+      "path": "witness.target.V"
+    },
+    {
+      "expected": true,
+      "id": "target-K-nonzero",
+      "path": "witness.target.KNonzero"
+    },
+    {
+      "expected": "6",
+      "id": "target-K-Frobenius-squared",
+      "path": "witness.target.KSquaredFrobenius"
+    },
+    {
+      "expected": 4,
+      "id": "pressure-site-count",
+      "path": "witness.pressure.siteCount"
+    },
+    {
+      "expected": {
+        "-2,-1,0": "2/5",
+        "0,-1,0": "2",
+        "0,1,0": "2",
+        "2,1,0": "2/5"
+      },
+      "id": "pressure-complete-coefficients",
+      "path": "witness.pressure.coefficients"
+    },
+    {
+      "expected": "p_hat(h)=-(h_i*h_j/|h|^2)*T_ij(h), h!=0; p_hat(0)=0",
+      "id": "pressure-formula",
+      "path": "witness.pressure.formula"
+    },
+    {
+      "expected": true,
+      "id": "independent-pressure-paths",
+      "path": "witness.independentPaths.fullPressureMapAgreement"
+    },
+    {
+      "expected": true,
+      "id": "independent-nonlinear-paths-full-map",
+      "path": "witness.independentPaths.fullNonlinearMapAgreement"
+    },
+    {
+      "expected": true,
+      "id": "independent-viscous-paths-full-map",
+      "path": "witness.independentPaths.fullViscousMapAgreement"
+    },
+    {
+      "expected": true,
+      "id": "independent-target-K",
+      "path": "witness.independentPaths.targetKAgreement"
+    },
+    {
+      "expected": true,
+      "id": "independent-target-V",
+      "path": "witness.independentPaths.targetVAgreement"
+    },
+    {
+      "expected": true,
+      "id": "all-relevant-matrices-symmetric",
+      "path": "witness.symmetry.allRelevantCoefficientMatricesSymmetric"
+    },
+    {
+      "expected": true,
+      "id": "target-T-symmetric",
+      "path": "witness.symmetry.targetT"
+    },
+    {
+      "expected": true,
+      "id": "target-A-symmetric",
+      "path": "witness.symmetry.targetA"
+    },
+    {
+      "expected": true,
+      "id": "target-B-symmetric",
+      "path": "witness.symmetry.targetB"
+    },
+    {
+      "expected": true,
+      "id": "target-K-symmetric",
+      "path": "witness.symmetry.targetK"
+    },
+    {
+      "expected": true,
+      "id": "target-V-symmetric",
+      "path": "witness.symmetry.targetV"
+    },
+    {
+      "expected": true,
+      "id": "parity-T-even",
+      "path": "witness.parity.TEven"
+    },
+    {
+      "expected": true,
+      "id": "parity-pressure-even",
+      "path": "witness.parity.pressureEven"
+    },
+    {
+      "expected": true,
+      "id": "parity-F-odd",
+      "path": "witness.parity.FOddAtTarget"
+    },
+    {
+      "expected": true,
+      "id": "parity-A-odd",
+      "path": "witness.parity.AOdd"
+    },
+    {
+      "expected": true,
+      "id": "parity-B-odd",
+      "path": "witness.parity.BOdd"
+    },
+    {
+      "expected": true,
+      "id": "parity-K-odd",
+      "path": "witness.parity.KOdd"
+    },
+    {
+      "expected": true,
+      "id": "parity-V-even",
+      "path": "witness.parity.VEven"
+    },
+    {
+      "expected": {"pressureEven": true, "tauEven": true, "thetaEven": true},
+      "id": "quadratic-heat-state-even",
+      "path": "witness.parity.quadraticState"
+    },
+    {
+      "expected": [["-4", "2", "0"], ["2", "0", "0"], ["0", "0", "0"]],
+      "id": "unfiltered-tangent-difference",
+      "path": "witness.parity.targetUnfilteredTangentDifference"
+    },
+    {
+      "expected": 5,
+      "id": "heat-target-group-index",
+      "path": "witness.heatGroups.targetNormSquared"
+    },
+    {
+      "expected": {"5": [["-4", "2", "0"], ["2", "0", "0"], ["0", "0", "0"]]},
+      "id": "heat-target-coefficient-group",
+      "path": "witness.heatGroups.targetCoefficientGroup"
+    },
+    {
+      "expected": "2*exp(-5*s)*K",
+      "id": "heat-target-difference-formula",
+      "path": "witness.heatGroups.targetDifferenceFormula"
+    },
+    {
+      "expected": "2*sqrt(6)*exp(-5*s)",
+      "id": "heat-target-difference-Frobenius",
+      "path": "witness.heatGroups.targetDifferenceFrobenius"
+    },
+    {
+      "expected": "24",
+      "id": "heat-target-difference-Frobenius-squared",
+      "path": "witness.heatGroups.targetDifferenceFrobeniusSquaredCoefficient"
+    },
+    {
+      "expected": {"1": "176/25", "2": "276/25", "5": "12", "10": "36/25", "13": "76/25"},
+      "id": "complete-base-K-Frobenius-groups",
+      "path": "witness.heatGroups.completeBaseKSquaredFrobeniusByNormSquared"
+    },
+    {
+      "expected": "sum_m S_m*exp(-2*s*m)",
+      "id": "complete-base-K-Frobenius-formula",
+      "path": "witness.heatGroups.completeBaseKSquaredFormula"
+    },
+    {
+      "expected": {"1": "704/25", "2": "1104/25", "5": "48", "10": "144/25", "13": "304/25"},
+      "id": "complete-heat-Frobenius-groups",
+      "path": "witness.heatGroups.completeSignedDifferenceSquaredFrobeniusByNormSquared"
+    },
+    {
+      "expected": "sum_m 4*S_m*exp(-2*s*m)",
+      "id": "complete-heat-Frobenius-formula",
+      "path": "witness.heatGroups.completeSignedDifferenceSquaredFormula"
+    },
+    {
+      "expected": "4",
+      "id": "signed-difference-squared-base-multiplier",
+      "path": "witness.heatGroups.signedDifferenceSquaredMultiplierFromBase"
+    },
+    {
+      "expected": "u_L(x)=u(L*x), integer L>=1",
+      "id": "dilation-field",
+      "path": "witness.dilation.field"
+    },
+    {
+      "expected": "h_L=(L,2*L,0)",
+      "id": "dilation-target-mode",
+      "path": "witness.dilation.mode"
+    },
+    {
+      "expected": "L",
+      "id": "dilation-derivative-factor",
+      "path": "witness.dilation.signedDerivativeFactor"
+    },
+    {
+      "expected": "2*L*exp(-5*s*L^2)*K",
+      "id": "dilation-heat-filtered-difference",
+      "path": "witness.dilation.heatFilteredDifference"
+    },
+    {
+      "expected": "2*sqrt(6)*L*exp(-5*s*L^2)",
+      "id": "dilation-heat-filtered-Frobenius",
+      "path": "witness.dilation.heatFilteredDifferenceFrobenius"
+    },
+    {
+      "expected": "s=theta*L^(-2), theta>0",
+      "id": "parabolic-slice",
+      "path": "witness.dilation.parabolicSlice"
+    },
+    {
+      "expected": "2*sqrt(6)*L*exp(-5*theta)",
+      "id": "parabolic-Frobenius",
+      "path": "witness.dilation.parabolicFrobenius"
+    },
+    {
+      "expected": "2*sqrt(6*theta)*exp(-5*theta)*s^(-1/2)",
+      "id": "parabolic-equivalent-in-s",
+      "path": "witness.dilation.parabolicEquivalentInS"
+    },
+    {
+      "expected": "2*sqrt(6*theta)*exp(-5*theta)",
+      "id": "parabolic-normalized-profile",
+      "path": "witness.parabolicProfile.normalizedProfile"
+    },
+    {
+      "expected": "1/10",
+      "id": "parabolic-profile-maximizer",
+      "path": "witness.parabolicProfile.maximumTheta"
+    },
+    {
+      "expected": "2*sqrt(3/5)*exp(-1/2)",
+      "id": "parabolic-profile-maximum",
+      "path": "witness.parabolicProfile.maximumValue"
+    },
+    {
+      "expected": "s^(-1/2)",
+      "id": "parabolic-one-derivative-cost",
+      "path": "witness.parabolicProfile.oneDerivativeCost"
+    },
+    {
+      "expected": "for support {+k,-k}, incompressibility k.a=0 makes every multiplier u_hat(q).r vanish",
+      "id": "single-pair-structural-argument",
+      "path": "witness.minimalityBoundary.singlePairArgument"
+    },
+    {
+      "expected": true,
+      "id": "single-pair-advection-zero",
+      "path": "witness.minimalityBoundary.singlePairAdvectiveZero"
+    },
+    {
+      "expected": true,
+      "id": "single-pair-pressure-zero",
+      "path": "witness.minimalityBoundary.singlePairPressureZero"
+    },
+    {
+      "expected": true,
+      "id": "single-pair-tensor-tangent-zero",
+      "path": "witness.minimalityBoundary.singlePairNonlinearTensorTangentZero"
+    },
+    {
+      "expected": "a nonzero real mean-zero witness needs at least two conjugate pairs, hence four Fourier sites",
+      "id": "minimal-support-lower-boundary",
+      "path": "witness.minimalityBoundary.certifiedLowerBoundary"
+    },
+    {
+      "expected": true,
+      "id": "witness-attains-support-boundary",
+      "path": "witness.minimalityBoundary.witnessAttainsBoundary"
+    },
+    {
+      "expected": "support-cardinality boundary for this parity mechanism; not minimality among all closures or all no-go arguments",
+      "id": "minimality-claim-scope",
+      "path": "witness.minimalityBoundary.claimScope"
+    }
+  ],
+  "schemaVersion": 1
+}

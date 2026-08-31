@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73P：临界 H1/2 稳定管、N^-1/2 带限频率门槛、延迟同步与早期弱区间边界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73P｜Critical stability, the N^{-1/2} frequency gate, and the early-time regularity gap">
+  <meta property="og:description" content="固定全局强轨道周围，任意弱比较解从初时刻起在 \(L^2\) 中相对衰减；临界 \(H^{1/2}\) 小球给出全局强正则，并把带限数据的充分 \(L^2\) 门槛高频幂次从 \(N^{-3}\) 改进到 \(N^{-1/2}\)。每条弱分支晚时还会进入统一小 \(H^3\) 球，但未知的早期弱区间仍阻止 \(L^2\)-only 与 Clay 结论。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073p/fig-r073p-critical-frequency-gate.png">
+  <title>R0.73P｜Critical stability, the N^{-1/2} frequency gate, and the early-time regularity gap</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.56"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    article p,article li{overflow-wrap:anywhere}
+    article pre{max-width:100%;overflow-x:auto;white-space:pre}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    article p,article li{overflow-wrap:anywhere}
+    article pre{max-width:100%;overflow-x:auto;white-space:pre}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#section">直接结论</a><a href="#section-2">两个有限轨道作用量</a><a href="#l2">无小量条件的弱 L2 相对稳定</a><a href="#section-3">全时段临界稳定管</a><a href="#h3">临界同步与 H3 传播</a><a href="#n-1-2">带限数据的 N^{-1/2} 门槛</a><a href="#section-4">混合范数与低高频尾部证书</a><a href="#section-5">统一最终正则与延迟同步</a><a href="#section-6">早期弱区间为何仍然开放</a><a href="#section-7">一手文献边界与研究价值</a><a href="#section-8">解析附图与证据层级</a><a href="#section-9">可直接发布的中文短文</a><a href="#section-10">精确排除</a><a href="#section-11">机器账本</a><a href="#figure">journal figure</a><a href="#release-boundary">exact boundary</a><a href="#reproduce">reproduction</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+                <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73P · CRITICAL STABILITY / FREQUENCY GATE</div>
+        <h1>R0.73P｜临界稳定、N^{-1/2} 频率门槛与早期正则缺口</h1>
+        <p class="lead">固定全局强轨道周围，任意弱比较解从初时刻起在 \(L^2\) 中相对衰减；临界 \(H^{1/2}\) 小球给出全局强正则，并把带限数据的充分 \(L^2\) 门槛高频幂次从 \(N^{-3}\) 改进到 \(N^{-1/2}\)。每条弱分支晚时还会进入统一小 \(H^3\) 球，但未知的早期弱区间仍阻止 \(L^2\)-only 与 Clay 结论。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73P 完成</span><strong>Classical critical corollary + exact frequency transfer</strong><p>版本 v0.73P · 2026-08-31</p><p>critical H1/2 orbit tube：CLASSICAL COROLLARY</p><p>band-limited L2 gate：N^-1/2 COROLLARY</p><p>delayed one-sided L2→H3：CLOSED</p><p>L2-only / early weak interval / Clay：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#section">00 · 直接结论</a></li><li><a href="#section-2">01 · 两个有限轨道作用量</a></li><li><a href="#l2">02 · 无小量条件的弱 L2 相对稳定</a></li><li><a href="#section-3">03 · 全时段临界稳定管</a></li><li><a href="#h3">04 · 临界同步与 H3 传播</a></li><li><a href="#n-1-2">05 · 带限数据的 N^{-1/2} 门槛</a></li><li><a href="#section-4">06 · 混合范数与低高频尾部证书</a></li><li><a href="#section-5">07 · 统一最终正则与延迟同步</a></li><li><a href="#section-6">08 · 早期弱区间为何仍然开放</a></li><li><a href="#section-7">09 · 一手文献边界与研究价值</a></li><li><a href="#section-8">10 · 解析附图与证据层级</a></li><li><a href="#section-9">11 · 可直接发布的中文短文</a></li><li><a href="#section-10">12 · 精确排除</a></li><li><a href="#section-11">13 · 机器账本</a></li><li><a href="#release-boundary">B · exact boundary</a></li><li><a href="#figure">F · journal figure</a></li><li><a href="#reproduce">R · reproduction</a></li></ol></aside>
+                        <article>
+        <section id="section"><div class="section-no">00 / canonical report</div><h2>直接结论</h2><p>R0.73P 把 R0.73O 留下的“初始差只在 \(L^2\) 中很小、但高阶范数可能很大”拆成三个不能混用的命题。</p><p>第一，对一条固定的先验全局强参考轨道 \(u\)，任意 Leray--Hopf 比较解都满足从初时刻开始的相对 \(L^2\) 能量估计和指数衰减；这不需要小量条件，但只控制弱解距离，不会自动把比较解变成早期强解。</p><p>第二，参考轨道具有一个对所有起始时刻有效的正 \(H^{1/2}\) 稳定半径。这个结论由已发表的周期临界鲁棒性定理与参考轨道的有限作用量直接推出。若扰动初值还属于 \(H^3\)，则比较解全局保持 \(H^3\)，并在临界范数中指数同步。</p><p>第三，若初始差的 Fourier 支撑满足 \(|k|\le N\)，临界稳定管给出充分条件</p><div class="equation result">\[
+ \|v_0-u_0\|_2&lt;R_{1/2}[u]N^{-1/2}.
+\]</div><p>这把充分门槛的高频幂次从直接使用 \(H^3\) 稳定管所得的 \(N^{-3}\) 改进到临界尺度 \(N^{-1/2}\)。两个门槛含有不同的轨道半径，因而这里不宣称它对每个有限 \(N\) 都在数值上更大。该指数对 Sobolev 范数转移是精确的，却没有被证明为 Navier--Stokes 动力学中的必要阈值。</p><p>此外，能量球内的每一条 Leray--Hopf 选择都在一个只依赖球半径的共同上界时间之后进入小 \(H^3\) 球。相对固定全局强参考轨道，可得到延迟的 \(L^2\to H^3\) Lipschitz 同步。未知部分被压缩到有限的早期弱区间；晚时光滑不能向后传播，因此 Clay 问题仍然开放。</p></section>
+        <section id="section-2"><div class="section-no">01 / canonical report</div><h2>两个有限轨道作用量</h2><p>在标准三维环面 \([0,2\pi]^3\)、黏性系数一、零均值无散度相空间中，用归一化 Haar 测度 \((2\pi)^{-3}dx\) 定义 Fourier--Stokes 范数，并令</p><div class="equation result">\[
+ |z|_s:=\|A^{s/2}z\|_2,
+ \qquad A=-P\Delta .
+\]</div><p>固定一条先验全局强解</p><div class="equation result">\[
+ u\in C([0,\infty);H^3_{\sigma,0})
+ \cap L^2_{\rm loc}([0,\infty);H^4_{\sigma,0}).
+\]</div><p>R0.73O 的衰减阶梯与能量等式给出</p><div class="equation result">\[
+ \mathcal A_c[u]:=\int_0^\infty |u(t)|_1^4\,dt&lt;\infty,
+ \qquad
+ \mathcal L[u]:=\int_0^\infty\|\nabla u(t)\|_\infty\,dt&lt;\infty.
+\]</div><p>前者把有限时段的临界鲁棒半径统一到整个时间轴；后者控制任意弱比较解相对这条固定强轨道的 \(L^2\) 放大因子。两者都依赖参考轨道已经先验全局存在。</p></section>
+        <section id="l2"><div class="section-no">02 / canonical report</div><h2>无小量条件的弱 L2 相对稳定</h2><p>令 \(v\) 是从 \(v(t_0)\in L^2_{\sigma,0}\) 出发的任意 Leray--Hopf 解，\(w=v-u\)。标准弱--强相对能量不等式为</p><div class="equation result">\[
+ {1\over2}{d\over dt}\|w\|_2^2+|w|_1^2
+ \le \|\nabla u\|_\infty\|w\|_2^2.
+\]</div><p>第一 Stokes 特征值等于一，因此</p><div class="equation result">\[
+ \boxed{
+ \|v(t)-u(t)\|_2
+ \le
+ \exp\!\left(\int_{t_0}^t\|\nabla u(s)\|_\infty ds\right)
+ e^{-(t-t_0)}\|v(t_0)-u(t_0)\|_2 .}
+\]</div><p>这个结论对每个 Leray--Hopf 选择成立，并且不要求初始差小。它只是一侧的弱 \(L^2\) 稳定：早期比较解可能仍只是弱解，也不能由此得到任意两条弱解之间的 Lipschitz 半群。</p></section>
+        <section id="section-3"><div class="section-no">03 / canonical report</div><h2>全时段临界稳定管</h2><p><a href="https://doi.org/10.1016/j.nonrwa.2016.03.001">Burczak--Zajączkowski Theorem 1</a> 在周期立方体上给出 \(\dot H^\alpha\)、\(\alpha\in[1/2,1]\) 的定量鲁棒性。取 \(\alpha=1/2\)、相同外力和黏性系数一，其充分条件包含</p><div class="equation result">\[
+ |w(t_0)|_{1/2}^2
+ \exp\!\left(K_3'\int_{t_0}^{T}|u(t)|_1^4dt\right)
+ &lt;\left({\bar\nu\over K_2^c}\right)^2.
+\]</div><p>固定 \(\bar\nu,\varepsilon_1,\varepsilon_2&gt;0\) 且 \(\bar\nu+\varepsilon_1+\varepsilon_2&lt;1\)。在 \(L=2\pi\)、 \(\alpha=1/2\) 时，原文常数为</p><div class="equation result">\[
+ K_2^c=\sqrt2\,C_S(1/2)C_S(1)C_S(0),
+\]</div><div class="equation result">\[
+ K_3^c=\varepsilon_1^{-3}{27\over128}(2\pi)^{-12}
+ C_S(1/2)^4C_S(1)^4
+ \left[1+C_S(0)(2\pi)^{-3/2}\right]^4.
+\]</div><p>并有 \(K_4^c=(4\varepsilon_2)^{-1}\)，但本节等强迫时对应项为零。原文的 \(|\cdot|_{s,2\pi}\) 与这里的归一化 Stokes 范数相同，但原文 \(L^2(dx)\) 梯度范数满足 \(\|\nabla z\|_{L^2(dx)}=(2\pi)^{3/2}|z|_1\)。因此令 \(K_3'=(2\pi)^6K_3^c\)。因 \(\mathcal A_c[u]&lt;\infty\)，可定义</p><div class="equation result">\[
+ R_{\rm pub}[u]
+ ={\bar\nu\over K_2^c}
+ \exp\!\left(-{K_3'\over2}\mathcal A_c[u]\right)&gt;0.
+\]</div><p>同一个半径适用于任意起始时刻和任意有限终止时刻，前提是初始临界差满足</p><div class="equation result">\[
+ |v(t_0)-u(t_0)|_{1/2}&lt;R_{\rm pub}[u].
+\]</div><p>在此前提下，用临界唯一性拼接，得到全局</p><div class="equation result">\[
+ v\in C([t_0,\infty);H^{1/2}_{\sigma,0})
+ \cap L^2_{\rm loc}([t_0,\infty);H^{3/2}_{\sigma,0}).
+\]</div><p>这一步是已发表鲁棒性定理与有限轨道作用量的经典推论，不作新临界理论或优先权声明。</p></section>
+        <section id="h3"><div class="section-no">04 / canonical report</div><h2>临界同步与 H3 传播</h2><p><a href="https://doi.org/10.1016/j.jmaa.2012.10.064">Marín-Rubio--Robinson--Sadowski Theorem 3</a> 的证明给出临界差分不等式</p><div class="equation result">\[
+ X'+c_0Y
+ \le C_0|u|_1^4X+C_1XY,
+ \qquad X=|w|_{1/2}^2,\quad Y=|w|_{3/2}^2.
+\]</div><p>把半径缩小到</p><div class="equation result">\[
+ R_{1/2}[u]
+ :=\min\left\{
+ R_{\rm pub}[u],
+ \sqrt{\eta/2}\,e^{-C_0\mathcal A_c[u]/2}
+ \right\}&gt;0,
+\]</div><p>其中 \(C_1\eta\le c_0/2\)，首离时刻论证保留 Poincaré 阻尼并给出</p><div class="equation result">\[
+ |v(t)-u(t)|_{1/2}
+ \le e^{C_0\mathcal A_c[u]/2}
+ e^{-c_0(t-t_0)/4}|v(t_0)-u(t_0)|_{1/2}.
+\]</div><p>本文不为 \(R_{1/2}[u]\) 填入虚假的数字常数；要得到数值半径，必须先固定全部 Fourier、Sobolev 与域归一化常数。</p><p>若 \(v(t_0)\in H^3\)，临界解满足</p><div class="equation result">\[
+ L^\infty_tH^{1/2}_x\cap L^2_tH^{3/2}_x
+ \subset L^4_tH^1_x\subset L^4_tL^6_x,
+\]</div><p>即 Serrin 临界类。局部 \(H^3\) 解不能在有限端点失去正则，故全局保持 \(H^3\)。</p></section>
+        <section id="n-1-2"><div class="section-no">05 / canonical report</div><h2>带限数据的 N^{-1/2} 门槛</h2><p>令 \(P_{\le N}\) 为 \(0&lt;|k|\le N\) 上的正交 Fourier 投影， \(Q_{&gt;N}=I-P_{\le N}\)，并令 \(R_3[u]\) 表示 R0.73O 的齐次 Stokes \(H^3\) 稳定半径。若</p><div class="equation result">\[
+ \operatorname{supp}\widehat w_0
+ \subset\{k\in\mathbb Z^3:0&lt;|k|\le N\},
+\]</div><p>则 Parseval 恒等式给出</p><div class="equation result">\[
+ |w_0|_{1/2}\le N^{1/2}\|w_0\|_2,
+ \qquad
+ |w_0|_3\le N^3\|w_0\|_2.
+\]</div><p>因此临界路线和旧的直接 \(H^3\) 路线分别要求</p><div class="equation result">\[
+ \boxed{\|w_0\|_2&lt;R_{1/2}[u]N^{-1/2}},
+ \qquad
+ \|w_0\|_2&lt;R_3[u]N^{-3}.
+\]</div><p>对归一化单 Fourier 模 \(\phi_N\)，取 \(w_N=rN^{-1/2}\phi_N\)，则</p><div class="equation result">\[
+ \|w_N\|_2=rN^{-1/2}\to0,
+ \qquad |w_N|_{1/2}=r,
+ \qquad |w_N|_3=rN^{5/2}\to\infty.
+\]</div><p>所以新门槛确实包含一族 \(L^2\) 趋零而 \(H^3\) 发散的光滑扰动。单 Fourier 剪切模本身可以全局光滑；它只证明 \(N^{-1/2}\) 对范数转移是最优的，不证明更大振幅会发生动力学失稳或奇性。</p></section>
+        <section id="section-4"><div class="section-no">06 / canonical report</div><h2>混合范数与低高频尾部证书</h2><p>对任意 \(s&gt;1/2\)，齐次 Sobolev 范数的对数凸性给出</p><div class="equation result">\[
+ |w_0|_{1/2}
+ \le \|w_0\|_2^{1-1/(2s)}|w_0|_s^{1/(2s)}.
+\]</div><p>若 \(|w_0|_s\le M\)，以下条件足以进入临界稳定管：</p><div class="equation result">\[
+ \|w_0\|_2
+ &lt;R_{1/2}[u]^{\frac{2s}{2s-1}}
+ M^{-\frac1{2s-1}}.
+\]</div><p>在 \(s=3\) 时指数为 \(R_{1/2}^{6/5}M^{-1/5}\)。另一种可审计条件是</p><div class="equation result">\[
+ N\|w_0\|_2^2+|Q_{&gt;N}w_0|_{1/2}^2&lt;R_{1/2}[u]^2.
+\]</div><p>这些都是“低范数加高频包络”的充分条件，不是 \(L^2\)-only 条件。只知道高频下界、尾部 \(L^2\) 或全场 \(L^2\) 很小，都不能通过这一范数转移关闭临界入口。</p></section>
+        <section id="section-5"><div class="section-no">07 / canonical report</div><h2>统一最终正则与延迟同步</h2><p>设 \(\|v_0\|_2\le M\)。能量不等式与 Poincaré 给出</p><div class="equation result">\[
+ \|v(t)\|_2^2\le e^{-2t}M^2.
+\]</div><p>固定一个足够小的通用 \(H^1\) 半径 \(\eta_*\)。若 \(M=0\)，能量不等式直接给出 \(v\equiv0\)，并约定 \(L(0)=0\)；若 \(M&gt;0\)，定义</p><div class="equation result">\[
+ L(M)=\bigl(\log(M/\eta_*)\bigr)_+,
+ \qquad
+ T_{\rm reg}(M)=L(M)+2,
+ \qquad
+ T_3(M)=L(M)+4.
+\]</div><p>对每条 Leray--Hopf 选择，可以在共同上界之前选到一个依赖该选择的小 \(H^1\) 时刻；弱--强唯一性和小数据能量阶梯随后给出</p><div class="equation result">\[
+ |v(t)|_3\le\sqrt2\,\eta_*,
+ \qquad t\ge T_3(M).
+\]</div><p>这个量词与 <a href="https://doi.org/10.3233/ASY-171429">Hoang--Martinez Theorem 2.4</a> 的更强最终 Gevrey 估计一致。固定全局强参考轨道 \(u\)，令</p><div class="equation result">\[
+ K_u=\exp\!\left(\int_0^\infty\|\nabla u(t)\|_\infty dt\right).
+\]</div><p>若 \(M\ge\|u_0\|_2\)，则对能量球内每个初值和每个 Leray--Hopf 选择，三个固定长度的平滑窗口给出</p><div class="equation result">\[
+ \boxed{
+ |v(t)-u(t)|_3
+ \le K_u e^{-\frac12(t-T_3(M)-3)}|v_0-u_0|_0,
+ \qquad t\ge T_3(M)+3.}
+\]</div><p>这是相对固定强轨道的一侧延迟 Lipschitz 同步，不是整个 Leray 解集合上的弱--弱 Lipschitz 半群。</p></section>
+        <section id="section-6"><div class="section-no">08 / canonical report</div><h2>早期弱区间为何仍然开放</h2><p>不存在统一常数 \(C\) 使所有光滑周期场满足</p><div class="equation result">\[
+ |z|_{1/2}\le C\|z\|_2;
+\]</div><p>单 Fourier 模使比值增长为 \(N^{1/2}\)。因此，现有临界鲁棒性定理不能仅靠范数嵌入产生与频率无关的 \(L^2\) 半径。</p><p>这只是方法论上的阻断，不是 Navier--Stokes 反例。R0.73P 没有证明也没有否定</p><div class="equation result">\[
+ \exists\delta[u]&gt;0\ \forall w_0\in H^3_{\sigma,0},\quad
+ \|w_0\|_2&lt;\delta[u]
+ \Longrightarrow u_0+w_0\text{ 从初时刻生成全局强解}.
+\]</div><p>最终正则性只说明每条弱分支在有限延迟后进入光滑尾部；它不排除更早的奇异时刻，也不能向后产生唯一性。这个早期弱区间是本节精确保留下来的缺口。</p></section>
+        <section id="section-7"><div class="section-no">09 / canonical report</div><h2>一手文献边界与研究价值</h2><p><a href="https://doi.org/10.1016/j.nonrwa.2016.03.001">Burczak--Zajączkowski</a> 与 <a href="https://doi.org/10.1016/j.jmaa.2012.10.064">Marín-Rubio--Robinson--Sadowski</a> 已建立周期临界鲁棒性；<a href="https://doi.org/10.3233/ASY-171429">Hoang--Martinez</a> 已建立每条周期 Leray--Hopf 解的最终 Gevrey 正则。因此临界稳定管与最终正则本身属于文献定理或其直接推论。</p><p><a href="https://doi.org/10.4064/bc81-0-18">Mucha 2008</a> 明确要求 \(L^2\) 小量相对于更高的 Besov 迹范数；<a href="https://doi.org/10.24033/bsmf.2358">Iftimie 1999</a> 和 <a href="https://doi.org/10.1155/S1073792897000597">Gallagher 1997</a> 也分别使用各向异性临界余项或 \(H^{1/2}\) 强解邻域。Mucha 2001 的摘要是最接近的碰撞来源，但本次有界检索没有获得完整定理量词，因此不把摘要提升为高阶范数无关的 \(L^2\)-only 定理。</p><p>本节的研究价值是把同一个“稳定”拆成弱能量稳定、临界强正则稳定和延迟平滑三层，给出 \(N^{-1/2}\) 的精确频率入口，并把剩余困难定位到早期弱区间。它不是新的 Fujita--Kato 定理，不是任意数据全局正则的推进量，也不承担原创性或优先权声明。</p></section>
+        <section id="section-8"><div class="section-no">10 / canonical report</div><h2>解析附图与证据层级</h2><p>正式附图只绘制三类可由公式独立复算的量：\(N^{-3}\) 与 \(N^{-1/2}\) 的门槛比值；振幅 \(a_N=N^{-\gamma}\) 下 \(L^2\)、\(H^{1/2}\)、\(H^3\) 的指数区域；以及线性热半群的 \(L^2\to H^3\) 平滑基准</p><div class="equation result">\[
+ \max_{k\in\mathbb Z^3\setminus\{0\}}
+ |k|^3e^{-\tau|k|^2}
+ \le\left({3\over2e\tau}\right)^{3/2}.
+\]</div><p>最后一式只属于线性热方程。它不是非线性初时刻入口证书，也不能把延迟估计向后延伸。附图是解析公式诊断，不是 Navier--Stokes 仿真；本节没有调用 DGX，也没有把有限绘图作为连续体证明。</p><div class="table-wrap"><table class="report-table"><thead><tr><th scope="col">证据层级</th><th scope="col">本节内容</th><th scope="col">可以支持</th><th scope="col">不能支持</th></tr></thead><tbody><tr><td>已发表文献</td><td>临界鲁棒性、最终 Gevrey、临界小数据理论</td><td>原文量词及明确写出的直接推论</td><td>无频率条件的 \(L^2\)-only 强正则</td></tr><tr><td>内部解析证明</td><td>有限轨道作用量、弱相对能量、全时段拼接、延迟同步</td><td>固定强参考轨道周围的精确结论</td><td>任意弱--弱唯一性或向后正则</td></tr><tr><td>解析公式诊断</td><td>频率幂律与线性热基准</td><td>范数转移、指数和绘图实现核查</td><td>非线性必要阈值、爆破或奇性</td></tr><tr><td>开放项</td><td>早期弱区间、Mucha 2001 完整量词、统一 \(L^2\)-only 半径</td><td>下一步问题定义</td><td>已解决的 Clay 结论</td></tr></tbody></table></div></section>
+        <section id="section-9"><div class="section-no">11 / canonical report</div><h2>可直接发布的中文短文</h2><h3>Lead</h3><p>固定全局强轨道周围，任意弱比较解从初时刻起在 \(L^2\) 中相对衰减；临界 \(H^{1/2}\) 小球给出全局强正则，并把带限数据的充分 \(L^2\) 门槛高频幂次从 \(N^{-3}\) 改进到 \(N^{-1/2}\)。每条弱分支晚时还会进入统一小 \(H^3\) 球，但未知的早期弱区间仍阻止 \(L^2\)-only 与 Clay 结论。</p><h3>Home</h3><p>这一步把“稳定”分成弱 \(L^2\) 相对能量、临界 \(H^{1/2}\) 强正则和延迟 \(H^3\) 同步三层。带限初始差可用 \(R_{1/2}N^{-1/2}\) 进入全局强解；没有频率或高阶包络时，初时刻强正则仍然开放。</p><h3>Recap</h3><p>R0.73P 关闭了固定全局强轨道周围的临界稳定与带限输入接口：临界管对所有起始时刻有效，\(N^{-1/2}\) 指数对范数转移精确，并允许 \(L^2\) 趋零而 \(H^3\) 发散的光滑扰动。能量球内所有弱分支在共同延迟后正则并相对参考轨道同步；不能跨越的部分是此前的早期弱区间。</p><h3>Literature</h3><p>Burczak--Zajączkowski 与 Marín-Rubio--Robinson--Sadowski 提供临界鲁棒性，Hoang--Martinez 提供最终 Gevrey 正则。Mucha 2008 的 \(L^2\) 阈值依赖高阶迹范数；Mucha 2001 的完整阈值量词仍未取得，因而统一 \(L^2\)-only 强正则不得宣称已经存在或已经排除。</p><h3>Next</h3><p>数学上的下一发布门是 R0.73Q：检查相对热流条件、频率包络和临界 Besov 拓扑能否形成严格大于 \(H^{1/2}\) 球、同时仍可全时段拼接的稳定域，并先完成 Kato、Koch--Tataru、Iftimie、Gallagher 与 Mucha 路线的碰撞审计。</p></section>
+        <section id="section-10"><div class="section-no">12 / canonical report</div><h2>精确排除</h2><ul class="report-list"><li>不证明无频率条件的统一 \(L^2\)-only 强正则半径。</li><li>不证明任意两条 Leray--Hopf 选择构成 Lipschitz 半群。</li><li>不把最终正则性向后传播到初时刻。</li><li>不把 \(N^{-1/2}\) 写成 Navier--Stokes 动力学的必要阈值。</li><li>不把单 Fourier 模写成失稳、奇性或爆破见证。</li><li>不把线性热半群图写成非线性入口证书。</li><li>不证明任意三维光滑初值全局，不证明奇性或非唯一性。</li><li>不作新颖性或优先权声明。</li></ul><p>精确公开标签是 <strong>NOT CLAY</strong>。</p></section>
+        <section id="section-11"><div class="section-no">13 / canonical report</div><h2>机器账本</h2><pre><code>allTimeWeakL2RelativeStability=CLOSED_AFTER_AUDIT
+globalCriticalH12OrbitStability=CLOSED_AS_CLASSICAL_COROLLARY
+criticalH12Synchronization=CLOSED_AFTER_AUDIT
+criticalToGlobalH3Propagation=CLOSED_AS_CLASSICAL_COROLLARY
+bandLimitedL2ThresholdNMinusHalf=CLOSED_AS_COROLLARY
+mixedL2HsThreshold=CLOSED_AS_COROLLARY
+lowHighCriticalTailCertificate=CLOSED_AS_COROLLARY
+uniformEventualRegularityOnL2Ball=CLOSED_AFTER_AUDIT
+uniformEventualSmallH3Entry=CLOSED_AFTER_AUDIT
+oneSidedDelayedL2ToH3Synchronization=CLOSED_AFTER_AUDIT
+normTransferNMinusHalfSharp=CLOSED
+PDEDynamicalNMinusHalfSharp=NOT_CLAIMED
+arbitraryLerayPairLipschitzSemigroup=NOT_PROVED
+uniformL2OnlyStrongThreshold=OPEN_COLLISION_SENSITIVE
+earlyWeakIntervalRegularity=OPEN
+backwardRegularityInference=NOT_AVAILABLE
+arbitraryThreeDimensionalGlobalRegularity=OPEN
+formulaDiagnosticValidation=PASS
+formulaDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
+clayConclusion=OPEN
+noveltyOrPriorityClaim=FORBIDDEN</code></pre></section>
+        <section id="figure"><div class="section-no">F / Journal figure</div><h2>临界频率门槛、Sobolev 指数区与线性热基准</h2><p><img src="/assets/r073p/fig-r073p-critical-frequency-gate.svg" alt="R0.73P critical frequency gate and linear heat benchmark"></p><p><a href="/assets/r073p/fig-r073p-critical-frequency-gate.pdf">下载矢量 PDF</a> · <a href="/assets/r073p/fig-r073p-critical-frequency-gate.png">下载 600 dpi PNG</a> · <a href="/assets/r073p/fig-r073p-critical-frequency-gate.svg">打开 SVG</a></p><p>附图只呈现 N^-3 与 N^-1/2 的解析换算、纯模 Sobolev 幂律和线性热半群基准。它不认证非线性入口、PDE 必要阈值、奇性或 Clay。</p></section>
+        <section id="release-boundary"><div class="section-no">B / Exact release boundary</div><h2>临界强稳定、带限推论与早期弱缺口严格分列</h2><p>globalCriticalH12OrbitStability=CLOSED_AS_CLASSICAL_COROLLARY；bandLimitedL2ThresholdNMinusHalf=CLOSED_AS_COROLLARY；oneSidedDelayedL2ToH3Synchronization=CLOSED_AFTER_AUDIT</p><p>formulaDiagnostic=ANALYTIC_ONLY；finiteAnalyticFigureProvesPDEThresholdNecessity=FALSE</p><p>uniformL2OnlyStrongThreshold=OPEN_COLLISION_SENSITIVE；earlyWeakIntervalRegularity=OPEN；clayConclusion=OPEN</p><p>临界稳定管是已发表鲁棒性定理的经典推论；N^-1/2 只对范数转移锐。解析附图不证明 PDE 必要阈值；无频率条件的 L2-only 初时刻正则、早期弱区间与 Clay 仍开放。NOT CLAY。</p></section>
+        <section id="reproduce"><div class="section-no">R / Reproduction</div><h2>报告、证明、审计、证书与附图入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073p_critical_frequency_proof.md">critical-frequency proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073p_delayed_synchronization_proof.md">delayed synchronization proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073p_literature_audit.md">bounded literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073p">finite diagnostic package</a></p><p><a href="/assets/r073p/fig-r073p-critical-frequency-gate.pdf">journal figure PDF</a> · <a href="/notes/r0-73p.pdf">synchronized note PDF</a> · <a href="/recap-r0-61-r0-73p.html">132-node cumulative recap</a> · <a href="/recap-r0-61-r0-73p.pdf">synchronized recap PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号区分定理、有限计算与开放问题。</div><div>研究笔记 R0.73P · 2026-08-31<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

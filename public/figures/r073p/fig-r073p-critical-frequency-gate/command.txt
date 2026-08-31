@@ -1,0 +1,17 @@
+# Run from the repository root. The dependency directory is outside the repository.
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073P_DEPS_DIR=/tmp/r073p-figure-deps
+"$CODEX_PYTHON" -m pip install --target "$R073P_DEPS_DIR" -r research/figures/r073p/fig-r073p-critical-frequency-gate/requirements.txt
+
+# Formula-data pass; this code path has no figure export and cannot create a PDF.
+env OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/plot.py --deps "$R073P_DEPS_DIR" --data-only
+
+# Current non-PDF render; this code path writes only SVG and PNG files.
+env MPLCONFIGDIR=/tmp/r073p-figure-mpl OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/plot.py --deps "$R073P_DEPS_DIR" --render-nonpdf
+"$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/validate.py --deps "$R073P_DEPS_DIR" --preflight
+"$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/validate.py --deps "$R073P_DEPS_DIR" --preflight --confirm-nonpdf-visual-qa
+"$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/validate.py --deps "$R073P_DEPS_DIR" --preflight --verify-only
+
+# DEFERRED AND NOT RUN IN THIS ROUND: this is the only rendering mode allowed to create PDF assets.
+# env MPLCONFIGDIR=/tmp/r073p-figure-mpl "$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/plot.py --deps "$R073P_DEPS_DIR" --render-final
+# "$CODEX_PYTHON" -B research/figures/r073p/fig-r073p-critical-frequency-gate/validate.py --deps "$R073P_DEPS_DIR" --final --confirm-visual-qa --source-commit FULL_40_HEX_COMMIT

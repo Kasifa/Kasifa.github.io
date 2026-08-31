@@ -45,7 +45,7 @@ test("release generator source-dry-run exposes P accounting without public write
     legacyFormalFigureBacklogCount: 24,
   });
   assert.equal(result.writes, 0);
-  assert.equal(result.commitPinsReady, false);
+  assert.equal(result.commitPinsReady, true);
   assert.equal(result.uniformL2OnlyStrongThreshold, "OPEN_COLLISION_SENSITIVE");
   assert.equal(result.earlyWeakIntervalRegularity, "OPEN");
   assert.equal(result.clayConclusion, "OPEN");

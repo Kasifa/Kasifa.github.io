@@ -27,6 +27,7 @@ FINAL_QA_KEYS = (
 COMPUTATION_KINDS = {
     "simulation",
     "exact-audit",
+    "exact-formula-audit",
     "data-analysis",
     "exact-audit plus high-precision presentation sampling",
     "closed-form sampling plus validated finite CSV ingestion",

@@ -407,10 +407,11 @@ heat 方向的耗散有正确符号，但
 Machine-readable boundary:
 
 ```text
-exactAutocorrelationEvolution=INTERNAL_EXACT
+exactAutocorrelationEvolution=VERIFIED_CLASSICAL_RECONSTRUCTION
 quarticBalance=VERIFIED_CLASSICAL_RECONSTRUCTION
 dynamicAQUpperInequality=INTERNAL_COROLLARY
-criticalAIntegral=INTERNAL_SCALING
+criticalAIntegral=INTERNAL_EXACT_SCALING
+criticalAIntegralControl=OPEN
 carrierScaleNonAutonomy=CLOSED_EXACT
 signedVelocityPhaseInPressurePairing=CLOSED_EXACT
 pressureTensorNeededForGeneralReconstruction=VERIFIED_CLASSICAL

@@ -798,6 +798,10 @@ def update_home(content: ReleaseContent) -> str:
         '<h3>检查 L2-only / 高频输入接口</h3><p>直接检查 \\(L^2\\)-only / 高频输入接口，确定初始 \\(L^2\\) 很小而 \\(H^3\\) 很大时现有稳定管在哪一步失效，并测试哪些可审计的频率局部化条件能够恢复严格控制。</p>',
         f'<h3>{html.escape(content.next_release)} 下一接口</h3><p>{html.escape(content.math_next_gate_zh)}</p>',
     )
+    value = value.replace(
+        '<h3>R0.73Q 下一接口</h3><p>检查相对热流条件、频率包络和临界 Besov 拓扑能否形成严格大于 \\(H^{1/2}\\) 球、同时仍可全时段拼接的稳定域，并先完成 Kato、Koch--Tataru、Iftimie、Gallagher 与 Mucha 路线的碰撞审计。</p>',
+        f'<h3>{html.escape(content.next_release)} 下一接口</h3><p>{html.escape(content.math_next_gate_zh)}</p>',
+    )
     value = value.replace("R0.70A–R0.73P：94 节已公开，70 节完整封存",
                           "R0.70A–R0.73Q：95 节已公开，71 节完整封存")
     value = value.replace("Research topology · R0.1–R0.73P", "Research topology · R0.1–R0.73Q")
@@ -879,6 +883,7 @@ def update_home(content: ReleaseContent) -> str:
         "<strong>R0.73P</strong>最新研究节点",
         'data-site-version="1.56"',
         "/site-refresh.js?v=1.56",
+        '<h3>R0.73Q 下一接口</h3>',
     ):
         if stale in value:
             raise RuntimeError("R0.73Q home retained stale latest marker " + stale)

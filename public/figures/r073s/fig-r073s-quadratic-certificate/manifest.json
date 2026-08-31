@@ -1,0 +1,328 @@
+{
+  "schemaVersion": "research-figure-manifest-v1",
+  "figureId": "fig-r073s-quadratic-certificate",
+  "release": "R0.73S",
+  "status": "formal",
+  "publicationStatus": "published",
+  "analyticalQuestion": "What does the complete quadratic autocorrelation certificate control, and which support or low-summary factors cannot be removed?",
+  "supportedClaim": "Exact formula audit of the autocorrelation upper bound, its sharp difference-support obstruction, and the low-summary no-go.",
+  "createdAt": "2026-08-31T10:51:44.578551+00:00",
+  "git": {
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "72e4c12760dc3b837dec328ee96a29736fe93c99",
+    "certificateCommit": "4bb49ecc380e4b41d33e3102af4f47de016b5653",
+    "dirtyAtCertifiedRun": false
+  },
+  "computation": {
+    "kind": "exact-formula-audit",
+    "configuration": "config.json",
+    "precision": "exact integer/rational formulas with deterministic rendering",
+    "solver": "closed-form finite audit",
+    "formalCommand": "python plot.py --render-preseal; python validate.py --final --verify-only",
+    "scientificWallTimeSeconds": 0.930649958900176,
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson"
+    }
+  },
+  "compute": {
+    "host": "Wool.local",
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "cpu": "arm64 / 18 logical CPUs",
+    "memoryGiB": 36.0,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "gpu": "not used",
+    "dgxUsed": false
+  },
+  "environment": {
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+    "packagesLock": "requirements.txt",
+    "packages": {
+      "matplotlib": "3.10.6",
+      "numpy": "2.5.2",
+      "pillow": "12.3.0",
+      "pypdf": "6.10.0",
+      "pypdfium2": "5.13.0"
+    }
+  },
+  "data": [
+    {
+      "path": "source-data.csv",
+      "schema": "r073s-quadratic-certificate-figure-source-v1",
+      "bytes": 19678,
+      "sha256": "83c1afd8eed3fdf79d77aaa4e608c75512f1871c68496eb29c724543cc9700ed"
+    },
+    {
+      "path": "results.json",
+      "schema": "r073s-quadratic-certificate-results-v1",
+      "bytes": 2253,
+      "sha256": "ee83109cc01c926dcc756dd13535c3f6d2b32c8d9659ba6654b34634ed41cd9c"
+    },
+    {
+      "path": "validation.json",
+      "schema": "r073s-quadratic-certificate-figure-validation-v1",
+      "bytes": 15909,
+      "sha256": "f3901c2e8b0abbc2a6646d7fd1b7a1aa8e2a0522e5b026f8ce81630c56eca1a6"
+    },
+    {
+      "path": "progress.ndjson",
+      "schema": "progress-ndjson-v1",
+      "bytes": 846,
+      "sha256": "30553ab976d2d3067015e3751597cf23e7520e83d43bed0ec3766335664d775b"
+    },
+    {
+      "path": "resource-log.ndjson",
+      "schema": "resource-log-ndjson-v1",
+      "bytes": 1226,
+      "sha256": "b44deeb94b93e551987720982b7dc897248b1820f1a286dd261ea8ec4c16335f"
+    }
+  ],
+  "sourceData": [],
+  "figure": {
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 43510,
+        "sha256": "f236997829207c4c5b8b948be3a46b8871de4c251dadda780f530b9590d07fda"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 101123,
+        "sha256": "168e5063e9c75d7d44231f66fa6ffd53b74c8e488ca2240c03fb412857872c35"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 523962,
+        "sha256": "9879ebb3c4d74bffa3aa2c1180ee416402e8453dffba5b9a1250289cc8f9deae",
+        "dpi": 600
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "qa": {
+    "status": "passed",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true,
+    "qaArtifacts": [
+      {
+        "path": "qa-pdf.png",
+        "schema": "qa-raster-v1",
+        "bytes": 270779,
+        "sha256": "ff656a084ee1697f38fb8d6fb245c763ebe8452ceb0928c46da2dae9bd738e78"
+      },
+      {
+        "path": "qa-final-size.png",
+        "schema": "qa-raster-v1",
+        "bytes": 473908,
+        "sha256": "51769e2d88df8b8891c5e39485a427cc7419299df913b3ce67698eac5b091126"
+      },
+      {
+        "path": "qa-grayscale.png",
+        "schema": "qa-raster-v1",
+        "bytes": 387979,
+        "sha256": "31e842d0e6f3cb4c2ef53fcdfc5e7be42d007172cac672deadb3277d81047579"
+      }
+    ]
+  },
+  "claimBoundary": {
+    "exactFormulaAndUpperBoundOnly": true,
+    "fittedScalingLaw": false,
+    "navierStokesSimulation": false,
+    "complexityLowerBound": false,
+    "necessaryRegularityCriterion": false,
+    "unsafeDynamics": false,
+    "finiteTimeSingularity": false,
+    "arbitraryL2SmallDataSafe": false,
+    "clayProblemSolved": false,
+    "sharpnessLiftHasZeroConvection": true
+  },
+  "sourceSeal": {
+    "boundFileCount": 23,
+    "figureId": "fig-r073s-quadratic-certificate",
+    "files": [
+      {
+        "bytes": 811,
+        "path": "README.md",
+        "sha256": "5b4432b98cec594ae7996a7c18bca4fcbeb2e21c17bcadf1bfef744a50963d4b"
+      },
+      {
+        "bytes": 1315,
+        "path": "caption.md",
+        "sha256": "c97229abead03f515d7f29918543499d5a682d237e3f822203cc611f4a44a934"
+      },
+      {
+        "bytes": 4612,
+        "path": "chart-contract-and-source-data.md",
+        "sha256": "badb1ec2b23d00a62d407e85a0808a114b068bf304edf0352efb8cac78b4e546"
+      },
+      {
+        "bytes": 490,
+        "path": "command.txt",
+        "sha256": "0ae9624d3a28be4fdf0ac94de739a7690c808ccfbaa0859033f1a05f4087c890"
+      },
+      {
+        "bytes": 730,
+        "path": "config.json",
+        "sha256": "69be1215f35185f87dd1e430c0fec1e15112731c10b931f9e4281ece89b7ab86"
+      },
+      {
+        "bytes": 1501,
+        "path": "contract.json",
+        "sha256": "f23989faaad025ea93b9efd568704ae15b477affe614d0e88d6c2724cfbbdea5"
+      },
+      {
+        "bytes": 705,
+        "path": "environment.json",
+        "sha256": "d48354d8cb8a40538c9e0a1fb16ac2026caffbc34aa0689b435e032cbda2fa94"
+      },
+      {
+        "bytes": 43510,
+        "path": "figure.pdf",
+        "sha256": "f236997829207c4c5b8b948be3a46b8871de4c251dadda780f530b9590d07fda"
+      },
+      {
+        "bytes": 523962,
+        "path": "figure.png",
+        "sha256": "9879ebb3c4d74bffa3aa2c1180ee416402e8453dffba5b9a1250289cc8f9deae"
+      },
+      {
+        "bytes": 101123,
+        "path": "figure.svg",
+        "sha256": "168e5063e9c75d7d44231f66fa6ffd53b74c8e488ca2240c03fb412857872c35"
+      },
+      {
+        "bytes": 21045,
+        "path": "plot.py",
+        "sha256": "24cca2cb42eb6e38c4d278d547039c49b7277d9ba0dec2619057f05bb0d93c29"
+      },
+      {
+        "bytes": 846,
+        "path": "progress.ndjson",
+        "sha256": "30553ab976d2d3067015e3751597cf23e7520e83d43bed0ec3766335664d775b"
+      },
+      {
+        "bytes": 473908,
+        "path": "qa-final-size.png",
+        "sha256": "51769e2d88df8b8891c5e39485a427cc7419299df913b3ce67698eac5b091126"
+      },
+      {
+        "bytes": 387979,
+        "path": "qa-grayscale.png",
+        "sha256": "31e842d0e6f3cb4c2ef53fcdfc5e7be42d007172cac672deadb3277d81047579"
+      },
+      {
+        "bytes": 270779,
+        "path": "qa-pdf.png",
+        "sha256": "ff656a084ee1697f38fb8d6fb245c763ebe8452ceb0928c46da2dae9bd738e78"
+      },
+      {
+        "bytes": 888,
+        "path": "qa-protocol.md",
+        "sha256": "7eb392a04550b36b2deb44eb91d0c7058e8ff3bb6445a05e962f2406a39e8150"
+      },
+      {
+        "bytes": 1061,
+        "path": "qa-report.md",
+        "sha256": "e8c9a756aa5d7bb13fe38850e523eb872feb7e8264a0b171102567df02ba8697"
+      },
+      {
+        "bytes": 79,
+        "path": "requirements.txt",
+        "sha256": "c0dfebb8e4ce0a39b1565a51b94cb2ad8adf09d7910be44490446710102cf92f"
+      },
+      {
+        "bytes": 1226,
+        "path": "resource-log.ndjson",
+        "sha256": "b44deeb94b93e551987720982b7dc897248b1820f1a286dd261ea8ec4c16335f"
+      },
+      {
+        "bytes": 2253,
+        "path": "results.json",
+        "sha256": "ee83109cc01c926dcc756dd13535c3f6d2b32c8d9659ba6654b34634ed41cd9c"
+      },
+      {
+        "bytes": 19678,
+        "path": "source-data.csv",
+        "sha256": "83c1afd8eed3fdf79d77aaa4e608c75512f1871c68496eb29c724543cc9700ed"
+      },
+      {
+        "bytes": 28412,
+        "path": "validate.py",
+        "sha256": "6ca7266e60ea2f46e86f0989d87c7cc1cd6016ffa0c66fc4b1f4af3fd5a90d39"
+      },
+      {
+        "bytes": 15909,
+        "path": "validation.json",
+        "sha256": "f3901c2e8b0abbc2a6646d7fd1b7a1aa8e2a0522e5b026f8ce81630c56eca1a6"
+      }
+    ],
+    "finalSeal": true,
+    "release": "R0.73S",
+    "schemaVersion": "r073s-quadratic-certificate-figure-manifest-v1",
+    "sourceCommit": "72e4c12760dc3b837dec328ee96a29736fe93c99",
+    "sourceCommitAssigned": true,
+    "status": "sealed",
+    "visualQaConfirmed": true
+  },
+  "publication": {
+    "archiveDirectory": "public/figures/r073s/fig-r073s-quadratic-certificate",
+    "directory": "public/assets/r073s",
+    "fileStem": "fig-r073s-quadratic-certificate",
+    "byteIdentityRequired": true,
+    "publicCopiesComplete": true,
+    "assets": [
+      {
+        "path": "public/assets/r073s/fig-r073s-quadratic-certificate.pdf",
+        "bytes": 43510,
+        "sha256": "f236997829207c4c5b8b948be3a46b8871de4c251dadda780f530b9590d07fda"
+      },
+      {
+        "path": "public/assets/r073s/fig-r073s-quadratic-certificate.svg",
+        "bytes": 101123,
+        "sha256": "168e5063e9c75d7d44231f66fa6ffd53b74c8e488ca2240c03fb412857872c35"
+      },
+      {
+        "path": "public/assets/r073s/fig-r073s-quadratic-certificate.png",
+        "bytes": 523962,
+        "sha256": "9879ebb3c4d74bffa3aa2c1180ee416402e8453dffba5b9a1250289cc8f9deae"
+      }
+    ]
+  },
+  "packageInventory": {
+    "paths": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "expectedFileCount": 25
+  }
+}

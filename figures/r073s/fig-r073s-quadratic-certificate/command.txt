@@ -1,0 +1,8 @@
+PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+DEPS=/Users/kasifa/.cache/codex-runtimes/r073s-figure-python
+
+$PYTHON -m pip install --disable-pip-version-check --target "$DEPS" -r requirements.txt
+$PYTHON plot.py --deps "$DEPS" --render-preseal
+$PYTHON validate.py --deps "$DEPS" --preseal
+$PYTHON validate.py --deps "$DEPS" --final --confirm-visual-qa --source-commit SOURCE_COMMIT
+$PYTHON validate.py --deps "$DEPS" --final --verify-only

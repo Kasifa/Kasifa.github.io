@@ -37,6 +37,7 @@ FIGURE_ID = "fig-r073s-quadratic-certificate"
 CERTIFICATE_CSV = ROOT / "research/certificates/r073s/source-data.csv"
 CERTIFICATE_VALIDATOR = ROOT / "research/certificates/r073s/validate_certificate.py"
 CERTIFICATE_SEALER = ROOT / "research/certificates/r073s/seal_package.py"
+CERTIFICATE_MANIFEST = ROOT / "research/certificates/r073s/manifest.json"
 SOURCE_FILES = {
     "README.md", "caption.md", "chart-contract-and-source-data.md", "command.txt",
     "config.json", "contract.json", "plot.py", "qa-protocol.md", "requirements.txt",
@@ -155,8 +156,13 @@ def verify_certificate(*, require_final: bool) -> None:
     )
     require(completed.returncode == 0, "R0.73S certificate structural verification failed")
     if require_final:
+        manifest = load_json(CERTIFICATE_MANIFEST)
+        source_commit = str(manifest.get("sourceCommit", ""))
+        require(bool(re.fullmatch(r"[0-9a-f]{40}", source_commit)),
+                "R0.73S certificate manifest lacks a final source commit")
         completed = subprocess.run(
-            [sys.executable, str(CERTIFICATE_SEALER), "--verify-only"], cwd=ROOT,
+            [sys.executable, str(CERTIFICATE_SEALER), "--source-commit", source_commit,
+             "--verify-only"], cwd=ROOT,
             text=True, capture_output=True, check=False,
         )
         require(completed.returncode == 0, "R0.73S certificate final seal verification failed")

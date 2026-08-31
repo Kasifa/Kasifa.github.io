@@ -221,8 +221,10 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
     for (const phrase of forbidden) assert.equal(value.includes(phrase), false, `${label}: ${phrase}`);
   }
   for (const token of boundaryTokens) assert.ok(pages.note.includes(token), token);
-  assert.ok(pages.note.includes("full-three-dimensional \\(H^3,H^3\\)"));
-  assert.ok(pages.note.includes("full-three-dimensional FPS \\(H^3,L^2\\)"));
+  assert.ok(pages.note.includes(
+    "full-three-dimensional forward synchronized \\((H^3,H^3)\\)",
+  ));
+  assert.ok(pages.note.includes("full-three-dimensional FPS \\((H^3,L^2)\\)"));
   assert.ok(pages.note.includes("bounded"));
   assert.ok(pages.note.includes("priority"));
   assert.ok(pages.note.includes("/note-retro.css"));

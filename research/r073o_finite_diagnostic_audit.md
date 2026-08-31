@@ -177,12 +177,24 @@ Master-output hashes:
 
 | Output | SHA-256 |
 | --- | --- |
-| figure.pdf | 902338dcad07cf36f72be3334ff57ed7eef1cb90ca9e74fd70851e614bca7bf0 |
-| figure.svg | e6499e02b5dd5429cea122e9aa68464e2114c89192ff3775491af93150ea3a50 |
+| figure.pdf | aad3b7de6682627913bd4fe2c47d89fa96cf45643c6356247d32a727d0ee7710 |
+| figure.svg | 2cca630f673f2442dc08b77a58e5bb23c43958c7cb2907335e49a4afc035d312 |
 | figure.png | 5cee46fc764ad763f2f227d076411bc5070800b916716ff7cd01aa7b7a977de6 |
-| manifest.json | 59b1bb71eb67b33dd9304628baddd5237934f105f22c481cd4ae8b2d57c54e39 |
-| validation.json | 70731fa8807326ccf8ede29b6fa7d360349cdaf79f9581e4db87c789a293ad0d |
-| results.json | 41ae45263f0fb7ad4ffe88bdafe654775487054c6a53e9631fd314b26aed214d |
+| manifest.json | 20c1bf33ad3b7b177509135aa3e6a830f0d959e9668cd4a236bfb7f770117740 |
+| validation.json | d9e8424ea0ce50452c9f47172d3f0017688c36a1ce1d6820c361b829754f1af7 |
+| results.json | 7867c25c6f0fac972d3a3fe68795985b4b8a9530b13119a48523d1b672a0fefc |
+
+Publication-contract audit found that the first sealed figure environment
+snapshot preceded the final byte of `independent_validation.json`: it recorded
+12,554 bytes and an obsolete SHA-256 even though the figure validation facts
+already read the final 12,555-byte file.  The figure was therefore rendered
+again from the final sealed certificate, visually reinspected, revalidated,
+and resealed.  The environment input now binds
+`independent_validation.json` to SHA-256
+`8f19b1042ac8e263f2525be6a60ade7d02ae6c6a2765ed8a02784bb98bd00c56`.
+This correction changes archival metadata and the timestamp-bearing vector
+exports; it does not change the finite spectral values or their evidence
+class.
 
 ## 6. Evidence boundary
 

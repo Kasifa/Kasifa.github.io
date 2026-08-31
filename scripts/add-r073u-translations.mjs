@@ -39,15 +39,15 @@ const localDirectProvenance = "local-direct-reviewed";
 const forcedSemanticReviewLedger = new Map([
   ["s1812", {
     zhSha256: "ec8cabcdbd73652c18e7723b2af7442aedb561b2401d706f0d36d56cfd1f258e",
-    capturedEnSha256: "c0d304ba769d8cd42fe121cf9f13619501516fbf21887d2115f135f7d59d7ff4",
+    capturedEnSha256: "33d7c2cd085f17d3f6c516b4d22259dac10bbc3926014d9b525d8b3030cefaa1",
   }],
   ["s1824", {
     zhSha256: "c64d1cbb0d0b21dedcf75e8b1a333e07e9a4e847ed7e672acbc8aab77a0dd891",
-    capturedEnSha256: "a8ab979092ba4877a46f73ddf04dbb08ed82c9ab71496e11e80fc10af6e0d9b1",
+    capturedEnSha256: "f0bb411e88d8b904df7c65991e2767958c4c28561d5b736df1065cc5e232a1a8",
   }],
   ["s2429", {
     zhSha256: "a3ab0dedb06f246cd9a9b6186a0f3ec23109af26918e746988c9eea0ec6b47a4",
-    capturedEnSha256: "1f7e1fc93ae5cfb8c6d078f1e86b99a47552c2b59455c80f775e55e9f16f660b",
+    capturedEnSha256: "1faa908103ed7cc16a33f2da61c572211ac537fb6a27840983bc7124da5cc96d",
   }],
 ]);
 const forcedSemanticReviewIds = new Set(forcedSemanticReviewLedger.keys());

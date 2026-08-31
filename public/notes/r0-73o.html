@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73O：先验全局轨道的条件 H3 稳定管、强迫 Kolmogorov 对照及有限谱诊断边界。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73O｜Global-orbit stability and a forced Kolmogorov contrast">
+  <meta property="og:description" content="无强迫一侧，每条先验全局的周期 \(H^3\) 强轨道都有正的同步稳定管；强迫一侧，一个非衰减 Kolmogorov 平衡态沿平面方向发生全局光滑的固定 \(L^2\) 逃逸。前者是经典路线在当前拓扑下的闭合，后者的无限维正实谱来自组合文献与算子论证明链；有限谱图只作诊断。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073o/fig-r073o-kolmogorov-spectrum.png">
+  <title>R0.73O｜Global-orbit stability and a forced Kolmogorov contrast</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.55"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    article p,article li{overflow-wrap:anywhere}
+    article pre{max-width:100%;overflow-x:auto;white-space:pre}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#section">直接结论</a><a href="#section-2">无强迫全局轨道的有限作用量</a><a href="#section-3">对全部起始时刻有效的稳定管</a><a href="#section-4">拓扑结论与仍未关闭的输入接口</a><a href="#kolmogorov">强迫 Kolmogorov 平衡态与精确缩放</a><a href="#section-5">无限维正实谱的组合证明链</a><a href="#section-6">从正实谱到全局光滑的固定逃逸</a><a href="#fourier">有限 Fourier 诊断及其证据边界</a><a href="#section-7">证据层级与结论账目</a><a href="#section-8">文献边界</a><a href="#section-9">可直接发布的中文短文</a><a href="#section-10">精确排除</a><a href="#section-11">机器账本</a><a href="#figure">journal figure</a><a href="#release-boundary">exact boundary</a><a href="#reproduce">reproduction</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+            <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73O · GLOBAL-ORBIT STABILITY / FORCED CONTRAST</div>
+        <h1>R0.73O｜先验全局轨道稳定性与强迫 Kolmogorov 对照</h1>
+        <p class="lead">无强迫一侧，每条先验全局的周期 \(H^3\) 强轨道都有正的同步稳定管；强迫一侧，一个非衰减 Kolmogorov 平衡态沿平面方向发生全局光滑的固定 \(L^2\) 逃逸。前者是经典路线在当前拓扑下的闭合，后者的无限维正实谱来自组合文献与算子论证明链；有限谱图只作诊断。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73O 完成</span><strong>Classical route closure + forced comparison</strong><p>版本 v0.73O · 2026-08-31</p><p>unforced global orbit (H3,H3)：CLOSED CONDITIONALLY</p><p>forced planar witness H3→L2：PRIMARY-SOURCE CHAIN</p><p>finite spectrum：DIAGNOSTIC ONLY</p><p>L2-only 3D input / Clay：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#section">00 · 直接结论</a></li><li><a href="#section-2">01 · 无强迫全局轨道的有限作用量</a></li><li><a href="#section-3">02 · 对全部起始时刻有效的稳定管</a></li><li><a href="#section-4">03 · 拓扑结论与仍未关闭的输入接口</a></li><li><a href="#kolmogorov">04 · 强迫 Kolmogorov 平衡态与精确缩放</a></li><li><a href="#section-5">05 · 无限维正实谱的组合证明链</a></li><li><a href="#section-6">06 · 从正实谱到全局光滑的固定逃逸</a></li><li><a href="#fourier">07 · 有限 Fourier 诊断及其证据边界</a></li><li><a href="#section-7">08 · 证据层级与结论账目</a></li><li><a href="#section-8">09 · 文献边界</a></li><li><a href="#section-9">10 · 可直接发布的中文短文</a></li><li><a href="#section-10">11 · 精确排除</a></li><li><a href="#section-11">12 · 机器账本</a></li><li><a href="#release-boundary">B · exact boundary</a></li><li><a href="#figure">F · journal figure</a></li><li><a href="#reproduce">R · reproduction</a></li></ol></aside>
+                  <article>
+        <section id="section"><div class="section-no">00 / canonical report</div><h2>直接结论</h2><p>R0.73O 得到两个边界不同、方向相反的结论。</p><p>无强迫方程一侧，每条已经先验全局存在的周期三维 \(H^3\) 强轨道都有有限的累积 \(H^4\) 作用量，并有一个正的 \(H^3\) 同步稳定半径。这个半径依赖固定参考轨道，却对所有起始时刻有效。该结论关闭的是已知全局背景上的 \(H^3\)-小扰动路线，不证明任意三维初值全局。</p><p>强迫方程一侧，显式 Kolmogorov 平衡态</p><div class="equation result">\[
+ U_*=(30.12\sin 10y,0,0),\qquad
+ f_*=(3012\sin 10y,0,0)
+\]</div><p>在 \(R=3.012\) 时至少有一个正实平面特征值。Friedlander--Pavlović--Shvydkoy 定理先在二维不变子空间中应用，再沿 \(z\) 常数延拓，得到全局光滑、初始 \(H^3\) 范数趋于零、但在某些时刻逃离固定 \(L^2\) 球的三维见证解。</p><p>这不是代数简单性结论，不是本质三维不稳定模态，也不能转移到无强迫方程。所有见证解都全局光滑，因此这里没有奇性结论，也没有 Clay 问题的进展声明。</p></section>
+        <section id="section-2"><div class="section-no">01 / canonical report</div><h2>无强迫全局轨道的有限作用量</h2><p>在标准三维环面、黏性系数一、零均值无散度相空间中，考虑</p><div class="equation result">\[
+ \partial_tu-\Delta u+P(u\cdot\nabla u)=0
+\]</div><p>的一条先验全局强解</p><div class="equation result">\[
+ u\in C([0,\infty);H^3_{\sigma,0})
+ \cap L^2_{\rm loc}([0,\infty);H^4_{\sigma,0}).
+\]</div><p>能量等式先给出有限的 \(L^2_tH^1_x\) 耗散。轨道随后进入一个通用的小 \(H^1\) 球；\(H^1\to H^2\to H^3\) 的能量阶梯给出高阶指数衰减。带权 \(H^3\) 能量估计进一步推出</p><div class="equation result">\[
+ \mathcal A_4[u]
+ :=\int_0^\infty |u(t)|_4\,dt&lt;\infty.
+\]</div><p>有限初始区间使用假设中的 \(L^2_{\rm loc}H^4\)，无限尾部使用指数权重。这个论证依赖参考轨道已经全局存在，不能反过来作为任意局部轨道的全局延拓证明。</p></section>
+        <section id="section-3"><div class="section-no">02 / canonical report</div><h2>对全部起始时刻有效的稳定管</h2><p>令 \(w=v-u\)、\(X=|w|_3^2\)、\(Y=|w|_4^2\)。周期交换子和 Moser 估计给出</p><div class="equation result">\[
+ {1\over2}X'+Y
+ \le C_*|u|_4X+C_*X^{1/2}Y.
+\]</div><p>Stokes \(H^3\) 范数中的半径可取为</p><div class="equation result">\[
+ R_A[u]
+ ={1\over4C_*}\exp\!\bigl(-C_*\mathcal A_4[u]\bigr)&gt;0.
+\]</div><p>对任意 \(t_0\ge0\)，只要</p><div class="equation result">\[
+ |v(t_0)-u(t_0)|_3&lt;R_A[u],
+\]</div><p>比较解就全局存在，并满足</p><div class="equation result">\[
+ |v(t)-u(t)|_3
+ \le e^{C_*\mathcal A_4[u]}
+ e^{-(t-t_0)/2}|v(t_0)-u(t_0)|_3,
+ \qquad t\ge t_0.
+\]</div><p>通常的非齐次 \(H^3\) 范数与 Stokes 范数等价，因此也得到正的通常 \(H^3\) 半径；固定等价常数会改变数值半径，不能把两个半径写成同一个数。</p></section>
+        <section id="section-4"><div class="section-no">03 / canonical report</div><h2>拓扑结论与仍未关闭的输入接口</h2><p>上述定理给出全三维同步 \((H^3,H^3)\) 稳定，也通过 \(H^3\hookrightarrow L^2\) 给出 \(H^3\)-输入、\(L^2\)-输出的直接推论。初始扰动仍须在 \(H^3\) 中小。</p><p>全局强解初值集</p><div class="equation result">\[
+ \mathcal G_3
+ =\{u_0\in H^3_{\sigma,0}:u_0\text{ 生成全局强解}\}
+\]</div><p>因此在 \(H^3\) 中是开集。其补集若非空则为闭集。这不证明补集非空，也不证明所有光滑初值都属于 \(\mathcal G_3\)。</p><p>尚未关闭的接口是：初值只在 \(L^2\) 中小，而 \(H^3\) 可以任意大时，能否仍得到全局 \(H^3\) 延拓和固定的 \(L^2\) 控制。现有稳定半径不能排除高频、大高阶范数的扰动。</p></section>
+        <section id="kolmogorov"><div class="section-no">04 / canonical report</div><h2>强迫 Kolmogorov 平衡态与精确缩放</h2><p>在同一标准三维环面上考虑带固定外力的方程</p><div class="equation result">\[
+ \partial_tu-\Delta u+P(u\cdot\nabla u)=Pf_*.
+\]</div><p>由于 \(U_*\) 只有依赖 \(y\) 的第一分量，</p><div class="equation result">\[
+ (U_*\cdot\nabla)U_*=0,\qquad
+ -\Delta U_*=100U_*=f_*.
+\]</div><p>所以 \(U_*\) 是精确的非衰减平衡态。它还有</p><div class="equation result">\[
+ \int_0^\infty\|\nabla U_*\|_{L^\infty}\,dt=\infty.
+\]</div><p>这只是非恒定稳态不衰减的直接结果，不是湍流或奇性的证据。</p><p>取物理纵向波数 \(m=7\)、基流波数 \(N=10\)、振幅 \(A=30.12\) 和黏性系数 \(\nu=1\)。归一化变量给出</p><div class="equation result">\[
+ \alpha={m\over N}=0.7,\qquad
+ R={A\over\nu N}=3.012,\qquad
+ \lambda=AN\sigma=301.2\sigma.
+\]</div><p>因此文献中的矩形二维环面问题被精确嵌入标准三维立方环面的平面不变子空间，而不是从不同几何或不同参数定义中直接搬用临界值。</p></section>
+        <section id="section-5"><div class="section-no">05 / canonical report</div><h2>无限维正实谱的组合证明链</h2><p>Nagatou 的计算机辅助定理给出</p><div class="equation result">\[
+ R_c\in[3.011528364444,\;3.011528364446].
+\]</div><p>仅有这个临界区间不能决定穿越后的谱方向。R0.73O 使用以下分工明确的组合链。</p><ol class="report-list report-list-ordered"><li><a href="https://doi.org/10.1016/j.cam.2003.10.016">Nagatou</a> 证明非负实部特征值都是实数，从而排除非零虚轴穿越。</li><li><a href="https://doi.org/10.2748/tmj/1113247600">Matsuda--Miyatake Proposition 1</a> 给出零特征值递推的唯一中性参数。余弦扇区、平移所得的正弦扇区、负纵向模和 \(m=0\) 规范模分别处理后，这一排除覆盖完整的零均值平面 Fourier 空间。</li><li><a href="https://doi.org/10.1070/SM2005v196n01ABEH000871">Ilyin Theorem 5.1</a> 在 \(L=2\pi\) 的同一归一化下，于某个有限的大 Reynolds 参数提供非空正实谱锚点。</li><li>固定零均值无散度 Hilbert 空间上的速度算子构成公共 \(H^2\) 定义域的 type-(A) 解析族，并有紧预解式。能量估计把闭右半平面谱统一限制在一个固定矩形中。虚轴无谱和 Riesz 投影秩的连续性使右半平面总代数重数从高参数锚点保持到 \(R=3.012\)。</li></ol><p>由于</p><div class="equation result">\[
+ 3.012&gt;3.011528364446,
+\]</div><p>二维无限维线性化算子在目标参数处至少有一个正实特征值。沿 \(z\) 常数延拓后，同一平面特征函数属于完整三维线性化相空间。</p><p>被保持的是右半平面 Riesz 投影的秩，即正实部谱的总代数重数。这个论证不证明该特征值代数简单，也不产生本质三维特征模。</p></section>
+        <section id="section-6"><div class="section-no">06 / canonical report</div><h2>从正实谱到全局光滑的固定逃逸</h2><p><a href="https://doi.org/10.1007/s00220-006-1526-7">Friedlander--Pavlović--Shvydkoy</a> 的非线性不稳定定理先应用在二维不变相空间，参数取</p><div class="equation result">\[
+ n=2,p=2,q=4.
+\]</div><p>光滑不稳定方向给出二维初始扰动序列 \(w_{0,j}\)，使其在 \(H^3\) 中趋于零，而相应解在某些时刻与平衡态的 \(L^2\) 距离至少为一个固定正数。</p><p>再把二维速度场沿 \(z\) 常数延拓。二维平面子空间对非线性方程严格不变，二维周期 Navier--Stokes 的经典全局正则性保证每个见证解全局光滑。固定延拓因子同时作用于 \(H^3\) 和 \(L^2\) 范数，所以三维相空间中存在</p><div class="equation result">\[
+ \|w_{0,j}\|_{H^3(\mathbb T^3)}\longrightarrow0,
+ \qquad
+ \|u_j(t_j)-U_*\|_{L^2(\mathbb T^3)}\ge\rho_*&gt;0.
+\]</div><p>一个平面序列足以证明完整相空间中的不稳定。这个存在性结论不说明任意非平面扰动全局，也不说明不稳定机制本质上是三维的。</p></section>
+        <section id="fourier"><div class="section-no">07 / canonical report</div><h2>有限 Fourier 诊断及其证据边界</h2><p>截断阶数 \(K=120\) 的主计算在 \(R=3.012\) 得到</p><div class="equation result">\[
+ \sigma_{\max}^{(120)}
+ =3.7327236415731776\times10^{-5},
+ \qquad
+ \lambda^{(120)}
+ =0.011242963608418411.
+\]</div><p>等价的机器可读数值是：</p><pre><code>sigma=3.7327236415731776e-05
+lambda=0.011242963608418411</code></pre><p>独立装配的广义特征值铅笔复现了符号、尺度和临界穿越；有限验证器检查了源数据、残差、配置和哈希关系。正式附图以 SVG、矢量 PDF 和 600 dpi PNG 保存，并完成尺寸、灰度与标签检查。</p><p>这些结果只用于检查缩放、符号、实现和截断收敛表现。有限矩阵的正特征值不证明无限维算子的正谱，不代替 Nagatou 的严格临界区间，也不单独推出非线性不稳定。无限维结论来自上一节的组合证明链。</p></section>
+        <section id="section-7"><div class="section-no">08 / canonical report</div><h2>证据层级与结论账目</h2><div class="table-wrap"><table class="report-table"><thead><tr><th scope="col">层级</th><th scope="col">本节内容</th><th scope="col">可以支持的陈述</th><th scope="col">不能支持的陈述</th></tr></thead><tbody><tr><td>已发表文献</td><td>Pizzocchero、Nagatou、Matsuda--Miyatake、Ilyin、FPS 等定理</td><td>各自原文量词和本文明确完成的参数对应</td><td>未核对量词、不同方程或不同拓扑的转移</td></tr><tr><td>内部解析证明</td><td>无强迫能量阶梯、有限作用量、稳定管；紧预解式与 Riesz 投影延拓</td><td>在写明假设下的连续体结论</td><td>任意三维初值全局、代数简单性</td></tr><tr><td>有限诊断</td><td>\(K=120\) 谱值、独立重算、残差与正式附图</td><td>数值尺度、符号和实现检查</td><td>无限维谱、非线性逃逸或奇性证明</td></tr><tr><td>开放项</td><td>\(L^2\)-only 高频接口、任意三维初值全局、本质三维模</td><td>下一步问题的精确定义</td><td>已完成的数学结论</td></tr></tbody></table></div><p>数学结论已经通过独立解析复核。有限诊断的 19 文件证书包和正式附图的 25 文件包均已绑定到不可变源提交 <code>f139c5e707ffdfe855ca114faac669d12e431e59</code>，其内部验证与哈希账本同时通过。网页发布链要求按事务顺序生成、翻译、同步 PDF 并做线上字节核对；这些发布步骤不增加数学证明强度。</p></section>
+        <section id="section-8"><div class="section-no">09 / canonical report</div><h2>文献边界</h2><p><a href="https://doi.org/10.1016/j.aml.2020.106970">Pizzocchero 2021</a> 已直接给出周期光滑全局解的稳定半径；Ponce--Racke--Sideris--Titi、Gallagher--Iftimie--Planchon、Hoang--Martinez 等工作也给出相关的稳定、开放性或最终衰减结论。因此无强迫部分定位为当前 \(H^3\) 拓扑下的自包含经典路线闭合，不作 novelty 或 priority 声明。</p><p><a href="https://doi.org/10.1006/jdeq.2000.3863">Mucha 2001</a> 是周期 \(L^2\)-小扰动问题最接近的碰撞来源，但本次 bounded audit 没有获得其完整定理量词。<a href="https://doi.org/10.4064/bc81-0-18">Mucha 2008</a> 的可读定理显示其自身的小 \(L^2\) 条件仍依赖高阶迹范数。这不能证明全部文献都不存在统一的 \(L^2\)-only 阈值。</p><p>强迫侧没有把十二位临界区间和超临界谱方向归于同一篇文献。临界区间来自 Nagatou；零谱唯一性来自 Matsuda--Miyatake；高参数正谱锚点来自 Ilyin；连续体方向由公共定义域、紧预解式、统一谱界和 Riesz 投影秩完成；非线性逃逸使用 FPS。</p></section>
+        <section id="section-9"><div class="section-no">10 / canonical report</div><h2>可直接发布的中文短文</h2><h3>Lead</h3><p>无强迫一侧，每条先验全局的周期 \(H^3\) 强轨道都有正的同步稳定管；强迫一侧，一个非衰减 Kolmogorov 平衡态沿平面方向发生全局光滑的固定 \(L^2\) 逃逸。前者是经典路线在当前拓扑下的闭合，后者的无限维正实谱来自组合文献与算子论证明链；有限谱图只作诊断。</p><h3>Home</h3><p>我把固定背景的有限作用量稳定机制推广到任意一条先验全局的无强迫周期 \(H^3\) 轨道，并登记了一个拓扑匹配的强迫 Kolmogorov 对照。两个结论都不改变任意三维初值的全局正则性问题。</p><h3>Recap</h3><p>R0.73O 关闭了已知全局无强迫背景上的 \(H^3\)-小扰动不稳定路线：每条轨道最终衰减，累积 \(H^4\) 作用量有限，并有一个对所有起始时刻有效的正稳定半径。强迫对照保留无限累积应变，并由平面方向给出全局光滑、初始 \(H^3\) 趋零而输出固定 \(L^2\) 逃逸的见证。</p><h3>Literature</h3><p>Pizzocchero 已给出直接的周期稳定定理；Mucha 2001 仍是 \(L^2\)-only 阈值最接近、但完整量词尚未核对的碰撞来源。Kolmogorov 正实谱使用 Nagatou、Matsuda--Miyatake、Ilyin 与标准算子延拓的组合链，非线性逃逸使用 Friedlander--Pavlović--Shvydkoy。</p><h3>Next</h3><p>数学上的下一发布门是 R0.73P：直接检查 \(L^2\)-only / 高频输入接口，确定初始 \(L^2\) 很小而 \(H^3\) 很大时现有稳定管在哪一步失效，并测试哪些可审计的频率局部化条件能够恢复严格控制。</p></section>
+        <section id="section-10"><div class="section-no">11 / canonical report</div><h2>精确排除</h2><ul class="report-list"><li>不证明任意三维光滑初值全局。</li><li>不证明全三维 \(L^2\)-only 输入稳定。</li><li>不证明目标正特征值代数简单。</li><li>不证明本质三维不稳定模态。</li><li>不证明爆破、湍流、异常耗散或非唯一性。</li><li>不把有限 Fourier 矩阵当作无限维谱证书。</li><li>不把带外力的对照转移到无强迫 Clay 方程。</li><li>不作新颖性或优先权声明。</li></ul><p>精确公开标签是 <strong>NOT CLAY</strong>。</p></section>
+        <section id="section-11"><div class="section-no">12 / canonical report</div><h2>机器账本</h2><pre><code>unforcedGlobalOrbitH3Stability=CLOSED_CONDITIONALLY_AFTER_AUDIT
+unforcedFiniteAccumulatedH4=CLOSED_CONDITIONALLY_AFTER_AUDIT
+globalDataSetH3Open=CLOSED_AS_COROLLARY
+unforcedH3InputL2Output=CLOSED_AS_COROLLARY
+uniformL2OnlyInputThreshold=OPEN_COLLISION_SENSITIVE
+arbitraryThreeDimensionalGlobalRegularity=OPEN
+forcedKolmogorovPositivePlanarSpectrum=CLOSED_BY_COMPOSITE_PRIMARY_SOURCE_CHAIN_AFTER_AUDIT
+forcedKolmogorovH3InputL2Escape=CLOSED_BY_COMPOSITE_PRIMARY_SOURCE_CHAIN_AFTER_AUDIT
+forcedWitnessSolutionsGlobalSmooth=PLANAR_ONLY
+positiveEigenvalueAlgebraicallySimple=OPEN_NOT_CLAIMED
+essentiallyThreeDimensionalUnstableMode=OPEN_NOT_NEEDED
+forcedConclusionTransfersToClay=FALSE
+finiteFourierDiagnostic=PASS
+finiteComputationProvesInfiniteDimensionalSpectrum=FALSE
+finiteComputationProvesNonlinearInstability=FALSE
+finiteComputationReplacesNagatouCertificate=FALSE
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
+clayConclusion=OPEN
+noveltyOrPriorityClaim=FORBIDDEN</code></pre></section>
+        <section id="figure"><div class="section-no">F / Journal figure</div><h2>Kolmogorov 有限谱诊断与截断收敛</h2><p><img src="/assets/r073o/fig-r073o-kolmogorov-spectrum.svg" alt="R0.73O finite-dimensional Kolmogorov spectral diagnostic and truncation convergence"></p><p><a href="/assets/r073o/fig-r073o-kolmogorov-spectrum.pdf">下载矢量 PDF</a> · <a href="/assets/r073o/fig-r073o-kolmogorov-spectrum.png">下载 600 dpi PNG</a> · <a href="/assets/r073o/fig-r073o-kolmogorov-spectrum.svg">打开 SVG</a></p><p>附图只呈现有限 Fourier 截断的谱横坐标、临界值诊断与残差。无限维正实谱只来自正文列出的组合主来源，不来自这幅有限图。附图不认证非线性逃逸、奇性或 Clay。</p></section>
+        <section id="release-boundary"><div class="section-no">B / Exact release boundary</div><h2>条件稳定、强迫对照与开放问题严格分列</h2><p>unforcedGlobalOrbitH3Stability=CLOSED_CONDITIONALLY_ON_GLOBAL_REFERENCE；globalDataSetH3Open=CLOSED_AS_CLASSICAL_COROLLARY；forcedKolmogorovPlanarH3InputL2Escape=CLOSED_BY_PRIMARY_SOURCE_COMBINATION</p><p>finiteKolmogorovSpectrum=DIAGNOSTIC_ONLY；finiteComputationProvesPositiveInfiniteDimensionalSpectrum=FALSE</p><p>uniformL2OnlyInputThreshold=OPEN；arbitraryDataGlobalRegularity=OPEN；essentiallyThreeDimensionalInstability=OPEN_NOT_NEEDED；Clay=OPEN</p><p>无强迫结论以前提轨道已经全局为条件。强迫对照属于不同方程。有限谱计算不证明无限维正实谱；有界检索不承担原创性或优先权声明。NOT CLAY。</p></section>
+        <section id="reproduce"><div class="section-no">R / Reproduction</div><h2>报告、证明、审计、证书与附图入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073o_global_orbit_stability_proof.md">unforced continuum proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073o_forced_kolmogorov_contrast.md">forced contrast</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073o_literature_audit.md">bounded literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073o">finite diagnostic package</a></p><p><a href="/assets/r073o/fig-r073o-kolmogorov-spectrum.pdf">journal figure PDF</a> · <a href="/notes/r0-73o.pdf">synchronized note PDF</a> · <a href="/recap-r0-61-r0-73o.html">131-node cumulative recap</a> · <a href="/recap-r0-61-r0-73o.pdf">synchronized recap PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号区分定理、有限计算与开放问题。</div><div>研究笔记 R0.73O · 2026-08-31<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

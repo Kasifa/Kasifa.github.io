@@ -288,7 +288,9 @@ if (!report.startsWith("# " + releaseTitle + "\n") ||
     !report.includes("**Public title (zh):** " + publicTitle)) {
   throw new Error("R0.73V canonical report title ledger drift");
 }
-const boundaryCorpus = (report + "\n" + dictionary).replace(/\s+/g, " ");
+const boundaryCorpus = (report + "\n" + dictionary)
+  .replace(/^>\s?/gm, "")
+  .replace(/\s+/g, " ");
 for (const phrase of [
   "equation-slot-compressed, pressure-aware signed third-order lift",
   "critical \\(\\kappa_s\\), \\(Q_s\\), and traced-flux rows remain conditional",
@@ -314,13 +316,15 @@ for (const token of [
   "formalFigureChecks=147",
   "formalFigureRows=158",
   "signedLiftInformationTheoreticMinimality=NOT_ESTABLISHED",
-  "wholeFieldKappaCollision=NOT_ESTABLISHED",
   "fourthOrderNonClosure=NOT_ESTABLISHED",
   "finiteMomentHierarchyNoGo=NOT_ESTABLISHED",
   "arbitraryThreeDimensionalGlobalRegularity=OPEN",
   "clayConclusion=OPEN",
 ]) {
   if (!report.includes(token)) throw new Error("R0.73V report missing " + token);
+}
+if (!dictionary.includes("wholeFieldKappaCollision=NOT_ESTABLISHED")) {
+  throw new Error("R0.73V dictionary missing wholeFieldKappaCollision=NOT_ESTABLISHED");
 }
 
 const releaseManifest = JSON.parse((await regularBytes("research/release-manifest.json")).toString("utf8"));

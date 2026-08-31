@@ -254,7 +254,7 @@ test("the release transaction fails closed until its normalized source pin is fr
   }
 });
 
-test("translation and PDF binders are local, syntax-valid, and help-only invocations do not publish", () => {
+test("translation and PDF binders are local, syntax-valid, and reproduce the sealed outputs", () => {
   for (const script of [
     "scripts/add-r073v-translations.mjs",
     "scripts/bind-r073v-pdfs.mjs",
@@ -266,4 +266,17 @@ test("translation and PDF binders are local, syntax-valid, and help-only invocat
   }
   assert.match(read("scripts/add-r073v-translations.mjs"), /LOCAL_DIRECT_NO_DGX/);
   assert.match(read("scripts/bind-r073v-pdfs.mjs"), /LOCAL_DIRECT_NO_DGX/);
+
+  for (const script of [
+    "scripts/add-r073v-translations.mjs",
+    "scripts/bind-r073v-pdfs.mjs",
+  ]) {
+    const checked = spawnSync(node, [script, "--check-only"], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    assert.equal(checked.status, 0, `${script}: ${checked.stderr}`);
+    const result = JSON.parse(checked.stdout);
+    assert.equal(result.dgxUsed, false);
+  }
 });

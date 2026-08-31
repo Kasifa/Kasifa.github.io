@@ -334,6 +334,13 @@ Rudin--Shapiro 递归和所列有限 \(m\) 的公式行。有限计算不能替�
 普通翻译直接在本机完成。R0.73R 的证明、证书和附图也只需本地 CPU；
 DGX 未使用。
 
+解析源文件固定在提交
+`25b20d225202359de2fd2d95ed86dd4b372d23a5`。19 文件公式证书在提交
+`6809fc92a2d1338fb77fb3bf5a72d16ed158d807` 终封；25 文件正式图包在提交
+`f3d8ac3b04aa122a44f112d554c4991ecfb6f36e` 终封。两套终封都逐字节绑定
+同一解析源提交；该来源链只证明有限公式、数据和制图可复现，不扩大
+连续体结论。
+
 ## 10. 碰撞边界使用的一手来源
 
 - J.-Y. Chemin and I. Gallagher,
@@ -381,11 +388,11 @@ noveltyOrPriorityClaim=FORBIDDEN
 ```
 
 ```text
-formulaCertificateValidation=PENDING
-formulaCertificatePackage=PRESEAL_PENDING
-sourceCommitAssigned=FALSE
-finalSeal=FALSE
-formalFigurePackage=PRESEAL_PENDING
-publicReleaseContent=PENDING
+formulaCertificateValidation=PASS
+formulaCertificatePackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
 translationPath=LOCAL_DIRECT_NO_DGX
 ```

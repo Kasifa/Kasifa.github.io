@@ -1,7 +1,7 @@
 # R0.73R bilingual dictionary and public-claim boundary
 
-**Status:** canonical terminology for synchronized HTML/PDF rendering;
-publication provenance is still pending
+**Status:** canonical terminology for synchronized HTML/PDF rendering; formula
+and figure provenance are sealed and the public rendering source is ready
 
 **Release title:** R0.73R | A shellwise phase certificate for the critical
 heat trace
@@ -50,12 +50,12 @@ uniformL2OnlyStrongRadius=OPEN
 arbitraryThreeDimensionalGlobalRegularity=OPEN
 clayConclusion=OPEN
 noveltyOrPriorityClaim=FORBIDDEN
-formulaCertificateValidation=PENDING
-formulaCertificatePackage=PRESEAL_PENDING
-sourceCommitAssigned=FALSE
-finalSeal=FALSE
-formalFigurePackage=PRESEAL_PENDING
-publicReleaseContent=PENDING
+formulaCertificateValidation=PASS
+formulaCertificatePackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
 translationPath=LOCAL_DIRECT_NO_DGX
 NOT CLAY
 ```
@@ -129,16 +129,19 @@ regularity theorem.
 
 ## 7. Publication provenance
 
-The provenance fields remain pending until the finite formula package and
-formal figure are sealed to an immutable analytic-source commit.
+The finite formula package and formal figure are sealed to immutable analytic
+source commit `25b20d225202359de2fd2d95ed86dd4b372d23a5`.  The package commits are
+`6809fc92a2d1338fb77fb3bf5a72d16ed158d807` and
+`f3d8ac3b04aa122a44f112d554c4991ecfb6f36e`, respectively.  These bindings
+certify byte identity and finite reproducibility only.
 
 ```text
-formulaCertificateValidation=PENDING
-formulaCertificatePackage=PRESEAL_PENDING
-sourceCommitAssigned=FALSE
-finalSeal=FALSE
-formalFigurePackage=PRESEAL_PENDING
-publicReleaseContent=PENDING
+formulaCertificateValidation=PASS
+formulaCertificatePackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
 translationPath=LOCAL_DIRECT_NO_DGX
 ```
 

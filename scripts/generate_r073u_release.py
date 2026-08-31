@@ -63,9 +63,10 @@ ANALYTIC_SOURCE_COMMIT = "84e808dae473f6381cbf9df55a71f5fe81a1cfce"
 FINITE_SOURCE_COMMIT = "6c79f23152116f5d420be6ff03653500ab02ef0e"
 FINITE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"
+FIGURE_METADATA_INPUT_COMMIT = "478674623bbbd9c9953c13048fd3455644736084"
 FIGURE_METADATA_RESEAL_COMMIT = "8f425d85a614b3d307715b4bf4f5daa5fff23693"
 FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"
-RELEASE_SOURCE_COMMIT = "758f6d2593b9807be9d1e80e7b6267abde4d41ce"
+RELEASE_SOURCE_COMMIT = "a3eabb5ec6ddb24342a44f92ab4efbb1a44834d0"
 
 BINDING_ORDER = (
     ("R0.73T published baseline", RELEASE_BASELINE_COMMIT),
@@ -73,8 +74,9 @@ BINDING_ORDER = (
     ("R0.73U finite source", FINITE_SOURCE_COMMIT),
     ("R0.73U sealed finite package", FINITE_PACKAGE_COMMIT),
     ("R0.73U formal figure package", FIGURE_PACKAGE_COMMIT),
-    ("R0.73U figure metadata reseal", FIGURE_METADATA_RESEAL_COMMIT),
     ("R0.73U final reader content", FINAL_CONTENT_COMMIT),
+    ("R0.73U figure metadata inputs", FIGURE_METADATA_INPUT_COMMIT),
+    ("R0.73U figure metadata reseal", FIGURE_METADATA_RESEAL_COMMIT),
     ("R0.73U release source", RELEASE_SOURCE_COMMIT),
 )
 
@@ -565,7 +567,7 @@ def validate_figure_package(certificate_manifest: dict) -> dict:
         or source_git.get("sourceCommit") != ANALYTIC_SOURCE_COMMIT
         or source_git.get("certificateCommit") != FINITE_PACKAGE_COMMIT
         or source_git.get("figureMetadataResealCommit")
-        != FIGURE_METADATA_RESEAL_COMMIT
+        != FIGURE_METADATA_INPUT_COMMIT
         or source_git.get("dirtyAtCertifiedRun") is not False
         or not isinstance(manifest.get("computation"), dict)
         or manifest["computation"].get("kind") != "exact-formula-audit"
@@ -1286,13 +1288,21 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
     source_manifest = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/manifest.json", "R0.73U sealed figure manifest"
     )
+    source_git = source_manifest.get("git")
     if (
         source_manifest.get("schemaVersion")
         != "r073u-tensor-heat-hierarchy-manifest-v1"
         or source_manifest.get("figureId") != FIGURE_ID
+        or source_manifest.get("publicationStatus") != "staged"
         or source_manifest.get("finalSeal") is not True
         or source_manifest.get("sourceCommitAssigned") is not True
         or source_manifest.get("sourceCommit") != ANALYTIC_SOURCE_COMMIT
+        or not isinstance(source_git, dict)
+        or source_git.get("sourceCommit") != ANALYTIC_SOURCE_COMMIT
+        or source_git.get("certificateCommit") != FINITE_PACKAGE_COMMIT
+        or source_git.get("figureMetadataResealCommit")
+        != FIGURE_METADATA_INPUT_COMMIT
+        or source_git.get("dirtyAtCertifiedRun") is not False
         or source_manifest.get("validation") != {
             "checksPassed": 325,
             "checksRequired": 325,
@@ -1416,6 +1426,8 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             "certificateSourceCommit": FINITE_SOURCE_COMMIT,
             "certificatePackageCommit": FINITE_PACKAGE_COMMIT,
             "figurePackageCommit": FIGURE_PACKAGE_COMMIT,
+            "figureMetadataInputCommit": FIGURE_METADATA_INPUT_COMMIT,
+            "figureMetadataResealCommit": FIGURE_METADATA_RESEAL_COMMIT,
         },
         "computation": source_manifest["computation"],
         "compute": source_manifest["compute"],

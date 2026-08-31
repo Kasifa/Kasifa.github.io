@@ -43,8 +43,12 @@ SHA-256 inventory, avoiding a metadata hash cycle.
 
 The seal also emits the repository-wide `research-figure-manifest-v1`
 compatibility fields while retaining the stricter R0.73U source seal.  The
-figure, analytic, and certificate inputs must be committed and clean in their
-declared scope before the write pass.  After sealing, verify both contracts:
+ten figure-source files, eleven raw artifacts, frozen analytic sources, and
+certificate inputs must be committed and clean in their declared scope before
+the write pass; the four generated metadata files are deliberately excluded so
+that the seal can be reproduced deterministically.  This source package remains
+`staged`; only the release transaction may mark its copied archive `published`.
+After sealing, verify both contracts:
 
 ```text
 python3 validate.py --deps <python-packages> --verify-only

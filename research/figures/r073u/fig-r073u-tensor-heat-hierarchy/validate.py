@@ -160,7 +160,10 @@ def metadata_reseal_commit() -> str:
     commit = completed.stdout.decode("ascii").strip()
     require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
             "metadata reseal HEAD is not full lowercase 40-hex")
-    scope = [str(HERE.relative_to(ROOT)), *sorted(ANALYTIC_SOURCE_FILES),
+    figure_inputs = sorted(
+        str((HERE / name).relative_to(ROOT)) for name in SOURCE_FILES | RAW_FILES
+    )
+    scope = [*figure_inputs, *sorted(ANALYTIC_SOURCE_FILES),
              "research/certificates/r073u"]
     status = subprocess.run(
         ["git", "status", "--porcelain=v1", "--untracked-files=all", "--", *scope],
@@ -457,6 +460,7 @@ trajectory-symmetry claim.
     (HERE / "qa-report.md").write_text(qa_report, encoding="utf-8")
     bound = [record(HERE / name) for name in sorted(MANIFEST_BOUND_FILES)]
     environment_payload = load_json(HERE / "environment.json")
+    contract_payload = load_json(HERE / "contract.json")
     execution = environment_payload["execution"]
     packages = environment_payload["packages"]
     compute_evidence, compute_provenance = same_host_compute_evidence(execution)
@@ -479,16 +483,9 @@ trajectory-symmetry claim.
         "figureId": FIGURE_ID,
         "release": "R0.73U",
         "status": "formal",
-        "publicationStatus": "published",
-        "analyticalQuestion": (
-            "Can the full local-product heat tensor recover pressure, and does "
-            "that even quadratic state close the signed physical-time dynamics?"
-        ),
-        "supportedClaim": (
-            "The full tensor recovers same-scale pressure and obeys an exact "
-            "heat-covariance PDE, while a four-site exact witness proves that "
-            "the even quadratic state does not determine the signed initial tangent."
-        ),
+        "publicationStatus": "staged",
+        "analyticalQuestion": contract_payload["analyticalQuestion"],
+        "supportedClaim": contract_payload["supportedClaim"],
         "createdAt": created_at,
         "createdUtc": created_at,
         "git": {
@@ -498,10 +495,11 @@ trajectory-symmetry claim.
             "figureMetadataResealCommit": metadata_commit,
             "dirtyAtCertifiedRun": False,
             "dirtyScope": [
-                str(HERE.relative_to(ROOT)),
-                "research/r073u_problem_freeze.md",
-                "research/r073u_tensor_heat_hierarchy.md",
-                "research/r073u_independent_analytic_audit.md",
+                *sorted(
+                    str((HERE / name).relative_to(ROOT))
+                    for name in SOURCE_FILES | RAW_FILES
+                ),
+                *sorted(ANALYTIC_SOURCE_FILES),
                 "research/certificates/r073u",
             ],
         },
@@ -564,7 +562,7 @@ trajectory-symmetry claim.
             "dataCrossChecked": True,
             "qaArtifacts": qa_artifacts,
         },
-        "claimBoundary": load_json(HERE / "contract.json")["claimBoundary"],
+        "claimBoundary": contract_payload["claimBoundary"],
         "dgxUsed": False,
         "ordinaryTranslationPath": "LOCAL_DIRECT_NO_DGX",
         "sourceCommit": source_commit or None,

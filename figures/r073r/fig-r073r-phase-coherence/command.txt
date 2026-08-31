@@ -1,0 +1,37 @@
+Purpose: render, independently validate, and two-stage seal the R0.73R analytic figure package.
+
+Bundled local runtime used for development:
+
+PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+DEPS=/tmp/r073r-figure-deps
+
+Install the pinned plotting dependencies outside the repository:
+
+$PYTHON -m pip install --target $DEPS -r research/figures/r073r/fig-r073r-phase-coherence/requirements.txt
+
+Render the unsealed assets, source data, QA rasters, environment record, results,
+and monitoring logs into the package:
+
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/plot.py --deps $DEPS --render-preseal
+
+Independently validate all 141 rows and create source-unsealed preseal metadata
+after the three QA rasters have been visually inspected:
+
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/validate.py --deps $DEPS --preseal --confirm-visual-qa
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/validate.py --deps $DEPS --preseal --verify-only
+
+Formal sealing is a distinct second stage. First commit exactly the ten source
+files named by validate.py, then provide that immutable full commit hash:
+
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/validate.py --deps $DEPS --final --source-commit <40_HEX_SOURCE_COMMIT> --confirm-visual-qa
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/validate.py --deps $DEPS --final --verify-only
+
+The final validator reads every committed source blob with git show and refuses
+to seal if even one byte differs from the working source. Commit the resulting
+assets and metadata only after the final command passes.
+
+For a source-data-only scratch render outside the package:
+
+$PYTHON research/figures/r073r/fig-r073r-phase-coherence/plot.py --deps $DEPS --data-only --output-dir /tmp/r073r-phase-coherence-data
+
+No DGX, GPU, random seed, regression, or PDE solver is used.

@@ -1,0 +1,361 @@
+{
+  "allFormulaAndVisualChecksPass": true,
+  "allPrerequisiteChecksPass": true,
+  "analyticalQuestion": "How can matched Fourier support and coefficient moduli coexist with a growing phase-sensitive heat-flow separation?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "analyticPowersOnly": true,
+    "arbitraryL2SmallDataSafe": false,
+    "clayProblemSolved": false,
+    "fieldsHaveZeroConvection": true,
+    "finiteTimeSingularity": false,
+    "fittedScalingLaw": false,
+    "navierStokesSimulation": false,
+    "necessaryRegularityCriterion": false,
+    "nonlinearPdeCertificate": false,
+    "unsafeDynamics": false
+  },
+  "computation": {
+    "command": "plot.py --render-preseal",
+    "configuration": "config.json",
+    "kind": "exact-formula-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "reportIntervalSeconds": 0.0,
+      "resourceLog": "resource-log.ndjson",
+      "trackedFields": [
+        "stage",
+        "elapsedSeconds",
+        "maximumResidentSetMiB"
+      ]
+    },
+    "precision": "IEEE-754 binary64 evaluation of exact signs and closed-form powers",
+    "solver": "none; direct formula evaluation only",
+    "wallTimeSeconds": 0.8546237499685958
+  },
+  "compute": {
+    "cpu": "arm",
+    "dgxUsed": false,
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-31T08:09:01.555442+00:00",
+  "data": [
+    {
+      "bytes": 12712,
+      "path": "source-data.csv",
+      "schema": "128 exact packet-sign rows plus 13 analytic-scaling rows",
+      "sha256": "8811fd0d0cbe13fc3dcf7e20aadc6d6b294ed5b07913afb4a7cb911cd713f328"
+    },
+    {
+      "bytes": 2808,
+      "path": "results.json",
+      "schema": "formula facts and output inventory",
+      "sha256": "cae232f94d8a39b38c942c16141e2411df18ac6e01eba7ac47840d3a7ae00c5d"
+    },
+    {
+      "bytes": 715,
+      "path": "environment.json",
+      "schema": "runtime and hardware record",
+      "sha256": "0fa06e52c75d5e6610c30f1420ee5a49be61a7c19f9b7113bf2340a2824e02dd"
+    },
+    {
+      "bytes": 719,
+      "path": "progress.ndjson",
+      "schema": "timestamped generation stages",
+      "sha256": "fa7f3b6fa4ae91fcdd3382fd5564af88e160bfc2028125e912e5ce809ec00f42"
+    },
+    {
+      "bytes": 966,
+      "path": "resource-log.ndjson",
+      "schema": "timestamped process resource observations",
+      "sha256": "b66c52024f72f3c6c3b2edcc7e4d28e8f68e38886c6bcf5a3ad7035b5cd93acf"
+    }
+  ],
+  "environment": {
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "packagesLock": "requirements.txt",
+    "pillow": "12.3.0",
+    "pypdf": "6.10.0",
+    "pypdfium2": "5.13.0",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]"
+  },
+  "figure": {
+    "heightMillimetres": 94.0,
+    "outputs": [
+      {
+        "bytes": 50237,
+        "format": "PDF vector",
+        "path": "figure.pdf",
+        "sha256": "08724ae1dcdc38f1fd983f114f0a60b56fe94cbee7243eb0bc026babb3a830c9"
+      },
+      {
+        "bytes": 96746,
+        "format": "SVG vector",
+        "path": "figure.svg",
+        "sha256": "2b97f8b18782327139c4ec1612698ee34dd6dcac784ba46827ddb977e8d6fed3"
+      },
+      {
+        "bytes": 494750,
+        "dpi": 600,
+        "format": "PNG",
+        "path": "figure.png",
+        "sha256": "47dddbf4730c270d6b16eb9487dfdea2f0f6ec16f41a08bd4c8ba950d9aee93a"
+      }
+    ],
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r073r-phase-coherence",
+  "formulaAudit": {
+    "panelA": {
+      "carrier": 64,
+      "coefficientModulus": 0.08838834764831843,
+      "dirichletSixthMoment": 18152,
+      "fullSupportSizePerFamily": 128,
+      "m": 8,
+      "positiveSupportSizePerFamily": 64,
+      "rudinShapiroSixthMoment": 1088
+    },
+    "rows": {
+      "analyticScaling": 13,
+      "maximumRelativeRecomputationError": 0.0,
+      "positivePacket": 128,
+      "total": 141
+    },
+    "scaling": {
+      "exponentRange": [
+        0,
+        12
+      ],
+      "mRange": [
+        1,
+        4096
+      ],
+      "maximumRelativeRecomputationError": 0.0,
+      "powers": {
+        "scaled_dirichlet_heat_guide": 0.0,
+        "scaled_hhalf_guide": 0.3333333333333333,
+        "scaled_l2_guide": -0.16666666666666666,
+        "scaled_rudin_shapiro_heat_guide": -0.6666666666666666,
+        "unscaled_dirichlet_guide": 0.16666666666666666,
+        "unscaled_ratio_guide": 0.6666666666666666,
+        "unscaled_rudin_shapiro_guide": -0.5
+      }
+    },
+    "surfaces": {
+      "expectedQaPixels": [
+        2102,
+        1110
+      ],
+      "figurePng": {
+        "dpi": [
+          599.9988,
+          599.9988
+        ],
+        "expectedPixels": [
+          4204,
+          2220
+        ],
+        "mode": "RGBA",
+        "pixels": [
+          4204,
+          2220
+        ]
+      },
+      "pdf": {
+        "embeddedImageObjectCount": 0,
+        "pageSizeMillimetres": [
+          178.0000000000147,
+          94.00000000000499
+        ],
+        "qaMode": "RGB",
+        "qaPixels": [
+          2103,
+          1111
+        ]
+      },
+      "qaRasters": {
+        "qa-final-size.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1110
+          ]
+        },
+        "qa-grayscale.png": {
+          "mode": "RGB",
+          "pixels": [
+            2102,
+            1110
+          ]
+        }
+      },
+      "svgBytes": 96746,
+      "svgEmbeddedImageElementCount": 0
+    }
+  },
+  "git": {
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "25b20d225202359de2fd2d95ed86dd4b372d23a5",
+    "certificateCommit": "6809fc92a2d1338fb77fb3bf5a72d16ed158d807",
+    "dirtyAtCertifiedRun": false
+  },
+  "qa": {
+    "all141RowsRecomputed": true,
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "independentFormulaRecomputation": true,
+    "labelsAndLegendsInspected": true,
+    "pdfRasterInspected": true,
+    "qaArtifacts": [
+      {
+        "bytes": 433081,
+        "path": "qa-final-size.png",
+        "sha256": "a6fae521b6a07004394d48732c067119ba0c969870b005d98f79beacec808b46"
+      },
+      {
+        "bytes": 358582,
+        "path": "qa-grayscale.png",
+        "sha256": "0d598c73eba6aaa3054fe2541dba5a938b14b65a4c88105390433ca4853c18ce"
+      },
+      {
+        "bytes": 282620,
+        "path": "qa-pdf.png",
+        "sha256": "936687d421b651a2143b26fec93f3fb206789e74efc8056bcd54a65afee9a532"
+      }
+    ],
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "schemaVersion": "research-figure-manifest-v1",
+  "sourceBindings": [
+    {
+      "bytes": 3097,
+      "gitBlobObjectId": "776e6222ed3159ddd95476ab56cbe660ccb28e50",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/README.md",
+      "sha256": "e6873b91427012a0792131815967cd7a7769aaa6fb28a0cd96810c326fe78b58"
+    },
+    {
+      "bytes": 1348,
+      "gitBlobObjectId": "b9459a0c6020ad47fad877731f0d2004629ed914",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/caption.md",
+      "sha256": "c3e9c3088ac0746e7af5fe510bc35c780cfe3fbb5b943314a4d776b4bd044d53"
+    },
+    {
+      "bytes": 3798,
+      "gitBlobObjectId": "ec63bece7dce96a9b560db5c659ebd198bcb326b",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/chart-contract-and-source-data.md",
+      "sha256": "9c9f65f72c15e6c332407afea3a40d1b452b8d0b811ed4b1713a105777f3c091"
+    },
+    {
+      "bytes": 1898,
+      "gitBlobObjectId": "3446dad4a6544e17e588bf6185a887a04971999b",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/command.txt",
+      "sha256": "55af1763ea8c0df9f797ede7c6948820bf1c81dedd189503fdfa192698a12ff1"
+    },
+    {
+      "bytes": 595,
+      "gitBlobObjectId": "473a61580909bddc6f24ce4379d03fd91098af87",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/config.json",
+      "sha256": "f6143f01fdccd75b3ef0a7987022fa6293cbbbf51949db00bc98a853107a5e2b"
+    },
+    {
+      "bytes": 1442,
+      "gitBlobObjectId": "76be0d9e663ce6bec193194fb5041c144e8c74c1",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/contract.json",
+      "sha256": "c49b0eb23eefda6a5a7791c78a95fbb2652d934a31e5683c549571d1352de7be"
+    },
+    {
+      "bytes": 23434,
+      "gitBlobObjectId": "805e079d6c70ed8b8f5369bb84bff0dc7164f25a",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/plot.py",
+      "sha256": "756bdbc11d6bc880f406b7c1620059bbede85f75b24f752078cb0d18ed16b0bf"
+    },
+    {
+      "bytes": 1957,
+      "gitBlobObjectId": "0edd21c0ab2343eda179a28850ecd89f80273d3d",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/qa-protocol.md",
+      "sha256": "e1322eb50148f476a7772f509d9e0fb824a719665dabae5e75644f5a22a6e109"
+    },
+    {
+      "bytes": 79,
+      "gitBlobObjectId": "e7173c3a8a9d00bcbd2408a88d033594453fbf70",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/requirements.txt",
+      "sha256": "c0dfebb8e4ce0a39b1565a51b94cb2ad8adf09d7910be44490446710102cf92f"
+    },
+    {
+      "bytes": 32280,
+      "gitBlobObjectId": "8f9dbaa7ad6de7520b96c463f5ba0b2337c29f09",
+      "path": "research/figures/r073r/fig-r073r-phase-coherence/validate.py",
+      "sha256": "e0c5967f3b241048718dfa2220fac5c700666210c45d65d7c8da5918bed47efc"
+    }
+  ],
+  "sourceCommitAssigned": true,
+  "status": "formal",
+  "supportedClaim": "The matched Dirichlet and Rudin-Shapiro tensors have identical Fourier support and coefficient moduli, while their normalized analytic heat-flow guides separate by m^(2/3).",
+  "release": "R0.73R",
+  "publicationStatus": "published",
+  "publication": {
+    "archiveDirectory": "public/figures/r073r/fig-r073r-phase-coherence",
+    "directory": "public/assets/r073r",
+    "fileStem": "fig-r073r-phase-coherence",
+    "byteIdentityRequired": true,
+    "publicCopiesComplete": true,
+    "assets": [
+      {
+        "path": "public/assets/r073r/fig-r073r-phase-coherence.pdf",
+        "bytes": 50237,
+        "sha256": "08724ae1dcdc38f1fd983f114f0a60b56fe94cbee7243eb0bc026babb3a830c9"
+      },
+      {
+        "path": "public/assets/r073r/fig-r073r-phase-coherence.svg",
+        "bytes": 96746,
+        "sha256": "2b97f8b18782327139c4ec1612698ee34dd6dcac784ba46827ddb977e8d6fed3"
+      },
+      {
+        "path": "public/assets/r073r/fig-r073r-phase-coherence.png",
+        "bytes": 494750,
+        "sha256": "47dddbf4730c270d6b16eb9487dfdea2f0f6ec16f41a08bd4c8ba950d9aee93a"
+      }
+    ]
+  },
+  "packageInventory": {
+    "paths": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "expectedFileCount": 25
+  }
+}

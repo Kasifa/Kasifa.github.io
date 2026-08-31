@@ -48,6 +48,9 @@ try {
   await page.addStyleTag({
     content: `
       @media print {
+        body {
+          zoom: 0.995;
+        }
         .metric {
           break-inside: avoid;
           page-break-inside: avoid;

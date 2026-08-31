@@ -16,6 +16,7 @@ const ENDPOINTS = Object.freeze({
   r073o: { version: "1.55", code: "R0.73O", slug: "r0-73o", next: "R0.73P" },
   r073p: { version: "1.56", code: "R0.73P", slug: "r0-73p", next: "R0.73Q" },
   r073q: { version: "1.57", code: "R0.73Q", slug: "r0-73q", next: "R0.73R" },
+  r073r: { version: "1.58", code: "R0.73R", slug: "r0-73r", next: "R0.73S" },
 });
 
 async function page(name) {
@@ -45,7 +46,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through Q boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through R boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -60,6 +61,7 @@ test("homepage current route reaches the materialized G through Q boundary witho
   const isO = endpoint.release === "r073o";
   const isP = endpoint.release === "r073p";
   const isQ = endpoint.release === "r073q";
+  const isR = endpoint.release === "r073r";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -71,7 +73,9 @@ test("homepage current route reaches the materialized G through Q boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isQ
+  assert.ok(current.includes(isR
+    ? "<h3>R0.73R：经典热--Besov、逐壳相位证书与零非线性边界已分列</h3>"
+    : isQ
     ? "<h3>R0.73Q：临界热流稳定管、严格扩域与端点边界已分列</h3>"
     : isP
     ? "<h3>R0.73P：临界稳定、频率门槛与早期弱区间已分列</h3>"
@@ -119,35 +123,35 @@ test("homepage current route reaches the materialized G through Q boundary witho
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ) {
+  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ) {
+  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ || isK || isL || isM || isN || isO || isP || isQ) {
+  if (isJ || isK || isL || isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
-  if (isK || isL || isM || isN || isO || isP || isQ) {
+  if (isK || isL || isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
     assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
-  if (isL || isM || isN || isO || isP || isQ) {
+  if (isL || isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("non-selfadjoint adiabatic tracking / matching selected action"));
     assert.ok(current.includes("parameter-uniform nonselfadjoint adiabatic tracking"));
     assert.ok(current.includes("finite diagnostic: 15 primary / 5 independent / 346 figure rows"));
   }
-  if (isM || isN || isO || isP || isQ) {
+  if (isM || isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("prescribed-action planar nonlinear fixed-distance departure"));
     assert.ok(current.includes("prescribed-action planar nonlinear departure"));
     assert.ok(current.includes(
       "finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks",
     ));
   }
-  if (isN || isO || isP || isQ) {
+  if (isN || isO || isP || isQ || isR) {
     assert.ok(current.includes("fixed-member finite-strain stability / family-transfer obstruction"));
   }
-  if (isO || isP || isQ) {
+  if (isO || isP || isQ || isR) {
     for (const token of [
       "global-orbit stability / forced Kolmogorov contrast",
       "global-orbit H3 stability",
@@ -156,22 +160,33 @@ test("homepage current route reaches the materialized G through Q boundary witho
     assert.equal(current.includes(
       "<h3>R0.73N：固定成员有限应变稳定性与族转移障碍已闭合</h3>"), false);
   }
-  if (isP || isQ) {
+  if (isP || isQ || isR) {
     for (const token of [
       "critical H1/2 stability / N^-1/2 frequency gate",
       "band-limited N^-1/2 gate",
       "earlyWeakIntervalRegularity=OPEN",
     ]) assert.ok(home.includes(token), token);
   }
-  if (isQ) {
+  if (isQ || isR) {
     for (const token of [
       "critical heat-flow tube / endpoint boundary",
       "critical heat-flow tube",
       "endpoint no-go",
     ]) assert.ok(home.includes(token), token);
-    assert.ok(home.includes("<h3>R0.73R 下一接口</h3>"));
-    assert.equal(home.includes("<h3>R0.73Q 下一接口</h3>"), false);
+    if (isQ) assert.ok(home.includes("<h3>R0.73R 下一接口</h3>"));
   }
+  if (isR) {
+    for (const token of [
+      "shellwise phase certificate",
+      "classical heat--Besov mechanism",
+      "matched phase separation",
+      "两族对流非线性严格为零",
+      "/assets/r073r/fig-r073r-phase-coherence.pdf",
+    ]) assert.ok(home.includes(token), token);
+    assert.ok(home.includes("<h3>R0.73S 下一接口</h3>"));
+    assert.equal(home.includes("<h3>R0.73R 下一接口</h3>"), false);
+  }
+  assert.equal(home.includes(`<h3>${endpoint.code} 下一接口</h3>`), false);
 
   assert.ok(
     home.includes(`<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`),
@@ -192,7 +207,7 @@ test("homepage current route reaches the materialized G through Q boundary witho
   );
 });
 
-test("literature route records the materialized G through Q boundary", async () => {
+test("literature route records the materialized G through R boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -207,6 +222,7 @@ test("literature route records the materialized G through Q boundary", async () 
   const isO = endpoint.release === "r073o";
   const isP = endpoint.release === "r073p";
   const isQ = endpoint.release === "r073q";
+  const isR = endpoint.release === "r073r";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -246,7 +262,44 @@ test("literature route records the materialized G through Q boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isQ) {
+  if (isR) {
+    for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q"]) {
+      assert.ok(literature.includes(`id="${previous}-boundary"`));
+    }
+    assert.ok(literature.includes('class="route-r073r-deck-update"'));
+    assert.ok(topology.includes(
+      '<div class="route-step kept"><header><b>R0.73R</b><strong>shellwise phase certificate and classical Besov boundary</strong>',
+    ));
+    for (const token of [
+      "periodicHeatBesovEquivalence=VERIFIED_CLASSICAL",
+      "ell4ShellExponent=CLOSED_AFTER_AUDIT",
+      "exactVectorTripleConvolution=CLOSED_EXACT_EVALUATION",
+      "additiveMultiplicityCertificate=CLOSED",
+      "supportCardinalityCertificate=CLOSED_SHARP_FROM_SUPPORT_ONLY",
+      "matchedPhaseHeatTraceSeparation=CLOSED_AFTER_AUDIT",
+      "zeroNonlinearityBoundary=CLOSED",
+      "matchedSupportMagnitudeQuadraticData=CLOSED_EXACT",
+      "finiteFormulaDiagnosticOnly=TRUE",
+      "heatFlowIntegralComputed=FALSE",
+      "navierStokesSimulation=NOT_RUN",
+      "translationPath=LOCAL_DIRECT_NO_DGX",
+      "failureOfEntranceImpliesUnsafeDynamics=FALSE",
+      "uniformL2OnlyStrongRadius=OPEN",
+      "arbitraryThreeDimensionalGlobalRegularity=OPEN",
+      "clayConclusion=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73R boundary ${token}`);
+    for (const token of [
+      "periodic heat--Besov equivalence=VERIFIED_CLASSICAL",
+      "uniform L2-only strong radius=OPEN",
+      "不承担新颖性或优先权声明",
+    ]) assert.ok(literature.includes(token), `R0.73R literature update ${token}`);
+    for (const token of [
+      "lower-cost deterministic phase proxy or no-go",
+      "部分自相关、低阶加法能量",
+      "确定性代理量",
+    ]) assert.ok(topology.includes(token), `R0.73S interface ${token}`);
+  } else if (isQ) {
     for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p"]) {
       assert.ok(literature.includes(`id="${previous}-boundary"`));
     }

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "r073n-finite-strain-figure-contract-v1",
+  "figureId": "fig-r073n-finite-strain-bracket",
+  "release": "R0.73N",
+  "evidenceClass": "exact-rational-and-high-precision-illustrative-diagnostic",
+  "analyticalQuestion": "Does the exact finite-strain envelope integrate to a bounded cumulative coefficient, does the R0.73M endpoint satisfy the strict exponent compatibility chain, and how do the resulting exponent factors vary across the unbounded family of marked basepoints?",
+  "supportedTakeaway": "The normalized half-strain envelope is exactly exp(-4t)+exp(-16t), its cumulative integral saturates at 5/16, and j*=0.001108032448... lies strictly above 359/324000 and the inherited R0.73M action upper bound. The marked-basepoint curves illustrate exponential nonuniformity across Lambda; they are not the sharp flow-map modulus and do not certify arbitrary fixed-background instability.",
+  "chartFamily": "three-panel exact trend, cumulative saturation, and exponent-bracket sensitivity",
+  "panels": {
+    "A": {
+      "variant": "exact component-plus-envelope trend",
+      "grain": "241 deterministic time samples on [0,3/2]",
+      "scaleNote": "The equality witness y=pi/2 makes the displayed envelope exact, not a sampled maximum."
+    },
+    "B": {
+      "variant": "log-time cumulative saturation curve",
+      "grain": "243 deterministic samples including zero and T*=1/1800",
+      "scaleNote": "The exact 5/16 asymptote and the R0.73M endpoint are marked."
+    },
+    "C": {
+      "variant": "marked-basepoint exponent-factor bracket",
+      "grain": "121 Lambda values from 0 to 12000",
+      "scaleNote": "The vertical axis is log10 of formula factors; the top axis records the exact L2 norm of each marked background."
+    }
+  },
+  "palettePolicy": {
+    "policy": "hard two-root cap",
+    "chromaticRoots": ["#285f8f", "#b07a00"],
+    "neutralSeriesAllowed": true,
+    "nonColorEncoding": [
+      "solid versus dashed component lines",
+      "filled action interval",
+      "solid versus dotted exponent bounds",
+      "direct labels and exact-value annotations"
+    ]
+  },
+  "output": {
+    "finalWidthMillimetres": 178.0,
+    "finalHeightMillimetres": 96.0,
+    "requiredFormats": ["PDF vector", "SVG vector", "PNG 600 dpi"],
+    "qaSurfaces": ["final-size raster", "grayscale final-size raster", "PDF raster"]
+  },
+  "claimBoundary": {
+    "formalValidatedDiagnosticFigure": true,
+    "upstreamCertificateValidationPassed": true,
+    "independentFiniteRecomputationPassed": true,
+    "finiteExactStrainEnvelopeIdentityChecked": true,
+    "finiteCumulativeJFormulaChecked": true,
+    "jInfinityExactRationalChecked": true,
+    "jStarStrictRationalLowerChecked": true,
+    "inheritedActionIntervalRecorded": true,
+    "markedBasepointExponentFactorsIllustrated": true,
+    "finiteComputationProvesInheritedActionInterval": false,
+    "finiteComputationProvesContinuumEnergyEstimate": false,
+    "finiteComputationProvesFixedMemberStabilityTube": false,
+    "sharpFamilyLipschitzExponentCertified": false,
+    "singleFixedBackgroundLyapunovInstabilityCertified": false,
+    "fullThreeDimensionalFPSH3L2StabilityCertified": false,
+    "transverseCriticalNormGrowthCertified": false,
+    "finiteTimeSingularityCertified": false,
+    "clayProblemSolved": false
+  }
+}

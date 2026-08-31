@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="研究笔记 R0.73N：固定成员有限应变稳定、族转移障碍、审计边界与独立有限诊断。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="R0.73N｜Fixed-member finite-strain stability and the family-transfer obstruction">
+  <meta property="og:description" content="R0.73N 对 R0.73M 的“变背景族能否转化为单个固定背景不稳定性”作出否定 判定。对显式无外力双谐波背景族中的每个固定有限 \(\Lambda\)，直接能量、 交换子与延拓估计给出一个正的全三维同步 \((H^3,H^3)\) 稳定管；R0.73M 所捕捉的是跨无界标记背景族的非一致指向放大，而不是任一固定成员处的 Lyapunov 不稳定性。">
+  <meta property="og:image" content="https://kasifa.github.io/assets/r073n/fig-r073n-finite-strain-bracket.png">
+  <title>R0.73N｜Fixed-member finite-strain stability and the family-transfer obstruction</title>
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <link rel="stylesheet" href="/bilingual.css">
+  <link rel="stylesheet" href="/note-retro.css?v=0.90">
+  <style>
+    .hero h1{font-size:clamp(1.62rem,3.5vw,2.9rem)}
+    pre{max-width:100%;overflow-x:auto}
+    .verdict-grid,.audit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+    .verdict-card,.audit-card,.figure-placeholder{border:1px solid var(--line);padding:1rem}
+    .verdict-card strong,.audit-card strong,.figure-placeholder strong{display:block;color:var(--gold);font-family:var(--mono);margin-bottom:.45rem}
+    .verdict-card.false{border-left:4px solid #9a4a3f}
+    .verdict-card.true{border-left:4px solid #4f7a62}
+    .verdict-card p,.audit-card p,.figure-placeholder p{overflow-wrap:anywhere;word-break:break-word}
+    .verdict-card p:last-child,.audit-card p:last-child,.figure-placeholder p:last-child{margin-bottom:0}
+    .compact-table{width:100%;border-collapse:collapse}
+    .compact-table th,.compact-table td{border:1px solid var(--line);padding:.55rem;text-align:left;vertical-align:top}
+    .figure-placeholder{background:color-mix(in srgb,var(--paper) 92%,var(--gold) 8%);margin:1rem 0}
+    .mini-kpi{font-family:var(--mono);font-size:.84rem;color:var(--muted)}
+    article img{max-width:100%;height:auto}
+    @media(max-width:760px){.verdict-grid,.audit-grid{grid-template-columns:1fr}.compact-table{font-size:.82rem}.threshold-ledger mjx-container{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{body{font-size:8.7pt}.topline{height:3px}}
+  </style>
+  <script defer src="/i18n-en.js?v=1.54"></script>
+  <script defer src="/bilingual.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header class="bar"><div class="bar-inner">
+    <a class="brand" href="/">ν · 三维 Navier–Stokes 个人研究记录</a>
+    <nav><a href="#direct-result">Direct result</a><a href="#four-topology-statements-that-must-remain-separate">Four topology statements that must remain separate</a><a href="#exact-relative-energy-estimate">Exact relative-energy estimate</a><a href="#the-genuine-planar-l-2-small-theorem">The genuine planar \(L^2\)-small theorem</a><a href="#positive-full-three-dimensional-h-3-tube">Positive full-three-dimensional \(H^3\) tube</a><a href="#what-r0-73m-actually-implies-for-the-flow-map">What R0.73M actually implies for the flow map</a><a href="#the-quantifier-obstruction">The quantifier obstruction</a><a href="#why-exact-symmetry-and-compactness-do-not-transfer-the-family">Why exact symmetry and compactness do not transfer the family</a><a href="#literature-position">Literature position</a><a href="#evidence-ledger">Evidence ledger</a><a href="#sealed-finite-diagnostic">Sealed finite diagnostic</a><a href="#formal-journal-figure">Formal journal figure</a><a href="#public-release-copy-zh">Public release copy (zh)</a><a href="#exact-public-boundary">Exact public boundary</a><a href="#canonical-machine-readable-boundary">Canonical machine-readable boundary</a><a href="#figure">journal figure</a><a href="#release-boundary">exact boundary</a><a href="#reproduce">reproduction</a><a href="/">返回主页</a></nav>
+  </div></header>
+  <main>
+        <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73N · FIXED-TRAJECTORY FINITE-STRAIN NO-GO</div>
+        <h1>R0.73N｜固定成员有限应变稳定性与族转移障碍</h1>
+        <p class="lead">R0.73N 对 R0.73M 的“变背景族能否转化为单个固定背景不稳定性”作出否定 判定。对显式无外力双谐波背景族中的每个固定有限 \(\Lambda\)，直接能量、 交换子与延拓估计给出一个正的全三维同步 \((H^3,H^3)\) 稳定管；R0.73M 所捕捉的是跨无界标记背景族的非一致指向放大，而不是任一固定成员处的 Lyapunov 不稳定性。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73N 完成</span><strong>Internal continuum theorem + claim-boundary audits</strong><p>版本 v0.73N · 2026-08-31</p><p>full 3D synchronized (H3,H3)：INTERNAL THEOREM</p><p>planar synchronized (H3pl,L2pl)：INTERNAL THEOREM</p><p>full 3D FPS (H3,L2)：OPEN</p><p>FINITE / FIGURE：separate gates</p><p>NOT CLAY</p></div>
+    </div></header>
+    <div class="layout">
+      <aside class="toc"><strong>CONTENTS</strong><ol><li><a href="#direct-result">00 · Direct result</a></li><li><a href="#four-topology-statements-that-must-remain-separate">01 · Four topology statements that must remain separate</a></li><li><a href="#exact-relative-energy-estimate">02 · Exact relative-energy estimate</a></li><li><a href="#the-genuine-planar-l-2-small-theorem">03 · The genuine planar \(L^2\)-small theorem</a></li><li><a href="#positive-full-three-dimensional-h-3-tube">04 · Positive full-three-dimensional \(H^3\) tube</a></li><li><a href="#what-r0-73m-actually-implies-for-the-flow-map">05 · What R0.73M actually implies for the flow map</a></li><li><a href="#the-quantifier-obstruction">06 · The quantifier obstruction</a></li><li><a href="#why-exact-symmetry-and-compactness-do-not-transfer-the-family">07 · Why exact symmetry and compactness do not transfer the family</a></li><li><a href="#literature-position">08 · Literature position</a></li><li><a href="#evidence-ledger">09 · Evidence ledger</a></li><li><a href="#sealed-finite-diagnostic">10 · Sealed finite diagnostic</a></li><li><a href="#formal-journal-figure">11 · Formal journal figure</a></li><li><a href="#public-release-copy-zh">12 · Public release copy (zh)</a></li><li><a href="#exact-public-boundary">13 · Exact public boundary</a></li><li><a href="#canonical-machine-readable-boundary">14 · Canonical machine-readable boundary</a></li><li><a href="#release-boundary">B · exact boundary</a></li><li><a href="#figure">F · journal figure</a></li><li><a href="#reproduce">R · reproduction</a></li></ol></aside>
+            <article>
+        <section id="direct-result"><div class="section-no">00 / canonical report</div><h2>Direct result</h2><p>R0.73N closes a specific attempted inference from R0.73M. It does not turn the R0.73M family-level departure into instability of one background. It proves the opposite statement needed for that route: every fixed finite member of the explicit family has a positive full-three-dimensional \(H^3\) stability tube.</p><p>On the normalized standard three-torus, with viscosity one and zero forcing, consider the mean-zero divergence-free trajectory</p><div class="equation result">\[
+ \overline U_\Lambda(t,y)
+ =\left(0,0,-\Lambda e^{-4t}\sin2y
+ +{\Lambda\over2}e^{-16t}\sin4y\right),
+ \qquad 0&lt;\Lambda&lt;\infty.
+ \tag{1.1}
+\]</div><p>For every fixed \(\Lambda\), the internal continuum proof establishes forward synchronized \((H^3,H^3)\) stability from the fixed initial time \(t_0=0\). This is a fixed-trajectory extension of the FPS norm-quantifier pattern, not an FPS theorem for a nonstationary orbit, not orbital stability, and not a claim uniform over all starting times.</p><p>The decisive route correction is:</p><blockquote><p>The amplification in R0.73M becomes unbounded only while the marked background changes with \(\Lambda\). At each individual marked background, the local chordal moduli are finite and the full-three-dimensional \(H^3\) synchronized stability radius is positive.</p></blockquote></section>
+        <section id="four-topology-statements-that-must-remain-separate"><div class="section-no">01 / canonical report</div><h2>Four topology statements that must remain separate</h2><div class="table-wrap"><table class="report-table"><thead><tr><th scope="col">Phase space and topology</th><th scope="col">Initial smallness</th><th scope="col">Observed distance</th><th scope="col">Global solution requirement</th><th scope="col">R0.73N state</th></tr></thead><tbody><tr><td>full 3D synchronized \((H^3,H^3)\)</td><td>\(H^3\)</td><td>\(H^3\)</td><td>proved inside the fixed-member tube</td><td><strong>CLOSED</strong></td></tr><tr><td>full 3D custom \(H^3\)-in/\(L^2\)-out</td><td>\(H^3\)</td><td>\(L^2\)</td><td>inherited from the \(H^3\) tube</td><td><strong>CLOSED AS COROLLARY</strong></td></tr><tr><td>planar synchronized \((H^3_{\rm pl},L^2_{\rm pl})\)</td><td>genuinely \(L^2_{\rm pl}\) only, with \(H^3_{\rm pl}\) regularity</td><td>\(L^2_{\rm pl}\)</td><td>global by two-dimensional regularity</td><td><strong>CLOSED</strong></td></tr><tr><td>full 3D FPS \((H^3,L^2)\)</td><td>genuinely \(L^2\) only, with arbitrary \(H^3\) size</td><td>\(L^2\)</td><td>would require global \(H^3\) continuation</td><td><strong>OPEN</strong></td></tr></tbody></table></div><p>The second row must not be renamed as the fourth. In the FPS convention, \((H^3,L^2)\) means that the datum is \(H^3\)-regular but small only in \(L^2\); R0.73N does not prove that full-three-dimensional statement.</p></section>
+        <section id="exact-relative-energy-estimate"><div class="section-no">02 / canonical report</div><h2>Exact relative-energy estimate</h2><p>Let \(V\) be any strong solution of the same equation on \([0,T]\), and set \(w=V-\overline U_\Lambda\). The perturbation equation gives the exact relative-energy identity</p><div class="equation result">\[
+ {1\over2}{d\over dt}\|w\|_2^2+\|\nabla w\|_2^2
+ =-\int_{\mathbb T^3}(\partial_yF_\Lambda)w_2w_3\,dx,
+ \tag{3.1}
+\]</div><p>where \(F_\Lambda\) is the third component of (1.1). Since</p><div class="equation result">\[
+ {1\over2}\|\partial_yF_\Lambda(t)\|_\infty
+ \le \Lambda(e^{-4t}+e^{-16t}),
+\]</div><p>Gronwall yields</p><div class="equation result">\[
+ \boxed{
+ \|w(T)\|_2\le e^{\Lambda j(T)}\|w(0)\|_2,}
+ \qquad
+ j(T)={1-e^{-4T}\over4}+{1-e^{-16T}\over16}.
+ \tag{3.2}
+\]</div><p>Because \(j(T)\uparrow5/16\),</p><div class="equation result">\[
+ \sup_{0\le t&lt;T_{\max}}\|w(t)\|_2
+ \le e^{5\Lambda/16}\|w(0)\|_2
+ \tag{3.3}
+\]</div><p>on every common strong lifespan. Equation (3.3) is all-time only when the comparison solution is known to be global: in the invariant planar subsystem or inside the full-three-dimensional tube proved below.</p></section>
+        <section id="the-genuine-planar-l-2-small-theorem"><div class="section-no">03 / canonical report</div><h2>The genuine planar \(L^2\)-small theorem</h2><p>The subspace</p><div class="equation result">\[
+ \mathcal S_{2D}
+ =\{(0,v_2(y,z),v_3(y,z)):
+ \partial_yv_2+\partial_zv_3=0\}
+ \tag{4.1}
+\]</div><p>is exactly invariant. Every \(H^3_{\rm pl}\) datum in it produces a global two-dimensional strong solution. Hence, for any \(\epsilon&gt;0\),</p><div class="equation result">\[
+ \|w(0)\|_2&lt;\epsilon e^{-5\Lambda/16}
+ \quad\Longrightarrow\quad
+ \sup_{t\ge0}\|w(t)\|_2&lt;\epsilon.
+ \tag{4.2}
+\]</div><p>The smallness assumption in (4.2) is genuinely \(L^2\), not \(H^3\). This is planar synchronized \((H^3_{\rm pl},L^2_{\rm pl})\) stability, with the regularity and distance norms playing the FPS roles but with a fixed nonstationary trajectory rather than an equilibrium.</p></section>
+        <section id="positive-full-three-dimensional-h-3-tube"><div class="section-no">04 / canonical report</div><h2>Positive full-three-dimensional \(H^3\) tube</h2><p>Use the normalized Bessel-potential norm and set</p><div class="equation result">\[
+ X(t)=\|w(t)\|_{H^3}^2,
+ \qquad
+ Y(t)=\|\nabla w(t)\|_{H^3}^2.
+\]</div><p>Mean zero gives \(X\le Y\). Periodic Kato--Ponce/Moser estimates and the top-order transport cancellations give a universal \(C_3\ge1\) such that</p><div class="equation result">\[
+ {1\over2}X'(t)+Y(t)
+ \le C_3\|\overline U_\Lambda(t)\|_{H^4}X(t)
+ +C_3X(t)^{1/2}Y(t).
+ \tag{5.1}
+\]</div><p>The two heat modes satisfy</p><div class="equation result">\[
+ A_{4,\Lambda}:=\int_0^\infty
+ \|\overline U_\Lambda(t)\|_{H^4}\,dt
+ \le {489\over32\sqrt2}\Lambda.
+ \tag{5.2}
+\]</div><p>Taking</p><div class="equation result">\[
+ r_3={1\over4C_3},
+ \qquad
+ R_\Lambda=r_3e^{-C_3A_{4,\Lambda}},
+ \tag{5.3}
+\]</div><p>the bootstrap closes for every datum satisfying \(\|w(0)\|_{H^3}&lt;R_\Lambda\). Strong continuation then gives a unique global solution and</p><div class="equation result">\[
+ \boxed{
+ \sup_{t\ge0}\|w(t)\|_{H^3}
+ \le e^{C_3A_{4,\Lambda}}\|w(0)\|_{H^3}.}
+ \tag{5.4}
+\]</div><p>For every \(\epsilon&gt;0\), one sufficient synchronized-stability radius is</p><div class="equation result">\[
+ \delta_\Lambda(\epsilon)
+ =\min\{R_\Lambda,\epsilon e^{-C_3A_{4,\Lambda}}\}.
+ \tag{5.5}
+\]</div><p>The radius may become exponentially small as \(\Lambda\) grows, but it is strictly positive for every fixed finite member. It is a sufficient radius, not an optimal threshold.</p><p>Equation (5.4) also gives the custom full-three-dimensional \(H^3\)-in/\(L^2\)-out corollary through \(\|w\|_2\le\|w\|_{H^3}\). It does not close full-three-dimensional FPS \((H^3,L^2)\) stability.</p></section>
+        <section id="what-r0-73m-actually-implies-for-the-flow-map"><div class="section-no">05 / canonical report</div><h2>What R0.73M actually implies for the flow map</h2><p>For a fixed observation time \(T\), let</p><div class="equation result">\[
+ \mathcal D_T=\{u_0\in H^3_{\sigma,0}:
+ \text{the unique strong solution from }u_0
+ \text{ exists on }[0,T]\}
+ \tag{6.1}
+\]</div><p>and let \(S_T:\mathcal D_T\to H^3_{\sigma,0}\) be the time-\(T\) state map. The local chordal moduli below are localized by \(H^3\) neighborhoods; the superscript \(2\to2\) records only the norms in its quotient.</p><p>Precisely,</p><div class="equation result">\[
+ \mathfrak L_{\Lambda,\mathrm{loc}}^{2\to2}(T)
+ :=\limsup_{r\downarrow0}
+ \sup_{\substack{h\in C^\infty_{\sigma,0},\ 0&lt;\|h\|_{H^3}&lt;r\\
+ \overline U_\Lambda(0)+h\in\mathcal D_T}}
+ {\|S_T(\overline U_\Lambda(0)+h)
+ -S_T(\overline U_\Lambda(0))\|_2\over\|h\|_2}.
+ \tag{6.2}
+\]</div><p>The modulus \(\mathfrak L_{\Lambda,\mathrm{loc}}^{3\to2}(T)\) uses the same formula with \(\|h\|_{H^3}\) in the denominator.</p><p>At</p><div class="equation result">\[
+ D_*={1\over450},
+ \qquad T_*={1\over1800},
+ \qquad
+ \mathcal A_*=\int_0^{D_*}\lambda_0(d)\,\mathrm d d,
+\]</div><p>R0.73M and the energy upper bound imply, for every sufficiently large \(\Lambda\),</p><div class="equation result">\[
+ \boxed{
+ c_*e^{\Lambda\mathcal A_*}
+ \le\mathfrak L_{\Lambda,\mathrm{loc}}^{2\to2}(T_*)
+ \le e^{\Lambda j_*}.}
+ \tag{6.3}
+\]</div><p>The launch estimate \(\|\phi_\Lambda\|_{H^3}\le C_H\Lambda^2\) gives the mixed-topology bracket</p><div class="equation result">\[
+ \boxed{
+ {c_*\over C_H}\Lambda^{-2}e^{\Lambda\mathcal A_*}
+ \le\mathfrak L_{\Lambda,\mathrm{loc}}^{3\to2}(T_*)
+ \le e^{\Lambda j_*}.}
+ \tag{6.4}
+\]</div><p>The exponents are compatible because</p><div class="equation result">\[
+ j_*&gt;{359\over324000}&gt;{173\over450000}&gt;\mathcal A_*.
+ \tag{6.5}
+\]</div><p>The first strict inequality follows analytically from \(1-e^{-x}&gt;x-x^2/2\); it is not inferred from decimal evaluation. Equations (6.3)--(6.4) do not identify a sharp exponent or a prefactor limit.</p><p>At any fixed \(0&lt;\rho\le\rho_0\), the R0.73M marked pairs satisfy</p><div class="equation result">\[
+ \|h_{\Lambda,\rho}\|_{H^3}
+ \le C_H\rho\Lambda^2e^{-\Lambda\mathcal A_*}\longrightarrow0,
+\]</div><p>while their time-\(T_*\) output separation is at least \(c_*\rho\). Define</p><div class="equation result">\[
+ \mathcal E_\rho=
+ \{\overline U_\Lambda(0),
+ \overline U_\Lambda(0)+h_{\Lambda,\rho}:\Lambda\ge\Lambda_0\}
+ \subset\mathcal D_{T_*}.
+ \tag{6.6}
+\]</div><p>The single Navier--Stokes flow map \(S_{T_*}\) fails to be uniformly continuous from \(H^3\) to \(L^2\) on this explicit unbounded planar set of marked pairs. Equivalently, the pointed maps fail to be equicontinuous across the family. Every individual marked basepoint still has a finite local modulus.</p><p>This is one flow map at different basepoints, not a different solution map for each \(\Lambda\).</p></section>
+        <section id="the-quantifier-obstruction"><div class="section-no">06 / canonical report</div><h2>The quantifier obstruction</h2><p>R0.73M has the form</p><div class="equation result">\[
+ \exists\rho_0,c_*,\Lambda_0\quad
+ \forall\Lambda\ge\Lambda_0\quad
+ \forall\rho\in(0,\rho_0],
+ \tag{7.1}
+\]</div><p>where the base is \(\overline U_\Lambda\). With \(\rho\) fixed, \(\Lambda\to\infty\) makes the selected input tend to zero and retains an order-\(\rho\) endpoint, but it also changes the background.</p><p>Fix instead one admissible \(\Lambda^\sharp\ge\Lambda_0\). When \(\rho\downarrow0\), the input tends to zero and the relative upper bound forces the actual endpoint distance to zero. Sections 3--5 give a positive stability radius for every fixed \(\Lambda&gt;0\), including members below the R0.73M threshold. Hence the family-level quantifiers cannot be exchanged for arbitrarily small \(H^3\) input and fixed \(L^2\) escape at one member.</p></section>
+        <section id="why-exact-symmetry-and-compactness-do-not-transfer-the-family"><div class="section-no">07 / canonical report</div><h2>Why exact symmetry and compactness do not transfer the family</h2><p>The registered candidates fail for explicit algebraic reasons.</p><div class="table-wrap"><table class="report-table"><thead><tr><th scope="col">Candidate</th><th scope="col">What it preserves or changes</th><th scope="col">Decision for this route</th></tr></thead><tbody><tr><td>pure amplitude multiplication</td><td>preserves the shear only because its self-advection vanishes; changes perturbed nonlinear dynamics</td><td>not a neighborhood symmetry</td></tr><tr><td>time translation</td><td>must match heat rates \(4\) and \(16\) simultaneously</td><td>only the zero shift preserves both modes</td></tr><tr><td>spatial translation or Galilean change</td><td>changes phase or adds a zero mode</td><td>cannot change \(\Lambda\)</td></tr><tr><td>parabolic scaling</td><td>changes torus representation, Fourier rows, time, and \(H^3\) size unless scale is one</td><td>no fixed-torus conjugacy</td></tr><tr><td>original-time compactness</td><td>\(\|\overline U_\Lambda(0)\|_2^2=5\Lambda^2/8\)</td><td>no bounded Sobolev subsequence</td></tr><tr><td>time-shift compactness</td><td>every bounded limit loses the second harmonic</td><td>loses the certified mechanism</td></tr><tr><td>smooth infinite-block embedding</td><td>fixed smooth heat shears retain finite integrated \(H^4\) size</td><td>remains inside the finite-strain tube class</td></tr></tbody></table></div><p>This audit closes only the registered transfer routes. A different forced, nondecaying, infinite-strain, or otherwise structurally different background would require a new problem and a new theorem.</p></section>
+        <section id="literature-position"><div class="section-no">08 / canonical report</div><h2>Literature position</h2><p>The bounded two-wave source audit fixes three boundaries.</p><ol class="report-list report-list-ordered"><li>Friedlander--Pavlović--Shvydkoy define the \((X,Z)\) norm roles for a fixed equilibrium and prove an autonomous spectral-to-nonlinear theorem; they do not prove the present nonstationary synchronized theorem.</li><li>Grenier-type constructions, Couette threshold results, and classical non-normal transient growth show that parameter-dependent large gain is a meaningful phenomenon, but do not exchange a varying-background family for one fixed member.</li><li>Heat-evolving and periodic-shear stability or frozen-spectrum results are neighboring comparisons with different geometry, hypotheses, or conclusions. They are not provenance for the internal R0.73N tube.</li></ol><p>Primary links and exact support classes are recorded in <code>r073n_literature_audit.md</code> and <code>r073n_claim_source_ledger.md</code>. The strongest permitted absence statement is:</p><blockquote><p>No single source in the recorded bounded search supplies the R0.73N fixed-member theorem and family-transfer obstruction as a black box.</p></blockquote><p>This is not an exhaustive classification and carries no novelty, first-result, or priority claim.</p></section>
+        <section id="evidence-ledger"><div class="section-no">09 / canonical report</div><h2>Evidence ledger</h2><div class="table-wrap"><table class="report-table"><thead><tr><th scope="col">Evidence layer</th><th scope="col">State</th><th scope="col">Exact support</th></tr></thead><tbody><tr><td>fixed-time relative \(L^2\) bound</td><td>CLOSED</td><td>direct nonlinear integration by parts and Gronwall</td></tr><tr><td>finite all-time strain envelope</td><td>CLOSED</td><td>exact two-mode heat formula</td></tr><tr><td>planar synchronized \((H^3_{\rm pl},L^2_{\rm pl})\) stability</td><td>CLOSED</td><td>planar invariance, global 2D regularity, and relative \(L^2\) bound</td></tr><tr><td>full-3D synchronized \((H^3,H^3)\) stability</td><td>CLOSED</td><td>periodic commutator estimate, finite \(H^4\) integral, bootstrap, and continuation</td></tr><tr><td>custom full-3D \(H^3\)-in/\(L^2\)-out</td><td>CLOSED AS COROLLARY</td><td>\(H^3\) theorem plus \(H^3\hookrightarrow L^2\)</td></tr><tr><td>full-3D FPS \((H^3,L^2)\) stability</td><td><strong>OPEN</strong></td><td>no theorem for arbitrary \(H^3\)-regular data small only in \(L^2\)</td></tr><tr><td>pointed family sensitivity and marked-set nonuniform continuity</td><td>CLOSED</td><td>sealed R0.73M lower theorem plus R0.73N upper estimate</td></tr><tr><td>registered symmetry and compactness transfer routes</td><td>CLOSED AS OBSTRUCTION</td><td>direct transformation and Sobolev/Fourier bookkeeping</td></tr><tr><td>independent analytic audit</td><td>PASS</td><td>complete rederivation of estimates, quantifiers, moduli, and transformations</td></tr><tr><td>adversarial audit</td><td>PASS</td><td>factor-of-two, lifespan, topology, bootstrap, modulus, and same-map attacks</td></tr><tr><td>bounded literature boundary</td><td>PASS</td><td>two-wave primary-source audit and internal claim-boundary reconciliation</td></tr><tr><td>finite diagnostic</td><td>CLOSED / PASS</td><td>19-file package; primary, independent, and 19-check final validation; sealed to the immutable source commit</td></tr><tr><td>formal figure</td><td>PASS</td><td>25-file package; PDF/SVG/600-dpi PNG, 605 source rows, 12 programmatic checks, and visual QA</td></tr><tr><td>public release content</td><td>READY</td><td>report, dictionary, figure, and claim-state vocabulary are frozen; deployment remains a separate transactional gate</td></tr></tbody></table></div></section>
+        <section id="sealed-finite-diagnostic"><div class="section-no">10 / canonical report</div><h2>Sealed finite diagnostic</h2><p>The current R0.73N diagnostic package has passed its primary and independent checks as a theorem-relevant error-detection layer. Its 9 source files are byte-bound to source commit <code>23526aa667aba1880a768ff4c1db35536edce737</code>; the 19-file package has <code>sourceCommitAssigned=true</code>, <code>finalSeal=true</code>, and a passing 19-check final validator. Its checks cover:</p><ul class="report-list"><li>the exact normalized strain envelope \(e^{-4t}+e^{-16t}\), including its equality witness;</li><li>the closed form for \(j(T)\) and \(j(\infty)=5/16\);</li><li>the high-precision value \(j_*=0.0011080324480805907920035217032737848\ldots\);</li><li>the exact strict rational chain in (6.5);</li><li>illustrative exponent-factor curves across the marked background family.</li></ul><p>The bound \(\mathcal A_*&lt;173/450000\) is inherited from the sealed R0.73M continuum theorem and is not recomputed by the finite package.</p><p>The sealed source-data file has exactly 605 rows: 241 strain samples, 243 cumulative samples, and 121 marked-basepoint samples. The primary validation and the independent Decimal/Fraction reconstruction both report <code>allChecksPass=true</code>; the latter evaluates six sentinel times without importing the primary producer.</p><p>These facts are finite checks, not proof of the continuum energy inequality, the \(H^3\) stability tube, the inherited action interval, a sharp flow-map modulus, or any open statement.</p></section>
+        <section id="formal-journal-figure"><div class="section-no">11 / canonical report</div><h2>Formal journal figure</h2><p><strong>Status:</strong> <code>PASS</code></p><p>The frozen figure identifier is <code>fig-r073n-finite-strain-bracket</code>. Its 25-file archive contains 10 source files and 15 generated files, including a row-for-row binding to all 605 certificate rows, PDF/SVG/600-dpi PNG masters, code, environment records, monitoring logs, hashes, and a QA report. The figure sources and upstream certificate are sealed to the same immutable commit. Twelve programmatic checks pass; color, grayscale, final-size, and independently rendered PDF surfaces were visually inspected and found legible and unclipped. The figure evaluates exact formulas at different marked basepoints and is not a measured sharp modulus or a fixed-background instability certificate.</p></section>
+        <section id="public-release-copy-zh"><div class="section-no">12 / canonical report</div><h2>Public release copy (zh)</h2><h3>Title</h3><p>R0.73N｜固定成员有限应变稳定性与族转移障碍</p><h3>Lead</h3><p>R0.73N 对 R0.73M 的“变背景族能否转化为单个固定背景不稳定性”作出否定 判定。对显式无外力双谐波背景族中的每个固定有限 \(\Lambda\)，直接能量、 交换子与延拓估计给出一个正的全三维同步 \((H^3,H^3)\) 稳定管；R0.73M 所捕捉的是跨无界标记背景族的非一致指向放大，而不是任一固定成员处的 Lyapunov 不稳定性。</p><h3>Home</h3><p>本节必须同时保留四条不同结论：全三维同步 \((H^3,H^3)\) 稳定性已经 闭合；全三维 \(H^3\)-输入/\(L^2\)-输出只是前者的自定义推论；平面不变 子系统内的同步 \((H^3_{\rm pl},L^2_{\rm pl})\) 稳定性具有真正的 \(L^2\) 初值小性；全三维 FPS \((H^3,L^2)\) 稳定性仍为 OPEN。这里的同步比较 固定从 \(t_0=0\) 出发，不允许轨道相移，也不声称对所有起始时刻一致。</p><h3>Recap</h3><p>R0.73M 证明：当 \(\Lambda\to\infty\) 且背景随之改变时，按完整作用量 缩小的平面扰动可以在固定时刻保持固定阶输出。R0.73N 补上固定成员审计： 任意共存强解满足有限累积应变控制；平面扰动全局满足 \(L^2\) 稳定估计； 足够小的全三维 \(H^3\) 扰动落在正的全局强解稳定管内。因此，R0.73M 中的量词顺序不能交换为一个固定背景上的任意小输入、固定距离逃逸。</p><h3>Literature</h3><p>有界两轮原始来源检索核对了 FPS 的范数量词、自治谱不稳定转移、Grenier 型参数族构造、Couette 阈值与瞬态增长、热演化剪切流和周期衰减流。检索 中没有一篇来源可以作为 R0.73N 固定成员定理与族转移障碍的黑箱证明。 这一表述只针对已记录的检索范围，不是穷尽性、首创性或优先权声明。</p><h3>Next</h3><p>R0.73N 的证书、正式附图与发布内容已经完成封存；公开页面仍须经过事务式生成、 翻译、同步 PDF、全站测试和线上字节一致性检查。数学上的下一发布门是 R0.73O： 为强迫、非衰减或无限累积应变等结构不同的固定背景重新冻结候选问题，先寻找 能够逃离本节有限总应变稳定管的必要结构，而不能把 R0.73M 的现有背景族直接 重新标记。</p></section>
+        <section id="exact-public-boundary"><div class="section-no">13 / canonical report</div><h2>Exact public boundary</h2><p>The public note may state:</p><blockquote><p>Every fixed member of the explicit unforced two-harmonic family has a positive full-three-dimensional forward synchronized \((H^3,H^3)\) stability tube from \(t_0=0\). R0.73M instead detects nonuniform pointed amplification across an unbounded family of marked backgrounds. The varying-background theorem therefore cannot be converted into instability of one member by the audited quantifier, symmetry, or compactness routes.</p></blockquote><p>It must also state all of the following:</p><ul class="report-list"><li>the full-3D \(H^3\)-in/\(L^2\)-out statement is a custom corollary;</li><li>the planar \((H^3_{\rm pl},L^2_{\rm pl})\) theorem has genuine \(L^2\) initial smallness but applies only in the invariant planar subsystem;</li><li>full-three-dimensional FPS \((H^3,L^2)\) stability remains OPEN;</li><li>the stability radius and both local-modulus exponent bounds are not claimed sharp;</li><li>the same autonomous Navier--Stokes flow map is evaluated at different marked basepoints;</li><li>the obstruction is specific to the registered R0.73M transfer routes;</li><li>finite diagnostics do not certify continuum claims;</li><li>arbitrary-background behavior, transverse critical-norm growth, finite-time singularity, and the Clay problem remain OPEN.</li></ul><p>The exact public boundary label is <code>NOT CLAY</code>.</p><p>The public note must not say that R0.73M proves fixed-member Lyapunov instability, that large finite amplification is instability, that the full-three-dimensional FPS \((H^3,L^2)\) problem is closed, or that the bounded source audit establishes novelty or priority.</p></section>
+        <section id="canonical-machine-readable-boundary"><div class="section-no">14 / canonical report</div><h2>Canonical machine-readable boundary</h2><pre><code>fixedTimeRelativeL2LipschitzBound=CLOSED
+finiteAllTimeStrainEnvelope=CLOSED
+fixedMemberPlanarL2SynchronizedStability=CLOSED
+fixedMemberThreeDimensionalH3SynchronizedStability=CLOSED
+fullThreeDimensionalH3InputL2Output=CLOSED_AS_COROLLARY
+familyFlowMapNonuniformMarkedBasepointSensitivity=CLOSED
+familyDepartureImpliesFixedMemberInstability=FALSE_AS_INFERENCE
+singleR073mMemberH3SmallL2FixedDistanceEscape=FALSE
+amplitudeOnlyIdentificationIsNSSymmetry=FALSE
+timeTranslationIdentifiesLambdaFamily=FALSE
+parabolicScalingIdentifiesLambdaFamilyOnFixedTorus=FALSE
+fullThreeDimensionalFPSH3L2Stability=OPEN
+optimalFixedMemberStabilityRadius=OPEN
+sharpFamilyLipschitzExponent=OPEN
+arbitraryFixedBackgroundInstability=OPEN
+transverseCriticalNormGrowth=OPEN
+finiteTimeSingularity=OPEN
+Clay=OPEN
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY</code></pre></section>
+        <section id="figure"><div class="section-no">F / Journal figure</div><h2>有限应变包络、累积系数与标记基点指数括号</h2><p><img src="/assets/r073n/fig-r073n-finite-strain-bracket.svg" alt="R0.73N finite-strain envelope, cumulative coefficient, and marked-basepoint exponent bracket"></p><p><a href="/assets/r073n/fig-r073n-finite-strain-bracket.pdf">下载矢量 PDF</a> · <a href="/assets/r073n/fig-r073n-finite-strain-bracket.png">下载 600 dpi PNG</a> · <a href="/assets/r073n/fig-r073n-finite-strain-bracket.svg">打开 SVG</a></p><p>附图只呈现已经封存的有限诊断；不认证连续能量估计、固定成员稳定管、尖锐模量、全三维 FPS (H3,L2)、奇性或 Clay。</p></section>
+        <section id="release-boundary"><div class="section-no">B / Exact release boundary</div><h2>固定成员、平面子系统与开放拓扑严格分列</h2><p>fixedTimeRelativeL2LipschitzBound=CLOSED；finiteAllTimeStrainEnvelope=CLOSED；fixedMemberPlanarL2SynchronizedStability=CLOSED；fixedMemberThreeDimensionalH3SynchronizedStability=CLOSED；fullThreeDimensionalH3InputL2Output=CLOSED_AS_COROLLARY；familyFlowMapNonuniformMarkedBasepointSensitivity=CLOSED；finiteDiagnosticPackage=CLOSED</p><p>finiteAllTimeStrainEnvelope=CLOSED；finiteTimeSingularity=OPEN；finiteDiagnosticValidation=PASS；finiteDiagnosticPackage=CLOSED；sourceCommitAssigned=TRUE；finalSeal=TRUE；formalFigurePackage=PASS；publicReleaseContent=READY</p><p>familyDepartureImpliesFixedMemberInstability=FALSE_AS_INFERENCE；singleR073mMemberH3SmallL2FixedDistanceEscape=FALSE；fullThreeDimensionalFPSH3L2Stability=OPEN；amplitudeOnlyIdentificationIsNSSymmetry=FALSE；timeTranslationIdentifiesLambdaFamily=FALSE；parabolicScalingIdentifiesLambdaFamilyOnFixedTorus=FALSE；optimalFixedMemberStabilityRadius=OPEN；sharpFamilyLipschitzExponent=OPEN；arbitraryFixedBackgroundInstability=OPEN；transverseCriticalNormGrowth=OPEN；finiteTimeSingularity=OPEN；Clay=OPEN；originalTimeCompactness=FALSE；boundedTimeShiftRetainsTwoHarmonics=FALSE；infiniteSmoothHeatShearEvadesFiniteStrainTube=FALSE；differentForcedOrNondecayingBackgroundRoute=OPEN</p><p>有限诊断不承担连续证明权重；bounded search 不承担原创性或优先权声明。NOT CLAY。</p></section>
+        <section id="reproduce"><div class="section-no">R / Reproduction</div><h2>报告、证明、审计、证书与附图入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_report-source.md">canonical report source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_fixed_background_no_go_proof.md">continuum proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073n_literature_audit.md">bounded literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073n">finite diagnostic package</a></p><p><a href="/assets/r073n/fig-r073n-finite-strain-bracket.pdf">journal figure PDF</a> · <a href="/notes/r0-73n.pdf">synchronized note PDF</a> · <a href="/recap-r0-61-r0-73n.html">130-node cumulative recap</a> · <a href="/recap-r0-61-r0-73n.pdf">synchronized recap PDF</a></p></section>
+      </article>
+    </div>
+  </main>
+<footer><div><strong>三维 Navier–Stokes 全局正则性问题</strong><br>按原编号区分定理、有限计算与开放问题。</div><div>研究笔记 R0.73N · 2026-08-31<br><a href="/">返回研究主页</a></div></footer>
+</body>
+</html>

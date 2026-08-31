@@ -1,0 +1,15 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073N_DEPS_DIR=/tmp/r073n-deps
+
+env PYTHONPATH="$R073N_DEPS_DIR" "$CODEX_PYTHON" -c 'from importlib.metadata import version; expected={"matplotlib":"3.10.6","numpy":"2.5.2","pillow":"12.3.0","pypdf":"6.10.0","pypdfium2":"5.13.0"}; actual={name:version(name) for name in expected}; assert actual == expected, (actual, expected)'
+
+env MPLCONFIGDIR=/tmp/r073n-figure-mpl OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" -B research/figures/r073n/fig-r073n-finite-strain-bracket/plot.py --deps "$R073N_DEPS_DIR"
+
+# Inspect qa-final-size.png, qa-grayscale.png, and qa-pdf.png before confirming.
+"$CODEX_PYTHON" -B research/figures/r073n/fig-r073n-finite-strain-bracket/validate.py --deps "$R073N_DEPS_DIR" --confirm-visual-qa
+"$CODEX_PYTHON" -B research/figures/r073n/fig-r073n-finite-strain-bracket/validate.py --deps "$R073N_DEPS_DIR" --verify-only
+
+# Final seal, after the certificate and figure sources share an immutable commit:
+# R073N_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$CODEX_PYTHON" -B research/figures/r073n/fig-r073n-finite-strain-bracket/validate.py --deps "$R073N_DEPS_DIR" --confirm-visual-qa --source-commit "$R073N_SOURCE_COMMIT"
+# "$CODEX_PYTHON" -B research/figures/r073n/fig-r073n-finite-strain-bracket/validate.py --deps "$R073N_DEPS_DIR" --source-commit "$R073N_SOURCE_COMMIT" --verify-only

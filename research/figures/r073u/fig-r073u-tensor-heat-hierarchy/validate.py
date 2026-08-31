@@ -184,9 +184,16 @@ def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list
     add(checks, "authoritative-source-commit-contract",
         contract.get("authoritativeAnalyticSourceCommit") == AUTHORITATIVE_SOURCE_COMMIT
         and contract.get("supersededAnalyticSourceCommitRejected") == SUPERSEDED_SOURCE_COMMIT)
+    normalization = contract["normalization"]
+    add(checks, "initial-time-and-viscous-definition-contract",
+        normalization.get("evaluationTime") == "initial time t=0"
+        and normalization.get("viscousTensorCoefficient")
+        == "V=Delta T-2 sum_l partial_l u tensor partial_l u")
     claim = contract["claimBoundary"]
     add(checks, "claim-boundary-no-overreach",
         claim.get("exactFormulaAndFiniteDiagnosticOnly") is True
+        and claim.get("initialTimeTangentOnly") is True
+        and claim.get("trajectorySymmetryClaim") is False
         and claim.get("navierStokesSimulation") is False
         and claim.get("fittedScalingLaw") is False
         and claim.get("closureModel") is False
@@ -195,6 +202,11 @@ def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list
         and claim.get("globalRegularityEstablished") is False
         and claim.get("clayProblemSolved") is False)
     add(checks, "results-claim-boundary", results.get("claimBoundary") == claim)
+    add(checks, "results-initial-time-scope", results.get("evaluation") == {
+        "comparison": "same initial time",
+        "time": "t=0",
+        "trajectorySymmetryClaim": False,
+    })
     compute = contract["compute"]
     execution = environment["execution"]
     add(checks, "contract-no-dgx", compute.get("dgxUsed") is False)
@@ -223,6 +235,9 @@ def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list
         [[a[i][j] + b[i][j] for j in range(2)] for i in range(2)] == k == [[-2, 1], [1, 0]])
     add(checks, "matrix-frobenius", sum(value * value for row in k for value in row) == 6)
     add(checks, "heat-exponent", constants.get("heatExponentAtWitness") == 5)
+    add(checks, "viscous-tensor-definition",
+        constants.get("viscousTensorDefinition")
+        == "V=Delta T-2 sum_l partial_l u tensor partial_l u")
 
     add(checks, "environment-package-record", environment.get("packages") == EXPECTED_DEPENDENCIES)
     for name, expected in EXPECTED_DEPENDENCIES.items():
@@ -241,6 +256,18 @@ def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list
             add(checks, f"row-{index:03d}-finite",
                 (not actual["x"] or math.isfinite(float(actual["x"])))
                 and (not actual["y"] or math.isfinite(float(actual["y"]))))
+    panel_b_rows = [row for row in actual_rows if row["panel"] == "B"]
+    add(checks, "panel-B-all-initial-time",
+        len(panel_b_rows) == 22
+        and all(row["parameter"].startswith("t=0;") for row in panel_b_rows))
+    separation_rows = [
+        row for row in panel_b_rows
+        if row["series"].startswith("tangent_separation")
+    ]
+    add(checks, "panel-B-separation-not-trajectory-symmetry",
+        len(separation_rows) == 2
+        and all("same initial time t=0" in row["normalization"] for row in separation_rows)
+        and "not trajectory symmetry" in separation_rows[0]["normalization"])
     peak = next(row for row in actual_rows if row["series"] == "exact_peak")
     peak_x = float(peak["x"])
     peak_y = float(peak["y"])
@@ -347,6 +374,10 @@ unambiguous, every matrix entry is legible, the analytic curve peak is
 labelled without collision, and the parabolic $s^{{-1/2}}$ statement is
 explicitly coefficient-level.  The figure cannot reasonably be read as a PDE
 simulation or fitted scaling law.
+
+Panel B explicitly defines the viscous tensor coefficient $V$, evaluates both
+sign-related tensor tangents at the same initial time $t=0$, and makes no
+trajectory-symmetry claim.
 
 `navierStokesSimulation=false`; `fittedScalingLaw=false`; `dgxUsed=false`;
 `ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX`; `NOT CLAY`.

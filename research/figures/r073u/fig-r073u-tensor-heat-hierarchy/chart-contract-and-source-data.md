@@ -19,8 +19,10 @@ one-derivative \(s^{-1/2}\) cost on parabolic heat slices.
 - **Panel A:** exact continuum map, not a numerical chart: \(T\to p\), but
   the even quadratic state does not determine the signed cubic and
   pressure--velocity tangent.
-- **Panel B:** exact finite Fourier diagnostic at \(h_*=(1,2,0)\), displaying
-  every entry of \(A+B=K\) and the \(u/-u\) tangent separation.
+- **Panel B:** exact finite Fourier diagnostic at the same initial time
+  \(t=0\) and \(h_*=(1,2,0)\), displaying every entry of \(A+B=K\) and the
+  \(u/-u\) initial-tangent separation.  This is not a trajectory-symmetry
+  claim.
 - **Panel C:** analytic line plot of \(f(z)=ze^{-5z^2}\), including its exact
   maximizer \(z_*=1/\sqrt{10}\) and the explicit parabolic
   \(s^{-1/2}\) boundary.
@@ -51,8 +53,16 @@ Panel B uses
  K=A+B=\begin{pmatrix}-2&1\\1&0\end{pmatrix}.
 \]
 
+The viscous tensor coefficient is defined before use by
+
+\[
+ V=\Delta T-2\sum_\ell
+   \partial_\ell u\otimes\partial_\ell u,
+ \qquad \widehat T(h_*)=\widehat V(h_*)=0.
+\]
+
 The plotted separation is the Frobenius norm of the coefficient difference,
-not a spatial norm and not a PDE trajectory.
+evaluated at \(t=0\); it is not a spatial norm and not a PDE trajectory.
 
 ## Interpretation boundary
 

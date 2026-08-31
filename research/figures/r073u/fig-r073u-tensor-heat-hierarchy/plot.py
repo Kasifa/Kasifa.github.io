@@ -157,7 +157,7 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
         "pressure_velocity_B": "B=-Fourier(u_j partial_i p+u_i partial_j p)",
         "total_K": "K=A+B",
         "local_tensor_T": "Fourier(u_i u_j)(h*)=0",
-        "viscous_V": "-2nu Fourier(partial_l u_i partial_l u_j)(h*)=0",
+        "viscous_V": "V=Delta T-2 sum_l partial_l u tensor partial_l u",
     }
     for series, matrix in matrices.items():
         for i in range(2):
@@ -165,20 +165,20 @@ def generate_rows(config: dict[str, Any]) -> list[dict[str, str]]:
                 value = matrix[i][j]
                 rows.append(row(
                     "B", series, f"{series}-{i + 1}{j + 1}", str(i + 1), str(j + 1),
-                    "h*=(1,2,0)", float(i + 1), float(value), str(value),
+                    "t=0; h*=(1,2,0)", float(i + 1), float(value), str(value),
                     "exact-finite-fourier", "r073u-four-site-diagnostic", formulas[series],
                     "2x2 active block; normalized Fourier coefficient",
                 ))
     rows.extend((
-        row("B", "tangent_separation", "matrix-coefficient", "i", "j", "s>=0",
+        row("B", "tangent_separation", "matrix-coefficient", "i", "j", "t=0; s>=0",
             None, None, "2*exp(-5s)*K", "exact-finite-fourier",
             "r073u-four-site-diagnostic",
-            "partial_t Theta_s(u)-partial_t Theta_s(-u)=2 exp(-5s) K",
-            "h*=(1,2,0)"),
-        row("B", "tangent_separation_norm", "frobenius", "", "", "s>=0",
+            "partial_t Theta_s(0;u)-partial_t Theta_s(0;-u)=2 exp(-5s) K",
+            "same initial time t=0; h*=(1,2,0); not trajectory symmetry"),
+        row("B", "tangent_separation_norm", "frobenius", "", "", "t=0; s>=0",
             None, None, "2*sqrt(6)*exp(-5s)", "exact-finite-fourier",
             "r073u-four-site-diagnostic", "norm_F(2 exp(-5s) K)",
-            "coefficient-level Frobenius norm"),
+            "same initial time t=0; coefficient-level Frobenius norm"),
     ))
     z_min = float(config["curveMinimum"])
     z_max = float(config["curveMaximum"])
@@ -312,7 +312,7 @@ def render(output: Path, config: dict[str, Any], rows: list[dict[str, str]]) -> 
     ax_b.set_axis_off()
     ax_b.set_title(r"B  Exact witness at $h_*=(1,2,0)$", loc="left",
                    fontweight="bold", y=1.075, pad=0)
-    ax_b.text(0.0, 1.01, "four Fourier sites | all entries exact integers",
+    ax_b.text(0.0, 1.01, "initial time t=0 | four Fourier sites | exact integers",
               transform=ax_b.transAxes, fontsize=5.9, color=palette["midGrey"], va="bottom")
     ax_b.text(0.5, 0.895,
               r"$u=(2\sin(x+y),\ 2\sin x-2\sin(x+y),\ 0)$",
@@ -329,18 +329,21 @@ def render(output: Path, config: dict[str, Any], rows: list[dict[str, str]]) -> 
               fontweight="bold", ha="center", va="center")
     ax_b.text(0.665, 0.665, "=", transform=ax_b.transAxes, fontsize=10.0,
               fontweight="bold", ha="center", va="center")
-    ax_b.text(0.5, 0.455,
+    ax_b.text(0.5, 0.475,
+              r"$V:=\Delta T-2\sum_\ell\partial_\ell u\otimes\partial_\ell u$",
+              transform=ax_b.transAxes, fontsize=5.8, ha="center", va="center")
+    ax_b.text(0.5, 0.415,
               r"$\widehat T(h_*)=\widehat V(h_*)=0,\qquad \|K\|_F=\sqrt{6}$",
-              transform=ax_b.transAxes, fontsize=6.2, ha="center", va="center")
+              transform=ax_b.transAxes, fontsize=6.0, ha="center", va="center")
     add_box(ax_b, 0.04, 0.11, 0.40, 0.20, palette["paper"], palette["blueDark"],
-            "STATE u", r"$\partial_t\widehat\Theta_s=+e^{-5s}K$",
+            "STATE u, t=0", r"$\partial_t\widehat\Theta_s=+e^{-5s}K$",
             palette["blueDark"], 6.1)
     add_box(ax_b, 0.56, 0.11, 0.40, 0.20, palette["paper"], palette["gold"],
-            "STATE -u", r"$\partial_t\widehat\Theta_s=-e^{-5s}K$",
+            "STATE -u, t=0", r"$\partial_t\widehat\Theta_s=-e^{-5s}K$",
             palette["ink"], 6.1)
     ax_b.text(0.5, 0.21, "vs", transform=ax_b.transAxes, fontsize=5.8,
               fontweight="bold", color=palette["midGrey"], ha="center", va="center")
-    ax_b.text(0.5, 0.03, r"separation $=2e^{-5s}K$; norm $=2\sqrt{6}e^{-5s}$",
+    ax_b.text(0.5, 0.03, r"at $t=0$: separation $=2e^{-5s}K$; norm $=2\sqrt{6}e^{-5s}$",
               transform=ax_b.transAxes, fontsize=6.0, fontweight="bold",
               ha="center", va="center")
 
@@ -468,12 +471,18 @@ def main() -> None:
         "schemaVersion": "r073u-tensor-heat-hierarchy-figure-results-v1",
         "allSourceChecksPass": True,
         "claimBoundary": contract["claimBoundary"],
+        "evaluation": {
+            "time": "t=0",
+            "comparison": "same initial time",
+            "trajectorySymmetryClaim": False,
+        },
         "exactConstants": {
             "cubicMatrixA": [[-2, 3], [3, -4]],
             "pressureVelocityMatrixB": [[0, -2], [-2, 4]],
             "totalMatrix": [[-2, 1], [1, 0]],
             "totalMatrixFrobeniusSquared": 6,
             "heatExponentAtWitness": 5,
+            "viscousTensorDefinition": "V=Delta T-2 sum_l partial_l u tensor partial_l u",
             "peakZExact": "1/sqrt(10)",
             "peakValueExact": "exp(-1/2)/sqrt(10)",
         },

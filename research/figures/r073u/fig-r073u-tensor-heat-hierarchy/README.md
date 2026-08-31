@@ -10,6 +10,12 @@ integration, random sample, regression, fitted scaling law, GPU result, or
 DGX result.  Ordinary translation metadata is fixed to
 `LOCAL_DIRECT_NO_DGX`.
 
+Panel B compares tensor time tangents of the two sign-related initial fields
+at the same initial time `t=0`.  It is not a claim that their subsequent
+Navier--Stokes trajectories remain sign-related.  The viscous tensor
+coefficient is
+`V = Delta T - 2 sum_l partial_l u tensor partial_l u`.
+
 ## Reproduce
 
 Use Python 3.12 with the exact versions in `requirements.txt`.  Either

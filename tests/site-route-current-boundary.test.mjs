@@ -12,6 +12,7 @@ const ENDPOINTS = Object.freeze({
   r073k: { version: "1.51", code: "R0.73K", slug: "r0-73k", next: "R0.73L" },
   r073l: { version: "1.52", code: "R0.73L", slug: "r0-73l", next: "R0.73M" },
   r073m: { version: "1.53", code: "R0.73M", slug: "r0-73m", next: "R0.73N" },
+  r073n: { version: "1.54", code: "R0.73N", slug: "r0-73n", next: "R0.73O" },
 });
 
 async function page(name) {
@@ -41,7 +42,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through M boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through N boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -52,6 +53,7 @@ test("homepage current route reaches the materialized G through M boundary witho
   const isK = endpoint.release === "r073k";
   const isL = endpoint.release === "r073l";
   const isM = endpoint.release === "r073m";
+  const isN = endpoint.release === "r073n";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -63,9 +65,11 @@ test("homepage current route reaches the materialized G through M boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isM
-    ? "<h3>R0.73M：prescribed-action 平面非线性固定距离偏离已闭合</h3>"
-    : isL
+  assert.ok(current.includes(isN
+    ? "<h3>R0.73N：固定成员有限应变稳定性与族转移障碍已闭合</h3>"
+    : isM
+      ? "<h3>R0.73M：prescribed-action 平面非线性固定距离偏离已闭合</h3>"
+      : isL
       ? "<h3>R0.73L：非自伴绝热跟踪与匹配作用量已闭合</h3>"
     : isK
       ? "<h3>R0.73K：参数一致黏性 rank-one 谱支与补空间控制已闭合</h3>"
@@ -103,30 +107,33 @@ test("homepage current route reaches the materialized G through M boundary witho
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ || isK || isL || isM) {
+  if (isH || isI || isJ || isK || isL || isM || isN) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ || isK || isL || isM) {
+  if (isI || isJ || isK || isL || isM || isN) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ || isK || isL || isM) {
+  if (isJ || isK || isL || isM || isN) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
-  if (isK || isL || isM) {
+  if (isK || isL || isM || isN) {
     assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
     assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
-  if (isL || isM) {
+  if (isL || isM || isN) {
     assert.ok(current.includes("non-selfadjoint adiabatic tracking / matching selected action"));
     assert.ok(current.includes("parameter-uniform nonselfadjoint adiabatic tracking"));
     assert.ok(current.includes("finite diagnostic: 15 primary / 5 independent / 346 figure rows"));
   }
-  if (isM) {
+  if (isM || isN) {
     assert.ok(current.includes("prescribed-action planar nonlinear fixed-distance departure"));
     assert.ok(current.includes("prescribed-action planar nonlinear departure"));
     assert.ok(current.includes(
       "finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks",
     ));
+  }
+  if (isN) {
+    assert.ok(current.includes("fixed-member finite-strain stability / family-transfer obstruction"));
   }
 
   assert.ok(
@@ -148,7 +155,7 @@ test("homepage current route reaches the materialized G through M boundary witho
   );
 });
 
-test("literature route records the materialized G through M boundary", async () => {
+test("literature route records the materialized G through N boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -159,6 +166,7 @@ test("literature route records the materialized G through M boundary", async () 
   const isK = endpoint.release === "r073k";
   const isL = endpoint.release === "r073l";
   const isM = endpoint.release === "r073m";
+  const isN = endpoint.release === "r073n";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -198,7 +206,40 @@ test("literature route records the materialized G through M boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isM) {
+  if (isN) {
+    assert.ok(literature.includes('id="r073j-boundary"'));
+    assert.ok(literature.includes('id="r073k-boundary"'));
+    assert.ok(literature.includes('id="r073l-boundary"'));
+    assert.ok(literature.includes('id="r073m-boundary"'));
+    assert.ok(literature.includes('class="route-r073n-deck-update"'));
+    for (const token of [
+      "fixedTimeRelativeL2LipschitzBound=CLOSED",
+      "finiteAllTimeStrainEnvelope=CLOSED",
+      "fixedMemberPlanarL2SynchronizedStability=CLOSED",
+      "fixedMemberThreeDimensionalH3SynchronizedStability=CLOSED",
+      "fullThreeDimensionalH3InputL2Output=CLOSED_AS_COROLLARY",
+      "familyFlowMapNonuniformMarkedBasepointSensitivity=CLOSED",
+      "finiteDiagnosticValidation=PASS",
+      "formalFigurePackage=PASS",
+      "familyDepartureImpliesFixedMemberInstability=FALSE_AS_INFERENCE",
+      "singleR073mMemberH3SmallL2FixedDistanceEscape=FALSE",
+      "fullThreeDimensionalFPSH3L2Stability=OPEN",
+      "amplitudeOnlyIdentificationIsNSSymmetry=FALSE",
+      "timeTranslationIdentifiesLambdaFamily=FALSE",
+      "parabolicScalingIdentifiesLambdaFamilyOnFixedTorus=FALSE",
+      "optimalFixedMemberStabilityRadius=OPEN",
+      "sharpFamilyLipschitzExponent=OPEN",
+      "arbitraryFixedBackgroundInstability=OPEN",
+      "transverseCriticalNormGrowth=OPEN",
+      "finiteTimeSingularity=OPEN",
+      "Clay=OPEN",
+      "originalTimeCompactness=FALSE",
+      "boundedTimeShiftRetainsTwoHarmonics=FALSE",
+      "infiniteSmoothHeatShearEvadesFiniteStrainTube=FALSE",
+      "differentForcedOrNondecayingBackgroundRoute=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73N boundary ${token}`);
+  } else if (isM) {
     assert.ok(literature.includes('id="r073j-boundary"'));
     assert.ok(literature.includes('id="r073k-boundary"'));
     assert.ok(literature.includes('id="r073l-boundary"'));

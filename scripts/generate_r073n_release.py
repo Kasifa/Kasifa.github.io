@@ -756,7 +756,9 @@ def build_recap(content: ReleaseContent) -> str:
 
 def update_home(content: ReleaseContent) -> str:
     value = decode_baseline("public/research-review.html")
+    value = value.replace('data-site-version="1.53"', 'data-site-version="1.54"')
     value = value.replace("/i18n-en.js?v=1.53", "/i18n-en.js?v=1.54")
+    value = value.replace("/site-refresh.js?v=1.53", "/site-refresh.js?v=1.54")
     value = replace_regex(value, r'<section class="route-overview latest-release-spotlight".*?</section>',
                           content.latest_spotlight, "home latest spotlight")
     marker = '<div class="task-one" id="r073m" data-release="r073m"'
@@ -848,6 +850,8 @@ def update_home(content: ReleaseContent) -> str:
         '<summary>展开 99 篇公开笔记</summary>',
         "<strong>v1.53</strong>网页版本",
         "<strong>R0.73M</strong>最新研究节点",
+        'data-site-version="1.53"',
+        "/site-refresh.js?v=1.53",
     ):
         if stale in value:
             raise RuntimeError("R0.73N home retained stale latest marker " + stale)

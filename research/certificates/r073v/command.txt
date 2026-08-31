@@ -1,0 +1,13 @@
+R073V_CERT_PYTHON="${R073V_CERT_PYTHON:-python3}"
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/compute_exact_certificate.py
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/compute_exact_certificate.py --check-only
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/independent_recompute.py
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/independent_recompute.py --check-only
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/seal_package.py
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/seal_package.py --check-only
+
+# After committing the eight source files, replace the placeholder with the
+# full lowercase 40-hex immutable commit to create and verify the final seal.
+R073V_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/seal_package.py --source-commit "$R073V_SOURCE_COMMIT"
+"$R073V_CERT_PYTHON" -B research/certificates/r073v/seal_package.py --source-commit "$R073V_SOURCE_COMMIT" --check-only

@@ -56,7 +56,7 @@ test("release generator source-dry-run exposes Q accounting without public write
   assert.deepEqual(result.finalContentPending, []);
   assert.equal(result.figureSourcePresent, true);
   assert.equal(result.certificateSourcePresent, true);
-  assert.equal(result.commitPinsReady, false);
+  assert.equal(result.commitPinsReady, true);
   assert.equal(result.uniformL2Only, "OPEN");
   assert.equal(result.nonperturbativeBMOInverseUniqueness, "FALSE_IN_GENERAL");
   assert.equal(result.clayConclusion, "OPEN");
@@ -66,23 +66,18 @@ test("release generator source-dry-run exposes Q accounting without public write
   assert.equal(result.writes, 0);
 });
 
-test("immutable reviewed pins are exact and the release-source zero pin fails closed", () => {
+test("immutable reviewed pins are exact and the release-source pin is sealed", () => {
   const generator = read("scripts/generate_r073q_release.py");
   assert.match(generator, /RELEASE_BASELINE_COMMIT = "dfec6fa047c8dd9f498aa798df23c525812951b6"/);
   assert.match(generator, /ANALYTIC_SOURCE_COMMIT = "cb9511c3af08a4beb0b31284e96e2a9c47a23d04"/);
   assert.match(generator, /FINITE_PACKAGE_COMMIT = "a0b00c0ef7f425443c88445a5284381469ce4046"/);
   assert.match(generator, /FIGURE_PACKAGE_COMMIT = "6da152412e36c647449675cb3cfaf3c4dab4542f"/);
   assert.match(generator, /FINAL_CONTENT_COMMIT = "14803d7299473359a64c2c08d183d4f2a8152b1c"/);
-  assert.match(generator, /RELEASE_SOURCE_COMMIT = ZERO_COMMIT/);
+  const sourcePin = generator.match(/RELEASE_SOURCE_COMMIT = "([0-9a-f]{40})"/)?.[1];
+  assert.ok(sourcePin);
+  assert.notEqual(sourcePin, "0".repeat(40));
   assert.ok(generator.includes('(\"R0.73P release baseline\", RELEASE_BASELINE_COMMIT)'));
   assert.ok(generator.includes('"tests/r073q-critical-heat-flow-gate.test.mjs"'));
-
-  const result = runPython("scripts/generate_r073q_release.py", "--check-only");
-  assert.notEqual(result.status, 0);
-  assert.match(
-    `${result.stdout}\n${result.stderr}`,
-    /R0\.73Q release source: unsealed 40-zero commit pin; binding remains fail-closed/,
-  );
 });
 
 test("canonical inventories bind the Q proof, literature readback, finite audit, and figure", () => {

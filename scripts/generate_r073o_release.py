@@ -58,7 +58,7 @@ FINITE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 FIGURE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 RELEASE_BASELINE_COMMIT = "d6d12469c266d16f08834320e2cae869af0aa479"
 FINAL_CONTENT_COMMIT = "007e4b17570c6659b20b1c929918fff74a2bc0c8"
-RELEASE_SOURCE_COMMIT = "21fb71e7b42c40f93cc31748819ba0c5f8f31d0e"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73N release baseline", RELEASE_BASELINE_COMMIT),
@@ -608,6 +608,14 @@ def build_recap(content: ReleaseContent) -> str:
     # The R0.73N baseline contains 49 phase articles despite displaying 48;
     # appending R0.73O therefore makes the exact public count 50.
     value = value.replace("48 个阶段", "50 个阶段")
+    value = value.replace("48 个研究阶段", "50 个研究阶段")
+    value = replace_once(
+        value,
+        "      #retained li{margin:.14rem 0;line-height:1.4}\n",
+        "      #retained li{margin:.14rem 0;line-height:1.4}\n"
+        "      #reproduce p{margin:.25rem 0}\n",
+        "recap print final-section spacing",
+    )
     value = value.replace("<strong>130</strong>", "<strong>131</strong>")
     value = value.replace("<strong>92</strong>", "<strong>93</strong>")
     value = value.replace("<strong>68</strong>", "<strong>69</strong>")
@@ -705,7 +713,10 @@ def build_recap(content: ReleaseContent) -> str:
             raise RuntimeError("R0.73O recap retained stale metric " + stale)
     if value.count('<article class="phase">') != 50:
         raise RuntimeError("R0.73O recap must contain exactly 50 phase articles")
-    if "48 个阶段" in value or "49 个阶段" in value:
+    if (
+        "48 个阶段" in value or "49 个阶段" in value
+        or "48 个研究阶段" in value or "49 个研究阶段" in value
+    ):
         raise RuntimeError("R0.73O recap retained a stale displayed phase count")
     assert_public_html(value, "R0.73O recap")
     return value

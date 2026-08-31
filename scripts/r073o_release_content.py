@@ -372,8 +372,8 @@ def _markdown_blocks(value: str) -> str:
     table_lines: list[str] = []
     math_lines: list[str] = []
     in_math = False
-    fence = chr(96) * 3
-    in_fence = False
+    fence_markers = (chr(96) * 3, "~~~")
+    active_fence = ""
     code_lines: list[str] = []
 
     def flush_paragraph() -> None:
@@ -461,16 +461,23 @@ def _markdown_blocks(value: str) -> str:
 
     for row in lines + [""]:
         stripped = row.strip()
-        if stripped.startswith(fence):
+        matched_fence = next(
+            (marker for marker in fence_markers if stripped.startswith(marker)),
+            "",
+        )
+        if active_fence and matched_fence and matched_fence != active_fence:
+            code_lines.append(row)
+            continue
+        if matched_fence:
             flush_blocks()
-            if in_fence:
+            if active_fence:
                 output.append("<pre><code>" + html.escape("\n".join(code_lines)) + "</code></pre>")
                 code_lines.clear()
-                in_fence = False
+                active_fence = ""
             else:
-                in_fence = True
+                active_fence = matched_fence
             continue
-        if in_fence:
+        if active_fence:
             code_lines.append(row)
             continue
         if stripped == r"\[":
@@ -538,7 +545,7 @@ def _markdown_blocks(value: str) -> str:
         flush_quote()
         flush_table()
         paragraph.append(row)
-    if in_fence or in_math:
+    if active_fence or in_math:
         raise CanonicalSourceError("unterminated fenced or display-math block in report source")
     return "".join(output)
 

@@ -58,7 +58,7 @@ FINITE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 FIGURE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 RELEASE_BASELINE_COMMIT = "d6d12469c266d16f08834320e2cae869af0aa479"
 FINAL_CONTENT_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
-RELEASE_SOURCE_COMMIT = "854b5d0dcf89b7856f8a5a6d891b72f734010261"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73N release baseline", RELEASE_BASELINE_COMMIT),
@@ -558,6 +558,8 @@ def build_note(content: ReleaseContent) -> str:
     .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
     .table-wrap table{margin:0;table-layout:fixed}
     .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    article p,article li{overflow-wrap:anywhere}
+    article pre{max-width:100%;overflow-x:auto;white-space:pre}
     blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
     blockquote p{max-width:none;margin:.4rem 0}
     @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}article mjx-container:not([display="true"]){display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}

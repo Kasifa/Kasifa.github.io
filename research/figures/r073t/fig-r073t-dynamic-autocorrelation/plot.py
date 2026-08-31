@@ -343,8 +343,17 @@ def render(output: Path, config: dict[str, Any], rows: list[dict[str, str]]) -> 
         "Subject": "Exact Navier-Stokes autocorrelation identities and finite witnesses",
         "Keywords": "Navier-Stokes, autocorrelation, pressure, Fourier, exact certificate",
     }
-    figure.savefig(output / "figure.svg", format="svg", facecolor=palette["paper"],
+    svg_path = output / "figure.svg"
+    figure.savefig(svg_path, format="svg", facecolor=palette["paper"],
                    metadata={"Title": metadata["Title"], "Description": metadata["Subject"]})
+    # Matplotlib emits spaces at the ends of multiline path-data rows.  Strip
+    # them deterministically so the generated SVG passes Git's whitespace gate
+    # and has a stable text representation without changing its geometry.
+    svg_text = svg_path.read_text(encoding="utf-8")
+    svg_path.write_text(
+        "\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n",
+        encoding="utf-8",
+    )
     figure.savefig(output / "figure.pdf", format="pdf", facecolor=palette["paper"],
                    metadata=metadata)
     figure.savefig(output / "figure.png", format="png", facecolor=palette["paper"],

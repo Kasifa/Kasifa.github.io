@@ -269,6 +269,7 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   assert.equal(pages.home.includes("<strong>R0.73M</strong>最新研究节点"), false);
   assert.equal(pages.home.includes("/recap-r0-61-r0-73m.html"), false);
   assert.equal(pages.home.includes("/recap-r0-61-r0-73m.pdf"), false);
+  assert.ok(pages.home.includes("综述 v1.54 ·"));
   for (const token of [
     '<div class="route-step kept"><header><b>R0.73N</b>',
     "开放接口 · R0.73O",
@@ -276,6 +277,7 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
     "R0.73N 的主张边界",
   ]) assert.ok(pages.literature.includes(token), `literature: ${token}`);
   assert.equal(pages.literature.includes("开放接口 · R0.73N"), false);
+  assert.ok(pages.literature.includes("文献综述 v1.54 ·"));
 
   for (const relative of [
     "public/notes/r0-73n.pdf", "public/recap-r0-61-r0-73n.pdf",

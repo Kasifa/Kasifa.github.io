@@ -858,6 +858,7 @@ def update_home(content: ReleaseContent) -> str:
 def update_literature(content: ReleaseContent) -> str:
     value = decode_baseline("public/literature-review.html")
     value = value.replace("/i18n-en.js?v=1.53", "/i18n-en.js?v=1.54")
+    value = value.replace("文献综述 v1.53 ·", "文献综述 v1.54 ·")
     marker = '<span class="route-r073m-deck-update">'
     start = value.find(marker)
     end = value.find("</span>", start)

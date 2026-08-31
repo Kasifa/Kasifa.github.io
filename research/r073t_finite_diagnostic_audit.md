@@ -131,8 +131,9 @@ package makes a self-referential commit claim.
 | figure metadata reseal | `b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9` | same-host runtime metadata backfill and the resulting figure `manifest.json` / `SHA256SUMS`; no mathematical or visual artifact changed |
 
 The exact sealer and figure validator re-read their declared sources from the
-source commit. The generated-artifact commit contains the byte-identical files
-reported here.
+source commit. The scientific-artifact commit contains the byte-identical
+scientific payloads reported here; the metadata-reseal commit contains the
+current environment, manifest, and `SHA256SUMS`.
 
 ## 4. Formal figure package
 

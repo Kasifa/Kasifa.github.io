@@ -1,0 +1,14 @@
+R073P_CERT_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/compute_formula_diagnostic.py
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/independent_validate.py
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/assemble_certificate.py
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/validate_certificate.py
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/seal_package.py
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/validate_certificate.py --verify-only
+"$R073P_CERT_PYTHON" -B research/certificates/r073p/seal_package.py --verify-only
+
+# Final seal only after a parent release commits the nine R0.73P source files:
+# R073P_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$R073P_CERT_PYTHON" -B research/certificates/r073p/seal_package.py --source-commit "$R073P_SOURCE_COMMIT"
+# "$R073P_CERT_PYTHON" -B research/certificates/r073p/seal_package.py --source-commit "$R073P_SOURCE_COMMIT" --verify-only

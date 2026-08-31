@@ -1,8 +1,7 @@
 # R0.73T claim--source ledger
 
-**Status:** analytic and exact no-go audits closed; primary-source collision
-labels aligned; finite package, formal figure, and public release bindings
-remain to be assigned
+**Status:** primary-source audit, exact-certificate final seal, and formal-
+figure QA closed; only the public HTML/PDF/deployment transaction remains
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -31,6 +30,28 @@ remain to be assigned
 | C21 | Weighted scalar sign-pair separation is \(-768Le^{-8\tau L^2}\) | `INTERNAL_EXACT` | Rational convolution grouped by \(|h|^2\) | Shows scalar heat weighting still loses signed velocity phase, even though the pair has the same tensor and pressure |
 | C22 | An identical prior \(AQ\)+two-witness package was not located | `NOT_ESTABLISHED` | Only a bounded search. Direct \(L^4\)/pressure collision: Tran--Yu--Dritschel 2021 [DOI](https://doi.org/10.1017/jfm.2020.1033). Related velocity-Wiener branch: Ambrose--Lopes Filho--Nussenzveig Lopes 2024 [DOI](https://doi.org/10.1090/proc/16615), [arXiv](https://arxiv.org/abs/2205.12383) | “Not located” is not a novelty, priority, or non-existence proof; novelty claim forbidden |
 | C23 | Arbitrary-data global regularity or Clay conclusion | `OPEN` | C5 still needs a classical-strength critical budget; C18 still needs signed flux control | Keep explicitly open |
+
+## Release-binding ledger
+
+```text
+finiteFormulaDiagnosticValidation=PASS
+finiteFormulaDiagnosticChecks=55
+formalFigurePackage=PASS
+formalFigureChecks=106
+formalFigureRows=28
+sourceCommitAssigned=TRUE
+sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
+generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+finalSeal=TRUE
+ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
+dgxUsed=FALSE
+publicReleaseTransaction=PENDING
+```
+
+The passed package gates certify the finite exact reconstruction, bound file
+inventory, hashes, and formal-figure QA.  They do not upgrade C2--C23 into a
+continuum proof, a numerical Navier--Stokes result, a novelty certificate, or
+a Clay conclusion.
 
 ## Evidence rules
 

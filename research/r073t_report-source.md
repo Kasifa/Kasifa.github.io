@@ -1,8 +1,7 @@
 # R0.73T | Dynamic autocorrelation and the pressure-tensor barrier
 
-**Status:** analytic reconstruction and two independent exact audits passed;
-primary-source collision audit, finite-package seal, formal-figure QA, and
-public HTML/PDF transaction remain in progress
+**Status:** primary-source audit, exact-certificate final seal, and formal-
+figure QA passed; only the public HTML/PDF/deployment transaction remains
 
 **Public title (zh):** R0.73T｜自相关进入动力学：一个临界一侧估计与压力张量障碍
 
@@ -389,13 +388,21 @@ heat 方向的耗散有正确符号，但
 2. 本地解析综合：式 (2.2)、(1.2)、逐壳 Duhamel 形式和 heat-plane
    恒等式的同一归一化重建。
 3. 精确有限证书：六模态压力、15 个自相关系数、剪切族、缩放和
-   heat 权重全部用 `Fraction` 稀疏卷积复算。
+   heat 权重全部用 `Fraction` 稀疏卷积复算；最终封印通过 `55/55`
+   项检查。配套正式附图通过 `106/106` 项检查，数据账本共有 28 行。
 4. 开放结论：\(\int A\) 的任意能量数据控制、可吸收的带符号壳通量、
    临界 heat commutator、任意三维数据全局正则性。
 
 限定式碰撞检索没有发现与“标量能量密度自相关 \(A Q\) + 两个精确
 非自治见证”完全相同的打包，但有限检索不是新颖性或优先权证明。本站
 只把它称为可审计的本地综合。
+
+精确证书与正式附图都绑定到源码提交
+`05c55d21f060a17a0a4db04c12e89e7271b03d30`；生成产物提交为
+`29d01625731d1c611f927c2852dbddf05967c6cb`。这些通过项验证的是有限
+代数、清单、哈希与图形交付链，不是对连续方程推导或任意三维数据的
+数值证明。本节没有运行 Navier--Stokes 仿真，也没有使用 DGX；普通
+双语翻译固定在本地直接完成。
 
 Machine-readable boundary:
 
@@ -409,8 +416,21 @@ signedVelocityPhaseInPressurePairing=CLOSED_EXACT
 pressureTensorNeededForGeneralReconstruction=VERIFIED_CLASSICAL
 shellDuhamelTransport=INTERNAL_CONDITIONAL
 finiteFormulaCertificateOnly=TRUE
+finiteFormulaDiagnosticValidation=PASS
+finiteFormulaDiagnosticChecks=55
+formalFigurePackage=PASS
+formalFigureChecks=106
+formalFigureRows=28
+sourceCommitAssigned=TRUE
+sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
+generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+finalSeal=TRUE
 navierStokesSimulation=NOT_RUN
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
+dgxUsed=FALSE
+publicHtmlRendered=FALSE
+publicPdfRendered=FALSE
+publicDeploymentCompleted=FALSE
 tensorHeatClosure=OPEN
 arbitraryThreeDimensionalGlobalRegularity=OPEN
 clayConclusion=OPEN

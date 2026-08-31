@@ -1,8 +1,8 @@
 # R0.73T bilingual dictionary and public-claim boundary
 
 **Status:** canonical titles, terminology, sentence pairs, claim-state tokens,
-and the local-direct translation route are frozen; public HTML rendering and
-deployment have not yet been completed
+the local-direct translation route, and the immutable source/artifact bindings
+are frozen; public HTML/PDF rendering and deployment have not yet been completed
 
 **Release title:** R0.73T | Dynamic autocorrelation and the pressure-tensor barrier
 
@@ -17,9 +17,9 @@ flux remain unclosed.
 
 **Next release:** R0.73U
 
-**Source commit:** `UNASSIGNED`
+**Source commit:** `05c55d21f060a17a0a4db04c12e89e7271b03d30`
 
-**Generated artifact commit:** `UNASSIGNED`
+**Generated artifact commit:** `29d01625731d1c611f927c2852dbddf05967c6cb`
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -298,15 +298,17 @@ promise of closure.
 releaseId=R0.73T
 nextRelease=R0.73U
 bilingualDictionary=FROZEN
-sourceCommitAssigned=FALSE
-generatedArtifactCommitAssigned=FALSE
+sourceCommitAssigned=TRUE
+sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
+generatedArtifactCommitAssigned=TRUE
+generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 translationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=FALSE
 externalTranslationServiceUsed=FALSE
 publicHtmlRendered=FALSE
 publicDeploymentCompleted=FALSE
-publicReleaseContent=DICTIONARY_FROZEN_ONLY
+publicReleaseContent=SOURCE_AND_ARTIFACT_BINDINGS_FROZEN
 exactAutocorrelationEvolution=VERIFIED_CLASSICAL_RECONSTRUCTION
 quarticBalance=VERIFIED_CLASSICAL_RECONSTRUCTION
 dynamicAQUpperInequality=INTERNAL_COROLLARY
@@ -330,6 +332,12 @@ signedShellFluxClosure=OPEN
 tensorHeatClosure=OPEN
 nextGateR073U=OPEN
 finiteFormulaCertificateOnly=TRUE
+finiteFormulaDiagnosticValidation=PASS
+finiteFormulaDiagnosticChecks=55
+formalFigurePackage=PASS
+formalFigureChecks=106
+formalFigureRows=28
+finalSeal=TRUE
 navierStokesSimulation=NOT_RUN
 finiteFormulaDiagnosticIsNavierStokesSimulation=FALSE
 finiteFormulaDiagnosticCertifiesContinuumPdeProof=FALSE

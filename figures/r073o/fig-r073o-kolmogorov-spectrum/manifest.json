@@ -1,6 +1,6 @@
 {
   "allPrerequisiteChecksPass": true,
-  "createdUtc": "2026-08-31T03:22:43.246623+00:00",
+  "createdUtc": "2026-08-31T04:06:02.300717+00:00",
   "files": [
     {
       "bytes": 858,
@@ -33,14 +33,14 @@
       "sha256": "3ff9c4872b2ca13db35576b3637543cf5da20743fbe494e8de3bde81dca2efa1"
     },
     {
-      "bytes": 1237,
+      "bytes": 1236,
       "path": "environment.json",
-      "sha256": "5d6c5fa1c4ec8732866ebbf9e93b1a039c4f6baefc2116f1d845f3c0b2f0b7fe"
+      "sha256": "c0f8e82de3717b5d7cd10e7be37c7da4823720fe8619850f6cde037c6ecb598c"
     },
     {
       "bytes": 38525,
       "path": "figure.pdf",
-      "sha256": "902338dcad07cf36f72be3334ff57ed7eef1cb90ca9e74fd70851e614bca7bf0"
+      "sha256": "aad3b7de6682627913bd4fe2c47d89fa96cf45643c6356247d32a727d0ee7710"
     },
     {
       "bytes": 528138,
@@ -50,7 +50,7 @@
     {
       "bytes": 100844,
       "path": "figure.svg",
-      "sha256": "e6499e02b5dd5429cea122e9aa68464e2114c89192ff3775491af93150ea3a50"
+      "sha256": "2cca630f673f2442dc08b77a58e5bb23c43958c7cb2907335e49a4afc035d312"
     },
     {
       "bytes": 15377,
@@ -60,7 +60,7 @@
     {
       "bytes": 639,
       "path": "progress.ndjson",
-      "sha256": "dc28a78054fe160339e6d18a9b4175d9485ed334217b941b297f9c6bba061a58"
+      "sha256": "34f11d58f583a0df1f8c15d696872303898ecdd0d050ea6143deab1d10b512c2"
     },
     {
       "bytes": 494435,
@@ -95,12 +95,12 @@
     {
       "bytes": 1111,
       "path": "resource-log.ndjson",
-      "sha256": "56cb0ea36fce9b43012f330d2597227320a1252e3cd7f2340b199a6ce10d54f5"
+      "sha256": "86ff4d7e094c686878f65067bff87aa1ddc3b7b2fec7a746b7b9e7f469ef93e2"
     },
     {
       "bytes": 3241,
       "path": "results.json",
-      "sha256": "41ae45263f0fb7ad4ffe88bdafe654775487054c6a53e9631fd314b26aed214d"
+      "sha256": "7867c25c6f0fac972d3a3fe68795985b4b8a9530b13119a48523d1b672a0fefc"
     },
     {
       "bytes": 30728,
@@ -115,7 +115,7 @@
     {
       "bytes": 5908,
       "path": "validation.json",
-      "sha256": "70731fa8807326ccf8ede29b6fa7d360349cdaf79f9581e4db87c789a293ad0d"
+      "sha256": "d9e8424ea0ce50452c9f47172d3f0017688c36a1ce1d6820c361b829754f1af7"
     }
   ],
   "schemaVersion": "r073o-kolmogorov-spectrum-figure-manifest-v1",
@@ -188,7 +188,8 @@
   "figureId": "fig-r073o-kolmogorov-spectrum",
   "release": "R0.73O",
   "publicationStatus": "published",
-  "createdAt": "2026-08-31T02:46:47.889346+00:00",
+  "createdAt": "2026-08-31T04:06:01.954490+00:00",
+  "analyticalQuestion": "Does an independently assembled Fourier truncation put the exact standard-cube embedding at R=3.012 on the unstable side of the rigorous alpha=0.7 critical interval, and is the leading finite eigenvalue stable under truncation?",
   "supportedClaim": "The finite spectral abscissa crosses zero inside the published rigorous critical interval and converges at R=3.012 to about 3.73272364e-5. This is a consistency diagnostic, not a substitute for the computer-assisted proof.",
   "claimBoundary": {
     "finiteFourierDiagnostic": true,
@@ -213,9 +214,9 @@
       "sha256": "128994c97f2e2ee9cd4fad5fae2788c4a884f852b9170d61d52e599adc7a4eae"
     },
     {
-      "bytes": 12554,
+      "bytes": 12555,
       "path": "research/certificates/r073o/independent_validation.json",
-      "sha256": "3f7a5f34b5b41b1983855134cd5c0be0657a99b444420083950953d2a507dee2"
+      "sha256": "8f19b1042ac8e263f2525be6a60ade7d02ae6c6a2765ed8a02784bb98bd00c56"
     },
     {
       "bytes": 30728,
@@ -226,12 +227,99 @@
   "computation": {
     "kind": "data-analysis",
     "configuration": "config.json",
+    "precision": "IEEE-754 binary64 finite spectral data and deterministic binary64 plotting",
+    "solver": "numpy.linalg.eig finite Fourier matrix; independently cross-checked by scipy.linalg.eig(A,B) after row equilibration",
     "formalCommand": "commands recorded in command.txt",
-    "wallTimeSeconds": 0.6780096250586212
+    "wallTimeSeconds": 0.6626402500551194
+  },
+  "environment": {
+    "python": "3.12.13",
+    "packagesLock": "requirements.txt",
+    "matplotlib": "3.10.6",
+    "numpy": "2.5.2",
+    "pillow": "12.3.0",
+    "pypdfium2": "5.13.0"
+  },
+  "data": [
+    {
+      "path": "source-data.csv",
+      "bytes": 30728,
+      "sha256": "4065d44e461e6e8b89d8ddaa1544e083ba393e8180eb0d0e6be5b1800b532927",
+      "schema": "131 finite spectral sweep and convergence rows"
+    },
+    {
+      "path": "results.json",
+      "bytes": 3241,
+      "sha256": "7867c25c6f0fac972d3a3fe68795985b4b8a9530b13119a48523d1b672a0fefc",
+      "schema": "finite result summary, output hashes, and claim boundary"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 5908,
+      "sha256": "d9e8424ea0ce50452c9f47172d3f0017688c36a1ce1d6820c361b829754f1af7",
+      "schema": "data, provenance, export, vector, and visual-QA checks"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 1236,
+      "sha256": "c0f8e82de3717b5d7cd10e7be37c7da4823720fe8619850f6cde037c6ecb598c",
+      "schema": "runtime versions, resource use, and upstream bindings"
+    },
+    {
+      "path": "progress.ndjson",
+      "bytes": 639,
+      "sha256": "34f11d58f583a0df1f8c15d696872303898ecdd0d050ea6143deab1d10b512c2",
+      "schema": "timestamped deterministic render progress"
+    },
+    {
+      "path": "resource-log.ndjson",
+      "bytes": 1111,
+      "sha256": "86ff4d7e094c686878f65067bff87aa1ddc3b7b2fec7a746b7b9e7f469ef93e2",
+      "schema": "process, memory, and GPU monitoring"
+    },
+    {
+      "path": "chart-contract-and-source-data.md",
+      "bytes": 2986,
+      "sha256": "227a817f3244ffc94319cfbfc23141b2bb0bd9180249af361dc974a93d1add2b",
+      "schema": "analytical question and evidence boundary"
+    }
+  ],
+  "figure": {
+    "widthMillimetres": 178.0,
+    "heightMillimetres": 82.0,
+    "pngDpi": 600,
+    "layout": "two-panel highlighted line and convergence dot-line",
+    "outputs": [
+      {
+        "path": "figure.pdf",
+        "bytes": 38525,
+        "sha256": "aad3b7de6682627913bd4fe2c47d89fa96cf45643c6356247d32a727d0ee7710"
+      },
+      {
+        "path": "figure.svg",
+        "bytes": 100844,
+        "sha256": "2cca630f673f2442dc08b77a58e5bb23c43958c7cb2907335e49a4afc035d312"
+      },
+      {
+        "path": "figure.png",
+        "bytes": 528138,
+        "sha256": "5cee46fc764ad763f2f227d076411bc5070800b916716ff7cd01aa7b7a977de6",
+        "dpi": 600,
+        "pixels": [
+          4204,
+          1937
+        ]
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md"
   },
   "qa": {
+    "status": "passed",
     "visualQaConfirmed": true,
     "allChecksPass": true,
+    "dataCrossChecked": true,
     "labelsAndLegendsInspected": true,
     "scalesAndUnitsInspected": true,
     "finalSizeInspected": true,
@@ -295,12 +383,12 @@
       {
         "path": "public/assets/r073o/fig-r073o-kolmogorov-spectrum.pdf",
         "bytes": 38525,
-        "sha256": "902338dcad07cf36f72be3334ff57ed7eef1cb90ca9e74fd70851e614bca7bf0"
+        "sha256": "aad3b7de6682627913bd4fe2c47d89fa96cf45643c6356247d32a727d0ee7710"
       },
       {
         "path": "public/assets/r073o/fig-r073o-kolmogorov-spectrum.svg",
         "bytes": 100844,
-        "sha256": "e6499e02b5dd5429cea122e9aa68464e2114c89192ff3775491af93150ea3a50"
+        "sha256": "2cca630f673f2442dc08b77a58e5bb23c43958c7cb2907335e49a4afc035d312"
       },
       {
         "path": "public/assets/r073o/fig-r073o-kolmogorov-spectrum.png",

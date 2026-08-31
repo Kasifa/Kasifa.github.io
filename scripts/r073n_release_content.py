@@ -302,12 +302,22 @@ def _slug(title: str, used: set[str]) -> str:
 def _inline(value: str) -> str:
     output: list[str] = []
     cursor = 0
-    for match in re.finditer(r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)", value):
+    token = re.compile(
+        r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)"
+        r"|\*\*([^*\n]+)\*\*"
+        r"|`([^`\n]+)`"
+    )
+    for match in token.finditer(value):
         output.append(html.escape(value[cursor:match.start()], quote=False))
-        output.append(
-            f'<a href="{html.escape(match.group(2), quote=True)}">'
-            f'{html.escape(match.group(1))}</a>'
-        )
+        if match.group(1) is not None:
+            output.append(
+                f'<a href="{html.escape(match.group(2), quote=True)}">'
+                f'{html.escape(match.group(1))}</a>'
+            )
+        elif match.group(3) is not None:
+            output.append(f"<strong>{html.escape(match.group(3))}</strong>")
+        else:
+            output.append(f"<code>{html.escape(match.group(4))}</code>")
         cursor = match.end()
     output.append(html.escape(value[cursor:], quote=False))
     return "".join(output)
@@ -318,6 +328,9 @@ def _markdown_blocks(value: str) -> str:
     output: list[str] = []
     paragraph: list[str] = []
     bullets: list[str] = []
+    ordered: list[str] = []
+    quote_lines: list[str] = []
+    table_lines: list[str] = []
     math_lines: list[str] = []
     in_math = False
     fence = chr(96) * 3
@@ -331,14 +344,86 @@ def _markdown_blocks(value: str) -> str:
 
     def flush_bullets() -> None:
         if bullets:
-            output.append("<ul>" + "".join(f"<li>{_inline(row)}</li>" for row in bullets) + "</ul>")
+            output.append(
+                '<ul class="report-list">'
+                + "".join(f"<li>{_inline(row)}</li>" for row in bullets)
+                + "</ul>"
+            )
             bullets.clear()
+
+    def flush_ordered() -> None:
+        if ordered:
+            output.append(
+                '<ol class="report-list report-list-ordered">'
+                + "".join(f"<li>{_inline(row)}</li>" for row in ordered)
+                + "</ol>"
+            )
+            ordered.clear()
+
+    def flush_quote() -> None:
+        if quote_lines:
+            quote = " ".join(row.strip() for row in quote_lines if row.strip())
+            if not quote:
+                raise CanonicalSourceError("empty blockquote in report source")
+            output.append(f"<blockquote><p>{_inline(quote)}</p></blockquote>")
+            quote_lines.clear()
+
+    def table_cells(row: str) -> list[str]:
+        stripped = row.strip()
+        if not (stripped.startswith("|") and stripped.endswith("|")):
+            raise CanonicalSourceError("malformed Markdown table row in report source")
+        # A TeX norm such as ``\|u\|`` contains escaped pipes that belong to
+        # the cell rather than to Markdown's column syntax.
+        return [
+            cell.strip()
+            for cell in re.split(r"(?<!\\)\|", stripped[1:-1])
+        ]
+
+    def is_table_separator(cells: list[str]) -> bool:
+        return bool(cells) and all(
+            re.fullmatch(r":?-{3,}:?", cell.replace(" ", "")) is not None
+            for cell in cells
+        )
+
+    def flush_table() -> None:
+        if not table_lines:
+            return
+        rows = [table_cells(row) for row in table_lines]
+        if len(rows) < 3:
+            raise CanonicalSourceError(
+                "Markdown table needs a header, separator, and body row"
+            )
+        width = len(rows[0])
+        if width < 2 or any(len(row) != width for row in rows):
+            raise CanonicalSourceError("Markdown table column-count mismatch")
+        if not is_table_separator(rows[1]):
+            raise CanonicalSourceError("Markdown table is missing its header separator")
+        if any(is_table_separator(row) for row in rows[2:]):
+            raise CanonicalSourceError("Markdown table has an unexpected separator row")
+        header = "".join(
+            f'<th scope="col">{_inline(cell)}</th>' for cell in rows[0]
+        )
+        body = "".join(
+            "<tr>" + "".join(f"<td>{_inline(cell)}</td>" for cell in row) + "</tr>"
+            for row in rows[2:]
+        )
+        output.append(
+            '<div class="table-wrap"><table class="report-table">'
+            f"<thead><tr>{header}</tr></thead><tbody>{body}</tbody></table></div>"
+        )
+        table_lines.clear()
+
+    def flush_blocks() -> None:
+        flush_paragraph()
+        flush_bullets()
+        flush_ordered()
+        flush_quote()
+        flush_table()
 
     for row in lines + [""]:
         stripped = row.strip()
         if stripped.startswith(fence):
-            flush_paragraph()
-            flush_bullets()
+            flush_blocks()
             if in_fence:
                 output.append("<pre><code>" + html.escape("\n".join(code_lines)) + "</code></pre>")
                 code_lines.clear()
@@ -350,8 +435,7 @@ def _markdown_blocks(value: str) -> str:
             code_lines.append(row)
             continue
         if stripped == r"\[":
-            flush_paragraph()
-            flush_bullets()
+            flush_blocks()
             in_math = True
             math_lines = [r"\["]
             continue
@@ -366,19 +450,54 @@ def _markdown_blocks(value: str) -> str:
                 math_lines = []
                 in_math = False
             continue
+        if re.fullmatch(r"###\s+.+", stripped):
+            flush_blocks()
+            output.append(f"<h3>{_inline(stripped[4:].strip())}</h3>")
+            continue
         if stripped.startswith("- "):
             flush_paragraph()
+            flush_ordered()
+            flush_quote()
+            flush_table()
             bullets.append(stripped[2:].strip())
             continue
+        ordered_match = re.match(r"^\d+\.\s+(.+)$", stripped)
+        if ordered_match:
+            flush_paragraph()
+            flush_bullets()
+            flush_quote()
+            flush_table()
+            ordered.append(ordered_match.group(1).strip())
+            continue
+        if bullets and row.startswith(("  ", "\t")):
+            bullets[-1] += " " + stripped
+            continue
+        if ordered and row.startswith(("  ", "\t")):
+            ordered[-1] += " " + stripped
+            continue
+        if stripped.startswith(">"):
+            flush_paragraph()
+            flush_bullets()
+            flush_ordered()
+            flush_table()
+            quote_lines.append(stripped[1:].lstrip())
+            continue
         if not stripped:
+            flush_blocks()
+            continue
+        if stripped.startswith("|") or stripped.endswith("|"):
+            if not (stripped.startswith("|") and stripped.endswith("|")):
+                raise CanonicalSourceError("malformed Markdown table row in report source")
             flush_paragraph()
             flush_bullets()
+            flush_ordered()
+            flush_quote()
+            table_lines.append(stripped)
             continue
-        if re.match(r"^\|.*\|$", stripped):
-            flush_paragraph()
-            flush_bullets()
-            output.append("<pre class=\"source-table\">" + html.escape(stripped) + "</pre>")
-            continue
+        flush_bullets()
+        flush_ordered()
+        flush_quote()
+        flush_table()
         paragraph.append(row)
     if in_fence or in_math:
         raise CanonicalSourceError("unterminated fenced or display-math block in report source")

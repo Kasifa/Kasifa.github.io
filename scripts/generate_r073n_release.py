@@ -607,6 +607,17 @@ def build_note(content: ReleaseContent) -> str:
                           f'<meta property="og:image" content="https://kasifa.github.io/assets/r073n/{FIGURE_ID}.png">', "note OG image")
     value = replace_regex(value, r'<title>.*?</title>',
                           f'<title>{html.escape(content.document_title_en)}</title>', "note title")
+    note_styles = """  <style>
+    .table-wrap{width:100%;margin:28px 0;overflow-x:auto}
+    .table-wrap table{margin:0;table-layout:fixed}
+    .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+    blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
+    blockquote p{max-width:none;margin:.4rem 0}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}}
+    @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
+  </style>
+"""
+    value = replace_once(value, "</head>", note_styles + "</head>", "note semantic styles")
     value = replace_once(value, "/i18n-en.js?v=1.53", "/i18n-en.js?v=1.54", "note i18n")
     navigation = ''.join(
         f'<a href="#{section.anchor}">{section.title}</a>' for section in content.sections

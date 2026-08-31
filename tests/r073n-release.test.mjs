@@ -226,6 +226,14 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
   assert.ok(pages.note.includes("bounded"));
   assert.ok(pages.note.includes("priority"));
   assert.ok(pages.note.includes("/note-retro.css"));
+  assert.equal((pages.note.match(/<table class="report-table">/g) ?? []).length, 3);
+  assert.equal((pages.note.match(/<blockquote>/g) ?? []).length, 3);
+  assert.ok(pages.note.includes('<ol class="report-list report-list-ordered">'));
+  assert.ok(pages.note.includes("<h3>Lead</h3>"));
+  assert.ok(pages.note.includes("<strong>OPEN</strong>"));
+  assert.ok(pages.note.includes("<code>NOT CLAY</code>"));
+  assert.equal(pages.note.includes('class="source-table"'), false);
+  assert.equal(pages.note.includes("&gt; The amplification"), false);
   for (const suffix of ["pdf", "svg", "png"]) {
     assert.ok(pages.note.includes(
       `/assets/r073n/fig-r073n-finite-strain-bracket.${suffix}`,

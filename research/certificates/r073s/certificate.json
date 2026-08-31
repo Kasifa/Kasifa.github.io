@@ -1,0 +1,71 @@
+{
+  "allPrerequisiteChecksPass": true,
+  "claimBoundary": {
+    "arithmeticComplexityLowerBound": false,
+    "clayProblemSolved": false,
+    "continuumPdeProofCertified": false,
+    "exactFiniteFormulaDiagnosticOnly": true,
+    "finiteTimeSingularityEstablished": false,
+    "globalRegularityEstablished": false,
+    "heatFlowIntegralComputed": false,
+    "intervalArithmeticUsed": false,
+    "navierStokesSimulation": false,
+    "pdeNecessityEstablished": false,
+    "predeclaredStrictSubsetNoGo": true,
+    "quadraticAutocorrelationUpperBoundChecked": true,
+    "runtimeBenchmark": false,
+    "universalRuntimeLowerBound": false
+  },
+  "evidenceBindings": {
+    "config": {
+      "bytes": 1377,
+      "path": "research/certificates/r073s/config.json",
+      "sha256": "b5c4426590dd251e6bb7058dd3fc85371f160a678ae29bc7fcdd18b1b899b7d3"
+    },
+    "diagnostic": {
+      "bytes": 32403,
+      "path": "research/certificates/r073s/diagnostic.json",
+      "sha256": "8bd9176b7f2696c2b3ef9c99a3037e902777aa3012b5b02b9d0e4d5c60ba7d7e"
+    },
+    "environment": {
+      "bytes": 265,
+      "path": "research/certificates/r073s/environment.json",
+      "sha256": "82234182b4fa1f45bfc0bed9fc2737103386202212463d7a31c285e541b21be1"
+    },
+    "independentValidation": {
+      "bytes": 5773,
+      "path": "research/certificates/r073s/independent_validation.json",
+      "sha256": "7aced7487e21a353d6af65fc3d24d9e586a7694674244d21809ba03b4dcc6eb5"
+    },
+    "sourceData": {
+      "bytes": 4357,
+      "path": "research/certificates/r073s/source-data.csv",
+      "sha256": "640beee60959e23e2b9877e7b0ae8f8790dcf2c7b37b162746da64a520f1680c"
+    }
+  },
+  "formulaStatements": {
+    "autocorrelation": "C(h)=sum_k a(k+h) dot conjugate(a(k))=Fourier(|f|^2)(h)",
+    "autocorrelationSupport": "D_C=cardinality(support(C))",
+    "differenceSet": "D_delta=cardinality(S-S), with D_C<=D_delta",
+    "exactQuartic": "Q=sum_h |C(h)|^2=||f||_4^4",
+    "matchedProxy": "scaled alpha_m*N^(-1/2)*(A_m*Q_m)^(1/6)",
+    "quadraticCertificate": "||f||_6^6 <= A*Q, A=sum_h |C(h)|",
+    "supportSurrogates": "A <= min(M*E^2, sqrt(D_C*Q)) <= min(M*E^2, sqrt(|S-S|*Q))"
+  },
+  "independentCheckCount": 54,
+  "primaryCheckCount": 226,
+  "recordsSha256": "e25f71da5a9e72ce7a44300d4b965d8a4389c7d7d7b1502c11a0fc569c305718",
+  "release": "R0.73S",
+  "rowCount": 43,
+  "schemaVersion": "r073s-quadratic-autocorrelation-certificate-v1",
+  "scientificState": {
+    "boundedQuarticFiniteGrid": "CLOSED",
+    "classicalInequalityCollision": "CONFIRMED_OUTSIDE_CERTIFICATE",
+    "exactFiniteFormulaGrid": "CLOSED",
+    "heatFlowIntegration": "NOT_RUN",
+    "navierStokesSimulation": "NOT_RUN",
+    "pdeContinuumProof": "OUTSIDE_CERTIFICATE",
+    "realDivergenceFreeLiftFiniteAudit": "CLOSED_ON_CONFIGURED_GRID",
+    "runtimeLowerBound": "NOT_CLAIMED"
+  }
+}

@@ -23,5 +23,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
+      - name: Use formal-figure Python version
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12.13"
+          cache: pip
+          cache-dependency-path: research/figures/r073u/fig-r073u-tensor-heat-hierarchy/requirements.txt
+      - name: Install formal-figure verifier dependencies
+        run: python -m pip install -r research/figures/r073u/fig-r073u-tensor-heat-hierarchy/requirements.txt
       - name: Verify fail-closed publication contract
         run: node scripts/run-release-publication-gate.mjs

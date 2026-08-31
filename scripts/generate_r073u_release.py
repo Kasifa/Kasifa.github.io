@@ -647,22 +647,39 @@ def validate_figure_package(certificate_manifest: dict) -> dict:
         payload = current_regular_bytes(f"{base}/{name}")
         if row.get("bytes") != len(payload) or row.get("sha256") != sha256(payload):
             raise RuntimeError("R0.73U figure manifest is not byte-bound: " + name)
-    dependency_root = os.environ.get(
-        "R073U_FIGURE_DEPS", "/Users/kasifa/.cache/codex-runtimes/r073s-figure-python"
+    local_dependency_root = Path(
+        "/Users/kasifa/.cache/codex-runtimes/r073s-figure-python"
     )
-    executable = os.environ.get(
-        "R073U_FIGURE_PYTHON",
-        "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    local_executable = Path(
+        "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
     )
-    if not Path(dependency_root).is_dir() or not Path(executable).is_file():
+    dependency_override = os.environ.get("R073U_FIGURE_DEPS")
+    executable_override = os.environ.get("R073U_FIGURE_PYTHON")
+    dependency_root = (
+        Path(dependency_override) if dependency_override
+        else local_dependency_root if local_dependency_root.is_dir()
+        else None
+    )
+    executable = (
+        Path(executable_override) if executable_override
+        else local_executable if local_executable.is_file()
+        else Path(sys.executable)
+    )
+    if not executable.is_file() or (
+        dependency_root is not None and not dependency_root.is_dir()
+    ):
         raise RuntimeError(
-            "R0.73U figure verifier runtime missing; set R073U_FIGURE_DEPS and R073U_FIGURE_PYTHON"
+            "R0.73U figure verifier runtime missing; install requirements.txt or set "
+            "R073U_FIGURE_DEPS and R073U_FIGURE_PYTHON"
         )
+    verifier_arguments = ["--verify-only"]
+    if dependency_root is not None:
+        verifier_arguments = ["--deps", str(dependency_root), *verifier_arguments]
     run_package_verifier(
         f"{base}/validate.py",
-        ["--deps", dependency_root, "--verify-only"],
+        verifier_arguments,
         "R0.73U figure",
-        executable=executable,
+        executable=str(executable),
     )
     return manifest
 

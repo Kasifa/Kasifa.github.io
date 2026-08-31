@@ -12,7 +12,8 @@ boundary
 **Ordinary translation path:** LOCAL_DIRECT_NO_DGX
 
 **Verdict:** PASS. The current figure package is byte-identical to its final
-package-seal commit, all 147 reconstructed checks pass, the generic formal
+package-seal commit, all 147 checks pass, including the evidence-aware CSV
+reconstruction check; the generic formal
 figure validator reports no error or warning, and the displayed Panel A--D
 formulas agree with the sealed two-path exact certificate. No mathematical
 source or claim-boundary blocker remains.
@@ -23,13 +24,13 @@ The figure has two consecutive immutable commits:
 
 | Layer | Commit | Independent check |
 |---|---|---|
-| figure source and 11 raw artifacts | 680fde5a24834b8e1c877f651eb20b119c671f49 | resolves and contains the 10 declared source files plus 11 raw artifacts |
-| final figure-package seal | b413586aa7a7389f8943acb2469eb28cdbbf31f3 | resolves; its parent is exactly the figure-source commit and it adds four metadata files |
+| figure source and 11 raw artifacts | f94915332ff405ae723711e8041acc2af07e896b | resolves and contains the 10 declared source files plus 11 raw artifacts |
+| final figure-package seal | ae679d5afa5f3cfacfe79c4d7b8a462baca2c195 | resolves; its parent is exactly the figure-source commit and it adds four metadata files |
 
 The scoped working-tree package has no byte difference from
-b413586aa7a7389f8943acb2469eb28cdbbf31f3. The manifest records
+ae679d5afa5f3cfacfe79c4d7b8a462baca2c195. The manifest records
 
-    figureSourceCommit=680fde5a24834b8e1c877f651eb20b119c671f49
+    figureSourceCommit=f94915332ff405ae723711e8041acc2af07e896b
     figureSourceCommitAssigned=TRUE
     sealState=formal-figure-source-seal
     requiresParentFigureSourceCommitFinalReseal=FALSE
@@ -106,7 +107,12 @@ Every data row carries the primary and independent JSON source paths, both
 producer hashes, evidence class, and normalization. The 101 Panel D samples
 are explicitly typed as analytic renderer samples from the closed exact
 formula. They are not observations, fitted data, or evidence used to infer
-the formula.
+the formula. The 57 non-renderer rows match the two-path certificate and
+declared formulas field for field and string for string. For the renderer
+rows, order, `x`, labels, hashes, provenance, and every field except `y` remain
+exact; the zero sample is exact, and each remaining `y` value must satisfy
+both absolute error at most `2e-16` and IEEE-754 distance at most 256 ULP.
+This isolates cross-platform `libm` variation from the exact finite evidence.
 
 ## 5. Panel A: pressure-aware compressed interface
 
@@ -337,8 +343,8 @@ The mathematical sources, immutable commit chain, certificate pins, two-path
 common core, 158 source rows, Panel A--D formulas, bottom-scale orders, and
 selected-coefficient boundaries all pass.
 
-    figureSourceCommit=680fde5a24834b8e1c877f651eb20b119c671f49
-    figurePackageSealCommit=b413586aa7a7389f8943acb2469eb28cdbbf31f3
+    figureSourceCommit=f94915332ff405ae723711e8041acc2af07e896b
+    figurePackageSealCommit=ae679d5afa5f3cfacfe79c4d7b8a462baca2c195
     certificatePins=PASS
     twoPathCommonCore=PASS_BYTE_IDENTICAL
     panelACompressedInterface=PASS

@@ -33,7 +33,7 @@ open
 | V18 | Exact KHM, generalized filtered-moment, LMN, and rigorous moment theories advance to the next order. | `VERIFIED_CLASSICAL` | von K\'arm\'an--Howarth 1938 [DOI](https://doi.org/10.1098/rspa.1938.0013); Hill 2001 [DOI](https://doi.org/10.1017/S0022112001003949); Germano 1992; Fursikov 1993 [DOI](https://doi.org/10.1070/IM1993v041n03ABEH002274) | These objects and hypotheses differ from the deterministic local heat state; they provide context, not the finite witness proof. |
 | V19 | The bounded search did not locate the present third heat-cumulant PDE or a universal minimality/no-go theorem for finite local heat-moment states. | `BOUNDED_NEGATIVE_FINDING` | [Primary-literature audit](r073v_primary_literature_audit.md) | Cannot support non-existence, novelty, priority, or first-authorship wording. |
 | V20 | Arbitrary-data three-dimensional global regularity and the Clay problem remain open. | `OPEN` | The derivative pressure row, zero-scale energy control, and critical strong-norm budget remain uncontrolled | `NOT CLAY`. |
-| V21 | The formal four-panel figure is reconstructed from the sealed two-path certificate and passes 147 checks over 158 source-data rows. | `FORMAL_FIGURE_SOURCE_SEALED` | `figures/r073v/fig-r073v-signed-third-order-interface/`, source commit `680fde5a24834b8e1c877f651eb20b119c671f49`, package commit `b413586aa7a7389f8943acb2469eb28cdbbf31f3` | The plotted curve is a deterministic rendering of a closed formula, not a fit or Navier--Stokes simulation; all finite conclusions remain coefficientwise or selected-coefficient. |
+| V21 | The formal four-panel figure passes 147 checks over 158 source-data rows: 57 certificate-derived rows are string-exact, while all non-`y` fields of the 101 renderer rows are exact and their closed-form `y` values satisfy fixed cross-`libm` absolute and ULP bounds. | `FORMAL_FIGURE_SOURCE_SEALED` | `figures/r073v/fig-r073v-signed-third-order-interface/`, source commit `f94915332ff405ae723711e8041acc2af07e896b`, package commit `ae679d5afa5f3cfacfe79c4d7b8a462baca2c195` | The plotted curve is a deterministic rendering of a closed formula, not a fit or Navier--Stokes simulation; all finite conclusions remain coefficientwise or selected-coefficient. |
 
 ## Current release-binding ledger
 
@@ -53,8 +53,8 @@ formalFiniteCertificate=SEALED
 formalFigurePackage=PASS
 formalFigureChecks=147
 formalFigureRows=158
-figureSourceCommit=680fde5a24834b8e1c877f651eb20b119c671f49
-figurePackageCommit=b413586aa7a7389f8943acb2469eb28cdbbf31f3
+figureSourceCommit=f94915332ff405ae723711e8041acc2af07e896b
+figurePackageCommit=ae679d5afa5f3cfacfe79c4d7b8a462baca2c195
 publicReleaseTransaction=PENDING
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=FALSE

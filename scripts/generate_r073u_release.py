@@ -64,7 +64,7 @@ FINITE_SOURCE_COMMIT = "6c79f23152116f5d420be6ff03653500ab02ef0e"
 FINITE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"
 FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"
-RELEASE_SOURCE_COMMIT = "e2bcc34ec757551ec341d31fe7d89cc269f8590a"
+RELEASE_SOURCE_COMMIT = "f215026a4e94ae3bb652d0e63ef580324f10ca0f"
 
 BINDING_ORDER = (
     ("R0.73T published baseline", RELEASE_BASELINE_COMMIT),
@@ -787,6 +787,10 @@ def build_recap(content: ReleaseContent) -> str:
     value = value.replace(
         "R0.61–R0.73U · 2026-08-31",
         f"R0.61–R0.73U · {content.date}",
+    )
+    value = value.replace(
+        "R0.61–R0.73U 回顾 · 2026-08-31",
+        f"R0.61–R0.73U 回顾 · {content.date}",
     )
     value = value.replace("R0.61 到 R0.73T", "R0.61 到 R0.73U")
     value = value.replace("R0.69P–R0.73T", "R0.69P–R0.73U")

@@ -63,8 +63,9 @@ ANALYTIC_SOURCE_COMMIT = "84e808dae473f6381cbf9df55a71f5fe81a1cfce"
 FINITE_SOURCE_COMMIT = "6c79f23152116f5d420be6ff03653500ab02ef0e"
 FINITE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"
+FIGURE_METADATA_RESEAL_COMMIT = "8f425d85a614b3d307715b4bf4f5daa5fff23693"
 FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"
-RELEASE_SOURCE_COMMIT = "f215026a4e94ae3bb652d0e63ef580324f10ca0f"
+RELEASE_SOURCE_COMMIT = "758f6d2593b9807be9d1e80e7b6267abde4d41ce"
 
 BINDING_ORDER = (
     ("R0.73T published baseline", RELEASE_BASELINE_COMMIT),
@@ -72,6 +73,7 @@ BINDING_ORDER = (
     ("R0.73U finite source", FINITE_SOURCE_COMMIT),
     ("R0.73U sealed finite package", FINITE_PACKAGE_COMMIT),
     ("R0.73U formal figure package", FIGURE_PACKAGE_COMMIT),
+    ("R0.73U figure metadata reseal", FIGURE_METADATA_RESEAL_COMMIT),
     ("R0.73U final reader content", FINAL_CONTENT_COMMIT),
     ("R0.73U release source", RELEASE_SOURCE_COMMIT),
 )
@@ -554,6 +556,23 @@ def validate_figure_package(certificate_manifest: dict) -> dict:
         or certificate_manifest.get("sourceCommit") != ANALYTIC_SOURCE_COMMIT
     ):
         raise RuntimeError("R0.73U figure is not source-bound and QA-confirmed")
+    source_git = manifest.get("git")
+    if (
+        manifest.get("release") != RELEASE
+        or manifest.get("status") != "formal"
+        or manifest.get("publicationStatus") != "staged"
+        or not isinstance(source_git, dict)
+        or source_git.get("sourceCommit") != ANALYTIC_SOURCE_COMMIT
+        or source_git.get("certificateCommit") != FINITE_PACKAGE_COMMIT
+        or source_git.get("figureMetadataResealCommit")
+        != FIGURE_METADATA_RESEAL_COMMIT
+        or source_git.get("dirtyAtCertifiedRun") is not False
+        or not isinstance(manifest.get("computation"), dict)
+        or manifest["computation"].get("kind") != "exact-formula-audit"
+        or not isinstance(manifest.get("compute"), dict)
+        or not isinstance(manifest.get("environment"), dict)
+    ):
+        raise RuntimeError("R0.73U figure global provenance contract drifted")
     if (
         config.get("schemaVersion") != "r073u-tensor-heat-hierarchy-figure-config-v1"
         or config.get("figureId") != FIGURE_ID
@@ -1353,6 +1372,9 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
         or contract.get("authoritativeAnalyticSourceCommit")
         != ANALYTIC_SOURCE_COMMIT
         or not isinstance(claim_boundary, dict)
+        or source_manifest.get("analyticalQuestion")
+        != contract.get("analyticalQuestion")
+        or source_manifest.get("supportedClaim") != contract.get("supportedClaim")
         or source_manifest.get("claimBoundary") != claim_boundary
         or results.get("claimBoundary") != claim_boundary
     ):
@@ -1386,35 +1408,18 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
         "release": RELEASE,
         "status": "formal",
         "publicationStatus": "published",
-        "analyticalQuestion": contract.get("analyticalQuestion"),
-        "supportedClaim": contract.get("supportedClaim"),
-        "createdAt": environment.get("createdUtc"),
+        "analyticalQuestion": source_manifest["analyticalQuestion"],
+        "supportedClaim": source_manifest["supportedClaim"],
+        "createdAt": source_manifest["createdAt"],
         "git": {
-            "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
-            "sourceCommit": ANALYTIC_SOURCE_COMMIT,
+            **source_git,
             "certificateSourceCommit": FINITE_SOURCE_COMMIT,
             "certificatePackageCommit": FINITE_PACKAGE_COMMIT,
             "figurePackageCommit": FIGURE_PACKAGE_COMMIT,
-            "dirtyAtCertifiedRun": False,
         },
-        "computation": {
-            "kind": "exact-analytic-and-finite-fourier-diagnostic",
-            "configuration": "config.json",
-            "precision": "exact finite coefficients plus deterministic analytic sampling",
-            "solver": "none",
-            "scientificWallTimeSeconds": progress_rows[-1]["elapsedSeconds"],
-            "monitoring": {
-                "enabled": True,
-                "progressLog": "progress.ndjson",
-                "resourceLog": "resource-log.ndjson",
-            },
-        },
-        "compute": execution,
-        "environment": {
-            "python": execution.get("python"),
-            "packagesLock": "requirements.txt",
-            "packages": environment.get("packages"),
-        },
+        "computation": source_manifest["computation"],
+        "compute": source_manifest["compute"],
+        "environment": source_manifest["environment"],
         "data": [
             record("source-data.csv", "r073u-tensor-heat-hierarchy-source-v1"),
             record("results.json", "r073u-tensor-heat-hierarchy-figure-results-v1"),
@@ -1422,6 +1427,7 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             record("progress.ndjson", "progress-ndjson-v1"),
             record("resource-log.ndjson", "resource-log-ndjson-v1"),
         ],
+        "sourceData": [],
         "figure": {"outputs": outputs},
         "caption": {"english": "caption.md"},
         "qa": {
@@ -1651,7 +1657,11 @@ def verify_release_inputs() -> ReleaseContent:
     verify_pinned_paths_exist(RELEASE_BASELINE_COMMIT, BASELINE_EXACT_PATHS, "R0.73T baseline")
     verify_commit_paths(ANALYTIC_SOURCE_COMMIT, ANALYTIC_EXACT_PATHS, "R0.73U analytic source")
     verify_commit_trees(FINITE_PACKAGE_COMMIT, FINITE_EXACT_ROOTS, "R0.73U finite package")
-    verify_commit_trees(FIGURE_PACKAGE_COMMIT, FIGURE_EXACT_ROOTS, "R0.73U formal figure package")
+    verify_commit_trees(
+        FIGURE_METADATA_RESEAL_COMMIT,
+        FIGURE_EXACT_ROOTS,
+        "R0.73U figure metadata reseal",
+    )
     verify_commit_paths(FINAL_CONTENT_COMMIT, FINAL_CONTENT_EXACT_PATHS, "R0.73U final content")
     verify_commit_paths(RELEASE_SOURCE_COMMIT, RELEASE_SOURCE_EXACT_PATHS, "R0.73U release source")
     certificate_manifest = validate_certificate_package()

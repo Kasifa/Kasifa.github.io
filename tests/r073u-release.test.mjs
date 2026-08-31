@@ -179,6 +179,8 @@ test("reviewed layers stay pinned across the release-source pre-seal/post-seal l
   assert.match(generator,
     /FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"/);
   assert.match(generator,
+    /FIGURE_METADATA_RESEAL_COMMIT = "8f425d85a614b3d307715b4bf4f5daa5fff23693"/);
+  assert.match(generator,
     /FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"/);
   const sourcePin = generator.match(
     /^RELEASE_SOURCE_COMMIT = (ZERO_COMMIT|"([0-9a-f]{40})")$/m,
@@ -215,7 +217,7 @@ test("the public transaction assembles the complete target in memory without app
     "recap=s[g.PUBLIC/'recap-r0-61-r0-73u.html'].decode()",
     "home=s[g.PUBLIC/'research-review.html'].decode()",
     "lit=s[g.PUBLIC/'literature-review.html'].decode()",
-    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'copyDefect':any('；；' in value or 'R0.73U · R0.73U |' in value for value in (note,recap,home,lit)) or bool(re.search(r'R0\\.73([N-T]) · R0\\.73\\1 \\|',recap)),'currentDates':'R0.61–R0.73U · 2026-09-01' in recap and 'R0.61–R0.73U 回顾 · 2026-09-01' in recap and '<strong>2026-09-01</strong>最近修订' in home and '综述 v1.61 · 2026-09-01' in home and '文献综述 v1.61 · 2026-09-01' in lit and '资料截止：2026-08-31' in lit,'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'paths':sorted(rel(p) for p in s)}))",
+    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'copyDefect':any('；；' in value or 'R0.73U · R0.73U |' in value for value in (note,recap,home,lit)) or bool(re.search(r'R0\\.73([N-T]) · R0\\.73\\1 \\|',recap)),'currentDates':'R0.61–R0.73U · 2026-09-01' in recap and 'R0.61–R0.73U 回顾 · 2026-09-01' in recap and '<strong>2026-09-01</strong>最近修订' in home and '综述 v1.61 · 2026-09-01' in home and '文献综述 v1.61 · 2026-09-01' in lit and '资料截止：2026-08-31' in lit,'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'figureMetadataCommit':f.get('git',{}).get('figureMetadataResealCommit'),'certificateCommit':f.get('git',{}).get('certificateCommit'),'publicationStatus':f.get('publicationStatus'),'sourcePublicationStatus':f.get('sourceSeal',{}).get('publicationStatus'),'dirtyScopeCount':len(f.get('git',{}).get('dirtyScope',[])),'globalKind':f.get('computation',{}).get('kind'),'globalCommand':bool(f.get('computation',{}).get('formalCommand')),'globalCpu':f.get('compute',{}).get('cpu'),'globalMemory':f.get('compute',{}).get('memoryGiB'),'paths':sorted(rel(p) for p in s)}))",
   ].join(";"));
   assert.equal(result.count, 62);
   assert.equal(result.core, true);
@@ -237,10 +239,48 @@ test("the public transaction assembles the complete target in memory without app
   assert.equal(result.figureId, "fig-r073u-tensor-heat-hierarchy");
   assert.equal(result.checks, 325);
   assert.equal(result.figureCommit, "6c20af03a21488fea3f060738084fa9048437984");
+  assert.equal(result.figureMetadataCommit, "8f425d85a614b3d307715b4bf4f5daa5fff23693");
+  assert.equal(result.certificateCommit, "044bfb3f7e5af98e2615f60747c9e5109ef12d7c");
+  assert.equal(result.publicationStatus, "published");
+  assert.equal(result.sourcePublicationStatus, "staged");
+  assert.equal(result.dirtyScopeCount, 25);
+  assert.equal(result.globalKind, "exact-formula-audit");
+  assert.equal(result.globalCommand, true);
+  assert.match(result.globalCpu, /18 logical CPUs/);
+  assert.equal(result.globalMemory, 36);
   assert.ok(result.paths.includes(
     "public/assets/r073u/fig-r073u-tensor-heat-hierarchy.pdf"));
   assert.ok(result.paths.includes(
     "public/figures/r073u/fig-r073u-tensor-heat-hierarchy/manifest.json"));
+});
+
+test("the staged formal figure archive passes the repository-wide validator", () => {
+  const result = pythonCodeJson(`
+import json, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "scripts")
+sys.path.insert(0, "research")
+import generate_r073u_release as g
+import validate_figure_package as validator
+content = g.load_release_content(g.ROOT)
+staged = g.build_staged(content)
+prefix = g.ROOT / g.FIGURE_ARCHIVE_RELATIVE
+with tempfile.TemporaryDirectory() as directory:
+    package = Path(directory) / "figure-package"
+    package.mkdir()
+    for path, payload in staged.items():
+        try:
+            relative = path.relative_to(prefix)
+        except ValueError:
+            continue
+        target = package / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(payload)
+    report = validator.validate(package)
+    print(json.dumps({"errors": report["errors"], "warnings": report["warnings"]}))
+`);
+  assert.deepEqual(result.errors, []);
+  assert.deepEqual(result.warnings, []);
 });
 
 test("the atomic transaction rejects real and dangling symlink ancestors", () => {

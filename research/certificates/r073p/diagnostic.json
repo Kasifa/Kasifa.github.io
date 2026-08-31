@@ -1,0 +1,117 @@
+{
+  "allChecksPass": true,
+  "checks": {
+    "claimBoundaryExplicitAndNegativeClaimsFalse": true,
+    "figureConfigurationExact": true,
+    "figureResultsCountsExact": true,
+    "figureResultsCutoffExact": true,
+    "figureSourceRowsByteIdentical": true,
+    "figureValidationFormulaBoundaryConsistent": true,
+    "panelAFormulaChecksPass": true,
+    "panelAFrequencyRangeExact": true,
+    "panelBOpenStripExact": true,
+    "panelBOpenStripSigns": true,
+    "panelBSobolevPowersExactByConstruction": true,
+    "panelCContinuousUpperBound": true,
+    "panelCCutoffIdentity": true,
+    "panelCCutoffStrictlyBeyondAllContinuousPeaks": true,
+    "panelCGlobalTailEnclosed": true,
+    "panelCMaximizerWitnessesExact": true
+  },
+  "claimBoundary": {
+    "clayProblemSolved": false,
+    "closedFormThresholdComparison": true,
+    "continuousLinearHeatUpperBound": true,
+    "finiteLatticeGlobalMaximumOnConfiguredTauGrid": true,
+    "finiteTimeSingularityEstablished": false,
+    "formulaDiagnosticOnly": true,
+    "globalRegularityEstablished": false,
+    "navierStokesSimulation": false,
+    "nonlinearEntryCertified": false,
+    "pdeNecessityEstablished": false,
+    "pureModeSobolevScaling": true
+  },
+  "createdUtc": "2026-08-31T05:09:21.401624+00:00",
+  "evidenceClass": "closed-form-formula-and-exact-finite-lattice-diagnostic",
+  "facts": {
+    "panelA": {
+      "maximumCriticalNormalizationError": 2.220446049250313e-16,
+      "maximumFrequency": 100000,
+      "maximumH3NormalizationError": 1.1102230246251565e-16,
+      "minimumFrequency": 1,
+      "rowCount": 198
+    },
+    "panelB": {
+      "criticalBoundary": 0.5,
+      "highBoundary": 3.0,
+      "interiorSignChecks": 249,
+      "openStrip": [
+        0.5,
+        3.0
+      ],
+      "rowCount": 351
+    },
+    "panelC": {
+      "allDiscreteValuesBelowContinuousBound": true,
+      "continuousPeakNormSquaredAtMinimumTau": 1500.0,
+      "cutoffNormSquared": 4096,
+      "latticeHalfWidth": 64,
+      "maximumDiscreteToContinuousRatio": 1.0,
+      "maximumMaximizerNormSquared": 1501,
+      "minimumDiscreteToContinuousRatio": 0.0035023537984809018,
+      "minimumMaximizerNormSquared": 1,
+      "representableRadiusCountThroughCutoff": 3414,
+      "rowCount": 241,
+      "tailStrictlyDecreasingBeyondCutoff": true,
+      "tauRange": [
+        0.001,
+        10.0
+      ]
+    }
+  },
+  "figureBindings": [
+    {
+      "bytes": 884,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/config.json",
+      "sha256": "d2ce92de2d32a34f417a45c7d1d0acd5eedd095303f039aeebdd86b44118ada4"
+    },
+    {
+      "bytes": 74765,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/source-data.csv",
+      "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a"
+    },
+    {
+      "bytes": 3278,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/results.json",
+      "sha256": "30b17c097d29367745773fafc705d98030208cff14073a26b2f96bb9191f8661"
+    },
+    {
+      "bytes": 3786,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/validation.json",
+      "sha256": "affc8f1d30b717bacaa02b8d1c9442aeba76375e2c84a409278a306fdf8570b0"
+    }
+  ],
+  "formulas": {
+    "continuousHeatUpperBound": "(3/(2 e tau))^(3/2)",
+    "criticalHhalfThreshold": "N^-1/2",
+    "directH3Threshold": "N^-3",
+    "discreteHeatMaximum": "max_{k in Z^3 minus {0}} |k|^3 exp(-tau |k|^2)",
+    "openGammaStrip": "1/2<gamma<3",
+    "pureModeH3Power": "3-gamma",
+    "pureModeHhalfPower": "1/2-gamma",
+    "pureModeL2Power": "-gamma"
+  },
+  "release": "R0.73P",
+  "schemaVersion": "r073p-formula-diagnostic-v1",
+  "sourceData": {
+    "byteIdenticalToFigureSourceData": true,
+    "bytes": 74765,
+    "heatLatticeRows": 241,
+    "path": "research/certificates/r073p/source-data.csv",
+    "rows": 790,
+    "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a",
+    "sobolevPowerRows": 351,
+    "thresholdRows": 198
+  },
+  "status": "passed"
+}

@@ -1,0 +1,137 @@
+{
+  "allChecksPass": true,
+  "checks": {
+    "claimBoundaryExact": true,
+    "cutoffGlobalEnclosurePassed": true,
+    "figureCrossChecksPassed": true,
+    "independentPassed": true,
+    "primaryPassed": true,
+    "producerCodeNotImportedOrCalled": true,
+    "sourceDataBound": true
+  },
+  "claimBoundary": {
+    "clayProblemSolved": false,
+    "closedFormThresholdComparison": true,
+    "continuousLinearHeatUpperBound": true,
+    "finiteLatticeGlobalMaximumOnConfiguredTauGrid": true,
+    "finiteTimeSingularityEstablished": false,
+    "formulaDiagnosticOnly": true,
+    "globalRegularityEstablished": false,
+    "navierStokesSimulation": false,
+    "nonlinearEntryCertified": false,
+    "pdeNecessityEstablished": false,
+    "pureModeSobolevScaling": true
+  },
+  "diagnosticOnly": true,
+  "evidenceClass": "closed-form-formula-and-exact-finite-lattice-diagnostic",
+  "exactStatements": {
+    "continuousUpperBound": "(3/(2 e tau))^(3/2)",
+    "cutoffEnclosure": "4096 > 3/(2*0.001) = 1500",
+    "latticeObjective": "max_{k in Z^3 minus {0}} |k|^3 exp(-tau |k|^2)",
+    "openGammaStrip": "1/2<gamma<3",
+    "pureModePowers": {
+      "H1/2": "1/2-gamma",
+      "H3": "3-gamma",
+      "L2": "-gamma"
+    },
+    "tauRange": [
+      0.001,
+      10.0
+    ],
+    "thresholdScaling": [
+      "N^-3",
+      "N^-1/2"
+    ]
+  },
+  "figureBindings": [
+    {
+      "bytes": 884,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/config.json",
+      "sha256": "d2ce92de2d32a34f417a45c7d1d0acd5eedd095303f039aeebdd86b44118ada4"
+    },
+    {
+      "bytes": 74765,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/source-data.csv",
+      "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a"
+    },
+    {
+      "bytes": 3278,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/results.json",
+      "sha256": "30b17c097d29367745773fafc705d98030208cff14073a26b2f96bb9191f8661"
+    },
+    {
+      "bytes": 3786,
+      "path": "research/figures/r073p/fig-r073p-critical-frequency-gate/validation.json",
+      "sha256": "affc8f1d30b717bacaa02b8d1c9442aeba76375e2c84a409278a306fdf8570b0"
+    }
+  ],
+  "formulas": {
+    "continuousHeatUpperBound": "(3/(2 e tau))^(3/2)",
+    "criticalHhalfThreshold": "N^-1/2",
+    "directH3Threshold": "N^-3",
+    "discreteHeatMaximum": "max_{k in Z^3 minus {0}} |k|^3 exp(-tau |k|^2)",
+    "openGammaStrip": "1/2<gamma<3",
+    "pureModeH3Power": "3-gamma",
+    "pureModeHhalfPower": "1/2-gamma",
+    "pureModeL2Power": "-gamma"
+  },
+  "independentClaimBoundary": {
+    "clayProblemSolved": false,
+    "closedFormThresholdComparison": true,
+    "continuousLinearHeatUpperBound": true,
+    "finiteLatticeGlobalMaximumOnConfiguredTauGrid": true,
+    "finiteTimeSingularityEstablished": false,
+    "formulaDiagnosticOnly": true,
+    "globalRegularityEstablished": false,
+    "navierStokesSimulation": false,
+    "nonlinearEntryCertified": false,
+    "pdeNecessityEstablished": false,
+    "pureModeSobolevScaling": true
+  },
+  "inputBindings": [
+    {
+      "bytes": 1353,
+      "path": "config.json",
+      "sha256": "7d8f90252e3da70b7f19778d71ce4173ae1d9be61abee45ec54db5ac1fcf20a5"
+    },
+    {
+      "bytes": 3982,
+      "path": "diagnostic.json",
+      "sha256": "889c52a580898cdfa51cf2774613e5a5f93ac2ea383b2d514444e7c260e608f0"
+    },
+    {
+      "bytes": 3051,
+      "path": "independent_validation.json",
+      "sha256": "ffa7d0912db10331ec2b611dc3e2265e5bb9fbf2d8fbcd567396199da24246fd"
+    },
+    {
+      "bytes": 74765,
+      "path": "source-data.csv",
+      "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a"
+    }
+  ],
+  "observations": {
+    "heatLatticeRows": 241,
+    "maximumDiscreteToContinuousRatio": 1.0,
+    "maximumMaximizerNormSquared": 1501,
+    "minimumDiscreteToContinuousRatio": 0.0035023537984809018,
+    "minimumMaximizerNormSquared": 1,
+    "representableRadiusCountThroughCutoff": 3414,
+    "sobolevPowerRows": 351,
+    "sourceRows": 790,
+    "thresholdRows": 198
+  },
+  "release": "R0.73P",
+  "schemaVersion": "r073p-formula-diagnostic-certificate-v1",
+  "sourceData": {
+    "byteIdenticalToFigureSourceData": true,
+    "bytes": 74765,
+    "heatLatticeRows": 241,
+    "path": "research/certificates/r073p/source-data.csv",
+    "rows": 790,
+    "sha256": "634b2aab69509aca09da0a29c43a6b0ab44e88602878a96b3231ff58df65211a",
+    "sobolevPowerRows": 351,
+    "thresholdRows": 198
+  },
+  "status": "passed"
+}

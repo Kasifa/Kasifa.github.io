@@ -613,7 +613,7 @@ def build_note(content: ReleaseContent) -> str:
     .table-wrap th,.table-wrap td{overflow-wrap:anywhere;word-break:normal;hyphens:auto}
     blockquote{max-width:760px;margin:24px 0;padding:2px 0 2px 20px;border-left:3px solid var(--gold);color:var(--muted)}
     blockquote p{max-width:none;margin:.4rem 0}
-    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}}
+    @media(max-width:520px){.table-wrap table{display:table;min-width:760px}article mjx-container[display="true"]{max-width:100%;overflow-x:auto;overflow-y:hidden}}
     @media print{.table-wrap{overflow:visible}.table-wrap table{display:table;min-width:0;font-size:6.7pt}.table-wrap th,.table-wrap td{padding:5px 4px}blockquote{break-inside:avoid;margin:14px 0}}
   </style>
 """

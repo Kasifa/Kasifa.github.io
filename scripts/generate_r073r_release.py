@@ -58,7 +58,7 @@ FINITE_PACKAGE_COMMIT = "6809fc92a2d1338fb77fb3bf5a72d16ed158d807"
 FIGURE_PACKAGE_COMMIT = "f3d8ac3b04aa122a44f112d554c4991ecfb6f36e"
 RELEASE_BASELINE_COMMIT = "66a523bcc49aadc4df81ab39542fc4dfdbac14d0"
 FINAL_CONTENT_COMMIT = "fb0ea0dfaf753de4c19b9155daf320b4fca8cb6a"
-RELEASE_SOURCE_COMMIT = "46f4e6c408fe527648674cc7152c096055863ab0"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73Q release baseline", RELEASE_BASELINE_COMMIT),
@@ -1116,10 +1116,20 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             "sha256": sha256(payload),
         })
 
-    formal = {
-        **json.loads(json.dumps(manifest)),
+    formal = json.loads(json.dumps(manifest))
+    computation = formal.get("computation")
+    if not isinstance(computation, dict):
+        raise RuntimeError("R0.73R formal figure computation metadata is missing")
+    computation["kind"] = "exact-formula-audit"
+    formal.update({
         "release": RELEASE,
         "publicationStatus": "published",
+        "git": {
+            "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+            "sourceCommit": ANALYTIC_SOURCE_COMMIT,
+            "certificateCommit": FINITE_PACKAGE_COMMIT,
+            "dirtyAtCertifiedRun": False,
+        },
         "publication": {
             "archiveDirectory": f"public/{FIGURE_ARCHIVE_RELATIVE}",
             "directory": "public/assets/r073r",
@@ -1132,7 +1142,7 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             "paths": actual,
             "expectedFileCount": len(actual),
         },
-    }
+    })
     payloads = {
         name: (
             json_bytes(formal)

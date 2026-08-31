@@ -1,0 +1,14 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073O_DEPS_DIR=/tmp/r073o-plot-deps
+
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -c 'from importlib.metadata import version; expected={"matplotlib":"3.10.6","numpy":"2.5.2","pillow":"12.3.0","pypdf":"6.10.0","pypdfium2":"5.13.0"}; actual={name:version(name) for name in expected}; assert actual == expected, (actual, expected)'
+
+env MPLCONFIGDIR=/tmp/r073o-figure-mpl OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 "$CODEX_PYTHON" -B research/figures/r073o/fig-r073o-kolmogorov-spectrum/plot.py --deps "$R073O_DEPS_DIR"
+
+# Inspect qa-final-size.png, qa-grayscale.png, and qa-pdf.png before confirming.
+"$CODEX_PYTHON" -B research/figures/r073o/fig-r073o-kolmogorov-spectrum/validate.py --deps "$R073O_DEPS_DIR" --confirm-visual-qa
+"$CODEX_PYTHON" -B research/figures/r073o/fig-r073o-kolmogorov-spectrum/validate.py --deps "$R073O_DEPS_DIR" --verify-only
+
+# Optional final source seal after the ten figure sources have an immutable commit:
+# R073O_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$CODEX_PYTHON" -B research/figures/r073o/fig-r073o-kolmogorov-spectrum/validate.py --deps "$R073O_DEPS_DIR" --confirm-visual-qa --source-commit "$R073O_SOURCE_COMMIT"

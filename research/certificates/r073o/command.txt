@@ -1,0 +1,20 @@
+CODEX_PYTHON=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+R073O_DEPS_DIR=/tmp/r073o-cert-deps
+
+# Prepare the exact local dependency directory once if it is absent:
+# "$CODEX_PYTHON" -m pip install --target "$R073O_DEPS_DIR" -r research/certificates/r073o/requirements.txt
+
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -c 'import numpy, scipy; assert numpy.__version__ == "2.3.5"; assert scipy.__version__ == "1.18.1"'
+
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073o/compute_spectrum_diagnostic.py --deps "$R073O_DEPS_DIR"
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073o/independent_validate.py --deps "$R073O_DEPS_DIR"
+"$CODEX_PYTHON" -B research/certificates/r073o/assemble_certificate.py
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073o/validate_certificate.py --deps "$R073O_DEPS_DIR"
+"$CODEX_PYTHON" -B research/certificates/r073o/seal_package.py
+env PYTHONPATH="$R073O_DEPS_DIR" "$CODEX_PYTHON" -B research/certificates/r073o/validate_certificate.py --deps "$R073O_DEPS_DIR" --verify-only
+"$CODEX_PYTHON" -B research/certificates/r073o/seal_package.py --verify-only
+
+# Final seal, only after the R0.73O certificate sources have an immutable commit:
+# R073O_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$CODEX_PYTHON" -B research/certificates/r073o/seal_package.py --source-commit "$R073O_SOURCE_COMMIT"
+# "$CODEX_PYTHON" -B research/certificates/r073o/seal_package.py --source-commit "$R073O_SOURCE_COMMIT" --verify-only

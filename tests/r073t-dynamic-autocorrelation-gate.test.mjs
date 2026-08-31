@@ -131,7 +131,10 @@ test("the formal figure binds 28 exact rows and 106 checks without strengthening
   const base = "research/figures/r073t/fig-r073t-dynamic-autocorrelation";
   const manifest = json(`${base}/manifest.json`);
   const contract = json(`${base}/contract.json`);
+  const environment = json(`${base}/environment.json`);
   const validation = json(`${base}/validation.json`);
+  const progress = read(`${base}/progress.ndjson`).trimEnd().split("\n").map(JSON.parse);
+  const resources = read(`${base}/resource-log.ndjson`).trimEnd().split("\n").map(JSON.parse);
   const rows = read(`${base}/source-data.csv`).trimEnd().split("\n");
   assert.equal(manifest.schemaVersion, "r073t-dynamic-autocorrelation-figure-manifest-v1");
   assert.equal(manifest.figureId, "fig-r073t-dynamic-autocorrelation");
@@ -147,6 +150,16 @@ test("the formal figure binds 28 exact rows and 106 checks without strengthening
   assert.equal(validation.allChecksPass, true);
   assert.equal(validation.checks.every((entry) => entry.pass), true);
   assert.equal(contract.compute.dgxUsed, false);
+  assert.equal(environment.metadataBackfill.schemaVersion,
+    "same-host-bracketed-runtime-metadata-v1");
+  assert.equal(environment.execution.operatingSystem, "macOS-26.6.2-arm64-arm-64bit");
+  assert.equal(environment.execution.logicalCpuCount, 18);
+  assert.equal(environment.execution.memoryGiB, 36);
+  assert.equal(environment.execution.scientificWallTimeSeconds, 0.7639225840102881);
+  assert.equal(progress.at(-1).elapsedSeconds,
+    environment.execution.scientificWallTimeSeconds);
+  assert.equal(resources.at(-1).elapsedSeconds,
+    environment.execution.scientificWallTimeSeconds);
   for (const key of [
     "clayProblemSolved",
     "fittedScalingLaw",

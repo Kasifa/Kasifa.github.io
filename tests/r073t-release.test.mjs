@@ -251,7 +251,7 @@ test("the generator pins reviewed layers and permits the normalized zero-to-full
   assert.match(generator, /RELEASE_BASELINE_COMMIT = "4323440923238d1ab04496f892ab9809b2d57532"/);
   assert.match(generator, /ANALYTIC_SOURCE_COMMIT = "05c55d21f060a17a0a4db04c12e89e7271b03d30"/);
   assert.match(generator, /FINITE_PACKAGE_COMMIT = "29d01625731d1c611f927c2852dbddf05967c6cb"/);
-  assert.match(generator, /FIGURE_PACKAGE_COMMIT = "29d01625731d1c611f927c2852dbddf05967c6cb"/);
+  assert.match(generator, /FIGURE_PACKAGE_COMMIT = "b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9"/);
   assert.match(generator, /FINAL_CONTENT_COMMIT = "[0-9a-f]{40}"/);
   assert.match(generator, /RELEASE_SOURCE_COMMIT = (?:ZERO_COMMIT|"[0-9a-f]{40}")/);
   assert.ok(generator.includes("__NORMALIZED_RELEASE_SOURCE_COMMIT__"));
@@ -286,6 +286,26 @@ test("the public transaction assembles the required targets in memory without ap
   assert.ok(result.paths.includes("public/assets/r073t/fig-r073t-dynamic-autocorrelation.pdf"));
   assert.ok(result.paths.includes(
     "public/figures/r073t/fig-r073t-dynamic-autocorrelation/manifest.json"));
+});
+
+test("the formal archive carries log-bound and transparently backfilled runtime metadata", () => {
+  const result = pythonCodeJson([
+    "import json,sys", "sys.path.insert(0,'scripts')", "import generate_r073t_release as g",
+    "s=g.build_staged(g.load_release_content(g.ROOT))",
+    "f=json.loads(s[g.ROOT/g.FIGURE_ARCHIVE_RELATIVE/'manifest.json'])",
+    "print(json.dumps({'wallTime':f['computation'].get('scientificWallTimeSeconds'),'runtimeProvenance':f['computation'].get('runtimeMetadataProvenance'),'operatingSystem':f['compute'].get('operatingSystem'),'cpu':f['compute'].get('cpu'),'memoryGiB':f['compute'].get('memoryGiB'),'metadataProvenance':f['compute'].get('metadataProvenance'),'figureMetadataResealCommit':f['git'].get('figureMetadataResealCommit')}))",
+  ].join(";"));
+  assert.equal(result.wallTime, 0.7639225840102881);
+  assert.equal(result.runtimeProvenance.captureMode, "same-host-bracketed-backfill");
+  assert.equal(result.runtimeProvenance.notOriginalRunEmission, true);
+  assert.deepEqual(result.runtimeProvenance.wallTimeCrossCheckedAgainst,
+    ["progress.ndjson", "resource-log.ndjson"]);
+  assert.equal(result.operatingSystem, "macOS-26.6.2-arm64-arm-64bit");
+  assert.equal(result.cpu, "arm64 / 18 logical CPUs");
+  assert.equal(result.memoryGiB, 36);
+  assert.equal(result.metadataProvenance, "same-host-bracketed-backfill");
+  assert.equal(result.figureMetadataResealCommit,
+    "b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9");
 });
 
 test("the HTML transaction rejects symlinked and dangling ancestor directories", () => {

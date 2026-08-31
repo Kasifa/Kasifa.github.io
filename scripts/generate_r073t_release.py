@@ -51,16 +51,17 @@ PUBLIC = ROOT / "public"
 ZERO_COMMIT = "0" * 40
 
 # Binding order is oldest to newest.  The analytic source commit is also the
-# explicit sourceCommit in both sealed scientific packages.  Certificate and
-# figure artifacts were committed atomically, so those two pins are equal.
-# The final reader content is already frozen.  Only this release-source pin
-# remains zero until these scripts and their downstream tests are committed.
+# explicit sourceCommit in both sealed scientific packages.  The finite package
+# retains its original seal; the figure package has a later metadata-only seal
+# that leaves every mathematical, raster, and vector artifact byte-identical.
+# The final reader content records that distinction.  The release-source pin
+# remains zero until this generator and its downstream tests are committed.
 RELEASE_BASELINE_COMMIT = "4323440923238d1ab04496f892ab9809b2d57532"
 ANALYTIC_SOURCE_COMMIT = "05c55d21f060a17a0a4db04c12e89e7271b03d30"
 FINITE_PACKAGE_COMMIT = "29d01625731d1c611f927c2852dbddf05967c6cb"
-FIGURE_PACKAGE_COMMIT = "29d01625731d1c611f927c2852dbddf05967c6cb"
-FINAL_CONTENT_COMMIT = "7ccd1c288f90e37ba5b07cc7d156b714a607b5a1"
-RELEASE_SOURCE_COMMIT = "e4b7d3d1b08085e9e8b7cc36e907b92b4ae80c4f"
+FIGURE_PACKAGE_COMMIT = "b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9"
+FINAL_CONTENT_COMMIT = "235ba93cfdba6734ad0991bd6cd6603f9c984a22"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73S published baseline", RELEASE_BASELINE_COMMIT),
@@ -203,6 +204,20 @@ def current_regular_bytes(relative: str) -> bytes:
 
 def strict_json_file(relative: str, label: str) -> dict:
     return strict_json_bytes(current_regular_bytes(relative), label)
+
+
+def strict_ndjson_file(relative: str, label: str) -> list[dict]:
+    try:
+        text = current_regular_bytes(relative).decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise RuntimeError(label + ": invalid UTF-8") from exc
+    lines = text.splitlines()
+    if not lines or any(not line.strip() for line in lines):
+        raise RuntimeError(label + ": expected nonempty NDJSON without blank rows")
+    return [
+        strict_json_bytes((line + "\n").encode("utf-8"), f"{label} row {index}")
+        for index, line in enumerate(lines, start=1)
+    ]
 
 
 def run_git(arguments: list[str], *, binary: bool = False) -> str | bytes:
@@ -1226,12 +1241,89 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
     environment = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/environment.json", "R0.73T figure environment"
     )
+    progress_rows = strict_ndjson_file(
+        f"{FIGURE_SOURCE_RELATIVE}/progress.ndjson", "R0.73T figure progress log"
+    )
+    resource_rows = strict_ndjson_file(
+        f"{FIGURE_SOURCE_RELATIVE}/resource-log.ndjson", "R0.73T figure resource log"
+    )
     contract = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/contract.json", "R0.73T figure contract"
     )
     results = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/results.json", "R0.73T figure results"
     )
+    execution = environment.get("execution")
+    backfill = environment.get("metadataBackfill")
+    if not isinstance(execution, dict) or not isinstance(backfill, dict):
+        raise RuntimeError("R0.73T figure runtime metadata is absent")
+    if len(progress_rows) != len(resource_rows) or len(progress_rows) != 5:
+        raise RuntimeError("R0.73T figure monitoring inventory drifted")
+    progress_terminal = progress_rows[-1]
+    resource_terminal = resource_rows[-1]
+    run_evidence = backfill.get("runEvidence")
+    wall_time = execution.get("scientificWallTimeSeconds")
+    if (
+        not isinstance(run_evidence, dict)
+        or progress_terminal.get("stage") != "complete"
+        or resource_terminal.get("stage") != "complete"
+        or not isinstance(wall_time, (int, float))
+        or isinstance(wall_time, bool)
+        or wall_time <= 0
+        or progress_terminal.get("elapsedSeconds") != wall_time
+        or resource_terminal.get("elapsedSeconds") != wall_time
+        or progress_terminal.get("timestampUtc") != resource_terminal.get("timestampUtc")
+        or run_evidence.get("completedUtc") != progress_terminal.get("timestampUtc")
+        or run_evidence.get("terminalElapsedSeconds") != wall_time
+        or run_evidence.get("progressLog") != "progress.ndjson"
+        or run_evidence.get("resourceLog") != "resource-log.ndjson"
+        or backfill.get("schemaVersion") != "same-host-bracketed-runtime-metadata-v1"
+    ):
+        raise RuntimeError("R0.73T figure wall-time evidence is inconsistent")
+    operating_system = execution.get("operatingSystem")
+    machine = execution.get("machine")
+    logical_cpu_count = execution.get("logicalCpuCount")
+    memory_gib = execution.get("memoryGiB")
+    host = execution.get("host")
+    post_probe = backfill.get("postRunProbe")
+    pre_evidence = backfill.get("preRunEvidence")
+    if (
+        not isinstance(operating_system, str) or not operating_system
+        or not isinstance(machine, str) or not machine
+        or not isinstance(logical_cpu_count, int) or isinstance(logical_cpu_count, bool)
+        or logical_cpu_count <= 0
+        or not isinstance(memory_gib, (int, float)) or isinstance(memory_gib, bool)
+        or memory_gib <= 0
+        or not isinstance(host, str) or not host
+        or not isinstance(post_probe, dict)
+        or not isinstance(pre_evidence, dict)
+        or any(row.get("executionHost") != host for row in resource_rows)
+        or backfill.get("capturedUtc") != post_probe.get("timestampUtc")
+        or post_probe.get("host") != host
+        or post_probe.get("operatingSystem") != operating_system
+        or post_probe.get("machine") != machine
+        or post_probe.get("logicalCpuCount") != logical_cpu_count
+        or post_probe.get("memoryBytes") != round(float(memory_gib) * 1024 ** 3)
+    ):
+        raise RuntimeError("R0.73T figure same-host runtime metadata is inconsistent")
+    pre_path = pre_evidence.get("path")
+    pre_hash = pre_evidence.get("sha256")
+    if pre_path != "research/figures/r073s/fig-r073s-quadratic-certificate/environment.json":
+        raise RuntimeError("R0.73T figure pre-run evidence path drifted")
+    pre_payload = git_bytes(RELEASE_BASELINE_COMMIT, pre_path)
+    pre_environment = strict_json_bytes(pre_payload, "R0.73T figure pre-run host evidence")
+    if (
+        not isinstance(pre_hash, str)
+        or sha256(pre_payload) != pre_hash
+        or pre_evidence.get("createdAt") != pre_environment.get("createdAt")
+        or pre_evidence.get("host") != host
+        or pre_environment.get("host") != host
+        or pre_environment.get("operatingSystem") != operating_system
+        or pre_environment.get("machine") != machine
+        or pre_environment.get("logicalCpuCount") != logical_cpu_count
+        or pre_environment.get("memoryGiB") != memory_gib
+    ):
+        raise RuntimeError("R0.73T figure pre-run host evidence is inconsistent")
 
     def record(name: str, schema: str) -> dict[str, object]:
         payload = current_regular_bytes(f"{FIGURE_SOURCE_RELATIVE}/{name}")
@@ -1275,6 +1367,7 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
             "sourceCommit": ANALYTIC_SOURCE_COMMIT,
             "certificateCommit": FINITE_PACKAGE_COMMIT,
+            "figureMetadataResealCommit": FIGURE_PACKAGE_COMMIT,
             "dirtyAtCertifiedRun": False,
         },
         "computation": {
@@ -1283,6 +1376,20 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             "precision": "exact integer/rational formulas with deterministic rendering",
             "solver": "closed-form finite audit",
             "formalCommand": "python plot.py --render-preseal; python validate.py --source-commit <commit> --verify-only",
+            "scientificWallTimeSeconds": wall_time,
+            "runtimeMetadataProvenance": {
+                "captureMode": "same-host-bracketed-backfill",
+                "notOriginalRunEmission": True,
+                "source": "environment.json",
+                "sourceFigureMetadataResealCommit": FIGURE_PACKAGE_COMMIT,
+                "preRunEvidence": {
+                    "path": pre_path,
+                    "commit": RELEASE_BASELINE_COMMIT,
+                    "sha256": pre_hash,
+                },
+                "postRunProbeTimestampUtc": post_probe.get("timestampUtc"),
+                "wallTimeCrossCheckedAgainst": ["progress.ndjson", "resource-log.ndjson"],
+            },
             "monitoring": {
                 "enabled": True,
                 "progressLog": "progress.ndjson",
@@ -1290,14 +1397,18 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
             },
         },
         "compute": {
-            "host": environment.get("execution", {}).get("host"),
-            "processes": environment.get("execution", {}).get("processes"),
-            "threadsPerProcess": environment.get("execution", {}).get("threadsPerProcess"),
-            "gpu": environment.get("execution", {}).get("gpu"),
-            "dgxUsed": environment.get("execution", {}).get("dgxUsed"),
+            "host": host,
+            "operatingSystem": operating_system,
+            "cpu": f"{machine} / {logical_cpu_count} logical CPUs",
+            "memoryGiB": memory_gib,
+            "processes": execution.get("processes"),
+            "threadsPerProcess": execution.get("threadsPerProcess"),
+            "gpu": execution.get("gpu"),
+            "dgxUsed": execution.get("dgxUsed"),
+            "metadataProvenance": "same-host-bracketed-backfill",
         },
         "environment": {
-            "python": environment.get("execution", {}).get("python"),
+            "python": execution.get("python"),
             "packagesLock": "requirements.txt",
             "packages": environment.get("packages"),
         },

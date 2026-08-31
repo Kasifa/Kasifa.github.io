@@ -405,6 +405,12 @@ def render(rows: list[dict[str, str]], config: dict[str, Any], output_dir: Path)
         "Subject": "Exact formulas and rigorous upper bounds; not a simulation",
     }
     fig.savefig(output_dir / "figure.svg", format="svg")
+    svg_path = output_dir / "figure.svg"
+    svg_text = svg_path.read_text(encoding="utf-8")
+    svg_path.write_text(
+        "\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n",
+        encoding="utf-8",
+    )
     fig.savefig(output_dir / "figure.pdf", format="pdf", metadata=metadata)
     fig.savefig(output_dir / "figure.png", format="png", dpi=int(config["pngDpi"]))
     plt.close(fig)

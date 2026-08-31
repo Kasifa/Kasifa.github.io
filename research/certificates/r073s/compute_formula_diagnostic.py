@@ -508,7 +508,7 @@ def main() -> None:
     records_digest = hashlib.sha256(compact(records)).hexdigest()
     source_path = HERE / "source-data.csv"
     with source_path.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=CSV_FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=CSV_FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

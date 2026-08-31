@@ -1,7 +1,7 @@
 # R0.73R | A shellwise phase certificate for the critical heat trace
 
-**Status:** analytic proof and literature collision audit passed; finite
-certificate, formal figure, and public seal are pending
+**Status:** analytic proof, literature collision audit, finite certificate,
+and formal figure passed; synchronized public rendering source is ready
 
 **Public title (zh):** R0.73R｜能谱看不见的相位：临界热流迹的壳层证书
 

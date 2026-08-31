@@ -1,0 +1,139 @@
+panel,series,record,component_i,component_j,parameter,x,y,exact_value,quantity_class,source_origin,formula,normalization
+A,tensor_state,local-product,,,s>=0,,,Theta_s=P_s(u tensor u),exact-identity,r073u-analytic-proof,Theta_s=P_s T,normalized periodic heat semigroup
+A,pressure_reconstruction,same-scale-pressure,i,j,s>=0,,,"p_s=R_i R_j Theta_s,ij",exact-identity,r073u-analytic-proof,"p_s=R_i R_j Theta_s,ij",mean-zero pressure
+A,cubic_tangent,odd-cubic-transport,i,j,s>=0,,,-P_s partial_k(u_k u_i u_j),exact-identity,r073u-analytic-proof,odd under u->-u,physical-time tangent
+A,pressure_velocity_tangent,odd-pressure-velocity,i,j,s>=0,,,-P_s(u_j partial_i p+u_i partial_j p),exact-identity,r073u-analytic-proof,odd under u->-u,physical-time tangent
+B,cubic_A,cubic_A-11,1,1,"h*=(1,2,0)",1,-2,-2,exact-finite-fourier,r073u-four-site-diagnostic,A=-i h_k Fourier(u_k u_i u_j),2x2 active block; normalized Fourier coefficient
+B,cubic_A,cubic_A-12,1,2,"h*=(1,2,0)",1,3,3,exact-finite-fourier,r073u-four-site-diagnostic,A=-i h_k Fourier(u_k u_i u_j),2x2 active block; normalized Fourier coefficient
+B,cubic_A,cubic_A-21,2,1,"h*=(1,2,0)",2,3,3,exact-finite-fourier,r073u-four-site-diagnostic,A=-i h_k Fourier(u_k u_i u_j),2x2 active block; normalized Fourier coefficient
+B,cubic_A,cubic_A-22,2,2,"h*=(1,2,0)",2,-4,-4,exact-finite-fourier,r073u-four-site-diagnostic,A=-i h_k Fourier(u_k u_i u_j),2x2 active block; normalized Fourier coefficient
+B,pressure_velocity_B,pressure_velocity_B-11,1,1,"h*=(1,2,0)",1,0,0,exact-finite-fourier,r073u-four-site-diagnostic,B=-Fourier(u_j partial_i p+u_i partial_j p),2x2 active block; normalized Fourier coefficient
+B,pressure_velocity_B,pressure_velocity_B-12,1,2,"h*=(1,2,0)",1,-2,-2,exact-finite-fourier,r073u-four-site-diagnostic,B=-Fourier(u_j partial_i p+u_i partial_j p),2x2 active block; normalized Fourier coefficient
+B,pressure_velocity_B,pressure_velocity_B-21,2,1,"h*=(1,2,0)",2,-2,-2,exact-finite-fourier,r073u-four-site-diagnostic,B=-Fourier(u_j partial_i p+u_i partial_j p),2x2 active block; normalized Fourier coefficient
+B,pressure_velocity_B,pressure_velocity_B-22,2,2,"h*=(1,2,0)",2,4,4,exact-finite-fourier,r073u-four-site-diagnostic,B=-Fourier(u_j partial_i p+u_i partial_j p),2x2 active block; normalized Fourier coefficient
+B,total_K,total_K-11,1,1,"h*=(1,2,0)",1,-2,-2,exact-finite-fourier,r073u-four-site-diagnostic,K=A+B,2x2 active block; normalized Fourier coefficient
+B,total_K,total_K-12,1,2,"h*=(1,2,0)",1,1,1,exact-finite-fourier,r073u-four-site-diagnostic,K=A+B,2x2 active block; normalized Fourier coefficient
+B,total_K,total_K-21,2,1,"h*=(1,2,0)",2,1,1,exact-finite-fourier,r073u-four-site-diagnostic,K=A+B,2x2 active block; normalized Fourier coefficient
+B,total_K,total_K-22,2,2,"h*=(1,2,0)",2,0,0,exact-finite-fourier,r073u-four-site-diagnostic,K=A+B,2x2 active block; normalized Fourier coefficient
+B,local_tensor_T,local_tensor_T-11,1,1,"h*=(1,2,0)",1,0,0,exact-finite-fourier,r073u-four-site-diagnostic,Fourier(u_i u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,local_tensor_T,local_tensor_T-12,1,2,"h*=(1,2,0)",1,0,0,exact-finite-fourier,r073u-four-site-diagnostic,Fourier(u_i u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,local_tensor_T,local_tensor_T-21,2,1,"h*=(1,2,0)",2,0,0,exact-finite-fourier,r073u-four-site-diagnostic,Fourier(u_i u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,local_tensor_T,local_tensor_T-22,2,2,"h*=(1,2,0)",2,0,0,exact-finite-fourier,r073u-four-site-diagnostic,Fourier(u_i u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,viscous_V,viscous_V-11,1,1,"h*=(1,2,0)",1,0,0,exact-finite-fourier,r073u-four-site-diagnostic,-2nu Fourier(partial_l u_i partial_l u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,viscous_V,viscous_V-12,1,2,"h*=(1,2,0)",1,0,0,exact-finite-fourier,r073u-four-site-diagnostic,-2nu Fourier(partial_l u_i partial_l u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,viscous_V,viscous_V-21,2,1,"h*=(1,2,0)",2,0,0,exact-finite-fourier,r073u-four-site-diagnostic,-2nu Fourier(partial_l u_i partial_l u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,viscous_V,viscous_V-22,2,2,"h*=(1,2,0)",2,0,0,exact-finite-fourier,r073u-four-site-diagnostic,-2nu Fourier(partial_l u_i partial_l u_j)(h*)=0,2x2 active block; normalized Fourier coefficient
+B,tangent_separation,matrix-coefficient,i,j,s>=0,,,2*exp(-5s)*K,exact-finite-fourier,r073u-four-site-diagnostic,partial_t Theta_s(u)-partial_t Theta_s(-u)=2 exp(-5s) K,"h*=(1,2,0)"
+B,tangent_separation_norm,frobenius,,,s>=0,,,2*sqrt(6)*exp(-5s),exact-finite-fourier,r073u-four-site-diagnostic,norm_F(2 exp(-5s) K),coefficient-level Frobenius norm
+C,universal_curve,analytic-sample-000,,,z=0.00,0,0,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-001,,,z=0.01,0.01,0.0099950012497916924,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-002,,,z=0.02,0.02,0.019960039973346663,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-003,,,z=0.03,0.029999999999999999,0.029865303294887114,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-004,,,z=0.04,0.040000000000000001,0.039681276593482424,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-005,,,z=0.05,0.050000000000000003,0.049378890024694075,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-006,,,z=0.06,0.059999999999999998,0.05892966194149804,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-007,,,z=0.07,0.070000000000000007,0.068305838224288526,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-008,,,z=0.08,0.080000000000000002,0.077480526566335806,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-009,,,z=0.09,0.089999999999999997,0.086427824806027162,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-010,,,z=0.10,0.10000000000000001,0.095122942450071413,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-011,,,z=0.11,0.11,0.10354231459202462,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-012,,,z=0.12,0.12,0.11166370749734468,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-013,,,z=0.13,0.13,0.11946631519898812,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-014,,,z=0.14,0.14000000000000001,0.12693084652554895,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-015,,,z=0.15,0.14999999999999999,0.13403960206627735,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-016,,,z=0.16,0.16,0.14077654066314302,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-017,,,z=0.17,0.17000000000000001,0.14712733510852816,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-018,,,z=0.18,0.17999999999999999,0.15307941681724194,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-019,,,z=0.19,0.19,0.15862200933241927,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-020,,,z=0.20,0.20000000000000001,0.16374615061559639,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-021,,,z=0.21,0.20999999999999999,0.16844470416094226,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-022,,,z=0.22,0.22,0.17271235906140248,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-023,,,z=0.23,0.23000000000000001,0.17654561923954173,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-024,,,z=0.24,0.23999999999999999,0.17994278213736989,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-025,,,z=0.25,0.25,0.18290390723666045,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-026,,,z=0.26,0.26000000000000001,0.18543077485355339,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-027,,,z=0.27,0.27000000000000002,0.18752683571796513,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-028,,,z=0.28,0.28000000000000003,0.18919715190897529,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-029,,,z=0.29,0.28999999999999998,0.19044832977147133,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-030,,,z=0.30,0.29999999999999999,0.19128844548653198,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-031,,,z=0.31,0.31,0.19172696400803432,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-032,,,z=0.32,0.32000000000000001,0.19177465211057229,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-033,,,z=0.33,0.33000000000000002,0.19144348631886082,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-034,,,z=0.34,0.34000000000000002,0.19074655650633798,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-035,,,z=0.35,0.35000000000000003,0.18969796596071548,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-036,,,z=0.36,0.35999999999999999,0.1883127287169003,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-037,,,z=0.37,0.37,0.18660666495321607,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-038,,,z=0.38,0.38,0.1845962952354763,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-039,,,z=0.39,0.39000000000000001,0.18229873437553665,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-040,,,z=0.40,0.40000000000000002,0.17973158564688863,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-041,,,z=0.41,0.41000000000000003,0.17691283607009697,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-042,,,z=0.42,0.41999999999999998,0.17386075344593513,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-043,,,z=0.43,0.42999999999999999,0.17059378577446455,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-044,,,z=0.44,0.44,0.16713046365460663,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-045,,,z=0.45,0.45000000000000001,0.16348930621155508,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-046,,,z=0.46,0.46000000000000002,0.15968873104927472,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-047,,,z=0.47,0.47000000000000003,0.15574696867294077,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-048,,,z=0.48,0.47999999999999998,0.15168198177209402,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-049,,,z=0.49,0.48999999999999999,0.1475113897001317,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-050,,,z=0.50,0.5,0.14325239843009505,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-051,,,z=0.51,0.51000000000000001,0.13892173621112927,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-052,,,z=0.52,0.52000000000000002,0.13453559509501284,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-053,,,z=0.53,0.53000000000000003,0.13010957844828805,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-054,,,z=0.54,0.54000000000000004,0.12565865451324837,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-055,,,z=0.55,0.55000000000000004,0.1211971160307786,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-056,,,z=0.56,0.56000000000000005,0.11673854589019365,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-057,,,z=0.57,0.57000000000000006,0.11229578872611924,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-058,,,z=0.58,0.57999999999999996,0.10788092834040709,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-059,,,z=0.59,0.58999999999999997,0.10350527078831853,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-060,,,z=0.60,0.59999999999999998,0.099179332932951933,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-061,,,z=0.61,0.60999999999999999,0.094912836240276119,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-062,,,z=0.62,0.62,0.090714705559273981,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-063,,,z=0.63,0.63,0.086593072607654725,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-064,,,z=0.64,0.64000000000000001,0.082555283863372408,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-065,,,z=0.65,0.65000000000000002,0.078607912545770819,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-066,,,z=0.66,0.66000000000000003,0.074756774357489036,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-067,,,z=0.67,0.67000000000000004,0.071006946649210784,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-068,,,z=0.68,0.68000000000000005,0.067362790663788155,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-069,,,z=0.69,0.69000000000000006,0.063827976514052823,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-070,,,z=0.70,0.70000000000000007,0.060405510549559324,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-071,,,z=0.71,0.70999999999999996,0.057097764771372073,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-072,,,z=0.72,0.71999999999999997,0.05390650796058704,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-073,,,z=0.73,0.72999999999999998,0.050832938195325666,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-074,,,z=0.74,0.73999999999999999,0.047877716442201249,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-075,,,z=0.75,0.75,0.045041000921480959,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-076,,,z=0.76,0.76000000000000001,0.042322481960085159,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-077,,,z=0.77,0.77000000000000002,0.039721417062919671,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-078,,,z=0.78,0.78000000000000003,0.03723666595056796,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-079,,,z=0.79,0.79000000000000004,0.0348667253298253,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-080,,,z=0.80,0.80000000000000004,0.032609763182692972,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-081,,,z=0.81,0.81000000000000005,0.030463652379031904,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-082,,,z=0.82,0.82000000000000006,0.028426003437882673,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-083,,,z=0.83,0.83000000000000007,0.026494196282283101,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-084,,,z=0.84,0.83999999999999997,0.02466541085206744,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-085,,,z=0.85,0.84999999999999998,0.022936656458432111,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-086,,,z=0.86,0.85999999999999999,0.021304799782850214,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-087,,,z=0.87,0.87,0.019766591441064626,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-088,,,z=0.88,0.88,0.018318691050269169,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-089,,,z=0.89,0.89000000000000001,0.016957690754092633,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-090,,,z=0.90,0.90000000000000002,0.015680137175544163,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-091,,,z=0.91,0.91000000000000003,0.014482551782593608,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-092,,,z=0.92,0.92000000000000004,0.013361449664490339,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-093,,,z=0.93,0.93000000000000005,0.012313356729234583,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-094,,,z=0.94,0.94000000000000006,0.011334825343782771,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-095,,,z=0.95,0.95000000000000007,0.010422448448584904,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-096,,,z=0.96,0.95999999999999996,0.0095728721869214068,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-097,,,z=0.97,0.96999999999999997,0.0087828070972463985,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-098,,,z=0.98,0.97999999999999998,0.0080490379233795987,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-099,,,z=0.99,0.98999999999999999,0.0073684321029560771,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-100,,,z=1.00,1,0.006737946999085467,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-101,,,z=1.01,1.01,0.0061546359437411897,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-102,,,z=1.02,1.02,0.0056156531640502768,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-103,,,z=1.03,1.03,0.0051182576644475848,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-104,,,z=1.04,1.04,0.0046598161386572842,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-105,,,z=1.05,1.05,0.0042378049857355361,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-106,,,z=1.06,1.0600000000000001,0.0038498115040192442,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-107,,,z=1.07,1.0700000000000001,0.0034935343358433769,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-108,,,z=1.08,1.0800000000000001,0.0031667832343817105,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-109,,,z=1.09,1.0900000000000001,0.0028674782219988608,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,universal_curve,analytic-sample-110,,,z=1.10,1.1000000000000001,0.0025936482071392541,z*exp(-5*z^2),analytic-function-sample,r073u-analytic-proof,f(z)=z exp(-5 z^2),sqrt(s)*D_L(s)/(2*sqrt(6))
+C,exact_peak,unique-positive-maximum,,,z*=1/sqrt(10),0.31622776601683794,0.19180183554164498,exp(-1/2)/sqrt(10),exact-analytic-value,r073u-analytic-proof,f'(z)=exp(-5z^2)(1-10z^2),f(z)=z exp(-5z^2)

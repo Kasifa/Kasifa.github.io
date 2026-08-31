@@ -126,3 +126,8 @@ test("translation and PDF binding preserve reviewed-local provenance and the Q b
   assert.ok(binding.includes("pdfBindingEstablishesNoveltyOrPriority: false"));
   assert.ok(binding.includes("clayProblemSolved: false"));
 });
+
+test("the Q note removes Chinese hard-wrap spaces from reader-facing prose", () => {
+  const note = read("public/notes/r0-73q.html");
+  assert.doesNotMatch(note, /[\u3400-\u9fff] [\u3400-\u9fff]/);
+});

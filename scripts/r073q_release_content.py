@@ -347,7 +347,13 @@ def _slug(title: str, used: set[str]) -> str:
     return value
 
 
+def _compact_cjk_spaces(value: str) -> str:
+    """Remove Markdown hard-wrap spaces only when both neighbours are CJK."""
+    return re.sub(r"(?<=[\u3400-\u9fff])\s+(?=[\u3400-\u9fff])", "", value)
+
+
 def _inline(value: str) -> str:
+    value = _compact_cjk_spaces(value)
     output: list[str] = []
     cursor = 0
     token = re.compile(
@@ -596,7 +602,7 @@ def _paragraph_under(report: str, heading_pattern: str, label: str) -> str:
     ]
     if not paragraphs:
         raise CanonicalSourceError("report source has no prose under " + label)
-    return paragraphs[0]
+    return _compact_cjk_spaces(paragraphs[0])
 
 
 def _machine_ledgers(combined: str) -> tuple[str, str, str]:
@@ -626,7 +632,7 @@ def _public_copy(report: str, heading: str) -> str:
     )
     if match is None:
         raise CanonicalSourceError("report source missing public copy: " + heading)
-    value = re.sub(r"\s+", " ", match.group(1)).strip()
+    value = _compact_cjk_spaces(re.sub(r"\s+", " ", match.group(1)).strip())
     if not value:
         raise CanonicalSourceError("empty public copy: " + heading)
     return value

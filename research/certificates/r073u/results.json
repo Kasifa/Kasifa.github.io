@@ -1,0 +1,1304 @@
+{
+  "arithmetic": "Python standard-library fractions.Fraction; exact Gaussian rationals; no floating point",
+  "audit": {
+    "checklistPath": "research/certificates/r073u/audit-checklist.json",
+    "checklistSha256": "f5c577db3bc8488a59fb1005291ad68530974c0869dc3c6b3bfd6139b3a73ad3",
+    "passed": 75,
+    "required": 75,
+    "results": [
+      {
+        "actual": "T_ij(h)=hat(u_i*u_j)(h)",
+        "expected": "T_ij(h)=hat(u_i*u_j)(h)",
+        "id": "definition-T",
+        "pass": true,
+        "path": "witness.definitions.T"
+      },
+      {
+        "actual": "F_ell,ij(h)=hat(u_ell*u_i*u_j)(h)",
+        "expected": "F_ell,ij(h)=hat(u_ell*u_i*u_j)(h)",
+        "id": "definition-F",
+        "pass": true,
+        "path": "witness.definitions.F"
+      },
+      {
+        "actual": "A_ij(h)=-i*h_ell*F_ell,ij(h)",
+        "expected": "A_ij(h)=-i*h_ell*F_ell,ij(h)",
+        "id": "definition-A",
+        "pass": true,
+        "path": "witness.definitions.A"
+      },
+      {
+        "actual": "B_ij(h)=-hat(u_j*partial_i(p)+u_i*partial_j(p))(h)",
+        "expected": "B_ij(h)=-hat(u_j*partial_i(p)+u_i*partial_j(p))(h)",
+        "id": "definition-B",
+        "pass": true,
+        "path": "witness.definitions.B"
+      },
+      {
+        "actual": "K=A+B, the nonlinear coefficient of partial_t(T)",
+        "expected": "K=A+B, the nonlinear coefficient of partial_t(T)",
+        "id": "definition-K",
+        "pass": true,
+        "path": "witness.definitions.K"
+      },
+      {
+        "actual": "V_ij(h)=hat(Delta(T_ij)-2*partial_ell(u_i)*partial_ell(u_j))(h)",
+        "expected": "V_ij(h)=hat(Delta(T_ij)-2*partial_ell(u_i)*partial_ell(u_j))(h)",
+        "id": "definition-V",
+        "pass": true,
+        "path": "witness.definitions.V"
+      },
+      {
+        "actual": 4,
+        "expected": 4,
+        "id": "four-site-velocity-count",
+        "pass": true,
+        "path": "witness.field.siteCount"
+      },
+      {
+        "actual": 2,
+        "expected": 2,
+        "id": "two-conjugate-pairs",
+        "pass": true,
+        "path": "witness.field.positivePairCount"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "velocity-real-conjugacy",
+        "pass": true,
+        "path": "witness.field.realConjugacy"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "velocity-mean-zero",
+        "pass": true,
+        "path": "witness.field.meanZero"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "velocity-divergence-free",
+        "pass": true,
+        "path": "witness.field.divergenceFree"
+      },
+      {
+        "actual": {
+          "-1,-1,0": [
+            "i",
+            "-i",
+            "0"
+          ],
+          "-1,0,0": [
+            "0",
+            "i",
+            "0"
+          ],
+          "1,0,0": [
+            "0",
+            "-i",
+            "0"
+          ],
+          "1,1,0": [
+            "-i",
+            "i",
+            "0"
+          ]
+        },
+        "expected": {
+          "-1,-1,0": [
+            "i",
+            "-i",
+            "0"
+          ],
+          "-1,0,0": [
+            "0",
+            "i",
+            "0"
+          ],
+          "1,0,0": [
+            "0",
+            "-i",
+            "0"
+          ],
+          "1,1,0": [
+            "-i",
+            "i",
+            "0"
+          ]
+        },
+        "id": "velocity-complete-coefficients",
+        "pass": true,
+        "path": "witness.field.coefficients"
+      },
+      {
+        "actual": [
+          "2*sin(x+y)",
+          "2*sin(x)-2*sin(x+y)",
+          "0"
+        ],
+        "expected": [
+          "2*sin(x+y)",
+          "2*sin(x)-2*sin(x+y)",
+          "0"
+        ],
+        "id": "physical-field",
+        "pass": true,
+        "path": "witness.field.physical"
+      },
+      {
+        "actual": [
+          1,
+          2,
+          0
+        ],
+        "expected": [
+          1,
+          2,
+          0
+        ],
+        "id": "target-mode",
+        "pass": true,
+        "path": "witness.target.mode"
+      },
+      {
+        "actual": 5,
+        "expected": 5,
+        "id": "target-norm-squared",
+        "pass": true,
+        "path": "witness.target.normSquared"
+      },
+      {
+        "actual": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "target-T-zero",
+        "pass": true,
+        "path": "witness.target.T"
+      },
+      {
+        "actual": {
+          "1": [
+            [
+              "0",
+              "-i",
+              "0"
+            ],
+            [
+              "-i",
+              "2*i",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ],
+          "2": [
+            [
+              "-i",
+              "2*i",
+              "0"
+            ],
+            [
+              "2*i",
+              "-3*i",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ],
+          "3": [
+            [
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        "expected": {
+          "1": [
+            [
+              "0",
+              "-i",
+              "0"
+            ],
+            [
+              "-i",
+              "2*i",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ],
+          "2": [
+            [
+              "-i",
+              "2*i",
+              "0"
+            ],
+            [
+              "2*i",
+              "-3*i",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ],
+          "3": [
+            [
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        "id": "target-F-complete",
+        "pass": true,
+        "path": "witness.target.F"
+      },
+      {
+        "actual": [
+          [
+            "-2",
+            "3",
+            "0"
+          ],
+          [
+            "3",
+            "-4",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "-2",
+            "3",
+            "0"
+          ],
+          [
+            "3",
+            "-4",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "target-A",
+        "pass": true,
+        "path": "witness.target.A"
+      },
+      {
+        "actual": [
+          [
+            "0",
+            "-2",
+            "0"
+          ],
+          [
+            "-2",
+            "4",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "0",
+            "-2",
+            "0"
+          ],
+          [
+            "-2",
+            "4",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "target-B",
+        "pass": true,
+        "path": "witness.target.B"
+      },
+      {
+        "actual": [
+          [
+            "-2",
+            "1",
+            "0"
+          ],
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "-2",
+            "1",
+            "0"
+          ],
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "target-K",
+        "pass": true,
+        "path": "witness.target.K"
+      },
+      {
+        "actual": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "target-V-zero",
+        "pass": true,
+        "path": "witness.target.V"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-K-nonzero",
+        "pass": true,
+        "path": "witness.target.KNonzero"
+      },
+      {
+        "actual": "6",
+        "expected": "6",
+        "id": "target-K-Frobenius-squared",
+        "pass": true,
+        "path": "witness.target.KSquaredFrobenius"
+      },
+      {
+        "actual": 4,
+        "expected": 4,
+        "id": "pressure-site-count",
+        "pass": true,
+        "path": "witness.pressure.siteCount"
+      },
+      {
+        "actual": {
+          "-2,-1,0": "2/5",
+          "0,-1,0": "2",
+          "0,1,0": "2",
+          "2,1,0": "2/5"
+        },
+        "expected": {
+          "-2,-1,0": "2/5",
+          "0,-1,0": "2",
+          "0,1,0": "2",
+          "2,1,0": "2/5"
+        },
+        "id": "pressure-complete-coefficients",
+        "pass": true,
+        "path": "witness.pressure.coefficients"
+      },
+      {
+        "actual": "p_hat(h)=-(h_i*h_j/|h|^2)*T_ij(h), h!=0; p_hat(0)=0",
+        "expected": "p_hat(h)=-(h_i*h_j/|h|^2)*T_ij(h), h!=0; p_hat(0)=0",
+        "id": "pressure-formula",
+        "pass": true,
+        "path": "witness.pressure.formula"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "independent-pressure-paths",
+        "pass": true,
+        "path": "witness.independentPaths.fullPressureMapAgreement"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "independent-nonlinear-paths-full-map",
+        "pass": true,
+        "path": "witness.independentPaths.fullNonlinearMapAgreement"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "independent-viscous-paths-full-map",
+        "pass": true,
+        "path": "witness.independentPaths.fullViscousMapAgreement"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "independent-target-K",
+        "pass": true,
+        "path": "witness.independentPaths.targetKAgreement"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "independent-target-V",
+        "pass": true,
+        "path": "witness.independentPaths.targetVAgreement"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "all-relevant-matrices-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.allRelevantCoefficientMatricesSymmetric"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-T-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.targetT"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-A-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.targetA"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-B-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.targetB"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-K-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.targetK"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "target-V-symmetric",
+        "pass": true,
+        "path": "witness.symmetry.targetV"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-T-even",
+        "pass": true,
+        "path": "witness.parity.TEven"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-pressure-even",
+        "pass": true,
+        "path": "witness.parity.pressureEven"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-F-odd",
+        "pass": true,
+        "path": "witness.parity.FOddAtTarget"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-A-odd",
+        "pass": true,
+        "path": "witness.parity.AOdd"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-B-odd",
+        "pass": true,
+        "path": "witness.parity.BOdd"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-K-odd",
+        "pass": true,
+        "path": "witness.parity.KOdd"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "parity-V-even",
+        "pass": true,
+        "path": "witness.parity.VEven"
+      },
+      {
+        "actual": {
+          "pressureEven": true,
+          "tauEven": true,
+          "thetaEven": true
+        },
+        "expected": {
+          "pressureEven": true,
+          "tauEven": true,
+          "thetaEven": true
+        },
+        "id": "quadratic-heat-state-even",
+        "pass": true,
+        "path": "witness.parity.quadraticState"
+      },
+      {
+        "actual": [
+          [
+            "-4",
+            "2",
+            "0"
+          ],
+          [
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "expected": [
+          [
+            "-4",
+            "2",
+            "0"
+          ],
+          [
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "id": "unfiltered-tangent-difference",
+        "pass": true,
+        "path": "witness.parity.targetUnfilteredTangentDifference"
+      },
+      {
+        "actual": 5,
+        "expected": 5,
+        "id": "heat-target-group-index",
+        "pass": true,
+        "path": "witness.heatGroups.targetNormSquared"
+      },
+      {
+        "actual": {
+          "5": [
+            [
+              "-4",
+              "2",
+              "0"
+            ],
+            [
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        "expected": {
+          "5": [
+            [
+              "-4",
+              "2",
+              "0"
+            ],
+            [
+              "2",
+              "0",
+              "0"
+            ],
+            [
+              "0",
+              "0",
+              "0"
+            ]
+          ]
+        },
+        "id": "heat-target-coefficient-group",
+        "pass": true,
+        "path": "witness.heatGroups.targetCoefficientGroup"
+      },
+      {
+        "actual": "2*exp(-5*s)*K",
+        "expected": "2*exp(-5*s)*K",
+        "id": "heat-target-difference-formula",
+        "pass": true,
+        "path": "witness.heatGroups.targetDifferenceFormula"
+      },
+      {
+        "actual": "2*sqrt(6)*exp(-5*s)",
+        "expected": "2*sqrt(6)*exp(-5*s)",
+        "id": "heat-target-difference-Frobenius",
+        "pass": true,
+        "path": "witness.heatGroups.targetDifferenceFrobenius"
+      },
+      {
+        "actual": "24",
+        "expected": "24",
+        "id": "heat-target-difference-Frobenius-squared",
+        "pass": true,
+        "path": "witness.heatGroups.targetDifferenceFrobeniusSquaredCoefficient"
+      },
+      {
+        "actual": {
+          "1": "176/25",
+          "10": "36/25",
+          "13": "76/25",
+          "2": "276/25",
+          "5": "12"
+        },
+        "expected": {
+          "1": "176/25",
+          "10": "36/25",
+          "13": "76/25",
+          "2": "276/25",
+          "5": "12"
+        },
+        "id": "complete-base-K-Frobenius-groups",
+        "pass": true,
+        "path": "witness.heatGroups.completeBaseKSquaredFrobeniusByNormSquared"
+      },
+      {
+        "actual": "sum_m S_m*exp(-2*s*m)",
+        "expected": "sum_m S_m*exp(-2*s*m)",
+        "id": "complete-base-K-Frobenius-formula",
+        "pass": true,
+        "path": "witness.heatGroups.completeBaseKSquaredFormula"
+      },
+      {
+        "actual": {
+          "1": "704/25",
+          "10": "144/25",
+          "13": "304/25",
+          "2": "1104/25",
+          "5": "48"
+        },
+        "expected": {
+          "1": "704/25",
+          "10": "144/25",
+          "13": "304/25",
+          "2": "1104/25",
+          "5": "48"
+        },
+        "id": "complete-heat-Frobenius-groups",
+        "pass": true,
+        "path": "witness.heatGroups.completeSignedDifferenceSquaredFrobeniusByNormSquared"
+      },
+      {
+        "actual": "sum_m 4*S_m*exp(-2*s*m)",
+        "expected": "sum_m 4*S_m*exp(-2*s*m)",
+        "id": "complete-heat-Frobenius-formula",
+        "pass": true,
+        "path": "witness.heatGroups.completeSignedDifferenceSquaredFormula"
+      },
+      {
+        "actual": "4",
+        "expected": "4",
+        "id": "signed-difference-squared-base-multiplier",
+        "pass": true,
+        "path": "witness.heatGroups.signedDifferenceSquaredMultiplierFromBase"
+      },
+      {
+        "actual": "u_L(x)=u(L*x), integer L>=1",
+        "expected": "u_L(x)=u(L*x), integer L>=1",
+        "id": "dilation-field",
+        "pass": true,
+        "path": "witness.dilation.field"
+      },
+      {
+        "actual": "h_L=(L,2*L,0)",
+        "expected": "h_L=(L,2*L,0)",
+        "id": "dilation-target-mode",
+        "pass": true,
+        "path": "witness.dilation.mode"
+      },
+      {
+        "actual": "L",
+        "expected": "L",
+        "id": "dilation-derivative-factor",
+        "pass": true,
+        "path": "witness.dilation.signedDerivativeFactor"
+      },
+      {
+        "actual": "2*L*exp(-5*s*L^2)*K",
+        "expected": "2*L*exp(-5*s*L^2)*K",
+        "id": "dilation-heat-filtered-difference",
+        "pass": true,
+        "path": "witness.dilation.heatFilteredDifference"
+      },
+      {
+        "actual": "2*sqrt(6)*L*exp(-5*s*L^2)",
+        "expected": "2*sqrt(6)*L*exp(-5*s*L^2)",
+        "id": "dilation-heat-filtered-Frobenius",
+        "pass": true,
+        "path": "witness.dilation.heatFilteredDifferenceFrobenius"
+      },
+      {
+        "actual": "s=theta*L^(-2), theta>0",
+        "expected": "s=theta*L^(-2), theta>0",
+        "id": "parabolic-slice",
+        "pass": true,
+        "path": "witness.dilation.parabolicSlice"
+      },
+      {
+        "actual": "2*sqrt(6)*L*exp(-5*theta)",
+        "expected": "2*sqrt(6)*L*exp(-5*theta)",
+        "id": "parabolic-Frobenius",
+        "pass": true,
+        "path": "witness.dilation.parabolicFrobenius"
+      },
+      {
+        "actual": "2*sqrt(6*theta)*exp(-5*theta)*s^(-1/2)",
+        "expected": "2*sqrt(6*theta)*exp(-5*theta)*s^(-1/2)",
+        "id": "parabolic-equivalent-in-s",
+        "pass": true,
+        "path": "witness.dilation.parabolicEquivalentInS"
+      },
+      {
+        "actual": "2*sqrt(6*theta)*exp(-5*theta)",
+        "expected": "2*sqrt(6*theta)*exp(-5*theta)",
+        "id": "parabolic-normalized-profile",
+        "pass": true,
+        "path": "witness.parabolicProfile.normalizedProfile"
+      },
+      {
+        "actual": "1/10",
+        "expected": "1/10",
+        "id": "parabolic-profile-maximizer",
+        "pass": true,
+        "path": "witness.parabolicProfile.maximumTheta"
+      },
+      {
+        "actual": "2*sqrt(3/5)*exp(-1/2)",
+        "expected": "2*sqrt(3/5)*exp(-1/2)",
+        "id": "parabolic-profile-maximum",
+        "pass": true,
+        "path": "witness.parabolicProfile.maximumValue"
+      },
+      {
+        "actual": "s^(-1/2)",
+        "expected": "s^(-1/2)",
+        "id": "parabolic-one-derivative-cost",
+        "pass": true,
+        "path": "witness.parabolicProfile.oneDerivativeCost"
+      },
+      {
+        "actual": "for support {+k,-k}, incompressibility k.a=0 makes every multiplier u_hat(q).r vanish",
+        "expected": "for support {+k,-k}, incompressibility k.a=0 makes every multiplier u_hat(q).r vanish",
+        "id": "single-pair-structural-argument",
+        "pass": true,
+        "path": "witness.minimalityBoundary.singlePairArgument"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "single-pair-advection-zero",
+        "pass": true,
+        "path": "witness.minimalityBoundary.singlePairAdvectiveZero"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "single-pair-pressure-zero",
+        "pass": true,
+        "path": "witness.minimalityBoundary.singlePairPressureZero"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "single-pair-tensor-tangent-zero",
+        "pass": true,
+        "path": "witness.minimalityBoundary.singlePairNonlinearTensorTangentZero"
+      },
+      {
+        "actual": "a nonzero real mean-zero witness needs at least two conjugate pairs, hence four Fourier sites",
+        "expected": "a nonzero real mean-zero witness needs at least two conjugate pairs, hence four Fourier sites",
+        "id": "minimal-support-lower-boundary",
+        "pass": true,
+        "path": "witness.minimalityBoundary.certifiedLowerBoundary"
+      },
+      {
+        "actual": true,
+        "expected": true,
+        "id": "witness-attains-support-boundary",
+        "pass": true,
+        "path": "witness.minimalityBoundary.witnessAttainsBoundary"
+      },
+      {
+        "actual": "support-cardinality boundary for this parity mechanism; not minimality among all closures or all no-go arguments",
+        "expected": "support-cardinality boundary for this parity mechanism; not minimality among all closures or all no-go arguments",
+        "id": "minimality-claim-scope",
+        "pass": true,
+        "path": "witness.minimalityBoundary.claimScope"
+      }
+    ]
+  },
+  "certificate": "R0.73U exact four-site tensor-heat parity witness",
+  "claimBoundary": "Exact finite Fourier coefficients, parity, and coefficient-level heat/dilation formulas only; no generic PDE integration, singularity, global regularity, or Clay conclusion.",
+  "normalization": {
+    "domain": "T^3=[0,2*pi]^3",
+    "fourier": "f_hat(k)=integral f(x)*exp(-i*k.x) dmu",
+    "measure": "normalized Haar probability measure",
+    "navierStokes": "partial_t(u)+(u.grad)u+grad(p)=nu*Delta(u); div(u)=0",
+    "pressureGauge": "p_hat(0)=0"
+  },
+  "producer": {
+    "dgx": "not used",
+    "gpu": "not used",
+    "network": "not used",
+    "ordinaryTranslationPath": "LOCAL_DIRECT_NO_DGX",
+    "scriptPath": "research/certificates/r073u/compute_exact_certificate.py",
+    "scriptSha256": "ae653906d8363eb71a726d4b8fdb276d13dbae2b543c8a7198332cdf104318b8",
+    "standardLibraryOnly": true
+  },
+  "schemaVersion": 1,
+  "witness": {
+    "definitions": {
+      "A": "A_ij(h)=-i*h_ell*F_ell,ij(h)",
+      "B": "B_ij(h)=-hat(u_j*partial_i(p)+u_i*partial_j(p))(h)",
+      "F": "F_ell,ij(h)=hat(u_ell*u_i*u_j)(h)",
+      "K": "K=A+B, the nonlinear coefficient of partial_t(T)",
+      "T": "T_ij(h)=hat(u_i*u_j)(h)",
+      "V": "V_ij(h)=hat(Delta(T_ij)-2*partial_ell(u_i)*partial_ell(u_j))(h)"
+    },
+    "dilation": {
+      "field": "u_L(x)=u(L*x), integer L>=1",
+      "heatFilteredDifference": "2*L*exp(-5*s*L^2)*K",
+      "heatFilteredDifferenceFrobenius": "2*sqrt(6)*L*exp(-5*s*L^2)",
+      "mode": "h_L=(L,2*L,0)",
+      "parabolicEquivalentInS": "2*sqrt(6*theta)*exp(-5*theta)*s^(-1/2)",
+      "parabolicFrobenius": "2*sqrt(6)*L*exp(-5*theta)",
+      "parabolicSlice": "s=theta*L^(-2), theta>0",
+      "signedDerivativeFactor": "L"
+    },
+    "field": {
+      "coefficients": {
+        "-1,-1,0": [
+          "i",
+          "-i",
+          "0"
+        ],
+        "-1,0,0": [
+          "0",
+          "i",
+          "0"
+        ],
+        "1,0,0": [
+          "0",
+          "-i",
+          "0"
+        ],
+        "1,1,0": [
+          "-i",
+          "i",
+          "0"
+        ]
+      },
+      "divergenceFree": true,
+      "meanZero": true,
+      "physical": [
+        "2*sin(x+y)",
+        "2*sin(x)-2*sin(x+y)",
+        "0"
+      ],
+      "positivePairCount": 2,
+      "realConjugacy": true,
+      "siteCount": 4
+    },
+    "heatGroups": {
+      "completeBaseKSquaredFormula": "sum_m S_m*exp(-2*s*m)",
+      "completeBaseKSquaredFrobeniusByNormSquared": {
+        "1": "176/25",
+        "10": "36/25",
+        "13": "76/25",
+        "2": "276/25",
+        "5": "12"
+      },
+      "completeSignedDifferenceSquaredFormula": "sum_m 4*S_m*exp(-2*s*m)",
+      "completeSignedDifferenceSquaredFrobeniusByNormSquared": {
+        "1": "704/25",
+        "10": "144/25",
+        "13": "304/25",
+        "2": "1104/25",
+        "5": "48"
+      },
+      "signedDifferenceSquaredMultiplierFromBase": "4",
+      "targetCoefficientGroup": {
+        "5": [
+          [
+            "-4",
+            "2",
+            "0"
+          ],
+          [
+            "2",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      },
+      "targetDifferenceFormula": "2*exp(-5*s)*K",
+      "targetDifferenceFrobenius": "2*sqrt(6)*exp(-5*s)",
+      "targetDifferenceFrobeniusSquaredCoefficient": "24",
+      "targetNormSquared": 5
+    },
+    "independentPaths": {
+      "fullNonlinearMapAgreement": true,
+      "fullPressureMapAgreement": true,
+      "fullViscousMapAgreement": true,
+      "pathA": "product law via T,F,A,B,G,V",
+      "pathB": "velocity NSE tangent followed by exact product convolution",
+      "targetKAgreement": true,
+      "targetVAgreement": true
+    },
+    "minimalityBoundary": {
+      "certifiedLowerBoundary": "a nonzero real mean-zero witness needs at least two conjugate pairs, hence four Fourier sites",
+      "claimScope": "support-cardinality boundary for this parity mechanism; not minimality among all closures or all no-go arguments",
+      "singlePairAdvectiveZero": true,
+      "singlePairArgument": "for support {+k,-k}, incompressibility k.a=0 makes every multiplier u_hat(q).r vanish",
+      "singlePairNonlinearTensorTangentZero": true,
+      "singlePairPressureZero": true,
+      "witnessAttainsBoundary": true
+    },
+    "parabolicProfile": {
+      "maximumTheta": "1/10",
+      "maximumValue": "2*sqrt(3/5)*exp(-1/2)",
+      "normalizedProfile": "2*sqrt(6*theta)*exp(-5*theta)",
+      "oneDerivativeCost": "s^(-1/2)"
+    },
+    "parity": {
+      "AOdd": true,
+      "BOdd": true,
+      "FOddAtTarget": true,
+      "KOdd": true,
+      "TEven": true,
+      "VEven": true,
+      "pressureEven": true,
+      "quadraticState": {
+        "pressureEven": true,
+        "tauEven": true,
+        "thetaEven": true
+      },
+      "targetUnfilteredTangentDifference": [
+        [
+          "-4",
+          "2",
+          "0"
+        ],
+        [
+          "2",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    "pressure": {
+      "coefficients": {
+        "-2,-1,0": "2/5",
+        "0,-1,0": "2",
+        "0,1,0": "2",
+        "2,1,0": "2/5"
+      },
+      "formula": "p_hat(h)=-(h_i*h_j/|h|^2)*T_ij(h), h!=0; p_hat(0)=0",
+      "siteCount": 4
+    },
+    "symmetry": {
+      "allRelevantCoefficientMatricesSymmetric": true,
+      "targetA": true,
+      "targetB": true,
+      "targetK": true,
+      "targetT": true,
+      "targetV": true
+    },
+    "target": {
+      "A": [
+        [
+          "-2",
+          "3",
+          "0"
+        ],
+        [
+          "3",
+          "-4",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "B": [
+        [
+          "0",
+          "-2",
+          "0"
+        ],
+        [
+          "-2",
+          "4",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "F": {
+        "1": [
+          [
+            "0",
+            "-i",
+            "0"
+          ],
+          [
+            "-i",
+            "2*i",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "2": [
+          [
+            "-i",
+            "2*i",
+            "0"
+          ],
+          [
+            "2*i",
+            "-3*i",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ],
+        "3": [
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "0"
+          ]
+        ]
+      },
+      "K": [
+        [
+          "-2",
+          "1",
+          "0"
+        ],
+        [
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "KNonzero": true,
+      "KSquaredFrobenius": "6",
+      "T": [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "V": [
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "mode": [
+        1,
+        2,
+        0
+      ],
+      "normSquared": 5
+    }
+  }
+}

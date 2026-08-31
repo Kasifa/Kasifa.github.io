@@ -31,7 +31,9 @@ const scaffoldFiles = [
   "scripts/generate_r073o_release.py",
   "scripts/add-r073o-translations.mjs",
   "scripts/bind-r073o-pdfs.mjs",
+  "tests/r073o-global-orbit-forced-contrast-gate.test.mjs",
   "tests/r073o-release.test.mjs",
+  "tests/site-route-current-boundary.test.mjs",
 ];
 const coreSources = [
   "research/r073o_problem_freeze.md",
@@ -192,7 +194,10 @@ test("materialized R0.73O publication has exact accounting and boundaries", asyn
     backlog: release.legacyFormalFigureBacklogCount, next: release.nextRelease},
   {version: "1.55", latest: "r073o", notes: 191, recap: 131,
     published: 93, sealed: 69, backlog: 24, next: "r073p"});
+  assert.equal(release.latestReleaseGate,
+    "tests/r073o-global-orbit-forced-contrast-gate.test.mjs");
   assert.equal(release.latestReleasePublicationTest, "tests/r073o-release.test.mjs");
+  assert.notEqual(release.latestReleaseGate, release.latestReleasePublicationTest);
 
   const pages = Object.fromEntries(await Promise.all(Object.entries(targetPages)
     .map(async ([key, relative]) => [key, await text(relative)])));
@@ -246,6 +251,27 @@ test("materialized R0.73O publication has exact accounting and boundaries", asyn
     "public/assets/r073o/fig-r073o-kolmogorov-spectrum.svg",
     "public/assets/r073o/fig-r073o-kolmogorov-spectrum.png"])
     assert.equal(await exists(relative), true, relative);
+  const formalFigure = await json(
+    "figures/r073o/fig-r073o-kolmogorov-spectrum/manifest.json");
+  assert.equal(formalFigure.status, "formal");
+  assert.equal(formalFigure.analyticalQuestion.length > 40, true);
+  assert.equal(formalFigure.computation.precision.includes("binary64"), true);
+  assert.equal(formalFigure.computation.solver.includes("scipy.linalg.eig(A,B)"), true);
+  assert.equal(formalFigure.environment.packagesLock, "requirements.txt");
+  assert.equal(formalFigure.data.length, 7);
+  assert.deepEqual(formalFigure.figure.outputs.map((row) => row.path),
+    ["figure.pdf", "figure.svg", "figure.png"]);
+  assert.equal(formalFigure.figure.outputs[2].dpi, 600);
+  assert.equal(formalFigure.caption.english, "caption.md");
+  assert.equal(formalFigure.qa.status, "passed");
+  assert.equal(formalFigure.qa.dataCrossChecked, true);
+  const independentInput = formalFigure.sourceData.find((row) =>
+    row.path.endsWith("/independent_validation.json"));
+  assert.ok(independentInput);
+  assert.deepEqual({bytes: independentInput.bytes, sha256: independentInput.sha256}, {
+    bytes: 12555,
+    sha256: "8f19b1042ac8e263f2525be6a60ade7d02ae6c6a2765ed8a02784bb98bd00c56",
+  });
   for (const suffix of ["pdf", "svg", "png"]) {
     const sealed = await bytes(`research/figures/r073o/fig-r073o-kolmogorov-spectrum/figure.${suffix}`);
     const published = await bytes(`public/assets/r073o/fig-r073o-kolmogorov-spectrum.${suffix}`);

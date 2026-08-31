@@ -55,10 +55,10 @@ ZERO_COMMIT = "0" * 40
 # set receives its own immutable commit.
 ANALYTIC_SOURCE_COMMIT = "f139c5e707ffdfe855ca114faac669d12e431e59"
 FINITE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
-FIGURE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
+FIGURE_PACKAGE_COMMIT = "6f24e989746056c3ca9d470ddd36b812d4d5c4d1"
 RELEASE_BASELINE_COMMIT = "d6d12469c266d16f08834320e2cae869af0aa479"
-FINAL_CONTENT_COMMIT = "007e4b17570c6659b20b1c929918fff74a2bc0c8"
-RELEASE_SOURCE_COMMIT = "d6f464f06a059c341aef92145c931753b89a28f5"
+FINAL_CONTENT_COMMIT = "7e929355458f7eb3f70d675f3fa245f071c59b52"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73N release baseline", RELEASE_BASELINE_COMMIT),
@@ -101,7 +101,9 @@ RELEASE_SOURCE_EXACT_PATHS = (
     "scripts/generate_r073o_release.py",
     "scripts/add-r073o-translations.mjs",
     "scripts/bind-r073o-pdfs.mjs",
+    "tests/r073o-global-orbit-forced-contrast-gate.test.mjs",
     "tests/r073o-release.test.mjs",
+    "tests/site-route-current-boundary.test.mjs",
 )
 
 CORE_TARGET_OUTPUTS = (
@@ -906,7 +908,7 @@ def build_manifest_outputs(content: ReleaseContent) -> dict[Path, bytes]:
             raise RuntimeError("R0.73N release-manifest baseline drift: " + key)
     release.update({
         **R073O_TARGET,
-        "latestReleaseGate": "tests/r073o-release.test.mjs",
+        "latestReleaseGate": "tests/r073o-global-orbit-forced-contrast-gate.test.mjs",
         "latestReleasePublicationTest": "tests/r073o-release.test.mjs",
     })
 
@@ -1008,6 +1010,9 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
     environment = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/environment.json", "R0.73O figure environment"
     )
+    config = strict_json_file(
+        f"{FIGURE_SOURCE_RELATIVE}/config.json", "R0.73O figure config"
+    )
     actual = sorted(
         path.name for path in source.iterdir()
         if path.is_file() and not path.is_symlink()
@@ -1026,16 +1031,71 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
     validation = strict_json_file(
         f"{FIGURE_SOURCE_RELATIVE}/validation.json", "R0.73O figure validation"
     )
+    upstream_inputs = environment.get("inputs")
+    if not isinstance(upstream_inputs, list) or len(upstream_inputs) != 4:
+        raise RuntimeError("R0.73O figure environment must bind four upstream inputs")
+    upstream_by_path: dict[str, dict[str, object]] = {}
+    for index, row in enumerate(upstream_inputs):
+        if not isinstance(row, dict) or not isinstance(row.get("path"), str):
+            raise RuntimeError(f"R0.73O figure environment input {index} is invalid")
+        relative = row["path"]
+        payload = current_regular_bytes(relative)
+        actual_row: dict[str, object] = {
+            "path": relative,
+            "bytes": len(payload),
+            "sha256": sha256(payload),
+        }
+        if row != actual_row or relative in upstream_by_path:
+            raise RuntimeError(
+                "R0.73O figure environment input does not match the sealed file: "
+                + relative
+            )
+        upstream_by_path[relative] = actual_row
+    validation_inputs = validation.get("facts", {}).get("upstreamInputs")
+    if not isinstance(validation_inputs, list) or len(validation_inputs) != 3:
+        raise RuntimeError("R0.73O figure validation must bind three upstream inputs")
+    for row in validation_inputs:
+        if not isinstance(row, dict) or upstream_by_path.get(str(row.get("path"))) != row:
+            raise RuntimeError("R0.73O figure validation/environment inputs disagree")
+
+    data_specs = (
+        ("source-data.csv", "131 finite spectral sweep and convergence rows"),
+        ("results.json", "finite result summary, output hashes, and claim boundary"),
+        ("validation.json", "data, provenance, export, vector, and visual-QA checks"),
+        ("environment.json", "runtime versions, resource use, and upstream bindings"),
+        ("progress.ndjson", "timestamped deterministic render progress"),
+        ("resource-log.ndjson", "process, memory, and GPU monitoring"),
+        ("chart-contract-and-source-data.md", "analytical question and evidence boundary"),
+    )
+    data_records: list[dict[str, object]] = []
+    for name, schema in data_specs:
+        payload = current_regular_bytes(f"{FIGURE_SOURCE_RELATIVE}/{name}")
+        data_records.append({
+            "path": name,
+            "bytes": len(payload),
+            "sha256": sha256(payload),
+            "schema": schema,
+        })
     outputs = results.get("outputs", [])
     output_rows = {
         str(row.get("path")): row for row in outputs if isinstance(row, dict)
     }
     public_assets: list[dict[str, object]] = []
+    formal_outputs: list[dict[str, object]] = []
     for suffix in ("pdf", "svg", "png"):
         name = f"figure.{suffix}"
         row = output_rows.get(name)
         if not isinstance(row, dict):
             raise RuntimeError("R0.73O formal archive lost " + name)
+        output_record: dict[str, object] = {
+            "path": name,
+            "bytes": row.get("bytes"),
+            "sha256": row.get("sha256"),
+        }
+        if suffix == "png":
+            output_record["dpi"] = config.get("pngDpi")
+            output_record["pixels"] = validation.get("facts", {}).get("pngPixels")
+        formal_outputs.append(output_record)
         public_assets.append({
             "path": f"public/assets/r073o/{FIGURE_ID}.{suffix}",
             "bytes": row.get("bytes"),
@@ -1045,12 +1105,16 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
     computation = {
         "kind": "data-analysis",
         "configuration": "config.json",
+        "precision": "IEEE-754 binary64 finite spectral data and deterministic binary64 plotting",
+        "solver": "numpy.linalg.eig finite Fourier matrix; independently cross-checked by scipy.linalg.eig(A,B) after row equilibration",
         "formalCommand": "commands recorded in command.txt",
         "wallTimeSeconds": environment.get("compute", {}).get("wallTimeSeconds"),
     }
     qa = {
+        "status": validation.get("status"),
         "visualQaConfirmed": validation.get("visualQaConfirmed"),
         "allChecksPass": validation.get("allChecksPass"),
+        "dataCrossChecked": validation.get("allChecksPass") is True,
         "labelsAndLegendsInspected": True,
         "scalesAndUnitsInspected": True,
         "finalSizeInspected": True,
@@ -1064,10 +1128,28 @@ def formal_figure_payloads(source: Path) -> dict[str, bytes]:
         "status": "formal",
         "publicationStatus": "published",
         "createdAt": environment.get("createdUtc"),
+        "analyticalQuestion": contract.get("analyticalQuestion"),
         "supportedClaim": contract.get("supportedTakeaway"),
         "claimBoundary": contract.get("claimBoundary"),
-        "sourceData": environment.get("inputs"),
+        "sourceData": upstream_inputs,
         "computation": computation,
+        "environment": {
+            "python": environment.get("python"),
+            "packagesLock": "requirements.txt",
+            "matplotlib": environment.get("matplotlib"),
+            "numpy": environment.get("numpy"),
+            "pillow": environment.get("pillow"),
+            "pypdfium2": environment.get("pypdfium2"),
+        },
+        "data": data_records,
+        "figure": {
+            "widthMillimetres": config.get("widthMillimetres"),
+            "heightMillimetres": config.get("heightMillimetres"),
+            "pngDpi": config.get("pngDpi"),
+            "layout": contract.get("chartFamily"),
+            "outputs": formal_outputs,
+        },
+        "caption": {"english": "caption.md"},
         "qa": qa,
         "packageInventory": {
             "paths": actual,

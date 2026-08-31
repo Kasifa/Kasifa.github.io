@@ -241,7 +241,7 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
       `/assets/r073n/fig-r073n-finite-strain-bracket.${suffix}`,
     ));
   }
-  assert.ok((await text("public/note-retro.css")).includes("prefers-color-scheme: dark"));
+  assert.match(await text("public/note-retro.css"), /prefers-color-scheme\s*:\s*dark/);
 
   for (const token of [
     "<strong>130</strong><span>R0.61–R0.73N 研究节点</span>",

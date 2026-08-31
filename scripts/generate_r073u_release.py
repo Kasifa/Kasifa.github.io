@@ -33,6 +33,7 @@ from r073u_release_content import (
     FIGURE_ARCHIVE_RELATIVE,
     FIGURE_ID,
     FIGURE_SOURCE_RELATIVE,
+    INITIAL_TIME_BOUNDARY_ZH,
     OPEN_LEDGER,
     PLANNED_AUDIT_PATHS,
     R073T_BASELINE,
@@ -63,7 +64,7 @@ FINITE_SOURCE_COMMIT = "6c79f23152116f5d420be6ff03653500ab02ef0e"
 FINITE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"
 FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"
-RELEASE_SOURCE_COMMIT = ZERO_COMMIT
+RELEASE_SOURCE_COMMIT = "c1e8ed1d30f68f4fc3ff9621fb846e7195f40656"
 
 BINDING_ORDER = (
     ("R0.73T published baseline", RELEASE_BASELINE_COMMIT),
@@ -837,7 +838,8 @@ def build_recap(content: ReleaseContent) -> str:
         '<li>R0.73U 把状态提升为完整局部乘积张量：heat covariance 逐点半正定并满足精确'
         '尺度方程，完整张量在同一尺度重建压力。条件临界 stress 行已经假设 '
         '<code>L_t^4L_x^6</code>；能量行在零尺度损失 <code>s^(-1/2)</code>。四站点符号对'
-        '只排除偶二次状态的单值带符号切向量，不排除 signed augmentation。NOT CLAY。</li>'
+        '只排除偶二次状态的单值带符号切向量，不排除 signed augmentation。'
+        f'{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</li>'
     )
     value = replace_once(
         value,
@@ -872,7 +874,8 @@ def build_recap(content: ReleaseContent) -> str:
         f'<p>{html.escape(FINITE_LEDGER)}</p>'
         f'<p>{html.escape(OPEN_LEDGER)}</p>'
         '<p>R0.73U 的有限公式证书和正式附图只复算精确稀疏 Fourier 恒等式与见证族；'
-        '它们不积分一般非线性解，不运行 Navier--Stokes 仿真。NOT CLAY。</p>'
+        '它们不积分一般非线性解，不运行 Navier--Stokes 仿真。'
+        f'{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</p>'
         '</section>',
         "recap exact boundary",
     )
@@ -1099,7 +1102,8 @@ def update_literature(content: ReleaseContent) -> str:
         f'<p>{html.escape(FINITE_LEDGER)}</p>'
         f'<p>{html.escape(OPEN_LEDGER)}</p>'
         '<p>一手来源承担经典碰撞；本地解析证明只承担 heat covariance、临界 stress 推论与精确 no-go；'
-        '有限包只复算公式诊断，不认证连续 PDE。NOT CLAY。</p></div>'
+        '有限包只复算公式诊断，不认证连续 PDE。'
+        f'{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</p></div>'
     )
     value = replace_once(
         value, '          <ol class="criteria">',

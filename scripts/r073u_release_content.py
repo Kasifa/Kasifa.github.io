@@ -113,6 +113,10 @@ OPEN_LEDGER = (
     "finiteGeneralTensorClosure=OPEN；zeroScaleEnergyCriticalStressControl=OPEN；"
     "arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN"
 )
+INITIAL_TIME_BOUNDARY_ZH = (
+    r"这里比较的是 \(u\) 和 \(-u\) 作为同一时刻初值时的 Navier--Stokes "
+    "切向量，不是轨道对称性。"
+)
 
 
 class CanonicalSourceError(RuntimeError):
@@ -197,7 +201,8 @@ class ReleaseContent:
             f'<p>{html.escape(OPEN_LEDGER)}</p>'
             '<p>完整局部二次张量可以在同一 heat 尺度重建瞬时压力，但这不闭合其'
             '物理时间动力学。一致临界 stress 行已经假设经典强范数，而能量行在'
-            '<code>s↓0</code> 时损失 <code>s^(-1/2)</code>。NOT CLAY。</p></section>'
+            '<code>s↓0</code> 时损失 <code>s^(-1/2)</code>。'
+            f'{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</p></section>'
         )
         reproduction = (
             '        <section id="reproduce"><div class="section-no">R / Reproduction</div>'
@@ -224,6 +229,7 @@ class ReleaseContent:
             f'            <p>{html.escape(self.home_zh)}</p>\n'
             f'            <p><strong>闭合边界：</strong>{html.escape(CLOSED_LEDGER)}</p>\n'
             f'            <p><strong>开放边界：</strong>{html.escape(OPEN_LEDGER)}。NOT CLAY。</p>\n'
+            f'            <p>{html.escape(INITIAL_TIME_BOUNDARY_ZH)}</p>\n'
             '            <p><a href="/notes/r0-73u.html"><strong>阅读 R0.73U 研究笔记 →</strong></a>'
             '<br><a href="/notes/r0-73u.pdf">下载同步 PDF</a> · '
             f'<a href="/assets/r073u/{FIGURE_ID}.pdf">下载期刊附图 PDF</a> · '
@@ -241,7 +247,7 @@ class ReleaseContent:
             f'            <article class="phase"><h3>R0.73U · {html.escape(self.release_title_en)}</h3>'
             f'<p>{html.escape(self.recap_zh)}</p>'
             f'<p>{html.escape(CLOSED_LEDGER)}。{html.escape(FINITE_LEDGER)}。'
-            f'{html.escape(OPEN_LEDGER)}。NOT CLAY。</p>'
+            f'{html.escape(OPEN_LEDGER)}。{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</p>'
             '<div class="links"><a href="/notes/r0-73u.html">R0.73U</a>'
             f'<a href="/assets/r073u/{FIGURE_ID}.pdf">R0.73U 附图</a>'
             '<a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/'
@@ -252,7 +258,7 @@ class ReleaseContent:
     def literature_update(self) -> str:
         return (
             '<span class="route-r073u-deck-update">'
-            + html.escape(self.literature_zh)
+            + _inline(self.literature_zh)
             + ' heat covariance / pressure reconstruction=EXACT OR CLASSICAL；'
             'quadratic-state non-autonomy=CLOSED_EXACT；general tensor closure=OPEN；'
             '不承担新颖性或优先权声明。</span>'
@@ -298,6 +304,7 @@ def _slug(title: str, used: set[str]) -> str:
 
 
 def _inline(value: str) -> str:
+    value = value.replace(r"K\'arm\'an", "Kármán").replace(r'H\"older', "Hölder")
     output: list[str] = []
     cursor = 0
     tokens = re.compile(r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)|`([^`\n]+)`")
@@ -322,7 +329,9 @@ def _markdown_blocks(markdown: str) -> str:
     bullets: list[str] = []
     ordered: list[str] = []
     math: list[str] = []
+    code: list[str] = []
     in_math = False
+    in_code = False
 
     def flush() -> None:
         if paragraph:
@@ -337,6 +346,24 @@ def _markdown_blocks(markdown: str) -> str:
 
     for row in rows + [""]:
         stripped = row.strip()
+        if stripped.startswith("```"):
+            if in_math:
+                raise CanonicalSourceError("code fence opened inside display math")
+            if in_code:
+                output.append(
+                    '<pre class="report-ledger"><code>'
+                    + html.escape("\n".join(code), quote=False)
+                    + "</code></pre>"
+                )
+                code = []
+                in_code = False
+            else:
+                flush()
+                in_code = True
+            continue
+        if in_code:
+            code.append(row)
+            continue
         if stripped == r"\[":
             flush()
             in_math = True
@@ -370,6 +397,8 @@ def _markdown_blocks(markdown: str) -> str:
         paragraph.append(row)
     if in_math:
         raise CanonicalSourceError("unterminated display math in R0.73U report")
+    if in_code:
+        raise CanonicalSourceError("unterminated code fence in R0.73U report")
     return "".join(output)
 
 
@@ -400,13 +429,31 @@ def _section_body(report: str, number: int) -> str:
 
 
 def _prose_paragraphs(section: str) -> list[str]:
-    without_math = re.sub(r"(?ms)\\\[.*?\\\]", " ", section)
+    without_fences = re.sub(r"(?ms)^```[^\n]*\n.*?^```[ \t]*$", " ", section)
+    without_math = re.sub(r"(?ms)\\\[.*?\\\]", " ", without_fences)
     values: list[str] = []
     for block in re.split(r"\n\s*\n", without_math):
         stripped = block.strip()
         if not stripped or stripped.startswith(("- ", "#", "1. ", "2. ", "3. ")):
             continue
         values.append(_compact(stripped))
+    return values
+
+
+def _ordered_items(section: str) -> list[str]:
+    values: list[str] = []
+    current: list[str] = []
+    for row in section.splitlines() + [""]:
+        match = re.match(r"^\d+\.\s+(.+)$", row)
+        if match:
+            if current:
+                values.append(_compact(" ".join(current)))
+            current = [match.group(1).strip()]
+        elif current and row.startswith((" ", "\t")) and row.strip():
+            current.append(row.strip())
+        elif current:
+            values.append(_compact(" ".join(current)))
+            current = []
     return values
 
 
@@ -511,9 +558,15 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
             raise CanonicalSourceError("report source violates public voice: " + phrase)
 
     section_one = _prose_paragraphs(_section_body(report, 1))
-    section_nine = _prose_paragraphs(_section_body(report, 9))
+    section_nine_source = _section_body(report, 9)
+    section_nine = _prose_paragraphs(section_nine_source)
+    next_items = _ordered_items(section_nine_source)
     if len(section_one) < 2 or len(section_nine) < 4:
         raise CanonicalSourceError("R0.73U report lacks required public-copy paragraphs")
+    if len(next_items) != 2:
+        raise CanonicalSourceError(
+            f"R0.73U report must contain two next-step items, found {len(next_items)}"
+        )
 
     certificate_ready, certificate_failure = _certificate_final(source_root)
     figure_ready, figure_failure = _figure_final(source_root)
@@ -549,7 +602,7 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
         recap_zh=section_nine[3],
         literature_zh=section_nine[0],
         next_release=NEXT_RELEASE,
-        next_gate_zh=section_nine[-2] + "；" + section_nine[-1],
+        next_gate_zh="；".join(next_items),
         sections=_sections(report),
         source_sha256=source_sha256,
         publication_ready=not failures,

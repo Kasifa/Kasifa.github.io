@@ -42,7 +42,7 @@ arbitraryThreeDimensionalGlobalRegularity=OPEN
 | 强迫 Kolmogorov 平衡态 | forced Kolmogorov equilibrium | \(U_*=(30.12\sin10y,0,0)\) solves the equation with \(f_*=(3012\sin10y,0,0)\). This is a different equation from the unforced Clay problem. |
 | 非衰减平衡态 | nondecaying equilibrium | The equilibrium is constant in time and has infinite accumulated strain; this alone is not turbulence or singularity evidence. |
 | 平面不变子空间 | invariant planar subspace | \(z\)-independent velocities with zero third component. The nonlinear flow and the selected witnesses stay in this subspace. |
-| 正实平面特征值 | positive real planar eigenvalue | At least one eigenvalue of the infinite-dimensional two-dimensional linearized operator has positive real part. No essentially three-dimensional mode is claimed. |
+| 正实平面特征值 | positive real planar eigenvalue | At least one eigenvalue of the infinite-dimensional two-dimensional linearized operator is real and strictly positive. No essentially three-dimensional mode is claimed. |
 | 组合主来源证书 | composite primary-source certificate | The sign uses Nagatou, Matsuda--Miyatake, Ilyin, and standard compact-resolvent/Riesz-projection continuation. No single checked source carries every parameter and direction claim. |
 | 固定 \(L^2\) 逃逸 | fixed \(L^2\) escape | Initial perturbations tend to zero in \(H^3\), while at selected times the distance from the equilibrium is bounded below by one positive \(L^2\) radius. |
 | 全局光滑见证 | globally smooth witness | FPS is applied first in two dimensions; classical two-dimensional regularity and constant extension in \(z\) keep every selected witness global and smooth. |
@@ -140,7 +140,23 @@ The strongest admissible English summary is:
 
 Every public rendering must retain the literal label `NOT CLAY`.
 
-## 7. Synchronized title
+## 7. Publication provenance
+
+The finite diagnostic certificate and formal figure are sealed to immutable
+source commit `f139c5e707ffdfe855ca114faac669d12e431e59`. These labels certify package
+identity and the declared validation scope; they do not enlarge the analytic
+theorems.
+
+```text
+finiteDiagnosticValidation=PASS
+finiteDiagnosticPackage=CLOSED
+sourceCommitAssigned=TRUE
+finalSeal=TRUE
+formalFigurePackage=PASS
+publicReleaseContent=READY
+```
+
+## 8. Synchronized title
 
 ```text
 R0.73O | Global-orbit stability and a forced Kolmogorov contrast

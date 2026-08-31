@@ -242,8 +242,56 @@ async function verifyLatestFormalFigure(record, latestCode) {
   assert.deepEqual(JSON.parse(stdout).errors, [], `${latestCode}: strict figure validator`);
   await verifyFlatHashLedger(packageUrl);
 
-  assert.equal(manifest.publication?.publicCopiesComplete, true);
-  const publicAssets = manifest.publication?.assets ?? [];
+  let publicationManifest = manifest;
+  if (manifest.publication?.publicCopiesComplete !== true) {
+    const researchManifestUrl = new URL(`research/${record.path}`, root);
+    const publicManifestUrl = new URL(`public/${record.path}`, root);
+    const [researchManifestBytes, publicManifestBytes] = await Promise.all([
+      readFile(researchManifestUrl),
+      readFile(publicManifestUrl),
+    ]);
+    assert.equal(
+      Buffer.compare(researchManifestBytes, publicManifestBytes),
+      0,
+      `${latestCode}: research/public publication manifests`,
+    );
+    publicationManifest = JSON.parse(researchManifestBytes.toString("utf8"));
+    assert.equal(publicationManifest.publicationStatus, "published");
+    assert.equal(
+      publicationManifest.sourcePublicationStatus,
+      manifest.publicationStatus,
+    );
+    assert.equal(publicationManifest.figureId, manifest.figureId);
+    assert.equal(publicationManifest.release, latestCode);
+    const researchPackageUrl = new URL("./", researchManifestUrl);
+    const publicPackageUrl = new URL("./", publicManifestUrl);
+    await Promise.all([
+      verifyFlatHashLedger(researchPackageUrl),
+      verifyFlatHashLedger(publicPackageUrl),
+    ]);
+    const sourceEntries = await readdir(packageUrl, { withFileTypes: true });
+    for (const entry of sourceEntries) {
+      if (!entry.isFile() || ["manifest.json", "SHA256SUMS"].includes(entry.name)) continue;
+      const [sourcePayload, researchPayload, publicPayload] = await Promise.all([
+        readFile(new URL(entry.name, packageUrl)),
+        readFile(new URL(entry.name, researchPackageUrl)),
+        readFile(new URL(entry.name, publicPackageUrl)),
+      ]);
+      assert.equal(
+        Buffer.compare(sourcePayload, researchPayload),
+        0,
+        `${latestCode}: research copy ${entry.name}`,
+      );
+      assert.equal(
+        Buffer.compare(sourcePayload, publicPayload),
+        0,
+        `${latestCode}: public copy ${entry.name}`,
+      );
+    }
+  }
+
+  assert.equal(publicationManifest.publication?.publicCopiesComplete, true);
+  const publicAssets = publicationManifest.publication?.assets ?? [];
   assert.equal(publicAssets.length, 3, `${latestCode}: PDF/SVG/PNG public masters`);
   const archivalOutputs = new Map(
     (manifest.figure?.outputs ?? []).map((row) => [row.path.split(".").at(-1), row]),

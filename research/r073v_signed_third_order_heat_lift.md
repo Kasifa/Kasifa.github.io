@@ -1,7 +1,7 @@
 # R0.73V analytic derivation: a pressure-aware signed heat lift and the \(3\to4\) boundary
 
-**Status:** parent derivation complete; independent analytic and formal finite
-certificate gates remain open
+**Status:** parent derivation, independent analytic audit, and sealed two-path
+finite certificate complete; formal figure and publication gates remain open
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -595,8 +595,9 @@ The trace corollary (6.6) removes pressure--strain exactly and places its
 remaining third-order flux in the conditional critical row (6.7).  Its signed
 production term is the next scalar obstruction.
 
-The analytic result is not yet a release.  Independent sign/index readback,
-the two planned sparse-Fourier witnesses, a sealed certificate, and formal
-figure and publication gates remain.  No result here controls the derivative
-pressure row or the critical strong norm from arbitrary energy data.
+The independent sign/index readback passes, and the separate sealed two-path
+certificate closes the declared four-site, six-site, and selected quartic
+finite gates.  The formal figure and publication transaction remain.  No
+result here controls the derivative pressure row or the critical strong norm
+from arbitrary energy data.
 Arbitrary-data three-dimensional global regularity remains open.  `NOT CLAY`.

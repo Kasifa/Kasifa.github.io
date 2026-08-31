@@ -480,9 +480,9 @@ heat-scale identities.  It does not establish information-theoretic,
 componentwise, or globally unique minimality of \(\chi\), \(\kappa\), \(Q\),
 or \(R\).  The heat-scale system is downward triangular, not a finite
 physical-time closure.  The conditional critical rows do not control the
-arbitrary-data energy class.  The finite certificate must still prove every
-claimed witness nondegeneracy and must not promote a single Fourier
-coefficient into a whole-field collision.
+arbitrary-data energy class.  The separate sealed finite certificate supplies
+the required witness nondegeneracies; its single-mode checks must not be
+promoted into a whole-field collision.
 
 Arbitrary-data three-dimensional global regularity and the Clay Millennium
 problem remain open.  NOT CLAY.

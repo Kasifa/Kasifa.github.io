@@ -149,7 +149,7 @@ This is a bounded negative finding.  It cannot support “does not exist,”
 
 ```text
 germanoGeneralizedStressEquation=VERIFIED_CLASSICAL
-thirdHeatCumulantScalePDE=INTERNAL_DERIVATION_PENDING_AUDIT
+thirdHeatCumulantScalePDE=INTERNAL_EXACT_AUDITED
 velocityCumulantAloneIsCompleteTensorLift=FALSE_AS_TRUNCATED_EQUATION
 componentwiseMinimality=NOT_ESTABLISHED
 finiteLocalHeatMomentUniversalNoGo=NOT_ESTABLISHED

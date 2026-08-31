@@ -1,0 +1,11 @@
+R073T_CERT_PYTHON="${R073T_CERT_PYTHON:-python3}"
+
+"$R073T_CERT_PYTHON" -B research/certificates/r073t/compute_exact_certificate.py
+"$R073T_CERT_PYTHON" -B research/certificates/r073t/compute_exact_certificate.py --check-only
+"$R073T_CERT_PYTHON" -B research/certificates/r073t/seal_package.py
+"$R073T_CERT_PYTHON" -B research/certificates/r073t/seal_package.py --check-only
+
+# Final seal only after a parent release commits all six source files:
+# R073T_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+# "$R073T_CERT_PYTHON" -B research/certificates/r073t/seal_package.py --source-commit "$R073T_SOURCE_COMMIT"
+# "$R073T_CERT_PYTHON" -B research/certificates/r073t/seal_package.py --source-commit "$R073T_SOURCE_COMMIT" --check-only

@@ -92,14 +92,12 @@ test("source-dry-run exposes exact accounting and the complete non-writing plan"
   assert.ok(result.figureOutputsPlanned.includes(
     "public/assets/r073s/fig-r073s-quadratic-certificate.pdf"));
   assert.equal(result.writes, 0);
-  if (manifest.latestCompletedRelease === "r073r") {
-    assert.equal(result.commitPinsReady, false);
-    assert.equal(result.publicTransactionImplemented, true);
-    assert.equal(result.publicationReady, true);
-  }
+  assert.equal(result.commitPinsReady, true);
+  assert.equal(result.publicTransactionImplemented, true);
+  assert.equal(result.publicationReady, true);
 });
 
-test("the layered generator pins reviewed inputs and leaves only release source closed", () => {
+test("the layered generator pins every reviewed input through the normalized release-source slot", () => {
   const generator = read("scripts/generate_r073s_release.py");
   assert.match(generator,
     /RELEASE_BASELINE_COMMIT = "71b562d45529ac45d2423d598fcc0f7f0845ea4b"/);
@@ -111,7 +109,7 @@ test("the layered generator pins reviewed inputs and leaves only release source 
     /FIGURE_PACKAGE_COMMIT = "4bb49ecc380e4b41d33e3102af4f47de016b5653"/);
   assert.match(generator,
     /FINAL_CONTENT_COMMIT = "ee6b4f15733f68ead337eb04d29620fd8b98e60d"/);
-  assert.match(generator, /RELEASE_SOURCE_COMMIT = ZERO_COMMIT/);
+  assert.match(generator, /RELEASE_SOURCE_COMMIT = "[0-9a-f]{40}"/);
   assert.ok(generator.includes("__NORMALIZED_RELEASE_SOURCE_COMMIT__"));
   assert.match(generator, /PUBLIC_TRANSACTION_IMPLEMENTED = True/);
   assert.ok(generator.includes("verify_commit_trees(FINITE_PACKAGE_COMMIT"));
@@ -119,18 +117,7 @@ test("the layered generator pins reviewed inputs and leaves only release source 
   assert.ok(generator.includes('"research/r073s_claim_source_ledger.md"'));
   assert.ok(generator.includes('"research/r073s_evidence_gap_matrix.md"'));
   assert.ok(generator.includes('"research/r073s_finite_diagnostic_audit.md"'));
-  const releaseSourcePinned = /RELEASE_SOURCE_COMMIT = "[0-9a-f]{40}"/.test(generator);
-  if (manifest.latestCompletedRelease === "r073r" && !releaseSourcePinned) {
-    for (const action of ["--check-only", "--apply"]) {
-      const result = runPython("scripts/generate_r073s_release.py", action);
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /R0\.73S release source/);
-      assert.match(result.stderr, /unsealed 40-zero commit pin/);
-      assert.match(result.stderr, /binding remains fail-closed/);
-    }
-  } else if (releaseSourcePinned) {
-    assert.ok(true, "full check-only belongs to the final release-source stage; tests never call --apply");
-  }
+  assert.ok(true, "the test suite never invokes --apply");
 });
 
 test("the public transaction assembles every target in memory without applying it", () => {

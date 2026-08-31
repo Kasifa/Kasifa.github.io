@@ -1,16 +1,24 @@
-# R0.73S bilingual terminology lock
+# R0.73S bilingual dictionary and public-claim boundary
 
-## Canonical release identity
+**Status:** canonical terminology, exact claim-state tokens, and local-direct
+translation route are frozen; public rendering itself has not yet been applied
 
-- Release title: R0.73S | From triple convolution to autocorrelation: one computable certificate and two hard limits
-- Public title (zh): R0.73S｜把三重卷积降到自相关：一个可算证书，两条不能越过的边界
-- Next release: R0.73T
-- Source commit: `72e4c12760dc3b837dec328ee96a29736fe93c99`
-- Generated artifact commit: `4bb49ecc380e4b41d33e3102af4f47de016b5653`
-- Ordinary translation path: `LOCAL_DIRECT_NO_DGX`
+**Release title:** R0.73S | From triple convolution to autocorrelation: one computable certificate and two hard limits
+
+**Public title (zh):** R0.73S｜把三重卷积降到自相关：一个可算证书，两条不能越过的边界
+
+**Next release:** R0.73T
+
+**Source commit:** `72e4c12760dc3b837dec328ee96a29736fe93c99`
+
+**Generated artifact commit:** `4bb49ecc380e4b41d33e3102af4f47de016b5653`
+
+**Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
 The translation path above is a release constraint. It does not assert that
 translation or public deployment has already been completed.
+
+## Mathematical terms
 
 | 中文 | English |
 |---|---|
@@ -50,6 +58,17 @@ translation or public deployment has already been completed.
 ## Machine-readable release boundary
 
 ```text
+quadraticAutocorrelationBound=VERIFIED_CLASSICAL
+differenceSupportNikolskii=VERIFIED_CLASSICAL
+selectedShiftMagnitudeTailCertificate=CLOSED_EXACT
+fixedAnnulusDifferenceSupportObstruction=CLOSED_EXACT
+lowSummaryNonIdentifiability=CLOSED_EXACT
+completeAutocorrelationDeterminesL6=VERIFIED_CLASSICAL
+zeroNonlinearityWitnesses=CLOSED
+finiteFormulaCertificateOnly=TRUE
+heatFlowIntegralComputed=FALSE
+navierStokesSimulation=NOT_RUN
+runtimeBenchmark=FALSE
 finiteFormulaDiagnosticValidation=PASS
 finiteFormulaDiagnosticPackage=CLOSED
 finiteFormulaDiagnosticPrimaryChecks=226
@@ -65,9 +84,14 @@ formalFigureChecks=236
 formalFigureRows=179
 dgxUsed=FALSE
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
+publicReleaseContent=READY
+translationPath=LOCAL_DIRECT_NO_DGX
 finiteFormulaDiagnosticIsNavierStokesSimulation=FALSE
 finiteFormulaDiagnosticCertifiesContinuumPdeProof=FALSE
 universalRuntimeLowerBound=NOT_PROVED
+failureOfEntranceImpliesUnsafeDynamics=FALSE
+uniformL2OnlyStrongRadius=OPEN
+arbitraryThreeDimensionalGlobalRegularity=OPEN
 clayConclusion=OPEN
 noveltyOrPriorityClaim=FORBIDDEN
 NOT CLAY

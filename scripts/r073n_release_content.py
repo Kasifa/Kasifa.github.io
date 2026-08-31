@@ -188,7 +188,8 @@ class ReleaseContent:
             'research/certificates/r073n">finite diagnostic package</a></p>'
             f'<p><a href="/assets/r073n/{FIGURE_ID}.pdf">journal figure PDF</a> · '
             '<a href="/notes/r0-73n.pdf">synchronized note PDF</a> · '
-            '<a href="/recap-r0-61-r0-73n.html">130-node cumulative recap</a></p>'
+            '<a href="/recap-r0-61-r0-73n.html">130-node cumulative recap</a> · '
+            '<a href="/recap-r0-61-r0-73n.pdf">synchronized recap PDF</a></p>'
             '</section>'
         )
         return (

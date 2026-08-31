@@ -39,6 +39,8 @@ ROOT = HERE.parents[3]
 FIGURE_ID = "fig-r073u-tensor-heat-hierarchy"
 AUTHORITATIVE_SOURCE_COMMIT = "84e808dae473f6381cbf9df55a71f5fe81a1cfce"
 SUPERSEDED_SOURCE_COMMIT = "72493751370aa948947000df169e21199fc5c95d"
+CERTIFICATE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
+REPOSITORY_URL = "https://github.com/Kasifa/Kasifa.github.io.git"
 ANALYTIC_SOURCE_FILES = {
     "research/r073u_problem_freeze.md",
     "research/r073u_tensor_heat_hierarchy.md",
@@ -144,6 +146,39 @@ def source_bindings(commit: str) -> list[dict[str, object]]:
             "sourceClass": "frozen-analytic-source",
         })
     return bindings
+
+
+def metadata_reseal_commit() -> str:
+    completed = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, check=False,
+    )
+    require(completed.returncode == 0, "metadata reseal HEAD does not resolve")
+    commit = completed.stdout.decode("ascii").strip()
+    require(re.fullmatch(r"[0-9a-f]{40}", commit) is not None,
+            "metadata reseal HEAD is not full lowercase 40-hex")
+    scope = [str(HERE.relative_to(ROOT)), *sorted(ANALYTIC_SOURCE_FILES),
+             "research/certificates/r073u"]
+    status = subprocess.run(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all", "--", *scope],
+        cwd=ROOT, capture_output=True, check=False,
+    )
+    require(status.returncode == 0, "metadata reseal clean-scope check failed")
+    require(not status.stdout,
+            "metadata reseal requires committed figure, analytic, and certificate inputs")
+    return commit
+
+
+def ndjson_elapsed_seconds(path: Path) -> float:
+    elapsed: list[float] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        value = json.loads(line, object_pairs_hook=reject_duplicate_keys)
+        require(isinstance(value, dict), "NDJSON row is not an object: " + path.name)
+        seconds = value.get("elapsedSeconds")
+        require(isinstance(seconds, (int, float)),
+                "NDJSON row lacks elapsedSeconds: " + path.name)
+        elapsed.append(float(seconds))
+    require(bool(elapsed), "NDJSON is empty: " + path.name)
+    return max(elapsed)
 
 
 def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
@@ -339,14 +374,16 @@ def reconstruct_checks(source_commit: str, visual_confirmed: bool) -> tuple[list
 
 
 def write_outputs(source_commit: str, checks: list[dict[str, object]],
-                  bindings: list[dict[str, object]]) -> None:
+                  bindings: list[dict[str, object]],
+                  metadata_commit: str) -> None:
     passed = sum(1 for item in checks if item["pass"])
     require(passed == len(checks), "not all checks passed")
     final_seal = bool(source_commit)
+    created_at = utc_now()
     validation = {
         "schemaVersion": "r073u-tensor-heat-hierarchy-validation-v1",
         "figureId": FIGURE_ID,
-        "generatedUtc": utc_now(),
+        "generatedUtc": created_at,
         "status": "PASS",
         "checksPassed": passed,
         "checksRequired": len(checks),
@@ -386,10 +423,116 @@ trajectory-symmetry claim.
         qa_report += "\nThe immutable source-commit publication seal remains pending.\n"
     (HERE / "qa-report.md").write_text(qa_report, encoding="utf-8")
     bound = [record(HERE / name) for name in sorted(MANIFEST_BOUND_FILES)]
+    environment_payload = load_json(HERE / "environment.json")
+    execution = environment_payload["execution"]
+    packages = environment_payload["packages"]
+
+    def data_record(name: str, schema: str) -> dict[str, object]:
+        return {**record(HERE / name), "schema": schema}
+
+    figure_outputs = []
+    for name in ("figure.pdf", "figure.svg", "figure.png"):
+        output = record(HERE / name)
+        if name.endswith(".png"):
+            output["dpi"] = 600
+        figure_outputs.append(output)
+    qa_artifacts = [
+        {**record(HERE / name), "schema": "qa-raster-v1"}
+        for name in ("qa-pdf.png", "qa-final-size.png", "qa-grayscale.png")
+    ]
     manifest = {
         "schemaVersion": "r073u-tensor-heat-hierarchy-manifest-v1",
         "figureId": FIGURE_ID,
-        "createdUtc": utc_now(),
+        "release": "R0.73U",
+        "status": "formal",
+        "publicationStatus": "published",
+        "analyticalQuestion": (
+            "Can the full local-product heat tensor recover pressure, and does "
+            "that even quadratic state close the signed physical-time dynamics?"
+        ),
+        "supportedClaim": (
+            "The full tensor recovers same-scale pressure and obeys an exact "
+            "heat-covariance PDE, while a four-site exact witness proves that "
+            "the even quadratic state does not determine the signed initial tangent."
+        ),
+        "createdAt": created_at,
+        "createdUtc": created_at,
+        "git": {
+            "repository": REPOSITORY_URL,
+            "sourceCommit": source_commit or None,
+            "certificateCommit": CERTIFICATE_PACKAGE_COMMIT,
+            "figureMetadataResealCommit": metadata_commit,
+            "dirtyAtCertifiedRun": False,
+            "dirtyScope": [
+                str(HERE.relative_to(ROOT)),
+                "research/r073u_problem_freeze.md",
+                "research/r073u_tensor_heat_hierarchy.md",
+                "research/r073u_independent_analytic_audit.md",
+                "research/certificates/r073u",
+            ],
+        },
+        "computation": {
+            "kind": "exact-formula-audit",
+            "configuration": "config.json",
+            "precision": "exact integer/rational formulas with deterministic rendering",
+            "solver": "closed-form finite audit",
+            "formalCommand": (
+                "python plot.py --render-preseal; python validate.py "
+                "--source-commit <commit> --confirm-visual-qa; "
+                "python validate.py --verify-only"
+            ),
+            "scientificWallTimeSeconds": ndjson_elapsed_seconds(
+                HERE / "progress.ndjson"
+            ),
+            "runtimeMetadataProvenance": {
+                "captureMode": "same-host post-run manifest backfill",
+                "notOriginalRunEmission": True,
+                "source": "environment.json, progress.ndjson, resource-log.ndjson",
+            },
+            "monitoring": {
+                "enabled": True,
+                "progressLog": "progress.ndjson",
+                "resourceLog": "resource-log.ndjson",
+            },
+        },
+        "compute": {
+            "host": execution["host"],
+            "operatingSystem": execution["operatingSystem"],
+            "cpu": (
+                f'{execution["machine"]} / '
+                f'{execution["logicalCpuCount"]} logical CPUs'
+            ),
+            "memoryGiB": 36.0,
+            "processes": execution["processes"],
+            "threadsPerProcess": execution["threadsPerProcess"],
+            "gpu": execution["gpu"],
+            "dgxUsed": execution["dgxUsed"],
+            "metadataProvenance": "same-host post-run manifest backfill",
+        },
+        "environment": {
+            "python": execution["python"],
+            "packagesLock": "requirements.txt",
+            "packages": packages,
+        },
+        "data": [
+            data_record("source-data.csv", "r073u-tensor-heat-hierarchy-source-v1"),
+            data_record("results.json", "r073u-tensor-heat-hierarchy-figure-results-v1"),
+            data_record("validation.json", "r073u-tensor-heat-hierarchy-validation-v1"),
+            data_record("progress.ndjson", "progress-ndjson-v1"),
+            data_record("resource-log.ndjson", "resource-log-ndjson-v1"),
+        ],
+        "sourceData": [],
+        "figure": {"outputs": figure_outputs},
+        "caption": {"english": "caption.md"},
+        "qa": {
+            "status": "passed",
+            "finalSizeInspected": True,
+            "grayscaleInspected": True,
+            "labelsAndLegendsInspected": True,
+            "scalesAndUnitsInspected": True,
+            "dataCrossChecked": True,
+            "qaArtifacts": qa_artifacts,
+        },
         "claimBoundary": load_json(HERE / "contract.json")["claimBoundary"],
         "dgxUsed": False,
         "ordinaryTranslationPath": "LOCAL_DIRECT_NO_DGX",
@@ -441,6 +584,32 @@ def verify_seal(functional_checks: list[dict[str, object]]) -> None:
     stored_commit = validation.get("sourceCommit") or ""
     require(stored_commit == (manifest.get("sourceCommit") or ""), "seal commit mismatch")
     require(validation.get("finalSeal") == manifest.get("finalSeal"), "final-seal flag mismatch")
+    require(manifest.get("release") == "R0.73U" and manifest.get("status") == "formal",
+            "global formal-archive identity missing")
+    git_metadata = manifest.get("git")
+    require(isinstance(git_metadata, dict), "global git metadata missing")
+    require(git_metadata.get("sourceCommit") == AUTHORITATIVE_SOURCE_COMMIT,
+            "global git analytic source commit mismatch")
+    require(git_metadata.get("certificateCommit") == CERTIFICATE_PACKAGE_COMMIT,
+            "global git certificate commit mismatch")
+    require(git_metadata.get("dirtyAtCertifiedRun") is False,
+            "global git clean-scope declaration missing")
+    metadata_commit = git_metadata.get("figureMetadataResealCommit")
+    require(isinstance(metadata_commit, str)
+            and re.fullmatch(r"[0-9a-f]{40}", metadata_commit) is not None,
+            "figure metadata reseal commit missing")
+    for name in sorted(SOURCE_FILES):
+        relative = str((HERE / name).relative_to(ROOT))
+        require(git_blob(metadata_commit, relative) == (HERE / name).read_bytes(),
+                "figure source drift from metadata reseal commit: " + name)
+    require(isinstance(manifest.get("computation"), dict)
+            and isinstance(manifest.get("compute"), dict)
+            and isinstance(manifest.get("environment"), dict),
+            "global compute provenance missing")
+    require(isinstance(manifest.get("data"), list)
+            and isinstance(manifest.get("figure"), dict)
+            and isinstance(manifest.get("qa"), dict),
+            "global data/figure/QA provenance missing")
 
 
 def main() -> None:
@@ -458,8 +627,9 @@ def main() -> None:
         }), end="")
         return
     require(args.confirm_visual_qa, "--confirm-visual-qa is required to write the seal")
+    metadata_commit = metadata_reseal_commit()
     checks, bindings = reconstruct_checks(args.source_commit, True)
-    write_outputs(args.source_commit, checks, bindings)
+    write_outputs(args.source_commit, checks, bindings, metadata_commit)
     verify_seal(checks)
     print(canonical({
         "checks": len(checks),

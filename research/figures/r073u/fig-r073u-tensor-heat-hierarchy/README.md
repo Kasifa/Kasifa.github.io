@@ -40,3 +40,17 @@ seal.  The superseded commit
 `72493751370aa948947000df169e21199fc5c95d` is rejected.  The ten figure-source
 files and all generated artifacts are separately sealed by the manifest's
 SHA-256 inventory, avoiding a metadata hash cycle.
+
+The seal also emits the repository-wide `research-figure-manifest-v1`
+compatibility fields while retaining the stricter R0.73U source seal.  The
+figure, analytic, and certificate inputs must be committed and clean in their
+declared scope before the write pass.  After sealing, verify both contracts:
+
+```text
+python3 validate.py --deps <python-packages> --verify-only
+python3 ../../../validate_figure_package.py .
+```
+
+The CPU and memory fields are an explicitly labelled same-host post-run
+metadata backfill; the original exact run's wall time and resource samples
+remain bound to `progress.ndjson` and `resource-log.ndjson`.

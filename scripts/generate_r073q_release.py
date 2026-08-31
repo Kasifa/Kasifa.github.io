@@ -58,7 +58,7 @@ FINITE_PACKAGE_COMMIT = "a0b00c0ef7f425443c88445a5284381469ce4046"
 FIGURE_PACKAGE_COMMIT = "6da152412e36c647449675cb3cfaf3c4dab4542f"
 RELEASE_BASELINE_COMMIT = "dfec6fa047c8dd9f498aa798df23c525812951b6"
 FINAL_CONTENT_COMMIT = "14803d7299473359a64c2c08d183d4f2a8152b1c"
-RELEASE_SOURCE_COMMIT = "27fef7b3edd97a9a8dff8cce2c8c3cf411f62fdf"
+RELEASE_SOURCE_COMMIT = "0652fb13f32b9d1dcddad410ae3379dad152e290"
 
 BINDING_ORDER = (
     ("R0.73P release baseline", RELEASE_BASELINE_COMMIT),
@@ -670,6 +670,8 @@ def build_recap(content: ReleaseContent) -> str:
         "      #reproduce h2{font-size:1.8rem;margin:.2rem 0 .35rem}\n"
         "      #reproduce p{font-size:.9rem;line-height:1.35;margin:.15rem 0}\n"
         "      #reproduce{margin-bottom:0}\n"
+        "      #claims{margin-bottom:10px}\n"
+        "      #claims p{line-height:1.45;margin:.2rem 0}\n"
         "      .layout{padding-bottom:0}\n",
         "recap print final-section spacing",
     )

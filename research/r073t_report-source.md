@@ -398,11 +398,14 @@ heat 方向的耗散有正确符号，但
 只把它称为可审计的本地综合。
 
 精确证书与正式附图都绑定到源码提交
-`05c55d21f060a17a0a4db04c12e89e7271b03d30`；生成产物提交为
-`29d01625731d1c611f927c2852dbddf05967c6cb`。这些通过项验证的是有限
-代数、清单、哈希与图形交付链，不是对连续方程推导或任意三维数据的
-数值证明。本节没有运行 Navier--Stokes 仿真，也没有使用 DGX；普通
-双语翻译固定在本地直接完成。
+`05c55d21f060a17a0a4db04c12e89e7271b03d30`；科学产物提交为
+`29d01625731d1c611f927c2852dbddf05967c6cb`。图件另有一个仅限元数据的
+重封提交 `b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9`：它补录由原始日志确定的
+运行耗时，以及同机前后夹证的系统、处理器和内存字段；精确数据、验证
+结果、PDF、SVG 与 PNG 字节均未改变。这些通过项验证的是有限代数、清单、
+哈希与图形交付链，不是对连续方程推导或任意三维数据的数值证明。本节
+没有运行 Navier--Stokes 仿真，也没有使用 DGX；普通双语翻译固定在本地
+直接完成。
 
 Machine-readable boundary:
 
@@ -424,7 +427,10 @@ formalFigureChecks=106
 formalFigureRows=28
 sourceCommitAssigned=TRUE
 sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
-generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+scientificArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+figureMetadataResealCommit=b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9
+figureMetadataResealScope=ENVIRONMENT_MANIFEST_SUMS_ONLY
+figureMetadataBackfill=SAME_HOST_BRACKETED_NOT_ORIGINAL_RUN_EMISSION
 finalSeal=TRUE
 navierStokesSimulation=NOT_RUN
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX

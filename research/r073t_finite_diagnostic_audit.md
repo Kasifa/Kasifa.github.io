@@ -12,8 +12,12 @@ shear, dilation laws, and the associated 25-file journal-figure package.
 fail-closed source seal, source-commit bindings, checksums, figure validator,
 vector/raster outputs, and visual QA pass. Both packages bind their immutable
 sources to commit `05c55d21f060a17a0a4db04c12e89e7271b03d30`; the
-generated artifacts are preserved in commit
-`29d01625731d1c611f927c2852dbddf05967c6cb`. These packages certify exact
+scientific artifacts are preserved in commit
+`29d01625731d1c611f927c2852dbddf05967c6cb`. A metadata-only figure reseal at
+`b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9` adds the wall-time and bracketed
+same-host runtime record required by the publication archive. It changes only
+`environment.json`, the source figure manifest, and `SHA256SUMS`; all exact
+data, validation, PDF, SVG, and PNG bytes remain unchanged. These packages certify exact
 finite Fourier identities, instantaneous formulas, finite witnesses, and
 artifact identity only. They are not a Navier--Stokes simulation, a continuum
 PDE certificate, a new regularity criterion, a singularity construction, or
@@ -123,7 +127,8 @@ package makes a self-referential commit claim.
 | Role | Commit | Audited content |
 | --- | --- | --- |
 | analytic and package sources | `05c55d21f060a17a0a4db04c12e89e7271b03d30` | exact-certificate sources, formal-figure sources, and the bound analytic proof |
-| generated exact artifacts | `29d01625731d1c611f927c2852dbddf05967c6cb` | final-sealed exact certificate and validated formal-figure package |
+| scientific artifacts | `29d01625731d1c611f927c2852dbddf05967c6cb` | final-sealed exact certificate plus the validated figure data, validation, PDF, SVG, and PNG |
+| figure metadata reseal | `b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9` | same-host runtime metadata backfill and the resulting figure `manifest.json` / `SHA256SUMS`; no mathematical or visual artifact changed |
 
 The exact sealer and figure validator re-read their declared sources from the
 source commit. The generated-artifact commit contains the byte-identical files
@@ -158,7 +163,9 @@ Master-output hashes:
 | `figure.pdf` | `cb2c4a213d7bb798b0717905be5a38d62e769837f3845128b4c596945998be62` |
 | `figure.svg` | `d5ada2c4dd716ec878b38474d7fdda267b7edfc8367e6653ea62126b1425d90f` |
 | `figure.png` | `9dbaedbfbf6370ca88612913dfe94b216df7d71142bbce248fb21f7f8a8fb060` |
-| `manifest.json` | `29d34366e2715819e08f1c6f1dc77bff5fcb089a2e2c2e6ce33616825fccae1d` |
+| original `manifest.json` at scientific-artifact commit | `29d34366e2715819e08f1c6f1dc77bff5fcb089a2e2c2e6ce33616825fccae1d` |
+| current metadata-resealed `manifest.json` | `bfa5c468ecb43a287239fd5e368c66d0eefad6ffe09dff241e828e806279a10e` |
+| current metadata-resealed `environment.json` | `259de2eebb7179336b41f060b57068319873cb03a0dce1324e1c95388e9bf50e` |
 | `validation.json` | `f440eac3f16edb5be2f35bc63f0c4464467256516b2c76537239d5646effb95f` |
 
 ## 5. Evidence boundary
@@ -203,7 +210,11 @@ finiteFormulaDiagnosticResultsSha256=3a673f127d11fa63516182855ee0fd1dfecce98c06b
 finiteFormulaDiagnosticManifestSha256=3ca0c0d6dad5bd88faad032e0dd93f1b74fd6338d99b0bb05f2454fac40e6134
 sourceCommitAssigned=TRUE
 sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
-generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+scientificArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+figureMetadataResealCommit=b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9
+figureMetadataBackfill=SAME_HOST_BRACKETED_NOT_ORIGINAL_RUN_EMISSION
+originalFormalFigureManifestSha256=29d34366e2715819e08f1c6f1dc77bff5fcb089a2e2c2e6ce33616825fccae1d
+currentFormalFigureManifestSha256=bfa5c468ecb43a287239fd5e368c66d0eefad6ffe09dff241e828e806279a10e
 finalSeal=TRUE
 formalFigurePackage=PASS
 formalFigureChecks=106

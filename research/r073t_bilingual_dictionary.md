@@ -19,7 +19,13 @@ flux remain unclosed.
 
 **Source commit:** `05c55d21f060a17a0a4db04c12e89e7271b03d30`
 
-**Generated artifact commit:** `29d01625731d1c611f927c2852dbddf05967c6cb`
+**Scientific artifact commit:** `29d01625731d1c611f927c2852dbddf05967c6cb`
+
+**Figure metadata reseal commit:** `b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9`
+
+The later commit is a metadata-only reseal. It records the log-derived wall
+time and bracketed same-host OS/CPU/memory fields; the exact data, validation,
+PDF, SVG, and PNG remain byte-identical to the scientific-artifact commit.
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -301,7 +307,13 @@ bilingualDictionary=FROZEN
 sourceCommitAssigned=TRUE
 sourceCommit=05c55d21f060a17a0a4db04c12e89e7271b03d30
 generatedArtifactCommitAssigned=TRUE
-generatedArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+generatedArtifactCommitAlias=scientificArtifactCommit
+scientificArtifactCommit=29d01625731d1c611f927c2852dbddf05967c6cb
+figureMetadataResealCommit=b17c45013cc9a3f6f09efa146bcbc2ef8ab043f9
+figureMetadataResealScope=ENVIRONMENT_MANIFEST_SUMS_ONLY
+figureMetadataBackfill=SAME_HOST_BRACKETED_NOT_ORIGINAL_RUN_EMISSION
+originalFormalFigureManifestSha256=29d34366e2715819e08f1c6f1dc77bff5fcb089a2e2c2e6ce33616825fccae1d
+currentFormalFigureManifestSha256=bfa5c468ecb43a287239fd5e368c66d0eefad6ffe09dff241e828e806279a10e
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 translationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=FALSE

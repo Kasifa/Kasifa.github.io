@@ -244,7 +244,7 @@ class ReleaseContent:
     @property
     def recap_phase(self) -> str:
         return (
-            f'            <article class="phase"><h3>R0.73U · {html.escape(self.release_title_en)}</h3>'
+            f'            <article class="phase"><h3>{html.escape(self.release_title_en)}</h3>'
             f'<p>{html.escape(self.recap_zh)}</p>'
             f'<p>{html.escape(CLOSED_LEDGER)}。{html.escape(FINITE_LEDGER)}。'
             f'{html.escape(OPEN_LEDGER)}。{html.escape(INITIAL_TIME_BOUNDARY_ZH)} NOT CLAY。</p>'
@@ -602,7 +602,7 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
         recap_zh=section_nine[3],
         literature_zh=section_nine[0],
         next_release=NEXT_RELEASE,
-        next_gate_zh="；".join(next_items),
+        next_gate_zh="；".join(item.rstrip("；;。 ") for item in next_items) + "。",
         sections=_sections(report),
         source_sha256=source_sha256,
         publication_ready=not failures,

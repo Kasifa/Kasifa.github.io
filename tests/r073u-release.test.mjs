@@ -215,7 +215,7 @@ test("the public transaction assembles the complete target in memory without app
     "recap=s[g.PUBLIC/'recap-r0-61-r0-73u.html'].decode()",
     "home=s[g.PUBLIC/'research-review.html'].decode()",
     "lit=s[g.PUBLIC/'literature-review.html'].decode()",
-    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'paths':sorted(rel(p) for p in s)}))",
+    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'copyDefect':any('；；' in value or 'R0.73U · R0.73U |' in value for value in (note,recap,home,lit)),'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'paths':sorted(rel(p) for p in s)}))",
   ].join(";"));
   assert.equal(result.count, 62);
   assert.equal(result.core, true);
@@ -224,6 +224,7 @@ test("the public transaction assembles the complete target in memory without app
   assert.equal(result.initialTime, true);
   assert.equal(result.initialBoundary, true);
   assert.equal(result.rawFence, false);
+  assert.equal(result.copyDefect, false);
   assert.equal(result.recap137, true);
   assert.equal(result.home197, true);
   assert.equal(result.next, true);

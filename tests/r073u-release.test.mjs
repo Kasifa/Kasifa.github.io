@@ -204,7 +204,7 @@ test("reviewed layers stay pinned across the release-source pre-seal/post-seal l
 
 test("the public transaction assembles the complete target in memory without applying", () => {
   const result = pythonCodeJson([
-    "import json,sys",
+    "import json,sys,re",
     "sys.path.insert(0,'scripts')",
     "import generate_r073u_release as g",
     "c=g.load_release_content(g.ROOT)",
@@ -215,7 +215,7 @@ test("the public transaction assembles the complete target in memory without app
     "recap=s[g.PUBLIC/'recap-r0-61-r0-73u.html'].decode()",
     "home=s[g.PUBLIC/'research-review.html'].decode()",
     "lit=s[g.PUBLIC/'literature-review.html'].decode()",
-    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'copyDefect':any('；；' in value or 'R0.73U · R0.73U |' in value for value in (note,recap,home,lit)),'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'paths':sorted(rel(p) for p in s)}))",
+    "print(json.dumps({'count':len(s),'core':all(g.ROOT/p in s for p in g.CORE_TARGET_OUTPUTS),'html':sum(p.suffix=='.html' for p in s),'title':c.public_title_zh in note,'initialTime':'t=0' in note,'initialBoundary':'不是轨道对称性' in note and '不是轨道对称性' in recap,'rawFence':any('```' in value or '``<code' in value for value in (note,recap,home,lit)),'copyDefect':any('；；' in value or 'R0.73U · R0.73U |' in value for value in (note,recap,home,lit)) or bool(re.search(r'R0\\.73([N-T]) · R0\\.73\\1 \\|',recap)),'currentDates':'R0.61–R0.73U · 2026-09-01' in recap and '<strong>2026-09-01</strong>最近修订' in home and '综述 v1.61 · 2026-09-01' in home and '文献综述 v1.61 · 2026-09-01' in lit and '资料截止：2026-08-31' in lit,'recap137':'137' in recap,'home197':'197' in home,'next':'R0.73V' in home,'nextGate':'加入最小的 signed third-order lift' in home and '保留 tensor-only 无符号 envelope' in home,'literature':'quadratic-state non-autonomy' in lit,'markdownDoi':'[1938 DOI](' in lit or '[2001 DOI](' in lit,'linkedDoi':'<a href=\"https://doi.org/10.1098/rspa.1938.0013\">1938 DOI</a>' in lit,'badAccent':any('K\\\\&#x27;' in value or \"K\\\\'arm\" in value or 'H\\\\&quot;' in value or 'H\\\\\"older' in value for value in (note,recap,home,lit)),'figureId':f.get('figureId'),'checks':f.get('qa',{}).get('validationChecks'),'figureCommit':f.get('git',{}).get('figurePackageCommit'),'paths':sorted(rel(p) for p in s)}))",
   ].join(";"));
   assert.equal(result.count, 62);
   assert.equal(result.core, true);
@@ -225,6 +225,7 @@ test("the public transaction assembles the complete target in memory without app
   assert.equal(result.initialBoundary, true);
   assert.equal(result.rawFence, false);
   assert.equal(result.copyDefect, false);
+  assert.equal(result.currentDates, true);
   assert.equal(result.recap137, true);
   assert.equal(result.home197, true);
   assert.equal(result.next, true);

@@ -64,7 +64,7 @@ FINITE_SOURCE_COMMIT = "6c79f23152116f5d420be6ff03653500ab02ef0e"
 FINITE_PACKAGE_COMMIT = "044bfb3f7e5af98e2615f60747c9e5109ef12d7c"
 FIGURE_PACKAGE_COMMIT = "6c20af03a21488fea3f060738084fa9048437984"
 FINAL_CONTENT_COMMIT = "552ce0015e5eac0bf1d93968304ec53c7181774e"
-RELEASE_SOURCE_COMMIT = "c1e8ed1d30f68f4fc3ff9621fb846e7195f40656"
+RELEASE_SOURCE_COMMIT = "e2bcc34ec757551ec341d31fe7d89cc269f8590a"
 
 BINDING_ORDER = (
     ("R0.73T published baseline", RELEASE_BASELINE_COMMIT),
@@ -784,6 +784,10 @@ def build_recap(content: ReleaseContent) -> str:
     value = decode_baseline("public/recap-r0-61-r0-73t.html")
     value = value.replace("/i18n-en.js?v=1.60", "/i18n-en.js?v=1.61")
     value = value.replace("R0.61–R0.73T", "R0.61–R0.73U")
+    value = value.replace(
+        "R0.61–R0.73U · 2026-08-31",
+        f"R0.61–R0.73U · {content.date}",
+    )
     value = value.replace("R0.61 到 R0.73T", "R0.61 到 R0.73U")
     value = value.replace("R0.69P–R0.73T", "R0.69P–R0.73U")
     value = value.replace("R0.70A–R0.73T", "R0.70A–R0.73U")
@@ -798,6 +802,16 @@ def build_recap(content: ReleaseContent) -> str:
     value = value.replace("<strong>136</strong>", "<strong>137</strong>")
     value = value.replace("<strong>98</strong>", "<strong>99</strong>")
     value = value.replace("<strong>74</strong>", "<strong>75</strong>")
+    value, duplicate_phase_count = re.subn(
+        r'(<article class="phase"><h3>)(R0\.73[N-T]) · \2 \| ',
+        r"\1\2 | ",
+        value,
+    )
+    if duplicate_phase_count != 7:
+        raise RuntimeError(
+            "R0.73U recap expected seven duplicated R0.73N--T phase titles, found "
+            + str(duplicate_phase_count)
+        )
     value = replace_regex(
         value, r'(<header class="hero">.*?<p class="lead">)(.*?)(</p>)',
         lambda match: match.group(1) + match.group(2) + " "
@@ -975,6 +989,14 @@ def update_home(content: ReleaseContent) -> str:
     value = value.replace("/recap-r0-61-r0-73t.pdf", "/recap-r0-61-r0-73u.pdf")
     value = value.replace("综述 v1.60 ·", "综述 v1.61 ·")
     value = value.replace(
+        "<strong>2026-08-31</strong>最近修订",
+        f"<strong>{html.escape(content.date)}</strong>最近修订",
+    )
+    value = value.replace(
+        "综述 v1.61 · 2026-08-31",
+        f"综述 v1.61 · {html.escape(content.date)}",
+    )
+    value = value.replace(
         '<span class="route-range">R0.69P–R0.73T</span>',
         '<span class="route-range">R0.69P–R0.73U</span>',
     )
@@ -1057,6 +1079,10 @@ def update_literature(content: ReleaseContent) -> str:
     value = decode_baseline("public/literature-review.html")
     value = value.replace("/i18n-en.js?v=1.60", "/i18n-en.js?v=1.61")
     value = value.replace("文献综述 v1.60 ·", "文献综述 v1.61 ·")
+    value = value.replace(
+        "文献综述 v1.61 · 2026-08-31",
+        f"文献综述 v1.61 · {html.escape(content.date)}",
+    )
     marker = '<span class="route-r073t-deck-update">'
     start = value.find(marker)
     end = value.find("</span>", start)

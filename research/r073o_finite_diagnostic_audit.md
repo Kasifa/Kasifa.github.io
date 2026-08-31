@@ -194,7 +194,8 @@ and resealed.  The environment input now binds
 `8f19b1042ac8e263f2525be6a60ade7d02ae6c6a2765ed8a02784bb98bd00c56`.
 This correction changes archival metadata and the timestamp-bearing vector
 exports; it does not change the finite spectral values or their evidence
-class.
+class.  The corrected generated figure package is frozen at repository commit
+`6f24e989746056c3ca9d470ddd36b812d4d5c4d1`.
 
 ## 6. Evidence boundary
 

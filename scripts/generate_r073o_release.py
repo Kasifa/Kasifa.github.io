@@ -58,7 +58,7 @@ FINITE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 FIGURE_PACKAGE_COMMIT = "6a08b38721959e8a08aeaad8eff54cfc1905a6ab"
 RELEASE_BASELINE_COMMIT = "d6d12469c266d16f08834320e2cae869af0aa479"
 FINAL_CONTENT_COMMIT = "007e4b17570c6659b20b1c929918fff74a2bc0c8"
-RELEASE_SOURCE_COMMIT = "471bc3ee8a416ab6045a4313e49c1793132459ad"
+RELEASE_SOURCE_COMMIT = ZERO_COMMIT
 
 BINDING_ORDER = (
     ("R0.73N release baseline", RELEASE_BASELINE_COMMIT),
@@ -613,7 +613,9 @@ def build_recap(content: ReleaseContent) -> str:
         value,
         "      #retained li{margin:.14rem 0;line-height:1.4}\n",
         "      #retained li{margin:.14rem 0;line-height:1.4}\n"
-        "      #reproduce p{margin:.25rem 0}\n",
+        "      #reproduce p{margin:.25rem 0}\n"
+        "      #reproduce{margin-bottom:0}\n"
+        "      .layout{padding-bottom:0}\n",
         "recap print final-section spacing",
     )
     value = value.replace("<strong>130</strong>", "<strong>131</strong>")

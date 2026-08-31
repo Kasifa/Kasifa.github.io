@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { basename, join, resolve } from "node:path";
 import test from "node:test";
 import {
   collectSiteStrings,
@@ -25,6 +26,31 @@ test("HTML extraction keeps mathematical comparisons in their text node", () => 
     "<p>其对数导数为 \\(f(x)\\)<0，所以严格递减。</p>",
   );
   assert.deepEqual(strings, ["其对数导数为 \\(f(x)\\)<0，所以严格递减。"]);
+});
+
+test("recap enumeration includes canonical names and excludes conflict copies", async (t) => {
+  const root = await mkdtemp(join(tmpdir(), "i18n-recap-enumeration-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const fixturePublic = join(root, "public");
+  await mkdir(join(fixturePublic, "notes"), { recursive: true });
+
+  for (const name of [
+    "recap-r0-60.html",
+    "recap-r0-61-r0-73t.html",
+    "recap-r0-61-r0-73t 2.html",
+    "recap-r0-61-r0-73t 3.html",
+    "recap-r0-61-r0-73t 4.html",
+  ]) {
+    await writeFile(join(fixturePublic, name), "<!doctype html>");
+  }
+
+  const recapNames = (await listSiteHtmlFiles(fixturePublic))
+    .map((path) => basename(path))
+    .filter((name) => name.startsWith("recap-"));
+  assert.deepEqual(recapNames, [
+    "recap-r0-60.html",
+    "recap-r0-61-r0-73t.html",
+  ]);
 });
 
 test("every research page loads the shared language controls before MathJax", async () => {

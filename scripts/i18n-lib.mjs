@@ -2,6 +2,8 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const CHINESE_RE = /[\u3400-\u9fff\uf900-\ufaff]/u;
+const CANONICAL_RECAP_HTML_RE =
+  /^recap-r0-\d+[a-z0-9]*(?:-r0-\d+[a-z0-9]*)?\.html$/;
 const TRANSLATABLE_ATTRIBUTES = new Set([
   "alt",
   "aria-label",
@@ -84,7 +86,7 @@ export async function listSiteHtmlFiles(publicDirectory) {
     readdir(noteDirectory),
   ]);
   const recapFiles = publicFiles
-    .filter((name) => /^recap-.*\.html$/.test(name))
+    .filter((name) => CANONICAL_RECAP_HTML_RE.test(name))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
   const noteFiles = noteFilesRaw
     .filter((name) => /^r0-\d+[a-z0-9-]*\.html$/.test(name))

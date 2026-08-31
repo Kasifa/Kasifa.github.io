@@ -238,6 +238,10 @@ test("materialized R0.73N publication is exact when the manifest advances", asyn
     pages.note,
     /article mjx-container\[display="true"\]\{width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden\}/,
   );
+  assert.match(
+    pages.note,
+    /article mjx-container:not\(\[display="true"\]\)\{display:inline-block!important;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle\}/,
+  );
   assert.ok(pages.note.includes('href="/recap-r0-61-r0-73n.pdf"'));
   assert.equal(pages.note.includes('class="source-table"'), false);
   assert.equal(pages.note.includes("&gt; The amplification"), false);

@@ -17,7 +17,12 @@
    metadata rather than estimated from plotted samples.
 6. Render SVG, one-page PDF, and 600 dpi PNG at 178 mm by 118 mm.
 7. Verify source and generated-file inventories, regular-file status, CSV
-   schema, row order, JSON paths, finite renderer samples, and exact formulas.
+   schema, row order, and JSON paths. Require all 57 certificate-derived CSV
+   rows to match exactly. For the 101 closed-form renderer samples, require
+   every field except `y` to match exactly; keep the zero sample exact and
+   require each remaining `y` value to satisfy both absolute error at most
+   `2e-16` and IEEE-754 distance at most 256 ULP across platform `libm`
+   implementations.
 8. Verify PNG dimensions and DPI, PDF page count and media box, SVG viewBox,
    absence of remote SVG links, and use of only the declared two-root palette
    plus neutrals.

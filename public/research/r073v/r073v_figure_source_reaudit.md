@@ -26,13 +26,13 @@ This re-audit did not edit or regenerate the figure package.
 - Exact-certificate package commit:
   `b34d91ea96c257b943f11d134e8024138e5f3cb0`.
 - Figure source/raw-artifact commit:
-  `680fde5a24834b8e1c877f651eb20b119c671f49`.
-- Figure metadata reseal commit and current `HEAD`:
-  `b413586aa7a7389f8943acb2469eb28cdbbf31f3`.
+  `f94915332ff405ae723711e8041acc2af07e896b`.
+- Figure metadata reseal commit at the time of this re-audit:
+  `ae679d5afa5f3cfacfe79c4d7b8a462baca2c195`.
 - All 21 `seal.figureSourceBindings` were independently read with
-  `git cat-file blob` from `680fde5...`.  Every blob equals the current file
+  `git cat-file blob` from `f949153...`.  Every blob equals the current file
   byte for byte and has the SHA-256 recorded in the manifest.
-- All 25 package files were independently read from `b413586...`; every blob
+- All 25 package files were independently read from `ae679d5...`; every blob
   equals the current working-tree file.
 - `git status --porcelain=v1 --untracked-files=all -- <package>` returned no
   output.
@@ -40,8 +40,8 @@ This re-audit did not edit or regenerate the figure package.
   `figureSourceCommitAssigned=true`,
   `requiresParentFigureSourceCommitFinalReseal=false`, and
   `seal.state=formal-figure-source-seal`.
-- Commit ancestry is correct: the metadata reseal `b413586...` has figure
-  source commit `680fde5...` as its parent.
+- Commit ancestry is correct: the metadata reseal `ae679d5...` has figure
+  source commit `f949153...` as its parent.
 
 The two certificate outputs are also immutable at `b34d91e...`:
 
@@ -61,6 +61,10 @@ Their complete `commonCore` objects are equal.
 - Figure validator: 147/147 checks passed.
 - `validation.json`, `results.json`, and `manifest.json` agree on the 147
   checks and 158 source-data rows.
+- The evidence-aware CSV check keeps 57 certificate-derived rows string-exact;
+  across the 101 renderer rows it keeps every non-`y` field exact, keeps the
+  zero sample exact, and admits a remaining `y` value only when both the
+  `2e-16` absolute bound and the 256-ULP bound hold against the closed formula.
 - No `__pycache__`, subdirectory, unexpected file, or untracked figure-package
   entry is present.
 

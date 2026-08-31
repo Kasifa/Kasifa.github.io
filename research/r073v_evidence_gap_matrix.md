@@ -1,7 +1,7 @@
 # R0.73V evidence and gap matrix
 
-**Status:** analytic and two-path exact-certificate gates complete; formal
-figure and public-release gates remain open
+**Status:** analytic, two-path exact-certificate, and immutable formal-figure
+source gates complete; the public-release gate remains open
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -24,6 +24,7 @@ figure and public-release gates remain open
 | Bottom-scale order separation | Heat covariance expansion gives \(\kappa_s=O(s^2)\) and the centered pressure source \(\mathfrak P_s=O(s)\), with explicit leading tensors | high, parent derivation | A ratio lower bound needs a witness on which the relevant leading coefficients do not vanish | Publish the general expansion and bind any \(s^{-1}\) ratio to the exact four-site coefficient |
 | Fourth-order nonclosure | Classical KHM/Germano/LMN hierarchy plus direct raw-moment product law | next-level entry exact; nonclosure open | The sealed selected coefficient proves a nonzero quartic remainder, not that fourth-order data cannot close | Publish only `nonzeroQuarticNextLevelRemainder`; keep `fourthOrderNonClosure=NOT_ESTABLISHED` |
 | R0.73U witness decomposition | The R0.73V certificate independently rebuilds the full \(\kappa,Q,\Xi\) maps and the compressed lift | exact, sealed | Reuse is restricted to recomputed rows and the final source-bound seal | Cite the new R0.73V manifest and finite audit |
+| Formal figure | Four panels are rebuilt from the sealed two-path common core; 158 source-data rows and 147 validation checks are bound to immutable source and package commits | exact, source sealed | The curve is a closed-form renderer sample, not fitted or simulated data; the finite claims remain coefficientwise | Publish the figure with its caption, manifest, source data, QA rasters, and `NOT CLAY` boundary |
 | Equality-state collision for \(\kappa\)-only non-sufficiency | No witness yet | open | Raw cubic data plus lower moments can be information-rich; all-scale data may permit unstable inversion | Do not claim a no-go unless the exact collision is found |
 | Coefficientwise local-cubic failure | The sealed six-site zero mode has vanishing contracted \(\kappa\)-flux and \(Q\)-divergence but nonzero \(\Xi\) | exact, two-path sealed | It does not compare two whole states and does not exclude whole-field or inverse-heat reconstruction | Call only `sameOutputCoefficientNonRecovery` |
 | Primary-source collision | Germano 1992 is direct; Hill 2001, Eyink 1996/2006, Duchon--Robert 2000, LMN and Fursikov moment chains are adjacent | high | The deterministic local heat state differs from two-point or ensemble hierarchies | Keep object distinctions explicit and prohibit novelty/priority claims |
@@ -45,13 +46,11 @@ figure and public-release gates remain open
 
 ## Next bounded actions
 
-1. Complete the formal figure package from the sealed exact source data and
-   finish print-size, grayscale, and PDF-render QA.
-2. Publish the analytic proof, independent audit, exact certificate, figure,
+1. Publish the analytic proof, independent audit, exact certificate, figure,
    bilingual note, and cumulative recap as one atomic GitHub transaction.
-3. Keep the failed stronger equality-state collision explicit; do not upgrade
+2. Keep the failed stronger equality-state collision explicit; do not upgrade
    the coefficientwise witness into a whole-field no-go.
-4. In the next section, test whether the trace equation can pay the signed
+3. In the next section, test whether the trace equation can pay the signed
    production \(-\tau:\nabla v\) through heat carré-du-champ or time-integrated
    cancellation without assuming \(L_t^4L_x^6\).
 

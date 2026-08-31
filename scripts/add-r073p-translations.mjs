@@ -55,6 +55,7 @@ const requiredDictionaryTokens = [
   "finalSeal=TRUE",
   "formalFigurePackage=PASS",
   "publicReleaseContent=READY",
+  "noveltyOrPriorityClaim=FORBIDDEN",
 ];
 
 async function regularText(path, label, { allowMissing = false } = {}) {
@@ -188,9 +189,6 @@ if (dictionary.includes("formulaDiagnosticValidation=PRESEAL_PENDING") ||
 }
 if (!/^\*\*Next release:\*\*\s*R0\.73Q\s*$/m.test(dictionary)) {
   throw new Error("R0.73P dictionary next-release gate is not frozen to R0.73Q");
-}
-if (!/bounded/i.test(dictionary) || !/priority/i.test(dictionary)) {
-  throw new Error("R0.73P dictionary lost bounded-search/non-priority boundary");
 }
 
 const releaseManifest = JSON.parse(await regularText(

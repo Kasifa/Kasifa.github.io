@@ -1,4 +1,8 @@
 {
+  "analyticalQuestion": "Can the full local-product heat tensor recover pressure, and does that even quadratic state close the signed physical-time dynamics?",
+  "caption": {
+    "english": "caption.md"
+  },
   "claimBoundary": {
     "allTensorBoundsRuledOut": false,
     "clayProblemSolved": false,
@@ -12,14 +16,107 @@
     "singularSolution": false,
     "trajectorySymmetryClaim": false
   },
-  "createdUtc": "2026-08-31T18:32:59.246523+00:00",
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "python plot.py --render-preseal; python validate.py --source-commit <commit> --confirm-visual-qa; python validate.py --verify-only",
+    "kind": "exact-formula-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson"
+    },
+    "precision": "exact integer/rational formulas with deterministic rendering",
+    "runtimeMetadataProvenance": {
+      "captureMode": "same-host post-run manifest backfill",
+      "notOriginalRunEmission": true,
+      "source": "environment.json, progress.ndjson, resource-log.ndjson"
+    },
+    "scientificWallTimeSeconds": 0.9382106659468263,
+    "solver": "closed-form finite audit"
+  },
+  "compute": {
+    "cpu": "arm64 / 18 logical CPUs",
+    "dgxUsed": false,
+    "gpu": "not used",
+    "host": "Wool.local",
+    "memoryGiB": 36.0,
+    "metadataProvenance": "same-host post-run manifest backfill",
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-08-31T20:04:25.260444+00:00",
+  "createdUtc": "2026-08-31T20:04:25.260444+00:00",
+  "data": [
+    {
+      "bytes": 26164,
+      "path": "source-data.csv",
+      "schema": "r073u-tensor-heat-hierarchy-source-v1",
+      "sha256": "75ecb2139bb8667a89a1bb3353f67afbaa236b9c6570c7b93b5ed3689847e4aa"
+    },
+    {
+      "bytes": 1430,
+      "path": "results.json",
+      "schema": "r073u-tensor-heat-hierarchy-figure-results-v1",
+      "sha256": "ea31e46a0138566a224f7e169f61a157a9f918f592e3ee82e0c5fc36c6708784"
+    },
+    {
+      "bytes": 21299,
+      "path": "validation.json",
+      "schema": "r073u-tensor-heat-hierarchy-validation-v1",
+      "sha256": "40d3044d767d1506d922061f9adbc205325caa5ed74c202645fd2d18d4221a4e"
+    },
+    {
+      "bytes": 535,
+      "path": "progress.ndjson",
+      "schema": "progress-ndjson-v1",
+      "sha256": "84b51879a8dcdfd8b236123751a0a6b150000700725af788daea7bad58a84082"
+    },
+    {
+      "bytes": 1243,
+      "path": "resource-log.ndjson",
+      "schema": "resource-log-ndjson-v1",
+      "sha256": "e076249b82f70cc7a877d1924e6b53aa41dba56627cc73a2aa5278d163c6b75a"
+    }
+  ],
   "dgxUsed": false,
+  "environment": {
+    "packages": {
+      "matplotlib": "3.10.6",
+      "numpy": "2.5.2",
+      "pillow": "12.3.0",
+      "pypdf": "6.10.0",
+      "pypdfium2": "5.13.0"
+    },
+    "packagesLock": "requirements.txt",
+    "python": "3.12.13"
+  },
+  "figure": {
+    "outputs": [
+      {
+        "bytes": 54443,
+        "path": "figure.pdf",
+        "sha256": "5377b2cdb32d7e8c65429d0d59b8d20c31128d9627c62b09f4f7fd92fba32088"
+      },
+      {
+        "bytes": 170604,
+        "path": "figure.svg",
+        "sha256": "18826213480a95ddf0bb6a515e9be6beebeaec77816abcc2c0e697709b162fe1"
+      },
+      {
+        "bytes": 609990,
+        "dpi": 600,
+        "path": "figure.png",
+        "sha256": "f35bed77869d7ced9f5d27e1a0390d4c3d91f6d3a4f1b5fc6b52ced1d82ae4e8"
+      }
+    ]
+  },
   "figureId": "fig-r073u-tensor-heat-hierarchy",
   "files": [
     {
-      "bytes": 1739,
+      "bytes": 2367,
       "path": "README.md",
-      "sha256": "c9217ffd601978346f4b7e056ef79ca16663d5899f3bc699628939e36c90ead4"
+      "sha256": "1c531268cf1381571191759b2738acf677545aa7440bad633b389e00e8116218"
     },
     {
       "bytes": 1628,
@@ -32,9 +129,9 @@
       "sha256": "a71a16c92fd6b86902b55b9ae8ea8f0dd7e271ec15aa2f0582fa4511393334c8"
     },
     {
-      "bytes": 536,
+      "bytes": 638,
       "path": "command.txt",
-      "sha256": "46d5666a76207d1bef698cc540bd6ef950f1be0d1056faa2bda733524f89f3cd"
+      "sha256": "c5a2a313ba12afcf72632ea3502df43f2c3c4da872028597d445a2aa9e4fdb9c"
     },
     {
       "bytes": 542,
@@ -122,18 +219,62 @@
       "sha256": "75ecb2139bb8667a89a1bb3353f67afbaa236b9c6570c7b93b5ed3689847e4aa"
     },
     {
-      "bytes": 22036,
+      "bytes": 29955,
       "path": "validate.py",
-      "sha256": "7638afbe892c4bd76756cf1cda0c91d98855141ec496a3ad9337f6e8cb3806ed"
+      "sha256": "7a3aad939bfe7c9839510110d6560c256344aa1db98d1e0d7c946911a9a76f24"
     },
     {
       "bytes": 21299,
       "path": "validation.json",
-      "sha256": "0d5a9005486e325a4c9b5fe70e4476edda486c37a720ce5c029abfab34747fec"
+      "sha256": "40d3044d767d1506d922061f9adbc205325caa5ed74c202645fd2d18d4221a4e"
     }
   ],
   "finalSeal": true,
+  "git": {
+    "certificateCommit": "044bfb3f7e5af98e2615f60747c9e5109ef12d7c",
+    "dirtyAtCertifiedRun": false,
+    "dirtyScope": [
+      "research/figures/r073u/fig-r073u-tensor-heat-hierarchy",
+      "research/r073u_problem_freeze.md",
+      "research/r073u_tensor_heat_hierarchy.md",
+      "research/r073u_independent_analytic_audit.md",
+      "research/certificates/r073u"
+    ],
+    "figureMetadataResealCommit": "608fb79180e230210d84dd11094881eb9778365d",
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "84e808dae473f6381cbf9df55a71f5fe81a1cfce"
+  },
   "ordinaryTranslationPath": "LOCAL_DIRECT_NO_DGX",
+  "publicationStatus": "published",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "qaArtifacts": [
+      {
+        "bytes": 185978,
+        "path": "qa-pdf.png",
+        "schema": "qa-raster-v1",
+        "sha256": "da622fc69b2eaac92ee7b8b2b464cda791bc5b5094567b0858ec7a5cf9d0d589"
+      },
+      {
+        "bytes": 458428,
+        "path": "qa-final-size.png",
+        "schema": "qa-raster-v1",
+        "sha256": "69a907a04bf658495ed24c11d4ca78a31b999309b7e46a465f69400e8ce927df"
+      },
+      {
+        "bytes": 186672,
+        "path": "qa-grayscale.png",
+        "schema": "qa-raster-v1",
+        "sha256": "379747ea8d98162edc305abad105b157f2fe3d387972a42a6ea84639e9edb6c7"
+      }
+    ],
+    "scalesAndUnitsInspected": true,
+    "status": "passed"
+  },
+  "release": "R0.73U",
   "schemaVersion": "r073u-tensor-heat-hierarchy-manifest-v1",
   "sourceBindings": [
     {
@@ -157,6 +298,9 @@
   ],
   "sourceCommit": "84e808dae473f6381cbf9df55a71f5fe81a1cfce",
   "sourceCommitAssigned": true,
+  "sourceData": [],
+  "status": "formal",
+  "supportedClaim": "The full tensor recovers same-scale pressure and obeys an exact heat-covariance PDE, while a four-site exact witness proves that the even quadratic state does not determine the signed initial tangent.",
   "validation": {
     "checksPassed": 325,
     "checksRequired": 325,

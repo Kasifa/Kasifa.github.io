@@ -666,7 +666,9 @@ def build_recap(content: ReleaseContent) -> str:
         value,
         "      #retained li{margin:.14rem 0;line-height:1.4}\n",
         "      #retained li{margin:.14rem 0;line-height:1.4}\n"
-        "      #reproduce p{margin:.25rem 0}\n"
+        "      #reproduce .section-no{margin-bottom:.1rem}\n"
+        "      #reproduce h2{font-size:1.8rem;margin:.2rem 0 .35rem}\n"
+        "      #reproduce p{font-size:.9rem;line-height:1.35;margin:.15rem 0}\n"
         "      #reproduce{margin-bottom:0}\n"
         "      .layout{padding-bottom:0}\n",
         "recap print final-section spacing",

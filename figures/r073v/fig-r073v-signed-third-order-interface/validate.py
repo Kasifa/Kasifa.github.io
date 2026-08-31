@@ -12,6 +12,7 @@ import json
 import math
 from pathlib import Path
 import re
+import struct
 import subprocess
 import sys
 from typing import Any
@@ -63,6 +64,10 @@ EXPECTED_DEPENDENCIES = {
     "matplotlib": "3.10.6", "numpy": "2.5.2", "pillow": "12.3.0",
     "pypdf": "6.10.0", "pypdfium2": "5.13.0",
 }
+RENDERER_SAMPLE_ABSOLUTE_TOLERANCE = 2e-16
+RENDERER_SAMPLE_MAX_ULP_DISTANCE = 256
+EXPECTED_EXACT_CSV_ROWS = 57
+EXPECTED_RENDERER_CSV_ROWS = 101
 
 
 def parse_args() -> argparse.Namespace:
@@ -214,6 +219,65 @@ def find_row(rows: list[dict[str, str]], panel: str, series: str, record_name: s
     return matches[0]
 
 
+def nonnegative_ulp_distance(left: float, right: float) -> int:
+    require(left >= 0.0 and right >= 0.0, "renderer samples must be nonnegative")
+    left_bits = struct.unpack(">Q", struct.pack(">d", left))[0]
+    right_bits = struct.unpack(">Q", struct.pack(">d", right))[0]
+    return abs(left_bits - right_bits)
+
+
+def renderer_sample_close(left: float, right: float) -> bool:
+    return (
+        math.isfinite(left)
+        and math.isfinite(right)
+        and left >= 0.0
+        and right >= 0.0
+        and abs(left - right) <= RENDERER_SAMPLE_ABSOLUTE_TOLERANCE
+        and nonnegative_ulp_distance(left, right) <= RENDERER_SAMPLE_MAX_ULP_DISTANCE
+    )
+
+
+def csv_evidence_aware_reconstruction(
+    actual_rows: list[dict[str, str]], expected_rows: list[dict[str, str]],
+) -> bool:
+    if len(actual_rows) != len(expected_rows):
+        return False
+    exact_rows = 0
+    renderer_rows = 0
+    for actual, expected in zip(actual_rows, expected_rows, strict=True):
+        renderer = (
+            actual.get("panel") == "D"
+            and actual.get("series") == "quarticProfile"
+            and expected.get("panel") == "D"
+            and expected.get("series") == "quarticProfile"
+        )
+        if not renderer:
+            if actual != expected:
+                return False
+            exact_rows += 1
+            continue
+        renderer_rows += 1
+        if actual.keys() != expected.keys():
+            return False
+        if any(actual[field] != expected[field] for field in actual if field != "y"):
+            return False
+        if actual["x"] == "0":
+            if actual["y"] != expected["y"] or actual["y"] != "0":
+                return False
+            continue
+        try:
+            actual_y = float(actual["y"])
+            expected_y = float(expected["y"])
+        except ValueError:
+            return False
+        if not renderer_sample_close(actual_y, expected_y):
+            return False
+    return (
+        exact_rows == EXPECTED_EXACT_CSV_ROWS
+        and renderer_rows == EXPECTED_RENDERER_CSV_ROWS
+    )
+
+
 def reconstruct_checks(
     visual_confirmed: bool, figure_source_commit: str | None = None,
 ) -> tuple[list[dict[str, object]], list[dict[str, object]], list[dict[str, object]]]:
@@ -297,7 +361,15 @@ def reconstruct_checks(
     fields, actual_rows = read_csv(HERE / "source-data.csv")
     add(checks, "csv-fields", fields == list(CSV_FIELDS))
     add(checks, "csv-row-count", len(actual_rows) == 158 and len(expected_rows) == 158)
-    add(checks, "csv-exact-reconstruction", actual_rows == expected_rows)
+    add(
+        checks,
+        "csv-evidence-aware-reconstruction",
+        csv_evidence_aware_reconstruction(actual_rows, expected_rows),
+        exactRows=EXPECTED_EXACT_CSV_ROWS,
+        rendererRows=EXPECTED_RENDERER_CSV_ROWS,
+        rendererYAbsoluteTolerance="2e-16",
+        rendererYMaximumUlpDistance=RENDERER_SAMPLE_MAX_ULP_DISTANCE,
+    )
     add(checks, "csv-primary-hash-propagated",
         all(row["primary_sha256"] == contract["certificate"]["primarySha256"] for row in actual_rows))
     add(checks, "csv-independent-hash-propagated",
@@ -308,12 +380,15 @@ def reconstruct_checks(
         sum(row["series"] == "quarticProfile" for row in actual_rows) == 101)
     sample_rows = [row for row in actual_rows if row["series"] == "quarticProfile"]
     add(checks, "csv-renderer-samples-finite", all(
-        math.isfinite(float(row["x"])) and math.isfinite(float(row["y"])) for row in sample_rows
+        math.isfinite(float(row["x"])) and math.isfinite(float(row["y"]))
+        and float(row["y"]) >= 0.0 for row in sample_rows
     ))
     add(checks, "csv-renderer-sample-formula", all(
-        math.isclose(float(row["y"]), 2 * math.exp(-2 * float(row["x"]))
-                     * (1 - math.exp(-2 * float(row["x"]))) ** 2,
-                     rel_tol=0.0, abs_tol=2e-16)
+        renderer_sample_close(
+            float(row["y"]),
+            2 * math.exp(-2 * float(row["x"]))
+            * (1 - math.exp(-2 * float(row["x"]))) ** 2,
+        )
         for row in sample_rows
     ))
 
@@ -519,8 +594,11 @@ bindings passed before source-data reconstruction.
 
 Exact compressed-lift coefficients, all displayed four-site matrices and
 small-s orders, six-site zero/nonzero rows, the selected quartic coefficient,
-finite-epsilon extraction, and parabolic dilation passed. The plotted profile
-was reconstructed pointwise from the exact formula and was not used as a fit.
+finite-epsilon extraction, and parabolic dilation passed. All 57
+certificate-derived CSV rows are string-exact. The 101 plotted-profile rows
+are exact outside the renderer-only `y` field; those `y` values satisfy both
+the fixed absolute and ULP portability bounds against the closed formula and
+were not used as a fit.
 
 SVG/PDF/600-dpi PNG integrity, dimensions, declared palette, final-size raster,
 grayscale conversion, and independently regenerated PDF raster passed. Visual

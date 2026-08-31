@@ -18,6 +18,7 @@ const ENDPOINTS = Object.freeze({
   r073q: { version: "1.57", code: "R0.73Q", slug: "r0-73q", next: "R0.73R" },
   r073r: { version: "1.58", code: "R0.73R", slug: "r0-73r", next: "R0.73S" },
   r073s: { version: "1.59", code: "R0.73S", slug: "r0-73s", next: "R0.73T" },
+  r073t: { version: "1.60", code: "R0.73T", slug: "r0-73t", next: "R0.73U" },
 });
 
 async function page(name) {
@@ -47,7 +48,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through S boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through T boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -64,6 +65,7 @@ test("homepage current route reaches the materialized G through S boundary witho
   const isQ = endpoint.release === "r073q";
   const isR = endpoint.release === "r073r";
   const isS = endpoint.release === "r073s";
+  const isT = endpoint.release === "r073t";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -75,7 +77,9 @@ test("homepage current route reaches the materialized G through S boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isS
+  assert.ok(current.includes(isT
+    ? "<h3>R0.73T：动态 AQ 估计、精确非自治见证与压力张量障碍已分列</h3>"
+    : isS
     ? "<h3>R0.73S：二次自相关证书、尖锐差集障碍与低摘要 no-go 已分列</h3>"
     : isR
     ? "<h3>R0.73R：经典热--Besov、逐壳相位证书与零非线性边界已分列</h3>"
@@ -127,35 +131,35 @@ test("homepage current route reaches the materialized G through S boundary witho
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS) {
+  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS) {
+  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS) {
+  if (isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
-  if (isK || isL || isM || isN || isO || isP || isQ || isR || isS) {
+  if (isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
     assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
-  if (isL || isM || isN || isO || isP || isQ || isR || isS) {
+  if (isL || isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("non-selfadjoint adiabatic tracking / matching selected action"));
     assert.ok(current.includes("parameter-uniform nonselfadjoint adiabatic tracking"));
     assert.ok(current.includes("finite diagnostic: 15 primary / 5 independent / 346 figure rows"));
   }
-  if (isM || isN || isO || isP || isQ || isR || isS) {
+  if (isM || isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("prescribed-action planar nonlinear fixed-distance departure"));
     assert.ok(current.includes("prescribed-action planar nonlinear departure"));
     assert.ok(current.includes(
       "finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks",
     ));
   }
-  if (isN || isO || isP || isQ || isR || isS) {
+  if (isN || isO || isP || isQ || isR || isS || isT) {
     assert.ok(current.includes("fixed-member finite-strain stability / family-transfer obstruction"));
   }
-  if (isO || isP || isQ || isR || isS) {
+  if (isO || isP || isQ || isR || isS || isT) {
     for (const token of [
       "global-orbit stability / forced Kolmogorov contrast",
       "global-orbit H3 stability",
@@ -164,14 +168,14 @@ test("homepage current route reaches the materialized G through S boundary witho
     assert.equal(current.includes(
       "<h3>R0.73N：固定成员有限应变稳定性与族转移障碍已闭合</h3>"), false);
   }
-  if (isP || isQ || isR || isS) {
+  if (isP || isQ || isR || isS || isT) {
     for (const token of [
       "critical H1/2 stability / N^-1/2 frequency gate",
       "band-limited N^-1/2 gate",
       "earlyWeakIntervalRegularity=OPEN",
     ]) assert.ok(home.includes(token), token);
   }
-  if (isQ || isR || isS) {
+  if (isQ || isR || isS || isT) {
     for (const token of [
       "critical heat-flow tube / endpoint boundary",
       "critical heat-flow tube",
@@ -179,7 +183,7 @@ test("homepage current route reaches the materialized G through S boundary witho
     ]) assert.ok(home.includes(token), token);
     if (isQ) assert.ok(home.includes("<h3>R0.73R 下一接口</h3>"));
   }
-  if (isR || isS) {
+  if (isR || isS || isT) {
     for (const token of [
       "shellwise phase certificate",
       "classical heat--Besov mechanism",
@@ -190,7 +194,7 @@ test("homepage current route reaches the materialized G through S boundary witho
     if (isR) assert.ok(home.includes("<h3>R0.73S 下一接口</h3>"));
     assert.equal(home.includes("<h3>R0.73R 下一接口</h3>"), false);
   }
-  if (isS) {
+  if (isS || isT) {
     for (const token of [
       "quadratic autocorrelation certificate",
       "difference-support obstruction",
@@ -198,8 +202,19 @@ test("homepage current route reaches the materialized G through S boundary witho
       "基础不等式直接落在经典",
       "/assets/r073s/fig-r073s-quadratic-certificate.pdf",
     ]) assert.ok(home.includes(token), token);
-    assert.ok(home.includes("<h3>R0.73T 下一接口</h3>"));
+    if (isS) assert.ok(home.includes("<h3>R0.73T 下一接口</h3>"));
     assert.equal(home.includes("<h3>R0.73S 下一接口</h3>"), false);
+  }
+  if (isT) {
+    for (const token of [
+      "dynamic AQ upper inequality",
+      "carrier-scale non-autonomy",
+      "pressure-tensor barrier",
+      "缺失的 A 积分已有经典 LPS 强度",
+      "/assets/r073t/fig-r073t-dynamic-autocorrelation.pdf",
+    ]) assert.ok(home.includes(token), token);
+    assert.ok(home.includes("<h3>R0.73U 下一接口</h3>"));
+    assert.equal(home.includes("<h3>R0.73T 下一接口</h3>"), false);
   }
   assert.equal(home.includes(`<h3>${endpoint.code} 下一接口</h3>`), false);
 
@@ -222,7 +237,7 @@ test("homepage current route reaches the materialized G through S boundary witho
   );
 });
 
-test("literature route records the materialized G through S boundary", async () => {
+test("literature route records the materialized G through T boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -239,6 +254,7 @@ test("literature route records the materialized G through S boundary", async () 
   const isQ = endpoint.release === "r073q";
   const isR = endpoint.release === "r073r";
   const isS = endpoint.release === "r073s";
+  const isT = endpoint.release === "r073t";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -278,7 +294,42 @@ test("literature route records the materialized G through S boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isS) {
+  if (isT) {
+    for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r", "r073s"]) {
+      assert.ok(literature.includes(`id="${previous}-boundary"`));
+    }
+    assert.ok(literature.includes('class="route-r073t-deck-update"'));
+    assert.ok(topology.includes(
+      '<div class="route-step kept"><header><b>R0.73T</b><strong>dynamic autocorrelation and the pressure-tensor barrier</strong>',
+    ));
+    for (const token of [
+      "exactAutocorrelationEvolution=VERIFIED_CLASSICAL_RECONSTRUCTION",
+      "dynamicAQUpperInequality=INTERNAL_COROLLARY",
+      "criticalAIntegral=INTERNAL_EXACT_SCALING",
+      "criticalAIntegralControl=OPEN",
+      "carrierScaleNonAutonomy=CLOSED_EXACT",
+      "signedVelocityPhaseInPressurePairing=CLOSED_EXACT",
+      "pressureTensorNeededForGeneralReconstruction=VERIFIED_CLASSICAL",
+      "finiteFormulaDiagnosticChecks=55",
+      "formalFigureChecks=106",
+      "navierStokesSimulation=NOT_RUN",
+      "ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX",
+      "tensorHeatClosure=OPEN",
+      "arbitraryThreeDimensionalGlobalRegularity=OPEN",
+      "clayConclusion=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73T boundary ${token}`);
+    for (const token of [
+      "dynamic AQ inequality=INTERNAL_COROLLARY",
+      "critical A integral / tensor heat closure=OPEN",
+      "不承担新颖性或优先权声明",
+    ]) assert.ok(literature.includes(token), `R0.73T literature update ${token}`);
+    for (const token of [
+      "开放接口 · R0.73U",
+      "tensor heat hierarchy",
+      "critical signed flux",
+    ]) assert.ok(topology.includes(token), `R0.73U interface ${token}`);
+  } else if (isS) {
     for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r"]) {
       assert.ok(literature.includes(`id="${previous}-boundary"`));
     }

@@ -1,0 +1,17 @@
+# Use a Python 3.12.13 environment created from requirements.txt.
+# R073Y_SOURCE_ROOT must name the clean checkout at the frozen source commit.
+# MPLCONFIGDIR is optional, but if supplied it must be outside this archive.
+
+export R073Y_SOURCE_ROOT=/path/to/frozen/repository
+export MPLCONFIGDIR=/path/to/external/matplotlib-cache
+python3.12 plot.py --render
+export DETERMINISM_BASELINE=/path/to/external/deterministic-core-baseline.json
+python3.12 validate.py --capture-deterministic-core "$DETERMINISM_BASELINE"
+python3.12 plot.py --render
+python3.12 validate.py --repository "$R073Y_SOURCE_ROOT" --confirm-visual-qa --determinism-baseline "$DETERMINISM_BASELINE"
+
+# Commit exactly the 21 source/raw files at their final repository path.
+# Resolve the real commit; never replace this with a guessed hash.
+: "${FIGURE_SOURCE_COMMIT:?set this to the actual 40-hex commit containing the 21 source/raw files}"
+python3.12 validate.py --repository /path/to/repository --figure-source-commit "$FIGURE_SOURCE_COMMIT" --confirm-visual-qa
+python3.12 validate.py --repository /path/to/repository --verify-only

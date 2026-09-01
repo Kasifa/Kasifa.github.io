@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.65">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.73Y｜Exact shear class rules out production-only coercivity</title><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script>
+<script defer src="/i18n-en.js?v=1.65"></script>
+<script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}.top{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between}main{width:min(920px,90vw);margin:auto}.hero{padding:64px 0 32px;border-bottom:1px solid var(--ink)}h1{font-size:clamp(2rem,6vw,4.3rem);line-height:1.05}h2{margin-top:3rem;color:var(--rule)}.stamp,.section-no{font:700 12px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}article{padding:20px 0 80px}.equation{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}code{overflow-wrap:anywhere;word-break:break-word}pre.report-ledger,pre.report-ledger code{max-width:100%;white-space:pre-wrap}pre.report-ledger{overflow-x:auto}a{color:#702824}img{max-width:100%;height:auto}@media(max-width:600px){html,body{max-width:100%;overflow-x:hidden;overflow-x:clip}body{font-size:15px}.equation{contain:inline-size paint}.equation mjx-container[display="true"]{display:block!important;width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.73Y · NOT CLAY</span></nav><main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73Y · EXACT ANALYTIC NO-GO / LITERATURE-CALIBRATED</div>
+        <h1>R0.73Y｜Exact shear 类否定 production-only coercivity</h1>
+        <p class="lead">全尺度零 production、A≠0 时严格正 heat covariance 与最小修复边界</p><p>R0.73X 留下的 signed-to-positive coercivity 桥，至少在 production-only 形式下是假的。存在一整个光滑、零均值的周期 Navier--Stokes exact shear 类：对每个实振幅，\(\Pi_s=\mathscr S_s=Q_s=0\) 在所有正 heat 尺度上成立；对每个非零振幅 \(A\ne0\)，\(D_{ii,s}&gt;0\) 逐点严格成立；零振幅成员是平凡场，且 \(D_{ii,s}=0\)。因而，零输入上取零的 production-only functional 不可能给出振幅无关的有限 coercive modulus。这是 exact no-go theorem，不是正则性判据。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73Y 完成</span><strong>analytic exact witness / not DNS</strong><p>版本 R0.73Y · 2026-09-01</p><p>exact shear NSE：PROVED ANALYTICALLY</p><p>production channels：ZERO AT EVERY POSITIVE SCALE</p><p>gradient covariance：STRICTLY POSITIVE FOR A ≠ 0; ZERO FOR A = 0</p><p>basic shear novelty / priority：NOT CLAIMED</p><p>NOT CLAY</p></div>
+    </div></header>
+      <article>
+        <section id="quantifier-correction" class="callout"><div class="section-no">Q / Quantifier correction</div><h2>严格正性只对非零振幅成员陈述</h2><p>冻结 theorem 的精确量词是：production 对所有实振幅为零；当 A ≠ 0 时 D<sub>ii,s</sub> &gt; 0；A = 0 时为平凡零场且 D<sub>ii,s</sub> = 0。本页按受审纠错源对原 reader report 的三处省略量词做精确替换，不改动已冻结的证明字节。</p></section>
+        <section id="section"><div class="section-no">01 / canonical report</div><h2>本节结论</h2><p>R0.73X 留下的 signed-to-positive coercivity 桥，至少在 production-only 形式下是假的。存在一整个光滑、零均值的 周期 Navier--Stokes exact shear 类。对任意实振幅 \(A\in\mathbb R\)，</p><div class="equation result">\[
+ \Pi_s=\mathscr S_s=Q_s=0
+ \qquad\text{for every }t&gt;0, x\in\mathbb T^3, s&gt;0,
+\tag{1.1}
+\]</div><p>而且</p><div class="equation result">\[
+ A\ne0\Longrightarrow D_{ii,s}&gt;0,\qquad A=0\Longrightarrow D_{ii,s}=0
+\tag{1.2}
+\]</div><p>逐点成立，而且 R0.73X 的正尺度大小满足</p><div class="equation result">\[
+ \mathcal Z_A
+ :=\mathcal E^\square[u^A](z_0,4R)^{3/2}
+ +\mathcal A_{\rm ext}^\square[u^A,p^A](z_0,R;\theta)
+ =|A|^3C,\qquad C&gt;0.
+\tag{1.3}
+\]</div><p>所以，凡是只由 \(\Pi_s\) 和 \(\mathscr S_s\) 经过 scalar weight、 cutoff、绝对值、有限求和或积分构成、且在零输入处取零的 functional \(\mathfrak P\)，都不能给出振幅无关的有限模量</p><div class="equation result">\[
+ \mathcal Z_A\le\omega(\mathfrak P_A),
+ \qquad \omega(0)&lt;\infty.
+\tag{1.4}
+\]</div><p>这是一条 exact no-go theorem，不是正则性判据。反例族本身全部光滑， 没有产生奇性，也没有否定 CKN epsilon regularity。</p></section>
+        <section id="exact-shear"><div class="section-no">02 / canonical report</div><h2>更强的 exact shear 类</h2><p>取</p><div class="equation result">\[
+ k\in\mathbb Z^3\setminus\{0\},\qquad
+ a\in\mathbb R^3\setminus\{0\},\qquad a\cdot k=0,
+\tag{2.1}
+\]</div><p>令 \(f_0\in C^\infty(\mathbb T)\) 非常数且零均值，并定义</p><div class="equation result">\[
+ F(t,\vartheta)=e^{\nu|k|^2t\partial_\vartheta^2}f_0(\vartheta),
+ \qquad
+ u^A(t,x)=AaF(t,k\cdot x),\qquad p^A=0.
+\tag{2.2}
+\]</div><p>正交条件同时消掉 divergence 和 convection：</p><div class="equation result">\[
+ \nabla\cdot u^A=A(a\cdot k)F'=0,
+ \qquad
+ (u^A\cdot\nabla)u^A=A^2aF(a\cdot k)F'=0.
+\tag{2.3}
+\]</div><p>而 \(F\) 的时间演化恰好支付 \(\nu\Delta u^A\)。这不是静态测试场、 线性化解或数值轨迹，而是真实 NSE 解。</p><p>对 \(H_\sigma=e^{\sigma\partial_\vartheta^2}\)，三维 heat filter 精确化为</p><div class="equation result">\[
+ P_su^A=AaH_{s|k|^2}F.
+\tag{2.4}
+\]</div><p>其 stress 与 filtered gradient 分别沿 \(a\otimes a\) 和 \(a\otimes k\)：</p><div class="equation result">\[
+ \tau_s=A^2(a\otimes a)
+ \bigl[H_{s|k|^2}(F^2)-(H_{s|k|^2}F)^2\bigr],
+\tag{2.5}
+\]</div><div class="equation result">\[
+ \nabla P_su^A=A(a\otimes k)\partial_\vartheta H_{s|k|^2}F.
+\tag{2.6}
+\]</div><p>因为</p><div class="equation result">\[
+ (a\otimes a):(a\otimes k)=|a|^2(a\cdot k)=0,
+\tag{2.7}
+\]</div><p>故 \(\Pi_s=-\tau_s:\nabla P_su^A=0\)。centered increment 平行于 \(a\)，但只依赖 \(k\cdot y\)；Euclidean-lift Gaussian 在正交的 \(a\)-方向给出奇积分，因此 \(\mathscr S_s=0\)。</p><p>当 \(A\ne0\) 时，gradient covariance 是严格正的 heat variance；当 \(A=0\) 时，它恒等于零：</p><div class="equation result">\[
+ \boxed{
+ A\ne0\Longrightarrow D_{ii,s}=A^2|a|^2|k|^2
+ \left\{H_{s|k|^2}\![(F')^2]
+ -(H_{s|k|^2}F')^2\right\}&gt;0.}
+\tag{2.8}
+\]</div><p>周期 heat kernel 处处为正。若方差在某点为零，则 \(F'\) 在整个圆周 几乎处处为常数；周期性迫使它为零，与 \(f_0\) 非常数及有限时间 heat 半群在非零 Fourier 模上的单射性矛盾。</p></section>
+        <section id="fourier"><div class="section-no">03 / canonical report</div><h2>单一 Fourier 见证与可复现证书</h2><p>证书固定</p><div class="equation result">\[
+ u^A(t,x)=Ae^{-\nu n^2t}\sin(nx_2)e_1,\qquad n\ge1.
+\tag{3.1}
+\]</div><p>令 \(\rho=e^{-n^2s}\)。可逐项得到</p><div class="equation result">\[
+ \tau_{11,s}={b_A(t)^2\over2}
+ \bigl[(1-\rho^2)+(\rho^2-\rho^4)\cos(2nx_2)\bigr],
+\tag{3.2}
+\]</div><div class="equation result">\[
+ \begin{aligned}
+ A\ne0\Longrightarrow D_{ii,s}
+ &amp;= {b_A(t)^2n^2\over2}(1-\rho^2)
+    (1-\rho^2\cos(2nx_2))\\
+ &amp;\ge {b_A(t)^2n^2\over2}(1-\rho^2)^2&gt;0,\\
+ A=0&amp;\Longrightarrow D_{ii,s}=0.
+ \end{aligned}
+\tag{3.3}
+\]</div><p>deterministic certificate 在 \(\mathbb Q[\rho][\mathbb Z]\) 中精确核验 NSE residual、heat multiplier、stress、tensor-support contraction、 centered parity、\(D\) 与 fixed-scale trace ledger；另用五组直接 Gaussian 积分作交叉验证。数值最大 scaled discrepancy 为 \(1.286\times10^{-13}\)，但任何普遍量词和严格正性都来自解析证明， 不依赖该有限数值。</p><p>跨平台 gate 对解析、代数、结构、量词和 claim ledger 逐字段严格比较； 只有明确位于 numerical cross-check 下的 binary64 字段允许 \(5\times10^{-12}\) 相对、\(5\times10^{-13}\) 绝对容差。stored payload hash、误差阈值和 Markdown report 绑定仍为严格校验。</p></section>
+        <section id="covariance"><div class="section-no">04 / canonical report</div><h2>正 covariance 由什么支付</h2><p>对单模见证，subfilter energy 的 torus 平均满足</p><div class="equation result">\[
+ {d\over dt}\int_{\mathbb T^3}k_s\,dx
+ +\nu\int_{\mathbb T^3}D_{ii,s}\,dx=0.
+\tag{4.1}
+\]</div><p>所以 \(\Pi_s=\mathscr S_s=0\) 并不迫使 \(D_{ii,s}=0\)。正 covariance 由 subfilter storage 的下降支付；局部化后，还要保留 endpoint、 time-cutoff、spatial-cutoff 和 viscous-boundary 等 nonproduction debt。 这些项的 signed sum 由 exact ledger 固定，但它们的绝对值不受零 production 控制。</p><p>这给出了修复方向：任何可能成立的正向定理，都必须保留至少一个能检测 shear kernel 的正量，例如 scale-critical covariance、endpoint/cutoff debt，或独立的正 tent norm。</p></section>
+        <section id="section-2"><div class="section-no">05 / canonical report</div><h2>文献校准</h2><p>本节最重要的文献事实不是“未发现重合”，而是发现了直接重合：</p><ul class="report-list"><li>Jeong--Yoneda（2022）在 \(\mathbb T^3\) 上明确使用 \(u^L(t,x_2)e_1\)，其演化就是一维 heat equation；</li><li>Vreman（2004）已经把 simple shear 列入 exact SGS dissipation 为零的 laminar flow classes；</li><li>Germano（1992）和 Eyink--Aluie（2009）的 exact small-scale energy ledger 已把 signed production 与 nonnegative gradient covariance 分成 不同账目；</li><li>Johnson（2020）把 Gaussian filter width squared 写成 diffusion-scale coordinate，并给出 exact stress evolution；</li><li>Duchon--Robert（2000）建立 cubic increment defect 的局部能量背景；</li><li>Yu（2026，预印本）已明确指出 coarse pressure--flux work 的 observability 可能因 cancellation/coherent profiles 失败，并把 positive covariance 作为 anti-kernel 方向之一。</li></ul><p>因此，exact shear、\(\Pi_s=0\)、正 covariance 以及一般性的“signed flux 不自动 coercive”都不能申报为新发现。可保留的成果只是：把这些已知机制 放进 R0.73X 的精确定义中，得到一个全 heat scale、全 cutoff/path、真实 NSE、振幅无界的 production-only no-go package。限定检索未发现逐字相同 的打包命题，但这不是 novelty 或 priority 证明。</p></section>
+        <section id="section-3"><div class="section-no">06 / canonical report</div><h2>价值评估</h2><p>本节对整个 Clay 问题的直接推进很小；它不提供任意三维解的新正估计。 它的研究价值是“及时关闭错误路线”：若继续尝试仅从 \(\Pi_s\) 或 \(\mathscr S_s\) 的小ness 推出正尺度 smallness，必然撞上 exact shear kernel。这个否证节省后续证明成本，并把下一步所需信息写得更精确。</p><p>作为独立论文主定理，当前结果过于初等，且与 LES/coarse-graining 文献 高度邻近。若要形成更高水平成果，必须继续完成正向部分：在 quotient 掉 Vreman/orthogonal-shear kernel 后，加入最小 positive observable，并证明 统一 coercivity；或者构造真正三维、pressure-active 的 production-invisible exact family。</p></section>
+        <section id="r0-73z"><div class="section-no">07 / canonical report</div><h2>R0.73Z 的冻结任务</h2><p>下一节不再尝试 production-only bridge，而先冻结一个同次齐次的正观测：</p><div class="equation result">\[
+ \mathcal D_{3/2}^{\square}(z_0,R;\theta)
+ ={1\over R}\int_{I_R^\square}\int_0^{\theta R^2}
+ \int_{B_R}D_{ii,s}^{3/2}\,dx\,ds\,dt.
+\tag{7.1}
+\]</div><p>它在 Navier--Stokes scaling 下无量纲、对振幅为三次，并能检测本节 shear kernel。R0.73Z 依次完成：</p><ol class="report-list report-list-ordered"><li>精确核验 (7.1) 的 scaling、finiteness 和 suitable-weak 正尺度定义；</li><li>分类 rank-one orthogonal shear 类上的零 production kernel；</li><li>对两模、pressure-active 和 local-cutoff probes 做反例压力测试；</li><li>只有通过前三关后，才提出 quotient coercivity 的精确定理；</li><li>任何失败都以 exact counterexample 记录，不把 conjecture 写成 theorem。</li></ol><p>开放项仍包括 compact quotient coercivity、endpoint debt 的最小性、 suitable-weak \(s=0\) endpoint、epsilon regularity、任意三维 global regularity 与 Clay conclusion。</p><p><strong>NOT CLAY.</strong></p></section>
+        <section id="figure"><div class="section-no">F / Journal figure</div><h2>解析 exact shear kernel，不是 DNS</h2><p><img src="/assets/r073y/fig-r073y-exact-shear-obstruction.svg" alt="R0.73Y analytic exact shear witness: zero production, positive heat covariance, and cubic amplitude homogeneity"></p><p><a href="/assets/r073y/fig-r073y-exact-shear-obstruction.pdf">下载矢量 PDF</a> · <a href="/assets/r073y/fig-r073y-exact-shear-obstruction.png">下载 600 dpi PNG</a> · <a href="/assets/r073y/fig-r073y-exact-shear-obstruction.svg">打开 SVG</a></p><p>附图只画解析公式和由解析公式导出的 source data。它是 analytic exact witness，不是 simulation 或 DNS，也不是奇性或 blow-up 候选。</p></section>
+        <section id="release-boundary"><div class="section-no">B / Exact claim boundary</div><h2>文献事实、本节证明、有限核验与开放问题分开</h2><p>文献直接碰撞：Vreman 已包含 simple shear 的零 exact SGS dissipation；Jeong--Yoneda 已使用周期 heat-evolving shear；Germano 与 Eyink--Aluie 已分开 signed production 和 nonnegative covariance。因此不申报 basic shear mechanism 的新颖性或优先权。</p><p>PROVED：exactShearNSE=PROVED_ANALYTICALLY；allPositiveHeatScalesZeroProduction=PROVED_ANALYTICALLY；gradientCovarianceStrictlyPositiveForAneq0AndSgt0=PROVED_ANALYTICALLY；zeroAmplitudeMemberCovariance=ZERO；positiveSizeCubicHomogeneity=PROVED_ANALYTICALLY；productionOnlyCoercivity=REFUTED_FOR_ZERO_PRESERVING_FUNCTIONALS</p><p>FINITE：singleFourierCertificate=FINITE_CROSS_CHECK_ONLY；formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED；formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES；navierStokesSimulation=NOT_RUN；directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；dgxUsed=false</p><p>OPEN：quotientCoercivity=OPEN；pressureActiveInvisibleFamily=OPEN；suitableWeakZeroScaleEndpoint=OPEN；epsilonRegularity=OPEN；arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN</p><p>本节只否定在零输入处取零的 production-only functional 对 R0.73X 正尺度大小的振幅无关有限模量。它不否定加入 covariance、endpoint 或 cutoff debt 的估计，也不提供奇性、epsilon regularity 或任意三维初值全局正则结论。 NOT CLAY。</p></section>
+        <section id="reproduce"><div class="section-no">R / Reproduction</div><h2>证明、证书、审计与复现</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073y_exact_shear_no_go.md">解析定理</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073y_exact_shear_independent_reaudit.md">独立复审</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073y_primary_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073y_reader_quantifier_correction.md">读者层量词纠错</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073y">证书档案</a></p><p><a href="/research/r073y/r073y_figure_source_audit.md">附图 source audit</a> · <a href="/research/r073y/r073y_figure_source_reaudit.md">附图 re-audit</a></p><p><a href="/assets/r073y/fig-r073y-exact-shear-obstruction.pdf">期刊附图 PDF</a> · <a href="/notes/r0-73y.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
+        <section id="references"><div class="section-no">References</div><h2>参考文献</h2><ol class="report-list report-list-ordered"><li>I.-J. Jeong and T. Yoneda, <em>Proc. Amer. Math. Soc.</em> <strong>150</strong> (2022), <a href="https://doi.org/10.1090/proc/15754">DOI</a>, <a href="https://arxiv.org/abs/2012.14621">arXiv</a>.</li><li>A. W. Vreman, <em>Phys. Fluids</em> <strong>16</strong> (2004), <a href="https://doi.org/10.1063/1.1785131">DOI</a>, <a href="https://www.vremanresearch.nl/Vreman-PF2004-subgridmodel.pdf">author PDF</a>.</li><li>M. Germano, <em>J. Fluid Mech.</em> <strong>238</strong> (1992), <a href="https://doi.org/10.1017/S0022112092001733">DOI</a>.</li><li>G. L. Eyink and H. Aluie, <em>Phys. Fluids</em> <strong>21</strong> (2009), <a href="https://doi.org/10.1063/1.3266883">DOI</a>, <a href="https://arxiv.org/abs/0909.2386">arXiv</a>.</li><li>P. L. Johnson, <em>Phys. Rev. Lett.</em> <strong>124</strong> (2020), <a href="https://doi.org/10.1103/PhysRevLett.124.104501">DOI</a>, <a href="https://arxiv.org/abs/1912.00293">arXiv</a>.</li><li>J. Duchon and R. Robert, <em>Nonlinearity</em> <strong>13</strong> (2000), <a href="https://doi.org/10.1088/0951-7715/13/1/312">DOI</a>.</li><li>L. Caffarelli, R. Kohn, and L. Nirenberg, <em>Comm. Pure Appl. Math.</em> <strong>35</strong> (1982), <a href="https://doi.org/10.1002/cpa.3160350604">DOI</a>.</li><li>R. Yu, arXiv:2606.25322v1 (2026), <a href="https://arxiv.org/abs/2606.25322">record</a>, <a href="https://doi.org/10.48550/arXiv.2606.25322">DOI</a>.</li></ol></section>
+      </article>
+</main></body></html>

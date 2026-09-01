@@ -23,6 +23,7 @@ const provenancePath = resolve(root, "research/r074a_note_pdf_render.json");
 const bindingPath = resolve(root, "research/r074a_pdf_bindings.json");
 const rendererPath = resolve(root, "scripts/render-note-pdf.mjs");
 const reportPath = resolve(root, "research/r074a_localized_kd_size_lemma.md");
+const translatedReportPath = resolve(root, "research/r074a_localized_kd_size_lemma_zh.md");
 const dictionaryPath = resolve(root, "research/r074a_bilingual_dictionary.md");
 const indexGenerator = resolve(root, "scripts/generate_note_index.py");
 const i18nBuilder = resolve(root, "scripts/build-i18n.mjs");
@@ -113,9 +114,9 @@ async function validateAndBind(writeBinding) {
       throw new Error(`protected recap drift: ${path}`);
     }
   }
-  const [html, pdf, provenanceBytes, renderer, report, dictionary] = await Promise.all([
+  const [html, pdf, provenanceBytes, renderer, report, translatedReport, dictionary] = await Promise.all([
     readFile(htmlPath), readFile(pdfPath), readFile(provenancePath), readFile(rendererPath),
-    readFile(reportPath), readFile(dictionaryPath),
+    readFile(reportPath), readFile(translatedReportPath), readFile(dictionaryPath),
   ]);
   const structure = inspectPdf(pdf, "public/notes/r0-74a.pdf");
   if (structure.title !== title) {
@@ -145,10 +146,16 @@ async function validateAndBind(writeBinding) {
     throw new Error("render provenance sidecar mismatch");
   }
   const binding = {
-    schemaVersion: "r074a-synchronized-pdf-bindings-v1",
+    schemaVersion: "r074a-synchronized-pdf-bindings-v2",
     release: "R0.74A",
     canonicalTitleSource: {
       path: "research/r074a_localized_kd_size_lemma.md", sha256: sha256(report), publicChineseTitle: title,
+    },
+    publicChineseReportSource: {
+      path: "research/r074a_localized_kd_size_lemma_zh.md",
+      bytes: translatedReport.length,
+      sha256: sha256(translatedReport),
+      translationScope: "complete canonical report sections 01--06; equations and claim boundaries preserved",
     },
     canonicalBoundarySource: {
       path: "research/r074a_bilingual_dictionary.md", sha256: sha256(dictionary),
@@ -170,6 +177,7 @@ async function validateAndBind(writeBinding) {
     },
     claimBoundary: {
       htmlAndPdfBytesCryptographicallyBound: true,
+      completeChineseCanonicalReport: true,
       loadedMainDocumentEqualsSourceHtml: true,
       pdfHeaderEofXrefPageCountAndTitleValidated: true,
       positiveFourBlockMajorization: "PROVED_ANALYTICALLY",

@@ -18,6 +18,7 @@ const publicDirectory = resolve(root, "public");
 const translationPath = resolve(root, "translations/en.json");
 const bundlePath = resolve(publicDirectory, "i18n-en.js");
 const snapshotPath = resolve(root, "scripts/i18n-snapshots/r074a-missing.json");
+const fullReportMapPath = resolve(root, "research/r074a_full_zh_translation_map.json");
 const mode = process.argv.length === 2 ? "--apply" : process.argv[2];
 if (!["--apply", "--check-only", "--capture-missing"].includes(mode)) {
   throw new Error("usage: add-r074a-translations.mjs [--apply|--check-only|--capture-missing]");
@@ -296,8 +297,16 @@ if (mode === "--capture-missing") {
 
 if (mode === "--apply") {
   const snapshot = JSON.parse(await readFile(snapshotPath, "utf8"));
-  const snapshotByZh = new Map(snapshot.map((entry) => [entry.zh, entry]));
-  const unresolved = missing.filter((entry) => !snapshotByZh.get(entry.zh)?.en?.trim());
+  const fullReportMap = JSON.parse(await readFile(fullReportMapPath, "utf8"));
+  const fullReportByZh = new Map(fullReportMap.map((entry) => [entry.zh, entry]));
+  for (const entry of translations) {
+    const reviewed = fullReportByZh.get(entry.zh);
+    if (reviewed?.en?.trim()) entry.en = reviewed.en.trim();
+  }
+  const reviewedByZh = new Map(
+    [...snapshot, ...fullReportMap].map((entry) => [entry.zh, entry]),
+  );
+  const unresolved = missing.filter((entry) => !reviewedByZh.get(entry.zh)?.en?.trim());
   if (unresolved.length) {
     throw new Error(`R0.74A local-direct snapshot has ${unresolved.length} unresolved string(s); run --capture-missing and review them`);
   }
@@ -306,7 +315,7 @@ if (mode === "--apply") {
     return Number.isFinite(number) ? Math.max(maximum, number) : maximum;
   }, 0) + 1;
   for (const entry of missing) {
-    const reviewed = snapshotByZh.get(entry.zh);
+    const reviewed = reviewedByZh.get(entry.zh);
     translations.push({
       id: `s${nextId++}`,
       zh: entry.zh,

@@ -8,12 +8,12 @@
 <style>:root{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}.top{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}main{width:min(920px,90vw);margin:auto}.hero{padding:56px 0 28px;border-bottom:1px solid var(--ink)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:2rem}h1{font-size:clamp(2rem,6vw,4rem);line-height:1.05}h2{margin-top:3rem;color:var(--rule)}.stamp,.section-no{font:700 12px/1.5 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}article{padding:20px 0 80px}p,.callout{overflow-wrap:anywhere}.equation{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}a{color:#702824}img{max-width:100%;height:auto}.callout{padding:1rem 1.25rem;background:#fff8e8;border:1px solid #c8bfa8}@media(max-width:720px){html,body{max-width:100%;overflow-x:hidden}body{font-size:15px}main,article,section{min-width:0}.hero-inner{grid-template-columns:1fr}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{.top{display:none}body{background:white;font-size:10.5pt}main{width:auto}.hero{padding-top:0}a{color:inherit;text-decoration:none}section{break-inside:auto}}</style></head>
 <body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74A · NOT CLAY</span></nav><main>
 <header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74A · EXACT ANALYTIC SIZE LEMMA / FINITE CERTIFICATE</div><h1>R0.74A｜混合 heat covariance 的局部 size lemma</h1><p>core 由局部能量支付，exterior 由两个显式 Gaussian 二次尾支付</p><p>四块正 majorization 给出 \(\theta^{1/4}\) 或 \(\theta\) 付款；旧的 R0.73X exterior package 单独不够，新 velocity endpoint tail 与复用的 gradient tail 只保证有限，不保证小或可吸收。</p></div><div class="stamp"><strong>状态 · R0.74A 完成</strong><p>版本 R0.74A · 2026-09-01</p><p>size lemma：PROVED</p><p>arithmetic certificate：FINITE</p><p>tail absorption / epsilon regularity：OPEN</p><p>LOCAL DIRECT / NO DGX</p><p>NOT CLAY</p></div></div></header>
-<article><section id="frozen-definitions-and-the-clock-qualification"><div class="section-no">01 / canonical report</div><h2>Frozen definitions and the clock qualification</h2><p>The standard and viscosity-adapted time intervals frozen in R0.73X are</p><div class="equation result">\[
+<article><section id="frozen-definitions-and-the-clock-qualification"><div class="section-no">01 / 规范报告</div><h2>冻结定义与时间钟说明</h2><p>R0.73X 冻结的标准时间区间和黏度适配时间区间为</p><div class="equation result">\[
  I_R^{\rm std}=(t_0-R^2,t_0),
  \qquad
  I_R^\nu=(t_0-R^2/\nu,t_0).
 \tag{1.1}
-\]</div><p>Both scale parabolically because \(\nu\) is unchanged by the Navier--Stokes scaling.  They are not interchangeable.</p><p>For either clock, the canonical local energy frozen in R0.73X is</p><div class="equation result">\[
+\]</div><p>由于 Navier--Stokes 缩放不改变 \(\nu\)，两个区间都按抛物尺度缩放，但二者不能互换。</p><p>对任一时间钟，R0.73X 冻结的规范局部能量是</p><div class="equation result">\[
  \mathcal E^\square(z_0,\rho)
  =\frac1\rho\mathop{\rm ess\,sup}_{t\in I_\rho^\square}
    \int_{B_\rho}|u|^2\,dx
@@ -21,42 +21,42 @@
    |\nabla u|^2\,dx\,dt,
  \qquad \square\in\{{\rm std},\nu\}.
 \tag{1.2}
-\]</div><p>Every comparison below uses the same \(\square\) on the left and right. No assertion replaces \(I_R^\nu\) by a standard interval, or conversely. Because the right-hand side uses radius \(4R\), the common quantifier is</p><div class="equation result">\[
+\]</div><p>下面每一处比较都在等式两侧使用同一个 \(\square\)。本文没有把 \(I_R^\nu\) 换成标准区间，也没有作相反替换。由于右端使用半径 \(4R\)，共同量词为</p><div class="equation result">\[
  I_{4R}^\square\Subset(0,T).
 \tag{1.3}
-\]</div><p>Let \(P_s=e^{s\Delta}\) be the periodic heat semigroup.  At almost every physical time for which \(u(t)\in H^1(\mathbb T^3)\), set</p><div class="equation result">\[
+\]</div><p>令 \(P_s=e^{s\Delta}\) 为周期 heat 半群。在几乎每个满足 \(u(t)\in H^1(\mathbb T^3)\) 的物理时刻，定义</p><div class="equation result">\[
  \begin{aligned}
  k_s&amp;=\frac12\bigl(P_s|u|^2-|P_su|^2\bigr),\\
  D_s&amp;=P_s|\nabla u|_F^2-|\nabla P_su|_F^2.
  \end{aligned}
 \tag{1.4}
-\]</div><p>The exact variance formulas imply</p><div class="equation result">\[
+\]</div><p>精确 variance 公式给出</p><div class="equation result">\[
  0\le k_s\le\frac12P_s|u|^2,
  \qquad
  0\le D_s\le P_s|\nabla u|_F^2.
 \tag{1.5}
-\]</div><p>Throughout,</p><div class="equation result">\[
+\]</div><p>全文均假设</p><div class="equation result">\[
  0&lt;R&lt;\frac\pi8,
  \qquad 0&lt;\theta\le1,
  \qquad I_{4R}^\square\Subset(0,T),
 \tag{1.6}
-\]</div><p>and</p><div class="equation result">\[
+\]</div><p>以及</p><div class="equation result">\[
  u\in L_t^\infty L_x^2(I_{4R}^\square\times\mathbb T^3)
  \cap L_t^2H_x^1(I_{4R}^\square\times\mathbb T^3).
 \tag{1.7}
-\]</div><p>Pressure does not enter (0.1) or Theorem 4.1.  It enters only through the inherited pressure-tail interface in Corollary 4.3.</p><p>---</p></section>
-<section id="lifted-annuli-and-the-two-quadratic-exterior-inputs"><div class="section-no">02 / canonical report</div><h2>Lifted annuli and the two quadratic exterior inputs</h2><p>Fix a lift \(\widetilde x_0\in\mathbb R^3\) of \(x_0\), and write \(\widetilde u\) for the periodic lift.  Put</p><div class="equation result">\[
+\]</div><p>pressure 不进入 (0.1) 或定理 4.1；它只通过推论 4.3 中继承的 pressure-tail 接口进入。</p><p>---</p></section>
+<section id="lifted-annuli-and-the-two-quadratic-exterior-inputs"><div class="section-no">02 / 规范报告</div><h2>提升环带与两个二次外部输入</h2><p>固定 \(\widetilde x_0\in\mathbb R^3\) 为 \(x_0\) 的一个提升，并以 \(\widetilde u\) 表示周期提升。令</p><div class="equation result">\[
  C_R=B_{2R}(\widetilde x_0),
  \qquad E_R=\mathbb R^3\setminus C_R,
 \tag{2.1}
-\]</div><p>and, for \(m\ge1\),</p><div class="equation result">\[
+\]</div><p>并对 \(m\ge1\) 定义</p><div class="equation result">\[
  A_m(R)=\{y:2^mR\le|y-\widetilde x_0|&lt;2^{m+1}R\}.
 \tag{2.2}
-\]</div><p>Up to null boundaries, the annuli partition \(E_R\).  They include all lattice copies of the periodic field.  Use the weight frozen in R0.73X,</p><div class="equation result">\[
+\]</div><p>忽略零测边界后，这些环带分割 \(E_R\)，并包含周期场的全部格点副本。使用 R0.73X 冻结的权重</p><div class="equation result">\[
  \gamma_m(\theta)
  =\theta^{-2}\exp\!\left(-\frac{4^{m-1}}{32\theta}\right).
 \tag{2.3}
-\]</div><p>For almost every \(t\in I_R^\square\), define</p><div class="equation result">\[
+\]</div><p>对几乎每个 \(t\in I_R^\square\)，定义</p><div class="equation result">\[
  \begin{aligned}
  U_\gamma(t;R,\theta)
  &amp;=\sum_{m\ge1}\gamma_m(\theta)
@@ -66,7 +66,7 @@
    \int_{A_m(R)}|\nabla\widetilde u(t,y)|_F^2\,dy.
  \end{aligned}
 \tag{2.4}
-\]</div><p>The scale-invariant exterior quantities used below are</p><div class="equation result">\[
+\]</div><p>下面使用的尺度不变量为</p><div class="equation result">\[
  \boxed{
  \begin{aligned}
  \mathcal U_{\rm ext}^{\infty,\square}(z_0,R;\theta)
@@ -76,29 +76,29 @@
  &amp;=\frac\nu R\int_{I_R^\square}G_\gamma(t;R,\theta)\,dt.
  \end{aligned}}
 \tag{2.5}
-\]</div><p>The superscripts record the time exponents, not derivative orders.  The second row is not a new tail: comparison with R0.73X (7.2) gives the exact identity</p><div class="equation result">\[
+\]</div><p>上标记录的是时间指数，不是导数阶数。第二行不是新的尾项：与 R0.73X 的 (7.2) 比较可得精确恒等式</p><div class="equation result">\[
  \boxed{
  \mathcal G_{\nabla,\rm ext}^{1,\square}(z_0,R;\theta)
  =\mathcal D_{\rm ext}^{\square}(z_0,R;\theta).}
 \tag{2.5a}
-\]</div><p>Only \(\mathcal U_{\rm ext}^{\infty,\square}\) is newly introduced in this note.  We use \(\mathcal D_{\rm ext}^{\square}\) from now on.</p><h3>Lemma 2.1 — scaling and finiteness of the tails</h3><p>Under</p><div class="equation result">\[
+\]</div><p>本笔记只新引入 \(\mathcal U_{\rm ext}^{\infty,\square}\)。下文继续使用 \(\mathcal D_{\rm ext}^{\square}\) 的记号。</p><h3>引理 2.1：尾项的缩放与有限性</h3><p>在</p><div class="equation result">\[
  u_\lambda(t,x)=\lambda u(\lambda^2t,\lambda x),
  \qquad R_\lambda=R/\lambda,
 \tag{2.6}
-\]</div><p>with the corresponding rescaled center and interval,</p><div class="equation result">\[
+\]</div><p>以及相应缩放后的中心和区间下，</p><div class="equation result">\[
  \mathcal U_{\rm ext}^{\infty,\square}[u_\lambda]
  =\mathcal U_{\rm ext}^{\infty,\square}[u],
  \qquad
  \mathcal D_{\rm ext}^{\square}[u_\lambda]
  =\mathcal D_{\rm ext}^{\square}[u].
 \tag{2.7}
-\]</div><p>Both quantities are finite under (1.7).</p><h4>Proof</h4><p>On corresponding annuli,</p><div class="equation result">\[
+\]</div><p>在 (1.7) 下，这两个量均有限。</p><h4>证明</h4><p>在对应环带上，</p><div class="equation result">\[
  \int|u_\lambda|^2\,dx=\lambda^{-1}\int|u|^2\,dx,
  \qquad
  \int|\nabla u_\lambda|^2\,dx
  =\lambda\int|\nabla u|^2\,dx.
 \tag{2.8}
-\]</div><p>Together with \(R_\lambda^{-1}=\lambda R^{-1}\) and \(dt_\lambda=\lambda^{-2}dt\), this proves (2.7), with the periodic lattice rescaled in the standard local Navier--Stokes scaling convention.</p><p>Each lifted annulus contains at most \(C[1+(2^mR)^3]\) fundamental cells.  Hence</p><div class="equation result">\[
+\]</div><p>结合 \(R_\lambda^{-1}=\lambda R^{-1}\) 与 \(dt_\lambda=\lambda^{-2}dt\)，即可得到 (2.7)；其中周期格点按照标准的局部 Navier--Stokes 缩放约定一同缩放。</p><p>每个提升环带至多包含 \(C[1+(2^mR)^3]\) 个基本胞元。因此</p><div class="equation result">\[
  \begin{aligned}
  U_\gamma(t)
  &amp;\le C\|u(t)\|_{L^2(\mathbb T^3)}^2
@@ -108,8 +108,8 @@
    \sum_{m\ge1}\gamma_m[1+(2^mR)^3].
  \end{aligned}
 \tag{2.9}
-\]</div><p>The sums converge because \(\gamma_m\) decays faster than geometrically. Now (1.7) proves finiteness. \(\square\)</p><p>---</p></section>
-<section id="positive-core-exterior-majorization"><div class="section-no">03 / canonical report</div><h2>Positive core/exterior majorization</h2><p>For \(x\in B_R\) and \(0&lt;s\le\theta R^2\), define</p><div class="equation result">\[
+\]</div><p>由于 \(\gamma_m\) 的衰减快于几何级数，上述级数收敛；再由 (1.7) 即得有限性。\(\square\)</p><p>---</p></section>
+<section id="positive-core-exterior-majorization"><div class="section-no">03 / 规范报告</div><h2>正的核心/外部上界分解</h2><p>对 \(x\in B_R\) 和 \(0&lt;s\le\theta R^2\)，定义</p><div class="equation result">\[
  \begin{aligned}
  U_c&amp;=\int_{C_R}g_s(\widetilde x-y)|\widetilde u(y)|^2\,dy,
  &amp;U_e&amp;=\int_{E_R}g_s(\widetilde x-y)|\widetilde u(y)|^2\,dy,\\
@@ -117,33 +117,33 @@
  &amp;G_e&amp;=\int_{E_R}g_s(\widetilde x-y)|\nabla\widetilde u(y)|_F^2\,dy.
  \end{aligned}
 \tag{3.1}
-\]</div><p>These are positive pieces of the uncentered moments.  They are not separate covariances.  From (1.5),</p><div class="equation result">\[
+\]</div><p>它们是未中心化矩的正分块，并不是彼此独立的 covariance。由 (1.5)，</p><div class="equation result">\[
  \boxed{
  D_s\sqrt{k_s}
  \le\frac1{\sqrt2}\left(
  G_c\sqrt{U_c}+G_c\sqrt{U_e}
  +G_e\sqrt{U_c}+G_e\sqrt{U_e}\right).}
 \tag{3.2}
-\]</div><p>This is the core/core, core/exterior, exterior/core, and exterior/exterior split used in the theorem.</p><p>There is no claimed exact four-term covariance identity.  Directly splitting \(u=1_{C_R}u+1_{E_R}u\) inside a covariance creates cross terms such as</p><div class="equation result">\[
+\]</div><p>这就是定理所用的 core/core、core/exterior、exterior/core 和 exterior/exterior 分解。</p><p>本文不主张存在精确的四项 covariance 恒等式。若在 covariance 内直接分解 \(u=1_{C_R}u+1_{E_R}u\)，会产生如下交叉项：</p><div class="equation result">\[
  -2(P_s(1_{C_R}\nabla u)):(P_s(1_{E_R}\nabla u)),
 \tag{3.3}
-\]</div><p>and the square root of the velocity covariance cannot be expanded linearly.  The positive majorization (3.2) avoids that false identity.</p><p>The R0.73X Gaussian annulus lemma gives, uniformly in the full scale interval,</p><div class="equation result">\[
+\]</div><p>而速度 covariance 的平方根也不能线性展开。正的上界分解 (3.2) 避开了这一错误恒等式。</p><p>R0.73X 的 Gaussian 环带引理在完整尺度区间上一致给出</p><div class="equation result">\[
  \boxed{
  U_e(t,x,s)\le CR^{-3}U_\gamma(t),
  \qquad
  G_e(t,x,s)\le CR^{-3}G_\gamma(t).}
 \tag{3.4}
-\]</div><p>Also,</p><div class="equation result">\[
+\]</div><p>同时，</p><div class="equation result">\[
  \int_{B_R}G_c(t,x,s)\,dx
  \le\int_{B_{2R}}|\nabla u(t,y)|_F^2\,dy.
 \tag{3.5}
-\]</div><p>Finally, periodic heat ultracontractivity implies</p><div class="equation result">\[
+\]</div><p>最后，周期 heat 超收缩性给出</p><div class="equation result">\[
  \|U_c(t,\cdot,s)\|_{L^\infty(B_R)}^{1/2}
  \le C_{\mathbb T^3}s^{-3/4}
  \|u(t)\|_{L^2(B_{2R})}.
 \tag{3.6}
 \]</div><p>---</p></section>
-<section id="the-localized-size-theorem"><div class="section-no">04 / canonical report</div><h2>The localized size theorem</h2><p>For \(I=I_R^\square\), put</p><div class="equation result">\[
+<section id="the-localized-size-theorem"><div class="section-no">04 / 规范报告</div><h2>局部 size 定理</h2><p>对 \(I=I_R^\square\)，令</p><div class="equation result">\[
  \begin{aligned}
  A_c(I,R)
  &amp;=\frac1R\mathop{\rm ess\,sup}_{t\in I}
@@ -152,7 +152,7 @@
  &amp;=\frac\nu R\int_I\int_{B_{2R}}|\nabla u|_F^2\,dx\,dt.
  \end{aligned}
 \tag{4.1}
-\]</div><h3>Theorem 4.1 — core/exterior Gaussian size lemma</h3><p>Assume (1.6)--(1.7).  Then</p><div class="equation result">\[
+\]</div><h3>定理 4.1：core/exterior Gaussian size 引理</h3><p>假设 (1.6)--(1.7) 成立，则</p><div class="equation result">\[
  \boxed{
  \begin{aligned}
  \mathcal K_D^\square(z_0,R;\theta)
@@ -164,13 +164,13 @@
    \mathcal D_{\rm ext}^{\square}\big].
  \end{aligned}}
 \tag{4.2}
-\]</div><p>Since \(0&lt;\theta\le1\), this implies the factorized bound</p><div class="equation result">\[
+\]</div><p>由于 \(0&lt;\theta\le1\)，还可推出因子化估计</p><div class="equation result">\[
  \mathcal K_D^\square
  \le C_{\mathbb T^3}\theta^{1/4}
  \left(A_c^{1/2}+(\mathcal U_{\rm ext}^{\infty,\square})^{1/2}\right)
  \left(B_c+\mathcal D_{\rm ext}^{\square}\right).
 \tag{4.3}
-\]</div><p>For either clock, the matching R0.73X local energy gives</p><div class="equation result">\[
+\]</div><p>对任一时间钟，与之匹配的 R0.73X 局部能量给出</p><div class="equation result">\[
  \boxed{
  \mathcal K_D^\square(z_0,R;\theta)
  \le C_{\mathbb T^3}\theta^{1/4}
@@ -180,55 +180,55 @@
  +\mathcal D_{\rm ext}^{\square}(z_0,R;\theta)
  \right]^{3/2}.}
 \tag{4.4}
-\]</div><p>Here \(\mathcal K_{D,cc}\) denotes the contribution obtained from \(G_c\sqrt{U_c}/\sqrt2\) in (3.2).</p><h4>Proof: core--core</h4><p>By (3.5)--(3.6),</p><div class="equation result">\[
+\]</div><p>这里，\(\mathcal K_{D,cc}\) 表示 (3.2) 中由 \(G_c\sqrt{U_c}/\sqrt2\) 产生的贡献。</p><h4>证明：core--core</h4><p>由 (3.5)--(3.6)，</p><div class="equation result">\[
  \int_{B_R}G_c\sqrt{U_c}\,dx
  \le Cs^{-3/4}
  \|u(t)\|_{L^2(B_{2R})}
  \|\nabla u(t)\|_{L^2(B_{2R})}^2.
 \tag{4.5}
-\]</div><p>Since</p><div class="equation result">\[
+\]</div><p>又因为</p><div class="equation result">\[
  \int_0^{\theta R^2}s^{-3/4}\,ds
  =4\theta^{1/4}R^{1/2},
 \tag{4.6}
-\]</div><p>we obtain</p><div class="equation result">\[
+\]</div><p>所以</p><div class="equation result">\[
  \mathcal K_{D,cc}^\square
  \le C\theta^{1/4}
  A_c^{1/2}B_c.
 \tag{4.7}
-\]</div><p>For either fixed \(\square\), the spatial inclusion \(B_{2R}\subset B_{4R}\) and the matching time inclusion \(I_R^\square\subset I_{4R}^\square\) give</p><div class="equation result">\[
+\]</div><p>对任一固定的 \(\square\)，空间包含关系 \(B_{2R}\subset B_{4R}\) 与匹配的时间包含关系 \(I_R^\square\subset I_{4R}^\square\) 给出</p><div class="equation result">\[
  A_c+B_c\le4\mathcal E^\square(z_0,4R).
 \tag{4.8}
-\]</div><p>Thus the core--core row is paid by \(C\theta^{1/4}(\mathcal E^\square)^{3/2}\).  Combining (4.8) with (4.3) and the elementary bound \((a^{1/2}+b^{1/2})(c+d)\le C(a+b+c+d)^{3/2}\) proves (4.4).</p><h4>Proof: core--exterior</h4><p>Using (3.4)--(3.5),</p><div class="equation result">\[
+\]</div><p>因此 core--core 行由 \(C\theta^{1/4}(\mathcal E^\square)^{3/2}\) 支付。把 (4.8) 与 (4.3) 结合，并使用初等不等式 \((a^{1/2}+b^{1/2})(c+d)\le C(a+b+c+d)^{3/2}\)，即可证明 (4.4)。</p><h4>证明：core--exterior</h4><p>利用 (3.4)--(3.5)，</p><div class="equation result">\[
  \int_{B_R}G_c\sqrt{U_e}\,dx
  \le CR^{-3/2}U_\gamma(t)^{1/2}
  \int_{B_{2R}}|\nabla u(t)|^2\,dx.
 \tag{4.9}
-\]</div><p>The integrand no longer depends on \(s\).  Integrating over a scale interval of length \(\theta R^2\), and then over physical time, gives</p><div class="equation result">\[
+\]</div><p>被积函数不再依赖 \(s\)。先在长度为 \(\theta R^2\) 的尺度区间积分，再在物理时间上积分，得到</p><div class="equation result">\[
  \mathcal K_{D,ce}^\square
  \le C\theta B_c
  (\mathcal U_{\rm ext}^{\infty,\square})^{1/2}.
 \tag{4.10}
-\]</div><h4>Proof: exterior--core</h4><p>From (3.4) and \(|B_R|\simeq R^3\),</p><div class="equation result">\[
+\]</div><h4>证明：exterior--core</h4><p>由 (3.4) 和 \(|B_R|\simeq R^3\)，</p><div class="equation result">\[
  \int_{B_R}G_e\sqrt{U_c}\,dx
  \le Cs^{-3/4}G_\gamma(t)
  \|u(t)\|_{L^2(B_{2R})}.
 \tag{4.11}
-\]</div><p>Using (4.6) and the definitions (4.1), (2.5),</p><div class="equation result">\[
+\]</div><p>再用 (4.6) 以及 (4.1)、(2.5) 的定义，得到</p><div class="equation result">\[
  \mathcal K_{D,ec}^\square
  \le C\theta^{1/4}A_c^{1/2}
  \mathcal D_{\rm ext}^{\square}.
 \tag{4.12}
-\]</div><h4>Proof: exterior--exterior</h4><p>The two estimates in (3.4) give</p><div class="equation result">\[
+\]</div><h4>证明：exterior--exterior</h4><p>(3.4) 中的两个估计给出</p><div class="equation result">\[
  \int_{B_R}G_e\sqrt{U_e}\,dx
  \le CR^{-3/2}G_\gamma(t)U_\gamma(t)^{1/2}.
 \tag{4.13}
-\]</div><p>After integration in \(s\) and \(t\),</p><div class="equation result">\[
+\]</div><p>在 \(s\) 和 \(t\) 上积分后，</p><div class="equation result">\[
  \mathcal K_{D,ee}^\square
  \le C\theta
  (\mathcal U_{\rm ext}^{\infty,\square})^{1/2}
  \mathcal D_{\rm ext}^{\square}.
 \tag{4.14}
-\]</div><p>Adding (4.7), (4.10), (4.12), and (4.14) proves (4.2). \(\square\)</p><h3>Remark 4.2 — sharper coupled tails</h3><p>The separated pair in (2.5) is convenient but not the only bookkeeping. The three exact Hölder pairings produced by the proof are</p><div class="equation result">\[
+\]</div><p>把 (4.7)、(4.10)、(4.12) 与 (4.14) 相加，即得 (4.2)。\(\square\)</p><h3>注 4.2：更尖锐的耦合尾项</h3><p>(2.5) 中的分离配对便于记账，但并非唯一选择。证明实际产生的三个精确 Hölder 配对为</p><div class="equation result">\[
  \begin{aligned}
  \mathcal T_{ce}
  &amp;=\frac\nu R\int_I
@@ -242,10 +242,10 @@
  \left(\frac{U_\gamma(t)}R\right)^{1/2}dt.
  \end{aligned}
 \tag{4.15}
-\]</div><p>Each is scale invariant.  They give a sharper mixed-tail formulation if a later argument can estimate them directly.  This note does not claim that the separated tails in (2.5) are optimal among every possible coupled functional.</p><h3>Corollary 4.3 — interface with the pressure-cutoff row</h3><p>Assume in addition that \((u,p)\) is a periodic suitable weak solution on \(\mathbb T^3\times(0,T)\), with \(p\in L_{t,x}^{3/2}\), and that the common R0.73X pressure-tail quantifiers hold.  Let</p><div class="equation result">\[
+\]</div><p>每个量都具有尺度不变性。如果后续论证能直接估计它们，就可得到更尖锐的 mixed-tail 表述。本笔记不主张 (2.5) 的分离尾项在所有可能的耦合 functional 中最优。</p><h3>推论 4.3：与 pressure-cutoff 行的接口</h3><p>进一步假设 \((u,p)\) 是 \(\mathbb T^3\times(0,T)\) 上的周期 suitable weak solution， \(p\in L_{t,x}^{3/2}\)，且满足 R0.73X 的共同 pressure-tail 量词。令</p><div class="equation result">\[
  Q_s=P_s(pu)-P_sp\,P_su,
 \tag{4.16}
-\]</div><p>let \(s:I_R^\square\to(0,\theta R^2]\) be measurable, and let \(\eta_R\in W_0^{1,\infty}(B_R)\) satisfy \(\|\nabla\eta_R\|_\infty\le C_\eta/R\).  Combining Theorem 4.1 with the R0.73X pressure-covariance estimate (5.7) and its local-energy payment (6.2) gives</p><div class="equation result">\[
+\]</div><p>令 \(s:I_R^\square\to(0,\theta R^2]\) 可测，并令 \(\eta_R\in W_0^{1,\infty}(B_R)\) 满足 \(\|\nabla\eta_R\|_\infty\le C_\eta/R\)。把定理 4.1 与 R0.73X 的 pressure-covariance 估计 (5.7) 及其局部能量付款 (6.2) 结合，得到</p><div class="equation result">\[
  \boxed{
  \begin{aligned}
  &amp;\mathcal K_D^\square(z_0,R;\theta)
@@ -262,58 +262,58 @@
  \right\}.
  \end{aligned}}
 \tag{4.17}
-\]</div><p>The new velocity endpoint tail and the reused gradient tail pay \(\mathcal K_D\).  The older \(\mathcal A_{\rm ext}\) continues to pay the nonlocal pressure and harmonic rows.  No claim is made that the two quadratic tails alone control a general \(Q_s\).</p><p>---</p></section>
-<section id="why-the-older-exterior-functional-is-insufficient"><div class="section-no">05 / canonical report</div><h2>Why the older exterior functional is insufficient</h2><p>The R0.73X functional is</p><div class="equation result">\[
+\]</div><p>新的 velocity endpoint tail 与复用的 gradient tail 支付 \(\mathcal K_D\)。旧的 \(\mathcal A_{\rm ext}\) 继续支付非局部 pressure 行与 harmonic 行。本文不主张这两个二次尾项能够单独控制一般的 \(Q_s\)。</p><p>---</p></section>
+<section id="why-the-older-exterior-functional-is-insufficient"><div class="section-no">05 / 规范报告</div><h2>为什么旧 exterior functional 不足</h2><p>R0.73X 的 functional 为</p><div class="equation result">\[
  \mathcal A_{\rm ext}^\square
  =\mathcal G_{u,p}^\square+\mathcal H_u^\square,
 \tag{5.1}
-\]</div><p>where \(\mathcal G_{u,p}\) contains the Gaussian annular integral of</p><div class="equation result">\[
+\]</div><p>其中 \(\mathcal G_{u,p}\) 包含下列量的 Gaussian 环带积分：</p><div class="equation result">\[
  |u|^3+|p-c_R(t)|^{3/2},
 \tag{5.2}
-\]</div><p>and \(\mathcal H_u\) contains an algebraically weighted annular \(|u|^2\) moment used for harmonic pressure.  Neither term contains \(|\nabla u|^2\).  Also, the Gaussian \(|u|^3\) row is integrated in physical time and does not control an essential time supremum of annular \(L^2\) energy.</p><p>The next examples are pure function-level obstructions.  They are not Navier--Stokes solutions and do not construct a singularity.</p><h3>Example 5.1 — exterior high-frequency packet</h3><p>Choose a ball \(B_<em>\Subset A_2(R)\) whose closure is disjoint from \(B_{4R}\), and choose \(\phi\in C_c^\infty(B_</em>)\), \(\phi\ne0\).  For integers \(N\) and amplitudes \(\varepsilon_N&gt;0\), let</p><div class="equation result">\[
+\]</div><p>而 \(\mathcal H_u\) 包含用于 harmonic pressure 的代数加权环带 \(|u|^2\) 矩。两项都不包含 \(|\nabla u|^2\)。此外，Gaussian \(|u|^3\) 行在物理时间上积分，不能控制环带 \(L^2\) 能量的本质时间上确界。</p><p>下面两个例子只是函数层障碍。它们不是 Navier--Stokes 解，也不构造奇性。</p><h3>例 5.1：外部高频包</h3><p>选取球 \(B_*\Subset A_2(R)\)，其闭包与 \(B_{4R}\) 不交，并取 \(\phi\in C_c^\infty(B_*)\)、\(\phi\ne0\)。对整数 \(N\) 和振幅 \(\varepsilon_N&gt;0\)，令</p><div class="equation result">\[
  b_N(y)=\frac{\varepsilon_N}N\phi(y)\sin(Ny_1)e_3,
  \qquad w_N=\nabla\times b_N.
 \tag{5.3}
-\]</div><p>Regard the packet as a periodic field in the fixed chart and set its associated Poisson pressure to</p><div class="equation result">\[
+\]</div><p>在固定坐标图中把该包视为周期场，并令其对应 Poisson pressure 为</p><div class="equation result">\[
  p_N=\mathcal R_i\mathcal R_j(w_{N,i}w_{N,j}),
  \qquad -\Delta p_N=\partial_i\partial_j(w_{N,i}w_{N,j}).
 \tag{5.3a}
-\]</div><p>Then \(w_N\) is smooth, divergence free, and supported in \(B_*\).  For all sufficiently large \(N\),</p><div class="equation result">\[
+\]</div><p>则 \(w_N\) 光滑、散度为零，并支撑于 \(B_*\)。当 \(N\) 充分大时，</p><div class="equation result">\[
  \|w_N\|_{L^2}+\|w_N\|_{L^3}\simeq_\phi\varepsilon_N,
  \qquad
  \|\nabla w_N\|_{L^2}\simeq_\phi\varepsilon_NN,
  \qquad
  \|p_N\|_{L^{3/2}}\le C_\phi\varepsilon_N^2.
 \tag{5.4}
-\]</div><p>The last estimate is the periodic Calder\'on--Zygmund bound.  For a time-independent packet on a fixed interval,</p><div class="equation result">\[
+\]</div><p>最后一个估计是周期 Calder\'on--Zygmund 估计。对固定区间上的时间无关包，</p><div class="equation result">\[
  \mathcal E^\square(z_0,4R)=0,
  \qquad
  \mathcal A_{\rm ext}^\square\le C\varepsilon_N^3.
 \tag{5.4a}
-\]</div><p>Fix \(0&lt;\alpha&lt;\beta\le\theta\).  The periodic heat kernel has a positive minimum on \(s\in[\alpha R^2,\beta R^2]\).  Since a periodic curl and its gradient have zero spatial mean, the exact variance formulas give, uniformly for \(x\in B_R\) on that scale band,</p><div class="equation result">\[
+\]</div><p>固定 \(0&lt;\alpha&lt;\beta\le\theta\)。周期 heat kernel 在 \(s\in[\alpha R^2,\beta R^2]\) 上有正的最小值。由于周期 curl 及其梯度的空间均值为零，精确 variance 公式在该尺度带上对 \(x\in B_R\) 一致给出</p><div class="equation result">\[
  k_s[w_N](x)\ge c\varepsilon_N^2,
  \qquad
  D_s[w_N](x)\ge c\varepsilon_N^2N^2.
 \tag{5.4b}
-\]</div><p>Consequently</p><div class="equation result">\[
+\]</div><p>因此</p><div class="equation result">\[
  \mathcal K_D^\square[w_N]\ge c\varepsilon_N^3N^2.
 \tag{5.4c}
-\]</div><p>Taking \(\varepsilon_N=N^{-2/3}\) yields</p><div class="equation result">\[
+\]</div><p>取 \(\varepsilon_N=N^{-2/3}\)，得到</p><div class="equation result">\[
  \mathcal K_D^\square[w_N]\ge c,
  \qquad
  \mathcal E^\square(z_0,4R)=0,
  \qquad
  \mathcal A_{\rm ext}^\square=O(N^{-2})\longrightarrow0.
 \tag{5.4d}
-\]</div><p>Thus the older \((\mathcal E^\square)^{3/2}+\mathcal A_{\rm ext}^\square\) payment does not control \(\mathcal K_D\) for arbitrary periodic energy-class velocity/Poisson-pressure pairs.  The static packets are not unforced Navier--Stokes trajectories, so (5.4d) is not a suitable-weak NSE counterexample.</p><h3>Example 5.2 — exterior time concentration</h3><p>Let \(w\in C_c^\infty(B_*;\mathbb R^3)\) be nonzero and divergence free. Choose a time interval \(J_\delta\subset I\) of length \(\delta\), and smoothly approximate</p><div class="equation result">\[
+\]</div><p>所以，对任意周期 energy-class velocity/Poisson-pressure 配对，旧付款 \((\mathcal E^\square)^{3/2}+\mathcal A_{\rm ext}^\square\) 不能控制 \(\mathcal K_D\)。这些静态包不是无强迫 Navier--Stokes 轨道，因此 (5.4d) 不是 suitable-weak NSE 反例。</p><h3>例 5.2：外部时间集中</h3><p>取非零、散度为零的 \(w\in C_c^\infty(B_*;\mathbb R^3)\)。选取时间区间 \(J_\delta\subset I\)，其长度为 \(\delta\)，并光滑逼近</p><div class="equation result">\[
  w_\delta(t,y)=\delta^{-1/3}1_{J_\delta}(t)w(y).
 \tag{5.5}
-\]</div><p>Then</p><div class="equation result">\[
+\]</div><p>则</p><div class="equation result">\[
  \int_I\int|w_\delta|^3\,dy\,dt=\|w\|_3^3,
  \qquad
  \mathop{\rm ess\,sup}_{t\in I}\int|w_\delta|^2\,dy
  =\delta^{-2/3}\|w\|_2^2.
 \tag{5.6}
-\]</div><p>With the associated pressure \(p_\delta=\mathcal R_i\mathcal R_j (w_{\delta,i}w_{\delta,j})\), the complete old \(\mathcal A_{\rm ext}\) remains bounded by Calder\'on--Zygmund, while \(\mathcal U_{\rm ext}^{\infty}\to\infty\).  This shows why the old Gaussian velocity tail does not supply the time endpoint used in core--exterior estimate (4.10).</p><p>The sequence (5.5) has no uniform \(L_t^\infty L_x^2\) bound.  It does not contradict energy-class finiteness for any fixed field.  If a later theorem allows a global Leray energy on its right-hand side, that global energy can pay this time supremum, but the resulting estimate is no longer a closure by the old local-energy and \(\mathcal A_{\rm ext}\) package alone.</p><p>---</p></section>
-<section id="proven-rows-and-remaining-gates"><div class="section-no">06 / canonical report</div><h2>Proven rows and remaining gates</h2><h3><code>PROVED</code></h3><ol class="report-list report-list-ordered"><li>The positive four-block majorization (3.2) is dimensionally and algebraically valid.</li><li>The four blocks satisfy (4.7), (4.10), (4.12), and (4.14), with the displayed \(\theta^{1/4}\) or \(\theta\) factors.</li><li>For both matching clocks, the full observable satisfies the local energy/tail bound (4.4).</li><li>The pressure-cutoff row interfaces with the new estimate through the inherited R0.73X payment, giving (4.17).</li><li>The all-energy-field packets (5.3)--(5.4d) prove that the old \((\mathcal E^\square)^{3/2} +\mathcal A_{\rm ext}^\square\) right-hand side alone does not control \(\mathcal K_D\) in that larger class.</li><li>All quantities in (4.2) are invariant under Navier--Stokes scaling.</li></ol><h3><code>FINITE</code></h3><p>For every periodic energy-class velocity on the stated interval, \(\mathcal U_{\rm ext}^{\infty,\square}\) and \(\mathcal D_{\rm ext}^{\square}\) are finite.  The first is the one new endpoint tail; the second is the favorable gradient tail already frozen in R0.73X.  This is a size statement, not a uniform local bound.</p><h3><code>OPEN</code></h3><ol class="report-list report-list-ordered"><li>Control of the new velocity endpoint tail and the reused gradient tail by data on one smaller cylinder.</li><li>Smallness or absorption of either quadratic tail in a local energy inequality.</li><li>A sharper argument replacing the time supremum by a coupled tail that is stable under the intended blow-up sequence.</li><li>Whether the Navier--Stokes equation supplies a stronger closure absent for arbitrary energy-class velocity/Poisson-pressure pairs; the static packet obstruction does not decide this.</li><li>Weak stability and lower semicontinuity of the localized observable and its chosen exterior payments.</li><li>Compatibility of this upper bound with a scale-uniform lower bound after quotienting the precise first-jet near-kernel.</li><li>Any epsilon-regularity consequence.</li></ol><h3><code>NOT CLAY</code></h3><p>Nothing in this note proves compactness, epsilon regularity, smoothness, or global regularity for three-dimensional Navier--Stokes solutions.</p></section><section id="figure"><div class="section-no">F / Journal figure</div><h2>四块付款、旧外部包障碍与 time-supremum tail</h2><p><img src="/assets/r074a/fig-r074a-localized-kd-payments.svg" alt="R0.74A localized mixed heat covariance payments and exact obstruction ledgers"></p><p><a href="/assets/r074a/fig-r074a-localized-kd-payments.pdf">下载矢量 PDF</a> · <a href="/assets/r074a/fig-r074a-localized-kd-payments.png">下载 600 dpi PNG</a> · <a href="/assets/r074a/fig-r074a-localized-kd-payments.svg">打开 SVG</a></p><p>图中 266 行只复算已证明公式与两个函数级 obstruction ledger；不是 DNS、NSE trajectory、奇性候选或有限采样证明。NOT CLAY。</p></section><section id="release-boundary" class="callout"><div class="section-no">B / Exact claim boundary</div><h2>证明、有限证书、开放问题与 Clay 边界分开</h2><p>PROVED：positiveFourBlockMajorization=PROVED_ANALYTICALLY；clockMatchedLocalEnergyTailBound=PROVED_ANALYTICALLY；pressureCutoffInterface=PROVED_BY_INHERITANCE_AND_ANALYTIC_COMBINATION；oldExteriorPackageOnlyControl=FALSE_BY_EXACT_ENERGY_CLASS_PACKETS；navierStokesScaling=PROVED_ANALYTICALLY</p><p>FINITE：velocityEndpointTail=FINITE_FOR_EVERY_STATED_PERIODIC_ENERGY_CLASS_FIELD；gradientTail=FINITE_AND_IDENTICAL_TO_R073X_D_EXT；localizedKDCertificate=FINITE_ARITHMETIC_CROSS_CHECK_ONLY；formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED；formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES；formalFigureRows=266；navierStokesSimulation=NOT_RUN；directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；dgxUsed=false</p><p>OPEN：smallerCylinderTailControl=OPEN；tailSmallnessOrAbsorption=OPEN；coupledTailReplacement=OPEN；weakStabilityAndLowerSemicontinuity=OPEN；scaleUniformQuotientCoercivity=OPEN；epsilonRegularity=OPEN；arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN</p><p>本节只证明一个正尺度 size lemma：core--core 由 clock-matched local energy 支付，其余三块由显式 exterior velocity/gradient tails 支付。它不证明尾项小、可吸收、紧致，也不证明 epsilon regularity、奇性或任意三维全局正则性。NOT CLAY。</p></section><section id="reproduce"><div class="section-no">R / Reproduction</div><h2>冻结证明、审计与证书</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma.md">localized size lemma</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_primary_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_certificate_report.md">有限算术证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_certificate.json">机器可读证书</a></p><p><a href="/notes/r0-74a.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a> · <a href="/recap-r0-61-r0-73x.pdf">PDF</a></p></section></article>
+\]</div><p>取对应 pressure \(p_\delta=\mathcal R_i\mathcal R_j (w_{\delta,i}w_{\delta,j})\)。由 Calder\'on--Zygmund 估计，完整的旧 \(\mathcal A_{\rm ext}\) 保持有界，而 \(\mathcal U_{\rm ext}^{\infty}\to\infty\)。这说明旧 Gaussian velocity tail 为什么不能提供 core--exterior 估计 (4.10) 所需的时间端点。</p><p>序列 (5.5) 没有一致的 \(L_t^\infty L_x^2\) 界，因此不与任一固定场的 energy-class 有限性矛盾。如果后续定理允许右端使用全局 Leray energy，那么该全局能量可以支付这个时间上确界；但所得估计将不再只由旧局部能量与 \(\mathcal A_{\rm ext}\) package 闭合。</p><p>---</p></section>
+<section id="proven-rows-and-remaining-gates"><div class="section-no">06 / 规范报告</div><h2>已证明条目与剩余门槛</h2><h3><code>PROVED</code></h3><ol class="report-list report-list-ordered"><li>正的四块上界分解 (3.2) 在量纲与代数上均成立。</li><li>四个分块分别满足 (4.7)、(4.10)、(4.12) 和 (4.14)，并带有所显示的 \(\theta^{1/4}\) 或 \(\theta\) 因子。</li><li>对两种匹配的时间钟，完整观测量都满足局部能量/尾项界 (4.4)。</li><li>pressure-cutoff 行通过继承的 R0.73X 付款与新估计衔接，得到 (4.17)。</li><li>全 energy-field 包 (5.3)--(5.4d) 证明，在这个更大的类别中，旧右端 \((\mathcal E^\square)^{3/2} +\mathcal A_{\rm ext}^\square\) 本身不能控制 \(\mathcal K_D\)。</li><li>(4.2) 中的所有量在 Navier--Stokes 缩放下均保持不变。</li></ol><h3><code>FINITE</code></h3><p>对声明区间上的每个周期 energy-class velocity， \(\mathcal U_{\rm ext}^{\infty,\square}\) 与 \(\mathcal D_{\rm ext}^{\square}\) 都有限。前者是本节新引入的 endpoint tail；后者是 R0.73X 已冻结的有利 gradient tail。这是 size 陈述，不是一致局部界。</p><h3><code>OPEN</code></h3><ol class="report-list report-list-ordered"><li>用一个更小柱上的数据控制新的 velocity endpoint tail 与复用的 gradient tail。</li><li>在局部能量不等式中证明任一二次尾项的小性或可吸收性。</li><li>用对预期 blow-up 序列稳定的 coupled tail 取代时间上确界，并得到更尖锐的论证。</li><li>Navier--Stokes 方程是否能提供任意 energy-class velocity/Poisson-pressure 配对所没有的更强闭合；静态包障碍不能决定这一点。</li><li>局部观测量及所选外部付款的弱稳定性与下半连续性。</li><li>把精确的一阶近核取商后，该上界是否与尺度一致的下界兼容。</li><li>任何 epsilon-regularity 推论。</li></ol><h3><code>NOT CLAY</code></h3><p>本笔记没有证明三维 Navier--Stokes 解的紧致性、epsilon regularity、光滑性或全局正则性。</p></section><section id="figure"><div class="section-no">F / 论文图</div><h2>四块付款、旧外部包障碍与 time-supremum tail</h2><p><img src="/assets/r074a/fig-r074a-localized-kd-payments.svg" alt="R0.74A localized mixed heat covariance payments and exact obstruction ledgers"></p><p><a href="/assets/r074a/fig-r074a-localized-kd-payments.pdf">下载矢量 PDF</a> · <a href="/assets/r074a/fig-r074a-localized-kd-payments.png">下载 600 dpi PNG</a> · <a href="/assets/r074a/fig-r074a-localized-kd-payments.svg">打开 SVG</a></p><p>图中 266 行只复算已证明公式与两个函数级 obstruction ledger；不是 DNS、NSE trajectory、奇性候选或有限采样证明。NOT CLAY。</p></section><section id="release-boundary" class="callout"><div class="section-no">B / 结论边界</div><h2>证明、有限证书、开放问题与 Clay 边界分开</h2><p>PROVED：positiveFourBlockMajorization=PROVED_ANALYTICALLY；clockMatchedLocalEnergyTailBound=PROVED_ANALYTICALLY；pressureCutoffInterface=PROVED_BY_INHERITANCE_AND_ANALYTIC_COMBINATION；oldExteriorPackageOnlyControl=FALSE_BY_EXACT_ENERGY_CLASS_PACKETS；navierStokesScaling=PROVED_ANALYTICALLY</p><p>FINITE：velocityEndpointTail=FINITE_FOR_EVERY_STATED_PERIODIC_ENERGY_CLASS_FIELD；gradientTail=FINITE_AND_IDENTICAL_TO_R073X_D_EXT；localizedKDCertificate=FINITE_ARITHMETIC_CROSS_CHECK_ONLY；formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED；formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES；formalFigureRows=266；navierStokesSimulation=NOT_RUN；directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；dgxUsed=false</p><p>OPEN：smallerCylinderTailControl=OPEN；tailSmallnessOrAbsorption=OPEN；coupledTailReplacement=OPEN；weakStabilityAndLowerSemicontinuity=OPEN；scaleUniformQuotientCoercivity=OPEN；epsilonRegularity=OPEN；arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN</p><p>本节只证明一个正尺度 size lemma：core--core 由 clock-matched local energy 支付，其余三块由显式 exterior velocity/gradient tails 支付。它不证明尾项小、可吸收、紧致，也不证明 epsilon regularity、奇性或任意三维全局正则性。NOT CLAY。</p></section><section id="reproduce"><div class="section-no">R / 复现材料</div><h2>冻结证明、审计与证书</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma.md">英文规范源文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma_zh.md">中文完整译文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_primary_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_certificate_report.md">有限算术证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_certificate.json">机器可读证书</a></p><p><a href="/notes/r0-74a.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a> · <a href="/recap-r0-61-r0-73x.pdf">PDF</a></p></section></article>
 </main></body></html>

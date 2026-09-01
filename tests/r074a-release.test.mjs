@@ -55,6 +55,16 @@ test("note, homepage, literature review, and index expose honest boundaries", as
   ]);
   for (const marker of ["PROVED", "FINITE", "OPEN", "NOT CLAY", "LOCAL DIRECT / NO DGX", "positiveFourBlockMajorization", "tailSmallnessOrAbsorption"])
     assert.ok(note.includes(marker), marker);
+  for (const marker of [
+    "冻结定义与时间钟说明", "提升环带与两个二次外部输入", "正的核心/外部上界分解",
+    "局部 size 定理", "为什么旧 exterior functional 不足", "已证明条目与剩余门槛",
+    "01 / 规范报告", "F / 论文图", "B / 结论边界", "R / 复现材料",
+  ]) assert.ok(note.includes(marker), marker);
+  for (const marker of [
+    "<h2>Frozen definitions and the clock qualification</h2>",
+    "<h2>The localized size theorem</h2>",
+    "<h2>Proven rows and remaining gates</h2>",
+  ]) assert.ok(!note.includes(marker), marker);
   assert.ok(note.includes('inlineMath:[["\\\\(","\\\\)"]]'));
   assert.ok(note.includes('displayMath:[["\\\\[","\\\\]"]]'));
   assert.equal((home.match(/data-release="r074a"/g) ?? []).length, 1);
@@ -86,6 +96,10 @@ test("publication archive is compatible while public evidence and assets stay fr
 });
 
 test("local translation and synchronized PDF binding check read-only", () => {
+  const fullChineseMap = JSON.parse(run(process.env.RELEASE_PYTHON ?? "python3", [
+    "scripts/generate_r074a_report_translation_map.py", "--check-only",
+  ]));
+  assert.ok(fullChineseMap.rows >= 100);
   const translation = JSON.parse(run(process.execPath, ["scripts/add-r074a-translations.mjs", "--check-only"]));
   assert.equal(translation.translationPath, "LOCAL_DIRECT_NO_DGX");
   assert.equal(translation.dgxUsed, false);

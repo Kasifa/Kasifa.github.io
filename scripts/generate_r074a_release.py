@@ -15,11 +15,12 @@ import re
 import shutil
 from pathlib import Path
 
-from r073y_release_content import _markdown_blocks, _slug
+from r073y_release_content import _markdown_blocks
 
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "research/r074a_localized_kd_size_lemma.md"
+REPORT_ZH = ROOT / "research/r074a_localized_kd_size_lemma_zh.md"
 HANDOFF = ROOT / "release/handoffs/r074a.json"
 FIGURE_SOURCE = ROOT / "research/figures/r074a/fig-r074a-localized-kd-payments"
 NOTE = ROOT / "public/notes/r0-74a.html"
@@ -46,6 +47,15 @@ NEXT_GATE = (
     "obstruction、lower-semicontinuity 与 scale-uniformity 检查；任何失败都记录为 exact "
     "counterexample，不在 tail payment 闭合前提出 quotient coercivity。"
 )
+
+SECTION_SLUGS = {
+    "1": "frozen-definitions-and-the-clock-qualification",
+    "2": "lifted-annuli-and-the-two-quadratic-exterior-inputs",
+    "3": "positive-core-exterior-majorization",
+    "4": "the-localized-size-theorem",
+    "5": "why-the-older-exterior-functional-is-insufficient",
+    "6": "proven-rows-and-remaining-gates",
+}
 
 
 def sha256(path: Path) -> str:
@@ -74,11 +84,23 @@ def assert_recap() -> None:
             raise RuntimeError(f"protected recap drift: {path.relative_to(ROOT)}")
 
 
+def markdown_blocks_tex_safe(value: str) -> str:
+    """Keep Markdown emphasis from consuming asterisks inside inline TeX."""
+    sentinel = "\ue000"
+    if sentinel in value:
+        raise RuntimeError("R0.74A report contains the inline-TeX sentinel")
+    protected = re.sub(
+        r"\\\([\s\S]*?\\\)",
+        lambda match: match.group(0).replace("*", sentinel),
+        value,
+    )
+    return _markdown_blocks(protected).replace(sentinel, "*")
+
+
 def report_sections(report: str) -> tuple[list[tuple[str, str, str]], str]:
     matches = list(re.finditer(r"(?m)^##\s+(.+?)\s*$", report))
     if len(matches) != 6:
         raise RuntimeError(f"R0.74A report section count drift: {len(matches)}")
-    used: set[str] = set()
     rows: list[tuple[str, str, str]] = []
     references = ""
     for index, match in enumerate(matches):
@@ -89,8 +111,9 @@ def report_sections(report: str) -> tuple[list[tuple[str, str, str]], str]:
         if number_match is None:
             raise RuntimeError(f"unexpected R0.74A heading: {heading}")
         title = number_match.group(2)
-        rows.append((number_match.group(1), title, _slug(title, used)))
-        public_body = _markdown_blocks(body)
+        number = number_match.group(1)
+        rows.append((number, title, SECTION_SLUGS[number]))
+        public_body = markdown_blocks_tex_safe(body)
         public_body = re.sub(r"<p>### (.*?)</p>", r"<h3>\1</h3>", public_body)
         public_body = re.sub(r"<p>#### (.*?)</p>", r"<h4>\1</h4>", public_body)
         rows[-1] += (public_body,)
@@ -100,12 +123,12 @@ def report_sections(report: str) -> tuple[list[tuple[str, str, str]], str]:
 def note_html(report: str) -> str:
     sections, references = report_sections(report)
     section_html = "\n".join(
-        f'<section id="{slug}"><div class="section-no">{number.zfill(2)} / canonical report</div>'
+        f'<section id="{slug}"><div class="section-no">{number.zfill(2)} / 规范报告</div>'
         f'<h2>{title}</h2>{body}</section>'
         for number, title, slug, body in sections
     )
     boundary = (
-        '<section id="release-boundary" class="callout"><div class="section-no">B / Exact claim boundary</div>'
+        '<section id="release-boundary" class="callout"><div class="section-no">B / 结论边界</div>'
         '<h2>证明、有限证书、开放问题与 Clay 边界分开</h2>'
         '<p>PROVED：positiveFourBlockMajorization=PROVED_ANALYTICALLY；'
         'clockMatchedLocalEnergyTailBound=PROVED_ANALYTICALLY；'
@@ -128,7 +151,7 @@ def note_html(report: str) -> str:
         '也不证明 epsilon regularity、奇性或任意三维全局正则性。NOT CLAY。</p></section>'
     )
     figure = (
-        '<section id="figure"><div class="section-no">F / Journal figure</div>'
+        '<section id="figure"><div class="section-no">F / 论文图</div>'
         '<h2>四块付款、旧外部包障碍与 time-supremum tail</h2>'
         '<p><img src="/assets/r074a/fig-r074a-localized-kd-payments.svg" '
         'alt="R0.74A localized mixed heat covariance payments and exact obstruction ledgers"></p>'
@@ -139,8 +162,9 @@ def note_html(report: str) -> str:
         '奇性候选或有限采样证明。NOT CLAY。</p></section>'
     )
     reproduce = (
-        '<section id="reproduce"><div class="section-no">R / Reproduction</div><h2>冻结证明、审计与证书</h2>'
-        '<p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma.md">localized size lemma</a> · '
+        '<section id="reproduce"><div class="section-no">R / 复现材料</div><h2>冻结证明、审计与证书</h2>'
+        '<p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma.md">英文规范源文</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_size_lemma_zh.md">中文完整译文</a> · '
         '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_independent_audit.md">独立审计</a> · '
         '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_primary_literature_audit.md">一手文献审计</a> · '
         '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074a_localized_kd_certificate_report.md">有限算术证书报告</a> · '
@@ -455,8 +479,15 @@ def write_dictionary() -> None:
 
 | Public Chinese | Reviewed English |
 |---|---|
-| {TITLE} | R0.74A | A localized size lemma for the mixed heat covariance |
+| {TITLE} | R0.74A \\| A localized size lemma for the mixed heat covariance |
 | {SUBTITLE} | The core is paid by local energy and the exterior by two explicit Gaussian quadratic tails |
+| 中文正文 01--06 节已完整同步 | Sections 01--06 of the Chinese canonical report are fully synchronized |
+| 冻结定义与时间钟说明 | Frozen definitions and the clock qualification |
+| 提升环带与两个二次外部输入 | Lifted annuli and the two quadratic exterior inputs |
+| 正的核心/外部上界分解 | Positive core/exterior majorization |
+| 局部 size 定理 | The localized size theorem |
+| 为什么旧 exterior functional 不足 | Why the older exterior functional is insufficient |
+| 已证明条目与剩余门槛 | Proven rows and remaining gates |
 | 四块 positive majorization | Positive four-block majorization |
 | clock-matched local energy | Clock-matched local energy |
 | velocity endpoint tail | Velocity endpoint tail |
@@ -466,8 +497,11 @@ def write_dictionary() -> None:
 | 本节只证明一个正尺度 size lemma。 | This section proves only a positive-scale size lemma. |
 | NOT CLAY。 | NOT CLAY. |
 
-Mathematical tokens, theorem quantifiers, certificate payloads, source-data rows,
-and formal-figure science remain byte-frozen in the research handoff.
+The reviewed Chinese source is `research/r074a_localized_kd_size_lemma_zh.md`;
+the frozen English source is `research/r074a_localized_kd_size_lemma.md`.
+All 52 display equations and tags are preserved. Mathematical tokens, theorem
+quantifiers, certificate payloads, source-data rows, and formal-figure science
+remain unchanged.
 ''')
 
 
@@ -476,13 +510,13 @@ def build() -> None:
     if SITE_VERSION.is_file():
         current_site = json.loads(SITE_VERSION.read_text(encoding="utf-8"))
         if current_site.get("version") == "1.67" and current_site.get("latestRelease") == "R0.74A":
-            report = REPORT.read_text(encoding="utf-8")
+            report = REPORT_ZH.read_text(encoding="utf-8")
             write_text(NOTE, note_html(report))
             copy_figures()
             write_dictionary()
             check()
             return
-    report = REPORT.read_text(encoding="utf-8")
+    report = REPORT_ZH.read_text(encoding="utf-8")
     handoff = json.loads(HANDOFF.read_text(encoding="utf-8"))
     if handoff["releaseId"] != "r074a" or handoff["translationRoute"] != "LOCAL_DIRECT_NO_DGX":
         raise RuntimeError("R0.74A handoff drift")
@@ -513,6 +547,19 @@ def check() -> None:
     for token in ("PROVED", "FINITE", "OPEN", "NOT CLAY", "LOCAL DIRECT / NO DGX"):
         if token not in note:
             raise RuntimeError(f"public note missing boundary token {token}")
+    for token in (
+        "冻结定义与时间钟说明", "局部 size 定理", "已证明条目与剩余门槛",
+        "01 / 规范报告", "R / 复现材料",
+    ):
+        if token not in note:
+            raise RuntimeError(f"public note missing complete Chinese report token {token}")
+    for token in (
+        "<h2>Frozen definitions and the clock qualification</h2>",
+        "<h2>The localized size theorem</h2>",
+        "<h2>Proven rows and remaining gates</h2>",
+    ):
+        if token in note:
+            raise RuntimeError(f"public Chinese note retains English canonical section: {token}")
     if 'inlineMath:[["\\\\(","\\\\)"]]' not in note or 'displayMath:[["\\\\[","\\\\]"]]' not in note:
         raise RuntimeError("public note MathJax delimiters are not JavaScript-safe")
     if (ROOT / "public/recap-r0-61-r0-74a.html").exists() or (ROOT / "public/recap-r0-61-r0-74a.pdf").exists():

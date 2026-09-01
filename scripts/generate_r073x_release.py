@@ -20,6 +20,7 @@ import argparse
 import hashlib
 import html
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -385,6 +386,227 @@ def run_check(relative: str, arguments: list[str], label: str) -> None:
         raise RuntimeError(label + " failed: " + detail[-3000:])
 
 
+FOURIER_RELATIVE_TOLERANCE = 5.0e-12
+FOURIER_ABSOLUTE_INTEGRAL_TOLERANCE = 5.0e-12
+FOURIER_SIGNED_INTEGRAL_TOLERANCE = 5.0e-13
+FOURIER_ABSOLUTE_DELTA_TOLERANCE = 1.0e-11
+FOURIER_RATIO_TOLERANCE = 2.0e-11
+FOURIER_RESIDUAL_LIMIT = 1.0e-12
+FOURIER_SIGNED_ERROR_LIMIT = 5.0e-14
+
+
+def finite_float_text(value: object, label: str) -> float:
+    if not isinstance(value, str):
+        raise RuntimeError(label + ": expected a decimal string")
+    try:
+        parsed = float(value)
+    except ValueError as exc:
+        raise RuntimeError(label + ": malformed decimal string") from exc
+    if not math.isfinite(parsed):
+        raise RuntimeError(label + ": expected a finite decimal string")
+    return parsed
+
+
+def require_portable_close(
+    stored: object,
+    recomputed: object,
+    label: str,
+    *,
+    absolute_tolerance: float,
+    relative_tolerance: float = FOURIER_RELATIVE_TOLERANCE,
+) -> None:
+    left = finite_float_text(stored, label + " stored")
+    right = finite_float_text(recomputed, label + " recomputed")
+    if not math.isclose(
+        left, right,
+        rel_tol=relative_tolerance,
+        abs_tol=absolute_tolerance,
+    ):
+        raise RuntimeError(
+            f"{label}: cross-platform float64 drift exceeds "
+            f"abs={absolute_tolerance:g}, rel={relative_tolerance:g}: "
+            f"{left!r} versus {right!r}"
+        )
+
+
+def verify_fourier_certificate_portably() -> None:
+    """Recompute the finite diagnostic without demanding FFT byte identity.
+
+    The exact Gaussian-rational channel and all non-quadrature metadata remain
+    byte-exact.  Only the float64 FFT/Gauss--Legendre rows receive a declared
+    cross-platform tolerance; imaginary residual and signed-error rows retain
+    their absolute mathematical thresholds.  The stored report is still
+    reproduced exactly from the stored, hash-sealed JSON.
+    """
+    import r073x_finite_fourier_harness as harness
+
+    stored = strict_json_file(
+        "research/r073x_finite_fourier_harness_results.json",
+        "R0.73X stored Fourier result",
+    )
+    archived = strict_json_file(
+        f"{CERTIFICATE_ROOT}/fourier-results.json",
+        "R0.73X archived Fourier result",
+    )
+    if stored != archived:
+        raise RuntimeError("R0.73X canonical/archive Fourier JSON drifted")
+
+    stored_report = current_bytes(
+        "research/r073x_finite_fourier_harness_report.md"
+    ).decode("utf-8")
+    archived_report = current_bytes(
+        f"{CERTIFICATE_ROOT}/fourier-report.md"
+    ).decode("utf-8")
+    if stored_report != archived_report or harness.report(stored) != stored_report:
+        raise RuntimeError("R0.73X Fourier report is not exact for sealed JSON")
+
+    recomputed = harness.build()
+    stored_exact = dict(stored)
+    recomputed_exact = dict(recomputed)
+    stored_quadrature = stored_exact.pop("quadrature", None)
+    recomputed_quadrature = recomputed_exact.pop("quadrature", None)
+    if stored_exact != recomputed_exact:
+        raise RuntimeError("R0.73X exact/non-quadrature Fourier channel drifted")
+    if not isinstance(stored_quadrature, dict) or not isinstance(
+        recomputed_quadrature, dict
+    ):
+        raise RuntimeError("R0.73X Fourier quadrature ledger is malformed")
+    if set(stored_quadrature) != {"twoPair", "threePair"} or set(
+        recomputed_quadrature
+    ) != set(stored_quadrature):
+        raise RuntimeError("R0.73X Fourier quadrature field inventory drifted")
+
+    ladder_keys = {
+        "absoluteConvergenceDeltaLastTwo",
+        "cancellationRatioAbsSignedOverAbsolute",
+        "levels",
+        "signedClosedForm50Digits",
+        "signedConvergenceDeltaLastTwo",
+        "signedFineVsClosedFormError",
+    }
+    level_keys = {
+        "absoluteSpatialScaleIntegral",
+        "grid",
+        "maxImaginaryResidual",
+        "signedSpatialScaleIntegral",
+        "timeGaussLegendreOrder",
+    }
+    for pair in ("twoPair", "threePair"):
+        stored_pair = stored_quadrature[pair]
+        recomputed_pair = recomputed_quadrature[pair]
+        if not isinstance(stored_pair, dict) or not isinstance(recomputed_pair, dict):
+            raise RuntimeError(f"R0.73X Fourier {pair} ledger is malformed")
+        if set(stored_pair) != {"pi", "remainder"} or set(recomputed_pair) != set(
+            stored_pair
+        ):
+            raise RuntimeError(f"R0.73X Fourier {pair} channel inventory drifted")
+        for channel in ("pi", "remainder"):
+            label = f"R0.73X Fourier {pair}/{channel}"
+            left = stored_pair[channel]
+            right = recomputed_pair[channel]
+            if (
+                not isinstance(left, dict)
+                or not isinstance(right, dict)
+                or set(left) != ladder_keys
+                or set(right) != ladder_keys
+            ):
+                raise RuntimeError(label + ": quadrature ladder schema drifted")
+            if left["signedClosedForm50Digits"] != right["signedClosedForm50Digits"]:
+                raise RuntimeError(label + ": exact signed closed form drifted")
+
+            left_levels = left["levels"]
+            right_levels = right["levels"]
+            if (
+                not isinstance(left_levels, list)
+                or not isinstance(right_levels, list)
+                or len(left_levels) != 4
+                or len(right_levels) != len(left_levels)
+            ):
+                raise RuntimeError(label + ": quadrature level inventory drifted")
+            for index, (left_level, right_level) in enumerate(
+                zip(left_levels, right_levels, strict=True)
+            ):
+                level_label = f"{label} level {index}"
+                if (
+                    not isinstance(left_level, dict)
+                    or not isinstance(right_level, dict)
+                    or set(left_level) != level_keys
+                    or set(right_level) != level_keys
+                    or left_level["grid"] != right_level["grid"]
+                    or left_level["timeGaussLegendreOrder"]
+                    != right_level["timeGaussLegendreOrder"]
+                ):
+                    raise RuntimeError(level_label + ": exact grid metadata drifted")
+                require_portable_close(
+                    left_level["absoluteSpatialScaleIntegral"],
+                    right_level["absoluteSpatialScaleIntegral"],
+                    level_label + " absolute integral",
+                    absolute_tolerance=FOURIER_ABSOLUTE_INTEGRAL_TOLERANCE,
+                )
+                require_portable_close(
+                    left_level["signedSpatialScaleIntegral"],
+                    right_level["signedSpatialScaleIntegral"],
+                    level_label + " signed integral",
+                    absolute_tolerance=FOURIER_SIGNED_INTEGRAL_TOLERANCE,
+                )
+                for side, row in (("stored", left_level), ("recomputed", right_level)):
+                    residual = finite_float_text(
+                        row["maxImaginaryResidual"],
+                        level_label + " " + side + " imaginary residual",
+                    )
+                    if residual > FOURIER_RESIDUAL_LIMIT:
+                        raise RuntimeError(
+                            level_label + f": {side} imaginary residual exceeds "
+                            f"{FOURIER_RESIDUAL_LIMIT:g}"
+                        )
+
+            require_portable_close(
+                left["absoluteConvergenceDeltaLastTwo"],
+                right["absoluteConvergenceDeltaLastTwo"],
+                label + " absoluteConvergenceDeltaLastTwo",
+                absolute_tolerance=FOURIER_ABSOLUTE_DELTA_TOLERANCE,
+            )
+            require_portable_close(
+                left["cancellationRatioAbsSignedOverAbsolute"],
+                right["cancellationRatioAbsSignedOverAbsolute"],
+                label + " cancellationRatioAbsSignedOverAbsolute",
+                absolute_tolerance=FOURIER_RATIO_TOLERANCE,
+            )
+            closed_form = float(left["signedClosedForm50Digits"])
+            for side, row in (("stored", left), ("recomputed", right)):
+                absolute_delta = finite_float_text(
+                    row["absoluteConvergenceDeltaLastTwo"],
+                    label + " " + side + " absolute convergence delta",
+                )
+                signed_delta = finite_float_text(
+                    row["signedConvergenceDeltaLastTwo"],
+                    label + " " + side + " signed convergence delta",
+                )
+                signed_error = finite_float_text(
+                    row["signedFineVsClosedFormError"],
+                    label + " " + side + " signed fine error",
+                )
+                finest = row["levels"][-1]
+                absolute_finest = finite_float_text(
+                    finest["absoluteSpatialScaleIntegral"],
+                    label + " " + side + " finest absolute integral",
+                )
+                signed_finest = finite_float_text(
+                    finest["signedSpatialScaleIntegral"],
+                    label + " " + side + " finest signed integral",
+                )
+                if absolute_delta >= 5.0e-6:
+                    raise RuntimeError(label + f": {side} absolute ladder did not converge")
+                if signed_delta > FOURIER_RESIDUAL_LIMIT:
+                    raise RuntimeError(label + f": {side} signed ladder did not converge")
+                if signed_error > FOURIER_SIGNED_ERROR_LIMIT:
+                    raise RuntimeError(label + f": {side} signed exact comparison failed")
+                if abs(signed_finest - closed_form) > FOURIER_SIGNED_ERROR_LIMIT:
+                    raise RuntimeError(label + f": {side} finest signed value drifted")
+                if absolute_finest + 1.0e-13 < abs(signed_finest):
+                    raise RuntimeError(label + f": {side} absolute value fell below signed")
+
+
 def validate_certificate() -> dict:
     manifest = strict_json_file(
         f"{CERTIFICATE_ROOT}/manifest.json", "R0.73X certificate manifest"
@@ -488,10 +710,7 @@ def validate_certificate() -> dict:
             or row.get("gitBlobObjectId") != expected_blob
         ):
             raise RuntimeError("R0.73X certificate immutable source binding drifted: " + canonical)
-    run_check(
-        "scripts/r073x_finite_fourier_harness.py", ["--check-only"],
-        "R0.73X Fourier certificate",
-    )
+    verify_fourier_certificate_portably()
     run_check(
         "scripts/r073x_gaussian_tail_certificate.py", ["--check-only"],
         "R0.73X Gaussian certificate",

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, lstatSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -366,9 +366,16 @@ test("published W binds the exact HTML/PDF bytes, counts, and canonical output n
     "public/figures/r073w/fig-r073w-signed-production",
     "public/research/r073w",
     "research/figures/r073w/fig-r073w-signed-production",
-  ]) assert.equal(readdirSync(resolve(root, directory)).some(conflictCopy), false, directory);
+  ]) {
+    const tracked = execFileSync("git", ["ls-files", "-z", "--", directory], {
+      cwd: root, encoding: "utf8",
+    }).split("\0").filter(Boolean);
+    assert.equal(tracked.some(conflictCopy), false, directory);
+  }
   for (const directory of ["public", "public/notes", "research", "scripts/i18n-snapshots"]) {
-    const bad = readdirSync(resolve(root, directory))
+    const bad = execFileSync("git", ["ls-files", "-z", "--", directory], {
+      cwd: root, encoding: "utf8",
+    }).split("\0").filter(Boolean)
       .filter((name) => /r073w|r0-73w/i.test(name) && conflictCopy(name));
     assert.deepEqual(bad, [], directory);
   }

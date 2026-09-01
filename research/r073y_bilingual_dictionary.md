@@ -34,16 +34,16 @@ linearized trajectory or a DNS sample.
 
 | 中文 | English | Required meaning |
 |---|---|---|
-| 正 heat 尺度 | positive heat scale | (s>0), with no automatic (s=0) endpoint |
-| 正交 rank-one shear | orthogonal rank-one shear | (u^A=AaF(t,k\cdot x)), (a\cdot k=0) |
-| 真实 NSE 解 | exact NSE solution | a smooth solution of the full unforced periodic equations with (p=0) |
-| subfilter stress | subfilter stress | τ_s=P_s(u\otimes u)-P_su\otimes P_su |
-| energy flux | energy flux | Π_s=-τ_s:\nabla P_su, a signed production channel |
-| centered production | centered production | ᵊe_s, the centered cubic-increment production remainder |
-| pressure--velocity covariance | pressure--velocity covariance | (Q_s=P_s(pu)-P_sp\,P_su) |
-| gradient covariance | gradient covariance | (D_{ii,s}=P_s(|\nabla u|^2)-|\nabla P_su|^2\ge0) |
-| production-only functional | production-only functional | a scalar construction from Π_s and ᵊe_s that vanishes on zero input |
-| 振幅无关有限模量 | finite amplitude-independent modulus | ω with ω(0)<∞, independent of (A) |
+| 正 heat 尺度 | positive heat scale | \(s>0\), with no automatic \(s=0\) endpoint |
+| 正交 rank-one shear | orthogonal rank-one shear | \(u^A=AaF(t,k\cdot x)\), \(a\cdot k=0\) |
+| 真实 NSE 解 | exact NSE solution | a smooth solution of the full unforced periodic equations with \(p=0\) |
+| subfilter stress | subfilter stress | \(\tau_s=P_s(u\otimes u)-P_su\otimes P_su\) |
+| energy flux | energy flux | \(\Pi_s=-\tau_s:\nabla P_su\), a signed production channel |
+| centered production | centered production | \(\mathscr S_s\), the centered cubic-increment production remainder |
+| pressure--velocity covariance | pressure--velocity covariance | \(Q_s=P_s(pu)-P_sp\,P_su\) |
+| gradient covariance | gradient covariance | \(D_{ii,s}=P_s(|\nabla u|^2)-|\nabla P_su|^2\ge0\); strict positivity requires \(A\ne0\) |
+| production-only functional | production-only functional | a scalar construction from \(\Pi_s\) and \(\mathscr S_s\) that vanishes on zero input |
+| 振幅无关有限模量 | finite amplitude-independent modulus | \(\omega\) with \(\omega(0)<\infty\), independent of \(A\) |
 | exact no-go theorem | exact no-go theorem | a quantified obstruction to the stated production-only implication |
 | heat variance | heat variance | the strict variance in the braces of formula (2.8) |
 | subfilter storage | subfilter storage | the energy account whose decay pays the positive covariance in the shear class |
@@ -52,7 +52,7 @@ linearized trajectory or a DNS sample.
 | bounded literature search | bounded literature search | a scoped primary-source collision audit, not novelty proof |
 | quotient coercivity | quotient coercivity | a future estimate after explicitly removing the shear kernel |
 | positive observable | positive observable | a covariance, endpoint/cutoff debt, or independent positive tent quantity |
-| suitable-weak zero-scale endpoint | suitable-weak zero-scale endpoint | passage to (s=0) with defect measures and traces; open |
+| suitable-weak zero-scale endpoint | suitable-weak zero-scale endpoint | passage to \(s=0\) with defect measures and traces; open |
 | epsilon regularity | epsilon regularity | a CKN-facing positive smallness implication; not proved here |
 | formal figure | formal figure | deterministic source-data-bound PDF/PNG/SVG package with logs and validators |
 | Clay conclusion | Clay conclusion | open and expressly not claimed |
@@ -61,17 +61,17 @@ linearized trajectory or a DNS sample.
 
 | Symbol | Frozen meaning |
 |---|---|
-| (k\in\mathbb Z^3\setminus\{0\}) | periodic shear wave vector |
-| (a\in\mathbb R^3\setminus\{0\}) | velocity direction with (a\cdot k=0) |
-| (F(t,\vartheta)) | one-dimensional heat evolution of a nonconstant zero-mean profile |
-| (u^A=AaF(t,k\cdot x)) | arbitrary-amplitude exact periodic shear solution |
-| (P_s=e^{s\Delta}) | periodic heat filter |
-| τ_s | subfilter stress tensor |
-| Π_s | signed stress--gradient production |
-| ᵊe_s | centered cubic production remainder |
-| (Q_s) | pressure--velocity heat covariance |
-| (D_{ii,s}) | nonnegative gradient heat covariance, strictly positive here |
-| \(\mathcal Z_A\) | the R0.73X positive-scale size evaluated on the amplitude-(A) shear |
+| \(k\in\mathbb Z^3\setminus\{0\}\) | periodic shear wave vector |
+| \(a\in\mathbb R^3\setminus\{0\}\) | velocity direction with \(a\cdot k=0\) |
+| \(F(t,\vartheta)\) | one-dimensional heat evolution of a nonconstant zero-mean profile |
+| \(u^A=AaF(t,k\cdot x)\) | arbitrary-amplitude exact periodic shear solution; \(A=0\) is the trivial member |
+| \(P_s=e^{s\Delta}\) | periodic heat filter |
+| \(\tau_s\) | subfilter stress tensor |
+| \(\Pi_s\) | signed stress--gradient production |
+| \(\mathscr S_s\) | centered cubic production remainder |
+| \(Q_s\) | pressure--velocity heat covariance |
+| \(D_{ii,s}\) | nonnegative gradient heat covariance; \(A\ne0\Rightarrow D_{ii,s}>0\), while \(A=0\Rightarrow D_{ii,s}=0\) |
+| \(\mathcal Z_A\) | the R0.73X positive-scale size evaluated on the amplitude-\(A\) shear |
 | \(\mathfrak P\) | a zero-preserving production-only functional |
 | \(\mathcal D_{3/2}^{\square}\) | proposed cubic positive observable for R0.73Z |
 
@@ -80,11 +80,11 @@ linearized trajectory or a DNS sample.
 | 中文冻结句 | Mandatory English sentence |
 |---|---|
 | 该 exact shear 类是真实的光滑周期 Navier--Stokes 解，不是线性化轨道或数值样本。 | “The exact-shear class consists of genuine smooth periodic Navier--Stokes solutions, not linearized trajectories or numerical samples.” |
-| 对每个正 heat 尺度，两个 production channel 与 pressure covariance 为零，而 gradient covariance 严格为正。 | “At every positive heat scale, both production channels and the pressure covariance vanish, while the gradient covariance is strictly positive.” |
+| 对每个正 heat 尺度，两个 production channel 与 pressure covariance 对所有振幅都为零；当且仅当取非零成员时，本命题所用的 gradient covariance 严格为正。 | “At every positive heat scale, both production channels and the pressure covariance vanish for every amplitude; for the nonzero members used in the no-go argument, the gradient covariance is strictly positive.” |
 | 否定的只是在零输入处取零的 production-only functional 所给出的振幅无关有限模量。 | “The theorem rules out only a finite amplitude-independent modulus built from a production-only functional that vanishes on zero input.” |
 | 该结果不否定加入 covariance、endpoint 或 cutoff debt 的估计。 | “The result does not rule out estimates that retain covariance, endpoint terms, or cutoff debt.” |
-| 正 covariance 由 subfilter storage 的下降支付，不由零 production 支付。 | “The positive covariance is paid by the decay of subfilter storage, not by the vanishing production.” |
-| 严格正性来自解析 heat-variance 证明，不来自有限采样。 | “Strict positivity comes from the analytic heat-variance proof, not from finite sampling.” |
+| 当 \(A\ne0\) 时，正 covariance 由 subfilter storage 的下降支付，不由零 production 支付。 | “For \(A\ne0\), the positive covariance is paid by the decay of subfilter storage, not by the vanishing production.” |
+| \(A\ne0\) 时的严格正性来自解析 heat-variance 证明，不来自有限采样；\(A=0\) 时 covariance 为零。 | “Strict positivity for \(A\ne0\) comes from the analytic heat-variance proof, not from finite sampling; at \(A=0\), the covariance is zero.” |
 | Vreman 等已覆盖 simple-shear 零 SGS dissipation，因此 basic shear 机制不得申报为新发现或优先权。 | “Vreman and related literature already cover zero SGS dissipation in simple shear, so the basic shear mechanism is not claimed as a new discovery or priority result.” |
 | 本节的可保留价值是将已知机制嵌入 R0.73X 量的精确全尺度 no-go 命题。 | “The retained contribution is an exact all-scale no-go statement obtained by inserting known mechanisms into the precise R0.73X quantities.” |
 | 作为独立论文主定理，当前结果过于初等且与 LES/coarse-graining 文献高度邻近。 | “As a stand-alone paper theorem, the current result is too elementary and too close to the LES/coarse-graining literature.” |
@@ -93,14 +93,15 @@ linearized trajectory or a DNS sample.
 | 限定检索未找到逐字相同的打包命题，不等于 novelty 或 priority 证明。 | “A bounded search did not locate the verbatim packaged proposition; non-detection is not proof of novelty or priority.” |
 | 本节只发布研究笔记；累积 Recap 保持在 R0.73X 里程碑。 | “This release publishes a research note only; the cumulative recap remains at the R0.73X milestone.” |
 | 普通中英翻译在本机直接完成，不调用 DGX。 | “Ordinary Chinese--English translation is performed directly on the local workstation; DGX is not used.” |
-| suitable-weak (s=0)、epsilon regularity、任意三维初值全局正则性与 Clay 结论全部开放。 | “The suitable-weak (s=0) endpoint, epsilon regularity, global regularity for arbitrary three-dimensional data, and the Clay conclusion all remain open.” |
+| suitable-weak \(s=0\)、epsilon regularity、任意三维初值全局正则性与 Clay 结论全部开放。 | “The suitable-weak \(s=0\) endpoint, epsilon regularity, global regularity for arbitrary three-dimensional data, and the Clay conclusion all remain open.” |
 
 ## 5. Machine-readable release boundary
 
 ```text
 exactShearNSE=PROVED_ANALYTICALLY
 allPositiveHeatScalesZeroProduction=PROVED_ANALYTICALLY
-gradientCovarianceStrictPositivity=PROVED_ANALYTICALLY
+gradientCovarianceStrictlyPositiveForAneq0AndSgt0=PROVED_ANALYTICALLY
+zeroAmplitudeMemberCovariance=ZERO
 positiveSizeCubicHomogeneity=PROVED_ANALYTICALLY
 productionOnlyCoercivity=REFUTED_FOR_ZERO_PRESERVING_FUNCTIONALS
 singleFourierCertificate=FINITE_CROSS_CHECK_ONLY

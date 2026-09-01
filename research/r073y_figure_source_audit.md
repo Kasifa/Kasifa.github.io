@@ -18,8 +18,8 @@ It is not a new proof of the underlying theorem. `NOT DNS`. `NOT CLAY`.
 
 ```text
 frozen analytic source       1ecc6fe20a921db9d0876dbd4484a3aa4ca7ec66
-21-file source/raw commit    e49a0e0570bd3b20fb38096e4841993f990b4cc2
-25-file metadata child       1aa97b39766d5eca01e7e0908ee222edd864b904
+21-file source/raw commit    e37bf12cb5c2a8eb975e5097229dbc48fa597b35
+25-file metadata child       05fdbc717a02be9f88fafc2b67a658e706b40be4
 ```
 
 The source/raw commit contains exactly 10 source files and 11 raw/result
@@ -62,6 +62,12 @@ The negative suite confirms that runtime-version drift, frozen-source drift,
 and inventory drift each fail closed. `SHA256SUMS` covers every package file
 except itself and independently verifies every listed digest.
 
+The source correction also makes the zero-amplitude endpoint literal:
+production vanishes for every real \(A\), strict gradient covariance holds for
+\(A\ne0\), and the trivial \(A=0\) member has \(D_{ii,s}=0\). The plotted
+covariance panels use the normalized nonzero witness \(A=1\), so no numeric or
+visual output changed during resealing.
+
 ## 4. Output and visual QA
 
 | Output | Formal property | SHA-256 |
@@ -85,10 +91,12 @@ with the original host path. No network, GPU, DGX, simulation, or DNS result
 supports the figure.
 
 The figure visualizes an analytic exact shear witness with
-`Pi_s=mathscrS_s=Q_s=0`, `D_{ii,s}>0`, and cubic amplitude homogeneity. It
-rules out only the declared zero-preserving production-only modulus. It does
-not establish or refute an associated-pressure estimate, epsilon regularity,
-arbitrary-data global regularity, blow-up, or a Clay conclusion.
+\(\Pi_s=\mathscr S_s=Q_s=0\) for every real amplitude,
+\(A\ne0\Rightarrow D_{ii,s}>0\), \(A=0\Rightarrow D_{ii,s}=0\), and cubic
+amplitude homogeneity. It rules out only the declared zero-preserving
+production-only modulus. It does not establish or refute an
+associated-pressure estimate, epsilon regularity, arbitrary-data global
+regularity, blow-up, or a Clay conclusion.
 
 **Final verdict:** `FORMAL PASS`. `ANALYTIC EXACT WITNESS / NOT DNS`.
 `NOT CLAY`.

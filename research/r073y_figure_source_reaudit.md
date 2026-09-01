@@ -4,9 +4,9 @@
 
 **Package:** `figures/r073y/fig-r073y-exact-shear-obstruction/`
 
-**Source/raw commit:** `e49a0e0570bd3b20fb38096e4841993f990b4cc2`
+**Source/raw commit:** `e37bf12cb5c2a8eb975e5097229dbc48fa597b35`
 
-**Metadata package commit:** `1aa97b39766d5eca01e7e0908ee222edd864b904`
+**Metadata package commit:** `05fdbc717a02be9f88fafc2b67a658e706b40be4`
 
 ## 1. Conclusion
 
@@ -23,8 +23,8 @@ and its separate proof audit.
 
 ## 2. Independent integrity reconciliation
 
-- Package HEAD was `1aa97b39766d5eca01e7e0908ee222edd864b904`, and the audited worktree was clean.
-- The source/raw commit `e49a0e05...` is an ancestor of the package commit.
+- Package HEAD was `05fdbc717a02be9f88fafc2b67a658e706b40be4`, and the audited worktree was clean apart from later reader-layer work outside the package.
+- The source/raw commit `e37bf12c...` is the package commit's source layer and is its direct parent.
 - All 21 source/raw current files equal their source-commit blobs byte-for-byte.
 - All 21 stored SHA-256 values, byte counts, and Git blob object IDs agree.
 - The three mathematical source hashes at `1ecc6fe2...` agree with the manifest.
@@ -60,9 +60,10 @@ Principal output hashes are:
 abce445fc6409bf8b412fab47620aeca5b748499cf953b9a40aa7d1fc8a46df5  figure.pdf
 7fd3b52f152e6fbc2d17325f6b1fc6f16172b7e5c3b0dcd72e7028624125e6f6  figure.png
 9403d5f042b17b8903a9c6cc1a0d51456412c09652b799ad3e75f794b2f86240  figure.svg
-51ea70e533db643096d6801759aa94f18e1e7ee71c21bb3c21ba6a549be5ae55  manifest.json
-6c3b7accdaa6600634d7fbe7b50c33f34a36baa3fa48ff8a6becef8f3d21c04d  validation.json
-860a97d197c77cd65253a209e8840a31d0e1bea76381355caf70fe7432465c2a  SHA256SUMS
+8ab3a2875cac69f7d208673731eff03f0635f95c8fcb90fb0641f7663c53fe23  manifest.json
+0dfc353afae9f7e2152f2175d6a2ebe452841fa15f8e968691513e9f0c7c5f8e  validation.json
+21d85686f2feec15f0ac6b3af6782cb72c3f009ff2c0b38d4ee157914d2a1b85  qa-report.md
+6ef06e492d0e280ec8df431b7e02fe97bdc53614e95f232a1114efd17be99ce7  SHA256SUMS
 ```
 
 No genuine temporary-root, home-directory, or machine-specific source path was
@@ -72,10 +73,12 @@ computation underlies the figure.
 ## 5. Claim-boundary verdict
 
 The caption and machine ledger consistently identify an analytic obstruction:
-the exact shear family has zero production channels at every positive scale,
-strictly positive gradient covariance, and cubic positive size. This refutes
-only a zero-preserving production-only coercivity modulus with finite
-amplitude-independent value at zero.
+the exact shear family has zero production channels at every positive scale
+for all real amplitudes; every nonzero member has strictly positive gradient
+covariance and cubic positive size, while the zero-amplitude member is the
+trivial field with zero covariance. This refutes only a zero-preserving
+production-only coercivity modulus with finite amplitude-independent value at
+zero.
 
 The package does not claim novelty for the basic shear mechanism, turbulence
 closure validation, a singular solution, epsilon regularity, arbitrary-data

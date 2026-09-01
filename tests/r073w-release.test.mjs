@@ -213,7 +213,7 @@ print(json.dumps({
   "auditsEqual":all(s[g.PUBLIC/"research"/"r073w"/name]==(g.ROOT/"research"/name).read_bytes() for name in ("r073w_figure_source_audit.md","r073w_figure_source_reaudit.md")),
   "recapNodes":recap.count('class="node-ref"'),
   "indexNotes":index.count('<li class="note-entry"'),
-  "homeCounts":all(value in home for value in ("199</strong>公开研究笔记","139 节累计回顾","101 节已公开 · 77 节完整封存")),
+  "homeCounts":all(value in home for value in ("199</strong>公开研究笔记","139 节累计回顾","101 节已公开","77 节完整封存")),
   "currentRoute":literature.count('<header><b>R0.73W</b>')==1 and literature.count('开放接口 · R0.73X')==1 and '开放接口 · R0.73W' not in literature,
   "literatureCounts":all(value in literature for value in ("本站 R0.69P–R0.73W 只列为研究笔记","累计回顾与 139 节索引","打开 139 节完整索引")) and all(value not in literature for value in ("本站 R0.69P–R0.73V 只列为研究笔记","累计回顾与 138 节索引","打开 138 节完整索引")),
   "currentVersion":all("v1.62" not in value and "v=1.62" not in value for value in (home,literature,index)),

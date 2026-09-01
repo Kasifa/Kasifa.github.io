@@ -1,0 +1,6 @@
+R073X_CERT_PYTHON="${R073X_CERT_PYTHON:-python3}"
+"$R073X_CERT_PYTHON" -B scripts/r073x_gaussian_tail_certificate.py --check-only
+"$R073X_CERT_PYTHON" -B scripts/r073x_finite_fourier_harness.py --check-only
+"$R073X_CERT_PYTHON" -B research/certificates/r073x/seal_package.py
+"$R073X_CERT_PYTHON" -B research/certificates/r073x/seal_package.py --check-only
+shasum -a 256 -c research/certificates/r073x/SHA256SUMS

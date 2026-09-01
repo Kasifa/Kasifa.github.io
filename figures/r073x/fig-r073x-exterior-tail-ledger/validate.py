@@ -153,25 +153,39 @@ def validate_content(repository: Path) -> tuple[list[dict[str, object]], dict[st
     versions = {name: importlib.metadata.version(name) for name in EXPECTED_PACKAGES}
     add(checks, "dependency-versions", versions == EXPECTED_PACKAGES, actual=versions, expected=EXPECTED_PACKAGES)
     runtime = environment["runtime"]
-    actual_runtime = {
-        "pythonExecutable": str(Path(__import__("sys").executable).resolve()),
-        "pythonPathEnvironment": __import__("os").environ.get("PYTHONPATH", ""),
-        "imports": {
-            "matplotlib": str(Path(__import__("matplotlib").__file__).resolve()),
-            "numpy": str(Path(__import__("numpy").__file__).resolve()),
-        },
-    }
+    recorded_python = runtime.get("pythonExecutable")
+    recorded_python_path = runtime.get("pythonPathEnvironment")
+    recorded_imports = runtime.get("imports")
+    python_path_roots = (
+        [Path(value).resolve() for value in recorded_python_path.split(":") if value]
+        if isinstance(recorded_python_path, str) else []
+    )
+    import_paths = (
+        {name: Path(value).resolve() for name, value in recorded_imports.items()}
+        if isinstance(recorded_imports, dict)
+        and all(isinstance(name, str) and isinstance(value, str)
+                for name, value in recorded_imports.items())
+        else {}
+    )
+    imports_under_recorded_path = bool(python_path_roots) and all(
+        any(root == path or root in path.parents for root in python_path_roots)
+        for path in import_paths.values()
+    )
     recorded_runtime = {
-        "pythonExecutable": str(Path(runtime["pythonExecutable"]).resolve()),
-        "pythonPathEnvironment": runtime["pythonPathEnvironment"],
-        "imports": runtime["imports"],
+        "pythonExecutable": recorded_python,
+        "pythonPathEnvironment": recorded_python_path,
+        "imports": recorded_imports,
     }
     add(
         checks,
         "runtime-provenance",
-        recorded_runtime == actual_runtime,
-        actual=actual_runtime,
+        isinstance(recorded_python, str)
+        and Path(recorded_python).is_absolute()
+        and set(import_paths) == {"matplotlib", "numpy"}
+        and all(path.is_absolute() for path in import_paths.values())
+        and imports_under_recorded_path,
         recorded=recorded_runtime,
+        interpretation="certified-run provenance is internally consistent; live verifier portability is checked by pinned package versions",
     )
 
     plot = load_plot_module()

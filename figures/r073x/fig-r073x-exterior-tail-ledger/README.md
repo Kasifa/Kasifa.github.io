@@ -51,11 +51,13 @@ install `requirements.txt` into a clean environment and point
 `R073X_FIGURE_PYTHON` at its Python; set `R073X_FIGURE_PYTHONPATH` only when
 the dependencies live outside that environment's ordinary import path.
 
-The present staged seal is a hash-bound prepublication artifact.  Source
-evidence is bound to immutable commit
-`958b6b4216f6914a5d42f7712b6bc9b218caf801`, but the 21 figure source/raw
-files are not package-commit-bound until the Site owner commits them.  A final
-seal has `schemaVersion=research-figure-manifest-v1`,
+Before the final reseal, the staged metadata is a hash-bound prepublication
+artifact.  Source evidence is bound to immutable research commit
+`958b6b4216f6914a5d42f7712b6bc9b218caf801`; the 21 figure source/raw files
+then receive their own immutable commit.  The current lifecycle state is
+carried by `manifest.json`, `validation.json`, `qa-report.md`, and
+`SHA256SUMS`, which are intentionally written only after that source commit.
+A final seal has `schemaVersion=research-figure-manifest-v1`,
 `figureSchemaVersion=r073x-exterior-tail-ledger-manifest-v1`, `release=R0.73X`,
 `status=formal`, `publicationStatus=staged`, and
 `seal.state=formal-figure-source-seal`.  No public mirror is created by this

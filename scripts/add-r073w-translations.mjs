@@ -36,20 +36,9 @@ const action = argumentsList[0];
 const translationRoute = "LOCAL_DIRECT_NO_DGX";
 const translationMethod = "reviewed-local-direct-no-dgx-no-network";
 const localDirectProvenance = "local-direct-reviewed";
-const forcedSemanticReviewLedger = new Map([
-  ["s1812", {
-    zhSha256: "ec8cabcdbd73652c18e7723b2af7442aedb561b2401d706f0d36d56cfd1f258e",
-    capturedEnSha256: "def0f106b80ef90637edc75c171b95e908f4fed8c9ba76d141b1626dabbc4c40",
-  }],
-  ["s1824", {
-    zhSha256: "c64d1cbb0d0b21dedcf75e8b1a333e07e9a4e847ed7e672acbc8aab77a0dd891",
-    capturedEnSha256: "01eb99ba78da2ac13f2bcf6ad6271e45bd29334291153c11bd9316050fa6b9e5",
-  }],
-  ["s2429", {
-    zhSha256: "a3ab0dedb06f246cd9a9b6186a0f3ec23109af26918e746988c9eea0ec6b47a4",
-    capturedEnSha256: "dba9300f29587fe82ed912d0f24a4c71744f54bfb8280ad29592473ba17803be",
-  }],
-]);
+// The current R0.73V baseline already contains those historical repairs.
+// Re-review only rows that the live strict validator actually flags.
+const forcedSemanticReviewLedger = new Map();
 const forcedSemanticReviewIds = new Set(forcedSemanticReviewLedger.keys());
 
 // These are reviewed, historical semantic equivalences—not a general escape

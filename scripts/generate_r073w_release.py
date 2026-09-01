@@ -736,6 +736,21 @@ def recap_page(content: ReleaseContent) -> str:
         ("<strong>76</strong>", "<strong>77</strong>"),
     ):
         value = value.replace(old, new)
+    value = replace_regex_once(
+        value,
+        r'<meta name="description" content="[^"]*">',
+        '<meta name="description" content="R0.60 之后的完整研究回顾：R0.61 到 R0.73W '
+        '共 139 个节点；最新一节分开带符号亚滤波 production、heat-plane 特征线、'
+        '能量类尺度损失、精确反例与局部化缺口。">',
+        "recap meta description",
+    )
+    value = replace_regex_once(
+        value,
+        r'<meta property="og:description" content="[^"]*">',
+        '<meta property="og:description" content="58 个阶段、139 个节点：从约化递推和环带排除，'
+        '推进到带符号亚滤波 production 的精确恒等式、能量类边界与反例证书。">',
+        "recap Open Graph description",
+    )
     value = replace_once(
         value,
         '          </div>\n        </section>\n\n        <section id="node-index"',
@@ -785,6 +800,24 @@ def recap_page(content: ReleaseContent) -> str:
     value = value.replace(
         'href="/recap-r0-61-r0-73v.pdf"', 'href="/recap-r0-61-r0-73w.pdf"'
     )
+    value = replace_regex_once(
+        value, r'<section id="reproduce">.*?</section>',
+        '<section id="reproduce"><div class="section-no">07 / 原始资料</div>'
+        '<h2>逐节笔记、证明、审计、证书、附图和历史回顾</h2>'
+        '<p><a href="/recap-r0-60.html">阅读 R0.00–R0.60 阶段回顾</a> · '
+        '<a href="/recap-r0-61-r0-73v.html">保留 R0.73V 历史回顾</a> · '
+        '<a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · '
+        '<a href="/notes/r0-73w.html">打开最新节点 R0.73W</a></p>'
+        '<p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_report-source.md">查看 canonical report</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_signed_production_identities.md">查看解析证明</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_primary_literature_audit.md">查看一手文献审计</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073w">查看有限证书</a> · '
+        '<a href="/assets/r073w/fig-r073w-signed-production.pdf">下载期刊附图</a> · '
+        '<a href="/recap-r0-61-r0-73w.pdf">下载同步 PDF</a></p>'
+        '<p>经典结论由一手来源承担；本地解析证明承担精确恒等式和条件推论；有限证书只作可复现系数核验。NOT CLAY。</p>'
+        '</section>',
+        "recap current source links",
+    )
     if value.count('<article class="phase">') != 58:
         raise RuntimeError("R0.73W recap must contain exactly 58 phase articles")
     if value.count('class="node-ref"') != 139:
@@ -827,6 +860,22 @@ def home_page(content: ReleaseContent) -> str:
     value = value.replace(
         "R0.70A–R0.73V：100 节已公开，76 节完整封存",
         "R0.70A–R0.73W：101 节已公开，77 节完整封存",
+    )
+    value = replace_regex_once(
+        value,
+        r'<div class="task-one" id="post-r060-recap".*?</div>',
+        '<div class="task-one" id="post-r060-recap" style="margin-top:2rem">'
+        '<p class="eyebrow">累计回顾 R0.61–R0.73W · ' + html.escape(content.date) + '</p>'
+        '<h3>R0.60 recap 之后的累计回顾收录 139 个节点；全站现有 199 篇公开研究笔记</h3>'
+        '<p>累计回顾现分 58 个阶段，完整保留 R0.61–R0.73W；最新节点分开记录带符号亚滤波 '
+        'production、heat-plane 特征线、能量类尺度损失、精确反例与局部化缺口。</p>'
+        '<p>R0.70A–R0.73W 共 101 个版本已公开；77 个按当前 formal-figure 合同完整封存，'
+        '24 个旧版附图档案仍列入回补清单。</p>'
+        '<p><strong>阶段判断：</strong>&nbsp;' + html.escape(content.recap_zh) + ' '
+        '任意三维初值全局正则性与 Clay 保持 OPEN。</p>'
+        '<p><a href="/recap-r0-61-r0-73w.html"><strong>阅读 R0.60 之后的完整累计回顾 →</strong></a> · '
+        '<a href="/recap-r0-61-r0-73w.pdf">下载同步 PDF</a></p></div>',
+        "home cumulative recap card",
     )
     value = value.replace("/recap-r0-61-r0-73v.html", "/recap-r0-61-r0-73w.html")
     value = value.replace("/recap-r0-61-r0-73v.pdf", "/recap-r0-61-r0-73w.pdf")
@@ -1036,9 +1085,32 @@ def validate_staged(staged: dict[Path, bytes]) -> None:
         raise RuntimeError("recap DOM does not derive 139 indexed nodes")
     if recap.count('<article class="phase">') != 58:
         raise RuntimeError("recap DOM does not derive 58 grouped phase articles")
+    if (
+        "最新一节分开带符号亚滤波 production、heat-plane 特征线" not in recap
+        or "打开最新节点 R0.73W" not in recap
+        or "research/r073w_report-source.md" not in recap
+        or "research/certificates/r073w" not in recap
+        or "/assets/r073w/fig-r073w-signed-production.pdf" not in recap
+        or "打开最新节点 R0.73V" in recap
+    ):
+        raise RuntimeError("recap current metadata/source surface is stale")
     home = staged[PUBLIC / "research-review.html"].decode("utf-8")
     if home.count('data-release="r073w"') != 1 or home.count('id="latest-release"') != 1:
         raise RuntimeError("home DOM lacks one canonical R0.73W route/card")
+    recap_card_match = re.search(
+        r'<div class="task-one" id="post-r060-recap".*?</div>', home, re.DOTALL
+    )
+    if recap_card_match is None:
+        raise RuntimeError("home DOM lacks the cumulative recap card")
+    recap_card = recap_card_match.group(0)
+    if not all(token in recap_card for token in (
+        "R0.61–R0.73W", "139 个节点", "199 篇公开研究笔记", "58 个阶段",
+        "101 个版本已公开", "77 个按当前 formal-figure 合同完整封存",
+    )) or any(token in recap_card for token in (
+        "累计回顾 R0.61–R0.73V", "完整保留 R0.61–R0.73V",
+        "R0.70A–R0.73V 共", "138 个节点", "198 篇公开研究笔记", "57 个阶段",
+    )):
+        raise RuntimeError("home cumulative recap card is stale")
     index = staged[PUBLIC / "notes/index.html"].decode("utf-8")
     if index.count('data-note="r0-73w"') != 1:
         raise RuntimeError("note-index DOM lacks one canonical R0.73W entry")

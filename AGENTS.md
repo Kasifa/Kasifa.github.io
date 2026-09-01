@@ -14,10 +14,11 @@ These rules apply to reader-facing text in `public/`, page metadata, research no
 
 - Publish this project only through the GitHub repository and its GitHub Pages site at `https://kasifa.github.io/`.
 - Do not mirror or deploy the project to another hosting service unless the user explicitly changes this rule.
-- Starting with R0.70A, a research section counts as completed only after its analytic proof or explicitly stated negative result, required certificates, independent audit, formal figure package, synchronized HTML/PDF, cumulative recap, literature boundary, bilingual dictionary, homepage route/progress entries, and publication tests all pass. Keep the same inventory in `research/release-manifest.json`.
+- Starting with R0.70A, a research section counts as completed only after its analytic proof or explicitly stated negative result, required certificates, independent audit, formal figure package, synchronized HTML/PDF, literature boundary, bilingual dictionary, homepage route/progress entries, and publication tests all pass. Keep the same inventory in `research/release-manifest.json`.
 - Publish each newly completed section in the same release cycle. Do not let later research versions advance while an earlier certified section remains absent from the public route.
-- Keep the homepage's latest-version label, total public-note count, route-node counts, and recap endpoint derived from the actual published files; verify them before every GitHub Pages push.
-- After a phase recap, create the next cumulative recap from that endpoint onward instead of silently extending only the research cards.
+- Treat a cumulative recap as a milestone artifact, not a per-section requirement. Update it only after a substantial phase closure, route change, or positive theorem; an ordinary completed section publishes its own note without creating a new recap.
+- Keep the latest published-research endpoint and latest recap endpoint as distinct manifest fields. Derive the homepage's latest-version label, total public-note count, published route-node count, recap-covered node count, and recap endpoint from the actual files; verify them before every GitHub Pages push.
+- When a milestone recap is created, state its exact terminal release and node coverage. Later note-only releases must keep that recap byte-identical and label it as the previous milestone instead of silently implying current coverage.
 
 # Simulation and figure archive
 

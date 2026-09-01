@@ -135,7 +135,7 @@ covariance flux。把式 (1.6) 代回 R0.73V 的 trace 方程后，\(K_s\)
 右侧是零阶 Riesz 三线性型，受 \(C\|u\|_3^3\) 控制。它恢复的正是经典
 \(H^{1/2}\) 小数据结构，而不是任意能量的 coercive 吸收。
 
-**[两路径精确有限计算，待 immutable pin]** 第六，主见证
+**[两路径精确有限计算，已 commit-bound 封存]** 第六，主见证
 
 \[
  \begin{aligned}
@@ -389,8 +389,9 @@ smoothing 的一阶收益恰好被 nonlinear derivative 用完，只剩经典临
 product-to-sum 与独立的 dense Fraction tuple。两边都从原始场重建
 \(v_s,\tau_s,\Pi_s,D_{ii,s}\)，并从实际 support 精确消元计算频率秩。
 
-当前未封印计算中，两条路径各通过 56/56 项检查，完整 `commonCore`
-逐字节一致。除秩三主见证外，证书还保留：
+commit-bound 封存中，两条路径各通过 56/56 项检查，完整 `commonCore`
+逐字节一致；manifest 绑定源提交 `b9f3b3943df1e2abf6abc2f51c1fb25d1f1e8440`。
+除秩三主见证外，证书还保留：
 
 - 一个原坐标依赖 \(x,y,z\)、但频率只张成 rank two 的 triad；
 - 一个 2D3C 场，其 production 具有相反的显式多项式。

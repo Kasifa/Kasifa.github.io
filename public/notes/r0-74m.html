@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.79">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74M｜最后一小段布朗路径，排出了最近内领圈</title>
+<meta name="description" content="最后一小段布朗路径给出相关支撑上的正剪切位移，关闭精确解族的最近内领圈完整有符号行">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74m.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.79"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74M · 2026-09-02</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74M · 完整中文版本</div><h1>R0.74M｜最后一小段布朗路径，排出了最近内领圈</h1>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。R0.74L 关闭了主目标领圈；我在本节处理另一个局部门槛：最近内领圈 \(k=j-1\) 的完整有符号行。真实剪切在最后一小段物理时间内把典型布朗路径对应的横向中心推出领圈，少数来得太快的路径则由明确的高斯尾支付。结论只属于 R0.74F--H 构造的精确光滑、周期、无外力解族。<strong>NOT CLAY.</strong></p>
+<div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div>
+<div class="stamp"><strong>状态 · R0.74M</strong><p>最近内领圈完整行：PROVED</p><p>最后时段排出：PROVED</p><p>证书 38/38：FINITE</p><p>图件 49/49：FINITE</p><p>完整壳层合成：OPEN</p><p>匹配上界：OPEN</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article>
+<section id="s-01"><div class="section-no">01 / 主结论</div><h2>最近内领圈完整有符号行已闭合</h2>
+<p>沿用 \(R_j=e^{-L_j^2/320}\)、\(\Gamma_{j-1}/\Gamma_j=e^{G_1L_j^2}\)、\(G_1=2/1323\)，并固定 \(s_{R_j}=61R_j^2\)、\(I_{R_j}=(64R_j^2,65R_j^2)\)。本节证明：存在与 \(j\) 无关的 \(C&lt;\infty\)，使充分大的 \(j\) 满足</p>
+<div class="equation">\[\boxed{\sup_{\tau\in I_{R_j}}[\mathcal J_{j,j-1}(\tau)]_+\le C\Gamma_jL_jR_j^5.}\]</div>
+<p>这里控制完整的 \(j-1\) 截止函数导数，保留全部周期绕行、两包自项和交叉项；四倍安全上界不假设正负包抵消。</p></section>
+<section id="s-02"><div class="section-no">02 / 相关支撑</div><h2>领圈位置与剪切滞后留在同一个期望里</h2>
+<p>我没有把真实被动包换成自由热包。R0.74L 的共同前向概率律保留端点领圈与剪切滞后的相关性，其中 \(T=R_j^2+t\)，</p>
+<div class="equation">\[\begin{aligned}\mathcal P^-(\tau)={}&R_j^6\int_{61R_j^2}^{\tau}\eta_{R_j}(t)\int_{\mathbb T}|\partial K_T(u)|^2\\&\quad\times\mathbb E^{\rm fw}[K_T(X_t)\,\overline D^-(t,q_\omega(t)+u,h_j+X_t)]\,du\,dt.\end{aligned}\]</div>
+<p>后面的排出结论只在这个相关支撑上证明；没有使用“给定终点就必然排出”的原则。</p></section>
+<section id="s-03"><div class="section-no">03 / 最后时段</div><h2>最后 \(R_j^2/64\) 产生可量化正位移</h2>
+<p>若终点落在最近内领圈，而最后一段布朗路径离终点不超过 \(L_jR_j/16\)，则路径保持在 \(|h_j+X_s|\le3L_jR_j/5\) 内。未含 padding 的几何余量为</p>
+<div class="equation">\[\frac35-\frac{32}{63}-\frac1{16}=\frac{149}{5040}>0.\]</div>
+<p>完整支撑另含 \(R_j/8\) padding；归一化余量是 \(149/5040-1/(8L_j)\)，所以包含关系只对充分大的 \(L_j\) 使用。内向热流缺陷与平台缺陷比较后得到</p>
+<div class="equation">\[\mathfrak S_t^\leftarrow[X]\ge\Sigma_{L_j},\qquad\Sigma_L=\frac1{32768}e^{-L^2/640}.\]</div></section>
+<section id="s-04"><div class="section-no">04 / 尺度分离</div><h2>位移趋于零，但比领圈尺度大得越来越多</h2>
+<div class="equation">\[\frac{\Sigma_L}{LR}=\frac{e^{L^2/640}}{32768L}\longrightarrow\infty.\]</div>
+<p>因此领圈支撑迫使横向热核导数在距离至少 \(\Sigma_{L_j}/2\) 处取值，好路径进入</p>
+<div class="equation">\[\exp\!\left[-c\frac{\Sigma_{L_j}^2}{R_j^2}\right]=\exp[-c'e^{L_j^2/320}]\]</div>
+<p>这样的超高斯尾。这里的“排出”不是常数量级位移，而是两个趋零尺度之间的严格分离。</p></section>
+<section id="s-05"><div class="section-no">05 / 坏路径</div><h2>快速回返事件由明确高斯尾支付</h2>
+<p>坏事件是最后 \(R_j^2/64\) 内的布朗振幅超过 \(L_jR_j/16\)。反射估计给出 \(\mathbb P(\mathcal H_t^c)\le4e^{-L_j^2/16}\)。所需指数余量为</p>
+<div class="equation">\[\frac1{16}-\frac1{320}-\frac2{1323}=\frac{24497}{423360}>0.\]</div>
+<p>它足以支付额外的 \(R_j\) 和壳权差；这个指数来自最后时段长度与允许振幅，不是数值拟合。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整两包行</div><h2>四倍安全上界把一包估计送回原始行</h2>
+<p>好、坏路径合并后，正包非负上界满足</p>
+<div class="equation">\[\sup_{\tau\in I_{R_j}}\mathcal P^-(\tau)\le Ce^{-G_1L_j^2}L_jR_j^5.\]</div>
+<p>权重正好换回 \(\Gamma_j\)。再用反演对称性和 \(|F_j^++F_j^-|^2\le2(|F_j^+|^2+|F_j^-|^2)\) 得到主定理，不需要交叉项的符号信息。</p></section>
+<section id="s-07"><div class="section-no">07 / 证据等级</div><h2>解析证明、沿用输入、有限复算和文献边界分开</h2>
+<p><strong>PROVED：</strong>最近内领圈完整行、相关支撑上的最后时段正剪切位移、好路径超高斯尾、坏路径高斯支付，以及全部周期绕行与两包交叉项的安全控制。</p>
+<p><strong>INHERITED：</strong>R0.74F--H 精确光滑周期无外力解族、R0.74L 共同前向概率律、\(B_jR_j^2\) 校准、反演对称性和截止几何。</p>
+<p><strong>FINITE：</strong>Python 与独立 Ruby 各 38/38、零差异；图件验证 49/49，23 项校验和通过。有限复算只认证常数、阈值、指数余量和幂次账本，不替代解析证明。</p>
+<p><strong>LITERATURE BOUNDARY：</strong>有界七篇一手文献检索没有找到直接给出或否定这里的端点相关、随 \(j\) 一致、指数变平的有符号领圈估计。有限未命中不证明新颖性、优先权或检索完备性。</p></section>
+<section id="s-08"><div class="section-no">08 / 开放边界</div><h2>两个局部门槛已闭合，全壳层合成仍未完成</h2>
+<ul><li>其余壳层行的合成和 R0.74K 完整有符号条件仍为 OPEN；</li><li>\(\mathfrak C_j\) 与更强的 \(X_j\) 匹配上界仍为 OPEN；</li><li>普适平方根对数端点、任意三维数据的正则性或奇性仍为 OPEN；</li><li>新颖性和优先权判断仍为 OPEN。</li></ul>
+<p><strong>NOT CLAY：</strong>本节只推进精确解族内部的领圈分析，不能外推为任意三维 Navier--Stokes 解的定理。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>最后时段排出、尺度分离与好坏路径支付</h2>
+<picture><source srcset="/assets/r074m/fig-r074m-nearest-inward-expulsion.svg" type="image/svg+xml"><img src="/assets/r074m/fig-r074m-nearest-inward-expulsion.png" alt="R0.74M final-segment expulsion at the nearest inward collar"></picture>
+<p><a href="/assets/r074m/fig-r074m-nearest-inward-expulsion.pdf">下载矢量 PDF</a> · <a href="/assets/r074m/fig-r074m-nearest-inward-expulsion.png">下载 600 dpi PNG</a> · <a href="/assets/r074m/fig-r074m-nearest-inward-expulsion.svg">打开 SVG</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/source-data.csv">精确 source-data.csv</a></p>
+<p><a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/caption.md">图注</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/qa-report.md">图件 QA</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/plot.py">绘图源码</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/validate.py">验证器</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/validation.json">49 项验证记录</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/manifest.json">图件 manifest</a> · <a href="/figures/r074m/fig-r074m-nearest-inward-expulsion/SHA256SUMS">23 项校验和</a></p>
+<p class="figure-note">SVG 是网页主图；PNG 是回退与 600 dpi 归档，PDF 是矢量下载。图是解析账本，不是 DNS、仿真、布朗样本路径或奇点证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>主文、独立审计、双实现证书与完整图包</h2><p class="files">
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_problem_freeze.md">问题冻结</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_final_segment_expulsion.md">解析主文</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_nearest_inward_independent_audit.md">独立解析审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_final_source_rebind_audit.md">最终源文件重绑定</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074m_nearest_inward_certificate.py">Python 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074m_nearest_inward_certificate_independent.rb">独立 Ruby 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_nearest_inward_certificate.json">冻结 JSON</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_nearest_inward_certificate_report.md">证书报告</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_certificate_independent_audit.md">证书独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_primary_literature_boundary.md">主源文献边界</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_gap_matrix.md">证据与缺口矩阵</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_bilingual_dictionary.md">双语边界词典</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_report-source.md">审计后中文 reader source</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_reader_source_independent_audit.md">reader source 独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_figure_independent_audit.md">图件独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074m_freeze_manifest.json">冻结清单</a></p>
+<p><a href="/notes/r0-74m.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74N</h2><p>合成其余壳层行，直接检查 R0.74K 完整有符号条件；匹配上界与普适端点继续保持开放。</p></section>
+</article></main></body></html>

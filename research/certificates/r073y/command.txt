@@ -1,0 +1,10 @@
+python3 exact-shear-producer.py --check-only
+python3 seal_package.py --check-only
+
+# Optional second-runtime read-only verification. Set the environment variable
+# to another Python 3 interpreter before running this command.
+python3 seal_package.py --check-only --python python3 --python "$R073Y_ALT_PYTHON"
+
+# Maintainer-only deterministic reseal after all content files are frozen.
+# Two distinct Python 3 runtimes are required in seal mode.
+python3 seal_package.py --seal --python python3 --python "$R073Y_ALT_PYTHON"

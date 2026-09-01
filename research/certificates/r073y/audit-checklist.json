@@ -1,0 +1,77 @@
+{
+  "checks": [
+    {
+      "evidence": "all eight frozen source paths and SHA-256 values are fixed in contract.json",
+      "id": "source_commit_and_hash_binding",
+      "status": "PASS"
+    },
+    {
+      "evidence": "the archive producer is reversibly reconstructed to the frozen source hash",
+      "id": "producer_relocation_binding",
+      "status": "PASS"
+    },
+    {
+      "evidence": "strict canonical JSON rejects duplicate keys, nonfinite constants, and noncanonical bytes",
+      "id": "strict_json",
+      "status": "PASS"
+    },
+    {
+      "evidence": "stored payload hash, exact report regeneration, and portable-float gate pass",
+      "id": "producer_result_report_binding",
+      "status": "PASS"
+    },
+    {
+      "evidence": "CPython 3.9.6 and CPython 3.12.13 both passed producer --check-only",
+      "id": "dual_runtime",
+      "status": "PASS"
+    },
+    {
+      "evidence": "source, result, report, hash, scalar type, duplicate key, inventory, and source-commit mutations are rejected",
+      "id": "archive_negative_tests",
+      "status": "PASS"
+    },
+    {
+      "evidence": "check-only snapshots package size, mtime, and ctime and performs no package writes",
+      "id": "read_only_check_mode",
+      "status": "PASS"
+    },
+    {
+      "evidence": "manifest excludes both seal outputs; SHA256SUMS adds manifest and excludes itself",
+      "id": "self_exclusion",
+      "status": "PASS"
+    },
+    {
+      "evidence": "claim-boundary.md and machine-readable flags preserve NOT CLAY",
+      "id": "claim_boundary",
+      "status": "PASS"
+    }
+  ],
+  "dual_runtime_evidence": [
+    {
+      "implementation": "CPython",
+      "label": "system-python3",
+      "producer_check_only": "PASS",
+      "version": "3.9.6"
+    },
+    {
+      "implementation": "CPython",
+      "label": "bundled-python3",
+      "producer_check_only": "PASS",
+      "version": "3.12.13"
+    }
+  ],
+  "negative_tests": {
+    "duplicate_key": "PASS_REJECTED",
+    "inventory": "PASS_REJECTED",
+    "report": "PASS_REJECTED",
+    "result": "PASS_REJECTED",
+    "source": "PASS_REJECTED",
+    "source_commit": "PASS_REJECTED",
+    "stored_hash": "PASS_REJECTED",
+    "type": "PASS_REJECTED"
+  },
+  "not_clay": true,
+  "release": "R0.73Y",
+  "schema": "r073y-formal-certificate-audit-v1",
+  "status": "PASS"
+}

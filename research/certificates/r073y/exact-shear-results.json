@@ -1,0 +1,315 @@
+{
+  "claim_ledger": {
+    "PiPointwiseZero": "PROVED_ANALYTICALLY_AND_EXACTLY_CHECKED",
+    "arbitraryCutoffProductionVanishing": "PROVED_FROM_POINTWISE_ZERO",
+    "arbitraryPositiveScalePathProductionVanishing": "PROVED_FROM_POINTWISE_ZERO",
+    "arbitraryThreeDimensionalGlobalRegularity": "OPEN",
+    "centeredProductionPointwiseZero": "PROVED_ANALYTICALLY_AND_PARITY_CHECKED",
+    "clayConclusion": "OPEN",
+    "energyAndExteriorTailCubicHomogeneity": "PROVED_ANALYTICALLY_CERTIFICATE_DEGREE_RECORDED",
+    "epsilonRegularityRefuted": "FALSE_NOT_CLAIMED",
+    "exactShearSolvesNSE": "PROVED_ANALYTICALLY_AND_EXACTLY_CHECKED",
+    "generalOrthogonalShearClass": "PROVED_ANALYTICALLY_NOT_CERTIFICATE_SCOPE",
+    "gradientCovarianceStrictlyPositiveForAneq0AndSgt0": "PROVED_ANALYTICALLY",
+    "heatFilteredVelocityAndStress": "PROVED_ANALYTICALLY_AND_EXACTLY_CHECKED",
+    "ledgerAbsoluteDebtAlsoZero": "FALSE_NOT_CLAIMED",
+    "localEnergyDefectZero": "PROVED_FROM_SMOOTH_LOCAL_ENERGY_EQUALITY",
+    "pressureCovarianceZero": "PROVED_ANALYTICALLY",
+    "productionOnlyCoerciveBridge": "FALSE_BY_EXACT_NSE_FAMILY"
+  },
+  "exact_checks": [
+    {
+      "method": "exact Fourier coefficients in Q[rho][Z]",
+      "name": "nse_heat_residual",
+      "status": "PASS"
+    },
+    {
+      "method": "exact component/dependency-axis audit",
+      "name": "divergence_and_convection",
+      "status": "PASS"
+    },
+    {
+      "method": "exact mode multiplier rho^(m^2)",
+      "name": "heat_filtered_velocity",
+      "status": "PASS"
+    },
+    {
+      "method": "exact Fourier convolution and subtraction",
+      "name": "subfilter_stress",
+      "status": "PASS"
+    },
+    {
+      "method": "exact tensor support mismatch: tau_11 versus gradient_12",
+      "name": "Pi_pointwise_zero",
+      "status": "PASS"
+    },
+    {
+      "method": "exact Gaussian odd moment in y_1; increment depends only on y_2",
+      "name": "centered_production_pointwise_zero",
+      "status": "PASS"
+    },
+    {
+      "method": "exact Fourier convolution and factorization",
+      "name": "gradient_covariance",
+      "status": "PASS"
+    },
+    {
+      "method": "exact rho-polynomial mean identity d_t mean(k)+nu mean(D)=0",
+      "name": "global_fixed_scale_trace_ledger",
+      "status": "PASS"
+    }
+  ],
+  "exact_fourier_evidence": {
+    "D_over_b_squared_n_squared": {
+      "-2": [
+        {
+          "coefficient": "-1/4",
+          "rho_power": 2
+        },
+        {
+          "coefficient": "1/4",
+          "rho_power": 4
+        }
+      ],
+      "0": [
+        {
+          "coefficient": "1/2",
+          "rho_power": 0
+        },
+        {
+          "coefficient": "-1/2",
+          "rho_power": 2
+        }
+      ],
+      "2": [
+        {
+          "coefficient": "-1/4",
+          "rho_power": 2
+        },
+        {
+          "coefficient": "1/4",
+          "rho_power": 4
+        }
+      ]
+    },
+    "filtered_velocity": {
+      "-1": [
+        {
+          "coefficient": "1/2i",
+          "rho_power": 1
+        }
+      ],
+      "1": [
+        {
+          "coefficient": "-1/2i",
+          "rho_power": 1
+        }
+      ]
+    },
+    "fixed_scale_trace_residual": [],
+    "normalized_nse_residual": {},
+    "sine": {
+      "-1": [
+        {
+          "coefficient": "1/2i",
+          "rho_power": 0
+        }
+      ],
+      "1": [
+        {
+          "coefficient": "-1/2i",
+          "rho_power": 0
+        }
+      ]
+    },
+    "structural_support": {
+      "centered_odd_axis_zero_based": 0,
+      "gradient_active_pair_zero_based": [
+        0,
+        1
+      ],
+      "tau_active_pair_zero_based": [
+        0,
+        0
+      ],
+      "velocity_active_component_zero_based": 0,
+      "velocity_dependency_axes_zero_based": [
+        1
+      ]
+    },
+    "tau_over_b_squared": {
+      "-2": [
+        {
+          "coefficient": "1/4",
+          "rho_power": 2
+        },
+        {
+          "coefficient": "-1/4",
+          "rho_power": 4
+        }
+      ],
+      "0": [
+        {
+          "coefficient": "1/2",
+          "rho_power": 0
+        },
+        {
+          "coefficient": "-1/2",
+          "rho_power": 2
+        }
+      ],
+      "2": [
+        {
+          "coefficient": "1/4",
+          "rho_power": 2
+        },
+        {
+          "coefficient": "-1/4",
+          "rho_power": 4
+        }
+      ]
+    }
+  },
+  "frozen_date": "2026-09-01",
+  "homogeneity": {
+    "degrees_in_absolute_amplitude_A": {
+      "A_ext": "3",
+      "D": "2",
+      "Lambda_R": "2",
+      "Pi": "3",
+      "centered_production": "3",
+      "energy": "2",
+      "energy_to_three_halves": "3",
+      "gradient_u": "1",
+      "harmonic_pressure": "2",
+      "harmonic_tail_H": "3",
+      "local_pressure": "2",
+      "pressure_gauge_c_R": "2",
+      "pressure_to_three_halves_tail": "3",
+      "u": "1",
+      "velocity_cubic_tail": "3"
+    },
+    "method": "declared degree ledger with target-degree consistency checks; no independent exponent propagation",
+    "status": "DEGREE_RECORDED",
+    "strict_positivity_basis": {
+      "G_u": "positive weights integrate |u|^3 over nonempty lifted annuli; the nodal planes have measure zero",
+      "H_u": "Lambda_R is positive because its positive annular |u|^2 integrals are nonzero",
+      "energy": "a nonzero continuous shear is nonzero on a positive-measure subset of every open ball",
+      "sum": "already strictly positive from the energy row, and also from G_u and H_u"
+    }
+  },
+  "not_clay": true,
+  "numerical_cross_checks": {
+    "cases": [
+      {
+        "D_exact": 0.009278071186940288,
+        "D_numeric": 0.009278071186952008,
+        "filtered_sine_exact": 0.35048969475996045,
+        "filtered_sine_numeric": 0.35048969475995556,
+        "filtered_square_exact": 0.17415189213251409,
+        "filtered_square_numeric": 0.17415189213256238,
+        "n": 1,
+        "odd_gaussian_moment": 0.0,
+        "rho": 0.9692332344763441,
+        "s": 0.03125,
+        "tau_exact": 0.05130886599958383,
+        "tau_numeric": 0.051308865999635564,
+        "x2": 0.37
+      },
+      {
+        "D_exact": 1.3333768214991693,
+        "D_numeric": 1.333376821499292,
+        "filtered_sine_exact": -0.45965474963118524,
+        "filtered_sine_numeric": -0.4596547496312112,
+        "filtered_square_exact": 0.5100588423122729,
+        "filtered_square_numeric": 0.5100588423123004,
+        "n": 2,
+        "odd_gaussian_moment": 0.0,
+        "rho": 0.6065306597126334,
+        "s": 0.125,
+        "tau_exact": 0.29877635345376535,
+        "tau_numeric": 0.29877635345376885,
+        "x2": -0.43
+      },
+      {
+        "D_exact": 1.8508428319576797,
+        "D_numeric": 1.8508428319578636,
+        "filtered_sine_exact": -0.11416937798760446,
+        "filtered_sine_numeric": -0.11416937798761384,
+        "filtered_square_exact": 0.4358087522971775,
+        "filtered_square_numeric": 0.4358087522973061,
+        "n": 3,
+        "odd_gaussian_moment": 0.0,
+        "rho": 0.6095709072963093,
+        "s": 0.055,
+        "tau_exact": 0.422774105427101,
+        "tau_numeric": 0.42277410542722743,
+        "x2": 1.11
+      },
+      {
+        "D_exact": 3.572895226406155,
+        "D_numeric": 3.5728952264061435,
+        "filtered_sine_exact": 0.5395072031440141,
+        "filtered_sine_numeric": 0.5395072031440438,
+        "filtered_square_exact": 0.5056196253970695,
+        "filtered_square_numeric": 0.5056196253971025,
+        "n": 4,
+        "odd_gaussian_moment": 0.0,
+        "rho": 0.7497615922390413,
+        "s": 0.018,
+        "tau_exact": 0.21455160315279295,
+        "tau_numeric": 0.21455160315279398,
+        "x2": -1.37
+      },
+      {
+        "D_exact": 7.266887156123145,
+        "D_numeric": 7.266887156123144,
+        "filtered_sine_exact": -0.7880108263979182,
+        "filtered_sine_numeric": -0.7880108263979231,
+        "filtered_square_exact": 0.6926574246536308,
+        "filtered_square_numeric": 0.6926574246536372,
+        "n": 5,
+        "odd_gaussian_moment": 0.0,
+        "rho": 0.7985162187593771,
+        "s": 0.009,
+        "tau_exact": 0.07169636213330088,
+        "tau_numeric": 0.07169636213329955,
+        "x2": 0.91
+      }
+    ],
+    "maximum_overall_scaled_error": 1.2856382625159313e-13,
+    "maximum_scaled_errors": {
+      "D": 9.933470833039907e-14,
+      "P_s_sine": 2.964295475749168e-14,
+      "P_s_sine_squared": 1.2856382625159313e-13,
+      "odd_gaussian_moment": 0.0,
+      "tau": 1.2645440250480533e-13
+    },
+    "method": "dependency-free adaptive Simpson integration of the Gaussian convolution",
+    "role": "cross-check only; no numerical row is used as proof",
+    "status": "PASS",
+    "truncation_window": "[-14 sqrt(s), 14 sqrt(s)]"
+  },
+  "payload_sha256": "51f721cf560df38fbeacdd093d4293adae10635e13dcaa6b9251616c4f7eca2c",
+  "quantifier_audit": {
+    "absolute_endpoint_and_cutoff_debt_claimed_zero": false,
+    "arbitrary_path_satisfies_heat_characteristic_ledger": false,
+    "arbitrary_positive_heat_scale_path_for_direct_production": true,
+    "arbitrary_scalar_cutoff": true,
+    "descending_characteristic_included": true,
+    "positive_D_or_debt_criteria_refuted": false,
+    "smooth_zero_scale_extension_included": true
+  },
+  "schema": "r073y-exact-shear-certificate-v1",
+  "scope": {
+    "A": "arbitrary real amplitude",
+    "certificate_role": "exact algebra audit plus numerical cross-check; analytic note carries the proof",
+    "domain": "T^3=[0,2pi]^3",
+    "family": "u=A exp(-nu n^2 t) sin(n x_2) e_1, p=0",
+    "general_class": "analytic theorem only; certificate witness is the single sine mode",
+    "n": "positive integer",
+    "not_a_simulation": true,
+    "nu": "positive"
+  },
+  "status": "PASS"
+}

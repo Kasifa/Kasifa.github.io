@@ -110,7 +110,7 @@ FIGURE_METADATA_SHA256 = {
 # not include this module, so they do not create a self-hash cycle.
 PUBLICATION_SOURCE_SHA256 = {
     DICTIONARY_SOURCE: "bde70adc2a6721bdccba72594e643c485e335c97a821032ea5677a3b555ed914",
-    CORRECTION_SOURCE: "267dc432ac8684528c6330da0ed5614133262c0860fa283b7a249b2cb63105b5",
+    CORRECTION_SOURCE: "3d096fd2d419864fd9b59a6147a097ad2debabbec168d237fdd976091a882c41",
     PLANNED_AUDIT_PATHS[0]: "bec2d287e31897fc2311519b9fb47b2f1344f69f81080ca8b9c440073b4e664d",
     PLANNED_AUDIT_PATHS[1]: "3d596d24e71ba63f4a142a6a8081588e649eca92330c76c7f4e7cac1b853b5b5",
 }
@@ -431,6 +431,7 @@ def _correct_reader_report(report: str, correction: str) -> str:
         "readerCorrectionVersion=1",
         "frozenReportBytesPreserved=true",
         "publicTransformation=EXACT_COUNTED_REPLACEMENTS",
+        "typesettingNormalization=EXACT_COUNTED_NONSEMANTIC_REPAIRS",
         "zeroProduction=ALL_REAL_A",
         "strictGradientCovariance=ONLY_A_NE_0",
         "zeroAmplitudeGradientCovariance=0",
@@ -475,9 +476,18 @@ def _correct_reader_report(report: str, correction: str) -> str:
     result = _replace_exact_once(
         result,
         "\\[\n D_{ii,s}={b_A(t)^2n^2\\over2}\n (1-\\rho^2)(1-\\rho^2\\cos(2nx_2))\n \\ge {b_A(t)^2n^2\\over2}(1-\\rho^2)^2>0.\n\\tag{3.3}\n\\]",
-        "\\[\n A\\ne0\\Longrightarrow D_{ii,s}={b_A(t)^2n^2\\over2}\n (1-\\rho^2)(1-\\rho^2\\cos(2nx_2))\n \\ge {b_A(t)^2n^2\\over2}(1-\\rho^2)^2>0,\n \\qquad A=0\\Longrightarrow D_{ii,s}=0.\n\\tag{3.3}\n\\]",
+        "\\[\n \\begin{aligned}\n A\\ne0\\Longrightarrow D_{ii,s}\n &= {b_A(t)^2n^2\\over2}(1-\\rho^2)\n    (1-\\rho^2\\cos(2nx_2))\\\\\n &\\ge {b_A(t)^2n^2\\over2}(1-\\rho^2)^2>0,\\\\\n A=0&\\Longrightarrow D_{ii,s}=0.\n \\end{aligned}\n\\tag{3.3}\n\\]",
         "Q3 single-mode covariance formula",
     )
+    for old, new, label in (
+        ("=|A|^3C,qquad C>0.", "=|A|^3C,\\qquad C>0.", "Q5 formula 1.3 spacing"),
+        ("u^A(t,x)=AaF(t,k\\cdot x),qquad p^A=0.",
+         "u^A(t,x)=AaF(t,k\\cdot x),\\qquad p^A=0.", "Q5 formula 2.2 spacing"),
+        ("u^A(t,x)=Ae^{-\\nu n^2t}\\sin(nx_2)e_1,qquad n\\ge1.",
+         "u^A(t,x)=Ae^{-\\nu n^2t}\\sin(nx_2)e_1,\\qquad n\\ge1.",
+         "Q5 formula 3.1 spacing"),
+    ):
+        result = _replace_exact_once(result, old, new, label)
     for forbidden in (
         "零均值、任意振幅的\n周期 Navier--Stokes exact shear 类，使",
         "\n D_{ii,s}>0\n",
@@ -503,13 +513,20 @@ def _slug(title: str, used: set[str]) -> str:
 def _inline(value: str) -> str:
     output: list[str] = []
     cursor = 0
-    tokens = re.compile(r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)|`([^`\n]+)`")
+    tokens = re.compile(
+        r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)|`([^`\n]+)`|"
+        r"\*\*([^*\n]+)\*\*|\*([^*\n]+)\*"
+    )
     for match in tokens.finditer(value):
         output.append(html.escape(value[cursor:match.start()], quote=False))
         if match.group(1) is not None:
             output.append(f'<a href="{html.escape(match.group(2), quote=True)}">{html.escape(match.group(1))}</a>')
-        else:
+        elif match.group(3) is not None:
             output.append(f"<code>{html.escape(match.group(3))}</code>")
+        elif match.group(4) is not None:
+            output.append(f"<strong>{html.escape(match.group(4))}</strong>")
+        else:
+            output.append(f"<em>{html.escape(match.group(5))}</em>")
         cursor = match.end()
     output.append(html.escape(value[cursor:], quote=False))
     return "".join(output)
@@ -889,6 +906,8 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
     dictionary = texts[DICTIONARY_SOURCE]
     correction = texts[CORRECTION_SOURCE]
     public_report = _correct_reader_report(report, correction)
+    if public_report.count(",qquad") != 0 or public_report.count(",\\qquad") < 3:
+        raise CanonicalSourceError("reader typesetting normalization drifted")
     combined = "\n".join((*texts.values(), *audit_texts.values()))
     compact = re.sub(r"\s+", " ", combined)
     report_compact = re.sub(r"\s+", "", report)
@@ -929,6 +948,8 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
             raise CanonicalSourceError("forbidden R0.73Y public claim: " + phrase)
 
     sections, references_html = _sections(public_report)
+    if "**" in references_html or "*Proc." in references_html or "*Phys." in references_html:
+        raise CanonicalSourceError("reference Markdown emphasis leaked into reader HTML")
     section_one = _prose_paragraphs(_section_body(public_report, 1))
     literature = _prose_paragraphs(_section_body(public_report, 5))
     value = _prose_paragraphs(_section_body(public_report, 6))
@@ -943,6 +964,8 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
         section = _section_body(public_report, number)
         if "A\\ne0" not in section:
             raise CanonicalSourceError(f"reader section {number} lacks the nonzero-amplitude qualifier")
+    if "\\begin{aligned}" not in _section_body(public_report, 3):
+        raise CanonicalSourceError("single-mode covariance display is not A4-safe")
     if "exact shear 类，使 这是一条" in public_report or "exact shear 类，使 本节" in public_report:
         raise CanonicalSourceError("formula-stripped reader fragment survived")
 

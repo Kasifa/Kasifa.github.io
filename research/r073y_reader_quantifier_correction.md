@@ -35,6 +35,14 @@ transformation before producing HTML or PDF.
 | `Q2` | Section 2 calls the structural heat variance strictly positive without first stating the amplitude condition | prepend \(A\ne0\Rightarrow\) to the strict formula and state the trivial zero member separately |
 | `Q3` | Section 3 ends the single-mode lower bound with an unconditional strict inequality | prepend \(A\ne0\Rightarrow\) to that lower bound |
 | `Q4` | hero/subtitle says only `STRICTLY POSITIVE` | display `STRICTLY POSITIVE FOR A != 0; ZERO FOR A = 0` |
+| `Q5` | formulas (1.3), (2.2), and (3.1) contain the literal token `qquad` without the required TeX escape | replace exactly those three tokens by `\qquad`; this is a reader-only typesetting repair |
+
+The corrected display (3.3) must use an aligned multiline layout so that both
+the \(A\ne0\) inequality and the \(A=0\) endpoint remain visible on an A4 PDF.
+Markdown emphasis in the frozen references and `NOT CLAY` line must be rendered
+as HTML emphasis rather than exposed as literal asterisks. These are
+nonsemantic reader repairs; they change no formula, quantifier, citation, or
+claim boundary.
 
 Each frozen snippet must occur exactly once before transformation and zero
 times afterward. A missing, duplicated, or newly altered snippet is a release
@@ -48,6 +56,7 @@ whitespace normalization.
 readerCorrectionVersion=1
 frozenReportBytesPreserved=true
 publicTransformation=EXACT_COUNTED_REPLACEMENTS
+typesettingNormalization=EXACT_COUNTED_NONSEMANTIC_REPAIRS
 zeroProduction=ALL_REAL_A
 strictGradientCovariance=ONLY_A_NE_0
 zeroAmplitudeGradientCovariance=0

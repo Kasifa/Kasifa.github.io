@@ -71,6 +71,26 @@ test("R0.74K frozen primary figure package remains byte-exact and valid", async 
   for (const [name, digest] of expected)
     assert.equal(sha256(await read(`${base}/${name}`)), digest, name);
   const python = process.env.CODEX_PYTHON || process.env.PYTHON || "python3";
-  const { stdout } = await execFileAsync(python, [`${base}/validate.py`, "--verify-only"], { cwd: root });
+  const portableVerifier = String.raw`
+import importlib.util
+import shutil
+import sys
+from pathlib import Path
+
+validator_path = Path(sys.argv[1]).resolve()
+spec = importlib.util.spec_from_file_location("r074k_figure_validator", validator_path)
+validator = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(validator)
+pdfinfo = shutil.which("pdfinfo")
+if not pdfinfo:
+    raise SystemExit("portable verifier requires pdfinfo on PATH")
+validator.PDFINFO = Path(pdfinfo)
+sys.argv = [str(validator_path), "--verify-only"]
+validator.main()
+`;
+  const { stdout } = await execFileAsync(python, ["-B", "-c", portableVerifier, `${base}/validate.py`], {
+    cwd: root,
+    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+  });
   assert.match(stdout, /verify-only PASS 41\/41; 25 files; seals PASS/);
 });

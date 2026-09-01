@@ -17,7 +17,7 @@ const notesRoot = new URL("notes/", publicRoot);
 const execFileAsync = promisify(execFile);
 
 function isOneDriveConflictCopyName(name) {
-  return / [234](?=\.[^.]+$|$)/.test(name);
+  return / \d+(?=\.[^.]+$|$)/.test(name);
 }
 
 function isPublicNoteHtml(file) {

@@ -4,7 +4,7 @@ import { resolve, sep } from "node:path";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 
-const routeTestRoot = process.env.R073Z_ROUTE_TEST_ROOT ?? process.env.R073Y_ROUTE_TEST_ROOT ?? process.env.R073U_ROUTE_TEST_ROOT;
+const routeTestRoot = process.env.R074A_ROUTE_TEST_ROOT ?? process.env.R073Z_ROUTE_TEST_ROOT ?? process.env.R073Y_ROUTE_TEST_ROOT ?? process.env.R073U_ROUTE_TEST_ROOT;
 const repositoryRoot = routeTestRoot
   ? pathToFileURL(resolve(routeTestRoot) + sep)
   : new URL("../", import.meta.url);
@@ -30,6 +30,7 @@ const ENDPOINTS = Object.freeze({
   r073x: { version: "1.64", code: "R0.73X", slug: "r0-73x", next: "R0.73Y" },
   r073y: { version: "1.65", code: "R0.73Y", slug: "r0-73y", next: "R0.73Z" },
   r073z: { version: "1.66", code: "R0.73Z", slug: "r0-73z", next: "R0.74A" },
+  r074a: { version: "1.67", code: "R0.74A", slug: "r0-74a", next: "R0.74B" },
 });
 
 async function page(name) {
@@ -59,7 +60,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through Z boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through R0.74A boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -82,7 +83,8 @@ test("homepage current route reaches the materialized G through Z boundary witho
   const isW = endpoint.release === "r073w";
   const isX = endpoint.release === "r073x";
   const isY = endpoint.release === "r073y";
-  const isZ = endpoint.release === "r073z";
+  const isA = endpoint.release === "r074a";
+  const isZ = endpoint.release === "r073z" || isA;
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -94,7 +96,9 @@ test("homepage current route reaches the materialized G through Z boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isZ
+  assert.ok(current.includes(isA
+    ? "<h3>R0.74A：core/exterior 四块付款、显式 Gaussian tails 与 old-package obstruction 已分列</h3>"
+    : isZ
     ? "<h3>R0.73Z：初始端点有限性障碍、能量兼容正三次修复与 pressure-active 分离已分列</h3>"
     : isY
     ? "<h3>R0.73Y：exact shear kernel、全振幅零 production、A != 0 时严格正 heat covariance 与 production-only no-go 已分列</h3>"
@@ -277,7 +281,23 @@ test("homepage current route reaches the materialized G through Z boundary witho
     ]) assert.ok(home.includes(token), `R0.73V homepage ${token}`);
     assert.equal(home.includes("<h3>R0.73V 下一接口</h3>"), false);
   }
-  if (isZ) {
+  if (isA) {
+    for (const token of [
+      "R0.74A｜混合 heat covariance 的局部 size lemma",
+      "positiveFourBlockMajorization=PROVED_ANALYTICALLY",
+      "clockMatchedLocalEnergyTailBound=PROVED_ANALYTICALLY",
+      "oldExteriorPackageOnlyControl=FALSE_BY_EXACT_ENERGY_CLASS_PACKETS",
+      "velocityEndpointTail=FINITE_FOR_EVERY_STATED_PERIODIC_ENERGY_CLASS_FIELD",
+      "R0.70A–R0.74A · 105 节已公开",
+      "81 节完整封存",
+      "上一大里程碑 recap（R0.61–R0.73X，140 节）",
+      "203 篇研究笔记总索引",
+      "/assets/r074a/fig-r074a-localized-kd-payments.pdf",
+      "<h3>R0.74B 下一接口</h3>",
+    ]) assert.ok(home.includes(token), `R0.74A homepage ${token}`);
+    assert.equal(home.includes("/recap-r0-61-r0-74a"), false);
+    assert.equal(home.includes("<h3>R0.74A 下一接口</h3>"), false);
+  } else if (isZ) {
     for (const token of [
       "R0.73Z｜正三次 heat covariance 的有限性障碍与能量兼容修复",
       "initialEndpointEnergyClassFiniteness=FALSE_BY_EXACT_LERAY_HOPF_SHEAR",
@@ -360,7 +380,7 @@ test("homepage current route reaches the materialized G through Z boundary witho
   );
 });
 
-test("literature route records the materialized G through Z boundary", async () => {
+test("literature route records the materialized G through R0.74A boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -383,7 +403,8 @@ test("literature route records the materialized G through Z boundary", async () 
   const isW = endpoint.release === "r073w";
   const isX = endpoint.release === "r073x";
   const isY = endpoint.release === "r073y";
-  const isZ = endpoint.release === "r073z";
+  const isA = endpoint.release === "r074a";
+  const isZ = endpoint.release === "r073z" || isA;
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -423,7 +444,40 @@ test("literature route records the materialized G through Z boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isZ) {
+  if (isA) {
+    for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r", "r073s", "r073t", "r073u", "r073v", "r073w", "r073x", "r073y", "r073z"]) {
+      assert.ok(literature.includes(`id="${previous}-boundary"`));
+    }
+    assert.ok(literature.includes("R0.74A：mixed heat covariance 的 core/exterior 四块 size lemma"));
+    assert.ok(literature.includes("R0.70A–R0.74A：105 节已公开，81 节完整封存"));
+    assert.ok(topology.includes(
+      '<div class="route-step kept"><header><b>R0.74A</b><strong>localized mixed-covariance four-block size lemma</strong>',
+    ));
+    for (const token of [
+      "positiveFourBlockMajorization=PROVED_ANALYTICALLY",
+      "clockMatchedLocalEnergyTailBound=PROVED_ANALYTICALLY",
+      "pressureCutoffInterface=PROVED_BY_INHERITANCE_AND_ANALYTIC_COMBINATION",
+      "oldExteriorPackageOnlyControl=FALSE_BY_EXACT_ENERGY_CLASS_PACKETS",
+      "velocityEndpointTail=FINITE_FOR_EVERY_STATED_PERIODIC_ENERGY_CLASS_FIELD",
+      "gradientTail=FINITE_AND_IDENTICAL_TO_R073X_D_EXT",
+      "localizedKDCertificate=FINITE_ARITHMETIC_CROSS_CHECK_ONLY",
+      "formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES",
+      "smallerCylinderTailControl=OPEN",
+      "tailSmallnessOrAbsorption=OPEN",
+      "weakStabilityAndLowerSemicontinuity=OPEN",
+      "scaleUniformQuotientCoercivity=OPEN",
+      "epsilonRegularity=OPEN",
+      "arbitraryThreeDimensionalGlobalRegularity=OPEN",
+      "clayConclusion=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.74A boundary ${token}`);
+    for (const token of [
+      "开放接口 · R0.74B",
+      "tail absorption, weak stability, and blow-up-sequence compatibility",
+      "time-supremum obstruction",
+    ]) assert.ok(topology.includes(token), `R0.74B interface ${token}`);
+    assert.equal(topology.includes("开放接口 · R0.74A"), false);
+  } else if (isZ) {
     for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r", "r073s", "r073t", "r073u", "r073v", "r073w", "r073x", "r073y"]) {
       assert.ok(literature.includes(`id="${previous}-boundary"`));
     }

@@ -19,6 +19,7 @@ PUBLIC = ROOT / "public"
 NOTES = PUBLIC / "notes"
 OUTPUT = NOTES / "index.html"
 NOTE_NAME = re.compile(r"^r0-(\d+)[a-z0-9]*\.html$")
+RECAP_NAME = re.compile(r"^recap-r0-61-r0-(\d+)[a-z0-9]*\.html$")
 
 
 class TitleParser(HTMLParser):
@@ -99,7 +100,11 @@ def parse_note(path: Path) -> Note:
 
 
 def latest_recap_href() -> str:
-    recaps = list(PUBLIC.glob("recap-r0-61-r0-*.html"))
+    recaps = [
+        path
+        for path in PUBLIC.glob("recap-r0-61-r0-*.html")
+        if RECAP_NAME.fullmatch(path.name)
+    ]
     if not recaps:
         return "/recap-r0-60.html"
     latest = max(

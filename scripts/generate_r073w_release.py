@@ -857,13 +857,21 @@ def home_page(content: ReleaseContent) -> str:
     value = replace_regex_once(
         value,
         r'<section class="route-overview latest-release-spotlight".*?</section>',
-        '<section class="route-overview latest-release-spotlight" id="latest-release"><div class="route-overview-inner">'
-        + '<p class="eyebrow">LATEST RELEASE · R0.73W · ' + html.escape(content.date) + '</p>'
-        + '<h2>' + html.escape(content.public_title_zh) + '</h2><p>' + home_summary + '</p>'
-        + '<p><a href="/notes/r0-73w.pdf">阅读最新 R0.73W 研究笔记 →</a> · '
-        + '<a href="/recap-r0-61-r0-73w.html">139 节累计回顾</a> · '
-        + '<a href="/notes/">199 篇研究笔记总索引</a></p>'
-        + '<p>R0.70A–R0.73W · 101 节已公开 · 77 节完整封存 · NOT CLAY</p></div></section>',
+        '<section class="route-overview latest-release-spotlight" id="latest-release" '
+        + 'aria-labelledby="latest-release-title"><div class="route-overview-inner">'
+        + '<header class="route-map-header"><div><p class="eyebrow">LATEST RELEASE · R0.73W · '
+        + html.escape(content.date) + '</p><h2 class="route-map-title" id="latest-release-title">'
+        + html.escape(content.public_title_zh) + '</h2><p class="route-map-intro">'
+        + home_summary + '</p></div><nav class="route-map-actions" aria-label="最新发布快捷入口">'
+        + '<a class="route-map-latest" href="/notes/r0-73w.pdf">阅读最新 R0.73W 研究笔记 →</a>'
+        + '<a href="/recap-r0-61-r0-73w.html">139 节累计回顾</a>'
+        + '<a href="/notes/">199 篇研究笔记总索引</a>'
+        + '<a href="#r073w">查看首页完整 R0.73W 卡片</a></nav></header>'
+        + '<div class="route-legend" aria-label="最新发布计数">'
+        + '<span><i class="route-legend-mark kept" aria-hidden="true"></i>R0.70A–R0.73W · 101 节已公开</span>'
+        + '<span><i class="route-legend-mark kept" aria-hidden="true"></i>77 节完整封存</span>'
+        + '<span><i class="route-legend-mark current" aria-hidden="true"></i>当前端点 R0.73W</span>'
+        + '</div></div></section>',
         "home latest spotlight",
     )
     marker = '<div class="task-one" id="r073v" data-release="r073v"'
@@ -937,6 +945,7 @@ def home_page(content: ReleaseContent) -> str:
     )
     value = value.replace("/recap-r0-61-r0-73v.html", "/recap-r0-61-r0-73w.html")
     value = value.replace("/recap-r0-61-r0-73v.pdf", "/recap-r0-61-r0-73w.pdf")
+    value = render_strong_markers(value, "R0.73W home")
     assert_public_html(value, "R0.73W home")
     return value
 
@@ -970,12 +979,18 @@ def literature_page(content: ReleaseContent) -> str:
     )
     value = value.replace("/recap-r0-61-r0-73v.html", "/recap-r0-61-r0-73w.html")
     block = (
-        '<section id="r073w-boundary"><h3>R0.73W 文献归属与主张边界</h3><p>'
-        + content.literature_update + '</p><p>' + html.escape(CLOSED_LEDGER) + '</p><p>'
+        '<h3 id="r073w-boundary">R0.73W 的带符号亚滤波 production 与 heat-plane 特征线边界</h3><p>'
+        + content.literature_update + '</p><div class="boundary">'
+        '<strong>R0.73W 的主张边界</strong><p>' + html.escape(CLOSED_LEDGER) + '</p><p>'
         + html.escape(FINITE_LEDGER) + '</p><p>' + html.escape(OPEN_LEDGER)
-        + '。' + html.escape(EXACT_SCOPE_BOUNDARY_ZH) + ' NOT CLAY。</p></section>'
+        + '。' + html.escape(EXACT_SCOPE_BOUNDARY_ZH) + ' NOT CLAY。</p></div>'
     )
-    value = replace_once(value, "</main>", block + "\n  </main>", "literature append")
+    value = replace_once(
+        value,
+        '          <ol class="criteria">',
+        block + '\n          <ol class="criteria">',
+        "literature canonical boundary insert",
+    )
     assert_public_html(value, "R0.73W literature")
     return value
 

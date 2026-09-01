@@ -307,6 +307,7 @@ const boundaryCorpus = (report + "\n" + dictionary)
   .replace(/^>\s?/gm, "")
   .replace(/\s+/g, " ");
 for (const token of [
+  "typesettingNormalization=EXACT_COUNTED_NONSEMANTIC_REPAIRS",
   "zeroProduction=ALL_REAL_A",
   "strictGradientCovariance=ONLY_A_NE_0",
   "zeroAmplitudeGradientCovariance=0",
@@ -608,6 +609,7 @@ const manifest = {
   canonicalCorrectionSource: {
     path: "research/r073y_reader_quantifier_correction.md",
     sha256: sha256(Buffer.from(correction)),
+    typesettingNormalization: "EXACT_COUNTED_NONSEMANTIC_REPAIRS",
     zeroProduction: "ALL_REAL_A",
     strictGradientCovariance: "ONLY_A_NE_0",
     zeroAmplitudeGradientCovariance: 0,

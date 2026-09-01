@@ -127,6 +127,11 @@ test("public note and routes are current, bilingual, and honestly bounded", asyn
     "A = 0 时为平凡零场",
     figureId,
   ]) assert.ok(note.includes(marker), "note missing " + marker);
+  assert.ok(!note.includes(",qquad"), "literal qquad token leaked into public note");
+  assert.ok(!note.includes("**NOT CLAY.**"), "raw Markdown emphasis leaked into public note");
+  assert.ok(note.includes("<strong>NOT CLAY.</strong>"));
+  assert.ok(note.includes("<em>Proc. Amer. Math. Soc.</em>"));
+  assert.ok(note.includes("\\begin{aligned}"), "A4-safe single-mode display is absent");
   assert.equal((home.match(/data-release="r073y"/g) ?? []).length, 1);
   assert.equal((index.match(/class="note-entry"/g) ?? []).length, 201);
   assert.ok(index.includes("158"));
@@ -192,6 +197,10 @@ test("only the R0.73Y note PDF is newly bound", async () => {
   assert.equal(
     binding.canonicalCorrectionSource.path,
     "research/r073y_reader_quantifier_correction.md",
+  );
+  assert.equal(
+    binding.canonicalCorrectionSource.typesettingNormalization,
+    "EXACT_COUNTED_NONSEMANTIC_REPAIRS",
   );
   assert.equal(binding.canonicalCorrectionSource.zeroProduction, "ALL_REAL_A");
   assert.equal(binding.canonicalCorrectionSource.strictGradientCovariance, "ONLY_A_NE_0");

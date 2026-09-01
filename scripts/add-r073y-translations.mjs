@@ -209,6 +209,7 @@ const requiredReportTokens = [
   "NOT CLAY",
 ];
 const requiredCorrectionTokens = [
+  "typesettingNormalization=EXACT_COUNTED_NONSEMANTIC_REPAIRS",
   "zeroProduction=ALL_REAL_A",
   "strictGradientCovariance=ONLY_A_NE_0",
   "zeroAmplitudeGradientCovariance=0",

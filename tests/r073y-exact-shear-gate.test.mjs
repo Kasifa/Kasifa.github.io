@@ -131,6 +131,7 @@ test("reader correction preserves the frozen theorem and exposes the A=0 endpoin
     `Frozen source commit:** \`${sourceCommit}\``,
     "frozenReportBytesPreserved=true",
     "publicTransformation=EXACT_COUNTED_REPLACEMENTS",
+    "typesettingNormalization=EXACT_COUNTED_NONSEMANTIC_REPAIRS",
     "zeroProduction=ALL_REAL_A",
     "strictGradientCovariance=ONLY_A_NE_0",
     "zeroAmplitudeGradientCovariance=0",

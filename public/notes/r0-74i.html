@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.75">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74I｜适合弱解的移动管门与平方根对数支付边界</title>
+<meta name="description" content="适合弱解的 Version-M 移动管门、单尺度 epsilon 桥与平方根对数支付边界">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74i.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.75"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74I · 2026-09-02</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74I · 完整中文版本</div><h1>R0.74I｜适合弱解的移动管门与平方根对数支付边界</h1>
+<p>R0.74H 的双区间估计原本只覆盖光滑周期解。本节把 Version M 推到适合弱解，并证明：若某一尺度上的移动局部能量足够小，就能进入已有的固定柱仅速度 epsilon 正则判据。</p>
+<div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">LITERATURE BOUNDARY</span><span class="label">NOT CLAY</span></div>
+<p>精确双包家族同时排除了所有低于平方根对数的普适修复；\(\gamma=1/2\) 只是第一个未被否定的端点，不是已证明上界。奇点处所需小量从何而来，仍然开放。</p></div>
+<div class="stamp"><strong>状态 · R0.74I</strong><p>Version-M 弱解闭合：PROVED</p><p>单尺度 epsilon 桥：PROVED</p><p>证书 36/36：FINITE</p><p>独立复算 269 字段：FINITE</p><p>图件 82/82：FINITE</p><p>端点上界与尺度传播：OPEN</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article>
+<section id="s-01"><div class="section-no">01 / 弱解闭合</div><h2>Version M 保留双区间估计</h2>
+<p>对笔记范围内的每个周期适合弱解和每个固定可容许尺度 \(R\)，终端锚定的光滑化轨迹可用于局部能量不等式，并得到</p>
+<div class="equation">\[\boxed{X_R^M\le C\bigl[(P_R^M)^{2/3}+P_R^M\bigr].}\]</div>
+<p>当 \(P_R^M\le1\) 时，线性项由 \(P^{2/3}\) 吸收：</p>
+<div class="equation">\[\boxed{P_R^M\le1\quad\Longrightarrow\quad X_R^M\le C(P_R^M)^{2/3}.}\]</div>
+<p>这是固定尺度、逐解成立的 Version-M 结果。Version F 的适合弱解扩展没有证明。</p></section>
+<section id="s-02"><div class="section-no">02 / 正则门</div><h2>小移动能量进入已有的一尺度判据</h2>
+<div class="equation">\[\boxed{\mathcal E^{M,R}(z_0,8R)\le\varepsilon_{\rm tube}\quad\Longrightarrow\quad z_0\text{ 是正则点}.}\]</div>
+<div class="equation">\[\boxed{P_R^M\le\varepsilon_P\quad\Longrightarrow\quad z_0\text{ 是正则点}.}\]</div>
+<p>这两个命题都以某一给定尺度上的小量为前提。本节没有证明可能奇点处的 \(P_R^M\) 或移动能量必然小。</p></section>
+<section id="s-03"><div class="section-no">03 / 移动到固定</div><h2>路径受限后，固定半径柱落入移动管</h2>
+<p>终端锚定路径满足 \(\dot X_R=u_R(t,X_R)\)。小移动能量给出</p>
+<div class="equation">\[\boxed{|X_R(t)-x_0|\le C R\mathcal E_R^{1/2}.}\]</div>
+<p>常数取到足够小时，\(B_{R/2}(x_0)\subset X_R(t)+B_R\)。固定柱中的三次速度量于是满足</p>
+<div class="equation">\[\boxed{(R/2)^{-2}\int_{Q_{R/2}(z_0)}|u|^3\le C_I\mathcal E_R^{3/2}.}\]</div>
+<p>最后一步调用已有的仅速度一尺度 epsilon 正则判据；移动管本身并不自动产生正则性。</p></section>
+<section id="s-04"><div class="section-no">04 / 对数前沿</div><h2>低于平方根对数的普适修复全部失败</h2>
+<p>在精确 R0.74F--H 双包族上，对 \(Y_j=X_j\) 和 \(Y_j=\mathfrak C_j\)，Version M 与 Version F 都有</p>
+<div class="equation">\[\boxed{\liminf_{j\to\infty}\frac{Y_j}{P_j^{2/3}\sqrt{1+\log_+P_j}}>0.}\]</div>
+<p>因此，对每个固定 \(\gamma&lt;1/2\)，不存在统一常数使</p>
+<div class="equation">\[\boxed{Y_R\le K P_R^{2/3}(1+\log_+P_R)^\gamma}\]</div>
+<p>对所有声明范围内的光滑周期解与尺度成立。该障碍沿高度稀疏的实际支付序列出现，不是对每个大实数 \(P\) 的点态下界。</p></section>
+<section id="s-05"><div class="section-no">05 / 端点边界</div><h2>\(\gamma=1/2\) 未被否定，也没有被证明</h2>
+<p>在平方根对数端点，现有论证只给正的下比值，不给发散。任何普适端点上界都会迫使尚未证明的匹配支付下界</p>
+<div class="equation">\[\boxed{P_j\gtrsim B_j^3R_j^3.}\]</div>
+<p>这只是条件推论。不得把它写成冻结解族已经具有的下界，也不得把平方根对数称为已完成的上界定理。</p></section>
+<section id="s-06"><div class="section-no">06 / 文献边界</div><h2>移动轨迹与斜柱已有直接先例</h2>
+<p><strong>LITERATURE BOUNDARY：</strong>Yang 与 Vasseur--Yang 已使用光滑化流轨迹、参考时刻锚定和单侧后向斜柱；这些几何成分不主张新颖。固定柱插值与仅速度 epsilon 判据也来自已有文献。</p>
+<p>限定式主源检索没有找到相同的 Version-M 支付、正环带通量、移动到固定包含与局部标量支付组合。这只是 finite non-hit，不证明新颖性或优先权。</p></section>
+<section id="s-07"><div class="section-no">07 / 证据分层</div><h2>解析证明、有限复算与开放命题分开</h2>
+<p><strong>PROVED：</strong>固定尺度 Caratheodory 路径、移动测试可容许性、Version-M 弱解双区间估计、路径受限与固定柱包含、仅速度的一尺度 epsilon 桥，以及 \(\gamma&lt;1/2\) 的对数修复排除。</p>
+<p><strong>FINITE：</strong>Python 证书 36/36；独立 Ruby 复算 36/36，核对 269 个终端字段且零差异。图件 validator 82/82，24 文件封存通过。有限证书只核对指数代数和图件，不证明 PDE 论证。</p>
+<p><strong>OPEN：</strong>Version-F 弱解扩展、奇点处小量机制、跨尺度轨迹比较、端点上界、匹配支付下界与通量的序列稳定性。</p></section>
+<section id="s-08"><div class="section-no">08 / 结论边界</div><h2>一尺度门已经存在，缺的是小量来源与传播</h2>
+<ul><li>没有证明任何可能奇点自动满足小量条件；</li><li>没有证明小量从一个移动尺度传播到更小尺度；</li><li>没有证明平方根对数端点上界；</li><li>没有排除所有奇点、证明全局光滑或构造 blow-up；</li><li>没有主张新颖性或发表优先权。</li></ul>
+<p><strong>NOT CLAY：</strong>任意三维初值的全局正则性与 Clay 千禧年问题仍然开放。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>移动管正则门与对数指数筛选</h2>
+<picture><source srcset="/assets/r074i/fig-r074i-moving-tube-log-screen.svg" type="image/svg+xml"><img src="/assets/r074i/fig-r074i-moving-tube-log-screen.png" alt="R0.74I moving-tube regularity gate and square-root logarithmic exponent screen"></picture>
+<p><a href="/assets/r074i/fig-r074i-moving-tube-log-screen.pdf">下载矢量 PDF</a> · <a href="/assets/r074i/fig-r074i-moving-tube-log-screen.png">下载 600 dpi PNG</a> · <a href="/assets/r074i/fig-r074i-moving-tube-log-screen.svg">打开 SVG</a> · <a href="/figures/r074i/fig-r074i-moving-tube-log-screen/source-data.csv">精确 source-data.csv</a></p>
+<p><a href="/figures/r074i/fig-r074i-moving-tube-log-screen/caption.md">图注</a> · <a href="/figures/r074i/fig-r074i-moving-tube-log-screen/qa-report.md">图件 QA</a> · <a href="/figures/r074i/fig-r074i-moving-tube-log-screen/manifest.json">图件 manifest</a> · <a href="/figures/r074i/fig-r074i-moving-tube-log-screen/validation.json">82 项验证记录</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074i/fig-r074i-moving-tube-log-screen">完整 24 文件图包</a></p>
+<p class="figure-note">SVG 是网页主图；PNG 是回退与 600 dpi 归档，PDF 是矢量下载。图是严格蕴含与指数筛选图，不是 DNS、数值仿真或实验数据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>主文、解析审计、精确证书与文献边界</h2><p class="files">
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_suitable_weak_tube_and_log_obstruction.md">规范主文</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_weak_extension_independent_audit.md">弱解扩展独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_epsilon_log_independent_audit.md">epsilon 与对数独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_final_source_rebind_audit.md">最终源文件重绑定审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_report-source.md">完整报告源</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_tube_log_certificate_report.md">证书报告</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_tube_log_certificate.json">冻结 JSON</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074i_tube_log_certificate.py">Python 实现</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074i_tube_log_certificate_independent.rb">独立 Ruby 实现</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_certificate_independent_audit.md">证书独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_primary_literature_boundary.md">主源文献边界</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_primary_literature_independent_audit.md">文献独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_gap_matrix.md">23 项证据与缺口矩阵</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_bilingual_dictionary.md">双语边界词典</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074i_freeze_manifest.json">冻结清单</a></p>
+<p><a href="/notes/r0-74i.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74J</h2><p>检查移动能量小量能否跨尺度传播，并分别决定平方根对数端点上界与匹配支付下界；在此之前不作全局正则性外推。</p></section>
+</article></main></body></html>

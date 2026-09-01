@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kasifa.github.io/contracts/research-publication-receipt.schema.json",
+  "title": "Research publication receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "frozenCommit",
+    "mode",
+    "startedAt",
+    "completedAt",
+    "finalState",
+    "publicationCommit",
+    "recap",
+    "claimBoundary",
+    "stages",
+    "errors"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "research-publication-receipt-v1" },
+    "releaseId": { "type": "string", "pattern": "^r0[0-9]{2}[a-z]$" },
+    "frozenCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "mode": { "enum": ["release", "verify-existing"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "finalState": {
+      "enum": [
+        "INTAKE_VALIDATED",
+        "CONTENT_GENERATED",
+        "TRANSLATION_VALIDATED",
+        "PDF_BOUND",
+        "AUDIT_PASSED",
+        "COMMIT_CONFIRMED",
+        "PUSH_CONFIRMED",
+        "DEPLOYMENT_CONFIRMED",
+        "LIVE_QA_PASSED"
+      ]
+    },
+    "publicationCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "recap": {
+      "type": "object",
+      "required": ["mode", "latestRecapRelease"]
+    },
+    "claimBoundary": {
+      "type": "array",
+      "allOf": [
+        { "contains": { "const": "PROVED" } },
+        { "contains": { "const": "FINITE" } },
+        { "contains": { "const": "OPEN" } },
+        { "contains": { "const": "NOT CLAY" } }
+      ]
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "state", "status", "cached", "durationMs", "fingerprint"],
+        "properties": {
+          "name": { "enum": ["intake", "generate", "translate", "bind", "gate", "commit", "push", "deploy", "qa"] },
+          "status": { "enum": ["pass", "fail"] },
+          "cached": { "type": "boolean" },
+          "durationMs": { "type": "integer", "minimum": 0 },
+          "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      }
+    },
+    "errors": { "type": "array" }
+  }
+}

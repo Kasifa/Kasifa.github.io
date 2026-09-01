@@ -1,0 +1,234 @@
+{
+  "schemaVersion": "research-publication-handoff-v1",
+  "releaseId": "r073y",
+  "frozenCommit": "1ecc6fe20a921db9d0876dbd4484a3aa4ca7ec66",
+  "translationRoute": "LOCAL_DIRECT_NO_DGX",
+  "artifacts": [
+    {
+      "path": "research/r073y_exact_shear_no_go.md",
+      "sha256": "2574f2caf19248a17d25f811488db1c7b30295efd07e59852c3afa17cf8f69e4",
+      "role": "frozen-analytic-proof"
+    },
+    {
+      "path": "research/r073y_exact_shear_certificate.json",
+      "sha256": "fe6bb0e8bb4674f63a579f6b2db92c12f75235c4d293594e115c7b49599ef4df",
+      "role": "frozen-finite-certificate"
+    },
+    {
+      "path": "research/r073y_exact_shear_certificate_report.md",
+      "sha256": "668177c61721600880cd85651f8481249c8f9a972d631dd4f5a3383bbb07c6aa",
+      "role": "frozen-certificate-report"
+    },
+    {
+      "path": "research/r073y_exact_shear_independent_reaudit.md",
+      "sha256": "622c35cedf82a87dccdac1e2b9fb8247b79a1a99020a91d95447884deaf5b231",
+      "role": "frozen-independent-audit"
+    },
+    {
+      "path": "research/r073y_primary_literature_audit.md",
+      "sha256": "13fcf43cfae17cbf4a5f0e171d3d602eccc9b4e0f24f093cfc3ab84187cf6871",
+      "role": "frozen-primary-literature-audit"
+    },
+    {
+      "path": "research/r073y_evidence_gap_matrix.md",
+      "sha256": "76e5d8b6bf3f9efc4217b06cea1af2c6408eb9ad7b6dc953676828e33a7195fb",
+      "role": "frozen-claim-boundary-ledger"
+    }
+  ],
+  "claimBoundary": {
+    "requiredLabels": ["PROVED", "FINITE", "OPEN", "NOT CLAY"],
+    "publicFiles": ["public/notes/r0-73y.html"]
+  },
+  "recap": {
+    "mode": "PRESERVE",
+    "latestRecapRelease": "r073x",
+    "preservedArtifacts": [
+      {
+        "path": "public/recap-r0-61-r0-73x.html",
+        "sha256": "44e38b7a6855edfd92842d2c5eb75792e03f5fb1ca6de6902a1402dcbe0a3776"
+      },
+      {
+        "path": "public/recap-r0-61-r0-73x.pdf",
+        "sha256": "e95324099393b5be917cb32b29d4986c4c8699fa3ba21904d7a7b5304e6501fa"
+      }
+    ]
+  },
+  "stages": {
+    "generate": {
+      "runner": "python-local",
+      "script": "scripts/generate_r073y_release.py",
+      "inputs": [
+        "research/r073y_exact_shear_no_go.md",
+        "research/r073y_exact_shear_certificate.json",
+        "research/r073y_exact_shear_certificate_report.md",
+        "research/r073y_exact_shear_independent_reaudit.md",
+        "research/r073y_primary_literature_audit.md",
+        "research/r073y_evidence_gap_matrix.md",
+        "figures/r073y/fig-r073y-exact-shear-obstruction"
+      ],
+      "outputs": [
+        "public/notes/r0-73y.html",
+        "public/research-review.html",
+        "public/notes/index.html",
+        "public/site-version.json",
+        "public/literature-review.html",
+        "research/release-manifest.json"
+      ]
+    },
+    "translate": {
+      "runner": "node-local",
+      "script": "scripts/add-r073y-translations.mjs",
+      "inputs": [
+        "public/notes/r0-73y.html",
+        "public/research-review.html",
+        "public/notes/index.html",
+        "public/literature-review.html",
+        "research/r073y_bilingual_dictionary.md",
+        "translations/en.json"
+      ],
+      "outputs": [
+        "translations/en.json",
+        "public/i18n-en.js",
+        "scripts/i18n-snapshots/r073y-missing.json"
+      ]
+    },
+    "bind": {
+      "runner": "node-local",
+      "script": "scripts/bind-r073y-pdfs.mjs",
+      "inputs": [
+        "public/notes/r0-73y.html",
+        "public/recap-r0-61-r0-73x.html",
+        "public/recap-r0-61-r0-73x.pdf"
+      ],
+      "outputs": [
+        "public/notes/r0-73y.pdf",
+        "research/r073y_pdf_bindings.json",
+        "research/r073y_note_pdf_render.json"
+      ]
+    }
+  },
+  "publication": {
+    "expectedCommit": "ec9722fd1603825aedb754de1cd4d02e1a83160d",
+    "siteBaseUrl": "https://kasifa.github.io",
+    "repository": "Kasifa/Kasifa.github.io",
+    "workflow": "pages.yml",
+    "remote": "origin",
+    "targetBranch": "main",
+    "commitMessage": "publish: release R0.73Y",
+    "managedPaths": [
+      "VERSION",
+      ".github/workflows",
+      "figures/r073y",
+      "public",
+      "release/handoffs/r073y-baseline.json",
+      "research/formal-archive-inventory.json",
+      "research/release-manifest.json",
+      "research/r073y_bilingual_dictionary.md",
+      "research/r073y_note_pdf_render.json",
+      "research/r073y_pdf_bindings.json",
+      "scripts/add-r073y-translations.mjs",
+      "scripts/bind-r073y-pdfs.mjs",
+      "scripts/generate_r073y_release.py",
+      "scripts/i18n-snapshots/r073y-missing.json",
+      "tests/r073y-exact-shear-gate.test.mjs",
+      "tests/r073y-release.test.mjs",
+      "translations/en.json"
+    ],
+    "expectedLive": [
+      {
+        "role": "homepage",
+        "localPath": "public/research-review.html",
+        "urlPath": "/",
+        "contentTypes": ["text/html"]
+      },
+      {
+        "role": "homepage-canonical",
+        "localPath": "public/research-review.html",
+        "urlPath": "/research-review.html",
+        "contentTypes": ["text/html"]
+      },
+      {
+        "role": "note-html",
+        "localPath": "public/notes/r0-73y.html",
+        "urlPath": "/notes/r0-73y.html",
+        "contentTypes": ["text/html"]
+      },
+      {
+        "role": "note-pdf",
+        "localPath": "public/notes/r0-73y.pdf",
+        "urlPath": "/notes/r0-73y.pdf",
+        "contentTypes": ["application/pdf"]
+      },
+      {
+        "role": "note-index",
+        "localPath": "public/notes/index.html",
+        "urlPath": "/notes/",
+        "contentTypes": ["text/html"]
+      },
+      {
+        "role": "site-version",
+        "localPath": "public/site-version.json",
+        "urlPath": "/site-version.json",
+        "contentTypes": ["application/json"]
+      },
+      {
+        "role": "recap-html",
+        "localPath": "public/recap-r0-61-r0-73x.html",
+        "urlPath": "/recap-r0-61-r0-73x.html",
+        "contentTypes": ["text/html"]
+      },
+      {
+        "role": "recap-pdf",
+        "localPath": "public/recap-r0-61-r0-73x.pdf",
+        "urlPath": "/recap-r0-61-r0-73x.pdf",
+        "contentTypes": ["application/pdf"]
+      },
+      {
+        "role": "figure-pdf",
+        "localPath": "public/assets/r073y/fig-r073y-exact-shear-obstruction.pdf",
+        "urlPath": "/assets/r073y/fig-r073y-exact-shear-obstruction.pdf",
+        "contentTypes": ["application/pdf"]
+      },
+      {
+        "role": "figure-svg",
+        "localPath": "public/assets/r073y/fig-r073y-exact-shear-obstruction.svg",
+        "urlPath": "/assets/r073y/fig-r073y-exact-shear-obstruction.svg",
+        "contentTypes": ["image/svg+xml"]
+      },
+      {
+        "role": "figure-png",
+        "localPath": "public/assets/r073y/fig-r073y-exact-shear-obstruction.png",
+        "urlPath": "/assets/r073y/fig-r073y-exact-shear-obstruction.png",
+        "contentTypes": ["image/png"]
+      }
+    ],
+    "expectedAbsent": [
+      "/recap-r0-61-r0-73y.html",
+      "/recap-r0-61-r0-73y.pdf"
+    ],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "1.65",
+      "latestRelease": "R0.73Y",
+      "publicHtmlNoteCount": 201,
+      "postR060PublishedNodeCount": 141,
+      "postR060RecapNodeCount": 140,
+      "latestRecapRelease": "R0.73X",
+      "publicPdfNoteCount": 158,
+      "publishedDate": "2026-09-01"
+    }
+  },
+  "visualQa": {
+    "evidencePath": ".release/qa/r073y.json",
+    "requiredChecks": [
+      "homepage-desktop",
+      "homepage-mobile",
+      "note-html-desktop",
+      "note-html-mobile",
+      "note-index-desktop",
+      "note-index-mobile",
+      "note-pdf-all-pages",
+      "figure-pdf-all-pages"
+    ]
+  }
+}

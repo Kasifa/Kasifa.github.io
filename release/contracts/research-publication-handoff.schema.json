@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kasifa.github.io/contracts/research-publication-handoff.schema.json",
+  "title": "Research to publication handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "releaseId",
+    "frozenCommit",
+    "translationRoute",
+    "artifacts",
+    "claimBoundary",
+    "recap",
+    "stages",
+    "publication",
+    "visualQa"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "research-publication-handoff-v1" },
+    "releaseId": { "type": "string", "pattern": "^r0[0-9]{2}[a-z]$" },
+    "frozenCommit": { "$ref": "#/$defs/commit" },
+    "translationRoute": { "const": "LOCAL_DIRECT_NO_DGX" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "claimBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiredLabels", "publicFiles"],
+      "properties": {
+        "requiredLabels": {
+          "type": "array",
+          "uniqueItems": true,
+          "allOf": [
+            { "contains": { "const": "PROVED" } },
+            { "contains": { "const": "FINITE" } },
+            { "contains": { "const": "OPEN" } },
+            { "contains": { "const": "NOT CLAY" } }
+          ]
+        },
+        "publicFiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/path" }
+        }
+      }
+    },
+    "recap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "latestRecapRelease", "preservedArtifacts"],
+      "properties": {
+        "mode": { "enum": ["PRESERVE", "UPDATE"] },
+        "latestRecapRelease": { "type": "string", "pattern": "^r0[0-9]{2}[a-z]$" },
+        "preservedArtifacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/binding" }
+        }
+      }
+    },
+    "stages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generate", "translate", "bind"],
+      "properties": {
+        "generate": { "$ref": "#/$defs/stage" },
+        "translate": { "$ref": "#/$defs/stage" },
+        "bind": { "$ref": "#/$defs/stage" }
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expectedCommit",
+        "siteBaseUrl",
+        "repository",
+        "workflow",
+        "remote",
+        "targetBranch",
+        "commitMessage",
+        "managedPaths",
+        "expectedLive",
+        "expectedAbsent",
+        "siteVersionExpectations"
+      ],
+      "properties": {
+        "expectedCommit": {
+          "oneOf": [
+            { "$ref": "#/$defs/commit" },
+            { "type": "null" }
+          ]
+        },
+        "siteBaseUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+        "repository": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
+        "workflow": { "const": "pages.yml" },
+        "remote": { "const": "origin" },
+        "targetBranch": { "const": "main" },
+        "commitMessage": { "type": "string", "minLength": 1 },
+        "managedPaths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/path" }
+        },
+        "expectedLive": {
+          "type": "array",
+          "minItems": 8,
+          "items": { "$ref": "#/$defs/live" }
+        },
+        "expectedAbsent": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^/" }
+        },
+        "siteVersionExpectations": { "type": "object" }
+      }
+    },
+    "visualQa": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidencePath", "requiredChecks"],
+      "properties": {
+        "evidencePath": { "$ref": "#/$defs/path" },
+        "requiredChecks": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)(?!.*:).+$"
+    },
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "role"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "role": { "type": "string", "minLength": 1 }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runner", "script", "inputs", "outputs"],
+      "properties": {
+        "runner": { "enum": ["python-local", "node-local"] },
+        "script": { "$ref": "#/$defs/path" },
+        "inputs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/path" }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/path" }
+        }
+      }
+    },
+    "live": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "localPath", "urlPath", "contentTypes"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "localPath": { "$ref": "#/$defs/path" },
+        "urlPath": { "type": "string", "pattern": "^/" },
+        "contentTypes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

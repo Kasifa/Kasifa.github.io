@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.72">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74F｜奇对称局部坐标中的双包存活：周期桥估计闭合</title><meta name="description" content="局部中心严格锁定；保留所有 winding 的 Brownian bridge 给出冻结端点正下界">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74f.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.72"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{color:var(--rule)}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}section{break-inside:auto}.stamp{break-inside:avoid}.equation{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74F · 2026-09-01</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74F · 完整中文版本</div><h1>R0.74F｜奇对称局部坐标中的双包存活：周期桥估计闭合</h1><p>局部中心严格锁定；保留所有 winding 的 Brownian bridge 给出冻结端点正下界</p><div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">BOUNDED LITERATURE AUDIT</span><span class="label">NOT CLAY</span></div><p>“NOT CLAY”表示本节不构成 Clay 千禧年问题的解答；“不可行性结论”只排除文中写明的具体估计或方法，不否定 Navier--Stokes 方程的其他路线。</p></div><div class="stamp"><strong>状态 · R0.74F</strong><p>双包存活定理：PROVED</p><p>两份独立解析审计：PASS</p><p>有限证书 30/30：FINITE</p><p>完整 denominator / amplitude：OPEN</p><p>不构成 Clay 问题解答：NOT CLAY</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article><section id="s-01"><div class="section-no">01 / 完整中文笔记</div><h2>冻结参数与精确解族</h2>
+<p>保留 R0.74E 的参数</p>
+<div class="equation">\[\lambda=\frac{63}{32},\quad c_h=\frac{15}{16},\quad
+\alpha=\frac{14}{15},\quad \beta=\frac{\sqrt{31}}{16},\quad
+c_R=\frac1{320},\quad \kappa=16.\]</div>
+<p>令 \(L_j=\lambda2^j\)、\(R_j=e^{-c_RL_j^2}\)、\(r_j=L_jR_j\)。本节构造精确、光滑、周期、零均值、无外力 2D3C 解</p>
+<div class="equation">\[u_j=(\mathfrak a_jF_j,b_j,0),\qquad p_j=0.\]</div>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整中文笔记</div><h2>奇对称性严格锁定局部中心</h2>
+<p>全反演奇性与偶匹配 mollifier 使选定局部轨迹、速度与加速度全部消失：</p>
+<div class="equation">\[X_{R_j}(t)\equiv0,\qquad a_{R_j}(t)=a_{R_j}'(t)=0.\]</div>
+<p>因此 frame 本身没有漂移误差，packet 是否存活成为纯解析问题，而不是坐标选择问题。</p></section>
+<section id="s-03"><div class="section-no">03 / 完整中文笔记</div><h2>正 packet 的反向 Feynman--Kac 表示</h2>
+<p>证明把终端 packet 值写成时间反向随机表示。周期流形上的 Brownian path 不能只保留中央复制；所有 winding 都必须纳入。正 packet 的主桥事件、drift shift 和横向扩散分别估计，负 packet 则用严格的相反侧指数抑制。</p>
+<p>这里的随机表示只服务于解析下界，没有 Monte Carlo、DNS 或经验拟合。</p></section>
+<section id="s-04"><div class="section-no">04 / 完整中文笔记</div><h2>完整周期 Brownian bridge 门</h2>
+<p>桥恒等式按整数 winding 精确求和。主 winding 的正概率由固定 tube 事件控制；其他 winding 不是删除，而是进入统一可求和上界。累计 drift-shift 小于冻结终端 lobe 的几何余量；反向 packet 的到达概率带有更强指数。</p>
+<p>终端 lobe 在指定 dyadic annulus 内具有正测度，这把路径概率下界转成确定性的 \(L^2\) 外环带下界。</p></section>
+<section id="s-05"><div class="section-no">05 / 完整中文笔记</div><h2>双包存活主定理</h2>
+<p><strong>PROVED。</strong>对每个 \(\mathfrak a_j&gt;0\) 以及所有充分大的 \(j\)，</p>
+<div class="equation">\[\boxed{
+X_{R_j}^M=X_{R_j}^F
+\ge c\,\mathfrak a_j^2L_jR_j^2
+e^{-c_\gamma L_j^2},\qquad c_\gamma=\frac8{3969}.}\]</div>
+<p>有限算术门从 \(j=13\) 开始，但解析定理有多个渐近估计，所以公开量词保留“充分大”，不把 \(j=13\) 偷换成全部解析步骤的统一阈值。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整中文笔记</div><h2>两份独立解析审计</h2>
+<p>周期桥审计逐行复核全 winding 恒等式、drift shift 与 bridge tube 概率；双包存活审计独立复核 packet 符号、终端几何和最终指数。两份审计绑定同一最终主报告 SHA；状态提升前后的主体 1--6 节经字节比较保持一致。</p></section>
+<section id="s-07"><div class="section-no">07 / 完整中文笔记</div><h2>有限证书与图件边界</h2>
+<p><strong>FINITE：</strong>算术证书 30/30 PASS，只核对有理恒等式、指数余量、离散阈值和条件 annular geometry。图 validator 50/50 PASS，SVG/PDF/600 dpi PNG、灰度和最终尺寸均通过。</p>
+<p>图上明确写明：有限兼容性不能认证解析 bridge 或 packet survival；图不是 DNS、仿真或数值证明。</p></section>
+<section id="s-08"><div class="section-no">08 / 完整中文笔记</div><h2>文献与开放边界</h2>
+<p><strong>BOUNDED LITERATURE AUDIT：</strong>Feynman--Kac、Brownian bridge、2D3C passive scalar、shear dispersion 和 mollified trajectory 各有直接先例。限定检索未定位同一组合定理，但这不是 priority/novelty proof。</p>
+<ul><li>半径 \(8R_j\) 上所有速度/梯度分量的 buffered local-energy 上界；</li><li>transition、background、packet、mixed \(G_u\)、pressure gauge 与 all-copy \(H_u\) 行；</li><li>一个闭合完整 denominator 的振幅 \(\mathfrak a_j\)；</li><li>任意 NSE 解的端点与所有正则性后果。</li></ul>
+<p><strong>NOT CLAY：</strong>双包存活下界不是 global regularity、blow-up 或 Clay 问题的部分完成。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>解析门槛与结论边界</h2>
+<picture><source srcset="/assets/r074f/fig-r074f-two-packet-survival-gates.svg" type="image/svg+xml"><img src="/assets/r074f/fig-r074f-two-packet-survival-gates.png" alt="R0.74F analytic proof ledger and open-boundary figure"></picture>
+<p><a href="/assets/r074f/fig-r074f-two-packet-survival-gates.pdf">下载矢量 PDF</a> · <a href="/assets/r074f/fig-r074f-two-packet-survival-gates.png">下载 600 dpi PNG</a> · <a href="/assets/r074f/fig-r074f-two-packet-survival-gates.svg">打开 SVG</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074f/fig-r074f-two-packet-survival-gates">源数据、caption 与 QA</a></p>
+<p class="figure-note">主图是可复算的解析账本示意；它不是 DNS、NSE 时间仿真、奇点候选或有限采样证明。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、证书与复现材料</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_two_packet_survival.md">规范解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_periodic_bridge_independent_audit.md">周期桥独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_two_packet_survival_independent_audit.md">存活定理独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_primary_literature_boundary.md">一手文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_two_packet_survival_certificate_report.md">有限证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_two_packet_survival_certificate.json">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074f_two_packet_survival_certificate.py">证书脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074f_freeze_manifest.json">冻结清单</a></p>
+<p><a href="/notes/r0-74f.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74G</h2><p>补齐 buffered local energy、完整 \(G_u/G_p/H_u\) 与 all-copy 账本，再决定是否存在统一闭合振幅。</p></section>
+</article></main></body></html>

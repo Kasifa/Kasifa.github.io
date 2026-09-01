@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.72">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74D｜零总均值仍不能修复固定中心运输缺口</title><meta name="description" content="局部 coherent transport 穿过全局均值/Galilean 修复，Version-A 比值仍无界">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74d.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.72"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{color:var(--rule)}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}section{break-inside:auto}.stamp{break-inside:avoid}.equation{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74D · 2026-09-01</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74D · 完整中文版本</div><h1>R0.74D｜零总均值仍不能修复固定中心运输缺口</h1><p>局部 coherent transport 穿过全局均值/Galilean 修复，Version-A 比值仍无界</p><div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">BOUNDED LITERATURE AUDIT</span><span class="label">NOT CLAY</span></div><p>“NOT CLAY”表示本节不构成 Clay 千禧年问题的解答；“不可行性结论”只排除文中写明的具体估计或方法，不否定 Navier--Stokes 方程的其他路线。</p></div><div class="stamp"><strong>状态 · R0.74D</strong><p>零均值运输障碍：PROVED</p><p>有限证书 111/111：FINITE</p><p>局部随流坐标：OPEN</p><p>不构成 Clay 问题解答：NOT CLAY</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article><section id="s-01"><div class="section-no">01 / 完整中文笔记</div><h2>Version-A 问题</h2>
+<p>R0.74C 的常速背景可被全局 Galilean 变换消去。本节因此冻结更强的 Version-A：先减去全局空间均值，再按该常数移动中心。令</p>
+<div class="equation">\[X_R^A=\mathcal U_{\rm ext}^{\infty,A}+\mathcal D_{\rm ext}^{A},\qquad
+P_R^A=\mathcal E^A(z_0,8R)^{3/2}+\mathcal A_{\rm ext}^{A}(z_0,2R;1).\]</div>
+<p><strong>PROVED。</strong></p>
+<div class="equation">\[\sup_{0<R<\pi/16,\ (u,p)\ {\rm smooth\ periodic\ NSE},\ \bar u=0}
+\frac{X_R^A}{(P_R^A)^{2/3}}=\infty.\]</div>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整中文笔记</div><h2>零总均值精确见证</h2>
+<p>见证是光滑周期 2D3C 解</p>
+<div class="equation">\[u(t,x)=\bigl(AF(t,x_2,x_3),\ B_Re^{-t}\cos x_3,\ 0\bigr),\qquad p=0,\]</div>
+<div class="equation">\[\partial_tF+B_Re^{-t}\cos x_3\,\partial_2F
+=(\partial_2^2+\partial_3^2)F.\]</div>
+<p>两个速度分量的全局空间均值都严格为零，所以 Version-A 的均值减除与常量平移在该族上就是恒等操作。障碍来自局部相干运输，不是隐藏的常速漂移。</p></section>
+<section id="s-03"><div class="section-no">03 / 完整中文笔记</div><h2>终端目标与参数序列</h2>
+<p>取</p>
+<div class="equation">\[M_m=3\,2^{m-1},\qquad R_m=e^{-M_m^2/96},\qquad
+\mathfrak a_m=R_m^{-2}e^{M_m^2/576}.\]</div>
+<p>正确时间序的 Feynman--Kac 表示给出目标存活；残余位移的符号产生单边 Gaussian 泄漏，另一侧由全局 \(L^2/L^3\) 收缩支付。目标下界为</p>
+<div class="equation">\[L_m=c\mathfrak a_m^2M_mR_m^2e^{-M_m^2/288}=cM_mR_m^{-2}.\]</div>
+</section>
+<section id="s-04"><div class="section-no">04 / 完整中文笔记</div><h2>三行付款同时被压过</h2>
+<p>完整付款保持背景、局部泄漏和谐和外部三行。严格指数差仍为</p>
+<div class="equation">\[\frac1{264}-\frac1{288}=\frac1{3168}>0.\]</div>
+<p>目标分别相对 \(R_m^{-2}\)、\(\mathfrak a_m^2R_m^2\Pi_m e^{-M_m^2/264}\) 与 \(\mathfrak a_m^2R_m^{8/3}M_m^{-4/3}\) 发散，从而证明 Version-A 比值无界。</p></section>
+<section id="s-05"><div class="section-no">05 / 完整中文笔记</div><h2>这一结论排除了什么</h2>
+<p>全局均值减除只处理常量漂移；它不能跟踪尺度相关的局部速度。本节因此排除“只减常数均值并作常量 Galilean 平移即可恢复纯大付款端点”这一明确方案。它不排除局部平均、mollified trajectory、skewed cylinder 或显式入口 flux。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整中文笔记</div><h2>有限证书的严格边界</h2>
+<p><strong>FINITE：</strong>确定性证书报告 111/111 PASS；独立有限审计核对参数恒等式、指数差、三比值签名和一个有限可行性见证。它不证明随机表示、Gaussian 泄漏、Calderón--Zygmund/Jensen、无穷极限或任何 Clay 结论。</p>
+<p>期刊图 validator 为 40/40 PASS；图是解析账本示意，不是 DNS、仿真或数值证明。</p></section>
+<section id="s-07"><div class="section-no">07 / 完整中文笔记</div><h2>有界文献审计</h2>
+<p><strong>BOUNDED LITERATURE AUDIT：</strong>2D3C/passive-scalar 子类、衰减正弦 shear、torus mean 的 Galilean 去除、mollified trajectories、flow-following cylinders 和 harmonic pressure splitting 均有直接先例。限定检索未找到完整定量组合，但这不是新颖性或优先权证明。</p></section>
+<section id="s-08"><div class="section-no">08 / 完整中文笔记</div><h2>开放边界</h2>
+<ul><li>跟随局部或 mollified velocity 的 cylinder；</li><li>尺度依赖局部均值减除与保留 signed entrance flux 的估计；</li><li>transport-aware 大付款修复、吸收和 epsilon regularity。</li></ul>
+<p><strong>NOT CLAY：</strong>见证位于经典全局光滑 2D3C 子空间；本节没有 blow-up、奇点或一般三维定理。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>解析门槛与结论边界</h2>
+<picture><source srcset="/assets/r074d/fig-r074d-zero-mean-local-transport-obstruction.svg" type="image/svg+xml"><img src="/assets/r074d/fig-r074d-zero-mean-local-transport-obstruction.png" alt="R0.74D analytic proof ledger and open-boundary figure"></picture>
+<p><a href="/assets/r074d/fig-r074d-zero-mean-local-transport-obstruction.pdf">下载矢量 PDF</a> · <a href="/assets/r074d/fig-r074d-zero-mean-local-transport-obstruction.png">下载 600 dpi PNG</a> · <a href="/assets/r074d/fig-r074d-zero-mean-local-transport-obstruction.svg">打开 SVG</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074d/fig-r074d-zero-mean-local-transport-obstruction">源数据、caption 与 QA</a></p>
+<p class="figure-note">主图是可复算的解析账本示意；它不是 DNS、NSE 时间仿真、奇点候选或有限采样证明。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、证书与复现材料</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_zero_mean_local_transport_gate.md">问题门</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_zero_mean_local_transport_obstruction.md">规范解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_independent_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_finite_certificate_independent_audit.md">独立有限审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_primary_literature_audit.md">一手文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_zero_mean_transport_certificate_report.md">有限证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074d_zero_mean_transport_certificate.json">机器可读证书</a></p>
+<p><a href="/notes/r0-74d.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>后续接口</h2><p>严格写出局部 mollified trajectory 的移动/减法方程，并检查旧反例是否被新付款吸收。</p></section>
+</article></main></body></html>

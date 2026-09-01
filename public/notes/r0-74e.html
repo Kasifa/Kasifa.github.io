@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.72">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74E｜局部随流坐标：旧反例被支付，外环新门槛通过</title><meta name="description" content="局部 frame 代数闭合；旧 R0.74D 族被中和；新奇对称双流只通过有限指数关">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74e.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.72"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{color:var(--rule)}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}section{break-inside:auto}.stamp{break-inside:avoid}.equation{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74E · 2026-09-01</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74E · 完整中文版本</div><h1>R0.74E｜局部随流坐标：旧反例被支付，外环新门槛通过</h1><p>局部 frame 代数闭合；旧 R0.74D 族被中和；新奇对称双流只通过有限指数关</p><div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">BOUNDED LITERATURE AUDIT</span><span class="label">NOT CLAY</span></div><p>“NOT CLAY”表示本节不构成 Clay 千禧年问题的解答；“不可行性结论”只排除文中写明的具体估计或方法，不否定 Navier--Stokes 方程的其他路线。</p></div><div class="stamp"><strong>状态 · R0.74E</strong><p>局部 frame 代数：PROVED</p><p>旧族中和：PROVED</p><p>新双流指数门 13/13：FINITE</p><p>双包存活与完整账本：OPEN</p><p>不构成 Clay 问题解答：NOT CLAY</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article><section id="s-01"><div class="section-no">01 / 完整中文笔记</div><h2>两种局部 frame 不等价</h2>
+<p>令终端轨迹满足 \(\dot X_R=u_R(t,X_R)\)。只移动、不减去轨迹速度时，移动场 \(v_R\) 满足</p>
+<div class="equation">\[\partial_tv_R-\Delta v_R+(v_R-a_R)\cdot\nabla v_R+\nabla\pi_R=0.\]</div>
+<p>移动并减去 \(a_R=\dot X_R\) 时，\(w_R\) 满足</p>
+<div class="equation">\[\partial_tw_R-\Delta w_R+w_R\cdot\nabla w_R+\nabla\pi_R=-a_R'.\]</div>
+<p>加速度 \(-a_R'\) 不能被藏入周期 torus pressure。匹配 mollifier 在半径 \(R\) 上精确消掉它的测试矩，但 \(2R\)、\(8R\) 或不匹配 sharp cutoff 不会自动消失。</p></section>
+<section id="s-02"><div class="section-no">02 / 完整中文笔记</div><h2>旧 R0.74D 反例族被完整中和</h2>
+<p>局部轨迹在整个付款时间窗内跟随旧 packet，始终位于 \(q_m+O(R^2)\)。因此旧的 kinematic target 转入 algebraic harmonic payment。对该显式族的每一个成员，两个局部 frame 版本均满足</p>
+<div class="equation">\[X_R^M\le C(P_R^M)^{2/3},\qquad
+X_R^F\le C(P_R^F)^{2/3}.\]</div>
+<p>这是 familywise neutralization，不是任意解端点定理。</p></section>
+<section id="s-03"><div class="section-no">03 / 完整中文笔记</div><h2>新奇对称成对双流</h2>
+<p>为避免局部中心跟随单个 packet，新构造采用成对奇对称流。冻结参数为</p>
+<div class="equation">\[\lambda=\frac{63}{32},\quad c_h=\frac{15}{16},\quad
+\alpha=\frac{14}{15},\quad \beta^2=\frac{31}{256},\quad
+c_R=\frac1{320},\quad \kappa=16.\]</div>
+<p>场是精确、光滑、周期、零均值、无外力 NSE 解；全反演奇性和偶 mollifier 给出</p>
+<div class="equation">\[X_{R_j}(t)\equiv0,\qquad a_{R_j}(t)=a_{R_j}'(t)=0.\]</div>
+<p>这只固定局部 frame；还没有证明被输运的 passive packets 在终端存活。</p></section>
+<section id="s-04"><div class="section-no">04 / 完整中文笔记</div><h2>非空指数窗口</h2>
+<p>有限算术门验证</p>
+<div class="equation">\[\frac4{1323}<\frac1{320}<\frac{49}{14625},\qquad
+\frac{75}{22528}>\frac1{320}>\frac8{3969}.\]</div>
+<p>第一条给出非空半径指数窗；第二条说明横向泄漏指数同时压过 \(R_j^{-1}\) 前因子和 annular weight。新严格间隙是</p>
+<div class="equation">\[\frac{75}{22528}-\frac1{320}=\frac{23}{112640}>0.\]</div>
+</section>
+<section id="s-05"><div class="section-no">05 / 完整中文笔记</div><h2>两个被拒绝的窄机制</h2>
+<p>高频单 cosine 被排除的是“统一 scale-\(R\) 扰动 packet 机制”，不是所有单模构造。对称 midpoint 双 bump 在直接充分估计 \(c_R&gt;1/192\) 与 \(c_R&lt;1/266240\) 下窗口为空；这也不是 plateau 构造的普适不可能性定理。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整中文笔记</div><h2>有限层不等于解析存活</h2>
+<p><strong>FINITE：</strong>证书 13/13 PASS，图件 validator 42/42 PASS。它们只核对参数、指数窗、几何兼容与图件档案；不证明 Feynman--Kac survival、buffered leakage、压力复制项或完整付款比。</p></section>
+<section id="s-07"><div class="section-no">07 / 完整中文笔记</div><h2>证据与文献边界</h2>
+<p><strong>PROVED：</strong>局部 frame 方程、匹配 mollifier 消去、旧族中和、奇对称中心锁定和参考路径校准均为解析结论。</p>
+<p><strong>BOUNDED LITERATURE AUDIT：</strong>mollified trajectories、flow-following cylinders、2D3C passive scalar 与 shear dispersion 都有经典或近期先例；这里不作“第一”或优先权表述。</p></section>
+<section id="s-08"><div class="section-no">08 / 完整中文笔记</div><h2>开放边界</h2>
+<ul><li>两 packet 的 Feynman--Kac 存活；</li><li>有限指数比较之外的解析泄漏；</li><li>完整 \(E/G_u/G_p/H_u\) transition、packet、mixed 与 periodic-copy 账本；</li><li>一个同时闭合 Version-M/F 比值的振幅。</li></ul>
+<p><strong>NOT CLAY：</strong>本节没有 epsilon regularity、奇点或任意三维全局结论。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>解析门槛与结论边界</h2>
+<picture><source srcset="/assets/r074e/fig-r074e-outer-annulus-frame-gate.svg" type="image/svg+xml"><img src="/assets/r074e/fig-r074e-outer-annulus-frame-gate.png" alt="R0.74E analytic proof ledger and open-boundary figure"></picture>
+<p><a href="/assets/r074e/fig-r074e-outer-annulus-frame-gate.pdf">下载矢量 PDF</a> · <a href="/assets/r074e/fig-r074e-outer-annulus-frame-gate.png">下载 600 dpi PNG</a> · <a href="/assets/r074e/fig-r074e-outer-annulus-frame-gate.svg">打开 SVG</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074e/fig-r074e-outer-annulus-frame-gate">源数据、caption 与 QA</a></p>
+<p class="figure-note">主图是可复算的解析账本示意；它不是 DNS、NSE 时间仿真、奇点候选或有限采样证明。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、证书与复现材料</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074e_local_mollified_frame_gate.md">规范研究报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074e_local_frame_independent_audit.md">局部 frame 独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074e_finite_gate_independent_audit.md">有限门独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074e_outer_annulus_exponent_certificate_report.md">有限证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074e_outer_annulus_exponent_certificate.json">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074e_outer_annulus_exponent_certificate.py">证书脚本</a></p>
+<p><a href="/notes/r0-74e.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>后续接口</h2><p>保留全部周期 winding，证明或否定两 packet 在终端外环带的正测度存活。</p></section>
+</article></main></body></html>

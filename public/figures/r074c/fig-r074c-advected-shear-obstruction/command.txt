@@ -1,0 +1,17 @@
+set -e
+export PYTHONPATH=/Users/kasifa/.cache/codex-runtimes/r073s-figure-python
+PY=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+$PY -B plot.py
+$PY -B validate.py
+snapshot_dir=$(mktemp -d /private/tmp/r074c-byte-snapshot.XXXXXX)
+cp -p * "$snapshot_dir"/
+$PY -B plot.py
+$PY -B validate.py
+diff -rq "$snapshot_dir" .
+text_files=(README.md caption.md chart-contract-and-source-data.md command.txt config.json contract.json environment.json figure.svg manifest.json plot.py progress.ndjson qa-protocol.md qa-report.md requirements.txt resource-log.ndjson results.json SHA256SUMS source-data.csv validate.py validation.json)
+for text_file in $text_files; do
+  whitespace=$(git diff --no-index --check /dev/null "$text_file" 2>&1 || true)
+  test -z "$whitespace"
+done
+shasum -a 256 -c SHA256SUMS >/dev/null
+echo "DETERMINISM PASS: 25/25 files byte-identical; text whitespace PASS: 20/20"

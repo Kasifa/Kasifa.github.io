@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.72">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74C｜平流剪切阻断固定中心的大付款端点</title><meta name="description" content="精确光滑周期 NSE 解族使固定中心的纯 2/3 次付款比无界">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74c.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.72"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{color:var(--rule)}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}section{break-inside:auto}.stamp{break-inside:avoid}.equation{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74C · 2026-09-01</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74C · 完整中文版本</div><h1>R0.74C｜平流剪切阻断固定中心的大付款端点</h1><p>精确光滑周期 NSE 解族使固定中心的纯 2/3 次付款比无界</p><div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">BOUNDED LITERATURE AUDIT</span><span class="label">NOT CLAY</span></div><p>“NOT CLAY”表示本节不构成 Clay 千禧年问题的解答；“不可行性结论”只排除文中写明的具体估计或方法，不否定 Navier--Stokes 方程的其他路线。</p></div><div class="stamp"><strong>状态 · R0.74C</strong><p>固定中心端点反例：PROVED</p><p>有限指数账本：FINITE</p><p>随流/均值修复：OPEN</p><p>不构成 Clay 问题解答：NOT CLAY</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article><section id="s-01"><div class="section-no">01 / 完整中文笔记</div><h2>冻结问题与结论</h2>
+<p>本节只测试 R0.74B 的固定中心、大付款纯 \(2/3\) 次估计。固定 \(\nu=\theta=1\)，令 \(t_0=65R^2\)，并保留</p>
+<div class="equation">\[X_R=\mathcal U_{\rm ext}^{\infty}+\mathcal D_{\rm ext},\qquad
+P_R=\mathcal E(z_0,8R)^{3/2}+\mathcal A_{\rm ext}(z_0,2R;1).\]</div>
+<p><strong>PROVED。</strong></p>
+<div class="equation">\[\sup_{0<R<\pi/16,\ (u,p)\ {\rm smooth\ periodic\ NSE}}
+\frac{X_R}{P_R^{2/3}}=\infty.\]</div>
+<p>所以 R0.74B 中的 \(+P\) 不能直接删除。该结论没有判断 \(+P\) 是否最优，也没有处理随流坐标。</p></section>
+<section id="s-02"><div class="section-no">02 / 完整中文笔记</div><h2>精确平流 shear 解族</h2>
+<p>令 \(K_\tau^{\rm per}\) 为一维周期热核，\(M_m=3\,2^{m-1}\)，\(q_m=M_mR\)，并取</p>
+<div class="equation">\[F_R(t,x_2)=R^2\partial_2K_{t+R^2}^{\rm per}(x_2-q(t)),
+\qquad u=A F_R e_1+V_me_2,\qquad p=0.\]</div>
+<p>由于 \(\partial_tF_R+V_m\partial_2F_R=\partial_2^2F_R\)，该场是完整时间区间上的精确、光滑、无外力周期 NSE 解。shear 分量空间均值为零。自由参数 \(A\) 属于这一正交 shear 子类，不是对任意 NSE 解做非法振幅缩放。</p></section>
+<section id="s-03"><div class="section-no">03 / 完整中文笔记</div><h2>终端外环带的下界</h2>
+<p>最终热核条带在正时间区间内穿过目标环带。中心核在一段长度为 \(cR/|V_m|\asymp R^3\) 的时间内保持统一点态下界；横向截面给出正测度。原始权重为 \(e^{-M_m^2/288}\)，因此</p>
+<div class="equation">\[\mathcal U_{\rm ext}^{\infty}
+\ge cA^2M_m^2R^2e^{-M_m^2/288}.\]</div>
+<p>这里使用 essential supremum，不依赖单一终端时刻。</p></section>
+<section id="s-04"><div class="section-no">04 / 完整中文笔记</div><h2>完整付款账本</h2>
+<p>早期局部球只看见 Gaussian 泄漏和常速背景。所有周期复制、局部压力 gauge、谐和压力和混合 \(A\)-\(V_m\) 项都被保留。统一上界为</p>
+<div class="equation">\[P_R^{2/3}\le C\left[
+R^{-2}+A^2R^2\Pi_m e^{-M_m^2/264}
++A^2R^{8/3}M_m^{-2/3}\right],\qquad \Pi_m=(1+M_m)^8.\]</div>
+<p>严格指数差 \(1/264-1/288=1/3168\) 是局部泄漏与终端条带分离的关键。</p></section>
+<section id="s-05"><div class="section-no">05 / 完整中文笔记</div><h2>三条比值同时发散</h2>
+<p>选择</p>
+<div class="equation">\[R_m=e^{-M_m^2/96},\qquad
+\mathfrak a_m=R_m^{-2}e^{M_m^2/576}.\]</div>
+<p>目标下界分别压过背景行、局部 Gaussian 泄漏行和外部三次行，因而</p>
+<div class="equation">\[\frac{X_{R_m}}{P_{R_m}^{2/3}}\longrightarrow\infty.\]</div>
+<p>机制是短驻留时间的 endpoint transport：大常速把更强的正交 shear 穿过固定观察环带，而早期核心只看见远处热尾。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整中文笔记</div><h2>结论只针对固定中心</h2>
+<p>该解族的常速背景可以被 Galilean 移动消去。若所有球和环带随全局均值移动，当前反例退化为不平流的耗散条带。因此，本节只排除冻结的 fixed-centre endpoint；均值减除、随流中心或显式入口 flux 的修复仍需单独证明。</p></section>
+<section id="s-07"><div class="section-no">07 / 完整中文笔记</div><h2>证据与文献边界</h2>
+<p><strong>PROVED：</strong>精确 NSE 解、热核上下界、全周期复制、压力 gauge、完整付款和三比值发散均为解析证明。</p>
+<p><strong>FINITE：</strong>每个序列成员能量和付款有限；有限证书只核对指数、阈值和算术。</p>
+<p><strong>BOUNDED LITERATURE AUDIT：</strong>平流 shear、周期热核、Galilean 变换和压力分解均有直接先例；限定检索不是新颖性证明。</p></section>
+<section id="s-08"><div class="section-no">08 / 完整中文笔记</div><h2>开放边界</h2>
+<ul><li>固定中心估计中大付款的最优替代指数；</li><li>随均值移动后的纯 \(P^{2/3}\) 闭合；</li><li>外部尾的弱稳定、吸收和 epsilon regularity。</li></ul>
+<p><strong>NOT CLAY：</strong>这是一个正尺度估计的反例，不是 blow-up 解，也不是一般三维全局正则性结论。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>解析门槛与结论边界</h2>
+<picture><source srcset="/assets/r074c/fig-r074c-advected-shear-obstruction.svg" type="image/svg+xml"><img src="/assets/r074c/fig-r074c-advected-shear-obstruction.png" alt="R0.74C analytic proof ledger and open-boundary figure"></picture>
+<p><a href="/assets/r074c/fig-r074c-advected-shear-obstruction.pdf">下载矢量 PDF</a> · <a href="/assets/r074c/fig-r074c-advected-shear-obstruction.png">下载 600 dpi PNG</a> · <a href="/assets/r074c/fig-r074c-advected-shear-obstruction.svg">打开 SVG</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074c/fig-r074c-advected-shear-obstruction">源数据、caption 与 QA</a></p>
+<p class="figure-note">主图是可复算的解析账本示意；它不是 DNS、NSE 时间仿真、奇点候选或有限采样证明。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、证书与复现材料</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074c_advected_shear_large_payment_obstruction.md">规范解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074c_independent_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074c_primary_literature_audit.md">一手文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074c_advected_shear_certificate_report.md">有限证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074c_advected_shear_certificate.json">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074c_advected_shear_certificate.py">证书脚本</a></p>
+<p><a href="/notes/r0-74c.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>后续接口</h2><p>先减去全局均值并移动观察中心，检查局部 coherent transport 是否仍能穿过外环带。</p></section>
+</article></main></body></html>

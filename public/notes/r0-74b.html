@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.72">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74B｜缓冲环带闭合：Gaussian 外部尾项由倍半径付款</title><meta name="description" content="原权重保留不变；严格更早的时间层和 2R 外部账本闭合正尺度尾项">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74b.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.72"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.8rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{color:var(--rule)}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:10.2pt}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}a{color:inherit;text-decoration:none}section{break-inside:auto}.stamp{break-inside:avoid}.equation{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74B · 2026-09-01</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74B · 完整中文版本</div><h1>R0.74B｜缓冲环带闭合：Gaussian 外部尾项由倍半径付款</h1><p>原权重保留不变；严格更早的时间层和 2R 外部账本闭合正尺度尾项</p><div class="labels"><span class="label">PROVED</span><span class="label">FINITE</span><span class="label">OPEN</span><span class="label">BOUNDED LITERATURE AUDIT</span><span class="label">NOT CLAY</span></div><p>“NOT CLAY”表示本节不构成 Clay 千禧年问题的解答；“不可行性结论”只排除文中写明的具体估计或方法，不否定 Navier--Stokes 方程的其他路线。</p></div><div class="stamp"><strong>状态 · R0.74B</strong><p>缓冲 Caccioppoli 估计：PROVED</p><p>有限证书与图件：FINITE</p><p>大付款纯 2/3 次闭合：OPEN</p><p>不构成 Clay 问题解答：NOT CLAY</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article><section id="s-01"><div class="section-no">01 / 完整中文笔记</div><h2>冻结对象与适用范围</h2>
+<p>本节处理 R0.74A 留下的两个二次外部尾项。对标准时间钟和黏度时间钟分别令</p>
+<div class="equation">\[\kappa_{\rm std}=1,\quad \kappa_\nu=\nu,\qquad
+I_\rho^\square=(t_0-\rho^2/\kappa_\square,t_0).\]</div>
+<p>假设 \(0&lt;R&lt;\pi/16\)、\(0&lt;\theta\le1\)、\(I_{8R}^\square\Subset(0,T)\)，并取周期 suitable weak solution。所有比较都在同一时间钟内完成；半径 \(8R\) 的局部能量支付半径 \(2R\) 压力分解产生的内区项。</p>
+<div class="equation">\[\mathcal U_{\rm ext}^{\infty,\square}
+=\mathop{\rm ess\,sup}_{I_R^\square}R^{-1}U_\gamma(t),\qquad
+\mathcal D_{\rm ext}^{\square}
+=\nu R^{-1}\int_{I_R^\square}G_\gamma(t)\,dt.\]</div>
+<p>结论是正尺度 size estimate，不是零尺度正则性判据。</p></section>
+<section id="s-02"><div class="section-no">02 / 完整中文笔记</div><h2>倍半径移位为什么消除权重损失</h2>
+<p>关键不是把相邻 Gaussian 权重粗暴比较，而是使用精确环带恒等式</p>
+<div class="equation">\[A_k(R)=A_{k-1}(2R),\qquad k\ge2.\]</div>
+<p>目标半径 \(R\) 的外移邻居在半径 \(2R\) 处保留同一权重；内移邻居获得更大的权重。前两个环带单独落入 \(B_{4R}\) 和最内层 \(2R\) 环带，因此作为 core 行显式保留。固定半径下错误使用 \(\gamma_m\lesssim\gamma_{m+1}\) 会造成超指数损失。</p></section>
+<section id="s-03"><div class="section-no">03 / 完整中文笔记</div><h2>suitable local energy 的加权求和</h2>
+<p>我在每个提升环带上放置非负 cutoff，并在 \(I_{2R}^\square\) 左端加入严格时间缓冲。先对有限个环带应用 suitable local energy inequality，再乘 \(\gamma_m/R\) 求和，最后用单调收敛取极限。压力常数由无散条件严格消失，局部压力、谐和压力、前两个内壳和所有周期复制项均显式计入。</p>
+<p>二次 cutoff 行由加权 Hölder 和 \(\mathcal E(z_0,8R)\) 支付；三次速度/压力 flux 行由 \(\mathcal A_{\rm ext}(z_0,2R;\theta)\) 支付。证明不调用时间端点值。</p></section>
+<section id="s-04"><div class="section-no">04 / 完整中文笔记</div><h2>缓冲尾项主定理</h2>
+<p>定义完整的大半径付款</p>
+<div class="equation">\[P^\square=\mathcal E^\square(z_0,8R)^{3/2}
++\mathcal A_{\rm ext}^\square(z_0,2R;\theta).\]</div>
+<p><strong>PROVED。</strong>对两种时间钟分别有</p>
+<div class="equation">\[\mathcal U_{\rm ext}^{\infty,\square}
++\mathcal D_{\rm ext}^{\square}
+\le C_{\nu,\square}\big[(P^\square)^{2/3}+P^\square\big].\]</div>
+<p>把它代回 R0.74A 的四块分解得到</p>
+<div class="equation">\[\mathcal K_D^\square
+\le C_{\nu,\square}\theta^{1/4}
+\big[P^\square+(P^\square)^{3/2}\big].\]</div>
+<p>当 \(P^\square\le1\) 时，二次尾由 \(C(P^\square)^{2/3}\) 控制，\(\mathcal K_D^\square\le C\theta^{1/4}P^\square\)。这仍只是小付款 size corollary，并未证明吸收。</p></section>
+<section id="s-05"><div class="section-no">05 / 完整中文笔记</div><h2>压力界面也随倍半径移动</h2>
+<p>压力 gauge 在半径 \(R\) 与 \(2R\) 处不能被默认视为相同。局部 Calderón--Zygmund、谐和压力估计和 Jensen 不等式共同给出 gauge difference 的显式付款。由此得到</p>
+<div class="equation">\[\mathcal A_{\rm ext}^\square(z_0,R;\theta)
+\le C_{\nu,\square}P^\square.\]</div>
+<p>因此 R0.74A 的 compact-cutoff 压力行与 \(\mathcal K_D\) 可由同一个 \(P^\square+(P^\square)^{3/2}\) 支付。这里没有把 pressure nonlocality 藏入“低阶误差”。</p></section>
+<section id="s-06"><div class="section-no">06 / 完整中文笔记</div><h2>同一时间窗的不可行性结论</h2>
+<p>精确耗散 shear</p>
+<div class="equation">\[u_N(t,x)=A e^{-\nu N^2(t-t_-)}\sin(Nx_2)e_1,\qquad p_N=0\]</div>
+<p>满足 \(\mathcal U_{\rm ext}^{\infty}\asymp A^2\)、\(\mathcal D_{\rm ext}\asymp A^2\)，而同窗积分三次付款是 \(O(A^3N^{-2})\)。所以只用同一时间窗的三次账本，不能以频率无关常数控制二次端点。这里的“不可行性”只排除这一条明确估计；它不排除所有缓冲、入口二次付款或其他结构。</p></section>
+<section id="s-07"><div class="section-no">07 / 完整中文笔记</div><h2>证据分层与文献边界</h2>
+<p><strong>PROVED：</strong>倍半径权重移位、两种时间钟的严格缓冲、局部能量求和、压力 gauge 转移、尾项闭合与同窗三次付款反例均为解析证明。</p>
+<p><strong>FINITE：</strong>固定正尺度下各尾有限；有限算术证书和期刊图只复算常数、索引与公式，不承担 suitable-weak PDE 证明。</p>
+<p><strong>BOUNDED LITERATURE AUDIT：</strong>局部能量、压力分解和 Gaussian 热核估计都有经典先例；限定检索不构成原创性或优先权证明。</p></section>
+<section id="s-08"><div class="section-no">08 / 完整中文笔记</div><h2>仍然开放</h2>
+<ul><li>对任意大付款删除主估计中的 \(+P\)；</li><li>付款的尺度一致小性、吸收、弱稳定与下半连续性；</li><li>quotient 后的下界、epsilon regularity 与任意三维正则性。</li></ul>
+<p><strong>NOT CLAY：</strong>本节不证明奇点不存在，也不构造奇点；它不构成 Clay 千禧年问题的解答或部分解答。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>解析门槛与结论边界</h2>
+<picture><source srcset="/assets/r074b/fig-r074b-buffered-tail-closure.svg" type="image/svg+xml"><img src="/assets/r074b/fig-r074b-buffered-tail-closure.png" alt="R0.74B analytic proof ledger and open-boundary figure"></picture>
+<p><a href="/assets/r074b/fig-r074b-buffered-tail-closure.pdf">下载矢量 PDF</a> · <a href="/assets/r074b/fig-r074b-buffered-tail-closure.png">下载 600 dpi PNG</a> · <a href="/assets/r074b/fig-r074b-buffered-tail-closure.svg">打开 SVG</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074b/fig-r074b-buffered-tail-closure">源数据、caption 与 QA</a></p>
+<p class="figure-note">主图是可复算的解析账本示意；它不是 DNS、NSE 时间仿真、奇点候选或有限采样证明。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、证书与复现材料</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074b_buffered_tail_closure.md">规范解析证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074b_independent_audit.md">独立解析审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074b_primary_literature_audit.md">一手文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074b_buffered_tail_certificate_report.md">有限证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074b_buffered_tail_certificate.json">机器可读证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074b_buffered_tail_certificate.py">证书脚本</a></p>
+<p><a href="/notes/r0-74b.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>后续接口</h2><p>构造或排除固定中心大付款端点；先检查运输造成的瞬时外环带质量。</p></section>
+</article></main></body></html>

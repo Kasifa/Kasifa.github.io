@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import html
+import importlib.util
 import json
 import math
 import os
@@ -438,7 +439,15 @@ def verify_fourier_certificate_portably() -> None:
     their absolute mathematical thresholds.  The stored report is still
     reproduced exactly from the stored, hash-sealed JSON.
     """
-    import r073x_finite_fourier_harness as harness
+    producer_path = (ROOT / "scripts/r073x_finite_fourier_harness.py").resolve()
+    module_name = "_r073x_verified_fourier_" + sha256(producer_path.read_bytes())[:16]
+    specification = importlib.util.spec_from_file_location(module_name, producer_path)
+    if specification is None or specification.loader is None:
+        raise RuntimeError("R0.73X verified Fourier producer could not be loaded")
+    harness = importlib.util.module_from_spec(specification)
+    specification.loader.exec_module(harness)
+    if Path(harness.__file__).resolve() != producer_path:
+        raise RuntimeError("R0.73X verified/executed Fourier producer paths differ")
 
     stored = strict_json_file(
         "research/r073x_finite_fourier_harness_results.json",
@@ -554,7 +563,7 @@ def verify_fourier_certificate_portably() -> None:
                         row["maxImaginaryResidual"],
                         level_label + " " + side + " imaginary residual",
                     )
-                    if residual > FOURIER_RESIDUAL_LIMIT:
+                    if not 0.0 <= residual < FOURIER_RESIDUAL_LIMIT:
                         raise RuntimeError(
                             level_label + f": {side} imaginary residual exceeds "
                             f"{FOURIER_RESIDUAL_LIMIT:g}"
@@ -595,13 +604,15 @@ def verify_fourier_certificate_portably() -> None:
                     finest["signedSpatialScaleIntegral"],
                     label + " " + side + " finest signed integral",
                 )
+                if absolute_finest < 0.0:
+                    raise RuntimeError(label + f": {side} absolute integral is negative")
                 if absolute_delta >= 5.0e-6:
                     raise RuntimeError(label + f": {side} absolute ladder did not converge")
-                if signed_delta > FOURIER_RESIDUAL_LIMIT:
+                if not 0.0 <= signed_delta < FOURIER_RESIDUAL_LIMIT:
                     raise RuntimeError(label + f": {side} signed ladder did not converge")
-                if signed_error > FOURIER_SIGNED_ERROR_LIMIT:
+                if not 0.0 <= signed_error < FOURIER_SIGNED_ERROR_LIMIT:
                     raise RuntimeError(label + f": {side} signed exact comparison failed")
-                if abs(signed_finest - closed_form) > FOURIER_SIGNED_ERROR_LIMIT:
+                if abs(signed_finest - closed_form) >= FOURIER_SIGNED_ERROR_LIMIT:
                     raise RuntimeError(label + f": {side} finest signed value drifted")
                 if absolute_finest + 1.0e-13 < abs(signed_finest):
                     raise RuntimeError(label + f": {side} absolute value fell below signed")

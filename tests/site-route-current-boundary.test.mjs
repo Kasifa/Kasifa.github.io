@@ -91,13 +91,17 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     "homepage has exactly the manifest version",
   );
   const match = home.match(
-    /<article class="tree-node current">([\s\S]*?)<details class="tree-notes" open>/,
+    /<article class="tree-node current">([\s\S]*?)<details class="tree-notes">/,
   );
   assert.ok(match, "current route node");
   const current = match[1];
+  assert.ok(
+    current.includes('<details class="tree-route-details" hidden>'),
+    "full historical route stays out of the compact homepage card",
+  );
 
   assert.ok(current.includes(isA
-    ? "<h3>R0.74A：core/exterior 四块付款、显式 Gaussian tails 与 old-package obstruction 已分列</h3>"
+    ? "<h3>R0.74A：局部 K_D 付款已闭合</h3>"
     : isZ
     ? "<h3>R0.73Z：初始端点有限性障碍、能量兼容正三次修复与 pressure-active 分离已分列</h3>"
     : isY

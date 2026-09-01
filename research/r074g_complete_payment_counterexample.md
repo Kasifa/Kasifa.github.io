@@ -106,6 +106,10 @@ The exact contrast calibration gives
 \tag{1.8}
 \]
 
+Indeed, the calibration numerator \(q_j+1/2\to1/2\), while R0.74E
+Lemma 9.1 gives
+\(\mathfrak D_j=64R_j^2(1+o(1))\).
+
 For the proof, abbreviate
 
 \[
@@ -231,7 +235,9 @@ The scalar maximum principle applied to (2.6) therefore yields, for
 
 Indeed, \(h-16R\ge\alpha LR\) for all sufficiently large \(L\), and
 the convolved Gaussian denominator is at most
-\(2R^2+4t\le262R^2\).
+\(2R^2+4t\le262R^2\).  Any fixed polynomial prefactor attached to a
+noncentral periodic copy is absorbed after decreasing its positive
+constant \(c\).
 
 The kinetic part of the \(8R\)-energy follows by integrating (2.8) over
 the \(x_3\)-interval and using the \(O(R)\) invariant \(x_1\)-section.
@@ -430,6 +436,11 @@ Apply (3.3), use \(|I_\rho|=\rho^2\), and take the essential supremum:
 \tag{3.12}
 \]
 
+More explicitly,
+\(\rho^{-1}\sup_{I_\rho}\int_{B_{4\rho}}|u|^2
+\le4\mathcal E(z_0,4\rho)\); its factor \(4^{3/2}=8\) is absorbed in
+the displayed constant.
+
 Set \(\rho=2R\).  Then \(4\rho=8R\), proving (3.8). \(\square\)
 
 Combining (2.13) and (3.8),
@@ -565,10 +576,11 @@ Let
 \tag{4.11}
 \]
 
-The plateau estimate is
+The plateau estimate, uniformly for every
+\(0\le\tau\le65R^2\), is
 
 \[
- 0\le1-\theta(t,h)\le4e^{-aL^2}.
+ 0\le1-\theta(\tau,h)\le4e^{-aL^2}.
 \tag{4.12}
 \]
 
@@ -645,8 +657,16 @@ There is no hidden wrap: (4.16)--(4.17) give
 
 \[
  -\frac{81}{32}\le Q-\mathfrak S\le q+\delta,
- \qquad \frac{81}{32}<\pi.
+ \qquad \frac{81}{32}<3<\pi.
 \tag{4.21}
+\]
+
+The upper endpoint is also in the central chart: after one further increase
+of the base index,
+
+\[
+ q+\delta<\frac32h\le\frac{25}{512}<\pi.
+\tag{4.21a}
 \]
 
 Combining both cases,
@@ -700,12 +720,36 @@ and
 \]
 
 These are periodic Gaussian moment bounds; their noncentral kernel copies
-are part of the left sides.
+are part of the left sides.  Indeed, the central copies obey
+
+\[
+ |\partial^mK_T(x)|
+ \le C_mR^{-1-m}
+ e^{-c\,d_{\mathbb T}(x,0)^2/R^2},
+ \qquad m=0,1,
+\tag{4.26b}
+\]
+
+and their polynomially weighted Gaussian integrals give (4.25)--(4.26)
+after \(x=R\xi\).  For a noncentral copy \(n\ne0\), the corresponding
+bound retains
+\(C_mR^{-1-m}e^{-c(2|n|-1)^2/R^2}\).  Its sum over
+\(n\in\mathbb Z\setminus\{0\}\) is absorbed by the same right sides.
 
 Apply (4.24) with \(c=c_{\mathfrak S}\) and
 \(\xi=(z+\mathfrak S,y)\).  Use (4.10), Tonelli, and the periodic
-translation \(u=z+\mathfrak S\).  Equations (4.22), (4.25), and (4.26)
-give
+translation \(u=z+\mathfrak S\).  The product reduction is
+
+\[
+ \left(1+\frac{d_{\mathbb T^2}((u,y),0)}R\right)^3
+ \le
+ C
+ \left(1+\frac{d_{\mathbb T}(u,0)}R\right)^3
+ \left(1+\frac{d_{\mathbb T}(y,0)}R\right)^3.
+\tag{4.26a}
+\]
+
+Equations (4.22), (4.25), (4.26), and (4.26a) give
 
 \[
  I_p^+(t)
@@ -717,7 +761,7 @@ give
 where
 
 \[
- a_3=R^4,qquad a_2=R.
+ a_3=R^4,\qquad a_2=R.
 \tag{4.28}
 \]
 
@@ -794,7 +838,7 @@ Hence
 \begin{aligned}
  \mathcal G_{u,F}
  &\le C\mathfrak a^3R^{-2}R^6B^{-1}
- \int_{\mathbb R}(h^2+R^2+q^2)^{-3/2}\,dq\\
+ \int_{\mathbb R}(h^2+R^2+\xi^2)^{-3/2}\,d\xi\\
  &\le C\mathfrak a^3R^4B^{-1}(h^2+R^2)^{-1}\\
  &\le C\mathfrak a^3R^4L^{-2}.
 \end{aligned}
@@ -888,7 +932,7 @@ Using (5.5),
  \mathcal H_F
  &\le C\mathfrak a^3R^{11/2}B^{-1}
  \int_{\mathbb R}
- (h^2+R^2+q^2)^{-9/4}\,dq\\
+ (h^2+R^2+\xi^2)^{-9/4}\,d\xi\\
  &\le C\mathfrak a^3R^{11/2}B^{-1}
  (h^2+R^2)^{-7/4}\\
  &\le C\mathfrak a^3R^4L^{-7/2}.
@@ -903,8 +947,14 @@ The pointwise orthogonality of the two velocity components and
 \tag{6.7}
 \]
 
-separate the shear and packet \(\Lambda\)-rows.  Equation (5.4) with
-power two separates the two passive packets. \(\square\)
+separate the shear and packet \(\Lambda\)-rows.  The explicit inequality
+
+\[
+ |F^++F^-|^2\le2(|F^+|^2+|F^-|^2)
+\tag{6.7a}
+\]
+
+separates the two passive packets. \(\square\)
 
 At amplitude (1.7), the packet-to-background ratio is at most
 
@@ -1042,4 +1092,3 @@ required:
 
 No finite certificate can prove the heat-kernel, Riesz-transform, bridge,
 or asymptotic arguments.  Those remain analytic proof obligations.
-

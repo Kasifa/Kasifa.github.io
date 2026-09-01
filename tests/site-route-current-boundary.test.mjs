@@ -4,7 +4,7 @@ import { resolve, sep } from "node:path";
 import test from "node:test";
 import { pathToFileURL } from "node:url";
 
-const routeTestRoot = process.env.R073Y_ROUTE_TEST_ROOT ?? process.env.R073U_ROUTE_TEST_ROOT;
+const routeTestRoot = process.env.R073Z_ROUTE_TEST_ROOT ?? process.env.R073Y_ROUTE_TEST_ROOT ?? process.env.R073U_ROUTE_TEST_ROOT;
 const repositoryRoot = routeTestRoot
   ? pathToFileURL(resolve(routeTestRoot) + sep)
   : new URL("../", import.meta.url);
@@ -29,6 +29,7 @@ const ENDPOINTS = Object.freeze({
   r073w: { version: "1.63", code: "R0.73W", slug: "r0-73w", next: "R0.73X" },
   r073x: { version: "1.64", code: "R0.73X", slug: "r0-73x", next: "R0.73Y" },
   r073y: { version: "1.65", code: "R0.73Y", slug: "r0-73y", next: "R0.73Z" },
+  r073z: { version: "1.66", code: "R0.73Z", slug: "r0-73z", next: "R0.74A" },
 });
 
 async function page(name) {
@@ -58,7 +59,7 @@ function claimBoundary(html, release) {
   return blocks[0][1];
 }
 
-test("homepage current route reaches the materialized G through Y boundary without duplication", async () => {
+test("homepage current route reaches the materialized G through Z boundary without duplication", async () => {
   const [home, endpoint] = await Promise.all([
     page("research-review.html"),
     currentEndpoint(),
@@ -81,6 +82,7 @@ test("homepage current route reaches the materialized G through Y boundary witho
   const isW = endpoint.release === "r073w";
   const isX = endpoint.release === "r073x";
   const isY = endpoint.release === "r073y";
+  const isZ = endpoint.release === "r073z";
   assert.deepEqual(
     [...home.matchAll(/\bdata-site-version="([^"]+)"/g)].map((match) => match[1]),
     [endpoint.version],
@@ -92,7 +94,9 @@ test("homepage current route reaches the materialized G through Y boundary witho
   assert.ok(match, "current route node");
   const current = match[1];
 
-  assert.ok(current.includes(isY
+  assert.ok(current.includes(isZ
+    ? "<h3>R0.73Z：初始端点有限性障碍、能量兼容正三次修复与 pressure-active 分离已分列</h3>"
+    : isY
     ? "<h3>R0.73Y：exact shear kernel、全振幅零 production、A != 0 时严格正 heat covariance 与 production-only no-go 已分列</h3>"
     : isX
     ? "<h3>R0.73X：Gaussian 速度尾、代数 pressure 尾、positive-scale size 与 open coercivity bridge 已分列</h3>"
@@ -156,35 +160,35 @@ test("homepage current route reaches the materialized G through Y boundary witho
   ]) {
     assert.ok(current.includes(token), token);
   }
-  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isH || isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("actual-gain-normalized planar fixed-distance departure"));
   }
-  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isI || isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("endpoint audit / continuum upper action / zero-window tangent"));
   }
-  if (isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isJ || isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("unique simple rightmost spectral branch of the continuum operator"));
   }
-  if (isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isK || isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("parameter-uniform viscous rank-one branch"));
     assert.ok(current.includes("finite diagnostic: 1190 states / 952 cross-cutoff comparisons"));
   }
-  if (isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isL || isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("non-selfadjoint adiabatic tracking / matching selected action"));
     assert.ok(current.includes("parameter-uniform nonselfadjoint adiabatic tracking"));
     assert.ok(current.includes("finite diagnostic: 15 primary / 5 independent / 346 figure rows"));
   }
-  if (isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isM || isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("prescribed-action planar nonlinear fixed-distance departure"));
     assert.ok(current.includes("prescribed-action planar nonlinear departure"));
     assert.ok(current.includes(
       "finite diagnostic: 15 primary / 5 linear / 3 hierarchy / 27 figure rows / 28 checks",
     ));
   }
-  if (isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isN || isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     assert.ok(current.includes("fixed-member finite-strain stability / family-transfer obstruction"));
   }
-  if (isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isO || isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "global-orbit stability / forced Kolmogorov contrast",
       "global-orbit H3 stability",
@@ -193,14 +197,14 @@ test("homepage current route reaches the materialized G through Y boundary witho
     assert.equal(current.includes(
       "<h3>R0.73N：固定成员有限应变稳定性与族转移障碍已闭合</h3>"), false);
   }
-  if (isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isP || isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "critical H1/2 stability / N^-1/2 frequency gate",
       "band-limited N^-1/2 gate",
       "earlyWeakIntervalRegularity=OPEN",
     ]) assert.ok(home.includes(token), token);
   }
-  if (isQ || isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isQ || isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "critical heat-flow tube / endpoint boundary",
       "critical heat-flow tube",
@@ -208,7 +212,7 @@ test("homepage current route reaches the materialized G through Y boundary witho
     ]) assert.ok(home.includes(token), token);
     if (isQ) assert.ok(home.includes("<h3>R0.73R 下一接口</h3>"));
   }
-  if (isR || isS || isT || isU || isV || isW || isX || isY) {
+  if (isR || isS || isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "shellwise phase certificate",
       "classical heat--Besov mechanism",
@@ -219,7 +223,7 @@ test("homepage current route reaches the materialized G through Y boundary witho
     if (isR) assert.ok(home.includes("<h3>R0.73S 下一接口</h3>"));
     assert.equal(home.includes("<h3>R0.73R 下一接口</h3>"), false);
   }
-  if (isS || isT || isU || isV || isW || isX || isY) {
+  if (isS || isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "quadratic autocorrelation certificate",
       "difference-support obstruction",
@@ -230,7 +234,7 @@ test("homepage current route reaches the materialized G through Y boundary witho
     if (isS) assert.ok(home.includes("<h3>R0.73T 下一接口</h3>"));
     assert.equal(home.includes("<h3>R0.73S 下一接口</h3>"), false);
   }
-  if (isT || isU || isV || isW || isX || isY) {
+  if (isT || isU || isV || isW || isX || isY || isZ) {
     for (const token of [
       "dynamic AQ upper inequality",
       "carrier-scale non-autonomy",
@@ -273,7 +277,22 @@ test("homepage current route reaches the materialized G through Y boundary witho
     ]) assert.ok(home.includes(token), `R0.73V homepage ${token}`);
     assert.equal(home.includes("<h3>R0.73V 下一接口</h3>"), false);
   }
-  if (isY) {
+  if (isZ) {
+    for (const token of [
+      "R0.73Z｜正三次 heat covariance 的有限性障碍与能量兼容修复",
+      "initialEndpointEnergyClassFiniteness=FALSE_BY_EXACT_LERAY_HOPF_SHEAR",
+      "energyCompatibleKDUpperBound=PROVED_ANALYTICALLY",
+      "pressureActiveCrossedFamily=PROVED_ANALYTICALLY",
+      "R0.70A–R0.73Z · 104 节已公开",
+      "80 节完整封存",
+      "上一大里程碑 recap（R0.61–R0.73X，140 节）",
+      "202 篇研究笔记总索引",
+      "/assets/r073z/fig-r073z-covariance-separation.pdf",
+      "<h3>R0.74A 下一接口</h3>",
+    ]) assert.ok(home.includes(token), `R0.73Z homepage ${token}`);
+    assert.equal(home.includes("/recap-r0-61-r0-73z"), false);
+    assert.equal(home.includes("<h3>R0.73Z 下一接口</h3>"), false);
+  } else if (isY) {
     for (const token of [
       "R0.73Y｜Exact shear 类否定 production-only coercivity",
       "exact shear NSE",
@@ -325,9 +344,9 @@ test("homepage current route reaches the materialized G through Y boundary witho
   assert.ok(
     home.includes(`<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`),
   );
-  assert.ok(
-    home.includes(`<a class="route-map-latest" href="#${endpoint.release}">跳到首页 ${endpoint.code} 卡片 →</a>`),
-  );
+  assert.ok(isZ
+    ? home.includes(`<a href="#${endpoint.release}">查看首页完整 ${endpoint.code} 卡片</a>`)
+    : home.includes(`<a class="route-map-latest" href="#${endpoint.release}">跳到首页 ${endpoint.code} 卡片 →</a>`));
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
 
   const routeStart = home.indexOf('<section class="route-overview"');
@@ -341,7 +360,7 @@ test("homepage current route reaches the materialized G through Y boundary witho
   );
 });
 
-test("literature route records the materialized G through Y boundary", async () => {
+test("literature route records the materialized G through Z boundary", async () => {
   const [literature, endpoint] = await Promise.all([
     page("literature-review.html"),
     currentEndpoint(),
@@ -364,6 +383,7 @@ test("literature route records the materialized G through Y boundary", async () 
   const isW = endpoint.release === "r073w";
   const isX = endpoint.release === "r073x";
   const isY = endpoint.release === "r073y";
+  const isZ = endpoint.release === "r073z";
   const match = literature.match(
     /<section id="route">([\s\S]*?)<figure class="topology"[^>]*>([\s\S]*?)<\/figure>/,
   );
@@ -403,7 +423,38 @@ test("literature route records the materialized G through Y boundary", async () 
   assert.ok(literature.includes('id="r073e-boundary"'));
   assert.ok(literature.includes('id="r073f-boundary"'));
   assert.ok(literature.includes('id="r073g-boundary"'));
-  if (isY) {
+  if (isZ) {
+    for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r", "r073s", "r073t", "r073u", "r073v", "r073w", "r073x", "r073y"]) {
+      assert.ok(literature.includes(`id="${previous}-boundary"`));
+    }
+    assert.ok(literature.includes("R0.73Z：positive covariance 的初始端点障碍、能量修复与 pressure-active 分离"));
+    assert.ok(literature.includes("R0.70A–R0.73Z：104 节已公开，80 节完整封存"));
+    assert.ok(topology.includes(
+      '<div class="route-step kept"><header><b>R0.73Z</b><strong>positive-covariance endpoint obstruction and energy-compatible repair</strong>',
+    ));
+    for (const token of [
+      "initialEndpointEnergyClassFiniteness=FALSE_BY_EXACT_LERAY_HOPF_SHEAR",
+      "energyCompatibleKDUpperBound=PROVED_ANALYTICALLY",
+      "exactKernelKD=PROVED_ANALYTICALLY",
+      "localCenteredOscillationProductLowerBound=PROVED_ANALYTICALLY",
+      "pressureActiveCrossedFamily=PROVED_ANALYTICALLY",
+      "covarianceFourierCertificate=FINITE_CROSS_CHECK_ONLY",
+      "formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES",
+      "interiorSuitableWeakFiniteness=OPEN",
+      "localKDUpperPayment=OPEN",
+      "scaleUniformQuotientCoercivity=OPEN",
+      "epsilonRegularity=OPEN",
+      "arbitraryThreeDimensionalGlobalRegularity=OPEN",
+      "clayConclusion=OPEN",
+      "NOT CLAY",
+    ]) assert.ok(boundary.includes(token), `R0.73Z boundary ${token}`);
+    for (const token of [
+      "开放接口 · R0.74A",
+      "local K_D payment and pressure-cutoff debt",
+      "core/exterior split",
+    ]) assert.ok(topology.includes(token), `R0.74A interface ${token}`);
+    assert.equal(topology.includes("开放接口 · R0.73Z"), false);
+  } else if (isY) {
     for (const previous of ["r073j", "r073k", "r073l", "r073m", "r073n", "r073o", "r073p", "r073q", "r073r", "r073s", "r073t", "r073u", "r073v", "r073w", "r073x"]) {
       assert.ok(literature.includes(`id="${previous}-boundary"`));
     }

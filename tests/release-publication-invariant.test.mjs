@@ -602,11 +602,13 @@ test("publishes every research release from R0.70A onward", async () => {
 });
 
 test("derives homepage counts, latest release, route size, and recap endpoint", async () => {
-  const [releases, manifest, home, literature, noteFiles] = await Promise.all([
+  const [releases, manifest, site, home, literature, noteIndex, noteFiles] = await Promise.all([
     publishedReleaseIds(),
     releaseManifest(),
+    readFile(new URL("site-version.json", publicRoot), "utf8").then(JSON.parse),
     readFile(new URL("research-review.html", publicRoot), "utf8"),
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
+    readFile(new URL("notes/index.html", publicRoot), "utf8"),
     readdir(notesRoot),
   ]);
 
@@ -615,7 +617,12 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   const latestSlug = releaseToSlug(latestRelease);
   const latestCode = releaseToPublicCode(latestRelease);
   const nextCode = nextPublicCode(latestRelease);
-  const recapStem = "recap-r0-61-" + latestSlug;
+  const recapRelease = manifest.latestRecapRelease;
+  assert.match(recapRelease, /^r0\d{2}[a-z]$/, "manifest latest recap release");
+  const recapSlug = releaseToSlug(recapRelease);
+  const recapCode = releaseToPublicCode(recapRelease);
+  const recapNextCode = nextPublicCode(recapRelease);
+  const recapStem = "recap-r0-61-" + recapSlug;
   const routeStart = home.indexOf('<section class="route-overview"');
   const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
   assert.ok(routeStart >= 0 && routeEnd > routeStart, "homepage route map");
@@ -629,7 +636,10 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
 
   const recapStart = routeLinks.indexOf("/notes/r0-61.html");
   assert.ok(recapStart >= 0, "R0.61 recap start is missing from route");
-  const recapNodes = routeLinks.length - recapStart;
+  const publishedNodes = routeLinks.length - recapStart;
+  const recapTerminal = routeLinks.indexOf("/notes/" + recapSlug + ".html");
+  assert.ok(recapTerminal >= recapStart, "declared recap endpoint is absent from route");
+  const recapNodes = recapTerminal - recapStart + 1;
   const detailsBlocks = [
     ...route.matchAll(
       /<details class="tree-notes"[^>]*>([\s\S]*?)<\/details>/g,
@@ -646,8 +656,9 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     routeLinks.length,
     "homepage route must enumerate every public HTML note exactly once",
   );
-  const [latestNote, recap, recapPdf] = await Promise.all([
+  const [latestNote, recapEndpointNote, recap, recapPdf] = await Promise.all([
     readFile(new URL(latestSlug + ".html", notesRoot), "utf8"),
+    readFile(new URL(recapSlug + ".html", notesRoot), "utf8"),
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
     readFile(new URL(recapStem + ".pdf", publicRoot)),
   ]);
@@ -664,8 +675,8 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   ].map((match) => match[1]);
   assert.deepEqual(
     recapIndexLinks,
-    routeLinks.slice(recapStart),
-    "current recap must index every post-R0.60 route node exactly once",
+    routeLinks.slice(recapStart, recapTerminal + 1),
+    "milestone recap must index exactly its declared post-R0.60 coverage",
   );
 
   const versionMatch = home.match(/<strong>v(\d+\.\d+)<\/strong>\u7f51\u9875\u7248\u672c/);
@@ -677,12 +688,28 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     ["homepage", home],
     ["literature", literature],
     ["latest note", latestNote],
-    ["current recap", recap],
   ]) {
     assert.ok(
       html.includes('src="/i18n-en.js?v=' + version + '"'),
       label + ": i18n cache version must match homepage v" + version,
     );
+  }
+  const recapEndpointVersion = recapEndpointNote.match(/data-site-version="(\d+\.\d+)"/);
+  assert.ok(recapEndpointVersion, "recap endpoint note site version");
+  const recapI18nVersions = [
+    ...recap.matchAll(/src="\/i18n-en\.js\?v=(\d+\.\d+)"/g),
+  ].map((match) => match[1]);
+  assert.deepEqual(
+    recapI18nVersions,
+    [recapEndpointVersion[1]],
+    "milestone recap keeps its own endpoint i18n version",
+  );
+  const recapDataVersions = [
+    ...recap.matchAll(/data-site-version="(\d+\.\d+)"/g),
+  ].map((match) => match[1]);
+  assert.ok(recapDataVersions.length <= 1, "recap has at most one site-version attribute");
+  if (recapDataVersions.length === 1) {
+    assert.equal(recapDataVersions[0], recapEndpointVersion[1]);
   }
   assert.ok(
     home.includes("\u7efc\u8ff0 v" + version + " \u00b7"),
@@ -713,9 +740,26 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     "manifest public-note count",
   );
   assert.equal(
+    publishedNodes,
+    manifest.postR060PublishedNodeCount,
+    "manifest post-R0.60 published-node count",
+  );
+  assert.equal(
     recapNodes,
     manifest.postR060RecapNodeCount,
     "manifest post-R0.60 recap count",
+  );
+  assert.equal(site.postR060PublishedNodeCount, manifest.postR060PublishedNodeCount);
+  assert.equal(site.postR060RecapNodeCount, manifest.postR060RecapNodeCount);
+  assert.equal(site.latestRecapRelease, recapCode);
+  assert.ok(
+    recapRelease.localeCompare(latestRelease) <= 0,
+    "recap endpoint cannot run ahead of the published endpoint",
+  );
+  assert.equal(
+    recapNodes <= publishedNodes,
+    true,
+    "recap coverage cannot exceed published-node coverage",
   );
   assert.equal(
     releases.length,
@@ -768,6 +812,19 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(literature.includes("开放接口 · " + nextCode));
   assert.ok(latestNote.includes('href="/' + recapStem + '.html"'));
   assert.ok(latestNote.includes('href="/' + recapStem + '.pdf"'));
+  assert.ok(noteIndex.includes('href="/' + recapStem + '.html"'));
+  if (recapRelease !== latestRelease) {
+    for (const [label, page] of [
+      ["latest note", latestNote],
+      ["homepage", home],
+      ["note index", noteIndex],
+    ]) {
+      assert.ok(page.includes("上一大里程碑"), label + ": milestone recap wording");
+    }
+    const undeclaredRecapStem = "recap-r0-61-" + latestSlug;
+    await assert.rejects(access(new URL(undeclaredRecapStem + ".html", publicRoot)));
+    await assert.rejects(access(new URL(undeclaredRecapStem + ".pdf", publicRoot)));
+  }
 
   for (const release of releases) {
     const slug = releaseToSlug(release);
@@ -781,11 +838,12 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   }
 
   for (const phrase of [
-    "R0.61–" + latestCode,
+    "R0.61–" + recapCode,
     "收录节点：" + recapNodes,
-    "回顾截止时公开笔记：" + htmlNotes.length,
-    nextCode,
-    latestCode,
+    "回顾截止时公开笔记：" +
+      (htmlNotes.length - (publishedNodes - recapNodes)),
+    recapNextCode,
+    recapCode,
   ]) {
     assert.ok(recap.includes(phrase), phrase);
   }

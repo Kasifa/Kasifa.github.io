@@ -99,19 +99,39 @@ def parse_note(path: Path) -> Note:
     )
 
 
+def release_to_slug(release: str) -> str:
+    match = re.fullmatch(r"r0(\d{2})([a-z])", release)
+    if match is None:
+        raise RuntimeError("release manifest has malformed latestRecapRelease")
+    return f"r0-{match.group(1)}{match.group(2)}"
+
+
 def latest_recap_href() -> str:
+    manifest = json.loads((ROOT / "research/release-manifest.json").read_text(encoding="utf-8"))
+    site = json.loads((PUBLIC / "site-version.json").read_text(encoding="utf-8"))
+    declared = manifest.get("latestRecapRelease")
+    if not isinstance(declared, str):
+        raise RuntimeError("release manifest must declare latestRecapRelease")
+    public_code = declared.replace(
+        "r0", "R0.", 1,
+    ).upper()
+    if site.get("latestRecapRelease") != public_code:
+        raise RuntimeError("site-version latestRecapRelease disagrees with release manifest")
+    expected = PUBLIC / f"recap-r0-61-{release_to_slug(declared)}.html"
     recaps = [
         path
         for path in PUBLIC.glob("recap-r0-61-r0-*.html")
         if RECAP_NAME.fullmatch(path.name)
     ]
-    if not recaps:
-        return "/recap-r0-60.html"
+    if not expected.is_file() or expected.is_symlink() or not recaps:
+        raise RuntimeError("declared recap endpoint is not a regular public HTML file")
     latest = max(
         recaps,
         key=lambda path: natural_key(path.stem.removeprefix("recap-r0-61-r0-")),
     )
-    return "/" + latest.name
+    if latest != expected:
+        raise RuntimeError("maximum recap filename disagrees with declared milestone endpoint")
+    return "/" + expected.name
 
 
 def entry(note: Note) -> str:
@@ -171,6 +191,11 @@ def render(notes: list[Note]) -> str:
       </section>''')
 
     recap_href = latest_recap_href()
+    recap_label = (
+        "累计回顾"
+        if site.get("latestRecapRelease") == notes[0].code
+        else "上一大里程碑 recap"
+    )
     version = html.escape(str(site["version"]))
     published_date = html.escape(str(site["publishedDate"]))
     latest = html.escape(notes[0].code)
@@ -363,7 +388,7 @@ def render(notes: list[Note]) -> str:
   <header class="masthead">
     <div class="masthead-inner">
       <a class="brand" href="/">ν · Navier–Stokes 研究记录</a>
-      <nav aria-label="页面导航"><a href="/">研究主页</a><a href="{recap_href}">累计回顾</a></nav>
+      <nav aria-label="页面导航"><a href="/">研究主页</a><a href="{recap_href}">{recap_label}</a></nav>
     </div>
   </header>
   <main id="content">

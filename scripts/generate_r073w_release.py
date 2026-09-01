@@ -695,17 +695,31 @@ def assert_public_html(value: str, label: str, *, require_boundary: bool = True)
         raise RuntimeError(label + ": missing NOT CLAY boundary")
 
 
+def render_strong_markers(value: str, label: str) -> str:
+    """Render the deliberately narrow ``**audit label**`` subset safely."""
+    if value.count("**") % 2:
+        raise RuntimeError(label + ": unmatched strong-emphasis marker")
+    rendered = re.sub(r"\*\*([^*\n]+)\*\*", r"<strong>\1</strong>", value)
+    if "**" in rendered:
+        raise RuntimeError(label + ": unsupported strong-emphasis marker")
+    return rendered
+
+
 def note_page(content: ReleaseContent) -> str:
     title = html.escape(content.document_title_en)
+    note_hero = render_strong_markers(content.note_hero, "R0.73W note hero")
+    note_article = render_strong_markers(content.note_article, "R0.73W note article")
     value = f'''<!doctype html>
 <html lang="zh-CN" data-site-version="1.63">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title><script>document.documentElement.classList.add('js')</script>
+<script>window.MathJax={{tex:{{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script>
 <script defer src="/i18n-en.js?v=1.63"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}}*{{box-sizing:border-box}}body{{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}}.top{{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between}}main{{width:min(920px,90vw);margin:auto}}.hero{{padding:64px 0 32px;border-bottom:1px solid var(--ink)}}h1{{font-size:clamp(2rem,6vw,4.3rem);line-height:1.05}}h2{{margin-top:3rem;color:var(--rule)}}.stamp,.section-no{{font:700 12px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}}article{{padding:20px 0 80px}}.equation{{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}}a{{color:#702824}}img{{max-width:100%;height:auto}}@media(max-width:600px){{body{{font-size:15px}}}}</style></head>
 <body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.73W · NOT CLAY</span></nav><main>
-{content.note_hero}
-{content.note_article}
+{note_hero}
+{note_article}
 </main></body></html>'''
     assert_public_html(value, "R0.73W note")
     return value
@@ -1114,6 +1128,14 @@ def validate_staged(staged: dict[Path, bytes]) -> None:
     index = staged[PUBLIC / "notes/index.html"].decode("utf-8")
     if index.count('data-note="r0-73w"') != 1:
         raise RuntimeError("note-index DOM lacks one canonical R0.73W entry")
+    note = staged[PUBLIC / "notes/r0-73w.html"].decode("utf-8")
+    if (
+        "mathjax@3/es5/tex-mml-chtml.js" not in note
+        or "window.MathJax=" not in note
+        or "**" in note
+        or "<strong>[开放]</strong>" not in note
+    ):
+        raise RuntimeError("R0.73W note math/emphasis rendering contract drifted")
     release = strict_json_bytes(staged[ROOT / "research/release-manifest.json"], "staged release manifest")
     expected = {
         "latestCompletedRelease": "r073w",

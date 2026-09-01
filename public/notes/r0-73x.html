@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.64">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.73X｜Localized heat ledgers with explicit exterior tails: Gaussian velocity control, algebraic pressure tails, and the open coercivity bridge</title><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script>
+<script defer src="/i18n-en.js?v=1.64"></script>
+<script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}.top{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between}main{width:min(920px,90vw);margin:auto}.hero{padding:64px 0 32px;border-bottom:1px solid var(--ink)}h1{font-size:clamp(2rem,6vw,4.3rem);line-height:1.05}h2{margin-top:3rem;color:var(--rule)}.stamp,.section-no{font:700 12px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}article{padding:20px 0 80px}.equation{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}code{overflow-wrap:anywhere;word-break:break-word}pre.report-ledger,pre.report-ledger code{max-width:100%;white-space:pre-wrap}pre.report-ledger{overflow-x:auto}a{color:#702824}img{max-width:100%;height:auto}@media(max-width:600px){html,body{max-width:100%;overflow-x:hidden;overflow-x:clip}body{font-size:15px}.equation{contain:inline-size paint}.equation mjx-container[display="true"]{display:block!important;width:100%!important;min-width:0!important;max-width:100%;overflow-x:auto;overflow-y:hidden}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.73X · NOT CLAY</span></nav><main>
+    <header class="hero"><div class="hero-inner">
+      <div><div class="eyebrow">研究笔记 R0.73X · EXPLICIT EXTERIOR TAILS / POSITIVE-SCALE SIZE</div>
+        <h1>R0.73X｜带显式外部尾项的局部热账本：Gaussian 速度控制、代数压力尾与未闭合 coercivity 桥</h1>
+        <p class="lead">R0.73X 把上一节留下的局部化问题推进到一个可审计的边界：外部影响不再写成一个含混的“误差”，而是拆成 direct heat propagation 的 Gaussian 尾与 harmonic pressure 的代数尾。 第一条已证明的 functional lemma 是 compact cutoff、signed-to-absolute coercivity、weighted tent/Carleson、 suitable-weak \(s=0\) endpoint、epsilon regularity、arbitrary-data global regularity 与 Clay conclusion 全部 OPEN。NOT CLAY。</p></div>
+      <div class="stamp"><span class="state">状态 · R0.73X 完成</span><strong>Gaussian velocity tail + algebraic pressure tail</strong><p>版本 R0.73X · 2026-09-01</p><p>Gaussian velocity-tail lemma：INDEPENDENT AUDIT PASS</p><p>pressure/exterior size：POSITIVE-SCALE PASS</p><p>static packet：FUNCTIONAL ONLY / NOT NSE</p><p>coercivity / weighted tent / s=0 / epsilon regularity：OPEN</p><p>NOT CLAY</p></div>
+    </div></header>
+      <article>
+        <section id="section"><div class="section-no">01 / canonical report</div><h2>直接结论</h2><p>R0.73X 把上一节留下的局部化问题推进到一个可审计的边界：外部影响不再 写成一个含混的“误差”，而是拆成 direct heat propagation 的 Gaussian 尾与 harmonic pressure 的代数尾。</p><p>对标准或 viscosity-adapted cylinder clock，冻结完整 exterior functional</p><div class="equation result">\[
+ \boxed{
+ \mathcal A_{\rm ext}^{\square}(z_0,R;\theta)
+ =\mathcal G_{u,p}^{\square}(z_0,R;\theta)
+  +\mathcal H_u^{\square}(z_0,R),
+ \qquad \square\in\{\mathrm{std},\nu\}.}
+\tag{1.1}
+\]</div><p>这里 \(\mathcal G_{u,p}\) 以 Gaussian annular weights 支付 velocity 与 pressure-source mass；\(\mathcal H_u\) 支付 local pressure split 中的 harmonic remainder，因而只有 algebraic annular decay。</p><p>第一条已证明的 functional lemma 是</p><div class="equation result">\[
+ \boxed{
+ |\mathscr S_s(t,x)|
+ \le C_0s^{-1/2}P_{2s}(|u(t)|^3)(x),}
+ \qquad
+ C_0=2^{5/2}e^{-1/2}+{2^{7/2}\over\sqrt\pi}&lt;10.
+\tag{1.2}
+\]</div><p>它对每个 \(s&gt;0\) 成立，不使用 pressure、defect 或 Navier--Stokes 时间 轨道。对 heat scale 积分以后，它给出带 critical Gaussian \(L^3\) velocity tail 的 unweighted absolute centered-production size bound。</p><p>第二条已证明的主结果，是对每个 measurable \(s(t)\in(0,\theta R^2]\) 与每个满足 \(\|\nabla\eta_R\|_\infty\le C_\eta/R\) 的 compact cutoff，</p><div class="equation result">\[
+ \boxed{
+ \begin{aligned}
+ &amp;{1\over R}\int_{I_R^\square}\!\int_{B_R}
+   |\mathscr S_{s(t)}^{\rm ext}|\,dx\,dt
+ +{1\over R}\int_{I_R^\square}\!\int_{B_R}
+   |Q_{s(t)}\cdot\nabla\eta_R|\,dx\,dt\\
+ &amp;\qquad\le C_{\theta,\nu,C_\eta}
+ \left[
+  \mathcal E^\square(z_0,4R)^{3/2}
+  +\mathcal A_{\rm ext}^\square(z_0,R;\theta)
+ \right].
+ \end{aligned}}
+\tag{1.3}
+\]</div><p>常数与 \(R,z_0\)、solution 以及所选 measurable scale 无关。式 (1.3) 是 positive-scale absolute size/finiteness statement；它没有声称右端小， 也没有给出 absorption 或 coercivity。</p><p>第三条已证明的结果，是 full unweighted scale-integrated row</p><div class="equation result">\[
+ \mathcal C_{\mathscr S,0,\theta}^{\rm abs,\square}(z_0,R)
+ ={1\over R^3}\int_{I_R^\square}\!\int_0^{\theta R^2}\!\int_{B_R}
+   |\mathscr S_s|\,dx\,ds\,dt
+\tag{1.4}
+\]</div><p>满足</p><div class="equation result">\[
+ \boxed{
+ \mathcal C_{\mathscr S,0,\theta}^{\rm abs,\square}
+ \le C_{\theta,\nu}
+ \left[
+  \mathcal E^\square(z_0,4R)^{3/2}
+  +\mathcal A_{\rm ext}^\square(z_0,R;\theta)
+ \right].}
+\tag{1.5}
+\]</div><p>这关闭了 problem-freeze 中 schematic unweighted exterior row，但没有 关闭带额外 \(s^{-1/2}\) 的 weighted tent/Carleson endpoint。</p><p>压力尾不能伪装成 Gaussian。harmonic remainder 的可见量是</p><div class="equation result">\[
+ \Lambda_R(t)
+ =R\sum_{m\ge1}(2^mR)^{-4}
+   \int_{A_m(R)}|\widetilde u(t,y)|^2\,dy,
+ \qquad
+ \mathcal H_u^\square
+ =R\int_{I_R^\square}\Lambda_R(t)^{3/2}\,dt.
+\tag{1.6}
+\]</div><p>其中 \((2^mR)^{-4}\) 来自 elliptic pressure derivative 的 off-diagonal order \(-4\) kernel，而不是 heat kernel。</p><p>两个负结果也有严格量词。fixed positive harmonic probe 排除指定 probe class 中的 amplitude-independent quadratic absorption；它不是 compactly supported cutoff，所以 compact-cutoff 命题仍开放。</p><p>translated packet 排除 unconstrained smooth divergence-free static triples with \(p=\mu=0\) 的 exterior-free velocity-only estimate，以及把 critical Gaussian \(L^3\) tail 仅用 weighted \(L^2\) mass 的 \(3/2\) 次方替代的 functional candidate。</p><p>这个 packet 通常不是 unforced Navier--Stokes trajectory。它不反驳 associated-pressure inequality，也不反驳只对 NSE trajectories 陈述的 估计；公开叙述必须把这三个限定写在同一处。</p><p>最终缺口是</p><div class="equation result">\[
+ \boxed{
+ \begin{aligned}
+ &amp;\text{small signed heat-characteristic payment}\\
+ &amp;{}\not\Longrightarrow_{\rm proved}
+ \mathcal E^\square(z_0,4R)^{3/2}
+ +\mathcal A_{\rm ext}^\square(z_0,R;\theta)
+ \text{ is small}.
+ \end{aligned}}
+\tag{1.7}
+\]</div><p>compact cutoff、signed-to-absolute coercivity、weighted tent/Carleson、 suitable-weak \(s=0\) endpoint、epsilon regularity、arbitrary-data global regularity 与 Clay conclusion 全部 OPEN。NOT CLAY。</p></section>
+        <section id="section-2"><div class="section-no">02 / canonical report</div><h2>局部账本与问题入口</h2><p>令 \(v_s=P_su\)、\(\tau_s=P_s(u\otimes u)-v_s\otimes v_s\)。上一节把 Gaussian filter scale 当成第二个 diffusion coordinate，沿 \(s'(t)=-\nu\) 得到 signed payment identity。R0.73X 加入 fixed compact cutoff \(\eta_R\)，不再依靠空间平均消掉所有 divergence。</p><p>centered third-moment split 保留为</p><div class="equation result">\[
+ \Pi_s=\partial_jK_{j,s}+\mathscr S_s,
+ \qquad
+ \mathscr S_s={1\over4s}\int_{\mathbb R^3}
+ y\cdot a_s|a_s|^2g_s(y)\,dy,
+\tag{2.1}
+\]</div><p>其中 \(a_s(x,y)=u(x-y)-v_s(x)\)。cutoff integration 以后， \(\partial_jK_{j,s}\) 变成真实 boundary payment，\(\mathscr S_s\) 留在 interior；pressure--velocity covariance</p><div class="equation result">\[
+ Q_s=P_s((p-c_R)u)-P_s(p-c_R)P_su
+\tag{2.2}
+\]</div><p>也与 \(\nabla\eta_R\) 配对。</p><p>对 suitable weak solutions，\(p-c_R\in L^{3/2}\)、\(u\in L^3\)，所以 式 (2.2) 的 product 属于 \(L^1\)。这一步解决“expression 是否有意义”， 不解决“它是否 small”。</p><p>完整 suitable-weak equality 还必须保留 nonnegative defect 与 dissipation tails。只有从 equality 转为方向正确的 one-sided upper estimate 时，才可 放掉 favorable-sign rows。</p><p>局部化以后真正的问题由此变得清楚：signed characteristic payment 能否 支付 positive absolute interior core、pressure annuli 与 zero-scale defect？ R0.73X 先完成 size bookkeeping，不把尚未证明的 coercivity 填进常数。</p></section>
+        <section id="gaussian"><div class="section-no">03 / canonical report</div><h2>Gaussian 速度尾控制</h2><p>在周期 lift 上使用 Euclidean heat kernel</p><div class="equation result">\[
+ g_s(y)=(4\pi s)^{-3/2}e^{-|y|^2/(4s)}.
+\tag{3.1}
+\]</div><p>关键 kernel comparison 是</p><div class="equation result">\[
+ {(|y|/s)g_s(y)\over s^{-1/2}g_{2s}(y)}
+ =2^{3/2}q e^{-q^2/8}
+ \le2^{5/2}e^{-1/2},
+ \qquad q={|y|\over\sqrt s}.
+\tag{3.2}
+\]</div><p>再用 \(|a-b|^3\le4(|a|^3+|b|^3)\)、Jensen 与 \(\int|y|g_s=4\sqrt s/\sqrt\pi\)，便得到式 (1.2) 的 explicit constant。</p><p>对 annulus \(A_m(R)=B_{2^{m+1}R}(x_0)\setminus B_{2^mR}(x_0)\)，若 \(x\in B_R\)、\(z\in A_m(R)\)，则 \(|x-z|\ge2^{m-1}R\)。对应的 direct heat coefficient 可取</p><div class="equation result">\[
+ \gamma_m(\theta)
+ =\theta^{-2}\exp\!\left[-{4^{m-1}\over32\theta}\right].
+\tag{3.3}
+\]</div><p>super-exponential decay 压过 periodic lift 中 annular cell count 的 polynomial growth。certificate 不只录入 exponent，还从 dimension \(d=3\) 重建 concentration powers，并用显式 divergence-free packet 的 quadrature 恢复 slopes \(3,9/2,-3/2,1\)。</p><p>这个结果的边界同样重要。式 (1.2) 的 direct majorant 若再乘一个 \(s^{-1/2}\)，scale integral 在 \(s=0\) 出现 logarithmic endpoint obstruction。因此 proved row 是 unweighted positive-scale size，不是 critical weighted tent theorem。</p></section>
+        <section id="section-3"><div class="section-no">04 / canonical report</div><h2>压力为什么留下代数尾</h2><p>pressure 是 elliptic nonlocal object。R0.73X 在 \(B_{2R}\) 写成 local singular-integral part 与 harmonic remainder，并冻结 Riesz convention</p><div class="equation result">\[
+ \widehat{\mathcal R_i f}(k)=i{k_i\over|k|}\widehat f(k).
+\tag{4.1}
+\]</div><p>因此 periodic pressure gradient 的 multiplier 为</p><div class="equation result">\[
+ \widehat{\partial_\ell\mathcal R_i\mathcal R_jF_{ij}}(k)
+ =-i{k_\ell k_i k_j\over|k|^2}\widehat F_{ij}(k),
+ \qquad k\ne0.
+\tag{4.2}
+\]</div><p>独立审计特别检查了 contact terms。完整 operator 先作为 \(\partial_\ell\partial_i\partial_j(4\pi|\cdot|)^{-1}\) 的 distribution periodize；不能从一开始就把它当成 naive principal-value function。</p><p>减去完整 local source 后，remaining source 在 inner ball 附近为零。 此时 origin-supported terms 才消失，operator 在 off-diagonal region 化为 ordinary absolutely convergent order \(-4\) kernel。</p><p>这正是式 (1.6) 的 algebraic weight 来源。heat operator 的 Gaussian off-diagonal decay不能传给 harmonic pressure；若把 \(\Lambda_R\) 换成 Gaussian weight，就删除了 elliptic nonlocality，而不是证明了更强估计。</p></section>
+        <section id="functional"><div class="section-no">05 / canonical report</div><h2>完整外部 functional</h2><p>固定 pressure gauge \(c_R(t)=(h_R(t,\cdot))_{B_{2R}}\)，令</p><div class="equation result">\[
+ Y_R(t,y)=|\widetilde u(t,y)|^3
+ +|\widetilde p(t,y)-c_R(t)|^{3/2}.
+\tag{5.1}
+\]</div><p>Gaussian exterior payment 是</p><div class="equation result">\[
+ \boxed{
+ \mathcal G_{u,p}^{\square}(z_0,R;\theta)
+ ={1\over R^2}\sum_{m=1}^{\infty}\gamma_m(\theta)
+ \int_{I_R^\square}\!\int_{A_m(R)}Y_R(t,y)\,dy\,dt.}
+\tag{5.2}
+\]</div><p>harmonic pressure payment 是式 (1.6) 的 \(\mathcal H_u^\square\)。二者相加得到式 (1.1)。每一项在 Navier--Stokes scaling 下 dimensionless。</p><p>这个 functional 的定义不是 circular：它没有把左侧待估的 \(\mathscr S_s\) 或 \(Q_s\) 再放回右侧。它支付的是明确的 annular velocity/pressure mass 与 harmonic moment。</p><p>但 non-circular 不等于 locally small。suitability 与 local energy inequality 没有自动把 \(\mathcal G_p\) 或 \(\mathcal H_u\) 由 \(Q_R^\square\) 内的数据控制为小量。</p><p>这一区分是 R0.73X 最重要的记账规则：先把所有 nonlocal rows 定义清楚、 证明 finite-scale size，再把 smallness/coercivity 留作独立命题。</p></section>
+        <section id="positive-scale-size-lemma"><div class="section-no">06 / canonical report</div><h2>positive-scale 绝对 size lemma</h2><p>定义 frozen local energy row</p><div class="equation result">\[
+ \mathcal E^\square(z_0,\rho)
+ ={1\over\rho}\operatorname*{ess\,sup}_{t\in I_\rho^\square}
+  \int_{B_\rho}|u|^2
+ +{\nu\over\rho}\int_{I_\rho^\square}\!\int_{B_\rho}|\nabla u|^2.
+\tag{6.1}
+\]</div><p>local Sobolev interpolation 与 time Hölder 给出</p><div class="equation result">\[
+ {1\over R^2}\int_{I_R^\square}\!\int_{B_{4R}}|u|^3
+ \le C_\nu\mathcal E^\square(z_0,4R)^{3/2}.
+\tag{6.2}
+\]</div><p>Gaussian annular bound、local pressure split、Calderón--Zygmund、harmonic oscillation 与式 (6.2) 合并，得到式 (1.3) 与式 (1.5)。pressure audit 逐项核对了 pair factor、core value in an exterior pair、两个 core--core payments、\(L^1\) product、outside \(R^{-1}\) 与 cutoff gradient 的 \(R^{-1}\) 组合。</p><p>因此最终常数没有缺 \(R\)、\(\theta\) 或 factor two；theorem 的量词也 包括 ambient-time containment、a.e.-time statement、measurable scale 与 cutoff class。</p><p>应当把结论逐字读成：finite, scale-compatible absolute size at positive heat scale。它不是 smallness、not absorption、not coercivity、not a weighted tent theorem、not an \(s=0\) endpoint。</p></section>
+        <section id="section-4"><div class="section-no">07 / canonical report</div><h2>两个精确负结果及其量词</h2><p>第一类 finite diagnostic 使用 fixed positive harmonic probe。对 amplitude \(A\)，cubic production 与 centered remainder 是 degree three，而 \(\nu D+R^{-2}k\) 是 degree two，所以对应 ratio 线性增长。</p><p>这排除了 probe class 中对所有 amplitude 成立的 uniform quadratic absorption constant。probe 不是 compactly supported，因而它没有决定 problem-freeze 中真正的 compact-cutoff candidate。</p><p>第二类 witness 是 translated compact divergence-free packet。它证明 velocity-only functional 的 exterior-free candidate 会漏掉 remote heat leakage；同时 weighted \(L^2\) mass 的 \(3/2\) 次方相对 cubic response 损失 \(\delta^{-3/2}\)。</p><p>这里的量词必须冻结：unconstrained smooth static triples，\(p=\mu=0\)， 或 velocity-only intermediate inequality。packet 通常不是 unforced NSE trajectory，\(p=0\) 也不一定是与该 velocity 关联的 pressure。</p><p>所以负结论没有触及 associated-pressure estimate 或 NSE-only theorem。 它只关闭两条被精确量词覆盖的错误 functional 路线。</p></section>
+        <section id="section-5"><div class="section-no">08 / canonical report</div><h2>独立审计与可执行证据</h2><p>Gaussian proof 经过独立 analytic readback。revised certificate 独立计算 kernel maximum、annular distance、heat-ball coefficient、exact scale integral、scaling degrees、packet powers 与 slopes、energy interpolation exponents，以及 infinite lifted-tail summability。</p><p>system Python 与 bundled Python 都复现 payload <code>fcac97440dde87d00103f3a09b346bdd918c9fbb7360ee792edc2c8d0357e3b7</code>， 并验证 <code>--check-only</code> zero-write contract。</p><p>pressure audit 对 final source 给出 <code>PASS_FOR_POSITIVE_SCALE_ABSOLUTE_SIZE_ONLY</code>。它没有把 pass 扩展到 smallness、coercivity、endpoint 或 regularity。</p><p>16-file formal-evidence archive 的 manifest 状态是 <code>SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED</code>：七个 canonical evidence inputs byte-bind 到 commit <code>958b6b4216f6914a5d42f7712b6bc9b218caf801</code>，完整 package tree 另由 release generator pin 到 commit <code>980a11c523deabc921fc7075aa17440a5ca2cc49</code>。 manifest 保留封印当时的 <code>packageCommitBound=false</code>，因此公开叙述不得把该 字段伪写为 true；不可变 package pin 由外层 release gate 独立核验。</p><p>finite Fourier harness 另外核对 localized algebra 与 fixed-probe amplitude obstruction。这里没有 DNS，也没有 Navier--Stokes time integration。</p><p>正式附图已经完成真实的 25-file two-commit seal。十个 source files 与十一个 raw/result files byte-bind 到 immutable figure-source commit <code>161fd9d5ca3ebea55e34567188a0e152ee39ecfb</code>；四个 metadata files 在 child commit <code>d11025bb124357c45c2f333bde1b21569b373aa5</code> 完成 package seal。owner visual QA 与 validator 的 50/50 rows 全部通过。两份 publication-facing source audit 仍是独立的后续发布门，不能由制图者自检替代。</p><p>可复现入口为：</p><pre class="report-ledger"><code>/usr/bin/python3 -B scripts/r073x_gaussian_tail_certificate.py --check-only
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B scripts/r073x_gaussian_tail_certificate.py --check-only
+/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -B scripts/r073x_finite_fourier_harness.py --check-only</code></pre></section>
+        <section id="section-6"><div class="section-no">09 / canonical report</div><h2>文献归属与碰撞边界</h2><p>localized resolved-energy balance、smooth-filter stress、signed SGS transfer 与 Gaussian continuous-scale stress identities 已在 Germano、Eyink--Aluie 与 Johnson 的 primary literature 中建立。R0.73X 对这些 ingredients 不主张 novelty。</p><p>local pressure/harmonic decomposition 的直接来源包括 Wolf、Jia--Šverák、 Bradshaw--Tsai 与 Kwon；heat off-diagonal decay 的 operator background 包括 Coulhon--Sikora。它们支持 Gaussian heat rows 与 algebraic pressure rows 分开的 design，不直接给出本节需要的 coercive bridge。</p><p>CKN、Lin、Vasseur、Kwon 与 Koch--Tataru 的 regularity interfaces 使用 positive absolute smallness、dissipation、velocity/pressure norms 或 caloric tent quantities。它们不是 signed production payment 自动控制 tent norm 的 theorem。</p><p>bounded primary-source search 还记录了 2026 年 directly adjacent coarse-grained ledger preprints。它们进一步占据 general ledger/defect architecture，同时也没有证明式 (1.7) 的 implication。</p><p>因此允许的表述是“localized heat-coordinate synthesis”和 “positive-scale exterior size lemma”。未检出 identical bridge 不证明 novelty、priority、non-existence 或 first authorship。</p></section>
+        <section id="coercivity"><div class="section-no">10 / canonical report</div><h2>研究价值与未闭合 coercivity 桥</h2><p>R0.73X 的价值在于把一个含混的 local remainder 问题拆成可独立攻击的 三层：direct Gaussian velocity/pressure-source transport、algebraic harmonic pressure tail，以及 signed payment 到 positive size 的 coercivity bridge。</p><p>第一层与第二层现在有 exact definitions、scale audit、positive-scale size proof 与 independent readback。这样，后续若提出更强 theorem，就不能再把 pressure nonlocality 或 zero-scale endpoint 隐藏在“lower-order error”里。</p><p>同样重要的是，本节关闭了两个精确定义的错误方向：fixed probe class 的 amplitude-independent quadratic absorption，以及没有 exterior input 的 velocity-only functional tail estimate。</p><p>仍未闭合的不是另一个 algebraic identity，而是式 (1.7)：怎样从 signed information 得到能进入 CKN/Koch--Tataru interface 的 positive smallness， 同时保留 compact cutoff、harmonic pressure 与 suitable-weak defect。</p><p>因此这一节是 rigorous boundary result，而不是 regularity theorem，更不是 Clay problem 的完成比例。</p></section>
+        <section id="r0-73y"><div class="section-no">11 / canonical report</div><h2>下一步：R0.73Y 与发布边界</h2><p>R0.73Y 应直接攻击 signed-to-absolute bridge，而不是再扩充同类 identity。 优先顺序是：</p><ul class="report-list"><li>固定真正 compact cutoff，判断 full unsigned core 是否存在 non-circular absorption；</li><li>若 absorption 失败，构造满足更接近 NSE pressure compatibility 的 obstruction；</li><li>分离可由 local energy 缩小的 Gaussian row 与必须额外假设的 algebraic pressure row；</li><li>研究 weighted tent endpoint 是否需要 cancellation beyond the pointwise majorant；</li><li>任何 regularity claim 之前，先证明与已知 CKN/Lin/Vasseur/Kwon criterion 的严格 implication。</li></ul><p>R0.73X 的 formal figure 两提交生命周期已经完成。真实 package 包含 deterministic source data、PDF/PNG/SVG、process monitoring、resource log、 manifest 与 validation；public release 仍须等待两份 publication-facing source audit、final reader/release pins、local-direct translation snapshot 与 synchronized PDFs。任一后续环节缺失时 gate 必须失败，不得用 placeholder 伪造。</p><p>最终 release boundary 是：</p><pre class="report-ledger"><code>localizedHeatCharacteristicLedger=PROVED_WITH_STATED_SOLUTION_CLASS
+centeredIncrementCutoffSplit=EXACT_AND_FINITE_CHECKED
+gaussianVelocityTailLemma=INDEPENDENT_AUDIT_PASS
+pressureExteriorTailSizeLemma=PASS_AT_POSITIVE_SCALE
+positiveScaleAbsoluteSize=PROVED
+fixedHarmonicProbeQuadraticAbsorption=REFUTED_EXACTLY
+compactCutoffQuadraticAbsorption=OPEN
+translatedPacketCounterexample=FUNCTIONAL_ONLY_NOT_NSE
+associatedPressureCounterexample=NOT_CLAIMED
+signedToAbsoluteCoercivity=OPEN
+exteriorFunctionalLocallyControlled=OPEN
+weightedTentCarlesonControl=OPEN
+suitableWeakZeroScaleEndpoint=OPEN
+epsilonRegularity=OPEN
+formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED
+formalFigurePackage=SEALED_COMMIT_BOUND
+publicReleaseTransaction=READY_FOR_FINAL_CONTENT_AND_RELEASE_PINS
+ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
+dgxUsed=false
+navierStokesSimulation=NOT_RUN
+directNumericalSimulation=NOT_RUN
+arbitraryThreeDimensionalGlobalRegularity=OPEN
+clayConclusion=OPEN
+noveltyOrPriorityClaim=FORBIDDEN
+NOT CLAY</code></pre></section>
+        <section id="figure"><div class="section-no">F / Journal figure</div><h2>Gaussian heat 尾、代数 pressure 尾与 open coercivity bridge</h2><p><img src="/assets/r073x/fig-r073x-exterior-tail-ledger.svg" alt="R0.73X exterior-tail ledger comparing Gaussian heat weights, algebraic harmonic-pressure weights, and the open signed-to-absolute bridge"></p><p><a href="/assets/r073x/fig-r073x-exterior-tail-ledger.pdf">下载矢量 PDF</a> · <a href="/assets/r073x/fig-r073x-exterior-tail-ledger.png">下载 600 dpi PNG</a> · <a href="/assets/r073x/fig-r073x-exterior-tail-ledger.svg">打开 SVG</a></p><p>附图只呈现冻结定义、解析 kernel weights、certificate rows 与明确的 OPEN bridge。它不是观测、拟合、DNS、Navier--Stokes 时间仿真、regularity theorem 或 blow-up 候选。</p></section>
+        <section id="release-boundary"><div class="section-no">B / Exact release boundary</div><h2>PROVED、FINITE 与 OPEN 分开列示</h2><p>PROVED：localizedHeatCharacteristicLedger=PROVED_WITH_STATED_SOLUTION_CLASS；gaussianVelocityTailLemma=INDEPENDENT_AUDIT_PASS；pressureExteriorTailSizeLemma=PASS_AT_POSITIVE_SCALE；positiveScaleAbsoluteSize=PROVED</p><p>FINITE：gaussianTailCertificate=INDEPENDENT_SECOND_PRODUCER_PASS；finiteHarmonicProbe=REFUTED_EXACTLY；formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED；formalFigurePackage=SEALED_COMMIT_BOUND；navierStokesSimulation=NOT_RUN；directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；dgxUsed=false</p><p>OPEN：compactCutoffQuadraticAbsorption=OPEN；signedToAbsoluteCoercivity=OPEN；weightedTentCarlesonControl=OPEN；suitableWeakZeroScaleEndpoint=OPEN；epsilonRegularity=OPEN；arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN</p><p>本节证明 finite, scale-compatible absolute size at positive heat scale，不证明 smallness、absorption、coercivity、weighted tent、s=0 endpoint 或 epsilon regularity；translated packet 是 p=mu=0 的静态 functional 见证，通常不是 NSE trajectory，不反驳 associated-pressure 或 NSE-only estimates。 NOT CLAY。</p></section>
+        <section id="reproduce"><div class="section-no">R / Reproduction</div><h2>证明、审计、证书和附图入口</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073x_claim_state_update.md">claim-state update</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073x_exterior_tail_freeze.md">exterior-tail proof</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073x_pressure_tail_independent_audit.md">pressure audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073x">formal certificate archive</a></p><p><a href="/research/r073x/r073x_figure_source_audit.md">figure source audit</a> · <a href="/research/r073x/r073x_figure_source_reaudit.md">figure source re-audit</a></p><p><a href="/assets/r073x/fig-r073x-exterior-tail-ledger.pdf">journal figure PDF</a> · <a href="/notes/r0-73x.pdf">synchronized note PDF</a> · <a href="/recap-r0-61-r0-73x.html">140-node cumulative recap</a> · <a href="/recap-r0-61-r0-73x.pdf">synchronized recap PDF</a></p></section>
+      </article>
+</main></body></html>

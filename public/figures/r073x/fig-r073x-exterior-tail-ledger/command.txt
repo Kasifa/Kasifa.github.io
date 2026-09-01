@@ -1,0 +1,9 @@
+R073X_FIGURE_PYTHON="${R073X_FIGURE_PYTHON:-/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3}"
+R073X_FIGURE_PYTHONPATH="${R073X_FIGURE_PYTHONPATH:-/Users/kasifa/.cache/codex-runtimes/r073s-figure-python}"
+PYTHONPATH="$R073X_FIGURE_PYTHONPATH" "$R073X_FIGURE_PYTHON" -B figures/r073x/fig-r073x-exterior-tail-ledger/plot.py --render-preseal
+PYTHONPATH="$R073X_FIGURE_PYTHONPATH" "$R073X_FIGURE_PYTHON" -B figures/r073x/fig-r073x-exterior-tail-ledger/validate.py --confirm-visual-qa
+PYTHONPATH="$R073X_FIGURE_PYTHONPATH" "$R073X_FIGURE_PYTHON" -B figures/r073x/fig-r073x-exterior-tail-ledger/validate.py --verify-only
+PYTHONPATH="$R073X_FIGURE_PYTHONPATH" "$R073X_FIGURE_PYTHON" -B figures/r073x/fig-r073x-exterior-tail-ledger/validate.py --figure-source-commit <full-40-hex-figure-source-commit> --confirm-visual-qa
+PYTHONPATH="$R073X_FIGURE_PYTHONPATH" "$R073X_FIGURE_PYTHON" -B figures/r073x/fig-r073x-exterior-tail-ledger/validate.py --verify-only
+"$R073X_FIGURE_PYTHON" -B research/validate_figure_package.py figures/r073x/fig-r073x-exterior-tail-ledger
+shasum -a 256 -c figures/r073x/fig-r073x-exterior-tail-ledger/SHA256SUMS

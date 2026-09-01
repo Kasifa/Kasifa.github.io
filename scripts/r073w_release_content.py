@@ -150,7 +150,7 @@ CLOSED_LEDGER = (
 FINITE_LEDGER = (
     "FINITE：formalFiniteCertificate=SEALED_COMMIT_BOUND；"
     "formalFiniteCertificateChecks=56+56；primaryWitnessFrequencyRank=3；"
-    "formalFigurePackage=PASS；navierStokesSimulation=NOT_RUN；"
+    "formalFigurePackage=SEALED_COMMIT_BOUND；navierStokesSimulation=NOT_RUN；"
     "directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；"
     "dgxUsed=false"
 )
@@ -754,7 +754,9 @@ def main() -> None:
         "energyClassFixedScaleEstimate": "INTERNAL_UNCONDITIONAL_AUDITED",
         "formalFiniteCertificate": "SEALED_COMMIT_BOUND",
         "primaryWitnessKey": "rankThreeExtension",
-        "formalFigurePackage": "PENDING" if figure_pending else "PASS",
+        "formalFigurePackage": (
+            "PENDING" if figure_pending else "SEALED_COMMIT_BOUND"
+        ),
         "localizedScaleCriticalControl": "OPEN",
         "arbitraryThreeDimensionalGlobalRegularity": "OPEN",
         "clayConclusion": "OPEN",

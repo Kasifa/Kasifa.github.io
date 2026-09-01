@@ -1,7 +1,8 @@
 # R0.73W claim--source ledger
 
-**Status:** parent derivation, independent analytic audit, and commit-bound
-two-path finite sealing complete; formal-figure sealing remains pending
+**Status:** parent derivation, independent analytic audit, commit-bound
+two-path finite sealing, and the immutable formal-figure source/package seal
+are complete; the public release transaction is ready
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -26,7 +27,7 @@ two-path finite sealing complete; formal-figure sealing remains pending
 | W13 | Local subgrid transfer can take both signs in turbulent data. | `VERIFIED_EMPIRICAL_CONTEXT` | Alexakis--Chibbaro 2020, *Physical Review Fluids* **5**, 094604; later primary filtering studies | Context only; the exact finite witness, not DNS evidence, proves the universal-sign counterexample used here. |
 | W14 | The bounded primary-source search did not locate the exact combined heat-characteristic display W6, the exact energy-class statement W8, or the critical weighted display W21 in the inspected sources. | `BOUNDED_NEGATIVE_FINDING` | [Primary-literature audit](r073w_primary_literature_audit.md) | Non-detection cannot establish novelty, priority, non-existence, or first authorship. |
 | W15 | Arbitrary-data three-dimensional global regularity and the Clay problem remain open. | `OPEN` | W7 uses signed cancellation; W8 loses \(s^{-1/4}\); no localized scale-critical closure has been proved | `NOT CLAY`. |
-| W16 | The formal figure is a deterministic rendering of exact identities and certificate formulas. | `FORMAL_FIGURE_PENDING` | Future package under `figures/r073w/` | It will not be described as DNS, fitting, or a Navier--Stokes time simulation. |
+| W16 | The formal figure is a deterministic rendering of exact identities and certificate formulas. | `FORMAL_FIGURE_SOURCE_SEALED` | `figures/r073w/fig-r073w-signed-production/`; 49/49 validator checks over 1,416 source-data rows; source commit `ac6293ac4d0c46c696d2ec8e29d3fb1350e341f1`; package commit `60b0e869bbaa3a0ace185bf450e067d79fcd79b3`; [independent audit](r073w_figure_source_audit.md); [re-audit](r073w_figure_source_reaudit.md) | The panels are exact identities, analytic upper-bound shapes, and finite Fourier formulas. They are not DNS, fitted data, a Navier--Stokes time solution, a singularity witness, or a PDE theorem. |
 | W17 | With \(K_{j,s}=\kappa_{iij,s}/2\), one has \(\Pi_s=\partial_jK_{j,s}+\mathscr S_s\), where \(\mathscr S_s=(4s)^{-1}\int y\cdot a_s|a_s|^2g_s\,dy\). | `INTERNAL_EXACT_AUDITED` | Direct differentiation of the centered third moment and integration by parts; [parent proof](r073w_signed_production_heat_characteristic.md), (6.1)--(6.4); [independent audit](r073w_independent_analytic_audit.md), Section 4 | Exact finite-scale increment split; related coarse-grained increment formulas are classical. |
 | W18 | Substitution of W17 into the R0.73V trace equation cancels \(K_s\) and leaves \(\partial_tk_s+\nabla\cdot(v_sk_s+Q_s-\nu\nabla k_s)=-\nu D_{ii,s}+\mathscr S_s\). | `INTERNAL_EXACT_AUDITED` | [Parent proof](r073w_signed_production_heat_characteristic.md), (6.5)--(6.6); [independent audit](r073w_independent_analytic_audit.md), Section 5 | Separates transport, a nonnegative quadratic covariance, and one signed remainder; no absorption follows. |
 | W19 | \(D_{ii,s}=2\int_0^sP_{s-r}|\nabla^2v_r|_F^2dr\ge0\). | `INTERNAL_EXACT_AUDITED` | Apply the two-field heat covariance identity to every \(\partial_k u_i\); [parent proof](r073w_signed_production_heat_characteristic.md), (6.7); [independent audit](r073w_independent_analytic_audit.md), Section 5 | Carré-du-champ representation for the trace only; \(\partial_s\tau_s\) itself need not be pointwise positive semidefinite. |
@@ -55,8 +56,12 @@ criticalHalfScaleAverage=INTERNAL_CRITICAL_AUDITED
 universalProductionSign=FALSE
 amplitudeIndependentQuadraticAbsorption=FALSE
 formalFiniteCertificate=SEALED_COMMIT_BOUND
-formalFigurePackage=PENDING
-publicReleaseTransaction=PENDING
+formalFigurePackage=SEALED_COMMIT_BOUND
+formalFigureChecks=49
+formalFigureRows=1416
+figureSourceCommit=ac6293ac4d0c46c696d2ec8e29d3fb1350e341f1
+figurePackageCommit=60b0e869bbaa3a0ace185bf450e067d79fcd79b3
+publicReleaseTransaction=READY
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=false
 fixedScaleUniformEnergyClassControl=OPEN

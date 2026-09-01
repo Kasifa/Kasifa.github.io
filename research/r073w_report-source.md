@@ -1,8 +1,9 @@
 # R0.73W | Signed subfilter production: heat-plane characteristics, the energy-class boundary, and exact counterexamples
 
 **Status:** analytic proof, independent sign/index audit, bounded
-primary-literature audit, and commit-bound two-path finite certificate
-complete; the figure seal and public deployment remain separate gates
+primary-literature audit, commit-bound two-path finite certificate, and
+immutable formal-figure source/package seal complete; the public release
+transaction is ready
 
 **Public title (zh):** R0.73W｜带符号亚滤波 production：heat-plane 特征线、能量类边界与精确反例
 
@@ -477,7 +478,12 @@ rankThreeUniversalSignCounterexample=SEALED_COMMIT_BOUND
 universalProductionSign=FALSE
 amplitudeIndependentQuadraticAbsorption=FALSE
 formalFiniteCertificate=SEALED_COMMIT_BOUND
-formalFigurePackage=PENDING
+formalFigurePackage=SEALED_COMMIT_BOUND
+formalFigureChecks=49
+formalFigureRows=1416
+figureSourceCommit=ac6293ac4d0c46c696d2ec8e29d3fb1350e341f1
+figurePackageCommit=60b0e869bbaa3a0ace185bf450e067d79fcd79b3
+publicReleaseTransaction=READY
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=false
 fixedScaleUniformEnergyClassControl=OPEN

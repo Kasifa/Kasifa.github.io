@@ -1,7 +1,8 @@
 # R0.73W evidence and gap matrix
 
-**Status:** parent derivation, independent analytic audit, and commit-bound
-finite seal complete; the formal-figure seal remains open
+**Status:** parent derivation, independent analytic audit, commit-bound finite
+seal, and immutable formal-figure source/package seal complete; the public
+release transaction is ready
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -27,7 +28,7 @@ finite seal complete; the formal-figure seal remains open
 | Finite witness geometry | Public field has Fourier-support rank three; rank-two and 2D3C fields remain as diagnostic cross-checks | exact, two-path sealed | Rank three is not generic turbulence and cannot address blow-up | Say “universal-sign counterexample,” never “singularity witness” |
 | Leray--Hopf extension | Every factor in the absolute estimate is defined a.e.; positive heat scale regularizes space | high | Full endpoint equality at \(s=0\) is not automatic | Restrict exact weak characteristic use to \(s\ge\sigma>0\) unless separately justified |
 | Literature ownership | Johnson 2020/2021 own Gaussian stress diffusion/decomposition; standard coarse-graining owns local energy flux; Germano and increment literature own the central-moment lineage | high, primary sources, bounded audit complete | The exact combined, fixed-scale, and critical-weighted displays may be routine consequences even if not found verbatim | Record bounded negative findings only; forbid priority claims |
-| Formal figure | Planned deterministic panels for the characteristic, scale envelope, and exact sign witness | pending | No source/raw seal or visual QA yet | Do not count the section as complete until PDF/SVG/600 dpi PNG and validator pass |
+| Formal figure | Deterministic panels for the characteristic, analytic scale envelopes, and exact sign witness; 49/49 checks over 1,416 source-data rows | exact rendering, source/package sealed | Source commit `ac6293ac4d0c46c696d2ec8e29d3fb1350e341f1` and package commit `60b0e869bbaa3a0ace185bf450e067d79fcd79b3`; no figure-package blocker remains | Treat the plots as exact identities, upper-bound shapes, and finite formulas, never DNS, fitted data, a Navier--Stokes time solution, or a PDE theorem |
 | Clay relevance | The section isolates a signed scalar obstruction and an energy-level estimate | structurally useful | No zero-scale uniform control, localized coercivity, or continuation criterion | Rate as a rigorous structural step, not a solution or near-solution |
 
 ## Release boundary
@@ -39,6 +40,7 @@ scale.  The remaining mathematical loss is local and zero-scale: signed
 cancellation does not control concentration, while the unconditional absolute
 bound is not uniform as \(s\downarrow0\).
 
-The analytic audit, literature readback, local direct translation, and exact
-finite seal now pass.  The release may proceed only after the formal figure,
-HTML/PDF parity, and GitHub Pages gate also pass.
+The analytic audit, literature readback, local direct translation, exact
+finite seal, and formal-figure source/package seal now pass.  The release
+transaction is ready, but publication is not complete until HTML/PDF parity
+and the GitHub Pages gate also pass.

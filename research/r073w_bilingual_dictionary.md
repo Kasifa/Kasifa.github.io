@@ -1,8 +1,8 @@
 # R0.73W bilingual dictionary and claim boundary
 
-**Status:** analytic wording, bounded primary-literature audit, and
-commit-bound finite certificate complete; figure and release bindings remain
-open
+**Status:** analytic wording, bounded primary-literature audit, commit-bound
+finite certificate, and immutable formal-figure source/package seal complete;
+the public release transaction is ready
 
 **Release title:** R0.73W | Signed subfilter production: heat-plane
 characteristics, the energy-class boundary, and exact counterexamples
@@ -132,7 +132,12 @@ criticalHalfScaleAverage=INTERNAL_CRITICAL_AUDITED
 universalProductionSign=FALSE
 amplitudeIndependentQuadraticAbsorption=FALSE
 formalFiniteCertificate=SEALED_COMMIT_BOUND
-formalFigurePackage=PENDING
+formalFigurePackage=SEALED_COMMIT_BOUND
+formalFigureChecks=49
+formalFigureRows=1416
+figureSourceCommit=ac6293ac4d0c46c696d2ec8e29d3fb1350e341f1
+figurePackageCommit=60b0e869bbaa3a0ace185bf450e067d79fcd79b3
+publicReleaseTransaction=READY
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=false
 localizedScaleCriticalControl=OPEN

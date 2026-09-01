@@ -6,7 +6,7 @@ Can signed heat-scale production observables alone control a positive, amplitude
 
 ## Supported takeaway
 
-No. On the frozen exact-shear family, $\Pi_s$ and $\mathscr S_s$ vanish pointwise for all $s>0$, while $D_{ii,s}$ is strictly positive and the normalized positive size grows as $|A|^3$.
+No. On the frozen exact-shear family, $\Pi_s$ and $\mathscr S_s$ vanish pointwise for all $s>0$ and every real amplitude. For each nonzero amplitude, $D_{ii,s}$ is strictly positive and the normalized positive size grows as $|A|^3$; the zero-amplitude member is the trivial field with $D_{ii,s}=0$.
 
 ## Surface and form
 

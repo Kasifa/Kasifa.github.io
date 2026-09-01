@@ -602,7 +602,7 @@ test("publishes every research release from R0.70A onward", async () => {
 });
 
 test("derives homepage counts, latest release, route size, and recap endpoint", async () => {
-  const [releases, manifest, site, home, literature, noteIndex, noteFiles] = await Promise.all([
+  const [releases, manifest, site, home, literature, noteIndex, noteFiles, versionFile, archive] = await Promise.all([
     publishedReleaseIds(),
     releaseManifest(),
     readFile(new URL("site-version.json", publicRoot), "utf8").then(JSON.parse),
@@ -610,9 +610,12 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     readFile(new URL("literature-review.html", publicRoot), "utf8"),
     readFile(new URL("notes/index.html", publicRoot), "utf8"),
     readdir(notesRoot),
+    readFile(new URL("VERSION", root), "utf8").then((value) => value.trim()),
+    formalArchiveInventory(),
   ]);
 
   const htmlNotes = noteFiles.filter(isPublicNoteHtml);
+  const pdfNotes = noteFiles.filter((file) => /^r0-[0-9a-z]+\.pdf$/.test(file));
   const latestRelease = releases.at(-1);
   const latestSlug = releaseToSlug(latestRelease);
   const latestCode = releaseToPublicCode(latestRelease);
@@ -683,7 +686,11 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(versionMatch, "homepage version marker is missing");
   const version = versionMatch[1];
   assert.match(version, /^\d+\.\d+$/, "current publication version format");
+  assert.match(versionFile, /^\d+\.\d+$/, "VERSION format");
+  assert.equal(versionFile, manifest.siteVersion, "VERSION must equal manifest siteVersion");
   assert.equal(version, manifest.siteVersion, "manifest site version");
+  assert.equal(site.version, manifest.siteVersion, "site-version version");
+  assert.equal(site.latestRelease, latestCode, "site-version latestRelease");
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],
@@ -739,6 +746,9 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     manifest.publicHtmlNoteCount,
     "manifest public-note count",
   );
+  assert.equal(site.publicHtmlNoteCount, htmlNotes.length, "site-version public HTML count");
+  assert.equal(manifest.publicPdfNoteCount, pdfNotes.length, "manifest public PDF count");
+  assert.equal(site.publicPdfNoteCount, pdfNotes.length, "site-version public PDF count");
   assert.equal(
     publishedNodes,
     manifest.postR060PublishedNodeCount,
@@ -752,6 +762,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.equal(site.postR060PublishedNodeCount, manifest.postR060PublishedNodeCount);
   assert.equal(site.postR060RecapNodeCount, manifest.postR060RecapNodeCount);
   assert.equal(site.latestRecapRelease, recapCode);
+  assert.equal(site.version, versionFile);
   assert.ok(
     recapRelease.localeCompare(latestRelease) <= 0,
     "recap endpoint cannot run ahead of the published endpoint",
@@ -794,6 +805,19 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(
     home.includes("<strong>" + latestCode + "</strong>最新研究节点"),
   );
+  assert.ok(home.includes("LATEST RELEASE · " + latestCode + " ·"));
+  assert.ok(home.includes(htmlNotes.length + " 篇研究笔记总索引"));
+  assert.ok(
+    home.includes(
+      "R0.70A–" + latestCode + " · " + archive.publishedReleaseCount + " 节已公开",
+    ),
+    "latest spotlight published count",
+  );
+  assert.ok(
+    home.includes(archive.formalSealedReleaseCount + " 节完整封存"),
+    "latest spotlight formal-sealed count",
+  );
+  assert.ok(home.includes("当前端点 " + latestCode));
   assert.ok(home.includes("展开 " + currentRouteNotes + " 篇公开笔记"));
   assert.ok(
     home.includes(

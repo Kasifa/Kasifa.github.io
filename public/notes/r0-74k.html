@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.77">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74K｜自由热指数为何只卡在最近内领圈</title>
+<meta name="description" content="最近内领圈的自由热指数障碍、常剪切参考尺度与仍开放的真实包桥估计">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74k.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.77"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74K · 2026-09-02</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74K · 完整中文版本</div><h1>R0.74K｜自由热指数为何只卡在最近内领圈</h1>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。我审计了 R0.74J 留下的两个匹配上界方向。精确指数核算表明：如果把真实被动包替换为自由热包，所有更深内壳都有严格指数余量，只有最近的 \(j-1\) 壳在一个正体积薄片上仍以 \(536399/8583708672\) 的系数向错误方向增长。因此，所选的归一化周期桥路线必须保留内向 Brownian bridge 与正剪切滞后之间的相关性。本文还给出一个精确充分条件：若对应的有符号包领圈积分不超过 \(\Gamma_jL_jR_j^5\)，则该精确解族的领圈通量恰好饱和 \(P_j^{2/3}\sqrt{1+\log P_j}\) 尺度。这个随机路径估计尚未证明；匹配上界仍为 OPEN。<strong>NOT CLAY.</strong></p>
+<div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div>
+<div class="stamp"><strong>状态 · R0.74K</strong><p>单一坏领圈：PROVED</p><p>自由热替换：ROUTE OBSTRUCTION</p><p>匹配支付律：INHERITED</p><p>证书 41/41：FINITE</p><p>图件 41/41：FINITE</p><p>真实包桥估计：OPEN</p><p>匹配上界：OPEN</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article>
+<section id="s-01"><div class="section-no">01 / 更深内壳</div><h2>除最近一层外，自由热指数都有严格余量</h2>
+<p>固定 \(\lambda=63/32\)、\(c_h=15/16\)、\(c_\gamma=8/3969\)，并记 \(d_m=c_h-2^{1-m}/\lambda\)、\(G_m=c_\gamma(1-4^{-m})\)。对每个物理内壳 \(2\le m\le j-1\)，</p>
+<div class="equation">\[\boxed{\frac{d_m^2}{132}-G_m\ge\frac{204385}{134120448}>0.}\]</div>
+<p>因此，更深内壳只需要把已有桥账本做得更精确，不需要新的指数机制。</p></section>
+<section id="s-02"><div class="section-no">02 / 最近内领圈</div><h2>正体积薄片保留错误方向的增长</h2>
+<p>在最近的 \(j-1\) 壳，取 \(4033r_j/8064\le x_3\le(4033/8064+1/256)r_j\)、\(|x_1|,|x_2|&lt;r_j/64\)。冻结薄片的归一化体积为 \(1/262144\)，且</p>
+<div class="equation">\[\boxed{G_1-\frac{d_{1,\varepsilon}^2}{132}=\frac{536399}{8583708672}>0.}\]</div>
+<p><strong>PROVED：</strong>自由热包替换无法关闭这条指定路线。它不是对目标可观测量上界的反例；真实包仍含差分剪切位移与内向桥的相关性。</p></section>
+<section id="s-03"><div class="section-no">03 / 参考尺度</div><h2>常剪切参考包固定了正确的领圈量级</h2>
+<div class="equation">\[\sup_{x_3}\int M_j(x_2,x_3)\,dx_2\le CL_jR_j,\qquad
+\Gamma_j\int_{I_{2R_j}\cap(-\infty,\tau]} |F_{\rm fr}|^2|\partial_2\psi_j^{R_j}|\le C\Gamma_jL_jR_j^5.\]</div>
+<p>该绝对值估计给出参考尺度，但没有处理真实包的时间重数。</p></section>
+<section id="s-04"><div class="section-no">04 / 条件充分律</div><h2>剩余问题被压缩成一个有符号包领圈估计</h2>
+<div class="equation">\[\boxed{\sup_{\tau\in I_{R_j}}[\mathcal I_j(\tau)]_+\le C\Gamma_jL_jR_j^5.}\]</div>
+<p>若这个仍为 <strong>OPEN</strong> 的真实包假设成立，则</p>
+<div class="equation">\[\boxed{\mathfrak C_j\lesssim B_j^2L_jR_j^2.}\]</div>
+<p>再与继承下界及 R0.74J 合并，才可得到这一解族上的 \(\mathfrak C_j\asymp P_j^{2/3}\sqrt{1+\log_+P_j}\)。本节没有证明假设，也没有证明匹配上界。</p></section>
+<section id="s-05"><div class="section-no">05 / 证据边界</div><h2>解析、继承、有限复算和文献筛查分开</h2>
+<p><strong>PROVED：</strong>更深内壳的统一指数余量、最近内领圈的正体积障碍、常剪切参考尺度，以及“真实包假设推出匹配领圈上界”的条件命题。</p>
+<p><strong>INHERITED：</strong>R0.74F--H 的精确光滑周期无外力解族、R0.74J 的 \(P_j\asymp B_j^3R_j^3\)，以及 \(\mathfrak C_j\) 的解族下界。</p>
+<p><strong>FINITE：</strong>Python 与独立 Ruby 证书各 41/41；图件验证 41/41，25 文件封存通过。它们只核对精确有理算术和条件指数账本，不证明 Brownian bridge 或 PDE 估计。</p>
+<p><strong>LITERATURE BOUNDARY：</strong>限定主源筛查覆盖 Bedrossian--Coti Zelati、Albritton--Beekie--Novack、Villringer、Gardner--Liss--Mattingly 与 Liss--Luan。没有一篇被筛论文提供这里所需的尺度依赖、有限时间、有符号领圈估计；有限非命中不证明新颖性或优先权。</p></section>
+<section id="s-06"><div class="section-no">06 / 开放边界</div><h2>剩下的是相关路径估计，不是另一个自由热尾界</h2>
+<ul><li>归一化桥与 BV 的时间耦合估计仍为 OPEN；</li><li>最近内壳的正剪切排出与充分假设本身仍为 OPEN；</li><li>\(\mathfrak C_j\) 和更强的 \(X_j\) 匹配上界仍为 OPEN；</li><li>普适平方根对数端点、奇点处好尺度与全局正则性仍为 OPEN。</li></ul>
+<p><strong>NOT CLAY：</strong>这里只排除一种自由热比较方法并冻结下一条充分条件，不构成千禧年问题结论。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>单一坏内领圈与真实包桥边界</h2>
+<picture><source srcset="/assets/r074k/fig-r074k-single-inward-collar.svg" type="image/svg+xml"><img src="/assets/r074k/fig-r074k-single-inward-collar.png" alt="R0.74K single adverse inward collar and true-packet bridge boundary"></picture>
+<p><a href="/assets/r074k/fig-r074k-single-inward-collar.pdf">下载矢量 PDF</a> · <a href="/assets/r074k/fig-r074k-single-inward-collar.png">下载 600 dpi PNG</a> · <a href="/assets/r074k/fig-r074k-single-inward-collar.svg">打开 SVG</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/source-data.csv">精确 source-data.csv</a></p>
+<p><a href="/figures/r074k/fig-r074k-single-inward-collar/caption.md">图注</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/qa-report.md">图件 QA</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/plot.py">绘图源码</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/validate.py">验证器</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/manifest.json">图件 manifest</a> · <a href="/figures/r074k/fig-r074k-single-inward-collar/validation.json">41 项验证记录</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/public/figures/r074k/fig-r074k-single-inward-collar">完整 25 文件图包</a></p>
+<p class="figure-note">SVG 是网页主图；PNG 是回退与 600 dpi 归档，PDF 是矢量下载。图是数学依赖图，不是 DNS、仿真、实验数据或奇点证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>主文、双重解析审计、证书与文献边界</h2><p class="files">
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_single_collar_shear_lag_reduction.md">规范主文</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_inward_tail_independent_audit.md">内向尾独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_collar_reduction_independent_audit.md">领圈约化独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_figure_independent_audit.md">图件独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_final_source_rebind_audit.md">最终源文件重绑定审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_report-source.md">完整报告源</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_single_collar_exponent_certificate_report.md">证书报告</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_single_collar_exponent_certificate.json">冻结 JSON</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074k_single_collar_exponent_certificate.py">Python 实现</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074k_single_collar_exponent_certificate_independent.rb">独立 Ruby 实现</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_certificate_independent_audit.md">证书独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_primary_literature_boundary.md">主源文献边界</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_primary_literature_independent_audit.md">文献独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_gap_matrix.md">证据与缺口矩阵</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_bilingual_dictionary.md">双语边界词典</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074k_freeze_manifest.json">冻结清单</a></p>
+<p><a href="/notes/r0-74k.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74L</h2><p>直接证明或否定真实包的归一化桥—BV 领圈估计；若失败，就把最近内领圈的正剪切排出缺口写成精确反例边界。</p></section>
+</article></main></body></html>

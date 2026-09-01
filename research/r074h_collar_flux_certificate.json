@@ -1,0 +1,250 @@
+{
+  "algebraic_implications": [
+    "For P,C>=0, P^(2/3) <= (P+C^(3/2))^(2/3).",
+    "For P,C>=0, C <= (P+C^(3/2))^(2/3).",
+    "Adding the preceding two inequalities gives the factor 2 in R0.74H (5.5).",
+    "For 0<=P<=1, P <= P^(2/3); this is the only extra step in Corollary 6.3."
+  ],
+  "analytic_boundary": [
+    "does not prove the finite-shell weighted energy identities or their signs",
+    "does not prove C2 convergence, unfolding, or absolute convergence of the shell sum",
+    "does not prove Holder, Calderon-Zygmund, harmonic-pressure, or residual-transport estimates",
+    "does not prove the Version-F acceleration moment bound",
+    "does not prove the R0.74F-G packet lobe or the positive collar-flux lower bound",
+    "does not prove a payment lower bound; R0.74H derives one analytically from Theorem 6.2",
+    "does not prove either two-regime theorem, epsilon regularity, continuation, or global regularity",
+    "does not prove a Navier-Stokes singularity or solve the Clay problem"
+  ],
+  "checks": [
+    {
+      "id": "parabolic_measure_power",
+      "left": "5/1",
+      "margin": "0/1",
+      "note": "time R^2 times shell volume R^3 gives R^5",
+      "pass": true,
+      "relation": "==",
+      "right": "5/1"
+    },
+    {
+      "id": "holder_volume_one_third",
+      "left": "5/3",
+      "margin": "0/1",
+      "note": "weighted Holder contributes the one-third power of R^5",
+      "pass": true,
+      "relation": "==",
+      "right": "5/3"
+    },
+    {
+      "id": "quadratic_cutoff_prefactor",
+      "left": "-3/1",
+      "margin": "0/1",
+      "note": "outer R^{-1} normalization and cutoff derivative R^{-2}",
+      "pass": true,
+      "relation": "==",
+      "right": "-3/1"
+    },
+    {
+      "id": "normalized_S2_power",
+      "left": "-4/3",
+      "margin": "0/1",
+      "note": "R^{-3} times the Holder volume factor R^{5/3}",
+      "pass": true,
+      "relation": "==",
+      "right": "-4/3"
+    },
+    {
+      "id": "normalized_S3_two_thirds_power",
+      "left": "-4/3",
+      "margin": "0/1",
+      "note": "(R^{-2} S3)^{2/3} has the same R exponent",
+      "pass": true,
+      "relation": "==",
+      "right": "-4/3"
+    },
+    {
+      "id": "quadratic_row_exponent_match",
+      "left": "-4/3",
+      "margin": "0/1",
+      "note": "finite dimensional consistency of equation (4.4)",
+      "pass": true,
+      "relation": "==",
+      "right": "-4/3"
+    },
+    {
+      "id": "energy_payment_outer_power",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "E^{3/2} inside P becomes E after the outer 2/3 power",
+      "pass": true,
+      "relation": "==",
+      "right": "1/1"
+    },
+    {
+      "id": "acceleration_payment_outer_power",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "J_acc^{3/2} inside P becomes linear J_acc",
+      "pass": true,
+      "relation": "==",
+      "right": "1/1"
+    },
+    {
+      "id": "collar_payment_outer_power",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "C_R^{3/2} inside the repaired payment becomes linear C_R",
+      "pass": true,
+      "relation": "==",
+      "right": "1/1"
+    },
+    {
+      "id": "small_payment_absorption_exponents",
+      "left": "2/3",
+      "margin": "1/3",
+      "note": "for 0<=P<=1, P^1 is at most P^{2/3}",
+      "pass": true,
+      "relation": "<",
+      "right": "1/1"
+    },
+    {
+      "id": "large_payment_two_regime_exponents",
+      "left": "2/3",
+      "margin": "1/3",
+      "note": "for P>=1, the linear row dominates P^{2/3}",
+      "pass": true,
+      "relation": "<",
+      "right": "1/1"
+    },
+    {
+      "id": "amplitude_gamma_cancellation",
+      "left": "0/1",
+      "margin": "0/1",
+      "note": "a^2 gamma equals B^2 under a=B gamma^{-1/2}",
+      "pass": true,
+      "relation": "==",
+      "right": "0/1"
+    },
+    {
+      "id": "old_payment_23_B_power",
+      "left": "2/1",
+      "margin": "0/1",
+      "note": "(B^3 R^3)^{2/3} has B^2",
+      "pass": true,
+      "relation": "==",
+      "right": "2/1"
+    },
+    {
+      "id": "old_payment_23_R_power",
+      "left": "2/1",
+      "margin": "0/1",
+      "note": "(B^3 R^3)^{2/3} has R^2",
+      "pass": true,
+      "relation": "==",
+      "right": "2/1"
+    },
+    {
+      "id": "old_payment_23_L_power",
+      "left": "0/1",
+      "margin": "0/1",
+      "note": "the old payment contributes no L factor",
+      "pass": true,
+      "relation": "==",
+      "right": "0/1"
+    },
+    {
+      "id": "target_over_old_23_L_power",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "the rejected ratio has the missing factor L",
+      "pass": true,
+      "relation": "==",
+      "right": "1/1"
+    },
+    {
+      "id": "cubic_flux_B_power",
+      "left": "3/1",
+      "margin": "0/1",
+      "note": "(B^2 L R^2)^{3/2} has B^3",
+      "pass": true,
+      "relation": "==",
+      "right": "3/1"
+    },
+    {
+      "id": "cubic_flux_L_power",
+      "left": "3/2",
+      "margin": "0/1",
+      "note": "the repaired denominator gains L^{3/2}",
+      "pass": true,
+      "relation": "==",
+      "right": "3/2"
+    },
+    {
+      "id": "cubic_flux_R_power",
+      "left": "3/1",
+      "margin": "0/1",
+      "note": "(B^2 L R^2)^{3/2} has R^3",
+      "pass": true,
+      "relation": "==",
+      "right": "3/1"
+    },
+    {
+      "id": "cubic_flux_beats_old_L_power",
+      "left": "3/2",
+      "margin": "3/2",
+      "note": "the cubicized collar flux supplies the missing large-payment scale",
+      "pass": true,
+      "relation": ">",
+      "right": "0/1"
+    },
+    {
+      "id": "old_payment_under_B_Rminus2",
+      "left": "-3/1",
+      "margin": "0/1",
+      "note": "B^3 R^3 scales as R^{-3} when B scales as R^{-2}",
+      "pass": true,
+      "relation": "==",
+      "right": "-3/1"
+    },
+    {
+      "id": "target_under_B_Rminus2",
+      "left": "-2/1",
+      "margin": "0/1",
+      "note": "B^2 L R^2 scales as L R^{-2}",
+      "pass": true,
+      "relation": "==",
+      "right": "-2/1"
+    },
+    {
+      "id": "reference_payment_scale_diverges",
+      "left": "-3/1",
+      "margin": "3/1",
+      "note": "the reference scale B^3 R^3 diverges; this is not a lower bound for P",
+      "pass": true,
+      "relation": "<",
+      "right": "0/1"
+    },
+    {
+      "id": "finite_tail_ratio_exponent_at_j4",
+      "left": "6/1",
+      "margin": "0/1",
+      "note": "the weighted shell-volume ratio has exponential decrement e^{-6} from j=4",
+      "pass": true,
+      "relation": "==",
+      "right": "6/1"
+    },
+    {
+      "id": "flux_repair_sum_constant",
+      "left": "2/1",
+      "margin": "0/1",
+      "note": "each summand P^{2/3} and C is separately bounded by the repaired power",
+      "pass": true,
+      "relation": "==",
+      "right": "2/1"
+    }
+  ],
+  "result": "PASS",
+  "summary": {
+    "passed": 25,
+    "total": 25
+  }
+}

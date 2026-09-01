@@ -222,9 +222,9 @@ test("ships the complete Chinese research review as static HTML", async () => {
 });
 
 test("maps the complete published route as a branching tree", async () => {
-  const [home, researchFiles] = await Promise.all([
+  const [home, publicNoteFiles] = await Promise.all([
     readFile(siteUrl, "utf8"),
-    readdir(new URL("../research/", import.meta.url)),
+    readdir(new URL("../public/notes/", import.meta.url)),
   ]);
   const start = home.indexOf('<section class="route-overview"');
   const end = home.indexOf('<div class="page-shell">', start);
@@ -237,13 +237,12 @@ test("maps the complete published route as a branching tree", async () => {
     { length: 66 },
     (_, index) => `/notes/r0-${index + 1}.html`,
   );
-  const completedTail = [
-    "r070a",
-    ...researchFiles
-      .map((file) => file.match(/^(r0\d{2}[a-z])_report-source\.md$/)?.[1])
-      .filter(Boolean)
-      .filter((release) => release.localeCompare("r070b") >= 0),
-  ].sort();
+  const completedTail = publicNoteFiles
+    .map((file) => file.match(/^r0-(\d{2}[a-z])\.html$/)?.[1])
+    .filter(Boolean)
+    .map((release) => `r0${release}`)
+    .filter((release) => release.localeCompare("r070a") >= 0)
+    .sort();
   const later = [
     "/notes/r0-67.html",
     "/notes/r0-67b.html",

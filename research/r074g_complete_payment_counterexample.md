@@ -26,7 +26,8 @@ criterion, or a solution of the Millennium problem.  **NOT CLAY.**
 
 Current status:
 
-    DERIVED / SAME-SOURCE AUDITS AND CERTIFICATE PENDING / NOT FROZEN
+    PROVED / THREE INDEPENDENT ANALYTIC AUDITS PASS /
+    FINITE CERTIFICATE PASS 31/31 / FIGURE VALIDATOR PASS 70/70 / FROZEN
 
 The inherited R0.74F source is frozen at commit
 
@@ -1075,20 +1076,46 @@ frame estimate fails, and it does not identify a sufficient replacement.
 
 ---
 
-## 9. Verification boundary before freeze
+## 9. Freeze verification record
 
-Before promotion from this draft to a frozen theorem, the following are
-required:
+The analytic source was audited independently in three disjoint passes:
 
-1. a same-source independent audit of Sections 2--3;
-2. a separate same-source audit of the normalized bridge, path geometry,
-   Peetre convolution, and Sections 5--7;
-3. an exact-arithmetic certificate for every rational exponent and finite
-   geometry gate used above;
-4. a journal figure package showing the target, background floor, packet
-   \(G_u\), and packet \(H_u\) exponents from exact source data;
-5. a freeze manifest binding all source, audit, certificate, and figure
-   hashes.
+1. buffered energy and gauge-fixed pressure;
+2. normalized periodic bridge, one-sided path geometry, and Peetre
+   occupation; and
+3. the complete \(\mathcal G_u\), \(\mathcal G_p\), and \(\mathcal H_u\)
+   ledger, amplitude choice, quantifiers, and final contradiction.
 
-No finite certificate can prove the heat-kernel, Riesz-transform, bridge,
-or asymptotic arguments.  Those remain analytic proof obligations.
+All three audits returned **PASS**.  The energy--pressure audit covers
+Sections 2--3 and records both its candidate and post-fix source hashes.
+The occupation and complete-ledger audits bind the pre-promotion
+main-source SHA-256
+
+    7282ccbe693c7277e111117d5105032d8fed6e55756ad26f2b6b2cd597ddd756.
+
+The administrative status promotion above and this verification record do
+not alter the mathematical derivation.  Sections 1--8 remain byte-identical
+with shared SHA-256
+
+    ba1d75c6728aaa95d1360f2ff3d9d0c4923aa14c011c2876f41dd7783c3963f9.
+
+The exact-arithmetic certificate returns **PASS: 31/31**.  Its Python
+standard output is byte-identical to the frozen JSON.  A separate
+implementation using exact rational arithmetic independently recomputed all
+31 rows and matched every displayed field.
+
+The 24-file journal figure package returns **PASS: 70/70**.  The generator
+is bound to the certificate producer and JSON by SHA-256 and also checks the
+byte-identical certificate output.  SVG, PDF, 600 dpi PNG, grayscale,
+final-size, and PDF-rendered surfaces passed visual inspection.  A second
+generation-and-validation run reproduced the package hashes exactly.
+
+The companion freeze manifest binds the final main note, all three analytic
+audits, the certificate and its independent audit, the evidence matrix, and
+the complete figure package.
+
+No finite certificate or figure proves the heat-kernel, Riesz-transform,
+bridge, Peetre, or asymptotic arguments.  Those obligations are discharged
+only by the analytic proof and its independent audits.  The frozen theorem
+rejects the two R0.74E inequalities; it does not establish a Navier--Stokes
+regularity result.  **NOT CLAY.**

@@ -235,3 +235,20 @@ lemma, the complete cubic/harmonic rows, the inherited R0.74F target, or any
 Navier--Stokes regularity claim.  It is an analytic audit, not a numerical
 certificate.  **NOT CLAY.**
 
+---
+
+## 7. Final-source rebind
+
+An independent read-only recheck of Sections 2--3 returned **PASS** against
+the final main note with full-note SHA-256
+
+    95548d6225389b9cfd1822a8abaf89e495e7f15ca5ff30c6b92aaa8ac5f2d6be.
+
+The recheck covered the transverse-energy subsolution, Gaussian exclusion
+and cutoff scales, shear energy, Newton-ball/Riesz signs, all-annulus pressure
+normalization, and the time/radius inclusion used to control the gauge row.
+The extracted Sections 1--8 remain byte-identical with SHA-256
+
+    ba1d75c6728aaa95d1360f2ff3d9d0c4923aa14c011c2876f41dd7783c3963f9.
+
+No estimate, exponent, normalization, theorem, or claim boundary was changed.

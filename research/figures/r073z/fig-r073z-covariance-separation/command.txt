@@ -1,0 +1,17 @@
+SOURCE_DATE_EPOCH=1788250565 \
+PYTHONHASHSEED=0 \
+python producer.py --render
+
+python validate.py --write-baseline .determinism-baseline.json
+
+SOURCE_DATE_EPOCH=1788250565 \
+PYTHONHASHSEED=0 \
+python producer.py --render
+
+python validate.py \
+  --determinism-baseline .determinism-baseline.json \
+  --consume-baseline \
+  --write-metadata \
+  --confirm-visual-qa
+
+python validate.py --verify-only --confirm-visual-qa

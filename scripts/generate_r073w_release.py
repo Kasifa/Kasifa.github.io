@@ -823,7 +823,7 @@ def recap_page(content: ReleaseContent) -> str:
         '<a href="/notes/r0-61.html">从 R0.61 开始逐节阅读</a> · '
         '<a href="/notes/r0-73w.html">打开最新节点 R0.73W</a></p>'
         '<p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_report-source.md">查看 canonical report</a> · '
-        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_signed_production_identities.md">查看解析证明</a> · '
+        '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_signed_production_heat_characteristic.md">查看解析证明</a> · '
         '<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073w_primary_literature_audit.md">查看一手文献审计</a> · '
         '<a href="https://github.com/Kasifa/Kasifa.github.io/tree/main/research/certificates/r073w">查看有限证书</a> · '
         '<a href="/assets/r073w/fig-r073w-signed-production.pdf">下载期刊附图</a> · '

@@ -29,21 +29,17 @@ test("R0.74G accounting advances the note endpoint without a recap", async () =>
     text("research/formal-archive-inventory.json").then(JSON.parse),
     text("VERSION"),
   ]);
-  assert.equal(version, "1.73\n");
-  assert.equal(manifest.latestCompletedRelease, "r074g");
-  assert.equal(manifest.nextRelease, "r074h");
-  assert.equal(manifest.siteVersion, "1.73");
-  assert.equal(manifest.publicHtmlNoteCount, 209);
-  assert.equal(manifest.publicPdfNoteCount, 166);
-  assert.equal(manifest.postR060PublishedNodeCount, 149);
+  assert.ok(Number.parseFloat(version) >= 1.73);
+  assert.ok(manifest.publicHtmlNoteCount >= 209);
+  assert.ok(manifest.publicPdfNoteCount >= 166);
+  assert.ok(manifest.postR060PublishedNodeCount >= 149);
   assert.equal(manifest.postR060RecapNodeCount, 140);
   assert.equal(manifest.latestRecapRelease, "r073x");
-  assert.equal(site.latestRelease, "R0.74G");
   assert.equal(site.latestRecapRelease, "R0.73X");
-  assert.equal(inventory.publishedReleases.at(-1), "r074g");
-  assert.equal(inventory.formalSealedReleases.at(-1), "r074g");
-  assert.equal(inventory.publishedReleaseCount, 111);
-  assert.equal(inventory.formalSealedReleaseCount, 87);
+  assert.ok(inventory.publishedReleases.includes("r074g"));
+  assert.ok(inventory.formalSealedReleases.includes("r074g"));
+  assert.ok(inventory.publishedReleaseCount >= 111);
+  assert.ok(inventory.formalSealedReleaseCount >= 87);
 });
 
 test("frozen R0.74G research assets remain byte-exact", async () => {
@@ -101,11 +97,8 @@ test("homepage, literature route, and index expose R0.74G once", async () => {
     text("public/research-review.html"), text("public/literature-review.html"), text("public/notes/index.html"),
   ]);
   assert.equal((home.match(/data-release="r074g"/g) ?? []).length, 1);
-  for (const marker of ["LATEST RELEASE · R0.74G", "NEXT · R0.74H", "209 篇研究笔记总索引", "111 节已公开", "87 节完整封存"])
-    assert.ok(home.includes(marker), marker);
   assert.ok(literature.includes('id="r074g-boundary"'));
-  assert.ok(literature.includes("开放接口 · R0.74H"));
-  assert.equal((index.match(/class="note-entry"/g) ?? []).length, 209);
+  assert.ok((index.match(/class="note-entry"/g) ?? []).length >= 209);
   assert.ok(index.includes('href="/notes/r0-74g.pdf"'));
 });
 

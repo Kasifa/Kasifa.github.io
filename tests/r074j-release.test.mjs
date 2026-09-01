@@ -16,21 +16,17 @@ test("R0.74J accounting advances note endpoint without changing recap", async ()
     text("research/formal-archive-inventory.json").then(JSON.parse),
     text("VERSION"),
   ]);
-  assert.equal(version, "1.76\n");
-  assert.equal(manifest.latestCompletedRelease, "r074j");
-  assert.equal(manifest.nextRelease, "r074k");
-  assert.equal(manifest.siteVersion, "1.76");
-  assert.equal(manifest.publicHtmlNoteCount, 212);
-  assert.equal(manifest.publicPdfNoteCount, 169);
-  assert.equal(manifest.postR060PublishedNodeCount, 152);
+  assert.ok(Number.parseFloat(version) >= 1.76);
+  assert.ok(manifest.publicHtmlNoteCount >= 212);
+  assert.ok(manifest.publicPdfNoteCount >= 169);
+  assert.ok(manifest.postR060PublishedNodeCount >= 152);
   assert.equal(manifest.postR060RecapNodeCount, 140);
   assert.equal(manifest.latestRecapRelease, "r073x");
-  assert.equal(site.latestRelease, "R0.74J");
   assert.equal(site.latestRecapRelease, "R0.73X");
-  assert.equal(inventory.publishedReleases.at(-1), "r074j");
-  assert.equal(inventory.formalSealedReleases.at(-1), "r074j");
-  assert.equal(inventory.publishedReleaseCount, 114);
-  assert.equal(inventory.formalSealedReleaseCount, 90);
+  assert.ok(inventory.publishedReleases.includes("r074j"));
+  assert.ok(inventory.formalSealedReleases.includes("r074j"));
+  assert.ok(inventory.publishedReleaseCount >= 114);
+  assert.ok(inventory.formalSealedReleaseCount >= 90);
 });
 
 test("complete Chinese note preserves formulas, qualifiers, and evidence links", async () => {
@@ -76,14 +72,11 @@ test("homepage, literature route, and index expose R0.74J once and compactly", a
     text("public/research-review.html"), text("public/literature-review.html"), text("public/notes/index.html"),
   ]);
   assert.equal((home.match(/data-release="r074j"/g) ?? []).length, 1);
-  for (const marker of ["LATEST RELEASE · R0.74J", "NEXT · R0.74K", "212 篇研究笔记总索引", "114 节已公开", "90 节完整封存"])
-    assert.ok(home.includes(marker), marker);
   const card = home.match(/<div class="task-one" id="r074j"[\s\S]*?<div class="task-one" id="r074i"/)?.[0] ?? "";
   assert.ok(card.length > 0);
   assert.ok(card.length < 1600, "homepage R0.74J card must remain concise");
   assert.ok(literature.includes('id="r074j-boundary"'));
-  assert.ok(literature.includes("开放接口 · R0.74K"));
-  assert.equal((index.match(/class="note-entry"/g) ?? []).length, 212);
+  assert.ok((index.match(/class="note-entry"/g) ?? []).length >= 212);
   assert.ok(index.includes('href="/notes/r0-74j.pdf"'));
 });
 

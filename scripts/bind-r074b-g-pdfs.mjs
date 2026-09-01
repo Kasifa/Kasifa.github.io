@@ -12,7 +12,7 @@ import { extname, resolve } from "node:path";
 import { inspectPdf } from "./render-note-pdf.mjs";
 
 const root = resolve(import.meta.dirname, "..");
-const releases = [
+const allReleases = [
   ["r074b", "r0-74b", "R0.74B｜缓冲环带闭合：Gaussian 外部尾项由倍半径付款"],
   ["r074c", "r0-74c", "R0.74C｜平流剪切阻断固定中心的大付款端点"],
   ["r074d", "r0-74d", "R0.74D｜零总均值仍不能修复固定中心运输缺口"],
@@ -20,6 +20,17 @@ const releases = [
   ["r074f", "r0-74f", "R0.74F｜奇对称局部坐标中的双包存活：周期桥估计闭合"],
   ["r074g", "r0-74g", "R0.74G｜完整支付闭合：一个显式光滑解族否定冻结局部坐标不等式"],
 ];
+const releaseArgument = process.argv.indexOf("--release");
+const selectedRelease = releaseArgument >= 0 ? process.argv[releaseArgument + 1] : null;
+if (releaseArgument >= 0 && !selectedRelease) {
+  throw new Error("--release requires a canonical release id");
+}
+const releases = selectedRelease
+  ? allReleases.filter(([release]) => release === selectedRelease)
+  : allReleases;
+if (releases.length === 0) {
+  throw new Error(`unknown queued release: ${selectedRelease}`);
+}
 
 function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");

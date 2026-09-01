@@ -150,7 +150,7 @@ c_R=\frac1{320},\quad \kappa=16.\]</div>
 <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074g_certificate_independent_audit.md">证书独立审计</a> ·
 <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074g_gap_matrix.md">证据与缺口矩阵</a> ·
 <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074g_freeze_manifest.json">冻结清单</a></p>
-<p><a href="/notes/r0-74g.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a></p></section>
+<p><a href="/notes/r0-74g.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
 <section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74H</h2><p>先提出一个能支付精确双包族、保持尺度不变且不把目标量循环写回右端的新 denominator；随后再检查任意解定理。</p></section>
 </article></main></body></html>'''
     return page.replace("__VERSION__", VERSION).replace("__TITLE__", TITLE)

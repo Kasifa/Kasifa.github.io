@@ -31,6 +31,13 @@ const ENDPOINTS = Object.freeze({
   r073y: { version: "1.65", code: "R0.73Y", slug: "r0-73y", next: "R0.73Z" },
   r073z: { version: "1.66", code: "R0.73Z", slug: "r0-73z", next: "R0.74A" },
   r074a: { version: "1.67", code: "R0.74A", slug: "r0-74a", next: "R0.74B" },
+  r074b: { version: "1.68", code: "R0.74B", slug: "r0-74b", next: "R0.74C" },
+  r074c: { version: "1.69", code: "R0.74C", slug: "r0-74c", next: "R0.74D" },
+  r074d: { version: "1.70", code: "R0.74D", slug: "r0-74d", next: "R0.74E" },
+  r074e: { version: "1.71", code: "R0.74E", slug: "r0-74e", next: "R0.74F" },
+  r074f: { version: "1.72", code: "R0.74F", slug: "r0-74f", next: "R0.74G" },
+  r074g: { version: "1.73", code: "R0.74G", slug: "r0-74g", next: "R0.74H" },
+  r074h: { version: "1.74", code: "R0.74H", slug: "r0-74h", next: "R0.74I" },
 });
 
 async function page(name) {
@@ -99,6 +106,24 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     current.includes('<details class="tree-route-details" hidden>'),
     "full historical route stays out of the compact homepage card",
   );
+
+  if (endpoint.release.localeCompare("r074b") >= 0) {
+    assert.ok(current.includes(`<h3>${endpoint.code}：`), "current compact route title");
+    assert.ok(current.includes(`R0.72R–${endpoint.code}：`), "current detailed route range");
+    assert.ok(home.includes(
+      `<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`,
+    ));
+    assert.ok(home.includes(`NEXT · ${endpoint.next}`));
+    const routeStart = home.indexOf('<section class="route-overview"');
+    const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
+    const route = home.slice(routeStart, routeEnd);
+    assert.equal(
+      (route.match(new RegExp(`href="/notes/${endpoint.slug}\\.html"`, "g")) ?? []).length,
+      1,
+      `${endpoint.slug} keeps one canonical note link in the route tree`,
+    );
+    return;
+  }
 
   assert.ok(current.includes(isA
     ? "<h3>R0.74A：局部 K_D 付款已闭合</h3>"
@@ -417,6 +442,16 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
   assert.ok(topology.includes(`开放接口 · ${endpoint.next}`));
+
+  if (endpoint.release.localeCompare("r074b") >= 0) {
+    assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));
+    assert.ok(literature.includes(`R0.69P–${endpoint.code}`));
+    assert.ok(topology.includes(`<b>${endpoint.code}</b>`));
+    for (const marker of ["PROVED", "FINITE", "OPEN", "NOT CLAY"]) {
+      assert.ok(boundary.includes(marker), `${endpoint.code} boundary ${marker}`);
+    }
+    return;
+  }
 
   for (const token of [
     "R0.72Z 在 high-gap \\(q\\)-graph 上闭合 signed OS pressure",

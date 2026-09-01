@@ -1,0 +1,14 @@
+R073W_CERT_PYTHON="${R073W_CERT_PYTHON:-python3}"
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/compute_fourier_certificate.py
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/compute_fourier_certificate.py --check-only
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/independent_trig_certificate.py
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/independent_trig_certificate.py --check-only
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/seal_package.py
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/seal_package.py --check-only
+
+# After committing the nine source files, replace the placeholder with the
+# full lowercase 40-hex immutable commit.  The final seal rejects any commit
+# whose source blobs differ from the current source bytes.
+R073W_SOURCE_COMMIT=<full-lowercase-40-hex-commit>
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/seal_package.py --source-commit "$R073W_SOURCE_COMMIT"
+"$R073W_CERT_PYTHON" -B research/certificates/r073w/seal_package.py --source-commit "$R073W_SOURCE_COMMIT" --check-only

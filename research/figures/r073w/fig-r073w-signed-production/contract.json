@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "r073w-signed-production-figure-contract-v1",
+  "figureId": "fig-r073w-signed-production",
+  "release": "R0.73W",
+  "evidenceClass": "audited-exact-analytic-identities-plus-two-path-exact-finite-fourier-certificate-and-closed-form-renderer-samples",
+  "analyticalQuestion": "What does the exact signed-production heat-plane identity control, what is the energy-class scale loss, and why do neither the sign nor a same-time quadratic absorption law hold universally?",
+  "supportedClaim": "Heat-plane characteristics pay the signed spatial mean through endpoint energy; the unconditional energy-class bound has integrable s^(-1/4) and S^(3/4) envelopes; and an exact rank-three Fourier-support witness realizes both production signs while the coefficient of A/nu in the same-time absorption ratio tends to 1/78 at zero heat scale.",
+  "analyticSources": [
+    {
+      "path": "research/r073w_signed_production_heat_characteristic.md",
+      "sha256": "bdb1ddaa16d33871fc1356ae573861981620437a20579f992e76a5dde54c0edd",
+      "claims": ["heat-plane characteristic payment", "fixed-scale energy-class bound", "cumulative scale bound"]
+    },
+    {
+      "path": "research/r073w_independent_analytic_audit.md",
+      "sha256": "ad0a7efb53fc47dcf3d811061e6359a88a0bcd3405596ac64ae3c328ccfd4bab",
+      "claims": ["independent sign and coefficient audit", "weak-solution boundary"]
+    }
+  ],
+  "certificate": {
+    "primaryPath": "research/certificates/r073w/results.json",
+    "primarySha256": "0ce95b6e7175e841e265fdd10bb08ed978844c1ec22305811ade2f55547af912",
+    "independentPath": "research/certificates/r073w/independent-results.json",
+    "independentSha256": "6e8e7dc46874ad62b74bbda3c2aef460e07d1e9e221704451647147cc8f76774",
+    "commonCoreSha256": "4c72251bde4bf12bb5cfe8c3c6b15c0e049dc440a2c41daa751eb0a5da9460f2",
+    "commonCoreCompactSha256": "a0f6b542de34732f3527af6c8e89ccfb1b9f4b120e91e4c701b659b5b5c5ff45",
+    "commonCorePath": "rankThreeExtension",
+    "manifestPath": "research/certificates/r073w/manifest.json",
+    "manifestSha256": "cc883c6d11aa7c8e993b2086559a43c444e323acf1293a1c1744bbae884f50be",
+    "sealState": "SEALED_COMMIT_BOUND",
+    "sourceCommit": "b9f3b3943df1e2abf6abc2f51c1fb25d1f1e8440",
+    "certificatePackageCommit": "68893eccd7f5b6047bf2b00c5262913e23fadbc3"
+  },
+  "normalization": {
+    "domain": "T^3=[0,2*pi]^3 with normalized Haar measure",
+    "heatVariable": "q=exp(-s)",
+    "panelADrawing": "nu=1 only for coordinates; displayed identity retains nu>0",
+    "panelB": "each analytic envelope divided by its value at unit scale",
+    "panelC": "spatial mean divided by A^3",
+    "panelD": "coefficient of A/nu in |mean Pi_s|/(nu*mean D_ii,s)"
+  },
+  "exactConstants": {
+    "signedProductionPositive": "1/4*q^2*(1-q^2)",
+    "signedProductionNegative": "-1/4*q^2*(1-q^2)",
+    "signedProductionPeakScale": "log(2)/2",
+    "signedProductionPeakMagnitude": "1/16",
+    "absorptionCoefficient": "q^2/(2*(13+12*q^2+10*q^4+4*q^6))",
+    "absorptionZeroScaleLimit": "1/78"
+  },
+  "claimBoundary": {
+    "characteristicIdentitySpatialMeanOnly": true,
+    "absoluteProductionIntegralControlled": false,
+    "periodicOrBoundaryDecayRequiredForPanelA": true,
+    "panelBAnalyticUpperBoundShapesOnly": true,
+    "panelBObservations": false,
+    "panelBSharpnessEstablished": false,
+    "exactFiniteCertificate": true,
+    "twoIndependentImplementationsAgree": true,
+    "primaryWitnessFrequencyRank": 3,
+    "universalOneSidedSignRule": false,
+    "universalAmplitudeIndependentMeanAbsorption": false,
+    "navierStokesSimulation": false,
+    "fittedScalingLaw": false,
+    "genericTurbulenceClaim": false,
+    "singularSolution": false,
+    "regularityCriterionImproved": false,
+    "globalRegularityEstablished": false,
+    "clayProblemSolved": false
+  },
+  "compute": {
+    "solver": "none",
+    "randomSeed": "not applicable",
+    "gpu": "not used",
+    "network": "not used",
+    "dgxUsed": false,
+    "ordinaryTranslationPath": "LOCAL_DIRECT_NO_DGX"
+  },
+  "outputs": ["source-data.csv", "figure.svg", "figure.pdf", "figure.png"]
+}

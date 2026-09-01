@@ -1,7 +1,8 @@
 # R0.73W analytic derivation: signed production, heat characteristics, and the energy-class boundary
 
-**Status:** parent derivation and independent sign/index audit complete; the
-two-path finite package and public release gates remain open
+**Status:** parent derivation, independent sign/index audit, and commit-bound
+two-path finite certificate complete; the formal figure and public release
+gates remain open
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 

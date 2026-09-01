@@ -1,7 +1,7 @@
 # R0.73W evidence and gap matrix
 
-**Status:** parent derivation and independent analytic audit complete; finite
-and formal-figure seals remain open
+**Status:** parent derivation, independent analytic audit, and commit-bound
+finite seal complete; the formal-figure seal remains open
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -22,9 +22,9 @@ and formal-figure seals remain open
 | Weighted spatial mean | Self-adjoint heat filtering gives \(\langle\Pi_s\rangle=\langle P_{2s}u,(u\cdot\nabla)u\rangle\) | exact parent derivation | Requires periodicity or boundary decay; removes spatial localization | Present as a global mean identity only |
 | Critical \(s^{-1/2}\) scale weight | Spectral multiplier is \(\sqrt{\pi/2}L^{-1/2}\) | exact parent derivation | It returns the classical \(H^{1/2}\) cubic threshold, not an arbitrary-energy estimate | Use as a sharp diagnosis of the remaining critical obstruction |
 | Time integral of the critical scale average | Energy inequality and \(L^3\) interpolation give \(\|u_0\|_2^3\nu^{-3/4}T^{1/4}\) | high | Absolute value follows signed space--scale integration | Never relabel it as \(\int\!\int\!\int |\Pi_s|\) |
-| Universal one-sided sign | Parity \(u\mapsto-u\) plus the nonzero finite production coefficient | exact once sealed | Two independent producers and immutable package are still pending | Publish only after both paths agree |
-| Same-time viscous absorption | Cubic production versus quadratic \(D_{ii,s}\) under amplitude scaling | exact once sealed | Refutes only the displayed amplitude-independent inequality | Do not generalize to time-integrated, nonlinear, conditional, or localized payments |
-| Finite witness geometry | Public field has Fourier-support rank three; rank-two and 2D3C fields remain as diagnostic cross-checks | exact once sealed | Rank three is not generic turbulence and cannot address blow-up | Say “universal-sign counterexample,” never “singularity witness” |
+| Universal one-sided sign | Parity \(u\mapsto-u\) plus the nonzero finite production coefficient | exact, two-path sealed | Commit-bound producers agree; the result is a counterexample to a universal rule, not pointwise sign variation of one witness | Publish only the stated quantified negation |
+| Same-time viscous absorption | Cubic production versus quadratic \(D_{ii,s}\) under amplitude scaling | exact, two-path sealed | Refutes only the displayed amplitude-independent inequality | Do not generalize to time-integrated, nonlinear, conditional, or localized payments |
+| Finite witness geometry | Public field has Fourier-support rank three; rank-two and 2D3C fields remain as diagnostic cross-checks | exact, two-path sealed | Rank three is not generic turbulence and cannot address blow-up | Say “universal-sign counterexample,” never “singularity witness” |
 | Leray--Hopf extension | Every factor in the absolute estimate is defined a.e.; positive heat scale regularizes space | high | Full endpoint equality at \(s=0\) is not automatic | Restrict exact weak characteristic use to \(s\ge\sigma>0\) unless separately justified |
 | Literature ownership | Johnson 2020/2021 own Gaussian stress diffusion/decomposition; standard coarse-graining owns local energy flux; Germano and increment literature own the central-moment lineage | high, primary sources, bounded audit complete | The exact combined, fixed-scale, and critical-weighted displays may be routine consequences even if not found verbatim | Record bounded negative findings only; forbid priority claims |
 | Formal figure | Planned deterministic panels for the characteristic, scale envelope, and exact sign witness | pending | No source/raw seal or visual QA yet | Do not count the section as complete until PDF/SVG/600 dpi PNG and validator pass |
@@ -39,6 +39,6 @@ scale.  The remaining mathematical loss is local and zero-scale: signed
 cancellation does not control concentration, while the unconditional absolute
 bound is not uniform as \(s\downarrow0\).
 
-The next release may proceed only after the analytic audit, exact finite seal,
-formal figure, literature readback, local direct translation, HTML/PDF parity,
-and GitHub Pages gate all pass.
+The analytic audit, literature readback, local direct translation, and exact
+finite seal now pass.  The release may proceed only after the formal figure,
+HTML/PDF parity, and GitHub Pages gate also pass.

@@ -1,7 +1,7 @@
 # R0.73W claim--source ledger
 
-**Status:** parent derivation and independent analytic audit complete;
-two-path finite sealing and formal-figure sealing remain pending
+**Status:** parent derivation, independent analytic audit, and commit-bound
+two-path finite sealing complete; formal-figure sealing remains pending
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -20,9 +20,9 @@ two-path finite sealing and formal-figure sealing remain pending
 | W7 | Along \(s'(t)=-\nu\), the spatially averaged signed production equals the resolved-energy drop (3.6). | `INTERNAL_EXACT_AUDITED` | Spatial integration of W6 and the chain rule; [parent proof](r073w_signed_production_heat_characteristic.md), (3.5)--(3.6); [independent audit](r073w_independent_analytic_audit.md), Section 2 | Controls the signed integral only; for Leray--Hopf endpoints at \(s=0\), energy equality must not be assumed. |
 | W8 | The energy class gives \(\|\Pi_s\|_{L^1_{t,x}}\lesssim s^{-1/4}\|u\|_{L_t^\infty L_x^2}\|\nabla u\|_{L^2_{t,x}}^2\) for \(0<s\le1\). | `INTERNAL_UNCONDITIONAL_AUDITED` | Exact stress Duhamel, \(\|\tau_s\|_1\le2s\|\nabla u\|_2^2\), heat \(L^2\to L^\infty\) with one derivative, and Hölder; [parent proof](r073w_signed_production_heat_characteristic.md), Section 4; [independent audit](r073w_independent_analytic_audit.md), Section 3 | Uses only the Leray--Hopf energy class. It is not uniform at zero scale, and optimality is not claimed. |
 | W9 | Integrating W8 in heat scale gives an \(S^{3/4}\) bound. | `INTERNAL_UNCONDITIONAL_AUDITED` | Integrate \(s^{-1/4}\) on \((0,S)\); [parent proof](r073w_signed_production_heat_characteristic.md), (4.4); [independent audit](r073w_independent_analytic_audit.md), Section 3 | Establishes scale integrability, not a scale-critical continuation criterion. |
-| W10 | The declared rank-three-support trigonometric polynomial has \(\langle\Pi_s(u_A)\rangle=\frac14A^3e^{-2s}(1-e^{-2s})\), and changing \(A\) to \(-A\) changes the sign. | `INTERNAL_EXACT_FINITE_PENDING_SEAL` | Two independent exact finite producers under `research/certificates/r073w/`; [problem freeze](r073w_problem_freeze.md), Section 4 | Once sealed, disproves a universal pointwise or mean one-sided sign. It is not a PDE trajectory or blow-up candidate. |
-| W11 | The same witness has \(\langle D_{ii,s}\rangle=\frac12A^2(1-q^2)(13+12q^2+10q^4+4q^6)\). | `INTERNAL_EXACT_FINITE_PENDING_SEAL` | Two-path exact certificate; [parent proof](r073w_signed_production_heat_characteristic.md), (5.3)--(5.5) | Positive quadratic comparison row for the narrowly stated absorption test. |
-| W12 | No amplitude-independent constant can make \(|\langle\Pi_s\rangle|\le C\nu\langle D_{ii,s}\rangle\) hold for all smooth data at fixed \(s>0\). | `INTERNAL_EXACT_FINITE_PENDING_SEAL` | W10 is cubic in \(A\), W11 is quadratic; exact ratio (5.6) | Refutes only this declared same-time quadratic absorption. It does not exclude nonlinear, time-integrated, or localized estimates. |
+| W10 | The declared rank-three-support trigonometric polynomial has \(\langle\Pi_s(u_A)\rangle=\frac14A^3e^{-2s}(1-e^{-2s})\), and changing \(A\) to \(-A\) changes the sign. | `INTERNAL_EXACT_FINITE_SEALED` | Commit-bound two-path certificate under `research/certificates/r073w/`; [problem freeze](r073w_problem_freeze.md), Section 4 | Disproves a universal pointwise or mean one-sided sign. It is not a PDE trajectory or blow-up candidate. |
+| W11 | The same witness has \(\langle D_{ii,s}\rangle=\frac12A^2(1-q^2)(13+12q^2+10q^4+4q^6)\). | `INTERNAL_EXACT_FINITE_SEALED` | Commit-bound two-path exact certificate; [parent proof](r073w_signed_production_heat_characteristic.md), (5.3)--(5.5) | Positive quadratic comparison row for the narrowly stated absorption test. |
+| W12 | No amplitude-independent constant can make \(|\langle\Pi_s\rangle|\le C\nu\langle D_{ii,s}\rangle\) hold for all smooth data at fixed \(s>0\). | `INTERNAL_EXACT_FINITE_SEALED` | W10 is cubic in \(A\), W11 is quadratic; exact ratio (5.6) | Refutes only this declared same-time quadratic absorption. It does not exclude nonlinear, time-integrated, or localized estimates. |
 | W13 | Local subgrid transfer can take both signs in turbulent data. | `VERIFIED_EMPIRICAL_CONTEXT` | Alexakis--Chibbaro 2020, *Physical Review Fluids* **5**, 094604; later primary filtering studies | Context only; the exact finite witness, not DNS evidence, proves the universal-sign counterexample used here. |
 | W14 | The bounded primary-source search did not locate the exact combined heat-characteristic display W6, the exact energy-class statement W8, or the critical weighted display W21 in the inspected sources. | `BOUNDED_NEGATIVE_FINDING` | [Primary-literature audit](r073w_primary_literature_audit.md) | Non-detection cannot establish novelty, priority, non-existence, or first authorship. |
 | W15 | Arbitrary-data three-dimensional global regularity and the Clay problem remain open. | `OPEN` | W7 uses signed cancellation; W8 loses \(s^{-1/4}\); no localized scale-critical closure has been proved | `NOT CLAY`. |
@@ -54,7 +54,7 @@ weightedMeanMultiplierIdentity=INTERNAL_EXACT_AUDITED
 criticalHalfScaleAverage=INTERNAL_CRITICAL_AUDITED
 universalProductionSign=FALSE
 amplitudeIndependentQuadraticAbsorption=FALSE
-formalFiniteCertificate=COMPUTED_HASH_BOUND_PENDING_COMMIT_SEAL
+formalFiniteCertificate=SEALED_COMMIT_BOUND
 formalFigurePackage=PENDING
 publicReleaseTransaction=PENDING
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
@@ -73,9 +73,9 @@ NOT CLAY
    derivation and a primary source owns the underlying established identity.
 2. `INTERNAL_EXACT_PENDING_AUDIT` is not promoted until an independent
    sign/index readback agrees with the parent proof.
-3. `INTERNAL_EXACT_FINITE_PENDING_SEAL` requires two independent producers,
-   byte-identical common cores, immutable source and result pins, and a final
-   reader audit.
+3. `INTERNAL_EXACT_FINITE_SEALED` means two independent producers have
+   byte-identical common cores, the manifest is bound to immutable source
+   blobs, and the result package is tracked by the repository.
 4. A characteristic identity for a signed spatial mean is not an estimate for
    \(|\Pi_s|\) and is not a local regularity criterion.
 5. A finite smooth field can disprove a universal theorem.  It cannot by

@@ -1,7 +1,8 @@
 # R0.73W bilingual dictionary and claim boundary
 
-**Status:** analytic wording and bounded primary-literature audit complete;
-finite and release bindings remain open
+**Status:** analytic wording, bounded primary-literature audit, and
+commit-bound finite certificate complete; figure and release bindings remain
+open
 
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
@@ -124,7 +125,7 @@ weightedMeanMultiplierIdentity=INTERNAL_EXACT_AUDITED
 criticalHalfScaleAverage=INTERNAL_CRITICAL_AUDITED
 universalProductionSign=FALSE
 amplitudeIndependentQuadraticAbsorption=FALSE
-formalFiniteCertificate=COMPUTED_HASH_BOUND_PENDING_COMMIT_SEAL
+formalFiniteCertificate=SEALED_COMMIT_BOUND
 formalFigurePackage=PENDING
 ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX
 dgxUsed=false

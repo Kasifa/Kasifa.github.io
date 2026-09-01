@@ -52,6 +52,7 @@ test("release tooling binds the immutable W chain and CI stays manifest-driven",
   const content = read("scripts/r073w_release_content.py");
   const translation = read("scripts/add-r073w-translations.mjs");
   const binder = read("scripts/bind-r073w-pdfs.mjs");
+  const renderer = read("scripts/render-note-pdf.mjs");
   const runner = read("scripts/run-release-publication-gate.mjs");
   const scientificGate = read("tests/r073w-signed-production-gate.test.mjs");
   const tooling = [content, generator, translation, binder, scientificGate].join("\n");
@@ -77,6 +78,9 @@ test("release tooling binds the immutable W chain and CI stays manifest-driven",
   assert.ok(translation.includes("dgxUsed: false"));
   assert.ok(binder.includes("ordinaryTranslationPath: \"LOCAL_DIRECT_NO_DGX\""));
   assert.ok(binder.includes("dgxUsed: false"));
+  assert.ok(renderer.includes("expectsMathJax"));
+  assert.ok(renderer.includes("page.waitForFunction"));
+  assert.ok(renderer.includes("globalThis.MathJax?.startup?.promise"));
   assert.ok(runner.includes("manifest.latestReleaseGate"));
   assert.ok(runner.includes("manifest.latestReleasePublicationTest"));
   for (const workflow of [
@@ -217,6 +221,7 @@ print(json.dumps({
   "recapSources":all(value in recap for value in ("打开最新节点 R0.73W","research/r073w_report-source.md","research/r073w_signed_production_identities.md","research/r073w_primary_literature_audit.md","research/certificates/r073w","/assets/r073w/fig-r073w-signed-production.pdf")) and "打开最新节点 R0.73V" not in recap,
   "homeRecap":all(value in home[home.index('id="post-r060-recap"'):home.index('id="r070a"')] for value in ("R0.61–R0.73W","139 个节点","199 篇公开研究笔记","58 个阶段","101 个版本已公开","77 个按当前 formal-figure 合同完整封存")) and all(value not in home[home.index('id="post-r060-recap"'):home.index('id="r070a"')] for value in ("累计回顾 R0.61–R0.73V","完整保留 R0.61–R0.73V","R0.70A–R0.73V 共","138 个节点","198 篇公开研究笔记","57 个阶段")),
   "noteMath":"mathjax@3/es5/tex-mml-chtml.js" in note and "window.MathJax=" in note and "**" not in note and "<strong>[开放]</strong>" in note,
+  "noteMathDelimiters":"inlineMath:[['\\\\(','\\\\)']]" in note and "displayMath:[['\\\\[','\\\\]']]" in note,
   "sealedBoundary":"formalFigurePackage=SEALED_COMMIT_BOUND" in note,
   "rawFence":any(chr(96)*3 in value for value in (note,recap,home,literature)),
   "figureStatus":[figure.get("publicationStatus"),figure.get("sourcePublicationStatus")],
@@ -243,6 +248,7 @@ print(json.dumps({
     recapSources: true,
     homeRecap: true,
     noteMath: true,
+    noteMathDelimiters: true,
     sealedBoundary: true,
     rawFence: false,
     figureStatus: ["published", "staged"],

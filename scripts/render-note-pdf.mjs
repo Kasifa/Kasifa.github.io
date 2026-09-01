@@ -313,6 +313,15 @@ async function main() {
         );
       }
     }
+    const expectsMathJax = await page.locator('script[src*="mathjax" i]').count() > 0;
+    if (expectsMathJax) {
+      await page.waitForFunction(
+        () => typeof globalThis.MathJax?.version === "string" &&
+          Boolean(globalThis.MathJax?.startup?.promise),
+        null,
+        { timeout: 30_000 },
+      );
+    }
     await page.evaluate(async () => {
       await document.fonts.ready;
       if (globalThis.MathJax?.startup?.promise) await globalThis.MathJax.startup.promise;

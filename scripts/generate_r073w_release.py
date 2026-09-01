@@ -713,7 +713,7 @@ def note_page(content: ReleaseContent) -> str:
 <html lang="zh-CN" data-site-version="1.63">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title><script>document.documentElement.classList.add('js')</script>
-<script>window.MathJax={{tex:{{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script>
+<script>window.MathJax={{tex:{{inlineMath:[['\\\\(','\\\\)']],displayMath:[['\\\\[','\\\\]']]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script>
 <script defer src="/i18n-en.js?v=1.63"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}}*{{box-sizing:border-box}}body{{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}}.top{{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between}}main{{width:min(920px,90vw);margin:auto}}.hero{{padding:64px 0 32px;border-bottom:1px solid var(--ink)}}h1{{font-size:clamp(2rem,6vw,4.3rem);line-height:1.05}}h2{{margin-top:3rem;color:var(--rule)}}.stamp,.section-no{{font:700 12px/1.4 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}}article{{padding:20px 0 80px}}.equation{{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}}a{{color:#702824}}img{{max-width:100%;height:auto}}@media(max-width:600px){{body{{font-size:15px}}}}</style></head>
@@ -1132,6 +1132,8 @@ def validate_staged(staged: dict[Path, bytes]) -> None:
     if (
         "mathjax@3/es5/tex-mml-chtml.js" not in note
         or "window.MathJax=" not in note
+        or "inlineMath:[['\\\\(','\\\\)']]" not in note
+        or "displayMath:[['\\\\[','\\\\]']]" not in note
         or "**" in note
         or "<strong>[开放]</strong>" not in note
     ):

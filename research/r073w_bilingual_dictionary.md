@@ -4,6 +4,12 @@
 commit-bound finite certificate complete; figure and release bindings remain
 open
 
+**Release title:** R0.73W | Signed subfilter production: heat-plane
+characteristics, the energy-class boundary, and exact counterexamples
+
+**Public title (zh):** R0.73W｜带符号亚滤波 production：heat-plane
+特征线、能量类边界与精确反例
+
 **Ordinary translation path:** `LOCAL_DIRECT_NO_DGX`
 
 **DGX used:** `false`

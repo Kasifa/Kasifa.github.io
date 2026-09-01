@@ -630,15 +630,10 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
     for marker in REQUIRED_SOURCE_MARKERS:
         if marker not in combined_compact:
             raise CanonicalSourceError("canonical sources missing boundary marker: " + marker)
-    if not any(
-        marker in combined_compact
-        for marker in (
-            "formalFigurePackage=PENDING",
-            "formalFigurePackage=SEALED_COMMIT_BOUND",
-            "formalFigurePackage=PASS",
+    if "formalFigurePackage=SEALED_COMMIT_BOUND" not in combined_compact:
+        raise CanonicalSourceError(
+            "canonical sources missing commit-bound formal-figure state marker"
         )
-    ):
-        raise CanonicalSourceError("canonical sources missing formal-figure state marker")
     for formula in (
         r"\Pi_s=-\tau_s:\nablav_s",
         r"(\partial_t-\nu\partial_s)e_s",
@@ -689,6 +684,8 @@ def load_release_content(root: Path | None = None) -> ReleaseContent:
         failures.append("canonical-source-backspace-control-character")
     if "formalFigurePackage=PENDING" in combined_compact:
         failures.append("canonical-ledger-formal-figure-pending")
+    if "formalFigurePackage=PASS" in combined_compact:
+        failures.append("canonical-ledger-formal-figure-unbound-pass")
     if "publicReleaseTransaction=PENDING" in combined_compact:
         failures.append("canonical-ledger-public-release-pending")
     if "待 immutable pin" in report or "当前未封印计算中" in report:

@@ -376,16 +376,20 @@ const figurePassed = figureValidation.passed ?? figureValidation.checksPassed ??
     ? figureValidation.checks.length : null);
 const figureRows = figureResults.sourceDataRows;
 const panelRowCounts = figureResults.panelRowCounts;
+const certificateInventory = certificateManifest.inventory;
+const certificateInventoryKeys = certificateInventory && typeof certificateInventory === "object" &&
+  !Array.isArray(certificateInventory) ? Object.keys(certificateInventory).sort() : [];
 if (
   certificateManifest.schemaVersion !== "r073x-formal-evidence-manifest-v1" ||
   certificateManifest.status !== "SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED" ||
   certificateManifest.sourceCommit !== "958b6b4216f6914a5d42f7712b6bc9b218caf801" ||
-  JSON.stringify(certificateManifest.inventory) !== JSON.stringify({
-    packageFileCount: 16,
-    boundFileCount: 14,
-    sha256SumsLineCount: 15,
-    archiveEvidenceFiles: 7,
-  }) ||
+  JSON.stringify(certificateInventoryKeys) !== JSON.stringify([
+    "archiveEvidenceFiles", "boundFileCount", "packageFileCount", "sha256SumsLineCount",
+  ]) ||
+  certificateInventory.packageFileCount !== 16 ||
+  certificateInventory.boundFileCount !== 14 ||
+  certificateInventory.sha256SumsLineCount !== 15 ||
+  certificateInventory.archiveEvidenceFiles !== 7 ||
   !Number.isInteger(certificateChecks) || certificateChecks <= 0 ||
   certificateChecklist.schemaVersion !== "r073x-formal-evidence-audit-v1" ||
   certificateRequired.gaussianOverall !== "PASS" ||

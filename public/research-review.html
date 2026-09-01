@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/bilingual.css">
   <script defer src="/i18n-en.js?v=1.65"></script>
   <script defer src="/bilingual.js"></script>
-  <script defer src="/site-refresh.js?v=1.65"></script>
+  <script defer src="/site-refresh.js?v=1.65.1"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root {
@@ -1224,6 +1224,26 @@
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       font-size: 10px !important;
     }
+    .tree-current-summary {
+      color: var(--ink) !important;
+      font-size: 13px !important;
+      line-height: 1.62 !important;
+    }
+    .tree-route-details {
+      margin-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .tree-route-details > summary {
+      padding-top: 9px;
+      color: var(--teal);
+      cursor: pointer;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .tree-route-details[open] > summary { margin-bottom: 10px; }
+    .tree-route-details-body > p + p { margin-top: 7px; }
     .tree-branch {
       padding: 15px 16px 16px;
       border: 1px solid var(--line);
@@ -1676,6 +1696,11 @@
                 <span class="tree-state current">当前主线</span>
               </div>
               <h3>R0.73Y：exact shear kernel、全振幅零 production、A != 0 时严格正 heat covariance 与 production-only no-go 已分列</h3>
+              <p class="tree-current-summary">R0.73X 已分离 Gaussian 速度尾、代数 pressure 尾与尚未闭合的 coercivity bridge。R0.73Y 进一步证明：exact shear 对所有实振幅的 positive-scale production 恒为零；仅在 A != 0 时 heat covariance 严格为正，因此零值保持的 production-only coercivity 不成立。任意三维全局正则性与 Clay 仍为 OPEN。</p>
+              <p class="tree-path">压力与协方差桥 → heat hierarchy → exterior tails → exact shear production-only no-go</p>
+              <details class="tree-route-details">
+                <summary>查看完整路线说明</summary>
+                <div class="tree-route-details-body">
               <p>静态环带族被严格排除后，主线转向协方差秩分层与全频投影桥。R0.71U–Z 依次处理 second-time jet、complete first row、fixed-small-coupling endpoint、selected roots 与 complete roots。R0.72A–C 建立 Bessel lower family、target-row participation 与 physical-phase sharp scales；R0.72D 再实现 positive-time root 与 full-charge order-one saturation。R0.72E 固定 \(q_0&gt;R_*\)，用 Feynman–Kac、驻相和定量 Hörmander density 控制完整 \(H^{-1}\) action；exact one-carrier family 最终使 complete-root ledger 相对候选 \(D^{1/3}\Lambda_1\) payment 按 \(R^{4/3}\) 发散。R0.72F 随后证明 selected roots 强制 \(1/3\) 下端点，而 Leray energy 只支付到 \(1/2\)；最小边界修正是 \(s^{-1/3}[1+\log(1/s)]\)。R0.72G 固定这一候选，用实相位 gauge、目标行恒等式与 Rolle–BV 归约证明完整根质量 \(G_{\rm all}\asymp\log\delta\)，并在原始幅度序列上得到 complete-root sharp saturation。R0.72H 转入有限共轭配对多载波 mixed row，证明载波数无关的 moment-resolved 上界；全奇数 Rudin–Shapiro 族排除 action-only payment，并使所需 \(M\)-幂次达到同阶。R0.72I 逐项换回物理量，证明分离的 \(B_AQ_*\) 项不能统一吸收；joint exposure 与 odd-carrier parity 又证明真实 complete ledger 统一衰减。R0.72J 把 parity 修复提升为 gcd-reduced Cayley 图二分定理，区分 odd cycle 与 triangle return，并排除 common-band coherent cubic 反族。R0.72K 再对每个复根隙选择独立 norming direction，把 mixed row 与 true cubic 转成 complete complex-target ledger，并证明其 common-band 物理归一化比统一衰减。R0.72L 保留 actual \(K\) 与 \(x\)，用 local exact root/action floor 把闭合区推进到 \(\varepsilon\lesssim p^{2/3}R^{2/3}(1+\log R)\)。R0.72M 精确求出 scalar danger window，并在完整一载波 Bessel reference 上证明 action-poor placement 与 \((16/\pi^2)a^2\log\sigma\) cubic law。R0.72N 回到耗散链，证明 action-poor route 对声明 launch 失效；再把 Coble–He 的时变剪切衰减转成本站的 \(O(a^2\sqrt\sigma)\) cubic corollary。R0.72O 将该结果回填 normalized physical ledger，得到 \(\varepsilon^{11/6}\) numerator 与加倍的 growing-geometry window，并把多载波问题隔离为 full-superposition ED gate。R0.72P 再把 fixed real-collinear-phase 1:2、B=2 与声明的 lambda cone 缩到固定 cell，从 Coble–He proof 抽取 uniform constants，闭合完整 two-carrier cross-term gate；±1/4 只标记 Morse applicability wall。</p>
               <p class="tree-path">环带排除 → 源—核账本 → 协方差谱分层 → 全频条件桥 → response-slope 弦增益 → 共同响应阶一通道 → 恒定投影符号障碍 → 无权尺度打包障碍 → 带符号正输出系数 → 非负细化缺陷 → 黏性符号创造 → 物质热 tent 临界障碍 → projected-Lamb 热体积闭合 → 局部热打包 → 临界底边迹 → sign-only 驻留反例 → 相对超水平集 → projective heat curvature → soft denominator faces → two-power gap → joint one-sided creation → zero-entry 2D3C volume gap → all-shell positive defect → broad-parent full-frame gap → fixed matched-cell heat gap → exact viscous fusion → increment–projective bridge → signed second-jet boundary → soft-denominator face boundary → spatial entry batching → temporal-packing boundary → complex-time anchor / truncation / cover boundary → parabolic-incidence rho=0 / rho=2 boundary → signed-packet scale / Bessel boundary → genuine internal-entry scaling no-go → outgoing occupation boundary → classical second-time-jet packing → exact finite recurrence → Leray-paid excursion → fixed-zero selected-singleton first-row obstruction → amplitude-doped complete first-row data-uniform no-go → fixed-small-coupling one-third internal saturation → bounded-coupling selected-root \(N^{-1}\) suppression → BV all-root slope-mass closure → launch-inclusive mixed-window floor cancellation → bounded-coupling complete-root \(M^{-2}\) suppression → local-exposure phase region → exact Bessel logarithmic obstruction → target-row participation → coherent many-carrier exclusion → physical-phase conjugate pairing → phase-uniform \(M^{-8/3}\) sharp algebraic prefactor → shifted Rudin–Shapiro heat pulse → positive-time simple root → full-charge normalized order-one saturation → fixed-carrier shell isolation → negative-Sobolev action decay → candidate D^{1/3}Λ₁ payment failure → critical-log repair → selected-family frontier → complete-root Rolle–BV closure → sharp critical-log saturation → carrier-free mixed-row payment → action-only no-go → termwise physical-absorption no-go → parity repair → gcd-reduced Cayley classification → triangle-return criterion → common-band cubic no-go → directional zero sampling → complete complex-root ledger → moderate strong-coupling window → exact action danger window → dissipative one-carrier decision → physical reinsertion → full-superposition ED gate <span>→ arbitrary-static-phase fixed-M shape gate → exact 1:2 caustic</span></p>
               <p class="tree-path"><span>R0.72R–R0.73Y：</span>caustic-free core → marked \(A_2\)–\(A_5\) collisions → exact scalar \(A_2\) block → all-start scoped cocycle → full Fourier–Leray row → signed OS–Squire ledger → hidden-mean transient → Bloch physical-kinetic direct sum → certified frozen Rayleigh instability → static viscous cluster persistence → fixed-half-plane logarithmic transfer → moving-profile fixed-window dichotomy → over-small-seed nonlinear relative amplification / exact planar barrier → actual-gain-normalized planar fixed-distance departure → endpoint audit / continuum upper action / zero-window tangent → unique simple rightmost spectral branch of the continuum operator → parameter-uniform viscous rank-one branch → non-selfadjoint adiabatic tracking / matching selected action → prescribed-action planar nonlinear fixed-distance departure → fixed-member finite-strain stability / family-transfer obstruction → global-orbit stability / forced Kolmogorov contrast → critical H1/2 stability / N^-1/2 frequency gate → critical heat-flow tube / endpoint boundary → shellwise phase certificate → quadratic autocorrelation certificate → dynamic autocorrelation → tensor heat hierarchy → explicit exterior tails and the open coercivity bridge → exact shear all-scale production obstruction</p>
@@ -1712,6 +1737,8 @@
               <p>这条路线的真正门槛不是再写一个高阶恒等式，而是从能量类获得新的、非循环的符号控制。这个门槛目前仍未跨过。 <span>signed cross-covariance scale PDE</span>；<span>pressure-aware Germano interface</span>；<span>selected quartic next-level remainder</span>。物理时间闭合仍开放。</p>
               <p>R0.73W 把带符号 production 的精确支付、能量类尺度损失、中心增量分解、临界半尺度平均与精确反例分开；局部化、零尺度一致控制和任意三维正则性仍开放。 <span>signed subfilter production</span>；<span>heat-plane characteristics</span>；<span>exact rank-three counterexample</span>。NOT CLAY。</p>
               <p>R0.73X 把 direct Gaussian heat tails、algebraic harmonic-pressure tails、positive-scale absolute size 与 open signed-to-absolute coercivity bridge 分开；compact cutoff、weighted tent、s=0 endpoint 和任意三维正则性仍开放。 <span>explicit exterior functional</span>；<span>positive-scale size</span>；<span>static packet is not NSE</span>。NOT CLAY。</p>
+                </div>
+              </details>
               <details class="tree-notes" open>
                 <summary>展开 111 篇公开笔记</summary>
                 <nav class="route-note-links" aria-label="R0.69P–R0.73Y">

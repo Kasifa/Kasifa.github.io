@@ -4,6 +4,13 @@
   const currentVersion = document.documentElement.dataset.siteVersion;
   if (!currentVersion) return;
 
+  // Keep the current research route readable at first glance. The complete
+  // public-note index remains available from its native details control.
+  const currentRouteNotes = document.querySelector(
+    "article.tree-node.current > details.tree-notes[open]",
+  );
+  if (currentRouteNotes) currentRouteNotes.open = false;
+
   let requestInFlight = false;
 
   async function refreshIfStale() {

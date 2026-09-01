@@ -842,9 +842,16 @@ def recap_page(content: ReleaseContent) -> str:
 
 def home_page(content: ReleaseContent) -> str:
     value = decode_baseline("public/research-review.html")
+    home_summary = render_strong_markers(
+        html.escape(content.home_zh), "R0.73W home summary"
+    )
+    home_card = render_strong_markers(content.home_card, "R0.73W home card")
     value = value.replace("v=1.62", "v=1.63").replace('data-site-version="1.62"', 'data-site-version="1.63"')
     value = replace_once(value, "<strong>v1.62</strong>", "<strong>v1.63</strong>", "home version")
     value = value.replace("v1.62", "v1.63")
+    value = value.replace("R0.69P–R0.73V", "R0.69P–R0.73W")
+    value = value.replace("138 节索引", "139 节索引")
+    value = value.replace("打开 138 节完整索引", "打开 139 节完整索引")
     value = replace_once(value, "<strong>198</strong>公开研究笔记", "<strong>199</strong>公开研究笔记", "home note count")
     value = replace_once(value, "<strong>R0.73V</strong>最新研究节点", "<strong>R0.73W</strong>最新研究节点", "home latest")
     value = replace_regex_once(
@@ -852,7 +859,7 @@ def home_page(content: ReleaseContent) -> str:
         r'<section class="route-overview latest-release-spotlight".*?</section>',
         '<section class="route-overview latest-release-spotlight" id="latest-release"><div class="route-overview-inner">'
         + '<p class="eyebrow">LATEST RELEASE · R0.73W · ' + html.escape(content.date) + '</p>'
-        + '<h2>' + html.escape(content.public_title_zh) + '</h2><p>' + html.escape(content.home_zh) + '</p>'
+        + '<h2>' + html.escape(content.public_title_zh) + '</h2><p>' + home_summary + '</p>'
         + '<p><a href="/notes/r0-73w.pdf">阅读最新 R0.73W 研究笔记 →</a> · '
         + '<a href="/recap-r0-61-r0-73w.html">139 节累计回顾</a> · '
         + '<a href="/notes/">199 篇研究笔记总索引</a></p>'
@@ -861,8 +868,45 @@ def home_page(content: ReleaseContent) -> str:
     )
     marker = '<div class="task-one" id="r073v" data-release="r073v"'
     value = replace_once(
-        value, marker, content.home_card + "\n          " + marker,
+        value, marker, home_card + "\n          " + marker,
         "home card reverse-chronological insert",
+    )
+    value = replace_regex_once(
+        value,
+        r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>',
+        '<div class="summary-item"><strong>我目前关注</strong><span>'
+        + html.escape(content.next_gate_zh)
+        + ' 任意三维初值全局正则性与 Clay 保持 OPEN。</span></div>',
+        "home current focus",
+    )
+    for old, new in (
+        ("pressure-aware signed third-order heat lift", "localized heat-characteristic and defect ledger"),
+        ("Research topology · R0.1–R0.73V", "Research topology · R0.1–R0.73W"),
+        ('href="#r073v">跳到首页 R0.73V 卡片 →', 'href="#r073w">跳到首页 R0.73W 卡片 →'),
+        ("R0.69P–R0.73V", "R0.69P–R0.73W"),
+        ("R0.72R–R0.73V", "R0.72R–R0.73W"),
+        ("R0.73V：有符号三阶尺度生成、完整压力账本与精确 3→4 边界已分列",
+         "R0.73W：带符号亚滤波 production、heat-plane 特征线、能量类边界与精确反例已分列"),
+        ("展开 108 篇公开笔记", "展开 109 篇公开笔记"),
+    ):
+        value = value.replace(old, new)
+    value = replace_once(
+        value,
+        '                  <a class="milestone" href="/notes/r0-73v.html">R0.73V</a>\n                </nav>',
+        '                  <a class="milestone" href="/notes/r0-73v.html">R0.73V</a>\n'
+        '                  <a class="milestone" href="/notes/r0-73w.html">R0.73W</a>\n'
+        '                </nav>',
+        "home route R0.73W link",
+    )
+    value = replace_once(
+        value,
+        '              <details class="tree-notes" open>',
+        '              <p>R0.73W 把带符号 production 的精确支付、能量类尺度损失、中心增量分解、'
+        '临界半尺度平均与精确反例分开；局部化、零尺度一致控制和任意三维正则性仍开放。'
+        ' <span>signed subfilter production</span>；<span>heat-plane characteristics</span>；'
+        '<span>exact rank-three counterexample</span>。NOT CLAY。</p>\n'
+        '              <details class="tree-notes" open>',
+        "home current-route R0.73W assessment",
     )
     value = value.replace("NEXT · R0.73W", "NEXT · R0.73X")
     value = replace_regex_once(
@@ -901,6 +945,9 @@ def literature_page(content: ReleaseContent) -> str:
     value = decode_baseline("public/literature-review.html")
     value = value.replace("v=1.62", "v=1.63").replace('data-site-version="1.62"', 'data-site-version="1.63"')
     value = value.replace("v1.62", "v1.63")
+    value = value.replace("R0.69P–R0.73V", "R0.69P–R0.73W")
+    value = value.replace("累计回顾与 138 节索引", "累计回顾与 139 节索引")
+    value = value.replace("打开 138 节完整索引", "打开 139 节完整索引")
     route_step = (
         '<div class="route-step kept"><header><b>R0.73W</b>'
         '<strong>signed subfilter production and heat-plane characteristics</strong></header>'
@@ -944,16 +991,22 @@ def note_index(content: ReleaseContent) -> str:
     value = replace_once(value, "<strong>R0.73V</strong>", "<strong>R0.73W</strong>", "index latest")
     value = replace_once(value, "<span>22</span> <span>篇</span>", "<span>23</span> <span>篇</span>", "index series count")
     value = value.replace("/recap-r0-61-r0-73v.html", "/recap-r0-61-r0-73w.html")
-    link = (
-        '          <li class="note-entry" data-note="r0-73w"><article>'
-        '<div class="entry-copy"><p class="note-code">R0.73W</p><h3>'
-        + html.escape(content.document_title_en.split("|", 1)[-1].strip())
-        + '</h3></div><nav class="entry-files" aria-label="R0.73W files">'
-        '<a class="file-link html" href="/notes/r0-73w.html" aria-label="Read R0.73W HTML">HTML</a>'
-        '<a class="file-link pdf" href="/notes/r0-73w.pdf" aria-label="Download R0.73W PDF">PDF</a>'
-        '</nav></article></li>'
+    index_title = html.escape(content.document_title_en.split("｜", 1)[-1].strip())
+    link = f'''          <li class="note-entry" data-note="r0-73w">
+            <article>
+              <div class="entry-copy">
+                <p class="note-code">R0.73W</p>
+                <h3>{index_title}</h3>
+              </div>
+              <nav class="entry-files" aria-label="R0.73W files">
+                <a class="file-link html" href="/notes/r0-73w.html" aria-label="Read R0.73W HTML">HTML</a>
+                <a class="file-link pdf" href="/notes/r0-73w.pdf" aria-label="Download R0.73W PDF">PDF</a>
+              </nav>
+            </article>
+          </li>'''
+    match = re.search(
+        r'(?m)^          <li class="note-entry" data-note="r0-73v">', value
     )
-    match = re.search(r'<li class="note-entry" data-note="r0-73v">', value)
     if match is None:
         raise RuntimeError("note index lacks canonical r073v insertion marker")
     value = value[:match.start()] + link + "\n" + value[match.start():]
@@ -1050,6 +1103,14 @@ def figure_payloads() -> dict[str, bytes]:
         "fileStem": FIGURE_ID,
         "byteIdentityRequired": True,
         "publicCopiesComplete": True,
+        "assets": [
+            {
+                "path": f"public/assets/r073w/{FIGURE_ID}.{suffix}",
+                "bytes": len(payloads[f"figure.{suffix}"]),
+                "sha256": sha256(payloads[f"figure.{suffix}"]),
+            }
+            for suffix in ("pdf", "svg", "png")
+        ],
         "releaseSourceCommit": RELEASE_SOURCE_COMMIT,
         "figureSourceCommit": FIGURE_SOURCE_COMMIT,
         "figurePackageCommit": FIGURE_PACKAGE_COMMIT,
@@ -1125,9 +1186,27 @@ def validate_staged(staged: dict[Path, bytes]) -> None:
         "R0.70A–R0.73V 共", "138 个节点", "198 篇公开研究笔记", "57 个阶段",
     )):
         raise RuntimeError("home cumulative recap card is stale")
+    if not all(token in home for token in (
+        "Research topology · R0.1–R0.73W", 'href="#r073w">跳到首页 R0.73W 卡片',
+        "R0.69P–R0.73W", "展开 109 篇公开笔记", 'href="/notes/r0-73w.html">R0.73W</a>',
+        "localized heat-characteristic and defect ledger",
+    )) or any(token in home for token in (
+        "Research topology · R0.1–R0.73V", 'href="#r073v">跳到首页 R0.73V 卡片',
+        '<span class="route-range">R0.69P–R0.73V</span>', "展开 108 篇公开笔记",
+    )):
+        raise RuntimeError("home current route is stale")
     index = staged[PUBLIC / "notes/index.html"].decode("utf-8")
     if index.count('data-note="r0-73w"') != 1:
         raise RuntimeError("note-index DOM lacks one canonical R0.73W entry")
+    literature = staged[PUBLIC / "literature-review.html"].decode("utf-8")
+    if not all(token in literature for token in (
+        "本站 R0.69P–R0.73W 只列为研究笔记", "累计回顾与 139 节索引",
+        "打开 139 节完整索引", "开放接口 · R0.73X",
+    )) or any(token in literature for token in (
+        "本站 R0.69P–R0.73V 只列为研究笔记", "累计回顾与 138 节索引",
+        "打开 138 节完整索引",
+    )):
+        raise RuntimeError("literature current route/index surface is stale")
     note = staged[PUBLIC / "notes/r0-73w.html"].decode("utf-8")
     if (
         "mathjax@3/es5/tex-mml-chtml.js" not in note

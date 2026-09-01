@@ -16,6 +16,10 @@ const publicRoot = new URL("../public/", import.meta.url);
 const notesRoot = new URL("notes/", publicRoot);
 const execFileAsync = promisify(execFile);
 
+function isOneDriveConflictCopyName(name) {
+  return / [234](?=\.[^.]+$|$)/.test(name);
+}
+
 function isPublicNoteHtml(file) {
   return /^r0-[0-9a-z]+\.html$/.test(file);
 }
@@ -219,7 +223,8 @@ async function verifyFlatHashLedger(directory) {
   const expectedNames = entries
     .filter(
       (entry) =>
-        entry.isFile() && !["SHA256SUMS", ".DS_Store"].includes(entry.name),
+        entry.isFile() && !["SHA256SUMS", ".DS_Store"].includes(entry.name) &&
+        !isOneDriveConflictCopyName(entry.name),
     )
     .map((entry) => entry.name)
     .sort();
@@ -295,10 +300,14 @@ async function verifyLatestFormalFigure(record, latestCode) {
         `${latestCode}: ${label} package must be flat and regular`,
       );
     }
-    const names = (entries) => entries.map((entry) => entry.name).sort();
+    const names = (entries) => entries
+      .filter((entry) => !isOneDriveConflictCopyName(entry.name))
+      .map((entry) => entry.name).sort();
     assert.deepEqual(names(researchEntries), names(sourceEntries));
     assert.deepEqual(names(publicEntries), names(sourceEntries));
-    for (const entry of sourceEntries) {
+    for (const entry of sourceEntries.filter(
+      (entry) => !isOneDriveConflictCopyName(entry.name),
+    )) {
       if (["manifest.json", "SHA256SUMS"].includes(entry.name)) continue;
       const [sourcePayload, researchPayload, publicPayload] = await Promise.all([
         readFile(new URL(entry.name, packageUrl)),

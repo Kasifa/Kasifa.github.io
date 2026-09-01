@@ -138,11 +138,13 @@ associated-pressure inequality，也不反驳只对 NSE trajectories 陈述的
 
 \[
  \boxed{
- \text{small signed heat-characteristic payment}
- {}\not\Longrightarrow_{\rm proved}{}
+ \begin{aligned}
+ &\text{small signed heat-characteristic payment}\\
+ &{}\not\Longrightarrow_{\rm proved}
  \mathcal E^\square(z_0,4R)^{3/2}
  +\mathcal A_{\rm ext}^\square(z_0,R;\theta)
- \text{ is small}.}
+ \text{ is small}.
+ \end{aligned}}
 \tag{1.7}
 \]
 

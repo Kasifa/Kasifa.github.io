@@ -323,7 +323,7 @@ for (const token of [
   "universalProductionSign=FALSE",
   "amplitudeIndependentQuadraticAbsorption=FALSE",
   "formalFiniteCertificate=SEALED_COMMIT_BOUND",
-  "formalFigurePackage=PASS",
+  "formalFigurePackage=SEALED_COMMIT_BOUND",
   "ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX",
   "dgxUsed=false",
   "localizedScaleCriticalControl=OPEN",
@@ -364,7 +364,8 @@ const figureResults = JSON.parse((await regularBytes(
 )).toString("utf8"));
 const certificateChecks = certificateManifest.checkInventory?.requiredPerPath;
 const figureChecks = figureValidation.required;
-const figureRows = figureResults.rowCount;
+const figureRows = figureResults.sourceDataRows;
+const panelRowCounts = figureResults.panelRowCounts;
 if (
   certificateManifest.schemaVersion !== "r073w-signed-production-exact-manifest-v1" ||
   certificateManifest.finalSeal !== true ||
@@ -375,7 +376,9 @@ if (
   figureValidation.passed !== figureChecks ||
   figureValidation.checks?.length !== figureChecks ||
   figureResults.schemaVersion !== "r073w-signed-production-figure-results-v1" ||
-  figureResults.series?.total !== figureRows ||
+  !panelRowCounts ||
+  Object.values(panelRowCounts).reduce((total, value) => total + value, 0) !== figureRows ||
+  JSON.stringify(panelRowCounts) !== JSON.stringify({ A: 327, B: 362, C: 484, D: 243 }) ||
   !Number.isInteger(figureChecks) || figureChecks <= 0 ||
   !Number.isInteger(figureRows) || figureRows <= 0
 ) {

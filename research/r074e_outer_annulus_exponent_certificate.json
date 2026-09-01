@@ -1,0 +1,155 @@
+{
+  "analytic_boundary": [
+    "does not prove heat-evolved contrast bounds",
+    "does not prove packet survival or leakage estimates",
+    "does not certify pressure or exterior-payment rows",
+    "does not prove endpoint divergence, regularity, or Clay"
+  ],
+  "checks": [
+    {
+      "id": "lambda_inside_lower_edge",
+      "left": "63/32",
+      "margin": "31/32",
+      "note": "target is beyond annulus inner radius",
+      "pass": true,
+      "relation": ">",
+      "right": "1/1"
+    },
+    {
+      "id": "lambda_inside_outer_edge",
+      "left": "63/32",
+      "margin": "1/32",
+      "note": "target remains below annulus outer radius",
+      "pass": true,
+      "relation": "<",
+      "right": "2/1"
+    },
+    {
+      "id": "radial_split",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "h^2+q^2=r^2",
+      "pass": true,
+      "relation": "==",
+      "right": "1/1"
+    },
+    {
+      "id": "gamma_coefficient",
+      "left": "8/3969",
+      "margin": "0/1",
+      "note": "1/(128 lambda^2)",
+      "pass": true,
+      "relation": "==",
+      "right": "8/3969"
+    },
+    {
+      "id": "packet_Gu_threshold",
+      "left": "4/1323",
+      "margin": "0/1",
+      "note": "(3/2)c_gamma",
+      "pass": true,
+      "relation": "==",
+      "right": "4/1323"
+    },
+    {
+      "id": "window_lower",
+      "left": "4/1323",
+      "margin": "43/423360",
+      "note": "packet target dominates the formal Gu row",
+      "pass": true,
+      "relation": "<",
+      "right": "1/320"
+    },
+    {
+      "id": "window_upper",
+      "left": "1/320",
+      "margin": "211/936000",
+      "note": "direct caloric isolation has exponent room",
+      "pass": true,
+      "relation": "<",
+      "right": "49/14625"
+    },
+    {
+      "id": "local_leakage_beats_inverse_R",
+      "left": "75/22528",
+      "margin": "23/112640",
+      "note": "transverse leakage beats the inverse-R prefactor in packet survival",
+      "pass": true,
+      "relation": ">",
+      "right": "1/320"
+    },
+    {
+      "id": "local_leakage_margin",
+      "left": "75/22528",
+      "margin": "117451/89413632",
+      "note": "transverse leakage exponent beats annular weight",
+      "pass": true,
+      "relation": ">",
+      "right": "8/3969"
+    },
+    {
+      "id": "outer_transition_threshold",
+      "left": "196/225",
+      "margin": "2812/33075",
+      "note": "equivalent nonempty-window condition",
+      "pass": true,
+      "relation": ">",
+      "right": "1040/1323"
+    },
+    {
+      "id": "buffer_gap",
+      "left": "1/240",
+      "margin": "0/1",
+      "note": "reserved asymptotic transition margin",
+      "pass": true,
+      "relation": "==",
+      "right": "1/240"
+    },
+    {
+      "id": "finite_separation_threshold",
+      "left": "32/1",
+      "margin": "0/1",
+      "note": "L>=7680 pays arcsin(kappa R)<=32R",
+      "pass": true,
+      "relation": "==",
+      "right": "32/1"
+    },
+    {
+      "id": "midpoint_window_empty",
+      "left": "1/192",
+      "margin": "4157/798720",
+      "note": "old midpoint sufficient conditions are incompatible",
+      "pass": true,
+      "relation": ">",
+      "right": "1/266240"
+    }
+  ],
+  "decimal_window": {
+    "chosen": "0.003125",
+    "lower": "0.00302343159486017",
+    "upper": "0.00335042735042735"
+  },
+  "derived": {
+    "c_gamma": "8/3969",
+    "heat_isolation_upper": "49/14625",
+    "local_leakage_exponent": "75/22528",
+    "outer_transition_threshold": "1040/1323",
+    "packet_Gu_lower": "4/1323"
+  },
+  "inputs": {
+    "L_min": "7680/1",
+    "alpha": "14/15",
+    "beta_squared": "31/256",
+    "c_R": "1/320",
+    "c_h": "15/16",
+    "kappa": "16/1",
+    "lambda": "63/32"
+  },
+  "schema": "r074e-outer-annulus-exponent-certificate-v1",
+  "scope": "finite exact rational exponent compatibility only",
+  "status": "PASS",
+  "summary": {
+    "passed": 13,
+    "total": 13
+  }
+}

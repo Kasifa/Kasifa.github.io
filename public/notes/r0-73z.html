@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.66">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.73Z｜正三次 heat covariance 的有限性障碍与能量兼容修复</title><meta name="description" content="从初始端点发散，到能量级有限性与 pressure-active 分离见证"><link rel="canonical" href="https://kasifa.github.io/notes/r0-73z.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.66"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{--paper:#f3ecd8;--ink:#26231d;--rule:#8b2f2b;--muted:#625d52}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 Georgia,"Noto Serif SC",serif}.top{border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}main{width:min(920px,90vw);margin:auto}.hero{padding:56px 0 28px;border-bottom:1px solid var(--ink)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:2rem}h1{font-size:clamp(2rem,6vw,4rem);line-height:1.05}h2{margin-top:3rem;color:var(--rule)}.stamp,.section-no{font:700 12px/1.5 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}article{padding:20px 0 80px}p,.callout{overflow-wrap:anywhere}.equation{overflow:auto;background:#fff8e8;padding:14px;border-left:4px solid var(--rule)}a{color:#702824}img{max-width:100%;height:auto}.callout{padding:1rem 1.25rem;background:#fff8e8;border:1px solid #c8bfa8}@media(max-width:720px){html,body{max-width:100%;overflow-x:hidden}body{font-size:15px}main,article,section{min-width:0}.hero-inner{grid-template-columns:1fr}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{.top{display:none}body{background:white;font-size:10.5pt}main{width:auto}.hero{padding-top:0}a{color:inherit;text-decoration:none}section{break-inside:auto}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.73Z · NOT CLAY</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.73Z · EXACT ANALYTIC THEOREMS / FINITE CERTIFICATE</div><h1>R0.73Z｜正三次 heat covariance 的有限性障碍与能量兼容修复</h1><p>从初始端点发散，到能量级有限性与 pressure-active 分离见证</p><p>原候选 D<sub>ii,s</sub><sup>3/2</sup> 在 L<sup>2</sup> 初始迹可发散；修复量 D<sub>ii,s</sub>√k<sub>s</sub> 由 Leray energy 支付，并由 crossed exact family 分离 pressure-cutoff debt。</p></div><div class="stamp"><strong>状态 · R0.73Z 完成</strong><p>版本 R0.73Z · 2026-09-01</p><p>analytic theorems：PROVED</p><p>Fourier certificate：FINITE</p><p>local payment / epsilon regularity：OPEN</p><p>LOCAL DIRECT / NO DGX</p><p>NOT CLAY</p></div></div></header>
+<article><section id="section"><div class="section-no">01 / canonical report</div><h2>本节直接结论</h2><p>R0.73Y 冻结的候选</p><div class="equation result">\[
+ \mathcal D_{3/2}^{\square}
+ ={1\over R}\int_{I_R^\square}\int_0^{\theta R^2}
+ \int_{B_R}D_{ii,s}^{3/2}\,dx\,ds\,dt
+\tag{1.1}
+\]</div><p>通过了三个形式关口：</p><ol class="report-list report-list-ordered"><li>在 Navier--Stokes scaling 下无量纲；</li><li>对振幅精确三次齐次；</li><li>对所有非平凡 periodic smooth 场，正尺度 kernel 只剩常向量。</li></ol><p>但它没有通过能量类有限性关口。存在一个零压、全局 Leray--Hopf、suitable、每个 \(t&gt;0\) 都光滑的 exact shear，使</p><div class="equation result">\[
+ \int_0^{T_*}\int_{s_0}^{s_1}\int_{B_R}
+ D_{ii,s}^{3/2}\,dx\,ds\,dt=+\infty
+\tag{1.2}
+\]</div><p>对任意 \(T_*&gt;0\) 和任意固定正尺度带 \(0&lt;s_0&lt;s_1\) 成立。发散只发生在时间区间触及 \(L^2\) 初始迹时； 它不是 interior singularity，也不否定 smooth-cylinder finiteness。</p><p>因此，\(\mathcal D_{3/2}\) 在 general suitable-weak 层面只能先作为 \([0,+\infty]\)-值的非负 functional。不能未经证明把它写成有限的 epsilon-regularity input。</p><p>本节给出的修复是</p><div class="equation result">\[
+ \boxed{
+ \mathcal K_D^\square
+ ={\nu\over R^2}\int_{I_R^\square}\int_0^{\theta R^2}
+ \int_{B_R}D_{ii,s}\,k_s^{1/2}\,dx\,ds\,dt,}
+\tag{1.3}
+\]</div><p>其中</p><div class="equation result">\[
+ k_s={1\over2}\left(P_s|u|^2-|P_su|^2\right).
+\tag{1.4}
+\]</div><p>它保留非负性、尺度不变性和三次齐次，却能由 Leray energy 直接控制。 这是一条真正的正向估计，但仍不是 CKN coercivity。</p></section>
+<section id="smooth"><div class="section-no">02 / canonical report</div><h2>原候选为什么在 smooth 层面正确</h2><p>梯度 covariance 是严格非负的 heat variance：</p><div class="equation result">\[
+ D_{ii,s}
+ =P_s|\nabla u|^2-|\nabla P_su|^2
+ =2\int_0^sP_{s-r}|\nabla^2P_ru|^2\,dr.
+\tag{2.1}
+\]</div><p>若 cylinder 闭包紧含于 smooth lifespan，且</p><div class="equation result">\[
+ M_2=\sup_t\|\nabla^2u(t)\|_\infty&lt;\infty,
+\tag{2.2}
+\]</div><p>则</p><div class="equation result">\[
+ 0\le D_{ii,s}\le2sM_2^2.
+\tag{2.3}
+\]</div><p>所以 \(D_{ii,s}^{3/2}=O(s^{3/2})\)，\(s=0\) 端点可积。</p><p>对 NSE scaling</p><div class="equation result">\[
+ u_\lambda(t,x)=\lambda u(\lambda^2t,\lambda x),
+\tag{2.4}
+\]</div><p>有</p><div class="equation result">\[
+ D_s[u_\lambda](t,x)
+ =\lambda^4D_{\lambda^2s}[u](\lambda^2t,\lambda x).
+\tag{2.5}
+\]</div><p>\(D^{3/2}\) 给出 \(\lambda^6\)， \(dt\,dx\,ds\) 给出 \(\lambda^{-7}\)，而 \(R^{-1}\) 给出 \(\lambda\)，总次数为零。对振幅 \(A\)，</p><div class="equation result">\[
+ \mathcal D_{3/2}[Au]
+ =|A|^3\mathcal D_{3/2}[u].
+\tag{2.6}
+\]</div><p>这些性质全部成立；失败发生在 suitable-weak 有限值，而不是形式尺度。</p></section>
+<section id="section-2"><div class="section-no">03 / canonical report</div><h2>精确初始端点反例</h2><p>先看光滑高频族</p><div class="equation result">\[
+ u^{(n)}(t,x)=e^{-\nu n^2t}\sin(nx_2)e_1.
+\tag{3.1}
+\]</div><p>在固定正尺度带 \(s\in[s_0,s_1]\) 上，periodic heat kernel 有正下界。 令 \(G_n=\partial_2u_1^{(n)}\)，则</p><div class="equation result">\[
+ D_s(t,x)\ge\kappa\|G_n(t)\|_{L^2(\mathbb T)}^2.
+\tag{3.2}
+\]</div><p>在</p><div class="equation result">\[
+ J_n=[(2\nu n^2)^{-1},(\nu n^2)^{-1}]
+\tag{3.3}
+\]</div><p>上，\(\|G_n(t)\|_2\gtrsim n\)，所以</p><div class="equation result">\[
+ \int_{J_n}\int_{s_0}^{s_1}\int_{B_R}
+ D_s^{3/2}\gtrsim n.
+\tag{3.4}
+\]</div><p>但三维 torus 上</p><div class="equation result">\[
+ \sup_t\|u^{(n)}(t)\|_2^2=4\pi^3,\qquad
+ \nu\int_0^\infty\|\nabla u^{(n)}\|_2^2dt=2\pi^3,
+\tag{3.5}
+\]</div><p>完全不依赖 \(n\)。因此没有只依赖 bare energy、又能统一穿过初始端点的 有限三次上界。</p><p>把这一非紧性装进一个解，取</p><div class="equation result">\[
+ N_j=8^j,\qquad a_j=2^{-j}=N_j^{-1/3},
+\tag{3.6}
+\]</div><div class="equation result">\[
+ F_0(\xi)=\sum_{j\ge1}a_j\sin(N_j\xi),
+\qquad
+ u(t,x)=e^{\nu t\partial_2^2}F_0(x_2)e_1.
+\tag{3.7}
+\]</div><p>因为</p><div class="equation result">\[
+ \sum_ja_j^2={1\over3}&lt;\infty,
+\tag{3.8}
+\]</div><p>初值属于 \(L^2\)。有限 Fourier truncation 的局部能量等式在 \(L_t^\infty L_x^2\cap L_t^2H_x^1\) 强极限下传递，所以该解是 suitable。 另一方面，每个 disjoint interval</p><div class="equation result">\[
+ J_j=[(2\nu N_j^2)^{-1},(\nu N_j^2)^{-1}]
+\tag{3.9}
+\]</div><p>至少贡献常数倍</p><div class="equation result">\[
+ a_j^3N_j=1.
+\tag{3.10}
+\]</div><p>无限求和得到 (1.2)。</p><p>这条反例的边界必须保留：任意 \(\delta&gt;0\) 后，解在 \([\delta,T_*]\) 上解析，原 functional 有限。R0.73X 的 interior cylinder 假设没有被一个已知奇解击穿。</p></section>
+<section id="section-3"><div class="section-no">04 / canonical report</div><h2>能量兼容修复</h2><p>速度 covariance 与梯度 covariance 分别满足</p><div class="equation result">\[
+ 0\le k_s\le\frac12P_s|u|^2,\qquad
+ 0\le D_s\le P_s|\nabla u|^2.
+\tag{4.1}
+\]</div><p>三维 periodic heat flow 的 \(L^1\to L^\infty\) 估计给</p><div class="equation result">\[
+ \|P_s|u|^2\|_\infty^{1/2}
+ \le Cs^{-3/4}\|u\|_2.
+\tag{4.2}
+\]</div><p>于是</p><div class="equation result">\[
+ \int_{B_R}D_s\sqrt{k_s}\,dx
+ \le Cs^{-3/4}\|u(t)\|_2\|\nabla u(t)\|_2^2.
+\tag{4.3}
+\]</div><p>因为</p><div class="equation result">\[
+ \int_0^{\theta R^2}s^{-3/4}ds
+ =4\theta^{1/4}R^{1/2},
+\tag{4.4}
+\]</div><p>得到严格的 energy-class 上界</p><div class="equation result">\[
+ \boxed{
+ \mathcal K_D[I,B_R;\theta]
+ \le C_{\mathbb T^3}\nu\theta^{1/4}R^{-3/2}
+ \left(\operatorname*{ess\,sup}_{t\in I}\|u(t)\|_2\right)
+ \int_I\|\nabla u(t)\|_2^2dt.}
+\tag{4.5}
+\]</div><p>修复的核心不是形式拼接，而是把原来不可用的时间需求 \(\|\nabla u\|_2^3\) 改成 Leray 可积的 \(\|u\|_2\|\nabla u\|_2^2\)。</p><p>对固定 \(t,s&gt;0\)，严格正 periodic heat kernel 还给出</p><div class="equation result">\[
+ D_s(x)\sqrt{k_s(x)}=0
+ \quad\Longleftrightarrow\quad
+ u(t,\cdot)\ \text{为空间常值}.
+\tag{4.6}
+\]</div><p>因此在非退化时间区间上，\(\mathcal K_D=0\) 当且仅当速度对几乎处处 物理时间为空间常值。对 unforced periodic NSE，这进一步是 time-independent Galilean mode。</p></section>
+<section id="local-lower-bound"><div class="section-no">05 / canonical report</div><h2>当前能证明的 local lower bound</h2><p>固定</p><div class="equation result">\[
+ 0&lt;\alpha&lt;\beta\le\theta,\qquad
+ s\in[\alpha R^2,\beta R^2].
+\tag{5.1}
+\]</div><p>对 \(x,y\in B_R\)，一个 lifted Gaussian 项满足</p><div class="equation result">\[
+ g_s(x-y)\ge c_{\alpha,\beta}R^{-3}.
+\tag{5.2}
+\]</div><p>定义</p><div class="equation result">\[
+ V_R=\int_{B_R}|u-u_{B_R}|^2,\qquad
+ G_R=\int_{B_R}|\nabla u-(\nabla u)_{B_R}|^2.
+\tag{5.3}
+\]</div><p>限制两个 variance 到 \(B_R\) 后，</p><div class="equation result">\[
+ D_s\ge cR^{-3}G_R,\qquad
+ k_s\ge cR^{-3}V_R.
+\tag{5.4}
+\]</div><p>从而</p><div class="equation result">\[
+ \boxed{
+ {\nu\over R^2}\int_I\int_{\alpha R^2}^{\beta R^2}
+ \int_{B_R}D_s\sqrt{k_s}
+ \ge c_{\alpha,\beta}\nu R^{-3/2}
+ \int_I G_RV_R^{1/2}dt.}
+\tag{5.5}
+\]</div><p>这只能称为 centered-oscillation product lower bound。它不是同一个 group action 下的 first-jet quotient；local affine profile 会令 \(G_R=0\)，使右端完全退化。这里没有提前申报 CKN coercivity。</p></section>
+<section id="pressure-active"><div class="section-no">06 / canonical report</div><h2>Pressure-active 分离见证</h2><p>R0.73Y 的 exact shear 具有 \(p=Q_s=0\)。本节进一步取</p><div class="equation result">\[
+ u(t,x)=e^{-\nu n^2t}
+ \left(A\sin(nx_2)e_1+B\sin(nx_1)e_2\right),
+\tag{6.1}
+\]</div><div class="equation result">\[
+ p(t,x)=ABe^{-2\nu n^2t}\cos(nx_1)\cos(nx_2).
+\tag{6.2}
+\]</div><p>直接计算得到</p><div class="equation result">\[
+ (u\cdot\nabla)u+\nabla p=0,
+\tag{6.3}
+\]</div><p>所以这是 exact NSE trajectory。它本身不是新解：等幅特例属于经典 二维 Taylor--Green 表示，一般 \(A,B\) 是同一 Laplacian eigenspace 中的 steady Euler flow 经 viscous decay。</p><p>令 \(r=e^{-n^2s}\)。Gaussian factorization 给</p><div class="equation result">\[
+ \tau_{12,s}=0.
+\tag{6.4}
+\]</div><p>resolved gradient 只有两个 off-diagonal entries，因此</p><div class="equation result">\[
+ \boxed{\Pi_s=\mathscr S_s=0}
+\tag{6.5}
+\]</div><p>对所有 \(t,x,s&gt;0\) 成立。但精确定义的 pressure--velocity covariance</p><div class="equation result">\[
+ Q_s=P_s(pu)-P_sp\,P_su
+\tag{6.6}
+\]</div><p>满足</p><div class="equation result">\[
+ \begin{aligned}
+ Q_{1,s}
+ &amp;=\frac{A_t^2B_t}{2}(r^5-r^3)
+ \cos(nx_1)\sin(2nx_2),\\
+ Q_{2,s}
+ &amp;=\frac{A_tB_t^2}{2}(r^5-r^3)
+ \sin(2nx_1)\cos(nx_2),
+ \end{aligned}
+\tag{6.7}
+\]</div><p>其中 \(A_t=Ae^{-\nu n^2t}\)，\(B_t=Be^{-\nu n^2t}\)。 若 \(AB\ne0\)，则 \(Q_s\not\equiv0\)。在 \(A_t=B_t&gt;0\)、\(nx_1=nx_2=\pi/3\) 处，</p><div class="equation result">\[
+ \nabla\cdot Q_s={3nA_t^3\over4}(r^3-r^5)&gt;0.
+\tag{6.8}
+\]</div><p>所以存在 compact nonnegative bump \(\chi\)，使</p><div class="equation result">\[
+ \int Q_s\cdot\nabla\chi
+ =-\int\chi\,\nabla\cdot Q_s&lt;0.
+\tag{6.9}
+\]</div><p>这证明：即使两种 production 都逐点为零，local pressure-cutoff debt 仍然会重新激活。</p><p>同一个见证的正 covariance 是</p><div class="equation result">\[
+ D_s={n^2\over2}(1-r^2)
+ \left[
+ A_t^2(1-r^2\cos2nx_2)
+ +B_t^2(1-r^2\cos2nx_1)
+ \right]&gt;0.
+\tag{6.10}
+\]</div><p>因此 \(\mathcal D_{3/2}\) 和 \(\mathcal K_D\) 都消除了这一 pressure-active production kernel。</p></section>
+<section id="section-4"><div class="section-no">07 / canonical report</div><h2>证书与审计</h2><p>deterministic certificate 在</p><div class="equation result">\[
+ \mathbb Q[i][A,B,r][\mathbb Z^2]
+\tag{7.1}
+\]</div><p>中完成 12 项 exact check：</p><ul class="report-list"><li>NSE residual；</li><li>cross stress \(\tau_{12}\)；</li><li>signed production；</li><li>third-centered flux divergence 与 centered production；</li><li>两个 pressure covariance component；</li><li>gradient covariance；</li><li>subfilter energy。</li></ul><p>它还精确核验高频能量常数 \(6\pi^3\)，以及</p><div class="equation result">\[
+ N_j=8^j,\qquad a_j=2^{-j},\qquad
+ \sum_ja_j^2={1\over3},\qquad a_j^3N_j=1.
+\tag{7.2}
+\]</div><p>证书是解析证明的 executable cross-check，不承担普遍量词。</p><p>独立审计逐项复算了端点发散、energy upper bound、exact kernel 与 local Gaussian lower bound。审计要求并已完成三个修正：</p><ol class="report-list report-list-ordered"><li>补写 suitable 极限；</li><li>把 integrated kernel 写成 a.e.-time spatial constants；</li><li>把 first-jet coercivity 降格为 centered-oscillation product bound。</li></ol></section>
+<section id="section-5"><div class="section-no">08 / canonical report</div><h2>文献校准</h2><p>本节不能把下列构件称为新：</p><ul class="report-list"><li>positive Gaussian covariance 与 realizability；</li><li>Gaussian scale-as-heat-time 和 exact stress evolution；</li><li>signed production 与 positive viscous covariance 的分账；</li><li>cubic weak energy defect；</li><li>heat-semigroup Besov/carré-du-champ 框架；</li><li>\(\sqrt{k_{\rm sgs}}\) 作为 unresolved velocity scale 的 LES 模型；</li><li>simple-shear zero SGS production；</li><li>crossed cellular/Taylor--Green-type exact solution。</li></ul><p>两轮 bounded primary-source audit 没有定位到完全同式的 \(D_s^{3/2}\) 或 \(D_s\sqrt{k_s}\) local scale-space functional，也没有 定位到同一 classical crossed witness 上 \(\Pi_s=\mathscr S_s=0\)、\(Q_s\ne0\) 的三项并列命题。这只能写成 bounded non-hit，不能写成 novelty proof。</p></section>
+<section id="section-6"><div class="section-no">09 / canonical report</div><h2>研究价值</h2><p>R0.73Z 有两项可靠增量。</p><p>第一，它关闭了一个原本看似自然、实际在能量层级不稳的候选： \(D_s^{3/2}\) 的 smooth 性质正确，但不能自动穿过 \(L^2\) 初始端点。 这避免后续在一个 undefined-or-infinite epsilon input 上继续搭桥。</p><p>第二，它给出一个目前确实能落在 Leray energy class 上的 positive cubic observable，并证明其 exact kernel 与 local centered-oscillation lower bound。pressure-active crossed witness 又说明，修复不能只 quotient zero-pressure shears；pressure covariance 必须被独立支付。</p><p>对 Clay 问题的直接推进仍然有限。目前尚未得到 arbitrary suitable weak solutions 上的 local CKN coercivity、compactness、epsilon regularity 或 global smoothness。作为论文方向，当前组合比 R0.73Y 更强：它包含一个 exact endpoint obstruction、一个 energy-compatible positive theorem 和一个 pressure-active separation witness；但在宣布高水平新结果前仍需完成更深的 引用链审计和真正的 local payment theorem。</p></section>
+<section id="r0-74a"><div class="section-no">10 / canonical report</div><h2>R0.74A 冻结任务</h2><p>下一节只攻击一个接口：</p><p>&gt; 能否把 \(\mathcal K_D^\square\) 的 global energy upper bound 局部化为 &gt; \(\mathcal E^\square(z_0,4R)^{3/2}\) 加一个最小、明确、可缩放的 exterior &gt; velocity/gradient tail，并用它支付 crossed witness 激活的 &gt; \(Q_s\cdot\nabla\chi\)？</p><p>依次执行：</p><ol class="report-list report-list-ordered"><li>对 \(k_s\) 与 \(D_s\) 同时做 core/exterior Gaussian annulus split；</li><li>确定 exterior gradient tail 是否可由 R0.73X 的 velocity/pressure tail 推出，或必须作为新独立债务；</li><li>在 crossed family 上精确测试每一项的振幅与 \(R\)-scaling；</li><li>证明 local upper payment，或给出 exact counterexample；</li><li>只有 payment 关闭后，才重新讨论 quotient coercivity。</li></ol><p><strong>NOT CLAY.</strong></p></section><section id="figure"><div class="section-no">F / Journal figure</div><h2>端点障碍、能量修复与 pressure-active 分离</h2><p><img src="/assets/r073z/fig-r073z-covariance-separation.svg" alt="R0.73Z covariance separation, endpoint obstruction, and pressure-active exact kernel"></p><p><a href="/assets/r073z/fig-r073z-covariance-separation.pdf">下载矢量 PDF</a> · <a href="/assets/r073z/fig-r073z-covariance-separation.png">下载 600 dpi PNG</a> · <a href="/assets/r073z/fig-r073z-covariance-separation.svg">打开 SVG</a></p><p>图中 201 行是解析公式的确定性取值，不是 DNS、simulation、奇性候选或有限采样证明。NOT CLAY。</p></section><section id="release-boundary" class="callout"><div class="section-no">B / Exact claim boundary</div><h2>证明、有限证书、开放问题与 Clay 边界分开</h2><p>PROVED：originalDThreeHalvesScaling=PROVED_ANALYTICALLY；smoothCylinderFiniteness=PROVED_ANALYTICALLY；initialEndpointEnergyClassFiniteness=FALSE_BY_EXACT_LERAY_HOPF_SHEAR；energyCompatibleKDUpperBound=PROVED_ANALYTICALLY；exactKernelKD=PROVED_ANALYTICALLY；localCenteredOscillationProductLowerBound=PROVED_ANALYTICALLY；pressureActiveCrossedFamily=PROVED_ANALYTICALLY</p><p>FINITE：covarianceFourierCertificate=FINITE_CROSS_CHECK_ONLY；formalEvidenceCertificate=SOURCE_COMMIT_BOUND_PACKAGE_HASH_SEALED；formalFigurePackage=SEALED_COMMIT_BOUND_25_FILES；formalFigureRows=201；navierStokesSimulation=NOT_RUN；directNumericalSimulation=NOT_RUN；ordinaryTranslationPath=LOCAL_DIRECT_NO_DGX；dgxUsed=false</p><p>OPEN：interiorSuitableWeakFiniteness=OPEN；localKDUpperPayment=OPEN；genuinelyThreeDimensionalPressureActiveInvisibleFamily=OPEN；scaleUniformQuotientCoercivity=OPEN；epsilonRegularity=OPEN；arbitraryThreeDimensionalGlobalRegularity=OPEN；clayConclusion=OPEN</p><p>本节证明初始端点障碍、一个能量兼容的正三次观测以及 pressure-active 分离见证。它不证明 CKN coercivity、epsilon regularity、奇性或任意三维全局正则性。NOT CLAY。</p></section><section id="reproduce"><div class="section-no">R / Reproduction</div><h2>冻结证明、审计与证书</h2><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073z_finiteness_obstruction_and_repair.md">有限性障碍与修复证明</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073z_pressure_active_kernel.md">pressure-active kernel</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073z_finiteness_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073z_primary_literature_audit.md">一手文献审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r073z_evidence_gap_matrix.md">主张—证据矩阵</a></p><p><a href="/notes/r0-73z.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X）</a> · <a href="/recap-r0-61-r0-73x.pdf">PDF</a></p></section><section id="references"><div class="section-no">References</div><h2>参考文献</h2><ol class="report-list report-list-ordered"><li>B. Vreman, B. Geurts, and H. Kuerten, <em>J. Fluid Mech.</em> <strong>278</strong> (1994), <a href="https://doi.org/10.1017/S0022112094003745">DOI</a>.</li><li>M. Germano, <em>J. Fluid Mech.</em> <strong>238</strong> (1992), <a href="https://doi.org/10.1017/S0022112092001733">DOI</a>.</li><li>G. L. Eyink and H. Aluie, <em>Physics of Fluids</em> <strong>21</strong> (2009), <a href="https://doi.org/10.1063/1.3266883">DOI</a>, <a href="https://arxiv.org/abs/0909.2386">arXiv</a>.</li><li>P. L. Johnson, <em>Phys. Rev. Lett.</em> <strong>124</strong> (2020), <a href="https://doi.org/10.1103/PhysRevLett.124.104501">DOI</a>, <a href="https://arxiv.org/abs/1912.00293">arXiv</a>.</li><li>J. Duchon and R. Robert, <em>Nonlinearity</em> <strong>13</strong> (2000), <a href="https://doi.org/10.1088/0951-7715/13/1/312">DOI</a>.</li><li>M. Ledoux, <em>Ann. Fac. Sci. Toulouse</em> <strong>9</strong> (2000), <a href="https://numdam.org/item/AFST_2000_6_9_2_305_0/">record</a>.</li><li>P. Alonso-Ruiz et al., <em>J. Funct. Anal.</em>, <a href="https://arxiv.org/abs/1811.04267">arXiv:1811.04267</a>.</li><li>A. W. Vreman, <em>Physics of Fluids</em> <strong>16</strong> (2004), <a href="https://doi.org/10.1063/1.1785131">DOI</a>.</li><li>A. Yoshizawa and K. Horiuti, <em>J. Phys. Soc. Japan</em> <strong>54</strong> (1985), <a href="https://doi.org/10.1143/JPSJ.54.2834">DOI</a>.</li><li>C. Meneveau and J. O'Neil, <em>Phys. Rev. E</em> <strong>49</strong> (1994), <a href="https://doi.org/10.1103/PhysRevE.49.2866">DOI</a>.</li><li>G. I. Taylor and A. E. Green, <em>Proc. R. Soc. A</em> <strong>158</strong> (1937), <a href="https://doi.org/10.1098/rspa.1937.0036">DOI</a>.</li></ol></section></article>
+</main></body></html>

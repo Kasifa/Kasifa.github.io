@@ -23,7 +23,7 @@ test("R0.74S publication accounting advances without recap drift", () => {
   assert.equal(manifest.latestReleaseGate, "tests/r074s-ball-clock-gate.test.mjs");
   assert.equal(manifest.latestReleasePublicationTest, "tests/r074s-release.test.mjs");
   assert.equal(manifest.latestReleasePdfBinder, "scripts/bind-r074s-pdf.mjs");
-  assert.equal(manifest.latestReleaseTranslationScript, "scripts/add-r074s-step11-translations.mjs");
+  assert.equal(manifest.latestReleaseTranslationScript, "scripts/add-r074s-translations.mjs");
   assert.equal(sha("public/recap-r0-61-r0-74o.html"), "d06c9edb093664c9835feb814a11ecd180305780b3efcdcd560908f754fba4b2");
   assert.equal(sha("public/recap-r0-61-r0-74o.pdf"), "80264dab72ca12569252a360d9b70388ba0c4b107132012b98d73b76d634d076");
 });

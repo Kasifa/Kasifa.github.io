@@ -1,0 +1,22 @@
+{
+  "schema": "r074p-observable-triage-config-v1",
+  "figure_id": "fig-r074p-observable-triage",
+  "width_mm": 178,
+  "height_mm": 100,
+  "dpi": 600,
+  "log10_K_min": 0,
+  "log10_K_max": 12,
+  "log10_K_step": 0.25,
+  "carleson_series": [
+    {"id": "sigma_1_4", "label": "sigma = 1/4", "beta_numerator": 1, "beta_denominator": 4, "line_style": "solid"},
+    {"id": "sigma_1_2", "label": "sigma = 1/2", "beta_numerator": 1, "beta_denominator": 2, "line_style": "dash"},
+    {"id": "sigma_ge_1", "label": "sigma >= 1", "beta_numerator": 1, "beta_denominator": 1, "line_style": "dot"}
+  ],
+  "rate_ledger": [
+    {"id": "window_sigma_1_4", "observable": "window, sigma = 1/4", "relation": "<=", "rate_numerator": -1, "rate_denominator": 4, "classification": "misses target"},
+    {"id": "window_sigma_1_2", "observable": "window, sigma = 1/2", "relation": "<=", "rate_numerator": -1, "rate_denominator": 2, "classification": "misses target"},
+    {"id": "window_sigma_ge_1", "observable": "window, sigma >= 1", "relation": "<=", "rate_numerator": -1, "rate_denominator": 1, "classification": "misses target"},
+    {"id": "matched_target_component", "observable": "matched target component v_j", "relation": "=", "rate_numerator": 0, "rate_denominator": 1, "classification": "detects target"},
+    {"id": "strong_target_lower", "observable": "over-weighted target lower", "relation": ">=", "rate_numerator": 640, "rate_denominator": 43, "classification": "overpays"}
+  ]
+}

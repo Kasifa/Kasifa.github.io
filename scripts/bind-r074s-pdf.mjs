@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜no-exception stopped-work 二次界 no-go";
+  const title = "R0.74S｜canonical best-N last-exit 等价与 no-gain";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -100,7 +100,17 @@ try {
       stoppedWorkFullClockEquivalence: "PROVED_WITHIN_PAID_B_Q",
       universalNoExceptionQuadraticAntecedent: "REFUTED_BY_INHERITED_SMOOTH_EXACT_NSE_FAMILY",
       conditionalS38Implication: "PROVED_RETAINED",
-      fixedBestNTerminalExceptionEstimate: "OPEN_NEXT_TARGET",
+      terminalDomainSeparation: "PROVED_PLATEAU_LESS_THAN_OR_EQUAL_TO_FULL",
+      signedBestNTailQuantifierOrder: "PROVED_SUP_INF_TERMINAL_DEPENDENT_EXCEPTIONS",
+      signedFHalfExit: "PROVED_EXACT_ONE_HALF_BEST_N_TAIL",
+      signedFHalfExitS25Admissibility: false,
+      kThetaLastExit: "PROVED_WITH_SHARP_ONE_B_Q_ERROR",
+      kThetaGoodStopClosure: "PROVED_FINITE_POSITIVE_TERMINALS_AT_GOOD_TERMINALS_FOR_THETA_BELOW_THREE_QUARTERS",
+      canonicalLastExitQuadraticCompression: "REFUTED_PROVED_NO_GAIN_EQUIVALENCE",
+      fullTerminalBestNTail: "OPEN_Q12",
+      plateauBestNTail: "OPEN_WEAKER_RESTRICTION",
+      fixedBestNTerminalExceptionEstimate: "OPEN_NEXT_PDE_TARGET",
+      paidBranchResidualTail: "OPEN_TO_BE_DEFINED_AND_AUDITED",
       jordanEnvelopeQuadraticBound: "OPEN",
       finiteExceptionConsequence: "PROVED_CONDITIONAL_IMPLICATION_ONLY",
       exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",

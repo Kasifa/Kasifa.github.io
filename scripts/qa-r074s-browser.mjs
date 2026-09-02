@@ -47,7 +47,7 @@ try {
         rawTexVisible: /\\\[|\\\]|\\\(|\\\)/.test(body),
         englishChineseResidueCount: residue.length,
         notClayVisible: kind !== "note" || body.includes("NOT CLAY"),
-        openBoundaryVisible: kind !== "note" || /fixed best-N/i.test(body) && /terminal-dependent|随终端变化/i.test(body) && /OPEN|下一门槛/.test(body),
+        openBoundaryVisible: kind !== "note" || /fixed best-|固定 best-/i.test(body) && /terminal-dependent|随终端变化/i.test(body) && /OPEN|下一门槛/.test(body),
         noGoBoundaryVisible: kind !== "note" || /no-go/i.test(body) && /smooth exact family|平滑精确族/i.test(body) && /REFUTED|严格否定/.test(body),
         formalFigureVisible: kind !== "note" || /figure|期刊主图/i.test(body),
         cardPresent: kind !== "home" || Boolean(card),

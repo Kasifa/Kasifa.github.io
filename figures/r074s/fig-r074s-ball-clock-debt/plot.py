@@ -145,8 +145,8 @@ def render(config: dict) -> None:
     width, height = config["width_mm"] * mm, config["height_mm"] * mm
     d = Drawing(width, height)
     d.add(Rect(0, 0, width, height, fillColor=white, strokeColor=None))
-    label(d, 14, height - 16, "Universal no-exception stopped-work quadratic bound: refuted", 8.2, bold=True)
-    label(d, 14, height - 27, "R0.74S Step 8  |  EXACT NSE NO-GO  |  CONDITIONAL S.38 RETAINED  |  NOT CLAY", 5.2, color=MID)
+    label(d, 14, height - 16, "Canonical best-N last exits: exact representations, no new compression", 8.2, bold=True)
+    label(d, 14, height - 27, "R0.74S STEP 9  |  SHARP B_Q ERROR  |  NO-GAIN / NO-GO  |  NOT CLAY", 5.2, color=MID)
     for dx, dy in [(0, 4.5), (4.5, 0), (0, -4.5), (-4.5, 0)]:
         d.add(Circle(width - 19 + dx, height - 18 + dy, 2.3, fillColor=BLUE_LIGHT, strokeColor=BLUE, strokeWidth=0.5))
     d.add(Circle(width - 19, height - 18, 1.8, fillColor=GOLD_LIGHT, strokeColor=GOLD, strokeWidth=0.5))
@@ -155,29 +155,27 @@ def render(config: dict) -> None:
     ax, aw = 14, 154
     bx, bw = 175, 160
     cx, cw = 342, width - 356
-    panel(d, ax, y, aw, h, "A", "Total-Rayleigh excess bridge")
-    panel(d, bx, y, bw, h, "B", "B_Q-precision equivalence")
-    panel(d, cx, y, cw, h, "C", "Exact NSE no-go")
+    panel(d, ax, y, aw, h, "A", "Signed F half-exit")
+    panel(d, bx, y, bw, h, "B", "K-theta last exit")
+    panel(d, cx, y, cw, h, "C", "No-gain boundary")
 
-    box(d, ax + 10, y + h - 60, 41, 27, ["beta", ">= T / 6"], fill=BLUE_LIGHT, stroke=BLUE, status="PAID")
-    box(d, ax + 57, y + h - 60, 41, 27, ["sigma", "> T/(12l)"], fill=GOLD_LIGHT, stroke=GOLD, status="PAID")
-    box(d, ax + 104, y + h - 60, 40, 27, ["x", "> T / 6"], fill=PLUM_LIGHT, stroke=PLUM, status="LEFT")
-    box(d, ax + 17, y + h - 101, 120, 26, ["0 <= x <= X", "sum X <= total dissipation"], fill=BLUE_LIGHT, stroke=BLUE, status="FINITE")
-    box(d, ax + 17, y + h - 138, 120, 26, ["x_k <= [F_k]_+", "sum x <= W_up <= C P"], fill=GOLD_LIGHT, stroke=GOLD, status="PROVED")
-    multiline(d, ax + 10, y + 28, ["Selected class: F > 5K / 6", "and K < (6/5) F."], 4.8, color=MID, leading=6.5)
+    box(d, ax + 10, y + h - 64, 134, 30, ["W_half^F = (1/2) S_N^F", "forced signed full tail"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
+    box(d, ax + 10, y + h - 106, 134, 29, ["sup_tau inf_{S_tau}", "exceptions depend on terminal"], fill=GOLD_LIGHT, stroke=GOLD, status="ORDER")
+    box(d, ax + 10, y + h - 148, 134, 29, ["F half-exit may fail S.25", "closure is not admissibility"], fill=RED_LIGHT, stroke=RED, status="FALSE")
+    multiline(d, ax + 10, y + 29, ["Cancellation remains inside the", "complete nonexceptional tail."], 4.8, color=MID, leading=6.5)
 
-    box(d, bx + 12, y + h - 60, 136, 26, ["B_Q = sum TV(Q_k)", "<= C_Q P^(2/3)"], fill=BLUE_LIGHT, stroke=BLUE, status="PAID")
-    box(d, bx + 12, y + h - 101, 136, 27, ["| W_up - C_full | <= B_Q"], fill=GOLD_LIGHT, stroke=GOLD, status="SHARP")
-    box(d, bx + 12, y + h - 142, 136, 27, ["K_full - B_Q <= W_up", "W_up <= K_full + B_Q"], fill=PLUM_LIGHT, stroke=PLUM, status="PROVED")
-    multiline(d, bx + 10, y + 28, ["No-exception stopped work is", "the full terminal positive flux", "modulo an already-paid row."], 4.8, color=MID, leading=6.3)
+    box(d, bx + 12, y + h - 65, 136, 31, ["L_theta = (1-theta)T", "minus Delta Q"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
+    box(d, bx + 12, y + h - 108, 136, 30, ["| W_theta^K", "- (1-theta) S_N^K | <= B_Q"], fill=GOLD_LIGHT, stroke=GOLD, status="SHARP")
+    box(d, bx + 12, y + h - 150, 136, 29, ["theta < 3/4", "finite good-stop closure"], fill=PLUM_LIGHT, stroke=PLUM, status="SCOPED")
+    multiline(d, bx + 10, y + 29, ["No continuity of the selector;", "no infinite cutoff test."], 4.8, color=MID, leading=6.3)
 
-    box(d, cx + 10, y + h - 68, cw - 20, 34, ["smooth exact NSE family", "W_up / P^(2/3) -> infinity"], fill=RED_LIGHT, stroke=RED, status="REFUTED")
-    box(d, cx + 10, y + h - 111, cw - 20, 27, ["universal antecedent: false", "conditional S.38: retained"], fill=GOLD_LIGHT, stroke=GOLD, status="NO-GO")
-    box(d, cx + 10, y + h - 154, cw - 20, 28, ["NEXT: fixed best-N exceptions", "+ sqrt(N) Y_2 payment"], fill=BLUE_LIGHT, stroke=BLUE, status="OPEN")
-    multiline(d, cx + 10, y + 29, ["Smooth, periodic, mean-zero,", "unforced and pressure-free.", "No regularity conclusion."], 4.7, color=MID, leading=6.1)
+    box(d, cx + 10, y + h - 69, cw - 20, 35, ["canonical last-exit bounds", "equivalent to open best-N tails"], fill=RED_LIGHT, stroke=RED, status="NO-GAIN")
+    box(d, cx + 10, y + h - 112, cw - 20, 28, ["full domain = Q.12", "plateau domain is weaker"], fill=GOLD_LIGHT, stroke=GOLD, status="DISTINCT")
+    box(d, cx + 10, y + h - 155, cw - 20, 29, ["NEXT: paid-branch", "forced PDE residual tail"], fill=BLUE_LIGHT, stroke=BLUE, status="OPEN")
+    multiline(d, cx + 10, y + 29, ["No new quadratic compression.", "Step 8 no-go and S.38 retained.", "No regularity conclusion."], 4.7, color=MID, leading=6.1)
     label(d, cx + 10, y + 12, "NOT CLAY.", 4.9, color=RED, bold=True)
 
-    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S no-exception stopped-work no-go")
+    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S canonical best-N last-exit no-gain")
     renderSVG.drawToFile(d, str(HERE / "figure.svg"))
     finalize_svg(config)
 
@@ -208,8 +206,9 @@ def main() -> None:
         "cross_channel_certificate_sha256": sha(REPO / "research/r074s_cross_channel_recombination_certificate.json"),
         "dissipation_rayleigh_certificate_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_certificate.json"),
         "step8_certificate_sha256": sha(REPO / "research/r074s_defect_relaxed_total_rayleigh_certificate.json"),
-        "analytic_note_sha256": sha(REPO / "research/r074s_defect_relaxed_total_rayleigh_excess.md"),
-        "claim_boundary": "UNIVERSAL NO-EXCEPTION STOPPED-WORK QUADRATIC BOUND REFUTED BY SMOOTH EXACT NSE FAMILY; CONDITIONAL S.38 RETAINED; FIXED BEST-N EXCEPTIONS OPEN; NOT CLAY",
+        "step9_certificate_sha256": sha(REPO / "research/r074s_best_n_last_exit_certificate.json"),
+        "analytic_note_sha256": sha(REPO / "research/r074s_best_n_last_exit_equivalence.md"),
+        "claim_boundary": "CANONICAL BEST-N LAST EXITS ARE EXACT TERMINAL-TAIL REPRESENTATIONS; NO NEW QUADRATIC COMPRESSION; PDE RESIDUAL TAIL OPEN; NOT CLAY",
     }
     (HERE / "environment.json").write_text(json.dumps(environment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "results.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")

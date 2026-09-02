@@ -76,6 +76,23 @@ test("R0.74S frozen final Step 8 sources and dual audits retain the corrected no
   }
 });
 
+test("R0.74S frozen Step 9 best-N last-exit sources and dual audits retain the no-gain boundary", () => {
+  const hashes = {
+    "research/r074s_best_n_last_exit_equivalence.md": "85003b3fdfdf28618a82a57d241e86c086704ea3ed3a9b192de223f3b8c3a4dd",
+    "research/r074s_best_n_last_exit_primary_audit.md": "0d326d0b77e499c36aa10fac64db66d4c40e6f0599640df65c915ca8de5f58d1",
+    "research/r074s_best_n_last_exit_independent_audit.md": "e67b0f6cfcfa15f8e0b7f4f96670e10a843aabd753dd25d7ce5684e6c993a634",
+    "scripts/r074s_best_n_last_exit_certificate.py": "0f04b79049ecd92c4a366ad9916fc8b6da9220b2f5baee34726aef2d4feaee65",
+    "scripts/r074s_best_n_last_exit_certificate_independent.rb": "d9c0674b79bc532c10366d317ccb10550f0bfd2a825127e87a4ef24633d3ae66",
+    "research/r074s_best_n_last_exit_certificate.json": "26ee76d969d3aec5eec55d9fa981bce195538cc3e2464fc0ece2c46b7c4accf0",
+    "research/r074s_best_n_last_exit_certificate_report.md": "1108b72113d84b90ebc5570c2c7b4bfaa1ccdc299525c557979b564109ab6481",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_best_n_last_exit_equivalence.md");
+  for (const marker of ["S.207", "S.214", "S.218", "theta<3/4", "no-gain", "residual full tail", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -86,6 +103,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_cross_channel_recombination_certificate.py", "research/r074s_cross_channel_recombination_certificate.json", { exact_passed: 4, exact_total: 4, finite_passed: 8, finite_total: 8, negative_passed: 10, negative_total: 10, result: "PASS", structural_passed: 58, structural_total: 58 }],
     ["scripts/r074s_dissipation_rayleigh_certificate.py", "research/r074s_dissipation_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 8, finite_total: 8, negative_mutations_passed: 9, negative_mutations_total: 9, structural_passed: 52, structural_total: 52 }],
     ["scripts/r074s_defect_relaxed_total_rayleigh_certificate.py", "research/r074s_defect_relaxed_total_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 19, finite_total: 19, negative_mutations_passed: 20, negative_mutations_total: 20, structural_passed: 75, structural_total: 75 }],
+    ["scripts/r074s_best_n_last_exit_certificate.py", "research/r074s_best_n_last_exit_certificate.json", { exact_passed: 9, exact_total: 9, finite_passed: 8, finite_total: 8, negative_mutations_passed: 18, negative_mutations_total: 18, structural_passed: 57, structural_total: 57 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -116,6 +134,19 @@ test("R0.74S final Step 8 Ruby audit independently reconstructs the corrected ga
     structural_passed: 61, structural_total: 61,
     source_mutations_rejected: 14, source_mutations_total: 14,
     artifact_mutations_rejected: 10, artifact_mutations_total: 10,
+    report_checks_passed: 6, report_checks_total: 6,
+  });
+});
+
+test("R0.74S Step 9 Ruby audit independently reconstructs the best-N last-exit boundary", () => {
+  const output = execFileSync("ruby", [resolve(root, "scripts/r074s_best_n_last_exit_certificate_independent.rb")], { cwd: root, encoding: "utf8" });
+  const summary = JSON.parse(output).summary;
+  assert.deepEqual(summary, {
+    independent_groups_passed: 12, independent_groups_total: 12,
+    independent_finite_cases: 91396,
+    structural_passed: 49, structural_total: 49,
+    source_mutations_rejected: 21, source_mutations_total: 21,
+    artifact_mutations_rejected: 15, artifact_mutations_total: 15,
     report_checks_passed: 6, report_checks_total: 6,
   });
 });

@@ -1,8 +1,8 @@
-# R0.74S｜no-exception stopped-work 二次界 no-go
+# R0.74S｜canonical best-N last-exit 等价与 no-gain
 
 ## 0. 这一步得到什么
 
-R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 又支付了 low-Rayleigh 耗散支。Step 8 对余下的 total-Rayleigh excess 做测度级扣除，并重新审计 Step 2 的 no-exception stopped-work gate。
+R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 支付 low-Rayleigh 耗散支，Step 8 则严格否定了 no-exception stopped-work 的普适二次界。Step 9 回到 R0.74Q 允许“固定 best-\(N\)、例外集合可随终端变化”的正确量词，并审计 canonical last exit 能否额外压缩尾部。
 
 本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出
 
@@ -22,7 +22,7 @@ Step 8 引入标量 excess \(x\) 与 Jordan envelope \(X\)，证明 selected def
 
 从而严格否定普适 no-exception 二次界。S.38 仍是正确的条件蕴含；被反证的是它若要作为无条件定理所需的 antecedent。下一条可行路线必须回到固定 best-\(N\)、随终端变化的例外集合，并用 \(\sqrt N,Y_{2,R}^{\rm sf}\) 支付尾部。
 
-此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的新 no-go 则由继承的真实平滑 NSE exact family 给出，严格排除普适 no-exception stopped-work 二次界。fixed best-\(N\) terminal-exception estimate、R0.74R extraction 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
+此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的 no-go 由继承的真实平滑 NSE exact family 给出。Step 9 进一步证明：\(F\)-half-exit 精确等于二分之一 signed best-\(N\) tail；\(K\)-last-exit 只在一个尖锐 \(B_Q\) 误差内等价于 \((1-\theta)\) 倍 best-\(N\) clock tail。因此 canonical stops 没有产生新的二次压缩；这是 completed-clock algebra 层面的严格 **no-gain / no-go**，不是 PDE tail estimate。fixed best-\(N_0\) PDE bound、R0.74R extraction 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
 本节没有数值仿真、DNS 或 DGX。
 
@@ -854,3 +854,201 @@ Step 8 **PROVED**：S.163--S.196 的 three-measure excess interface、one-sixth 
 下一步不再尝试 no-exception supremum。唯一冻结方向是回到 R0.74Q (Q.7)--(Q.12) 的 fixed best-\(N\)、terminal-dependent exceptions，并保留 \(\sqrt N,Y_{2,R}^{\rm sf}\) 付款。
 
 **UNIVERSAL NO-EXCEPTION STOPPED-WORK QUADRATIC BOUND: REFUTED. CONDITIONAL S.38: RETAINED. NOT CLAY.**
+
+## 28. Step 9 的结果与终端域
+
+Step 9 不再修补已被 Step 8 反驳的 no-exception gate，而是回到 R0.74Q 的 fixed best-\(N\) terminal tail。必须区分 plateau 终端域 \(I_R\) 与 full clock interval \(\mathcal T_R=(s_R,t_0)\)：
+
+\[
+\mathfrak C_R^M(\mathcal D)
+:=\sup_{\tau\in\mathcal D}\left[\sum_{k\ge1}F_{k,R}(\tau)\right]_+,
+\qquad
+\mathfrak C_R^M(I_R)\le \mathfrak C_R^M(\mathcal T_R).
+\tag{S.200}
+\]
+
+只保留这个不等式，不声称两个终端域相等。记
+
+\[
+A_R=(P_R^M)^{2/3},\qquad Z_R=Y_{2,R}^{\rm sf},\qquad
+B_{Q,R}^M=\sum_k\operatorname{TV}Q_{k,R}\le C_QA_R.
+\tag{S.201}
+\]
+
+\(Q,F,K\) 连续、从零起步，\(K\ge0\)；继承的 variation 与 Step 8 有限性保证下文所有无穷和绝对收敛。
+
+## 29. signed best-N tail 与正确量词
+
+对 \(x\in\ell^1(\mathbb N;\mathbb R)\) 及固定整数 \(N\ge0\)，定义
+
+\[
+\mathcal S_N(x)
+:=\inf_{S\subset\mathbb N,\,\#S\le N}
+\left[\sum_{k\notin S}x_k\right]_+.
+\tag{S.202}
+\]
+
+对 \(F\) 与 \(K\) 分别在终端域上取 \(\sup_\tau\)，得到 \(\mathcal S_{N,R}^{F}(\mathcal D)\) 与 \(\mathcal S_{N,R}^{K}(\mathcal D)\)，即 (S.203)。删除的只能是最大的 \(N\) 个正坐标，因而
+
+\[
+\mathcal S_N(x)
+=\left[\sum_kx_k-\sum_{m=1}^{N}x_m^{+*}\right]_+,
+\qquad
+|\mathcal S_N(x)-\mathcal S_N(y)|\le\|x-y\|_{\ell^1}.
+\]
+
+这是 forced full signed tail：负坐标的 cancellation 不能被任意 finite-subset supremum 取代。正确量词是
+
+\[
+\boxed{\sup_{\tau}\inf_{\#S_\tau\le N}},
+\]
+
+其中 \(N\) 与终端、尺度、解无关，但最优例外集 \(S_\tau\) 可随 \(\tau\) 变化。它不是更强的 \(\inf_S\sup_\tau\)。
+
+## 30. F-half-exit：精确二分之一
+
+固定终端 \(\tau\)，令 \(f_k=F_{k,R}(\tau)\)。当 \(f_k\ne0\) 时，取最后一个满足
+
+\[
+\operatorname{sgn}(f_k)F_{k,R}(t)\le |f_k|/2
+\]
+
+的时刻 \(\ell_k^F(\tau)\)；当 \(f_k=0\) 时定义 \(\ell_k^F(\tau)=\tau\)，即 (S.204)。连续性立即给出
+
+\[
+F_{k,R}(\ell_k^F(\tau))={1\over2}F_{k,R}(\tau),
+\qquad
+F_{k,R}(\tau)-F_{k,R}(\ell_k^F(\tau))={1\over2}F_{k,R}(\tau).
+\tag{S.205}
+\]
+
+在完整非例外 signed tail 上先求和，再取正部、\(\inf_S\) 与 \(\sup_\tau\)，得到
+
+\[
+\boxed{
+\mathfrak W_{1/2,N,R}^{F}(\mathcal D)
+={1\over2}\mathcal S_{N,R}^{F}(\mathcal D).}
+\tag{S.207}
+\]
+
+对 plateau 域，这给出
+
+\[
+\mathfrak C_R^M
+\le B_{Q,R}^M+\sqrt N\,Z_R
++2\mathfrak W_{1/2,N,R}^{F}(I_R).
+\tag{S.208}
+\]
+
+但 F-half-exit 一般不满足 Step 2 的严格 S.25 upcrossing。精确反例 \(F(t)=t\)、\(K(t)=\min\{2t,1\}\)、\(\tau=1\) 中，\(\ell^F=1/2\)，但 \(K(1)-K(1/2)=0\)。因此 (S.209) 排除了“canonical half-exit 自动是 S.25 admissible stop”的推断。
+
+## 31. K-theta last exit 与尖锐一个 B_Q
+
+对 \(0<\theta<1\) 及 \(T_k=K_{k,R}(\tau)>0\)，令 \(\ell_{k,\theta}^{K}(\tau)\) 为最后一个满足 \(K_{k,R}(t)\le\theta T_k\) 的时刻；\(T_k=0\) 时取 \(\ell=\tau\)。由 \(F=K-Q\)，
+
+\[
+L_{k,\theta}(\tau)
+:=F_k(\tau)-F_k(\ell_{k,\theta}^{K})
+=(1-\theta)T_k-\Delta Q_{k,\theta}(\tau).
+\tag{S.211}
+\]
+
+完整非例外 tail 的 last-exit observable 与 best-\(N\) clock tail 满足
+
+\[
+\boxed{
+(1-\theta)\mathcal S_{N,R}^{K}(\mathcal D)-B_{Q,R}^M
+\le\mathfrak W_{\theta,N,R}^{K}(\mathcal D)
+\le(1-\theta)\mathcal S_{N,R}^{K}(\mathcal D)+B_{Q,R}^M.}
+\tag{S.214}
+\]
+
+误差只是一个 \(B_Q\)，不是两个；系数 \(1\) 在单标量连续 clock 上可达，所以是尖锐的。对 \(0<\theta<3/4\)，正终端壳层有
+
+\[
+K_k(\tau)-K_k(\ell_{k,\theta}^{K})=(1-\theta)T_k>{1\over4}T_k.
+\tag{S.215}
+\]
+
+因此在 good terminal 上，任意有限正终端壳层族可用共同稠密 good-time set 逼近，落入 S.37 的闭包。这只是有限族、正终端、good terminal 的 closure statement；它不说 last-exit selector 连续，也不允许把一个无穷且时间不连续的 cutoff 直接插入 local energy inequality。\(\theta=3/4\) 时严格余量消失，故不包含端点。
+
+## 32. 与 R0.74Q 既有 gate 等价：no-gain
+
+signed \(F\)-tail 与非负 \(K\)-tail 之差由一个 \(B_Q\) 控制：
+
+\[
+\left|\mathcal S_{N,R}^{F}(\mathcal D)
+-\mathcal S_{N,R}^{K}(\mathcal D)\right|
+\le B_{Q,R}^M.
+\tag{S.217}
+\]
+
+因此，对与 \(R\) 及解都无关的固定 \(N_0\)，
+
+\[
+\mathcal S_{N_0,R}^{F}(\mathcal D)\lesssim A_R
+\Longleftrightarrow
+\mathfrak W_{1/2,N_0,R}^{F}(\mathcal D)\lesssim A_R,
+\]
+
+\[
+\mathcal S_{N_0,R}^{K}(\mathcal D)\lesssim A_R
+\Longleftrightarrow
+\mathfrak W_{\theta,N_0,R}^{K}(\mathcal D)\lesssim A_R.
+\tag{S.218}
+\]
+
+这是 Step 9 的精确 no-gain/no-go：证明 last-exit 二次界，就等价于证明已经开放的 best-\(N\) terminal-tail bound，canonical stop 本身没有提供更弱的过渡定理。当 \(\mathcal D=\mathcal T_R\) 时正好是 Q.12；当 \(\mathcal D=I_R\) 时只是更弱的 plateau restriction。
+
+## 33. 量词、相消与 full-history 压力测试
+
+(S.219) 用两个终端状态 \(x(\tau_1)=(1,0)\)、\(x(\tau_2)=(0,1)\) 证明
+
+\[
+\sup_\tau\inf_{\#S_\tau\le1}\sum_{k\notin S_\tau}x_k=0,
+\qquad
+\inf_{\#S\le1}\sup_\tau\sum_{k\notin S}x_k=1.
+\]
+
+(S.220) 用 \(F(\tau)=(1,-1)\)、\(N=0\) 证明 forced signed tail 为零，而任意 subset supremum 会挑出正坐标并得到 \(1/2\)；后者破坏了需要保留的 cancellation。
+
+(S.221) 取 \(M>N\) 个同步 completed clocks，\(K_k=F_k=h\)、\(Q_k=0\)。平台终端上
+
+\[
+\mathcal S_N(F)=\mathcal S_N(K)=(M-N)H,
+\quad
+\mathfrak W_{1/2,N}^F={M-N\over2}H,
+\quad
+\mathfrak W_{\theta,N}^K=(1-\theta)(M-N)H.
+\]
+
+这是抽象连续-clock stress test，不是 NSE solution；它严格显示 last exit 不会自动把 \(\ell^1\) tail 变成 \(\ell^2\) payment。另外，若所有 level exit 都发生在某个“recent window”之前，该窗口内根本没有可用 exit；因此 (S.210) 必须保留从 \(s_R\) 到 \(\tau\) 的 full history，除非另有 PDE 定理支付早期段。
+
+## 34. theta=2/3 的兼容性与下一 PDE residual
+
+\(\theta=2/3\) 与 Step 8 的 one-sixth rows 兼容：
+
+\[
+\Delta K_{k,2/3}={1\over3}T_k,
+\qquad
+|\Delta Q_{k,2/3}|<{1\over6}T_k
+\Longrightarrow
+\Delta F_{k,2/3}>{1\over6}T_k.
+\tag{S.222}
+\]
+
+这是为下一 PDE 分解选择的兼容参数，不是全局最优化定理。下一真正新的目标是：在删去 Step 7 low-Rayleigh 支、Step 8 \(\mathcal I_\beta\) 与 \(\mathcal I_\sigma\) 两个已付分支后，定义并审计 forced full PDE residual tail；只允许至多 \(N_0\) 个随终端变化的例外，且以 \(\sqrt{N_0}Z_R\) 支付。该 residual 可能仍包含 anomalous defect 或 high-Rayleigh dissipation，本步没有预先定义成有利对象。
+
+## 35. Step 9 主张边界与双路审计
+
+Step 9 **PROVED**：(S.200)--(S.203) 的终端域分离与 best-\(N\) tails；(S.204)--(S.207) 的 signed half-exit 精确表示；(S.208) 的 plateau reduction；(S.209) 的 S.25 失败反例；(S.210)--(S.215) 的 \(K\)-last-exit、尖锐一个 \(B_Q\) 误差与 \(\theta<3/4\) 有限 good-stop closure；(S.216)--(S.218) 的 plateau reduction、\(F/K\) tail comparison 与 no-gain 等价；以及 (S.219)--(S.222) 的量词、相消、平台和 \(\theta=2/3\) 压力测试。
+
+继承的 Step 8 no-exception gate 仍是 **REFUTED**，S.38 条件蕴含仍然 **RETAINED**。canonical last exits 不产生新二次压缩，是 completed-clock algebra 层面的严格 **no-gain/no-go**。
+
+继续 **OPEN**：存在与解和尺度无关的固定 \(N_0\)，使 (S.218) 的任一 best-\(N_0\) PDE tail 获得二次界；删去已付分支后的 residual full tail；(Q.1)、R0.74R extraction hypotheses、scale contraction、prescribed-centre packing 与 regularity。
+
+明确 **NOT CLAIMED**：F-half-exit 满足 S.25；canonical selector 对终端连续；一个无穷 stopped cutoff 可直接作 local-energy test；arbitrary subset supremum 可取代 forced full tail；\(\sup\inf\) 可换成 \(\inf\sup\)；plateau 与 full domain 相等；单个 dominant packet 证明 \(N_0=1\)；标量 stress tests 是 PDE solutions；以及新颖性、优先权、奇点形成或 Clay 结论。
+
+主证书通过 9/9 exact、8/8 finite、57/57 structural 与 18/18 mutations。独立 Ruby 审计通过 12/12 groups、91,396/91,396 finite cases、49/49 structural、21/21 source mutations、15/15 artifact mutations与 6/6 report checks。主文 SHA-256 为 `85003b3fdfdf28618a82a57d241e86c086704ea3ed3a9b192de223f3b8c3a4dd`。有限证书只支持实现可复现性，不替代 PDE 解析证明。
+
+**CANONICAL BEST-N LAST EXITS: EXACT REPRESENTATIONS, NO NEW QUADRATIC COMPRESSION. NEXT: PDE RESIDUAL TAIL AFTER PAID BRANCHES. NOT CLAY.**

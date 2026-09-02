@@ -149,6 +149,13 @@ jobs:
                   if temporary_r074p_render and package_raster:
                       shutil.copyfile(source, target)
                       return None
+                  frozen_r074p_grayscale = (
+                      target.endswith(
+                          "/research/figures/r074p/fig-r074p-observable-triage/qa-grayscale.png"
+                      )
+                  )
+                  if frozen_r074p_grayscale:
+                      return None
                   return _image_save(self, fp, format=format, **params)
 
               Image.Image.save = _save_with_r074p_fixture

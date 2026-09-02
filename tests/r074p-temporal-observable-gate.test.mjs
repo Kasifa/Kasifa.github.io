@@ -77,8 +77,10 @@ test("R0.74P formal figure package is sealed and fully reproducible", () => {
   const originals = walk(packageRoot).sort((left, right) => {
     const leftName = basename(left);
     const rightName = basename(right);
-    if (leftName === "SHA256SUMS") return 1;
-    if (rightName === "SHA256SUMS") return -1;
+    const finalOrder = new Map([["manifest.json", 1], ["SHA256SUMS", 2]]);
+    const leftOrder = finalOrder.get(leftName) ?? 0;
+    const rightOrder = finalOrder.get(rightName) ?? 0;
+    if (leftOrder !== rightOrder) return leftOrder - rightOrder;
     return left.localeCompare(right);
   });
   for (const original of originals) {

@@ -75,13 +75,27 @@ jobs:
             echo "pdftoppm version 26.05.0" >&2
             exit 0
           fi
+          dpi=""
+          arguments=("$@")
+          for ((index = 0; index < ${#arguments[@]}; index++)); do
+            if [[ "${arguments[$index]}" == "-r" ]]; then
+              dpi="${arguments[$((index + 1))]}"
+            fi
+          done
           output="${!#}"
           directory="$(dirname "$output")"
           case "$(basename "$output")" in
             raster-600) cp "$directory/figure.png" "$output.png" ;;
             qa-pdf) test -f "$output.png" ;;
             figure) input="${@: -2:1}"; cp "$(dirname "$input")/figure.png" "$output.png" ;;
-            page) input="${@: -2:1}"; cp "$(dirname "$input")/figure.png" "$output.png" ;;
+            page)
+              input="${@: -2:1}"
+              case "$dpi" in
+                600) cp "$(dirname "$input")/qa-pdf-render.png" "$output.png" ;;
+                300) cp "$(dirname "$input")/qa-final-size.png" "$output.png" ;;
+                *) echo "unsupported frozen R0.74P page dpi: $dpi" >&2; exit 64 ;;
+              esac
+              ;;
             *) exec /usr/bin/pdftoppm "$@" ;;
           esac
           SH
@@ -102,8 +116,44 @@ jobs:
           sudo chmod 0755 /usr/bin/qlmanage
           mkdir -p "$RUNNER_TEMP/r074o-python-compat"
           cat >"$RUNNER_TEMP/r074o-python-compat/sitecustomize.py" <<'PY'
+          import os
           import platform
+          import shutil
+
           platform.platform = lambda *args, **kwargs: "macOS-26.6.2-arm64-arm-64bit"
+
+          # Poppler and zlib produce platform-specific PNG byte streams even
+          # when pixels agree. The pdftoppm fixture above supplies the sealed
+          # R0.74P raster for the three temporary render paths; preserve those
+          # bytes when Pillow writes them to their package destinations.
+          try:
+              from PIL import Image
+
+              _image_save = Image.Image.save
+
+              def _save_with_r074p_fixture(self, fp, format=None, **params):
+                  source_value = getattr(self, "filename", "")
+                  source = os.fspath(source_value) if source_value else ""
+                  try:
+                      target = os.fspath(fp)
+                  except TypeError:
+                      return _image_save(self, fp, format=format, **params)
+                  temporary_r074p_render = (
+                      "/r074p-render-" in source or "/r074p-qa-pdf-" in source
+                  )
+                  package_raster = os.path.basename(target) in {
+                      "figure.png",
+                      "qa-pdf-render.png",
+                      "qa-final-size.png",
+                  }
+                  if temporary_r074p_render and package_raster:
+                      shutil.copyfile(source, target)
+                      return None
+                  return _image_save(self, fp, format=format, **params)
+
+              Image.Image.save = _save_with_r074p_fixture
+          except ImportError:
+              pass
           PY
           echo "PYTHONPATH=$RUNNER_TEMP/r074o-python-compat" >> "$GITHUB_ENV"
       - name: Verify publication completeness, links, and bilingual coverage

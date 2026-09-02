@@ -46,6 +46,7 @@ const ENDPOINTS = Object.freeze({
   r074n: { version: "1.80", code: "R0.74N", slug: "r0-74n", next: "R0.74O" },
   r074o: { version: "1.81", code: "R0.74O", slug: "r0-74o", next: "R0.74P" },
   r074p: { version: "1.82", code: "R0.74P", slug: "r0-74p", next: "R0.74Q" },
+  r074q: { version: "1.83", code: "R0.74Q", slug: "r0-74q", next: "R0.74R" },
 });
 
 async function page(name) {

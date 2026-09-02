@@ -133,7 +133,7 @@ export function extractProtectedTokens(value) {
     tokens.push(
       ...value.matchAll(pattern).map((match) =>
         match[0].replace(
-          /\\(text|mathrm|operatorname)\{[^{}]*\}/g,
+          /\\(text|mathrm|operatorname|hbox)\{[^{}]*\}/g,
           "\\$1{__I18N_TEXT__}",
         ),
       ),

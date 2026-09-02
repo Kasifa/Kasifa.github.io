@@ -380,6 +380,36 @@ async function verifyLatestFormalFigure(record, latestCode) {
   }
 }
 
+async function verifyLatestAnalyticFigureExemption(latestRelease, latestCode) {
+  const freeze = JSON.parse(
+    await readFile(new URL(`research/${latestRelease}_freeze_manifest.json`, root), "utf8"),
+  );
+  assert.equal(
+    freeze.claim_status?.formal_figure,
+    "NOT_USED_ANALYTIC_RELEASE_NO_SIMULATION",
+    `${latestCode}: frozen formal-figure exemption`,
+  );
+  assert.equal(freeze.claim_status?.simulation_or_dns, "NOT_USED");
+  assert.equal(freeze.claim_status?.dgx, "NOT_USED");
+  assert.equal(freeze.verification?.formal_figure_or_simulation_package, "NOT_APPLICABLE");
+  assert.equal(freeze.publication_handoff?.target_primary_figure, null);
+  const note = await readFile(
+    new URL(`public/notes/${releaseToSlug(latestRelease)}.html`, root),
+    "utf8",
+  );
+  assert.ok(note.includes("正式图件：NOT APPLICABLE"));
+  assert.ok(note.includes("本节纯解析，没有 Navier--Stokes 数值仿真、DNS、DGX 或正式图件"));
+  assert.doesNotMatch(note, new RegExp(`(?:assets|figures)/${latestRelease}`, "i"));
+  for (const directory of ["figures/", "research/figures/", "public/figures/", "public/assets/"]) {
+    const entries = await readdir(new URL(directory, root), { withFileTypes: true });
+    assert.equal(
+      entries.some((entry) => entry.name.startsWith(latestRelease)),
+      false,
+      `${latestCode}: analytic exemption must not fabricate ${directory} package`,
+    );
+  }
+}
+
 function publicReleaseId(file) {
   const match = file.match(/^r0-(\d{2})([a-z])\.html$/);
   if (!match) return null;
@@ -918,21 +948,30 @@ test("separates the published inventory from the formal-sealed archive", async (
     archive.legacyFormalFigureBacklogCount,
     releaseIndex.legacyFormalFigureBacklogCount,
   );
+  assert.equal(
+    archive.formalFigureExemptReleaseCount,
+    releaseIndex.formalFigureExemptReleaseCount,
+  );
 
   const formal = archive.formalSealedReleases;
   const backlog = archive.legacyFormalFigureBacklog.map((row) => row.release);
+  const exempt = archive.formalFigureExemptReleases;
   assert.equal(new Set(formal).size, formal.length, "unique formal releases");
   assert.equal(new Set(backlog).size, backlog.length, "unique backlog releases");
+  assert.equal(new Set(exempt).size, exempt.length, "unique formal-figure exemptions");
+  assert.equal(archive.formalFigureExemptReleaseCount, exempt.length);
   assert.deepEqual(
-    [...formal, ...backlog].sort(),
+    [...formal, ...backlog, ...exempt].sort(),
     releases,
-    "formal-sealed plus backlog must partition every published release",
+    "formal-sealed, backlog, and declared analytic exemptions must partition every published release",
   );
   assert.deepEqual(
     formal.filter((release) => backlog.includes(release)),
     [],
     "formal and backlog inventories must be disjoint",
   );
+  assert.deepEqual(formal.filter((release) => exempt.includes(release)), [], "formal and exempt inventories must be disjoint");
+  assert.deepEqual(backlog.filter((release) => exempt.includes(release)), [], "backlog and exempt inventories must be disjoint");
 
   assert.equal(
     releaseIndex.postR070APublishedReleaseCount,
@@ -945,6 +984,10 @@ test("separates the published inventory from the formal-sealed archive", async (
   assert.equal(
     releaseIndex.legacyFormalFigureBacklogCount,
     archive.legacyFormalFigureBacklogCount,
+  );
+  assert.equal(
+    releaseIndex.formalFigureExemptReleaseCount,
+    archive.formalFigureExemptReleaseCount,
   );
 
   const currentFormal = figureManifests
@@ -961,12 +1004,17 @@ test("separates the published inventory from the formal-sealed archive", async (
     "formal-sealed releases must be backed by formal figure manifests",
   );
   const latestCode = releaseToPublicCode(releases.at(-1));
-  await verifyLatestFormalFigure(
-    figureManifests.find(
-      ({ value }) => value.status === "formal" && value.release === latestCode,
-    ),
-    latestCode,
-  );
+  if (formal.includes(releases.at(-1))) {
+    await verifyLatestFormalFigure(
+      figureManifests.find(
+        ({ value }) => value.status === "formal" && value.release === latestCode,
+      ),
+      latestCode,
+    );
+  } else {
+    assert.ok(exempt.includes(releases.at(-1)), `${latestCode}: latest release must be formal or explicitly exempt`);
+    await verifyLatestAnalyticFigureExemption(releases.at(-1), latestCode);
+  }
   assert.ok(formal.includes("r072f"), "R0.72F must remain formal-sealed");
   assert.ok(formal.includes("r072g"), "R0.72G must be formal-sealed");
   assert.ok(formal.includes("r072h"), "R0.72H must be formal-sealed");

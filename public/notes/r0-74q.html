@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.83"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74Q｜许多壳层同时亮起，为什么仍然压不低支付？</title><meta name="description" content="有效壳层归约、共同剪切多包压力测试与真实三次支付阻断；固定尺度不等式仍开放">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74q.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.83"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\(","\)"]],displayMath:[["\[","\]"]],macros:{fint:"\mathop{\unicode{x2A0F}}\limits"}},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{margin:1.7rem 0 .65rem;font-size:1.16rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74Q · 2026-09-02</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74Q · 完整中文版本</div><h1>R0.74Q｜许多壳层同时亮起，为什么仍然压不低支付？</h1><p>我证明了 terminal effective-shell best-\(N\) 归约，并在共同剪切的光滑精确族上完成 growing finite multipacket 压力测试。equal-target 架构能同时点亮许多目标壳层，却被最外 lobe 的真实非负三次支付阻断；这不证明固定尺度不等式。<strong>NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">CONDITIONAL</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74Q</strong><p>有效壳层归约：PROVED</p><p>共同剪切精确族：PROVED / PRIOR STRUCTURE</p><p>all-lobe dominance：PROVED</p><p>三次支付阻断：PROVED</p><p>signed flux 与完整 \(Y_2\)：OPEN</p><p>正式图件：NOT APPLICABLE</p><p>纯解析 / 无仿真 / NO DGX</p></div></div></header><article>
+<section id="s-01"><div class="section-no">01 / 完整正文</div><h2>导语</h2>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。</p>
+<p>R0.74P 把核心缺口压缩成一个固定尺度问题。记完整 Version-M 支付的 自然尺度为</p>
+<div class="equation">\[
+ A_R:=(P_R^M)^{2/3},
+\]</div>
+<p>缺陷补全壳层时钟的匹配平方函数为</p>
+<div class="equation">\[
+ Z_R:=Y_{2,R}^{\rm sf}
+ =\left(\sum_{k\ge1}v_{k,R}^2\right)^{1/2}.
+\]</div>
+<p>我真正想知道的是</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \stackrel{?}{\le}
+ C\left[A_R+Z_R\right].}
+\]</div>
+<p>这里 \(\mathfrak C_R^M\) 是所有物理壳层的有符号累计通量在终端前的 正部上确界，\(v_{k,R}\) 是第 \(k\) 个非负时钟的时间正变差。抽象序列 已经告诉我，不能仅靠</p>
+<div class="equation">\[
+ \sum_kv_k
+ \quad\hbox{与}\quad
+ \left(\sum_kv_k^2\right)^{1/2}
+\]</div>
+<p>之间的形式变换得到所需压缩：若 \(N\) 个坐标都等于一，前者是 \(N\)，后者只有 \(\sqrt N\)。缺少的必须是 Navier--Stokes 方程对 “同时有效壳层”的限制。</p>
+<p>R0.74Q 因而不再发明一个新可观测量，而是把问题改写成一次压力测试。 我先证明一个精确的 terminal effective-shell reduction：只要除去有限 个终端壳层后，剩余正尾能够由 \(A_R\) 支付，上面的固定尺度不等式就 成立。然后我反过来构造越来越多的光滑精确包，试图让 \(N\) 个壳层在 同一个终端时刻都达到尺度 \(T\)，同时让平方函数只有 \(\sqrt N\,T\)，让支付的 \(2/3\) 次幂小于 \(NT\)。</p>
+<p>结果分成清楚的两半。</p>
+<ol><li>共同剪切的精确 PDE、放松后的多包几何、统一生存以及所有 target lobe 上的振幅加权无抵消，都可以严格完成。</li><li>equal-target 振幅一旦让每个目标时钟都达到同一尺度，最外层 lobe 自己就迫使外部速度三次支付过大，并且</li></ol>
+<div class="equation">\[
+    \boxed{
+    \frac{(P_R^{M,(N)})^{2/3}}{NT}\longrightarrow\infty.}
+   \]</div>
+<p>因此，这个明确的 equal-target 光滑精确解架构不能给出我想要的 低支付反例。它的失败不是包无法同时放进壳层，也不是尾部发生了未经 控制的抵消；真正阻断它的是凸的三次支付。</p>
+<p>这不证明待定不等式正确，更不证明正则性。signed flux 的 \(NT\) 下界 和完整 \(Y_{2,R}^{\rm sf}\) 的 \(\sqrt N\,T\) 上界都仍然没有完成。</p>
+<p><strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整正文</div><h2>1. 先把“有效壳层”写成精确终端命题</h2>
+<p>R0.74P 已经给出逐壳层累计平衡</p>
+<div class="equation">\[
+ K_{k,R}=Q_{k,R}+F_{k,R},
+ \qquad
+ K_{k,R}\ge0,
+ \qquad
+ K_{k,R}(\tau)\le v_{k,R},
+\]</div>
+<p>其中 \(Q\) 是二次截断源项原函数，\(F\) 是物理通量原函数。所有壳层 的 \(Q\) 有绝对账本</p>
+<div class="equation">\[
+ \sum_k\operatorname{TV}Q_{k,R}\le CA_R.
+\]</div>
+<p>关键点是：左端只要求累计总通量的正部，而不是要求控制 \(\sum_kv_{k,R}\) 的全部正变差。因此，我对一个绝对可和的实序列 \(x=(x_k)\) 定义除去至多 \(N\) 个坐标后的正残余</p>
+<div class="equation">\[
+ \mathcal S_N(x)
+ :=\inf_{S\subset\mathbb N,\ \#S\le N}
+ \left[\sum_{k\notin S}x_k\right]_+.
+\]</div>
+<p>相应地，在所有终端前时刻取上确界，得到</p>
+<div class="equation">\[
+ \mathcal S_{N,R}^{K}
+ :=\sup_{\tau&lt;t_0}\mathcal S_N((K_{k,R}(\tau))_k),
+\]</div>
+<p>以及真正允许壳间符号抵消的</p>
+<div class="equation">\[
+ \mathcal S_{N,R}^{F}
+ :=\sup_{\tau&lt;t_0}\mathcal S_N((F_{k,R}(\tau))_k).
+\]</div>
+<p>对任意固定 \(N\)，选择至多 \(N\) 个例外壳层，在例外集上用 Cauchy--Schwarz，例外集外保留终端正尾，就得到</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \le CA_R+\sqrt N\,Z_R+\mathcal S_{N,R}^{K}.}
+\]</div>
+<p>把最后一项换成 \(\mathcal S_{N,R}^{F}\) 也成立，只需改变 \(A_R\) 前的绝对常数。这里允许例外集随终端时刻 \(\tau\) 改变；我没有要求 所有时间都由同一批壳层承担，也没有要求只有有限个时钟的正变差非零。</p>
+<p>因此，只要存在一个与 \(R\) 和解无关的整数 \(N_0\)，使</p>
+<div class="equation">\[
+ \mathcal S_{N_0,R}^{K}\le CA_R
+ \qquad\hbox{或}\qquad
+ \mathcal S_{N_0,R}^{F}\le CA_R,
+\]</div>
+<p>R0.74P 留下的固定尺度不等式就会闭合。\(K\)-版本因为时钟非负，是 终端 best-\(N\) 尾；\(F\)-版本才是有符号的有效壳层命题。</p>
+<p>这个改写的价值在于量词准确。它没有把目标偷换成“活跃壳层总数有界”， 而是问：在每个终端切片上，是否只有有限个壳层需要单独支付，剩余正尾 能否由完整支付量吸收？</p>
+</section>
+<section id="s-03"><div class="section-no">03 / 完整正文</div><h2>2. 纯序列空间为什么仍然不够</h2>
+<p>若 \(v^*\) 是非负序列 \(v\) 的递减重排，best-\(N\) 的 \(\ell^1\) 尾为</p>
+<div class="equation">\[
+ \sigma_N(v)_1=\sum_{m&gt;N}v_m^*.
+\]</div>
+<p>总有</p>
+<div class="equation">\[
+ \|v\|_1
+ \le\sqrt N\,\|v\|_2+\sigma_N(v)_1.
+\]</div>
+<p>而且 layer-cake 恒等式给出</p>
+<div class="equation">\[
+ \sigma_N(v)_1
+ =\int_0^\infty
+ \bigl(\#\{k:v_k&gt;\lambda\}-N\bigr)_+\,d\lambda.
+\]</div>
+<p>所以一个幅度阈值上的壳层计数不够；真正需要的是对所有幅度层积分后的 packing。最简单的平顶序列</p>
+<div class="equation">\[
+ v_k^{(M,L)}=M^{-1}\mathbf1_{\{L&lt;k\le L+M\}}
+\]</div>
+<p>满足</p>
+<div class="equation">\[
+ \|v^{(M,L)}\|_1=1,
+ \qquad
+ \|v^{(M,L)}\|_2=M^{-1/2},
+\]</div>
+<p>而区间可以移到任意大的壳层指标。有限前缀控制、单峰、一个连通壳层块、 定性 \(\ell^p\) 可和或有界树宽，都不能单独给出统一压缩。</p>
+<p>对非零非负序列，纯粹的</p>
+<div class="equation">\[
+ \|v\|_1\le C\|v\|_2
+\]</div>
+<p>等价于逆参与数</p>
+<div class="equation">\[
+ N_{\rm eff}(v)
+ :=\frac{\|v\|_1^2}{\|v\|_2^2}
+\]</div>
+<p>一致有界。这个数才是抽象序列意义上的有效壳层数。因为壳层权重已经 包含在 \(v_{k,R}\) 里面，\(\sum_k\gamma_k&lt;\infty\) 本身不能再替我 完成压缩。</p>
+<p>于是下一步必须让 PDE 说话。最直接的检验是：方程是否真的允许很多 物理壳层在同一终端时刻都留下尺度相同的时钟？</p>
+</section>
+<section id="s-04"><div class="section-no">04 / 完整正文</div><h2>3. 多包压力测试想实现什么</h2>
+<p>理想的压力测试会构造一个光滑、周期、无外力的精确解，在互不相同的 目标壳层 \(k_1,\ldots,k_N\) 上，同时满足</p>
+<div class="equation">\[
+ K_{k_\ell,R}(\tau_N)\ge cT,
+ \qquad 1\le\ell\le N.
+\]</div>
+<p>若还能证明</p>
+<div class="equation">\[
+ \mathfrak C_R^{M,(N)}\gtrsim NT,
+ \qquad
+ Y_{2,R}^{\rm sf,(N)}\lesssim\sqrt N\,T,
+\]</div>
+<p>并让</p>
+<div class="equation">\[
+ (P_R^{M,(N)})^{2/3}=o(NT),
+\]</div>
+<p>那么固定尺度待定不等式会在光滑精确解上失败。</p>
+<p>这三个目标缺一不可。许多正时钟并不自动给出有符号总通量；目标壳层的 下界也不自动给出完整平方函数的上界；把单包支付逐个估计后相加，更不 能忽略完整支付外面的 \(3/2\) 次幂。R0.74Q 的作用，就是把这些原来 混在一句“叠加很多包”里的要求逐项拆开。</p>
+</section>
+<section id="s-05"><div class="section-no">05 / 完整正文</div><h2>4. 共同剪切使精确 PDE 门成立</h2>
+<p>工作在 \(\mathbb T^3=(-\pi,\pi]^3\)。取一个光滑奇函数初值 \(\theta_0(x_3)\)，令</p>
+<div class="equation">\[
+ \theta(t,x_3)=e^{t\partial_3^2}\theta_0(x_3),
+ \qquad
+ b(t,x_3)=B\theta(t,x_3).
+\]</div>
+<p>对每个包 \(G_\ell\)，把一对位于 \((q_{{\rm pre},\ell},h_\ell)\) 和其反演位置的周期热核导数作为初值，并让所有包都解同一个线性方程</p>
+<div class="equation">\[
+ (\partial_t+b\partial_2-\Delta_{23})G_\ell^\pm=0,
+ \qquad
+ G_\ell=G_\ell^++G_\ell^-.
+\]</div>
+<p>对任意有限 \(N\) 和常振幅 \(\mathfrak a_\ell\)，定义</p>
+<div class="equation">\[
+ U_N=\sum_{\ell=1}^N\mathfrak a_\ell G_\ell,
+ \qquad
+ u^{(N)}=(U_N,b,0),
+ \qquad
+ p^{(N)}=0.
+\]</div>
+<p>这个场与 \(x_1\) 无关，而 \(b\) 与 \(x_2\) 无关，因此</p>
+<div class="equation">\[
+ \nabla\cdot u^{(N)}=0,
+ \qquad
+ u^{(N)}\cdot\nabla=b\partial_2.
+\]</div>
+<p>第一分量由所有共同剪切的线性方程相加得到，第二分量只是热方程，第三 分量恒为零，所以它是精确的无外力 Navier--Stokes 解，物理压力可以 取零。反演配对与奇剪切保持</p>
+<div class="equation">\[
+ u^{(N)}(t,-x)=-u^{(N)}(t,x).
+\]</div>
+<p>对冻结的偶 mollifier，这进一步给出</p>
+<div class="equation">\[
+ X_R(t)\equiv0,
+ \qquad
+ a_R(t)=a_R&#x27;(t)=0.
+\]</div>
+<p>因此 Version M 与 Version F 在这个精确族上重合。</p>
+<p>这里“共同”二字不能省略。若旧包 \(F_\ell\) 各自在不同剪切 \(b_\ell\) 下演化，把它直接放到新剪切 \(b\) 下会留下残差</p>
+<div class="equation">\[
+ (b-b_\ell)\partial_2F_\ell.
+\]</div>
+<p>把旧的完整速度场相加还会产生所有交叉剪切项。正确顺序是先冻结一个 剪切，再让每个包在同一个系数下重新演化。精确 PDE 的线性叠加不表示 通量、时钟、局部压力或三次支付也线性叠加。</p>
+</section>
+<section id="s-06"><div class="section-no">06 / 完整正文</div><h2>5. 原来的冻结角为什么不能共用一个标定</h2>
+<p>R0.74F 的单包几何把目标高度和水平终点写成</p>
+<div class="equation">\[
+ h_i=c_hL_iR,
+ \qquad
+ q_i=\beta L_iR,
+\]</div>
+<p>并要求一个剪切振幅 \(B\) 同时满足</p>
+<div class="equation">\[
+ BD_R(h_i)=q_*+q_i,
+ \qquad i=1,2,
+\]</div>
+<p>其中</p>
+<div class="equation">\[
+ D_R(h)=\int_{R^2}^{65R^2}\theta_R(t,h)\,dt.
+\]</div>
+<p>正平台估计给出</p>
+<div class="equation">\[
+ D_R(c_hLR)=64R^2-\delta(L),
+ \qquad
+ 0\le\delta(L)\le CR^2e^{-a_DL^2}.
+\]</div>
+<p>若 \(L_2\ge2L_1\) 而同一个 \(B\) 同时完成两个冻结标定，交叉相乘 会迫使</p>
+<div class="equation">\[
+ R(L_2-L_1)\le Ce^{-a_DL_1^2}.
+\]</div>
+<p>另一方面，沿用的 R0.74F 内包 bridge proof 在以下充分储备条件下闭合 其平移误差：</p>
+<div class="equation">\[
+ R^{-1}e^{-a_SL_1^2}\longrightarrow0.
+\]</div>
+<p>在 dyadic 分离下，这个储备与前面的必要关系不相容。因此，原来的 冻结终端角不能在同一剪切、同一 \(R\)、相邻两个 dyadic 物理壳层上 直接复制。</p>
+<p>这只是指定参数化的失败。它依赖 \((h_i,q_i)=(c_hL_iR,\beta L_iR)\)、同一水平入口点 \(q_*=1/2\)、同一正平台和继承的 bridge closure。它不表示共同剪切 多包在 PDE 层面不可能，也不表示所有放松后的终端几何都会失败。</p>
+</section>
+<section id="s-07"><div class="section-no">07 / 完整正文</div><h2>6. 放松水平终点后，\(N\) 个壳层几何可以同时完成</h2>
+<p>我保留垂向高度</p>
+<div class="equation">\[
+ h_\ell=c_hL_\ell R,
+\]</div>
+<p>但不再预先规定水平终点角。取</p>
+<div class="equation">\[
+ L=\frac{63}{32}2^j,
+ \qquad
+ R=e^{-L^2/320},
+ \qquad
+ N=\lfloor\log_2L\rfloor=j,
+\]</div>
+<p>以及</p>
+<div class="equation">\[
+ L_\ell=2^{\ell-1}L,
+ \qquad
+ k_\ell=j+\ell-1,
+ \qquad
+ 1\le\ell\le N.
+\]</div>
+<p>最外尺度满足精确关系</p>
+<div class="equation">\[
+ L_N=\frac{16}{63}L^2,
+ \qquad
+ L_NR\longrightarrow0.
+\]</div>
+<p>所以尽管壳层数趋于无穷，所有目标高度仍然留在同一中央周期图内。</p>
+<p>用最内层平台定义共同振幅</p>
+<div class="equation">\[
+ B=\frac{q_*}{D_1},
+\]</div>
+<p>再让每个水平终点由实际剪切位移决定：</p>
+<div class="equation">\[
+ q_\ell=BD_\ell-q_*.
+\]</div>
+<p>平台误差给出</p>
+<div class="equation">\[
+ \sup_{\ell\le N}|q_\ell|\le Ce^{-a_DL^2},
+ \qquad
+ \sup_{\ell\le N}\frac{|q_\ell|}{R}\longrightarrow0.
+\]</div>
+<p>于是所有参考路径在同一终端区间</p>
+<div class="equation">\[
+ J=(65R^2-R^3,65R^2)
+\]</div>
+<p>内都只有 \(O(R)\) 的水平误差。继承的 all-winding Brownian-bridge 估计在 \(L_\ell\ge L\) 上统一关闭；每个正包在自己的 lobe 上有固定 符号，并满足一个与 \(N,\ell\) 无关的点态下界。</p>
+<p>令</p>
+<div class="equation">\[
+\begin{aligned}
+ \Omega_{\ell,+}(t)=\{x:\;&amp;|x_1|&lt;L_\ell R/16,\\
+ &amp;5R/4&lt;x_2-Q_\ell(t)&lt;3R/2,\\
+ &amp;|x_3-h_\ell|&lt;R\},
+\end{aligned}
+\]</div>
+<p>并取反演 lobe \(\Omega_{\ell,-}(t)=-\Omega_{\ell,+}(t)\)。统一的 内外半径余量证明</p>
+<div class="equation">\[
+ \Omega_{\ell,\pm}(t)\subset A_{k_\ell}(R),
+ \qquad 1\le\ell\le N,
+\]</div>
+<p>而这些 \(k_\ell\) 两两不同。每个 lobe 的体积为</p>
+<div class="equation">\[
+ |\Omega_{\ell,+}(t)|
+ =\frac1{16}L_\ell R^3.
+\]</div>
+<p>所以 relaxed geometry 真正通过了共同剪切、共同终端窗口、统一 bridge survival、反演配对、周期 copies 和不同物理壳层六道门。</p>
+</section>
+<section id="s-08"><div class="section-no">08 / 完整正文</div><h2>7. equal-target 振幅下，所有 lobe 仍然不被其他包抵消</h2>
+<p>目标壳层权重是</p>
+<div class="equation">\[
+ \Gamma_\ell
+ =\gamma_{k_\ell}
+ =e^{-c_\gamma L_\ell^2},
+ \qquad
+ c_\gamma=\frac8{3969}.
+\]</div>
+<p>为了让每个目标壳层具有同一终端尺度，我取</p>
+<div class="equation">\[
+ \mathfrak a_\ell
+ =A_*(\Gamma_\ell L_\ell)^{-1/2}.
+\]</div>
+<p>这样</p>
+<div class="equation">\[
+ \boxed{
+ T:=\Gamma_\ell\mathfrak a_\ell^2L_\ell R^2
+ =A_*^2R^2}
+\]</div>
+<p>与 \(\ell\) 无关。困难在于 \(\Gamma_\ell\) 随壳层指数下降，所以 \(\mathfrak a_\ell\) 向外增长得非常快。仅仅说未加权包彼此远离， 不能排除大振幅外包的微小热尾抵消内包。</p>
+<p>共同剪切随机表示给出一个不依赖剪切大小的垂向尾界：</p>
+<div class="equation">\[
+ |G_m^\pm(t,x)|
+ \le CRK_{R^2+t}^{\rm per}(x_3\mp h_m),
+ \qquad 0\le t\le65R^2.
+\]</div>
+<p>令</p>
+<div class="equation">\[
+ a_\times=\frac{49}{14850},
+ \qquad
+ q=\frac{c_\gamma}{2}=\frac4{3969}.
+\]</div>
+<p>在第 \(\ell\) 个正 lobe 上，直接包和反演包分别满足</p>
+<div class="equation">\[
+ |G_m^+|
+ \le Ce^{-a_\times(L_m-L_\ell)^2}
+    +Ce^{-3/(22R^2)},
+\]</div>
+<div class="equation">\[
+ |G_m^-|
+ \le Ce^{-a_\times(L_m+L_\ell)^2}
+    +Ce^{-3/(22R^2)}.
+\]</div>
+<p>最危险的是相邻外包 \(L_m=2L_\ell\) 污染内层 target。振幅增长与 Gaussian 尾合并后的精确余量是</p>
+<div class="equation">\[
+ \delta_\times
+ =a_\times-3q
+ =\frac{67}{242550}&gt;0.
+\]</div>
+<p>对更远的外包，若 \(r=L_m/L_\ell\ge2\)，净指数满足</p>
+<div class="equation">\[
+ a_\times(r-1)^2-q(r^2-1)
+ \ge\delta_\times(r-1)^2.
+\]</div>
+<p>因此所有外包的振幅加权尾可以求和。内包污染外层 target 时，振幅 本身已经下降；相邻内包的精确指数为</p>
+<div class="equation">\[
+ \mu_{\rm in}
+ =\frac14a_\times+\frac34q
+ =\frac{4601}{2910600}&gt;0,
+\]</div>
+<p>其后各项形成统一几何尾。</p>
+<p>周期绕回也不能被振幅放大救回来。最外高度仍在中央图内，所有非零垂向 winding 给出 \(e^{-3/(22R^2)}\)。乘上最粗的全包振幅因子后，周期总 余项至多为</p>
+<div class="equation">\[
+ CN\exp\left[
+ \frac{1024}{15752961}L^4
+ -\frac3{22}e^{L^2/160}
+ \right]\longrightarrow0.
+\]</div>
+<p>合并外包、内包、反演 partner 与所有周期 copies，存在与 \(A_*,N,\ell\) 无关的 \(\varepsilon_L\to0\)，使每个正、负 target lobe 上都有</p>
+<div class="equation">\[
+ \frac{\sum_{m\ne\ell}|\mathfrak a_mG_m|}
+ {|\mathfrak a_\ell G_\ell|}
+ \le\varepsilon_L.
+\]</div>
+<p>对充分大的 \(L\)，右端小于 \(1/2\)，于是</p>
+<div class="equation">\[
+ \boxed{
+ |U_N|
+ \ge\frac12|\mathfrak a_\ell G_\ell|
+ \ge\frac{c_0}{2}\mathfrak a_\ell}
+\]</div>
+<p>在全部 \(N\) 个 target lobe 上同时成立。这一步把此前条件式的 no-cancellation 假设变成了这个明确解族上的定理。</p>
+</section>
+<section id="s-09"><div class="section-no">09 / 完整正文</div><h2>8. 每个目标时钟都有 \(T\) 量级的终端下界</h2>
+<p>在 \(\tau\in J\) 时，时间 cutoff 已等于一，目标壳层 cutoff 在 \(\Omega_{\ell,+}(\tau)\) 上也等于一。缺陷补全时钟的耗散部分非负， 所以只保留终端能量就有</p>
+<div class="equation">\[
+\begin{aligned}
+ K_{k_\ell,R}(\tau)
+ &amp;\ge\frac{\Gamma_\ell}{2R}
+ \int_{\Omega_{\ell,+}(\tau)}|u^{(N)}(\tau,x)|^2\,dx\\
+ &amp;\ge c\Gamma_\ell\mathfrak a_\ell^2L_\ell R^2
+ =cT.
+\end{aligned}
+\]</div>
+<p>所有目标指标不同，因此</p>
+<div class="equation">\[
+ K_{k,R}(s_R)=0,
+ \qquad
+ K_{k,R}\ge0
+ \quad\Longrightarrow\quad
+ v_{k,R}=\operatorname{Var}^{+}K_{k,R}
+ \ge K_{k,R}(\tau).
+\]</div>
+<p>把这个正变差下界用于两两不同的目标指标，得到</p>
+<div class="equation">\[
+ \boxed{
+ Y_{2,R}^{\rm sf}
+ \ge c\sqrt N\,T.}
+\]</div>
+<p>这是一条同时终端检出下界。它说明多包没有在目标平方函数中消失，但 方向只有“\(\ge\)”。我还没有控制非目标壳层时钟、所有二次交叉项， 也没有控制 \(J\) 以前积累的正变差。所以</p>
+<div class="equation">\[
+ \boxed{
+ Y_{2,R}^{\rm sf}\lesssim\sqrt N\,T
+ \quad\textbf{OPEN}.}
+\]</div>
+<p>不能把目标分量的下界写成完整平方函数的双边尺度。</p>
+</section>
+<section id="s-10"><div class="section-no">10 / 完整正文</div><h2>9. 最外 lobe 单独迫使三次支付过大</h2>
+<p>完整 Version-M 支付包含非负的外部速度三次项。在半径 \(2R\) 上，</p>
+<div class="equation">\[
+ \mathcal G_u^{(N)}
+ =(2R)^{-2}
+ \int_{I_{2R}}\int_{\mathbb T^3}
+ W_{2R}(x)|u^{(N)}(t,x)|^3\,dx\,dt.
+\]</div>
+<p>最外 target lobe 位于</p>
+<div class="equation">\[
+ A_{k_N}(R)=A_{k_N-1}(2R),
+\]</div>
+<p>该 annulus 的支付权重正好是</p>
+<div class="equation">\[
+ \gamma_{k_N-1}
+ =e^{-(c_\gamma/4)L_N^2}
+ =\Gamma_N^{1/4}.
+\]</div>
+<p>时间长度是 \(|J|=R^3\)，空间体积是 \(L_NR^3/16\)，归一化为 \((2R)^{-2}\)。利用已经证明的点态 dominance，可得真正的下界</p>
+<div class="equation">\[
+\begin{aligned}
+ P_R^{M,(N)}
+ &amp;\ge\mathcal G_u^{(N)}\\
+ &amp;\ge c\mathfrak a_N^3\Gamma_N^{1/4}L_NR^4\\
+ &amp;=cA_*^3R^4\Gamma_N^{-5/4}L_N^{-1/2}.
+\end{aligned}
+\]</div>
+<p>这不是一个发散的上界或无法关闭的 majorant，而是对真实非负支付项 的下界。</p>
+<p>取 \(2/3\) 次幂，再除以</p>
+<div class="equation">\[
+ NT=NA_*^2R^2,
+\]</div>
+<p>共同振幅 \(A_*\) 精确消去：</p>
+<div class="equation">\[
+ \frac{(P_R^{M,(N)})^{2/3}}{NT}
+ \ge\frac cN R^{2/3}L_N^{-1/3}
+ e^{(5/6)c_\gamma L_N^2}.
+\]</div>
+<p>因为 \(L_N=(16/63)L^2\)、\(R=e^{-L^2/320}\)，其对数满足</p>
+<div class="equation">\[
+\begin{aligned}
+ \log\frac{(P_R^{M,(N)})^{2/3}}{NT}
+ \ge{}&amp;
+ \frac{5c_\gamma}{6}L_N^2
+ -\frac1{480}L^2
+ -\frac13\log L_N-\log N-O(1)\\
+ \longrightarrow{}&amp;+\infty.
+\end{aligned}
+\]</div>
+<p>精确的 \(L^4\) 首项系数为</p>
+<div class="equation">\[
+ \frac{5120}{47258883}&gt;0.
+\]</div>
+<p>所以</p>
+<div class="equation">\[
+ \boxed{
+ \frac{(P_R^{M,(N)})^{2/3}}{NT}\longrightarrow\infty.}
+\]</div>
+<p>这说明 equal-target 架构越努力把外层时钟抬到与内层相同的 \(T\)， 就越被最外物理壳层的凸三次支付收费。加更多同样归一化的包不会接近 低支付目标，反而使最外壳的指数成本更严重。</p>
+</section>
+<section id="s-11"><div class="section-no">11 / 完整正文</div><h2>10. 为什么这仍然不是待定不等式的证明</h2>
+<p>终端时钟总和确实满足</p>
+<div class="equation">\[
+ \sum_{\ell=1}^NK_{k_\ell,R}(\tau)\ge cNT.
+\]</div>
+<p>但有符号物理通量是</p>
+<div class="equation">\[
+ F_{k,R}=K_{k,R}-Q_{k,R}.
+\]</div>
+<p>现有绝对账本只给出</p>
+<div class="equation">\[
+ \sum_k\operatorname{TV}Q_{k,R}
+ \le C(P_R^{M,(N)})^{2/3}.
+\]</div>
+<p>因此目前最多得到</p>
+<div class="equation">\[
+ \sum_kF_{k,R}(\tau)
+ \ge cNT-C(P_R^{M,(N)})^{2/3}.
+\]</div>
+<p>而刚刚证明的支付发散说明右端误差远大于 \(NT\)。这个不等式没有正 内容，不能推出</p>
+<div class="equation">\[
+ \mathfrak C_R^{M,(N)}\asymp NT.
+\]</div>
+<p>所以本节严格保留两条 OPEN 边界：</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^{M,(N)}\asymp NT
+ \quad\textbf{OPEN},}
+\]</div>
+<div class="equation">\[
+ \boxed{
+ Y_{2,R}^{\rm sf,(N)}\lesssim\sqrt N\,T
+ \quad\textbf{OPEN}.}
+\]</div>
+<p>若未来另有有符号通量分析证明第一条，那么本节的支付下界只会说明这个 equal-target 解族不能反驳固定尺度不等式。反过来，当前构造失败也不 能推出固定尺度不等式对任意周期适合弱解成立。两种逻辑方向都不能 越过。</p>
+</section>
+<section id="s-12"><div class="section-no">12 / 完整正文</div><h2>11. 这一节的研究价值</h2>
+<p>R0.74Q 的价值不是离全局正则性终点又近了一个可以用百分比表示的距离， 而是把“多壳层可能破坏匹配平方函数压缩”这条路线分成了可独立核查的 机制，并明确了哪一部分成功、哪一部分失败。</p>
+<p>第一，terminal best-\(N\) reduction 给出了足够弱而又足以推出待定 不等式的有效壳层命题。例外壳层可以随终端时刻变化；\(F\)-版本保留 真正的符号结构。这比要求时钟支撑有限更接近 PDE 实际可能提供的 packing。</p>
+<p>第二，共同剪切的精确解说明 PDE 线性叠加本身不是障碍。原来的冻结角 失败来自过强的共同标定，不是方程不允许多包。放松水平终点以后， \(N\to\infty\) 个包可以共享剪切、终端窗口和零 mollified path，并 分别落入不同物理壳层。</p>
+<p>第三，equal-target 振幅下的 all-lobe dominance 已经逐项支付了 相邻外包、内包、反演 partner 和全部周期绕回。最危险的外侧相邻指数 仍有明确正余量。因此，后面的三次支付阻断不是由“也许发生抵消”造成 的条件式结论。</p>
+<p>第四，最外 lobe 暴露了一个以前容易被上界 majorant 混淆的事实： 物理壳层权重与 equal-target 振幅结合后，真实的非负 exterior cubic row 已经足以关闭这条低支付反例路线。这里没有借助压力，因为精确解的 物理压力为零；也没有依赖异常耗散，因为解是光滑的。</p>
+<p>第五，失败机制给下一步提供了更准确的方向。问题不再是“能否简单叠加 更多相同包”，而是：凸支付是否本身能够对有效终端壳层数给出一个一般 packing；或者，是否存在非 equal-target 的振幅分配、不同时间安排或 不同几何，在保留 signed flux 与平方函数尺度的同时避开最外三次收费？</p>
+<p>这些都是可以逐条证明或否定的问题。它们仍处于本项目内部研究阶段； 有限文献筛查未命中同一命题，不构成新颖性或优先权结论。</p>
+</section>
+<section id="s-13"><div class="section-no">13 / 完整正文</div><h2>12. 下一步怎么走</h2>
+<p>我不会继续机械地增加 equal-target 包数。下一阶段应当同时推进三条 互相校验的路线。</p>
+<h3>12.1 从 cubic payment 反推一般有效壳层 packing</h3>
+<p>本节只在一个明确几何上证明：若最外 target lobe 有固定体积和点态 dominance，它就必须支付一个三次成本。下一步要问能否把这个机制写成 不依赖精确包形状的局部不等式，把若干终端时钟 \(K_{k,R}(\tau)\) 与 各壳层的非负支付 \(p_{k,R}\) 联系起来。</p>
+<p>一个可操作目标是：除去至多 \(N_0\) 个终端例外后，构造 \(a_{k,R,\tau}\ge0\)，使</p>
+<div class="equation">\[
+ K_{k,R}(\tau)
+ \le q_{k,R}+a_{k,R,\tau}p_{k,R}^{2/3},
+\]</div>
+<p>并满足</p>
+<div class="equation">\[
+ \sum_kq_{k,R}\le CA_R,
+ \qquad
+ \sum_{k\notin S_\tau}a_{k,R,\tau}^3\le C.
+\]</div>
+<p>Hölder 随即把例外集外的终端正尾压到 \(CA_R\)。这正是 effective-shell reduction 所需要的 PDE 形式。</p>
+<h3>12.2 优化非 equal-target 振幅，而不是预设每壳同高</h3>
+<p>equal-target 让时钟账本最清楚，却把外层振幅设为 \(\Gamma_\ell^{-1/2}\) 量级。可以把下一轮压力测试写成一个离散优化： 在给定 cubic budget、目标 signed-flux 总量和平方函数预算下，寻找 最优的 \(T_\ell\) 分布，检查是否存在很多弱外壳与少数强内壳的组合。</p>
+<p>这一步必须使用完整支付，而不能只优化单个 exterior row；中央能量的 \(3/2\) 次幂、harmonic row、局部压力账本和所有交叉时钟都要保留。 若优化问题本身已有 coercive lower bound，它会支持一般 packing；若 仍有逃逸序列，再回到 PDE 构造验证它能否实现。</p>
+<h3>12.3 单独处理 signed flux 与完整 \(Y_2\)</h3>
+<p>终端 \(K\) 下界不能代替 \(F=K-Q\) 的符号分析。需要检查相邻物理壳层 cutoff 是否能在总和前通过离散 Abel 变换消去内部边界，或能否把 \(Q\) 的最坏绝对账本改成对目标终端更有利的 signed estimate。</p>
+<p>同样，完整 \(Y_{2,R}^{\rm sf}\) 必须核对所有 off-target 壳层和早期 正变差。只有得到上界，\(\sqrt N\,T\) 才能被当作精确族的真实平方 函数尺度，而不是目标分量的下方检出。</p>
+<p>这三条路线彼此有门禁关系：没有 signed flux 与 \(Y_2\) 上界，新的 精确族不能否定待定不等式；没有一般 cubic packing，也不能从本节一个 解族的失败推到任意适合弱解。</p>
+</section>
+<section id="s-14"><div class="section-no">14 / 完整正文</div><h2>13. 证据与边界</h2>
+<ul><li><strong>PROVED：</strong>terminal effective-shell reduction；共同剪切有限 \(N\) 精确 NSE；不同旧剪切不能直接叠加；冻结角共同标定在继承 survival reserve 下失败；relaxed \(N\)-packet 共同终端几何与统一 bridge 参数闭合；equal-target all-lobe dominance；每个目标 \(K_{k_\ell,R}\gtrsim T\)；最外真实 velocity-cubic payment 下界； \((P_R^{M,(N)})^{2/3}/(NT)\to\infty\)。</li><li><strong>INHERITED：</strong>R0.74F 的 all-winding Brownian-bridge 生存定理； R0.74E/H 的物理壳层权重和完整支付定义；R0.74P 的 \(K=Q+F\) 缺陷补全时钟、正变差与绝对 \(Q\) 账本。</li><li><strong>FINITE：</strong>所有显示的有理指数余量、dyadic 恒等式、公式标签与 确定性证书检查。有限计算不替代 stochastic tail、annular geometry 或 payment lower bound 的解析证明。</li><li><strong>LITERATURE BOUNDARY：</strong>2D3C 中“二维底流加被动第三分量”以及 一个共同线性标量方程允许的叠加机制已有先例，不能单独作为新颖性 主张。有限的一手文献筛查没有找到直接覆盖冻结角标定障碍、relaxed all-lobe dominance 与 cubic-payment 组合定理的来源；这只是 bounded non-hit，不证明新颖性、优先权或可发表性。</li><li><strong>OPEN：</strong>\(\mathfrak C_R^{M,(N)}\asymp NT\)；完整 \(Y_{2,R}^{\rm sf,(N)}\lesssim\sqrt N\,T\)；一般适合弱解的 terminal effective-shell packing；固定尺度不等式 \(\mathfrak C_R^M\le C[(P_R^M)^{2/3}+Y_{2,R}^{\rm sf}]\)；预定中心 的尺度收缩与迭代；三维 Navier--Stokes 全局正则性。</li></ul>
+<p>R0.74Q 没有数值 Navier--Stokes 仿真，没有构造奇点，没有排除奇点， 没有证明任意光滑有限能量初值的全局光滑性，也没有解决固定尺度待定 不等式。</p>
+<p><strong>NOT CLAY.</strong></p>
+</section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>解析主文、双证书与独立审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_problem_freeze.md">问题冻结</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_common_shear_multipacket_gate.md">共同剪切门</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_relaxed_multipacket_cubic_obstruction.md">放松多包与三次支付</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074q_common_shear_gate_certificate.py">共同剪切证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074q_relaxed_multipacket_certificate.py">放松族证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_primary_literature_boundary.md">文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_gap_matrix.md">证据与缺口矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_report-source.md">完整中文 reader source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074q_freeze_manifest.json">冻结清单</a></p><p><a href="/notes/r0-74q.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节）</a> · <a href="/recap-r0-61-r0-74o.pdf">recap PDF</a></p><p class="note">本节纯解析，没有 Navier--Stokes 数值仿真、DNS、DGX 或正式图件。</p></section>
+<section id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74R</h2><p>从 convex cubic payment 反推一般有效壳层 packing，同时独立处理 signed flux、完整 \(Y_2\) 与非 equal-target 振幅优化。</p></section></article></main></body></html>

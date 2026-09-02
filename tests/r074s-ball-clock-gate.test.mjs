@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -171,7 +171,12 @@ test("R0.74S Step 9 Ruby audit independently reconstructs the best-N last-exit b
 });
 
 test("R0.74S Step 10 Ruby audit independently reconstructs the paid-branch residual boundary", () => {
-  const output = execFileSync("ruby", [resolve(root, "scripts/r074s_paid_branch_last_exit_certificate_independent.rb")], { cwd: root, encoding: "utf8" });
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_paid_branch_last_exit_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 10 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  const output = result.stdout;
   assert.equal(createHash("sha256").update(output).digest("hex"), "4877dc3a0de2c2f605641736c7355672f0a7a68cb97a37849d4a7c28495e8bbd");
   const parsed = JSON.parse(output);
   assert.equal(parsed.pass, true);

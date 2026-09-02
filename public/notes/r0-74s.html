@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.85"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74S｜一侧球时钟为何仍留下 ℓ¹ 债务</title><meta name="description" content="一侧 ball-clock 归约、终端 Abel 恒等式与剩余的 ℓ¹ 债务">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.85"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}picture img{display:block;width:100%;height:auto}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-02</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜一侧球时钟为何仍留下 ℓ¹ 债务</h1><p>一侧 ball completion 给出精确 stopped clocks 与 Abel 恒等式，但只留下 \(\ell^1\) 账本。抽象时钟塔证明单靠正性、线性与 tower identity 不能得到匹配 \(\ell^2\) 压缩。<strong>PROVED ABSTRACT NO-GO ONLY. NOT PDE/NSE. NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">ABSTRACT NO-GO</span><span class="label">OPEN</span><span class="label">NOT PDE/NSE</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S</strong><p>一侧 ball cutoff：PROVED</p><p>三条 stopped orientation：PROVED</p><p>terminal Abel identity：PROVED</p><p>ℓ¹/ℓ² obstruction：PROVED ABSTRACT NO-GO</p><p>PDE/NSE counterexample：NOT CLAIMED</p><p>cross-channel sign：OPEN</p><p>Q.1 / regularity：OPEN</p><p>无仿真 / NO DGX</p></div></div></header><article>
+<section id="s-01"><div class="section-no">01 / 完整正文</div><h2>0. 这一步得到什么</h2>
+<p>R0.74R 把任意 completed clock 的困难分成累计耗散、真实动能窗口和近期正变差三支。R0.74S 继续检验其中最自然的修复：在最后一次 upcrossing 处停止每个活跃壳层，用一侧球 cutoff 完成剩余的 root、outer 与 weight-drop 三条有符号通道，再利用正性和相邻壳层消去边界。</p>
+<p>本节证明了三件事：</p>
+<ul><li>三条有符号通道都有精确的 stopped ball-clock 表示，但时间方向不同；</li><li>从 collar 换成 ball 不会增加低阶损失，所有二次 cutoff 行仍由 \(A_R=(P_R^M)^{2/3}\) 支付；</li><li>terminal weight-drop ball clocks 满足精确 Abel 恒等式，但右端是完整的 \(\ell^1\) shell residual，而不是匹配平方函数。</li></ul>
+<p>最后，一个光滑抽象时钟塔使 ball-clock 债务等于 \(N\)，而平方函数只等于 \(\sqrt N\)。因此，单靠 completed-clock 正性、cutoff 线性与 tower 恒等式，不能推出所需的 \(\ell^2\) 压缩。这是一个 <strong>PROVED ABSTRACT NO-GO</strong>；见证不是速度场、压力场、耗散测度或 Navier--Stokes 解，不能写成 PDE/NSE 反例。</p>
+<p>无条件 stopped-work 估计、跨通道动力学符号定理、R0.74R 的普适 persistence 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 <strong>OPEN / NOT CLAIMED</strong>。<strong>NOT CLAY.</strong></p>
+<p>本节没有数值仿真、DNS 或 DGX。</p>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整正文</div><h2>1. 两个紧支撑一侧球 cutoff</h2>
+<p>保留 \(r_m=2^mR\)、\(\delta=R/8\) 与冻结过渡函数 \(\vartheta\)，定义</p>
+<div class="equation">\[
+\chi_{m,R}^-(y)=1-\vartheta\!\left(\frac{|y|-r_m}{\delta}\right),
+\qquad
+\chi_{m,R}^+(y)=\vartheta\!\left(\frac{r_m-|y|}{\delta}\right).
+\]</div>
+<p>两者都光滑、径向、紧支撑且取值于 \([0,1]\)。逐一检查 \(r_m-\delta,r_m,r_m+\delta\) 划分的四个径向区间，得到</p>
+<div class="equation">\[
+\boxed{
+0\le\chi_{m,R}^-\le\chi_{m,R}^+\le1,
+\qquad
+\beta_m^R=\chi_{m,R}^+-\chi_{m,R}^-,
+\qquad
+\psi_m^R=\chi_{m+1,R}^+-\chi_{m,R}^- .}
+\]</div>
+<p>令 \(\mathsf B_{m,R}^{\pm}\) 为它们的周期化。两条径向梯度都带负号，因此对 R0.74S Step 3 的 work vector 有</p>
+<div class="equation">\[
+\boxed{
+\int_{\mathbb T^3}\mathcal W_R^M\cdot\nabla\mathsf B_{m,R}^-=-J_{m,R}^-,
+\qquad
+\int_{\mathbb T^3}\mathcal W_R^M\cdot\nabla\mathsf B_{m,R}^+=-J_{m,R}^+.}
+\]</div>
+<p>这个符号决定了后面 root 与 outer 两行保留的是不同端点；不能在这里先取绝对值。</p>
+</section>
+<section id="s-03"><div class="section-no">03 / 完整正文</div><h2>2. completed ball-clock tower</h2>
+<p>对任意非负紧支撑 lifted cutoff \(\phi\) 及其周期化 \(\Phi\)，定义端点能量、耗散、二次源项与通量四行</p>
+<div class="equation">\[
+\begin{aligned}
+\mathscr E_R[\Phi](t)
+&amp;=\frac{\eta_R(t)}{2R}\int_{\mathbb T^3}\Phi|v_R|^2,\\
+\mathscr D_R[\Phi](t)
+&amp;=\frac1R\int_{(s_R,t)\times\mathbb T^3}\eta_R\Phi\,d\boldsymbol\mu,\\
+\mathscr Q_R[\Phi](t)
+&amp;=\frac1{2R}\int_{s_R}^{t}\!\int_{\mathbb T^3}
+[\eta_R&#x27;\Phi+\eta_R\Delta\Phi]|v_R|^2,\\
+\mathscr F_R[\Phi](t)
+&amp;=\frac1R\int_{s_R}^{t}\!\int_{\mathbb T^3}
+\eta_R\mathcal W_R^M\cdot\nabla\Phi .
+\end{aligned}
+\]</div>
+<p>写 \(\mathscr K_R=\mathscr Q_R+\mathscr F_R\)。R0.74P 的 suitable-weak 局部能量计算给出规范绝对连续代表</p>
+<div class="equation">\[
+\boxed{
+\mathscr K_R[\Phi]=\mathscr E_R[\Phi]+\mathscr D_R[\Phi]\ge0,
+\qquad
+\mathscr K_R[\Phi](s_R)=0.}
+\]</div>
+<p>线性与上面的 cutoff 差分恒等式给出</p>
+<div class="equation">\[
+\boxed{
+\begin{aligned}
+\mathscr K_{m,R}^{+}-\mathscr K_{m,R}^{-}
+&amp;=\gamma_m^{-1}K_{m,R}^{\partial},\\
+\mathscr K_{m+1,R}^{+}-\mathscr K_{m,R}^{-}
+&amp;=\gamma_m^{-1}K_{m,R}.
+\end{aligned}}
+\]</div>
+<p>于是</p>
+<div class="equation">\[
+\boxed{
+\mathscr K_{m+1,R}^{+}-\mathscr K_{m,R}^{+}
+=\gamma_m^{-1}(K_{m,R}-K_{m,R}^{\partial})\ge0.}
+\]</div>
+<p>这是一条真正的单调 ball tower；但单调性本身只说明 residual 非负，并不把它从 \(\ell^1\) 变成 \(\ell^2\)。</p>
+</section>
+<section id="s-04"><div class="section-no">04 / 完整正文</div><h2>3. 从 collar 到 ball 仍是二次付款</h2>
+<p>令</p>
+<div class="equation">\[
+d_m=\gamma_{m-1}-\gamma_m&gt;0,
+\qquad m\ge2.
+\]</div>
+<p>冻结权重满足 \(\sum_{k\ge j}\gamma_k\le(35/3)\gamma_j\)。把 lifted ball 分成中心球、硬边界 collar 与 padded-shell 内部后，得到点态 packing</p>
+<div class="equation">\[
+\begin{aligned}
+&amp;\sum_{k\ge1}\gamma_k\chi_{k,R}^-
++\sum_{k\ge1}\gamma_k\chi_{k+1,R}^+
++\sum_{m\ge2}d_m\chi_{m,R}^+\\
+&amp;\qquad\le C\left[
+\mathbf1_{\{|y|&lt;4R\}}+
+\sum_{j\ge1}\gamma_j\mathbf1_{\operatorname{supp}\psi_j^R}(y)
+\right].
+\end{aligned}
+\]</div>
+<p>对应绝对 Laplacian 的和乘以 \(R^2\) 后也满足同一控制。危险的 outer collar \(C_j^+\) 上出现 \(\gamma_{j-1}\)，它由 \(\operatorname{supp}\psi_{j-1}^R\) 支付；不能错误地用 \(\gamma_j\) 代替。中心球另由</p>
+<div class="equation">\[
+R^{-3}\int_{I_{2R}}\int_{B_{4R}}|v_R|^2
+\le32\,\mathcal E^{M,R}(z_0,8R)
+\le32A_R
+\]</div>
+<p>支付。合并后</p>
+<div class="equation">\[
+\boxed{
+\sum_{k\ge1}\gamma_k\operatorname{TV}\mathscr Q_{k,R}^-
++\sum_{k\ge1}\gamma_k\operatorname{TV}\mathscr Q_{k+1,R}^+
++\sum_{m\ge2}d_m\operatorname{TV}\mathscr Q_{m,R}^+
+\le CA_R.}
+\]</div>
+<p>因此 ball completion 没有制造新的低阶损失；真正的问题是保留下来的 terminal \(\mathscr K\)-clock。</p>
+</section>
+<section id="s-05"><div class="section-no">05 / 完整正文</div><h2>4. 三条 signed channel 的时间方向</h2>
+<p>固定 Step 2 的 stopped family \((\tau,I,\boldsymbol\sigma)\)。对 \(k\in I\)，令 \(\rho_k\) 为前驱 merge/终端时刻，\(\lambda_k\) 为后继 merge/终端时刻；内部边界从 \(\widehat\sigma_m=\max(\sigma_{m-1},\sigma_m)\) 开始激活。</p>
+<p>精确积分得到：</p>
+<div class="equation">\[
+\frac1R\int_{s_R}^{\tau}\eta_R\mathcal R_R
+=-\sum_{k\in I_{\rm rt}}\gamma_k
+[\mathscr F_{k,R}^-(\rho_k)-\mathscr F_{k,R}^-(\sigma_k)],
+\]</div>
+<div class="equation">\[
+-\frac1R\int_{s_R}^{\tau}\eta_R\mathcal L_R
+=\sum_{k\in I_{\rm out}}\gamma_k
+[\mathscr F_{k+1,R}^+(\lambda_k)-\mathscr F_{k+1,R}^+(\sigma_k)],
+\]</div>
+<div class="equation">\[
+\frac1R\int_{s_R}^{\tau}\eta_R\mathcal G_R
+=\sum_{m\in I^\partial}d_m
+[\mathscr F_{m,R}^+(\tau)-\mathscr F_{m,R}^+(\widehat\sigma_m)].
+\]</div>
+<p>用 \(\mathscr F=\mathscr K-\mathscr Q\)、\(\mathscr K\ge0\) 与二次付款，只能分别留下</p>
+<div class="equation">\[
+\begin{aligned}
+\left[R^{-1}\int\eta_R\mathcal R_R\right]_+
+&amp;\le\sum_{k\in I_{\rm rt}}\gamma_k\mathscr K_{k,R}^-(\sigma_k)+CA_R,\\
+\left[-R^{-1}\int\eta_R\mathcal L_R\right]_+
+&amp;\le\sum_{k\in I_{\rm out}}\gamma_k\mathscr K_{k+1,R}^+(\lambda_k)+CA_R,\\
+\left[R^{-1}\int\eta_R\mathcal G_R\right]_+
+&amp;\le\sum_{m\in I^\partial}d_m\mathscr K_{m,R}^+(\tau)+CA_R.
+\end{aligned}
+\]</div>
+<p>不对称性是精确的：root 留在起始 stop，outer 留在 merge，weight-drop 留在终端。正性不会自动抹掉这些值。</p>
+</section>
+<section id="s-06"><div class="section-no">06 / 完整正文</div><h2>5. terminal weight-drop 的 Abel 恒等式</h2>
+<p>在好时刻 \(t\) 写 \(B_m=\mathscr K_{m,R}^+(t)\)。有限求和分部给出</p>
+<div class="equation">\[
+\sum_{m=2}^{M}d_mB_m
+=\gamma_1B_2+
+\sum_{m=2}^{M-1}\gamma_m(B_{m+1}-B_m)
+-\gamma_MB_M.
+\]</div>
+<p>由 ball tower，中间项正好等于</p>
+<div class="equation">\[
+\sum_{m=2}^{M-1}[K_{m,R}(t)-K_{m,R}^{\partial}(t)].
+\]</div>
+<p>固定 \(R,t\) 时，周期化 ball clock 至多按 \(1+2^{3M}\) 增长；而 \(\gamma_M=\exp(-4^{M-1}/32)\)，所以 \(\gamma_MB_M\to0\)。取极限并补回 \(m=1\) 得到</p>
+<div class="equation">\[
+\boxed{
+\sum_{m\ge2}d_m\mathscr K_{m,R}^{+}(t)
+=\gamma_1\mathscr K_{1,R}^{+}(t)
++\sum_{m\ge1}[K_{m,R}(t)-K_{m,R}^{\partial}(t)].}
+\]</div>
+<p>每一项都非负。因此对任意有限 \(H\subset\{2,3,\ldots\}\)，</p>
+<div class="equation">\[
+\sum_{m\in H}d_m\mathscr K_{m,R}^{+}(t)
+\le\gamma_1\mathscr K_{1,R}^{+}(t)+Y_{1,R}^{\rm clk}.
+\]</div>
+<p>这是正确且有限的 \(\ell^1\) 估计，却没有任何平方函数压缩。把它代回 weight-drop 行，只会返回已经知道的大付款 ledger。</p>
+</section>
+<section id="s-07"><div class="section-no">07 / 完整正文</div><h2>6. 抽象时钟塔严格饱和这个损失</h2>
+<p>取任意 \(N\ge1\) 与光滑单调函数 \(h\)，满足 \(h(s_R)=0\)、\(h(\tau)=1\)。规定</p>
+<div class="equation">\[
+K_{m,R}(t)=
+\begin{cases}h(t),&amp;1\le m\le N,\\0,&amp;m&gt;N,
+\end{cases}
+\qquad
+K_{m,R}^{\partial}=0,
+\qquad
+\mathscr K_{1,R}^{+}=0,
+\qquad
+\mathscr K_{m,R}^{-}=\mathscr K_{m,R}^{+}.
+\]</div>
+<p>其余 ball tower 由单调差分递归定义。再在纯标量层面取 \(\mathscr E=\mathscr K\)、\(\mathscr D=\mathscr Q=0\)、\(\mathscr F=\mathscr K\)，所有 completed-clock 与线性 tower 恒等式都逐项成立。</p>
+<p>在终端时刻，前 \(N\) 个 shell positive variations 都等于 1，于是</p>
+<div class="equation">\[
+\boxed{
+Y_{2,R}^{\rm sf}=\sqrt N,
+\qquad
+\sum_{m\ge2}d_m\mathscr K_{m,R}^{+}(\tau)=N.}
+\]</div>
+<p>所以不存在仅由上述标量代数推出的普适常数 \(C\)，使</p>
+<div class="equation">\[
+\sum_{m\ge2}d_m\mathscr K_{m,R}^{+}(\tau)
+\le C\,Y_{2,R}^{\rm sf}.
+\]</div>
+<p>这就是本节的 no-go：<strong>positive completion + linear tower + \(\ell^1\) summation</strong> 不能单独关闭匹配平方函数。这个见证没有空间算子或 PDE 实现，因此不排除真正利用 Navier--Stokes 方程、跨通道符号或有限 genealogy 的定理。</p>
+</section>
+<section id="s-08"><div class="section-no">08 / 完整正文</div><h2>7. 证书与独立审计</h2>
+<p>最终确定性证书通过：</p>
+<ul><li>5/5 个精确 ledger 行；</li><li>7/7 个有限检查；</li><li>55/55 个结构检查；</li><li>4/4 个负向符号突变检查。</li></ul>
+<p>有限覆盖包括 312 个有理 cutoff 值、228 个导数样本、1024 个含并列 stop 的 stopped configuration、82432 个布尔激活比较、\(M=2,\ldots,8\) 的全部有限 Abel 端点，以及 \(N=1,\ldots,24\) 在五个有理时刻的抽象 tower。两个临时目录独立重算得到逐字节一致的 JSON 与 Markdown 报告。</p>
+<p>这些是 <strong>FINITE</strong> 证书，只验证公式实现和符号哨兵；它们不机器证明 cutoff 光滑性、周期化/unfolding、suitable local-energy 计算、无限支撑估计或抽象见证的 PDE 实现。解析证明和有限证书必须继续分开。</p>
+</section>
+<section id="s-09"><div class="section-no">09 / 完整正文</div><h2>8. 决定与下一门槛</h2>
+<p>本节已经 <strong>PROVED</strong>：</p>
+<ul><li>一侧 ball cutoff 与 flux 符号恒等式；</li><li>completed ball-clock tower；</li><li>三族二次 \(\mathscr Q\) 付款；</li><li>root、outer、weight-drop 的精确 stopped 时间方向；</li><li>terminal weight-drop Abel 恒等式；</li><li>标量 positive-clock 的 \(\ell^1/\ell^2\) obstruction。</li></ul>
+<p>本节只关闭一条独立代数路线：把所有剩余 signed face 分别完成成正 ball clock，再逐项取绝对值或终端值，不能从正性、线性与 tower identity 得到 matched square-function estimate。</p>
+<p>仍可能有效的下一步必须保留跨通道动力学关系，例如 root supply 与 inactive inner shell、outer leakage 与 later merge、weight-drop 与取正之前的 negative work/backscatter 之间的符号耦合；另一种可能是证明 stopped block genealogy 具有统一有限复杂度。</p>
+<p>root/outer/weight-drop 动力学控制、耗散主导分支、R0.74R persistence hypotheses、无条件固定尺度不等式 (Q.1)、尺度收缩、正则性、奇点形成和 Clay 问题全部保持 <strong>OPEN / NOT CLAIMED</strong>。</p>
+<p><strong>PROVED ABSTRACT NO-GO ONLY. NOT PDE/NSE. NOT CLAY.</strong></p>
+</section>
+<section id="s-10"><div class="section-no">10 / 完整正文</div><h2>9. 继承边界</h2>
+<ul><li>actual collar traces 与四通道 split：继承自 R0.74S Step 3，PROVED；</li><li>stopped-family activation：继承自 R0.74S Step 2，PROVED；</li><li>thin boundary clock 与 \(K_m^\partial\le K_m\)：继承自 R0.74S Step 4，PROVED；</li><li>suitable-weak completed-clock operator：继承自 R0.74P，PROVED；</li><li>weighted \(S_2\) 与 doubled-radius support ledger：继承自 R0.74H，PROVED；</li><li>frozen adjacent-weight tail：继承自 R0.74S Step 1，PROVED。</li></ul>
+<p>不声称新颖性、优先权、正则性或千禧年问题结论。</p>
+</section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>一侧球时钟、精确 Abel 恒等式与剩余债务</h2><picture><source srcset="/assets/r074s/fig-r074s-ball-clock-debt.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-ball-clock-debt.png" alt="R0.74S one-sided ball completion and l1 debt"></picture><p><a href="/assets/r074s/fig-r074s-ball-clock-debt.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-ball-clock-debt.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-ball-clock-debt.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-ball-clock-debt/source-data.csv">source data</a> · <a href="/figures/r074s/fig-r074s-ball-clock-debt/qa-report.md">视觉 QA</a></p><p class="note">确定性解析图，不是 DNS、仿真、PDE/NSE 反例、奇点或正则性证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>解析主文、证书与独立审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_problem_freeze.md">问题冻结</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_one_sided_ball_clock_no_gain.md">最终解析主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_one_sided_ball_clock_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_one_sided_ball_clock_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_claim_state_update.md">主张边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_literature_boundary.md">文献与优先权边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_report-source.md">完整中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">5/5 exact、7/7 finite、55/55 structural、4/4 negative mutation；有限证书不替代解析证明。</p></section>
+<section id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74T</h2><p>不再增加同类 positive completion；下一步只检验跨通道动力学符号关系，或证明 stopped block genealogy 的统一有限复杂度。</p></section></article></main></body></html>

@@ -40,6 +40,26 @@ jobs:
           python -m pip install -r figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
           sudo apt-get update
           sudo apt-get install --yes poppler-utils
+      - name: Restore frozen R0.74N verifier font fixtures
+        run: |
+          python - <<'PY'
+          import base64
+          import os
+          import re
+          from pathlib import Path
+
+          svg = Path("research/figures/r074n/fig-r074n-all-shell-synthesis/figure.svg").read_text(encoding="utf-8")
+          payloads = re.findall(r"data:font/ttf;base64,([A-Za-z0-9+/=]+)", svg)
+          if len(payloads) != 2:
+              raise SystemExit(f"expected two frozen font payloads, found {len(payloads)}")
+          output = Path(os.environ["RUNNER_TEMP"]) / "r074n-fonts"
+          output.mkdir(parents=True, exist_ok=True)
+          (output / "DejaVuSans.ttf").write_bytes(base64.b64decode(payloads[0], validate=True))
+          (output / "DejaVuSans-Bold.ttf").write_bytes(base64.b64decode(payloads[1], validate=True))
+          PY
+          sudo mkdir -p /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype
+          sudo install -m 0644 "$RUNNER_TEMP/r074n-fonts/DejaVuSans.ttf" /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype/DejaVuSans.ttf
+          sudo install -m 0644 "$RUNNER_TEMP/r074n-fonts/DejaVuSans-Bold.ttf" /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype/DejaVuSans-Bold.ttf
       - name: Verify publication completeness, links, and bilingual coverage
         run: node scripts/run-release-publication-gate.mjs
       - name: Prepare static artifact

@@ -12,7 +12,7 @@ const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex")
 const node = process.env.CODEX_NODE || process.execPath;
 
 test("R0.74S publication accounting advances without recap drift", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.90", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
+  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.91", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
   const manifest = JSON.parse(read("research/release-manifest.json"));
   assert.equal(manifest.latestCompletedRelease, "r074s");
   assert.equal(manifest.nextRelease, "r074t");
@@ -33,9 +33,9 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   for (const marker of [
     "一侧 ball cutoff 与 flux 符号恒等式", "四通道 signed recombination", "三通道 genealogy cutoff 非负",
     "PROVED ABSTRACT SCALAR NO-GO", "这个见证没有空间算子或 PDE 实现", "真实 NSE solution family", "PDE-weighted block length", "完整中文版本",
-    "S.248–S.272：PROVED / OPEN 分列", "shared infimal convolution：EXACT", "critical s² Carleson：LOG GAP",
-    "terminal trace S.261：OPEN", "excess constants：1/5 与 3", "uniform packing S.269：OPEN", "combined S.272：OPEN",
-    "14/14 exact", "34/34 structural", "7/7 mutations", "206,891 cases", "ABSTRACT STRESS TESTS, NOT NSE COUNTEREXAMPLES", "NOT CLAY",
+    "S.273–S.306：PROVED / OPEN 分列", "terminal window：EXACT REDUCTION", "Morrey packing：CONDITIONAL",
+    "S.280：OPEN", "S.288：OPEN", "S.303：OPEN", "16/16 exact", "51/51 structural", "11/11 mutations", "153,237 exact cases",
+    "ABSTRACT BOUNDARY TESTS, NOT NSE COUNTEREXAMPLES", "不是 universal PDE no-go", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -101,10 +101,25 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   assert.equal(binding.claimBoundary.nPlusOneTargetFalsificationCriterion, "PROVED_CONDITIONAL_S270");
   assert.equal(binding.claimBoundary.existingMultiPacketFamiliesRefuteFixedPositiveN, false);
   assert.equal(binding.claimBoundary.combinedTwoBranchEstimate, "OPEN_S272");
+  assert.equal(binding.claimBoundary.commonTerminalWindowDefinition, "PROVED_S273");
+  assert.equal(binding.claimBoundary.commonWindowShortResidualReduction, "PROVED_S274_S275");
+  assert.equal(binding.claimBoundary.commonWindowTerminalContinuity, "PROVED_S276");
+  assert.equal(binding.claimBoundary.fixedSolutionWindowModulus, "PROVED_NONUNIFORM_S277");
+  assert.equal(binding.claimBoundary.bestNLayerCakeIdentity, "PROVED_S278");
+  assert.equal(binding.claimBoundary.universalTerminalWindowGate, "OPEN_S280");
+  assert.equal(binding.claimBoundary.l1OnlyWindowEstimate, "REFUTED_ABSTRACT_LEDGER_NO_GO_S281_NOT_NSE");
+  assert.equal(binding.claimBoundary.averagedTerminalBoundary, "PROVED_P_TO_FOUR_FIFTH_S282_S284");
+  assert.equal(binding.claimBoundary.universalAncestorGate, "OPEN_S288");
+  assert.equal(binding.claimBoundary.movingTubeMorreyPacking, "PROVED_CONDITIONALLY_ON_UNIFORM_M_L_S289_S294");
+  assert.equal(binding.claimBoundary.criticalMixedNormBenchmark, "PROVED_CONDITIONAL_S295_S300");
+  assert.equal(binding.claimBoundary.cknDimensionImpliesAncestorPacking, false);
+  assert.equal(binding.claimBoundary.combinedStep12Target, "OPEN_S303");
+  assert.equal(binding.claimBoundary.frozenPacketPhysicalWinding, false);
+  assert.equal(binding.claimBoundary.singlePacketSpeedRoute, "KINEMATICALLY_SCREENED_NOT_UNIVERSAL_PDE_NO_GO_S304_S306");
   assert.equal(binding.claimBoundary.step6PdeOrNseCounterexample, false);
   assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
   assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN_Q1");
-  assert.equal(binding.claimBoundary.formalFigure, "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP11_FIGURE");
+  assert.equal(binding.claimBoundary.formalFigure, "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP12_FIGURE");
 });
 
 test("R0.74S public mirrors, concise homepage card, and literature boundary are synchronized", () => {
@@ -115,10 +130,10 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
   const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
   assert.ok(card.length > 0 && card.length < 500, `homepage card length ${card.length}`);
-  for (const marker of ["共享 budget", "terminal trace", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
+  for (const marker of ["终端窗归约", "Morrey packing", "S.280", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["S.249", "nested-tent", "1/5", "S.261", "S.269", "S.272", "no-go", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["S.273", "layer cake", "S.280", "S.288", "S.303", "no-go", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
     const canonical = `research/figures/r074s/fig-r074s-ball-clock-debt/figure.${ext}`;
@@ -134,7 +149,7 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step11-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step12-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
   assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));

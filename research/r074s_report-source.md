@@ -1778,3 +1778,428 @@ Step 11 **OPEN**：terminal anti-concentration (S.261)；uniform selected-excess
 主证书通过 14/14 exact、7/7 finite、34/34 structural 与 7/7 negative mutations。独立 Ruby audit 通过 7/7 groups、206,891 cases、6/6 artifact locks、7/7 dependency locks 与 59/59 note checks；canonical stdout SHA-256 为 `506440647a0a9b5be9d65ded24762b6eb6f6ce8cf054473a0ac04bf8835a1ffb`。这些有限证书只支持实现可复现性，不替代 inherited local-energy/PDE analysis。
 
 **SHARED BUDGET: EXACT. SHORT TERMINAL TRACE: OPEN. SELECTED-EXCESS PACKING: OPEN. EXISTING MULTI-PACKET FAMILIES DO NOT REFUTE FIXED POSITIVE N. NOT CLAY.**
+
+## 58. Step 12：终端公共窗口与 conditional Morrey packing
+
+Step 11 把 full-terminal clock estimate 归约为两个 best-\(N\) tail：short non-dissipation residual \(r^{\rm sh}\) 与 selected dissipation excess \(x^{\rm sel}\)（等价地 \(r^x\)）。Step 12 没有证明这两个 universal tail estimate，而是把它们改写成更清晰的 PDE 接口，并证明一个带附加统一假设的 conditional packing theorem。
+
+本步得到六项结论：short residual 可由一个共同终端窗内的 absolute shell-flux variation 与已证明的 positive-depth cubic term 控制；该新窗口泛函对 terminal 连续，但固定解的模量不对解与尺度统一；best-\(N\) 的 exact layer-cake identity 把问题变成所有阈值上的 shell counting；selected excess 的 anomalous-defect 与 high-Rayleigh ancestors 必须诚实相加 exception budgets；若 total local dissipation 具有统一 critical Morrey coefficient，且 lifted mollified path 的长度以 \(R\) 为单位一致有界，则 moving-tube covering 给出 conditional Morrey packing；最后，单个 inherited passive packet 的统一加速受到 kinematic screen，并不能绕过 cubic obstruction。
+
+**OPEN**：S.280、S.288、S.303、Step 11 的 S.272、Q.12、Q.1、scale contraction、regularity 与 singularity。conditional Morrey 与 mixed-norm 结论的常数依赖其额外统一上界；不声称 novelty 或 priority。无 DNS、无 floating-point asymptotics、无 DGX。**NOT CLAY.**
+
+## 59. 冻结设置与公共终端窗
+
+保留 R0.74S Steps 10--11 的全部定义：
+
+\[
+ \mathcal T_R=(s_R,t_0),\qquad |\mathcal T_R|=4R^2,
+ \qquad A_R=(P_R^M)^{2/3},
+\]
+
+并对每个 \(\tau\in\mathcal G_R\cap\mathcal T_R\) 保留 \(r_k^{\rm sh}\)、\(d_k=(\tau-\ell_k)/R^2\) 以及 inherited absolute flux ledger
+
+\[
+ \sum_{k\ge1}\int_{\mathcal T_R}|\dot F_{k,R}(t)|\,dt
+ \le \mathfrak L_{{\rm abs},R}^M\le C_FP_R^M.
+\]
+
+把 \(|\dot F_{k,R}|\) 在 \(\mathcal T_R\) 外延为零。对 \(0<\delta<4\)，定义
+
+\[
+ \boxed{
+ \begin{aligned}
+ J_{\tau,\delta}&=(\max\{s_R,\tau-\delta R^2\},\tau),\\
+ f_{k,R}(\tau,\delta)&=\int_{J_{\tau,\delta}}|\dot F_{k,R}(t)|\,dt,\\
+ \mathcal V^F_{N,R}(\tau,\delta)&=\mathcal S_N((f_{k,R}(\tau,\delta))_{k\ge1}).
+ \end{aligned}}
+\tag{S.273}
+\]
+
+这里用一个共同 shell deletion set 处理整段 window；不能在积分内部随时间改变。
+
+## 60. Exact terminal variation-window reduction
+
+若 \(k\in\mathcal R_{\rm sh}(\tau)\) 且 \(d_k\le\delta\)，则 \(J_k^{\rm LE}\subset J_{\tau,\delta}\)。因此对每个 \(S\subset\mathbb N\)，
+
+\[
+ \boxed{
+ \sum_{\substack{k\in\mathcal R_{\rm sh}(\tau)\setminus S\\d_k\le\delta}}
+ r_k^{\rm sh}(\tau)
+ \le\sum_{k\notin S}f_{k,R}(\tau,\delta).}
+\tag{S.274}
+\]
+
+其余 \(d_k>\delta\) 的坐标由 Step 11 (S.259) 以同一个 \(S\) 控制，故
+
+\[
+ \boxed{
+ \mathcal S_N(r^{\rm sh}(\tau))
+ \le \mathcal V^F_{N,R}(\tau,\delta)
+ +C_{\rm deep}\delta^{-2/3}A_R,
+ \quad C_{\rm deep}=3C_1^{2/3}C_P^{2/3}\mathscr A_0^{1/3}.}
+\tag{S.275}
+\]
+
+这个结构性增益把 last-exit selectors 与 branch masks 从新项中移除，改为固定窗口上的连续泛函。
+
+## 61. 终端连续性与缺失的 uniform modulus
+
+令 \(g_R(t)=\sum_k|\dot F_{k,R}(t)|\in L^1(\mathcal T_R)\)。当 \(\tau_n\to\tau\) 时，
+
+\[
+ \begin{aligned}
+ \|f_R(\tau_n,\delta)-f_R(\tau,\delta)\|_{\ell^1}
+ &\le\int_{J_{\tau_n,\delta}\triangle J_{\tau,\delta}}g_R(t)\,dt\to0,\\
+ |\mathcal S_N(a)-\mathcal S_N(b)|&\le\|a-b\|_{\ell^1}.
+ \end{aligned}
+\tag{S.276}
+\]
+
+所以 \(\tau\mapsto\mathcal V^F_{N,R}(\tau,\delta)\) 连续，good terminals 上的 supremum 等于全 \(\mathcal T_R\) 上的 supremum。对每个固定 \((u,R)\)，Lebesgue integral 的 absolute continuity 还给出
+
+\[
+ \boxed{
+ \Omega_{u,R}(\delta):=
+ \sup_{\tau\in\mathcal T_R}\sum_kf_{k,R}(\tau,\delta)
+ \longrightarrow0\qquad(\delta\downarrow0).}
+\tag{S.277}
+\]
+
+但这个 modulus 依赖 solution 与 scale，且 S.275 的 positive-depth term 同时按 \(\delta^{-2/3}A_R\) 增长，因此不能据此得到 universal estimate。
+
+## 62. Layer cake：精确的 all-threshold counting problem
+
+对 \(z\in\ell^1_+\) 定义 \(n_z(t)=\#\{k:z_k>t\}\)。删除最大的 \(N\) 个坐标并用 Tonelli，得到
+
+\[
+ \boxed{
+ \mathcal S_N(z)=\int_0^\infty(n_z(t)-N)_+\,dt.}
+\tag{S.278}
+\]
+
+因此一个充分的 distributional theorem 是找到 fixed \(N_F\) 与一个对解、尺度、terminal 均统一的 \(\Phi\in L^1(0,\infty)\)，使
+
+\[
+ \boxed{
+ \#\{k:f_{k,R}(\tau,\delta_*)>sA_R\}
+ \le N_F+\Phi(s)
+ \Longrightarrow
+ \mathcal V^F_{N_F,R}(\tau,\delta_*)\le A_R\|\Phi\|_{L^1}.}
+\tag{S.279}
+\]
+
+只在一个 threshold 上计数不够；critical \(A_R/t\) count 在 layer-cake endpoint 仍产生 logarithmic divergence。clean short-branch target 为
+
+\[
+ \boxed{
+ \begin{gathered}
+ \textbf{OPEN: find fixed }N_F,\ 0<\delta_*<4,\ C_F^*<\infty\textbf{ such that}\\
+ \sup_{\tau\in\mathcal T_R}\mathcal V^F_{N_F,R}(\tau,\delta_*)
+ \le C_F^*A_R.\\
+ \text{Then (S.275) proves the short gate with }N_{\rm sh}=N_F.
+ \end{gathered}}
+\tag{S.280}
+\]
+
+S.280 是 S.261 的 sufficient replacement，不是 equivalent reformulation；它更强，但目标连续、窗口固定且无 moving selector。
+
+## 63. Inherited \(L_t^1\) ledger 的 method boundary
+
+固定 \(N\)，令 \(M=N+1\)。在同一 terminal window 内放置 \(M\) 个同步 AC spikes，可得
+
+\[
+ \boxed{
+ \sum_k\int_{\mathcal T_R}|\dot F_{k,H}|=MH,
+ \quad \mathcal S_N\left(\left(\int_{J_{\tau_0,\delta}}|\dot F_{k,H}|\right)_k\right)=H,
+ \quad {H\over(MH)^{2/3}}={H^{1/3}\over M^{2/3}}\to\infty.}
+\tag{S.281}
+\]
+
+这是 vector-valued translated-spike witness，**不是 Navier--Stokes solution**。它只证明 AC 加 linear total-mass ledger 不能推出 uniform fixed-\(N\)、\(P^{2/3}\)-scaled window estimate；这是一个明确的 abstract no-go。
+
+Fubini 仍给出 averaged terminal statement：
+
+\[
+ \boxed{
+ \int_{\mathcal T_R}\sum_kf_{k,R}(\tau,\delta)\,d\tau
+ \le\delta R^2\int_{\mathcal T_R}g_R(t)\,dt
+ \le C_F\delta R^2P_R^M.}
+\tag{S.282}
+\]
+
+除去至多 \(\eta R^2\) 的 terminal times 后，
+
+\[
+ \sum_kr_k^{\rm sh}(\tau)
+ \le C\left(\eta^{-1}\delta P_R^M+\delta^{-2/3}A_R\right).
+\tag{S.283}
+\]
+
+若内点 optimizer 落在 \((0,4)\)，平衡两项只得到
+
+\[
+ \boxed{
+ \sum_kr_k^{\rm sh}(\tau)
+ \le C\eta^{-2/5}A_R^{3/5}(P_R^M)^{2/5}
+ =C\eta^{-2/5}(P_R^M)^{4/5}.}
+\tag{S.284}
+\]
+
+这弱于所需 \(P^{2/3}\)，且不控制 supremum terminal；它是该方法的精确 exponent boundary，不声称对 NSE sharp。
+
+## 64. Excess branch 与 honest exception accounting
+
+在 Step 8 的 priority-selected set \(\mathcal I_x(\tau)\) 上定义
+
+\[
+ \boxed{
+ \begin{aligned}
+ d_k^{\rm def}(\tau)&=\mathbf1_{\mathcal I_x(\tau)}m_{k,R}(\tau),\\
+ h_k(\tau)&=\mathbf1_{\mathcal I_x(\tau)}\int_{H_{k,R}}g_{k,R}(t)\,dt,\\
+ b_k(\tau)&=d_k^{\rm def}(\tau)+h_k(\tau),
+ \qquad0\le x_k^{\rm sel}(\tau)\le b_k(\tau).
+ \end{aligned}}
+\tag{S.285}
+\]
+
+两个 ancestor vectors 可重叠，但 deletion sets 的 union 给出
+
+\[
+ \boxed{
+ \mathcal S_{N_D+N_H}(x^{\rm sel})
+ \le\mathcal S_{N_D}(d^{\rm def})+\mathcal S_{N_H}(h).}
+\tag{S.286}
+\]
+
+若存在一个共享 exceptional set \(E_\tau\)、\(\#E_\tau\le N_b\)，且在其外
+\(b_k\le q_k+c_kp_k^{2/3}\)、\(\sum q_k\le C_qA_R\)、\(\sum p_k\le C_pP_R^M\)、\(\sum c_k^3\le C_c\)，则 shellwise Hölder 得到
+
+\[
+ \boxed{
+ \mathcal S_{N_b}(b)
+ \le(C_q+C_c^{1/3}C_p^{2/3})A_R.}
+\tag{S.287}
+\]
+
+PDE 必须构造这些对象并保留 full-history ancestry。bare minimal statement 仍为
+
+\[
+ \boxed{
+ \textbf{OPEN:}\quad
+ \exists N_b,C_b\text{ fixed such that }
+ \mathcal S_{N_b}(b(\tau))\le C_bA_R.}
+\tag{S.288}
+\]
+
+## 65. Conditional moving-tube Morrey theorem
+
+令 \(\widetilde{\boldsymbol\mu}\) 为 total local dissipation measure 的 periodic lift，\(\widetilde X_R\) 为 mollified path 的 continuous lift，并定义 full-history tube
+
+\[
+ \boxed{
+ \mathcal U_{k,R}(\tau)
+ =\{(t,y):s_R<t<\tau,\ y-\widetilde X_R(t)\in\operatorname{supp}\psi_k^R\}.}
+\tag{S.289}
+\]
+
+假设在所限制的整个 solution class、所有尺度与 terminals 上存在共同常数 \(M,L<\infty\)：
+
+\[
+ \boxed{
+ \sup_{Q_R^-(z,s)}{\widetilde{\boldsymbol\mu}(Q_R^-(z,s))\over R}\le M,
+ \qquad
+ \mathcal L_R(\tau)={1\over R}\int_{s_R}^{\tau}|\dot{\widetilde X}_R(t)|\,dt\le L.}
+\tag{S.290}
+\]
+
+按 elapsed time \(O(R^2)\) 或 accumulated path variation \(O(2^kR)\) 贪心停时，可用至多
+
+\[
+ \boxed{C_\psi(2^{3k}+L2^{2k})}
+\tag{S.291}
+\]
+
+个 backward \(R\)-cylinders 覆盖 \(\mathcal U_{k,R}(\tau)\)。arc-length stopping 不可用 endpoint displacement 代替。又因 \(\boldsymbol\mu=|\nabla u|^2dxdt+\boldsymbol D\) 正好一次分解，defect 与 restricted high-Rayleigh viscous parts 相加后只需支付 tube total mass 一次：
+
+\[
+ \boxed{
+ b_k(\tau)
+ \le {\gamma_k\over R}\widetilde{\boldsymbol\mu}(\mathcal U_{k,R}(\tau))
+ \le C_\psi M\gamma_k(2^{3k}+L2^{2k}).}
+\tag{S.292}
+\]
+
+令 \(\mathscr A_m=\sum_{k\ge1}2^{mk}\gamma_k<\infty\)（\(m=2,3\)），则
+
+\[
+ \boxed{
+ \sum_kx_k^{\rm sel}(\tau)\le\sum_kb_k(\tau)
+ \le B(M,L):=C_\psi M(\mathscr A_3+L\mathscr A_2).}
+\tag{S.293}
+\]
+
+与 inherited linear cap \(\sum x_k^{\rm sel}\le C_0P_R^M\) 合并，在 \(P_R^M\le1\) 与 \(P_R^M\ge1\) 两区分别选择较强上界，得到
+
+\[
+ \boxed{
+ \mathcal S_0(x^{\rm sel}(\tau))
+ \le\max\{C_0,B(M,L)\}A_R.}
+\tag{S.294}
+\]
+
+这是真正证明的 **conditional theorem**。允许 \(M=M(u,R)\) 或 \(L=L(u,R)\) 只会恢复 nonuniform fixed-solution finiteness，不能冒充 bare suitable-weak class 的 uniform packing。
+
+## 66. Scale-critical mixed-norm benchmark
+
+令 \(q\in[3,\infty]\)、\(r\in[3,\infty)\)，\(\theta=3/r+2/q\)，并在 restricted class 的所有 target scales 上假设
+
+\[
+ \boxed{
+ \mathcal U_{q,r}(R)=R^{1-\theta}
+ \|u\|_{L_t^q(I_{8R};L_x^r(\mathbb T^3))}\le M_*.}
+\tag{S.295}
+\]
+
+mean-zero periodic pressure gauge 与 Calderón--Zygmund 给出
+
+\[
+ \boxed{
+ \|p-\bar p(t)\|_{L_t^{q/2}L_x^{r/2}}
+ \le C_rM_*^2R^{2\theta-2}.}
+\tag{S.296}
+\]
+
+把等于一的 smooth spacetime test 插入 \(\boldsymbol\mu\) 的 distribution definition，得到
+
+\[
+ \begin{aligned}
+ \boldsymbol\mu(Q_R^-)
+ \le C\bigg[&R^{-2}\int_{Q_{2R}^-}|u|^2
+ +R^{-1}\int_{Q_{2R}^-}|u|^3\\
+ &+R^{-1}\int_{Q_{2R}^-}|p-\bar p(t)|\,|u|\bigg].
+ \end{aligned}
+\tag{S.297}
+\]
+
+mixed Hölder 后所有 \(R\) powers 精确抵消为一次 \(R\)：
+
+\[
+ \boxed{
+ \sup_{Q_R^-}{\boldsymbol\mu(Q_R^-)\over R}
+ \le C_{q,r}(M_*^2+M_*^3)=:M_\mu.}
+\tag{S.298}
+\]
+
+同时 \(|\dot X_R(t)|\le CR^{-3/r}\|u(t)\|_{L^r}\)，故
+
+\[
+ \boxed{
+ {1\over R}\int_{s_R}^{\tau}|\dot X_R(t)|\,dt
+ \le CM_*R^{-1-3/r+2-2/q+\theta-1}=CM_*.}
+\tag{S.299}
+\]
+
+代入 S.294 得
+
+\[
+ \boxed{
+ \mathcal S_0(x^{\rm sel}(\tau))\le C_{q,r,M_*}A_R.}
+\tag{S.300}
+\]
+
+这只是 conditional sanity check：critical strong norm ball 已有更强 regularity theory；当 \(\theta>1\) 时，单个解的 global mixed norm finiteness 不推出 S.295 所需的 scale-Morrey decay。这里也不把 weak \(L^3\) 未经 Lorentz endpoint argument 直接代入 cubic row。
+
+## 67. Partial regularity 为什么没有闭合 excess gate
+
+CKN 给出 singular set 的 parabolic \(\mathcal H^1\)-measure 为零，这是 support-size conclusion，不是 \(\boldsymbol D\) 的 mass-density upper bound。抽象测度
+
+\[
+ \boxed{
+ \boldsymbol D_M=\sum_{k=1}^Ma_k\delta_{z_k},\qquad a_k>0}
+\tag{S.301}
+\]
+
+可支撑在有限点集上，却在 \(M\) 个 moving annular tubes 中各有非零 weighted mass。它只是反驳“dimension 自动推出 packing”的 measure countermodel，**不是 NSE defect measure**。
+
+high-Rayleigh ancestor 属于 \(|\nabla u|^2dxdt\)，可完全位于 regular set。于是
+
+\[
+ \boxed{
+ \text{large high-Rayleigh mass}\ \not\Longrightarrow\
+ \text{a singular point detected by epsilon regularity}.}
+\tag{S.302}
+\]
+
+epsilon regularity 的 converse 不把每个大的 regular viscous mass 变成 singular point。即使有一个 threshold 的 singular-cylinder count，也仍需提升为 all-threshold integrable mass distribution 才能推出 S.288。
+
+## 68. Bounded primary-source collision audit
+
+有限文献检索覆盖 Caffarelli--Kohn--Nirenberg 的 partial regularity、De Rosa--Drivas--Inversi 的 anomalous dissipation support、Seregin 的 critical Morrey estimates、Barker 在附加 weak-\(L^3\) bound 下的 singular-point count，以及 Neustupa 的 singular-point \(L^3\) concentration。没有找到与 S.280 或 S.288 量词完全相同的 theorem。
+
+这些来源分别控制 singular-set size、附加 integrability 下的 density、假设性的 critical coefficient 或依赖额外 norm 的 singular-point count；都没有从 bare inherited ledger 推出 full-history high-Rayleigh annular best-\(N\) packing。检索只用于标记 literature boundary，不构成 novelty 或 priority proof。
+
+## 69. Route decision 与 combined target
+
+short branch 应直接攻连续公共窗口 gate S.280，最好通过 all-threshold count S.279；scalar temporal \(L^1\)、terminal averaging 或没有 endpoint gain 的 critical one-threshold count 已被证明不足。excess branch 应攻 shared ancestor charging S.287 或足以触发 S.294 的 uniform moving-tube coefficient；defect 与 high-Rayleigh budgets 必须按 S.286 相加。
+
+combined Step 12 target 是
+
+\[
+ \boxed{
+ \begin{gathered}
+ \textbf{OPEN: find fixed }N_F,N_b\textbf{ and constants such that}\\
+ \sup_{\tau\in\mathcal T_R}\mathcal V^F_{N_F,R}(\tau,\delta_*)\lesssim A_R,
+ \qquad
+ \sup_{\tau\in\mathcal G_R\cap\mathcal T_R}\mathcal S_{N_b}(b(\tau))\lesssim A_R.\\
+ \text{Then Step 11 closes with }N_{\rm sh}=N_F,\ N_x=N_b,
+ \text{ and total budget }N_F+N_b.
+ \end{gathered}}
+\tag{S.303}
+\]
+
+两个 antecedents 在 bare suitable-weak class 中都 **OPEN**；第二项目前只在 Section 65/66 的附加统一假设下证明。
+
+## 70. 单包加速的 kinematic screen
+
+inherited R0.74F packet centre 满足 \(Q(t)=q_{\rm pre}+B\int_0^t\theta(s,h)ds\)、\(|\theta|\le1\)、\(0<B\le(32R^2)^{-1}\)，故
+
+\[
+ \boxed{
+ \operatorname{Var}_{[0,65R^2]}Q\le{65\over32}<2\pi,
+ \qquad \operatorname{Var}_{I_{2R}}Q\le{1\over8}.}
+\tag{S.304}
+\]
+
+冻结 exact family 的 packet centre 不发生一次完整 torus winding；R0.74F 的 all-winding estimates 是 Brownian-bridge heat kernel 的 periodic copies，不是 packet-centre orbits。
+
+若 hypothetical monotone extension 满足 \(0<\beta B\le q'(t)\le B\)，对 torus measurable set \(J\)，令 \(D=q(T)-q(0)\)、\(m=\lfloor D/(2\pi)\rfloor\)，则 change of variables 给出 exact occupation bound
+
+\[
+ \boxed{
+ {m|J|\over B}\le\tau_J\le{(m+1)|J|\over\beta B}.}
+\tag{S.305}
+\]
+
+many-winding regime 中 \(m\asymp BT\)，访问次数与每次 residence time 的 \(B\) 因子抵消，不能产生 outer dyadic shells 的 exponential preference。若 \(z_\ell\le H2^{p\ell}\Gamma^{4^\ell}\)，且 \(q_N=2^p\Gamma^{3\cdot4^N}<1\)，则
+
+\[
+ \boxed{
+ \mathcal S_N(z)
+ \le\sum_{\ell\ge N}z_\ell
+ \le{H2^{pN}\Gamma^{4^N}\over1-q_N}.}
+\tag{S.306}
+\]
+
+所以 uniform speed-up 只改变共同 prefactor，不改变 super-Gaussian shell ratio。这是 kinematic screen，**不是 universal PDE no-go**，也没有把 earlier packet deposit 识别成 complete ancestor vector \(b\)。
+
+## 71. Step 12 主张边界与双路审计
+
+Step 12 **PROVED**：S.274--S.275 terminal variation-window reduction；S.276--S.277 continuity 与 fixed-solution modulus；S.278--S.279 best-\(N\) layer cake 与 all-threshold implication；S.281--S.284 \(L_t^1\)-only abstract no-go 与 averaged \(P^{4/5}\) boundary；S.285--S.287 exception-budget recombination 与 conditional charging；S.289--S.294 moving-tube cover 与 conditional critical-Morrey theorem；S.295--S.300 mixed-norm sufficient benchmark；S.304--S.305 literal no-winding 与 occupation lemma；S.306 abstract super-Gaussian filter。
+
+Step 12 **ABSTRACT BOUNDARY TESTS, NOT NSE COUNTEREXAMPLES**：S.281 synchronized temporal spikes；S.301 finite atomic defect-support model。
+
+Step 12 **OPEN**：universal terminal-window gate S.280；universal ancestor gate S.288；combined S.303；Step 11 S.272；Q.12、Q.1；从 frozen payment alone 推出 uniform critical Morrey/path estimate；把 earlier moving-packet deposit 与完整 \(b\) 识别；bare suitable weak class 的 universal shell count；scale contraction、regularity、singularity 与 Clay。
+
+主证书通过 16/16 exact、12/12 finite、51/51 structural 与 11/11 mutations。独立 Ruby audit 通过 12/12 groups、153,237 exact cases、6/6 artifact locks、6/6 dependency locks、39/39 note checks；两条实现相互独立地封存 source 与证书边界。有限检查只支持公式实现与防篡改，不替代 analytic proof。
+
+**TERMINAL WINDOW: EXACT REDUCTION. MORREY PACKING: CONDITIONAL. UNIVERSAL WINDOW / ANCESTOR GATES: OPEN. SPEED-ONLY ROUTE: KINEMATICALLY SCREENED, NOT A UNIVERSAL NO-GO. NOT CLAY.**

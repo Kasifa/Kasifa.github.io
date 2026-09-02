@@ -77,10 +77,25 @@
 | N+1-target exact-family falsification criterion | PROVED CONDITIONAL TEST / S.270 |
 | existing multi-packet exact families refute every fixed positive N | FALSE / CURRENT CUBIC PAYMENT IS PROHIBITIVE S.271 |
 | combined two-branch PDE estimate S.272 | OPEN / IMPLIES S.243 WITH ADDED COUNTS |
+| common terminal-window definition and short residual reduction | PROVED / S.273--S.275 |
+| common-window best-N terminal continuity | PROVED / S.276 |
+| fixed-solution terminal-window modulus | PROVED NONUNIFORMLY / S.277 |
+| best-N layer-cake identity and all-threshold implication | PROVED / S.278--S.279 |
+| universal terminal-window gate S.280 | OPEN / SUFFICIENT REPLACEMENT FOR S.261 |
+| L_t^1-only fixed-N P^(2/3) window estimate | ABSTRACT NO-GO / S.281 / NOT NSE COUNTEREXAMPLE |
+| terminal averaging plus positive-depth route | PROVED METHOD BOUNDARY P^(4/5) / S.282--S.284 |
+| defect and high-Rayleigh ancestor budget recombination | PROVED / EXCEPTION COUNTS ADD / S.285--S.287 |
+| universal ancestor gate S.288 | OPEN |
+| moving-tube Morrey packing | PROVED CONDITIONALLY ON UNIFORM M AND L / S.289--S.294 |
+| scale-critical mixed-norm benchmark | PROVED CONDITIONAL COROLLARY / S.295--S.300 |
+| CKN singular-set size closes ancestor packing | FALSE AS INFERENCE / S.301--S.302 |
+| combined Step 12 target S.303 | OPEN |
+| frozen R0.74F packet makes one physical winding | FALSE / TOTAL VARIATION <= 65/32 < 2PI |
+| speed-only single-packet route | KINEMATICALLY SCREENED / NOT A UNIVERSAL PDE NO-GO / S.304--S.306 |
 | quadratic or square-function control of Jordan envelope X | OPEN |
 | Step 8 narrows Step 2 stopped-work gate | FALSE / NOT CLAIMED |
 | smooth NSE approximants exist for every suitable weak solution | NOT CLAIMED |
 | R0.74R persistence inputs and fixed-scale Q.1 | OPEN |
 | scale contraction, regularity, singularity, Clay | OPEN / NOT CLAIMED / NOT CLAY |
 
-Finite evidence: Step 5 passes 5/5 exact, 7/7 finite, 55/55 structural, and 4/4 mutations. Step 6 passes 4/4 exact, 8/8 finite, 58/58 structural, and 10/10 mutations; the independent Ruby audit passes 9/9 checks and 8/8 mutations. Step 7 passes 16/16 exact, 8/8 finite, 52/52 structural, and 9/9 negative mutations; the independent Ruby audit passes 6/6 groups, 31/31 structural checks, and 9/9 adversarial mutations. Final Step 8 passes 16/16 exact, 19/19 finite, 75/75 structural, and 20/20 negative mutations; the independent Ruby audit passes 14/14 groups, 22/22 exact rows, 61/61 structural checks, 14/14 source mutations, 10/10 artifact mutations, and 6/6 report checks. Step 9 passes 9/9 exact, 8/8 finite, 57/57 structural, and 18/18 mutations; its independent audit passes 12/12 groups, 91,396/91,396 finite cases, 49/49 structural checks, 21/21 source mutations, 15/15 artifact mutations, and 6/6 report checks. Step 10 passes 12/12 exact, 10/10 finite, 79/79 structural, and 47/47 negative mutations; its independent Ruby audit passes 9/9 groups, 65,681 cases, 21/21 contract mutations, 13/13 report checks, and 15/15 audit bindings. Step 11 passes 14/14 exact, 7/7 finite, 34/34 structural, and 7/7 negative mutations; its independent Ruby audit passes 7/7 groups, 206,891 cases, 6/6 artifact locks, 7/7 dependency locks, and 59/59 note checks. These checks support implementation reproducibility only.
+Finite evidence: Step 5 passes 5/5 exact, 7/7 finite, 55/55 structural, and 4/4 mutations. Step 6 passes 4/4 exact, 8/8 finite, 58/58 structural, and 10/10 mutations; the independent Ruby audit passes 9/9 checks and 8/8 mutations. Step 7 passes 16/16 exact, 8/8 finite, 52/52 structural, and 9/9 negative mutations; the independent Ruby audit passes 6/6 groups, 31/31 structural checks, and 9/9 adversarial mutations. Final Step 8 passes 16/16 exact, 19/19 finite, 75/75 structural, and 20/20 negative mutations; the independent Ruby audit passes 14/14 groups, 22/22 exact rows, 61/61 structural checks, 14/14 source mutations, 10/10 artifact mutations, and 6/6 report checks. Step 9 passes 9/9 exact, 8/8 finite, 57/57 structural, and 18/18 mutations; its independent audit passes 12/12 groups, 91,396/91,396 finite cases, 49/49 structural checks, 21/21 source mutations, 15/15 artifact mutations, and 6/6 report checks. Step 10 passes 12/12 exact, 10/10 finite, 79/79 structural, and 47/47 negative mutations; its independent Ruby audit passes 9/9 groups, 65,681 cases, 21/21 contract mutations, 13/13 report checks, and 15/15 audit bindings. Step 11 passes 14/14 exact, 7/7 finite, 34/34 structural, and 7/7 negative mutations; its independent Ruby audit passes 7/7 groups, 206,891 cases, 6/6 artifact locks, 7/7 dependency locks, and 59/59 note checks. Step 12 passes 16/16 exact, 12/12 finite, 51/51 structural, and 11/11 mutations; its independent Ruby audit passes 12/12 groups, 153,237 exact cases, 6/6 artifact locks, 6/6 dependency locks, and 39/39 note checks. These checks support implementation reproducibility only.

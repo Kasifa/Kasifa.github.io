@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜共享 best-N budget 与终端 trace 障碍";
+  const title = "R0.74S｜终端公共窗口与条件 Morrey packing";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -144,8 +144,25 @@ try {
       existingMultiPacketFamiliesRefuteFixedPositiveN: false,
       combinedTwoBranchEstimate: "OPEN_S272",
       exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",
+      commonTerminalWindowDefinition: "PROVED_S273",
+      commonWindowShortResidualReduction: "PROVED_S274_S275",
+      commonWindowTerminalContinuity: "PROVED_S276",
+      fixedSolutionWindowModulus: "PROVED_NONUNIFORM_S277",
+      bestNLayerCakeIdentity: "PROVED_S278",
+      allThresholdWindowImplication: "PROVED_S279",
+      universalTerminalWindowGate: "OPEN_S280",
+      l1OnlyWindowEstimate: "REFUTED_ABSTRACT_LEDGER_NO_GO_S281_NOT_NSE",
+      averagedTerminalBoundary: "PROVED_P_TO_FOUR_FIFTH_S282_S284",
+      ancestorExceptionBudgetAddition: "PROVED_S285_S287",
+      universalAncestorGate: "OPEN_S288",
+      movingTubeMorreyPacking: "PROVED_CONDITIONALLY_ON_UNIFORM_M_L_S289_S294",
+      criticalMixedNormBenchmark: "PROVED_CONDITIONAL_S295_S300",
+      cknDimensionImpliesAncestorPacking: false,
+      combinedStep12Target: "OPEN_S303",
+      frozenPacketPhysicalWinding: false,
+      singlePacketSpeedRoute: "KINEMATICALLY_SCREENED_NOT_UNIVERSAL_PDE_NO_GO_S304_S306",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP11_FIGURE",
+      formalFigure: "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP12_FIGURE",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

@@ -128,6 +128,23 @@ test("R0.74S frozen Step 11 shared-budget and terminal-trace sources retain the 
   }
 });
 
+test("R0.74S frozen Step 12 terminal-window and Morrey sources retain the conditional boundary", () => {
+  const hashes = {
+    "research/r074s_terminal_window_morrey_packing.md": "03d1ae1fffd22d59ccb5bae7d860e3bd9bb9ab2f9e5dd7aafbee43b19153f84f",
+    "research/r074s_terminal_window_morrey_primary_audit.md": "77397f923a20cb51382031bc4a8da82944190d4273aca8c316864e053e4c9396",
+    "research/r074s_terminal_window_morrey_independent_audit.md": "148a75ca1ed9fdba3d8e0df3d1681f0e3fa4997df76960498faf64ffab9b9c95",
+    "scripts/r074s_terminal_window_morrey_certificate.py": "90529ecfd080d3554fc45b63f5734a86f8736834cd6a65365c03fc82fb927a5a",
+    "research/r074s_terminal_window_morrey_certificate.json": "741cb443b35a447df112d8078b79150eb21d5de308c4835219e0aa54f5e5b9d6",
+    "research/r074s_terminal_window_morrey_certificate_report.md": "e9d5ebee782751b2cad17a4b7a78829ee7c4da6b6d7b828a9d5bb8faadba36ad",
+    "scripts/r074s_terminal_window_morrey_certificate_independent.rb": "9c34db7d87b7074febdf5cad4cf437c28be6747017002d45479b024b5a815741",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_terminal_window_morrey_packing.md");
+  for (const marker of ["S.273", "S.280", "S.288", "S.303", "conditional moving-tube Morrey", "kinematic screen", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -141,6 +158,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_best_n_last_exit_certificate.py", "research/r074s_best_n_last_exit_certificate.json", { exact_passed: 9, exact_total: 9, finite_passed: 8, finite_total: 8, negative_mutations_passed: 18, negative_mutations_total: 18, structural_passed: 57, structural_total: 57 }],
     ["scripts/r074s_paid_branch_last_exit_certificate.py", "research/r074s_paid_branch_last_exit_certificate.json", { exact_total: 12, exact_passed: 12, finite_total: 10, finite_passed: 10, structural_total: 79, structural_passed: 79, negative_mutations_total: 47, negative_mutations_passed: 47 }],
     ["scripts/r074s_shared_budget_terminal_trace_certificate.py", "research/r074s_shared_budget_terminal_trace_certificate.json", { all_pass: true, exact_passed: 14, exact_total: 14, finite_passed: 7, finite_total: 7, negative_passed: 7, negative_total: 7, structural_passed: 34, structural_total: 34 }],
+    ["scripts/r074s_terminal_window_morrey_certificate.py", "research/r074s_terminal_window_morrey_certificate.json", { all_pass: true, exact_passed: 16, exact_total: 16, finite_passed: 12, finite_total: 12, negative_passed: 11, negative_total: 11, structural_passed: 51, structural_total: 51 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -227,6 +245,27 @@ test("R0.74S Step 11 Ruby audit independently reconstructs the shared-budget ter
     artifact_locks_passed: 6, artifact_locks_total: 6,
     dependency_locks_passed: 7, dependency_locks_total: 7,
     note_checks_passed: 59, note_checks_total: 59,
+    placeholder_artifacts: [],
+  });
+});
+
+test("R0.74S Step 12 Ruby audit independently reconstructs the terminal-window Morrey boundary", () => {
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_terminal_window_morrey_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 12 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  assert.equal(createHash("sha256").update(result.stdout).digest("hex"), "f991a1884a57f761a016903b66912a294df1cc80ebef3ba0503d527fd3736f5f");
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.release_ready, true);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 12, independent_groups_total: 12,
+    independent_cases: 153237,
+    artifact_locks_passed: 6, artifact_locks_total: 6,
+    dependency_locks_passed: 6, dependency_locks_total: 6,
+    note_checks_passed: 39, note_checks_total: 39,
+    negative_groups_passed: 2, negative_groups_total: 2,
     placeholder_artifacts: [],
   });
 });

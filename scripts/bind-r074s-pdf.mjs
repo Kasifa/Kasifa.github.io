@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜混合通量等价与终端 crown 强制性缺口";
+  const title = "R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -71,7 +71,7 @@ try {
       completeChinesePublication: true,
       htmlAndPdfCryptographicallyBound: true,
       pdfBindingCertifiesMathematicalCorrectness: false,
-      evidenceClassesSeparated: ["PROVED", "CONDITIONAL", "ABSTRACT METHOD OBSTRUCTION", "METHOD CEILING", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
+      evidenceClassesSeparated: ["PROVED", "FALSE", "CRITICAL OPEN", "CONDITIONAL", "ABSTRACT METHOD OBSTRUCTION", "METHOD CEILING", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
       oneSidedBallClocks: "PROVED",
       stoppedOrientations: "PROVED",
       quadraticBallLedger: "PROVED",
@@ -174,7 +174,7 @@ try {
       criticalEightAryTree: "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S335_S339",
       incidenceChargingAndCubicDuality: "CONDITIONAL_INTERFACE_S340_S341",
       strictCubicDiniPdeGain: "OPEN",
-      quadraticShellSelectivePayment: "OPEN_S342",
+      quadraticShellSelectivePayment: "FALSE_FOR_EVERY_P_GREATER_THAN_ONE_S342",
       uniformFixedSolutionHTailPayment: "OPEN",
       shellScalePressureAndFourChannelFlux: "PROVED_S343_S347",
       outerCollarAlignment: "PROVED_SAME_WEIGHT_NO_GAIN_S350_S352",
@@ -197,8 +197,22 @@ try {
       terminalCrownConclusion: "CONDITIONAL_ON_OPEN_S407_S408",
       converseHolderFlatDataFamily: "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S409_S412",
       measureTreeAndScalarClockStressTests: "SEPARATE_UNCOUPLED_S413_S416",
+      taylor1923BiPeriodicDecayingVortex: "PROVED_SMOOTH_EXACT_PERIODIC_UNFORCED_3D_NSE_FAMILY_S417_S421",
+      fixedFrameBernoulliFlux: "PROVED_EXACT_CANCELLATION_S422_S426",
+      versionMMovingCutoffDrift: "PROVED_NONZERO_S427_S432",
+      supercriticalAmplitudeSplit: "PROVED_TAIL_A_TO_3_MINUS_1_OVER_P_PAYMENT_A_CUBED_S433_S443",
+      s342Status: "FALSE_FOR_EVERY_P_GREATER_THAN_ONE_FINITE_N_AND_C",
+      step15S342AntecedentViable: false,
+      criticalP1Scaling: "SATURATION_H_ASYMPTOTIC_A_SQUARED_PAYMENT_ASYMPTOTIC_A_CUBED",
+      criticalEndpoint: "OPEN_S444",
+      q12: "OPEN",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "STEP15_HYBRID_CROWN_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
+      primaryFiniteCertificate: "PASS_7_OF_7_GROUPS_2207_CASES",
+      independentRubyCertificate: "PASS_9_OF_9_GROUPS_2839_CASES",
+      externalNegativeProbes: "PASS_11_EXPECTED_FAILURES",
+      continuumPaymentMachineProved: false,
+      noveltyOrPriorityClaimed: false,
+      formalFigure: "STEP16_TAYLOR_MOVING_DRIFT_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

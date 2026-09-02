@@ -1,11 +1,21 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { collectSiteStrings, containsChinese, extractProtectedTokens } from "./i18n-lib.mjs";
 
 const root = resolve(import.meta.dirname, "..");
+const delegated = spawnSync(
+  process.execPath,
+  [resolve(root, "scripts/add-r074s-step16-translations.mjs"), ...process.argv.slice(2)],
+  { cwd: root, encoding: "utf8" },
+);
+process.stdout.write(delegated.stdout || "");
+process.stderr.write(delegated.stderr || "");
+process.exit(delegated.status ?? 1);
+
 const translationPath = resolve(root, "translations/en.json");
 const publicRoot = resolve(root, "public");
 const translationRoute = "LOCAL_DIRECT_NO_DGX";

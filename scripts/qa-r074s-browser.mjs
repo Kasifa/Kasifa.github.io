@@ -16,6 +16,7 @@ const cases = [
   { id: "note-en-desktop", path: "/notes/r0-74s.html?lang=en", width: 1440, height: 1000, lang: "en", kind: "note" },
   { id: "note-zh-mobile", path: "/notes/r0-74s.html?lang=zh", width: 390, height: 844, lang: "zh", kind: "note" },
   { id: "note-en-mobile", path: "/notes/r0-74s.html?lang=en", width: 390, height: 844, lang: "en", kind: "note" },
+  { id: "note-zh-desktop-grayscale", path: "/notes/r0-74s.html?lang=zh", width: 1440, height: 1000, lang: "zh", kind: "note", grayscale: true },
   { id: "home-zh-desktop", path: "/research-review.html?lang=zh#r074s", width: 1440, height: 1000, lang: "zh", kind: "home" },
   { id: "home-en-mobile", path: "/research-review.html?lang=en#r074s", width: 390, height: 844, lang: "en", kind: "home" },
   { id: "literature-en-desktop", path: "/literature-review.html?lang=en#r074s-boundary", width: 1440, height: 1000, lang: "en", kind: "literature" },
@@ -33,6 +34,7 @@ try {
     if (item.kind === "note") await page.waitForFunction(() => document.querySelectorAll("mjx-container").length >= 20, null, { timeout: 20000 });
     if (item.kind === "home") await page.locator('[data-release="r074s"]').scrollIntoViewIfNeeded();
     if (item.kind === "literature") await page.locator("#r074s-boundary").scrollIntoViewIfNeeded();
+    if (item.grayscale) await page.addStyleTag({ content: "html { filter: grayscale(1) !important; }" });
     await page.screenshot({ path: resolve(output, `${item.id}.png`), fullPage: false });
     const state = await page.evaluate(({ expectedLang, kind }) => {
       const body = document.body.innerText;
@@ -47,8 +49,9 @@ try {
         rawTexVisible: /\\\[|\\\]|\\\(|\\\)/.test(body),
         englishChineseResidueCount: residue.length,
         notClayVisible: kind !== "note" || body.includes("NOT CLAY"),
-        openBoundaryVisible: kind !== "note" || /S\.342/.test(body) && /S\.407/.test(body) && /OPEN|开放/.test(body),
-        noGoBoundaryVisible: kind !== "note" || /ABSTRACT METHOD OBSTRUCTION|抽象方法阻碍/i.test(body) && /not (?:an? )?(?:NSE|Navier--Stokes) counterexample|不是.{0,24}(?:NSE|Navier--Stokes).{0,12}反例/i.test(body),
+        falseBoundaryVisible: kind !== "note" || /S\.342/.test(body) && /FALSE/.test(body),
+        openBoundaryVisible: kind !== "note" || /S\.444/.test(body) && /S\.407/.test(body) && /OPEN|开放/.test(body),
+        exactSolutionBoundaryVisible: kind !== "note" || /Taylor 1923/.test(body) && /smooth exact|光滑、精确/i.test(body),
         formalFigureVisible: kind !== "note" || /正式解析示意图|formal analytic schematic/i.test(body),
         cardPresent: kind !== "home" || Boolean(card),
         cardCharacters: card?.textContent?.length ?? 0,
@@ -57,7 +60,7 @@ try {
     }, { expectedLang: item.lang, kind: item.kind });
     const pass = state.overflow <= 1
       && failures.length === 0
-      && (item.kind !== "note" || (state.mathCount >= 20 && state.mathErrors === 0 && !state.rawTexVisible && state.notClayVisible && state.openBoundaryVisible && state.noGoBoundaryVisible && state.formalFigureVisible))
+      && (item.kind !== "note" || (state.mathCount >= 20 && state.mathErrors === 0 && !state.rawTexVisible && state.notClayVisible && state.falseBoundaryVisible && state.openBoundaryVisible && state.exactSolutionBoundaryVisible && state.formalFigureVisible))
       && (item.lang !== "en" || state.englishChineseResidueCount === 0)
       && state.cardPresent
       && (item.kind !== "home" || state.cardCharacters < 450)

@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN" data-site-version="1.94"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>R0.74S｜混合通量等价与终端 crown 强制性缺口</title><meta name="description" content="混合起点通量的同删除集 best-N 等价、终端 crown 的深度无关预算，以及仍开放的 S.342 与 S.407">
-<link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="stylesheet" href="/bilingual.css">
-<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.94"></script><script defer src="/bilingual.js"></script>
+<html lang="zh-CN" data-site-version="1.95"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</title><meta name="description" content="Taylor 1923 二周期衰减涡揭示 Version-M 移动截断漂移；S.342 对每个 p&gt;1 为 false，临界 S.444 仍 open">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.95"></script><script defer src="/bilingual.js"></script>
 <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}.hero-inner>div:first-child>p strong{margin-left:.25em}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}picture img{display:block;width:100%;height:auto}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem;break-after:avoid}#figure{break-before:page}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
-<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜混合通量等价与终端 crown 强制性缺口</h1><p>新的 hybrid-start physical flux 向量与 residual vector 在<strong>同一删除集</strong>上满足双向 best-\(N\) 等价；终端 crown 还给出深度无关的系数预算。 <strong>这两项是 PROVED，但完整闭合仍分别依赖 OPEN S.342 与 OPEN S.407；S.408 只是 CONDITIONAL。Q.1、正则性与 Millennium 问题均保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED S.384–S.385</span><span class="label">PROVED S.404</span><span class="label">CONDITIONAL S.408</span><span class="label">ABSTRACT METHOD OBSTRUCTION</span><span class="label">OPEN S.342 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 15</strong><p>S.377–S.416：PROVED / CONDITIONAL / ABSTRACT METHOD OBSTRUCTION / OPEN</p><p>same-deletion equivalence：\(\frac15 S_N(z)\le S_N(r)\le S_N(z)\)</p><p>terminal crown budget：PROVED S.404</p><p>start-clock overshoot debt：RETAINED S.395</p><p>S.408：CONDITIONAL</p><p>S.342 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</h1><p>Taylor 1923 二周期衰减涡给出光滑、精确、周期、无外力的三维 NSE 解族：固定框架中 Bernoulli 通量精确抵消，Version-M 移动截断却留下非零漂移。 <strong>因此 S.342 对每个 \(p&gt;1\) 为 FALSE；临界端点 S.444 以及 S.407、Q.12、Q.1、正则性与 Millennium 问题仍保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">SMOOTH EXACT NSE</span><span class="label">FIXED-FRAME CANCELLATION</span><span class="label">MOVING DRIFT</span><span class="label">FALSE S.342 FOR p&gt;1</span><span class="label">OPEN S.444 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 16</strong><p>S.417–S.444：PROVED / FALSE / OPEN</p><p>fixed-frame Bernoulli flux：\(0\)</p><p>Version-M cutoff drift：nonzero</p><p>tail：\(A^{3-1/p}\)</p><p>payment：\(A^3\)</p><p>S.342：FALSE for every \(p&gt;1\)</p><p>S.444 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>精确解解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
 <section id="s-01"><div class="section-no">01 / 完整正文</div><h2>0. 这一步得到什么</h2>
 <p>R0.74S Steps 1--10 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination、未加权 genealogy 的抽象标量 no-go、低 Rayleigh 支付、no-exception exact-family no-go、canonical last exit 以及 paid/residual 六类分区逐项封存。Step 11 不再重复分区，而是精确回答两个 residual mechanisms 怎样共享一个 best-\(N\) budget，并分别把 short branch 与 scalar-excess branch 推到各自第一个仍缺失的 PDE 门槛。</p>
 <p>本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出</p>
@@ -2845,6 +2845,298 @@ r_k^x\le3x_k^{\rm sel}\le3b_k,
 <p>本步 <strong>OPEN PDE INPUTS</strong>：common-deletion temporal flux tail S.342；selected-crown nonlinear payment S.407；以及 inherited S.375。继续 <strong>OPEN</strong>：S.288、S.303、S.272、Q.12、Q.1、scale contraction、regularity、singularity formation 与 Navier--Stokes Millennium problem。</p>
 <p>Frozen primary certificate 通过 9/9 finite groups、3,941 finite cases、5/5 dependency、45/45 structural 与 20/20 negative checks。Independent Ruby verifier 从头重建 vectors、deletion sets、trees、crowns 与 incidence rows，并锁定两篇主文、两份实现、certificate 与 report 的哈希；它检查 finite algebra 与 combinatorics，不证明 S.342、S.407 或任何 PDE realization。Primary analytic audit 与 independent audit 均在这个边界内 PASS。<strong>FINITE ONLY. NOT CLAY.</strong></p>
 </section>
-<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>混合通量等价与终端 crown 接口</h2><picture><source srcset="/assets/r074s/fig-r074s-hybrid-crown-interface.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-hybrid-crown-interface.png" alt="R0.74S Step 15 analytic schematic of hybrid-flux equivalence and the terminal-crown interface"></picture><p><a href="/assets/r074s/fig-r074s-hybrid-crown-interface.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-hybrid-crown-interface.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-hybrid-crown-interface.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/source-data.csv">exact source data</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/qa-report.md">视觉 QA</a></p><p class="note">这是由精确公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
-<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 15 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_flux_tail_equivalence.md">hybrid flux 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_terminal_crown_coercivity.md">terminal crown 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step15_report-source.md">Step 15 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 15：Python 5/5 dependency、9/9 finite groups（3,941 cases）、45/45 structural、20/20 negative；Ruby 为独立证书实现。有限证书不替代 analytic proof。</p></section>
-<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / 后续研究</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 15，并在此停止。后续若另行启动，只能继续检验 OPEN S.342、OPEN S.407 或其他明确的新 PDE 输入；不得把 S.408 或 Q.1 写成 theorem。</p></section></article></main></body></html>
+<section id="s-107"><div class="section-no">107 / 完整正文</div><h2>106. Step 16：光滑精确解否定所有 \(p&gt;1\) 的二次时间尾估计</h2>
+<p>Step 15 说明，只要一个 common-deletion temporal flux tail 成立，同一个删除集就能支付 combined terminal residual 的两条分支。Step 16 检查 Step 13 候选 S.342 额外要求的 \(p&gt;1\) 时间可积性。检验对象不是数值近似，也不是奇异解，而是 Taylor 1923 bi-periodic decaying vortex 的平移与振幅族。</p>
+<p>结论是严格的：对每个 \(p&gt;1\)、每个有限删除预算 \(N\) 和每个拟议常数 \(C\)，都能选择 admissible \(R,z_0\) 与足够大的振幅 \(A\)，使 S.342 失败。因此 S.342 必须标记为 <strong>FALSE</strong>，不能继续列为 open candidate。</p>
+<p>这个否定结果只针对 supercritical temporal-tail statement S.342。它不否定 direct hybrid terminal-flux gate，不否定临界 \(p=1\) 候选 S.444，也不证明或否定 S.407、S.375、Q.12、Q.1、scale contraction、regularity、singularity formation 或 Navier--Stokes Millennium problem。这里没有 singular solution。<strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-108"><div class="section-no">108 / 完整正文</div><h2>107. Taylor 1923 二周期衰减涡是三维周期类中的光滑精确解</h2>
+<p>在 \(\mathbb T^3=(-\pi,\pi]^3\) 上定义</p>
+<div class="equation">\[
+ \boxed{
+ W(x)=\bigl(\sin x_1\cos x_2,-\cos x_1\sin x_2,0\bigr),
+ \qquad
+ p_W(x)={\cos 2x_1+\cos 2x_2\over4}.}
+ \tag{S.417}
+\]</div>
+<p>直接微分得到</p>
+<div class="equation">\[
+ \boxed{
+ \nabla\!\cdot W=0,
+ \qquad \Delta W=-2W,
+ \qquad (W\!\cdot\!\nabla)W=-\nabla p_W.}
+ \tag{S.418}
+\]</div>
+<p>固定 \(t_0&gt;0\)，令</p>
+<div class="equation">\[
+ b_A(t):=Ae^{-2(t-t_0)},
+ \qquad
+ u_A(t,x):=b_A(t)W(x),
+ \qquad
+ p_A(t,x):=b_A(t)^2p_W(x).
+ \tag{S.419}
+\]</div>
+<p>于是</p>
+<div class="equation">\[
+ \partial_tu_A-\Delta u_A+(u_A\!\cdot\!\nabla)u_A+\nabla p_A=0.
+ \tag{S.420}
+\]</div>
+<p>对每个 \(A&gt;0\)，这都是光滑、精确、周期、mean-zero、无外力的三维不可压 NSE 解。它独立于 \(x_3\)，所以是嵌入三维解类的二维光滑 screen。这里能自由改变振幅，是因为这个特定 \(W\) 同时是 steady Euler field 与 Laplace eigenfield；这不是一般 NSE 解的振幅对称性。</p>
+</section>
+<section id="s-109"><div class="section-no">109 / 完整正文</div><h2>108. 固定坐标 Bernoulli 通量精确抵消，Version-M 只留下移动漂移</h2>
+<p>冻结的 even radial mollifier 对 \(W\) 的所有 \(\sqrt2\)-频率模式给出同一个实乘子</p>
+<div class="equation">\[
+ \varphi_R^{\rm per}*W=\mu_R W,
+ \qquad
+ \mu_R:=\int_{\mathbb R^3}\varphi(z)
+            \cos\!\bigl(R(1,1,0)\!\cdot z\bigr)\,dz.
+ \tag{S.421}
+\]</div>
+<p>当 \(R\downarrow0\) 时 \(\mu_R\to1\)。取 \(R\) 足够小，可令 \(1/2\le\mu_R\le1\)。以 \(x_*=(\pi/4,0,0)\) 为终点，Version-M 轨迹和移动场满足</p>
+<div class="equation">\[
+ \boxed{
+ \dot\xi=\mu_Rb_AW(\xi),
+ \quad
+ v_R(t,y)=b_A(t)W(y+\xi(t)),
+ \quad
+ \pi_R(t,y)=b_A(t)^2p_W(y+\xi(t)).}
+ \tag{S.422}
+\]</div>
+<p>唯一性给出 \(\xi_2=\xi_3=0\)，并且</p>
+<div class="equation">\[
+ \dot\xi_1=\mu_Rb_A\sin\xi_1,
+ \qquad
+ \boxed{
+ \tan{\xi_1(t)\over2}
+ =\tan{\pi\over8}
+ \exp\!\left(-\mu_R\int_t^{t_0}b_A(s)\,ds\right).}
+ \tag{S.423}
+\]</div>
+<p>对 shell cutoff \(\Psi_k^R\)，记</p>
+<div class="equation">\[
+ m_{k,R}:=\int_{\mathbb R^3}\psi_k^R(y)\,dy,
+ \qquad
+ J_{k,R}(\xi):=\int_{\mathbb T^3}\Psi_k^R(y)
+          |W(y+\xi)|^2\,dy.
+ \tag{S.424}
+\]</div>
+<p>Bernoulli 函数 \(B_W=|W|^2/2+p_W\) 满足 \(\nabla\cdot(B_WW)=0\)。因此固定坐标中的 kinetic 与 physical-pressure shell flux 经过周期分部积分后精确抵消；time-dependent pressure gauge 也因不可压而积分为零。Version-M 的完整公式只剩 moving-cutoff drift：</p>
+<div class="equation">\[
+ \boxed{
+ \dot F_{k,R}(t)
+ ={\gamma_k\mu_R\eta_R(t)b_A(t)^3\over2R}
+       W(\xi(t))\!\cdot\!\nabla_\xi J_{k,R}(\xi(t)).}
+ \tag{S.425}
+\]</div>
+<p>这是本步的关键区分。固定坐标 Bernoulli 通量为零，不代表冻结的移动观测量没有通量；沿非恒定局部速度移动的 cutoff 产生可计算漂移，而且这项不能从 Version-M flux 中删除。</p>
+</section>
+<section id="s-110"><div class="section-no">110 / 完整正文</div><h2>109. 一个径向 Fourier 乘子同时激活任意 \(N+1\) 个物理 annuli</h2>
+<p>Taylor 平面场满足</p>
+<div class="equation">\[
+ |W(x)|^2={1-\cos2x_1\cos2x_2\over2}.
+ \tag{S.426}
+\]</div>
+<p>令 \(q_+=(2,2,0)\)，并定义</p>
+<div class="equation">\[
+ c_{k,R}:=\int_{\mathbb R^3}\psi_k^R(y)
+                  \cos(q_+\!\cdot y)\,dy.
+ \tag{S.427}
+\]</div>
+<p>径向对称和积化和差公式给出</p>
+<div class="equation">\[
+ \boxed{
+ J_{k,R}(\xi)={m_{k,R}\over2}
+       +c_{k,R}\left(|W(\xi)|^2-{1\over2}\right),
+ \qquad
+ \nabla J_{k,R}=c_{k,R}\nabla|W|^2.}
+ \tag{S.428}
+\]</div>
+<p>先固定任意有限删除预算 \(N\ge0\)，令 \(M=N+1\)。再选择 \(R\) 使</p>
+<div class="equation">\[
+ \boxed{
+ 0&lt;R&lt;\min\left\{{\pi\over16},
+ {\pi\over6\sqrt2(2^{M+1}+1/8)}\right\},
+ \qquad \mu_R\ge{1\over2},
+ \qquad \overline I_{8R}\Subset(0,T).}
+ \tag{S.429}
+\]</div>
+<p>这样，对前 \(M\) 个物理 shell cutoff 的整个支撑都有 \(|q_+\cdot y|\le\pi/3\)，从而</p>
+<div class="equation">\[
+ \boxed{
+ c_{k,R}\ge{1\over2}m_{k,R}&gt;0,
+ \qquad 1\le k\le M.}
+ \tag{S.430}
+\]</div>
+<p>这些是移动空间坐标中的 \(N+1\) 个不同物理 annuli，不是 Fourier-shell index。沿 \(\xi_2=0\) 有</p>
+<div class="equation">\[
+ W(\xi)\!\cdot\!\nabla|W(\xi)|^2
+ =\sin\xi_1\sin2\xi_1.
+ \tag{S.431}
+\]</div>
+<p>选一个固定小 \(\delta&gt;0\)。当 \(A\) 足够大时，终端物理时间块 \([t_0-\delta/A,t_0)\) 位于 \(I_R\)，且 \(\pi/8\le\xi_1(t)\le\pi/4\)。于是前 \(N+1\) 个 shell 同时满足</p>
+<div class="equation">\[
+ \boxed{
+ |\dot F_{k,R}(t)|=\dot F_{k,R}(t)
+ \ge {\gamma_k\mu_Rc_{k,R}g_0\over2R}A^3,
+ \quad
+ 1\le k\le M,
+ \quad t_0-\delta/A\le t&lt;t_0,}
+ \tag{S.432}
+\]</div>
+<p>其中 \(g_0=\sin(\pi/8)\sin(\pi/4)&gt;0\)。</p>
+</section>
+<section id="s-111"><div class="section-no">111 / 完整正文</div><h2>110. \(p&gt;1\) 的 common-deletion temporal tail 逐量词失败</h2>
+<p>沿用 Step 13 的无量纲 density</p>
+<div class="equation">\[
+ h_{k,R}(\sigma)=R^2
+ |\dot F_{k,R}(s_R+R^2\sigma)|,
+ \qquad 0&lt;\sigma&lt;4.
+\]</div>
+<p>S.432 的无量纲时间长度是 \(\delta/(AR^2)\)。因此，对 \(1&lt;p&lt;\infty\)，</p>
+<div class="equation">\[
+ \boxed{
+ \|h_{k,R}\|_{L^p(0,4)}
+ \ge {\gamma_k\mu_Rc_{k,R}g_0\over2}
+       \delta^{1/p}R^{\,1-2/p}A^{\,3-1/p},
+ \qquad 1\le k\le M.}
+ \tag{S.433}
+\]</div>
+<p>对 \(p=\infty\)，</p>
+<div class="equation">\[
+ \boxed{
+ \|h_{k,R}\|_{L^\infty(0,4)}
+ \ge {\gamma_k\mu_Rc_{k,R}g_0R\over2}A^3.}
+ \tag{S.434}
+\]</div>
+<p>删除至多 \(N=M-1\) 个 index，前 \(M\) 个正坐标中至少留下一个。所以</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak H^F_{p,N,R}
+ \ge c_{p,N,R}A^{\,3-1/p},
+ \qquad p\in(1,\infty],}
+ \tag{S.435}
+\]</div>
+<p>其中 \(c_{p,N,R}&gt;0\) 与 \(A\) 无关。另一方面，完整 payment 的每个非负 row 都必须纳入比较。固定 \(R\) 后，平移不改变 pointwise amplitude；local energy、exterior velocity/pressure、fixed gauge 与 algebraic harmonic row 分别至多是 \(O_R(A^2)\) 或 \(O_R(A^3)\)。因此</p>
+<div class="equation">\[
+ \boxed{P_R^M\le C_RA^3.}
+ \tag{S.436}
+\]</div>
+<p>这里 exterior \(\mathcal G\) 的 all-copy sum 由 super-Gaussian shell weights 收敛；harmonic \(\mathcal H\) row 则使用冻结的 order-\(-4\) algebraic kernel。两种收敛机制不能混写。</p>
+<p>结合 S.435--S.436，</p>
+<div class="equation">\[
+ {\mathfrak H^F_{p,N,R}\over(P_R^M)^{2/3}}
+ \ge c&#x27;_{p,N,R}A^{\,1-1/p}\longrightarrow\infty
+ \qquad(A\to\infty).
+ \tag{S.437}
+\]</div>
+<p>因此 S.342 的精确量词否定是</p>
+<div class="equation">\[
+ \boxed{
+ \begin{gathered}
+ \text{对每个 }p\in(1,\infty],\ N\in\mathbb N_0,\ C&gt;0,\\
+ \text{都存在 admissible }R,z_0\text{ 和一个光滑、周期、无外力解，使得}\\
+ \mathfrak H^F_{p,N,R}&gt;C(P_R^M)^{2/3}.
+ \end{gathered}}
+ \tag{S.438}
+\]</div>
+<p>顺序不能交换：先由对手给定 \(p,N,C\)，再取 \(M=N+1\)，选择一个 admissible \(R\)，最后令 \(A\to\infty\)。\(R\) 可以依赖 \(N\)，因为 S.342 要求同一个有限 \(N\) 对所有 admissible scales 一致成立。</p>
+</section>
+<section id="s-112"><div class="section-no">112 / 完整正文</div><h2>111. 更一般的付款幂与时间反集中指数也受到限制</h2>
+<p>同一族还给出更尖锐的指数边界。若某个固定 \(p\in[1,\infty]\) 存在</p>
+<div class="equation">\[
+ \mathfrak H^F_{p,N,R}\le C(P_R^M)^\beta,
+\]</div>
+<p>则必须有</p>
+<div class="equation">\[
+ \boxed{\beta\ge1-{1\over3p}.}
+ \tag{S.438a}
+\]</div>
+<p>这里 \(1/\infty=0\)。所以 \(2/3\) 只在 \(p=1\) 与振幅标度相容；每个 \(p&gt;1\) 都要求严格更大的 payment power，除非加入额外因子。</p>
+<p>更一般地，在同一个无量纲终端块上，若</p>
+<div class="equation">\[
+ \int_I h_{k,R}\le C(P_R^M)^\beta |I|^\alpha,
+\]</div>
+<p>则 \(|I|\asymp_RA^{-1}\)、\(\int_Ih_{k,R}\asymp_RA^2\) 强制</p>
+<div class="equation">\[
+ \boxed{3\beta-\alpha\ge2.}
+ \tag{S.438b}
+\]</div>
+<p>特别地，在 bare class 中，二次 payment power \(\beta=2/3\) 不允许任何正的 time anti-concentration exponent \(\alpha&gt;0\)。</p>
+</section>
+<section id="s-113"><div class="section-no">113 / 完整正文</div><h2>112. 临界 \(p=1\) 只达到振幅饱和，新的 S.444 仍然 OPEN</h2>
+<p>对所有 \(k\)，S.428 仍成立且 \(|c_{k,R}|\le m_{k,R}\)。沿特征线使用</p>
+<div class="equation">\[
+ d\xi_1=\mu_Rb_A\sin\xi_1\,dt
+\]</div>
+<p>作变量替换，\(\mu_R\) 精确抵消，同时少掉一个振幅因子。于是</p>
+<div class="equation">\[
+ \int_{s_R}^{t_0}|\dot F_{k,R}(t)|\,dt
+ \le C_R\gamma_km_{k,R}A^2.
+ \tag{S.439}
+\]</div>
+<p>由 \(m_{k,R}\le C2^{3k}R^3\) 与 \(\sum_k2^{3k}\gamma_k&lt;\infty\)，</p>
+<div class="equation">\[
+ \mathfrak H^F_{1,N,R}\le C_RA^2.
+ \tag{S.440}
+\]</div>
+<p>把 S.432 在长度 \(\delta/A\) 的终端块上积分，并再次使用 \(N+1\) 个 shell 的 pigeonhole，得到反向振幅下界</p>
+<div class="equation">\[
+ \mathfrak H^F_{1,N,R}\ge c_{N,R}A^2.
+ \tag{S.441}
+\]</div>
+<p>取趋向 \(t_0\) 的 local-energy good times，buffered local energy 的 endpoint 项还给出</p>
+<div class="equation">\[
+ P_R^M\ge c_RA^3.
+ \tag{S.442}
+\]</div>
+<p>所以在固定 \((N,R)\) 下，</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak H^F_{1,N,R}\asymp_{N,R}A^2,
+ \qquad
+ P_R^M\asymp_RA^3,
+ \qquad
+ \mathfrak H^F_{1,N,R}\asymp_{N,R}(P_R^M)^{2/3}.}
+ \tag{S.443}
+\]</div>
+<p>这只是振幅 exponent 的饱和。它既没有给出 universal \(N_1,C\)，也没有证明下面的新候选：</p>
+<div class="equation">\[
+ \boxed{
+ \begin{gathered}
+ \exists\,N_1\in\mathbb N_0,\ C&gt;0\ \text{universal，使得}\\
+ \forall\text{ admissible Version-M solutions, }R,z_0
+ \text{ and terminal settings},\\
+ \mathfrak H^F_{1,N_1,R}\le C(P_R^M)^{2/3}.
+ \end{gathered}}
+ \tag{S.444}
+\]</div>
+<p>S.444 仍是 <strong>OPEN</strong>。Step 15 的 S.386--S.387 包含 \(p=1\)；若将 S.444 作为 antecedent，S.389--S.391 的同一推理仍能支付完整 hybrid residual。Step 13 的 \(p&gt;1\) 时间窗增益不得继续使用。</p>
+</section>
+<section id="s-114"><div class="section-no">114 / 完整正文</div><h2>113. ABC 精确族提供独立代数 screen，但不是第二个所需定理</h2>
+<p>等参数 ABC field</p>
+<div class="equation">\[
+ U=(\sin x_3+\cos x_2,\ \sin x_1+\cos x_3,
+       \ \sin x_2+\cos x_1)
+\]</div>
+<p>满足 \(\nabla\times U=U\) 与 \(\Delta U=-U\)。因此 \(u=Ae^{-(t-t_0)}U\)，连同 mean-zero pressure \(-A^2e^{-2(t-t_0)}(|U|^2-3)/2\)，也是一个光滑周期精确解。在 \(\xi_*=0\) 有</p>
+<div class="equation">\[
+ U(0)\!\cdot\!\nabla|U|^2(0)=6.
+\]</div>
+<p>速度模式的频率长度为 \(1\)，\(|U|^2\) 的非恒定模式长度为 \(\sqrt2\)。径向乘子、small-\(R\) shell positivity 与 \(O(A^{-1})\) trajectory residence 再次产生 \(A^{3-1/p}\) obstruction。</p>
+<p>这只是对机制的独立 exact-family screen。Taylor 族的主证明不依赖它，也不需要把它提升为第二个 theorem。ABC 的历史语境见 Dombre et al., <a href="https://doi.org/10.1017/S0022112086002859">*Chaotic streamlines in the ABC flows*</a> (1986)。</p>
+</section>
+<section id="s-115"><div class="section-no">115 / 完整正文</div><h2>114. 原始来源只支持经典背景，不承担本项目的否定结论</h2>
+<p>S.417 的精确场采用 Taylor 1923 的 bi-periodic decaying vortex。现代数值文献有时把它称为 two-dimensional Taylor--Green vortex，但这里不把它与 Taylor--Green 1937 的 fully three-dimensional datum 混为一谈。</p>
+<p>历史来源是 G. I. Taylor, <a href="https://doi.org/10.1080/14786442308634295">*On the decay of vortices in a viscous fluid*</a> (1923)。Taylor--Green 1937 只作为历史语境，见 <a href="https://doi.org/10.1098/rspa.1937.0036">*Mechanism of the production of small eddies from large ones*</a>。现代 exact-flow 背景包括 Chai--Wu--Fang 的 <a href="https://doi.org/10.1016/j.physleta.2020.126857">*Single-scale two-dimensional-three-component generalized-Beltrami-flow solutions of incompressible Navier--Stokes equations*</a> (2020) 与 Antuono 的 <a href="https://doi.org/10.1017/jfm.2020.126">*Tri-periodic fully three-dimensional analytic solutions for the Navier--Stokes equations*</a> (2020)。这些 classical fields、generalized-Beltrami mechanism 与 exponential decay 都不是 novelty claims。</p>
+<p>附近的分析背景还包括 Caffarelli--Kohn--Nirenberg 的 suitable-weak partial regularity <a href="https://doi.org/10.1002/cpa.3160350604">DOI</a>，Wolf 的 local pressure decomposition，Dascaliuc--Grujić 的 physical-scale flux locality，Koch--Tataru 的 critical Carleson-type norm，以及 Yang 的 skewed-cylinder maximal estimates <a href="https://doi.org/10.4171/AIHPC/20">DOI</a>。它们不提供本项目特定的 terminal mollified trajectory、periodized physical annuli、time norm 之前的 fixed shell deletion 与 \(P_R^M\) payment 的组合定理。</p>
+<p>冻结审计只做了 bounded collision search。没有找到相同量词的 theorem 或 counterexample，不等于 exhaustiveness，也不构成 novelty 或 priority claim。S.438 的证明依赖页面展示的直接 substitution 与 payment comparison，不依赖文献搜索没有命中。</p>
+</section>
+<section id="s-116"><div class="section-no">116 / 完整正文</div><h2>115. 主张账本、有限证书与下一条允许路线</h2>
+<p>在冻结的 Version-M setting 中，本步 <strong>PROVED</strong>：S.417--S.420 的精确光滑 NSE identities；S.421--S.423 的径向 mollifier 与 terminal path；S.424--S.425 的 fixed-frame Bernoulli cancellation 与 moving-drift identity；S.426--S.432 对任意 \(N+1\) 个 physical shells 的 simultaneous positivity；S.433--S.437 的 temporal-tail lower bounds 与 complete-payment upper bound；S.438 对 S.342 的量词级否定；以及 S.439--S.443 在固定 \((N,R)\) 下的临界 \(L_t^1\) 振幅饱和。</p>
+<p>本步新写出的 S.444 仍 <strong>OPEN</strong>。继续 <strong>OPEN AND UNCHANGED</strong>：direct hybrid terminal-flux gate、selected-crown estimate S.407、S.375、S.288、S.303、S.272、Step 10 S.243、Q.12、Q.1、scale contraction、regularity、singularity formation 与 Millennium problem。</p>
+<p>路线校正是明确的：以后不能再把 S.342 当作 proof antecedent，因为它在光滑周期精确解上已经为 false。short-flux 路线下一步只能分析临界 \(L_t^1\) tail S.444，并保留 signed moving-drift cancellation 与 common deletion set。terminal-crown 路线仍可通过另外开放的 coercivity estimate S.407 继续。</p>
+<p>主证书通过 7/7 finite groups、2,207 cases、7/7 structural groups 与 3/3 dependency locks。Independent Ruby verifier 通过 9/9 groups、2,839 independent cases，并锁定主文、两份审计、Python/Ruby 实现、主证书 JSON 与证书报告。另有 11 个外部负探针，全部按预期失败关闭。两套有限程序核对 exact Fourier identities、pigeonhole、representative support/path inequalities、amplitude exponents、hashes、structure 与 claim labels；它们不 machine-prove arbitrary-mollifier continuity、continuous payment estimate、S.444、S.407、regularity 或 Clay problem。<strong>FINITE ONLY. NOT CLAY.</strong></p>
+</section>
+<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>Taylor 1923 精确涡：固定框架抵消、移动漂移与振幅分裂</h2><picture><source srcset="/assets/r074s/fig-r074s-taylor-moving-drift.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-taylor-moving-drift.png" alt="R0.74S Step 16 analytic schematic of the Taylor 1923 exact vortex, Version-M moving drift, and amplitude split"></picture><p><a href="/assets/r074s/fig-r074s-taylor-moving-drift.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-taylor-moving-drift.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-taylor-moving-drift.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/source-data.csv">exact source data</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/qa-report.md">视觉 QA</a></p><p class="note">这是由精确解公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 16 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_obstruction.md">Taylor moving-frame 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step16_report-source.md">Step 16 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 16：主证书 7/7 groups（2,207 cases）；独立 Ruby 9/9 groups（2,839 cases）；11 项外部 negative probes 均按预期失败。有限证书核验代数、计数与边界，不替代 continuum payment 的解析证明。</p></section>
+<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74S / 后续研究接口</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 16，并在此停止。后续若另行启动，只能分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342，也不得把 Q.1、正则性或 Millennium 问题写成 theorem。</p></section></article></main></body></html>

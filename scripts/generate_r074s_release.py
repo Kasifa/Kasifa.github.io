@@ -10,11 +10,11 @@ ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "public"
 HOME = PUBLIC / "research-review.html"
 LITERATURE = PUBLIC / "literature-review.html"
-VERSION = "1.94"
+VERSION = "1.95"
 RELEASE = "r074s"
 CODE = "R0.74S"
-TITLE = "R0.74S｜混合通量等价与终端 crown 强制性缺口"
-FIGURE_ID = "fig-r074s-hybrid-crown-interface"
+TITLE = "R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点"
+FIGURE_ID = "fig-r074s-taylor-moving-drift"
 RECAP_HASHES = {
     PUBLIC / "recap-r0-61-r0-74o.html": "d06c9edb093664c9835feb814a11ecd180305780b3efcdcd560908f754fba4b2",
     PUBLIC / "recap-r0-61-r0-74o.pdf": "80264dab72ca12569252a360d9b70388ba0c4b107132012b98d73b76d634d076",
@@ -124,6 +124,13 @@ def verify_sources() -> None:
         "research/r074s_hybrid_crown_certificate.json": "38e4d15c76b4bb9a2523173c0da816d6862f9e24fe59595d9953a7aa9516a7b8",
         "scripts/r074s_hybrid_crown_certificate.py": "84c1d8aac5399b71a98cefc4a8ff6a0e13835c8a19e47bd5693ac76fe2bcced4",
         "scripts/r074s_hybrid_crown_certificate_independent.rb": "e21f186f65052335a2ad97f1fd3dfdeada0d548c9369b7040adb77436320af0e",
+        "research/r074s_moving_frame_taylor_vortex_obstruction.md": "de2365c38201996276c280441ab17c6c065e74a4301106484dd1cdc88a341fb0",
+        "research/r074s_moving_frame_taylor_vortex_primary_audit.md": "1140e3f72ddf9565bb6e9c565aaf10de75c8f04b9417ad12e4cddffbabc9a262",
+        "research/r074s_moving_frame_taylor_vortex_independent_audit.md": "30af657d18b428fa0355a8cd93a3cf7b7af452588561259ae53a9a734dc55da2",
+        "research/r074s_moving_frame_taylor_vortex_certificate.json": "27f93a7e23268be2c337eef6ae0488a8fb60508c51f6dbf12080807e5f636271",
+        "research/r074s_moving_frame_taylor_vortex_certificate_report.md": "9b2868d2e9a7cf0bd574ab347d266da1e30a1426c22d48a20f3a472557eab362",
+        "scripts/r074s_moving_frame_taylor_vortex_certificate.py": "ec11a53bfc6221344eabd8b809c72deb8996adb56a2da81a6502bc7b914bb54a",
+        "scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb": "9b1fcd3805e162bf7d8f24a2ed0818722dc9413ca709696380d0f02614892677",
     }
     for relative, expected_hash in expected.items():
         if sha256(ROOT / relative) != expected_hash:
@@ -161,6 +168,30 @@ def verify_sources() -> None:
     step15 = json.loads((ROOT / "research/r074s_hybrid_crown_certificate.json").read_text(encoding="utf-8"))
     if step15["overall_pass"] is not True or step15["summary"] != {"dependency_passed": 5, "dependency_total": 5, "finite_cases": 3941, "finite_passed": 9, "finite_total": 9, "negative_passed": 20, "negative_total": 20, "structural_passed": 45, "structural_total": 45}:
         raise RuntimeError("R0.74S Step 15 certificate boundary drift")
+    step16 = json.loads((ROOT / "research/r074s_moving_frame_taylor_vortex_certificate.json").read_text(encoding="utf-8"))
+    if step16.get("verdict") != "PASS":
+        raise RuntimeError("R0.74S Step 16 certificate verdict drift")
+    if [row["id"] for row in step16["finite_checks"]] != [
+        "taylor_exact_fourier_identities", "abc_independent_exact_screen",
+        "N_plus_one_deletion_pigeonhole", "finite_small_R_support_screen",
+        "temporal_and_payment_exponents", "terminal_characteristic_screen",
+        "complete_payment_and_L1_amplitude_bookkeeping",
+    ]:
+        raise RuntimeError("R0.74S Step 16 finite inventory drift")
+    if sum(row["cases"] for row in step16["finite_checks"]) != 2207:
+        raise RuntimeError("R0.74S Step 16 finite case count drift")
+    if len(step16["structural_checks"]) != 7 or not all(row["pass"] for row in step16["structural_checks"]):
+        raise RuntimeError("R0.74S Step 16 structural boundary drift")
+    if len(step16["dependency_checks"]) != 3 or not all(row["pass"] for row in step16["dependency_checks"]):
+        raise RuntimeError("R0.74S Step 16 dependency boundary drift")
+    if step16["claim_boundary"] != {
+        "Q1": "OPEN", "Q12": "OPEN",
+        "S342_quadratic_tail_for_p_gt_1": "FALSE_BY_SMOOTH_EXACT_NSE",
+        "S444_critical_L1_tail": "OPEN",
+        "hybrid_terminal_flux_gate": "OPEN_NOT_REFUTED",
+        "millennium_problem_solved": False, "regularity": "OPEN",
+    }:
+        raise RuntimeError("R0.74S Step 16 claim boundary drift")
 
 
 def inline_markup(value: str) -> str:
@@ -175,6 +206,7 @@ def report_body() -> str:
         (ROOT / "research/r074s_step13_report-source.md").read_text(encoding="utf-8").strip(),
         (ROOT / "research/r074s_step14_report-source.md").read_text(encoding="utf-8").strip(),
         (ROOT / "research/r074s_step15_report-source.md").read_text(encoding="utf-8").strip(),
+        (ROOT / "research/r074s_step16_report-source.md").read_text(encoding="utf-8").strip(),
     ])
     blocks = re.split(r"\n\s*\n", source)
     output: list[str] = []
@@ -220,16 +252,16 @@ def report_body() -> str:
 def render_note() -> str:
     return f'''<!doctype html>
 <html lang="zh-CN" data-site-version="{VERSION}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{TITLE}</title><meta name="description" content="混合起点通量的同删除集 best-N 等价、终端 crown 的深度无关预算，以及仍开放的 S.342 与 S.407">
-<link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="stylesheet" href="/bilingual.css">
+<title>{TITLE}</title><meta name="description" content="Taylor 1923 二周期衰减涡揭示 Version-M 移动截断漂移；S.342 对每个 p&gt;1 为 false，临界 S.444 仍 open">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/bilingual.css">
 <script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v={VERSION}"></script><script defer src="/bilingual.js"></script>
 <script>window.MathJax={{tex:{{inlineMath:[["\\\\(","\\\\)"]],displayMath:[["\\\\[","\\\\]"]]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}}@media(prefers-color-scheme:dark){{:root{{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}}}*{{box-sizing:border-box}}html,body{{max-width:100%;overflow-x:hidden}}body{{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}}.top{{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}}.top a{{font-weight:700;text-decoration:none}}main{{width:min(940px,90vw);margin:auto}}.hero{{padding:54px 0 30px;border-bottom:1px solid var(--line)}}.hero-inner{{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}}.hero-inner>div:first-child>p strong{{margin-left:.25em}}h1{{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}}h2{{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}}.stamp,.section-no,.label{{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}}.stamp{{border:1px solid var(--line);padding:1rem;background:var(--raised)}}article{{padding:14px 0 72px}}section{{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}}p,li{{overflow-wrap:anywhere}}.equation{{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}}.labels{{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}}.label{{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}}a{{color:var(--rule)}}.files{{line-height:2}}.note{{color:var(--muted);font-size:.94rem}}picture img{{display:block;width:100%;height:auto}}@media(max-width:720px){{body{{font-size:15px}}.hero-inner{{grid-template-columns:1fr}}main,article,section{{min-width:0}}.top{{font-size:13px}}.equation mjx-container[display="true"]{{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}}}@media print{{:root{{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}}.top{{display:none}}body{{background:#fff;font-size:9.3pt;line-height:1.5}}main{{width:auto}}.hero{{padding-top:0}}.hero-inner{{grid-template-columns:1fr 220px}}h2{{margin:1.7rem 0 .6rem;break-after:avoid}}#figure{{break-before:page}}a{{color:inherit;text-decoration:none}}a[href]::after{{content:none!important}}.equation,.stamp{{break-inside:avoid}}}}</style></head>
-<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>{TITLE}</h1><p>新的 hybrid-start physical flux 向量与 residual vector 在<strong>同一删除集</strong>上满足双向 best-\\(N\\) 等价；终端 crown 还给出深度无关的系数预算。 <strong>这两项是 PROVED，但完整闭合仍分别依赖 OPEN S.342 与 OPEN S.407；S.408 只是 CONDITIONAL。Q.1、正则性与 Millennium 问题均保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED S.384–S.385</span><span class="label">PROVED S.404</span><span class="label">CONDITIONAL S.408</span><span class="label">ABSTRACT METHOD OBSTRUCTION</span><span class="label">OPEN S.342 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 15</strong><p>S.377–S.416：PROVED / CONDITIONAL / ABSTRACT METHOD OBSTRUCTION / OPEN</p><p>same-deletion equivalence：\\(\\frac15 S_N(z)\\le S_N(r)\\le S_N(z)\\)</p><p>terminal crown budget：PROVED S.404</p><p>start-clock overshoot debt：RETAINED S.395</p><p>S.408：CONDITIONAL</p><p>S.342 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>{TITLE}</h1><p>Taylor 1923 二周期衰减涡给出光滑、精确、周期、无外力的三维 NSE 解族：固定框架中 Bernoulli 通量精确抵消，Version-M 移动截断却留下非零漂移。 <strong>因此 S.342 对每个 \\(p&gt;1\\) 为 FALSE；临界端点 S.444 以及 S.407、Q.12、Q.1、正则性与 Millennium 问题仍保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">SMOOTH EXACT NSE</span><span class="label">FIXED-FRAME CANCELLATION</span><span class="label">MOVING DRIFT</span><span class="label">FALSE S.342 FOR p&gt;1</span><span class="label">OPEN S.444 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 16</strong><p>S.417–S.444：PROVED / FALSE / OPEN</p><p>fixed-frame Bernoulli flux：\\(0\\)</p><p>Version-M cutoff drift：nonzero</p><p>tail：\\(A^{{3-1/p}}\\)</p><p>payment：\\(A^3\\)</p><p>S.342：FALSE for every \\(p&gt;1\\)</p><p>S.444 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>精确解解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
 {report_body()}
-<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>混合通量等价与终端 crown 接口</h2><picture><source srcset="/assets/r074s/{FIGURE_ID}.svg" type="image/svg+xml"><img src="/assets/r074s/{FIGURE_ID}.png" alt="R0.74S Step 15 analytic schematic of hybrid-flux equivalence and the terminal-crown interface"></picture><p><a href="/assets/r074s/{FIGURE_ID}.pdf">矢量 PDF</a> · <a href="/assets/r074s/{FIGURE_ID}.png">600 dpi PNG</a> · <a href="/assets/r074s/{FIGURE_ID}.svg">SVG</a> · <a href="/figures/r074s/{FIGURE_ID}/source-data.csv">exact source data</a> · <a href="/figures/r074s/{FIGURE_ID}/manifest.json">manifest</a> · <a href="/figures/r074s/{FIGURE_ID}/qa-report.md">视觉 QA</a></p><p class="note">这是由精确公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
-<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 15 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_flux_tail_equivalence.md">hybrid flux 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_terminal_crown_coercivity.md">terminal crown 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step15_report-source.md">Step 15 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 15：Python 5/5 dependency、9/9 finite groups（3,941 cases）、45/45 structural、20/20 negative；Ruby 为独立证书实现。有限证书不替代 analytic proof。</p></section>
-<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / 后续研究</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 15，并在此停止。后续若另行启动，只能继续检验 OPEN S.342、OPEN S.407 或其他明确的新 PDE 输入；不得把 S.408 或 Q.1 写成 theorem。</p></section></article></main></body></html>'''
+<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>Taylor 1923 精确涡：固定框架抵消、移动漂移与振幅分裂</h2><picture><source srcset="/assets/r074s/{FIGURE_ID}.svg" type="image/svg+xml"><img src="/assets/r074s/{FIGURE_ID}.png" alt="R0.74S Step 16 analytic schematic of the Taylor 1923 exact vortex, Version-M moving drift, and amplitude split"></picture><p><a href="/assets/r074s/{FIGURE_ID}.pdf">矢量 PDF</a> · <a href="/assets/r074s/{FIGURE_ID}.png">600 dpi PNG</a> · <a href="/assets/r074s/{FIGURE_ID}.svg">SVG</a> · <a href="/figures/r074s/{FIGURE_ID}/source-data.csv">exact source data</a> · <a href="/figures/r074s/{FIGURE_ID}/manifest.json">manifest</a> · <a href="/figures/r074s/{FIGURE_ID}/qa-report.md">视觉 QA</a></p><p class="note">这是由精确解公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 16 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_obstruction.md">Taylor moving-frame 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step16_report-source.md">Step 16 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 16：主证书 7/7 groups（2,207 cases）；独立 Ruby 9/9 groups（2,839 cases）；11 项外部 negative probes 均按预期失败。有限证书核验代数、计数与边界，不替代 continuum payment 的解析证明。</p></section>
+<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74S / 后续研究接口</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 16，并在此停止。后续若另行启动，只能分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342，也不得把 Q.1、正则性或 Millennium 问题写成 theorem。</p></section></article></main></body></html>'''
 
 
 def copy_figures() -> None:
@@ -248,30 +280,30 @@ def copy_figures() -> None:
 def update_home() -> None:
     page = HOME.read_text(encoding="utf-8")
     pairs = (
-        ('data-site-version="1.93"', 'data-site-version="1.94"', "home version"),
-        ('/i18n-en.js?v=1.93', '/i18n-en.js?v=1.94', "home i18n"),
-        ('/site-refresh.js?v=1.93.1', '/site-refresh.js?v=1.94.1', "home refresh"),
-        ('<strong>v1.93</strong>网页版本', '<strong>v1.94</strong>网页版本', "home stat version"),
-        ('<h3>R0.74S：外侧 collar 对齐与 jump--corona 障碍</h3>', '<h3>R0.74S：混合通量等价与终端 crown 强制性缺口</h3>', "current route title"),
-        ('<p class="tree-current-summary">外侧 collar 精确落在同权 payment annulus，临界 density threshold 无增益；jump skeleton 可收缩，但完整 corona 仍取决于 OPEN S.375。抽象障碍不是 NSE counterexamples。NOT CLAY。</p>', '<p class="tree-current-summary">同一删除集控制两条 residual branches，终端 crowns 给出深度无关预算；完整闭合仍分别依赖 OPEN S.342 与 OPEN S.407。两类 stress tests 彼此不耦合。NOT CLAY。</p>', "current route summary"),
-        ('<p class="tree-path">four-channel flux → outer-collar same-weight alignment → threshold cancellation → jump skeleton / unpaid corona → S.375 open</p>', '<p class="tree-path">hybrid-start flux → same-deletion best-N equivalence → terminal crowns → depth-independent budget → S.342 / S.407 open</p>', "current route path"),
-        ('综述 v1.93 · 2026-09-03', '综述 v1.94 · 2026-09-03', "footer"),
+        ('data-site-version="1.94"', 'data-site-version="1.95"', "home version"),
+        ('/i18n-en.js?v=1.94', '/i18n-en.js?v=1.95', "home i18n"),
+        ('/site-refresh.js?v=1.94.1', '/site-refresh.js?v=1.95.1', "home refresh"),
+        ('<strong>v1.94</strong>网页版本', '<strong>v1.95</strong>网页版本', "home stat version"),
+        ('<h3>R0.74S：混合通量等价与终端 crown 强制性缺口</h3>', '<h3>R0.74S：Taylor 1923 涡、移动漂移与临界时间端点</h3>', "current route title"),
+        ('<p class="tree-current-summary">同一删除集控制两条 residual branches，终端 crowns 给出深度无关预算；完整闭合仍分别依赖 OPEN S.342 与 OPEN S.407。两类 stress tests 彼此不耦合。NOT CLAY。</p>', '<p class="tree-current-summary">Taylor 1923 光滑精确解的 fixed-frame Bernoulli 通量为零，但 Version-M moving drift 使 S.342 对每个 p&gt;1 为 FALSE；临界 S.444 与 S.407 仍 OPEN。NOT CLAY。</p>', "current route summary"),
+        ('<p class="tree-path">hybrid-start flux → same-deletion best-N equivalence → terminal crowns → depth-independent budget → S.342 / S.407 open</p>', '<p class="tree-path">Taylor 1923 exact vortex → fixed-frame Bernoulli cancellation → Version-M moving drift → S.342 false for p&gt;1 → S.444 / S.407 open</p>', "current route path"),
+        ('综述 v1.94 · 2026-09-03', '综述 v1.95 · 2026-09-03', "footer"),
     )
     for old, new, label in pairs:
         page = replace_once_or_present(page, old, new, label)
-    page, count = re.subn(r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>', '<div class="summary-item"><strong>我目前关注</strong><span>R0.74S Step 15 已锁定同删除集 best-N 等价与终端 crown 深度无关预算；S.408 仍 conditional，S.342、S.407、Q.1 与上游 PDE gates 仍 OPEN。</span></div>', page, count=1, flags=re.S)
+    page, count = re.subn(r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>', '<div class="summary-item"><strong>我目前关注</strong><span>R0.74S Step 16 已用 Taylor 1923 光滑精确解证否 S.342（每个 p&gt;1）；临界 S.444、S.407、Q.12、Q.1 与正则性仍 OPEN。</span></div>', page, count=1, flags=re.S)
     if count != 1:
         raise RuntimeError("home focus replacement failed")
-    latest = '''<section class="route-overview latest-release-spotlight" id="latest-release" aria-labelledby="latest-release-title"><div class="route-overview-inner"><header class="route-map-header"><div><p class="eyebrow">LATEST RELEASE · R0.74S · 2026-09-03 · STEP 15</p><h2 class="route-map-title" id="latest-release-title">R0.74S｜混合通量等价与终端 crown 强制性缺口</h2><p class="route-map-intro">同删除集 best-N 等价与终端 crown 深度无关预算已证；完整闭合仍依赖 OPEN S.342 与 OPEN S.407，S.408 保持 CONDITIONAL。NOT CLAY.</p></div><nav class="route-map-actions" aria-label="最新发布快捷入口"><a class="route-map-latest" href="/notes/r0-74s.pdf">阅读最新 R0.74S 研究笔记 →</a><a href="/assets/r074s/fig-r074s-hybrid-crown-interface.pdf">Step 15 正式解析示意图</a><a href="/recap-r0-61-r0-74o.html">最新大里程碑 recap（R0.61–R0.74O，157 节）</a><a href="/notes/">221 篇研究笔记总索引</a><a href="#r074s">查看首页 R0.74S 卡片</a></nav></header><div class="route-legend" aria-label="最新发布计数"><span><i class="route-legend-mark kept" aria-hidden="true"></i>R0.70A–R0.74S · 123 节已公开</span><span><i class="route-legend-mark kept" aria-hidden="true"></i>98 节完整封存</span><span><i class="route-legend-mark current" aria-hidden="true"></i>当前端点 R0.74S Step 15</span></div></div></section>'''
+    latest = '''<section class="route-overview latest-release-spotlight" id="latest-release" aria-labelledby="latest-release-title"><div class="route-overview-inner"><header class="route-map-header"><div><p class="eyebrow">LATEST RELEASE · R0.74S · 2026-09-03 · STEP 16</p><h2 class="route-map-title" id="latest-release-title">R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</h2><p class="route-map-intro">固定框架 Bernoulli 通量精确抵消，Version-M 移动截断留下漂移；S.342 对每个 p&gt;1 为 FALSE，临界 S.444 与 S.407 仍 OPEN。NOT CLAY.</p></div><nav class="route-map-actions" aria-label="最新发布快捷入口"><a class="route-map-latest" href="/notes/r0-74s.pdf">阅读最新 R0.74S 研究笔记 →</a><a href="/assets/r074s/fig-r074s-taylor-moving-drift.pdf">Step 16 正式解析示意图</a><a href="/recap-r0-61-r0-74o.html">最新大里程碑 recap（R0.61–R0.74O，157 节）</a><a href="/notes/">221 篇研究笔记总索引</a><a href="#r074s">查看首页 R0.74S 卡片</a></nav></header><div class="route-legend" aria-label="最新发布计数"><span><i class="route-legend-mark kept" aria-hidden="true"></i>R0.70A–R0.74S · 123 节已公开</span><span><i class="route-legend-mark kept" aria-hidden="true"></i>98 节完整封存</span><span><i class="route-legend-mark current" aria-hidden="true"></i>当前端点 R0.74S Step 16</span></div></div></section>'''
     page, count = re.subn(r'<section class="route-overview latest-release-spotlight" id="latest-release".*?</section>', lambda _: latest, page, count=1, flags=re.S)
     if count != 1:
         raise RuntimeError("latest spotlight replacement failed")
     page = replace_once_or_present(page, '<a class="milestone" href="/notes/r0-74r.html">R0.74R</a>', '<a class="milestone" href="/notes/r0-74r.html">R0.74R</a>\n<a class="milestone" href="/notes/r0-74s.html">R0.74S</a>', "milestone")
-    old_next = '<div class="tree-row"><article class="tree-node next"><div class="tree-node-head"><span class="route-range">NEXT · R0.74T</span><span class="tree-state current">未启动</span></div><h3>R0.74T 后续研究</h3><p>若另行启动：只继续检验 S.375 的 PDE-level jump--corona payment 或其他明确新结构；本次发布在 R0.74S Step 14 停止。</p></article></div>'
-    new_next = '<div class="tree-row"><article class="tree-node next"><div class="tree-node-head"><span class="route-range">NEXT · R0.74T</span><span class="tree-state current">未启动</span></div><h3>R0.74T 后续研究</h3><p>若另行启动：只继续检验 OPEN S.342、OPEN S.407 或其他明确的新 PDE 输入；本次仅发布 R0.74S Step 15。</p></article></div>'
+    old_next = '<div class="tree-row"><article class="tree-node next"><div class="tree-node-head"><span class="route-range">NEXT · R0.74S</span><span class="tree-state current">未启动</span></div><h3>R0.74S 后续研究接口</h3><p>若另行启动：只分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342，也不得声称 Q.1 或正则性已解决。本次仅发布 R0.74S Step 16。</p></article></div>'
+    new_next = '<div class="tree-row"><article class="tree-node next"><div class="tree-node-head"><span class="route-range">NEXT · R0.74T</span><span class="tree-state current">未启动</span></div><h3>R0.74T 后续研究</h3><p>若另行启动：只分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342，也不得声称 Q.1 或正则性已解决。本次仅发布 R0.74S Step 16。</p></article></div>'
     page = replace_once_or_present(page, old_next, new_next, "next route")
-    page = replace_once_or_present(page, 'terminal-window convex packing / arbitrary-clock triage / no-exception no-go → time-integrability ceiling → outer-collar alignment → jump skeleton / corona → S.375 open</p>', 'terminal-window packing → time-integrability ceiling → outer-collar alignment → hybrid best-N equivalence → terminal crowns → S.342 / S.407 open</p>', "path tail")
-    card = '''          <div class="task-one" id="r074s" data-release="r074s" style="margin-top:2rem"><p class="eyebrow">研究笔记 R0.74S Step 15 · 2026-09-03</p><h3>R0.74S｜混合通量等价与终端 crown 强制性缺口</h3><p>同删除集 best-N 等价与终端 crown 深度无关预算已锁定；S.342、S.407、Q.1 与正则性仍 OPEN。NOT CLAY.</p><p><a href="/notes/r0-74s.html"><strong>阅读完整中文笔记 →</strong></a> · <a href="/notes/r0-74s.pdf">PDF</a> · <a href="/assets/r074s/fig-r074s-hybrid-crown-interface.pdf">正式解析示意图</a></p></div>\n'''
+    page = replace_once_or_present(page, 'terminal-window packing → time-integrability ceiling → outer-collar alignment → hybrid best-N equivalence → terminal crowns → S.342 / S.407 open</p>', 'Taylor 1923 exact vortex → fixed-frame Bernoulli cancellation → Version-M moving drift → S.342 false for p&gt;1 → S.444 / S.407 open</p>', "path tail")
+    card = '''          <div class="task-one" id="r074s" data-release="r074s" style="margin-top:2rem"><p class="eyebrow">研究笔记 R0.74S Step 16 · 2026-09-03</p><h3>R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</h3><p>Taylor 1923 光滑精确解显示固定框架通量抵消而 Version-M 移动漂移非零；S.342 对每个 p&gt;1 为 FALSE，S.444、S.407、Q.1 与正则性仍 OPEN。NOT CLAY.</p><p><a href="/notes/r0-74s.html"><strong>阅读完整中文笔记 →</strong></a> · <a href="/notes/r0-74s.pdf">PDF</a> · <a href="/assets/r074s/fig-r074s-taylor-moving-drift.pdf">正式解析示意图</a></p></div>\n'''
     page = re.sub(r'^[ \t]*<div class="task-one" id="r074s" data-release="r074s"[\s\S]*?</div>\n?', "", page, flags=re.M)
     anchor = '          <div class="task-one" id="r074r"'
     if anchor not in page:
@@ -283,13 +315,13 @@ def update_home() -> None:
 def update_literature() -> None:
     page = LITERATURE.read_text(encoding="utf-8")
     for old, new, label in (
-        ('data-site-version="1.93"', 'data-site-version="1.94"', "lit version"), ('/i18n-en.js?v=1.93', '/i18n-en.js?v=1.94', "lit i18n"), ('文献综述 v1.93 · 2026-09-03', '文献综述 v1.94 · 2026-09-03', "lit footer"),
+        ('data-site-version="1.94"', 'data-site-version="1.95"', "lit version"), ('/i18n-en.js?v=1.94', '/i18n-en.js?v=1.95', "lit i18n"), ('文献综述 v1.94 · 2026-09-03', '文献综述 v1.95 · 2026-09-03', "lit footer"),
     ):
         page = replace_once_or_present(page, old, new, label)
-    old = '<div class="route-step kept"><header><b>R0.74S</b><strong>外侧 collar 对齐与 jump--corona 障碍</strong></header><p>S.343–S.374 锁定 shell-scale flux、同权 outer-collar 对齐、critical density cancellation、first-jump skeleton 与 heat-shear screen；S.358、S.376 保持 conditional，S.342、S.375 仍开放。<a href="/notes/r0-74s.html">研究笔记</a> <a href="#r074s-boundary">主张边界</a></p></div><div class="route-step pause"><header><b>开放接口 · R0.74T</b><strong>本次未启动</strong></header><p>若另行启动：检验 S.375 的 PDE-level jump--corona payment 或其他明确新结构。</p></div>'
-    new = '<div class="route-step kept"><header><b>R0.74S</b><strong>混合通量等价与终端 crown 强制性缺口</strong></header><p>S.377–S.416 锁定同删除集 best-N 等价、start-clock overshoot debt 与终端 crown 深度无关预算；S.408 保持 conditional，S.342、S.407、Q.12 与 Q.1 仍开放。<a href="/notes/r0-74s.html">研究笔记</a> <a href="#r074s-boundary">主张边界</a></p></div><div class="route-step pause"><header><b>开放接口 · R0.74T</b><strong>本次未启动</strong></header><p>若另行启动：检验 OPEN S.342、OPEN S.407 或其他明确的新 PDE 输入。</p></div>'
+    old = '<div class="route-step kept"><header><b>R0.74S</b><strong>Taylor 1923 涡、移动漂移与临界时间端点</strong></header><p>S.417–S.443 以 Taylor 1923 光滑精确周期解锁定 fixed-frame Bernoulli cancellation 与 Version-M moving drift，并对每个 p&gt;1 证否 S.342；S.444、S.407、Q.12 与 Q.1 仍开放。<a href="/notes/r0-74s.html">研究笔记</a> <a href="#r074s-boundary">主张边界</a></p></div><div class="route-step pause"><header><b>开放接口 · R0.74S</b><strong>本次未启动</strong></header><p>若另行启动：分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入，不得继续假设 FALSE S.342。</p></div>'
+    new = '<div class="route-step kept"><header><b>R0.74S</b><strong>Taylor 1923 涡、移动漂移与临界时间端点</strong></header><p>S.417–S.443 以 Taylor 1923 光滑精确周期解锁定 fixed-frame Bernoulli cancellation 与 Version-M moving drift，并对每个 p&gt;1 证否 S.342；S.444、S.407、Q.12 与 Q.1 仍开放。<a href="/notes/r0-74s.html">研究笔记</a> <a href="#r074s-boundary">主张边界</a></p></div><div class="route-step pause"><header><b>开放接口 · R0.74T</b><strong>本次未启动</strong></header><p>若另行启动：分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入，不得继续假设 FALSE S.342。</p></div>'
     page = replace_once_or_present(page, old, new, "literature route")
-    boundary = '<h3 id="r074s-boundary">R0.74S 的文献与主张边界</h3><p>Step 15 证明 hybrid-start flux 与 residual 的同删除集 best-N 等价，以及 terminal crown 的深度无关系数预算；converse Hölder / flat-data family 仅是 abstract method obstruction，periodic measure tree 与 scalar clock 是彼此不耦合的 stress tests，不声称 novelty 或 priority。</p><div class="boundary"><strong>R0.74S Step 15 公开边界</strong><p>PROVED：S.377–S.406 中的 hybrid coordinate comparison、same-deletion equivalence、signed common-window debt、terminal-crown ownership 与 depth-independent budget。CONDITIONAL：S.408 依赖 OPEN S.407。ABSTRACT METHOD OBSTRUCTION：S.409–S.412 不是 NSE counterexample。FINITE：Python 5/5 dependency、9/9 finite groups（3,941 cases）、45/45 structural、20/20 negative；另有 Ruby 独立实现。OPEN：S.342、S.375、S.407、S.288、S.303、S.272、Q.12、Q.1、scale contraction 与正则性。 <strong>NOT CLAY.</strong> <a href="/notes/r0-74s.html">阅读完整中文笔记</a>。</p></div>\n'
+    boundary = '<h3 id="r074s-boundary">R0.74S 的文献与主张边界</h3><p>Step 16 使用 Taylor 1923 的二周期衰减涡这一光滑精确 NSE 解族；Taylor–Green 1937 只作为历史背景。这里只陈述 frozen evidence 支持的结果，不声称 novelty 或 priority。</p><div class="boundary"><strong>R0.74S Step 16 公开边界</strong><p>PROVED：S.417–S.443 的精确解、fixed-frame Bernoulli cancellation、Version-M moving drift 与振幅标度。FALSE：S.342 对每个 p&gt;1、任意有限 N 与 C 都可由合适 R、z0、A 推翻。CRITICAL OPEN：p=1 时 H 约为 A² 而 payment 约为 A³，S.444 未判定。FINITE：主证书 7/7 groups（2,207 cases）、独立 Ruby 9/9 groups（2,839 cases），11 项外部 negative probes 均按预期失败；有限证书不 machine-prove continuum payment。OPEN：S.444、S.407、Q.12、Q.1、scale contraction 与正则性。 <strong>NOT CLAY.</strong> <a href="/notes/r0-74s.html">阅读完整中文笔记</a>。</p></div>\n'
     page = re.sub(r'<h3 id="r074s-boundary">[\s\S]*?<div class="boundary">[\s\S]*?</div>\n?', "", page)
     anchor = '        <section id="references">'
     if anchor not in page:
@@ -302,10 +334,10 @@ def update_notes_index() -> None:
     target = PUBLIC / "notes/index.html"
     page = target.read_text(encoding="utf-8")
     for old, new, label in (
-        ('data-site-version="1.93"', 'data-site-version="1.94"', "index version"), ('/i18n-en.js?v=1.93', '/i18n-en.js?v=1.94', "index i18n"), ('/site-refresh.js?v=1.93', '/site-refresh.js?v=1.94', "index refresh"), ('研究笔记总索引 · v1.93 · 2026-09-03', '研究笔记总索引 · v1.94 · 2026-09-03', "index footer"),
+        ('data-site-version="1.94"', 'data-site-version="1.95"', "index version"), ('/i18n-en.js?v=1.94', '/i18n-en.js?v=1.95', "index i18n"), ('/site-refresh.js?v=1.94', '/site-refresh.js?v=1.95', "index refresh"), ('研究笔记总索引 · v1.94 · 2026-09-03', '研究笔记总索引 · v1.95 · 2026-09-03', "index footer"),
     ):
         page = replace_once_or_present(page, old, new, label)
-    entry = '''          <li class="note-entry" data-note="r0-74s"><article><div class="entry-copy"><p class="note-code">R0.74S · STEP 15</p><h3>混合通量等价与终端 crown 强制性缺口</h3></div><nav class="entry-files" aria-label="R0.74S files"><a class="file-link html" href="/notes/r0-74s.html" aria-label="Read R0.74S HTML">HTML</a><a class="file-link pdf" href="/notes/r0-74s.pdf" aria-label="Download R0.74S PDF">PDF</a></nav></article></li>\n'''
+    entry = '''          <li class="note-entry" data-note="r0-74s"><article><div class="entry-copy"><p class="note-code">R0.74S · STEP 16</p><h3>Taylor 1923 涡、移动漂移与临界时间端点</h3></div><nav class="entry-files" aria-label="R0.74S files"><a class="file-link html" href="/notes/r0-74s.html" aria-label="Read R0.74S HTML">HTML</a><a class="file-link pdf" href="/notes/r0-74s.pdf" aria-label="Download R0.74S PDF">PDF</a></nav></article></li>\n'''
     anchor = '          <li class="note-entry" data-note="r0-74r">'
     page, existing = re.subn(r'\s*<li class="note-entry" data-note="r0-74s">[\s\S]*?</li>\n?', "\n" + entry, page, count=1)
     if existing == 0:
@@ -336,11 +368,12 @@ def update_accounting() -> None:
     inventory["latestPublishedRelease"] = RELEASE
     inventory["publishedReleaseCount"] = len(inventory["publishedReleases"])
     inventory["formalSealedReleaseCount"] = len(inventory["formalSealedReleases"])
+    inventory["sameReleaseCompletedSteps"] = {"r074s": 16}
     inventory["formalFigureExemptReleaseCount"] = len(inventory.get("formalFigureExemptReleases", []))
     write_json(inventory_target, inventory)
     manifest_target = ROOT / "research/release-manifest.json"
     manifest = json.loads(manifest_target.read_text(encoding="utf-8"))
-    manifest.update({"latestCompletedRelease": RELEASE, "siteVersion": VERSION, "publicHtmlNoteCount": html_count, "publicPdfNoteCount": pdf_count, "postR060PublishedNodeCount": post_r060, "postR060RecapNodeCount": 157, "nextRelease": "r074t", "latestPublishedResearchHtml": "/notes/r0-74s.html", "latestPublishedResearchPdf": "/notes/r0-74s.pdf", "latestReleaseGate": "tests/r074s-ball-clock-gate.test.mjs", "latestReleasePublicationTest": "tests/r074s-release.test.mjs", "postR070APublishedReleaseCount": inventory["publishedReleaseCount"], "postR070AFormalSealedReleaseCount": inventory["formalSealedReleaseCount"], "formalFigureExemptReleaseCount": inventory["formalFigureExemptReleaseCount"], "latestRecapRelease": "r074o", "latestRecapHtml": "/recap-r0-61-r0-74o.html", "latestRecapPdf": "/recap-r0-61-r0-74o.pdf", "latestReleaseTranslationScript": "scripts/add-r074s-translations.mjs", "latestReleasePdfBinder": "scripts/bind-r074s-pdf.mjs", "recapPolicy": "MILESTONE_ONLY"})
+    manifest.update({"latestCompletedRelease": RELEASE, "latestCompletedStep": 16, "siteVersion": VERSION, "publicHtmlNoteCount": html_count, "publicPdfNoteCount": pdf_count, "postR060PublishedNodeCount": post_r060, "postR060RecapNodeCount": 157, "nextRelease": "r074t", "latestPublishedResearchHtml": "/notes/r0-74s.html", "latestPublishedResearchPdf": "/notes/r0-74s.pdf", "latestReleaseGate": "tests/r074s-step16-gate.test.mjs", "latestReleasePublicationTest": "tests/r074s-step16-release.test.mjs", "postR070APublishedReleaseCount": inventory["publishedReleaseCount"], "postR070AFormalSealedReleaseCount": inventory["formalSealedReleaseCount"], "formalFigureExemptReleaseCount": inventory["formalFigureExemptReleaseCount"], "latestRecapRelease": "r074o", "latestRecapHtml": "/recap-r0-61-r0-74o.html", "latestRecapPdf": "/recap-r0-61-r0-74o.pdf", "latestReleaseTranslationScript": "scripts/add-r074s-translations.mjs", "latestReleaseStepTranslationScript": "scripts/add-r074s-step16-translations.mjs", "latestReleasePdfBinder": "scripts/bind-r074s-pdf.mjs", "recapPolicy": "MILESTONE_ONLY"})
     manifest["formalArchiveInventory"] = {"path": "research/formal-archive-inventory.json", "sha256": sha256(inventory_target)}
     write_json(manifest_target, manifest)
 

@@ -162,6 +162,23 @@ test("R0.74S frozen Step 13 temporal and Morrey sources retain the exact boundar
   }
 });
 
+test("R0.74S frozen Step 14 outer-collar and jump--corona sources retain the exact boundary", () => {
+  const hashes = {
+    "research/r074s_outer_collar_corona_obstruction.md": "c843284d68c0d7d441214b0b3e67e97ca4c5ebda5f527a957eb6e9bdc07f55f9",
+    "research/r074s_outer_collar_corona_certificate.json": "1714426abc2bbe0a6f98ea5bced5c15843a68fbe66ed02adef670ee681f42be3",
+    "research/r074s_outer_collar_corona_certificate_report.md": "d3a5213ed8a646ccf6b26947a31ad18276c3e6e823c4296e8b1b760deabd05ef",
+    "research/r074s_outer_collar_corona_primary_audit.md": "7f7dd6a7bb1ca6e598b4156388037fe6db7c191a7baacd46d9abe43b12c37e90",
+    "research/r074s_outer_collar_corona_independent_audit.md": "9baa160a706c962f3eb6911d55882c3bc2f883ccdea6c674689930ab4b4e4156",
+    "scripts/r074s_outer_collar_corona_certificate.py": "041328286841e79e8863aca9c5ca9ef7c6ebbab328505c030dd1789c76d03e05",
+    "scripts/r074s_outer_collar_corona_certificate_independent.rb": "f7e420a03445a8089cd53e31eed55f00def576d2f76e091bf3aa5c405915ee10",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_outer_collar_corona_obstruction.md");
+  for (const marker of ["S.343", "S.352", "S.358", "S.365", "S.370", "S.375", "S.376", "ABSTRACT METHOD OBSTRUCTION", "OPEN", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -177,6 +194,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_shared_budget_terminal_trace_certificate.py", "research/r074s_shared_budget_terminal_trace_certificate.json", { all_pass: true, exact_passed: 14, exact_total: 14, finite_passed: 7, finite_total: 7, negative_passed: 7, negative_total: 7, structural_passed: 34, structural_total: 34 }],
     ["scripts/r074s_terminal_window_morrey_certificate.py", "research/r074s_terminal_window_morrey_certificate.json", { all_pass: true, exact_passed: 16, exact_total: 16, finite_passed: 12, finite_total: 12, negative_passed: 11, negative_total: 11, structural_passed: 51, structural_total: 51 }],
     ["scripts/r074s_temporal_integrability_morrey_certificate.py", "research/r074s_temporal_integrability_morrey_certificate.json", { dependency_passed: 4, dependency_total: 4, exact_passed: 31, exact_total: 31, finite_passed: 11, finite_total: 11, negative_passed: 32, negative_total: 32, structural_passed: 22, structural_total: 22 }],
+    ["scripts/r074s_outer_collar_corona_certificate.py", "research/r074s_outer_collar_corona_certificate.json", { dependency_passed: 3, dependency_total: 3, exact_passed: 12, exact_total: 12, finite_cases: 74287, finite_passed: 9, finite_total: 9, negative_passed: 49, negative_total: 49, structural_passed: 37, structural_total: 37 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -307,5 +325,26 @@ test("R0.74S Step 13 Ruby audit independently reconstructs the temporal and Morr
     primary_artifact_cases: 19,
     negative_groups_passed: 2, negative_groups_total: 2,
     negative_cases: 43,
+  });
+});
+
+test("R0.74S Step 14 Ruby audit independently reconstructs the outer-collar and jump--corona boundary", () => {
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_outer_collar_corona_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 14 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 7, independent_groups_total: 7,
+    independent_cases: 82788,
+    artifact_locks_passed: 6, artifact_locks_total: 6,
+    dependency_locks_passed: 2, dependency_locks_total: 2,
+    note_checks_passed: 68, note_checks_total: 68,
+    primary_artifact_groups_passed: 1, primary_artifact_groups_total: 1,
+    primary_artifact_cases: 21,
+    negative_groups_passed: 2, negative_groups_total: 2,
+    negative_cases: 99,
   });
 });

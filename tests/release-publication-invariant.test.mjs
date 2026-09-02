@@ -992,13 +992,13 @@ test("separates the published inventory from the formal-sealed archive", async (
     archive.formalFigureExemptReleaseCount,
   );
 
-  const currentFormal = figureManifests
+  const currentFormal = [...new Set(figureManifests
     .filter(
       ({ value }) =>
         value.status === "formal" && typeof value.release === "string",
     )
     .map(({ value }) => value.release.toLowerCase().replace(".", ""))
-    .filter((release) => releases.includes(release))
+    .filter((release) => releases.includes(release)))]
     .sort();
   assert.deepEqual(
     currentFormal,

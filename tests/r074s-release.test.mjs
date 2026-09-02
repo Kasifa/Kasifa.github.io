@@ -12,7 +12,7 @@ const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex")
 const node = process.env.CODEX_NODE || process.execPath;
 
 test("R0.74S publication accounting advances without recap drift", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.92", latestRelease: "R0.74S", latestPublishedResearchHtml: "/notes/r0-74s.html", latestPublishedResearchPdf: "/notes/r0-74s.pdf", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
+  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.93", latestRelease: "R0.74S", latestPublishedResearchHtml: "/notes/r0-74s.html", latestPublishedResearchPdf: "/notes/r0-74s.pdf", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
   const manifest = JSON.parse(read("research/release-manifest.json"));
   assert.equal(manifest.latestCompletedRelease, "r074s");
   assert.equal(manifest.nextRelease, "r074t");
@@ -35,9 +35,9 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   for (const marker of [
     "一侧 ball cutoff 与 flux 符号恒等式", "四通道 signed recombination", "三通道 genealogy cutoff 非负",
     "PROVED ABSTRACT SCALAR NO-GO", "这个见证没有空间算子或 PDE 实现", "真实 NSE solution family", "PDE-weighted block length", "完整中文版本",
-    "S.307–S.342：PROVED / CONDITIONAL / ABSTRACT / OPEN", "fixed-solution sum：PROVED", "linear ceiling：\\(&gt;2/3\\)",
-    "S.342：OPEN", "31/31 exact", "22/22 structural", "32/32 negative", "72,027 cases",
-    "ABSTRACT BOUNDARY TESTS, NOT NSE COUNTEREXAMPLES", "不是 universal PDE no-go", "NOT CLAY",
+    "S.343–S.376：PROVED / CONDITIONAL / ABSTRACT METHOD OBSTRUCTION / OPEN", "outer collar ratio：\\(1\\)",
+    "S.358 / S.376：CONDITIONAL", "S.342 / S.375：OPEN", "12/12 exact", "37/37 structural", "49/49 negative", "82,788 cases",
+    "ABSTRACT METHOD OBSTRUCTION", "不是 Navier--Stokes counterexample", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -130,10 +130,17 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   assert.equal(binding.claimBoundary.criticalEightAryTree, "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S335_S339");
   assert.equal(binding.claimBoundary.incidenceChargingAndCubicDuality, "CONDITIONAL_INTERFACE_S340_S341");
   assert.equal(binding.claimBoundary.quadraticShellSelectivePayment, "OPEN_S342");
+  assert.equal(binding.claimBoundary.outerCollarAlignment, "PROVED_SAME_WEIGHT_NO_GAIN_S350_S352");
+  assert.equal(binding.claimBoundary.incidenceHolderS358, "CONDITIONAL_ON_S356_S357");
+  assert.equal(binding.claimBoundary.criticalDensityCancellation, "PROVED_NO_LINEAR_PAYMENT_GAIN_S360_S365");
+  assert.equal(binding.claimBoundary.firstJumpDiniSkeleton, "PROVED_UNDER_DISPLAYED_HYPOTHESES_S366_S368");
+  assert.equal(binding.claimBoundary.criticalCorona, "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S370");
+  assert.equal(binding.claimBoundary.jumpCoronaPdeLemma, "OPEN_S375");
+  assert.equal(binding.claimBoundary.jumpCoronaConclusion, "CONDITIONAL_ON_OPEN_S375_S376");
   assert.equal(binding.claimBoundary.step6PdeOrNseCounterexample, false);
   assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
   assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN_Q1");
-  assert.equal(binding.claimBoundary.formalFigure, "STEP13_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS");
+  assert.equal(binding.claimBoundary.formalFigure, "STEP14_OUTER_COLLAR_CORONA_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS");
 });
 
 test("R0.74S public mirrors, concise homepage card, and literature boundary are synchronized", () => {
@@ -143,28 +150,28 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   assert.match(home, /98 节完整封存/);
   assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
   const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
-  assert.ok(card.length > 0 && card.length < 500, `homepage card length ${card.length}`);
-  for (const marker of ["时间模量", "two-cap 2/3", "critical cubic tree", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
+  assert.ok(card.length > 0 && card.length < 650, `homepage card length ${card.length}`);
+  for (const marker of ["外侧 collar", "density cancellation", "critical corona", "S.375", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["S.307", "exact ceiling", "S.328", "S.342", "ABSTRACT", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["S.343", "outer-collar", "S.358", "S.375", "ABSTRACT METHOD OBSTRUCTION", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
-    const canonical = `research/figures/r074s/fig-r074s-temporal-morrey-threshold/figure.${ext}`;
+    const canonical = `research/figures/r074s/fig-r074s-outer-collar-corona/figure.${ext}`;
     assert.ok(existsSync(resolve(root, canonical)), canonical);
-    assert.equal(sha(`public/assets/r074s/fig-r074s-temporal-morrey-threshold.${ext}`), sha(canonical));
-    assert.equal(sha(`public/figures/r074s/fig-r074s-temporal-morrey-threshold/figure.${ext}`), sha(canonical));
-    assert.equal(sha(`figures/r074s/fig-r074s-temporal-morrey-threshold/figure.${ext}`), sha(canonical));
+    assert.equal(sha(`public/assets/r074s/fig-r074s-outer-collar-corona.${ext}`), sha(canonical));
+    assert.equal(sha(`public/figures/r074s/fig-r074s-outer-collar-corona/figure.${ext}`), sha(canonical));
+    assert.equal(sha(`figures/r074s/fig-r074s-outer-collar-corona/figure.${ext}`), sha(canonical));
   }
-  const validation = JSON.parse(read("research/figures/r074s/fig-r074s-temporal-morrey-threshold/validation.json"));
+  const validation = JSON.parse(read("research/figures/r074s/fig-r074s-outer-collar-corona/validation.json"));
   assert.equal(validation.summary.result, "PASS");
-  assert.equal(validation.summary.passed, 12);
-  assert.equal(validation.summary.total, 12);
+  assert.equal(validation.summary.passed, 13);
+  assert.equal(validation.summary.total, 13);
   assert.equal(JSON.parse(read("figures/r074s/fig-r074s-ball-clock-debt/manifest.json")).status, "historical");
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step13-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step14-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
   assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));

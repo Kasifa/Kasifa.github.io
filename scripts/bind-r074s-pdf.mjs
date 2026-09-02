@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜时间可积性上限与组合 Morrey 阈值";
+  const title = "R0.74S｜外侧 collar 对齐与 jump--corona 障碍";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -71,7 +71,7 @@ try {
       completeChinesePublication: true,
       htmlAndPdfCryptographicallyBound: true,
       pdfBindingCertifiesMathematicalCorrectness: false,
-      evidenceClassesSeparated: ["PROVED", "CONDITIONAL", "ABSTRACT", "METHOD CEILING", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
+      evidenceClassesSeparated: ["PROVED", "CONDITIONAL", "ABSTRACT METHOD OBSTRUCTION", "METHOD CEILING", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
       oneSidedBallClocks: "PROVED",
       stoppedOrientations: "PROVED",
       quadraticBallLedger: "PROVED",
@@ -176,8 +176,19 @@ try {
       strictCubicDiniPdeGain: "OPEN",
       quadraticShellSelectivePayment: "OPEN_S342",
       uniformFixedSolutionHTailPayment: "OPEN",
+      shellScalePressureAndFourChannelFlux: "PROVED_S343_S347",
+      outerCollarAlignment: "PROVED_SAME_WEIGHT_NO_GAIN_S350_S352",
+      alignedSpike: "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S353_S355",
+      incidenceHolderS358: "CONDITIONAL_ON_S356_S357",
+      criticalDensityCancellation: "PROVED_NO_LINEAR_PAYMENT_GAIN_S360_S365",
+      firstJumpDiniSkeleton: "PROVED_UNDER_DISPLAYED_HYPOTHESES_S366_S368",
+      strictnessFreeDini: "REFUTED_AS_METHOD_S369",
+      criticalCorona: "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S370",
+      shellIncidenceAndHeatShear: "PROVED_S371_S374",
+      jumpCoronaPdeLemma: "OPEN_S375",
+      jumpCoronaConclusion: "CONDITIONAL_ON_OPEN_S375_S376",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "STEP13_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
+      formalFigure: "STEP14_OUTER_COLLAR_CORONA_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

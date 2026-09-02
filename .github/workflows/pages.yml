@@ -38,11 +38,13 @@ jobs:
             figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
             figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
             figures/r074p/fig-r074p-observable-triage/requirements.txt
+            research/figures/r074r/fig-r074r-clock-triage/requirements.txt
       - name: Install formal-figure verifier dependencies
         run: |
           python -m pip install -r figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
           python -m pip install -r figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
           python -m pip install -r figures/r074p/fig-r074p-observable-triage/requirements.txt
+          python -m pip install -r research/figures/r074r/fig-r074r-clock-triage/requirements.txt
           sudo apt-get update
           sudo apt-get install --yes poppler-utils
       - name: Restore frozen R0.74N/O/P verifier runtime fixtures
@@ -163,6 +165,8 @@ jobs:
               pass
           PY
           echo "PYTHONPATH=$RUNNER_TEMP/r074o-python-compat" >> "$GITHUB_ENV"
+      - name: Verify R0.74R formal figure package
+        run: R074R_DEPENDENCIES_ROOT=/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies python research/figures/r074r/fig-r074r-clock-triage/validate.py
       - name: Verify publication completeness, links, and bilingual coverage
         run: node scripts/run-release-publication-gate.mjs
       - name: Prepare static artifact

@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.84"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74R｜窗口质量为何收缩到第一壳层，任意时钟还缺什么？</title><meta name="description" content="终端窗口第一壳层收缩、任意 completed clock 三分法与仍开放的普适提取门">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74r.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.84"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],macros:{fint:"\\mathop{\\unicode{x2A0F}}\\limits"}},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}h3{margin:1.7rem 0 .65rem;font-size:1.16rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74R · 2026-09-02</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74R · 完整中文版本</div><h1>R0.74R｜窗口质量为何收缩到第一壳层，任意时钟还缺什么？</h1><p>终端窗口中的凸三次支付会把目标质量压向第一壳层；对任意 completed clock，我证明了耗散、动能窗口与近期正变差的精确三分法。普适提取和 persistence packing 仍是开放输入。<strong>NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">CONDITIONAL</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NO-GO</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74R</strong><p>窗口 lobe packing：PROVED</p><p>第一壳层收缩：PROVED</p><p>任意时钟三分法：PROVED</p><p>固定尺度结论：PROVED CONDITIONAL</p><p>普适提取输入：OPEN</p><p>no-go witness：NOT NSE</p><p>纯解析 / 无仿真 / NO DGX</p></div></div></header><article>
+<section id="s-01"><div class="section-no">01 / 完整正文</div><h2>导语</h2>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。</p>
+<p>R0.74Q 留下了一个很具体的固定尺度问题：怎样把所有壳层的有符号累计 通量，压到完整支付量的 \(2/3\) 次幂与壳层时钟平方函数之和？记</p>
+<div class="equation">\[
+ A_R:=(P_R^M)^{2/3},
+ \qquad
+ Z_R:=Y_{2,R}^{\rm sf},
+\]</div>
+<p>目标仍是</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \stackrel{?}{\le}
+ C\bigl[A_R+Z_R\bigr].}
+\]</div>
+<p>R0.74Q 已经证明，想用很多等强度光滑包同时点亮许多壳层，外部速度三次 支付会先爆掉。但那个结论仍依赖 equal-target 设计。R0.74R 做了两件更 基础的工作。</p>
+<p>第一，我把“等强度目标”完全拿掉。只要质量确实在同一个终端时间窗口的 那些目标 lobe 中出现，任意非负质量分布都会受到一个显式凸性约束：若 支付不大，几乎全部质量必须指数级地收缩到第一目标壳层。</p>
+<p>第二，我回到任意 defect-completed clock，精确拆出从“终端时钟很大”到 “终端窗口中有质量”的缺口。这个缺口不再是一句话，而是两个可检验的 因子：时钟必须能被端点动能近似；端点动能必须有足够的时间厚度。若这 两个因子具有正确的壳层加权可和性，固定尺度问题就闭合。</p>
+<p>但我也证明了：只靠时钟代数、不可压条件和 Hölder 不等式，无法推出这 两个因子。大时钟可能主要是累计耗散；端点动能可以只活在极薄时间片； 固定梯度耗散也不能由速度三次量反向支付。真正剩下的是 Navier--Stokes 动力学问题，不是序列技巧。</p>
+<p><strong>这一节的状态是：窗口情形 PROVED；任意时钟的充分条件 PROVED；充分 条件本身 OPEN。NOT CLAY.</strong></p>
+<p>本节没有使用数值仿真或 DGX。</p>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整正文</div><h2>1. 先去掉 equal-target 假设</h2>
+<p>沿用 R0.74Q 的冻结参数</p>
+<div class="equation">\[
+ \lambda=\frac{63}{32},
+ \qquad
+ \rho=\frac1{320},
+ \qquad
+ c_\gamma=\frac8{3969},
+\]</div>
+<p>并令</p>
+<div class="equation">\[
+ L=\lambda2^j,
+ \qquad
+ R=e^{-\rho L^2},
+ \qquad
+ N=j,
+\]</div>
+<div class="equation">\[
+ L_\ell=2^{\ell-1}L,
+ \qquad
+ k_\ell=j+\ell-1,
+ \qquad
+ \Gamma_\ell=e^{-c_\gamma L_\ell^2}.
+\]</div>
+<p>所有正 lobe 共用终端窗口</p>
+<div class="equation">\[
+ J=(65R^2-R^3,65R^2),
+ \qquad |J|=R^3.
+\]</div>
+<p>我不再规定每个包的振幅，也不再假设各壳层目标相等。直接用真实总速度 \(u\) 定义第 \(\ell\) 个窗口平均质量</p>
+<div class="equation">\[
+ E_\ell
+ :=\frac{\Gamma_\ell}{2R|J|}
+   \int_J\int_{\Omega_{\ell,+}(t)}|u(t,x)|^2\,dx\,dt.
+\]</div>
+<p>再记</p>
+<div class="equation">\[
+ S:=\sum_{\ell=1}^NE_\ell,
+ \qquad
+ Q:=\left(\sum_{\ell=1}^NE_\ell^2\right)^{1/2},
+ \qquad
+ U:=\sum_{\ell=2}^NE_\ell=S-E_1.
+\]</div>
+<p>因为 completed clock 的其余部分非负，且各目标 lobe 位于不同壳层，</p>
+<div class="equation">\[
+ v_{k_\ell,R}\ge E_\ell,
+ \qquad
+ Y_{2,R}^{\rm sf}\ge Q.
+\]</div>
+<p>这里不要求各壳层在同一时刻取得最大值。每个 \(v_{k_\ell,R}\) 可以在 自己的时刻实现下界；平方函数只需要这些逐坐标下界。</p>
+</section>
+<section id="s-03"><div class="section-no">03 / 完整正文</div><h2>2. 三次支付先相加，再体现凸性</h2>
+<p>R0.74Q 的 doubled-radius 权重给出</p>
+<div class="equation">\[
+ \gamma_{k_\ell-1}=\Gamma_\ell^{1/4}.
+\]</div>
+<p>把完整 Version-M 支付中的非负外部速度三次项，限制到所有互不相交的 lobe cylinder，再用时空 Hölder，得到</p>
+<div class="equation">\[
+ \boxed{
+ P_R^M
+ \ge2\sqrt2\,R
+ \sum_{\ell=1}^N
+ \Gamma_\ell^{-5/4}L_\ell^{-1/2}E_\ell^{3/2}.}
+\]</div>
+<p>关键是次序：先在每个不相交 lobe 上得到真实非负下界，再求和；我没有 假设完整非线性支付对各包可加。</p>
+<p>令</p>
+<div class="equation">\[
+ d_\ell:=\Gamma_\ell^{-5/4}L_\ell^{-1/2}.
+\]</div>
+<p>加权 Hölder 给出</p>
+<div class="equation">\[
+ \sum_{\ell\in I}d_\ell E_\ell^{3/2}
+ \ge
+ \frac{(\sum_{\ell\in I}E_\ell)^{3/2}}
+      {(\sum_{\ell\in I}d_\ell^{-2})^{1/2}}.
+\]</div>
+<p>其等号分布恰好是</p>
+<div class="equation">\[
+ E_\ell\propto d_\ell^{-2}
+ =\Gamma_\ell^{5/2}L_\ell.
+\]</div>
+<p>这些倒数权重从第二壳层开始快速几何衰减。精确计算后，</p>
+<div class="equation">\[
+ \boxed{
+ (P_R^M)^{2/3}
+ \ge
+ 2^{2/3}(2L)^{-1/3}e^{\kappa_2L^2}U,}
+\]</div>
+<p>其中</p>
+<div class="equation">\[
+ \kappa_2
+ =\frac{10}{3}c_\gamma-\frac23\rho
+ =\frac{8831}{1905120}&gt;0.
+\]</div>
+<p>因此，只要 \(S&gt;0\) 且</p>
+<div class="equation">\[
+ (P_R^M)^{2/3}\le MS,
+\]</div>
+<p>就有</p>
+<div class="equation">\[
+ \boxed{
+ \frac US
+ \le
+ 2^{-2/3}M(2L)^{1/3}e^{-\kappa_2L^2}.}
+\]</div>
+<p>更直观地，若</p>
+<div class="equation">\[
+ \mathbf E=(E_1,\ldots,E_N),
+ \qquad
+ \mathbf e_1=(1,0,\ldots,0),
+\]</div>
+<p>那么</p>
+<div class="equation">\[
+ \left\|\frac{\mathbf E}{S}-\mathbf e_1\right\|_{\ell^1}
+ \le
+ 2^{1/3}M(2L)^{1/3}e^{-\kappa_2L^2}.
+\]</div>
+<p>这比“质量只能近似 rank one”更具体：在冻结几何里，低支付不仅要求 集中到某一壳层，而且要求集中到第一目标壳层。第二层以后的总质量受到 显式指数压制。</p>
+</section>
+<section id="s-04"><div class="section-no">04 / 完整正文</div><h2>3. 它怎样关闭原来的反例路线</h2>
+<p>若一个终端窗口构型想反驳固定尺度不等式，并且未来还能证明其有符号通量 与 \(S\) 可比，那么至少需要同时满足</p>
+<div class="equation">\[
+ (P_R^M)^{2/3}=o(S),
+ \qquad
+ Y_{2,R}^{\rm sf}=o(S).
+\]</div>
+<p>第二个关系连同 \(Y_{2,R}^{\rm sf}\ge Q\) 迫使 \(E_1=o(S)\)；第一个关系 连同上面的支付定理迫使 \(U=o(S)\)。但 \(S=E_1+U\)，矛盾。</p>
+<p>所以，在继承的终端窗口与 lobe 几何中，无论怎样重新分配非负目标质量， “小支付 + 小平方函数”都不能同时发生。equal-target 并不是 R0.74Q 失败的偶然原因；真正的原因是权重与三次凸性共同造成的第一壳层稳定性。</p>
+<p>这仍然只是路线封闭，不是固定尺度不等式本身。一个任意的大 completed clock 不一定在这个终端窗口里含有动能质量。</p>
+</section>
+<section id="s-05"><div class="section-no">05 / 完整正文</div><h2>4. 任意 completed clock 的精确三分法</h2>
+<p>在 R0.74P 的 suitable-weak chart 中，每个壳层时钟都分解为</p>
+<div class="equation">\[
+ K_{k,R}=E_{k,R}+D_{k,R}=Q_{k,R}+F_{k,R}.
+\]</div>
+<p>\(E\) 是端点局部动能，\(D\) 是从起始时刻累计的非负黏性与缺陷耗散， \(Q\) 是二次源项原函数，\(F\) 是有符号通量原函数。\(D\) 单调不减， \(K(s_R)=0\)，且 \(K\ge0\)。继承的绝对账本给出</p>
+<div class="equation">\[
+ \sum_k\operatorname{TV}Q_{k,R}\le C(P_R^M)^{2/3},
+ \qquad
+ \sum_k\operatorname{TV}F_{k,R}\le CP_R^M.
+\]</div>
+<p>取任意好终端时刻 \(\tau\in(s_R,t_0)\) 和先前区间 \(J=(a,\tau)\subset(s_R,t_0)\)。把正变差明确地 取到终端值 \(K(\tau)\)，单调性立即给出</p>
+<div class="equation">\[
+ E_{k,R}(\tau)
+ \le
+ \fint_JE_{k,R}(t)\,dt
+ +\operatorname{Var}^{+}_{J\rightsquigarrow\tau}K_{k,R}.
+\]</div>
+<p>并且</p>
+<div class="equation">\[
+ \operatorname{Var}^{+}_{J\rightsquigarrow\tau}K_{k,R}
+ \le
+ \operatorname{TV}_{J\rightsquigarrow\tau}Q_{k,R}
+ +\operatorname{TV}_{J\rightsquigarrow\tau}F_{k,R}.
+\]</div>
+<p>令 \(T=K_{k,R}(\tau)\)。至少有一个分支成立：</p>
+<div class="equation">\[
+ \boxed{
+ D_{k,R}(\tau)\ge\frac T2,}
+\]</div>
+<p>或者</p>
+<div class="equation">\[
+ \boxed{
+ \fint_JE_{k,R}(t)\,dt\ge\frac T4,}
+\]</div>
+<p>或者</p>
+<div class="equation">\[
+ \boxed{
+ \operatorname{TV}_{J\rightsquigarrow\tau}Q_{k,R}
+ +\operatorname{TV}_{J\rightsquigarrow\tau}F_{k,R}
+ \ge\frac T4.}
+\]</div>
+<p>这三个分支分别是：累计耗散、真实窗口动能、最近的正向跳升。它完整地 说明了为什么“时钟很大”不能直接替换成“终端窗口质量很大”。</p>
+</section>
+<section id="s-06"><div class="section-no">06 / 完整正文</div><h2>5. 时间厚度的正确系数</h2>
+<p>为了覆盖 R0.74Q 中对全部 \(\tau&lt;t_0\) 的上确界，不能只在平台窗口 \(I_R\) 内定义这个量。对 padded shell 定义带时间截断的端点动能</p>
+<div class="equation">\[
+ e_{k,R}^{\eta}(t)
+ :=\frac{\gamma_k\eta_R(t)}{2R}
+ \int_{\mathbb R^3}\psi_k^R(y)|\widetilde v_R(t,y)|^2\,dy,
+\]</div>
+<p>以及选定时间集 \(J\subset(s_R,t_0)\) 上的局部速度三次支付</p>
+<div class="equation">\[
+ p_{k,R}^{u,\eta}(J)
+ :=R^{-2}\gamma_k
+ \int_J\eta_R(t)^{3/2}
+ \int_{\operatorname{supp}\psi_k^R}
+ |\widetilde v_R|^3\,dy\,dt.
+\]</div>
+<p>把端点相对于这段时间的厚度写成无量纲比率</p>
+<div class="equation">\[
+ \Theta_{k,R}^{\eta}(\tau;J)
+ :=\frac{R^{-2}\int_Je_{k,R}^{\eta}(t)^{3/2}\,dt}
+         {e_{k,R}^{\eta}(\tau)^{3/2}}.
+\]</div>
+<p>这里 \(\eta_R^{3/2}\) 不是装饰项：它正好来自端点动能的 \(3/2\) 次幂，也使论证覆盖时间截断的整个过渡区。空间支撑体积是 \(O(2^{3k}R^3)\)。一次精确的空间 Hölder 与时间积分 给出</p>
+<div class="equation">\[
+ \boxed{
+ e_{k,R}^{\eta}(\tau)
+ \le
+ C_0\,2^k\gamma_k^{1/3}
+ \Theta_{k,R}^{\eta}(\tau;J)^{-2/3}
+ p_{k,R}^{u,\eta}(J)^{2/3}.}
+\]</div>
+<p>这说明需要的不是一句模糊的“持续一段时间”，而是带着正确壳层系数的 \(\Theta^\eta\)。跨壳层再用 Hölder 后，必须控制的是</p>
+<div class="equation">\[
+ \sum_k
+ 2^{3k}\gamma_k\Lambda_k^3\Theta_k^{-2}.
+\]</div>
+<p>这正是任意时钟问题的第二个因子。</p>
+</section>
+<section id="s-07"><div class="section-no">07 / 完整正文</div><h2>6. 一个足够关闭固定尺度问题的条件定理</h2>
+<p>假设存在与解、尺度和终端时刻都无关的常数 \(N_0,C_q,C_*\)。对每个好终端时刻 \(\tau\in(s_R,t_0)\)，允许删除至多 \(N_0\) 个例外壳层；在其余壳层上 能够选择误差 \(q_k\ge0\)、放大因子 \(\Lambda_k\ge0\) 与先前时间集 \(J_k\subset(s_R,\tau)\)，使</p>
+<div class="equation">\[
+ \sum q_k\le C_qA_R,
+ \qquad
+ K_{k,R}(\tau)\le q_k+\Lambda_ke_{k,R}^{\eta}(\tau),
+\]</div>
+<p>并满足</p>
+<div class="equation">\[
+ \boxed{
+ \sum
+ 2^{3k}\gamma_k\Lambda_k^3
+ \Theta_{k,R}^{\eta}(\tau;J_k)^{-2}
+ \le C_*.}
+\]</div>
+<p>那么，壳层 Hölder 与完整支付账本直接给出</p>
+<div class="equation">\[
+ \mathcal S_{N_0,R}^{K}\le CA_R,
+\]</div>
+<p>进而由 R0.74Q 的终端 reduction 得到</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \le C\left[(P_R^M)^{2/3}+Y_{2,R}^{\rm sf}\right].}
+\]</div>
+<p>这一步还有一个容易漏掉的范围问题：R0.74Q 的 \(\mathcal S_{N_0,R}^{K}\) 对全部终端时刻取上确界，而端点能量公式先在 好时刻成立。规范时钟 \(K_{k,R}\) 逐壳层连续；非负序列的最优 \(N_0\) 项尾部对逐坐标收敛下半连续。因此，把好时刻逼近任意终端时刻， 就能把同一上界传到全部 \(\tau&lt;t_0\)。这正是采用 \(e^\eta,p^{u,\eta},\Theta^\eta\) 而不只采用平台窗口量的原因。</p>
+<p>这个“若……则……”已经证明。没有证明的是：任意 suitable weak solution 一定能构造出这些 \(q_k,\Lambda_k,J_k\)。因此，固定尺度不等式仍然是 <strong>OPEN</strong>，不能把条件定理写成无条件结论。</p>
+</section>
+<section id="s-08"><div class="section-no">08 / 完整正文</div><h2>7. 三个不能绕过的 no-go 检验</h2>
+<p>我用三个显式检验排除了三种过快的证明路线。</p>
+<p>第一，纯 completed-clock 代数不能提取动能。可以令</p>
+<div class="equation">\[
+ E=0,
+ \qquad
+ D=K=F=Th(t),
+ \qquad
+ Q=0,
+\]</div>
+<p>其中 \(h\) 光滑单调。所有时钟公理都成立，终端值等于 \(T\)，但任何 动能窗口平均都为零。它准确地落在“耗散/正变差”分支。</p>
+<p>第二，一个光滑不可压时间尖峰可以保持固定端点动能，同时让时空速度三次 量为 \(O(\varepsilon)\)，并使</p>
+<div class="equation">\[
+ \Theta=O(\varepsilon/R^2)\to0.
+\]</div>
+<p>所以任何端点到时空三次量的估计都不能删掉时间厚度因子。</p>
+<p>第三，取</p>
+<div class="equation">\[
+ A_n(x)=n^{-2}\zeta(x)\sin(nx_1)e_3,
+ \qquad
+ w_n=\nabla\times A_n.
+\]</div>
+<p>则 \(w_n\) 光滑且不可压，并满足</p>
+<div class="equation">\[
+ \|\nabla w_n\|_2\ge c_\zeta&gt;0,
+ \qquad
+ \|w_n\|_3^3=O(n^{-3})\to0.
+\]</div>
+<p>因此，固定梯度耗散不可能仅靠一个通用函数不等式被速度三次支付。若 Navier--Stokes 方程能排除这种分离，证明必须显式使用演化方程。</p>
+<p>这三个对象都不是 Navier--Stokes 反例。它们只证明：代数、不可压与 Hölder 本身不够。</p>
+</section>
+<section id="s-09"><div class="section-no">09 / 完整正文</div><h2>8. 与已有文献的真正边界</h2>
+<p>最接近“时间持续性”的成熟结果不是空白。Neustupa 证明：若 \((x_0,t_0)\) 已经是 suitable weak solution 的奇点，则在 \(t_0\) 左侧 某个时间邻域的每一个时刻，\(x_0\) 的任意小空间邻域中都有统一正量的 局部 \(L^3\) 集中；论文还建立了局部化解的强能量不等式 (<a href="https://doi.org/10.3934/dcdss.2013.6.1391">DCDS-S, 2013</a>).</p>
+<p>Barker 与 Prange 的局部光滑化定理进一步给出：在 Type-I 局部动能控制 与首次奇点假设下，每个足够晚的时刻，在半径 \(O(\sqrt{T^*-t})\) 的奇点中心球中都有统一 \(L^3\) 下界 (<a href="https://arxiv.org/abs/1812.09115">ARMA, 2020</a>); 他们后来的工作还发展了 定量的浓度传播与 time-slice 正则性技术 (<a href="https://doi.org/10.1007/s00220-021-04122-x">CMP, 2021</a>).</p>
+<p>这些结果很强，但它们从“已知奇点 + 额外 Type-I/临界控制”出发。当前缺的是更早一层：从任意 prescribed-centre、finite-scale、包含缺陷 耗散的 completed shell clock 出发，在不先假定奇点结论的情况下提取 端点动能与可打包的时间厚度。</p>
+<p>Choe 与 Yang 的反向 Hölder 结论也以统一有界的 scaled local kinetic energy 为输入，并作用于速度梯度 (<a href="https://arxiv.org/abs/1705.04561">JDE, 2018</a>); 它不提供从累计耗散到 速度三次量的反向支付。</p>
+<p>2026 年有两个特别邻近、但仍不同的预印本。Yu 在有限 coarse-grained 链上证明了 active signed-work 提取和带 leakage/backscatter 的加权 telescoping，但把从 CKN badness 到 coarse observability 的困难步骤明确 留作独立问题 (<a href="https://arxiv.org/abs/2606.25322">arXiv:2606.25322</a>). Huang 则在终端能量 测度已经含点原子的假设下，构造 same-state constrained/passive 比较， 得到非负累计压力功与局部压力集中 (<a href="https://arxiv.org/abs/2608.30715">arXiv:2608.30715</a>). 二者截至本节冻结时 均为预印本，不能当作已同行评审结论；它们也都没有给出本节所需的任意 completed-clock 两因子提取。</p>
+<p>这次有限检索没有找到同型定理，但“没有检索到”不是新颖性证明。更准确 的表述是：已有文献证明了多种在奇点、Type-I、局部能量有界、有限 resolved test family 或端点原子假设下的集中/传播/压力功定理；本项目的任意时钟 桥接仍未由这些结果覆盖。</p>
+</section>
+<section id="s-10"><div class="section-no">10 / 完整正文</div><h2>9. 这一阶段的研究价值</h2>
+<p>R0.74R 的价值不是把 OPEN 改成 PROVED，而是把一个模糊缺口压成了可攻击 的精确命题。</p>
+<p>现在已经确定：</p>
+<ul><li>只要真实质量占据继承的终端窗口，三次支付会把它指数级压向第一壳层；</li><li>equal-target 不是关键，任意非负目标分布都受同一约束；</li><li>任意时钟问题只剩 clock-to-endpoint 与 endpoint-to-window 两个主要因子， 再加耗散与正 upcrossing 的替代支付；</li><li>正确的时间厚度权重必须以 \(2^{3k}\gamma_k\Lambda_k^3\Theta_k^{-2}\) 的形式可和；</li><li>三类纯函数/代数捷径已经被显式 no-go 排除。</li></ul>
+<p>这使下一步不必再试探“许多壳层能否同时亮起”或重新发明序列压缩。更有 价值的路线是二选一：</p>
+<ol><li>建立保留负功与 leakage 的 signed stopping-time 恒等式，把 recent upcrossing 直接送入可支付账本；</li><li>建立真正的动力学耗散替代：一个耗散主导壳层要么属于统一有限例外集， 要么在相邻抛物时间段重新产生足够厚的动能。</li></ol>
+<p>这是重要的结构性进展，但距离论文级主定理仍有明显缺口；当前还不能声称 创新优先权、正则性或千禧年问题结论。</p>
+</section>
+<section id="s-11"><div class="section-no">11 / 完整正文</div><h2>10. 审计状态</h2>
+<p>R0.74R Step 1 的解析证明、精确有理数与指数账本、确定性重跑、负哨兵和 两轮独立审计均已通过。Step 2 修复全时段范围后，当前有限证书通过了 13/13 个有理数检查、3/3 个指数账本和 25/25 个结构检查；确定性重跑 字节一致，且把 \(2^{3k}\) 错改为 \(2^{2k}\) 的负哨兵已被拒绝。 Step 2 的独立数学审计已完成：独立实现通过 9/9 个有理数检查、 12/12 个结构检查与 5/5 个有限哨兵。两步证据现已冻结；这些有限检查 只验证公式与实现，不替代解析证明，也不扩大本节的主张边界。</p>
+<p>当前严格状态如下：</p>
+<ul><li><strong>PROVED</strong>：窗口 lobe 的任意质量凸性压缩与第一壳层稳定性；</li><li><strong>PROVED</strong>：任意 completed clock 的三分法；</li><li><strong>PROVED</strong>：带 \(\Theta^\eta\) 的端点到时空三次支付；</li><li><strong>CONDITIONAL / PROVED IMPLICATION</strong>：两因子条件推出固定尺度不等式；</li><li><strong>FINITE</strong>：Step 2 当前算术、指数与结构证书；</li><li><strong>LITERATURE BOUNDARY</strong>：截至 2026-09-02 的有限一手文献非同型命中；</li><li><strong>OPEN</strong>：两因子的任意 suitable-weak 构造、耗散替代、signed upcrossing 支付、\(Q.1\)、尺度收缩与正则性；</li><li><strong>NOT CLAIMED</strong>：奇点构造、奇点排除、Clay 问题解决。</li></ul>
+<p><strong>NOT CLAY.</strong></p>
+</section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>窗口收缩、时钟三分法与开放接口</h2><picture><source srcset="/assets/r074r/fig-r074r-clock-triage.svg" type="image/svg+xml"><img src="/assets/r074r/fig-r074r-clock-triage.png" alt="R0.74R terminal-window contraction and arbitrary-clock gate"></picture><p><a href="/assets/r074r/fig-r074r-clock-triage.pdf">矢量 PDF</a> · <a href="/assets/r074r/fig-r074r-clock-triage.png">600 dpi PNG</a> · <a href="/assets/r074r/fig-r074r-clock-triage.svg">SVG</a> · <a href="/figures/r074r/fig-r074r-clock-triage/source-data.csv">source data</a> · <a href="/figures/r074r/fig-r074r-clock-triage/qa-report.md">视觉 QA</a></p><p class="note">确定性解析图，不是 DNS、仿真、奇点或正则性证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>解析主文、双重证书与独立审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_problem_freeze.md">问题冻结</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_persistent_lobe_cubic_packing.md">窗口 lobe packing</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_arbitrary_clock_extraction_gate.md">任意时钟提取门</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_arbitrary_clock_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_primary_literature_boundary.md">文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_gap_matrix.md">证据与缺口矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_bilingual_dictionary.md">双语词典</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_report-source.md">完整中文 reader source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074r_freeze_manifest.json">冻结清单</a></p><p><a href="/notes/r0-74r.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">本节为解析证明与抽象/函数 no-go；没有 Navier--Stokes 数值仿真、DNS 或 DGX。</p></section>
+<section id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74S</h2><p>继续检验一侧 ball completion 后仍剩下的 \(\ell^1\) debt；任何 no-go 都必须保持 abstract、NOT PDE/NSE 的边界。</p></section></article></main></body></html>

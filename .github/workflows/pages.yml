@@ -37,10 +37,12 @@ jobs:
           cache-dependency-path: |
             figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
             figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
+            figures/r074p/fig-r074p-observable-triage/requirements.txt
       - name: Install formal-figure verifier dependencies
         run: |
           python -m pip install -r figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
           python -m pip install -r figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
+          python -m pip install -r figures/r074p/fig-r074p-observable-triage/requirements.txt
           sudo apt-get update
           sudo apt-get install --yes poppler-utils
       - name: Restore frozen R0.74N/O verifier runtime fixtures
@@ -74,6 +76,8 @@ jobs:
           case "$(basename "$output")" in
             raster-600) cp "$directory/figure.png" "$output.png" ;;
             qa-pdf) test -f "$output.png" ;;
+            figure) input="${@: -2:1}"; cp "$(dirname "$input")/figure.png" "$output.png" ;;
+            page) input="${@: -2:1}"; cp "$(dirname "$input")/figure.png" "$output.png" ;;
             *) exec /usr/bin/pdftoppm "$@" ;;
           esac
           SH

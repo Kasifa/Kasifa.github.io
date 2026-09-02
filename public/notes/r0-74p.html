@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.82"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74P｜哪些时间可观测量真正看见了缺失的尺度？</title><meta name="description" content="正阶窗口、能量振荡与缺陷补全壳层时钟的严格筛选；目标壳可检出，完整匹配平方函数上界仍开放">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74p.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.82"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]],macros:{fint:"\\mathop{\\unicode{x2A0F}}\\limits"}},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74P · 2026-09-02</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74P · 完整中文版本</div><h1>R0.74P｜哪些时间可观测量真正看见了缺失的尺度？</h1><p>我筛选了正阶时间窗口、能量振荡与缺陷补全壳层时钟。固定正阶窗口严格漏掉目标尺度；能量振荡只是端点的重包装；缺陷补全时钟通过目标壳检出与固定尺度适合弱解稳定性两道门槛，但完整匹配平方函数上界仍然 <strong>OPEN</strong>。<strong>NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74P</strong><p>正阶窗口漏检：PROVED NO-GO</p><p>缺陷补全时钟：PROVED</p><p>目标壳双边尺度：PROVED</p><p>完整 \(Y_2\) 上界：OPEN</p><p>证书 52/52：FINITE</p><p>图件 20/20：FINITE</p><p>LOCAL DIRECT / NO DGX</p></div></div></header><article>
+<section id="s-01"><div class="section-no">01 / 完整正文</div><h2>导语</h2>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。</p>
+<p>R0.74O 已经说明：只看原来的完整标量支付量，不可能给出我曾希望 得到的普适次线性端点上界。在那列光滑、周期、无外力的精确解上， 记</p>
+<div class="equation">\[
+ T_*:=\varkappa^2B^2LR^2,
+ \qquad
+ K_*:=\frac{T_*}{B^2R^2}=\varkappa^2L\longrightarrow\infty,
+\]</div>
+<p>则</p>
+<div class="equation">\[
+ X_*^\alpha\asymp\mathfrak C_*^\alpha\asymp T_*,
+ \qquad
+ (P_*^\alpha)^{2/3}\asymp\frac{T_*}{K_*}.
+\]</div>
+<p>这里带 \(\alpha\) 的结论只用于光滑精确解族， \(\alpha\in\{M,F\}\)，其中 \(z_M=v_R\)， \(z_F=v_R-a_R\)。下文关于一般周期适合弱解的定理及全部紧性结论 都只在 Version M 中陈述，并固定半径 \(R\) 与终点。</p>
+<p>所以真正缺失的是一个能区分“平均尺度”与“短时集中尺度”的结构 量。R0.74P 没有直接猜一个答案，而是逐一筛选三个候选：正阶时间 窗口质量、能量振荡、以及缺陷补全壳层时钟。</p>
+<p>结论很清楚。</p>
+<ol><li>每个固定正阶的窗口质量都漏掉目标尺度。</li><li>能量振荡能看见目标尺度，但它基本上把原端点重新写了一遍。</li><li>缺陷补全时钟在固定 \(R\)、固定终点的适合弱解极限下稳定；其 匹配平方函数的目标壳分量恰好达到 \(T_*\)，但完整平方函数的上 界仍未证明。</li></ol>
+<p>这把下一步从一片模糊的“寻找时间信息”，缩成了一条明确的 PDE 问题：怎样把逐壳层的 \(\ell^1\) 通量账本压缩成匹配的 \(\ell^2\) 时钟？</p>
+<p><strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-02"><div class="section-no">02 / 完整正文</div><h2>1. 第一条路线：正阶窗口质量为什么必然漏检</h2>
+<p>令加权能量为</p>
+<div class="equation">\[
+ E_R^\alpha(t)
+ :=\frac1R\int_{\mathbb T^3}\Theta_R|z_\alpha(t)|^2\,dx,
+\]</div>
+<p>对固定 \(\sigma&gt;0\) 定义</p>
+<div class="equation">\[
+ \mathcal C_{\sigma,R}(E)
+ :=\sup_{J\Subset I_R,\ |J|&gt;0}
+ \left(\frac{|J|}{R^2}\right)^\sigma
+ \fint_JE(t)\,dt.
+\]</div>
+<p>这个量试图奖励短时间窗口中的高能量，同时用 \((|J|/R^2)^\sigma\) 惩罚过短窗口。问题在于，精确解族同时给出</p>
+<div class="equation">\[
+ \operatorname*{ess\,sup}_{I_R}E_*\le CT_*,
+ \qquad
+ \fint_{I_R}E_*\le C\frac{T_*}{K_*}.
+\]</div>
+<p>若令 \(x=|J|/R^2\in(0,1)\)，任何窗口都满足</p>
+<div class="equation">\[
+ x^\sigma\fint_JE_*
+ \le CT_*\min\{x^\sigma,K_*^{-1}x^{\sigma-1}\}.
+\]</div>
+<p>分别取三个区间 \(0&lt;\sigma&lt;1\)、\(\sigma=1\) 与 \(\sigma&gt;1\) 的上确界，得到</p>
+<div class="equation">\[
+ \boxed{
+ \mathcal C_{\sigma,R}(E_*)
+ \le CT_*K_*^{-\min\{\sigma,1\}}
+ =o(T_*).}
+\]</div>
+<p>当 \(\sigma&gt;1\) 时，第二个分支随 \(x\) 增长；因为 \(x&lt;1\)， \(K_*^{-1}\) 只在 \(x\uparrow1\) 时逼近，并不在允许窗口上取到。</p>
+<p>这里的量词非常重要：对每个固定 \(\sigma&gt;0\)，对所有充分大的 \(j\) 成立，常数对 \(j\) 一致；但当 \(\sigma\downarrow0\) 时并不一致。恰在 \(\sigma=0\) 时，窗口上 确界退化为</p>
+<div class="equation">\[
+ \sup_{J\Subset I_R,\ |J|&gt;0}\fint_JE
+ =\operatorname*{ess\,sup}_{I_R}E,
+\]</div>
+<p>也就是原来的端点量。</p>
+<p>因此，不存在一个“稍微正阶”的窗口质量，既保持弱于端点，又能在 这个精确解族上看见 \(T_*\)。这是一条严格的 no-go，而不是数值 现象。</p>
+<p>正式附图中的三条直线只画 \(-\min\{\sigma,1\}\log_{10}K_*\) 这一衰减率项。真实上界还有一 个未知的加法截距 \(\log_{10}C\)，图和源数据都明确把它省略；因 此曲线表达斜率与渐近速率，不表达绝对纵向数值。</p>
+</section>
+<section id="s-03"><div class="section-no">03 / 完整正文</div><h2>2. 第二条路线：能量振荡能检出，但没有真正变弱</h2>
+<p>定义所有时间窗口平均之间的最大振荡</p>
+<div class="equation">\[
+ \Omega_R^\alpha
+ :=\sup_{\substack{J,K\Subset I_R\\ |J|,|K|&gt;0}}
+ \left|\fint_JE_R^\alpha-\fint_KE_R^\alpha\right|.
+\]</div>
+<p>Lebesgue 微分定理给出精确恒等式</p>
+<div class="equation">\[
+ \Omega_R^\alpha
+ =\operatorname*{ess\,sup}_{I_R}E_R^\alpha
+ -\operatorname*{ess\,inf}_{I_R}E_R^\alpha.
+\]</div>
+<p>于是</p>
+<div class="equation">\[
+ \mathcal U_{\rm ext}^{\infty,\alpha,R}
+ \le C\left[(P_R^\alpha)^{2/3}+\Omega_R^\alpha\right].
+\]</div>
+<p>若再把完整外部耗散加回来，当然可以控制 \(X_R^\alpha\)。在精确 解族上，对所有充分大的 \(j\)，且常数对 \(j\) 一致，也确实有</p>
+<div class="equation">\[
+ \Omega_R^{\alpha,*}\asymp T_*.
+\]</div>
+<p>但这不是我想寻找的更弱机制。它用“最高能量减最低能量”重建了 端点，并显式把全部外部耗散重新放入右端。它是一个稳定、正确、但 已经解决的基线。</p>
+</section>
+<section id="s-04"><div class="section-no">04 / 完整正文</div><h2>3. 第三条路线：用总局部耗散补全壳层时钟</h2>
+<p>适合弱解的局部能量不一定满足等式。定义总局部耗散分布</p>
+<div class="equation">\[
+ \boldsymbol\mu[u,p]
+ :=-\partial_t\frac{|u|^2}{2}
+ -\nabla\!\cdot\!\left[\left(\frac{|u|^2}{2}+p\right)u\right]
+ +\Delta\frac{|u|^2}{2}.
+\]</div>
+<p>局部能量不等式给出</p>
+<div class="equation">\[
+ \boldsymbol\mu\ge|\nabla u|^2\,dx\,dt.
+\]</div>
+<p>对每个空间壳层，我先在局部能量良时间 \(\tau&lt;t_0\) 定义</p>
+<div class="equation">\[
+ \widetilde K_{k,R}(\tau)
+ :=
+ \frac{\eta_R(\tau)}{2R}
+ \int_{\mathbb T^3}\Psi_k^R(y)|v_R(\tau,y)|^2\,dy
+ +\frac1R
+ \int_{(s_R,\tau)\times\mathbb T^3}
+ \eta_R(t)\Psi_k^R(x-X_R(t))\,d\boldsymbol\mu(t,x).
+\]</div>
+<p>壳层权重放在时钟内部，即良时间上 \(K_{k,R}=\gamma_k\widetilde K_{k,R}\)。但在所有时间上，我不把 这个测度公式当作定义，而是用精确累计平衡</p>
+<div class="equation">\[
+ K_{k,R}=Q_{k,R}+F_{k,R},
+\]</div>
+<p>其中 \(Q\) 是二次截断原函数，\(F\) 是物理通量原函数，并把 \(Q+F\) 选为 \(K\) 在 \([s_R,t_0]\) 上的规范绝对连续代表。它在 每个良时间与上式一致。这样做的关键不是多加一个符号，而是避免在 某个固定时刻切取耗散测度；弱星收敛时也不需要穿过可能的时间原子。</p>
+</section>
+<section id="s-05"><div class="section-no">05 / 完整正文</div><h2>4. 已闭合的 \(\ell^1\) 时钟</h2>
+<p>取时钟的正变差</p>
+<div class="equation">\[
+ v_{k,R}:=\operatorname{Var}^+_{[s_R,t_0)}K_{k,R},
+ \qquad
+ Y_{1,R}^{\rm clk}:=\sum_{k\ge1}v_{k,R}.
+\]</div>
+<p>完整绝对值账本给出</p>
+<div class="equation">\[
+ \sum_k\operatorname{TV}_{[s_R,t_0)}Q_{k,R}\le C(P_R^M)^{2/3},
+ \qquad
+ \sum_k\operatorname{TV}_{[s_R,t_0)}F_{k,R}\le CP_R^M.
+\]</div>
+<p>因此</p>
+<div class="equation">\[
+ \boxed{
+ Y_{1,R}^{\rm clk}
+ \le C\left[(P_R^M)^{2/3}+P_R^M\right],}
+\]</div>
+<p>而且</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \le Y_{1,R}^{\rm clk}+C(P_R^M)^{2/3}.}
+\]</div>
+<p>这是一个 Version M 中、在冻结局部设置下对周期适合弱解成立的定 理，但它没有完成压缩：右端仍然保留线性的逐壳层绝对通量成本。</p>
+</section>
+<section id="s-06"><div class="section-no">06 / 完整正文</div><h2>5. 匹配平方函数：目标壳检出，完整上界未闭合</h2>
+<p>自然的弱化是</p>
+<div class="equation">\[
+ Y_{2,R}^{\rm sf}
+ :=\left(\sum_{k\ge1}v_{k,R}^2\right)^{1/2}.
+\]</div>
+<p>在 R0.74O 精确解族的目标壳 \(j\) 上，对所有充分大的 \(j\)，并 且常数对 \(j\) 一致，我证明</p>
+<div class="equation">\[
+ \boxed{cT_*\le v_{j,R}\le CT_*.}
+\]</div>
+<p>因此</p>
+<div class="equation">\[
+ Y_{2,R}^{\rm sf}\ge cT_*.
+\]</div>
+<p>这只是一条“下方检出”结论：目标壳没有被平方求和抹掉。它绝不表 示完整 \(Y_{2,R}^{\rm sf}\) 也有 \(CT_*\) 上界，因为其他壳层仍然 存在。</p>
+<p>若改用能通过 Cauchy--Schwarz 自动闭合的强加权量</p>
+<div class="equation">\[
+ Y_{2,R}^{\rm strong}
+ :=\left(\sum_k\frac{v_{k,R}^2}{\gamma_k}\right)^{1/2},
+\]</div>
+<p>目标壳却至少支付</p>
+<div class="equation">\[
+ Y_{2,R}^{\rm strong}
+ \ge cT_*\Gamma^{-1/2}.
+\]</div>
+<p>它比目标尺度多出指数因子。有限证书把这个额外指数相对 \(a=2m/3\) 的精确比值复算为</p>
+<div class="equation">\[
+ \frac{(c_\gamma/2)}{a}=\frac{640}{43}.
+\]</div>
+<p>所以现在已经知道两端：\(\ell^1\) 账本太贵；带 \(\gamma_k^{-1/2}\) 的 \(\ell^2\) 也太贵。匹配的无附加权 \(\ell^2\) 正好处在需要 PDE 结构填补的中间位置。</p>
+</section>
+<section id="s-07"><div class="section-no">07 / 完整正文</div><h2>6. 固定尺度弱稳定性已经闭合</h2>
+<p>在固定半径 \(R\)、固定终点、每个紧子柱上的 Lin 紧性拓扑下，若</p>
+<div class="equation">\[
+ u_n\to u\ \hbox{strongly in }L^3,
+ \qquad
+ \nabla u_n\rightharpoonup\nabla u\ \hbox{weakly in }L^2,
+ \qquad
+ p_n\rightharpoonup p\ \hbox{weakly in }L^{3/2},
+\]</div>
+<p>则平滑轨迹一致收敛，移动场按相应强弱拓扑收敛，总耗散测度局部弱 星收敛。每个固定壳层的 \(Q,F,K\) 累计原函数都在闭时间区间上一致 收敛。</p>
+<p>正变差因此满足</p>
+<div class="equation">\[
+ v_{k,R}[u,p]
+ \le\liminf_n v_{k,R}[u_n,p_n],
+\]</div>
+<p>并进一步得到</p>
+<div class="equation">\[
+ \boxed{
+ Y_{2,R}^{\rm sf}[u,p]
+ \le\liminf_nY_{2,R}^{\rm sf}[u_n,p_n].}
+\]</div>
+<p>窗口质量、能量振荡与外部耗散也具有相应下半连续性。</p>
+<p>这一步说明匹配时钟可以穿过标准适合弱解极限。它没有说明该时钟在 半径 \(R\downarrow0\) 时小，也没有给出跨尺度紧性。</p>
+</section>
+<section id="s-08"><div class="section-no">08 / 完整正文</div><h2>7. 真正剩下的一条不等式</h2>
+<p>当前核心缺口可以写成</p>
+<div class="equation">\[
+ \boxed{
+ \mathfrak C_R^M
+ \stackrel{?}{\le}
+ C\left[(P_R^M)^{2/3}+Y_{2,R}^{\rm sf}\right].}
+\]</div>
+<p>不能用纯序列不等式证明它。若 \(v_1=\cdots=v_N=1\)，则</p>
+<div class="equation">\[
+ \sum_kv_k=N,
+ \qquad
+ \left(\sum_kv_k^2\right)^{1/2}=\sqrt N.
+\]</div>
+<p>所以必须使用 Navier--Stokes 方程本身限制“同时有效的壳层”数量、 持续时间或相互作用。这可能采取有效壳层定理、尺度装箱估计，或另 一种能把正变差关联起来的 PDE 机制。</p>
+<p>即使这条不等式成立，也还没有解决正则性。下一层接口还需要一个真 正的尺度收缩，例如</p>
+<div class="equation">\[
+ \mathcal E_{\theta R}
+ \le\lambda\mathcal E_R
+ +C\left[(P_R^M)^{2/3}+Y_{2,R}^{\rm sf}\right],
+ \qquad 0&lt;\theta&lt;1,\quad 0&lt;\lambda&lt;1,
+\]</div>
+<p>并证明右端新增项沿一个预定中心的嵌套尺度序列足够小或可求和。 Lei--Ren 在看过解以后选择的空间正则区间和 quantitative regularity epochs，都不能自动强迫一个穿过预定时空中心的收缩尺度列。Yu 2026 研究了相邻的移动抛物窗口链、局部能量 supply--tax 账本与尺度缺陷 包，但没有陈述本文的 \(K=Q+F\) 壳层时钟、时间正变差 BV 或匹配壳 层 \(\ell^2\) 下半连续性定理。</p>
+</section>
+<section id="s-09"><div class="section-no">09 / 完整正文</div><h2>8. 这一节的研究价值</h2>
+<p>R0.74P 的价值不是向 Clay 终点迈出一个可量化百分比，而是把三条容 易混淆的路线严格分开。</p>
+<ul><li>正阶窗口路线在精确解族上被排除。</li><li>能量振荡路线被识别为端点的重包装。</li><li>缺陷补全匹配时钟同时通过了目标壳检出与固定尺度弱稳定两道必要 门槛。</li></ul>
+<p>它还把失败原因从“估计技巧不够”变成了一个可检验的结构问题：能 否证明 PDE 只允许有限或可装箱的有效壳层？这个问题既可以被证明， 也可以被新的精确解族否定，因此适合作为下一阶段的严肃研究目标。</p>
+</section>
+<section id="s-10"><div class="section-no">10 / 完整正文</div><h2>9. 证据与边界</h2>
+<ul><li><strong>PROVED：</strong>正阶窗口 no-go、能量振荡恒等式、缺陷补全平衡、 \(\ell^1\) 闭合、目标壳双边尺度、固定尺度弱下半连续性。</li><li><strong>INHERITED：</strong>R0.74O 的光滑精确解族及其 \(P_*,X_*,\mathfrak C_*\) 尺度。</li><li><strong>FINITE：</strong>52 项精确有理数与有限序列检查；图件中的 147 个包络 点和 5 个速率行。</li><li><strong>LITERATURE BOUNDARY：</strong>相关文献提供适合弱解、局部耗散、移动 圆柱、固定物理壳层通量、空间正则区间与 quantitative regularity epochs 等工具；Yu 2026 是移动窗口与尺度缺陷账本的相邻预印本。 没有任何一篇被用来替代本文的壳层时钟证明。有限未命中不证明创 新性或优先权。</li><li><strong>OPEN：</strong>完整匹配平方函数上界、\(\ell^1\) 到匹配 \(\ell^2\) 的 PDE 压缩、预定中心尺度装箱、收缩迭代与全局正则性。</li></ul>
+<p>本节没有数值 Navier--Stokes 仿真，没有构造奇点，没有排除奇点， 也没有证明任意光滑有限能量初值的全局正则性。</p>
+<p><strong>NOT CLAY.</strong></p>
+</section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>三个候选时间可观测量的严格筛选</h2><picture><source srcset="/assets/r074p/fig-r074p-observable-triage.svg" type="image/svg+xml"><img src="/assets/r074p/fig-r074p-observable-triage.png" alt="R0.74P temporal observable triage"></picture><p><a href="/assets/r074p/fig-r074p-observable-triage.pdf">下载矢量 PDF</a> · <a href="/assets/r074p/fig-r074p-observable-triage.png">下载 600 dpi PNG</a> · <a href="/assets/r074p/fig-r074p-observable-triage.svg">打开 SVG</a> · <a href="/figures/r074p/fig-r074p-observable-triage/source-data.csv">source-data.csv</a></p><p><a href="/figures/r074p/fig-r074p-observable-triage/caption.md">图注</a> · <a href="/figures/r074p/fig-r074p-observable-triage/qa-report.md">图件 QA</a> · <a href="/figures/r074p/fig-r074p-observable-triage/plot.py">绘图源码</a> · <a href="/figures/r074p/fig-r074p-observable-triage/validate.py">验证器</a> · <a href="/figures/r074p/fig-r074p-observable-triage/validation.json">20 项验证记录</a> · <a href="/figures/r074p/fig-r074p-observable-triage/manifest.json">manifest</a> · <a href="/figures/r074p/fig-r074p-observable-triage/SHA256SUMS">校验和</a></p><p class="figure-note">确定性解析图，不是 DNS、仿真、奇点或正则性证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>完整主文、双实现证书、独立审计与图包</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_problem_freeze.md">问题冻结</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_temporal_observable_triage.md">解析主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_main_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074p_temporal_clock_certificate.py">Python 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074p_temporal_clock_certificate_independent.rb">独立 Ruby 证书</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_temporal_clock_certificate.json">冻结 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_primary_literature_boundary.md">文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_gap_matrix.md">证据与缺口矩阵</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_bilingual_dictionary.md">双语词典</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_report-source.md">完整中文 reader source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074p_freeze_manifest.json">冻结清单</a></p><p><a href="/notes/r0-74p.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节）</a> · <a href="/recap-r0-61-r0-74o.pdf">recap PDF</a></p></section>
+<section id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74Q</h2><p>证明或否定逐壳层 \(\ell^1\) 通量账本向匹配 \(\ell^2\) 时钟的 PDE 压缩，并检验预定中心与尺度装箱。</p></section></article></main></body></html>

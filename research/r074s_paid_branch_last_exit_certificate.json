@@ -1,0 +1,1651 @@
+{
+  "exact_checks": [
+    {
+      "id": "two_thirds_last_exit_clock_increment",
+      "left": "1/3",
+      "margin": "0/1",
+      "note": "S.223: Delta K=(1-theta)T=T/3.",
+      "pass": true,
+      "right": "1/3"
+    },
+    {
+      "id": "positive_q_residual_lower_margin",
+      "left": "1/60",
+      "margin": "0/1",
+      "note": "The positive-Q fixture approaches r=T/6 from above.",
+      "pass": true,
+      "right": "1/60"
+    },
+    {
+      "id": "negative_q_residual_upper_margin",
+      "left": "1/60",
+      "margin": "0/1",
+      "note": "The negative-Q fixture approaches r=T/2 from below.",
+      "pass": true,
+      "right": "1/60"
+    },
+    {
+      "id": "lambda_four_exact_long_boundary",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "d=lambda^(-3/2) is encoded without floating-point roots.",
+      "pass": true,
+      "right": "1/1"
+    },
+    {
+      "id": "long_payment_lambda_recovery",
+      "left": "1/1",
+      "margin": "0/1",
+      "note": "The duration exponent recovers one factor of lambda after 2/3 power.",
+      "pass": true,
+      "right": "1/1"
+    },
+    {
+      "id": "C_LE_is_strictly_below_C4_by_cubes",
+      "left": "32/1",
+      "margin": "0/1",
+      "note": "C4^3/CLE^3=32, so CLE<C4 for C1>0.",
+      "pass": true,
+      "right": "32/1"
+    },
+    {
+      "id": "one_Q_ledger_sharp_pair",
+      "left": "24/1",
+      "margin": "0/1",
+      "note": "One P_beta shell and one P_Q shell saturate a single 6 B_Q ledger.",
+      "pass": true,
+      "right": "24/1"
+    },
+    {
+      "id": "one_cubic_ledger_Holder_equality",
+      "left": "8/1",
+      "margin": "0/1",
+      "note": "One P_sigma and one P_LE coordinate saturate combined Holder.",
+      "pass": true,
+      "right": "8/1"
+    },
+    {
+      "id": "plateau_Q_coefficient",
+      "left": "7/1",
+      "margin": "0/1",
+      "note": "S.241 combines one inherited B_Q with the six-unit paid ledger.",
+      "pass": true,
+      "right": "7/1"
+    },
+    {
+      "id": "small_payment_fallback",
+      "left": "1/8",
+      "margin": "0/1",
+      "note": "For P=1/8, A=P^(2/3)=1/4 and A-P=1/8.",
+      "pass": true,
+      "right": "1/8"
+    },
+    {
+      "id": "D_persistence_fixture_terminal_excess",
+      "left": "2/5",
+      "margin": "0/1",
+      "note": "The S.247 terminal clock has E(tau)=2/5.",
+      "pass": true,
+      "right": "2/5"
+    },
+    {
+      "id": "D_persistence_fixture_early_excess",
+      "left": "7/100",
+      "margin": "0/1",
+      "note": "At t=1 the D-dominated fixture has E=7/100<T/6.",
+      "pass": true,
+      "right": "7/100"
+    }
+  ],
+  "finite_checks": [
+    {
+      "boundary_fixture_count": 9,
+      "boundary_rows": [
+        {
+          "actual": [],
+          "beta": "0/1",
+          "delta_Q": "0/1",
+          "dissipation": "0/1",
+          "duration": "0/1",
+          "expected": [],
+          "id": "zero_terminal",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "0/1",
+          "terminal": "0/1"
+        },
+        {
+          "actual": [
+            "P_beta"
+          ],
+          "beta": "2/1",
+          "delta_Q": "2/1",
+          "dissipation": "6/1",
+          "duration": "1/1",
+          "expected": [
+            "P_beta"
+          ],
+          "id": "D_beta_equal_priority_over_all_other_tests",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "2/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "P_sigma"
+          ],
+          "beta": "1/1",
+          "delta_Q": "1/1",
+          "dissipation": "6/1",
+          "duration": "1/1",
+          "expected": [
+            "P_sigma"
+          ],
+          "id": "D_sigma_strict",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "3/2",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "R_x"
+          ],
+          "beta": "3/2",
+          "delta_Q": "3/2",
+          "dissipation": "6/1",
+          "duration": "1/2",
+          "expected": [
+            "R_x"
+          ],
+          "id": "D_sigma_equal_falls_to_Rx",
+          "pass": true,
+          "residual": "5/2",
+          "sigma": "1/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "P_LE"
+          ],
+          "beta": "2/1",
+          "delta_Q": "2/1",
+          "dissipation": "5/1",
+          "duration": "1/1",
+          "expected": [
+            "P_LE"
+          ],
+          "id": "nonD_long_equal_precedes_Q_split",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "2/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "P_Q"
+          ],
+          "beta": "2/1",
+          "delta_Q": "2/1",
+          "dissipation": "5/1",
+          "duration": "1/2",
+          "expected": [
+            "P_Q"
+          ],
+          "id": "nonD_short_positive_Q_equal",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "0/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "P_Q"
+          ],
+          "beta": "2/1",
+          "delta_Q": "-2/1",
+          "dissipation": "5/1",
+          "duration": "1/2",
+          "expected": [
+            "P_Q"
+          ],
+          "id": "nonD_short_negative_Q_equal",
+          "pass": true,
+          "residual": "0/1",
+          "sigma": "0/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "R_sh"
+          ],
+          "beta": "3/2",
+          "delta_Q": "3/2",
+          "dissipation": "5/1",
+          "duration": "1/2",
+          "expected": [
+            "R_sh"
+          ],
+          "id": "nonD_short_positive_Q_small",
+          "pass": true,
+          "residual": "5/2",
+          "sigma": "0/1",
+          "terminal": "12/1"
+        },
+        {
+          "actual": [
+            "R_sh"
+          ],
+          "beta": "3/2",
+          "delta_Q": "-3/2",
+          "dissipation": "5/1",
+          "duration": "1/2",
+          "expected": [
+            "R_sh"
+          ],
+          "id": "nonD_short_negative_Q_small",
+          "pass": true,
+          "residual": "11/2",
+          "sigma": "0/1",
+          "terminal": "12/1"
+        }
+      ],
+      "branch_counts": {
+        "P_LE": 8,
+        "P_Q": 4,
+        "P_beta": 8,
+        "P_sigma": 4,
+        "R_sh": 4,
+        "R_x": 4
+      },
+      "failures": [],
+      "id": "D_first_full_truth_table_and_boundary_fixtures",
+      "low_Rayleigh_sigma": "13/96",
+      "pass": true,
+      "predicate_configurations_checked": 32
+    },
+    {
+      "configurations_checked": 3,
+      "failures": [],
+      "id": "two_thirds_last_exit_not_first_exit_fixtures",
+      "pass": true,
+      "rows": [
+        {
+          "delta_K": "4/1",
+          "expected_first": "4/5",
+          "expected_last": "3/1",
+          "first_exit": "4/5",
+          "id": "oscillatory_last_not_first",
+          "last_exit": "3/1",
+          "level": "8/1",
+          "pass": true
+        },
+        {
+          "delta_K": "4/1",
+          "expected_first": "1/1",
+          "expected_last": "2/1",
+          "first_exit": "1/1",
+          "id": "level_plateau_uses_right_endpoint",
+          "last_exit": "2/1",
+          "level": "8/1",
+          "pass": true
+        },
+        {
+          "delta_K": "4/1",
+          "expected_first": "3/2",
+          "expected_last": "3/2",
+          "first_exit": "3/2",
+          "id": "monotone_fractional_crossing",
+          "last_exit": "3/2",
+          "level": "8/1",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "configurations_checked": 4,
+      "failures": [],
+      "id": "signed_delta_Q_sharp_residual_limits",
+      "pass": true,
+      "rows": [
+        {
+          "epsilon": "1/12",
+          "lower_boundary_gap": "1/12",
+          "lower_residual": "1/4",
+          "negative_delta_Q": "-1/12",
+          "pass": true,
+          "positive_delta_Q": "1/12",
+          "upper_boundary_gap": "1/12",
+          "upper_residual": "5/12"
+        },
+        {
+          "epsilon": "1/60",
+          "lower_boundary_gap": "1/60",
+          "lower_residual": "11/60",
+          "negative_delta_Q": "-3/20",
+          "pass": true,
+          "positive_delta_Q": "3/20",
+          "upper_boundary_gap": "1/60",
+          "upper_residual": "29/60"
+        },
+        {
+          "epsilon": "1/600",
+          "lower_boundary_gap": "1/600",
+          "lower_residual": "101/600",
+          "negative_delta_Q": "-33/200",
+          "pass": true,
+          "positive_delta_Q": "33/200",
+          "upper_boundary_gap": "1/600",
+          "upper_residual": "299/600"
+        },
+        {
+          "epsilon": "1/6000",
+          "lower_boundary_gap": "1/6000",
+          "lower_residual": "1001/6000",
+          "negative_delta_Q": "-333/2000",
+          "pass": true,
+          "positive_delta_Q": "333/2000",
+          "upper_boundary_gap": "1/6000",
+          "upper_residual": "2999/6000"
+        }
+      ]
+    },
+    {
+      "Q_paid_shell_count": 2,
+      "full_B_Q": "7/1",
+      "id": "disjoint_Q_paid_rows_use_one_global_ledger",
+      "one_copy_global_bound": "42/1",
+      "pass": true,
+      "sharp_restricted_bound": "24/1",
+      "terminal_sum": "24/1",
+      "used_variation": "4/1"
+    },
+    {
+      "configurations_checked": 7380,
+      "equality_cases": 404,
+      "failures": [],
+      "id": "combined_Psigma_PLE_one_cubic_Holder_ledger",
+      "mixed_branch_equality_fixture": true,
+      "mixed_branch_labels": [
+        "P_sigma",
+        "P_LE"
+      ],
+      "pass": true
+    },
+    {
+      "best_N_forward_checks": 9018,
+      "best_N_reverse_checks": 9018,
+      "failures": [],
+      "id": "paid_deletion_same_set_and_best_N_enumeration",
+      "pass": true,
+      "pointwise_same_set_checks": 22620,
+      "rearrangement_checks": 18036
+    },
+    {
+      "forbidden_branchwise_tail_sum": "0/1",
+      "id": "shared_N_and_sup_inf_quantifier_witnesses",
+      "inf_S_sup_tau": "1/1",
+      "paid_deletion_left": "3/1",
+      "paid_deletion_right": "6/1",
+      "pass": true,
+      "shared_combined_tail": "1/1",
+      "sup_tau_inf_S": "0/1"
+    },
+    {
+      "configurations_checked": 16,
+      "failures": [],
+      "id": "fixed_N_finite_to_infinite_and_growing_budget_fixtures",
+      "infinite_S1_limit": "1/2",
+      "pass": true,
+      "rows": [
+        {
+          "M": 1,
+          "S1_geometric_prefix": "0/1",
+          "S2_ones": "0/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "0/1",
+          "pass": true
+        },
+        {
+          "M": 2,
+          "S1_geometric_prefix": "1/4",
+          "S2_ones": "0/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "1/4",
+          "pass": true
+        },
+        {
+          "M": 3,
+          "S1_geometric_prefix": "3/8",
+          "S2_ones": "1/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "3/8",
+          "pass": true
+        },
+        {
+          "M": 4,
+          "S1_geometric_prefix": "7/16",
+          "S2_ones": "2/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "7/16",
+          "pass": true
+        },
+        {
+          "M": 5,
+          "S1_geometric_prefix": "15/32",
+          "S2_ones": "3/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "15/32",
+          "pass": true
+        },
+        {
+          "M": 6,
+          "S1_geometric_prefix": "31/64",
+          "S2_ones": "4/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "31/64",
+          "pass": true
+        },
+        {
+          "M": 7,
+          "S1_geometric_prefix": "63/128",
+          "S2_ones": "5/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "63/128",
+          "pass": true
+        },
+        {
+          "M": 8,
+          "S1_geometric_prefix": "127/256",
+          "S2_ones": "6/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "127/256",
+          "pass": true
+        },
+        {
+          "M": 9,
+          "S1_geometric_prefix": "255/512",
+          "S2_ones": "7/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "255/512",
+          "pass": true
+        },
+        {
+          "M": 10,
+          "S1_geometric_prefix": "511/1024",
+          "S2_ones": "8/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "511/1024",
+          "pass": true
+        },
+        {
+          "M": 11,
+          "S1_geometric_prefix": "1023/2048",
+          "S2_ones": "9/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "1023/2048",
+          "pass": true
+        },
+        {
+          "M": 12,
+          "S1_geometric_prefix": "2047/4096",
+          "S2_ones": "10/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "2047/4096",
+          "pass": true
+        },
+        {
+          "M": 13,
+          "S1_geometric_prefix": "4095/8192",
+          "S2_ones": "11/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "4095/8192",
+          "pass": true
+        },
+        {
+          "M": 14,
+          "S1_geometric_prefix": "8191/16384",
+          "S2_ones": "12/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "8191/16384",
+          "pass": true
+        },
+        {
+          "M": 15,
+          "S1_geometric_prefix": "16383/32768",
+          "S2_ones": "13/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "16383/32768",
+          "pass": true
+        },
+        {
+          "M": 16,
+          "S1_geometric_prefix": "32767/65536",
+          "S2_ones": "14/1",
+          "SM_geometric_prefix": "0/1",
+          "expected_S1": "32767/65536",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "beta_full_branch": [
+        "P_beta"
+      ],
+      "beta_last_exit_mutation_branch": [
+        "R_x"
+      ],
+      "id": "full_history_beta_sigma_not_last_exit_fixtures",
+      "nested_beta_chain": {
+        "T_over_6": "2/1",
+        "abs_delta_Q": "1/1",
+        "beta_J_LE": "1/1",
+        "beta_J_tau": "3/2"
+      },
+      "pass": true,
+      "sigma_full_branch": [
+        "P_sigma"
+      ],
+      "sigma_last_exit_mutation_branch": [
+        "R_x"
+      ]
+    },
+    {
+      "D_nondecreasing": true,
+      "T_over_6": "1/6",
+      "delta_D_after_last_exit": "0/1",
+      "early_excess": [
+        "1/15",
+        "61/900",
+        "7/100"
+      ],
+      "early_times": [
+        "1/4",
+        "1/2",
+        "1/1"
+      ],
+      "id": "terminal_D_dominance_does_not_persist_on_last_exit_interval",
+      "last_exit": "1/4",
+      "nonnegative_excess_at_vertices": true,
+      "normalized_duration": "7/4",
+      "pass": true,
+      "terminal_D": "3/5"
+    }
+  ],
+  "negative_mutations": [
+    {
+      "classification": "false_formula",
+      "id": "mutation_last_exit_to_first_exit_rejected",
+      "kind": "algebraic",
+      "mutated_value": "4/5",
+      "pass": true,
+      "true_value": "3/1"
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_D_equality_to_nonD_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "P_LE"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_beta"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_beta_equality_to_failure_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_x"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_beta"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_sigma_equality_to_success_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "P_sigma"
+      ],
+      "pass": true,
+      "true_value": [
+        "R_x"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_long_equality_to_short_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_sh"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_LE"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_Q_equality_to_small_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_sh"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_Q"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_drop_absolute_Q_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_sh"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_Q"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_Q_split_before_long_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "P_Q"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_LE"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_Q_split_before_D_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "P_Q"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_beta"
+      ]
+    },
+    {
+      "classification": "false_formula",
+      "id": "mutation_DeltaF_minus_to_plus_DeltaQ_rejected",
+      "kind": "algebraic",
+      "mutated_value": "13/30",
+      "pass": true,
+      "true_value": "7/30"
+    },
+    {
+      "classification": "false_inequality",
+      "id": "mutation_residual_factor_six_to_five_rejected",
+      "kind": "algebraic",
+      "mutated_bound": "1001/1200",
+      "pass": true,
+      "terminal": "1/1",
+      "true_bound": "1001/1000"
+    },
+    {
+      "classification": "false_inequality",
+      "id": "mutation_residual_half_to_two_fifths_rejected",
+      "kind": "algebraic",
+      "mutated_bound": "2/5",
+      "pass": true,
+      "residual": "2999/6000",
+      "true_bound": "1/2"
+    },
+    {
+      "classification": "wrong_quantifier",
+      "id": "mutation_shared_N_to_two_branch_budgets_rejected",
+      "kind": "algebraic",
+      "mutated_value": "0/1",
+      "pass": true,
+      "true_value": "1/1"
+    },
+    {
+      "classification": "wrong_quantifier",
+      "id": "mutation_sup_inf_to_inf_sup_rejected",
+      "kind": "algebraic",
+      "mutated_value": "1/1",
+      "pass": true,
+      "true_value": "0/1"
+    },
+    {
+      "classification": "wrong_quantifier",
+      "id": "mutation_fixed_N_to_truncation_N_rejected",
+      "kind": "algebraic",
+      "mutated_value": "0/1",
+      "pass": true,
+      "true_value": "127/256"
+    },
+    {
+      "classification": "wrong_interval",
+      "id": "mutation_full_beta_to_last_exit_beta_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_x"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_beta"
+      ]
+    },
+    {
+      "classification": "wrong_interval",
+      "id": "mutation_full_sigma_to_last_exit_sigma_rejected",
+      "kind": "algebraic",
+      "mutated_value": [
+        "R_x"
+      ],
+      "pass": true,
+      "true_value": [
+        "P_sigma"
+      ]
+    },
+    {
+      "classification": "false_persistence",
+      "id": "mutation_terminal_D_to_last_exit_E_persistence_rejected",
+      "kind": "algebraic",
+      "mutated_value": "E above T/6 a.e. on J_LE",
+      "pass": true,
+      "true_value": "E below T/6 on a positive-length subinterval",
+      "witness_early_excess": [
+        "1/15",
+        "61/900",
+        "7/100"
+      ]
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "false_definition",
+      "expected_failed_check": "canonical_last_exit_is_max",
+      "id": "mutation_source_last_exit_max_to_min_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "canonical_last_exit_is_max"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "false_formula",
+      "expected_failed_check": "delta_F_has_minus_delta_Q",
+      "id": "mutation_source_DeltaF_sign_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "delta_F_has_minus_delta_Q"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "strict_boundary_drift",
+      "expected_failed_check": "D_boundary_formula",
+      "id": "mutation_source_D_boundary_ge_to_gt_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "D_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "strict_boundary_drift",
+      "expected_failed_check": "beta_boundary_formula",
+      "id": "mutation_source_beta_boundary_ge_to_gt_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "beta_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "strict_boundary_drift",
+      "expected_failed_check": "sigma_strict_boundary_formula",
+      "id": "mutation_source_sigma_boundary_gt_to_ge_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "sigma_strict_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "strict_boundary_drift",
+      "expected_failed_check": "long_boundary_formula",
+      "id": "mutation_source_long_boundary_ge_to_gt_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "long_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "overlapping_boundary_drift",
+      "expected_failed_check": "short_boundary_formula",
+      "id": "mutation_source_short_boundary_lt_to_le_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "short_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "strict_boundary_drift",
+      "expected_failed_check": "Q_large_boundary_formula",
+      "id": "mutation_source_Q_boundary_ge_to_gt_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "Q_large_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "overlapping_boundary_drift",
+      "expected_failed_check": "Q_small_boundary_formula",
+      "id": "mutation_source_Qsmall_boundary_lt_to_le_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "Q_small_boundary_formula"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_interval",
+      "expected_failed_check": "full_history_not_last_exit",
+      "id": "mutation_source_full_history_to_LE_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "full_history_not_last_exit"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "overlapping_priority",
+      "expected_failed_check": "D_first_priority",
+      "id": "mutation_source_D_first_to_Q_first_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "D_first_priority"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "false_sign_rule",
+      "expected_failed_check": "absolute_Q_meaning",
+      "id": "mutation_source_absolute_Q_to_signed_positive_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "absolute_Q_meaning"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "false_good_time_extension",
+      "expected_failed_check": "a.e_nonD_persistence",
+      "id": "mutation_source_a.e_to_every_time_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "a.e_nonD_persistence"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_quantifier",
+      "expected_failed_check": "same_set_before_infimum",
+      "id": "mutation_source_same_set_to_separate_sets_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "same_set_before_infimum"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_positive_part_domain",
+      "expected_failed_check": "best_N_nonnegative_domain",
+      "id": "mutation_source_nonnegative_bestN_to_signed_without_positive_part_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "best_N_nonnegative_domain"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "invalid_infinite_step",
+      "expected_failed_check": "finite_Holder_before_monotone_limit",
+      "id": "mutation_source_finite_Holder_limit_removed_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "finite_Holder_before_monotone_limit"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_quantifier",
+      "expected_failed_check": "one_shared_N",
+      "id": "mutation_source_one_shared_N_to_two_N_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "one_shared_N"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "unsupported_closure",
+      "expected_failed_check": "good_terminal_residual_gate",
+      "id": "mutation_source_good_gate_to_all_terminals_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "good_terminal_residual_gate"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "unsupported_regularity",
+      "expected_failed_check": "K_only_domain_closure",
+      "id": "mutation_source_K_continuity_to_residual_continuity_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "K_only_domain_closure"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_quantifier",
+      "expected_failed_check": "fixed_profile_quantifiers",
+      "id": "mutation_source_fixed_profile_to_solution_dependent_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "fixed_profile_quantifiers"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_domain",
+      "expected_failed_check": "plateau_does_not_give_Q12",
+      "id": "mutation_source_plateau_to_full_Q12_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "plateau_does_not_give_Q12"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "claim_inflation",
+      "expected_failed_check": "full_gate_explicitly_open",
+      "id": "mutation_source_OPEN_to_PROVED_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "full_gate_explicitly_open"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "claim_inflation",
+      "expected_failed_check": "selector_regularities_not_claimed",
+      "id": "mutation_source_selector_continuity_claim_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "selector_regularities_not_claimed"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "source_integrity",
+      "expected_failed_check": "S223_S247_tags_consecutive",
+      "id": "mutation_source_remove_final_tag_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "S223_S247_tags_consecutive"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "statement_integrity_nonsharp_drift",
+      "expected_failed_check": "one_6BQ_statement",
+      "id": "mutation_source_6BQ_to_12BQ_statement_drift_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": true,
+      "mutated_structural_failures": [
+        "one_6BQ_statement"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "statement_integrity_nonsharp_drift",
+      "expected_failed_check": "one_C5_statement",
+      "id": "mutation_source_C5_to_2C5_statement_drift_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": true,
+      "mutated_structural_failures": [
+        "one_C5_statement"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "claim_boundary_drift",
+      "expected_failed_check": "double_charge_truth_boundary",
+      "id": "mutation_source_nonsharp_double_charge_called_false_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "double_charge_truth_boundary",
+        "refuted_ledger_preserves_nonsharp_truth"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "false_persistence",
+      "expected_failed_check": "D_persistence_invalid",
+      "id": "mutation_source_D_persistence_warning_removed_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "D_persistence_invalid"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    },
+    {
+      "baseline_structural_pass": true,
+      "changed": true,
+      "classification": "wrong_quantifier",
+      "expected_failed_check": "fixed_N_not_truncation_budget",
+      "id": "mutation_source_fixed_N_to_truncation_budget_rejected",
+      "kind": "source_mutation",
+      "mutated_inequality_can_remain_true": false,
+      "mutated_structural_failures": [
+        "fixed_N_not_truncation_budget"
+      ],
+      "pass": true,
+      "source_occurrences": 1
+    }
+  ],
+  "pass": true,
+  "schema": "r074s-paid-branch-last-exit-certificate-v1",
+  "scope": {
+    "finite_exact_fraction_and_statement_integrity_only": true,
+    "machine_proves_Q12_or_Q1": false,
+    "machine_proves_R211_R214": false,
+    "machine_proves_fixed_N_PDE_packing": false,
+    "machine_proves_inherited_good_time_theory": false,
+    "machine_proves_regularity_or_Clay": false
+  },
+  "source": {
+    "generator": "scripts/r074s_paid_branch_last_exit_certificate.py",
+    "generator_sha256": "2763b3fa575ce723a400b6c7e5654d0a64c8a9db470d79097dc5a77769a365a9",
+    "locked_note_sha256": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c",
+    "note": "research/r074s_paid_branch_last_exit_residual.md",
+    "note_sha256": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c"
+  },
+  "structural_checks": [
+    {
+      "actual": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c",
+      "enforced": true,
+      "expected": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c",
+      "id": "locked_note_sha256",
+      "pass": true
+    },
+    {
+      "actual": [
+        "223",
+        "224",
+        "225",
+        "226",
+        "227",
+        "228",
+        "229",
+        "230",
+        "231",
+        "232",
+        "233",
+        "234",
+        "235",
+        "236",
+        "237",
+        "238",
+        "239",
+        "240",
+        "241",
+        "242",
+        "243",
+        "244",
+        "245",
+        "246",
+        "247"
+      ],
+      "expected": [
+        "223",
+        "224",
+        "225",
+        "226",
+        "227",
+        "228",
+        "229",
+        "230",
+        "231",
+        "232",
+        "233",
+        "234",
+        "235",
+        "236",
+        "237",
+        "238",
+        "239",
+        "240",
+        "241",
+        "242",
+        "243",
+        "244",
+        "245",
+        "246",
+        "247"
+      ],
+      "id": "S223_S247_tags_consecutive",
+      "pass": true
+    },
+    {
+      "id": "S223_S247_tags_unique",
+      "pass": true,
+      "tag_count": 25,
+      "unique_count": 25
+    },
+    {
+      "id": "display_math_line_delimiters_balanced",
+      "left_count": 43,
+      "pass": true,
+      "right_count": 43
+    },
+    {
+      "id": "inline_math_delimiters_balanced",
+      "left_count": 204,
+      "pass": true,
+      "right_count": 204
+    },
+    {
+      "id": "no_disallowed_control_or_zero_width_characters",
+      "pass": true
+    },
+    {
+      "id": "no_tabs_or_trailing_whitespace",
+      "pass": true
+    },
+    {
+      "id": "required_heading_00",
+      "pass": true,
+      "sentinel": "## 0. Result and scope"
+    },
+    {
+      "id": "required_heading_01",
+      "pass": true,
+      "sentinel": "## 1. Inherited setting and the \\(2/3\\)-last exit"
+    },
+    {
+      "id": "required_heading_02",
+      "pass": true,
+      "sentinel": "## 2. The exact paid/residual partition"
+    },
+    {
+      "id": "required_heading_03",
+      "pass": true,
+      "sentinel": "## 3. The two already-paid ledgers"
+    },
+    {
+      "id": "required_heading_04",
+      "pass": true,
+      "sentinel": "## 4. The residual stopped-flux vector"
+    },
+    {
+      "id": "required_heading_05",
+      "pass": true,
+      "sentinel": "## 5. Paid-branch deletion and the best-\\(N\\) theorem"
+    },
+    {
+      "id": "required_heading_06",
+      "pass": true,
+      "sentinel": "## 6. Plateau corollary, full-domain gate, and linear fallback"
+    },
+    {
+      "id": "required_heading_07",
+      "pass": true,
+      "sentinel": "## 7. Sharpness, boundary, and quantifier stress tests"
+    },
+    {
+      "id": "required_heading_08",
+      "pass": true,
+      "sentinel": "## 8. Route decision"
+    },
+    {
+      "id": "required_heading_09",
+      "pass": true,
+      "sentinel": "## 9. Decision and claim ledger"
+    },
+    {
+      "id": "required_heading_10",
+      "pass": true,
+      "sentinel": "## 10. Inherited source ledger"
+    },
+    {
+      "id": "scope_not_clay",
+      "pass": true,
+      "sentinel": "No fixed universal \\(N_0\\), residual"
+    },
+    {
+      "id": "fixed_profile_quantifiers",
+      "pass": true,
+      "sentinel": "independently\nof \\(R\\), \\(\\tau\\), and the solution"
+    },
+    {
+      "id": "canonical_last_exit_is_max",
+      "pass": true,
+      "sentinel": ":=\\max\\{t\\in[s_R,\\tau]:K_{k,R}(t)\\le2T_k/3\\}"
+    },
+    {
+      "id": "last_exit_strict_after_stop",
+      "pass": true,
+      "sentinel": "K_{k,R}(t)> {2T_k\\over3}"
+    },
+    {
+      "id": "delta_F_has_minus_delta_Q",
+      "pass": true,
+      "sentinel": "\\Delta F_k={T_k\\over3}-\\Delta Q_k"
+    },
+    {
+      "id": "positive_terminal_restriction",
+      "pass": true,
+      "sentinel": "All displayed sets in this paragraph are restricted to \\(T_k>0\\)."
+    },
+    {
+      "id": "long_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_{\\rm long}(\\tau)&:=\\{k:d_k\\ge\\lambda_k^{-3/2}\\}"
+    },
+    {
+      "id": "short_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_{\\rm short}(\\tau)&:=\\{k:d_k<\\lambda_k^{-3/2}\\}"
+    },
+    {
+      "id": "Q_large_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_{Q+}(\\tau)&:=\\{k:|\\Delta Q_k|\\ge T_k/6\\}"
+    },
+    {
+      "id": "Q_small_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_{Q-}(\\tau)&:=\\{k:|\\Delta Q_k|<T_k/6\\}"
+    },
+    {
+      "id": "D_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_D(\\tau)&:=\\{k:D_{k,R}(\\tau)\\ge T_k/2\\}"
+    },
+    {
+      "id": "nonD_boundary_formula",
+      "pass": true,
+      "sentinel": "\\mathcal I_{\\neg D}(\\tau)&:=\\{k:D_{k,R}(\\tau)<T_k/2\\}"
+    },
+    {
+      "id": "boundary_assignment_sentence",
+      "pass": true,
+      "sentinel": "Equality is assigned to the long, absolute-\\(Q\\)-large, and\ndissipation-dominated sides."
+    },
+    {
+      "id": "full_history_not_last_exit",
+      "pass": true,
+      "sentinel": "using\n\\(J_\\tau=(s_R,\\tau)\\), not the last-exit interval"
+    },
+    {
+      "id": "beta_boundary_formula",
+      "pass": true,
+      "sentinel": "\\beta_{k,R}(J_\\tau)\\ge T_k/6"
+    },
+    {
+      "id": "sigma_strict_boundary_formula",
+      "pass": true,
+      "sentinel": "\\sigma_{k,R}(J_\\tau)>T_k/(12\\lambda_k)"
+    },
+    {
+      "id": "D_first_priority",
+      "pass": true,
+      "sentinel": "*D-first* priority rule"
+    },
+    {
+      "id": "absolute_Q_meaning",
+      "pass": true,
+      "sentinel": "means *absolute-\\(Q\\)-large*, not positive-sign \\(Q\\)"
+    },
+    {
+      "id": "low_Rayleigh_no_double_charge",
+      "pass": true,
+      "sentinel": "\\mathcal I_{\\rm lo}\\setminus(\\mathcal I_\\beta\\cup\\mathcal I_\\sigma)=\\varnothing"
+    },
+    {
+      "id": "one_6BQ_statement",
+      "pass": true,
+      "sentinel": "Thus the correct coefficient is one copy of \\(6B_Q\\), not \\(12B_Q\\)."
+    },
+    {
+      "id": "a.e_nonD_persistence",
+      "pass": true,
+      "sentinel": "for almost every local-energy\ngood time \\(t\\in J_k^{\\rm LE}\\)"
+    },
+    {
+      "id": "stop_value_not_used",
+      "pass": true,
+      "sentinel": "No value of \\(E_k\\) or \\(D_k\\) at the possibly non-good stop \\(\\ell_k\\)\nis used."
+    },
+    {
+      "id": "shell_dependent_sets",
+      "pass": true,
+      "sentinel": "expressly permits a different measurable time set for every shell"
+    },
+    {
+      "id": "one_C5_statement",
+      "pass": true,
+      "sentinel": "estimating\nthem as two complete global ledgers would lose an unnecessary second copy\nof \\(C_5\\)."
+    },
+    {
+      "id": "residual_union",
+      "pass": true,
+      "sentinel": "\\mathcal I_{\\rm res}(\\tau):=\\mathcal R_{\\rm sh}\\cup\\mathcal R_x"
+    },
+    {
+      "id": "Ix_beta_nesting",
+      "pass": true,
+      "sentinel": "|\\Delta Q_k|\\le\\beta_{k,R}(J_k^{\\rm LE})\\le\\beta_{k,R}(J_\\tau)<{T_k\\over6}"
+    },
+    {
+      "id": "residual_strict_two_sided",
+      "pass": true,
+      "sentinel": "{T_k\\over6}<r_{k,R}^{\\boldsymbol\\lambda}(\\tau)<{T_k\\over2}"
+    },
+    {
+      "id": "finite_Holder_before_monotone_limit",
+      "pass": true,
+      "sentinel": "Use finite-shell Hölder first and then the inherited estimate (R.211)"
+    },
+    {
+      "id": "monotone_convergence_for_infinite_shells",
+      "pass": true,
+      "sentinel": "monotone convergence yields"
+    },
+    {
+      "id": "best_N_nonnegative_domain",
+      "pass": true,
+      "sentinel": "For a nonnegative \\(\\ell^1\\) vector \\(x\\), recall"
+    },
+    {
+      "id": "best_N_infimum_formula",
+      "pass": true,
+      "sentinel": "\\mathcal S_N(x)=\\inf_{S\\subset\\mathbb N,\\,\\#S\\le N}\\sum_{k\\notin S}x_k"
+    },
+    {
+      "id": "same_set_before_infimum",
+      "pass": true,
+      "sentinel": "apply (S.235) to those same sets"
+    },
+    {
+      "id": "one_shared_N",
+      "pass": true,
+      "sentinel": "There is one exceptional set of size at most \\(N\\) for the *combined*\nresidual."
+    },
+    {
+      "id": "good_terminal_residual_gate",
+      "pass": true,
+      "sentinel": "\\sup_{\\tau\\in\\mathcal D\\cap\\mathcal G_R}"
+    },
+    {
+      "id": "K_only_domain_closure",
+      "pass": true,
+      "sentinel": "Only the inherited \\(\\ell^1\\)-continuity of the\nterminal \\(K\\)-vector is used"
+    },
+    {
+      "id": "reverse_half_tail",
+      "pass": true,
+      "sentinel": "\\mathfrak R_{N,R}^{\\boldsymbol\\lambda}(\\mathcal D)\\le{1\\over2}\\mathcal S_{N,R}^{K}(\\mathcal D)"
+    },
+    {
+      "id": "fixed_N_equivalence",
+      "pass": true,
+      "sentinel": "For a fixed integer\n\\(N_0\\), independent of the scale and the solution"
+    },
+    {
+      "id": "plateau_not_full",
+      "pass": true,
+      "sentinel": "The plateau estimate is not a full-terminal statement."
+    },
+    {
+      "id": "full_gate_explicitly_open",
+      "pass": true,
+      "sentinel": "\\text{OPEN: there exist fixed }N_0<\\infty, C_{\\rm res}<\\infty"
+    },
+    {
+      "id": "plateau_does_not_give_Q12",
+      "pass": true,
+      "sentinel": "a proof of the residual bound only on\n\\(I_R\\) yields (S.241), not full Q.12."
+    },
+    {
+      "id": "sharp_Q_equality_paid",
+      "pass": true,
+      "sentinel": "At \\(|\\Delta Q|=T/6\\), a short non-\\(D\\) shell\nbelongs to \\(\\mathcal P_Q\\)"
+    },
+    {
+      "id": "fixed_N_not_truncation_budget",
+      "pass": true,
+      "sentinel": "fixed \\(N\\) cannot be replaced by a truncation-dependent budget"
+    },
+    {
+      "id": "D_persistence_invalid",
+      "pass": true,
+      "sentinel": "It would be invalid to apply the long non-\\(D\\) proof to\n\\(\\mathcal I_D\\)."
+    },
+    {
+      "id": "double_charge_truth_boundary",
+      "pass": true,
+      "sentinel": "those separate double charges are valid but nonsharp and are not used;"
+    },
+    {
+      "id": "open_claim_heading",
+      "pass": true,
+      "sentinel": "The following remain **OPEN**:"
+    },
+    {
+      "id": "not_claimed_heading",
+      "pass": true,
+      "sentinel": "The following are **NOT CLAIMED**:"
+    },
+    {
+      "id": "selector_regularities_not_claimed",
+      "pass": true,
+      "sentinel": "continuity, measurability, or lower semicontinuity in \\(\\tau\\)"
+    },
+    {
+      "id": "full_history_redefinition_not_claimed",
+      "pass": true,
+      "sentinel": "may be\n  redefined on \\(J_k^{\\rm LE}\\)"
+    },
+    {
+      "id": "plateau_full_not_identified",
+      "pass": true,
+      "sentinel": "that \\(I_R\\) and \\(\\mathcal T_R\\) give the same terminal supremum"
+    },
+    {
+      "id": "final_not_clay",
+      "pass": true,
+      "sentinel": "**NOT CLAY.**"
+    },
+    {
+      "id": "proved_ledger_keeps_S243_conditional",
+      "pass": true
+    },
+    {
+      "id": "inherited_ledger_names_all_four_steps",
+      "pass": true
+    },
+    {
+      "id": "refuted_ledger_preserves_nonsharp_truth",
+      "pass": true
+    },
+    {
+      "id": "open_ledger_contains_residual_Q12_and_Q1",
+      "pass": true
+    },
+    {
+      "id": "not_claimed_ledger_preserves_domain_and_Clay_boundaries",
+      "pass": true
+    },
+    {
+      "id": "source_R074P",
+      "pass": true,
+      "sentinel": "R0.74P, (2.7)--(3.7)"
+    },
+    {
+      "id": "source_R074Q",
+      "pass": true,
+      "sentinel": "R0.74Q, (Q.7)--(Q.12)"
+    },
+    {
+      "id": "source_R074R",
+      "pass": true,
+      "sentinel": "R0.74R, (R.209)--(R.214)"
+    },
+    {
+      "id": "source_Step7",
+      "pass": true,
+      "sentinel": "R0.74S Step 7, (S.142)--(S.155)"
+    },
+    {
+      "id": "source_Step8",
+      "pass": true,
+      "sentinel": "R0.74S Step 8, (S.163)--(S.199)"
+    },
+    {
+      "id": "source_Step9",
+      "pass": true,
+      "sentinel": "R0.74S Step 9, (S.200)--(S.222)"
+    }
+  ],
+  "summary": {
+    "exact_passed": 12,
+    "exact_total": 12,
+    "finite_passed": 10,
+    "finite_total": 10,
+    "negative_mutations_passed": 47,
+    "negative_mutations_total": 47,
+    "structural_passed": 79,
+    "structural_total": 79
+  }
+}

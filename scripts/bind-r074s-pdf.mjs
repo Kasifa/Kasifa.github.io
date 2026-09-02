@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜低 Rayleigh 耗散支的二次支付";
+  const title = "R0.74S｜no-exception stopped-work 二次界 no-go";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -80,14 +80,28 @@ try {
       threeChannelTemporalDebtCancellation: "PROVED",
       terminalL1Decomposition: "PROVED",
       unweightedGenealogyObstruction: "PROVED_ABSTRACT_SCALAR_NO_GO",
-      pdeOrNseCounterexample: false,
+      step6PdeOrNseCounterexample: false,
       pdeWeightedGenealogy: "OPEN",
       viscousDefectSplit: "PROVED_INHERITED_MEASURE_IDENTITY",
       lowHighRayleighTimeSplit: "PROVED",
       dissipationPriorityTrichotomy: "PROVED",
       lowRayleighAllShellPayment: "PROVED",
-      highRayleighResidual: "OPEN",
-      anomalousDefectResidual: "OPEN",
+      rayleighExcessMeasures: "PROVED",
+      scalarAndJordanExcessTiers: "PROVED_DISTINCT",
+      excessPriorityTrichotomy: "PROVED",
+      fixedScaleExcessLowerSemicontinuity: "PROVED_UNDER_INHERITED_TOPOLOGY",
+      fixedScaleJordanEnvelopeFiniteness: "PROVED",
+      selectedScalarResidual: "UNIFIED_WITH_EXISTING_STOPPED_WORK_GATE",
+      highRayleighScalarResidual: "UNIFIED_WITH_EXISTING_STOPPED_WORK_GATE",
+      anomalousDefectScalarResidual: "UNIFIED_WITH_EXISTING_STOPPED_WORK_GATE",
+      selectedPositiveFluxRelation: "PROVED_F_GREATER_THAN_5K_OVER_6",
+      fullDissipationBranchBridge: "PROVED_QUADRATIC_PLUS_6_OVER_5_STOPPED_WORK",
+      stoppedWorkFullFluxEquivalence: "PROVED_WITHIN_PAID_B_Q",
+      stoppedWorkFullClockEquivalence: "PROVED_WITHIN_PAID_B_Q",
+      universalNoExceptionQuadraticAntecedent: "REFUTED_BY_INHERITED_SMOOTH_EXACT_NSE_FAMILY",
+      conditionalS38Implication: "PROVED_RETAINED",
+      fixedBestNTerminalExceptionEstimate: "OPEN_NEXT_TARGET",
+      jordanEnvelopeQuadraticBound: "OPEN",
       finiteExceptionConsequence: "PROVED_CONDITIONAL_IMPLICATION_ONLY",
       exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",
       fixedScaleInequality: "OPEN",

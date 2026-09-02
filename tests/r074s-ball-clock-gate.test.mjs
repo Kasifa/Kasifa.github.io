@@ -59,6 +59,23 @@ test("R0.74S frozen Step 7 sources and dual audits retain their exact boundary",
   }
 });
 
+test("R0.74S frozen final Step 8 sources and dual audits retain the corrected no-exception boundary", () => {
+  const hashes = {
+    "research/r074s_defect_relaxed_total_rayleigh_excess.md": "0a79f2c5bb59644eca710b3d9341776853ceb4d1f65a36869c2465073f8c08ab",
+    "research/r074s_defect_relaxed_total_rayleigh_primary_audit.md": "dbcba5ea68899faf74e4d38c232c58fdd3a71f1b2dcefb1eb007fcf102cd4f73",
+    "research/r074s_defect_relaxed_total_rayleigh_independent_audit.md": "d7cb626b07b735b6ef19c8ca20fff670795e32768f3224a756901b230183d875",
+    "scripts/r074s_defect_relaxed_total_rayleigh_certificate.py": "18735df5a8eff96167ef6314dad04150636c800c276e2fcffc7cbd8177fce9cf",
+    "scripts/r074s_defect_relaxed_total_rayleigh_certificate_independent.rb": "b18b0a0b9937b106c5879a9e28996dd6892ab53f19decb7bca4db38c70a11343",
+    "research/r074s_defect_relaxed_total_rayleigh_certificate.json": "3639edbccfddd97781805ed121fc91407771b9bf051ffefae5a17ad80087c69c",
+    "research/r074s_defect_relaxed_total_rayleigh_certificate_report.md": "3a6d1e263daa7041edc4083a76c38af44f4fbcd7d2efc8f57592eecbd19ec55a",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_defect_relaxed_total_rayleigh_excess.md");
+  for (const marker of ["S.197", "S.198", "S.199", "universal antecedent", "fixed best-", "conditional implication \\(S\\.38\\)", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -68,6 +85,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_one_sided_ball_clock_certificate.py", "research/r074s_one_sided_ball_clock_certificate.json", { exact_passed: 5, exact_total: 5, finite_passed: 7, finite_total: 7, negative_passed: 4, negative_total: 4, result: "PASS", structural_passed: 55, structural_total: 55 }],
     ["scripts/r074s_cross_channel_recombination_certificate.py", "research/r074s_cross_channel_recombination_certificate.json", { exact_passed: 4, exact_total: 4, finite_passed: 8, finite_total: 8, negative_passed: 10, negative_total: 10, result: "PASS", structural_passed: 58, structural_total: 58 }],
     ["scripts/r074s_dissipation_rayleigh_certificate.py", "research/r074s_dissipation_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 8, finite_total: 8, negative_mutations_passed: 9, negative_mutations_total: 9, structural_passed: 52, structural_total: 52 }],
+    ["scripts/r074s_defect_relaxed_total_rayleigh_certificate.py", "research/r074s_defect_relaxed_total_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 19, finite_total: 19, negative_mutations_passed: 20, negative_mutations_total: 20, structural_passed: 75, structural_total: 75 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -87,4 +105,17 @@ test("R0.74S Step 7 Ruby audit independently reconstructs and cross-checks the p
   const output = execFileSync("ruby", [resolve(root, "scripts/r074s_dissipation_rayleigh_certificate_independent.rb")], { cwd: root, encoding: "utf8" });
   const summary = JSON.parse(output).summary;
   assert.deepEqual(summary, { result: "PASS", independent_passed: 6, independent_total: 6, structural_passed: 31, structural_total: 31, mutations_passed: 9, mutations_total: 9, producer_cross_check: "PASS" });
+});
+
+test("R0.74S final Step 8 Ruby audit independently reconstructs the corrected gate", () => {
+  const output = execFileSync("ruby", [resolve(root, "scripts/r074s_defect_relaxed_total_rayleigh_certificate_independent.rb")], { cwd: root, encoding: "utf8" });
+  const summary = JSON.parse(output).summary;
+  assert.deepEqual(summary, {
+    independent_checks_passed: 14, independent_checks_total: 14,
+    exact_rows_passed: 22, exact_rows_total: 22,
+    structural_passed: 61, structural_total: 61,
+    source_mutations_rejected: 14, source_mutations_total: 14,
+    artifact_mutations_rejected: 10, artifact_mutations_total: 10,
+    report_checks_passed: 6, report_checks_total: 6,
+  });
 });

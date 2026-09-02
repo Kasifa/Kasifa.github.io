@@ -145,8 +145,8 @@ def render(config: dict) -> None:
     width, height = config["width_mm"] * mm, config["height_mm"] * mm
     d = Drawing(width, height)
     d.add(Rect(0, 0, width, height, fillColor=white, strokeColor=None))
-    label(d, 14, height - 16, "Low-Rayleigh dissipation supplies parabolic kinetic mass", 8.4, bold=True)
-    label(d, 14, height - 27, "R0.74S Step 7  |  LOW-RAYLEIGH BRANCH PAID  |  RESIDUALS OPEN  |  NOT CLAY", 5.2, color=MID)
+    label(d, 14, height - 16, "Universal no-exception stopped-work quadratic bound: refuted", 8.2, bold=True)
+    label(d, 14, height - 27, "R0.74S Step 8  |  EXACT NSE NO-GO  |  CONDITIONAL S.38 RETAINED  |  NOT CLAY", 5.2, color=MID)
     for dx, dy in [(0, 4.5), (4.5, 0), (0, -4.5), (-4.5, 0)]:
         d.add(Circle(width - 19 + dx, height - 18 + dy, 2.3, fillColor=BLUE_LIGHT, strokeColor=BLUE, strokeWidth=0.5))
     d.add(Circle(width - 19, height - 18, 1.8, fillColor=GOLD_LIGHT, strokeColor=GOLD, strokeWidth=0.5))
@@ -155,32 +155,29 @@ def render(config: dict) -> None:
     ax, aw = 14, 154
     bx, bw = 175, 160
     cx, cw = 342, width - 356
-    panel(d, ax, y, aw, h, "A", "Exact dissipation trichotomy")
-    panel(d, bx, y, bw, h, "B", "Low-Rayleigh payment")
-    panel(d, cx, y, cw, h, "C", "Residual boundary")
+    panel(d, ax, y, aw, h, "A", "Total-Rayleigh excess bridge")
+    panel(d, bx, y, bw, h, "B", "B_Q-precision equivalence")
+    panel(d, cx, y, cw, h, "C", "Exact NSE no-go")
 
-    box(d, ax + 10, y + h - 61, 61, 27, ["D = viscous", "+ defect"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
-    arrow(d, ax + 73, y + h - 47, ax + 87, y + h - 47, color=MID)
-    box(d, ax + 88, y + h - 61, 56, 27, ["D >= T / 2"], fill=GOLD_LIGHT, stroke=GOLD, status="BRANCH")
-    box(d, ax + 10, y + h - 101, 40, 27, ["defect", ">= T / 8"], fill=PLUM_LIGHT, stroke=PLUM, status="A")
-    box(d, ax + 57, y + h - 101, 40, 27, ["high", ">= T / 8"], fill=RED_LIGHT, stroke=RED, status="B")
-    box(d, ax + 104, y + h - 101, 40, 27, ["low", "> T / 4"], fill=BLUE_LIGHT, stroke=BLUE, status="C")
-    multiline(d, ax + 10, y + 42, ["The priority split is disjoint", "and exhaustive for every shell."], 4.8, color=MID, leading=6.5)
+    box(d, ax + 10, y + h - 60, 41, 27, ["beta", ">= T / 6"], fill=BLUE_LIGHT, stroke=BLUE, status="PAID")
+    box(d, ax + 57, y + h - 60, 41, 27, ["sigma", "> T/(12l)"], fill=GOLD_LIGHT, stroke=GOLD, status="PAID")
+    box(d, ax + 104, y + h - 60, 40, 27, ["x", "> T / 6"], fill=PLUM_LIGHT, stroke=PLUM, status="LEFT")
+    box(d, ax + 17, y + h - 101, 120, 26, ["0 <= x <= X", "sum X <= total dissipation"], fill=BLUE_LIGHT, stroke=BLUE, status="FINITE")
+    box(d, ax + 17, y + h - 138, 120, 26, ["x_k <= [F_k]_+", "sum x <= W_up <= C P"], fill=GOLD_LIGHT, stroke=GOLD, status="PROVED")
+    multiline(d, ax + 10, y + 28, ["Selected class: F > 5K / 6", "and K < (6/5) F."], 4.8, color=MID, leading=6.5)
 
-    box(d, bx + 10, y + h - 58, 58, 24, ["low g", "kinetic mass"], fill=BLUE_LIGHT, stroke=BLUE, status="PROVED")
-    arrow(d, bx + 70, y + h - 46, bx + 87, y + h - 46, color=MID)
-    box(d, bx + 88, y + h - 58, 62, 24, ["Jensen", "e^(3/2)"], fill=GOLD_LIGHT, stroke=GOLD, status="PROVED")
-    box(d, bx + 18, y + h - 99, 124, 27, ["T_k <= coefficient x p_k^(2/3)"], fill=PLUM_LIGHT, stroke=PLUM, status="PER SHELL")
-    box(d, bx + 18, y + h - 136, 124, 27, ["sum low clocks", "<= C L(lambda)^(1/3) P^(2/3)"], fill=BLUE_LIGHT, stroke=BLUE, status="ALL SHELLS")
-    multiline(d, bx + 10, y + 35, ["No uniform time-thickness", "hypothesis is used."], 4.8, color=MID, leading=6.5)
+    box(d, bx + 12, y + h - 60, 136, 26, ["B_Q = sum TV(Q_k)", "<= C_Q P^(2/3)"], fill=BLUE_LIGHT, stroke=BLUE, status="PAID")
+    box(d, bx + 12, y + h - 101, 136, 27, ["| W_up - C_full | <= B_Q"], fill=GOLD_LIGHT, stroke=GOLD, status="SHARP")
+    box(d, bx + 12, y + h - 142, 136, 27, ["K_full - B_Q <= W_up", "W_up <= K_full + B_Q"], fill=PLUM_LIGHT, stroke=PLUM, status="PROVED")
+    multiline(d, bx + 10, y + 28, ["No-exception stopped work is", "the full terminal positive flux", "modulo an already-paid row."], 4.8, color=MID, leading=6.3)
 
-    box(d, cx + 10, y + h - 62, cw - 20, 28, ["defect residual", "+ high-Rayleigh residual"], fill=RED_LIGHT, stroke=RED, status="OPEN")
-    box(d, cx + 10, y + h - 105, cw - 20, 29, ["if #bad <= N_D", "then <= sqrt(N_D) Y_2"], fill=GOLD_LIGHT, stroke=GOLD, status="CONDITIONAL")
-    multiline(d, cx + 10, y + h - 127, ["Exact shear: high-Rayleigh", "time set exists, but K = Q", "and is already Q-paid."], 4.7, color=MID, leading=6.1)
-    multiline(d, cx + 10, y + 43, ["No Q.1 or regularity claim.", "The Step 6 scalar no-go", "retains its narrow scope."], 4.7, color=RED, bold_first=True, leading=6.1)
-    label(d, cx + 10, y + 20, "NOT CLAY.", 4.9, color=MID, bold=True)
+    box(d, cx + 10, y + h - 68, cw - 20, 34, ["smooth exact NSE family", "W_up / P^(2/3) -> infinity"], fill=RED_LIGHT, stroke=RED, status="REFUTED")
+    box(d, cx + 10, y + h - 111, cw - 20, 27, ["universal antecedent: false", "conditional S.38: retained"], fill=GOLD_LIGHT, stroke=GOLD, status="NO-GO")
+    box(d, cx + 10, y + h - 154, cw - 20, 28, ["NEXT: fixed best-N exceptions", "+ sqrt(N) Y_2 payment"], fill=BLUE_LIGHT, stroke=BLUE, status="OPEN")
+    multiline(d, cx + 10, y + 29, ["Smooth, periodic, mean-zero,", "unforced and pressure-free.", "No regularity conclusion."], 4.7, color=MID, leading=6.1)
+    label(d, cx + 10, y + 12, "NOT CLAY.", 4.9, color=RED, bold=True)
 
-    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S low-Rayleigh dissipation payment")
+    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S no-exception stopped-work no-go")
     renderSVG.drawToFile(d, str(HERE / "figure.svg"))
     finalize_svg(config)
 
@@ -210,8 +207,9 @@ def main() -> None:
         "one_sided_certificate_sha256": sha(REPO / "research/r074s_one_sided_ball_clock_certificate.json"),
         "cross_channel_certificate_sha256": sha(REPO / "research/r074s_cross_channel_recombination_certificate.json"),
         "dissipation_rayleigh_certificate_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_certificate.json"),
-        "analytic_note_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_gate.md"),
-        "claim_boundary": "LOW-RAYLEIGH BRANCH PAID; high-Rayleigh and anomalous-defect residuals OPEN; finite-exception consequence CONDITIONAL ONLY; NOT CLAY",
+        "step8_certificate_sha256": sha(REPO / "research/r074s_defect_relaxed_total_rayleigh_certificate.json"),
+        "analytic_note_sha256": sha(REPO / "research/r074s_defect_relaxed_total_rayleigh_excess.md"),
+        "claim_boundary": "UNIVERSAL NO-EXCEPTION STOPPED-WORK QUADRATIC BOUND REFUTED BY SMOOTH EXACT NSE FAMILY; CONDITIONAL S.38 RETAINED; FIXED BEST-N EXCEPTIONS OPEN; NOT CLAY",
     }
     (HERE / "environment.json").write_text(json.dumps(environment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "results.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")

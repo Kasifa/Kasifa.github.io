@@ -1,8 +1,8 @@
-# R0.74S｜低 Rayleigh 耗散支的二次支付
+# R0.74S｜no-exception stopped-work 二次界 no-go
 
 ## 0. 这一步得到什么
 
-R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存。Step 7 回到 R0.74R 三分法的耗散主导支，得到一个新的正结果。
+R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 又支付了 low-Rayleigh 耗散支。Step 8 对余下的 total-Rayleigh excess 做测度级扣除，并重新审计 Step 2 的 no-exception stopped-work gate。
 
 本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出
 
@@ -13,9 +13,16 @@ R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 ci
 
 这里不需要例外壳层，也不需要新的 signed cancellation。这个结论是全部壳层同时成立的严格二次支付，但只覆盖低 Rayleigh 耗散支；它不推出低 Rayleigh 时间集具有统一正测度。
 
-高 Rayleigh 与反常缺陷两支仍然 **OPEN**。本步只给出它们的精确 residual ledger，以及“若未来证明剩余壳层数一致有界，则可用平方函数支付”的 **PROVED CONDITIONAL IMPLICATION**。继承的高频光滑剪切说明高 Rayleigh 时间集确实可以出现，但该剪切本身由已有 \(Q\)-ledger 支付，不是本定理的反例。
+Step 8 引入标量 excess \(x\) 与 Jordan envelope \(X\)，证明 selected defect/high-Rayleigh residual 是既有 stopped-work ledger 的子账本。更关键的是，S.197--S.198 证明 no-exception stopped-work supremum \(\mathfrak W_{\rm up}\) 与 full terminal clock、full positive cumulative flux 只差已由二次 ledger 支付的 \(B_Q\)。R0.74O/P 的平滑精确族随后给出
 
-此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；它不是 PDE/NSE 反例。无条件 stopped-work 估计、R0.74R 的普适 persistence 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
+\[
+\frac{\mathfrak W_{{\rm up},R_j}^{M,*}}
+{(P_{R_j}^{M,*})^{2/3}}\longrightarrow\infty,
+\]
+
+从而严格否定普适 no-exception 二次界。S.38 仍是正确的条件蕴含；被反证的是它若要作为无条件定理所需的 antecedent。下一条可行路线必须回到固定 best-\(N\)、随终端变化的例外集合，并用 \(\sqrt N,Y_{2,R}^{\rm sf}\) 支付尾部。
+
+此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的新 no-go 则由继承的真实平滑 NSE exact family 给出，严格排除普适 no-exception stopped-work 二次界。fixed best-\(N\) terminal-exception estimate、R0.74R extraction 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
 本节没有数值仿真、DNS 或 DGX。
 
@@ -524,3 +531,326 @@ root/outer/weight-drop 动力学控制、high-Rayleigh/defect residual、R0.74R 
 - 高频光滑剪切诊断：继承自 R0.73Y 与 R0.74B，在其原范围内 PROVED。
 
 不声称新颖性、优先权、正则性或千禧年问题结论。
+
+## 18. 三个时间测度与开放终端约定
+
+固定 R0.74P--R0.74R 的 periodic suitable-weak Version-M 几何：黏性系数一、尺度 \(R\)、终端锚定路径 \(X_R\)、非降时间 cutoff \(\eta_R\)、padded shell cutoff \(\Psi_k^R\) 与权重 \(\gamma_k\)。写
+
+\[
+\mathcal T_R=(s_R,t_0),\qquad J_\tau=(s_R,\tau),\qquad s_R=t_0-4R^2.
+\]
+
+对 Borel 集 \(A\subset\mathcal T_R\) 定义
+
+\[
+\boxed{
+\begin{aligned}
+\sigma_{k,R}(A)&=R^{-2}\int_Ae_{k,R}(t)\,dt,\\
+\nu_{k,R}(A)&=\gamma_kR^{-1}\int_{A\times\mathbb T^3}
+\eta_R(t)\Psi_k^R(x-X_R(t))\,d\boldsymbol\mu(t,x),\\
+\beta_{k,R}(A)&=\int_A|\dot Q_{k,R}(t)|\,dt.
+\end{aligned}}
+\]
+
+\(\sigma\) 是抛物归一化动能测度，\(\nu\) 是黏性加反常缺陷的总耗散测度，\(\beta\) 是 canonical \(Q\)-primitive 的 total-variation measure。区间 \(J_\tau\) 在终端开口，与 inherited completed-clock 的 \((s_R,\tau)\) 约定一致，因此不会额外计入 \(t=\tau\) 的耗散原子。冻结 cutoff 与其导数在 \(s_R\) 的公共邻域内为零，左端也没有质量逃逸。
+
+若 \(\boldsymbol\delta_{k,R}\) 是反常耗散的加权时间推前，则
+
+\[
+d\nu_{k,R}=g_{k,R}\,dt+d\boldsymbol\delta_{k,R},
+\qquad \boldsymbol\delta_{k,R}(J_\tau)=m_{k,R}(\tau).
+\]
+
+在 inherited local-energy good terminal time 上，\(\nu_{k,R}(J_\tau)=D_{k,R}(\tau)\)，而 \(\beta_{k,R}(J_\tau)=\operatorname{TV}_{J_\tau}Q_{k,R}\)。这些是 S.163--S.166 的精确测度身份。
+
+## 19. 标量 excess 与 Jordan envelope
+
+固定正的确定性 profile \(\boldsymbol\lambda=(\lambda_k)\)，令
+
+\[
+\alpha_{k,R}^{\boldsymbol\lambda}
+=\nu_{k,R}-\beta_{k,R}-2\lambda_k\sigma_{k,R}.
+\]
+
+两个 excess 层级分别是
+
+\[
+\boxed{
+x_{k,R}^{\boldsymbol\lambda}(\tau)
+=\bigl[\alpha_{k,R}^{\boldsymbol\lambda}(J_\tau)\bigr]_+,
+\qquad
+X_{k,R}^{\boldsymbol\lambda}(\tau)
+=(\alpha_{k,R}^{\boldsymbol\lambda})^+(J_\tau).}
+\]
+
+\(x\) 先计算整个终端区间的 signed mass，再取标量正部；\(X\) 是 Jordan decomposition 的正测度质量，会保留不同时间区间之间被净额相消的局部正 excess。Hahn decomposition、Radon measure 正则性与 Urysohn 逼近给出
+
+\[
+0\le[\alpha(J_\tau)]_+\le\alpha^+(J_\tau)
+=\sup_{A\in\mathcal B(J_\tau)}\alpha(A)
+=\sup_{\substack{\phi\in C_c(J_\tau)\\0\le\phi\le1}}
+\int_{J_\tau}\phi\,d\alpha.
+\]
+
+因此 \(0\le x\le X\)，并且
+
+\[
+\nu(J_\tau)\le\beta(J_\tau)+2\lambda\sigma(J_\tau)+x
+\le\beta(J_\tau)+2\lambda\sigma(J_\tau)+X.
+\]
+
+终端三分法使用较小的 \(x\)；\(X\) 用于局部化与弱极限稳定性，不是更小的终端上界。
+
+## 20. 六分之一优先三分法与两个已付分支
+
+对 dissipation-dominated shell 写 \(T_k=K_{k,R}(\tau)>0\)、\(D_{k,R}(\tau)\ge T_k/2\)。按优先顺序检查
+
+\[
+\beta_{k,R}(J_\tau)\ge\frac16T_k,
+\qquad
+\sigma_{k,R}(J_\tau)>\frac{T_k}{12\lambda_k}.
+\]
+
+若两项都失败，则
+
+\[
+\alpha(J_\tau)>\frac12T_k-\frac16T_k-\frac16T_k
+=\frac16T_k,
+\]
+
+所以 \(x_k>T_k/6\)。这给出 S.170--S.171 的 literal trichotomy：每个耗散主导正 clock 要么由 \(\beta\) 支付至少六分之一，要么有足够 kinetic time mass，要么进入 selected excess 类。
+
+\(\beta\)-branch 由 inherited quadratic \(Q\)-variation ledger 支付。对 kinetic branch，令 \(\delta_\tau=|J_\tau|/R^2<4\)，Jensen 给出
+
+\[
+R^{-2}\int_{J_\tau}e_{k,R}^{3/2}
+\ge\delta_\tau^{-1/2}\sigma_{k,R}(J_\tau)^{3/2}
+>\frac12\left(\frac{T_k}{12\lambda_k}\right)^{3/2}.
+\]
+
+与 inherited padded-shell cubic estimate 合并可得
+
+\[
+T_k\le C_4\lambda_k2^k\gamma_k^{1/3}(p_{k,R}^\tau)^{2/3}.
+\]
+
+定义 \(\mathscr L(\boldsymbol\lambda)=\sum_k2^{3k}\gamma_k\lambda_k^3\)。若 \(\mathscr L<\infty\)，有限壳层 Hölder 与 monotone convergence 给出
+
+\[
+\boxed{
+\sum_{k\in\mathcal I_\sigma(\tau)}T_k
+\le C_5\mathscr L(\boldsymbol\lambda)^{1/3}(P_R^M)^{2/3}.}
+\]
+
+## 21. selected/global excess ledger 与 Step 7 比较
+
+\(\beta\)-branch 满足 \(\sum_{\mathcal I_\beta}T_k\le C_\beta(P_R^M)^{2/3}\)，selected excess branch 满足 \(T_k\le6x_k\)。因此
+
+\[
+\boxed{
+\sum_{k\in\mathcal I_D(\tau)}K_{k,R}(\tau)
+\le C_6(1+\mathscr L^{1/3})(P_R^M)^{2/3}
++6\sum_{k\in\mathcal I_x(\tau)}x_{k,R}^{\boldsymbol\lambda}(\tau).}
+\]
+
+定义全壳层接口
+
+\[
+\mathfrak x_{1,R}^{\boldsymbol\lambda}=\sum_kx_{k,R}^{\boldsymbol\lambda},
+\qquad
+\mathcal X_{1,R}^{\boldsymbol\lambda}=\sum_kX_{k,R}^{\boldsymbol\lambda},
+\qquad
+\mathfrak x_{1,R}\le\mathcal X_{1,R}.
+\]
+
+selected inequality 因而可放宽为加上 \(6\mathfrak x_{1,R}\)，再放宽为加上 \(6\mathcal X_{1,R}\)。global sums 会覆盖已由 \(\beta\) 支付的壳层；\(X\) 还会保留被终端 signed mass 抵消的局部正 excess。
+
+对 Step 7 同一个 high/low-Rayleigh 分割，逐壳层有
+
+\[
+\boxed{x_{k,R}\le X_{k,R}
+\le m_{k,R}(\tau)+\int_{H_{k,R}}g_{k,R}(t)\,dt.}
+\]
+
+这是对 old raw residual 的逐壳层支配，但由于两步 priority partition 不同，不能说 Step 8 的 global sum 数值上严格小于 Step 7 的 prioritized residual。
+
+## 22. exact shear、lower semicontinuity 与光滑公式边界
+
+对 inherited heat shear，Step 7 已证明 \(F_k=0\)，故 \(K_k=Q_k\)。若 \(T_k=K_k(\tau)>0\)，则
+
+\[
+T_k=Q_k(\tau)\le\operatorname{TV}_{J_\tau}Q_k=\beta_k(J_\tau),
+\qquad x_k(\tau)=0.
+\]
+
+所以它进入 \(\beta\)-priority branch，不是 excess theorem 的反例；这里不声称 Jordan envelope \(X_k\) 为零。
+
+在 R0.74P 的 fixed-scale Version-M topology 下，若 \(u_n\to u\) strongly in \(L^3\)、\(\nabla u_n\rightharpoonup\nabla u\) in \(L^2\)、\(p_n\rightharpoonup p\) in \(L^{3/2}\)，则每个 fixed shell 上 \(\nu_n\rightharpoonup^*\nu\) locally，\(\sigma_n\to\sigma\) 与 \(\beta_n\to\beta\) in total variation。开放集 Portmanteau 与 Jordan continuous-test formula 分别给出
+
+\[
+x_k[u,p](\tau)\le\liminf_nx_k[u_n,p_n](\tau),
+\qquad
+X_k[u,p](\tau)\le\liminf_nX_k[u_n,p_n](\tau).
+\]
+
+finite-shell Fatou 再接 monotone convergence，得到 \(\mathfrak x_{1,R}\) 与 \(\mathcal X_{1,R}\) 的全壳层 lower semicontinuity。这个结论只在固定 \(R\) 的 inherited topology 中成立，不提供 cross-scale compactness。
+
+若解本身光滑，则 defect measure 为零，且
+
+\[
+x_k=\left[\int_{s_R}^{\tau}
+\left(g_k-|\dot Q_k|-2\lambda_kR^{-2}e_k\right)dt\right]_+,
+\qquad
+X_k=\int_{s_R}^{\tau}
+\left[g_k-|\dot Q_k|-2\lambda_kR^{-2}e_k\right]_+dt.
+\]
+
+只有在另行提供满足上述 topology 的 smooth periodic NSE sequence 时，才能对这些光滑公式取 \(\liminf\)。本节不声称任意 suitable weak solution 都存在这样的 smooth approximants。
+
+## 23. fixed-scale finiteness 与 terminal flux domination
+
+由 signed-measure order \(\alpha\le\nu\) 得 \(\alpha^+\le\nu\)。Tonelli、\(\Theta_R=\sum_k\gamma_k\Psi_k^R\) 的 inherited \(C^2\)-convergence 与 local finiteness 给出
+
+\[
+\boxed{
+0\le x_k\le X_k\le\nu_k(J_\tau),
+\qquad
+\mathcal X_{1,R}(\tau)
+\le\sum_k\nu_k(J_\tau)<\infty.}
+\]
+
+这是 fixed-scale total-dissipation finiteness，不是关于 \(R\) 的一致二次界。
+
+canonical primitives 在 \(s_R\) 为零，故 \(\beta_k(J_\tau)\ge|Q_k(\tau)|\)。completed-clock identity 给出
+
+\[
+\alpha_k(J_\tau)
+=Q_k(\tau)+F_k(\tau)-E_k(\tau)-\beta_k(J_\tau)-2\lambda_k\sigma_k(J_\tau)
+\le F_k(\tau).
+\]
+
+所以
+
+\[
+\boxed{x_k(\tau)\le[F_k(\tau)]_+,
+\qquad
+\mathfrak x_{1,R}(\tau)
+\le\mathfrak L_{{\rm abs},R}^M\le CP_R^M.}
+\]
+
+线性 \(CP_R^M\) bound 在 \(P_R^M>1\) 时不是二次 \((P_R^M)^{2/3}\) bound。
+
+## 24. selected excess 归入 Step 2 gate
+
+在 \(\eta_R=\eta_R'=0\) 的共同初始区间内取 common good time \(\sigma_0\)。每个壳层都满足 \(K_k(\sigma_0)=Q_k(\sigma_0)=F_k(\sigma_0)=0\)。若 \(x_k(\tau)>0\)，则 \(K_k(\tau)>0\)，所以这个共同零起点满足 Step 2 的 strict upcrossing condition。对任意有限非空 \(G\subset\{k:x_k(\tau)>0\}\)，
+
+\[
+W_R^M(\tau;G,(\sigma_0)_{k\in G})
+=\sum_{k\in G}F_k(\tau)
+\ge\sum_{k\in G}x_k(\tau)>0.
+\]
+
+取 finite-family supremum 得
+
+\[
+\boxed{
+\mathfrak x_{1,R}(\tau)
+\le\mathfrak W_{{\rm up},R}^M
+\le\mathfrak L_{{\rm abs},R}^M\le CP_R^M.}
+\]
+
+在 priority-selected excess class 上，\(\beta_k<T_k/6\) 且 \(|Q_k(\tau)|\le\beta_k\)，故
+
+\[
+F_k(\tau)=T_k-Q_k(\tau)
+\ge T_k-|Q_k(\tau)|>\frac56T_k,
+\qquad T_k<\frac65F_k(\tau).
+\]
+
+结合 \(\beta\) 与 kinetic 两个已付分支，S.196 给出
+
+\[
+\boxed{
+\sum_{k\in\mathcal I_D(\tau)}K_{k,R}(\tau)
+\le C_6(1+\mathscr L(\boldsymbol\lambda)^{1/3})(P_R^M)^{2/3}
++\frac65\mathfrak W_{{\rm up},R}^M.}
+\]
+
+这一步证明 selected defect/high-Rayleigh scalar residual 不是新的独立 obstruction，而是既有 stopped-work ledger 的子账本；但 Step 2 的 gate 本来就允许共同 zero start，所以它没有缩窄 no-exception supremum。
+
+## 25. no-exception stopped work 与 full terminal flux 的等价
+
+定义已付的 \(Q\)-variation、full terminal clock supremum 与 full positive cumulative flux：
+
+\[
+\boxed{
+B_{Q,R}^M=\sum_k\operatorname{TV}_{[s_R,t_0)}Q_{k,R}
+\le C_Q(P_R^M)^{2/3},
+\quad
+\mathcal K_R^M=\sup_{\tau\in\mathcal G_R}\sum_kK_{k,R}(\tau),
+\quad
+\mathfrak C_{{\rm full},R}^M
+=\sup_{s_R<\tau<t_0}\left[\sum_kF_{k,R}(\tau)\right]_+.}
+\]
+
+对 S.37 任意 admissible stopped family，把 work 与同一终端的 full flux 直接相减；start 与 omitted-shell 两部分中的 \(K_k\) 都非负，余下的 \(Q\)-差总计至多 \(B_Q\)。反向则在 common good terminal time 上，对 \(K_k(\tau)>0\) 且 \(F_k(\tau)>0\) 的有限壳层集合使用共同 zero stop，再取 monotone limit；若某个 omitted shell 满足 \(K_k=0<F_k\)，则 \(F_k=-Q_k\)，总量仍至多 \(B_Q\)。因此 S.197--S.198 得到
+
+\[
+\boxed{
+\mathcal K_R^M-B_{Q,R}^M
+\le\mathfrak W_{{\rm up},R}^M
+\le\mathcal K_R^M+B_{Q,R}^M,
+\qquad
+\bigl|\mathfrak W_{{\rm up},R}^M-
+\mathfrak C_{{\rm full},R}^M\bigr|
+\le B_{Q,R}^M.}
+\]
+
+第二条的系数一已经被 single-shell scalar stress \(K=0,Q=-B,F=B\) 证明 sharp。故 Step 2 no-exception observable 只是在已付二次误差 \(B_Q\) 内等价于 full-cutoff positive cumulative flux；它不是一个更小的 signed-depletion quantity。
+
+## 26. smooth exact-family no-go
+
+使用 inherited R0.74O/P smooth periodic exact family，已有
+
+\[
+\mathfrak C_{R_j}^{M,*}\asymp T_*,
+\qquad
+\mathfrak C_{{\rm full},R_j}^{M,*}\ge\mathfrak C_{R_j}^{M,*},
+\qquad
+(P_{R_j}^{M,*})^{2/3}\asymp\frac{T_*}{K_*},
+\qquad K_*\to\infty.
+\]
+
+由于 S.198 的 additive \(Q\)-error 仅为 \(O((P_{R_j}^{M,*})^{2/3})\)，S.199 推出
+
+\[
+\boxed{
+\frac{\mathfrak W_{{\rm up},R_j}^{M,*}}
+{(P_{R_j}^{M,*})^{2/3}}\longrightarrow\infty.}
+\]
+
+也可只选 exact-family target shell：其 terminal clock 为 \(\gtrsim T_*\)，full \(Q\)-variation 为 \(O(T_*/K_*)\)，共同 zero stop 给 stopped work \(\gtrsim T_*\)。这个 witness 是 smooth、periodic、mean-zero、unforced、pressure-free 的真实 NSE solution family。
+
+因此普适 antecedent
+
+\[
+\mathfrak W_{{\rm up},R}^M\lesssim(P_R^M)^{2/3}
+\]
+
+被严格 **REFUTED / no-go**。这不反驳 S.38 的条件代数、S.196、带 terminal exceptions 且由 \(Y_{2,R}^{\rm sf}\) 支付的估计，也不反驳 (Q.1)。
+
+## 27. 压力测试、证书与下一门槛
+
+本步还保留六类 stress tests：interior atom 被 Jordan formula 完整检测；\(\nu=\beta\) 的 already-paid dissipation 被 excess 扣除；高频 divergence-free functional family 排除仅靠 incompressibility/cutoff/Hölder 得到 \(x\) 或 \(X\) 的 cubic bound；符号密度的时间相消证明 \(X\) 可严格大于 \(x\)；质量向硬终端逃逸说明只能主张 lower semicontinuity；\(Q_n=n^{-1}\sin(nt)\) 说明 primitive uniform convergence 不能替代 \(\dot Q_n\) 的 strong \(L^1\) convergence。这些 stress tests 的 PDE 身份边界逐项保留。
+
+最终 Step 8 主证书通过 16/16 exact、19/19 finite、75/75 structural、20/20 negative mutations。独立 Ruby 审计通过 14/14 groups、22/22 exact rows、61/61 structural、14/14 source mutations、10/10 artifact mutations 与 6/6 report checks。主文 SHA-256 为 `0a79f2c5bb59644eca710b3d9341776853ceb4d1f65a36869c2465073f8c08ab`。有限证书支持实现可复现性，不替代 measure/PDE 解析证明。
+
+Step 8 **PROVED**：S.163--S.196 的 three-measure excess interface、one-sixth trichotomy、两个已付分支、lower semicontinuity、fixed-scale finiteness、terminal flux domination 与 stopped-work bridge；S.197--S.198 的 no-exception two-sided equivalence；以及 S.199 的 smooth exact-family refutation。
+
+继续 **OPEN**：固定 best-\(N_0\)、terminal-dependent exception estimate，并以 \(\sqrt{N_0}Y_{2,R}^{\rm sf}\) 支付例外尾；Jordan envelope 的二次/平方函数/finite-exception bound；smooth NSE approximation existence；R0.74R extraction hypotheses；unconditional fixed-scale (Q.1)、scale contraction、prescribed-centre packing 与 regularity。
+
+明确 **NOT CLAIMED**：exact shear 的 \(X=0\)；selected excess sum lower semicontinuity；\(X\le\mathfrak W_{\rm up}\)；Step 8 缩窄 Step 2 gate；硬终端 mass convergence；新颖性、优先权、奇点或 Clay 结论。
+
+下一步不再尝试 no-exception supremum。唯一冻结方向是回到 R0.74Q (Q.7)--(Q.12) 的 fixed best-\(N\)、terminal-dependent exceptions，并保留 \(\sqrt N,Y_{2,R}^{\rm sf}\) 付款。
+
+**UNIVERSAL NO-EXCEPTION STOPPED-WORK QUADRATIC BOUND: REFUTED. CONDITIONAL S.38: RETAINED. NOT CLAY.**

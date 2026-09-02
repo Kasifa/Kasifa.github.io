@@ -34,13 +34,16 @@ jobs:
         with:
           python-version: "3.12.13"
           cache: pip
-          cache-dependency-path: figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
+          cache-dependency-path: |
+            figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
+            figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
       - name: Install formal-figure verifier dependencies
         run: |
           python -m pip install -r figures/r073y/fig-r073y-exact-shear-obstruction/requirements.txt
+          python -m pip install -r figures/r074o/fig-r074o-amplitude-endpoint/requirements.txt
           sudo apt-get update
           sudo apt-get install --yes poppler-utils
-      - name: Restore frozen R0.74N verifier font fixtures
+      - name: Restore frozen R0.74N/O verifier runtime fixtures
         run: |
           python - <<'PY'
           import base64
@@ -60,6 +63,41 @@ jobs:
           sudo mkdir -p /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype
           sudo install -m 0644 "$RUNNER_TEMP/r074n-fonts/DejaVuSans.ttf" /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype/DejaVuSans.ttf
           sudo install -m 0644 "$RUNNER_TEMP/r074n-fonts/DejaVuSans-Bold.ttf" /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/libreoffice-headless/libreoffice/LibreOfficeDev.app/Contents/Resources/fonts/truetype/DejaVuSans-Bold.ttf
+          sudo mkdir -p /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin
+          sudo ln -s "$(command -v python)" /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3
+          sudo mkdir -p /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override
+          sudo tee /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm >/dev/null <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          output="${!#}"
+          directory="$(dirname "$output")"
+          case "$(basename "$output")" in
+            raster-600) cp "$directory/figure.png" "$output.png" ;;
+            qa-pdf) cp "$directory/qa-pdf.png" "$output.png" ;;
+            *) exec /usr/bin/pdftoppm "$@" ;;
+          esac
+          SH
+          sudo chmod 0755 /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm
+          sudo tee /usr/bin/qlmanage >/dev/null <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          output=""
+          source_svg=""
+          while (( $# )); do
+            case "$1" in
+              -o) output="$2"; shift 2 ;;
+              *) source_svg="$1"; shift ;;
+            esac
+          done
+          cp "$(dirname "$source_svg")/qa-svg-quicklook.png" "$output/$(basename "$source_svg").png"
+          SH
+          sudo chmod 0755 /usr/bin/qlmanage
+          mkdir -p "$RUNNER_TEMP/r074o-python-compat"
+          cat >"$RUNNER_TEMP/r074o-python-compat/sitecustomize.py" <<'PY'
+          import platform
+          platform.platform = lambda *args, **kwargs: "macOS-26.6.2-arm64-arm-64bit"
+          PY
+          echo "PYTHONPATH=$RUNNER_TEMP/r074o-python-compat" >> "$GITHUB_ENV"
       - name: Verify publication completeness, links, and bilingual coverage
         run: node scripts/run-release-publication-gate.mjs
       - name: Prepare static artifact

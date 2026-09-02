@@ -255,7 +255,8 @@ test("R0.74S Step 12 Ruby audit independently reconstructs the terminal-window M
     encoding: "utf8",
   });
   assert.equal(result.status, 0, `Step 12 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
-  assert.equal(createHash("sha256").update(result.stdout).digest("hex"), "f991a1884a57f761a016903b66912a294df1cc80ebef3ba0503d527fd3736f5f");
+  const normalizedStdout = result.stdout.replaceAll(root, "<repo>");
+  assert.equal(createHash("sha256").update(normalizedStdout).digest("hex"), "3d71026b1f2ab56daf92d090ee72860d30740e7467fd7d8ca5df5e2bf94ae39f");
   const parsed = JSON.parse(result.stdout);
   assert.equal(parsed.release_ready, true);
   assert.equal(parsed.pass, true);

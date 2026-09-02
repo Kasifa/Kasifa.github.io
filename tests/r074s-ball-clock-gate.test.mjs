@@ -111,6 +111,23 @@ test("R0.74S frozen Step 10 paid-branch residual sources and dual audits retain 
   assert.ok(source.includes("one complete \\(Q\\)-ledger"));
 });
 
+test("R0.74S frozen Step 11 shared-budget and terminal-trace sources retain the exact boundary", () => {
+  const hashes = {
+    "research/r074s_shared_budget_terminal_trace_obstruction.md": "fd022de342b935e3e6e5fe0231f6b08ab9494e2bd38e23da15de6807f14d4693",
+    "research/r074s_shared_budget_terminal_trace_primary_audit.md": "d8bf38f4337af366cd450a50622f7105b8925db37cd87c09ce839fe129a058d5",
+    "research/r074s_shared_budget_terminal_trace_independent_audit.md": "cfabe4b389c31b7ddeab755f51db8cf7daa88875add33621b0722b4487520f65",
+    "scripts/r074s_shared_budget_terminal_trace_certificate.py": "a397d27943fca4d4a487038b5c14956667c7d36b3be5eb069262d2593f8ad2de",
+    "research/r074s_shared_budget_terminal_trace_certificate.json": "ea5c9f13ba412703995b2875a26c84fa20779457399ffa9117871b65fafaf8d0",
+    "research/r074s_shared_budget_terminal_trace_certificate_report.md": "6e86813ab2b001a8f357af42d952a9104ba70859b32441148ad5cd3ab283ffc4",
+    "scripts/r074s_shared_budget_terminal_trace_certificate_independent.rb": "b8309f6bf23d0c75b09c39814e1452e6890a8de712f2974ffbda003a53d7a154",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_shared_budget_terminal_trace_obstruction.md");
+  for (const marker of ["S.249", "S.257", "S.261", "S.263", "S.269", "S.270", "S.272", "NOT NSE COUNTEREXAMPLES", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -123,6 +140,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_defect_relaxed_total_rayleigh_certificate.py", "research/r074s_defect_relaxed_total_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 19, finite_total: 19, negative_mutations_passed: 20, negative_mutations_total: 20, structural_passed: 75, structural_total: 75 }],
     ["scripts/r074s_best_n_last_exit_certificate.py", "research/r074s_best_n_last_exit_certificate.json", { exact_passed: 9, exact_total: 9, finite_passed: 8, finite_total: 8, negative_mutations_passed: 18, negative_mutations_total: 18, structural_passed: 57, structural_total: 57 }],
     ["scripts/r074s_paid_branch_last_exit_certificate.py", "research/r074s_paid_branch_last_exit_certificate.json", { exact_total: 12, exact_passed: 12, finite_total: 10, finite_passed: 10, structural_total: 79, structural_passed: 79, negative_mutations_total: 47, negative_mutations_passed: 47 }],
+    ["scripts/r074s_shared_budget_terminal_trace_certificate.py", "research/r074s_shared_budget_terminal_trace_certificate.json", { all_pass: true, exact_passed: 14, exact_total: 14, finite_passed: 7, finite_total: 7, negative_passed: 7, negative_total: 7, structural_passed: 34, structural_total: 34 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -190,5 +208,25 @@ test("R0.74S Step 10 Ruby audit independently reconstructs the paid-branch resid
     contract_mutations_rejected: 21, contract_mutations_total: 21,
     report_checks_passed: 13, report_checks_total: 13,
     audit_bindings_passed: 15, audit_bindings_total: 15,
+  });
+});
+
+test("R0.74S Step 11 Ruby audit independently reconstructs the shared-budget terminal-trace boundary", () => {
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_shared_budget_terminal_trace_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 11 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  assert.equal(createHash("sha256").update(result.stdout).digest("hex"), "506440647a0a9b5be9d65ded24762b6eb6f6ce8cf054473a0ac04bf8835a1ffb");
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.release_ready, true);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 7, independent_groups_total: 7,
+    independent_cases: 206891,
+    artifact_locks_passed: 6, artifact_locks_total: 6,
+    dependency_locks_passed: 7, dependency_locks_total: 7,
+    note_checks_passed: 59, note_checks_total: 59,
+    placeholder_artifacts: [],
   });
 });

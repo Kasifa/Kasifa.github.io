@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜删除已付分支后的 residual best-N gate";
+  const title = "R0.74S｜共享 best-N budget 与终端 trace 障碍";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -123,9 +123,29 @@ try {
       fixedUniversalN0ResidualEstimate: "OPEN_S243",
       jordanEnvelopeQuadraticBound: "OPEN",
       finiteExceptionConsequence: "PROVED_CONDITIONAL_IMPLICATION_ONLY",
+      sharedBudgetPointwiseInfimalConvolution: "PROVED_EXACT_S249",
+      terminalSupremumBudgetMinimumCommutation: false,
+      sharedBudgetDomainInequality: "PROVED_S250",
+      addedBranchExceptionCounts: "PROVED_CONDITIONAL_S251",
+      duplicateBranchBudgets: false,
+      shortBranchInverseDuration: "PROVED_S253_S254",
+      criticalQuadraticCarlesonEndpoint: "REFUTED_AT_COEFFICIENT_CLOCK_LEVEL_LOG_GAP",
+      criticalCarlesonWitnessIsNseCounterexample: false,
+      nestedTentEstimate: "PROVED_S258",
+      positiveBackwardDepthControl: "PROVED_S259",
+      depthZeroTerminalTrace: "OPEN_S261",
+      scalarExcessResidualBestNComparison: "PROVED_CONSTANTS_ONE_FIFTH_AND_THREE",
+      fixedSolutionTailTightness: "PROVED_NONUNIFORM_S265",
+      fixedSolutionTightnessGivesUniversalN: false,
+      lastExitAncestryLocalization: false,
+      ancestryFixturesAreNseCounterexamples: false,
+      uniformSelectedExcessPacking: "OPEN_S269",
+      nPlusOneTargetFalsificationCriterion: "PROVED_CONDITIONAL_S270",
+      existingMultiPacketFamiliesRefuteFixedPositiveN: false,
+      combinedTwoBranchEstimate: "OPEN_S272",
       exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "PUBLISHED_DERIVED_FROM_FROZEN_ANALYTIC_SOURCE",
+      formalFigure: "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP11_FIGURE",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

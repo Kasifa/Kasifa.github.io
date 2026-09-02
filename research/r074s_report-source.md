@@ -1,8 +1,8 @@
-# R0.74S｜删除已付分支后的 residual best-N gate
+# R0.74S｜共享 best-N budget 与终端 trace 障碍
 
 ## 0. 这一步得到什么
 
-R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 支付 low-Rayleigh 耗散支，Step 8 严格否定 no-exception stopped-work 的普适二次界，Step 9 证明 canonical last exit 只是 fixed best-\(N\) terminal tail 的精确表示。Step 10 进一步删除所有已被 \(Q\)-variation 或 velocity-cubic ledger 支付的壳层，定位真正剩下的两个 residual mechanisms。
+R0.74S Steps 1--10 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination、未加权 genealogy 的抽象标量 no-go、低 Rayleigh 支付、no-exception exact-family no-go、canonical last exit 以及 paid/residual 六类分区逐项封存。Step 11 不再重复分区，而是精确回答两个 residual mechanisms 怎样共享一个 best-\(N\) budget，并分别把 short branch 与 scalar-excess branch 推到各自第一个仍缺失的 PDE 门槛。
 
 本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出
 
@@ -22,7 +22,7 @@ Step 8 引入标量 excess \(x\) 与 Jordan envelope \(X\)，证明 selected def
 
 从而严格否定普适 no-exception 二次界。S.38 仍是正确的条件蕴含；被反证的是它若要作为无条件定理所需的 antecedent。下一条可行路线必须回到固定 best-\(N\)、随终端变化的例外集合，并用 \(\sqrt N,Y_{2,R}^{\rm sf}\) 支付尾部。
 
-此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的 no-go 由继承的真实平滑 NSE exact family 给出；Step 9 的 no-gain 说明 canonical stops 本身没有压缩。Step 10 证明四个 paid classes 合计只使用一个 \(6B_Q\) ledger 和一个 \(C_5\) cubic ledger，余项正好是 \(\mathcal R_{\rm sh}\cup\mathcal R_x\) 上的共享 best-\(N\) residual gate，并满足 \(T_k/6<r_k<T_k/2\)。这是一条 domain-safe reduction，不是 residual packing theorem。固定、与尺度和解无关的 \(N_0\) 估计 (S.243)、Q.12、Q.1、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
+此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的 no-go 由继承的真实平滑 NSE exact family 给出；Step 9 的 no-gain 说明 canonical stops 本身没有压缩。Step 10 证明四个 paid classes 合计只使用一个 \(6B_Q\) ledger 和一个 \(C_5\) cubic ledger，余项正好是 \(\mathcal R_{\rm sh}\cup\mathcal R_x\) 上的共享 best-\(N\) residual gate。Step 11 进一步证明共享 budget 的离散 infimal convolution；short branch 得到 inverse-duration 与 nested-tent 控制，却仍缺 depth zero 的 terminal trace；scalar-excess branch 与 residual best-\(N\) 以字面常数 \(1/5\) 与 \(3\) 等价。固定解的 tail tightness 不能替代与解和尺度无关的固定 \(N_0\)。现有 multi-packet exact families 也没有否定任意固定正 \(N\)。S.261、S.269、S.272、S.243、Q.12、Q.1、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
 本节没有数值仿真、DNS 或 DGX。
 
@@ -1437,3 +1437,344 @@ Step 10 **REFUTED / RULED OUT**：额外 low-Rayleigh residual class；必须重
 主证书通过 12/12 exact、10/10 finite、79/79 structural 与 47/47 negative mutations。独立 Ruby 通过 9/9 groups、65,681 cases、21/21 contract mutations、13/13 report checks 与 15/15 audit bindings；deterministic stdout SHA-256 为 `4877dc3a0de2c2f605641736c7355672f0a7a68cb97a37849d4a7c28495e8bbd`。主文 SHA-256 为 `9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c`。有限证书不替代 inherited local-energy/PDE analysis。
 
 **PAID BRANCHES: DELETED WITH ONE Q LEDGER AND ONE CUBIC LEDGER. TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE. S.243 OPEN. NOT CLAY.**
+
+## 46. Step 11 的问题与四项结论
+
+Step 10 已把 full-terminal clock estimate 归约为两个不交 residual mechanisms 上的一个 combined best-\(N\) tail。Step 11 不证明这个 tail estimate，而是确定两支怎样精确重组、各自现有估计能走到哪里，以及哪一条新的 PDE 陈述足以闭合 short branch。
+
+- combined residual 是两支 best-\(N\) tails 的精确离散 infimal convolution。两支可以分别研究，但 exception counts 必须相加；两个固定有限 count 仍足以满足最终“存在某个固定 \(N_0\)”的目标。
+- short non-\(D\) branch 得到尖锐 inverse-duration coefficient、nested-tent integral 与任意正 backward depth 的控制；depth zero 的 terminal trace 仍缺失，critical \(s^2\) Carleson endpoint 有 logarithmic divergence。
+- scalar-excess branch 上，stopped residual 与 Step 8 priority-selected excess 在 best-\(N\) 意义下以字面常数 \(1/5\) 与 \(3\) 等价。现有理论只有 linear summability 与 fixed-solution tightness，没有 solution- and scale-independent count。
+- 现有 smooth exact families 只 refute zero-exception route。当前 multi-packet designs 的 cubic cost 过大，不能 refute 任意固定正 exception count。
+
+因此 short branch 的缺口是 terminal anti-concentration，不是 interval overlap；excess branch 的缺口是 uniform weighted packing，不是 ancestry classification。两条都 **OPEN**。无新颖性、优先权、奇点、正则性或千禧年问题结论。**NOT CLAY.**
+
+## 47. 两个 residual vectors 与共享 budget 恒等式
+
+保留 Step 10 的全部定义。固定 good terminal \(\tau\)，令 \(T_k=K_{k,R}(\tau)\)、\(\ell_k=\ell^K_{k,2/3}(\tau)\)、\(d_k=(\tau-\ell_k)/R^2\)，并把 residual 拆成不交支撑的两向量
+
+\[
+\boxed{
+r_k^{\rm sh}(\tau):=\mathbf1_{\mathcal R_{\rm sh}(\tau)}r_k(\tau),
+\qquad
+r_k^x(\tau):=\mathbf1_{\mathcal R_x(\tau)}r_k(\tau),
+\qquad r=r^{\rm sh}+r^x.}
+\tag{S.248}
+\]
+
+两支上都有 \(T_k/6<r_k<T_k/2\le v_{k,R}/2\)。对 \(z\in\ell^1_+\) 写
+\(\mathcal S_N(z)=\inf_{\#S\le N}\sum_{k\notin S}z_k\)。若 \(a,b\) 支撑不交，则
+
+\[
+\boxed{
+\mathcal S_N(a+b)=\min_{0\le n\le N}
+\left[\mathcal S_n(a)+\mathcal S_{N-n}(b)\right].}
+\tag{S.249}
+\]
+
+这是 pointwise equality。取 terminal supremum 后只有 domain-safe inequality：
+
+\[
+\boxed{
+\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)
+\le\min_{0\le n\le N}
+\left[\mathfrak R^{\rm sh}_{n,R}(\mathcal D)
++\mathfrak R^x_{N-n,R}(\mathcal D)\right].}
+\tag{S.250}
+\]
+
+这里通常不能写等号，因为 supremum 与 finite minimum 不交换；最优 budget split 与 top-\(N\) shells 可以依赖 \(\tau\)。若两支分别以固定 \(N_{\rm sh},N_x\) 闭合，令 \(N_0=N_{\rm sh}+N_x\)，则
+
+\[
+\boxed{
+\begin{gathered}
+\mathfrak R_{N_0,R}^{\boldsymbol\lambda}\le(C_{\rm sh}+C_x)A_R,\\
+\mathcal S^K_{N_0,R}\le
+\left[6C_Q+C_5\mathscr L(\boldsymbol\lambda)^{1/3}
++6C_{\rm sh}+6C_x\right]A_R.
+\end{gathered}}
+\tag{S.251}
+\]
+
+两个 best-\(N\) branch theorems 给出 combined best-\(2N\)，不是 best-\(N\)。fixture \(a=(M,0),b=(0,M)\) 给出
+
+\[
+\boxed{
+\mathcal S_1(a)=\mathcal S_1(b)=0,
+\qquad \mathcal S_1(a+b)=M,
+\qquad \mathcal S_2(a+b)=0.}
+\tag{S.252}
+\]
+
+它精确说明 duplicate \(N\)-budgets 会偷偷把总预算加倍。
+
+## 48. Short branch 的 inverse-duration ledger
+
+令 \(\mathcal H_\tau=\mathcal R_{\rm sh}(\tau)\)、\(a_k=2^{3k}\gamma_k\)、\(p_k=p_{k,R}^{u,\eta}(J_k^{\rm LE})\)。non-\(D\) persistence 与继承的 cubic estimate 给出
+
+\[
+\boxed{
+d_k\left({T_k\over6}\right)^{3/2}<C_1a_k^{1/2}p_k,
+\qquad
+r_k^{\rm sh}<3C_1^{2/3}(a_kd_k^{-2})^{1/3}p_k^{2/3}.}
+\tag{S.253}
+\]
+
+对同一个 exceptional set 做 finite-shell Hölder，再只调用一次 shell-dependent-time-set estimate，得到
+
+\[
+\boxed{
+\mathcal S_N(r^{\rm sh}(\tau))
+\le3C_1^{2/3}C_P^{2/3}
+\bigl(\mathfrak D_N^{\rm sh}(\tau)\bigr)^{1/3}A_R,
+\quad
+\mathfrak D_N^{\rm sh}:=
+\inf_{\#S\le N}\sum_{k\in\mathcal H_\tau\setminus S}a_kd_k^{-2}.}
+\tag{S.254}
+\]
+
+这只是 sufficient interface，不是对 \(\mathfrak D_N^{\rm sh}\) 的新估计；它把遗留债务精确定位为 inverse-square duration。
+
+## 49. Normalized depth 与 critical Carleson log gap
+
+在 short branch 定义 \(h_k=d_k\lambda_k^{3/2}\in(0,1)\)、\(w_k=a_k\lambda_k^3\)。令 \(\mathcal H_j=\{2^{-j-1}\le h_k<2^{-j}\}\)、\(W_j=\sum_{k\in\mathcal H_j}w_k\)，则
+
+\[
+\boxed{
+w_kh_k^{-2}=a_kd_k^{-2},
+\qquad
+\sum_j4^jW_j\le\sum_kw_kh_k^{-2}\le4\sum_j4^jW_j.}
+\tag{S.255}
+\]
+
+对原子测度 \(\mu_\tau=\sum_{k\in\mathcal H_\tau}w_k\delta_{h_k}\)，Tonelli 给出精确 layer-cake：
+
+\[
+\boxed{
+\sum_kw_kh_k^{-2}
+=\mu_\tau((0,1))+2\int_0^1s^{-3}\mu_\tau((0,s])\,ds.}
+\tag{S.256}
+\]
+
+因此 \(\mu_\tau((0,s])\lesssim s^{2+\varepsilon}\) 足够，但 critical exponent two 不足。取固定 profile \(\lambda_k=1\)、\(w_k=2^{3k}\gamma_k\)、\(h_k=w_k^{1/2}\)，可有 \(\mu((0,s])\le2s^2\)，同时
+
+\[
+\boxed{
+\sum_{k\ge k_0}w_kh_k^{-2}=\sum_{k\ge k_0}1=\infty.}
+\tag{S.257}
+\]
+
+这就是 critical \(s^2\) Carleson endpoint 的 logarithmic obstruction。它是 coefficient/clock stress test，**不是 NSE solution**。
+
+## 50. Nested tent 能控制什么、不能控制什么
+
+以 backward time \(s=(\tau-t)/R^2\) 定义
+\(M_I(s)=\sum_{k\in I,d_k>s}r_k^{\rm sh}\)、
+\(V_I(s)=\sum_{k\in I,d_k>s}a_k\)。所有 last-exit intervals 共用 terminal endpoint，故其 indicator 精确为 \(\mathbf1_{\{s<d_k\}}\)。weighted Hölder、(R.214) 与 (R.211) 给出
+
+\[
+\boxed{
+\int_0^4{M_I(s)^{3/2}\over V_I(s)^{1/2}}\,ds
+\le3^{3/2}C_1C_PP_R^M.}
+\tag{S.258}
+\]
+
+令 \(\mathscr A_0=\sum_k2^{3k}\gamma_k<\infty\)。对任意 \(0<\delta<4\)，
+
+\[
+\boxed{
+\sum_{k\in I,\ d_k>\delta}r_k^{\rm sh}
+\le3C_1^{2/3}C_P^{2/3}\mathscr A_0^{1/3}
+\delta^{-2/3}A_R.}
+\tag{S.259}
+\]
+
+所以任何持续到固定正 backward depth 的 residual 已经得到 quadratic control；未解决的全部质量可以集中到 \(d_k\downarrow0\)。一个 \(L^{3/2}\)-in-time tent bound 没有 depth-zero terminal trace。
+
+严格嵌套本身也无能为力：连续 clock/payment tower 可同时满足 nested intervals 与很小 cubic integral，却有
+
+\[
+\boxed{
+\mathcal S_N(r)=M-N,
+\qquad A_M\asymp M^{2/3},
+\qquad Z_M=3\sqrt M.}
+\tag{S.260}
+\]
+
+这是 abstract continuous clock/payment witness，**不是 NSE counterexample**。
+
+## 51. Short branch 的第一个新 PDE 门槛
+
+比 raw inverse-duration moment 更自然的目标是 amplitude-sensitive terminal anti-concentration：寻找与解和尺度无关的固定 \(N_{\rm sh}\)、\(0<\delta_*<4\)、\(0\le\theta_*<1\)、\(C_{\rm nc}<\infty\)，使每个 good terminal 都存在同一个 \(S_\tau\)、\(\#S_\tau\le N_{\rm sh}\)，满足
+
+\[
+\boxed{
+\sum_{k\in\mathcal H_\tau\setminus S_\tau,\ d_k\le\delta_*}
+r_k^{\rm sh}
+\le\theta_*
+\sum_{k\in\mathcal H_\tau\setminus S_\tau}r_k^{\rm sh}
++C_{\rm nc}A_R.
+\quad\textbf{OPEN}}
+\tag{S.261}
+\]
+
+(S.261) 与 (S.259) 的 implication 已证明：它将闭合 short branch。boxed hypothesis 本身没有证明；它要求 PDE 排除一个非二次比例的 tail 完全在最后 \(\delta_*R^2\) 时间内生成。
+
+## 52. Scalar excess 与 residual 的精确 best-N 等价
+
+保留 Step 8 scalar excess
+\(x_k=[D_{k,R}(\tau)-\beta_{k,R}(J_\tau)-2\lambda_k\sigma_{k,R}(J_\tau)]_+\)，并令 \(x_k^{\rm sel}=\mathbf1_{\mathcal I_x}x_k\)。priority failures 与 terminal clock identity 给出字面坐标比较
+
+\[
+\boxed{
+{1\over5}x_k^{\rm sel}<r_k^x<3x_k^{\rm sel}
+\qquad(k\in\mathcal I_x).}
+\tag{S.262}
+\]
+
+常数在 scalar constraints 层面尖锐。优化同一个 exceptional set 后，
+
+\[
+\boxed{
+{1\over5}\mathcal S_N(x^{\rm sel}(\tau))
+\le\mathcal S_N(r^x(\tau))
+\le3\mathcal S_N(x^{\rm sel}(\tau)).}
+\tag{S.263}
+\]
+
+因此 \(\mathcal R_x\) gate 已精确归约，但没有闭合。
+
+## 53. Fixed-solution tightness 不等于 uniform \(N\)
+
+Step 8 ancestor vector \(b_k=\mathbf1_{\mathcal I_x}[m_{k,R}+\int_{H_{k,R}}g_{k,R}]\) 满足
+
+\[
+\boxed{
+r_k^x\le3x_k^{\rm sel}\le3b_k,
+\qquad
+\sum_kx_k^{\rm sel}\le CP_R^M,
+\qquad
+\sum_kb_k\le C(A_R+P_R^M).}
+\tag{S.264}
+\]
+
+这些在 \(P_R^M>1\) 时只是 linear ledger，Markov counting 不能产生 universal quadratic best-\(N\) tail。另一方面，因 \(r_k^x\le v_{k,R}/2\) 且 \(v_R\in\ell^1\)，对每个固定 solution、固定 \(R\) 和 \(\varepsilon>0\)，可以选取依赖于它们的 \(N=N(u,R,\varepsilon)\)，使
+
+\[
+\boxed{
+\sup_{\tau\in\mathcal G_R\cap\mathcal D}
+\mathcal S_N(r^x(\tau))
+\le{1\over2}\sum_{k>N}v_{k,R}<\varepsilon.}
+\tag{S.265}
+\]
+
+这是真实的 nonuniform compactness，但缺失的恰恰是与 solution、scale 无关的 uniform \(N\) 与 \(O(A_R)\) rate；两者不能混同。
+
+## 54. Ancestry 不能倒推到 last-exit interval
+
+两个 exact rational scalar clocks 表明禁止的 shortcut。pure-defect row 满足
+
+\[
+\boxed{
+\ell=1,
+\quad r^x={1\over3},
+\quad \sigma={959\over12000}<{1\over12},
+\quad x={2641\over6000}>{1\over6},
+\quad D(2)-D(\ell)=0.}
+\tag{S.266}
+\]
+
+pure high-Rayleigh row 满足
+
+\[
+\boxed{
+\ell=1,
+\quad r^x={1\over3},
+\quad \sigma={983\over12000}<{1\over12},
+\quad x={2617\over6000}>{1\over6},
+\quad \int_{H\cap J^{\rm LE}}g=0.}
+\tag{S.267}
+\]
+
+两者都说明 full-history ancestry 不能 retrospectively restricted to \(J^{\rm LE}\)。重复 pure-defect row 得到
+
+\[
+\boxed{
+\mathcal S_N(r^x)={(M-N)_+\over3},
+\qquad A_M\asymp M^{2/3},
+\qquad Z_M=\sqrt M.}
+\tag{S.268}
+\]
+
+(S.266)--(S.268) 都是 **ABSTRACT STRESS TESTS, NOT NSE COUNTEREXAMPLES**；它们排除只靠 scalar \(\ell^1/\ell^2\) ledgers 的推导，不否定 (S.243)。exact minimal target 是
+
+\[
+\boxed{
+\textbf{OPEN:}\quad
+\exists N_x,C_x<\infty\ \text{uniformly such that}
+\mathcal S_{N_x}(x^{\rm sel}(\tau))\le C_xA_R.}
+\tag{S.269}
+\]
+
+由 (S.263)，这与 \(\mathcal R_x\) residual gate 在字面常数范围内等价。
+
+## 55. Exact-family falsification criterion
+
+若要 refute 某个固定 \(N\)，新的 smooth exact family 必须提供 \(N+1\) 个不同 target shells，且
+
+\[
+\boxed{
+\min_{1\le i\le N+1}{K_{k_i,R}(\tau)\over A_R}
+\longrightarrow\infty.}
+\tag{S.270}
+\]
+
+Step 10 将迫使这些 target shells 最终全部落入 combined residual，于是 \(\mathcal S_N(r)/A_R\to\infty\)。现有 R0.74O/P single-packet family 只对 \(N=0\) 通过此检验：一个正 exception 可以删除唯一大坐标。
+
+现有 common-shear multi-packet construction 虽能制造 distinct terminal lobes，却同时证明 exterior cubic lower bound
+
+\[
+\boxed{
+{A_R^{(N)}\over NT}
+\ge {c\over N}R^{2/3}L_N^{-1/3}
+\exp\left({5\over6}c_\gamma L_N^2\right)
+\longrightarrow\infty.}
+\tag{S.271}
+\]
+
+所以其 clock lower scale 被 nonnegative cubic payment 压倒；它没有建立 (S.270)，也没有 refute fixed positive exception count。这是对现有设计的 quantitative obstruction，不是对全部 multi-packet architectures 的 no-go。
+
+## 56. 合并后的开放定理
+
+下一 PDE 阶段保留两个工作包：short terminal trace 检验 (S.261)；selected-excess packing 检验 (S.269)，并分开 anomalous measure 与 high-Rayleigh viscous mass。任何 adversarial exact family 先通过 (S.270)，不能只展示多个 terminal lobes。
+
+最终 combined theorem 写成
+
+\[
+\boxed{
+\begin{gathered}
+\textbf{OPEN: find fixed }N_{\rm sh},N_x\in\mathbb N_0
+\textbf{ and }C_{\rm sh},C_x<\infty\textbf{ such that}\\
+\sup_{\tau\in\mathcal T_R\cap\mathcal G_R}
+\mathcal S_{N_{\rm sh}}(r^{\rm sh}(\tau))\le C_{\rm sh}A_R,\\
+\sup_{\tau\in\mathcal T_R\cap\mathcal G_R}
+\mathcal S_{N_x}(r^x(\tau))\le C_xA_R.
+\end{gathered}}
+\tag{S.272}
+\]
+
+若 (S.272) 成立，(S.251) 以 \(N_0=N_{\rm sh}+N_x\) 推出 Step 10 (S.243)，继而条件性推出 R0.74Q (Q.12) 与 fixed-scale (Q.1)。implication 已证明，antecedent 仍 **OPEN**。
+
+## 57. Step 11 主张边界与双路审计
+
+Step 11 **PROVED**：(S.249)--(S.251) shared-budget identity 与 domain consequence；(S.253)--(S.254) inverse-duration estimate；(S.255)--(S.256) normalized-depth/dyadic/layer-cake identities；(S.257) coefficient-level critical Carleson failure；(S.258)--(S.259) nested-tent 与 positive-depth estimates；(S.262)--(S.263) scalar-excess/residual equivalence；(S.264)--(S.265) ancestry、linear ledger 与 fixed-solution compactness；以及从 (S.261)、(S.269)、(S.270)、(S.272) 出发的 conditional implications。
+
+Step 11 **ABSTRACT STRESS TESTS, NOT NSE COUNTEREXAMPLES**：(S.252) duplicate-budget fixture；(S.257)、(S.260) critical Carleson sequence 与 nested tower；(S.266)--(S.267) ancestry-localization witnesses；(S.268) flat selected-excess tower。
+
+Step 11 **OPEN**：terminal anti-concentration (S.261)；uniform selected-excess packing (S.269)；(S.272) 的两支估计；固定 universal \(N_0\)；Step 10 (S.243)、Q.12、Q.1、scale contraction、prescribed-centre packing 与 regularity；以及能通过 (S.270) 且没有 prohibitive full payment 的新 exact multi-packet family。
+
+明确 **NOT CLAIMED**：moving masks、last-exit selectors、top-\(N\) sets 或 adaptive budget split 的连续性/可测性；terminal supremum 与 branch-budget minimum 交换；CKN-type singular-set estimates 对当前 shell residuals 计数；terminal ancestry 在 last-exit interval 持续；bounded literature search 穷尽；新颖性、优先权；或 Navier--Stokes Millennium problem 的解。
+
+主证书通过 14/14 exact、7/7 finite、34/34 structural 与 7/7 negative mutations。独立 Ruby audit 通过 7/7 groups、206,891 cases、6/6 artifact locks、7/7 dependency locks 与 59/59 note checks；canonical stdout SHA-256 为 `506440647a0a9b5be9d65ded24762b6eb6f6ce8cf054473a0ac04bf8835a1ffb`。这些有限证书只支持实现可复现性，不替代 inherited local-energy/PDE analysis。
+
+**SHARED BUDGET: EXACT. SHORT TERMINAL TRACE: OPEN. SELECTED-EXCESS PACKING: OPEN. EXISTING MULTI-PACKET FAMILIES DO NOT REFUTE FIXED POSITIVE N. NOT CLAY.**

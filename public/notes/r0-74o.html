@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.81">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74O｜自由振幅否定了标量平方根对数端点</title>
+<meta name="description" content="同一精确 2D3C 解中的自由被动振幅否定只依赖冻结标量支付的普适平方根对数端点">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74o.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.81"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9pt;line-height:1.42}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.35rem 0 .45rem}.callout{padding:.6rem .8rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74O · 2026-09-02</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74O · 完整中文版本</div><h1>R0.74O｜自由振幅否定了标量平方根对数端点</h1>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。R0.74N 在归一化振幅上得到平方根对数匹配律。这里我没有更换流动几何，只放开同一个精确 2D3C 解中一直存在的被动分量振幅。完整标量支付仍停留在背景剪切尺度，而端点量与正领圈通量按振幅平方增长。因此，只依赖冻结标量支付的普适平方根对数端点是假的；更强的已实现标量次前沿也被排除。带独立结构可观测量的端点、任意流正则性和 Clay 问题仍然开放。<strong>NOT CLAY.</strong></p>
+<div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div>
+<div class="stamp"><strong>状态 · R0.74O</strong><p>标量平方根对数端点：FALSE</p><p>已实现 no-go 前沿：PROVED</p><p>证书 245/245：FINITE</p><p>图件 72/72：FINITE</p><p>增广任意流端点：OPEN</p><p>耗散匹配下界：OPEN</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article>
+<section id="s-01"><div class="section-no">01 / 精确振幅自由</div><h2>我只放开被动分量，不改变流动几何</h2>
+<p>令 \(m=\rho-\tfrac32c_\gamma=43/423360>0\)，并取</p>
+<div class="equation">\[\varkappa_j=L_j^{2/3}\exp\!\left(\frac m3L_j^2\right),\qquad \mathfrak a_{*,j}=\varkappa_jB_j\Gamma_j^{-1/2}.\]</div>
+<p>对每个有限 \(j\)，\(u_j^*=(\mathfrak a_{*,j}F_j,B_j\theta_j,0)\)、\(p_j^*=0\) 仍是精确、光滑、周期、均值为零、无外力解。这来自被动分量的特殊线性振幅自由，不是一般 Navier--Stokes 振幅缩放。</p></section>
+<section id="s-02"><div class="section-no">02 / 完整支付</div><h2>标量支付保持在背景剪切尺度</h2>
+<p>局部能量、规范压力、速度三次项、调和项、加速度与第五支付壳全部重算后，M、F 两框架一致：</p>
+<div class="equation">\[\boxed{P_{R_j}^{M,*}=P_{R_j}^{F,*}\asymp B_j^3R_j^3,\qquad \log P_{R_j}^{\alpha,*}=3\rho L_j^2+O(1).}\]</div>
+<p>能量行保留严格正余量 \(e_E-2m/3=1171/943200>0\)。反例位于大支付区；小支付估计不受影响。</p></section>
+<section id="s-03"><div class="section-no">03 / 二次目标量</div><h2>端点量与正领圈通量按振幅平方增长</h2>
+<p>领圈通量对被动振幅严格二次齐次。R0.74F 的终端存活下界对任意被动振幅成立，R0.74N 的全壳上界也可精确缩放。非循环合并后得到</p>
+<div class="equation">\[\boxed{X_{R_j}^{\alpha,*}\asymp\mathfrak C_{R_j}^{\alpha,*}\asymp\varkappa_j^2B_j^2L_jR_j^2,\qquad \alpha\in\{M,F\}.}\]</div>
+<p>这里 \(X_*\) 的下界来自端点能量分量。耗散分量单独只有上界；没有证明匹配耗散下界。</p></section>
+<section id="s-04"><div class="section-no">04 / 标量端点 no-go</div><h2>平方根对数不再是普适标量上界</h2>
+<p>定义 \(\delta_*=86/11907\)、\(q_*=8024/11907\)。同一列精确解满足</p>
+<div class="equation">\[\boxed{X_{R_j}^{\alpha,*}\asymp\mathfrak C_{R_j}^{\alpha,*}\asymp(P_{R_j}^{\alpha,*})^{8024/11907}(1+\log_+P_{R_j}^{\alpha,*})^{7/6}.}\]</div>
+<div class="equation">\[\frac{X_{R_j}^{\alpha,*}}{(P_{R_j}^{\alpha,*})^{2/3}\sqrt{1+\log_+P_{R_j}^{\alpha,*}}}\asymp\frac{\mathfrak C_{R_j}^{\alpha,*}}{(P_{R_j}^{\alpha,*})^{2/3}\sqrt{1+\log_+P_{R_j}^{\alpha,*}}}\longrightarrow\infty.\]</div>
+<p>因此，只依赖冻结标量支付的普适平方根对数端点是 FALSE。更一般地，任何 \(\Phi(p)=o\!\left(p^{8024/11907}(1+\log_+p)^{7/6}\right)\) 都不能成为普适标量 majorant。这里不声称该指数最优。</p></section>
+<section id="s-05"><div class="section-no">05 / 固定对数幂量词</div><h2>每个预先固定的对数幂也分别失败</h2>
+<p>先固定任意 \(\gamma\in\mathbb R\)，再选择 \(M>\max\{0,\gamma-1/2\}\) 和 \(\varkappa_\gamma=L^M\)。则存在一个可依赖于 \(\gamma\) 的精确光滑解族，使</p>
+<div class="equation">\[P^{2/3}(1+\log_+P)^\gamma\]</div>
+<p>不是普适上界。我没有声称同一列多项式振幅同时处理所有 \(\gamma\)。这条推论与上一节的一列指数振幅定理必须分开。</p></section>
+<section id="s-06"><div class="section-no">06 / 证据等级</div><h2>解析结论、继承输入、有限复算和文献边界分开</h2>
+<p><strong>PROVED：</strong>任意被动振幅下的精确解结构、完整支付账本、\(P_*\) 尺度、领圈通量的精确二次缩放、\(X_*\) 的非循环两侧闭合、标量次前沿 no-go 与固定 \(\gamma\) 推论。</p>
+<p><strong>INHERITED：</strong>R0.74F--N 的精确 2D3C 解、终端叶片下界、通量恒等式、第五壳下界与归一化全壳上界。</p>
+<p><strong>FINITE：</strong>Python Fraction 与独立 Ruby Rational 重建 245/245；图包含 26 个文件、24 个 manifest 条目、15 个外部绑定和 25 行校验和，内部验证 72/72。有限复算不替代解析证明。</p>
+<p><strong>LITERATURE BOUNDARY：</strong>十四篇一手来源确认 2D3C 被动分量的任意振幅先例，并区分局部能量、压力、通量、偏斜柱体与 Carleson 控制。有限未命中不证明新颖性、优先权、穷尽性或可发表性。</p></section>
+<section id="s-07"><div class="section-no">07 / 开放边界</div><h2>下一步必须加入真正独立的结构可观测量</h2>
+<ul><li>最优的普适替代前沿仍为 OPEN；</li><li>能检测二次被动振幅、又能稳定传到 suitable weak 极限的增广量仍为 OPEN；</li><li>任意光滑流的增广端点定理、payment-to-admissibility 与 prescribed good scale 仍为 OPEN；</li><li>耗散分量单独的匹配下界仍为 OPEN；</li><li>任意三维数据的正则性或奇性、全局存在与光滑性仍为 OPEN；</li><li>新颖性和优先权仍为 OPEN。</li></ul>
+<p><strong>NOT CLAY：</strong>这里构造的是全局光滑结构解上的 no-go，没有奇点，也没有任意数据的全局正则性结论。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>标量支付保持不变，二次目标量逃离平方根对数端点</h2>
+<picture><source srcset="/assets/r074o/fig-r074o-amplitude-endpoint.svg" type="image/svg+xml"><img src="/assets/r074o/fig-r074o-amplitude-endpoint.png" alt="R0.74O passive-amplitude endpoint no-go"></picture>
+<p><a href="/assets/r074o/fig-r074o-amplitude-endpoint.pdf">下载矢量 PDF</a> · <a href="/assets/r074o/fig-r074o-amplitude-endpoint.png">下载 600 dpi PNG</a> · <a href="/assets/r074o/fig-r074o-amplitude-endpoint.svg">打开 SVG</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/source-data.csv">source-data.csv</a></p>
+<p><a href="/figures/r074o/fig-r074o-amplitude-endpoint/caption.md">图注</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/chart-contract-and-source-data.md">图表合同</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/qa-report.md">图件 QA</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/plot.py">绘图源码</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/validate.py">验证器</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/validation.json">72 项验证记录</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/manifest.json">图件 manifest</a> · <a href="/figures/r074o/fig-r074o-amplitude-endpoint/SHA256SUMS">25 项校验和</a></p>
+<p class="figure-note">SVG 是网页主图；PNG 是回退与 600 dpi 归档，PDF 是矢量下载。图是确定性解析示意图，不是 DNS、仿真、拟合数据、采样路径或奇点证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>证明、独立审计、双实现证书、里程碑增量与完整图包</h2><p class="files">
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_problem_freeze.md">问题冻结</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_amplitude_endpoint_counterexample.md">解析主文</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_amplitude_endpoint_independent_audit.md">解析独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_final_source_rebind_audit.md">最终源文件重绑定</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074o_amplitude_endpoint_certificate.py">Python 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074o_amplitude_endpoint_certificate_independent.rb">独立 Ruby 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_amplitude_endpoint_certificate.json">冻结 JSON</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_amplitude_endpoint_certificate_report.md">证书报告</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_certificate_independent_audit.md">证书独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_primary_literature_boundary.md">主源文献边界</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_primary_literature_independent_audit.md">文献独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_gap_matrix.md">证据与缺口矩阵</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_bilingual_dictionary.md">双语边界词典</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_report-source.md">审计后中文 reader source</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_reader_source_independent_audit.md">reader source 独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_milestone_recap_delta.md">里程碑 recap 增量</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_milestone_recap_independent_audit.md">recap 独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_figure_independent_audit.md">图件独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074o_freeze_manifest.json">冻结清单</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/tests/r074o-amplitude-endpoint-gate.test.mjs">R0.74O 数学门禁</a></p>
+<p><a href="/notes/r0-74o.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">累计回顾 R0.61–R0.74O</a> · <a href="/recap-r0-61-r0-74o.pdf">累计回顾 PDF</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74P</h2><p>冻结一个非循环、尺度临界、可弱稳定的增广可观测量，先检验它是否能看见本节的二次被动振幅。</p></section>
+</article></main></body></html>

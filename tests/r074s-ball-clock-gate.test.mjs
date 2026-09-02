@@ -145,6 +145,23 @@ test("R0.74S frozen Step 12 terminal-window and Morrey sources retain the condit
   }
 });
 
+test("R0.74S frozen Step 13 temporal and Morrey sources retain the exact boundary", () => {
+  const hashes = {
+    "research/r074s_temporal_integrability_morrey_certificate.json": "095e8a7a0ba378ff2178a166cbed81e1f132be055d37165c945020a26466e330",
+    "research/r074s_temporal_integrability_morrey_certificate_report.md": "c464af1617391beda5b077e13066629203d408519ab32ee89b2115475346fe2b",
+    "research/r074s_temporal_integrability_morrey_independent_audit.md": "332bf2a5b4503b9456bc76b1067bc44cb2d788e37fa7f2e34f10211a700e7ce3",
+    "research/r074s_temporal_integrability_morrey_primary_audit.md": "5910f46c0dd401d3766343d75ae3e68bdecb9d8416615fd8feb74d0f560adefd",
+    "research/r074s_temporal_integrability_morrey_threshold.md": "d22a4e06b55325009b3d3930d0f8c0b96b4b4a7d3cdf1386a4158b0446e367de",
+    "scripts/r074s_temporal_integrability_morrey_certificate.py": "eb313260c16431c1379d1b77a508b8bb7740ac713c014126c08e44bc2d0cfafb",
+    "scripts/r074s_temporal_integrability_morrey_certificate_independent.rb": "520d52deb1ba56fb46f841e0856bd8eb14ec5dd4961c90dd3b9ec240f88c9720",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_temporal_integrability_morrey_threshold.md");
+  for (const marker of ["S.307", "S.313", "S.322", "S.328", "S.331", "S.334", "S.340", "S.342", "ABSTRACT BOUNDARY TESTS", "NOT NSE COUNTEREXAMPLES", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -159,6 +176,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_paid_branch_last_exit_certificate.py", "research/r074s_paid_branch_last_exit_certificate.json", { exact_total: 12, exact_passed: 12, finite_total: 10, finite_passed: 10, structural_total: 79, structural_passed: 79, negative_mutations_total: 47, negative_mutations_passed: 47 }],
     ["scripts/r074s_shared_budget_terminal_trace_certificate.py", "research/r074s_shared_budget_terminal_trace_certificate.json", { all_pass: true, exact_passed: 14, exact_total: 14, finite_passed: 7, finite_total: 7, negative_passed: 7, negative_total: 7, structural_passed: 34, structural_total: 34 }],
     ["scripts/r074s_terminal_window_morrey_certificate.py", "research/r074s_terminal_window_morrey_certificate.json", { all_pass: true, exact_passed: 16, exact_total: 16, finite_passed: 12, finite_total: 12, negative_passed: 11, negative_total: 11, structural_passed: 51, structural_total: 51 }],
+    ["scripts/r074s_temporal_integrability_morrey_certificate.py", "research/r074s_temporal_integrability_morrey_certificate.json", { dependency_passed: 4, dependency_total: 4, exact_passed: 31, exact_total: 31, finite_passed: 11, finite_total: 11, negative_passed: 32, negative_total: 32, structural_passed: 22, structural_total: 22 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -268,5 +286,26 @@ test("R0.74S Step 12 Ruby audit independently reconstructs the terminal-window M
     note_checks_passed: 39, note_checks_total: 39,
     negative_groups_passed: 2, negative_groups_total: 2,
     placeholder_artifacts: [],
+  });
+});
+
+test("R0.74S Step 13 Ruby audit independently reconstructs the temporal and Morrey boundary", () => {
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_temporal_integrability_morrey_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 13 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 9, independent_groups_total: 9,
+    independent_cases: 72027,
+    artifact_locks_passed: 6, artifact_locks_total: 6,
+    dependency_locks_passed: 4, dependency_locks_total: 4,
+    note_checks_passed: 32, note_checks_total: 32,
+    primary_artifact_groups_passed: 1, primary_artifact_groups_total: 1,
+    primary_artifact_cases: 19,
+    negative_groups_passed: 2, negative_groups_total: 2,
+    negative_cases: 43,
   });
 });

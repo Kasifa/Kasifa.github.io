@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜终端公共窗口与条件 Morrey packing";
+  const title = "R0.74S｜时间可积性上限与组合 Morrey 阈值";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -71,7 +71,7 @@ try {
       completeChinesePublication: true,
       htmlAndPdfCryptographicallyBound: true,
       pdfBindingCertifiesMathematicalCorrectness: false,
-      evidenceClassesSeparated: ["PROVED", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
+      evidenceClassesSeparated: ["PROVED", "CONDITIONAL", "ABSTRACT", "METHOD CEILING", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
       oneSidedBallClocks: "PROVED",
       stoppedOrientations: "PROVED",
       quadraticBallLedger: "PROVED",
@@ -161,8 +161,23 @@ try {
       combinedStep12Target: "OPEN_S303",
       frozenPacketPhysicalWinding: false,
       singlePacketSpeedRoute: "KINEMATICALLY_SCREENED_NOT_UNIVERSAL_PDE_NO_GO_S304_S306",
+      dimensionlessFluxAndCommonDeletion: "PROVED_S307_S309",
+      fixedSolutionTemporalSequence: "PROVED_ELL1_L4_OVER_3_S310_S312",
+      fixedSolutionCommonWindowGain: "PROVED_DELTA_ONE_QUARTER_S313",
+      generalTemporalHolder: "PROVED_S314_S315",
+      linearPaymentOptimization: "PROVED_UNDER_EXPLICIT_S316_S317_S322",
+      linearPaymentTargetTwoThirds: "METHOD_CEILING_STRICTLY_ABOVE_TWO_THIRDS",
+      smoothTemporalSaturation: "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S323_S325",
+      paymentDependentMovingTubeMorrey: "CONDITIONAL_ON_S328_S326_S330",
+      twoScalarCapThreshold: "ABSTRACT_EXACT_TWO_THIRDS_S331",
+      heatShearHighFrequencyScreen: "PROVED_EXACT_SMOOTH_NSE_S332_S334",
+      criticalEightAryTree: "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S335_S339",
+      incidenceChargingAndCubicDuality: "CONDITIONAL_INTERFACE_S340_S341",
+      strictCubicDiniPdeGain: "OPEN",
+      quadraticShellSelectivePayment: "OPEN_S342",
+      uniformFixedSolutionHTailPayment: "OPEN",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "INHERITED_STEP10_STRUCTURE_FIGURE_NO_NEW_STEP12_FIGURE",
+      formalFigure: "STEP13_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

@@ -49,7 +49,7 @@ try {
         notClayVisible: kind !== "note" || body.includes("NOT CLAY"),
         openBoundaryVisible: kind !== "note" || /S\.280/.test(body) && /S\.288/.test(body) && /S\.303/.test(body) && /OPEN|开放/.test(body),
         noGoBoundaryVisible: kind !== "note" || /no-go/i.test(body) && /not a universal PDE no-go|不是 universal PDE no-go/i.test(body),
-        formalFigureVisible: kind !== "note" || /历史结构图|historical structure figure/i.test(body),
+        formalFigureVisible: kind !== "note" || /正式解析示意图|formal analytic schematic/i.test(body),
         cardPresent: kind !== "home" || Boolean(card),
         cardCharacters: card?.textContent?.length ?? 0,
         literatureBoundaryPresent: kind !== "literature" || Boolean(document.querySelector("#r074s-boundary")),

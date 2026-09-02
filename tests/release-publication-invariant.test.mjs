@@ -418,7 +418,9 @@ function publicReleaseId(file) {
 }
 
 test("keeps every synchronized public note PDF discoverable from its note", async () => {
-  const noteFiles = await readdir(notesRoot);
+  const noteFiles = (await readdir(notesRoot)).filter(
+    (file) => !isOneDriveConflictCopyName(file),
+  );
   const notePdfs = noteFiles.filter((file) => /^r0-.+\.pdf$/.test(file)).sort();
 
   assert.ok(notePdfs.length > 0, "public note PDF inventory is empty");

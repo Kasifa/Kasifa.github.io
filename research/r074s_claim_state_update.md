@@ -47,10 +47,21 @@
 | full terminal domain and plateau domain are equivalent | FALSE / ONLY PLATEAU <= FULL |
 | fixed best-N terminal-dependent PDE estimate | OPEN / NEXT PDE TARGET |
 | forced residual tail after Step 7/8 paid branches | OPEN / TO BE DEFINED AND AUDITED |
+| exact D-first paid/residual six-class partition | PROVED / S.225 |
+| new low-Rayleigh residual class | RULED OUT / EMPTY BY S.226 |
+| combined Q-paid branches | PROVED / ONE 6B_Q LEDGER, NOT TWO |
+| combined cubic-paid branches | PROVED / ONE C5 LEDGER, NOT TWO |
+| paid-branch residual vector | PROVED NONNEGATIVE / T_OVER_6 < r < T_OVER_2 ON BOTH RESIDUAL CLASSES |
+| residual best-N reduction | PROVED DOMAIN-SAFE / S.235--S.240 |
+| separate N-exception budgets for R_sh and R_x | REFUTED / WRONG QUANTIFIER |
+| terminal D-dominance localizes to last-exit persistence | REFUTED BY EXACT CLOCK STRESS TEST |
+| small-payment residual fallback | PROVED QUADRATIC WHEN P_R^M <= 1 |
+| fixed solution- and scale-independent N0 residual estimate S.243 | OPEN / MAIN PDE GATE |
+| full-terminal Q.12 from S.243 | PROVED CONDITIONAL IMPLICATION ONLY |
 | quadratic or square-function control of Jordan envelope X | OPEN |
 | Step 8 narrows Step 2 stopped-work gate | FALSE / NOT CLAIMED |
 | smooth NSE approximants exist for every suitable weak solution | NOT CLAIMED |
 | R0.74R persistence inputs and fixed-scale Q.1 | OPEN |
 | scale contraction, regularity, singularity, Clay | OPEN / NOT CLAIMED / NOT CLAY |
 
-Finite evidence: Step 5 passes 5/5 exact, 7/7 finite, 55/55 structural, and 4/4 mutations. Step 6 passes 4/4 exact, 8/8 finite, 58/58 structural, and 10/10 mutations; the independent Ruby audit passes 9/9 checks and 8/8 mutations. Step 7 passes 16/16 exact, 8/8 finite, 52/52 structural, and 9/9 negative mutations; the independent Ruby audit passes 6/6 groups, 31/31 structural checks, and 9/9 adversarial mutations. Final Step 8 passes 16/16 exact, 19/19 finite, 75/75 structural, and 20/20 negative mutations; the independent Ruby audit passes 14/14 groups, 22/22 exact rows, 61/61 structural checks, 14/14 source mutations, 10/10 artifact mutations, and 6/6 report checks. Step 9 passes 9/9 exact, 8/8 finite, 57/57 structural, and 18/18 mutations; its independent audit passes 12/12 groups, 91,396/91,396 finite cases, 49/49 structural checks, 21/21 source mutations, 15/15 artifact mutations, and 6/6 report checks. These checks support implementation reproducibility only.
+Finite evidence: Step 5 passes 5/5 exact, 7/7 finite, 55/55 structural, and 4/4 mutations. Step 6 passes 4/4 exact, 8/8 finite, 58/58 structural, and 10/10 mutations; the independent Ruby audit passes 9/9 checks and 8/8 mutations. Step 7 passes 16/16 exact, 8/8 finite, 52/52 structural, and 9/9 negative mutations; the independent Ruby audit passes 6/6 groups, 31/31 structural checks, and 9/9 adversarial mutations. Final Step 8 passes 16/16 exact, 19/19 finite, 75/75 structural, and 20/20 negative mutations; the independent Ruby audit passes 14/14 groups, 22/22 exact rows, 61/61 structural checks, 14/14 source mutations, 10/10 artifact mutations, and 6/6 report checks. Step 9 passes 9/9 exact, 8/8 finite, 57/57 structural, and 18/18 mutations; its independent audit passes 12/12 groups, 91,396/91,396 finite cases, 49/49 structural checks, 21/21 source mutations, 15/15 artifact mutations, and 6/6 report checks. Step 10 passes 12/12 exact, 10/10 finite, 79/79 structural, and 47/47 negative mutations; its independent Ruby audit passes 9/9 groups, 65,681 cases, 21/21 contract mutations, 13/13 report checks, and 15/15 audit bindings. These checks support implementation reproducibility only.

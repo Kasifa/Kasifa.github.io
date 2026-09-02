@@ -93,6 +93,24 @@ test("R0.74S frozen Step 9 best-N last-exit sources and dual audits retain the n
   }
 });
 
+test("R0.74S frozen Step 10 paid-branch residual sources and dual audits retain the shared-gate boundary", () => {
+  const hashes = {
+    "research/r074s_paid_branch_last_exit_residual.md": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c",
+    "research/r074s_paid_branch_last_exit_primary_audit.md": "cf7bbfcb01a5389878a2a9f65ffa0e083863f8f6478986bc10110cfd24e6446c",
+    "research/r074s_paid_branch_last_exit_independent_audit.md": "cb33dd2a1fed8a58f285bdb3e7a053480c40b06a899d1a1bd3a18549b6b8125a",
+    "scripts/r074s_paid_branch_last_exit_certificate.py": "2763b3fa575ce723a400b6c7e5654d0a64c8a9db470d79097dc5a77769a365a9",
+    "research/r074s_paid_branch_last_exit_certificate.json": "8f37a8ce4d6513406297e6ce1e676ceaafa39776723bba839074120f206314de",
+    "research/r074s_paid_branch_last_exit_certificate_report.md": "6e25a07a417f96907e5e17da6b561830b75aa1a44d0b4b13fa56107dc31e4a5f",
+    "scripts/r074s_paid_branch_last_exit_certificate_independent.rb": "15b77560f41aa22d00447821be501ab5d3c992afa1001063c3ce986f2e9938c9",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_paid_branch_last_exit_residual.md");
+  for (const marker of ["S.225", "S.233", "S.240", "S.243", "one complete cubic", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+  assert.ok(source.includes("one complete \\(Q\\)-ledger"));
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -104,6 +122,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_dissipation_rayleigh_certificate.py", "research/r074s_dissipation_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 8, finite_total: 8, negative_mutations_passed: 9, negative_mutations_total: 9, structural_passed: 52, structural_total: 52 }],
     ["scripts/r074s_defect_relaxed_total_rayleigh_certificate.py", "research/r074s_defect_relaxed_total_rayleigh_certificate.json", { exact_passed: 16, exact_total: 16, finite_passed: 19, finite_total: 19, negative_mutations_passed: 20, negative_mutations_total: 20, structural_passed: 75, structural_total: 75 }],
     ["scripts/r074s_best_n_last_exit_certificate.py", "research/r074s_best_n_last_exit_certificate.json", { exact_passed: 9, exact_total: 9, finite_passed: 8, finite_total: 8, negative_mutations_passed: 18, negative_mutations_total: 18, structural_passed: 57, structural_total: 57 }],
+    ["scripts/r074s_paid_branch_last_exit_certificate.py", "research/r074s_paid_branch_last_exit_certificate.json", { exact_total: 12, exact_passed: 12, finite_total: 10, finite_passed: 10, structural_total: 79, structural_passed: 79, negative_mutations_total: 47, negative_mutations_passed: 47 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -148,5 +167,23 @@ test("R0.74S Step 9 Ruby audit independently reconstructs the best-N last-exit b
     source_mutations_rejected: 21, source_mutations_total: 21,
     artifact_mutations_rejected: 15, artifact_mutations_total: 15,
     report_checks_passed: 6, report_checks_total: 6,
+  });
+});
+
+test("R0.74S Step 10 Ruby audit independently reconstructs the paid-branch residual boundary", () => {
+  const output = execFileSync("ruby", [resolve(root, "scripts/r074s_paid_branch_last_exit_certificate_independent.rb")], { cwd: root, encoding: "utf8" });
+  assert.equal(createHash("sha256").update(output).digest("hex"), "4877dc3a0de2c2f605641736c7355672f0a7a68cb97a37849d4a7c28495e8bbd");
+  const parsed = JSON.parse(output);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 9, independent_groups_total: 9,
+    independent_cases: 65681,
+    artifact_hashes_passed: 6, artifact_hashes_total: 6,
+    dependency_hashes_passed: 7, dependency_hashes_total: 7,
+    note_checks_passed: 16, note_checks_total: 16,
+    parser_checks_passed: 3, parser_checks_total: 3,
+    contract_mutations_rejected: 21, contract_mutations_total: 21,
+    report_checks_passed: 13, report_checks_total: 13,
+    audit_bindings_passed: 15, audit_bindings_total: 15,
   });
 });

@@ -145,8 +145,8 @@ def render(config: dict) -> None:
     width, height = config["width_mm"] * mm, config["height_mm"] * mm
     d = Drawing(width, height)
     d.add(Rect(0, 0, width, height, fillColor=white, strokeColor=None))
-    label(d, 14, height - 16, "Canonical best-N last exits: exact representations, no new compression", 8.2, bold=True)
-    label(d, 14, height - 27, "R0.74S STEP 9  |  SHARP B_Q ERROR  |  NO-GAIN / NO-GO  |  NOT CLAY", 5.2, color=MID)
+    label(d, 14, height - 16, "Paid-branch deletion leaves one residual best-N gate", 8.2, bold=True)
+    label(d, 14, height - 27, "R0.74S STEP 10  |  SIX CLASSES  |  SINGLE LEDGERS  |  S.243 OPEN  |  NOT CLAY", 5.2, color=MID)
     for dx, dy in [(0, 4.5), (4.5, 0), (0, -4.5), (-4.5, 0)]:
         d.add(Circle(width - 19 + dx, height - 18 + dy, 2.3, fillColor=BLUE_LIGHT, strokeColor=BLUE, strokeWidth=0.5))
     d.add(Circle(width - 19, height - 18, 1.8, fillColor=GOLD_LIGHT, strokeColor=GOLD, strokeWidth=0.5))
@@ -155,27 +155,27 @@ def render(config: dict) -> None:
     ax, aw = 14, 154
     bx, bw = 175, 160
     cx, cw = 342, width - 356
-    panel(d, ax, y, aw, h, "A", "Signed F half-exit")
-    panel(d, bx, y, bw, h, "B", "K-theta last exit")
-    panel(d, cx, y, cw, h, "C", "No-gain boundary")
+    panel(d, ax, y, aw, h, "A", "Four paid classes")
+    panel(d, bx, y, bw, h, "B", "Two residual mechanisms")
+    panel(d, cx, y, cw, h, "C", "Shared best-N gate")
 
-    box(d, ax + 10, y + h - 64, 134, 30, ["W_half^F = (1/2) S_N^F", "forced signed full tail"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
-    box(d, ax + 10, y + h - 106, 134, 29, ["sup_tau inf_{S_tau}", "exceptions depend on terminal"], fill=GOLD_LIGHT, stroke=GOLD, status="ORDER")
-    box(d, ax + 10, y + h - 148, 134, 29, ["F half-exit may fail S.25", "closure is not admissibility"], fill=RED_LIGHT, stroke=RED, status="FALSE")
-    multiline(d, ax + 10, y + 29, ["Cancellation remains inside the", "complete nonexceptional tail."], 4.8, color=MID, leading=6.5)
+    box(d, ax + 10, y + h - 64, 134, 30, ["P_beta + P_Q", "one combined 6 B_Q"], fill=BLUE_LIGHT, stroke=BLUE, status="SINGLE")
+    box(d, ax + 10, y + h - 106, 134, 29, ["P_sigma + P_LE", "one combined C5 ledger"], fill=GOLD_LIGHT, stroke=GOLD, status="SINGLE")
+    box(d, ax + 10, y + h - 148, 134, 29, ["D-first six-class split", "no low-Rayleigh residual"], fill=PLUM_LIGHT, stroke=PLUM, status="EXACT")
+    multiline(d, ax + 10, y + 29, ["No duplicate Q ledger;", "no duplicate cubic ledger."], 4.8, color=MID, leading=6.5)
 
-    box(d, bx + 12, y + h - 65, 136, 31, ["L_theta = (1-theta)T", "minus Delta Q"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
-    box(d, bx + 12, y + h - 108, 136, 30, ["| W_theta^K", "- (1-theta) S_N^K | <= B_Q"], fill=GOLD_LIGHT, stroke=GOLD, status="SHARP")
-    box(d, bx + 12, y + h - 150, 136, 29, ["theta < 3/4", "finite good-stop closure"], fill=PLUM_LIGHT, stroke=PLUM, status="SCOPED")
-    multiline(d, bx + 10, y + 29, ["No continuity of the selector;", "no infinite cutoff test."], 4.8, color=MID, leading=6.3)
+    box(d, bx + 12, y + h - 65, 136, 31, ["R_sh: short non-D", "and Q-small"], fill=BLUE_LIGHT, stroke=BLUE, status="RESIDUAL")
+    box(d, bx + 12, y + h - 108, 136, 30, ["R_x: defect or", "high-Rayleigh ancestry"], fill=GOLD_LIGHT, stroke=GOLD, status="RESIDUAL")
+    box(d, bx + 12, y + h - 150, 136, 29, ["T/6 < r < T/2", "on both classes"], fill=PLUM_LIGHT, stroke=PLUM, status="SHARP")
+    multiline(d, bx + 10, y + 29, ["One shared exception budget;", "two separate N budgets are false."], 4.8, color=MID, leading=6.3)
 
-    box(d, cx + 10, y + h - 69, cw - 20, 35, ["canonical last-exit bounds", "equivalent to open best-N tails"], fill=RED_LIGHT, stroke=RED, status="NO-GAIN")
-    box(d, cx + 10, y + h - 112, cw - 20, 28, ["full domain = Q.12", "plateau domain is weaker"], fill=GOLD_LIGHT, stroke=GOLD, status="DISTINCT")
-    box(d, cx + 10, y + h - 155, cw - 20, 29, ["NEXT: paid-branch", "forced PDE residual tail"], fill=BLUE_LIGHT, stroke=BLUE, status="OPEN")
-    multiline(d, cx + 10, y + 29, ["No new quadratic compression.", "Step 8 no-go and S.38 retained.", "No regularity conclusion."], 4.7, color=MID, leading=6.1)
+    box(d, cx + 10, y + h - 69, cw - 20, 35, ["clock tail <= paid", "+ 6 residual best-N tail"], fill=BLUE_LIGHT, stroke=BLUE, status="REDUCED")
+    box(d, cx + 10, y + h - 112, cw - 20, 28, ["residual tail <=", "one half clock tail"], fill=GOLD_LIGHT, stroke=GOLD, status="DOMAIN-SAFE")
+    box(d, cx + 10, y + h - 155, cw - 20, 29, ["fixed universal N0", "residual estimate S.243"], fill=RED_LIGHT, stroke=RED, status="OPEN")
+    multiline(d, cx + 10, y + 29, ["Plateau is weaker than full Q.12.", "PDE packing is not proved.", "Prior no-go remains."], 4.7, color=MID, leading=6.1)
     label(d, cx + 10, y + 12, "NOT CLAY.", 4.9, color=RED, bold=True)
 
-    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S canonical best-N last-exit no-gain")
+    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S paid-branch residual best-N gate")
     renderSVG.drawToFile(d, str(HERE / "figure.svg"))
     finalize_svg(config)
 
@@ -207,8 +207,9 @@ def main() -> None:
         "dissipation_rayleigh_certificate_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_certificate.json"),
         "step8_certificate_sha256": sha(REPO / "research/r074s_defect_relaxed_total_rayleigh_certificate.json"),
         "step9_certificate_sha256": sha(REPO / "research/r074s_best_n_last_exit_certificate.json"),
-        "analytic_note_sha256": sha(REPO / "research/r074s_best_n_last_exit_equivalence.md"),
-        "claim_boundary": "CANONICAL BEST-N LAST EXITS ARE EXACT TERMINAL-TAIL REPRESENTATIONS; NO NEW QUADRATIC COMPRESSION; PDE RESIDUAL TAIL OPEN; NOT CLAY",
+        "step10_certificate_sha256": sha(REPO / "research/r074s_paid_branch_last_exit_certificate.json"),
+        "analytic_note_sha256": sha(REPO / "research/r074s_paid_branch_last_exit_residual.md"),
+        "claim_boundary": "FOUR PAID CLASSES USE ONE Q LEDGER AND ONE CUBIC LEDGER; TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE; S.243 OPEN; NOT CLAY",
     }
     (HERE / "environment.json").write_text(json.dumps(environment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "results.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")

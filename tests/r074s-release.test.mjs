@@ -12,7 +12,7 @@ const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex")
 const node = process.env.CODEX_NODE || process.execPath;
 
 test("R0.74S publication accounting advances without recap drift", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.88", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
+  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.89", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
   const manifest = JSON.parse(read("research/release-manifest.json"));
   assert.equal(manifest.latestCompletedRelease, "r074s");
   assert.equal(manifest.nextRelease, "r074t");
@@ -33,8 +33,8 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   for (const marker of [
     "一侧 ball cutoff 与 flux 符号恒等式", "四通道 signed recombination", "三通道 genealogy cutoff 非负",
     "PROVED ABSTRACT SCALAR NO-GO", "这个见证没有空间算子或 PDE 实现", "真实 NSE solution family", "PDE-weighted block length", "完整中文版本",
-    "S.200–S.222：PROVED", "F-half-exit：EXACT 1/2 TAIL", "K-last-exit：WITHIN SHARP B_Q", "canonical compression：NO-GAIN",
-    "9/9 exact", "57/57 structural", "18/18 mutations", "91,396/91,396 finite cases", "NOT CLAY",
+    "S.223–S.247：PROVED / AUDITED", "P_beta + P_Q：ONE 6B_Q", "P_sigma + P_LE：ONE C5", "residual：R_sh ∪ R_x",
+    "T/6 &lt; r &lt; T/2", "S.243 residual packing：OPEN", "12/12 exact", "79/79 structural", "47/47 mutations", "65,681 cases", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -68,11 +68,21 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   assert.equal(binding.claimBoundary.fullTerminalBestNTail, "OPEN_Q12");
   assert.equal(binding.claimBoundary.plateauBestNTail, "OPEN_WEAKER_RESTRICTION");
   assert.equal(binding.claimBoundary.fixedBestNTerminalExceptionEstimate, "OPEN_NEXT_PDE_TARGET");
-  assert.equal(binding.claimBoundary.paidBranchResidualTail, "OPEN_TO_BE_DEFINED_AND_AUDITED");
+  assert.equal(binding.claimBoundary.sixClassPaidResidualPartition, "PROVED_D_FIRST_EXACT_PARTITION");
+  assert.equal(binding.claimBoundary.lowRayleighExtraResidualClass, false);
+  assert.equal(binding.claimBoundary.oneQPaidLedger, "PROVED_SINGLE_6_B_Q");
+  assert.equal(binding.claimBoundary.oneCubicPaidLedger, "PROVED_SINGLE_C5_LEDGER");
+  assert.deepEqual(binding.claimBoundary.residualClasses, ["R_sh", "R_x"]);
+  assert.equal(binding.claimBoundary.residualTwoSidedComparability, "PROVED_T_OVER_6_LT_R_LT_T_OVER_2");
+  assert.equal(binding.claimBoundary.residualBestNReduction, "PROVED_DOMAIN_SAFE");
+  assert.equal(binding.claimBoundary.separateResidualExceptionBudgets, false);
+  assert.equal(binding.claimBoundary.terminalDDominanceLastExitPersistence, false);
+  assert.equal(binding.claimBoundary.paidBranchResidualTail, "PROVED_DEFINED_AND_REDUCED_PACKING_OPEN");
+  assert.equal(binding.claimBoundary.fixedUniversalN0ResidualEstimate, "OPEN_S243");
   assert.equal(binding.claimBoundary.finiteExceptionConsequence, "PROVED_CONDITIONAL_IMPLICATION_ONLY");
   assert.equal(binding.claimBoundary.step6PdeOrNseCounterexample, false);
   assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
-  assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN");
+  assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN_Q1");
   assert.equal(binding.claimBoundary.formalFigure, "PUBLISHED_DERIVED_FROM_FROZEN_ANALYTIC_SOURCE");
 });
 
@@ -84,10 +94,10 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
   const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
   assert.ok(card.length > 0 && card.length < 500, `homepage card length ${card.length}`);
-  for (const marker of ["F-half-exit", "signed tail", "canonical stops", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
+  for (const marker of ["四个已付分支", "residual", "S.243 OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["S.200–S.207", "K-last-exit", "S.25", "no-gain", "PDE residual tail", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["S.223–S.231", "six-class", "T/6&lt;r&lt;T/2", "S.243", "no-go", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
     const canonical = `research/figures/r074s/fig-r074s-ball-clock-debt/figure.${ext}`;
@@ -98,12 +108,12 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   }
   const validation = JSON.parse(read("research/figures/r074s/fig-r074s-ball-clock-debt/validation.json"));
   assert.equal(validation.summary.result, "PASS");
-  assert.equal(validation.summary.passed, 18);
-  assert.equal(validation.summary.total, 18);
+  assert.equal(validation.summary.passed, 19);
+  assert.equal(validation.summary.total, 19);
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step9-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step10-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
   assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));

@@ -1,8 +1,8 @@
-# R0.74S｜canonical best-N last-exit 等价与 no-gain
+# R0.74S｜删除已付分支后的 residual best-N gate
 
 ## 0. 这一步得到什么
 
-R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 支付 low-Rayleigh 耗散支，Step 8 则严格否定了 no-exception stopped-work 的普适二次界。Step 9 回到 R0.74Q 允许“固定 best-\(N\)、例外集合可随终端变化”的正确量词，并审计 canonical last exit 能否额外压缩尾部。
+R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存；Step 7 支付 low-Rayleigh 耗散支，Step 8 严格否定 no-exception stopped-work 的普适二次界，Step 9 证明 canonical last exit 只是 fixed best-\(N\) terminal tail 的精确表示。Step 10 进一步删除所有已被 \(Q\)-variation 或 velocity-cubic ledger 支付的壳层，定位真正剩下的两个 residual mechanisms。
 
 本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出
 
@@ -22,7 +22,7 @@ Step 8 引入标量 excess \(x\) 与 Jordan envelope \(X\)，证明 selected def
 
 从而严格否定普适 no-exception 二次界。S.38 仍是正确的条件蕴含；被反证的是它若要作为无条件定理所需的 antecedent。下一条可行路线必须回到固定 best-\(N\)、随终端变化的例外集合，并用 \(\sqrt N,Y_{2,R}^{\rm sf}\) 支付尾部。
 
-此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的 no-go 由继承的真实平滑 NSE exact family 给出。Step 9 进一步证明：\(F\)-half-exit 精确等于二分之一 signed best-\(N\) tail；\(K\)-last-exit 只在一个尖锐 \(B_Q\) 误差内等价于 \((1-\theta)\) 倍 best-\(N\) clock tail。因此 canonical stops 没有产生新的二次压缩；这是 completed-clock algebra 层面的严格 **no-gain / no-go**，不是 PDE tail estimate。fixed best-\(N_0\) PDE bound、R0.74R extraction 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
+此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；Step 8 的 no-go 由继承的真实平滑 NSE exact family 给出；Step 9 的 no-gain 说明 canonical stops 本身没有压缩。Step 10 证明四个 paid classes 合计只使用一个 \(6B_Q\) ledger 和一个 \(C_5\) cubic ledger，余项正好是 \(\mathcal R_{\rm sh}\cup\mathcal R_x\) 上的共享 best-\(N\) residual gate，并满足 \(T_k/6<r_k<T_k/2\)。这是一条 domain-safe reduction，不是 residual packing theorem。固定、与尺度和解无关的 \(N_0\) 估计 (S.243)、Q.12、Q.1、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
 本节没有数值仿真、DNS 或 DGX。
 
@@ -1052,3 +1052,388 @@ Step 9 **PROVED**：(S.200)--(S.203) 的终端域分离与 best-\(N\) tails；(S
 主证书通过 9/9 exact、8/8 finite、57/57 structural 与 18/18 mutations。独立 Ruby 审计通过 12/12 groups、91,396/91,396 finite cases、49/49 structural、21/21 source mutations、15/15 artifact mutations与 6/6 report checks。主文 SHA-256 为 `85003b3fdfdf28618a82a57d241e86c086704ea3ed3a9b192de223f3b8c3a4dd`。有限证书只支持实现可复现性，不替代 PDE 解析证明。
 
 **CANONICAL BEST-N LAST EXITS: EXACT REPRESENTATIONS, NO NEW QUADRATIC COMPRESSION. NEXT: PDE RESIDUAL TAIL AFTER PAID BRANCHES. NOT CLAY.**
+
+## 36. Step 10 的问题与结论
+
+Step 9 已说明 canonical last exit 只表示 R0.74Q 的 best-\(N\) terminal tail，并不自行压缩它。Step 10 的问题更窄：先删除所有已经被二次 \(Q\)-variation ledger 或 velocity-cubic ledger 支付的壳层，canonical \(2/3\)-last-exit tail 还剩什么？
+
+答案是一个精确六分区。四个 paid classes 合计只需
+
+\[
+6B_{Q,R}^M+C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R,
+\qquad A_R=(P_R^M)^{2/3},
+\]
+
+其中 \(Q\) 行只记一次 \(6B_Q\)，\(\mathcal P_\sigma\) 与 \(\mathcal P_{\rm LE}\) 先合并再做 Hölder，只记一次 \(C_5\) cubic ledger。余下两个 residual mechanisms 是：short non-\(D\)、\(Q\)-small 的 \(\mathcal R_{\rm sh}\)，以及 Step 8 scalar-excess class \(\mathcal R_x=\mathcal I_x\)。二者共享同一个 best-\(N\) exception budget，不能各自删除 \(N\) 个坐标。
+
+本步证明的是 exact reduction。它没有证明存在与解、尺度无关的固定 \(N_0\)，使 residual tail 获得二次界；没有证明 Q.12、Q.1、正则性或 Clay 结论。**NOT CLAY.**
+
+## 37. canonical 2/3-last exit 与固定 profile
+
+保留 periodic suitable-weak Version-M、full clock interval \(\mathcal T_R=(s_R,t_0)\)、plateau interval \(I_R\)、good-time set \(\mathcal G_R\)，以及
+
+\[
+A_R=(P_R^M)^{2/3},\qquad
+B_{Q,R}^M=\sum_{k\ge1}\operatorname{TV}_{[s_R,t_0)}Q_{k,R}\le C_QA_R,
+\qquad
+Z_R=\left(\sum_{k\ge1}v_{k,R}^2\right)^{1/2}.
+\]
+
+固定 \(\tau\in\mathcal G_R\cap\mathcal T_R\)。若 \(T_k=K_{k,R}(\tau)>0\)，取最后一个 \(K\le2T_k/3\) 的时刻 \(\ell_k\)，并写
+
+\[
+\boxed{
+\begin{gathered}
+\ell_k=\max\{t\in[s_R,\tau]:K_{k,R}(t)\le2T_k/3\},
+\quad J_k^{\rm LE}=(\ell_k,\tau),
+\quad d_k={\tau-\ell_k\over R^2},\\
+0<d_k<4,\quad K_{k,R}(\ell_k)={2T_k\over3},
+\quad K_{k,R}(t)>{2T_k\over3}\ (t\in J_k^{\rm LE}),\\
+\Delta Q_k=Q_k(\tau)-Q_k(\ell_k),\quad
+\Delta F_k=F_k(\tau)-F_k(\ell_k),\\
+\Delta K_k={T_k\over3},\qquad
+\Delta F_k={T_k\over3}-\Delta Q_k.
+\end{gathered}}
+\tag{S.223}
+\]
+
+若 \(T_k=0\)，令 \(\ell_k=\tau\)、\(d_k=0\)、residual coordinate 为零。\(\ell_k\) 不必是 good time；这里只用 \(K_k\) 连续。
+
+固定正的 deterministic profile \(\boldsymbol\lambda\)，它与 \(R,\tau\) 和解无关，并满足
+
+\[
+\boxed{\mathscr L(\boldsymbol\lambda)
+=\sum_{k\ge1}2^{3k}\gamma_k\lambda_k^3<\infty.}
+\tag{S.224}
+\]
+
+在正终端壳层中，按 \(d_k\gtreqless\lambda_k^{-3/2}\)、\(|\Delta Q_k|\gtreqless T_k/6\)、\(D_{k,R}(\tau)\gtreqless T_k/2\) 分出 long/short、\(Q+\)/\(Q-\)、\(D\)/non-\(D\)。等号分别放入 long、absolute-\(Q\)-large 与 \(D\)-dominated 一侧。
+
+## 38. D-first 六分区与 genealogy
+
+Step 8 的 full-history priority partition 保持不变：
+
+\[
+\mathcal I_D
+=\mathcal I_\beta\mathbin{\dot\cup}\mathcal I_\sigma
+\mathbin{\dot\cup}\mathcal I_x.
+\]
+
+这里 \(\mathcal I_\beta,\mathcal I_\sigma,\mathcal I_x\) 仍在完整 \(J_\tau=(s_R,\tau)\) 上定义，不能改写成 last-exit interval。按 D-first 优先顺序定义
+
+\[
+\boxed{
+\begin{aligned}
+\mathcal P_\beta&=\mathcal I_\beta,
+&\mathcal P_\sigma&=\mathcal I_\sigma,\\
+\mathcal P_{\rm LE}&=\mathcal I_{\neg D}\cap\mathcal I_{\rm long},
+&\mathcal P_Q&=\mathcal I_{\neg D}\cap\mathcal I_{\rm short}\cap\mathcal I_{Q+},\\
+\mathcal R_{\rm sh}&=\mathcal I_{\neg D}\cap\mathcal I_{\rm short}\cap\mathcal I_{Q-},
+&\mathcal R_x&=\mathcal I_x,\\
+\{k:T_k>0\}
+&=\mathcal P_\beta\mathbin{\dot\cup}\mathcal P_\sigma
+\mathbin{\dot\cup}\mathcal P_{\rm LE}\mathbin{\dot\cup}\mathcal P_Q
+\mathbin{\dot\cup}\mathcal R_{\rm sh}\mathbin{\dot\cup}\mathcal R_x.
+\end{aligned}}
+\tag{S.225}
+\]
+
+\(\mathcal P_Q\) 表示 absolute-\(Q\)-large，不是 \(Q\) 符号为正。Step 7 low-Rayleigh 支不会再生成第七类：
+
+\[
+\boxed{
+\mathcal I_{\rm lo}\subset\mathcal I_\beta\cup\mathcal I_\sigma,
+\qquad
+\mathcal I_{\rm lo}\setminus(\mathcal I_\beta\cup\mathcal I_\sigma)=\varnothing,
+\qquad
+\mathcal I_x=\mathcal I_x\cap(\mathcal I_{\rm def}\cup\mathcal I_{\rm hi}).}
+\tag{S.226}
+\]
+
+这是 genealogy 与 no-double-charge 结论，不是对 \(\mathcal I_x\) 的新支付；它仍可能来自 anomalous-defect 或 high-Rayleigh 支。
+
+## 39. 一个 Q ledger 与一个 cubic ledger
+
+对 \(\mathcal P_\beta\)，Step 8 给出 \(T_k\le6\beta_k(J_\tau)\)；对 \(\mathcal P_Q\)，定义给出 \(T_k\le6|\Delta Q_k|\)。两类位于互不相交的 \(D\) 与 non-\(D\) shell sets，因此先求和再扩大到完整 variation ledger：
+
+\[
+\boxed{
+\sum_{k\in\mathcal P_\beta\cup\mathcal P_Q}T_k
+\le6\left(\sum_{k\in\mathcal P_\beta}\beta_k(J_\tau)
++\sum_{k\in\mathcal P_Q}|\Delta Q_k|\right)
+\le6B_{Q,R}^M\le6C_QA_R.}
+\tag{S.227}
+\]
+
+正确系数是一个 \(6B_Q\)，不是两个 \(6B_Q\)。
+
+若 \(k\in\mathcal P_{\rm LE}\)，由 \(D_k(t)\le D_k(\tau)<T_k/2\) 与 \(K_k(t)>2T_k/3\)，对 last-exit interval 上几乎处处 good times 有
+
+\[
+\boxed{
+e_{k,R}(t)>{T_k\over6},\qquad
+{1\over R^2}\int_{J_k^{\rm LE}}e_{k,R}(t)^{3/2}\,dt
+>d_k\left({T_k\over6}\right)^{3/2}
+\ge\lambda_k^{-3/2}\left({T_k\over6}\right)^{3/2}.}
+\tag{S.228}
+\]
+
+这里没有在可能非 good 的 \(\ell_k\) 取 \(E_k,D_k\) 的值。接上 inherited padded-shell estimate 得到
+
+\[
+\boxed{
+T_k\le C_{\rm LE}\lambda_k2^k\gamma_k^{1/3}
+\bigl(p_{k,R}^{u,\eta}(J_k^{\rm LE})\bigr)^{2/3},
+\quad C_{\rm LE}=6C_1^{2/3}<C_4,
+\quad C_4=12(2C_1)^{2/3}.}
+\tag{S.229}
+\]
+
+对 \(\mathcal P_\sigma\) 使用 \(J_\tau\)，对 \(\mathcal P_{\rm LE}\) 使用各自的 \(J_k^{\rm LE}\)，在并集上先做 finite-shell Hölder，再只调用一次允许 shell-dependent time sets 的 (R.211)，得到
+
+\[
+\boxed{
+\sum_{k\in\mathcal P_\sigma\cup\mathcal P_{\rm LE}}T_k
+\le C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R,
+\qquad C_5=C_4C_P^{2/3}.}
+\tag{S.230}
+\]
+
+把两支各自估成完整全局 ledger 会多收一次 \(C_5\)，本步不这样做。
+
+## 40. residual vector 与尖锐比较
+
+记四个 paid classes 的并为 \(\mathcal I_{\rm pay}\)，两个 residual classes 的并为 \(\mathcal I_{\rm res}=\mathcal R_{\rm sh}\cup\mathcal R_x\)。已有
+
+\[
+\boxed{
+\sum_{k\in\mathcal I_{\rm pay}(\tau)}T_k
+\le6B_{Q,R}^M+C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R
+\le C_{\rm pay}(\boldsymbol\lambda)A_R,
+\quad C_{\rm pay}=6C_Q+C_5\mathscr L(\boldsymbol\lambda)^{1/3}.}
+\tag{S.231}
+\]
+
+定义 residual stopped-flux vector
+
+\[
+\boxed{
+r_{k,R}^{\boldsymbol\lambda}(\tau)
+=1_{\mathcal I_{\rm res}(\tau)}(k)
+\bigl[F_{k,R}(\tau)-F_{k,R}(\ell_k)\bigr],
+\qquad r_k=0\ \text{if }T_k=0.}
+\tag{S.232}
+\]
+
+在 \(\mathcal R_{\rm sh}\) 上，\(|\Delta Q_k|<T_k/6\) 来自定义；在 \(\mathcal R_x=\mathcal I_x\) 上，失败的 Step 8 \(\beta\)-test 给出同样严格界。配合 \(\Delta F=T/3-\Delta Q\)，两个 residual classes 都满足
+
+\[
+\boxed{
+{T_k\over6}<r_{k,R}^{\boldsymbol\lambda}(\tau)<{T_k\over2},
+\qquad
+2r_{k,R}^{\boldsymbol\lambda}(\tau)<T_k<6r_{k,R}^{\boldsymbol\lambda}(\tau).}
+\tag{S.233}
+\]
+
+全局补零后，
+
+\[
+\boxed{
+0\le r_{k,R}^{\boldsymbol\lambda}(\tau)\le{T_k\over2}\le{v_{k,R}\over2},
+\quad
+\|r_R^{\boldsymbol\lambda}(\tau)\|_{\ell^2}\le{Z_R\over2},
+\quad
+\sum_kr_{k,R}^{\boldsymbol\lambda}(\tau)\le C_FP_R^M.}
+\tag{S.234}
+\]
+
+\(\ell^2\) 上界本身不能推出 fixed-\(N\) 的 \(\ell^1\) tail bound；最后一项在大 \(P_R^M\) 区域也只有线性尺度。
+
+## 41. paid-branch deletion 的 best-N reduction
+
+对非负 \(\ell^1\) vector 定义
+
+\[
+\mathcal S_N(x)=\inf_{S\subset\mathbb N,\#S\le N}\sum_{k\notin S}x_k.
+\]
+
+对每一个同样的 exceptional set \(S\)，四个 paid classes 与 residual comparison 给出
+
+\[
+\boxed{
+\sum_{k\notin S}T_k
+\le6B_{Q,R}^M+C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R
++6\sum_{k\notin S}r_{k,R}^{\boldsymbol\lambda}(\tau).}
+\tag{S.235}
+\]
+
+用逼近 residual infimum 的同一批集合取极限，得到 fixed-good-terminal theorem
+
+\[
+\boxed{
+\mathcal S_N((K_{k,R}(\tau))_k)
+\le6B_{Q,R}^M+C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R
++6\mathcal S_N((r_{k,R}^{\boldsymbol\lambda}(\tau))_k).}
+\tag{S.236}
+\]
+
+\(\mathcal R_x\) 与 \(\mathcal R_{\rm sh}\) 必须先合并再只做一次 best-\(N\) infimum；分别允许 \(N\) 个例外会悄悄把总预算增至 \(2N\)。
+
+对 \(\mathcal D\in\{I_R,\mathcal T_R\}\) 定义 good-terminal residual gate
+
+\[
+\boxed{
+\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)
+=\sup_{\tau\in\mathcal D\cap\mathcal G_R}
+\mathcal S_N((r_{k,R}^{\boldsymbol\lambda}(\tau))_k).}
+\tag{S.237}
+\]
+
+只用 terminal \(K\)-vector 的 inherited \(\ell^1\)-continuity，把左侧从 dense good times 延伸到所有 terminal times；不使用 residual path、selector 或 masks 的连续性：
+
+\[
+\boxed{
+\mathcal S_{N,R}^{K}(\mathcal D)
+\le C_{\rm pay}(\boldsymbol\lambda)A_R
++6\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D).}
+\tag{S.238}
+\]
+
+反向由 coordinatewise \(r\le K/2\) 与同一 exceptional set 得到
+
+\[
+\boxed{
+\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)
+\le{1\over2}\mathcal S_{N,R}^{K}(\mathcal D).}
+\tag{S.239}
+\]
+
+因此对固定、与尺度和解无关的 \(N_0\)，
+
+\[
+\boxed{
+\mathfrak R_{N_0,R}^{\boldsymbol\lambda}(\mathcal D)\lesssim A_R
+\quad\Longleftrightarrow\quad
+\mathcal S_{N_0,R}^{K}(\mathcal D)\lesssim A_R.}
+\tag{S.240}
+\]
+
+这个等价移除了已知付款，但没有把 residual gate 变成定理；它准确标出还需要新 PDE 信息的位置。
+
+## 42. plateau corollary、full gate 与 fallback
+
+把 inherited plateau reduction 与 (S.238) 合并：
+
+\[
+\boxed{
+\mathfrak C_R^M
+\le\sqrt N\,Z_R+7B_{Q,R}^M
++C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R
++6\mathfrak R_{N,R}^{\boldsymbol\lambda}(I_R).}
+\tag{S.241}
+\]
+
+七个 \(B_Q\) units 中，六个来自 paid partition，一个来自 terminal \(K\)-to-flux reduction。该式只在 plateau 域，不是 full-terminal Q.12。
+
+绝对 \(F\)-variation 给出线性 fallback：
+
+\[
+\boxed{
+\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)\le C_FP_R^M,
+\qquad
+P_R^M\le1\Longrightarrow
+\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)\le C_FA_R.}
+\tag{S.242}
+\]
+
+因此 small-payment regime 已经闭合；当 \(P_R^M>1\) 时，线性 fallback 与目标之间仍差 \((P_R^M)^{1/3}\)。真正开放的 full-domain statement 是
+
+\[
+\boxed{
+\text{OPEN: 存在固定 }N_0<\infty,C_{\rm res}<\infty,
+\text{ 使 }
+\mathfrak R_{N_0,R}^{\boldsymbol\lambda}(\mathcal T_R)
+\le C_{\rm res}A_R
+\text{ 对所有 }R\text{ 与解一致成立}.}
+\tag{S.243}
+\]
+
+若 (S.243) 成立，则 (S.238) 推出 full Q.12，再由 inherited Q.9 推出 Q.1。只在 \(I_R\) 证明 residual bound 能直接给 plateau Q.1，但不能升级成 full Q.12。
+
+## 43. sharpness、exception budget 与 D-persistence no-go
+
+在 abstract continuous-clock 层面，取 \(T=1\)、\(0<\varepsilon<1/6\)，并令
+
+\[
+\boxed{
+\Delta Q={1\over6}-\varepsilon
+\Longrightarrow r={1\over6}+\varepsilon,
+\qquad
+\Delta Q=-{1\over6}+\varepsilon
+\Longrightarrow r={1\over2}-\varepsilon.}
+\tag{S.244}
+\]
+
+因此仅凭 \(|\Delta Q|<T/6\)，系数六与上界二分之一都是 limiting-sharp；等号 \(|\Delta Q|=T/6\) 已归入 paid \(\mathcal P_Q\)。这些是 clock-algebra tests，不是 NSE solutions。
+
+一份共享 exception budget 的必要性由 \(T_1=T_2=3\)、\(r_1=r_2=1\) 给出：
+
+\[
+\boxed{
+\mathcal S_1((r_1,r_2))=1,
+\qquad
+\mathcal S_1((r_1,0))+\mathcal S_1((0,r_2))=0.}
+\tag{S.245}
+\]
+
+右式违法之处是给两个 residual labels 各花一个例外。固定 \(N\) 也不能被 truncation-dependent budget 替代：
+
+\[
+\boxed{
+T_k=2^{-k}:\quad
+\mathcal S_1((T_k)_{k\ge1})={1\over2},
+\quad
+\mathcal S_1((T_k)_{1\le k\le M})={1\over2}-2^{-M},
+\quad
+\mathcal S_M((T_k)_{1\le k\le M})=0.}
+\tag{S.246}
+\]
+
+最后，terminal \(D\)-dominance 不能免费局部化成 last-exit persistence。显式 rational piecewise-linear clock 取 \(R^2=1,s_R=0,\tau=2,T=1\)，last exit \(\ell=1/4\)，并安排 \(D(t)=3/5\) 在后段保持不变；则
+
+\[
+\boxed{
+D(\tau)={3T\over5}\ge{T\over2},
+\qquad
+\Delta D|_{(\ell,\tau)}=0,
+\qquad
+E(1)={7T\over100}<{T\over6}.}
+\tag{S.247}
+\]
+
+这严格排除把 \(\mathcal I_D\) 直接塞入 long non-\(D\) persistence proof；Step 8 full-history trichotomy 必须保留。该 witness 仍只是 continuous clock stress test。
+
+## 44. 路线决定
+
+paid-branch deletion 已达到它的自然终点。下一 PDE 阶段应分别研究两类 residual mechanism，但最终必须用一个共享 exception budget 重组：
+
+- **short non-D、Q-small packing**：正 stopped flux 与 \(T_k\) 可比，却生成在短于 \(R^2\lambda_k^{-3/2}\) 的 terminal interval。新定理必须使用 spatial crowding、overlap 或 Carleson-type constraint 等跨壳层 PDE 信息；普通 \(\ell^2\) sequence inequality 不足以闭合。
+- **scalar-excess ancestry**：\(\mathcal I_x\) 只可能来自 anomalous-defect 或 high-Rayleigh shells，且 full-history \(Q\)-variation 与 kinetic mass 都低于 Step 8 thresholds。需要真正打包剩余 defect/high-Rayleigh mass；terminal \(D\)-dominance 不能免费变成 last-exit interval 内的支付。
+
+任何候选估计都必须通过 (S.245)--(S.247)，并保留 inherited R0.74O/P exact family 的边界：该精确族只 refute no-exception gate，不证明 \(N_0=1\) 足够。
+
+## 45. Step 10 主张边界与双路审计
+
+Step 10 **PROVED**：(S.223)--(S.224) 的 canonical \(2/3\)-last-exit 与固定 profile；(S.225) 的 exact six-class partition；(S.226) 的 Step 7/8 compatibility；(S.227)--(S.231) 的 single \(6B_Q\) 与 single \(C_5\) payments；(S.232)--(S.234) 的 positive residual 与 \(T/6<r<T/2\)；(S.235)--(S.240) 的 fixed-good-terminal/domain-safe best-\(N\) reductions；以及 (S.241)--(S.242) 的 plateau corollary 与 small-payment fallback。
+
+Step 10 **INHERITED**：R0.74P canonical clocks、variation ledgers 与 \(\ell^1\)-terminal continuity；R0.74Q fixed-\(N\) reduction；R0.74R shell-dependent cubic payment；Step 7 Rayleigh trichotomy；Step 8 full-history \(\beta/\sigma/x\) partition；Step 9 last-exit identity 与 finite good-stop closure。
+
+Step 10 **REFUTED / RULED OUT**：额外 low-Rayleigh residual class；必须重复收取完整 \(Q\) 或 cubic ledger；两个 residual mechanisms 分别拥有 \(N\) 个 exceptions；terminal \(D\)-dominance 自动局部化到 last-exit interval；以及 last-exit algebra 单独产生 fixed-\(N\) shell compression。
+
+继续 **OPEN**：固定、与解和尺度无关的 \(N_0\) residual estimate (S.243)；\(\mathcal R_{\rm sh}\) 与 \(\mathcal R_x\) 的 PDE packing；full Q.12、Q.1、R0.74R extraction hypotheses、scale contraction、prescribed-centre packing 与 regularity。
+
+明确 **NOT CLAIMED**：last-exit selector、branch masks 或 residual path 对终端连续/可测/lower semicontinuous；\(\ell_k\) 是 good time；无穷 last-exit family 是一个 admissible local-energy test；Step 8 classes 可在 \(J_k^{\rm LE}\) 重定义；plateau 与 full domain 相等；\(\boldsymbol\lambda\) 已优化；scalar fixtures 是 NSE solutions；以及新颖性、优先权、奇点形成、正则性或 Clay 结论。
+
+主证书通过 12/12 exact、10/10 finite、79/79 structural 与 47/47 negative mutations。独立 Ruby 通过 9/9 groups、65,681 cases、21/21 contract mutations、13/13 report checks 与 15/15 audit bindings；deterministic stdout SHA-256 为 `4877dc3a0de2c2f605641736c7355672f0a7a68cb97a37849d4a7c28495e8bbd`。主文 SHA-256 为 `9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c`。有限证书不替代 inherited local-energy/PDE analysis。
+
+**PAID BRANCHES: DELETED WITH ONE Q LEDGER AND ONE CUBIC LEDGER. TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE. S.243 OPEN. NOT CLAY.**

@@ -45,6 +45,13 @@ EXTERNAL = [
     "research/r074s_best_n_last_exit_certificate_report.md",
     "scripts/r074s_best_n_last_exit_certificate.py",
     "scripts/r074s_best_n_last_exit_certificate_independent.rb",
+    "research/r074s_paid_branch_last_exit_residual.md",
+    "research/r074s_paid_branch_last_exit_primary_audit.md",
+    "research/r074s_paid_branch_last_exit_independent_audit.md",
+    "scripts/r074s_paid_branch_last_exit_certificate.py",
+    "research/r074s_paid_branch_last_exit_certificate.json",
+    "research/r074s_paid_branch_last_exit_certificate_report.md",
+    "scripts/r074s_paid_branch_last_exit_certificate_independent.rb",
     "research/r074s_report-source.md",
     "research/r074s_claim_state_update.md",
     "research/r074s_literature_boundary.md",
@@ -94,6 +101,7 @@ def main() -> None:
     step7 = json.loads((REPO / "research/r074s_dissipation_rayleigh_certificate.json").read_text(encoding="utf-8"))
     step8 = json.loads((REPO / "research/r074s_defect_relaxed_total_rayleigh_certificate.json").read_text(encoding="utf-8"))
     step9 = json.loads((REPO / "research/r074s_best_n_last_exit_certificate.json").read_text(encoding="utf-8"))
+    step10 = json.loads((REPO / "research/r074s_paid_branch_last_exit_certificate.json").read_text(encoding="utf-8"))
     checks += [
         {"id": "one_sided_certificate_pass", "pass": final["summary"] == {"exact_passed": 5, "exact_total": 5, "finite_passed": 7, "finite_total": 7, "negative_passed": 4, "negative_total": 4, "result": "PASS", "structural_passed": 55, "structural_total": 55}},
         {"id": "boundary_certificate_pass", "pass": boundary["summary"] == {"exact_passed": 14, "exact_total": 14, "finite_passed": 4, "finite_total": 4, "result": "PASS", "structural_passed": 38, "structural_total": 38}},
@@ -101,6 +109,7 @@ def main() -> None:
         {"id": "dissipation_rayleigh_certificate_pass", "pass": step7["summary"] == {"exact_passed": 16, "exact_total": 16, "finite_passed": 8, "finite_total": 8, "negative_mutations_passed": 9, "negative_mutations_total": 9, "structural_passed": 52, "structural_total": 52}},
         {"id": "step8_final_certificate_pass", "pass": step8["summary"] == {"exact_passed": 16, "exact_total": 16, "finite_passed": 19, "finite_total": 19, "negative_mutations_passed": 20, "negative_mutations_total": 20, "structural_passed": 75, "structural_total": 75}},
         {"id": "step9_certificate_pass", "pass": step9["summary"] == {"exact_passed": 9, "exact_total": 9, "finite_passed": 8, "finite_total": 8, "structural_passed": 57, "structural_total": 57, "negative_mutations_passed": 18, "negative_mutations_total": 18}},
+        {"id": "step10_certificate_pass", "pass": step10["summary"] == {"exact_total": 12, "exact_passed": 12, "finite_total": 10, "finite_passed": 10, "structural_total": 79, "structural_passed": 79, "negative_mutations_total": 47, "negative_mutations_passed": 47}},
     ]
     expected_size = [round(config["width_mm"] / 25.4 * config["dpi"]), round(config["height_mm"] / 25.4 * config["dpi"])]
     with Image.open(HERE / "figure.png") as source_image:
@@ -114,8 +123,8 @@ def main() -> None:
     checks.append({"id": "svg_physical_geometry", "pass": root.attrib.get("width") == "178mm" and root.attrib.get("height") == "100mm"})
     svg = (HERE / "figure.svg").read_text(encoding="utf-8")
     caption = (HERE / "caption.md").read_text(encoding="utf-8")
-    checks.append({"id": "svg_boundary_language", "pass": all(value in svg for value in ["Canonical best-N last exits", "W_half^F", "B_Q", "NO-GAIN", "Q.12", "NOT CLAY"])})
-    checks.append({"id": "caption_boundary_language", "pass": all(value in caption for value in ["signed F-half-exit", "sharp one-", "no-gain", "PDE residual tail", "NOT CLAY"])})
+    checks.append({"id": "svg_boundary_language", "pass": all(value in svg for value in ["Paid-branch deletion", "one combined 6 B_Q", "T/6 &lt; r &lt; T/2", "S.243", "NOT CLAY"])})
+    checks.append({"id": "caption_boundary_language", "pass": all(value in caption for value in ["six-class", "single", "two residual", "S.243", "NOT CLAY"])})
     font_sizes = [float(value) for value in re.findall(r"font-size: ([0-9.]+)px", svg)]
     checks.append({"id": "minimum_text_size", "pass": bool(font_sizes) and min(font_sizes) >= 4.5, "minimum": min(font_sizes) if font_sizes else None})
     checks.append({"id": "svg_embedded_fonts", "pass": svg.count("data:font/ttf;base64,") == 2 and "R074S-Regular" in svg and "R074S-Bold" in svg})
@@ -136,9 +145,9 @@ def main() -> None:
     validation = {"schema": "r074s-ball-clock-debt-validation-v1", "checks": checks, "summary": {"passed": sum(bool(item["pass"]) for item in checks), "total": len(checks), "result": "PASS" if passed else "FAIL"}}
     (HERE / "validation.json").write_text(json.dumps(validation, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "layout-bounds.json").write_text(json.dumps({"schema": "r074s-layout-v1", "page_mm": [178, 100], "panels": {"A": [14, 22, 154], "B": [175, 22, 160], "C": [342, 22, 148]}}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (HERE / "qa-report.md").write_text("# R0.74S figure QA\n\n**PASS.** PDF/PNG pixel parity, 600 dpi geometry, print-size and grayscale derivatives, embedded-font SVG, exact source rows, and all certificate bindings passed. Quick Look SVG preview was generated locally. No simulation or DNS. **CANONICAL BEST-N LAST EXITS ARE EXACT TERMINAL-TAIL REPRESENTATIONS; NO NEW QUADRATIC COMPRESSION; PDE RESIDUAL TAIL OPEN; NOT CLAY.**\n", encoding="utf-8")
+    (HERE / "qa-report.md").write_text("# R0.74S figure QA\n\n**PASS.** PDF/PNG pixel parity, 600 dpi geometry, print-size and grayscale derivatives, embedded-font SVG, exact source rows, and all certificate bindings passed. Quick Look SVG preview was generated locally. No simulation or DNS. **FOUR PAID CLASSES USE ONE Q LEDGER AND ONE CUBIC LEDGER; TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE; S.243 OPEN; NOT CLAY.**\n", encoding="utf-8")
     package_files = ["README.md", "caption.md", "chart-contract-and-source-data.md", "command.txt", "config.json", "environment.json", "figure.pdf", "figure.png", "figure.svg", "layout-bounds.json", "plot.py", "progress.ndjson", "qa-final-size.png", "qa-grayscale.png", "qa-pdf-render.png", "qa-protocol.md", "qa-report.md", "qa-svg-quicklook.png", "requirements.txt", "results.json", "source-data.csv", "validate.py", "validation.json"]
-    figure_commit = "8b2af62c592b9c647e463f68dd74c86365c3cc98"
+    figure_commit = "5fb2c4d1c410ce6a63c0a87e4b7935e4bc6303a4"
     outputs = []
     for name, schema in (("figure.svg", "svg-journal-master"), ("figure.pdf", "pdf-journal-master"), ("figure.png", "png-journal-master")):
         record = {"path": name, "schema": schema, "bytes": (HERE / name).stat().st_size, "sha256": sha(HERE / name)}
@@ -148,15 +157,15 @@ def main() -> None:
     public_assets = [{"path": f"public/assets/r074s/{config['figure_id']}.{name.rsplit('.', 1)[1]}", "bytes": (HERE / name).stat().st_size, "sha256": sha(HERE / name)} for name in ("figure.svg", "figure.pdf", "figure.png")]
     manifest = {
         "schemaVersion": "research-figure-manifest-v1", "figureSchemaVersion": "r074s-ball-clock-debt-publication-v1", "figureId": config["figure_id"], "release": "R0.74S", "status": "formal", "publicationStatus": "published",
-        "analyticalQuestion": "Do canonical best-N last exits produce a new quadratic compression beyond the existing terminal-tail gate?", "supportedClaim": "No. The signed F-half-exit is exactly one half of the signed best-N tail, while the K-last-exit is equivalent to the nonnegative best-N K-tail within one sharp paid B_Q row.",
+        "analyticalQuestion": "After deleting every already-paid branch, what part of the canonical last-exit tail remains?", "supportedClaim": "Four paid classes use one complete Q ledger and one complete cubic ledger; exactly two residual mechanisms remain, with T/6 < r < T/2, and they share one domain-safe best-N gate.",
         "createdAt": "2026-09-03T00:00:00Z", "git": {"repository": "https://github.com/Kasifa/Kasifa.github.io.git", "commit": figure_commit, "dirty": False},
         "computation": {"kind": "exact-formula-audit", "configuration": "config.json", "precision": "exact rational certificates plus deterministic analytic summary", "solver": "none", "formalCommand": "use command.txt and validate.py", "wallTimeSeconds": 1.3, "monitoring": {"enabled": False}},
         "compute": {"host": "local workstation (hostname omitted)", "operatingSystem": "macOS arm64", "cpu": "arm64 / local CPU", "memoryGiB": 36.0, "processes": 1, "threadsPerProcess": 1}, "environment": {"python": "3.12.13", "packagesLock": "requirements.txt"},
         "data": [{"path": "source-data.csv", "schema": "r074s-ball-clock-debt-source-v1", "bytes": (HERE / "source-data.csv").stat().st_size, "sha256": sha(HERE / "source-data.csv")}], "sourceData": [], "figure": {"widthMillimetres": config["width_mm"], "heightMillimetres": config["height_mm"], "outputs": outputs}, "caption": {"english": "caption.md"},
         "qa": {"status": "passed", "finalSizeInspected": True, "grayscaleInspected": True, "labelsAndLegendsInspected": True, "scalesAndUnitsInspected": True, "dataCrossChecked": True, "pdfInspected": True, "visualQaConfirmed": True, "report": "qa-report.md"},
-        "claimBoundary": {"signedFHalfExit": "PROVED_EXACT_ONE_HALF_BEST_N_TAIL", "signedFHalfExitS25Admissibility": False, "kThetaLastExit": "PROVED_WITH_SHARP_ONE_B_Q_ERROR", "kThetaGoodStopClosure": "FINITE_POSITIVE_TERMINALS_AT_GOOD_TERMINALS_FOR_THETA_BELOW_THREE_QUARTERS", "canonicalLastExitQuadraticCompression": "REFUTED_PROVED_NO_GAIN", "fullTerminalBestNTail": "OPEN_Q12", "plateauBestNTail": "OPEN_WEAKER_RESTRICTION", "conditionalS38Implication": "PROVED_RETAINED", "paidBranchResidualTail": "OPEN_NEXT_TARGET", "fixedScaleInequality": "OPEN", "globalRegularity": False, "notClay": True},
+        "claimBoundary": {"sixClassPaidResidualPartition": "PROVED_D_FIRST_EXACT", "lowRayleighExtraResidualClass": False, "oneQPaidLedger": "PROVED_SINGLE_6_B_Q", "oneCubicPaidLedger": "PROVED_SINGLE_C5", "residualClasses": ["R_sh", "R_x"], "residualTwoSidedComparability": "PROVED_T_OVER_6_LT_R_LT_T_OVER_2", "residualBestNReduction": "PROVED_DOMAIN_SAFE", "separateResidualExceptionBudgets": False, "terminalDDominanceLastExitPersistence": False, "fullTerminalBestNTail": "OPEN_Q12", "plateauBestNTail": "OPEN_WEAKER_RESTRICTION", "fixedUniversalN0ResidualEstimate": "OPEN_S243", "fixedScaleInequality": "OPEN_Q1", "globalRegularity": False, "notClay": True},
         "publication": {"archiveDirectory": "public/figures/r074s/fig-r074s-ball-clock-debt", "researchArchiveDirectory": "research/figures/r074s/fig-r074s-ball-clock-debt", "directory": "public/assets/r074s", "fileStem": config["figure_id"], "byteIdentityRequired": True, "publicCopiesComplete": True, "releaseSourceCommit": figure_commit, "figurePackageCommit": figure_commit, "assets": public_assets},
-        "provenance": {"frozenResearchSourceSha256": sha(REPO / "research/r074s_best_n_last_exit_equivalence.md"), "compatibilityScope": "publication metadata and deterministic analytic summary"}, "claim_boundary": "CANONICAL BEST-N LAST EXITS ARE EXACT TERMINAL-TAIL REPRESENTATIONS; NO NEW QUADRATIC COMPRESSION; PDE RESIDUAL TAIL OPEN; NOT CLAY", "external_bindings": {source: sha(REPO / source) for source in EXTERNAL},
+        "provenance": {"frozenResearchSourceSha256": sha(REPO / "research/r074s_paid_branch_last_exit_residual.md"), "compatibilityScope": "publication metadata and deterministic analytic summary"}, "claim_boundary": "FOUR PAID CLASSES USE ONE Q LEDGER AND ONE CUBIC LEDGER; TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE; S.243 OPEN; NOT CLAY", "external_bindings": {source: sha(REPO / source) for source in EXTERNAL},
         "files": {name: {"bytes": (HERE / name).stat().st_size, "sha256": sha(HERE / name)} for name in package_files if (HERE / name).is_file()}, "validation_result": validation["summary"],
     }
     (HERE / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")

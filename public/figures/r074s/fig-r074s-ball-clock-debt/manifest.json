@@ -1,23 +1,29 @@
 {
-  "analyticalQuestion": "Do canonical best-N last exits produce a new quadratic compression beyond the existing terminal-tail gate?",
+  "analyticalQuestion": "After deleting every already-paid branch, what part of the canonical last-exit tail remains?",
   "caption": {
     "english": "caption.md"
   },
   "claimBoundary": {
-    "canonicalLastExitQuadraticCompression": "REFUTED_PROVED_NO_GAIN",
-    "conditionalS38Implication": "PROVED_RETAINED",
-    "fixedScaleInequality": "OPEN",
+    "fixedScaleInequality": "OPEN_Q1",
+    "fixedUniversalN0ResidualEstimate": "OPEN_S243",
     "fullTerminalBestNTail": "OPEN_Q12",
     "globalRegularity": false,
-    "kThetaGoodStopClosure": "FINITE_POSITIVE_TERMINALS_AT_GOOD_TERMINALS_FOR_THETA_BELOW_THREE_QUARTERS",
-    "kThetaLastExit": "PROVED_WITH_SHARP_ONE_B_Q_ERROR",
+    "lowRayleighExtraResidualClass": false,
     "notClay": true,
-    "paidBranchResidualTail": "OPEN_NEXT_TARGET",
+    "oneCubicPaidLedger": "PROVED_SINGLE_C5",
+    "oneQPaidLedger": "PROVED_SINGLE_6_B_Q",
     "plateauBestNTail": "OPEN_WEAKER_RESTRICTION",
-    "signedFHalfExit": "PROVED_EXACT_ONE_HALF_BEST_N_TAIL",
-    "signedFHalfExitS25Admissibility": false
+    "residualBestNReduction": "PROVED_DOMAIN_SAFE",
+    "residualClasses": [
+      "R_sh",
+      "R_x"
+    ],
+    "residualTwoSidedComparability": "PROVED_T_OVER_6_LT_R_LT_T_OVER_2",
+    "separateResidualExceptionBudgets": false,
+    "sixClassPaidResidualPartition": "PROVED_D_FIRST_EXACT",
+    "terminalDDominanceLastExitPersistence": false
   },
-  "claim_boundary": "CANONICAL BEST-N LAST EXITS ARE EXACT TERMINAL-TAIL REPRESENTATIONS; NO NEW QUADRATIC COMPRESSION; PDE RESIDUAL TAIL OPEN; NOT CLAY",
+  "claim_boundary": "FOUR PAID CLASSES USE ONE Q LEDGER AND ONE CUBIC LEDGER; TWO RESIDUAL MECHANISMS SHARE ONE BEST-N GATE; S.243 OPEN; NOT CLAY",
   "computation": {
     "configuration": "config.json",
     "formalCommand": "use command.txt and validate.py",
@@ -40,10 +46,10 @@
   "createdAt": "2026-09-03T00:00:00Z",
   "data": [
     {
-      "bytes": 1058,
+      "bytes": 1066,
       "path": "source-data.csv",
       "schema": "r074s-ball-clock-debt-source-v1",
-      "sha256": "1b3f0c6f92a967719a1fcf809853d17b9881b0f58e12ff0c5c54f8d11f9403bc"
+      "sha256": "b266566f4fe63c3ebdecdd77ea48884d8113900411389b375a0bcac79eed378d"
     }
   ],
   "environment": {
@@ -59,7 +65,7 @@
     "research/r074s_best_n_last_exit_primary_audit.md": "0d326d0b77e499c36aa10fac64db66d4c40e6f0599640df65c915ca8de5f58d1",
     "research/r074s_boundary_mismatch_certificate.json": "c3823b9c5cdf62b4a8eb870be60bd7a0bf23bb8788a1ae375d45efab55ab1239",
     "research/r074s_boundary_mismatch_clock.md": "0bcb1e871ee00747e74b7a938dcebed9a70a1ed0a79a8dc7fc31739086cd749a",
-    "research/r074s_claim_state_update.md": "01b4a543bec63b8531f2807b38846b363ba07b12021134455147b8be2ff35d04",
+    "research/r074s_claim_state_update.md": "fb38fb09f82bbd8fb65cbc12f0e9af1ff9ba9dee129221e6d4f29da729d1e795",
     "research/r074s_cross_channel_independent_audit.md": "0e245ce2a71bf7a143a57e139a74bd072686c15494802040ccf1836c085a5fcf",
     "research/r074s_cross_channel_primary_audit.md": "fbbcba3c60e79911b9a1752d94b2a589ccbc26e8fa8b513ae8c8ec302053717d",
     "research/r074s_cross_channel_recombination_certificate.json": "5cd6ce5ba59586154c39cdfc5904eec4894dd51370d0cb02c0cd51bff58f4a63",
@@ -74,41 +80,48 @@
     "research/r074s_dissipation_rayleigh_gate.md": "e835a104f4a6f4d2281bef877dd6bfeb73f1c2396f6bd28203bb0812f7f8e3d3",
     "research/r074s_dissipation_rayleigh_independent_audit.md": "efc30eb21e8d4e125d4b189455d4419bca9b5d1f1effeb265edba1cdf4a48233",
     "research/r074s_dissipation_rayleigh_primary_audit.md": "304bc2b87b9eb97d4f46d8bc4a77da3b1f11e2c37e95e20956504bb4681b2175",
-    "research/r074s_literature_boundary.md": "710385493e6c109bccdd5630673dc1d96060391f8369a1e5ec611731ad7946e2",
+    "research/r074s_literature_boundary.md": "de2ce5cee6791375905b0b3160627b0650e4e7cb13a56a7593446bc4b0d7f14d",
     "research/r074s_one_sided_ball_clock_certificate.json": "1afcea511445b75c05da034130c4f1719f4b129c1df496ba5b3f65025ff57219",
     "research/r074s_one_sided_ball_clock_independent_audit.md": "5ee63f78699891801151171f7fa68e103e52b04d2cc07b20ce48c1d3dd31b209",
     "research/r074s_one_sided_ball_clock_no_gain.md": "178c3431f808fa0bb7c8bbf116bd2fdf8c7335eea75e93ba11f51d7eeba7f1af",
     "research/r074s_one_sided_ball_clock_primary_audit.md": "83093d667b0f0ac0af919651c4dd45f87e60b8d2ebde59017f8abdfbd33041b9",
+    "research/r074s_paid_branch_last_exit_certificate.json": "8f37a8ce4d6513406297e6ce1e676ceaafa39776723bba839074120f206314de",
+    "research/r074s_paid_branch_last_exit_certificate_report.md": "6e25a07a417f96907e5e17da6b561830b75aa1a44d0b4b13fa56107dc31e4a5f",
+    "research/r074s_paid_branch_last_exit_independent_audit.md": "cb33dd2a1fed8a58f285bdb3e7a053480c40b06a899d1a1bd3a18549b6b8125a",
+    "research/r074s_paid_branch_last_exit_primary_audit.md": "cf7bbfcb01a5389878a2a9f65ffa0e083863f8f6478986bc10110cfd24e6446c",
+    "research/r074s_paid_branch_last_exit_residual.md": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c",
     "research/r074s_problem_freeze.md": "3c5d1aad6b1c7d1b687917a384b1e104f8586e12d9b93e79e0ba99cb55809982",
-    "research/r074s_report-source.md": "0f4951758f6e45af3ea0336b511b243dc7f429dd9b3453da47cb7e5e4cae3c3d",
+    "research/r074s_report-source.md": "0065d4ddf537334b12736ebd375b79fdebf31db8a2317f6755cf33f45039ff1c",
     "research/r074s_terminal_upcrossing_stopped_work.md": "3ec5f9b894f89e9febb95e5a100836b5b18e455f8366bf99e93b746ac6353da4",
     "research/r074s_weighted_abel_no_gain.md": "cfc949386d448d69f33699c6d223865b4ad5ec92591ea1e675c0daad8f168a69",
     "scripts/r074s_best_n_last_exit_certificate.py": "0f04b79049ecd92c4a366ad9916fc8b6da9220b2f5baee34726aef2d4feaee65",
     "scripts/r074s_best_n_last_exit_certificate_independent.rb": "d9c0674b79bc532c10366d317ccb10550f0bfd2a825127e87a4ef24633d3ae66",
     "scripts/r074s_defect_relaxed_total_rayleigh_certificate.py": "18735df5a8eff96167ef6314dad04150636c800c276e2fcffc7cbd8177fce9cf",
-    "scripts/r074s_defect_relaxed_total_rayleigh_certificate_independent.rb": "b18b0a0b9937b106c5879a9e28996dd6892ab53f19decb7bca4db38c70a11343"
+    "scripts/r074s_defect_relaxed_total_rayleigh_certificate_independent.rb": "b18b0a0b9937b106c5879a9e28996dd6892ab53f19decb7bca4db38c70a11343",
+    "scripts/r074s_paid_branch_last_exit_certificate.py": "2763b3fa575ce723a400b6c7e5654d0a64c8a9db470d79097dc5a77769a365a9",
+    "scripts/r074s_paid_branch_last_exit_certificate_independent.rb": "15b77560f41aa22d00447821be501ab5d3c992afa1001063c3ce986f2e9938c9"
   },
   "figure": {
     "heightMillimetres": 100,
     "outputs": [
       {
-        "bytes": 1963477,
+        "bytes": 1963409,
         "path": "figure.svg",
         "schema": "svg-journal-master",
-        "sha256": "2f22d65724faf321e04b033fa8258ff110cc7173d4d7fe705e27213000776586"
+        "sha256": "9547b239f9a7bb66ab7fdac6eee9f2f48f4676df7f4611d77db4c61b077b5018"
       },
       {
-        "bytes": 46403,
+        "bytes": 46285,
         "path": "figure.pdf",
         "schema": "pdf-journal-master",
-        "sha256": "5807eccf638bc0d994f83d3b0bd72bef23bb3a2745d0eb50221a29d5dd4b4531"
+        "sha256": "41065bd1d14321c3167c345246b9aeb24c2657f4d6094e5f819d4b795727ac23"
       },
       {
-        "bytes": 309024,
+        "bytes": 295814,
         "dpi": 600,
         "path": "figure.png",
         "schema": "png-journal-master",
-        "sha256": "f344d3fd8c3802e17cf78f614dddd1c5dccbba4c8d10fbe70e26e95bdedb6c9d"
+        "sha256": "61a3701c58391ea19fef64e26520cea5359cf9598032486eded7dd9ef097efcd"
       }
     ],
     "widthMillimetres": 178
@@ -117,132 +130,132 @@
   "figureSchemaVersion": "r074s-ball-clock-debt-publication-v1",
   "files": {
     "README.md": {
-      "bytes": 329,
-      "sha256": "59cc8e6130d9ad5e6c472e79cd831eb6a077b4aa497b6c035aa1ea9202532ee8"
+      "bytes": 379,
+      "sha256": "28be5c94afed4e94f1ac18d9042be3e74f722aa99f497339ad87e8abc90b5509"
     },
     "caption.md": {
-      "bytes": 818,
-      "sha256": "97d12f796bd98865f60535d3084f4de305ee4d75e29195494b14d081bab069f8"
+      "bytes": 746,
+      "sha256": "e659dcb860ba9cbff1e1b7830d69b8ebb8e190c6867c1464c7835a021ebbc2b3"
     },
     "chart-contract-and-source-data.md": {
-      "bytes": 692,
-      "sha256": "47e972b0a30e714f81ca3587f179c3eceebac6af03c948763ebe3742d6dd483b"
+      "bytes": 729,
+      "sha256": "e86bb3feecf08efe2e730a52336d767b44540fc239781296bf573562b33e6a07"
     },
     "command.txt": {
       "bytes": 298,
       "sha256": "c6e3f3fac53f71fc550fa6804adf75cb2844995b70587d96092fdb84bc5cb9f5"
     },
     "config.json": {
-      "bytes": 1699,
-      "sha256": "8d3a89d402c27d8e75010d1524fe0bb0fe32571d3687f20ed90fc378129cbc96"
+      "bytes": 1707,
+      "sha256": "c85f5a612397399a2df043663b8f1bf3bccb16f4c4350dbc336cb151e35ef080"
     },
     "environment.json": {
       "bytes": 484,
       "sha256": "26d00733493bb7ba0e5c3351fd6193068a6ec40bcbf5527e940fac0d346b4dd0"
     },
     "figure.pdf": {
-      "bytes": 46403,
-      "sha256": "5807eccf638bc0d994f83d3b0bd72bef23bb3a2745d0eb50221a29d5dd4b4531"
+      "bytes": 46285,
+      "sha256": "41065bd1d14321c3167c345246b9aeb24c2657f4d6094e5f819d4b795727ac23"
     },
     "figure.png": {
-      "bytes": 309024,
-      "sha256": "f344d3fd8c3802e17cf78f614dddd1c5dccbba4c8d10fbe70e26e95bdedb6c9d"
+      "bytes": 295814,
+      "sha256": "61a3701c58391ea19fef64e26520cea5359cf9598032486eded7dd9ef097efcd"
     },
     "figure.svg": {
-      "bytes": 1963477,
-      "sha256": "2f22d65724faf321e04b033fa8258ff110cc7173d4d7fe705e27213000776586"
+      "bytes": 1963409,
+      "sha256": "9547b239f9a7bb66ab7fdac6eee9f2f48f4676df7f4611d77db4c61b077b5018"
     },
     "layout-bounds.json": {
       "bytes": 235,
       "sha256": "361de7dd0d14bae6fc98934c6e111ea2681503220c0d8d0fc61341535a4cafbc"
     },
     "plot.py": {
-      "bytes": 10916,
-      "sha256": "ef80044a71435fea43fa585bd86270370791b9503940efa7b6ff0e2d033fa99a"
+      "bytes": 10948,
+      "sha256": "87290eb39cc6109fb3788a2fb2bbb22850993fa2c63192dd71b48bab6bbb6448"
     },
     "progress.ndjson": {
       "bytes": 90,
       "sha256": "880ebe44acccd1835d16df9ad82c17014e2986305fc72371de278da94f340bcc"
     },
     "qa-final-size.png": {
-      "bytes": 175804,
-      "sha256": "9c57b962bd7bd50146f8c5a00027551eb4747c65a89246381bcde6adf562f156"
+      "bytes": 168304,
+      "sha256": "0eeee4c0f4283ba555baa1866af70255268866619ea51d3fa748e3dcc84c30ae"
     },
     "qa-grayscale.png": {
-      "bytes": 150429,
-      "sha256": "f536ed61ef1f80f7b6508be5430176ece0f1d7f7781b0753de0315f5c2f285d6"
+      "bytes": 143899,
+      "sha256": "d02dc9cbf28827a3ed29cdbe3e972dc9205118adaa7629d41aec47d91ac21e28"
     },
     "qa-pdf-render.png": {
-      "bytes": 309024,
-      "sha256": "f344d3fd8c3802e17cf78f614dddd1c5dccbba4c8d10fbe70e26e95bdedb6c9d"
+      "bytes": 295814,
+      "sha256": "61a3701c58391ea19fef64e26520cea5359cf9598032486eded7dd9ef097efcd"
     },
     "qa-protocol.md": {
-      "bytes": 705,
-      "sha256": "6873dbdfb5910a8c01d9e2525dfc308e490a9fce7ba7cd8b8045b3f90e98cac3"
+      "bytes": 730,
+      "sha256": "4d0b66dc96538c193b8e9963517f963f2eee4278c211a45a8ea12177c861792a"
     },
     "qa-report.md": {
-      "bytes": 388,
-      "sha256": "56d82d15612ecd81baef2dab2924be87b22a66b127cd7b94bb7e9fd673fb5eeb"
+      "bytes": 381,
+      "sha256": "c92d479f88db4f93cd0a267df53d9dc2e10dcd853ea9abde189670b4834121a2"
     },
     "qa-svg-quicklook.png": {
-      "bytes": 247981,
-      "sha256": "b7afeade8d405664df08a4803b38737532742ccf6f7d6755332a5c4f5388973a"
+      "bytes": 235759,
+      "sha256": "f42ec08055974b7ee97f7c0e9f54190665ff82dd26bdd2a29931595e4d3306be"
     },
     "requirements.txt": {
       "bytes": 47,
       "sha256": "15af292e64155b9f8c0a3a27ba6dc7fc9401ff827ad80943d07b593d30783b45"
     },
     "results.json": {
-      "bytes": 872,
-      "sha256": "875c7324bc9a7b2c5f5d67b4dc0887f2dd667a28ef617661bee4c73cda08b28f"
+      "bytes": 964,
+      "sha256": "d520d5f65986ac6e2247d038e26708194bef53885b83bf8f2152ad85fc02b074"
     },
     "source-data.csv": {
-      "bytes": 1058,
-      "sha256": "1b3f0c6f92a967719a1fcf809853d17b9881b0f58e12ff0c5c54f8d11f9403bc"
+      "bytes": 1066,
+      "sha256": "b266566f4fe63c3ebdecdd77ea48884d8113900411389b375a0bcac79eed378d"
     },
     "validate.py": {
-      "bytes": 15515,
-      "sha256": "3c73687490e6a713b3a63d517a8afafe57687814753657ba00a08193ea97b5bd"
+      "bytes": 16367,
+      "sha256": "2dd72ac182811ba1d859ab34fbacf5c182165a183f1e1085a494667c20060f1b"
     },
     "validation.json": {
-      "bytes": 1585,
-      "sha256": "a46e3c328c17b8a7a31c37e28fab8101214a203120dd972aa5405c9ef2f467e8"
+      "bytes": 1656,
+      "sha256": "f67c9cd55a92d11aba8b4818bc27e9ef414eddf55449ccc56c870cd95bd59848"
     }
   },
   "git": {
-    "commit": "8b2af62c592b9c647e463f68dd74c86365c3cc98",
+    "commit": "5fb2c4d1c410ce6a63c0a87e4b7935e4bc6303a4",
     "dirty": false,
     "repository": "https://github.com/Kasifa/Kasifa.github.io.git"
   },
   "provenance": {
     "compatibilityScope": "publication metadata and deterministic analytic summary",
-    "frozenResearchSourceSha256": "85003b3fdfdf28618a82a57d241e86c086704ea3ed3a9b192de223f3b8c3a4dd"
+    "frozenResearchSourceSha256": "9eb5f2a794021b49894adfc167d350f58d93c266e6be319ce835c58db2e0d74c"
   },
   "publication": {
     "archiveDirectory": "public/figures/r074s/fig-r074s-ball-clock-debt",
     "assets": [
       {
-        "bytes": 1963477,
+        "bytes": 1963409,
         "path": "public/assets/r074s/fig-r074s-ball-clock-debt.svg",
-        "sha256": "2f22d65724faf321e04b033fa8258ff110cc7173d4d7fe705e27213000776586"
+        "sha256": "9547b239f9a7bb66ab7fdac6eee9f2f48f4676df7f4611d77db4c61b077b5018"
       },
       {
-        "bytes": 46403,
+        "bytes": 46285,
         "path": "public/assets/r074s/fig-r074s-ball-clock-debt.pdf",
-        "sha256": "5807eccf638bc0d994f83d3b0bd72bef23bb3a2745d0eb50221a29d5dd4b4531"
+        "sha256": "41065bd1d14321c3167c345246b9aeb24c2657f4d6094e5f819d4b795727ac23"
       },
       {
-        "bytes": 309024,
+        "bytes": 295814,
         "path": "public/assets/r074s/fig-r074s-ball-clock-debt.png",
-        "sha256": "f344d3fd8c3802e17cf78f614dddd1c5dccbba4c8d10fbe70e26e95bdedb6c9d"
+        "sha256": "61a3701c58391ea19fef64e26520cea5359cf9598032486eded7dd9ef097efcd"
       }
     ],
     "byteIdentityRequired": true,
     "directory": "public/assets/r074s",
-    "figurePackageCommit": "8b2af62c592b9c647e463f68dd74c86365c3cc98",
+    "figurePackageCommit": "5fb2c4d1c410ce6a63c0a87e4b7935e4bc6303a4",
     "fileStem": "fig-r074s-ball-clock-debt",
     "publicCopiesComplete": true,
-    "releaseSourceCommit": "8b2af62c592b9c647e463f68dd74c86365c3cc98",
+    "releaseSourceCommit": "5fb2c4d1c410ce6a63c0a87e4b7935e4bc6303a4",
     "researchArchiveDirectory": "research/figures/r074s/fig-r074s-ball-clock-debt"
   },
   "publicationStatus": "published",
@@ -261,10 +274,10 @@
   "schemaVersion": "research-figure-manifest-v1",
   "sourceData": [],
   "status": "formal",
-  "supportedClaim": "No. The signed F-half-exit is exactly one half of the signed best-N tail, while the K-last-exit is equivalent to the nonnegative best-N K-tail within one sharp paid B_Q row.",
+  "supportedClaim": "Four paid classes use one complete Q ledger and one complete cubic ledger; exactly two residual mechanisms remain, with T/6 < r < T/2, and they share one domain-safe best-N gate.",
   "validation_result": {
-    "passed": 18,
+    "passed": 19,
     "result": "PASS",
-    "total": 18
+    "total": 19
   }
 }

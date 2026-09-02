@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜canonical best-N last-exit 等价与 no-gain";
+  const title = "R0.74S｜删除已付分支后的 residual best-N gate";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -71,7 +71,7 @@ try {
       completeChinesePublication: true,
       htmlAndPdfCryptographicallyBound: true,
       pdfBindingCertifiesMathematicalCorrectness: false,
-      evidenceClassesSeparated: ["PROVED", "INHERITED", "FINITE", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT PDE/NSE", "NOT CLAY"],
+      evidenceClassesSeparated: ["PROVED", "INHERITED", "FINITE", "REFUTED", "RULED OUT", "LITERATURE BOUNDARY", "OPEN", "NO-GO", "NOT CLAIMED", "NOT CLAY"],
       oneSidedBallClocks: "PROVED",
       stoppedOrientations: "PROVED",
       quadraticBallLedger: "PROVED",
@@ -110,11 +110,21 @@ try {
       fullTerminalBestNTail: "OPEN_Q12",
       plateauBestNTail: "OPEN_WEAKER_RESTRICTION",
       fixedBestNTerminalExceptionEstimate: "OPEN_NEXT_PDE_TARGET",
-      paidBranchResidualTail: "OPEN_TO_BE_DEFINED_AND_AUDITED",
+      sixClassPaidResidualPartition: "PROVED_D_FIRST_EXACT_PARTITION",
+      lowRayleighExtraResidualClass: false,
+      oneQPaidLedger: "PROVED_SINGLE_6_B_Q",
+      oneCubicPaidLedger: "PROVED_SINGLE_C5_LEDGER",
+      residualClasses: ["R_sh", "R_x"],
+      residualTwoSidedComparability: "PROVED_T_OVER_6_LT_R_LT_T_OVER_2",
+      residualBestNReduction: "PROVED_DOMAIN_SAFE",
+      separateResidualExceptionBudgets: false,
+      terminalDDominanceLastExitPersistence: false,
+      paidBranchResidualTail: "PROVED_DEFINED_AND_REDUCED_PACKING_OPEN",
+      fixedUniversalN0ResidualEstimate: "OPEN_S243",
       jordanEnvelopeQuadraticBound: "OPEN",
       finiteExceptionConsequence: "PROVED_CONDITIONAL_IMPLICATION_ONLY",
       exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",
-      fixedScaleInequality: "OPEN",
+      fixedScaleInequality: "OPEN_Q1",
       formalFigure: "PUBLISHED_DERIVED_FROM_FROZEN_ANALYTIC_SOURCE",
       navierStokesSimulation: false,
       directNumericalSimulation: false,

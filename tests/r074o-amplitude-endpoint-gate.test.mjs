@@ -95,6 +95,118 @@ async function assertPackageByteIdentical(sourcePackage, tempPackage) {
   }
 }
 
+async function decodedPng(path) {
+  const script = [
+    "import hashlib, json, sys",
+    "from PIL import Image",
+    "with Image.open(sys.argv[1]) as image:",
+    "    payload = {",
+    "        'mode': image.mode,",
+    "        'size': [image.width, image.height],",
+    "        'pixel_sha256': hashlib.sha256(image.tobytes()).hexdigest(),",
+    "    }",
+    "print(json.dumps(payload, sort_keys=True))",
+  ].join("\n");
+  const { stdout } = await execFileAsync(python, ["-B", "-c", script, path], {
+    cwd: root,
+    maxBuffer: 1024 * 1024,
+  });
+  return JSON.parse(stdout);
+}
+
+function normalizedResults(value) {
+  return {
+    ...value,
+    outputs: { ...value.outputs, png_sha256: "<platform-png-encoding>" },
+  };
+}
+
+function normalizedManifest(value) {
+  const platformEncoded = new Set([
+    "figure.png",
+    "qa-final-size.png",
+    "qa-grayscale.png",
+    "qa-pdf.png",
+    "qa-svg-quicklook.png",
+    "results.json",
+  ]);
+  return {
+    ...value,
+    entries: value.entries.map((entry) =>
+      platformEncoded.has(entry.path)
+        ? { ...entry, bytes: "<platform-png-encoding>", sha256: "<platform-png-encoding>" }
+        : entry,
+    ),
+  };
+}
+
+function parseSeal(value) {
+  const entries = new Map();
+  for (const line of value.trim().split("\n")) {
+    const match = line.match(/^([0-9a-f]{64})  (.+)$/);
+    assert.ok(match, line);
+    entries.set(match[2], match[1]);
+  }
+  return entries;
+}
+
+async function assertCrossPlatformRegenerationEquivalent(sourcePackage, tempPackage) {
+  const sourceNames = (await readdir(sourcePackage)).sort();
+  const tempNames = (await readdir(tempPackage)).sort();
+  assert.deepEqual(tempNames, sourceNames);
+
+  const pngNames = [
+    "figure.png",
+    "qa-final-size.png",
+    "qa-grayscale.png",
+    "qa-pdf.png",
+    "qa-svg-quicklook.png",
+  ];
+  for (const name of pngNames) {
+    assert.deepEqual(
+      await decodedPng(resolve(tempPackage, name)),
+      await decodedPng(resolve(sourcePackage, name)),
+      name + " decoded pixels",
+    );
+  }
+
+  const normalizedNames = new Set([
+    ...pngNames,
+    "results.json",
+    "manifest.json",
+    "SHA256SUMS",
+  ]);
+  for (const name of sourceNames.filter((name) => !normalizedNames.has(name))) {
+    assert.deepEqual(
+      await readFile(resolve(tempPackage, name)),
+      await readFile(resolve(sourcePackage, name)),
+      name,
+    );
+  }
+
+  const sourceResults = JSON.parse(await readFile(resolve(sourcePackage, "results.json"), "utf8"));
+  const tempResults = JSON.parse(await readFile(resolve(tempPackage, "results.json"), "utf8"));
+  assert.deepEqual(normalizedResults(tempResults), normalizedResults(sourceResults));
+  assert.equal(tempResults.outputs.png_sha256, sha256(await readFile(resolve(tempPackage, "figure.png"))));
+
+  const sourceManifest = JSON.parse(await readFile(resolve(sourcePackage, "manifest.json"), "utf8"));
+  const tempManifest = JSON.parse(await readFile(resolve(tempPackage, "manifest.json"), "utf8"));
+  assert.deepEqual(normalizedManifest(tempManifest), normalizedManifest(sourceManifest));
+
+  const sourceSeal = parseSeal(await readFile(resolve(sourcePackage, "SHA256SUMS"), "utf8"));
+  const tempSeal = parseSeal(await readFile(resolve(tempPackage, "SHA256SUMS"), "utf8"));
+  assert.deepEqual([...tempSeal.keys()].sort(), [...sourceSeal.keys()].sort());
+  for (const name of sourceSeal.keys()) {
+    assert.equal(
+      tempSeal.get(name),
+      sha256(await readFile(resolve(tempPackage, name))),
+      name + " regenerated seal",
+    );
+    if (!normalizedNames.has(name))
+      assert.equal(tempSeal.get(name), sourceSeal.get(name), name + " frozen-byte equivalence");
+  }
+}
+
 test("R0.74O frozen artifacts and claim manifest remain byte-exact", async () => {
   for (const [path, expected] of frozen)
     assert.equal(sha256(await read(path)), expected, path);
@@ -405,7 +517,7 @@ test("R0.74O figure validator reproduces all sealed metadata byte-exact in isola
   }
 });
 
-test("R0.74O figure regeneration and validation reproduce all 26 files byte-exact in isolation", async () => {
+test("R0.74O regeneration keeps vector masters byte-exact and PNG pixels exact in isolation", async () => {
   const { tempRoot, sourcePackage, tempPackage } = await prepareIsolatedFigure("r074o-figure-regenerate-");
   try {
     const { stdout: plotStdout } = await execFileAsync(
@@ -421,7 +533,7 @@ test("R0.74O figure regeneration and validation reproduce all 26 files byte-exac
     const regenerated = JSON.parse(plotStdout);
     assert.equal(regenerated.outputs.svg_sha256, figureFrozen.get("figure.svg"));
     assert.equal(regenerated.outputs.pdf_sha256, figureFrozen.get("figure.pdf"));
-    assert.equal(regenerated.outputs.png_sha256, figureFrozen.get("figure.png"));
+    assert.equal(regenerated.outputs.png_sha256, sha256(await readFile(resolve(tempPackage, "figure.png"))));
     assert.equal(regenerated.simulation, false);
 
     const { stdout: validationStdout } = await execFileAsync(
@@ -435,7 +547,7 @@ test("R0.74O figure regeneration and validation reproduce all 26 files byte-exac
       },
     );
     assert.match(validationStdout, /verify-only PASS 72\/72; 24 package entries/);
-    await assertPackageByteIdentical(sourcePackage, tempPackage);
+    await assertCrossPlatformRegenerationEquivalent(sourcePackage, tempPackage);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

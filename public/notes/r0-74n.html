@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="1.80">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74N｜把所有壳层合起来，完整领圈条件闭合了</title>
+<meta name="description" content="全部内壳、主壳和外壳合成为精确解族的完整有符号领圈条件，并给出匹配的 X_j 与领圈通量尺度">
+<link rel="canonical" href="https://kasifa.github.io/notes/r0-74n.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.80"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><style>
+:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}
+@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}
+*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}
+.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}
+main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}
+h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}
+.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}
+article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.callout{padding:1rem 1.2rem;background:var(--raised);border:1px solid var(--line)}
+.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}img{max-width:100%;height:auto}.files{line-height:2}.figure-note{color:var(--muted);font-size:.94rem}
+@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}
+@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem}a{color:inherit;text-decoration:none}.equation,.stamp{break-inside:avoid}}
+</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74N · 2026-09-02</span></nav><main>
+<header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74N · 完整中文版本</div><h1>R0.74N｜把所有壳层合起来，完整领圈条件闭合了</h1>
+<p>这一节仍然没有解决三维 Navier--Stokes 千禧年问题。R0.74L 处理了主壳，R0.74M 处理了最近内壳。这里我不再逐行追赶：全部内壳进入同一个有界正部弦长，全部外壳由超高斯权绝对求和。因而，冻结精确解族的完整 R0.74K 有符号领圈条件闭合。再与已经审计的能量闭合式和支付律合并，我得到该精确解族上的 \(X_j\) 与 \(\mathfrak C_j\) 匹配平方根对数尺度。耗散分量只有上界，没有匹配下界；任意流端点估计和正则性问题仍然开放。<strong>NOT CLAY.</strong></p>
+<div class="labels"><span class="label">PROVED</span><span class="label">INHERITED</span><span class="label">FINITE</span><span class="label">LITERATURE BOUNDARY</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div>
+<div class="stamp"><strong>状态 · R0.74N</strong><p>完整有符号条件：PROVED</p><p>精确族 \(X_j\) 匹配律：PROVED</p><p>耗散匹配下界：OPEN</p><p>证书 84/84：FINITE</p><p>图件 67/67：FINITE</p><p>任意流端点：OPEN</p><p>LOCAL DIRECT / NO DGX</p></div></div></header>
+<article>
+<section id="s-01"><div class="section-no">01 / 完整主结论</div><h2>全部壳层的完整有符号条件已闭合</h2>
+<p>对 R0.74F--N 的精确光滑、周期、无外力双包解族，存在与 \(j\) 无关的 \(C&lt;\infty\) 和 \(j_0\)，使每个 \(j\ge j_0\) 满足</p>
+<div class="equation">\[\boxed{\sup_{\tau\in I_{R_j}}[\mathcal I_j(\tau)]_+\le C\Gamma_jL_jR_j^5.}\]</div>
+<p>这里的完整对象覆盖全部壳层，没有丢掉周期副本，也没有假设壳层或正负包之间发生抵消：</p>
+<div class="equation">\[\mathcal I_j=\mathcal I_<+\mathcal I_=+\mathcal I_>,\qquad k\le j-1,\quad k=j,\quad k\ge j+1.\]</div></section>
+<section id="s-02"><div class="section-no">02 / 全部内壳</div><h2>所有内壳只留下一个一致有界的正部弦长</h2>
+<p>我先逐壳取正部，再把权重放进联合弦长。这个上界故意放弃所有壳层抵消：</p>
+<div class="equation">\[0\le D_<\le C\sum_{k\ge1}2^ke^{-4^{k-1}/32}=:C_*&lt;\infty.\]</div>
+<p>所有内壳的联合支撑仍落在最大的 \(j-1\) 领圈内，所以 R0.74M 的支撑条件化最后时段排出机制可以一次作用于整个内壳和。坏路径由</p>
+<div class="equation">\[\frac1{16}-\frac1{320}-\frac8{3969}=\frac{72851}{1270080}>0\]</div>
+<p>支付；好路径进入超高斯尾。由此得到 \(\sup_\tau[\mathcal I_<]_+\le C\Gamma_jL_jR_j^5\)。</p></section>
+<section id="s-03"><div class="section-no">03 / 主壳与外壳</div><h2>主壳沿用绝对估计，外壳一次绝对求和</h2>
+<p>主壳使用 R0.74L 已审计的真实包绝对估计。外壳只需最大值原理、完整双面领圈导数总量和超高斯权：</p>
+<div class="equation">\[|\mathcal I_>(\tau)|\le CR_j^4\sum_{k\ge j+1}4^k\Gamma_k.\]</div>
+<p>尾和由首项控制，且有严格指数余量</p>
+<div class="equation">\[3c_\gamma-\rho=\frac{1237}{423360}>0.\]</div>
+<p>因此 \(\sup_\tau|\mathcal I_>|\le C\Gamma_jL_jR_j^5\)，并同时得到有限截断到无限壳层的统一极限。</p></section>
+<section id="s-04"><div class="section-no">04 / 纠正后的精确族结论</div><h2>领圈通量和 \(X_j\) 都达到匹配平方根对数尺度</h2>
+<p>R0.74K 先把完整条件转换为领圈通量上界，再与 R0.74H、R0.74J 及 R0.74F 的已审计结论非循环地合并。我得到本节必须显式保留的精确族结论：</p>
+<div class="equation">\[\boxed{X_j\asymp\mathfrak C_j\asymp B_j^2L_jR_j^2\asymp P_j^{2/3}\sqrt{1+\log_+P_j}.}\]</div>
+<p>这是跨笔记证明合成，不是新的随机引理，也不是任意流上的普适端点不等式。</p></section>
+<section id="s-05"><div class="section-no">05 / 分量边界</div><h2>外部动能有两侧界，耗散分量只有上界</h2>
+<p>令 \(T_j=B_j^2L_jR_j^2\)。分量结论是</p>
+<div class="equation">\[cT_j\le\mathcal U_{{\rm ext},j}^{\infty}\le X_j\le CT_j,\qquad 0\le\mathcal D_{{\rm ext},j}\le CT_j.\]</div>
+<p>第二个分量没有已证明的匹配下界；这里不声称 \(\mathcal D_{{\rm ext},j}\ge cT_j\)。</p></section>
+<section id="s-06"><div class="section-no">06 / 证据等级</div><h2>解析证明、沿用输入、有限复算和文献边界分开</h2>
+<p><strong>PROVED：</strong>完整全壳层有符号条件、无抵消内壳联合和、外壳绝对尾、匹配领圈通量律、跨笔记推出的精确族 \(X_j\) 匹配律及分量边界。</p>
+<p><strong>INHERITED：</strong>R0.74F--H 精确解族、R0.74F 外部动能下界、R0.74H 能量闭合式、R0.74J 支付律、R0.74K 转换、R0.74L 主壳估计和 R0.74M 最后时段排出。</p>
+<p><strong>FINITE：</strong>Python Fraction 与独立 Ruby Rational 各 84/84、零差异；对抗审计拒绝两类有效 JSON 变异。图包含 26 个文件、24 个 manifest 条目、21 个外部绑定和 25 行校验和，验证器 67/67。有限复算不替代解析证明。</p>
+<p><strong>LITERATURE BOUNDARY：</strong>有界八篇一手文献检索没有找到直接给出本节精确全壳层解族结论的定理。有限未命中不证明新颖性、优先权、检索完备性或可发表性。</p></section>
+<section id="s-07"><div class="section-no">07 / 开放边界</div><h2>精确族内部已闭合，任意流接口仍未跨越</h2>
+<ul><li>耗散分量单独的匹配下界仍为 OPEN；</li><li>任意流上的全壳层有符号领圈控制仍为 OPEN；</li><li>普适平方根对数端点、payment-to-admissibility 与指定点 core-from-shell 仍为 OPEN；</li><li>任意三维数据的正则性或奇性、全局存在与光滑性仍为 OPEN；</li><li>新颖性和优先权仍为 OPEN。</li></ul>
+<p><strong>NOT CLAY：</strong>本节只处理一个精确构造解族，不能外推为任意三维 Navier--Stokes 解的定理。</p></section>
+<section id="figure"><div class="section-no">F / 期刊主图</div><h2>内壳联合和、主壳、外壳尾与精确族匹配尺度</h2>
+<picture><source srcset="/assets/r074n/fig-r074n-all-shell-synthesis.svg" type="image/svg+xml"><img src="/assets/r074n/fig-r074n-all-shell-synthesis.png" alt="R0.74N complete all-shell synthesis and exact-family endpoint scale"></picture>
+<p><a href="/assets/r074n/fig-r074n-all-shell-synthesis.pdf">下载矢量 PDF</a> · <a href="/assets/r074n/fig-r074n-all-shell-synthesis.png">下载 600 dpi PNG</a> · <a href="/assets/r074n/fig-r074n-all-shell-synthesis.svg">打开 SVG</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/source-data.csv">精确 source-data.csv</a></p>
+<p><a href="/figures/r074n/fig-r074n-all-shell-synthesis/caption.md">图注</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/chart-contract-and-source-data.md">图表合同</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/qa-report.md">图件 QA</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/plot.py">绘图源码</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/validate.py">验证器</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/validation.json">67 项验证记录</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/manifest.json">图件 manifest</a> · <a href="/figures/r074n/fig-r074n-all-shell-synthesis/SHA256SUMS">25 项校验和</a></p>
+<p class="figure-note">SVG 是网页主图；PNG 是回退与 600 dpi 归档，PDF 是矢量下载。图是确定性解析示意图，不是 DNS、仿真、随机样本路径或奇点证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>主文、跨笔记审计、双实现证书与完整图包</h2><p class="files">
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_problem_freeze.md">问题冻结</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_all_shell_synthesis.md">解析主文</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_all_shell_independent_audit.md">壳层独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_crossnote_implication_independent_audit.md">跨笔记推论审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_final_source_rebind_audit.md">最终源文件重绑定</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074n_all_shell_certificate.py">Python 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074n_all_shell_certificate_independent.rb">独立 Ruby 证书</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_all_shell_certificate.json">冻结 JSON</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_all_shell_certificate_report.md">证书报告</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_certificate_independent_audit.md">证书独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_certificate_adversarial_audit.md">证书对抗审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_primary_literature_boundary.md">主源文献边界</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_primary_literature_independent_audit.md">文献独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_gap_matrix.md">证据与缺口矩阵</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_bilingual_dictionary.md">双语边界词典</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_report-source.md">审计后中文 reader source</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_reader_source_independent_audit.md">reader source 独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_figure_independent_audit.md">图件独立审计</a> ·
+<a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074n_freeze_manifest.json">冻结清单</a></p>
+<p><a href="/notes/r0-74n.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-73x.html">上一大里程碑 recap（截止 R0.73X，140 节）</a> · <a href="/recap-r0-61-r0-73x.pdf">recap PDF</a></p></section>
+<section class="callout" id="next"><div class="section-no">NEXT / 下一门槛</div><h2>R0.74O</h2><p>把全壳层领圈控制移到任意流，或建立 payment-to-admissibility 与指定点 core-from-shell 机制；精确族的耗散匹配下界也继续保持开放。</p></section>
+</article></main></body></html>

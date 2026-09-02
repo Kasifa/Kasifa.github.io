@@ -73,7 +73,7 @@ jobs:
           directory="$(dirname "$output")"
           case "$(basename "$output")" in
             raster-600) cp "$directory/figure.png" "$output.png" ;;
-            qa-pdf) cp "$directory/qa-pdf.png" "$output.png" ;;
+            qa-pdf) test -f "$output.png" ;;
             *) exec /usr/bin/pdftoppm "$@" ;;
           esac
           SH

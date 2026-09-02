@@ -12,7 +12,7 @@ const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex")
 const node = process.env.CODEX_NODE || process.execPath;
 
 test("R0.74S publication accounting advances without recap drift", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.85", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-02" });
+  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.86", latestRelease: "R0.74S", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-02" });
   const manifest = JSON.parse(read("research/release-manifest.json"));
   assert.equal(manifest.latestCompletedRelease, "r074s");
   assert.equal(manifest.nextRelease, "r074t");
@@ -31,9 +31,10 @@ test("R0.74S publication accounting advances without recap drift", () => {
 test("R0.74S reader is complete Chinese and preserves every claim boundary", () => {
   const note = read("public/notes/r0-74s.html");
   for (const marker of [
-    "一侧 ball cutoff：PROVED", "四通道重组：PROVED / CIRCULAR", "三通道 genealogy：PROVED",
-    "PROVED ABSTRACT SCALAR NO-GO", "NOT PDE/NSE", "PDE-weighted genealogy：OPEN", "完整中文版本",
-    "4/4 exact", "8/8 finite", "58/58 structural", "10/10 mutations", "9/9 independent", "NOT CLAY",
+    "一侧 ball cutoff 与 flux 符号恒等式", "四通道 signed recombination", "三通道 genealogy cutoff 非负",
+    "PROVED ABSTRACT SCALAR NO-GO", "不是 PDE/NSE 反例", "PDE-weighted block length", "完整中文版本",
+    "低 Rayleigh 全壳层支付：PROVED", "高 Rayleigh residual：OPEN", "反常缺陷 residual：OPEN",
+    "16/16 exact", "52/52 structural", "9/9 negative mutations", "6/6 groups", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -50,6 +51,12 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   assert.equal(binding.claimBoundary.threeChannelTemporalDebtCancellation, "PROVED");
   assert.equal(binding.claimBoundary.terminalL1Decomposition, "PROVED");
   assert.equal(binding.claimBoundary.unweightedGenealogyObstruction, "PROVED_ABSTRACT_SCALAR_NO_GO");
+  assert.equal(binding.claimBoundary.lowHighRayleighTimeSplit, "PROVED");
+  assert.equal(binding.claimBoundary.dissipationPriorityTrichotomy, "PROVED");
+  assert.equal(binding.claimBoundary.lowRayleighAllShellPayment, "PROVED");
+  assert.equal(binding.claimBoundary.highRayleighResidual, "OPEN");
+  assert.equal(binding.claimBoundary.anomalousDefectResidual, "OPEN");
+  assert.equal(binding.claimBoundary.finiteExceptionConsequence, "PROVED_CONDITIONAL_IMPLICATION_ONLY");
   assert.equal(binding.claimBoundary.pdeOrNseCounterexample, false);
   assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
   assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN");
@@ -64,10 +71,10 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
   const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
   assert.ok(card.length > 0 && card.length < 500, `homepage card length ${card.length}`);
-  for (const marker of ["ℓ¹", "不是 PDE/NSE 反例", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
+  for (const marker of ["低 Rayleigh", "反常缺陷仍开放", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["完整 signed recombination", "三通道分解", "未加权 component/epoch/merger count", "ABSTRACT SCALAR NO-GO ONLY. NOT PDE/NSE. NOT CLAY."]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["八分之一/八分之一/四分之一三分法", "all-shell (P_R^M)^(2/3) payment", "high-Rayleigh", "abstract scalar no-go", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
     const canonical = `research/figures/r074s/fig-r074s-ball-clock-debt/figure.${ext}`;
@@ -78,12 +85,12 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   }
   const validation = JSON.parse(read("research/figures/r074s/fig-r074s-ball-clock-debt/validation.json"));
   assert.equal(validation.summary.result, "PASS");
-  assert.equal(validation.summary.passed, 15);
-  assert.equal(validation.summary.total, 15);
+  assert.equal(validation.summary.passed, 16);
+  assert.equal(validation.summary.total, 16);
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step6-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step7-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
   assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));

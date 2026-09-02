@@ -145,8 +145,8 @@ def render(config: dict) -> None:
     width, height = config["width_mm"] * mm, config["height_mm"] * mm
     d = Drawing(width, height)
     d.add(Rect(0, 0, width, height, fillColor=white, strokeColor=None))
-    label(d, 14, height - 16, "Cross-channel recombination localizes the remaining l1 debt", 8.4, bold=True)
-    label(d, 14, height - 27, "R0.74S Step 6  |  ABSTRACT SCALAR NO-GO ONLY  |  NOT PDE/NSE  |  NOT CLAY", 5.2, color=MID)
+    label(d, 14, height - 16, "Low-Rayleigh dissipation supplies parabolic kinetic mass", 8.4, bold=True)
+    label(d, 14, height - 27, "R0.74S Step 7  |  LOW-RAYLEIGH BRANCH PAID  |  RESIDUALS OPEN  |  NOT CLAY", 5.2, color=MID)
     for dx, dy in [(0, 4.5), (4.5, 0), (0, -4.5), (-4.5, 0)]:
         d.add(Circle(width - 19 + dx, height - 18 + dy, 2.3, fillColor=BLUE_LIGHT, strokeColor=BLUE, strokeWidth=0.5))
     d.add(Circle(width - 19, height - 18, 1.8, fillColor=GOLD_LIGHT, strokeColor=GOLD, strokeWidth=0.5))
@@ -155,29 +155,32 @@ def render(config: dict) -> None:
     ax, aw = 14, 154
     bx, bw = 175, 160
     cx, cw = 342, width - 356
-    panel(d, ax, y, aw, h, "A", "Full signed recombination")
-    panel(d, bx, y, bw, h, "B", "Mismatch separated")
-    panel(d, cx, y, cw, h, "C", "One-block saturation")
+    panel(d, ax, y, aw, h, "A", "Exact dissipation trichotomy")
+    panel(d, bx, y, bw, h, "B", "Low-Rayleigh payment")
+    panel(d, cx, y, cw, h, "C", "Residual boundary")
 
-    box(d, ax + 10, y + h - 65, 58, 31, ["root + outer", "+ gap + mismatch"], fill=BLUE_LIGHT, stroke=BLUE, status="SIGNED")
-    arrow(d, ax + 70, y + h - 50, ax + 86, y + h - 50, color=MID)
-    box(d, ax + 87, y + h - 65, 57, 31, ["original stopped", "shell increment"], fill=GOLD_LIGHT, stroke=GOLD, status="EXACT")
-    box(d, ax + 20, y + h - 119, 114, 29, ["same quantity is reconstructed", "no smaller control appears"], fill=RED_LIGHT, stroke=RED, status="CIRCULAR")
-    multiline(d, ax + 10, y + 40, ["The four-channel identity is exact,", "but the linear route closes on itself."], 4.8, color=MID, leading=6.5)
+    box(d, ax + 10, y + h - 61, 61, 27, ["D = viscous", "+ defect"], fill=BLUE_LIGHT, stroke=BLUE, status="EXACT")
+    arrow(d, ax + 73, y + h - 47, ax + 87, y + h - 47, color=MID)
+    box(d, ax + 88, y + h - 61, 56, 27, ["D >= T / 2"], fill=GOLD_LIGHT, stroke=GOLD, status="BRANCH")
+    box(d, ax + 10, y + h - 101, 40, 27, ["defect", ">= T / 8"], fill=PLUM_LIGHT, stroke=PLUM, status="A")
+    box(d, ax + 57, y + h - 101, 40, 27, ["high", ">= T / 8"], fill=RED_LIGHT, stroke=RED, status="B")
+    box(d, ax + 104, y + h - 101, 40, 27, ["low", "> T / 4"], fill=BLUE_LIGHT, stroke=BLUE, status="C")
+    multiline(d, ax + 10, y + 42, ["The priority split is disjoint", "and exhaustive for every shell."], 4.8, color=MID, leading=6.5)
 
-    box(d, bx + 10, y + h - 65, 58, 31, ["three-channel", "genealogy"], fill=BLUE_LIGHT, stroke=BLUE, status="PROVED")
-    arrow(d, bx + 70, y + h - 50, bx + 88, y + h - 50, color=MID)
-    box(d, bx + 89, y + h - 65, 61, 31, ["start / merge", "time debt = 0"], fill=GOLD_LIGHT, stroke=GOLD, status="CANCELLED")
-    box(d, bx + 18, y + h - 119, 124, 31, ["terminal = block roots", "+ all shell residual l1 mass"], fill=PLUM_LIGHT, stroke=PLUM, status="EXACT")
-    multiline(d, bx + 10, y + 40, ["Temporal debts cancel; the final", "nonnegative l1 ledger remains."], 4.8, color=MID, leading=6.5)
+    box(d, bx + 10, y + h - 58, 58, 24, ["low g", "kinetic mass"], fill=BLUE_LIGHT, stroke=BLUE, status="PROVED")
+    arrow(d, bx + 70, y + h - 46, bx + 87, y + h - 46, color=MID)
+    box(d, bx + 88, y + h - 58, 62, 24, ["Jensen", "e^(3/2)"], fill=GOLD_LIGHT, stroke=GOLD, status="PROVED")
+    box(d, bx + 18, y + h - 99, 124, 27, ["T_k <= coefficient x p_k^(2/3)"], fill=PLUM_LIGHT, stroke=PLUM, status="PER SHELL")
+    box(d, bx + 18, y + h - 136, 124, 27, ["sum low clocks", "<= C L(lambda)^(1/3) P^(2/3)"], fill=BLUE_LIGHT, stroke=BLUE, status="ALL SHELLS")
+    multiline(d, bx + 10, y + 35, ["No uniform time-thickness", "hypothesis is used."], 4.8, color=MID, leading=6.5)
 
-    box(d, cx + 10, y + h - 61, cw - 20, 27, ["work = N"], fill=RED_LIGHT, stroke=RED, status="L1")
-    box(d, cx + 10, y + h - 100, cw - 20, 27, ["matched square = sqrt(N)"], fill=BLUE_LIGHT, stroke=BLUE, status="L2")
-    multiline(d, cx + 10, y + h - 121, ["components = 1", "epochs = 1", "mergers = 0"], 4.8, color=MID, leading=6.3)
-    multiline(d, cx + 10, y + 47, ["ABSTRACT SCALAR NO-GO ONLY.", "Unweighted genealogy counts", "cannot pay the work."], 4.8, color=RED, bold_first=True, leading=6.3)
-    label(d, cx + 10, y + 22, "NOT PDE/NSE. NOT CLAY.", 4.8, color=MID, bold=True)
+    box(d, cx + 10, y + h - 62, cw - 20, 28, ["defect residual", "+ high-Rayleigh residual"], fill=RED_LIGHT, stroke=RED, status="OPEN")
+    box(d, cx + 10, y + h - 105, cw - 20, 29, ["if #bad <= N_D", "then <= sqrt(N_D) Y_2"], fill=GOLD_LIGHT, stroke=GOLD, status="CONDITIONAL")
+    multiline(d, cx + 10, y + h - 127, ["Exact shear: high-Rayleigh", "time set exists, but K = Q", "and is already Q-paid."], 4.7, color=MID, leading=6.1)
+    multiline(d, cx + 10, y + 43, ["No Q.1 or regularity claim.", "The Step 6 scalar no-go", "retains its narrow scope."], 4.7, color=RED, bold_first=True, leading=6.1)
+    label(d, cx + 10, y + 20, "NOT CLAY.", 4.9, color=MID, bold=True)
 
-    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S ball-clock debt")
+    renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S low-Rayleigh dissipation payment")
     renderSVG.drawToFile(d, str(HERE / "figure.svg"))
     finalize_svg(config)
 
@@ -206,8 +209,9 @@ def main() -> None:
         "pixel_size": list(image.size),
         "one_sided_certificate_sha256": sha(REPO / "research/r074s_one_sided_ball_clock_certificate.json"),
         "cross_channel_certificate_sha256": sha(REPO / "research/r074s_cross_channel_recombination_certificate.json"),
-        "analytic_note_sha256": sha(REPO / "research/r074s_cross_channel_recombination_no_gain.md"),
-        "claim_boundary": "PROVED ABSTRACT SCALAR NO-GO for unweighted genealogy counts only; NOT PDE/NSE; PDE-weighted genealogy OPEN; NOT CLAY",
+        "dissipation_rayleigh_certificate_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_certificate.json"),
+        "analytic_note_sha256": sha(REPO / "research/r074s_dissipation_rayleigh_gate.md"),
+        "claim_boundary": "LOW-RAYLEIGH BRANCH PAID; high-Rayleigh and anomalous-defect residuals OPEN; finite-exception consequence CONDITIONAL ONLY; NOT CLAY",
     }
     (HERE / "environment.json").write_text(json.dumps(environment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "results.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")

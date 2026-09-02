@@ -47,7 +47,7 @@ try {
         rawTexVisible: /\\\[|\\\]|\\\(|\\\)/.test(body),
         englishChineseResidueCount: residue.length,
         notClayVisible: kind !== "note" || body.includes("NOT CLAY"),
-        openBoundaryVisible: kind !== "note" || /cross-channel|跨通道/i.test(body) && /OPEN/.test(body),
+        openBoundaryVisible: kind !== "note" || /high-Rayleigh|高 Rayleigh/i.test(body) && /anomalous-defect|反常缺陷/i.test(body) && /OPEN/.test(body),
         noGoBoundaryVisible: kind !== "note" || /no-go/i.test(body) && /PDE\/NSE/i.test(body),
         formalFigureVisible: kind !== "note" || /figure|期刊主图/i.test(body),
         cardPresent: kind !== "home" || Boolean(card),
@@ -73,4 +73,3 @@ const report = { schemaVersion: "r074s-browser-qa-v1", base, output, cases: resu
 await writeFile(resolve(output, "report.json"), JSON.stringify(report, null, 2) + "\n");
 process.stdout.write(JSON.stringify(report, null, 2) + "\n");
 if (!report.allPass) process.exitCode = 1;
-

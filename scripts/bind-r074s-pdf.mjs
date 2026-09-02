@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜一侧球时钟为何仍留下 ℓ¹ 债务";
+  const title = "R0.74S｜低 Rayleigh 耗散支的二次支付";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -82,6 +82,14 @@ try {
       unweightedGenealogyObstruction: "PROVED_ABSTRACT_SCALAR_NO_GO",
       pdeOrNseCounterexample: false,
       pdeWeightedGenealogy: "OPEN",
+      viscousDefectSplit: "PROVED_INHERITED_MEASURE_IDENTITY",
+      lowHighRayleighTimeSplit: "PROVED",
+      dissipationPriorityTrichotomy: "PROVED",
+      lowRayleighAllShellPayment: "PROVED",
+      highRayleighResidual: "OPEN",
+      anomalousDefectResidual: "OPEN",
+      finiteExceptionConsequence: "PROVED_CONDITIONAL_IMPLICATION_ONLY",
+      exactShearHighRayleighDiagnostic: "PROVED_IN_INHERITED_SCOPE_NOT_A_COUNTEREXAMPLE",
       fixedScaleInequality: "OPEN",
       formalFigure: "PUBLISHED_DERIVED_FROM_FROZEN_ANALYTIC_SOURCE",
       navierStokesSimulation: false,

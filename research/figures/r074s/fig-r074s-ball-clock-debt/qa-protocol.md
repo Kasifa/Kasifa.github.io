@@ -4,5 +4,5 @@
 2. Inspect the 300 dpi print-size derivative for overlap, clipping, hierarchy, and readable status labels.
 3. Inspect the grayscale derivative for non-colour redundancy.
 4. Inspect the SVG in Quick Look when available and verify physical dimensions and embedded fonts.
-5. Check every CIRCULAR / PROVED ABSTRACT SCALAR NO-GO / OPEN / NOT PDE-NSE boundary against source rows.
+5. Check every PROVED / PROVED CONDITIONAL IMPLICATION / OPEN / NOT CLAY boundary against source rows.
 6. Run `validate.py`; publication requires every required machine check to pass.

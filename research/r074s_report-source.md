@@ -1,20 +1,21 @@
-# R0.74S｜一侧球时钟为何仍留下 ℓ¹ 债务
+# R0.74S｜低 Rayleigh 耗散支的二次支付
 
 ## 0. 这一步得到什么
 
-R0.74R 把任意 completed clock 的困难分成累计耗散、真实动能窗口和近期正变差三支。R0.74S 继续检验其中最自然的修复：在最后一次 upcrossing 处停止每个活跃壳层，用一侧球 cutoff 完成剩余的 root、outer 与 weight-drop 三条有符号通道，再利用正性和相邻壳层消去边界。
+R0.74S Steps 1--6 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination 与未加权 genealogy 的抽象标量 no-go 分开封存。Step 7 回到 R0.74R 三分法的耗散主导支，得到一个新的正结果。
 
-本节证明了三件事：
+本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出
 
-- 三条有符号通道都有精确的 stopped ball-clock 表示，但时间方向不同；
-- 从 collar 换成 ball 不会增加低阶损失，所有二次 cutoff 行仍由 \(A_R=(P_R^M)^{2/3}\) 支付；
-- terminal weight-drop ball clocks 满足精确 Abel 恒等式，但右端是完整的 \(\ell^1\) shell residual，而不是匹配平方函数。
+\[
+\sum_{k\in\mathcal I_{\rm lo}(\tau)}K_{k,R}(\tau)
+\le C\,\mathscr L(\boldsymbol\lambda)^{1/3}(P_R^M)^{2/3}.
+\]
 
-Step 6 再保留全部四通道符号做精确重组。结果不是新估计：完整 root、outer、weight-drop 与 mismatch 行恰好重建原 stopped shell increment，因而该线性路线是 circular。把 mismatch 分开后，三通道重组确实消去全部 start/merge 时间债务，但终端仍精确等于“每个最终块一个 root-boundary clock + 全部非负 shell residual 的 \(\ell^1\) 质量”。
+这里不需要例外壳层，也不需要新的 signed cancellation。这个结论是全部壳层同时成立的严格二次支付，但只覆盖低 Rayleigh 耗散支；它不推出低 Rayleigh 时间集具有统一正测度。
 
-最后，一个光滑抽象时钟塔使 stopped work 等于 \(N\)，而平方函数只等于 \(\sqrt N\)，且只需一个 activation epoch、一个 active block、零 merger。因此，单靠 completed-clock 正性、cutoff 线性、tower 恒等式与未加权 genealogy 复杂度，不能推出所需的 \(\ell^2\) 压缩。这是一个 **PROVED ABSTRACT SCALAR NO-GO**；见证不是速度场、压力场、耗散测度或 Navier--Stokes 解，不能写成 PDE/NSE 反例。
+高 Rayleigh 与反常缺陷两支仍然 **OPEN**。本步只给出它们的精确 residual ledger，以及“若未来证明剩余壳层数一致有界，则可用平方函数支付”的 **PROVED CONDITIONAL IMPLICATION**。继承的高频光滑剪切说明高 Rayleigh 时间集确实可以出现，但该剪切本身由已有 \(Q\)-ledger 支付，不是本定理的反例。
 
-无条件 stopped-work 估计、跨通道动力学符号定理、R0.74R 的普适 persistence 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
+此前的 **PROVED ABSTRACT SCALAR NO-GO** 继续只排除 scalar completed-clock algebra 与未加权 genealogy；它不是 PDE/NSE 反例。无条件 stopped-work 估计、R0.74R 的普适 persistence 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
 本节没有数值仿真、DNS 或 DGX。
 
@@ -320,7 +321,154 @@ W_R^M=\sum_{k\in I}\Delta_{\sigma_k}^{\tau}K_{k,R}
 
 仍是 \(O(|I|)\)，不是无维数损失的平方函数界。这个结论只排除 **scalar completed-clock algebra + unweighted genealogy**；PDE-weighted block length、耗散支付与跨通道动力学符号仍可能有效。
 
-## 10. 证书与独立审计
+## 10. 局部耗散的精确拆分与 Rayleigh 时间集
+
+保留 R0.74P 的 suitable-weak 总局部耗散测度
+
+\[
+\boldsymbol\mu=|\nabla u|^2\,dx\,dt+\boldsymbol D,
+\qquad \boldsymbol D\ge0.
+\]
+
+对每个壳层定义动能与黏性密度
+
+\[
+e_{k,R}(t)=\frac{\gamma_k\eta_R(t)}{2R}
+\int_{\mathbb T^3}\Psi_k^R|v_R|^2,
+\qquad
+g_{k,R}(t)=\frac{\gamma_k\eta_R(t)}{R}
+\int_{\mathbb T^3}\Psi_k^R|\nabla v_R|^2.
+\]
+
+把共同零测集上的代表取为零后，两行均可测。对好终端时刻 \(\tau\)，耗散 clock 精确分解为
+
+\[
+D_{k,R}(\tau)=\int_{s_R}^{\tau}g_{k,R}(t)\,dt+m_{k,R}(\tau),
+\qquad m_{k,R}(\tau)\ge0,
+\]
+
+其中 \(m_{k,R}\) 是反常缺陷部分。给定正序列 \(\boldsymbol\lambda=(\lambda_k)\)，直接定义
+
+\[
+L_{k,R}=\left\{g_{k,R}\le\frac{2\lambda_k}{R^2}e_{k,R}\right\},
+\qquad H_{k,R}=(s_R,\tau)\setminus L_{k,R}.
+\]
+
+当分母与 \(\eta_R\) 为正时，这等价于 cutoff-weighted ratio
+
+\[
+\rho_{k,R}=R^2\frac{\int\Psi_k^R|\nabla v_R|^2}{\int\Psi_k^R|v_R|^2}
+\le\lambda_k.
+\]
+
+原定义不做除法；分母为零时两行同时为零，因此没有 \(0/0\) 约定。
+
+## 11. 八分之一、八分之一、四分之一三分法
+
+对耗散主导壳层写 \(T_k=K_{k,R}(\tau)>0\) 且 \(D_{k,R}(\tau)\ge T_k/2\)。按优先顺序定义 defect、high 与 low 三类：
+
+\[
+\begin{aligned}
+\mathcal I_{\rm def}&=\{m_{k,R}(\tau)\ge T_k/8\},\\
+\mathcal I_{\rm hi}&=\left\{k\notin\mathcal I_{\rm def}:\int_{H_{k,R}}g_{k,R}\ge T_k/8\right\},\\
+\mathcal I_{\rm lo}&=\mathcal I_D\setminus(\mathcal I_{\rm def}\cup\mathcal I_{\rm hi}).
+\end{aligned}
+\]
+
+剩余的低 Rayleigh 类满足精确严格不等式
+
+\[
+\int_{L_{k,R}}g_{k,R}>\frac14T_k,
+\qquad
+\frac1{R^2}\int_{L_{k,R}}e_{k,R}>\frac{T_k}{8\lambda_k}.
+\]
+
+令 \(\delta_{k,R}=|L_{k,R}|/R^2\)。冻结时间窗只给 \(0<\delta_{k,R}\le4\)，但这已经足够使 Jensen 给出
+
+\[
+\frac1{R^2}\int_{L_{k,R}}e_{k,R}^{3/2}
+\ge\frac12\left(\frac{T_k}{8\lambda_k}\right)^{3/2}.
+\]
+
+时间集变薄不会破坏这一步：在固定动能时间质量下，它反而增大 \(L_t^{3/2}\) 行。这里证明的是积分质量，不是统一时间厚度。
+
+## 12. 全壳层低 Rayleigh 二次支付
+
+把 R0.74R 的 padded-shell 三次付款限制到每个壳层自己的 \(L_{k,R}\)：
+
+\[
+p_{k,R}^{\rm lo}=R^{-2}\gamma_k\int_{L_{k,R}}\eta_R^{3/2}
+\int_{\operatorname{supp}\psi_k^R}|\widetilde v_R|^3.
+\]
+
+空间 Hölder 与上一节合并，先得到逐壳层估计
+
+\[
+T_k\le C_2\lambda_k2^k\gamma_k^{1/3}
+(p_{k,R}^{\rm lo})^{2/3}.
+\]
+
+定义
+
+\[
+\mathscr L(\boldsymbol\lambda)
+=\sum_{k\ge1}2^{3k}\gamma_k\lambda_k^3.
+\]
+
+只要 \(\mathscr L(\boldsymbol\lambda)<\infty\)，跨壳层 Hölder 与继承的非负付款给出
+
+\[
+\boxed{
+\sum_{k\in\mathcal I_{\rm lo}(\tau)}K_{k,R}(\tau)
+\le C_3\mathscr L(\boldsymbol\lambda)^{1/3}(P_R^M)^{2/3}.}
+\]
+
+常数序列 \(\lambda_k=1\) 可用；\(\lambda_k=\gamma_k^{-\alpha}\) 在 \(0\le\alpha<1/3\) 时可用；近临界序列
+
+\[
+\lambda_k^{(\varepsilon)}=2^{-(1+\varepsilon)k}\gamma_k^{-1/3}
+\]
+
+给出 \(\mathscr L=2^{-3\varepsilon}/(1-2^{-3\varepsilon})\)。临界 \(\varepsilon=0\) 时每个 summand 等于 1，级数发散。这只是本论证的序列空间边界，不是任意解自动满足的 Rayleigh profile。
+
+## 13. 未关闭 residual 与条件 finite-exception 接口
+
+耗散主导族的完整剩余账本是
+
+\[
+\begin{aligned}
+\sum_{k\in\mathcal I_D(\tau)}T_k
+\le{}&C_3\mathscr L(\boldsymbol\lambda)^{1/3}A_R\\
+&+8\sum_{k\in\mathcal I_{\rm def}(\tau)}m_{k,R}(\tau)
++8\sum_{k\in\mathcal I_{\rm hi}(\tau)}\int_{H_{k,R}}g_{k,R},
+\qquad A_R=(P_R^M)^{2/3}.
+\end{aligned}
+\]
+
+这条不等式没有隐藏新的 \(\ell^1\) clock remainder，但也没有控制最后两项。若未来 PDE 定理证明
+
+\[
+\#(\mathcal I_{\rm def}(\tau)\cup\mathcal I_{\rm hi}(\tau))\le N_D,
+\]
+
+则 Cauchy--Schwarz 立即给出剩余 clock 至多为 \(\sqrt{N_D}Y_{2,R}^{\rm sf}\)。这是 **PROVED CONDITIONAL IMPLICATION ONLY**；本步没有证明一致有限例外，更没有由此推出 (Q.1)。
+
+## 14. 高频剪切诊断与严格边界
+
+继承的光滑周期剪切
+
+\[
+u_N(t,x)=Ae^{-N^2(t-t_-)}\sin(Nx_2)e_1,
+\qquad p_N=0,
+\]
+
+满足固定 cutoff 上 \(\rho_{k,R}^{(N)}/(R^2N^2)\to1\)。因此对固定阈值，充分高频时 high-Rayleigh 时间集可以在全部活跃时间出现；不能直接删除这一 residual。
+
+但该剪切的 flux clock 满足 \(F_{k,R}=0\)，因而 \(K_{k,R}=Q_{k,R}\)，其 completed clocks 已由继承的 \(Q\)-variation ledger 支付。它只说明 high-Rayleigh 时间集非空，不是低 Rayleigh 定理或 completed-clock 估计的反例，也不把壳层自动放入优先类 \(\mathcal I_{\rm hi}\)。
+
+Step 7 严格证明低 Rayleigh 耗散支的同时二次支付、精确 residual ledger 与条件 finite-exception implication。高 Rayleigh 支、反常缺陷支、stopped-work depletion、任意时钟 extraction、(Q.1)、尺度收缩与正则性仍为 **OPEN**。**NOT CLAY.**
+
+## 15. 证书与独立审计
 
 Step 5 最终确定性证书通过：
 
@@ -333,9 +481,11 @@ Step 5 最终确定性证书通过：
 
 Step 6 主证书另通过 4/4 exact、8/8 finite、58/58 structural、10/10 mutation；独立 Ruby 实现通过 9/9 independent 与 8/8 mutation，且与 producer 交叉一致。九类 forged JSON 全部被拒绝。
 
+Step 7 主证书通过 16/16 exact、8/8 finite、52/52 structural、9/9 negative mutations。独立 Ruby 链通过 6/6 groups、31/31 structural 与 9/9 adversarial mutations，并与主 producer 交叉一致。主文 SHA-256 为 `e835a104f4a6f4d2281bef877dd6bfeb73f1c2396f6bd28203bb0812f7f8e3d3`。
+
 这些是 **FINITE** 证书，只验证公式实现和符号哨兵；它们不机器证明 cutoff 光滑性、周期化/unfolding、suitable local-energy 计算、无限支撑估计或抽象见证的 PDE 实现。解析证明和有限证书必须继续分开。
 
-## 11. 决定与下一门槛
+## 16. 决定与下一门槛
 
 本节已经 **PROVED**：
 
@@ -348,16 +498,20 @@ Step 6 主证书另通过 4/4 exact、8/8 finite、58/58 structural、10/10 muta
 - 四通道 signed recombination 精确重建 stopped increments，证明该路线 circular；
 - 三通道 genealogy cutoff 非负、插入符号有利、终端块分解精确；
 - 单块标量族与有限 genealogy 计数的 abstract scalar no-go。
+- 黏性/缺陷耗散的精确拆分与可测 low/high-Rayleigh 时间集；
+- 八分之一、八分之一、四分之一优先三分法；
+- 低 Rayleigh 动能时间质量、Jensen 转换与全壳层 \((P_R^M)^{2/3}\) 支付；
+- admissible/critical Rayleigh profile 边界、精确 residual ledger 与条件 finite-exception implication。
 
 本节关闭两条相邻的独立代数路线：分开估计所有 positive completions 只得到 \(\ell^1\)；完整保留符号再线性重组则精确返回原未知量。未加权 component/epoch/merger 计数也不能修复差距。
 
-仍可能有效的下一步必须加入能看见 block length 或 signed transport 的 PDE-paid quantity；一个具体入口是回到耗散主导分支，检验正测度能否为 weighted genealogy 提供付款。
+Step 7 已经关闭耗散主导族的 low-Rayleigh 部分。下一步应只检验 high-Rayleigh 黏性 residual 与 anomalous-defect residual 能否由 PDE 结构支付，或是否能证明一致 finite-exception theorem；不能把条件接口写成已完成定理。
 
-root/outer/weight-drop 动力学控制、耗散主导分支、R0.74R persistence hypotheses、无条件固定尺度不等式 (Q.1)、尺度收缩、正则性、奇点形成和 Clay 问题全部保持 **OPEN / NOT CLAIMED**。
+root/outer/weight-drop 动力学控制、high-Rayleigh/defect residual、R0.74R persistence hypotheses、无条件固定尺度不等式 (Q.1)、尺度收缩、正则性、奇点形成和 Clay 问题全部保持 **OPEN / NOT CLAIMED**。
 
-**PROVED ABSTRACT SCALAR NO-GO ONLY. NOT PDE/NSE. NOT CLAY.**
+**LOW-RAYLEIGH BRANCH PAID. ABSTRACT SCALAR NO-GO RETAINED IN ITS ORIGINAL SCOPE. NOT CLAY.**
 
-## 12. 继承边界
+## 17. 继承边界
 
 - actual collar traces 与四通道 split：继承自 R0.74S Step 3，PROVED；
 - stopped-family activation：继承自 R0.74S Step 2，PROVED；
@@ -365,5 +519,8 @@ root/outer/weight-drop 动力学控制、耗散主导分支、R0.74R persistence
 - suitable-weak completed-clock operator：继承自 R0.74P，PROVED；
 - weighted \(S_2\) 与 doubled-radius support ledger：继承自 R0.74H，PROVED；
 - frozen adjacent-weight tail：继承自 R0.74S Step 1，PROVED。
+- suitable-weak 耗散测度与 completed shell clock：继承自 R0.74P，PROVED；
+- shell-dependent cubic payment 与 padded-shell Hölder：继承自 R0.74R，PROVED；
+- 高频光滑剪切诊断：继承自 R0.73Y 与 R0.74B，在其原范围内 PROVED。
 
 不声称新颖性、优先权、正则性或千禧年问题结论。

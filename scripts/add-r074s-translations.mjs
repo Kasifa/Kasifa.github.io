@@ -145,14 +145,18 @@ const [source, translationOrderSource, current] = await Promise.all([
   collectSiteStrings("./public"),
   readFile(translationPath, "utf8").then(JSON.parse),
 ]);
-const baseCurrent = checkOnly ? current : current.filter((row) => !/^r074s\d+$/.test(row.id));
+// The original R0.74S release owns exactly the three-digit r074sNNN range.
+// Later step-specific prefixes (for example r074s7NNN) must not be folded into
+// this historical self-check.
+const baseRowPattern = /^r074s\d{3}$/;
+const baseCurrent = checkOnly ? current : current.filter((row) => !baseRowPattern.test(row.id));
 const currentByZh = new Map(baseCurrent.map((entry) => [entry.zh, entry]));
 const missingBefore = source.filter((entry) => !currentByZh.has(entry.zh));
 const missingInTranslationOrder = translationOrderSource.filter((entry) => !currentByZh.has(entry.zh));
 
 if (checkOnly) {
   assert.equal(missingBefore.length, 0, "site still has untranslated Chinese strings");
-  const rows = current.filter((row) => /^r074s\d+$/.test(row.id));
+  const rows = current.filter((row) => baseRowPattern.test(row.id));
   assert.equal(rows.length, english.length, "R0.74S translation count drift");
   assert.deepEqual(rows.map((row) => row.en), english, "R0.74S English translation drift");
 } else {

@@ -45,7 +45,7 @@ jobs:
           python -m pip install -r figures/r074p/fig-r074p-observable-triage/requirements.txt
           sudo apt-get update
           sudo apt-get install --yes poppler-utils
-      - name: Restore frozen R0.74N/O verifier runtime fixtures
+      - name: Restore frozen R0.74N/O/P verifier runtime fixtures
         run: |
           python - <<'PY'
           import base64
@@ -71,6 +71,10 @@ jobs:
           sudo tee /Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm >/dev/null <<'SH'
           #!/usr/bin/env bash
           set -euo pipefail
+          if [[ "${1:-}" == "-v" ]]; then
+            echo "pdftoppm version 26.05.0" >&2
+            exit 0
+          fi
           output="${!#}"
           directory="$(dirname "$output")"
           case "$(basename "$output")" in

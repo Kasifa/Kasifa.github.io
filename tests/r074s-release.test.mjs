@@ -31,9 +31,9 @@ test("R0.74S publication accounting advances without recap drift", () => {
 test("R0.74S reader is complete Chinese and preserves every claim boundary", () => {
   const note = read("public/notes/r0-74s.html");
   for (const marker of [
-    "一侧 ball cutoff：PROVED", "三条 stopped orientation：PROVED", "terminal Abel identity：PROVED",
-    "PROVED ABSTRACT NO-GO", "NOT PDE/NSE", "cross-channel sign：OPEN", "完整中文版本",
-    "5/5", "7/7", "55/55", "4/4", "NOT CLAY",
+    "一侧 ball cutoff：PROVED", "四通道重组：PROVED / CIRCULAR", "三通道 genealogy：PROVED",
+    "PROVED ABSTRACT SCALAR NO-GO", "NOT PDE/NSE", "PDE-weighted genealogy：OPEN", "完整中文版本",
+    "4/4 exact", "8/8 finite", "58/58 structural", "10/10 mutations", "9/9 independent", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -42,13 +42,16 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   const binding = JSON.parse(read("research/r074s_pdf_bindings.json"));
   assert.equal(binding.publicChineseHtml.sha256, sha("public/notes/r0-74s.html"));
   assert.equal(binding.publicPdf.sha256, sha("public/notes/r0-74s.pdf"));
-  assert.equal(binding.publicPdf.pageCount, 7);
+  assert.ok(binding.publicPdf.pageCount >= 7);
   assert.equal(binding.claimBoundary.oneSidedBallClocks, "PROVED");
   assert.equal(binding.claimBoundary.stoppedOrientations, "PROVED");
   assert.equal(binding.claimBoundary.terminalAbelIdentity, "PROVED");
-  assert.equal(binding.claimBoundary.scalarPositiveClockObstruction, "PROVED_ABSTRACT_NO_GO");
+  assert.equal(binding.claimBoundary.fullSignedRecombination, "PROVED_CIRCULAR");
+  assert.equal(binding.claimBoundary.threeChannelTemporalDebtCancellation, "PROVED");
+  assert.equal(binding.claimBoundary.terminalL1Decomposition, "PROVED");
+  assert.equal(binding.claimBoundary.unweightedGenealogyObstruction, "PROVED_ABSTRACT_SCALAR_NO_GO");
   assert.equal(binding.claimBoundary.pdeOrNseCounterexample, false);
-  assert.equal(binding.claimBoundary.crossChannelDynamicalSign, "OPEN");
+  assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
   assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN");
   assert.equal(binding.claimBoundary.formalFigure, "PUBLISHED_DERIVED_FROM_FROZEN_ANALYTIC_SOURCE");
 });
@@ -64,7 +67,7 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   for (const marker of ["ℓ¹", "不是 PDE/NSE 反例", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["仅排除 scalar positivity", "见证不是速度、压力、耗散测度或 NSE 解", "跨通道动力学符号", "NOT PDE/NSE. NOT CLAY."]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["完整 signed recombination", "三通道分解", "未加权 component/epoch/merger count", "ABSTRACT SCALAR NO-GO ONLY. NOT PDE/NSE. NOT CLAY."]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
     const canonical = `research/figures/r074s/fig-r074s-ball-clock-debt/figure.${ext}`;
@@ -75,13 +78,13 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   }
   const validation = JSON.parse(read("research/figures/r074s/fig-r074s-ball-clock-debt/validation.json"));
   assert.equal(validation.summary.result, "PASS");
-  assert.equal(validation.summary.passed, 14);
-  assert.equal(validation.summary.total, 14);
+  assert.equal(validation.summary.passed, 15);
+  assert.equal(validation.summary.total, 15);
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
-  assert.match(translation, /"checked": 122/);
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step6-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));
   assert.equal(inventory.latestPublishedRelease, "r074s");

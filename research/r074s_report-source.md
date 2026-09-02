@@ -10,7 +10,9 @@ R0.74R 把任意 completed clock 的困难分成累计耗散、真实动能窗�
 - 从 collar 换成 ball 不会增加低阶损失，所有二次 cutoff 行仍由 \(A_R=(P_R^M)^{2/3}\) 支付；
 - terminal weight-drop ball clocks 满足精确 Abel 恒等式，但右端是完整的 \(\ell^1\) shell residual，而不是匹配平方函数。
 
-最后，一个光滑抽象时钟塔使 ball-clock 债务等于 \(N\)，而平方函数只等于 \(\sqrt N\)。因此，单靠 completed-clock 正性、cutoff 线性与 tower 恒等式，不能推出所需的 \(\ell^2\) 压缩。这是一个 **PROVED ABSTRACT NO-GO**；见证不是速度场、压力场、耗散测度或 Navier--Stokes 解，不能写成 PDE/NSE 反例。
+Step 6 再保留全部四通道符号做精确重组。结果不是新估计：完整 root、outer、weight-drop 与 mismatch 行恰好重建原 stopped shell increment，因而该线性路线是 circular。把 mismatch 分开后，三通道重组确实消去全部 start/merge 时间债务，但终端仍精确等于“每个最终块一个 root-boundary clock + 全部非负 shell residual 的 \(\ell^1\) 质量”。
+
+最后，一个光滑抽象时钟塔使 stopped work 等于 \(N\)，而平方函数只等于 \(\sqrt N\)，且只需一个 activation epoch、一个 active block、零 merger。因此，单靠 completed-clock 正性、cutoff 线性、tower 恒等式与未加权 genealogy 复杂度，不能推出所需的 \(\ell^2\) 压缩。这是一个 **PROVED ABSTRACT SCALAR NO-GO**；见证不是速度场、压力场、耗散测度或 Navier--Stokes 解，不能写成 PDE/NSE 反例。
 
 无条件 stopped-work 估计、跨通道动力学符号定理、R0.74R 的普适 persistence 输入、固定尺度不等式、尺度收缩、正则性与奇点形成仍为 **OPEN / NOT CLAIMED**。**NOT CLAY.**
 
@@ -251,9 +253,76 @@ Y_{2,R}^{\rm sf}=\sqrt N,
 
 这就是本节的 no-go：**positive completion + linear tower + \(\ell^1\) summation** 不能单独关闭匹配平方函数。这个见证没有空间算子或 PDE 实现，因此不排除真正利用 Navier--Stokes 方程、跨通道符号或有限 genealogy 的定理。
 
-## 7. 证书与独立审计
+## 7. 四通道 signed recombination 精确返回原问题
 
-最终确定性证书通过：
+对 \(X\in\{E,D,Q,F,K\}\)，把 root、outer、weight-drop 与 mismatch 四行按 stopped 时间方向组合成 \(\mathfrak C_X\)。有限块分解与 cutoff 线性给出
+
+\[
+\boxed{\mathfrak C_X=\sum_{k\in I}[X_{k,R}(\tau)-X_{k,R}(\sigma_k)].}
+\]
+
+特别地，\(X=F\) 时 \(\mathfrak C_F=W_R^M\)，而 \(F=K-Q\) 给出
+
+\[
+\boxed{
+W_R^M=\sum_{k\in I}\Delta_{\sigma_k}^{\tau}K_{k,R}
+-\sum_{k\in I}\Delta_{\sigma_k}^{\tau}Q_{k,R}.}
+\]
+
+二次 \(Q\) 行已由 \(CA_R\) 支付，但终端 upcrossing 恰好满足
+
+\[
+\mathfrak C_K=\sum_{k\in I}\Delta_{\sigma_k}^{\tau}K_{k,R}
+>\frac14\sum_{k\in I}K_{k,R}(\tau).
+\]
+
+因此完整 signed recombination 没有把困难项压小，而是精确重建了要控制的对象。这是 **CIRCULAR ROUTE / PROVED**，不是 PDE 反例。
+
+## 8. 拆出 mismatch 后的三通道正结果
+
+令 \(\Omega_A^R\) 为由 padded shells 减去内部 boundary bumps 得到的 genealogy cutoff。精确支撑几何证明 \(\Omega_A^R\ge0\)，且插入新 shell 时 cutoff 单调增加。对三通道 stopped work \(W_{R,3}^M\)，所有起始与 merge 时钟相消，得到
+
+\[
+\boxed{[W_{R,3}^M]_+\le \Phi_I(\tau)+CA_R.}
+\]
+
+这里 \(\Phi_I=\mathscr K_R[\Omega_I^R]\)。若最终块为 \([a,b]_{\mathbb Z}\)，写 \(r_m=K_{m,R}-K_{m,R}^{\partial}\ge0\)，则终端量有精确非负分解
+
+\[
+\boxed{
+\Phi_I(t)=\sum_{[a,b]\in\operatorname{Comp}(I)}
+\left[K_{a,R}^{\partial}(t)+\sum_{m=a}^{b}r_m(t)\right].}
+\]
+
+这是本节保留的正结果：三通道重组消除了 temporal genealogy debt；剩余障碍被定位到每个最终块的 root-boundary clock 与完整 \(\ell^1\) residual，而不是停止时刻本身。
+
+## 9. 单块标量族排除未加权 genealogy 压缩
+
+取 \(I_N=\{1,\ldots,N\}\)，所有 shell 在同一时刻激活，边界 clocks 为零，令 \(K_{k,R}=F_{k,R}=h\)、\(Q=D=0\)，并用 tower identity 递归构造 ball clocks。所有标量 completed-clock 恒等式逐项成立，且
+
+\[
+\boxed{W_N^{\rm sc}=N,\qquad Y_{2,R}^{\rm sf}=\sqrt N.}
+\]
+
+同时
+
+\[
+\sup_t\#\operatorname{Comp}(I(t))=1,
+\qquad \#\{\text{activation epochs}\}=1,
+\qquad \#\{\text{block mergers}\}=0.
+\]
+
+因此 component、epoch 或 merger 数单独不能完成 \(\ell^1\to\ell^2\) 压缩。有限 genealogy 的精确计数为
+
+\[
+\boxed{|I_{\rm rt}|+|I_{\rm out}|+|I^\partial|=2|I|-e_{\rm tie},}
+\]
+
+仍是 \(O(|I|)\)，不是无维数损失的平方函数界。这个结论只排除 **scalar completed-clock algebra + unweighted genealogy**；PDE-weighted block length、耗散支付与跨通道动力学符号仍可能有效。
+
+## 10. 证书与独立审计
+
+Step 5 最终确定性证书通过：
 
 - 5/5 个精确 ledger 行；
 - 7/7 个有限检查；
@@ -262,9 +331,11 @@ Y_{2,R}^{\rm sf}=\sqrt N,
 
 有限覆盖包括 312 个有理 cutoff 值、228 个导数样本、1024 个含并列 stop 的 stopped configuration、82432 个布尔激活比较、\(M=2,\ldots,8\) 的全部有限 Abel 端点，以及 \(N=1,\ldots,24\) 在五个有理时刻的抽象 tower。两个临时目录独立重算得到逐字节一致的 JSON 与 Markdown 报告。
 
+Step 6 主证书另通过 4/4 exact、8/8 finite、58/58 structural、10/10 mutation；独立 Ruby 实现通过 9/9 independent 与 8/8 mutation，且与 producer 交叉一致。九类 forged JSON 全部被拒绝。
+
 这些是 **FINITE** 证书，只验证公式实现和符号哨兵；它们不机器证明 cutoff 光滑性、周期化/unfolding、suitable local-energy 计算、无限支撑估计或抽象见证的 PDE 实现。解析证明和有限证书必须继续分开。
 
-## 8. 决定与下一门槛
+## 11. 决定与下一门槛
 
 本节已经 **PROVED**：
 
@@ -274,16 +345,19 @@ Y_{2,R}^{\rm sf}=\sqrt N,
 - root、outer、weight-drop 的精确 stopped 时间方向；
 - terminal weight-drop Abel 恒等式；
 - 标量 positive-clock 的 \(\ell^1/\ell^2\) obstruction。
+- 四通道 signed recombination 精确重建 stopped increments，证明该路线 circular；
+- 三通道 genealogy cutoff 非负、插入符号有利、终端块分解精确；
+- 单块标量族与有限 genealogy 计数的 abstract scalar no-go。
 
-本节只关闭一条独立代数路线：把所有剩余 signed face 分别完成成正 ball clock，再逐项取绝对值或终端值，不能从正性、线性与 tower identity 得到 matched square-function estimate。
+本节关闭两条相邻的独立代数路线：分开估计所有 positive completions 只得到 \(\ell^1\)；完整保留符号再线性重组则精确返回原未知量。未加权 component/epoch/merger 计数也不能修复差距。
 
-仍可能有效的下一步必须保留跨通道动力学关系，例如 root supply 与 inactive inner shell、outer leakage 与 later merge、weight-drop 与取正之前的 negative work/backscatter 之间的符号耦合；另一种可能是证明 stopped block genealogy 具有统一有限复杂度。
+仍可能有效的下一步必须加入能看见 block length 或 signed transport 的 PDE-paid quantity；一个具体入口是回到耗散主导分支，检验正测度能否为 weighted genealogy 提供付款。
 
 root/outer/weight-drop 动力学控制、耗散主导分支、R0.74R persistence hypotheses、无条件固定尺度不等式 (Q.1)、尺度收缩、正则性、奇点形成和 Clay 问题全部保持 **OPEN / NOT CLAIMED**。
 
-**PROVED ABSTRACT NO-GO ONLY. NOT PDE/NSE. NOT CLAY.**
+**PROVED ABSTRACT SCALAR NO-GO ONLY. NOT PDE/NSE. NOT CLAY.**
 
-## 9. 继承边界
+## 12. 继承边界
 
 - actual collar traces 与四通道 split：继承自 R0.74S Step 3，PROVED；
 - stopped-family activation：继承自 R0.74S Step 2，PROVED；

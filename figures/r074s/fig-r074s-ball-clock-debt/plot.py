@@ -145,8 +145,8 @@ def render(config: dict) -> None:
     width, height = config["width_mm"] * mm, config["height_mm"] * mm
     d = Drawing(width, height)
     d.add(Rect(0, 0, width, height, fillColor=white, strokeColor=None))
-    label(d, 14, height - 16, "One-sided ball completion exposes the remaining l1 debt", 8.4, bold=True)
-    label(d, 14, height - 27, "R0.74S analytic route  |  ABSTRACT NO-GO, NOT PDE/NSE  |  NOT CLAY", 5.2, color=MID)
+    label(d, 14, height - 16, "Cross-channel recombination localizes the remaining l1 debt", 8.4, bold=True)
+    label(d, 14, height - 27, "R0.74S Step 6  |  ABSTRACT SCALAR NO-GO ONLY  |  NOT PDE/NSE  |  NOT CLAY", 5.2, color=MID)
     for dx, dy in [(0, 4.5), (4.5, 0), (0, -4.5), (-4.5, 0)]:
         d.add(Circle(width - 19 + dx, height - 18 + dy, 2.3, fillColor=BLUE_LIGHT, strokeColor=BLUE, strokeWidth=0.5))
     d.add(Circle(width - 19, height - 18, 1.8, fillColor=GOLD_LIGHT, strokeColor=GOLD, strokeWidth=0.5))
@@ -155,33 +155,26 @@ def render(config: dict) -> None:
     ax, aw = 14, 154
     bx, bw = 175, 160
     cx, cw = 342, width - 356
-    panel(d, ax, y, aw, h, "A", "One-sided ball clocks")
-    panel(d, bx, y, bw, h, "B", "Exact Abel identity")
-    panel(d, cx, y, cw, h, "C", "Decision boundary")
+    panel(d, ax, y, aw, h, "A", "Full signed recombination")
+    panel(d, bx, y, bw, h, "B", "Mismatch separated")
+    panel(d, cx, y, cw, h, "C", "One-block saturation")
 
-    box(d, ax + 10, y + h - 62, 58, 28, ["root / outer /", "weight-drop work"], fill=BLUE_LIGHT, stroke=BLUE, status="SIGNED")
-    box(d, ax + 86, y + h - 62, 58, 28, ["compact one-sided", "ball cutoffs"], fill=GOLD_LIGHT, stroke=GOLD)
-    box(d, ax + 31, y + h - 119, 92, 34, ["exact stopped clocks", "different endpoints"], fill=PLUM_LIGHT, stroke=PLUM, status="PROVED")
-    d.add(Line(ax + 39, y + h - 62, ax + 58, y + h - 85, strokeColor=MID, strokeWidth=1.0))
-    d.add(Line(ax + 115, y + h - 62, ax + 96, y + h - 85, strokeColor=MID, strokeWidth=1.0))
-    multiline(d, ax + 10, y + 42, ["All quadratic cutoff rows remain", "paid by A_R = (P_R^M)^(2/3)."], 4.8, color=MID, leading=6.5)
+    box(d, ax + 10, y + h - 65, 58, 31, ["root + outer", "+ gap + mismatch"], fill=BLUE_LIGHT, stroke=BLUE, status="SIGNED")
+    arrow(d, ax + 70, y + h - 50, ax + 86, y + h - 50, color=MID)
+    box(d, ax + 87, y + h - 65, 57, 31, ["original stopped", "shell increment"], fill=GOLD_LIGHT, stroke=GOLD, status="EXACT")
+    box(d, ax + 20, y + h - 119, 114, 29, ["same quantity is reconstructed", "no smaller control appears"], fill=RED_LIGHT, stroke=RED, status="CIRCULAR")
+    multiline(d, ax + 10, y + 40, ["The four-channel identity is exact,", "but the linear route closes on itself."], 4.8, color=MID, leading=6.5)
 
-    box(d, bx + 49, y + h - 57, 62, 25, ["terminal ball debt"], fill=PALE, stroke=INK, status="EXACT")
-    branch_y = y + h - 112
-    boxes = [
-        (bx + 7, ["core", "ball clock"], BLUE_LIGHT, BLUE),
-        (bx + 56, ["sum shell", "residuals"], GOLD_LIGHT, GOLD),
-        (bx + 105, ["full l1", "ledger"], PLUM_LIGHT, PLUM),
-    ]
-    for x0, lines, fill, stroke in boxes:
-        d.add(Line(bx + 80, y + h - 57, x0 + 23, branch_y + 30, strokeColor=MID, strokeWidth=0.85))
-        box(d, x0, branch_y, 46, 30, lines, fill=fill, stroke=stroke)
-    multiline(d, bx + 9, y + 44, ["Abstract smooth tower: debt = N", "while matched square function", "is only sqrt(N)."], 4.8, color=MID, leading=6.4)
+    box(d, bx + 10, y + h - 65, 58, 31, ["three-channel", "genealogy"], fill=BLUE_LIGHT, stroke=BLUE, status="PROVED")
+    arrow(d, bx + 70, y + h - 50, bx + 88, y + h - 50, color=MID)
+    box(d, bx + 89, y + h - 65, 61, 31, ["start / merge", "time debt = 0"], fill=GOLD_LIGHT, stroke=GOLD, status="CANCELLED")
+    box(d, bx + 18, y + h - 119, 124, 31, ["terminal = block roots", "+ all shell residual l1 mass"], fill=PLUM_LIGHT, stroke=PLUM, status="EXACT")
+    multiline(d, bx + 10, y + 40, ["Temporal debts cancel; the final", "nonnegative l1 ledger remains."], 4.8, color=MID, leading=6.5)
 
-    box(d, cx + 10, y + h - 64, cw - 20, 31, ["positive completion +", "linearity + tower"], fill=RED_LIGHT, stroke=RED, status="NO-GO")
-    arrow(d, cx + cw / 2, y + h - 70, cx + cw / 2, y + h - 93, color=RED)
-    box(d, cx + 10, y + h - 126, cw - 20, 34, ["cross-channel sign or", "finite genealogy"], fill=BLUE_LIGHT, stroke=BLUE, status="OPEN")
-    multiline(d, cx + 10, y + 48, ["PROVED ABSTRACT NO-GO only.", "No velocity, pressure, or", "PDE realization is asserted."], 4.8, color=RED, bold_first=True, leading=6.3)
+    box(d, cx + 10, y + h - 61, cw - 20, 27, ["work = N"], fill=RED_LIGHT, stroke=RED, status="L1")
+    box(d, cx + 10, y + h - 100, cw - 20, 27, ["matched square = sqrt(N)"], fill=BLUE_LIGHT, stroke=BLUE, status="L2")
+    multiline(d, cx + 10, y + h - 121, ["components = 1", "epochs = 1", "mergers = 0"], 4.8, color=MID, leading=6.3)
+    multiline(d, cx + 10, y + 47, ["ABSTRACT SCALAR NO-GO ONLY.", "Unweighted genealogy counts", "cannot pay the work."], 4.8, color=RED, bold_first=True, leading=6.3)
     label(d, cx + 10, y + 22, "NOT PDE/NSE. NOT CLAY.", 4.8, color=MID, bold=True)
 
     renderPDF.drawToFile(d, str(HERE / "figure.pdf"), title="R0.74S ball-clock debt")
@@ -212,9 +205,9 @@ def main() -> None:
         "schema": "r074s-ball-clock-debt-results-v1", "rows": 9,
         "pixel_size": list(image.size),
         "one_sided_certificate_sha256": sha(REPO / "research/r074s_one_sided_ball_clock_certificate.json"),
-        "boundary_mismatch_certificate_sha256": sha(REPO / "research/r074s_boundary_mismatch_certificate.json"),
-        "analytic_note_sha256": sha(REPO / "research/r074s_one_sided_ball_clock_no_gain.md"),
-        "claim_boundary": "PROVED ABSTRACT NO-GO for one scalar mechanism; NOT PDE/NSE; dynamical sign theorem OPEN; NOT CLAY",
+        "cross_channel_certificate_sha256": sha(REPO / "research/r074s_cross_channel_recombination_certificate.json"),
+        "analytic_note_sha256": sha(REPO / "research/r074s_cross_channel_recombination_no_gain.md"),
+        "claim_boundary": "PROVED ABSTRACT SCALAR NO-GO for unweighted genealogy counts only; NOT PDE/NSE; PDE-weighted genealogy OPEN; NOT CLAY",
     }
     (HERE / "environment.json").write_text(json.dumps(environment, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (HERE / "results.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n", encoding="utf-8")

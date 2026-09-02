@@ -1,0 +1,3 @@
+# Figure caption
+
+**R0.74S Step 15 hybrid-flux and terminal-crown interface.** Left: the hybrid stopped-flux vector equals the short residual and is sharply comparable to the selected-excess residual, so the full best-N residual uses one deletion set. The dashed arrow is conditional because the common-deletion temporal estimate S.342 remains open. Right: disjoint terminal crowns give a depth-independent coefficient budget, while the selected-crown nonlinear payment S.407 remains the missing PDE input. The periodic-measure tree and scalar clock are separate, uncoupled stress tests. This is an analytic schematic generated from frozen formulas, not simulation, DNS, an NSE counterexample, or evidence for regularity or the Millennium problem.

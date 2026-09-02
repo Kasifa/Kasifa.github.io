@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN" data-site-version="1.93"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>R0.74S｜外侧 collar 对齐与 jump--corona 障碍</title><meta name="description" content="外侧 collar 同权对齐、临界密度无增益、jump skeleton 与未支付 corona；S.375 仍开放">
+<html lang="zh-CN" data-site-version="1.94"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74S｜混合通量等价与终端 crown 强制性缺口</title><meta name="description" content="混合起点通量的同删除集 best-N 等价、终端 crown 的深度无关预算，以及仍开放的 S.342 与 S.407">
 <link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="stylesheet" href="/bilingual.css">
-<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.93"></script><script defer src="/bilingual.js"></script>
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.94"></script><script defer src="/bilingual.js"></script>
 <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}.hero-inner>div:first-child>p strong{margin-left:.25em}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}picture img{display:block;width:100%;height:auto}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem;break-after:avoid}#figure{break-before:page}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
-<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜外侧 collar 对齐与 jump--corona 障碍</h1><p>外侧 derivative collar 与同权 payment annulus 精确对齐，临界密度阈值中的 \(\lambda\) 也完全抵消；first-jump skeleton 在已写明的假设下收缩。 <strong>aligned spike 与 critical corona 只是 ABSTRACT METHOD OBSTRUCTIONS；S.358、S.376 保持 CONDITIONAL，S.342、S.375 仍 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED GEOMETRY</span><span class="label">PROVED THRESHOLD</span><span class="label">ABSTRACT OBSTRUCTION</span><span class="label">CONDITIONAL S.358 / S.376</span><span class="label">OPEN S.342 / S.375</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 14</strong><p>S.343–S.376：PROVED / CONDITIONAL / ABSTRACT METHOD OBSTRUCTION / OPEN</p><p>outer collar ratio：\(1\)</p><p>critical threshold：\(2^{1/3}\mathfrak M_R\)</p><p>jump skeleton：PROVED</p><p>aligned spike：ABSTRACT</p><p>critical corona：ABSTRACT</p><p>S.358 / S.376：CONDITIONAL</p><p>S.342 / S.375：OPEN</p><p>regularity：OPEN</p><p>解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜混合通量等价与终端 crown 强制性缺口</h1><p>新的 hybrid-start physical flux 向量与 residual vector 在<strong>同一删除集</strong>上满足双向 best-\(N\) 等价；终端 crown 还给出深度无关的系数预算。 <strong>这两项是 PROVED，但完整闭合仍分别依赖 OPEN S.342 与 OPEN S.407；S.408 只是 CONDITIONAL。Q.1、正则性与 Millennium 问题均保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED S.384–S.385</span><span class="label">PROVED S.404</span><span class="label">CONDITIONAL S.408</span><span class="label">ABSTRACT METHOD OBSTRUCTION</span><span class="label">OPEN S.342 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 15</strong><p>S.377–S.416：PROVED / CONDITIONAL / ABSTRACT METHOD OBSTRUCTION / OPEN</p><p>same-deletion equivalence：\(\frac15 S_N(z)\le S_N(r)\le S_N(z)\)</p><p>terminal crown budget：PROVED S.404</p><p>start-clock overshoot debt：RETAINED S.395</p><p>S.408：CONDITIONAL</p><p>S.342 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
 <section id="s-01"><div class="section-no">01 / 完整正文</div><h2>0. 这一步得到什么</h2>
 <p>R0.74S Steps 1--10 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination、未加权 genealogy 的抽象标量 no-go、低 Rayleigh 支付、no-exception exact-family no-go、canonical last exit 以及 paid/residual 六类分区逐项封存。Step 11 不再重复分区，而是精确回答两个 residual mechanisms 怎样共享一个 best-\(N\) budget，并分别把 short branch 与 scalar-excess branch 推到各自第一个仍缺失的 PDE 门槛。</p>
 <p>本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出</p>
@@ -2508,6 +2508,343 @@ r_k^x\le3x_k^{\rm sel}\le3b_k,
 <p>冻结主文 SHA-256 为 `c843284d68c0d7d441214b0b3e67e97ca4c5ebda5f527a957eb6e9bdc07f55f9`。Python certificate 通过 12/12 exact、9/9 finite groups、74,287 finite rational cases、3/3 dependency、37/37 structural 与 49/49 negative mutations。Independent Ruby verifier 通过 7/7 groups、82,788 cases、6/6 artifact locks、2/2 dependency locks、68/68 note checks、1/1 primary-artifact group 与 2/2 negative groups。有限程序检查 exact rational algebra、fixtures、upstream hashes、equation numbering、selected formula bindings 与 claim wording；它们不 machine-prove analytic pressure decomposition、inherited PDE estimates、open packing gates、S.375、abstract fixture 的 NSE realization、regularity 或 Millennium problem。</p>
 <p>本步的 advance 是严格的方法边界：super-Gaussian weights 不改善 aligned outer flux face，density threshold 不改善 critical cubic payment power，density jumps 还留下当前 PDE ledger 未控制的 corona；下一正向命题被精确写成 open lemma S.375。<strong>NOT CLAY.</strong></p>
 </section>
-<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>外侧 collar 对齐、临界阈值与 jump--corona 边界</h2><picture><source srcset="/assets/r074s/fig-r074s-outer-collar-corona.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-outer-collar-corona.png" alt="R0.74S Step 14 analytic schematic of the outer-collar and jump-corona boundary"></picture><p><a href="/assets/r074s/fig-r074s-outer-collar-corona.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-outer-collar-corona.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-outer-collar-corona.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-outer-collar-corona/source-data.csv">exact source data</a> · <a href="/figures/r074s/fig-r074s-outer-collar-corona/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-outer-collar-corona/qa-report.md">视觉 QA</a></p><p class="note">这是由精确公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
-<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 14 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_outer_collar_corona_obstruction.md">Step 14 最终解析主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_outer_collar_corona_primary_audit.md">Step 14 主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_outer_collar_corona_independent_audit.md">Step 14 独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_outer_collar_corona_certificate.json">Step 14 机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_outer_collar_corona_certificate_report.md">Step 14 证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_claim_state_update.md">主张边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_literature_boundary.md">文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step14_report-source.md">Step 14 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 14：Python 12/12 exact、9/9 finite groups（74,287 cases）、37/37 structural、3/3 dependency、49/49 negative；Ruby 7/7 groups、82,788 cases、6/6 artifact locks、2/2 dependency locks、68/68 note checks、1/1 primary-artifact group、2/2 negative groups（99 cases）。有限证书不替代 analytic proof。</p></section>
-<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / 后续研究</h2><p style="margin:.15rem 0">本次发布到 R0.74S Step 14 即停止。后续若另行启动，只能继续检验 S.375 的 PDE-level jump--corona payment 或其他明确的新结构；不得把 S.358、S.376 的 conditional interface 写成 theorem。</p></section></article></main></body></html>
+<section id="s-96"><div class="section-no">96 / 完整正文</div><h2>95. Step 15：混合通量等价与终端 crown 强制性缺口</h2>
+<p>Step 14 把 short branch 的共同删除 flux tail S.342 与 excess branch 的 jump--corona input S.375 分成两条路线。Step 15 先证明一个此前未记录的精确归约：short last-exit residual 与 selected-excess residual 可以写进同一个非负 stopped physical-flux vector，并且在同一个 best-\(N\) 删除集合下与完整 residual 逐坐标等价。因而，若仍开放的 S.342 将来成立，同一个 \(N_F\) 会一次支付两条 residual 分支，不再需要另加 ancestor budget。</p>
+<p>对独立的 crown 路线，本步把每个 terminal corona 压成只计一次的 disjoint crown，并证明其 cubic coefficient budget 与停止深度无关。这个组合结果没有提供缺失的 PDE coercivity：selected-crown nonlinear payment S.407 仍是 <strong>OPEN PDE INPUT</strong>。Periodic positive-measure tree 与 selected scalar clock 只分别通过几何和标量压力测试；它们没有被耦合成一个 completed-clock/measure fixture，更不是 Navier--Stokes 反例。</p>
+<p>本步没有证明 S.342、S.375、S.407、Q.12、Q.1、scale contraction、regularity、singularity formation 或 Millennium problem，也不声称 novelty 或 priority。有限证书检查代数、组合、哈希、结构与边界措辞，不 machine-prove 开放的 PDE 输入。<strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-97"><div class="section-no">97 / 完整正文</div><h2>96. Hybrid start 与同一物理通量向量</h2>
+<p>固定一个 Version-M suitable weak solution、尺度 \(R\) 与 good terminal \(\tau\)。保留</p>
+<div class="equation">\[
+ T_k=K_{k,R}(\tau),\qquad
+ \ell_k=\ell_{k,2/3}^{K}(\tau),\qquad
+ \mathcal I_{\rm res}(\tau)
+ =\mathcal R_{\rm sh}(\tau)\mathbin{\dot\cup}\mathcal I_x(\tau).
+\]</div>
+<p>选取 frozen initial interval 中共同的 local-energy good time \(\sigma_0\)，使所有 shell 都有 \(K(\sigma_0)=Q(\sigma_0)=F(\sigma_0)=0\)。定义</p>
+<div class="equation">\[
+ \boxed{
+ \sigma_k^{\rm hyb}(\tau):=
+ \begin{cases}
+   \ell_k(\tau),&amp;k\in\mathcal R_{\rm sh}(\tau),\\
+   \sigma_0,&amp;k\in\mathcal I_x(\tau),\\
+   \tau,&amp;k\notin\mathcal I_{\rm res}(\tau),
+ \end{cases}
+ \qquad
+ z_{k,R}^{\boldsymbol\lambda}(\tau)
+ :=F_{k,R}(\tau)-F_{k,R}(\sigma_k^{\rm hyb}(\tau)).}
+\tag{S.377}
+\]</div>
+<p>于是</p>
+<div class="equation">\[
+ \boxed{
+ z_k=r_k^{\rm sh}=r_k\quad(k\in\mathcal R_{\rm sh}),\qquad
+ z_k=F_{k,R}(\tau)=[F_{k,R}(\tau)]_+\quad(k\in\mathcal I_x),\qquad
+ z_k=r_k=0\quad(k\notin\mathcal I_{\rm res}).}
+\tag{S.378}
+\]</div>
+<p>Selected excess 因此是该 physical-flux vector 的 subcoordinate：</p>
+<div class="equation">\[
+ \boxed{0\le x_k^{\rm sel}(\tau)\le z_k(\tau)\qquad(k\ge1).}
+\tag{S.379}
+\]</div>
+<p>S.377--S.379 是表示与符号结论，不是对 \(z\) 的 PDE bound。</p>
+</section>
+<section id="s-98"><div class="section-no">98 / 完整正文</div><h2>97. 同一个 \(Q\)-variation diamond 与 best-\(N\) 等价</h2>
+<p>对 \(k\in\mathcal I_x(\tau)\)，令</p>
+<div class="equation">\[
+ U_k=Q_{k,R}(\ell_k),\qquad
+ V_k=Q_{k,R}(\tau)-Q_{k,R}(\ell_k).
+\]</div>
+<p>两段 \(Q\)-variation 来自同一个 full-history variation measure，故不是两个可独立饱和的误差：</p>
+<div class="equation">\[
+ \boxed{|U_k|+|V_k|\le\operatorname{TV}_{J_\tau}Q_{k,R}&lt;{T_k\over6}.}
+\tag{S.380}
+\]</div>
+<p>Terminal clock 与 last-exit identity 为</p>
+<div class="equation">\[
+ \boxed{z_k=T_k-U_k-V_k,\qquad r_k={T_k\over3}-V_k.}
+\tag{S.381}
+\]</div>
+<p>在 S.380 的同一个菱形约束内直接优化，得到 sharp scalar constants</p>
+<div class="equation">\[
+ \boxed{{1\over5}z_k&lt;r_k&lt;{3\over7}z_k\qquad(k\in\mathcal I_x(\tau)).}
+\tag{S.382}
+\]</div>
+<p>与 short branch 上的 equality 合并，得到</p>
+<div class="equation">\[
+ \boxed{{1\over5}z_k(\tau)\le r_k(\tau)\le z_k(\tau),
+ \qquad z(\tau)\in\ell^1_+.}
+\tag{S.383}
+\]</div>
+<p>对同一个任意 shell set \(S\)、\(\#S\le N\) 先求和再优化，得到</p>
+<div class="equation">\[
+ \boxed{{1\over5}\mathcal S_N(z(\tau))
+ \le\mathcal S_N(r(\tau))
+ \le\mathcal S_N(z(\tau)).}
+\tag{S.384}
+\]</div>
+<p>令 \(\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal D)\) 为 good terminals 上 \(\mathcal S_N(z)\) 的 supremum，则</p>
+<div class="equation">\[
+ \boxed{{1\over5}\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal D)
+ \le\mathfrak R_{N,R}^{\boldsymbol\lambda}(\mathcal D)
+ \le\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal D).}
+\tag{S.385}
+\]</div>
+<p>因此完整 hybrid-flux gate 与完整 combined-residual gate 在同一个 terminal-dependent deletion budget 下按常数 \(1/5\) 与 \(1\) 等价。S.396 的 abstract scalar-ledger rows 分别把比值逼近 \(1/5\) 与 \(3/7\)，证明 S.382 的常数在已用标量约束内 sharp；它们不是 NSE counterexamples。</p>
+</section>
+<section id="s-99"><div class="section-no">99 / 完整正文</div><h2>98. 一个 common-deletion temporal tail 同时支付两条分支</h2>
+<p>保留 Step 13 的 dimensionless flux density \(h_{k,R}\)。Absolute continuity 与 S.377 给出</p>
+<div class="equation">\[
+ \boxed{0\le z_k(\tau)
+ \le\int_0^4h_{k,R}(\sigma)\,d\sigma
+ \le4^{1-1/p}\|h_{k,R}\|_{L^p(0,4)},
+ \qquad1\le p\le\infty.}
+\tag{S.386}
+\]</div>
+<p>在取 terminal 或 branch 之前，整个 time norm 只删除同一个 shell set，因此</p>
+<div class="equation">\[
+ \boxed{\mathcal S_N(r(\tau))
+ \le\mathcal S_N(z(\tau))
+ \le4^{1-1/p}\mathfrak H^F_{p,N,R}.}
+\tag{S.387}
+\]</div>
+<p>若把仍开放的 Step 13 estimate 明确作为 antecedent，</p>
+<div class="equation">\[
+ \boxed{\mathfrak H^F_{p,N_F,R}\le C_HA_R,
+ \qquad A_R=(P_R^M)^{2/3},}
+\tag{S.388}
+\]</div>
+<p>则同一个 \(N_F\) 给出</p>
+<div class="equation">\[
+ \boxed{\mathfrak R_{N_F,R}^{\boldsymbol\lambda}(\mathcal T_R)
+ \le4^{1-1/p}C_HA_R,}
+\tag{S.389}
+\]</div>
+<div class="equation">\[
+ \boxed{\mathcal S_{N_F,R}^{K}(\mathcal T_R)
+ \le\left[C_{\rm pay}(\boldsymbol\lambda)
+ +6\,4^{1-1/p}C_H\right]A_R,}
+\tag{S.390}
+\]</div>
+<p>并经 inherited terminal reduction 得到</p>
+<div class="equation">\[
+ \boxed{\mathfrak C_R^M
+ \le C(\boldsymbol\lambda,p,N_F,C_H)
+ \left[A_R+Y_{2,R}^{\rm sf}\right].}
+\tag{S.391}
+\]</div>
+<p>S.388--S.391 证明的是 implication，不是 S.342 或 Q.1 本身。其新意义是 route-level：若 S.342 成立，它会同时关闭 short 与 selected-excess residual，不需要另加 \(N_b\) 或 ancestor coefficient。</p>
+</section>
+<section id="s-100"><div class="section-no">100 / 完整正文</div><h2>99. Signed common window 的 start-clock debt</h2>
+<p>把 Step 14 的四通道 identity 积分在 hybrid active blocks 上，可写成</p>
+<div class="equation">\[
+ \boxed{
+ \sum_{k\in G\cap\mathcal I_{\rm res}(\tau)}z_k(\tau)
+ =\sum_{\alpha\in\{{\rm cub,loc,har,dr}\}}
+ \sum_{k\in G\cap\mathcal I_{\rm res}(\tau)}
+ \int_{\sigma_k^{\rm hyb}(\tau)}^\tau
+ \dot F_{k,R}^{\alpha}(t)\,dt.}
+\tag{S.392}
+\]</div>
+<p>这允许新的 PDE cancellation，但 algebraic regrouping 本身不产生 gain。对 common terminal window 起点 \(a=\max\{s_R,\tau-\delta R^2\}\)，若 shallow shell 满足 \(a\le\ell_k\)，则</p>
+<div class="equation">\[
+ \boxed{r_k^{\rm sh}=G_{k,\tau,\delta}
+ +\left[K_{k,R}(a)-{2T_k\over3}\right]
+ +\left[Q_{k,R}(\ell_k)-Q_{k,R}(a)\right].}
+\tag{S.393}
+\]</div>
+<p>定义 start-clock overshoot</p>
+<div class="equation">\[
+ \omega_{k,\tau,\delta}
+ :=\mathbf1_{\mathcal R_{\rm sh}^{\le\delta}(\tau)}(k)
+ \left[K_{k,R}(a)-{2T_k\over3}\right]_+.
+\]</div>
+<p>同一个 deletion set 下的求和给出</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \sum_{k\in\mathcal R_{\rm sh}^{\le\delta}(\tau)\setminus S}r_k^{\rm sh}
+ \le{}&amp;
+ \left[\sum_{k\in\mathcal R_{\rm sh}^{\le\delta}(\tau)\setminus S}
+ G_{k,\tau,\delta}\right]_+
+ +\sum_{k\notin S}\omega_{k,\tau,\delta}+C_QA_R.
+ \end{aligned}}
+\tag{S.394}
+\]</div>
+<p>于是 minimal signed common-window gate 为</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \mathcal S_N(r^{{\rm sh},\le\delta}(\tau))
+ \le C_QA_R+\inf_{\#S\le N}\Bigg\{
+ &amp;\left[\sum_{k\in\mathcal R_{\rm sh}^{\le\delta}(\tau)\setminus S}
+ G_{k,\tau,\delta}\right]_+\\
+ &amp;+\sum_{k\notin S}\omega_{k,\tau,\delta}\Bigg\}.
+ \end{aligned}}
+\tag{S.395}
+\]</div>
+<p>Last-exit maximality只控制 \(\ell_k&lt;t\le\tau\)，不能控制更早的共同起点 \(a\)。S.397 的 abstract clock 取 \(K(a)=M\)、\(K(\ell)=2\)、\(K(\tau)=3\)，得到</p>
+<div class="equation">\[
+ \boxed{r=1,\qquad G=3-M,\qquad\omega=M-2,\qquad r=G+\omega.}
+\tag{S.397}
+\]</div>
+<p>所以 signed synchronization 将逐坐标 absolute increment 换成了两个同删集合任务：common-window cancellation 与 start-clock overshoot control。这个 debt 是精确代数事实，但见证仍只是 abstract clock check。</p>
+</section>
+<section id="s-101"><div class="section-no">101 / 完整正文</div><h2>100. Shellwise ownership 与 terminal crowns</h2>
+<p>对 selected ancestor，定义 finite positive Borel submeasure \(\alpha^{\rm anc}_{k,\tau}\)。Frozen definition 与 cutoff domination 给出</p>
+<div class="equation">\[
+ \boxed{b_k(\tau)=\alpha^{\rm anc}_{k,\tau}(\mathbb R\times\mathbb R^3),
+ \qquad0\le d\alpha^{\rm anc}_{k,\tau}
+ \le\gamma_k\mathbf1_{\widehat{\mathcal U}_{k,R}(\tau)}\,d\nu_R.}
+\tag{S.398}
+\]</div>
+<p>对 countable locally finite half-open forest-top occurrences，分别按 shell 构造 Borel ownership：</p>
+<div class="equation">\[
+ \boxed{\widehat{\mathcal U}_{k,R}(\tau)
+ =\mathop{\dot\bigcup}_{T:(T,k)\in\mathscr I_{\rm top}}\mathcal O_{Tk},
+ \qquad\mathcal O_{Tk}\subset T\cap\widehat{\mathcal U}_{k,R}(\tau).}
+\tag{S.399}
+\]</div>
+<p>Forest overlap 因而不重复 ancestor mass；adjacent-shell incidence、shifted-grid occurrence、periodic copy 与 repeated top occurrence 仍各自保留。定义 incidence-weighted top content</p>
+<div class="equation">\[
+ \boxed{\mathscr C_{\rm top}
+ :=\sum_{(T,k)\in\mathscr I_{\rm top}}\gamma_k\rho_T&lt;\infty.}
+\tag{S.400}
+\]</div>
+<p>这里重复一个 top 会相应增加 \(\mathscr C_{\rm top}\)，不会被隐藏在几何常数中。</p>
+</section>
+<section id="s-102"><div class="section-no">102 / 完整正文</div><h2>101. First roots、first jumps 与深度无关系数预算</h2>
+<p>取 canonical top level \(\lambda_T=m_T/\rho_T\)。First crossing roots 满足</p>
+<div class="equation">\[
+ \boxed{\sum_{S\in\mathscr R(T)}\rho_S\le{m_T\over\lambda_T}=\rho_T.}
+\tag{S.401}
+\]</div>
+<p>从每个 root 迭代 first proper \(\kappa\)-jump descendants，则</p>
+<div class="equation">\[
+ \boxed{\sum_{S\in\mathscr J_j(T)}\rho_S\le\kappa^{-j}\rho_T,
+ \qquad\sum_{j\ge0}\sum_{S\in\mathscr J_j(T)}\rho_S
+ \le{\kappa\over\kappa-1}\rho_T.}
+\tag{S.402}
+\]</div>
+<p>在任意 finite stopping depth \(L\)，top crown、各非终端 jump crown 与 terminal-depth crowns 构成 exact half-open partition：</p>
+<div class="equation">\[
+ \boxed{T=\Omega_T\mathbin{\dot\cup}
+ \mathop{\dot\bigcup}_{0\le j\le L}
+ \mathop{\dot\bigcup}_{S\in\mathscr J_j(T)}\Omega_S.}
+\tag{S.403}
+\]</div>
+<p>每个 low-transition corona 只按一个 crown 计数，而不是在每一 dyadic generation 重复计数。Infinite-jump mass 保留在最后一个 finite-depth crown 中，不可在极限里丢弃。完整 crown--shell incidence multiset 因而满足</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \sum_{(\Omega_S,T,k)\in\mathscr C_L}\gamma_k\rho_S
+ &amp;\le C_{\kappa,L}\mathscr C_{\rm top}
+ \le C_\kappa\mathscr C_{\rm top},\\
+ C_\kappa&amp;=1+{\kappa\over\kappa-1}
+ ={2\kappa-1\over\kappa-1}.
+ \end{aligned}}
+\tag{S.404}
+\]</div>
+<p>S.404 的常数与 depth、top count 和 top levels 无关。这关闭的是 cubic coefficient side，不是 payment estimate。</p>
+</section>
+<section id="s-103"><div class="section-no">103 / 完整正文</div><h2>102. Open nonlinear crown payment 与 conditional closure</h2>
+<p>先选择一个 common shell exception set \(E_\tau\)、\(\#E_\tau\le N_b\)，再对所有 tops、crowns、defect 与 high-Rayleigh channels 使用同一个集合。设 owned crown mass 分解为</p>
+<div class="equation">\[
+ \boxed{a_{Sk}=q_{Sk}+a_{Sk}^{\rm pay},
+ \qquad\sum_{\mathscr C_L(E_\tau)}q_{Sk}\le C_qA_R.}
+\tag{S.405}
+\]</div>
+<p>对 paid part 定义 canonical crown payment</p>
+<div class="equation">\[
+ \boxed{p_{Sk}^{\rm crown}
+ ={(a_{Sk}^{\rm pay})^{3/2}\over(\gamma_k\rho_S)^{1/2}},
+ \qquad{(a_{Sk}^{\rm pay})^3\over(p_{Sk}^{\rm crown})^2}
+ =\gamma_k\rho_S\mathbf1_{\{a_{Sk}^{\rm pay}&gt;0\}}.}
+\tag{S.406}
+\]</div>
+<p>缺失的 PDE statement 是</p>
+<div class="equation">\[
+ \boxed{\sum_{\mathscr C_L(E_\tau)}p_{Sk}^{\rm crown}
+ =\sum_{\mathscr C_L(E_\tau)}
+ {(a_{Sk}^{\rm pay})^{3/2}\over(\gamma_k\rho_S)^{1/2}}
+ \le C_pP_R^M.\qquad\textbf{OPEN}}
+\tag{S.407}
+\]</div>
+<p>S.407 要求 constant 对 solution、\(R\)、\(\tau\)、forest、top count、levels 与 stopping depth 一致；同一份 frozen payment 若用于多个 occurrences，必须在 sum 中重复记录。它不是本步 local-energy inequality 的推论。</p>
+<p>若 S.400、S.405、S.407 同时成立，则 Hölder 与 S.404--S.406 给出</p>
+<div class="equation">\[
+ \boxed{\mathcal S_{N_b}(b(\tau))
+ \le\left[C_q+(C_\kappa\mathscr C_{\rm top})^{1/3}C_p^{2/3}\right]A_R.}
+\tag{S.408}
+\]</div>
+<p>Proposition 3.1 因而是 <strong>PROVED CONDITIONAL</strong>：top boundary 与所有 low-transition crowns 的 bookkeeping 已闭合，但 antecedent S.407 仍开放。</p>
+</section>
+<section id="s-104"><div class="section-no">104 / 完整正文</div><h2>103. Converse Hölder 与 linear-payment 方法障碍</h2>
+<p>对非负 \(a_i,p_i\)，\(A=\sum a_i\)、\(P=\sum p_i\)，Hölder 的精确 converse 为</p>
+<div class="equation">\[
+ \boxed{\sum_i{a_i^3\over p_i^2}\ge{A^3\over P^2},
+ \qquad\inf_{p_i\ge0,\ \sum p_i=P}\sum_i{a_i^3\over p_i^2}
+ ={A^3\over P^2}.}
+\tag{S.409}
+\]</div>
+<p>Equality 恰在 \(p_i=(P/A)a_i\) 取得。固定任意 deletion budget \(N_b\)，取 \(M=N_b+1\) 个 distinct shell coordinates，并令</p>
+<div class="equation">\[
+ \boxed{b_{k_i}\ge H\quad(1\le i\le M),
+ \qquad P_H=C_MH,\qquad A_H=(C_MH)^{2/3}.}
+\tag{S.410}
+\]</div>
+<p>允许 forest、grids、levels、depth 与 common exception set 在看到 data 后自适应选择，完整 repeated incidence multiset 仍满足：若 \(q\)-budget 是 \(O(A_H)\)、payment 是 \(O(P_H)\)，则对 large \(H\)</p>
+<div class="equation">\[
+ \boxed{\sum_i{a_i^3\over p_i^2}
+ \ge {H\over8C_p^2C_M^2}.}
+\tag{S.411}
+\]</div>
+<p>等价地，若 cubic coefficient sum 被一个 fixed \(C_{\rm cor}\) 控制，则</p>
+<div class="equation">\[
+ \boxed{\sum q_k
+ \ge H-C_{\rm cor}^{1/3}(C_pC_MH)^{2/3}.}
+\tag{S.412}
+\]</div>
+<p>所以只有 linear payment 时，normalized \(q\)-budget 或 cubic coefficient budget 至少一项必须发散。这个 conclusion 是对 formal nonnegative incidence data 的 <strong>ABSTRACT METHOD OBSTRUCTION</strong>，不是 S.407 的 PDE 反例。</p>
+</section>
+<section id="s-105"><div class="section-no">105 / 完整正文</div><h2>104. 两个未耦合的压力测试</h2>
+<p>Periodic positive-measure tree 取</p>
+<div class="equation">\[
+ \boxed{d\nu_H(\sigma,z)
+ :=\sum_{n\in\mathbb Z^3}\sum_{i=1}^{M}{H\over\gamma_{k_i}}
+ \delta_{\sigma_*}(d\sigma)
+ {|Q_i^x|^{-1}\mathbf1_{Q_i^x+(2\pi/R)n}(z)\,dz}.}
+\tag{S.413}
+\]</div>
+<p>在 standard grid 中，每个 retained child 满足</p>
+<div class="equation">\[
+ \boxed{\rho_v=2^{-d}\rho_0,\qquad
+ m_v=8^{-d}m_0,\qquad
+ \Theta(v)=4^{-d}\Theta(0).}
+\tag{S.414}
+\]</div>
+<p>所以它没有 upward \(\kappa\)-jump，却保留任意深 low-transition coronas；所有 periodic copies 仍进入 finite constant \(C_M\)。独立地，把 Step 11 pure-defect scalar fixture 按 \(s=5H/3\) 缩放，得到</p>
+<div class="equation">\[
+ \boxed{T={5H\over3},\quad b=m=H,\quad r^x={5H\over9},
+ \quad\sigma={959H\over7200}&lt;{T\over12},
+ \quad x={2641H\over3600}&gt;{T\over6},\quad\beta=0.}
+\tag{S.415}
+\]</div>
+<p>取 \(M=N_b+1\) 个 scalar copies 后</p>
+<div class="equation">\[
+ \boxed{{\mathcal S_{N_b}(b)\over A_H}
+ \ge C_M^{-2/3}H^{1/3}\longrightarrow\infty.}
+\tag{S.416}
+\]</div>
+<p>S.413--S.414 只测试 measure geometry；S.415--S.416 只测试 selected scalar-clock arithmetic。两者没有共享一个 completed-clock/measure identity，更没有共同 velocity-pressure Navier--Stokes realization。不得把它们的并列展示写成 coupled counterexample。</p>
+</section>
+<section id="s-106"><div class="section-no">106 / 完整正文</div><h2>105. 路线决定、文献边界与证书</h2>
+<p>Step 15 把下一步可接受的输入压缩为两条独立路线。</p>
+<p>1. 证明 S.342。由 S.387--S.391，这一个 common-deletion theorem 用同一个 \(N_F\) 关闭整个 combined residual，ancestor jump--corona route 随即不再需要。 2. 若保留 ancestor route，则 S.404 已给出所有 finite-depth terminal crowns 的 depth-independent coefficient budget；剩余的新 PDE burden 是 S.407 的 occurrence-level \(3/2\)-coercivity。它必须在同一个 shell deletion 后同时记录 top/stopping faces、pressure、moving drift、defect 与 infinite-jump remainder。</p>
+<p>还有一条更直接但同样未证的接口：用 signed local-energy cancellation 证明 \(\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal T_R)\lesssim A_R\)。由 S.385，它与 Step 10 residual gate 只差 literal factor \(5\)。对 shallow short intervals，S.395 说明任何 signed common-window proof 还必须控制 start-clock overshoot。</p>
+<p>Frozen note 的 bounded collision boundary 比较了 physical-space flux locality、skewed-cylinder maximal/covering estimates、reverse Holder under extra local kinetic control、anomalous-dissipation support results、quantitative partial regularity 与 Navier--Stokes inequality flexibility。它们都没有提供 S.342 或 S.407 的 frozen quantifiers。这只是有限 collision check，不是 exhaustive review，也不是 novelty 或 priority claim。</p>
+<p>本步 <strong>PROVED</strong>：S.377--S.387 的 hybrid vector、sharp coordinate comparison 与 same-deletion best-\(N\) equivalence；S.388--S.391 的 conditional implication；S.392--S.395 的 signed-window debt identity；S.396--S.397 的 abstract sharpness checks；S.398--S.404 的 ancestor submeasure、ownership、terminal crowns 与 depth-independent coefficient content；S.405--S.408 的 exact factorization 与 conditional Hölder closure；S.409--S.412 的 converse-Hölder method obstruction；S.413--S.416 的两个 separate stress tests。</p>
+<p>本步 <strong>OPEN PDE INPUTS</strong>：common-deletion temporal flux tail S.342；selected-crown nonlinear payment S.407；以及 inherited S.375。继续 <strong>OPEN</strong>：S.288、S.303、S.272、Q.12、Q.1、scale contraction、regularity、singularity formation 与 Navier--Stokes Millennium problem。</p>
+<p>Frozen primary certificate 通过 9/9 finite groups、3,941 finite cases、5/5 dependency、45/45 structural 与 20/20 negative checks。Independent Ruby verifier 从头重建 vectors、deletion sets、trees、crowns 与 incidence rows，并锁定两篇主文、两份实现、certificate 与 report 的哈希；它检查 finite algebra 与 combinatorics，不证明 S.342、S.407 或任何 PDE realization。Primary analytic audit 与 independent audit 均在这个边界内 PASS。<strong>FINITE ONLY. NOT CLAY.</strong></p>
+</section>
+<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>混合通量等价与终端 crown 接口</h2><picture><source srcset="/assets/r074s/fig-r074s-hybrid-crown-interface.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-hybrid-crown-interface.png" alt="R0.74S Step 15 analytic schematic of hybrid-flux equivalence and the terminal-crown interface"></picture><p><a href="/assets/r074s/fig-r074s-hybrid-crown-interface.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-hybrid-crown-interface.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-hybrid-crown-interface.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/source-data.csv">exact source data</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-hybrid-crown-interface/qa-report.md">视觉 QA</a></p><p class="note">这是由精确公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 15 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_flux_tail_equivalence.md">hybrid flux 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_terminal_crown_coercivity.md">terminal crown 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_hybrid_crown_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_hybrid_crown_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step15_report-source.md">Step 15 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 15：Python 5/5 dependency、9/9 finite groups（3,941 cases）、45/45 structural、20/20 negative；Ruby 为独立证书实现。有限证书不替代 analytic proof。</p></section>
+<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / 后续研究</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 15，并在此停止。后续若另行启动，只能继续检验 OPEN S.342、OPEN S.407 或其他明确的新 PDE 输入；不得把 S.408 或 Q.1 写成 theorem。</p></section></article></main></body></html>

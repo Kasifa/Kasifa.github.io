@@ -56,7 +56,7 @@ try {
   await run(process.execPath, ["scripts/render-note-pdf.mjs", url, pdfRelative, "-", htmlRelative, provenanceRelative], { env: { PDF_RENDER_ROOT: root, PDF_PUBLIC_ORIGIN: "https://kasifa.github.io" } });
   const [html, pdf, provenanceBytes] = await Promise.all([readFile(resolve(root, htmlRelative)), readFile(resolve(root, pdfRelative)), readFile(resolve(root, provenanceRelative))]);
   const structure = inspectPdf(pdf, pdfRelative);
-  const title = "R0.74S｜外侧 collar 对齐与 jump--corona 障碍";
+  const title = "R0.74S｜混合通量等价与终端 crown 强制性缺口";
   if (structure.title !== title) throw new Error(`note PDF title drift: ${structure.title}`);
   const provenance = JSON.parse(provenanceBytes);
   if (provenance.loadedDocument?.equalsSourceHtml !== true || provenance.loadedDocument?.sha256 !== sha256(html) || provenance.source?.publicOrigin !== "https://kasifa.github.io") throw new Error("note render provenance mismatch");
@@ -187,8 +187,18 @@ try {
       shellIncidenceAndHeatShear: "PROVED_S371_S374",
       jumpCoronaPdeLemma: "OPEN_S375",
       jumpCoronaConclusion: "CONDITIONAL_ON_OPEN_S375_S376",
+      hybridStartFluxCoordinate: "PROVED_S377_S383",
+      sameDeletionBestNEquivalence: "PROVED_ONE_FIFTH_TO_ONE_S384_S385",
+      bothResidualBranchesClosure: "CONDITIONAL_ON_OPEN_S342_S387_S391",
+      signedCommonWindowStartDebt: "RETAINED_S395",
+      terminalCrownOwnershipAndPartition: "PROVED_S396_S403",
+      terminalCrownDepthIndependentBudget: "PROVED_S404",
+      selectedCrownNonlinearPayment: "OPEN_S407",
+      terminalCrownConclusion: "CONDITIONAL_ON_OPEN_S407_S408",
+      converseHolderFlatDataFamily: "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S409_S412",
+      measureTreeAndScalarClockStressTests: "SEPARATE_UNCOUPLED_S413_S416",
       fixedScaleInequality: "OPEN_Q1",
-      formalFigure: "STEP14_OUTER_COLLAR_CORONA_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
+      formalFigure: "STEP15_HYBRID_CROWN_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS",
       navierStokesSimulation: false,
       directNumericalSimulation: false,
       translationPath: "LOCAL_DIRECT_NO_DGX",

@@ -47,7 +47,7 @@ try {
         rawTexVisible: /\\\[|\\\]|\\\(|\\\)/.test(body),
         englishChineseResidueCount: residue.length,
         notClayVisible: kind !== "note" || body.includes("NOT CLAY"),
-        openBoundaryVisible: kind !== "note" || /S\.342/.test(body) && /S\.375/.test(body) && /OPEN|开放/.test(body),
+        openBoundaryVisible: kind !== "note" || /S\.342/.test(body) && /S\.407/.test(body) && /OPEN|开放/.test(body),
         noGoBoundaryVisible: kind !== "note" || /ABSTRACT METHOD OBSTRUCTION|抽象方法阻碍/i.test(body) && /not (?:an? )?(?:NSE|Navier--Stokes) counterexample|不是.{0,24}(?:NSE|Navier--Stokes).{0,12}反例/i.test(body),
         formalFigureVisible: kind !== "note" || /正式解析示意图|formal analytic schematic/i.test(body),
         cardPresent: kind !== "home" || Boolean(card),

@@ -179,6 +179,24 @@ test("R0.74S frozen Step 14 outer-collar and jump--corona sources retain the exa
   }
 });
 
+test("R0.74S frozen Step 15 hybrid-flux and terminal-crown sources retain the exact boundary", () => {
+  const hashes = {
+    "research/r074s_hybrid_flux_tail_equivalence.md": "2e41f89e2ed13c09f64f09ace1b7884303e9add0b874e934ba210519b8a8ba5d",
+    "research/r074s_terminal_crown_coercivity.md": "c62fc127c6d6381075653819a4672cae69f1ac4e2b7b45ee2d0b033ab770fd80",
+    "research/r074s_hybrid_crown_primary_audit.md": "4b5a9943d69da7d97cd5214f36fed98f09a7f58cada2139e8ab76e6e07d1ce28",
+    "research/r074s_hybrid_crown_independent_audit.md": "805707ea3890bd825f1a63cc10985bc24fd5f297c784d1e8b0a1d1c15ba5fef6",
+    "research/r074s_hybrid_crown_certificate_report.md": "6777bc9cbfdaf0d079407e24269822e52bb36ffda13b828bdd7440a554050d87",
+    "research/r074s_hybrid_crown_certificate.json": "38e4d15c76b4bb9a2523173c0da816d6862f9e24fe59595d9953a7aa9516a7b8",
+    "scripts/r074s_hybrid_crown_certificate.py": "84c1d8aac5399b71a98cefc4a8ff6a0e13835c8a19e47bd5693ac76fe2bcced4",
+    "scripts/r074s_hybrid_crown_certificate_independent.rb": "e21f186f65052335a2ad97f1fd3dfdeada0d548c9369b7040adb77436320af0e",
+  };
+  for (const [path, expected] of Object.entries(hashes)) assert.equal(sha(path), expected, path);
+  const source = text("research/r074s_terminal_crown_coercivity.md");
+  for (const marker of ["S.404", "S.407", "S.408", "ABSTRACT METHOD OBSTRUCTION", "separately pass", "OPEN", "NOT CLAY"]) {
+    assert.match(source, new RegExp(marker, "i"), marker);
+  }
+});
+
 test("R0.74S deterministic certificate producers rerun byte-identically", () => {
   const cases = [
     ["scripts/r074s_boundary_mismatch_certificate.py", "research/r074s_boundary_mismatch_certificate.json", { exact_passed: 14, exact_total: 14, finite_passed: 4, finite_total: 4, result: "PASS", structural_passed: 38, structural_total: 38 }],
@@ -195,6 +213,7 @@ test("R0.74S deterministic certificate producers rerun byte-identically", () => 
     ["scripts/r074s_terminal_window_morrey_certificate.py", "research/r074s_terminal_window_morrey_certificate.json", { all_pass: true, exact_passed: 16, exact_total: 16, finite_passed: 12, finite_total: 12, negative_passed: 11, negative_total: 11, structural_passed: 51, structural_total: 51 }],
     ["scripts/r074s_temporal_integrability_morrey_certificate.py", "research/r074s_temporal_integrability_morrey_certificate.json", { dependency_passed: 4, dependency_total: 4, exact_passed: 31, exact_total: 31, finite_passed: 11, finite_total: 11, negative_passed: 32, negative_total: 32, structural_passed: 22, structural_total: 22 }],
     ["scripts/r074s_outer_collar_corona_certificate.py", "research/r074s_outer_collar_corona_certificate.json", { dependency_passed: 3, dependency_total: 3, exact_passed: 12, exact_total: 12, finite_cases: 74287, finite_passed: 9, finite_total: 9, negative_passed: 49, negative_total: 49, structural_passed: 37, structural_total: 37 }],
+    ["scripts/r074s_hybrid_crown_certificate.py", "research/r074s_hybrid_crown_certificate.json", { dependency_passed: 5, dependency_total: 5, finite_cases: 3941, finite_passed: 9, finite_total: 9, negative_passed: 20, negative_total: 20, structural_passed: 45, structural_total: 45 }],
   ];
   for (const [script, certificate, expected] of cases) {
     const before = sha(certificate);
@@ -346,5 +365,22 @@ test("R0.74S Step 14 Ruby audit independently reconstructs the outer-collar and 
     primary_artifact_cases: 21,
     negative_groups_passed: 2, negative_groups_total: 2,
     negative_cases: 99,
+  });
+});
+
+test("R0.74S Step 15 Ruby audit independently reconstructs the hybrid-flux and terminal-crown boundary", () => {
+  const result = spawnSync("ruby", [resolve(root, "scripts/r074s_hybrid_crown_certificate_independent.rb")], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, `Step 15 Ruby audit failed:\n${result.stdout}\n${result.stderr}`);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.pass, true);
+  assert.deepEqual(parsed.summary, {
+    independent_groups_passed: 8, independent_groups_total: 8,
+    independent_finite_cases: 127683,
+    structural_passed: 49, structural_total: 49,
+    source_mutations_rejected: 22, source_mutations_total: 22,
+    artifact_mutations_rejected: 8, artifact_mutations_total: 8,
   });
 });

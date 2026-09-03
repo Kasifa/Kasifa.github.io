@@ -1095,13 +1095,13 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(home.includes('href="/' + recapStem + '.pdf"'));
   assert.ok(recap.includes('href="/' + recapStem + '.pdf"'));
   assert.ok(
-    home.includes("NEXT · " + nextCode) || home.includes("NEXT · FROZEN PACKAGE"),
-    "homepage must name the next release or the fixed-task frozen-package queue",
+    home.includes("NEXT · " + nextCode) || home.includes("NEXT · FROZEN PACKAGE") || (latestRelease === "r075f" && home.includes("NEXT · NOT AUTHORIZED")),
+    "homepage must name the next release, fixed-task queue, or authorization stop",
   );
   assert.ok(literature.includes("R0.69P–" + latestCode));
   assert.ok(
-    literature.includes("开放接口 · " + nextCode) || literature.includes("开放接口 · 等待冻结包") || (latestRelease === "r075a" && literature.includes("开放接口 · A.63")),
-    "literature route must name the next release or the fixed-task frozen-package queue",
+    literature.includes("开放接口 · " + nextCode) || literature.includes("开放接口 · 等待冻结包") || (latestRelease === "r075a" && literature.includes("开放接口 · A.63")) || (latestRelease === "r075f" && literature.includes("开放接口 · 后续未授权")),
+    "literature route must name the next release, fixed-task queue, or authorization stop",
   );
   assert.ok(latestNote.includes('href="/' + recapStem + '.html"'));
   assert.ok(latestNote.includes('href="/' + recapStem + '.pdf"'));

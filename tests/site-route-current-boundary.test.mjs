@@ -49,6 +49,7 @@ const ENDPOINTS = Object.freeze({
   r074q: { version: "1.83", code: "R0.74Q", slug: "r0-74q", next: "R0.74R" },
   r074r: { version: "1.84", code: "R0.74R", slug: "r0-74r", next: "R0.74S" },
   r074s: { version: "1.97", code: "R0.74S", slug: "r0-74s", next: "R0.74T" },
+  r074t: { version: "1.98", code: "R0.74T", slug: "r0-74t", next: "R0.74U" },
 });
 
 async function page(name) {
@@ -124,7 +125,7 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     assert.ok(home.includes(
       `<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`,
     ));
-    assert.ok(home.includes(endpoint.release === "r074s" ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
+    assert.ok(home.includes(endpoint.release === "r074t" ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
     const routeStart = home.indexOf('<section class="route-overview"');
     const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
     const route = home.slice(routeStart, routeEnd);
@@ -452,7 +453,7 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const intro = match[1];
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
-  assert.ok(topology.includes(endpoint.release === "r074s" ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
+  assert.ok(topology.includes(endpoint.release === "r074t" ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
 
   if (endpoint.release.localeCompare("r074b") >= 0) {
     assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));

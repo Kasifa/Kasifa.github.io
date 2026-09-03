@@ -235,9 +235,50 @@ async function verifyLatestFormalFigure(record, latestCode) {
   assert.ok(record, `${latestCode}: formal figure manifest is missing`);
   const manifest = record.value;
   assert.equal(manifest.status, "formal");
-  assert.equal(manifest.release, latestCode);
+  assert.equal(manifest.release.split(/\s+/)[0], latestCode);
   const manifestUrl = new URL(record.path, root);
   const packageUrl = new URL("./", manifestUrl);
+
+  // R0.74T introduced a native sealed research-figure package. Its 25 frozen
+  // files must stay byte-exact, so publication metadata lives in the release
+  // manifest rather than rewriting the scientific package manifest.
+  if (manifest.schemaVersion === "research-figure-manifest-v1" && manifest.publicationStatus === "sealed") {
+    assert.equal(manifest.inventory.count, 25, `${latestCode}: native inventory count`);
+    assert.deepEqual(manifest.inventory.files, [...manifest.inventory.files].sort(), `${latestCode}: native inventory order`);
+    const entries = await readdir(packageUrl, { withFileTypes: true });
+    const names = entries
+      .filter((entry) => entry.isFile() && !isOneDriveConflictCopyName(entry.name))
+      .map((entry) => entry.name)
+      .sort();
+    assert.deepEqual(names, manifest.inventory.files, `${latestCode}: native frozen inventory`);
+    await verifyFlatHashLedger(packageUrl);
+
+    const validation = JSON.parse(await readFile(new URL("validation.json", packageUrl), "utf8"));
+    assert.equal(validation.checkCount, validation.checks.length, `${latestCode}: native validation count`);
+    assert.ok(validation.checkCount >= 47, `${latestCode}: native validation coverage`);
+    assert.ok(validation.checks.every((row) => row.pass), `${latestCode}: native validation result`);
+
+    const researchPackageUrl = new URL(`research/${record.path.replace(/^figures\//, "figures/")}`.replace(/manifest\.json$/, ""), root);
+    const publicPackageUrl = new URL(`public/${record.path}`.replace(/manifest\.json$/, ""), root);
+    for (const name of names) {
+      const [sourcePayload, researchPayload, publicPayload] = await Promise.all([
+        readFile(new URL(name, packageUrl)),
+        readFile(new URL(name, researchPackageUrl)),
+        readFile(new URL(name, publicPackageUrl)),
+      ]);
+      assert.equal(Buffer.compare(sourcePayload, researchPayload), 0, `${latestCode}: native research copy ${name}`);
+      assert.equal(Buffer.compare(sourcePayload, publicPayload), 0, `${latestCode}: native public copy ${name}`);
+    }
+    const releaseId = latestCode.toLowerCase().replace(".", "");
+    for (const output of manifest.figure.outputs) {
+      const extension = output.path.split(".").at(-1);
+      const sourcePayload = await readFile(new URL(output.path, packageUrl));
+      const assetPayload = await readFile(new URL(`public/assets/${releaseId}/${manifest.figureId}.${extension}`, root));
+      assert.equal(Buffer.compare(sourcePayload, assetPayload), 0, `${latestCode}: native public asset ${extension}`);
+    }
+    return;
+  }
+
   const validator = new URL("research/validate_figure_package.py", root);
   const { stdout } = await execFileAsync(
     process.env.CODEX_PYTHON || "python3",
@@ -1004,7 +1045,7 @@ test("separates the published inventory from the formal-sealed archive", async (
       ({ value }) =>
         value.status === "formal" && typeof value.release === "string",
     )
-    .map(({ value }) => value.release.toLowerCase().replace(".", ""))
+    .map(({ value }) => value.release.split(/\s+/)[0].toLowerCase().replace(".", ""))
     .filter((release) => releases.includes(release)))]
     .sort();
   assert.deepEqual(
@@ -1016,7 +1057,7 @@ test("separates the published inventory from the formal-sealed archive", async (
   if (formal.includes(releases.at(-1))) {
     await verifyLatestFormalFigure(
       figureManifests.find(
-        ({ value }) => value.status === "formal" && value.release === latestCode,
+        ({ value }) => value.status === "formal" && typeof value.release === "string" && value.release.split(/\s+/)[0] === latestCode,
       ),
       latestCode,
     );

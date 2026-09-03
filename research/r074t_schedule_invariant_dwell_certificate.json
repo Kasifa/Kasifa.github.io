@@ -1,0 +1,483 @@
+{
+  "checks": [
+    {
+      "cases": 1,
+      "expected": {
+        "C_Omega": "-1/2",
+        "Gamma": "-5/4",
+        "L": "-1/2",
+        "R": "1/1",
+        "c_W": "1/1",
+        "h": "3/2",
+        "theta": "1/1",
+        "two": "-1/2"
+      },
+      "group": "finite",
+      "id": "atomic_raw_monomial_exponents",
+      "note": "Atomic payment, dwell, weight, volume, and kinetic-floor factors reconstruct T.15.",
+      "observed": {
+        "C_Omega": "-1/2",
+        "Gamma": "-5/4",
+        "L": "-1/2",
+        "R": "1/1",
+        "c_W": "1/1",
+        "h": "3/2",
+        "theta": "1/1",
+        "two": "-1/2"
+      },
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "expected": {
+        "C_Omega": "-1/3",
+        "Gamma": "-5/6",
+        "L": "-1/3",
+        "R": "2/3",
+        "c_W": "2/3",
+        "h": "1/1",
+        "theta": "2/3",
+        "two": "-1/3"
+      },
+      "group": "finite",
+      "id": "two_thirds_monomial_exponents",
+      "note": "Taking the two-thirds power reconstructs Lambda and its exact exponents.",
+      "observed": {
+        "C_Omega": "-1/3",
+        "Gamma": "-5/6",
+        "L": "-1/3",
+        "R": "2/3",
+        "c_W": "2/3",
+        "h": "1/1",
+        "theta": "2/3",
+        "two": "-1/3"
+      },
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "expected": {
+        "C_Omega": "-1/2",
+        "Gamma": "1/4",
+        "L": "1/1",
+        "R": "4/1",
+        "amplitude": "3/1",
+        "c_W": "1/1",
+        "theta": "1/1",
+        "two": "-1/2"
+      },
+      "group": "finite",
+      "id": "amplitude_recovery_exponents",
+      "note": "Substitution of the packet kinetic floor recovers Gamma^(1/4) L R^4.",
+      "observed": {
+        "C_Omega": "-1/2",
+        "Gamma": "1/4",
+        "L": "1/1",
+        "R": "4/1",
+        "amplitude": "3/1",
+        "c_W": "1/1",
+        "theta": "1/1",
+        "two": "-1/2"
+      },
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "group": "finite",
+      "id": "robust_constant_squared",
+      "note": "The robust coefficient satisfies c_rob^2=c_W^2/(2 C_Omega).",
+      "pass": true,
+      "value": "1/2"
+    },
+    {
+      "cases": 1,
+      "group": "finite",
+      "id": "exact_lobe_constant",
+      "note": "At c_W=1 and C_Omega=1/16, c_rob=2 sqrt(2) and c_rob^(2/3)=2.",
+      "pass": true,
+      "powered_constant_cubed": "8/1",
+      "raw_constant_squared": "8/1"
+    },
+    {
+      "cases": 1024,
+      "failures": [],
+      "group": "finite",
+      "id": "exact_rational_Lambda_grid",
+      "note": "A perfect-power rational grid independently checks every powered monomial exponent.",
+      "pass": true
+    },
+    {
+      "cases": 2728,
+      "equality_seen": true,
+      "failures": [],
+      "group": "finite",
+      "id": "finite_weighted_Holder_proxy",
+      "note": "Exact finite cells satisfy (sum w|u|^3)^2 sum w >= (sum w|u|^2)^3.",
+      "pass": true,
+      "strict_seen": true
+    },
+    {
+      "cases": 1364,
+      "failures": [],
+      "group": "finite",
+      "id": "finite_time_infimum_floor_proxy",
+      "note": "A time integral is controlled by an all-time infimum floor, not by a peak or existential time.",
+      "pass": true,
+      "strict_seen": true
+    },
+    {
+      "cases": 13608,
+      "equality_seen": true,
+      "failures": [],
+      "group": "finite",
+      "id": "two_clock_fixed_deletion_schedule_invariance",
+      "note": "Distinct nonnegative clocks give L_1^K >= min(h1,h2), even at disjoint times.",
+      "pass": true,
+      "strict_seen": true
+    },
+    {
+      "cases": 3,
+      "failures": [],
+      "group": "finite",
+      "id": "functional_direction_and_no_illegal_replacement",
+      "note": "The Step 18 bridge permits only the paid factor-six lower consequence, not Hfix>=hstar or payment>=Lambda L.",
+      "pass": true
+    },
+    {
+      "actual_l3_squared": "64/1",
+      "actual_volume": "1/1",
+      "cases": 1,
+      "group": "finite",
+      "id": "volume_upper_bound_direction",
+      "note": "The L3 coercive lower bound uses |Omega| <= C_Omega L R^3.",
+      "pass": true,
+      "predicted_squared": "32/1",
+      "volume_cap": "2/1"
+    },
+    {
+      "cases": 1,
+      "expected": "603445/89413632",
+      "group": "finite",
+      "id": "five_cgamma_minus_aS",
+      "note": "The survival/payment exponent reserve is the exact positive rational in T.25.",
+      "observed": "603445/89413632",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "expected": {
+        "L1_squared": "603445/134120448",
+        "d_L": "2/3",
+        "log_L2": "-1/3",
+        "log_theta": "2/3"
+      },
+      "group": "finite",
+      "id": "log_Lambda_substitution",
+      "note": "L2=2L1 and d_L=a_S L1^2-S give the exact T.24 coefficient vector.",
+      "observed": {
+        "L1_squared": "603445/134120448",
+        "d_L": "2/3",
+        "log_L2": "-1/3",
+        "log_theta": "2/3"
+      },
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "group": "finite",
+      "id": "inherited_reserve_sum",
+      "note": "The inherited survival reserve and total theta=1 exponent are exact and positive.",
+      "pass": true,
+      "survival_reserve": "23/112640",
+      "total_reserve": "8831/1270080"
+    },
+    {
+      "cases": 162,
+      "failures": [],
+      "group": "finite",
+      "id": "bounded_ratio_forces_theta_upper_bound",
+      "note": "Exact rational log-slack rows verify the direction and 3/2 constant in T.28--T.29.",
+      "pass": true
+    },
+    {
+      "cases": 17,
+      "first": "4991/1280",
+      "group": "finite",
+      "id": "inherited_theta_one_rational_lower_envelope",
+      "last": "148159594441/5",
+      "note": "A finite exact recurrence audits the dyadic lower envelope used by the theta=1 asymptotic.",
+      "pass": true,
+      "recurrence": true
+    },
+    {
+      "cases": 18,
+      "failures": [],
+      "group": "finite",
+      "id": "asynchronous_window_and_recentering_algebra",
+      "note": "The explicit unit-dwell windows are disjoint for R<1/3, and the negative q_pre sign centers each packet at its own terminal time.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "error": null,
+      "group": "structural",
+      "id": "note_readable_utf8",
+      "note": "The theorem note is readable UTF-8.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "expected": [
+        "T.1",
+        "T.2",
+        "T.3",
+        "T.4",
+        "T.5",
+        "T.6",
+        "T.7",
+        "T.8",
+        "T.9",
+        "T.10",
+        "T.11",
+        "T.12",
+        "T.13",
+        "T.14",
+        "T.15",
+        "T.16",
+        "T.17",
+        "T.18",
+        "T.19",
+        "T.20",
+        "T.21",
+        "T.22",
+        "T.23",
+        "T.24",
+        "T.25",
+        "T.26",
+        "T.27",
+        "T.28",
+        "T.29",
+        "T.30",
+        "T.31",
+        "T.32",
+        "T.33",
+        "T.34",
+        "T.35",
+        "T.36",
+        "T.37",
+        "T.38",
+        "T.39",
+        "T.40",
+        "T.41",
+        "T.42",
+        "T.43"
+      ],
+      "group": "structural",
+      "id": "tag_inventory_unique_and_ordered",
+      "note": "The note contains exactly one ordered T.1--T.43 ledger.",
+      "observed": [
+        "T.1",
+        "T.2",
+        "T.3",
+        "T.4",
+        "T.5",
+        "T.6",
+        "T.7",
+        "T.8",
+        "T.9",
+        "T.10",
+        "T.11",
+        "T.12",
+        "T.13",
+        "T.14",
+        "T.15",
+        "T.16",
+        "T.17",
+        "T.18",
+        "T.19",
+        "T.20",
+        "T.21",
+        "T.22",
+        "T.23",
+        "T.24",
+        "T.25",
+        "T.26",
+        "T.27",
+        "T.28",
+        "T.29",
+        "T.30",
+        "T.31",
+        "T.32",
+        "T.33",
+        "T.34",
+        "T.35",
+        "T.36",
+        "T.37",
+        "T.38",
+        "T.39",
+        "T.40",
+        "T.41",
+        "T.42",
+        "T.43"
+      ],
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "group": "structural",
+      "id": "display_and_environment_balance",
+      "note": "Display delimiters and aligned environments balance.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "group": "structural",
+      "id": "required_formula_and_claim_sentinels",
+      "missing": [],
+      "note": "Exact exponents, functionals, schedule restriction, and claim boundaries are present.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "found": [],
+      "group": "structural",
+      "id": "no_malformed_or_overclaim_phrases",
+      "note": "Malformed LaTeX, stale asynchronous denial, and listed overclaims are absent.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "group": "structural",
+      "id": "control_character_policy",
+      "note": "Tabs and non-newline C0 controls are forbidden.",
+      "pass": true
+    },
+    {
+      "cases": 1,
+      "expected": "8d56a66ff918fe1c25056617468022379b71ab37bacff2650599194501ea4fbd",
+      "group": "hash",
+      "id": "locked_note_sha256",
+      "note": "The Step 19 theorem note matches its frozen byte hash.",
+      "observed": "8d56a66ff918fe1c25056617468022379b71ab37bacff2650599194501ea4fbd",
+      "pass": true,
+      "path": "research/r074t_schedule_invariant_dwell_coercivity.md"
+    },
+    {
+      "cases": 1,
+      "expected": "60b49f6279c696a370af5f8050a6162753372eba81f8215e02e15259f084e88b",
+      "group": "hash",
+      "id": "locked_literature_sha256",
+      "note": "The Step 19 primary-source audit must exist and match a real frozen hash; PENDING is fail-closed.",
+      "observed": "60b49f6279c696a370af5f8050a6162753372eba81f8215e02e15259f084e88b",
+      "pass": true,
+      "path": "research/r074t_schedule_invariant_literature_audit.md"
+    },
+    {
+      "cases": 1,
+      "expected": "3a0ea093c42016b78cb589738a666d7b40019fd860c934be9c46418cb1fb05d7",
+      "group": "hash",
+      "id": "dependency_r074e_version_m_payment",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "3a0ea093c42016b78cb589738a666d7b40019fd860c934be9c46418cb1fb05d7",
+      "pass": true,
+      "path": "research/r074e_local_mollified_frame_gate.md"
+    },
+    {
+      "cases": 1,
+      "expected": "0dc16cefb3ce071ce0f309a7683bf2956ebcc9cbc91520544bd5a740edb4c2eb",
+      "group": "hash",
+      "id": "dependency_r074f_packet_survival",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "0dc16cefb3ce071ce0f309a7683bf2956ebcc9cbc91520544bd5a740edb4c2eb",
+      "pass": true,
+      "path": "research/r074f_two_packet_survival.md"
+    },
+    {
+      "cases": 1,
+      "expected": "a3cb872735b92b32ddfa7b96bc4184d70b0287ff2ce7d3da8cadbbcc494d0867",
+      "group": "hash",
+      "id": "dependency_r074p_completed_clock",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "a3cb872735b92b32ddfa7b96bc4184d70b0287ff2ce7d3da8cadbbcc494d0867",
+      "pass": true,
+      "path": "research/r074p_temporal_observable_triage.md"
+    },
+    {
+      "cases": 1,
+      "expected": "60cb683ff6b602b16d64313b278c11a08d73f89e3bc2b1562b256a9911695695",
+      "group": "hash",
+      "id": "dependency_r074q_common_shear",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "60cb683ff6b602b16d64313b278c11a08d73f89e3bc2b1562b256a9911695695",
+      "pass": true,
+      "path": "research/r074q_common_shear_multipacket_gate.md"
+    },
+    {
+      "cases": 1,
+      "expected": "ba8897da349aa5c71c5ac355164a938599489c2691b09eb59760934b70617e8d",
+      "group": "hash",
+      "id": "dependency_r074q_relaxed_multipacket",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "ba8897da349aa5c71c5ac355164a938599489c2691b09eb59760934b70617e8d",
+      "pass": true,
+      "path": "research/r074q_relaxed_multipacket_cubic_obstruction.md"
+    },
+    {
+      "cases": 1,
+      "expected": "305bf75f978c080a1790fbc42bb9bd725f56f537785ffe0fc45e3ca815aa5dc1",
+      "group": "hash",
+      "id": "dependency_r074s_fixed_deletion",
+      "note": "A direct inherited dependency matches its audited hash.",
+      "observed": "305bf75f978c080a1790fbc42bb9bd725f56f537785ffe0fc45e3ca815aa5dc1",
+      "pass": true,
+      "path": "research/r074s_fixed_deletion_simultaneous_height.md"
+    }
+  ],
+  "limitations": [
+    "finite rational, combinatorial, structural, and hash audit only",
+    "no machine proof of continuous Holder or local-energy theory",
+    "no machine proof of packet survival or exact NSE superposition",
+    "no proof of the full completed-clock or stopped-flux gate",
+    "not a regularity theorem and not a Clay claim"
+  ],
+  "literature": {
+    "locked_sha256": "60b49f6279c696a370af5f8050a6162753372eba81f8215e02e15259f084e88b",
+    "path": "research/r074t_schedule_invariant_literature_audit.md",
+    "sha256": "60b49f6279c696a370af5f8050a6162753372eba81f8215e02e15259f084e88b"
+  },
+  "mutation": null,
+  "negative_mutations": [
+    "gamma_weight_quarter_to_half",
+    "gamma_exponent_sign",
+    "two_thirds_to_half",
+    "L_power_sign",
+    "theta_power_sign",
+    "holder_direction",
+    "time_inf_to_sup",
+    "survival_forall_to_exists",
+    "min_to_max",
+    "fixed_to_moving_deletion",
+    "same_shell_allowed",
+    "allow_signed_clocks",
+    "K_floor_to_Hfix",
+    "hstar_to_full_clock",
+    "volume_upper_to_lower",
+    "theta_bound_direction",
+    "survival_defect_sign",
+    "margin_sign",
+    "async_qpre_sign",
+    "async_interval_direction",
+    "sum_overlapping_lobes",
+    "tag_inventory",
+    "claim_boundary",
+    "source_hash",
+    "literature_hash",
+    "dependency_hash"
+  ],
+  "note": {
+    "path": "research/r074t_schedule_invariant_dwell_coercivity.md",
+    "sha256": "8d56a66ff918fe1c25056617468022379b71ab37bacff2650599194501ea4fbd"
+  },
+  "schema": "r074t-schedule-invariant-dwell-certificate-v1",
+  "verdict": "PASS"
+}

@@ -1,0 +1,22 @@
+# Locator policy: CODEX_PYTHON resolves to a bundled Python 3.12.13 executable.
+# R074U_DEPS_DIR resolves separately to an external version-pinned directory
+# whose installed package metadata exactly matches requirements.txt. Do not
+# substitute a generic bundled Python package root unless that version check
+# passes. Paths below are portable placeholders; absolute locators stay out of
+# the sealed archive and are supplied by the execution environment.
+
+CODEX_PYTHON=/path/to/bundled/python3
+R074U_DEPS_DIR=/path/to/pinned/figure-dependencies
+REPOSITORY=/path/to/navier-stokes-r074m
+PACKAGE=research/figures/r074u/fig-r074u-intrinsic-certified-residence
+
+# Stage 1: render and reproducibility/visual preseal QA. No metadata files
+# are written inside the archive. The validator performs the second render
+# and compares all 18 deterministic-core hashes in memory.
+env PYTHONPATH="$R074U_DEPS_DIR" "$CODEX_PYTHON" -B "$PACKAGE/plot.py" --deps "$R074U_DEPS_DIR" --repository "$REPOSITORY" --render
+env PYTHONPATH="$R074U_DEPS_DIR" "$CODEX_PYTHON" -B "$PACKAGE/validate.py" --deps "$R074U_DEPS_DIR" --repository "$REPOSITORY" --preseal-roundtrip --confirm-visual-qa
+
+# Commit exactly the 21 source/raw files before the formal seal. Never guess it.
+: "${FIGURE_SOURCE_COMMIT:?set the actual full commit containing the 21 files}"
+env PYTHONPATH="$R074U_DEPS_DIR" "$CODEX_PYTHON" -B "$PACKAGE/validate.py" --deps "$R074U_DEPS_DIR" --repository "$REPOSITORY" --figure-source-commit "$FIGURE_SOURCE_COMMIT" --confirm-visual-qa
+env PYTHONPATH="$R074U_DEPS_DIR" "$CODEX_PYTHON" -B "$PACKAGE/validate.py" --deps "$R074U_DEPS_DIR" --repository "$REPOSITORY" --verify-only

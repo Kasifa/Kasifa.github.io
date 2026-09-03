@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -9,7 +9,25 @@ const root = resolve(import.meta.dirname, "..");
 const readBytes = (path) => readFileSync(resolve(root, path));
 const read = (path) => readBytes(path).toString("utf8");
 const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex");
-const python = process.env.CODEX_PYTHON || "/Users/kasifa/Documents/Math/.codex-research-venv/bin/python";
+const python = process.env.CODEX_PYTHON || "python3";
+
+function runIndependentCertificate() {
+  const result = spawnSync("ruby", ["scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.error, undefined, result.error?.message);
+  const payload = JSON.parse(result.stdout);
+  const failed = [
+    ...payload.independent_checks,
+    ...payload.artifacts,
+    ...payload.note_checks,
+    ...payload.primary_artifact_checks,
+    ...payload.negative_mutation_checks,
+  ].filter((row) => !row.pass);
+  assert.equal(result.status, 0, JSON.stringify({ stderr: result.stderr, failed }, null, 2));
+  return payload;
+}
 
 test("R0.74S Step 16 imports the exact frozen evidence", () => {
   const hashes = {
@@ -35,7 +53,7 @@ test("R0.74S Step 16 primary and independent certificates reproduce", () => {
   assert.equal(primary.claim_boundary.S444_critical_L1_tail, "OPEN");
   assert.equal(primary.claim_boundary.millennium_problem_solved, false);
 
-  const independent = JSON.parse(execFileSync("ruby", ["scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb"], { cwd: root, encoding: "utf8" }));
+  const independent = runIndependentCertificate();
   assert.equal(independent.pass, true);
   assert.equal(independent.summary.independent_groups_passed, 9);
   assert.equal(independent.summary.independent_groups_total, 9);

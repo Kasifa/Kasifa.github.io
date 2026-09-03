@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -9,6 +9,24 @@ const root = resolve(import.meta.dirname, "..");
 const bytes = (path) => readFileSync(resolve(root, path));
 const sha = (path) => createHash("sha256").update(bytes(path)).digest("hex");
 const python = process.env.CODEX_PYTHON || "python3";
+
+function runIndependentCertificate() {
+  const result = spawnSync("ruby", ["scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.error, undefined, result.error?.message);
+  const payload = JSON.parse(result.stdout);
+  const failed = [
+    ...payload.independent_checks,
+    ...payload.artifacts,
+    ...payload.note_checks,
+    ...payload.primary_artifact_checks,
+    ...payload.negative_mutation_checks,
+  ].filter((row) => !row.pass);
+  assert.equal(result.status, 0, JSON.stringify({ stderr: result.stderr, failed }, null, 2));
+  return payload;
+}
 
 test("R0.74S Step 16 exact frozen source lock and certificate boundary", () => {
   const locks = {
@@ -29,7 +47,7 @@ test("R0.74S Step 16 exact frozen source lock and certificate boundary", () => {
   assert.equal(primary.claim_boundary.S342_quadratic_tail_for_p_gt_1, "FALSE_BY_SMOOTH_EXACT_NSE");
   assert.equal(primary.claim_boundary.S444_critical_L1_tail, "OPEN");
 
-  const independent = JSON.parse(execFileSync("ruby", ["scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb"], { cwd: root, encoding: "utf8" }));
+  const independent = runIndependentCertificate();
   assert.equal(independent.pass, true);
   assert.deepEqual(
     [

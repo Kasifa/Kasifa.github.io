@@ -231,13 +231,80 @@ async function verifyFlatHashLedger(directory) {
   assert.deepEqual(names, expectedNames, "formal-figure hash coverage");
 }
 
+function isR074wFrozenNativeFigure(manifest, latestCode) {
+  return (
+    latestCode === "R0.74W" &&
+    manifest.schema === "r074w-figure-manifest-v1" &&
+    manifest.status === "local-precommit-sealed" &&
+    manifest.publicationStatus === "locally-hash-sealed-precommit" &&
+    manifest.artifactId === "fig-r074w-remote-adjacent-inward-threshold"
+  );
+}
+
 async function verifyLatestFormalFigure(record, latestCode) {
   assert.ok(record, `${latestCode}: formal figure manifest is missing`);
   const manifest = record.value;
-  assert.equal(manifest.status, "formal");
-  assert.equal(manifest.release.split(/\s+/)[0], latestCode);
   const manifestUrl = new URL(record.path, root);
   const packageUrl = new URL("./", manifestUrl);
+
+  // R0.74W's scientific package is immutable and records its original local
+  // SHA-256 seal. The later frozen Git commit is bound in the publication
+  // ledger instead of rewriting any of the 25 scientific archive files.
+  if (isR074wFrozenNativeFigure(manifest, latestCode)) {
+    assert.equal(manifest.inventory.expectedFileCount, 25, `${latestCode}: frozen inventory count`);
+    const entries = await readdir(packageUrl, { withFileTypes: true });
+    assert.ok(entries.every((entry) => entry.isFile() && !entry.isSymbolicLink()), `${latestCode}: flat regular archive`);
+    const names = entries.filter((entry) => !isOneDriveConflictCopyName(entry.name)).map((entry) => entry.name).sort();
+    assert.equal(names.length, 25, `${latestCode}: frozen file count`);
+    await verifyFlatHashLedger(packageUrl);
+
+    const validation = JSON.parse(await readFile(new URL("validation.json", packageUrl), "utf8"));
+    assert.equal(validation.status, "PASS", `${latestCode}: frozen validation status`);
+    assert.equal(validation.visualQAConfirmed, true, `${latestCode}: frozen visual QA`);
+    assert.equal(Object.keys(validation.checks).length, 12, `${latestCode}: frozen validation coverage`);
+    assert.equal(validation.checks.claimBoundary.fixedDeletionResolved, false);
+    assert.equal(validation.checks.claimBoundary.weightedPacket2EndpointDivergence, true);
+    assert.equal(validation.checks.claimBoundary.dnsData, false);
+    assert.equal(validation.checks.claimBoundary.clayClaim, false);
+
+    const researchPackageUrl = new URL(`research/${record.path.replace(/^figures\//, "figures/")}`.replace(/manifest\.json$/, ""), root);
+    const publicPackageUrl = new URL(`public/${record.path}`.replace(/manifest\.json$/, ""), root);
+    for (const name of names) {
+      const [sourcePayload, researchPayload, publicPayload] = await Promise.all([
+        readFile(new URL(name, packageUrl)),
+        readFile(new URL(name, researchPackageUrl)),
+        readFile(new URL(name, publicPackageUrl)),
+      ]);
+      assert.equal(Buffer.compare(sourcePayload, researchPayload), 0, `${latestCode}: frozen research copy ${name}`);
+      assert.equal(Buffer.compare(sourcePayload, publicPayload), 0, `${latestCode}: frozen public copy ${name}`);
+    }
+
+    const releaseIndex = await releaseManifest();
+    const publication = releaseIndex.latestFormalFigurePublication;
+    assert.equal(publication.schemaVersion, "r074w-native-figure-publication-binding-v1");
+    assert.equal(publication.release, latestCode);
+    assert.equal(publication.figureId, manifest.artifactId);
+    assert.equal(publication.researchSourceCommit, "f581c46ee7759c190b6f407633549e7106ff60b5");
+    assert.equal(publication.figureArchiveCommit, "0143d65322a3c854fe220aa9d3e4f93a1f6ca09e");
+    assert.equal(publication.inventory.files, 25);
+    assert.equal(publication.inventory.bytes, 3774363);
+    assert.equal(publication.byteIdentityRequired, true);
+    assert.equal(publication.publicCopiesComplete, true);
+    assert.equal(publication.assets.length, 3);
+    for (const row of publication.assets) {
+      const suffix = row.path.split(".").at(-1);
+      const master = await readFile(new URL(`figure.${suffix}`, packageUrl));
+      const published = await readFile(new URL(row.path, root));
+      const hash = createHash("sha256").update(master).digest("hex");
+      assert.equal(Buffer.compare(master, published), 0, `${latestCode}: frozen public ${suffix}`);
+      assert.equal(row.bytes, master.length, `${latestCode}: frozen public ${suffix} bytes`);
+      assert.equal(row.sha256, hash, `${latestCode}: frozen public ${suffix} hash`);
+    }
+    return;
+  }
+
+  assert.equal(manifest.status, "formal");
+  assert.equal(manifest.release.split(/\s+/)[0], latestCode);
 
   // R0.74T introduced a native sealed research-figure package. Its 25 frozen
   // files must stay byte-exact, so publication metadata lives in the release
@@ -1043,9 +1110,12 @@ test("separates the published inventory from the formal-sealed archive", async (
   const currentFormal = [...new Set(figureManifests
     .filter(
       ({ value }) =>
-        value.status === "formal" && typeof value.release === "string",
+        (value.status === "formal" && typeof value.release === "string") ||
+        isR074wFrozenNativeFigure(value, "R0.74W"),
     )
-    .map(({ value }) => value.release.split(/\s+/)[0].toLowerCase().replace(".", ""))
+    .map(({ value }) => value.status === "formal"
+      ? value.release.split(/\s+/)[0].toLowerCase().replace(".", "")
+      : "r074w")
     .filter((release) => releases.includes(release)))]
     .sort();
   assert.deepEqual(
@@ -1057,7 +1127,9 @@ test("separates the published inventory from the formal-sealed archive", async (
   if (formal.includes(releases.at(-1))) {
     await verifyLatestFormalFigure(
       figureManifests.find(
-        ({ value }) => value.status === "formal" && typeof value.release === "string" && value.release.split(/\s+/)[0] === latestCode,
+        ({ value }) =>
+          (value.status === "formal" && typeof value.release === "string" && value.release.split(/\s+/)[0] === latestCode) ||
+          isR074wFrozenNativeFigure(value, latestCode),
       ),
       latestCode,
     );

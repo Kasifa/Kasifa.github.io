@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const baseUrl = new URL(process.env.R074S_PUBLIC_BASE_URL ?? "https://kasifa.github.io/");
 const commit = process.env.R074S_DEPLOYED_COMMIT ?? "unversioned";
 const figureId = "fig-r074s-fixed-deletion-quantifier-gap";
-const canonicalFigureRoot = resolve(root, "research/figures/r074s", figureId);
 const publicFigureRoot = `public/figures/r074s/${figureId}`;
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
@@ -28,7 +28,11 @@ const fixedObjects = [
   [`public/assets/r074s/${figureId}.svg`, `/assets/r074s/${figureId}.svg`],
 ];
 
-const figureNames = (await readdir(canonicalFigureRoot)).sort();
+const figureNames = execFileSync(
+  "git",
+  ["ls-tree", "-r", "--name-only", "HEAD", `research/figures/r074s/${figureId}`],
+  { cwd: root, encoding: "utf8" },
+).trim().split("\n").filter(Boolean).map((path) => path.split("/").at(-1)).sort();
 assert.equal(figureNames.length, 25, "frozen figure archive must contain exactly 25 files");
 assert.ok(figureNames.every((name) => !/ 2(?:\.|$)/.test(name)), "duplicate-copy names are not publication objects");
 

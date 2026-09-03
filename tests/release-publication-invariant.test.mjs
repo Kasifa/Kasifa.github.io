@@ -231,14 +231,34 @@ async function verifyFlatHashLedger(directory) {
   assert.deepEqual(names, expectedNames, "formal-figure hash coverage");
 }
 
-function isR074wFrozenNativeFigure(manifest, latestCode) {
-  return (
-    latestCode === "R0.74W" &&
-    manifest.schema === "r074w-figure-manifest-v1" &&
+const frozenNativeFigureConfigs = {
+  "R0.74W": {
+    release: "r074w", schema: "r074w-figure-manifest-v1",
+    artifactId: "fig-r074w-remote-adjacent-inward-threshold", validationChecks: 12,
+    publicationSchema: "r074w-native-figure-publication-binding-v1",
+    researchSourceCommit: "f581c46ee7759c190b6f407633549e7106ff60b5",
+    figureArchiveCommit: "0143d65322a3c854fe220aa9d3e4f93a1f6ca09e",
+    bytes: 3774363,
+  },
+  "R0.74X": {
+    release: "r074x", schema: "r074x-figure-manifest-v1",
+    artifactId: "fig-r074x-three-packet-payment-gate", validationChecks: 13,
+    publicationSchema: "r074x-native-figure-publication-binding-v1",
+    researchSourceCommit: "802e5572b3490b326a03706c512f35ef6f5afa31",
+    figureArchiveCommit: "a5670383091098331b557869a57c6ed9b6fa72e9",
+    bytes: 3096940,
+  },
+};
+
+function frozenNativeFigureConfig(manifest, latestCode) {
+  const config = frozenNativeFigureConfigs[latestCode];
+  return config &&
+    manifest.schema === config.schema &&
     manifest.status === "local-precommit-sealed" &&
     manifest.publicationStatus === "locally-hash-sealed-precommit" &&
-    manifest.artifactId === "fig-r074w-remote-adjacent-inward-threshold"
-  );
+    manifest.artifactId === config.artifactId
+    ? config
+    : null;
 }
 
 async function verifyLatestFormalFigure(record, latestCode) {
@@ -247,10 +267,11 @@ async function verifyLatestFormalFigure(record, latestCode) {
   const manifestUrl = new URL(record.path, root);
   const packageUrl = new URL("./", manifestUrl);
 
-  // R0.74W's scientific package is immutable and records its original local
+  // These scientific packages are immutable and record their original local
   // SHA-256 seal. The later frozen Git commit is bound in the publication
   // ledger instead of rewriting any of the 25 scientific archive files.
-  if (isR074wFrozenNativeFigure(manifest, latestCode)) {
+  const frozenConfig = frozenNativeFigureConfig(manifest, latestCode);
+  if (frozenConfig) {
     assert.equal(manifest.inventory.expectedFileCount, 25, `${latestCode}: frozen inventory count`);
     const entries = await readdir(packageUrl, { withFileTypes: true });
     assert.ok(entries.every((entry) => entry.isFile() && !entry.isSymbolicLink()), `${latestCode}: flat regular archive`);
@@ -261,9 +282,15 @@ async function verifyLatestFormalFigure(record, latestCode) {
     const validation = JSON.parse(await readFile(new URL("validation.json", packageUrl), "utf8"));
     assert.equal(validation.status, "PASS", `${latestCode}: frozen validation status`);
     assert.equal(validation.visualQAConfirmed, true, `${latestCode}: frozen visual QA`);
-    assert.equal(Object.keys(validation.checks).length, 12, `${latestCode}: frozen validation coverage`);
-    assert.equal(validation.checks.claimBoundary.fixedDeletionResolved, false);
-    assert.equal(validation.checks.claimBoundary.weightedPacket2EndpointDivergence, true);
+    assert.equal(Object.keys(validation.checks).length, frozenConfig.validationChecks, `${latestCode}: frozen validation coverage`);
+    if (latestCode === "R0.74W") {
+      assert.equal(validation.checks.claimBoundary.fixedDeletionResolved, false);
+      assert.equal(validation.checks.claimBoundary.weightedPacket2EndpointDivergence, true);
+    } else {
+      assert.equal(validation.checks.claimBoundary.actualPaymentNormalizedGateCounterexample, false);
+      assert.equal(validation.checks.claimBoundary.twoCoordinateTstarEndpointObstruction, true);
+      assert.equal(validation.checks.claimBoundary.equalTargetWStripRouteNoGo, true);
+    }
     assert.equal(validation.checks.claimBoundary.dnsData, false);
     assert.equal(validation.checks.claimBoundary.clayClaim, false);
 
@@ -281,13 +308,13 @@ async function verifyLatestFormalFigure(record, latestCode) {
 
     const releaseIndex = await releaseManifest();
     const publication = releaseIndex.latestFormalFigurePublication;
-    assert.equal(publication.schemaVersion, "r074w-native-figure-publication-binding-v1");
+    assert.equal(publication.schemaVersion, frozenConfig.publicationSchema);
     assert.equal(publication.release, latestCode);
     assert.equal(publication.figureId, manifest.artifactId);
-    assert.equal(publication.researchSourceCommit, "f581c46ee7759c190b6f407633549e7106ff60b5");
-    assert.equal(publication.figureArchiveCommit, "0143d65322a3c854fe220aa9d3e4f93a1f6ca09e");
+    assert.equal(publication.researchSourceCommit, frozenConfig.researchSourceCommit);
+    assert.equal(publication.figureArchiveCommit, frozenConfig.figureArchiveCommit);
     assert.equal(publication.inventory.files, 25);
-    assert.equal(publication.inventory.bytes, 3774363);
+    assert.equal(publication.inventory.bytes, frozenConfig.bytes);
     assert.equal(publication.byteIdentityRequired, true);
     assert.equal(publication.publicCopiesComplete, true);
     assert.equal(publication.assets.length, 3);
@@ -1111,11 +1138,12 @@ test("separates the published inventory from the formal-sealed archive", async (
     .filter(
       ({ value }) =>
         (value.status === "formal" && typeof value.release === "string") ||
-        isR074wFrozenNativeFigure(value, "R0.74W"),
+        Object.keys(frozenNativeFigureConfigs).some((code) => frozenNativeFigureConfig(value, code)),
     )
     .map(({ value }) => value.status === "formal"
       ? value.release.split(/\s+/)[0].toLowerCase().replace(".", "")
-      : "r074w")
+      : Object.entries(frozenNativeFigureConfigs)
+        .find(([code]) => frozenNativeFigureConfig(value, code))[1].release)
     .filter((release) => releases.includes(release)))]
     .sort();
   assert.deepEqual(
@@ -1129,7 +1157,7 @@ test("separates the published inventory from the formal-sealed archive", async (
       figureManifests.find(
         ({ value }) =>
           (value.status === "formal" && typeof value.release === "string" && value.release.split(/\s+/)[0] === latestCode) ||
-          isR074wFrozenNativeFigure(value, latestCode),
+          frozenNativeFigureConfig(value, latestCode),
       ),
       latestCode,
     );

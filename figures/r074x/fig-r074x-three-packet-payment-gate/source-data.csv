@@ -1,0 +1,31 @@
+panel,series,x,y,x_unit,y_unit,exact_value,role,source_locator,note
+A,packet 1,1,0.72,scale-index schematic,diagram coordinate,k_1; L_1,packet/clock architecture,X.1,context packet
+A,packet 2,2,0.72,scale-index schematic,diagram coordinate,k_2=k_1+1; L_2=2L_1,packet/clock architecture,X.1,remote-strip survivor
+A,packet 3,3,0.72,scale-index schematic,diagram coordinate,k_3=k_1+2; L_3=4L_1,packet/clock architecture,X.1,remote-strip survivor
+A,clock coordinate from packet 2,1,0.25,scale-index schematic,diagram coordinate,k_2-1=k_1,packet/clock architecture,X.40--X.44,strip lower witness only
+A,clock coordinate from packet 3,2,0.25,scale-index schematic,diagram coordinate,k_3-1=k_2,packet/clock architecture,X.40--X.44,strip lower witness only
+A,equal target clock packet 1,1,,scale-index schematic,diagram coordinate,Gamma_1*a_1^2*L_1*R^2=T_*,packet/clock architecture,X.17,normalization
+A,equal target clock packet 2,2,,scale-index schematic,diagram coordinate,Gamma_2*a_2^2*L_2*R^2=T_*,packet/clock architecture,X.17,normalization
+A,equal target clock packet 3,3,,scale-index schematic,diagram coordinate,Gamma_3*a_3^2*L_3*R^2=T_*,packet/clock architecture,X.17,normalization
+A,packet 2 survival reserve,2,,scale-index schematic,diagram coordinate,3719797/5811886080,packet/clock architecture,X.27,strictly positive
+A,packet 3 survival reserve,3,,scale-index schematic,diagram coordinate,72925813/5811886080,packet/clock architecture,X.28,strictly positive
+A,cross 2 from 1,,,scale-index schematic,diagram coordinate,3667/70447104,packet/clock architecture,X.32,amplitude-weighted margin
+A,cross 2 from 3,,,scale-index schematic,diagram coordinate,100043/29804544,packet/clock architecture,X.32--X.33,amplitude-weighted margin
+A,cross 3 from 2,,,scale-index schematic,diagram coordinate,3667/70447104,packet/clock architecture,X.32,amplitude-weighted margin
+A,cross 3 from 1,,,scale-index schematic,diagram coordinate,147359/281788416,packet/clock architecture,X.32,amplitude-weighted margin
+A,inversion margin,,,scale-index schematic,diagram coordinate,5/693,packet/clock architecture,X.34,all intended inversion partners
+A,periodic margin,,,scale-index schematic,diagram coordinate,123450676/1091475,packet/clock architecture,X.36,all noncentral copies retained and bounded
+B,fixed deletion order,0,,proof-order,,"inf_{#S<=1} sup_{t in D} sum_{k notin S} K_{k,R}(t)",quantifier branch,X.5,S fixed before t
+B,branch k1 remains,1,,proof-order,,k_1 notin S => choose t=tau_2,quantifier branch,X.43,time chosen after fixed S
+B,branch k1 deleted,2,,proof-order,,k_1 in S => k_2 notin S => choose t=tau_3,quantifier branch,X.43,time chosen after fixed S
+B,pigeonhole lower bound,3,,proof-order,,"L^K_{1,R}(D)>=min{K_{k_1,R}(tau_2),K_{k_2,R}(tau_3)}",quantifier branch,X.43,different times permitted
+B,optional equal schedule,4,,proof-order,,tau_2=tau_3 is permitted but unnecessary,quantifier branch,X.42--X.43,not a hypothesis of the pigeonhole
+B,terminal-domain consequence,5,,proof-order,,"L^K_{1,R}(T_R)/T_*->infinity",quantifier branch,X.44,two-coordinate T_* obstruction
+C,payment lower rate,0.0246554872825954,,L_1^2 exponent rate,,3306805/134120448,rate bar,X.47--X.48,lower exponential rate in L_1^2-units
+C,maximum audited strip rate,0.00182081109660475,,L_1^2 exponent rate,,15263/8382528,rate bar,X.49,16*chi(66); applies only to the two strip endpoint witnesses
+C,strict rate gap,0.0228346761859907,,L_1^2 exponent rate,,3062597/134120448,derived gap,X.50,payment minus maximum audited strip rate
+C,strip-to-payment conclusion,,,,,(E_2^strip+E_3^strip)/(P_R^M)^(2/3)->0,scope boundary,X.51,does not upper-bound either whole shell clock
+D,PROVED,0,,claim order,,two-coordinate endpoint obstruction normalized by T_*,claim hierarchy,X.40--X.44,times may differ
+D,NOT PROVED,1,,claim order,,counterexample to the actual (P_R^M)^(2/3)-normalized gate,claim hierarchy,X.47--X.51,whole-shell or dissipation enhancement remains possible
+D,NO-GO,2,,claim order,,equal-target W-strip route is dominated by cubic payment,claim hierarchy,X.50--X.51,architecture-specific obstruction
+D,NEXT X.52,3,,claim order,,"min{K_r(t_r),K_s(t_s)}/(P_R^M)^(2/3)->infinity",claim hierarchy,X.52,distinct coordinates; witness times need not coincide

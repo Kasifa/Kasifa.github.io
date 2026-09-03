@@ -1,0 +1,9 @@
+# Portable locators; keep absolute machine paths outside the archive.
+CODEX_PYTHON=/path/to/bundled/python3
+R074X_DEPS_DIR=/path/to/version-pinned/dependencies
+REPOSITORY=/path/to/navier-stokes-r074m
+FIG=research/figures/r074x/fig-r074x-three-packet-payment-gate
+
+env PYTHONPATH="$R074X_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/plot.py" --deps "$R074X_DEPS_DIR" --repository "$REPOSITORY" --render
+env PYTHONPATH="$R074X_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/validate.py" --deps "$R074X_DEPS_DIR" --repository "$REPOSITORY" --seal-local --confirm-visual-qa
+env PYTHONPATH="$R074X_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/validate.py" --deps "$R074X_DEPS_DIR" --repository "$REPOSITORY" --verify-only

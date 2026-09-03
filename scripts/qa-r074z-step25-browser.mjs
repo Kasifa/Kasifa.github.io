@@ -1,0 +1,162 @@
+#!/usr/bin/env node
+
+import assert from "node:assert/strict";
+import { createReadStream } from "node:fs";
+import { mkdir } from "node:fs/promises";
+import { createServer } from "node:http";
+import { createRequire } from "node:module";
+import { extname, resolve } from "node:path";
+
+const root = resolve(import.meta.dirname, "..");
+const publicRoot = resolve(root, "public");
+const outputRoot = resolve(process.env.R074Z_STEP25_BROWSER_QA_OUTPUT ?? "/tmp/r074z-step25-browser-qa");
+const figureId = "fig-r074z-remote-persistence-gate";
+const require = createRequire(import.meta.url);
+const { chromium } = require(
+  "/Users/kasifa/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
+);
+
+function contentType(path) {
+  return new Map([
+    [".html", "text/html; charset=utf-8"], [".js", "text/javascript; charset=utf-8"],
+    [".css", "text/css; charset=utf-8"], [".svg", "image/svg+xml"],
+    [".png", "image/png"], [".pdf", "application/pdf"], [".json", "application/json"],
+    [".md", "text/markdown; charset=utf-8"], [".csv", "text/csv; charset=utf-8"],
+  ]).get(extname(path).toLowerCase()) ?? "application/octet-stream";
+}
+
+const server = createServer((request, response) => {
+  const pathname = decodeURIComponent(new URL(request.url, "http://127.0.0.1").pathname);
+  const relative = pathname === "/" ? "research-review.html" : pathname.replace(/^\/+/, "");
+  const target = resolve(publicRoot, relative);
+  if (!target.startsWith(`${publicRoot}/`)) { response.writeHead(403).end(); return; }
+  response.setHeader("Content-Type", contentType(target));
+  const stream = createReadStream(target);
+  stream.on("error", () => response.writeHead(404).end());
+  stream.pipe(response);
+});
+
+await mkdir(outputRoot, { recursive: true });
+await new Promise((resolvePromise, reject) => {
+  server.once("error", reject);
+  server.listen(0, "127.0.0.1", resolvePromise);
+});
+
+const browser = await chromium.launch({
+  executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  headless: true,
+});
+const scenarios = [
+  { id: "desktop-light-zh", viewport: { width: 1440, height: 900 }, colorScheme: "light", lang: "zh" },
+  { id: "desktop-dark-en", viewport: { width: 1440, height: 900 }, colorScheme: "dark", lang: "en" },
+  { id: "mobile-light-en", viewport: { width: 390, height: 844 }, colorScheme: "light", lang: "en" },
+  { id: "mobile-dark-zh", viewport: { width: 390, height: 844 }, colorScheme: "dark", lang: "zh" },
+];
+const results = [];
+
+try {
+  const address = server.address();
+  for (const scenario of scenarios) {
+    const context = await browser.newContext({
+      viewport: scenario.viewport,
+      colorScheme: scenario.colorScheme,
+      locale: scenario.lang === "zh" ? "zh-CN" : "en-US",
+      deviceScaleFactor: 1,
+    });
+    const page = await context.newPage();
+    const pageErrors = [];
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    const response = await page.goto(
+      `http://127.0.0.1:${address.port}/notes/r0-74z.html?lang=${scenario.lang}`,
+      { waitUntil: "networkidle" },
+    );
+    assert.equal(response?.status(), 200, `${scenario.id} main document`);
+    await page.waitForFunction(() => document.documentElement.dataset.language);
+    await page.waitForFunction(
+      () => typeof globalThis.MathJax?.version === "string" && Boolean(globalThis.MathJax?.startup?.promise),
+      null,
+      { timeout: 30_000 },
+    );
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await globalThis.MathJax.startup.promise;
+      await Promise.all([...document.images].map((image) => image.complete
+        ? Promise.resolve()
+        : new Promise((resolvePromise) => image.addEventListener("load", resolvePromise, { once: true }))));
+    });
+
+    const audit = await page.evaluate((expectedFigureId) => {
+      const bodyCopy = document.body.cloneNode(true);
+      bodyCopy.querySelectorAll(".language-switcher").forEach((node) => node.remove());
+      const visibleText = bodyCopy.innerText;
+      const style = getComputedStyle(document.documentElement);
+      const figureImage = document.querySelector(`#figure img[src*="${expectedFigureId}"]`);
+      return {
+        documentLanguage: document.documentElement.lang,
+        selectedLanguage: document.documentElement.dataset.language,
+        title: document.title,
+        h1: document.querySelector("h1")?.textContent?.trim(),
+        switcher: document.querySelector(".language-switcher")?.textContent?.trim(),
+        sitePaper: style.getPropertyValue("--paper").trim(),
+        viewportWidth: window.innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
+        mathJaxContainers: document.querySelectorAll("mjx-container").length,
+        rawInlineDelimiters: (visibleText.match(/\\\(/g) ?? []).length,
+        rawDisplayDelimiters: (visibleText.match(/\\\[/g) ?? []).length,
+        chineseCharactersOutsideSwitcher: (visibleText.match(/[\u3400-\u9fff\uf900-\ufaff]/gu) ?? []).length,
+        imageCount: document.images.length,
+        figureSections: document.querySelectorAll("#figure").length,
+        figureLoaded: Boolean(figureImage?.complete && figureImage?.naturalWidth > 0),
+        figureCurrentSource: figureImage?.currentSrc ?? "",
+        persistentTubeLabels: [...document.querySelectorAll(".label")].filter((node) => node.textContent.includes("PERSISTENT TUBE PROVED")).length,
+        strictBoundary: /STRICT SIDE ONLY|strict subcritical/i.test(visibleText),
+        conditionalBoundary: /TIME-TAME CONDITIONAL|conditional.{0,100}(Z\.22|moving-strip)/i.test(visibleText),
+        criticalOpen: /CRITICAL OPEN|critical layer.{0,100}OPEN/i.test(visibleText),
+        fullClockOpen: /FULL CLOCK OPEN|full-clock Y\.57.{0,100}(OPEN|unproved)/i.test(visibleText),
+        noveltyBoundary: /NO NOVELTY CLAIM|not novelty evidence/i.test(visibleText),
+        clayBoundary: /NOT CLAY/.test(visibleText),
+        chinesePdfLabels: document.querySelectorAll(".pdf-language-label").length,
+      };
+    }, figureId);
+
+    assert.equal(audit.selectedLanguage, scenario.lang, `${scenario.id} selected language`);
+    assert.equal(audit.documentLanguage, scenario.lang === "en" ? "en" : "zh-CN", `${scenario.id} document language`);
+    assert.equal(audit.horizontalOverflow, false, `${scenario.id} horizontal overflow ${audit.scrollWidth}/${audit.viewportWidth}`);
+    assert.ok(audit.mathJaxContainers > 100, `${scenario.id} MathJax coverage`);
+    assert.equal(audit.rawInlineDelimiters, 0, `${scenario.id} raw inline TeX`);
+    assert.equal(audit.rawDisplayDelimiters, 0, `${scenario.id} raw display TeX`);
+    assert.equal(audit.imageCount, 1, `${scenario.id} one formal figure image`);
+    assert.equal(audit.figureSections, 1, `${scenario.id} one formal figure section`);
+    assert.equal(audit.figureLoaded, true, `${scenario.id} formal figure loaded`);
+    assert.match(audit.figureCurrentSource, /r074z\/fig-r074z-remote-persistence-gate\.svg/);
+    assert.equal(audit.persistentTubeLabels, 1, `${scenario.id} persistent-tube prominence`);
+    assert.equal(audit.strictBoundary, true, `${scenario.id} strict boundary`);
+    assert.equal(audit.conditionalBoundary, true, `${scenario.id} conditional boundary`);
+    assert.equal(audit.criticalOpen, true, `${scenario.id} critical boundary`);
+    assert.equal(audit.fullClockOpen, true, `${scenario.id} full-clock boundary`);
+    assert.equal(audit.noveltyBoundary, true, `${scenario.id} novelty boundary`);
+    assert.equal(audit.clayBoundary, true, `${scenario.id} Clay boundary`);
+    assert.equal(audit.sitePaper, scenario.colorScheme === "dark" ? "#181714" : "#f3ecd8", `${scenario.id} colour scheme`);
+    if (scenario.lang === "en") {
+      assert.equal(audit.chineseCharactersOutsideSwitcher, 0, `${scenario.id} untranslated Chinese`);
+      assert.match(audit.h1, /Remote persistence gate/);
+      assert.equal(audit.switcher, "中文");
+      assert.ok(audit.chinesePdfLabels >= 1, `${scenario.id} Chinese-PDF label`);
+    } else {
+      assert.match(audit.h1, /远端持续性门/);
+      assert.equal(audit.switcher, "English");
+      assert.equal(audit.chinesePdfLabels, 0);
+    }
+    assert.deepEqual(pageErrors, [], `${scenario.id} page errors`);
+    const screenshot = resolve(outputRoot, `${scenario.id}.png`);
+    await page.screenshot({ path: screenshot, fullPage: false });
+    results.push({ ...scenario, screenshot, ...audit, pageErrors });
+    await context.close();
+  }
+} finally {
+  await browser.close();
+  await new Promise((resolvePromise) => server.close(resolvePromise));
+}
+
+process.stdout.write(`${JSON.stringify({ status: "PASS", scenarios: results }, null, 2)}\n`);

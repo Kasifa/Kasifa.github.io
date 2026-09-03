@@ -248,6 +248,14 @@ const frozenNativeFigureConfigs = {
     figureArchiveCommit: "a5670383091098331b557869a57c6ed9b6fa72e9",
     bytes: 3096940,
   },
+  "R0.74Z": {
+    release: "r074z", schema: "r074z-figure-manifest-v1",
+    artifactId: "fig-r074z-remote-persistence-gate", validationChecks: 13,
+    publicationSchema: "r074z-native-figure-publication-binding-v1",
+    researchSourceCommit: "91aaac829c6b54a0ad24cf10ff3f533f58a10035",
+    figureArchiveCommit: "30ed47c9ae2334a9e9cb3468a5094dfb3dc65907",
+    bytes: 3032354,
+  },
 };
 
 function frozenNativeFigureConfig(manifest, latestCode) {
@@ -286,10 +294,17 @@ async function verifyLatestFormalFigure(record, latestCode) {
     if (latestCode === "R0.74W") {
       assert.equal(validation.checks.claimBoundary.fixedDeletionResolved, false);
       assert.equal(validation.checks.claimBoundary.weightedPacket2EndpointDivergence, true);
-    } else {
+    } else if (latestCode === "R0.74X") {
       assert.equal(validation.checks.claimBoundary.actualPaymentNormalizedGateCounterexample, false);
       assert.equal(validation.checks.claimBoundary.twoCoordinateTstarEndpointObstruction, true);
       assert.equal(validation.checks.claimBoundary.equalTargetWStripRouteNoGo, true);
+    } else {
+      assert.equal(validation.checks.claimBoundary.shellTubeHolderCoercivity, true);
+      assert.equal(validation.checks.claimBoundary.strictSubcriticalKappaNoGoForWKinetic, true);
+      assert.equal(validation.checks.claimBoundary.timeTamePersistenceConditional, true);
+      assert.equal(validation.checks.claimBoundary.criticalLayerResolved, false);
+      assert.equal(validation.checks.claimBoundary.fullClockY57Blocked, false);
+      assert.equal(validation.checks.claimBoundary.noveltyClaim, false);
     }
     assert.equal(validation.checks.claimBoundary.dnsData, false);
     assert.equal(validation.checks.claimBoundary.clayClaim, false);

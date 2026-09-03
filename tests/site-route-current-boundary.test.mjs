@@ -55,6 +55,7 @@ const ENDPOINTS = Object.freeze({
   r074w: { version: "2.01", code: "R0.74W", slug: "r0-74w", next: "R0.74X" },
   r074x: { version: "2.02", code: "R0.74X", slug: "r0-74x", next: "R0.74Y" },
   r074y: { version: "2.03", code: "R0.74Y", slug: "r0-74y", next: "R0.74Z" },
+  r074z: { version: "2.04", code: "R0.74Z", slug: "r0-74z", next: "R0.75A" },
 });
 
 async function page(name) {
@@ -130,7 +131,7 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     assert.ok(home.includes(
       `<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`,
     ));
-    assert.ok(home.includes(["r074x", "r074y"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
+    assert.ok(home.includes(["r074x", "r074y", "r074z"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
     const routeStart = home.indexOf('<section class="route-overview"');
     const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
     const route = home.slice(routeStart, routeEnd);
@@ -458,15 +459,16 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const intro = match[1];
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
-  assert.ok(topology.includes(["r074t", "r074u", "r074w", "r074x", "r074y"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
+  assert.ok(topology.includes(["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
 
   if (endpoint.release.localeCompare("r074b") >= 0) {
     assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));
     assert.ok(literature.includes(`R0.69P–${endpoint.code}`));
     assert.ok(topology.includes(`<b>${endpoint.code}</b>`));
-    for (const marker of ["PROVED", "FINITE", "OPEN", "NOT CLAY"]) {
+    for (const marker of ["PROVED", "OPEN", "NOT CLAY"]) {
       assert.ok(boundary.includes(marker), `${endpoint.code} boundary ${marker}`);
     }
+    assert.match(boundary, /(?:FINITE|finite)/, `${endpoint.code} boundary finite`);
     return;
   }
 

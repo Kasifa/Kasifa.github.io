@@ -11,23 +11,23 @@ const read = (path) => readBytes(path).toString("utf8");
 const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex");
 const node = process.env.CODEX_NODE || process.execPath;
 
-test("R0.74S publication accounting advances without recap drift", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.95", latestRelease: "R0.74S", latestPublishedResearchHtml: "/notes/r0-74s.html", latestPublishedResearchPdf: "/notes/r0-74s.pdf", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 157, latestRecapRelease: "R0.74O", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
+test("R0.74S publication accounting advances through the one-off Step 17 route correction", () => {
+  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.96", latestRelease: "R0.74S", latestPublishedResearchHtml: "/notes/r0-74s.html", latestPublishedResearchPdf: "/notes/r0-74s.pdf", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 161, latestRecapRelease: "R0.74S", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
   const manifest = JSON.parse(read("research/release-manifest.json"));
   assert.equal(manifest.latestCompletedRelease, "r074s");
-  assert.equal(manifest.latestCompletedStep, 16);
+  assert.equal(manifest.latestCompletedStep, 17);
   assert.equal(manifest.nextRelease, "r074t");
   assert.equal(manifest.postR070APublishedReleaseCount, 123);
   assert.equal(manifest.postR070AFormalSealedReleaseCount, 98);
   assert.equal(manifest.formalFigureExemptReleaseCount, 1);
-  assert.equal(manifest.latestRecapRelease, "r074o");
+  assert.equal(manifest.latestRecapRelease, "r074s");
   assert.equal(manifest.latestPublishedResearchHtml, "/notes/r0-74s.html");
   assert.equal(manifest.latestPublishedResearchPdf, "/notes/r0-74s.pdf");
-  assert.equal(manifest.latestReleaseGate, "tests/r074s-step16-gate.test.mjs");
-  assert.equal(manifest.latestReleasePublicationTest, "tests/r074s-step16-release.test.mjs");
-  assert.equal(manifest.latestReleasePdfBinder, "scripts/bind-r074s-pdf.mjs");
+  assert.equal(manifest.latestReleaseGate, "tests/r074s-step17-gate.test.mjs");
+  assert.equal(manifest.latestReleasePublicationTest, "tests/r074s-step17-release.test.mjs");
+  assert.equal(manifest.latestReleasePdfBinder, "scripts/bind-r074s-step17-pdf.mjs");
   assert.equal(manifest.latestReleaseTranslationScript, "scripts/add-r074s-translations.mjs");
-  assert.equal(manifest.latestReleaseStepTranslationScript, "scripts/add-r074s-step16-translations.mjs");
+  assert.equal(manifest.latestReleaseStepTranslationScript, "scripts/add-r074s-step17-translations.mjs");
   assert.equal(sha("public/recap-r0-61-r0-74o.html"), "d06c9edb093664c9835feb814a11ecd180305780b3efcdcd560908f754fba4b2");
   assert.equal(sha("public/recap-r0-61-r0-74o.pdf"), "80264dab72ca12569252a360d9b70388ba0c4b107132012b98d73b76d634d076");
 });
@@ -35,11 +35,10 @@ test("R0.74S publication accounting advances without recap drift", () => {
 test("R0.74S reader is complete Chinese and preserves every claim boundary", () => {
   const note = read("public/notes/r0-74s.html");
   for (const marker of [
-    "一侧 ball cutoff 与 flux 符号恒等式", "四通道 signed recombination", "三通道 genealogy cutoff 非负",
-    "PROVED ABSTRACT SCALAR NO-GO", "这个见证没有空间算子或 PDE 实现", "真实 NSE solution family", "PDE-weighted block length", "完整中文版本",
-    "S.417–S.444：PROVED / FALSE / OPEN", "fixed-frame Bernoulli flux",
-    "S.342：FALSE for every", "S.444 / S.407：OPEN", "2,207 cases", "2,839 cases", "11 个外部负探针",
-    "ABSTRACT METHOD OBSTRUCTION", "不是 Navier--Stokes counterexample", "NOT CLAY",
+    "完整中文版本", "S.445–S.475：PROVED / FALSE / OPEN", "regular closed streamline",
+    "absolute temporal variation", "signed positive excursion", "A^3", "A^2",
+    "S.342", "S.444：FALSE", "S.472 / direct hybrid / S.407：OPEN",
+    "Q.12 / Q.1：OPEN", "4,325", "294 assertions", "NOT CLAY",
   ]) assert.ok(note.includes(marker), marker);
   assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
   assert.ok(!note.includes("独立数学审计尚未完成"));
@@ -156,9 +155,9 @@ test("R0.74S reader is complete Chinese and preserves every claim boundary", () 
   assert.equal(binding.claimBoundary.fixedFrameBernoulliFlux, "PROVED_EXACT_CANCELLATION_S422_S426");
   assert.equal(binding.claimBoundary.versionMMovingCutoffDrift, "PROVED_NONZERO_S427_S432");
   assert.equal(binding.claimBoundary.s342Status, "FALSE_FOR_EVERY_P_GREATER_THAN_ONE_FINITE_N_AND_C");
-  assert.equal(binding.claimBoundary.criticalEndpoint, "OPEN_S444");
+  assert.equal(binding.claimBoundary.criticalEndpoint, "FALSE_S444_BY_RECURRENT_CLOSED_STREAMLINE");
   assert.equal(binding.claimBoundary.continuumPaymentMachineProved, false);
-  assert.equal(binding.claimBoundary.formalFigure, "STEP16_TAYLOR_MOVING_DRIFT_ANALYTIC_SCHEMATIC_EXACT_FORMULAS_NOT_SIMULATION_OR_DNS");
+  assert.equal(binding.claimBoundary.formalFigure, "STEP17_RECURRENT_CLOSED_STREAMLINE_FOUR_PANEL_ANALYTIC_EXACT_FIELD_NOT_SIMULATION_OR_DNS");
 });
 
 test("R0.74S public mirrors, concise homepage card, and literature boundary are synchronized", () => {
@@ -169,27 +168,26 @@ test("R0.74S public mirrors, concise homepage card, and literature boundary are 
   assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
   const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
   assert.ok(card.length > 0 && card.length < 650, `homepage card length ${card.length}`);
-  for (const marker of ["Taylor 1923", "Version-M", "S.342", "FALSE", "S.444", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
+  for (const marker of ["闭流线", "recurrence", "A³", "S.444", "FALSE", "S.472", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
   const literature = read("public/literature-review.html");
   assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["S.417", "Taylor 1923", "moving drift", "S.342", "S.444", "S.407", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
+  for (const marker of ["S.445", "Taylor 1923", "closed streamline", "S.444", "S.472", "S.407", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
 
   for (const ext of ["svg", "pdf", "png"]) {
-    const canonical = `research/figures/r074s/fig-r074s-taylor-moving-drift/figure.${ext}`;
+    const canonical = `research/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`;
     assert.ok(existsSync(resolve(root, canonical)), canonical);
-    assert.equal(sha(`public/assets/r074s/fig-r074s-taylor-moving-drift.${ext}`), sha(canonical));
-    assert.equal(sha(`public/figures/r074s/fig-r074s-taylor-moving-drift/figure.${ext}`), sha(canonical));
-    assert.equal(sha(`figures/r074s/fig-r074s-taylor-moving-drift/figure.${ext}`), sha(canonical));
+    assert.equal(sha(`public/assets/r074s/fig-r074s-recurrent-tail-obstruction.${ext}`), sha(canonical));
+    assert.equal(sha(`public/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`), sha(canonical));
+    assert.equal(sha(`figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`), sha(canonical));
   }
-  const validation = JSON.parse(read("research/figures/r074s/fig-r074s-taylor-moving-drift/validation.json"));
-  assert.equal(validation.summary.result, "PASS");
-  assert.equal(validation.summary.passed, 15);
-  assert.equal(validation.summary.total, 15);
+  const validation = JSON.parse(read("research/figures/r074s/fig-r074s-recurrent-tail-obstruction/validation.json"));
+  assert.equal(validation.checkCount, 42);
+  assert.ok(validation.checks.every((row) => row.pass));
   assert.equal(JSON.parse(read("figures/r074s/fig-r074s-ball-clock-debt/manifest.json")).status, "historical");
 });
 
 test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step16-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
+  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step17-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
   assert.match(translation, /"checked": [1-9][0-9]*/);
   assert.match(translation, /"applied": false/);
   const inventory = JSON.parse(read("research/formal-archive-inventory.json"));
@@ -199,6 +197,6 @@ test("R0.74S translations and formal archive inventory are complete", () => {
   assert.ok(!inventory.formalFigureExemptReleases.includes("r074s"));
   assert.equal(inventory.publishedReleaseCount, 123);
   assert.equal(inventory.formalSealedReleaseCount, 98);
-  assert.equal(inventory.sameReleaseCompletedSteps.r074s, 16);
+  assert.equal(inventory.sameReleaseCompletedSteps.r074s, 17);
   assert.equal(inventory.formalFigureExemptReleaseCount, 1);
 });

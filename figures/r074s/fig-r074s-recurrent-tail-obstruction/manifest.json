@@ -1,0 +1,418 @@
+{
+  "analyticalQuestion": "How does recurrence on a regular closed Taylor-vortex streamline separate bounded signed excursion from accumulated absolute temporal variation?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "analyticExactField": true,
+    "clayProblemSolved": false,
+    "dns": false,
+    "globalRegularity": false,
+    "numericalRendering": true,
+    "openS472Proved": false,
+    "pdeSimulation": false,
+    "periodByDeterministicQuadrature": true,
+    "rk4UsedOnlyForOrbitTimeParametrization": true
+  },
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "python plot.py --render; python validate.py --confirm-visual-qa",
+    "kind": "exact-formula-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson"
+    },
+    "precision": "analytic formulas with deterministic IEEE-754 binary64 quadrature and RK4 rendering",
+    "solver": "none for PDE; fixed-step RK4 only for exact orbit time parametrization",
+    "wallTimeSeconds": 1.0965627090772614
+  },
+  "compute": {
+    "cpu": "arm64 / 18 logical CPUs",
+    "dgxUsed": false,
+    "gpu": "not used",
+    "host": "local workstation (hostname omitted)",
+    "memoryGiB": 36.0,
+    "network": "not used",
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-09-02T23:38:56.606688+00:00",
+  "data": [
+    {
+      "bytes": 2242685,
+      "path": "source-data.csv",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "2ae9607b71ec9c1b480ae69b2ef2305bd9d03aa7cb29bc9cfc07a5b07c1901a3"
+    },
+    {
+      "bytes": 2354,
+      "path": "results.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "2c2e73f4a4671632e5c990a2128f255f0ecf42bfdc7b5481a89f41ae50d3f316"
+    },
+    {
+      "bytes": 618,
+      "path": "environment.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "eaf983305bfc52d803c4363a744f7c15c6c2cb9eebc2ad087faa4166d56ac592"
+    },
+    {
+      "bytes": 1280,
+      "path": "progress.ndjson",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "592dd420b8b94bbd3e5492b7bf006584ccdc53397fcaf66314498e499db21564"
+    },
+    {
+      "bytes": 287,
+      "path": "resource-log.ndjson",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "e43f02d9dbfde534042567d5cbe9bf127795ba31e8b59ec065c7a3a24153cf78"
+    },
+    {
+      "bytes": 640669,
+      "path": "qa-final-size.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "c33fdc76f21eb85d48abd07a3bd1b82f0c4100b98d965aed6ee3ffb3a5b727a4"
+    },
+    {
+      "bytes": 529222,
+      "path": "qa-grayscale.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "e5ab3f464916ae658d240c0da7dffc68e9dd9b1c15dc31763ce4739c4c3cb285"
+    },
+    {
+      "bytes": 372017,
+      "path": "qa-pdf.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "c7b2d42f25d0fa6de9efdd4b6dfa1538d12273a9a8ab035b0ac460245abb4332"
+    },
+    {
+      "bytes": 10125,
+      "path": "validation.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "0c69da55fb446e0b40b3c916420bcc986df6b9c8565d372ca298aaf4ee4cbffa"
+    },
+    {
+      "bytes": 1436,
+      "path": "qa-report.md",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "af6a3ab8c636dde2fa3d553527334c2451cfe9c482248705fe956621271549c0"
+    }
+  ],
+  "deterministicCore": [
+    "README.md",
+    "caption.md",
+    "chart-contract-and-source-data.md",
+    "command.txt",
+    "config.json",
+    "contract.json",
+    "plot.py",
+    "qa-protocol.md",
+    "requirements.txt",
+    "validate.py",
+    "figure.pdf",
+    "figure.png",
+    "figure.svg",
+    "qa-final-size.png",
+    "qa-grayscale.png",
+    "qa-pdf.png",
+    "results.json",
+    "source-data.csv"
+  ],
+  "environment": {
+    "packages": {
+      "matplotlib": "3.10.6",
+      "numpy": "2.5.2",
+      "pillow": "12.3.0",
+      "pypdf": "6.10.0",
+      "pypdfium2": "5.13.0"
+    },
+    "packagesLock": "requirements.txt",
+    "python": "3.12.13",
+    "runtime": {
+      "provenance": "version-bound; absolute paths omitted"
+    }
+  },
+  "figure": {
+    "heightMillimetres": 116.0,
+    "outputs": [
+      {
+        "bytes": 98593,
+        "path": "figure.svg",
+        "schema": "svg-journal-master",
+        "sha256": "0f981f91f1d981f3f0a731754b37148a476b5c71e397f5d63439550a447c3ef0"
+      },
+      {
+        "bytes": 58526,
+        "path": "figure.pdf",
+        "schema": "one-page-pdf-journal-master",
+        "sha256": "96e4c2d77e1dcceed5aa2527a1e9654243b15e2bb6eaf10d9eeadb1a02a5ce94"
+      },
+      {
+        "bytes": 763551,
+        "dpi": 600,
+        "path": "figure.png",
+        "schema": "png-journal-master",
+        "sha256": "8e3e15a3ce03d839a06ea5215c9a44ea1c2a661e4a035b5ecb3a72bea9f97ac4"
+      }
+    ],
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r074s-recurrent-tail-obstruction",
+  "figureSchemaVersion": "r074s-recurrent-tail-obstruction-manifest-v1",
+  "git": {
+    "certificateCommit": "7355c01dead23c3524242006318b02a8324447e6",
+    "dirtyAtCertifiedRun": false,
+    "figureSourceCommit": "e70db2c5da131d05500e1399df1299c25c78886c",
+    "figureSourceCommitBound": true,
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "e70db2c5da131d05500e1399df1299c25c78886c",
+    "sourceEvidenceCommit": "7355c01dead23c3524242006318b02a8324447e6"
+  },
+  "inventory": {
+    "count": 25,
+    "files": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "metadataCount": 4,
+    "rawAndResultCount": 11,
+    "sourceCount": 10
+  },
+  "nondeterministic_observability": {
+    "excludedFromDeterministicCore": true,
+    "files": [
+      "environment.json",
+      "manifest.json",
+      "progress.ndjson",
+      "qa-report.md",
+      "resource-log.ndjson",
+      "SHA256SUMS",
+      "validation.json"
+    ]
+  },
+  "notClay": true,
+  "publicationStatus": "staged",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfInspected": true,
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "validationChecks": 42,
+    "visualQaConfirmed": true
+  },
+  "release": "R0.74S Step 17",
+  "schemaVersion": "research-figure-manifest-v1",
+  "seal": {
+    "figureSourceBindings": [
+      {
+        "bytes": 2069,
+        "gitBlobObjectId": "fc7921fcc0467adfa56386cb4aef04207f1733ce",
+        "path": "README.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/README.md",
+        "sha256": "9efeed1f8c2cace9eda611b6806b5d434725426fc832b9699d60429570f17724"
+      },
+      {
+        "bytes": 1650,
+        "gitBlobObjectId": "c20fe14f24a425477cf1af2976e9e345ddf115c2",
+        "path": "caption.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/caption.md",
+        "sha256": "9f649ad2543619a10e05b679adebde21239830d34c26aec343e941d8b92046df"
+      },
+      {
+        "bytes": 2715,
+        "gitBlobObjectId": "76594ca4d3571b22d11456fb30245defe518b7e2",
+        "path": "chart-contract-and-source-data.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/chart-contract-and-source-data.md",
+        "sha256": "d13cb316262eae9f56cd96b50e3b58bb0d8dc61bfa9f17b4bb47418df0641e6f"
+      },
+      {
+        "bytes": 1587,
+        "gitBlobObjectId": "c73611c341f9f33fc9741e4cc470ff68dcaf7af1",
+        "path": "command.txt",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/command.txt",
+        "sha256": "1a3ffd47abd20bd0654cb4288c26d597dab73bfb4d3cb0e726f534b05f249f43"
+      },
+      {
+        "bytes": 2453,
+        "gitBlobObjectId": "37361b02bfe1815f00bd4559fae59771dcdc1fe0",
+        "path": "config.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/config.json",
+        "sha256": "fed5dfd27aa0a154feee179d2c14cf7e44a0f45211189b9c7fe73c0d37955ae4"
+      },
+      {
+        "bytes": 2588,
+        "gitBlobObjectId": "d0a0da57167c351dafb30e13928f5490869027c8",
+        "path": "contract.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/contract.json",
+        "sha256": "9279de5f84a701ae9e9d5adda0d33b50150a1df9c33837510d853674337caa96"
+      },
+      {
+        "bytes": 37174,
+        "gitBlobObjectId": "5fc5fb45521271b2803fb76ca32b748a9cc05802",
+        "path": "plot.py",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/plot.py",
+        "sha256": "6d72c6d2735cfdbe02ff3dc96c59d1dfc7701939e62931accd239064e77ad1a9"
+      },
+      {
+        "bytes": 1405,
+        "gitBlobObjectId": "09cfef1177bec63ca93d6a73cb4fdb4f8706a824",
+        "path": "qa-protocol.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-protocol.md",
+        "sha256": "86d3d5166a56c3130b17422a1e1199b8c59aa568b9f677e5b3a9c61c1aa3ed76"
+      },
+      {
+        "bytes": 79,
+        "gitBlobObjectId": "e8c538cd2bb919234a95a79d39aec05aa4aaecb9",
+        "path": "requirements.txt",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/requirements.txt",
+        "sha256": "525ffa315648c87692d7e77fec950ff730b1e2e1f31638c5a065ec73e8d770c2"
+      },
+      {
+        "bytes": 33335,
+        "gitBlobObjectId": "6474a1313a968346df06fa655c745104f57bf17b",
+        "path": "validate.py",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/validate.py",
+        "sha256": "87965f953f0e787f5a1befeecfc3b94d04111d9105179e3800733e58ea4a95ce"
+      },
+      {
+        "bytes": 618,
+        "gitBlobObjectId": "b81d5acd37a17acedee853d2f8e40f7fcee81e24",
+        "path": "environment.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/environment.json",
+        "sha256": "eaf983305bfc52d803c4363a744f7c15c6c2cb9eebc2ad087faa4166d56ac592"
+      },
+      {
+        "bytes": 58526,
+        "gitBlobObjectId": "fe7ad6152691798fb93e950b2334528d2bb3c587",
+        "path": "figure.pdf",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.pdf",
+        "sha256": "96e4c2d77e1dcceed5aa2527a1e9654243b15e2bb6eaf10d9eeadb1a02a5ce94"
+      },
+      {
+        "bytes": 763551,
+        "gitBlobObjectId": "b1bdd60fd769c02908ac899daa20178e6c99c179",
+        "path": "figure.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.png",
+        "sha256": "8e3e15a3ce03d839a06ea5215c9a44ea1c2a661e4a035b5ecb3a72bea9f97ac4"
+      },
+      {
+        "bytes": 98593,
+        "gitBlobObjectId": "d676c0f837e335a401a8c93f91d1eecbf72f4ca6",
+        "path": "figure.svg",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.svg",
+        "sha256": "0f981f91f1d981f3f0a731754b37148a476b5c71e397f5d63439550a447c3ef0"
+      },
+      {
+        "bytes": 1280,
+        "gitBlobObjectId": "3bfe792b3b805f99aa39cde9ed862497ae58be16",
+        "path": "progress.ndjson",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/progress.ndjson",
+        "sha256": "592dd420b8b94bbd3e5492b7bf006584ccdc53397fcaf66314498e499db21564"
+      },
+      {
+        "bytes": 640669,
+        "gitBlobObjectId": "a34efa5bad770430344aaa0d107498a4b15c8d30",
+        "path": "qa-final-size.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-final-size.png",
+        "sha256": "c33fdc76f21eb85d48abd07a3bd1b82f0c4100b98d965aed6ee3ffb3a5b727a4"
+      },
+      {
+        "bytes": 529222,
+        "gitBlobObjectId": "27379a136b1e77659b7312f61922f0a907a227a1",
+        "path": "qa-grayscale.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-grayscale.png",
+        "sha256": "e5ab3f464916ae658d240c0da7dffc68e9dd9b1c15dc31763ce4739c4c3cb285"
+      },
+      {
+        "bytes": 372017,
+        "gitBlobObjectId": "c8b9fe7aa549f317d1761fcd416b4e6f571e5c26",
+        "path": "qa-pdf.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-pdf.png",
+        "sha256": "c7b2d42f25d0fa6de9efdd4b6dfa1538d12273a9a8ab035b0ac460245abb4332"
+      },
+      {
+        "bytes": 287,
+        "gitBlobObjectId": "580f8f57cb473e5ee568a4354dbbb5b08e91a8b6",
+        "path": "resource-log.ndjson",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/resource-log.ndjson",
+        "sha256": "e43f02d9dbfde534042567d5cbe9bf127795ba31e8b59ec065c7a3a24153cf78"
+      },
+      {
+        "bytes": 2354,
+        "gitBlobObjectId": "1075450592d852b3b524f1f9fd95d36774fb25a2",
+        "path": "results.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/results.json",
+        "sha256": "2c2e73f4a4671632e5c990a2128f255f0ecf42bfdc7b5481a89f41ae50d3f316"
+      },
+      {
+        "bytes": 2242685,
+        "gitBlobObjectId": "e204c04d04540bdd57b0d2efd61e2b56bcb2a6db",
+        "path": "source-data.csv",
+        "repositoryPath": "research/figures/r074s/fig-r074s-recurrent-tail-obstruction/source-data.csv",
+        "sha256": "2ae9607b71ec9c1b480ae69b2ef2305bd9d03aa7cb29bc9cfc07a5b07c1901a3"
+      }
+    ],
+    "figureSourceCommit": "e70db2c5da131d05500e1399df1299c25c78886c",
+    "figureSourceCommitAssigned": true,
+    "requiresFigureSourceCommitFinalReseal": false,
+    "state": "formal-figure-source-seal"
+  },
+  "sourceData": [
+    {
+      "bytes": 127853,
+      "extractionCommand": "git show 7355c01dead23c3524242006318b02a8324447e6:research/r074s_recurrent_streamline_certificate.json",
+      "fileName": "research/r074s_recurrent_streamline_certificate.json",
+      "gitBlobObjectId": "535b7a86ac7a281ab2dedb38c83ba60f6ff6d00d",
+      "location": "Git core commit 7355c01dead23c3524242006318b02a8324447e6",
+      "sha256": "a4acf1769e9b56f372b15bfa0155755cb9f0a55a9a314f431d3df0add6f99c0c"
+    },
+    {
+      "bytes": 2986,
+      "extractionCommand": "git show 7355c01dead23c3524242006318b02a8324447e6:research/r074s_recurrent_streamline_certificate_report.md",
+      "fileName": "research/r074s_recurrent_streamline_certificate_report.md",
+      "gitBlobObjectId": "11a4aa72992b83d14f2a0ee721104bba869096f9",
+      "location": "Git core commit 7355c01dead23c3524242006318b02a8324447e6",
+      "sha256": "efb25a4068957b17910fdf9c345ad92f383d5525c316cad98d763e642c44d202"
+    },
+    {
+      "bytes": 20839,
+      "extractionCommand": "git show 7355c01dead23c3524242006318b02a8324447e6:research/r074s_recurrent_streamline_temporal_tail_obstruction.md",
+      "fileName": "research/r074s_recurrent_streamline_temporal_tail_obstruction.md",
+      "gitBlobObjectId": "3d663c54827db6eed717d854497fd1951db26f1a",
+      "location": "Git core commit 7355c01dead23c3524242006318b02a8324447e6",
+      "sha256": "7d204b326be45a82bc0d8531ea2f2d894c0c125b76e3ccbf02fdc1978a6011c5"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "For the frozen smooth exact Taylor family and recurrent terminal setting, the orbit repeatedly revisits a nonconstant periodic flux phase. Absolute temporal variation and the complete payment have cubic amplitude order, while signed positive excursion has quadratic order. Consequently every sublinear power-only absolute temporal-tail estimate is false on this family; the positive-excursion successor estimate remains open."
+}

@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN" data-site-version="1.95"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</title><meta name="description" content="Taylor 1923 二周期衰减涡揭示 Version-M 移动截断漂移；S.342 对每个 p&gt;1 为 false，临界 S.444 仍 open">
+<html lang="zh-CN" data-site-version="1.96"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74S｜闭流线复现否定所有次线性绝对时间尾</title><meta name="description" content="同一 Taylor 光滑精确解的闭流线复现使绝对时间变差达到 A³，并否定所有 beta 小于 1 的 power-only tail，包括 S.444；signed excursion 仍为 A²">
 <link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/bilingual.css">
-<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.95"></script><script defer src="/bilingual.js"></script>
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.96"></script><script defer src="/bilingual.js"></script>
 <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}.hero-inner>div:first-child>p strong{margin-left:.25em}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}picture img{display:block;width:100%;height:auto}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem;break-after:avoid}#figure{break-before:page}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
-<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · 完整中文版本</div><h1>R0.74S｜Taylor 1923 涡、移动漂移与临界时间端点</h1><p>Taylor 1923 二周期衰减涡给出光滑、精确、周期、无外力的三维 NSE 解族：固定框架中 Bernoulli 通量精确抵消，Version-M 移动截断却留下非零漂移。 <strong>因此 S.342 对每个 \(p&gt;1\) 为 FALSE；临界端点 S.444 以及 S.407、Q.12、Q.1、正则性与 Millennium 问题仍保持 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">SMOOTH EXACT NSE</span><span class="label">FIXED-FRAME CANCELLATION</span><span class="label">MOVING DRIFT</span><span class="label">FALSE S.342 FOR p&gt;1</span><span class="label">OPEN S.444 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 16</strong><p>S.417–S.444：PROVED / FALSE / OPEN</p><p>fixed-frame Bernoulli flux：\(0\)</p><p>Version-M cutoff drift：nonzero</p><p>tail：\(A^{3-1/p}\)</p><p>payment：\(A^3\)</p><p>S.342：FALSE for every \(p&gt;1\)</p><p>S.444 / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>精确解解析示意 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · STEP 17 · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · Step 17 完整中文版本</div><h1>R0.74S｜闭流线复现否定所有次线性绝对时间尾</h1><p>同一 Taylor 1923 光滑精确解在 regular closed streamline 上产生 \(O_R(A)\) 次复现：absolute temporal variation 逐圈累积到 \(A^3\)，而 signed positive excursion 仍只有 \(A^2\)。 <strong>因此所有 \(p\ge1\)、所有 \(\beta&lt;1\) 的 power-only absolute tail 都为 FALSE，包括 S.444；S.472、direct hybrid gate、S.407、Q.12、Q.1 与正则性仍 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">SMOOTH EXACT NSE</span><span class="label">CLOSED-ORBIT RECURRENCE</span><span class="label">ABSOLUTE VARIATION A³</span><span class="label">SIGNED EXCURSION A²</span><span class="label">FALSE S.444</span><span class="label">OPEN S.472 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 17</strong><p>S.445–S.475：PROVED / FALSE / OPEN</p><p>Step 16 separatrix absolute variation：\(A^2\)</p><p>Step 17 recurrent absolute variation：\(A^3\)</p><p>complete payment：\(A^3\)</p><p>signed positive excursion：\(A^2\)</p><p>all power-only \(\beta&lt;1\)：FALSE</p><p>S.444：FALSE</p><p>S.472 / direct hybrid / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>解析可视化 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
 <section id="s-01"><div class="section-no">01 / 完整正文</div><h2>0. 这一步得到什么</h2>
 <p>R0.74S Steps 1--10 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination、未加权 genealogy 的抽象标量 no-go、低 Rayleigh 支付、no-exception exact-family no-go、canonical last exit 以及 paid/residual 六类分区逐项封存。Step 11 不再重复分区，而是精确回答两个 residual mechanisms 怎样共享一个 best-\(N\) budget，并分别把 short branch 与 scalar-excess branch 推到各自第一个仍缺失的 PDE 门槛。</p>
 <p>本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出</p>
@@ -3137,6 +3137,146 @@ r_k^x\le3x_k^{\rm sel}\le3b_k,
 <p>路线校正是明确的：以后不能再把 S.342 当作 proof antecedent，因为它在光滑周期精确解上已经为 false。short-flux 路线下一步只能分析临界 \(L_t^1\) tail S.444，并保留 signed moving-drift cancellation 与 common deletion set。terminal-crown 路线仍可通过另外开放的 coercivity estimate S.407 继续。</p>
 <p>主证书通过 7/7 finite groups、2,207 cases、7/7 structural groups 与 3/3 dependency locks。Independent Ruby verifier 通过 9/9 groups、2,839 independent cases，并锁定主文、两份审计、Python/Ruby 实现、主证书 JSON 与证书报告。另有 11 个外部负探针，全部按预期失败关闭。两套有限程序核对 exact Fourier identities、pigeonhole、representative support/path inequalities、amplitude exponents、hashes、structure 与 claim labels；它们不 machine-prove arbitrary-mollifier continuity、continuous payment estimate、S.444、S.407、regularity 或 Clay problem。<strong>FINITE ONLY. NOT CLAY.</strong></p>
 </section>
-<section id="figure"><div class="section-no">F / 正式解析示意图</div><h2>Taylor 1923 精确涡：固定框架抵消、移动漂移与振幅分裂</h2><picture><source srcset="/assets/r074s/fig-r074s-taylor-moving-drift.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-taylor-moving-drift.png" alt="R0.74S Step 16 analytic schematic of the Taylor 1923 exact vortex, Version-M moving drift, and amplitude split"></picture><p><a href="/assets/r074s/fig-r074s-taylor-moving-drift.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-taylor-moving-drift.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-taylor-moving-drift.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/source-data.csv">exact source data</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-taylor-moving-drift/qa-report.md">视觉 QA</a></p><p class="note">这是由精确解公式与冻结证据生成的 <strong>analytic schematic</strong>，不是 simulation、DNS 或 NSE counterexample，也不是 regularity / Clay 证据。</p></section>
-<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 16 主文、证书与双重审计</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_obstruction.md">Taylor moving-frame 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_primary_audit.md">主审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_independent_audit.md">独立审计</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate.json">机器证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_moving_frame_taylor_vortex_certificate_report.md">证书报告</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate.py">Python 实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb">Ruby 独立实现</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step16_report-source.md">Step 16 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74o.html">上一大里程碑 recap（截止 R0.74O，157 节，未改动）</a> · <a href="/recap-r0-61-r0-74o.pdf">PDF</a></p><p class="note">Step 16：主证书 7/7 groups（2,207 cases）；独立 Ruby 9/9 groups（2,839 cases）；11 项外部 negative probes 均按预期失败。有限证书核验代数、计数与边界，不替代 continuum payment 的解析证明。</p></section>
-<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74S / 后续研究接口</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 16，并在此停止。后续若另行启动，只能分析 OPEN S.444、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342，也不得把 Q.1、正则性或 Millennium 问题写成 theorem。</p></section></article></main></body></html>
+<section id="s-117"><div class="section-no">117 / 完整正文</div><h2>116. 路线修正：闭流线复现使绝对时间变差从 \(A^2\) 升到 \(A^3\)</h2>
+<p>Step 16 在同一 Taylor 1923 光滑精确解上选取 terminal centre \(x_*=(\pi/4,0,0)\)。该点位于非复现的 separatrix 路径：轨迹只穿过关键相位一次，因此绝对 flux variation 是 \(A^2\)。这个计算对该特殊 terminal setting 完全正确，却不能决定对所有 terminal settings 量化的 S.444。</p>
+<p>Step 17 把终点移到同一解的一条 regular closed streamline。在固定物理时间窗中，Version-M 中心完成 \(O_R(A)\) 次闭轨道返回；每次 flux density 的瞬时尺度为 \(A^3\)。有符号增量在一圈圈之间抵消，但绝对时间变差会逐圈累加。</p>
+<p>最终结论是：对所有 \(p\in[1,\infty]\)、所有有限删除预算 \(N\) 以及所有 \(\beta&lt;1\)，power-only absolute temporal-tail 都失败。尤其 \(p=1,\beta=2/3\) 正是否定 S.444 的量词组合，所以 <strong>S.444 为 FALSE</strong>。</p>
+<p>这不是 DNS，也不是数值 Navier--Stokes 仿真。图中轨道与曲线来自精确解公式的确定性解析可视化。例子全局光滑；S.472、direct hybrid gate、S.407、Q.12、Q.1、scale contraction 与 regularity 仍 OPEN。<strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-118"><div class="section-no">118 / 完整正文</div><h2>117. 同一 Taylor 精确族上的 regular closed streamline</h2>
+<p>在 \(\mathbb T^3=(-\pi,\pi]^3\) 上定义</p>
+<div class="equation">\[
+ \boxed{\psi=\sin x_1\sin x_2,\qquad
+ W=(\sin x_1\cos x_2,-\cos x_1\sin x_2,0).}
+ \tag{S.445}
+\]</div>
+<p>令 \(p_W=(\cos2x_1+\cos2x_2)/4\)、\(b_A(t)=Ae^{-2(t-t_0)}\)、\(u_A=b_AW\)、\(p_A=b_A^2p_W\)。由 \(\nabla\!\cdot W=0\)、\(\Delta W=-2W\) 和 \((W\!\cdot\!\nabla)W=-\nabla p_W\)，它对每个 \(A&gt;0\) 都是 smooth、periodic、mean-zero、unforced 的精确三维 NSE 解。</p>
+<p>取 \(\Gamma=\{\sin x_1\sin x_2=1/2\}\) 在 \((0,\pi)^2\) 中的分支。它由上下两条显式图形拼成一个 compact regular oval，且 \(W\) 在其上无零点并沿切向流动。令 \(\chi&#x27;=W(\chi)\)、\(\chi(0)=(\pi/4,\pi/4,0)\)，则存在有限周期 \(T_*&gt;0\)：</p>
+<div class="equation">\[
+ \boxed{\chi(s+T_*)=\chi(s),\qquad T_*=\int_\Gamma{d\ell\over|W|}.}
+ \tag{S.447}
+\]</div>
+<p>记 \(g(s)=|W(\chi(s))|^2\)、\(q=g&#x27;\)。同一轨道上两点的 \(g\) 值分别为 \(1/2\) 与 \(3/4\)，所以 \(q\not\equiv0\)，且对所有 \(p\ge1\)，一个足够长的 phase interval 都包含线性多份完整周期：</p>
+<div class="equation">\[
+ L\ge2T_*\Longrightarrow
+ \int_a^{a+L}|q(s)|^pds\ge{V_p\over2T_*}L,
+ \qquad V_p=\int_0^{T_*}|q|^p&gt;0.
+ \tag{S.449}
+\]</div>
+</section>
+<section id="s-119"><div class="section-no">119 / 完整正文</div><h2>118. 任意 \(N+1\) 个物理 annuli 同时激活，Version-M 中心线性多次回返</h2>
+<p>先固定任意有限删除预算 \(N\)，再令 \(M=N+1\)，最后选择足够小的 admissible \(R\)。Step 16 的 Fourier multiplier 与 support/cosine 论证给出前 \(M\) 个 physical shells 的系数</p>
+<div class="equation">\[
+ c_{k,R}\ge{1\over2}m_{k,R}&gt;0,
+ \qquad 1\le k\le M.
+\]</div>
+<p>Version-M 的 terminally anchored path 恰为</p>
+<div class="equation">\[
+ \boxed{\theta_A(t)=\mu_R\int_{t_0}^tb_A(r)dr,
+ \qquad \xi_A(t)=\chi(\theta_A(t)),
+ \qquad \theta_A&#x27;=\mu_Rb_A.}
+ \tag{S.452}
+\]</div>
+<p>在 \(I_R=(t_0-R^2,t_0)\) 上，phase length 是</p>
+<div class="equation">\[
+ \boxed{L_A={\mu_RA\over2}(e^{2R^2}-1)\asymp_RA.}
+ \tag{S.453}
+\]</div>
+<p>因此随 \(A\to\infty\)，中心在固定物理时间窗里完成线性多次 closed-orbit recurrence。这一机制与 Step 16 的单次 separatrix passage 不同。</p>
+</section>
+<section id="s-120"><div class="section-no">120 / 完整正文</div><h2>119. 绝对时间尾对每个 \(p\ge1\) 都是 \(A^3\)</h2>
+<p>固定框架的 kinetic 与 physical-pressure Bernoulli flux 仍精确抵消，pressure gauge 也逐壳层抵消；完整 Version-M 只留下 moving-cutoff drift：</p>
+<div class="equation">\[
+ \boxed{\dot F_{k,R}(t)=
+ {\gamma_k\mu_Rc_{k,R}\over2R}\eta_R(t)b_A(t)^3q(\theta_A(t)).}
+ \tag{S.454}
+\]</div>
+<p>在 \(I_R\) 上 \(\eta_R=1\)。用 \(d\theta=\mu_Rb_A\,dt\) 和周期平均后，所有有限 \(p\) 的 \(L_t^p\) norm 都获得 \(A^{3p}\) 的 \(p\) 次方下界；\(p=\infty\) 也在一个完整周期中达到 \(RA^3\) 尺度。删除至多 \(N=M-1\) 个 shell，前 \(M\) 个正坐标中至少留下一个。因此，对所有 \(p\in[1,\infty]\)，</p>
+<div class="equation">\[
+ \boxed{d_{p,N,R}A^3\le\mathfrak H^F_{p,N,R}
+ \le D_{p,R}A^3,\qquad A\ge A_0(R).}
+ \tag{S.459}
+\]</div>
+<p>下界是 continuum analytic statement；有限证书只核对精确恒等式、计数、删除量词和 exponent bookkeeping。</p>
+</section>
+<section id="s-121"><div class="section-no">121 / 完整正文</div><h2>120. 完整 Version-M payment 仍是 \(A^3\)，所以所有 \(\beta&lt;1\) 都失败</h2>
+<p>沿 compact orbit 平移不会改变 fixed smooth profiles 的幅值。local energy、exterior velocity/pressure、quadratic cutoff 与 harmonic rows 逐项给出至多 \(A^2\) 或 \(A^3\)；super-Gaussian all-copy sum 和 order-\(-4\) harmonic sum分别保持可和。good times 趋近 \(t_0\) 时，buffered local-energy endpoint 给出正的 \(A^2\) trace，其 \(3/2\) 次幂给出 payment 下界。于是</p>
+<div class="equation">\[
+ \boxed{c_RA^3\le P_R^M\le C_RA^3.}
+ \tag{S.461}
+\]</div>
+<p>把它与 S.459 合并，若 \(\beta\ge0\) 使用 payment 上界，若 \(\beta&lt;0\) 使用 payment 下界，得到</p>
+<div class="equation">\[
+ \boxed{{\mathfrak H^F_{p,N,R}\over(P_R^M)^\beta}
+ \ge c_{p,N,R,\beta}A^{3(1-\beta)}\longrightarrow\infty,
+ \qquad \beta&lt;1.}
+ \tag{S.462}
+\]</div>
+<p>量词顺序不可交换：对手先固定 \(p,N,\beta,C\)，然后取 \(M=N+1\)、选择 admissible \(R,z_0\)，最后令 \(A\) 足够大。取 \(p=1,\beta=2/3\) 就精确否定 S.444。对 absolute temporal-tail 的 power-only 形式，必要 payment exponent 至少为 \(1\)。</p>
+</section>
+<section id="s-122"><div class="section-no">122 / 完整正文</div><h2>121. 有符号正向 excursion 仍只有 \(A^2\)</h2>
+<p>同一公式也说明 absolute value 丢失了什么。由于 \(d_tg(\theta_A)=\mu_Rb_Aq(\theta_A)\)，</p>
+<div class="equation">\[
+ \dot F_{k,R}={\gamma_kc_{k,R}\over2R}\eta_Rb_A^2{d\over dt}g(\theta_A).
+ \tag{S.464}
+\]</div>
+<p>分部积分后，端点项与 cutoff/damping 项都只有 quadratic amplitude scale，从而</p>
+<div class="equation">\[
+ \boxed{\sum_{k\ge1}\operatorname{osc}_{[s_R,t_0)}F_{k,R}\le C_RA^2.}
+ \tag{S.466}
+\]</div>
+<p>沿正确 orientation 选择同一周期内从 \(g=1/2\) 到 \(g=3/4\) 的有序两时刻，可得前 \(N+1\) 个坐标均有正向 \(c_{k,R}A^2\) excursion。于是 signed range 和 positive excursion 恰为 \(A^2\)，而 absolute variation 为 \(A^3\)。</p>
+</section>
+<section id="s-123"><div class="section-no">123 / 完整正文</div><h2>122. BV/Jordan 分解精确识别 recurrent backtracking debt</h2>
+<p>在 \(p=1\) 时 dimensionless normalization 完全抵消：</p>
+<div class="equation">\[
+ \mathfrak H^F_{1,N,R}=\inf_{\#S\le N}\sum_{k\notin S}
+ \operatorname{TV}_{[s_R,t_0)}F_{k,R}.
+ \tag{S.467}
+\]</div>
+<p>令 \(V_{k,R}^\pm=\int[\pm\dot F_{k,R}]_+dt\)、\(B_{k,R}=\min(V^+,V^-)\)。由共同零起点和 Jordan decomposition，</p>
+<div class="equation">\[
+ \boxed{\operatorname{TV}F_{k,R}
+ =|F_{k,R}(t_0^-)|+2B_{k,R}.}
+ \tag{S.468}
+\]</div>
+<p>在 recurrent orbit 上，terminal endpoint 或 signed range 只有 \(A^2\)，但 backtracking debt \(B_{k,R}\) 在每个激活 shell 上达到 \(A^3\)。S.444 实际要求为每次上下往返付费；signed terminal problem 并不需要这笔重复债务。</p>
+</section>
+<section id="s-124"><div class="section-no">124 / 完整正文</div><h2>123. 正确的后继目标是 fixed-deletion positive excursion / simultaneous height</h2>
+<p>定义正向有序 excursion 与 common-deletion tail</p>
+<div class="equation">\[
+ \boxed{\mathfrak O^{F,+}_{N,R}:=
+ \inf_{\#S\le N}\sum_{k\notin S}
+ \sup_{a&lt;b}[F_{k,R}(b)-F_{k,R}(a)]_+.}
+ \tag{S.469}
+\]</div>
+<p>每个 Step 15 hybrid coordinate 都是同一 \(F_{k,R}\) 的两时刻 increment，因此</p>
+<div class="equation">\[
+ \boxed{\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal T_R)
+ \le\mathfrak O^{F,+}_{N,R}\le\mathfrak H^F_{1,N,R}.}
+ \tag{S.470}
+\]</div>
+<p>在当前 exact family 上，</p>
+<div class="equation">\[
+ \boxed{\mathfrak O^{F,+}_{N,R}\asymp A^2
+ \asymp(P_R^M)^{2/3},\qquad
+ \mathfrak H^F_{1,N,R}\asymp A^3.}
+ \tag{S.471}
+\]</div>
+<p>因此 S.472--即 universal fixed-deletion positive-excursion estimate--是与 signed endpoint problem 对齐的充分输入，但目前仍 <strong>OPEN</strong>。它比 direct Step 15 gate 在量词上更强；更弱的 direct hybrid terminal-flux gate 也仍 OPEN，未来证明不必一定先证明 S.472。</p>
+<p>把完成的非负 clocks 写成 \(K=F+Q\)，且 \(B_{Q,R}=\sum_k\operatorname{TV}Q_{k,R}\lesssim(P_R^M)^{2/3}\)，则 S.473--S.475 证明：S.444 对应 positive-variation packing，而正确的后继只需 maximal simultaneous height 或 positive-excursion packing。</p>
+</section>
+<section id="s-125"><div class="section-no">125 / 完整正文</div><h2>124. 三份审计、双语言证书与期刊级四联图</h2>
+<p>Primary analytic audit 对 S.445--S.475 的 closed-orbit topology、periodic averaging、dimensionless \(L_t^p\) normalization、complete payment、fixed deletion、signed integration by parts 与 completed-clock inequalities 逐项复核，结论为 PASS。Independent adversarial audit 保留并关闭五项修复记录，最终也为 PASS。Literature audit 逐条检查 Taylor、Yang、Dascaliuc--Grujić、Wolf 与 Duchon--Robert 的来源、适用范围与 non-implication 边界；有限检索不构成 novelty 或 priority claim。</p>
+<p>Python 主证书通过 12/12 finite groups、4,325 cases、11/11 structural checks 与 2/2 dependency locks。独立 Ruby 实现不调用 Python：7/7 exact groups 共 294 assertions、4/4 artifact/commit locks、20/20 semantic checks、32/32 negative mutations、3/3 artifact-path substitutions 与 14/14 reproducibility assertions 全部 PASS。</p>
+<p>正式四联图展示 regular closed streamline、一个 orbit period 的 \(g\)、四次 return 中 signed cancellation 对 absolute debt 的分离，以及 slope 2 / slope 3 的 amplitude classes。图、caption、source-data、plot/validate scripts、manifest 与 QA 均公开；它是 analytic exact-field visualization，不是 DNS 或数值 NSE simulation。</p>
+</section>
+<section id="s-126"><div class="section-no">126 / 完整正文</div><h2>125. 主张账本与严格下一接口</h2>
+<p>本节 <strong>PROVED</strong>：regular closed streamline 与 recurrence lemma；任意 \(N+1\) 个 physical shells 同时激活；exact Version-M recurrent path 与 flux identity；所有 \(p\ge1\) 的 \(A^3\) absolute temporal-tail；完整 \(P_R^M\asymp A^3\)；所有 \(\beta&lt;1\) 的 power-only absolute tail 失败，尤其 <strong>S.444 为 FALSE</strong>；signed \(A^2\) range、BV/backtracking identity、positive-excursion implication 与 completed-clock comparison。</p>
+<p>本节 <strong>OPEN</strong>：S.472 fixed-deletion positive excursion / simultaneous-height estimate。继续 <strong>OPEN AND UNCHANGED</strong>：direct hybrid gate、terminal-crown coercivity S.407、Q.12、Q.1、scale contraction 与 regularity。</p>
+<p>路线决定不可回退：任何后续证明都不得再使用 S.342、S.444 或 \(\mathfrak H^F_{p,N,R}\lesssim(P_R^M)^\beta\) with \(\beta&lt;1\)。下一 temporal task 只能研究 signed positive-excursion tail、fixed-deletion simultaneous height，或直接处理 Step 15 hybrid last-exit increments；terminal-crown 路线仍独立可用。<strong>NOT CLAY.</strong></p>
+</section>
+<section id="figure"><div class="section-no">F / 期刊级四联图</div><h2>闭流线复现：signed excursion 与 absolute temporal variation</h2><picture><source srcset="/assets/r074s/fig-r074s-recurrent-tail-obstruction.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-recurrent-tail-obstruction.png" alt="R0.74S Step 17 four-panel analytic visualization of a recurrent Taylor streamline, signed excursion, absolute variation, and amplitude classes"></picture><p><a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/caption.md">caption</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/source-data.csv">source data</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/plot.py">复现脚本</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-report.md">视觉 QA</a></p><p class="note">四个 panel 来自精确 Taylor family、closed-orbit ODE 与冻结公式的 deterministic rendering。它不是 DNS，不是数值 Navier--Stokes simulation，也不是 regularity / Clay 证据。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 17 主文、三份审计与双语言证书</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_temporal_tail_obstruction.md">recurrent-streamline 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_primary_audit.md">primary audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_independent_audit.md">independent audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_literature_audit.md">literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_certificate.json">Python 证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_certificate_report.md">Python report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_independent_report.md">Ruby 独立 report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_recurrent_streamline_certificate.py">Python 复现脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_recurrent_streamline_independent.rb">Ruby 独立脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step17_report-source.md">Step 17 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74s.html">重大路线修正 recap（R0.61–R0.74S，161 节）</a> · <a href="/recap-r0-61-r0-74s.pdf">recap PDF</a></p><p class="note">Step 17：Python 12/12 finite groups（4,325 cases）、11/11 structural checks、2/2 dependency locks；独立 Ruby 7/7 exact groups（294 assertions）、4/4 artifact locks、20/20 semantic checks、32/32 statement/environment mutations、3/3 path substitutions 与 14/14 reproducibility assertions 全部 PASS。有限证书不替代 continuum proof。</p></section>
+<section id="adjacent"><div class="section-no">NAV / 相邻研究节点</div><h2>上一节与下一接口</h2><p><a href="/notes/r0-74r.html">← 上一节：R0.74R 终端窗口与任意时钟提取门</a> · <a href="#next">下一接口：R0.74T 尚未启动 →</a></p></section>
+<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / signed endpoint functional 接口</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 17，并在此停止。后续若另行启动，只能研究 OPEN S.472、fixed-deletion simultaneous height、direct hybrid last-exit increments、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342 或 S.444，也不得把 Q.12、Q.1、正则性或 Millennium 问题写成 theorem。</p></section></article></main></body></html>

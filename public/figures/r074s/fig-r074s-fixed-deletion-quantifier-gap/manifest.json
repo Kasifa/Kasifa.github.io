@@ -1,0 +1,451 @@
+{
+  "analyticalQuestion": "Which temporal and shell-selection quantifiers separate the moving-deletion, fixed-deletion, simultaneous-clock, and coordinatewise-maximal functionals, and why can the inherited linear ledger not supply a fixed-budget 2/3-power bound?",
+  "caption": {
+    "english": "caption.md"
+  },
+  "claimBoundary": {
+    "abstractClockTest": true,
+    "clayProblemSolved": false,
+    "dns": false,
+    "globalRegularity": false,
+    "numericalRendering": true,
+    "openS486Proved": false,
+    "openS487Proved": false,
+    "pdeData": false,
+    "pdeSimulation": false
+  },
+  "computation": {
+    "configuration": "config.json",
+    "formalCommand": "python plot.py --render; python validate.py --confirm-visual-qa",
+    "kind": "exact-formula-audit",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resource-log.ndjson"
+    },
+    "precision": "exact finite formulas with deterministic IEEE-754 binary64 rendering",
+    "solver": "none",
+    "wallTimeSeconds": 7.996049124980345
+  },
+  "compute": {
+    "cpu": "arm64 / 18 logical CPUs",
+    "dgxUsed": false,
+    "gpu": "not used",
+    "host": "local workstation (hostname omitted)",
+    "memoryGiB": 36.0,
+    "network": "not used",
+    "operatingSystem": "macOS-26.6.2-arm64-arm-64bit",
+    "processes": 1,
+    "threadsPerProcess": 1
+  },
+  "createdAt": "2026-09-03T00:52:45.201279+00:00",
+  "data": [
+    {
+      "bytes": 773543,
+      "path": "source-data.csv",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "f1de544ee648fdbbe94151c778e5408cdb1db21e1df7b0bc06d26f5733475c22"
+    },
+    {
+      "bytes": 1656,
+      "path": "results.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "180412763ca760fe2d1f04c2bb4bbbd81f4ad8f0facb05680d658ec62e0207f9"
+    },
+    {
+      "bytes": 565,
+      "path": "environment.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "a2514366e6cda213ad6a6f5ea7d0e8e9c76684516f9242edd411dec954bb05fe"
+    },
+    {
+      "bytes": 1179,
+      "path": "progress.ndjson",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "67472f865b557234a349ad2c39fa81857a761cbfef95686ef76c657a51b1b921"
+    },
+    {
+      "bytes": 207,
+      "path": "resource-log.ndjson",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "8cee3baed10da05c8d103145f40aa51947cfebb41fa7f60bf0644e4d598a4ca0"
+    },
+    {
+      "bytes": 573456,
+      "path": "qa-final-size.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "e010cf6b7bc6720ef9feee3fa12bc31c46ffd5be8311b97b0a8e045149174329"
+    },
+    {
+      "bytes": 491312,
+      "path": "qa-grayscale.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "d076521ab471bfe50d73cd7960f4b5307193f08efcfd45f798910b9ce6923522"
+    },
+    {
+      "bytes": 369702,
+      "path": "qa-pdf.png",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "439e45a8baf263ab310b69fd7be05ef5340803a8ec778e76c72730cb3e309cff"
+    },
+    {
+      "bytes": 10243,
+      "path": "validation.json",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "4a35ed119b12446ad21af1fad98f813545339b3dda3c28943d93f9a505c61895"
+    },
+    {
+      "bytes": 1433,
+      "path": "qa-report.md",
+      "schema": "r074s-figure-package-record-v1",
+      "sha256": "23ed813c96cec4293661b40d7dceacf7e3f0928a107003036d8eb5eea7465211"
+    }
+  ],
+  "deterministicCore": [
+    "README.md",
+    "caption.md",
+    "chart-contract-and-source-data.md",
+    "command.txt",
+    "config.json",
+    "contract.json",
+    "plot.py",
+    "qa-protocol.md",
+    "requirements.txt",
+    "validate.py",
+    "figure.pdf",
+    "figure.png",
+    "figure.svg",
+    "qa-final-size.png",
+    "qa-grayscale.png",
+    "qa-pdf.png",
+    "results.json",
+    "source-data.csv"
+  ],
+  "environment": {
+    "packages": {
+      "matplotlib": "3.10.6",
+      "numpy": "2.5.2",
+      "pillow": "12.3.0",
+      "pypdf": "6.10.0",
+      "pypdfium2": "5.13.0",
+      "python": "3.12.13"
+    },
+    "packagesLock": "requirements.txt",
+    "python": "3.12.13",
+    "runtime": {
+      "provenance": "version-bound; absolute paths omitted"
+    }
+  },
+  "figure": {
+    "heightMillimetres": 116.0,
+    "outputs": [
+      {
+        "bytes": 388742,
+        "path": "figure.svg",
+        "schema": "svg-journal-master",
+        "sha256": "972568bd3c15408284055568dc11f3eebb036685646d3d84c72effcfd2641e83"
+      },
+      {
+        "bytes": 104608,
+        "path": "figure.pdf",
+        "schema": "one-page-pdf-journal-master",
+        "sha256": "2425e4233d451e5a0f5fda2c50582a30f624bc5bbbd7d96177bde680df5f3ad1"
+      },
+      {
+        "bytes": 696917,
+        "dpi": 600,
+        "path": "figure.png",
+        "schema": "png-journal-master",
+        "sha256": "56b4be0262c0404c56e6a9b1fc51ff46ab00adf015aaf9b5e2a4795e1196dbf5"
+      }
+    ],
+    "widthMillimetres": 178.0
+  },
+  "figureId": "fig-r074s-fixed-deletion-quantifier-gap",
+  "figureSchemaVersion": "r074s-fixed-deletion-quantifier-gap-manifest-v1",
+  "git": {
+    "certificateCommit": "5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+    "dirtyAtCertifiedRun": false,
+    "figureSourceCommit": "50c17eedde4774fddb8c9e80ae1df4c04f0509f0",
+    "figureSourceCommitBound": true,
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "50c17eedde4774fddb8c9e80ae1df4c04f0509f0",
+    "sourceEvidenceCommit": "5a9c172e1db8886d49fdf15b8676b4810b002ae3"
+  },
+  "inventory": {
+    "count": 25,
+    "files": [
+      "README.md",
+      "SHA256SUMS",
+      "caption.md",
+      "chart-contract-and-source-data.md",
+      "command.txt",
+      "config.json",
+      "contract.json",
+      "environment.json",
+      "figure.pdf",
+      "figure.png",
+      "figure.svg",
+      "manifest.json",
+      "plot.py",
+      "progress.ndjson",
+      "qa-final-size.png",
+      "qa-grayscale.png",
+      "qa-pdf.png",
+      "qa-protocol.md",
+      "qa-report.md",
+      "requirements.txt",
+      "resource-log.ndjson",
+      "results.json",
+      "source-data.csv",
+      "validate.py",
+      "validation.json"
+    ],
+    "metadataCount": 4,
+    "rawAndResultCount": 11,
+    "sourceCount": 10
+  },
+  "nondeterministic_observability": {
+    "excludedFromDeterministicCore": true,
+    "files": [
+      "environment.json",
+      "manifest.json",
+      "progress.ndjson",
+      "qa-report.md",
+      "resource-log.ndjson",
+      "SHA256SUMS",
+      "validation.json"
+    ]
+  },
+  "notClay": true,
+  "publicationStatus": "staged",
+  "qa": {
+    "dataCrossChecked": true,
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "pdfInspected": true,
+    "report": "qa-report.md",
+    "scalesAndUnitsInspected": true,
+    "status": "passed",
+    "validationChecks": 39,
+    "visualQaConfirmed": true
+  },
+  "release": "R0.74S Step 18",
+  "schemaVersion": "research-figure-manifest-v1",
+  "seal": {
+    "figureSourceBindings": [
+      {
+        "bytes": 1912,
+        "gitBlobObjectId": "932a21a7014bb42eab0979f5b701341eccf2bc03",
+        "path": "README.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/README.md",
+        "sha256": "96e0dac10f8fdc63f8e3e7867f5530357b0f82a92a14bf9562204889b2e0ec44"
+      },
+      {
+        "bytes": 1816,
+        "gitBlobObjectId": "a32c5beab894eda614f3a3b4aba7c2b16a093cb5",
+        "path": "caption.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/caption.md",
+        "sha256": "d386989700f8e638b07a11e021f36c587de4cffd9d74bf2183eecab9682dfa5e"
+      },
+      {
+        "bytes": 2655,
+        "gitBlobObjectId": "7628857c0a4137c941c8f63f1a6942a73a37f015",
+        "path": "chart-contract-and-source-data.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/chart-contract-and-source-data.md",
+        "sha256": "7a28e51832c1ceefc730c4389dc5f84eaa5ffee64bff1f9b8f293e7df2991c41"
+      },
+      {
+        "bytes": 1605,
+        "gitBlobObjectId": "eecc9f30e73db404fce97309f5317d1ee8374494",
+        "path": "command.txt",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/command.txt",
+        "sha256": "8312aa6b764ff97376a2c089d0a54a62b1c71613737e39e5e8d151c920a2c562"
+      },
+      {
+        "bytes": 3121,
+        "gitBlobObjectId": "860d227088d54d236a19c2e916ef7ab71000690c",
+        "path": "config.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/config.json",
+        "sha256": "ca87ab5afcf0020c26564dc004bd8d10ae8a8dfecb8c6000cfeb930e376e474c"
+      },
+      {
+        "bytes": 2739,
+        "gitBlobObjectId": "31704d0aadc43b8ad5b083bf1e9244310f5f78e9",
+        "path": "contract.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/contract.json",
+        "sha256": "e17118db56570e7aecc8a243f268ee7e1bd3a4355ee01ec3a5dd9ca5cee842e4"
+      },
+      {
+        "bytes": 35557,
+        "gitBlobObjectId": "99ce924c3724a633dfc44d62fb8fcfe4c1b095e1",
+        "path": "plot.py",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/plot.py",
+        "sha256": "f6d78f9f4eda16d420cba38d7713e75838e0c47a4c40912ada793da871c1d8bc"
+      },
+      {
+        "bytes": 1419,
+        "gitBlobObjectId": "dcdffae449ba7030acf496465cc749087cb3be18",
+        "path": "qa-protocol.md",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/qa-protocol.md",
+        "sha256": "01896a733b2e531824bc8c210d0d8a0467ad72a15fd5a4b1f4a6b976e1d390eb"
+      },
+      {
+        "bytes": 79,
+        "gitBlobObjectId": "e8c538cd2bb919234a95a79d39aec05aa4aaecb9",
+        "path": "requirements.txt",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/requirements.txt",
+        "sha256": "525ffa315648c87692d7e77fec950ff730b1e2e1f31638c5a065ec73e8d770c2"
+      },
+      {
+        "bytes": 34121,
+        "gitBlobObjectId": "ec09e8728eaed0bb482276e30d5ff5264a7902d1",
+        "path": "validate.py",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/validate.py",
+        "sha256": "256db443f34fe2072270375bca0b5b9fcaf8a90cb8d3f219f5643f74ba58bb9c"
+      },
+      {
+        "bytes": 565,
+        "gitBlobObjectId": "5015b4973fb795dbd4bfe62d005137d3cb283cbe",
+        "path": "environment.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/environment.json",
+        "sha256": "a2514366e6cda213ad6a6f5ea7d0e8e9c76684516f9242edd411dec954bb05fe"
+      },
+      {
+        "bytes": 104608,
+        "gitBlobObjectId": "35d809494edd4162f6fbc88b4ef1f4689353676c",
+        "path": "figure.pdf",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/figure.pdf",
+        "sha256": "2425e4233d451e5a0f5fda2c50582a30f624bc5bbbd7d96177bde680df5f3ad1"
+      },
+      {
+        "bytes": 696917,
+        "gitBlobObjectId": "cb9bafb978b59956cece7cdbbe844c5ae224a70b",
+        "path": "figure.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/figure.png",
+        "sha256": "56b4be0262c0404c56e6a9b1fc51ff46ab00adf015aaf9b5e2a4795e1196dbf5"
+      },
+      {
+        "bytes": 388742,
+        "gitBlobObjectId": "f1bf927722b19782ff3e49e2eb8bbfbe5e413820",
+        "path": "figure.svg",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/figure.svg",
+        "sha256": "972568bd3c15408284055568dc11f3eebb036685646d3d84c72effcfd2641e83"
+      },
+      {
+        "bytes": 1179,
+        "gitBlobObjectId": "70652bf799f9ee2f70d5b2c21ecf97bc71dec6dd",
+        "path": "progress.ndjson",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/progress.ndjson",
+        "sha256": "67472f865b557234a349ad2c39fa81857a761cbfef95686ef76c657a51b1b921"
+      },
+      {
+        "bytes": 573456,
+        "gitBlobObjectId": "94b04a494efc005dafd00f445f42cfcc052c66c7",
+        "path": "qa-final-size.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/qa-final-size.png",
+        "sha256": "e010cf6b7bc6720ef9feee3fa12bc31c46ffd5be8311b97b0a8e045149174329"
+      },
+      {
+        "bytes": 491312,
+        "gitBlobObjectId": "e348112a17e363b574685a2c8dfabe5b6ea4629a",
+        "path": "qa-grayscale.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/qa-grayscale.png",
+        "sha256": "d076521ab471bfe50d73cd7960f4b5307193f08efcfd45f798910b9ce6923522"
+      },
+      {
+        "bytes": 369702,
+        "gitBlobObjectId": "2c3e0b27699a136148747c8e02e0ac827d5f2f6b",
+        "path": "qa-pdf.png",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/qa-pdf.png",
+        "sha256": "439e45a8baf263ab310b69fd7be05ef5340803a8ec778e76c72730cb3e309cff"
+      },
+      {
+        "bytes": 207,
+        "gitBlobObjectId": "b388397c5ac8783cff0a9bf8c5e257a2f06a8be9",
+        "path": "resource-log.ndjson",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/resource-log.ndjson",
+        "sha256": "8cee3baed10da05c8d103145f40aa51947cfebb41fa7f60bf0644e4d598a4ca0"
+      },
+      {
+        "bytes": 1656,
+        "gitBlobObjectId": "411bc32eb0ffd8c34f047f919d6daf9bc9644ab5",
+        "path": "results.json",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/results.json",
+        "sha256": "180412763ca760fe2d1f04c2bb4bbbd81f4ad8f0facb05680d658ec62e0207f9"
+      },
+      {
+        "bytes": 773543,
+        "gitBlobObjectId": "04bb2064e0e41e7d205d9cdee8412f3fec223193",
+        "path": "source-data.csv",
+        "repositoryPath": "research/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/source-data.csv",
+        "sha256": "f1de544ee648fdbbe94151c778e5408cdb1db21e1df7b0bc06d26f5733475c22"
+      }
+    ],
+    "figureSourceCommit": "50c17eedde4774fddb8c9e80ae1df4c04f0509f0",
+    "figureSourceCommitAssigned": true,
+    "requiresFigureSourceCommitFinalReseal": false,
+    "state": "formal-figure-source-seal"
+  },
+  "sourceData": [
+    {
+      "bytes": 15303,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_certificate.json",
+      "fileName": "research/r074s_fixed_deletion_certificate.json",
+      "gitBlobObjectId": "b9ef7719cec6286c0c7bcf95138256fe39c67d87",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "3594d71f53c60e9e2b03c139ac1be79fba9a93c71f11d2cd73a9c85aa30ebe00"
+    },
+    {
+      "bytes": 2596,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_certificate_report.md",
+      "fileName": "research/r074s_fixed_deletion_certificate_report.md",
+      "gitBlobObjectId": "ae74604916718e1b90daf32d805c5568fa059b0a",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "9fd733deff824fe856c41879d130d753770b0e88fa1d03f90cac67ed29ef4283"
+    },
+    {
+      "bytes": 2077,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_independent_audit.md",
+      "fileName": "research/r074s_fixed_deletion_independent_audit.md",
+      "gitBlobObjectId": "20c800d20c2d508057de82bfe56f155f8ea87b52",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "93ecdb2457d77fb945abe2bd71891c0d115fcaf2c3c8280ddf790ea4944a9324"
+    },
+    {
+      "bytes": 18101,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_literature_audit.md",
+      "fileName": "research/r074s_fixed_deletion_literature_audit.md",
+      "gitBlobObjectId": "772fe56fddfaa2b4d9de7162844e897e7e1fec14",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "fea7470814c0c21399c6e2b25961e8b3791e584cc24612ac37e9d1be7ce707ce"
+    },
+    {
+      "bytes": 11215,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_primary_audit.md",
+      "fileName": "research/r074s_fixed_deletion_primary_audit.md",
+      "gitBlobObjectId": "d1a14c57b9241c34bf64c01e6309b0e9d305eea6",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "dd9abf2e818ef096aa7fe9e2218b88c55ffb94fa6882a572f85f0f08ed31bab8"
+    },
+    {
+      "bytes": 2787,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_qa_report.md",
+      "fileName": "research/r074s_fixed_deletion_qa_report.md",
+      "gitBlobObjectId": "d28d6ca024ba1a210ef31ead53e80f895160f4b1",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "7c53c59053204d3a3e4fce6184ca94b0f5693e37ccaa3d37647c8f5d0ceb2587"
+    },
+    {
+      "bytes": 21078,
+      "extractionCommand": "git show 5a9c172e1db8886d49fdf15b8676b4810b002ae3:research/r074s_fixed_deletion_simultaneous_height.md",
+      "fileName": "research/r074s_fixed_deletion_simultaneous_height.md",
+      "gitBlobObjectId": "c2d4f3923313a69652ded2c2e65f8b065229040f",
+      "location": "Git core commit 5a9c172e1db8886d49fdf15b8676b4810b002ae3",
+      "sha256": "305bf75f978c080a1790fbc42bb9bd725f56f537785ffe0fc45e3ca815aa5dc1"
+    }
+  ],
+  "status": "formal",
+  "supportedClaim": "Step 18 proves the exact fixed-deletion hierarchy and a target-scale equivalence between fixed hybrid height and simultaneous completed-clock height after known payments. Exact disjoint triangular clocks separate moving from fixed deletion and simultaneous from coordinatewise maxima. At fixed deletion budget, the full-ledger-normalized fixed height grows like H^(1/3), so the inherited abstract linear ledger does not imply the desired 2/3-power estimate."
+}

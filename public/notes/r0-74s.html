@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN" data-site-version="1.96"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>R0.74S｜闭流线复现否定所有次线性绝对时间尾</title><meta name="description" content="同一 Taylor 光滑精确解的闭流线复现使绝对时间变差达到 A³，并否定所有 beta 小于 1 的 power-only tail，包括 S.444；signed excursion 仍为 A²">
+<html lang="zh-CN" data-site-version="1.97"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.74S｜固定删除、同时高度与精确时间量词缺口</title><meta name="description" content="fixed deletion 与 completed-clock simultaneous height 在已知 payment 后目标尺度等价；triangular clocks 精确分开 moving、fixed 与 separable 时间量词，S.486–S.487 仍 OPEN">
 <link rel="canonical" href="https://kasifa.github.io/notes/r0-74s.html"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/bilingual.css">
-<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.96"></script><script defer src="/bilingual.js"></script>
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=1.97"></script><script defer src="/bilingual.js"></script>
 <script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}.hero-inner>div:first-child>p strong{margin-left:.25em}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.5rem;border-bottom:1px dotted var(--line)}p,li{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}picture img{display:block;width:100%;height:auto}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}.top{display:none}body{background:#fff;font-size:9.3pt;line-height:1.5}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.7rem 0 .6rem;break-after:avoid}#figure{break-before:page}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}.equation,.stamp{break-inside:avoid}}</style></head>
-<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · STEP 17 · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · Step 17 完整中文版本</div><h1>R0.74S｜闭流线复现否定所有次线性绝对时间尾</h1><p>同一 Taylor 1923 光滑精确解在 regular closed streamline 上产生 \(O_R(A)\) 次复现：absolute temporal variation 逐圈累积到 \(A^3\)，而 signed positive excursion 仍只有 \(A^2\)。 <strong>因此所有 \(p\ge1\)、所有 \(\beta&lt;1\) 的 power-only absolute tail 都为 FALSE，包括 S.444；S.472、direct hybrid gate、S.407、Q.12、Q.1 与正则性仍 OPEN. NOT CLAY.</strong></p><div class="labels"><span class="label">SMOOTH EXACT NSE</span><span class="label">CLOSED-ORBIT RECURRENCE</span><span class="label">ABSOLUTE VARIATION A³</span><span class="label">SIGNED EXCURSION A²</span><span class="label">FALSE S.444</span><span class="label">OPEN S.472 / S.407</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 17</strong><p>S.445–S.475：PROVED / FALSE / OPEN</p><p>Step 16 separatrix absolute variation：\(A^2\)</p><p>Step 17 recurrent absolute variation：\(A^3\)</p><p>complete payment：\(A^3\)</p><p>signed positive excursion：\(A^2\)</p><p>all power-only \(\beta&lt;1\)：FALSE</p><p>S.444：FALSE</p><p>S.472 / direct hybrid / S.407：OPEN</p><p>Q.12 / Q.1：OPEN</p><p>regularity / Millennium：OPEN</p><p>解析可视化 · 非 simulation / DNS · NO DGX</p></div></div></header><article>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>R0.74S · STEP 18 · 2026-09-03</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">研究笔记 R0.74S · Step 18 完整中文版本</div><h1>R0.74S｜固定删除、同时高度与精确时间量词缺口</h1><p>Step 18 精确分开 moving deletion、fixed deletion 与 separable coordinatewise maxima，并证明 fixed hybrid tail 与 completed-clock simultaneous height 在已知 payment 后目标尺度等价。 <strong>S.476–S.485、S.488–S.493 为 PROVED；triangular clocks 仅为 ABSTRACT；S.486、S.487、direct hybrid、S.472、S.407、Q.12、Q.1 与正则性仍 OPEN。NOT CLAY.</strong></p><div class="labels"><span class="label">EXACT QUANTIFIER ORDER</span><span class="label">FIXED DELETION</span><span class="label">SIMULTANEOUS HEIGHT</span><span class="label">ABSTRACT CLOCK TEST</span><span class="label">OPEN S.486 / S.487</span><span class="label">NOT PDE DATA</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>状态 · R0.74S STEP 18</strong><p>S.476–S.493：PROVED / ABSTRACT / OPEN</p><p>moving deletion ≤ fixed deletion ≤ separable maximum</p><p>fixed hybrid ↔ simultaneous height：target-scale only</p><p>unconditional ledger：linear fallback</p><p>triangular-clock separation：ABSTRACT ONLY</p><p>Taylor recurrence：surviving gates compatible</p><p>S.486 / S.487：OPEN</p><p>direct hybrid / S.472 / S.407：OPEN</p><p>Q.12 / Q.1 / regularity：OPEN</p><p>analytic schematic · NOT PDE DATA / DNS</p></div></div></header><article>
 <section id="s-01"><div class="section-no">01 / 完整正文</div><h2>0. 这一步得到什么</h2>
 <p>R0.74S Steps 1--10 已把一侧球完成、terminal Abel 恒等式、四通道 circular recombination、未加权 genealogy 的抽象标量 no-go、低 Rayleigh 支付、no-exception exact-family no-go、canonical last exit 以及 paid/residual 六类分区逐项封存。Step 11 不再重复分区，而是精确回答两个 residual mechanisms 怎样共享一个 best-\(N\) budget，并分别把 short branch 与 scalar-excess branch 推到各自第一个仍缺失的 PDE 门槛。</p>
 <p>本步先把局部耗散 clock 精确拆成黏性耗散与反常缺陷，再按优先顺序分成三类：反常缺陷至少承担终端 clock 的八分之一；高 Rayleigh 黏性耗散至少承担八分之一；否则低 Rayleigh 黏性耗散承担超过四分之一。第三类由抛物归一化动能时间质量、Jensen 不等式和继承的 padded-shell 三次付款同时给出</p>
@@ -3276,7 +3276,230 @@ r_k^x\le3x_k^{\rm sel}\le3b_k,
 <p>本节 <strong>OPEN</strong>：S.472 fixed-deletion positive excursion / simultaneous-height estimate。继续 <strong>OPEN AND UNCHANGED</strong>：direct hybrid gate、terminal-crown coercivity S.407、Q.12、Q.1、scale contraction 与 regularity。</p>
 <p>路线决定不可回退：任何后续证明都不得再使用 S.342、S.444 或 \(\mathfrak H^F_{p,N,R}\lesssim(P_R^M)^\beta\) with \(\beta&lt;1\)。下一 temporal task 只能研究 signed positive-excursion tail、fixed-deletion simultaneous height，或直接处理 Step 15 hybrid last-exit increments；terminal-crown 路线仍独立可用。<strong>NOT CLAY.</strong></p>
 </section>
-<section id="figure"><div class="section-no">F / 期刊级四联图</div><h2>闭流线复现：signed excursion 与 absolute temporal variation</h2><picture><source srcset="/assets/r074s/fig-r074s-recurrent-tail-obstruction.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-recurrent-tail-obstruction.png" alt="R0.74S Step 17 four-panel analytic visualization of a recurrent Taylor streamline, signed excursion, absolute variation, and amplitude classes"></picture><p><a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-recurrent-tail-obstruction.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/caption.md">caption</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/source-data.csv">source data</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/plot.py">复现脚本</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-recurrent-tail-obstruction/qa-report.md">视觉 QA</a></p><p class="note">四个 panel 来自精确 Taylor family、closed-orbit ODE 与冻结公式的 deterministic rendering。它不是 DNS，不是数值 Navier--Stokes simulation，也不是 regularity / Clay 证据。</p></section>
-<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 17 主文、三份审计与双语言证书</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_temporal_tail_obstruction.md">recurrent-streamline 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_primary_audit.md">primary audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_independent_audit.md">independent audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_literature_audit.md">literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_certificate.json">Python 证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_certificate_report.md">Python report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_recurrent_streamline_independent_report.md">Ruby 独立 report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_recurrent_streamline_certificate.py">Python 复现脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_recurrent_streamline_independent.rb">Ruby 独立脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step17_report-source.md">Step 17 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74s.html">重大路线修正 recap（R0.61–R0.74S，161 节）</a> · <a href="/recap-r0-61-r0-74s.pdf">recap PDF</a></p><p class="note">Step 17：Python 12/12 finite groups（4,325 cases）、11/11 structural checks、2/2 dependency locks；独立 Ruby 7/7 exact groups（294 assertions）、4/4 artifact locks、20/20 semantic checks、32/32 statement/environment mutations、3/3 path substitutions 与 14/14 reproducibility assertions 全部 PASS。有限证书不替代 continuum proof。</p></section>
-<section id="adjacent"><div class="section-no">NAV / 相邻研究节点</div><h2>上一节与下一接口</h2><p><a href="/notes/r0-74r.html">← 上一节：R0.74R 终端窗口与任意时钟提取门</a> · <a href="#next">下一接口：R0.74T 尚未启动 →</a></p></section>
-<section id="next"><div class="section-no">NEXT / 本次不启动</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">R0.74T / signed endpoint functional 接口</h2><p style="margin:.15rem 0">本次仅发布 R0.74S Step 17，并在此停止。后续若另行启动，只能研究 OPEN S.472、fixed-deletion simultaneous height、direct hybrid last-exit increments、OPEN S.407 或其他明确的新 PDE 输入；不得继续假设已经为 FALSE 的 S.342 或 S.444，也不得把 Q.12、Q.1、正则性或 Millennium 问题写成 theorem。</p></section></article></main></body></html>
+<section id="s-126"><div class="section-no">126 / 完整正文</div><h2>126. 结论与修正：真正缺失的是时间量词的中间层</h2>
+<p>Step 17 已证明 absolute temporal-variation tail 的所有次线性幂估计都为 FALSE，并保留逐坐标 positive excursion \(\mathfrak O^{F,+}_{N,R}\) 作为一个充分的 signed 后继。但它对每个 shell 分别取时间上确界，再对 shell 求和；Step 15 的实际 residual gate 则先固定一个 terminal time。Step 18 补上两者之间缺失的 fixed-deletion functional，并把三种量词次序精确分开。</p>
+<p>直接 Step 15 gate 是 \(\sup_\tau\inf_{\#S\le N}\sum_{k\notin S}z_k(\tau)\)。若要求一个异常 shell 集合对所有 common good terminal times 同时有效，就得到更强但仍非 separable 的 \(\inf_{\#S\le N}\sup_\tau\sum_{k\notin S}z_k(\tau)\)。它仍弱于逐坐标 positive excursion。</p>
+<p>completed-clock simultaneous height 在一次支付已控制的 \(Q\)-variation 后控制 fixed-set hybrid tail；反向上，Step 10 paid-branch inequality 用 fixed hybrid tail 加已知 \(A_R\)-scale payments 控制 simultaneous height。因此两者只在目标尺度上等价，不是字面相等，也不等同于更弱的 moving-deletion gate。</p>
+<p>互不相交的 triangular clocks 证明前两条层级不等式都可严格，并且逐坐标 maxima 可以任意倍数高估 simultaneous height。正确的严格例子需要 \(M\ge N+2\)，不是 \(M=N+1\)。同一抽象族还证明 inherited nonnegativity、\(Q\)-variation 与 linear absolute-flux ledger 不能纯代数推出所需 \(2/3\)-power estimate。这是 ABSTRACT information-theoretic obstruction，不是 Navier--Stokes 反例。</p>
+<p>Step 17 的 recurrent Taylor smooth family 不否定任何仍存活的 gate：固定 \(N\) 后按 S.451 固定 \(R\)，它只把 positive excursion 饱和在 quadratic scale，同时继续否定已经弃用的 absolute-variation route。本节是严格 route reduction 与 correction；不证明 fixed-deletion gate、direct hybrid gate、Q.12、Q.1、scale contraction 或 regularity。<strong>NOT CLAY.</strong></p>
+</section>
+<section id="s-127"><div class="section-no">127 / 完整正文</div><h2>127. 冻结设定与三种 deletion order</h2>
+<p>固定一个 Version-M suitable weak solution、一个 admissible scale \(R\)、一个 admissible profile \(\boldsymbol\lambda\)、一个 terminal domain \(\mathcal D\in\{I_R,\mathcal T_R\}\) 以及一个 \(N\in\mathbb N_0\)。令 \(I=[s_R,t_0)\)、\(\mathcal D_g=\mathcal D\cap\mathcal G_R\)。继承对象满足</p>
+<div class="equation">\[
+ \boxed{K_{k,R}=F_{k,R}+Q_{k,R}\ge0,\qquad F_{k,R}(s_R)=Q_{k,R}(s_R)=K_{k,R}(s_R)=0.}
+ \tag{S.476}
+\]</div>
+<p>并且</p>
+<div class="equation">\[
+ B_{F,R}:=\sum_{k\ge1}\operatorname{TV}_{I}F_{k,R}\le C_FP_R^M,
+ \qquad B_{Q,R}:=\sum_{k\ge1}\operatorname{TV}_{I}Q_{k,R}\le C_QA_R,
+ \qquad A_R=(P_R^M)^{2/3}.
+\]</div>
+<p>保留 Step 15 的 nonnegative stopped-flux vector</p>
+<div class="equation">\[
+ z_k(\tau)=F_{k,R}(\tau)-F_{k,R}(\sigma_k^{\rm hyb}(\tau)),
+ \qquad \tau\in\mathcal D_g,
+\]</div>
+<p>其中 active coordinate 上 \(\sigma_k^{\rm hyb}(\tau)\in[s_R,\tau]\)，否则 \(z_k(\tau)=0\)；Step 15 已证明 \(z(\tau)\in\ell^1_+\)。设 \(\mathscr S_N=\{S\subset\mathbb N:\#S\le N\}\)，定义</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \mathfrak H^{\rm hyb}_{N,R}(\mathcal D)
+ &amp;:=\sup_{\tau\in\mathcal D_g}\inf_{S\in\mathscr S_N}\sum_{k\notin S}z_k(\tau)
+ =\mathfrak Z_{N,R}^{\boldsymbol\lambda}(\mathcal D),\\
+ \mathfrak H^{\rm fix}_{N,R}(\mathcal D)
+ &amp;:=\inf_{S\in\mathscr S_N}\sup_{\tau\in\mathcal D_g}\sum_{k\notin S}z_k(\tau).
+ \end{aligned}}
+ \tag{S.477}
+\]</div>
+<p>这里的 fix 只表示：对每个已经固定的 solution、scale、centre 与 terminal domain，同一个 shell set 要用于全部 common good terminal times；该集合仍可依赖这些固定数据。它不冻结 hybrid starts，后者仍依赖 terminal time。</p>
+<p>为比较，定义</p>
+<div class="equation">\[
+ \boxed{o_{k,R}^F:=\sup_{s_R\le a&lt;b&lt;t_0}[F_{k,R}(b)-F_{k,R}(a)]_+,
+ \qquad \mathfrak O^{F,+}_{N,R}:=\inf_{S\in\mathscr S_N}\sum_{k\notin S}o_{k,R}^F.}
+ \tag{S.478}
+\]</div>
+<p>因为 \(o_{k,R}^F\le\operatorname{TV}_I F_{k,R}\)，序列 \((o_{k,R}^F)_k\in\ell^1_+\)，且对每个 \(k,\tau\) 都有 \(0\le z_k(\tau)\le o_{k,R}^F\)。以下所有级数都由同一可和序列控制，不交换任何无限 signed sum。</p>
+</section>
+<section id="s-128"><div class="section-no">128 / 完整正文</div><h2>128. 精确层级与 layer-cake incidence</h2>
+<p>minimax inequality 与逐坐标支配直接给出</p>
+<div class="equation">\[
+ \boxed{\mathfrak H^{\rm hyb}_{N,R}(\mathcal D)
+ \le\mathfrak H^{\rm fix}_{N,R}(\mathcal D)
+ \le\mathfrak O^{F,+}_{N,R}
+ \le\mathfrak H^F_{1,N,R}.}
+ \tag{S.479}
+\]</div>
+<p>第一条只用 \(\sup\inf\le\inf\sup\)，不假设 minimax equality 或 attainment。第二条来自 \(z_k(\tau)\le o_{k,R}^F\)，第三条来自 \(o_{k,R}^F\le\operatorname{TV}F_{k,R}\)；若 infimum 不取到，就用 \(\varepsilon\)-minimizer 再令 \(\varepsilon\downarrow0\)。</p>
+<p>对 \(\lambda&gt;0\)，令 \(A_\tau(\lambda)=\{k:z_k(\tau)&gt;\lambda\}\)、\(A_o(\lambda)=\{k:o_{k,R}^F&gt;\lambda\}\)。layer-cake 与 best-\(N\) rearrangement 给出</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \mathfrak H^{\rm hyb}_{N,R}(\mathcal D)
+ &amp;=\sup_{\tau\in\mathcal D_g}\int_0^\infty(\#A_\tau(\lambda)-N)_+\,d\lambda,\\
+ \mathfrak H^{\rm fix}_{N,R}(\mathcal D)
+ &amp;=\inf_{S\in\mathscr S_N}\sup_{\tau\in\mathcal D_g}
+ \int_0^\infty\#(A_\tau(\lambda)\setminus S)\,d\lambda,\\
+ \mathfrak O^{F,+}_{N,R}
+ &amp;=\int_0^\infty(\#A_o(\lambda)-N)_+\,d\lambda.
+ \end{aligned}}
+ \tag{S.480}
+\]</div>
+<p>对非负 \(\ell^1\) 序列 \(x\)，所用恒等式为</p>
+<div class="equation">\[
+ \inf_{\#S\le N}\sum_{k\notin S}x_k
+ =\int_0^\infty(\#\{k:x_k&gt;\lambda\}-N)_+\,d\lambda.
+\]</div>
+<p>先对有限截断排序，再用 monotone convergence 即得无限序列版本。S.480 中间一行仅在固定 \(S,\tau\) 后使用 Tonelli；两个 optimization 都没有穿过积分号。</p>
+<p>这正定位量词缺口：direct gate 可在知道每个 terminal time 后改变删除集；fixed gate 要求一个集合击中全部 common good terminal times；separable excursion gate 又把 \(A_\tau(\lambda)\) 换成更大的 coordinatewise envelope \(A_o(\lambda)\)，因而忘记不同 shell peaks 是否只在互斥时刻出现。这里只断言 \(\bigcup_\tau A_\tau(\lambda)\subseteq A_o(\lambda)\)，不断言相等。</p>
+</section>
+<section id="s-129"><div class="section-no">129 / 完整正文</div><h2>129. Completed-clock simultaneous height 与目标尺度等价</h2>
+<p>定义 terminal domain 上的 fixed-deletion simultaneous height</p>
+<div class="equation">\[
+ \boxed{\mathfrak L^K_{N,R}(\mathcal D):=
+ \inf_{S\in\mathscr S_N}\sup_{t\in\mathcal D}\sum_{k\notin S}K_{k,R}(t).}
+ \tag{S.481}
+\]</div>
+<p>它不同于 Step 17 的 separable maximum \(\mathfrak M^K_{N,R}=\inf_S\sum_{k\notin S}\sup_{t\in I}K_{k,R}(t)\)：\(\mathfrak L^K\) 的时间上确界位于 shell sum 外，但仍保留一个 deletion set。</p>
+<p>对 active hybrid coordinate，\(K=F+Q\)、\(K\ge0\) 与 \(\sigma_k^{\rm hyb}(\tau)\le\tau\) 给出</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ z_k(\tau)&amp;=K_k(\tau)-K_k(\sigma_k^{\rm hyb}(\tau))-Q_k(\tau)+Q_k(\sigma_k^{\rm hyb}(\tau))\\
+ &amp;\le K_k(\tau)+\operatorname{TV}_I Q_k.
+ \end{aligned}}
+ \tag{S.482}
+\]</div>
+<p>在同一个固定 \(S\) 外求和，先取 terminal supremum，再优化，得到</p>
+<div class="equation">\[
+ \boxed{\mathfrak H^{\rm fix}_{N,R}(\mathcal D)
+ \le\mathfrak L^K_{N,R}(\mathcal D)+B_{Q,R}
+ \le\mathfrak L^K_{N,R}(\mathcal D)+C_QA_R.}
+ \tag{S.483}
+\]</div>
+<p>所有 clock sums 都有限，因为共同零起点给出 \(K_k(t)\le o_{k,R}^F+\operatorname{TV}_I Q_{k,R}\)，故 \(\sum_k\sup_tK_k(t)\le B_{F,R}+B_{Q,R}&lt;\infty\)。</p>
+<p>令 \(\Pi_R^{\boldsymbol\lambda}=6B_{Q,R}+C_5\mathscr L(\boldsymbol\lambda)^{1/3}A_R\le C_{\rm pay}(\boldsymbol\lambda)A_R\)。Step 10 S.235 对同一个固定 \(S\) 与每个 good terminal time 给出 \(\sum_{k\notin S}K_{k,R}(\tau)\le\Pi_R^{\boldsymbol\lambda}+6\sum_{k\notin S}z_k(\tau)\)。利用 \(t\mapsto(K_{k,R}(t))_k\) 在 \(\ell^1\) 中连续、common good-time set 稠密，得到反向估计</p>
+<div class="equation">\[
+ \boxed{\mathfrak L^K_{N,R}(\mathcal D)
+ \le\Pi_R^{\boldsymbol\lambda}+6\mathfrak H^{\rm fix}_{N,R}(\mathcal D).}
+ \tag{S.484}
+\]</div>
+<p>所以对固定 admissible profile 和固定 universal \(N\)，\(\mathfrak H^{\rm fix}\lesssim A_R\) 当且仅当 \(\mathfrak L^K\lesssim A_R\)。这是支付已知项后的 target-scale equivalence，不是 literal equality，也不把任一 functional 等同于更弱的 moving-deletion tail。</p>
+<p>最后，固定删除集后，sum 的 supremum 不超过 coordinatewise suprema 之和；结合 Step 17 S.475，</p>
+<div class="equation">\[
+ \boxed{\mathfrak L^K_{N,R}(\mathcal D)
+ \le\mathfrak M^K_{N,R}
+ \le\mathfrak O^{F,+}_{N,R}+B_{Q,R}.}
+ \tag{S.485}
+\]</div>
+<p>不存在从 \(\mathfrak L^K\) 到 \(\mathfrak M^K\) 的 universal reverse comparison；后面的 abstract clocks 给出无界分离。</p>
+</section>
+<section id="s-130"><div class="section-no">130 / 完整正文</div><h2>130. 修正后的 OPEN targets 与无条件线性 fallback</h2>
+<p>最弱且精确匹配 Step 15 route 的 direct target 仍是某个 universal finite \(N_0,C\) 下 \(\mathfrak H^{\rm hyb}_{N_0,R}(\mathcal T_R)\le CA_R\)；它与 full residual gate 相差 Step 15 S.385 的字面因子 \(5\)。</p>
+<p>若坚持一个 exceptional shell set 对全部 common good terminal times 同时有效，route-minimal successor 是</p>
+<div class="equation">\[
+ \boxed{\begin{gathered}
+ \exists N_{\rm fix}\in\mathbb N_0,\ C_{\rm fix}&lt;\infty
+ \text{ for the fixed universal admissible profile, such that}\\
+ \mathfrak H^{\rm fix}_{N_{\rm fix},R}(\mathcal T_R)
+ \le C_{\rm fix}(P_R^M)^{2/3}
+ \quad\text{uniformly in the solution and admissible }R,z_0.
+ \end{gathered}}
+ \tag{S.486}
+\]</div>
+<p>S.486 为 <strong>OPEN</strong>。由 S.479，它蕴含 direct hybrid gate，进而通过既证 reductions 蕴含 Step 10 S.243、Q.12 与 Q.1；它比 direct gate 更强，因为 direct exceptional set 可依赖 \(\tau\)。</p>
+<p>目标尺度等价的 completed-clock 表述是</p>
+<div class="equation">\[
+ \boxed{\begin{gathered}
+ \exists N_L\in\mathbb N_0,\ C_L&lt;\infty
+ \text{ for the fixed universal admissible profile, such that}\\
+ \bigl(\mathfrak L^K_{N_L,R}(\mathcal T_R)\bigr)^{3/2}
+ \le C_LP_R^M
+ \quad\text{uniformly in the solution and admissible }R,z_0.
+ \end{gathered}}
+ \tag{S.487}
+\]</div>
+<p>S.487 同样为 <strong>OPEN</strong>。S.483--S.484 只证明它与 S.486 在目标尺度等价，常数仅依赖同一冻结 profile；二者都强于 direct moving-deletion gate。</p>
+<p>继承的无条件信息只有</p>
+<div class="equation">\[
+ \boxed{\mathfrak H^{\rm fix}_{N,R}(\mathcal D)\le B_{F,R}\le C_FP_R^M,
+ \qquad \mathfrak L^K_{N,R}(\mathcal D)\le B_{F,R}+B_{Q,R}
+ \le C_FP_R^M+C_QA_R.}
+ \tag{S.488}
+\]</div>
+<p>当 \(P_R^M\le1\) 时第一式已不超过 \(C_FA_R\)；当 \(P_R^M&gt;1\) 时，它还差因子 \((P_R^M)^{1/3}\)。只重排 displayed linear ledger 无法消掉这一因子。</p>
+</section>
+<section id="s-131"><div class="section-no">131 / 完整正文</div><h2>131. Disjoint triangular clocks 的精确 ABSTRACT separation</h2>
+<p>固定整数 \(M&gt;N\)、高度 \(H&gt;0\) 与 \(I=[0,1]\)。对 \(1\le j\le M\)，令</p>
+<div class="equation">\[
+ \boxed{\phi_j(t)=\left(1-2M\left|t-\frac{2j-1}{2M}\right|\right)_+,
+ \qquad K_j(t)=F_j(t)=H\phi_j(t),\qquad Q_j(t)=0,}
+ \tag{S.489}
+\]</div>
+<p>其 support interiors 两两不交，后续坐标为零，并取 common-zero-start increment \(z_j(\tau)=H\phi_j(\tau)\)。每个时刻至多一个坐标为正；任一至多删除 \(N&lt;M\) 项的固定集合都遗漏某个 peak。于是</p>
+<div class="equation">\[
+ \boxed{\begin{aligned}
+ \mathfrak H^{\rm hyb}_N&amp;=\begin{cases}H,&amp;N=0,\\0,&amp;N\ge1,\end{cases}
+ &amp;\mathfrak H^{\rm fix}_N&amp;=H,&amp;\mathfrak L^K_N&amp;=H,\\
+ \mathfrak O_N^{F,+}&amp;=\mathfrak M_N^K=\mathfrak V_N^K=(M-N)H,
+ &amp;\mathfrak H^F_{1,N}&amp;=2(M-N)H,
+ &amp;\sum_j\operatorname{TV}F_j&amp;=2MH.
+ \end{aligned}}
+ \tag{S.490}
+\]</div>
+<p>特别地，当 \(N\ge1\) 且 \(M\ge N+2\) 时，</p>
+<div class="equation">\[
+ \boxed{0=\mathfrak H^{\rm hyb}_N
+ &lt;\mathfrak H^{\rm fix}_N=\mathfrak L^K_N
+ &lt;\mathfrak O_N^{F,+}=\mathfrak M_N^K.}
+ \tag{S.491}
+\]</div>
+<p>比值 \(\mathfrak O_N^{F,+}/\mathfrak H_N^{\rm fix}=M-N\) 在固定 \(N\)、\(M\to\infty\) 时无界。因此 abstract clock class 中不存在从 simultaneous functional 到 separable coordinatewise maximum 的 universal reverse comparison。先前诱人的 \(M=N+1\) 只分开 moving 与 fixed deletion，不能使第二条不等式严格。</p>
+<p>以 full absolute-flux ledger \(\mathcal P=\sum_j\operatorname{TV}F_j=2MH\) 归一化。固定 \(N\) 与任意 \(M&gt;N\)，令 \(H\to\infty\)，则</p>
+<div class="equation">\[
+ \boxed{\frac{\mathfrak H_N^{\rm fix}}{\mathcal P^{2/3}}
+ =\frac{\mathfrak L_N^K}{\mathcal P^{2/3}}
+ =\frac{H^{1/3}}{(2M)^{2/3}}\longrightarrow\infty.}
+ \tag{S.492}
+\]</div>
+<p>所以 \(K\ge0\)、\(K=F+Q\)、\(B_Q\lesssim\mathcal P^{2/3}\) 与 \(\sum_k\operatorname{TV}F_k\lesssim\mathcal P\) 这些 abstract assumptions，不能对任何预先指定的有限 \(N\) 推出 fixed-deletion quadratic bound。高度 \(H\) 是独立参数；只令 \(M=N+1\)、\(H=M^3\) 改变的是对 \(N\) 的 uniformity，不能否定 fixed-\(N\) statement。</p>
+<p>S.489--S.492 全部是 <strong>ABSTRACT CLOCK STRESS TESTS</strong>：它们不是 spatial fields，不实现 Version-M payment，也不是 Navier--Stokes solutions 或 counterexamples。</p>
+</section>
+<section id="s-132"><div class="section-no">132 / 完整正文</div><h2>132. Recurrent Taylor family 通过所有仍存活的 gates</h2>
+<p>对 Step 17 的 exact smooth family，先固定有限 \(N\)，再按 S.451 选择并固定 \(R\)。对该量词次序以及 \(A\ge A_0(N,R)\)，</p>
+<div class="equation">\[
+ \mathfrak O^{F,+}_{N,R}\asymp_{N,R}A^2,
+ \qquad B_{Q,R}=O_R(A^2),
+ \qquad P_R^M\asymp_RA^3.
+\]</div>
+<p>因此 S.479 与 S.485 给出</p>
+<div class="equation">\[
+ \boxed{\mathfrak H^{\rm hyb}_{N,R}
+ \le\mathfrak H^{\rm fix}_{N,R}
+ \lesssim_{N,R}A^2
+ \asymp_{N,R}(P_R^M)^{2/3},
+ \qquad \mathfrak L^K_{N,R}(\mathcal T_R)\lesssim_{N,R}A^2.}
+ \tag{S.493}
+\]</div>
+<p>这是 fixed-\(R\) screen，不是 universal S.486 或 S.487 的证明。它只说明摧毁 absolute temporal variation 的 smooth recurrent family 与全部存活的 quadratic gates 相容：recurrence 产生 \(O(A)\) 次重复绕行，但 peaks 处于同一 phase geometry，signed excursion 仍为 \(O(A^2)\)。</p>
+</section>
+<section id="s-133"><div class="section-no">133 / 完整正文</div><h2>133. 成功的 PDE theorem 必须补入什么</h2>
+<p>精确 reductions 留下三个嵌套研究目标：最弱的 direct hybrid target 是 \(\mathfrak H^{\rm hyb}\lesssim A_R\)，完全匹配 Step 15；fixed-deletion target 是 S.486，要求一个共同有限 shell set，但保留 simultaneous terminal incidence；completed-clock target 是 S.487，或更强的 Step 17 positive-excursion bound。simultaneous-height form 在已知 payment 后与 fixed hybrid gate 等价，而 separable positive excursion 仍要求额外 cross-time information。</p>
+<p>triangular clocks 已证明新输入不能只有 nonnegativity 与 inherited linear ledgers。可行 theorem 至少要加入一个真正 PDE-specific mechanism，例如：</p>
+<ul><li>simultaneous height-to-cubic-payment estimate；</li><li>persistence 或 dwell-time，使高 clock aggregate 占据足够 parabolic time 并由 cubic payment 支付；</li><li>deterministic stopping-time / Carleson charge，控制 S.480 的 time--shell incidence sets；</li><li>与 hybrid first-passage intervals 绑定的 signed entrance 或 collar-flux payment。</li></ul>
+<p>这些只是 mechanism classes，不是已证明 lemmas。</p>
+</section>
+<section id="s-134"><div class="section-no">134 / 完整正文</div><h2>134. 一手来源 collision boundary</h2>
+<p>有界两轮一手来源检索没有找到同时具有 S.486 全部量词的 theorem：deterministic suitable weak solutions；对每个固定 solution、scale、centre 与 terminal domain，保留一个 finite shell deletion 覆盖全部 common good terminal times；对 forward stopped increments 作 infinite-shell \(\ell^1\) sum；删除预算 universal；并由 \((P_R^M)^{2/3}\) 支付。</p>
+<ul><li>Dascaliuc--Grujić 的 physical-scale energy cascade / flux locality 证明 inertial-range 条件下的 signed time/ensemble-averaged flux estimates，不是带一个 shell deletion 的 terminal-time maximum。</li><li>Yang 的 flow-generated skewed cylinders maximal functions 给出 space-time averages 的 weak-\((1,1)\) 与 strong-\((p,p)\) bounds，不控制 simultaneous clock height 或 fixed best-\(N\) terminal functional。</li><li>Yu 的 finite-chain CKN bad-scale counting 在预先指定的有限 scale chain 上用 nonnegative channel costs 得到至少一个 CKN-small scale，不给 infinite-shell、all-good-terminal 的 S.486。</li><li>Yu 的 coarse-grained pressure-flux work depletion 给出 exact fixed-chain signed-work depletion，并明确保留 negative work / backscatter；它不声称 negative set smallness、uniform moving-window constants 或 chain length 趋于无穷时的 summability。</li></ul>
+<p>这些是相邻工具与可能 ingredients，不是 open gate 的证明。检索有界；未命中不构成 novelty、priority 或 exhaustiveness claim。</p>
+</section>
+<section id="s-135"><div class="section-no">135 / 完整正文</div><h2>135. 主张账本、证书与严格后续边界</h2>
+<p>本节 <strong>PROVED</strong>：S.476--S.479 的 hierarchy 与 infinite-shell justification；S.480 的 exact layer-cake incidence formulas；S.481--S.485 的 completed-clock 双向 target-scale reduction；S.488 的 unconditional linear fallback；S.489--S.492 的 abstract triangular-clock exact values；S.493 的 fixed-\(R\) Taylor compatibility screen。</p>
+<p>本节 <strong>ABSTRACT ONLY</strong>：S.491 的 strictness 与 unbounded reverse ratio；S.492 中 listed ledger assumptions 不能推出 \(2/3\)-power bound。二者都不是 NSE counterexample。</p>
+<p>继续 <strong>OPEN</strong>：direct moving-deletion hybrid gate；route-minimal fixed-deletion gate S.486；target-scale-equivalent simultaneous-height gate S.487；Step 17 positive-excursion gate S.472；terminal-crown coercivity S.407；Q.12、Q.1、scale contraction 与 regularity。<strong>NOT CLAY.</strong></p>
+<p>Python 主证书通过 5/5 exact finite groups、283,157 rational cases、5/5 structural groups 与 5/5 hash locks。独立 Ruby verifier 通过 8/8 groups、72,144 assertions；Python/Ruby 分别拒绝 12/12 与 13/13 intentional mutations；三组 Python hash seed 和一次跨工作目录 Ruby 重放均 byte-identical。</p>
+<p>正式四联图的 25 文件档案通过 39 checks 与 verify-only。Panel A 是 proved inequalities 与 known-payment links 的精确 schematic；Panels B--D 是 exact abstract clocks。彩色、灰度与独立 PDF render 均完成视觉 QA。它不是 PDE data，不是 DNS，不是 NSE simulation，也不证明 OPEN S.486--S.487 或 Clay 问题。</p>
+<p>route decision 已精确固定：后续 fixed-deletion 工作应直接研究 \(\mathfrak H^{\rm fix}\)，不应自动升级到更强的 \(\mathfrak O^{F,+}\)；completed-clock 工作可研究在已支付项后等价的 \(\mathfrak L^K\)；最弱有效路线仍是 terminal-dependent deletion set 的 direct Step 15 hybrid gate。本站在此停于冻结 Step 18，等待下一份明确冻结包。</p>
+</section>
+<section id="figure"><div class="section-no">F / 期刊级四联图</div><h2>Fixed-deletion functionals 与 temporal quantifier gap</h2><picture><source srcset="/assets/r074s/fig-r074s-fixed-deletion-quantifier-gap.svg" type="image/svg+xml"><img src="/assets/r074s/fig-r074s-fixed-deletion-quantifier-gap.png" alt="R0.74S Step 18 four-panel analytic schematic of fixed-deletion functionals and the temporal quantifier gap"></picture><p><a href="/assets/r074s/fig-r074s-fixed-deletion-quantifier-gap.pdf">矢量 PDF</a> · <a href="/assets/r074s/fig-r074s-fixed-deletion-quantifier-gap.png">600 dpi PNG</a> · <a href="/assets/r074s/fig-r074s-fixed-deletion-quantifier-gap.svg">SVG</a> · <a href="/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/caption.md">caption</a> · <a href="/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/source-data.csv">source data</a> · <a href="/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/plot.py">复现脚本</a> · <a href="/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/manifest.json">manifest</a> · <a href="/figures/r074s/fig-r074s-fixed-deletion-quantifier-gap/qa-report.md">视觉 QA</a></p><p class="note">Panel A 是 proved inequalities 与 known-payment links；Panels B–D 是 exact abstract clocks。ANALYTIC SCHEMATIC / ABSTRACT CLOCK TEST / NOT PDE DATA / NOT DNS / NOT CLAY。</p></section>
+<section id="reproduce"><div class="section-no">R / 冻结证据</div><h2>Step 18 主文、审计、双实现证书与 QA</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_simultaneous_height.md">fixed-deletion 主文</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_primary_audit.md">primary audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_independent_audit.md">independent audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_literature_audit.md">literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_qa_report.md">QA report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_certificate.json">Python 证书 JSON</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_fixed_deletion_certificate_report.md">Python report</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_fixed_deletion_certificate.py">Python 脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/r074s_fixed_deletion_certificate_independent.rb">Ruby 独立脚本</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r074s_step18_report-source.md">Step 18 中文 reader source</a></p><p><a href="/notes/r0-74s.pdf">同步研究笔记 PDF</a> · <a href="/recap-r0-61-r0-74s.html">保留的 Step 17 重大路线修正 recap</a> · <a href="/recap-r0-61-r0-74s.pdf">Step 17 recap PDF</a></p><p class="note">Python：5/5 finite groups、283,157 cases、5/5 structural groups、5/5 hash locks；独立 Ruby：8/8 groups、72,144 assertions。Python/Ruby 分别拒绝 12/12 与 13/13 intentional mutations；有限证书不替代 continuum proof。</p></section>
+<section id="adjacent"><div class="section-no">NAV / 相邻研究节点</div><h2>上一冻结步骤与后续边界</h2><p><a href="#s-116">← Step 17：闭流线复现与 absolute-tail no-go</a> · <a href="#next">下一冻结包尚未发布 →</a></p></section>
+<section id="next"><div class="section-no">NEXT / 等待明确冻结包</div><h2 style="margin:.35rem 0 .15rem;font-size:1.15rem">后续接口仍由 OPEN PDE input 决定</h2><p style="margin:.15rem 0">本站在 R0.74S Step 18 停止。后续 frozen package 可以研究 direct hybrid、OPEN S.486 / S.487、OPEN S.472、OPEN S.407 或其他明确 PDE-specific mechanism；不得把 ABSTRACT clocks 当作 PDE 数据，也不得把 Q.12、Q.1、regularity 或 Millennium problem 写成 theorem。</p></section></article></main></body></html>

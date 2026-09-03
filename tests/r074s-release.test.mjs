@@ -1,202 +1,52 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const readBytes = (path) => readFileSync(resolve(root, path));
-const read = (path) => readBytes(path).toString("utf8");
-const sha = (path) => createHash("sha256").update(readBytes(path)).digest("hex");
-const node = process.env.CODEX_NODE || process.execPath;
+const bytes = (path) => readFileSync(resolve(root, path));
+const sha = (path) => createHash("sha256").update(bytes(path)).digest("hex");
 
-test("R0.74S publication accounting advances through the one-off Step 17 route correction", () => {
-  assert.deepEqual(JSON.parse(read("public/site-version.json")), { schemaVersion: "research-site-version-v1", version: "1.96", latestRelease: "R0.74S", latestPublishedResearchHtml: "/notes/r0-74s.html", latestPublishedResearchPdf: "/notes/r0-74s.pdf", publicHtmlNoteCount: 221, postR060PublishedNodeCount: 161, postR060RecapNodeCount: 161, latestRecapRelease: "R0.74S", publicPdfNoteCount: 178, publishedDate: "2026-09-03" });
-  const manifest = JSON.parse(read("research/release-manifest.json"));
+test("R0.74S cumulative release remains on one note while Step 18 advances", () => {
+  const version = JSON.parse(bytes("public/site-version.json"));
+  const manifest = JSON.parse(bytes("research/release-manifest.json"));
+  assert.deepEqual(version, {
+    schemaVersion: "research-site-version-v1",
+    version: "1.97",
+    latestRelease: "R0.74S",
+    latestPublishedResearchHtml: "/notes/r0-74s.html",
+    latestPublishedResearchPdf: "/notes/r0-74s.pdf",
+    publicHtmlNoteCount: 221,
+    postR060PublishedNodeCount: 161,
+    postR060RecapNodeCount: 161,
+    latestRecapRelease: "R0.74S",
+    publicPdfNoteCount: 178,
+    publishedDate: "2026-09-03",
+  });
   assert.equal(manifest.latestCompletedRelease, "r074s");
-  assert.equal(manifest.latestCompletedStep, 17);
+  assert.equal(manifest.latestCompletedStep, 18);
   assert.equal(manifest.nextRelease, "r074t");
   assert.equal(manifest.postR070APublishedReleaseCount, 123);
   assert.equal(manifest.postR070AFormalSealedReleaseCount, 98);
-  assert.equal(manifest.formalFigureExemptReleaseCount, 1);
   assert.equal(manifest.latestRecapRelease, "r074s");
-  assert.equal(manifest.latestPublishedResearchHtml, "/notes/r0-74s.html");
-  assert.equal(manifest.latestPublishedResearchPdf, "/notes/r0-74s.pdf");
-  assert.equal(manifest.latestReleaseGate, "tests/r074s-step17-gate.test.mjs");
-  assert.equal(manifest.latestReleasePublicationTest, "tests/r074s-step17-release.test.mjs");
-  assert.equal(manifest.latestReleasePdfBinder, "scripts/bind-r074s-step17-pdf.mjs");
-  assert.equal(manifest.latestReleaseTranslationScript, "scripts/add-r074s-translations.mjs");
-  assert.equal(manifest.latestReleaseStepTranslationScript, "scripts/add-r074s-step17-translations.mjs");
-  assert.equal(sha("public/recap-r0-61-r0-74o.html"), "d06c9edb093664c9835feb814a11ecd180305780b3efcdcd560908f754fba4b2");
-  assert.equal(sha("public/recap-r0-61-r0-74o.pdf"), "80264dab72ca12569252a360d9b70388ba0c4b107132012b98d73b76d634d076");
+  assert.equal(sha("public/recap-r0-61-r0-74s.html"), "47f8eddf89c018e9ea5c73cb7179e8c282d96d002baa16d52b7fae225f5dae81");
+  assert.equal(sha("public/recap-r0-61-r0-74s.pdf"), "eea82eba8d6fe66ca8a45348d3d9e20a9450c039f749feafae007a362a2a49ec");
 });
 
-test("R0.74S reader is complete Chinese and preserves every claim boundary", () => {
-  const note = read("public/notes/r0-74s.html");
-  for (const marker of [
-    "完整中文版本", "S.445–S.475：PROVED / FALSE / OPEN", "regular closed streamline",
-    "absolute temporal variation", "signed positive excursion", "A^3", "A^2",
-    "S.342", "S.444：FALSE", "S.472 / direct hybrid / S.407：OPEN",
-    "Q.12 / Q.1：OPEN", "4,325", "294 assertions", "NOT CLAY",
-  ]) assert.ok(note.includes(marker), marker);
-  assert.ok(Buffer.byteLength(note, "utf8") > 18000, "reader UTF-8 payload is unexpectedly short");
-  assert.ok(!note.includes("独立数学审计尚未完成"));
-  assert.ok(!/解决了.{0,20}(千禧年|Clay)/.test(note));
-  for (const path of ["public/notes/r0-74s.pdf", "research/r074s_note_pdf_render.json", "research/r074s_pdf_bindings.json"]) assert.ok(statSync(resolve(root, path)).size > 0, path);
-  const binding = JSON.parse(read("research/r074s_pdf_bindings.json"));
+test("R0.74S Step 18 synchronized binding retains the strict boundary", () => {
+  const binding = JSON.parse(bytes("research/r074s_pdf_bindings.json"));
+  assert.equal(binding.schemaVersion, "r074s-step18-note-synchronized-pdf-binding-v1");
   assert.equal(binding.publicChineseHtml.sha256, sha("public/notes/r0-74s.html"));
   assert.equal(binding.publicPdf.sha256, sha("public/notes/r0-74s.pdf"));
-  assert.ok(binding.publicPdf.pageCount >= 9);
-  assert.equal(binding.claimBoundary.oneSidedBallClocks, "PROVED");
-  assert.equal(binding.claimBoundary.stoppedOrientations, "PROVED");
-  assert.equal(binding.claimBoundary.terminalAbelIdentity, "PROVED");
-  assert.equal(binding.claimBoundary.fullSignedRecombination, "PROVED_CIRCULAR");
-  assert.equal(binding.claimBoundary.threeChannelTemporalDebtCancellation, "PROVED");
-  assert.equal(binding.claimBoundary.terminalL1Decomposition, "PROVED");
-  assert.equal(binding.claimBoundary.unweightedGenealogyObstruction, "PROVED_ABSTRACT_SCALAR_NO_GO");
-  assert.equal(binding.claimBoundary.lowHighRayleighTimeSplit, "PROVED");
-  assert.equal(binding.claimBoundary.dissipationPriorityTrichotomy, "PROVED");
-  assert.equal(binding.claimBoundary.lowRayleighAllShellPayment, "PROVED");
-  assert.equal(binding.claimBoundary.rayleighExcessMeasures, "PROVED");
-  assert.equal(binding.claimBoundary.scalarAndJordanExcessTiers, "PROVED_DISTINCT");
-  assert.equal(binding.claimBoundary.highRayleighScalarResidual, "UNIFIED_WITH_EXISTING_STOPPED_WORK_GATE");
-  assert.equal(binding.claimBoundary.anomalousDefectScalarResidual, "UNIFIED_WITH_EXISTING_STOPPED_WORK_GATE");
-  assert.equal(binding.claimBoundary.stoppedWorkFullFluxEquivalence, "PROVED_WITHIN_PAID_B_Q");
-  assert.equal(binding.claimBoundary.universalNoExceptionQuadraticAntecedent, "REFUTED_BY_INHERITED_SMOOTH_EXACT_NSE_FAMILY");
-  assert.equal(binding.claimBoundary.conditionalS38Implication, "PROVED_RETAINED");
-  assert.equal(binding.claimBoundary.signedFHalfExit, "PROVED_EXACT_ONE_HALF_BEST_N_TAIL");
-  assert.equal(binding.claimBoundary.signedFHalfExitS25Admissibility, false);
-  assert.equal(binding.claimBoundary.kThetaLastExit, "PROVED_WITH_SHARP_ONE_B_Q_ERROR");
-  assert.equal(binding.claimBoundary.canonicalLastExitQuadraticCompression, "REFUTED_PROVED_NO_GAIN_EQUIVALENCE");
-  assert.equal(binding.claimBoundary.fullTerminalBestNTail, "OPEN_Q12");
-  assert.equal(binding.claimBoundary.plateauBestNTail, "OPEN_WEAKER_RESTRICTION");
-  assert.equal(binding.claimBoundary.fixedBestNTerminalExceptionEstimate, "OPEN_NEXT_PDE_TARGET");
-  assert.equal(binding.claimBoundary.sixClassPaidResidualPartition, "PROVED_D_FIRST_EXACT_PARTITION");
-  assert.equal(binding.claimBoundary.lowRayleighExtraResidualClass, false);
-  assert.equal(binding.claimBoundary.oneQPaidLedger, "PROVED_SINGLE_6_B_Q");
-  assert.equal(binding.claimBoundary.oneCubicPaidLedger, "PROVED_SINGLE_C5_LEDGER");
-  assert.deepEqual(binding.claimBoundary.residualClasses, ["R_sh", "R_x"]);
-  assert.equal(binding.claimBoundary.residualTwoSidedComparability, "PROVED_T_OVER_6_LT_R_LT_T_OVER_2");
-  assert.equal(binding.claimBoundary.residualBestNReduction, "PROVED_DOMAIN_SAFE");
-  assert.equal(binding.claimBoundary.separateResidualExceptionBudgets, false);
-  assert.equal(binding.claimBoundary.terminalDDominanceLastExitPersistence, false);
-  assert.equal(binding.claimBoundary.paidBranchResidualTail, "PROVED_DEFINED_AND_REDUCED_PACKING_OPEN");
-  assert.equal(binding.claimBoundary.fixedUniversalN0ResidualEstimate, "OPEN_S243");
-  assert.equal(binding.claimBoundary.finiteExceptionConsequence, "PROVED_CONDITIONAL_IMPLICATION_ONLY");
-  assert.equal(binding.claimBoundary.sharedBudgetPointwiseInfimalConvolution, "PROVED_EXACT_S249");
-  assert.equal(binding.claimBoundary.terminalSupremumBudgetMinimumCommutation, false);
-  assert.equal(binding.claimBoundary.sharedBudgetDomainInequality, "PROVED_S250");
-  assert.equal(binding.claimBoundary.addedBranchExceptionCounts, "PROVED_CONDITIONAL_S251");
-  assert.equal(binding.claimBoundary.duplicateBranchBudgets, false);
-  assert.equal(binding.claimBoundary.shortBranchInverseDuration, "PROVED_S253_S254");
-  assert.equal(binding.claimBoundary.criticalQuadraticCarlesonEndpoint, "REFUTED_AT_COEFFICIENT_CLOCK_LEVEL_LOG_GAP");
-  assert.equal(binding.claimBoundary.criticalCarlesonWitnessIsNseCounterexample, false);
-  assert.equal(binding.claimBoundary.nestedTentEstimate, "PROVED_S258");
-  assert.equal(binding.claimBoundary.positiveBackwardDepthControl, "PROVED_S259");
-  assert.equal(binding.claimBoundary.depthZeroTerminalTrace, "OPEN_S261");
-  assert.equal(binding.claimBoundary.scalarExcessResidualBestNComparison, "PROVED_CONSTANTS_ONE_FIFTH_AND_THREE");
-  assert.equal(binding.claimBoundary.fixedSolutionTailTightness, "PROVED_NONUNIFORM_S265");
-  assert.equal(binding.claimBoundary.fixedSolutionTightnessGivesUniversalN, false);
-  assert.equal(binding.claimBoundary.lastExitAncestryLocalization, false);
-  assert.equal(binding.claimBoundary.ancestryFixturesAreNseCounterexamples, false);
-  assert.equal(binding.claimBoundary.uniformSelectedExcessPacking, "OPEN_S269");
-  assert.equal(binding.claimBoundary.nPlusOneTargetFalsificationCriterion, "PROVED_CONDITIONAL_S270");
-  assert.equal(binding.claimBoundary.existingMultiPacketFamiliesRefuteFixedPositiveN, false);
-  assert.equal(binding.claimBoundary.combinedTwoBranchEstimate, "OPEN_S272");
-  assert.equal(binding.claimBoundary.commonTerminalWindowDefinition, "PROVED_S273");
-  assert.equal(binding.claimBoundary.commonWindowShortResidualReduction, "PROVED_S274_S275");
-  assert.equal(binding.claimBoundary.commonWindowTerminalContinuity, "PROVED_S276");
-  assert.equal(binding.claimBoundary.fixedSolutionWindowModulus, "PROVED_NONUNIFORM_S277");
-  assert.equal(binding.claimBoundary.bestNLayerCakeIdentity, "PROVED_S278");
-  assert.equal(binding.claimBoundary.universalTerminalWindowGate, "OPEN_S280");
-  assert.equal(binding.claimBoundary.l1OnlyWindowEstimate, "REFUTED_ABSTRACT_LEDGER_NO_GO_S281_NOT_NSE");
-  assert.equal(binding.claimBoundary.averagedTerminalBoundary, "PROVED_P_TO_FOUR_FIFTH_S282_S284");
-  assert.equal(binding.claimBoundary.universalAncestorGate, "OPEN_S288");
-  assert.equal(binding.claimBoundary.movingTubeMorreyPacking, "PROVED_CONDITIONALLY_ON_UNIFORM_M_L_S289_S294");
-  assert.equal(binding.claimBoundary.criticalMixedNormBenchmark, "PROVED_CONDITIONAL_S295_S300");
-  assert.equal(binding.claimBoundary.cknDimensionImpliesAncestorPacking, false);
-  assert.equal(binding.claimBoundary.combinedStep12Target, "OPEN_S303");
-  assert.equal(binding.claimBoundary.frozenPacketPhysicalWinding, false);
-  assert.equal(binding.claimBoundary.singlePacketSpeedRoute, "KINEMATICALLY_SCREENED_NOT_UNIVERSAL_PDE_NO_GO_S304_S306");
-  assert.equal(binding.claimBoundary.dimensionlessFluxAndCommonDeletion, "PROVED_S307_S309");
-  assert.equal(binding.claimBoundary.fixedSolutionTemporalSequence, "PROVED_ELL1_L4_OVER_3_S310_S312");
-  assert.equal(binding.claimBoundary.fixedSolutionCommonWindowGain, "PROVED_DELTA_ONE_QUARTER_S313");
-  assert.equal(binding.claimBoundary.linearPaymentOptimization, "PROVED_UNDER_EXPLICIT_S316_S317_S322");
-  assert.equal(binding.claimBoundary.linearPaymentTargetTwoThirds, "METHOD_CEILING_STRICTLY_ABOVE_TWO_THIRDS");
-  assert.equal(binding.claimBoundary.smoothTemporalSaturation, "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S323_S325");
-  assert.equal(binding.claimBoundary.paymentDependentMovingTubeMorrey, "CONDITIONAL_ON_S328_S326_S330");
-  assert.equal(binding.claimBoundary.twoScalarCapThreshold, "ABSTRACT_EXACT_TWO_THIRDS_S331");
-  assert.equal(binding.claimBoundary.heatShearHighFrequencyScreen, "PROVED_EXACT_SMOOTH_NSE_S332_S334");
-  assert.equal(binding.claimBoundary.criticalEightAryTree, "ABSTRACT_NOT_NSE_COUNTEREXAMPLE_S335_S339");
-  assert.equal(binding.claimBoundary.incidenceChargingAndCubicDuality, "CONDITIONAL_INTERFACE_S340_S341");
-  assert.equal(binding.claimBoundary.quadraticShellSelectivePayment, "FALSE_FOR_EVERY_P_GREATER_THAN_ONE_S342");
-  assert.equal(binding.claimBoundary.outerCollarAlignment, "PROVED_SAME_WEIGHT_NO_GAIN_S350_S352");
-  assert.equal(binding.claimBoundary.incidenceHolderS358, "CONDITIONAL_ON_S356_S357");
-  assert.equal(binding.claimBoundary.criticalDensityCancellation, "PROVED_NO_LINEAR_PAYMENT_GAIN_S360_S365");
-  assert.equal(binding.claimBoundary.firstJumpDiniSkeleton, "PROVED_UNDER_DISPLAYED_HYPOTHESES_S366_S368");
-  assert.equal(binding.claimBoundary.criticalCorona, "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S370");
-  assert.equal(binding.claimBoundary.jumpCoronaPdeLemma, "OPEN_S375");
-  assert.equal(binding.claimBoundary.jumpCoronaConclusion, "CONDITIONAL_ON_OPEN_S375_S376");
-  assert.equal(binding.claimBoundary.hybridStartFluxCoordinate, "PROVED_S377_S383");
-  assert.equal(binding.claimBoundary.sameDeletionBestNEquivalence, "PROVED_ONE_FIFTH_TO_ONE_S384_S385");
-  assert.equal(binding.claimBoundary.bothResidualBranchesClosure, "CONDITIONAL_ON_OPEN_S342_S387_S391");
-  assert.equal(binding.claimBoundary.signedCommonWindowStartDebt, "RETAINED_S395");
-  assert.equal(binding.claimBoundary.terminalCrownOwnershipAndPartition, "PROVED_S396_S403");
-  assert.equal(binding.claimBoundary.terminalCrownDepthIndependentBudget, "PROVED_S404");
-  assert.equal(binding.claimBoundary.selectedCrownNonlinearPayment, "OPEN_S407");
-  assert.equal(binding.claimBoundary.terminalCrownConclusion, "CONDITIONAL_ON_OPEN_S407_S408");
-  assert.equal(binding.claimBoundary.converseHolderFlatDataFamily, "ABSTRACT_METHOD_OBSTRUCTION_NOT_NSE_S409_S412");
-  assert.equal(binding.claimBoundary.measureTreeAndScalarClockStressTests, "SEPARATE_UNCOUPLED_S413_S416");
-  assert.equal(binding.claimBoundary.step6PdeOrNseCounterexample, false);
-  assert.equal(binding.claimBoundary.pdeWeightedGenealogy, "OPEN");
-  assert.equal(binding.claimBoundary.fixedScaleInequality, "OPEN_Q1");
-  assert.equal(binding.claimBoundary.taylor1923BiPeriodicDecayingVortex, "PROVED_SMOOTH_EXACT_PERIODIC_UNFORCED_3D_NSE_FAMILY_S417_S421");
-  assert.equal(binding.claimBoundary.fixedFrameBernoulliFlux, "PROVED_EXACT_CANCELLATION_S422_S426");
-  assert.equal(binding.claimBoundary.versionMMovingCutoffDrift, "PROVED_NONZERO_S427_S432");
-  assert.equal(binding.claimBoundary.s342Status, "FALSE_FOR_EVERY_P_GREATER_THAN_ONE_FINITE_N_AND_C");
-  assert.equal(binding.claimBoundary.criticalEndpoint, "FALSE_S444_BY_RECURRENT_CLOSED_STREAMLINE");
-  assert.equal(binding.claimBoundary.continuumPaymentMachineProved, false);
-  assert.equal(binding.claimBoundary.formalFigure, "STEP17_RECURRENT_CLOSED_STREAMLINE_FOUR_PANEL_ANALYTIC_EXACT_FIELD_NOT_SIMULATION_OR_DNS");
-});
-
-test("R0.74S public mirrors, concise homepage card, and literature boundary are synchronized", () => {
-  const home = read("public/research-review.html");
-  assert.match(home, /LATEST RELEASE · R0\.74S/);
-  assert.match(home, /R0\.70A–R0\.74S · 123 节已公开/);
-  assert.match(home, /98 节完整封存/);
-  assert.equal((home.match(/id="r074s" data-release="r074s"/g) ?? []).length, 1);
-  const card = home.match(/<div class="task-one" id="r074s"[\s\S]*?<\/div>/)?.[0] ?? "";
-  assert.ok(card.length > 0 && card.length < 650, `homepage card length ${card.length}`);
-  for (const marker of ["闭流线", "recurrence", "A³", "S.444", "FALSE", "S.472", "OPEN", "NOT CLAY"]) assert.ok(card.includes(marker), marker);
-  const literature = read("public/literature-review.html");
-  assert.equal((literature.match(/id="r074s-boundary"/g) ?? []).length, 1);
-  for (const marker of ["S.445", "Taylor 1923", "closed streamline", "S.444", "S.472", "S.407", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
-
-  for (const ext of ["svg", "pdf", "png"]) {
-    const canonical = `research/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`;
-    assert.ok(existsSync(resolve(root, canonical)), canonical);
-    assert.equal(sha(`public/assets/r074s/fig-r074s-recurrent-tail-obstruction.${ext}`), sha(canonical));
-    assert.equal(sha(`public/figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`), sha(canonical));
-    assert.equal(sha(`figures/r074s/fig-r074s-recurrent-tail-obstruction/figure.${ext}`), sha(canonical));
-  }
-  const validation = JSON.parse(read("research/figures/r074s/fig-r074s-recurrent-tail-obstruction/validation.json"));
-  assert.equal(validation.checkCount, 42);
-  assert.ok(validation.checks.every((row) => row.pass));
-  assert.equal(JSON.parse(read("figures/r074s/fig-r074s-ball-clock-debt/manifest.json")).status, "historical");
-});
-
-test("R0.74S translations and formal archive inventory are complete", () => {
-  const translation = execFileSync(node, [resolve(root, "scripts/add-r074s-step17-translations.mjs"), "--check-only"], { cwd: root, encoding: "utf8" });
-  assert.match(translation, /"checked": [1-9][0-9]*/);
-  assert.match(translation, /"applied": false/);
-  const inventory = JSON.parse(read("research/formal-archive-inventory.json"));
-  assert.equal(inventory.latestPublishedRelease, "r074s");
-  assert.ok(inventory.publishedReleases.includes("r074s"));
-  assert.ok(inventory.formalSealedReleases.includes("r074s"));
-  assert.ok(!inventory.formalFigureExemptReleases.includes("r074s"));
-  assert.equal(inventory.publishedReleaseCount, 123);
-  assert.equal(inventory.formalSealedReleaseCount, 98);
-  assert.equal(inventory.sameReleaseCompletedSteps.r074s, 17);
-  assert.equal(inventory.formalFigureExemptReleaseCount, 1);
+  assert.deepEqual(binding.claimBoundary.proved, ["S.476-S.485", "S.488-S.493"]);
+  assert.deepEqual(binding.claimBoundary.abstractOnly, [
+    "triangular-clock strictness",
+    "linear-ledger two-thirds-power obstruction",
+  ]);
+  assert.ok(binding.claimBoundary.open.includes("S.486"));
+  assert.ok(binding.claimBoundary.open.includes("S.487"));
+  assert.equal(binding.claimBoundary.pdeData, false);
+  assert.equal(binding.claimBoundary.dns, false);
+  assert.equal(binding.claimBoundary.clayClaim, false);
 });

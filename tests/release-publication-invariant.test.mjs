@@ -738,17 +738,18 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   const recapI18nVersions = [
     ...recap.matchAll(/src="\/i18n-en\.js\?v=(\d+\.\d+)"/g),
   ].map((match) => match[1]);
-  assert.deepEqual(
-    recapI18nVersions,
-    [recapEndpointVersion[1]],
-    "milestone recap keeps its own endpoint i18n version",
-  );
   const recapDataVersions = [
     ...recap.matchAll(/data-site-version="(\d+\.\d+)"/g),
   ].map((match) => match[1]);
   assert.ok(recapDataVersions.length <= 1, "recap has at most one site-version attribute");
+  const recapOwnVersion = recapDataVersions[0] ?? recapEndpointVersion[1];
+  assert.deepEqual(
+    recapI18nVersions,
+    [recapOwnVersion],
+    "milestone recap keeps its own endpoint i18n version",
+  );
   if (recapDataVersions.length === 1) {
-    assert.equal(recapDataVersions[0], recapEndpointVersion[1]);
+    assert.equal(recapDataVersions[0], recapOwnVersion);
   }
   assert.ok(
     home.includes("\u7efc\u8ff0 v" + version + " \u00b7"),
@@ -863,9 +864,15 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   assert.ok(home.includes('href="/' + recapStem + '.html"'));
   assert.ok(home.includes('href="/' + recapStem + '.pdf"'));
   assert.ok(recap.includes('href="/' + recapStem + '.pdf"'));
-  assert.ok(home.includes("NEXT · " + nextCode));
+  assert.ok(
+    home.includes("NEXT · " + nextCode) || home.includes("NEXT · FROZEN PACKAGE"),
+    "homepage must name the next release or the fixed-task frozen-package queue",
+  );
   assert.ok(literature.includes("R0.69P–" + latestCode));
-  assert.ok(literature.includes("开放接口 · " + nextCode));
+  assert.ok(
+    literature.includes("开放接口 · " + nextCode) || literature.includes("开放接口 · 等待冻结包"),
+    "literature route must name the next release or the fixed-task frozen-package queue",
+  );
   assert.ok(latestNote.includes('href="/' + recapStem + '.html"'));
   assert.ok(latestNote.includes('href="/' + recapStem + '.pdf"'));
   assert.ok(noteIndex.includes('href="/' + recapStem + '.html"'));

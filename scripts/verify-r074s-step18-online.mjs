@@ -1,0 +1,72 @@
+#!/usr/bin/env node
+
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile, readdir } from "node:fs/promises";
+import { resolve } from "node:path";
+
+const root = resolve(import.meta.dirname, "..");
+const baseUrl = new URL(process.env.R074S_PUBLIC_BASE_URL ?? "https://kasifa.github.io/");
+const commit = process.env.R074S_DEPLOYED_COMMIT ?? "unversioned";
+const figureId = "fig-r074s-fixed-deletion-quantifier-gap";
+const canonicalFigureRoot = resolve(root, "research/figures/r074s", figureId);
+const publicFigureRoot = `public/figures/r074s/${figureId}`;
+const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
+
+const fixedObjects = [
+  ["public/notes/r0-74s.html", "/notes/r0-74s.html"],
+  ["public/notes/r0-74s.pdf", "/notes/r0-74s.pdf"],
+  ["public/research-review.html", "/research-review.html"],
+  ["public/literature-review.html", "/literature-review.html"],
+  ["public/notes/index.html", "/notes/index.html"],
+  ["public/site-version.json", "/site-version.json"],
+  ["public/i18n-en.js", "/i18n-en.js"],
+  ["public/recap-r0-61-r0-74s.html", "/recap-r0-61-r0-74s.html"],
+  ["public/recap-r0-61-r0-74s.pdf", "/recap-r0-61-r0-74s.pdf"],
+  [`public/assets/r074s/${figureId}.pdf`, `/assets/r074s/${figureId}.pdf`],
+  [`public/assets/r074s/${figureId}.png`, `/assets/r074s/${figureId}.png`],
+  [`public/assets/r074s/${figureId}.svg`, `/assets/r074s/${figureId}.svg`],
+];
+
+const figureNames = (await readdir(canonicalFigureRoot)).sort();
+assert.equal(figureNames.length, 25, "frozen figure archive must contain exactly 25 files");
+assert.ok(figureNames.every((name) => !/ 2(?:\.|$)/.test(name)), "duplicate-copy names are not publication objects");
+
+const objects = [
+  ...fixedObjects,
+  ...figureNames.map((name) => [
+    `${publicFigureRoot}/${name}`,
+    `/figures/r074s/${figureId}/${encodeURIComponent(name)}`,
+  ]),
+];
+assert.equal(objects.length, 37, "Step 18 online publication inventory");
+
+const results = [];
+for (const [localPath, publicPath] of objects) {
+  const expected = await readFile(resolve(root, localPath));
+  const url = new URL(publicPath, baseUrl);
+  url.searchParams.set("publication", commit);
+  const response = await fetch(url, { headers: { "cache-control": "no-cache" } });
+  const actual = Buffer.from(await response.arrayBuffer());
+  results.push({
+    publicPath,
+    status: response.status,
+    bytes: actual.length,
+    sha256: sha256(actual),
+    expectedSha256: sha256(expected),
+    exact: response.status === 200 && actual.equals(expected),
+  });
+}
+
+const failures = results.filter((row) => !row.exact);
+console.log(JSON.stringify({
+  status: failures.length === 0 ? "PASS" : "FAIL",
+  release: "R0.74S Step 18",
+  baseUrl: baseUrl.href,
+  commit,
+  objectCount: results.length,
+  exactCount: results.length - failures.length,
+  failures,
+}, null, 2));
+
+if (failures.length > 0) process.exitCode = 1;

@@ -9,7 +9,7 @@ import { collectSiteStrings, containsChinese, extractProtectedTokens } from "./i
 const root = resolve(import.meta.dirname, "..");
 const delegated = spawnSync(
   process.execPath,
-  [resolve(root, "scripts/add-r074s-step17-translations.mjs"), ...process.argv.slice(2)],
+  [resolve(root, "scripts/add-r074s-step18-translations.mjs"), ...process.argv.slice(2)],
   { cwd: root, encoding: "utf8" },
 );
 process.stdout.write(delegated.stdout || "");

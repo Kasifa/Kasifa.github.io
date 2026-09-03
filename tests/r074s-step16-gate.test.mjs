@@ -8,7 +8,7 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "..");
 const bytes = (path) => readFileSync(resolve(root, path));
 const sha = (path) => createHash("sha256").update(bytes(path)).digest("hex");
-const python = process.env.CODEX_PYTHON || "/Users/kasifa/Documents/Math/.codex-research-venv/bin/python";
+const python = process.env.CODEX_PYTHON || "python3";
 
 test("R0.74S Step 16 exact frozen source lock and certificate boundary", () => {
   const locks = {

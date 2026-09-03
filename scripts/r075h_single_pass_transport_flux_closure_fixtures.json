@@ -1,0 +1,88 @@
+{
+  "schema": "r075h-single-pass-transport-flux-closure-fixtures-v1",
+  "frozenSources": {
+    "research/r075b_bulk_clock_outer_padding_gate.md": "430feb9efc151e2b968dd1b7f785a19dc0e38416270ff8ed0275cfc6429b1a5a",
+    "research/r075e_horizontal_cross_mode_flux_reduction.md": "99529b8934412775e19a1b70784cddf3e62190b50c42669ccd34135a134c5049",
+    "research/r075f_modal_phase_integration_identity.md": "f7a72ebfe0471e18c0d5d44bd3123491d7cd47a79293d1860c5d023c13acf440",
+    "research/r075g_signed_flux_gain_threshold.md": "f2b3424dddb7eee5938200c3433cd012a1820564e43ad446e0c88d8dfa39ff41",
+    "research/r075h_report-source.md": "5b0b05b2ce903986ef8439a766766e8bdb97e2fe4d9eb6035f73102583b1b779",
+    "research/r075h_single_pass_transport_flux_closure.md": "849379bea9cf22e0d892ac11ac05bb3b3bc2967a1735753dbc4a6ffc7bb7d7b9",
+    "research/r075h_single_pass_transport_flux_closure_primary_audit.md": "3c85368e051102997e66ae36fa43290b6200e688db886380215fb40ec0bb757e"
+  },
+  "constants": {
+    "rho": "9/10000",
+    "cGamma": "8/3969"
+  },
+  "weightedTransportCase": {
+    "timeInterval": ["0", "1"],
+    "q": "q(t)=pi*t/4",
+    "field": "H(t,x)=cos(x-q(t))",
+    "cutoff": "xi(x)=1/2+(1/4)sin(2x)",
+    "eta": "eta(t)=sin(pi*t/2)",
+    "cutoffMean": "1/2",
+    "cutoffSineAmplitude": "1/4",
+    "etaInitial": "0",
+    "etaTerminal": "1",
+    "etaNondecreasing": true,
+    "measure": "(2*pi)^-1 dx"
+  },
+  "terminalTubeCase": {
+    "normalizedCircle": true,
+    "terminalTime": "1",
+    "terminalInterval": ["1/2", "1"],
+    "qOverTwoPi": "t/8",
+    "omega0Lift": ["1/4", "3/4"],
+    "omegaPlusLift": ["3/16", "3/4"],
+    "maxBackwardShift": "1/16",
+    "terminalField": "cos(2*pi*y-pi/4)",
+    "terminalL2OnOmega0": "1/4",
+    "terminalWeightedEnergy": "1/8"
+  },
+  "holderEqualityCase": {
+    "delta": "1/8",
+    "spatialVolume": "1/8",
+    "constantFieldMagnitude": "2"
+  },
+  "h23Factors": [
+    {"name": "fluxNormalization", "L": "0", "R": "-1", "omega": "1", "p": "0"},
+    {"name": "deltaMinusTwoThirds", "L": "0", "R": "-2", "omega": "0", "p": "0"},
+    {"name": "volumeOneThird", "L": "2/3", "R": "1", "omega": "0", "p": "0"},
+    {"name": "cubicTwoThirds", "L": "0", "R": "4/3", "omega": "-2/3", "p": "2/3"}
+  ],
+  "matchingBackgroundCase": {
+    "R": "1/8",
+    "L": "1",
+    "omega": "1/8",
+    "lowerConstant": "1",
+    "pB": "64"
+  },
+  "coherentRationalClosureCase": {
+    "domain": "unit periodic x2 circle with unit transverse measure",
+    "timeInterval": ["0", "1"],
+    "terminalInterval": ["3/4", "1"],
+    "qPrime": "1/8",
+    "qTerminal": "1/8",
+    "etaBreak": "1/4",
+    "etaEarlySlope": "4",
+    "etaPlateau": "1",
+    "R": "1/2",
+    "L": "2",
+    "omega": "1/8",
+    "exteriorWeight": "1/4",
+    "omega0": ["5/8", "7/8"],
+    "omegaPlus": ["19/32", "7/8"],
+    "xiPieces": [
+      {"interval": ["5/8", "3/4"], "constant": "-5", "x": "8"},
+      {"interval": ["3/4", "7/8"], "constant": "7", "x": "-8"}
+    ],
+    "xiRegularity": "Lipschitz; a.e. transport/IBP arithmetic fixture only",
+    "positiveField": {"constant": "7/4", "x": "-2", "t": "1/4"},
+    "negativeControlField": {"constant": "-3/4", "x": "2", "t": "-1/4"},
+    "matchingPB": "8"
+  },
+  "diffusiveIdentityCase": {
+    "terminalHalfEnergy": "3",
+    "dissipation": "5",
+    "cutoffHalfIntegral": "2"
+  }
+}

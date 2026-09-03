@@ -2,13 +2,31 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const bytes = (path) => readFileSync(resolve(root, path));
 const sha = (path) => createHash("sha256").update(bytes(path)).digest("hex");
 const python = process.env.CODEX_PYTHON || "python3";
+
+function runPrimaryCertificate() {
+  const outputRoot = mkdtempSync(join(tmpdir(), "r074s-taylor-primary-"));
+  try {
+    return JSON.parse(execFileSync(python, ["scripts/r074s_moving_frame_taylor_vortex_certificate.py"], {
+      cwd: root,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        R074S_TAYLOR_JSON: join(outputRoot, "certificate.json"),
+        R074S_TAYLOR_REPORT: join(outputRoot, "certificate-report.md"),
+      },
+    }));
+  } finally {
+    rmSync(outputRoot, { recursive: true, force: true });
+  }
+}
 
 function runIndependentCertificate() {
   const result = spawnSync("ruby", ["scripts/r074s_moving_frame_taylor_vortex_certificate_independent.rb"], {
@@ -40,7 +58,7 @@ test("R0.74S Step 16 exact frozen source lock and certificate boundary", () => {
   };
   for (const [path, expected] of Object.entries(locks)) assert.equal(sha(path), expected, path);
 
-  const primary = JSON.parse(execFileSync(python, ["scripts/r074s_moving_frame_taylor_vortex_certificate.py"], { cwd: root, encoding: "utf8" }));
+  const primary = runPrimaryCertificate();
   assert.equal(primary.verdict, "PASS");
   assert.equal(primary.finite_checks.length, 7);
   assert.equal(primary.finite_checks.reduce((sum, row) => sum + row.cases, 0), 2207);

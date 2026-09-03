@@ -1,0 +1,66 @@
+{
+  "schema": "r075i-diffusion-safe-block-participation-fixtures-v1",
+  "frozenSources": {
+    "research/r075b_bulk_clock_outer_padding_gate.md": "430feb9efc151e2b968dd1b7f785a19dc0e38416270ff8ed0275cfc6429b1a5a",
+    "research/r075c_background_shear_packing_false_positive.md": "1f72f3c9d9d348f86188206690ce714df28aed661a9192c7b53bc1e5921f2f89",
+    "research/r075e_horizontal_cross_mode_flux_reduction.md": "99529b8934412775e19a1b70784cddf3e62190b50c42669ccd34135a134c5049",
+    "research/r075g_signed_flux_gain_threshold.md": "f2b3424dddb7eee5938200c3433cd012a1820564e43ad446e0c88d8dfa39ff41",
+    "research/r075h_single_pass_transport_flux_closure.md": "849379bea9cf22e0d892ac11ac05bb3b3bc2967a1735753dbc4a6ffc7bb7d7b9",
+    "research/r075i_diffusion_safe_block_participation.md": "c8511690dc52988b3f3715e589379c72dae0a892dcabd8d0ca218dddbe0fd3a7",
+    "research/r075i_diffusion_safe_block_participation_primary_audit.md": "a8e481bfa28ba244a6022b782880ce9a86c40de29e3b0064474841eca99cecbd",
+    "research/r075i_report-source.md": "8459adb6735caa2ee6c6e9c27202125cda34ad9072e2d78167f3f961e34f5de3"
+  },
+  "oneBlockExponentFactors": [
+    {"name": "fluxNormalization", "L": "0", "R": "-1", "omega": "1", "p": "0"},
+    {"name": "pointwiseCoefficient", "L": "0", "R": "-3", "omega": "0", "p": "0"},
+    {"name": "measureOneThird", "L": "2/3", "R": "2", "omega": "0", "p": "0"},
+    {"name": "cubicTwoThirds", "L": "0", "R": "4/3", "omega": "-2/3", "p": "2/3"}
+  ],
+  "oneBlockHolderCase": {
+    "R": "1/2",
+    "L": "2",
+    "omega": "1/8",
+    "timeLength": "1/8",
+    "supportVolume": "1/2",
+    "cellMeasures": ["1/32", "1/32"],
+    "fieldValues": ["1", "3"],
+    "bMagnitude": "4",
+    "cutoffDerivativeMagnitude": "2",
+    "eta": "1"
+  },
+  "participationCases": [
+    {"name": "singleBlock", "payments": ["8"]},
+    {"name": "equalMassFourBlocks", "payments": ["8", "8", "8", "8"]},
+    {"name": "unequalPerfectCubes", "payments": ["1", "8"]},
+    {"name": "sparseCollection", "payments": ["0", "8", "0"]},
+    {"name": "zeroPayment", "payments": ["0", "0"]}
+  ],
+  "signedAggregationCases": [
+    {"name": "negativeTotal", "fluxes": ["5", "-9", "1"]},
+    {"name": "positiveMixedTotal", "fluxes": ["5", "-2", "-4", "3"]}
+  ],
+  "paymentDirectionCase": {
+    "pA": "9",
+    "pF": "12",
+    "constant": "2",
+    "P": "8"
+  },
+  "thresholdConstants": {
+    "rho": "9/10000",
+    "cGamma": "8/3969",
+    "thetaBelow": "1/5",
+    "thetaAbove": "1/4"
+  },
+  "zeroModeCase": {
+    "blockCount": 4,
+    "R": "1/2",
+    "omega": "1/8",
+    "timeLength": "1/4",
+    "domainVolume": "1",
+    "fieldValue": "2",
+    "bValue": "3",
+    "eta": "1",
+    "x2CellMeasures": ["1/2", "1/2"],
+    "cutoffDerivativeValues": ["2", "-2"]
+  }
+}

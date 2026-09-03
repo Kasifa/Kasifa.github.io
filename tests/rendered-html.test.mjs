@@ -303,7 +303,7 @@ test("maps the complete published route as a branching tree", async () => {
   ).length;
   assert.ok(currentRouteCount > 0);
   assert.ok(route.includes(`展开 ${currentRouteCount} 篇公开笔记`));
-  assert.ok(route.includes(["R0.75F", "R0.75G", "R0.75H"].includes(latestCode) ? "NEXT · NOT AUTHORIZED" : `NEXT · ${nextCode}`));
+  assert.ok(route.includes(["R0.75F", "R0.75G", "R0.75H", "R0.75I"].includes(latestCode) ? "NEXT · NOT AUTHORIZED" : `NEXT · ${nextCode}`));
   assert.match(route, /路线回返/);
   assert.match(route, /当前主线/);
   assert.doesNotMatch(route, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);

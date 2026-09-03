@@ -65,6 +65,7 @@ const ENDPOINTS = Object.freeze({
   r075g: { version: "2.11", code: "R0.75G", slug: "r0-75g", next: "R0.75H" },
   r075h: { version: "2.12", code: "R0.75H", slug: "r0-75h", next: "R0.75I" },
   r075i: { version: "2.13", code: "R0.75I", slug: "r0-75i", next: "R0.75J" },
+  r075j: { version: "2.14", code: "R0.75J", slug: "r0-75j", next: "R0.75K" },
 });
 
 async function page(name) {
@@ -140,7 +141,7 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     assert.ok(home.includes(
       `<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`,
     ));
-    assert.ok(home.includes(["r075f", "r075g", "r075h", "r075i"].includes(endpoint.release) ? "NEXT · NOT AUTHORIZED" : ["r074x", "r074y", "r074z"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
+    assert.ok(home.includes(["r075f", "r075g", "r075h", "r075i", "r075j"].includes(endpoint.release) ? "NEXT · NOT AUTHORIZED" : ["r074x", "r074y", "r074z"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
     const routeStart = home.indexOf('<section class="route-overview"');
     const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
     const route = home.slice(routeStart, routeEnd);
@@ -422,7 +423,9 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
   );
   assert.ok(isZ
     ? home.includes(`<a href="#${endpoint.release}">查看首页完整 ${endpoint.code} 卡片</a>`)
-    : home.includes(`<a class="route-map-latest" href="#${endpoint.release}">跳到首页 ${endpoint.code} 卡片 →</a>`));
+    : ["r075h", "r075i", "r075j"].includes(endpoint.release)
+      ? home.includes(`<a href="#${endpoint.release}">查看首页 ${endpoint.code} 卡片</a>`)
+      : home.includes(`<a class="route-map-latest" href="#${endpoint.release}">跳到首页 ${endpoint.code} 卡片 →</a>`));
   assert.ok(home.includes('<a href="/notes/">查看完整笔记</a>'));
 
   const routeStart = home.indexOf('<section class="route-overview"');
@@ -468,7 +471,7 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const intro = match[1];
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
-  assert.ok(topology.includes(["r075f", "r075g", "r075h", "r075i"].includes(endpoint.release) ? "开放接口 · 后续未授权" : endpoint.release === "r075a" ? "开放接口 · A.63" : ["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
+  assert.ok(topology.includes(["r075f", "r075g", "r075h", "r075i", "r075j"].includes(endpoint.release) ? "开放接口 · 后续未授权" : endpoint.release === "r075a" ? "开放接口 · A.63" : ["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
 
   if (endpoint.release.localeCompare("r074b") >= 0) {
     assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));
@@ -477,7 +480,7 @@ test("literature route records the materialized G through R0.74A boundary", asyn
     for (const marker of ["PROVED", "OPEN", "NOT CLAY"]) {
       assert.ok(boundary.includes(marker), `${endpoint.code} boundary ${marker}`);
     }
-    assert.match(boundary, /(?:FINITE|finite|SUFFICIENT ONLY)/, `${endpoint.code} boundary finite or sufficient-only scope`);
+    assert.match(boundary, /(?:FINITE|finite|SUFFICIENT ONLY|NOT A BLANKET NO-GO)/, `${endpoint.code} boundary finite or sufficient-only scope`);
     return;
   }
 

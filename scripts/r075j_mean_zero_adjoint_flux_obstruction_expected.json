@@ -1,0 +1,75 @@
+{
+  "schema": "r075j-mean-zero-adjoint-flux-obstruction-expected-v1",
+  "operators": {
+    "forward": {"time": "1", "drift": "1", "laplacian": "-1"},
+    "adjoint": {"time": "-1", "drift": "-1", "laplacian": "-1"},
+    "driftDivergenceTerm": "0",
+    "squareDissipationCoefficient": "-2"
+  },
+  "physicalSource": {
+    "derivativeMeanByX3Cell": ["0", "0"],
+    "sourceMeanByX3Cell": ["0", "0"],
+    "totalSignedMean": "0",
+    "positivePartMean": "6",
+    "absoluteMean": "12",
+    "positivePartEqualsSignedSource": false,
+    "quantifier": "every-(t,x1)"
+  },
+  "explicitAdjoint": {
+    "cosineCoefficientsInTau": ["1", "1", "2", "1"],
+    "sineCoefficientsInTau": ["0", "0", "0", "0"],
+    "sourceCosineCoefficientsInTau": ["1", "1", "2", "1"],
+    "terminalA": "0",
+    "terminalB": "0",
+    "etaSamples": ["1/2", "17/20", "5/3"],
+    "etaNumeratorMinimumOnUnitInterval": "1",
+    "etaDenominatorMinimumOnUnitInterval": "2",
+    "etaPositiveOnUnitInterval": true,
+    "sliceSamples": [
+      {"tau": "1/2", "atX0": "1/2", "atXPi": "-1/2"},
+      {"tau": "1", "atX0": "1", "atXPi": "-1"}
+    ],
+    "nonzeroSlicesChangeSign": true
+  },
+  "duality": {
+    "initialCoefficient": "1",
+    "terminalCoefficient": "-1",
+    "bulkCoefficient": "1",
+    "rhs": "-4",
+    "sourcePairing": "-4",
+    "residual": "0"
+  },
+  "signedDissipation": {
+    "squareDissipationCoefficient": "-2",
+    "J5InitialCoefficient": "1/2",
+    "J5DissipationCoefficient": "-1",
+    "exactFlux": "2",
+    "J13InitialPositiveCoefficient": "1/2",
+    "J13NegativeDissipationCoefficient": "1",
+    "upperBound": "7",
+    "upperSlack": "5"
+  },
+  "constantShift": {
+    "energyIdentityResidual": "0",
+    "homogeneousAdjointSource": "0",
+    "initialConstantContribution": "15",
+    "terminalConstantContribution": "-6",
+    "dissipationConstantContribution": "-9",
+    "exactConstantSum": "0",
+    "droppedDissipationSurcharge": "9",
+    "CtimesD": "9"
+  },
+  "majorant": {
+    "direction": "a<=LstarPhi",
+    "PhiNonnegative": true,
+    "terminalNonnegative": true,
+    "halfSourcePairing": "3",
+    "halfInitialRow": "6",
+    "negativeHalfTerminalRow": "-1",
+    "negativeDissipationRow": "-2",
+    "exactMajorantRhs": "3",
+    "boundaryOnlyUpper": "6",
+    "terminalTermFavorable": true,
+    "dissipationTermFavorable": true
+  }
+}

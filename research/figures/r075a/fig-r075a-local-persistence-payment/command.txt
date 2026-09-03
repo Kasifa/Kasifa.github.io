@@ -1,0 +1,7 @@
+CODEX_PYTHON=/path/to/bundled/python3
+R075A_DEPS_DIR=/path/to/version-pinned/dependencies
+REPOSITORY=/path/to/navier-stokes-r074m
+FIG=research/figures/r075a/fig-r075a-local-persistence-payment
+env PYTHONPATH="$R075A_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/plot.py" --deps "$R075A_DEPS_DIR" --repository "$REPOSITORY" --render
+env PYTHONPATH="$R075A_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/validate.py" --repository "$REPOSITORY" --seal
+env PYTHONPATH="$R075A_DEPS_DIR" "$CODEX_PYTHON" -B "$FIG/validate.py" --repository "$REPOSITORY" --verify-only

@@ -56,6 +56,7 @@ const ENDPOINTS = Object.freeze({
   r074x: { version: "2.02", code: "R0.74X", slug: "r0-74x", next: "R0.74Y" },
   r074y: { version: "2.03", code: "R0.74Y", slug: "r0-74y", next: "R0.74Z" },
   r074z: { version: "2.04", code: "R0.74Z", slug: "r0-74z", next: "R0.75A" },
+  r075a: { version: "2.05", code: "R0.75A", slug: "r0-75a", next: "R0.75B" },
 });
 
 async function page(name) {
@@ -459,7 +460,7 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const intro = match[1];
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
-  assert.ok(topology.includes(["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
+  assert.ok(topology.includes(endpoint.release === "r075a" ? "开放接口 · A.63" : ["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
 
   if (endpoint.release.localeCompare("r074b") >= 0) {
     assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));

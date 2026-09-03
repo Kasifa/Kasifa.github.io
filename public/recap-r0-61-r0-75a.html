@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="2.05"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R0.61–R0.75A 累计里程碑回顾｜从 clock compression 到 local dichotomy</title>
+<meta name="description" content="R0.61 至 R0.75A 的 169 节累计回顾，含 P–A 五字段节点账本、R0.75A moving-cutoff dichotomy、完整审计边界与 A.63 开放接口">
+<link rel="canonical" href="https://kasifa.github.io/recap-r0-61-r0-75a.html"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=2.05"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.7 Georgia,"Songti SC","Noto Serif SC",serif}nav{padding:12px 5vw;border-top:5px solid var(--ink);border-bottom:3px double var(--ink);display:flex;justify-content:space-between;gap:1rem}main{width:min(1040px,90vw);margin:auto}header{padding:55px 0 30px;border-bottom:1px solid var(--line)}h1{font-size:clamp(2rem,5vw,3.7rem);line-height:1.08}h2{color:var(--rule);margin-top:2.4rem}section{border-bottom:1px dotted var(--line);padding-bottom:1.2rem}.eyebrow{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.06em;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card,.boundary{background:var(--raised);border:1px solid var(--line);padding:1rem 1.2rem}.node dl{display:grid;grid-template-columns:7rem 1fr;gap:.28rem .7rem;margin:0}.node dt{font-weight:700;color:var(--rule)}.node dd{margin:0}.node-links{display:flex;flex-wrap:wrap;gap:.45rem}.node-links a{border:1px solid var(--line);padding:.2rem .45rem;text-decoration:none}a{color:var(--rule)}code{overflow-wrap:anywhere}@media(max-width:720px){body{font-size:15px}.grid{grid-template-columns:1fr}nav{font-size:13px}.node dl{grid-template-columns:1fr}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}nav{display:none}body{font-size:8.5pt}main{width:auto}header{padding-top:0}.card{break-inside:avoid}}</style></head>
+<body><nav><a href="/research-review.html">研究首页</a><span>R0.61–R0.75A · 2026-09-03</span></nav><main><header><p class="eyebrow">CUMULATIVE MILESTONE RECAP · 169 NODES</p><h1>从 clock compression 到 local persistence/payment dichotomy</h1><p>这是 R0.60 之后的累计里程碑回顾。收录节点：169；回顾截止时公开笔记：229。它保留 R0.74S 与更早 recap 字节不变，在现有路线之后新增 R0.74T–R0.75A 八个节点，并以 P–A 五字段 ledger 固定最新问题、结果、被拒路线、边界和下一步。</p><p><a href="/recap-r0-61-r0-75a.pdf">下载同步累计回顾 PDF</a> · <a href="/notes/r0-75a.html">阅读 R0.75A Step 26</a> · <a href="/recap-r0-61-r0-74s.html">上一版重大路线修正 recap</a></p></header>
+<article><section id="retained"><p class="eyebrow">01 / P–A MILESTONE</p><h2>一个已证局部二分，一个被隔离的 complete-clock 缺口</h2><p>P–A 把宽泛的 clock-compression 问题转成一个 proved local dichotomy 和一个 sharply isolated remaining gap。路线完成 local-energy clock，压力测试 finite deletion 与 exact common-shear multipackets，修正 time/deletion quantifiers，证明 schedule-invariant residence 与 remote adjacent-inward witnesses，并检验 three-packet 与 cancellation-cell routes。R0.75A 最终关闭 W remote kinetic witness 的 arbitrarily short endpoint focusing：localized mass 要么向后持续，要么其 rapid change 强制同一个 exterior cubic payment。下一问题是 complete-clock extraction，不是 spectral persistence。</p><ul><li>projected-Lamb 全局与局部压缩，以及 \(\int_0^\infty\Theta_s^2ds\le\frac12\|u\|_4^4\)。</li><li>归一化热体积 \(\mathcal V\in L_t^1\) 的无条件 Leray 能量估计。</li><li>固定 Parseval 框架上的精确 \(2K^2\) 底边迹代价，以及若干量词明确的光滑 NSE 解族和有限 Fourier 符号对。</li></ul></section>
+<section id="timeline"><p class="eyebrow">02 / P–A FIVE-FIELD LEDGER</p><h2>Problem / Result / Rejected / Boundary / Next</h2><div class="grid"><article class="card node"><p class="eyebrow">P / defect-completed clock</p><dl><dt>Problem</dt><dd>在不丢失 anomalous dissipation 的前提下定义 suitable-weak clock。</dd><dt>Result</dt><dd>K=Q+F=E+D≥0；quadratic 与 flux variations 继承付款账本。</dd><dt>Rejected</dt><dd>defect-only detection；循环使用 full-dissipation baseline。</dd><dt>Boundary</dt><dd>严谨 ledger/compactness，不是 best-N compression。</dd><dt>Next</dt><dd>exact multipacket stress test。</dd></dl></article>
+<article class="card node"><p class="eyebrow">Q / common-shear multipackets</p><dl><dt>Problem</dt><dd>以 exact smooth unforced NSE 实现多个坐标。</dd><dt>Result</dt><dd>有限 same-shear passive packets 与 inversion partners 精确闭合；canonical equal-target family 产生付款。</dd><dt>Rejected</dt><dd>naive additivity 与 canonical cheap-payment design。</dd><dt>Boundary</dt><dd>constructed-family theorem，不是 universal exclusion；non-hit 不是 novelty。</dd><dt>Next</dt><dd>arbitrary-clock extraction。</dd></dl></article>
+<article class="card node"><p class="eyebrow">R / arbitrary clocks</p><dl><dt>Problem</dt><dd>从大 clock 提取 persistent lobe 或 paid branch。</dd><dt>Result</dt><dd>endpoint averaging、padded persistence、good-time closure 与 conditional lobe extraction；exposed lobe cubically pays。</dd><dt>Rejected</dt><dd>用 abstract clock example 代替 PDE extraction。</dd><dt>Boundary</dt><dd>uniform arbitrary-suitable-weak extraction 仍 OPEN。</dd><dt>Next</dt><dd>修正 deletion/time quantifiers。</dd></dl></article>
+<article class="card node"><p class="eyebrow">S / fixed-deletion quantifiers</p><dl><dt>Problem</dt><dd>排序 terminal time、deletion set 与 shell supremum。</dd><dt>Result</dt><dd>hybrid、fixed-set simultaneous height 与 coordinatewise excursion 完成排序；known payment 后 fixed hybrid 与 simultaneous height target-scale 等价。</dd><dt>Rejected</dt><dd>absolute variation 与 separable coordinatewise maxima。</dd><dt>Boundary</dt><dd>functional counterexamples，不是 NSE counterexamples。</dd><dt>Next</dt><dd>schedule-invariant physical residence。</dd></dl></article>
+<article class="card node"><p class="eyebrow">T / schedule-invariant dwell</p><dl><dt>Problem</dt><dd>一次 deletion 后处理 asynchronous lobes。</dd><dt>Result</dt><dd>theta R³ residence 强制 exact exterior cubic payment；两个 nonnegative clocks 给出 N=1 floor。</dd><dt>Rejected</dt><dd>以 H_fix 取代 K、反向不等式与未证 target-time shift。</dd><dt>Boundary</dt><dd>local coercivity 已证；full-clock extraction OPEN。</dd><dt>Next</dt><dd>certify actual packet residence。</dd></dl></article>
+<article class="card node"><p class="eyebrow">U / intrinsic residence</p><dl><dt>Problem</dt><dd>在完整 terminal slab 保持 dominance。</dd><dt>Result</dt><dd>exact corridor/slab/all-winding estimates 给出 total-field lobe 与 Omega(LR³) certified residence。</dd><dt>Rejected</dt><dd>把 corridor occupation 转成 full K-superlevel occupation，或把 Omega 升为 Theta。</dd><dt>Boundary</dt><dd>explicit-family lower theorem，不是 maximal-clock upper。</dd><dt>Next</dt><dd>completed-clock upper ledger。</dd></dl></article>
+<article class="card node"><p class="eyebrow">V / completed-clock upper screen</p><dl><dt>Problem</dt><dd>控制 explicit-family 每个 clock row。</dd><dt>Result</dt><dd>exact lifted tiling 与 coarse shear/packet budgets；V.46–V.50 只限定到六对 central-chart。</dd><dt>Rejected</dt><dd>all-shell K-upper、arbitrary-k extension、torus cap 与漏记 accumulated dissipation。</dd><dt>Boundary</dt><dd>即使在六对有限表域，whole-annulus occupation estimates 仍 OPEN；all-shell upper 也 OPEN。</dd><dt>Next</dt><dd>adjacent-inward remote comparison。</dd></dl></article>
+<article class="card node"><p class="eyebrow">W / remote adjacent inward</p><dl><dt>Problem</dt><dd>把 outer packet 向内移动一个 dyadic shell 测试。</dd><dt>Result</dt><dd>all-winding survival、inversion/cross margins 与 exact endpoint geometry 给出 remote lower witness。</dd><dt>Rejected</dt><dd>absolute o(1)、free age、deleted windings 与 whole-shell promotion。</dd><dt>Boundary</dt><dd>无 fixed-deletion 或 whole-clock upper theorem。</dd><dt>Next</dt><dd>three-packet payment gate。</dd></dl></article>
+<article class="card node"><p class="eyebrow">X / three-packet gate</p><dl><dt>Problem</dt><dd>一次 deletion 后保留两个坐标且保持 cheap payment。</dd><dt>Result</dt><dd>exact three-packet algebra、四个 cross margins 与两个 endpoint lowers 给出 two-coordinate obstruction。</dd><dt>Rejected</dt><dd>把两个 actual-strip uppers 提升为 whole-clock upper。</dd><dt>Boundary</dt><dd>payment-normalized fixed-deletion counterexample NOT PROVED。</dd><dt>Next</dt><dd>payment-compatible cancellation。</dd></dl></article>
+<article class="card node"><p class="eyebrow">Y / route screen</p><dl><dt>Problem</dt><dd>取消 target 同时保留 remote coordinate。</dd><dt>Result</dt><dd>exact arithmetic 排除 frozen geometry，并找到 formal changed-geometry exponent window。</dd><dt>Rejected</dt><dd>dyadic r≥2 route；把 accumulated-viscosity dimensional screen 当 theorem。</dd><dt>Boundary</dt><dd>necessary window，不是 construction；platform、windings、survival 与 H1 occupation 要重证。</dd><dt>Next</dt><dd>cancellation-cell gate。</dd></dl></article>
+<article class="card node"><p class="eyebrow">Z / cancellation cell</p><dl><dt>Problem</dt><dd>有限 Gaussian/Hermite/time-offset cells 能否只在 endpoint focusing。</dd><dt>Result</dt><dd>exact closure、time-tame conditional persistence 与 strict subcritical dwell obstruction，带 positive exact payment gap。</dd><dt>Rejected</dt><dd>literal vertical/time translates、qualitative analyticity 充当 quantitative theorem、unconditioned finite-family claims。</dd><dt>Boundary</dt><dd>在 Z，critical/ill-conditioned endpoint focusing 与 full Y.57 clock 仍 OPEN；literature 只是 finite non-hit。</dd><dt>Next</dt><dd>exact moving-cutoff identity。</dd></dl></article>
+<article class="card node"><p class="eyebrow">A / moving-cutoff dichotomy</p><dl><dt>Problem</dt><dd>任意短 total-field endpoint focusing 能否逃避 W-kinetic payment。</dd><dt>Result</dt><dd>exact smooth common-shear family 中，persistence 与 rapid-rise 两支穷尽，并得到 \((P_R^M)^{2/3}\gtrsim h_{\rm rem}R^{2/3}\omega^{-5/6}L^{-1/6}\)；exact gap \(64279/238140000>0\)。</dd><dt>Rejected</dt><dd>backward-growing Fourier mode、horizontal band 作为 full generator、global modal energy 自动等于 local payment、此 lemma 必须用 spectral observability。</dd><dt>Boundary</dt><dd>只针对 positive-volume endpoint core 与 exact smooth family；无 complete-clock upper、fixed deletion 或 suitable-weak extension。</dd><dt>Next</dt><dd>A.63 remote complete-clock extraction，控制 endpoint、accumulated、off-target rows，且不把 strip lower 改成 whole-shell upper。</dd></dl></article></div></section>
+<section id="changed"><p class="eyebrow">03 / WHAT CHANGED AT A</p><h2>critical 与任意短光滑 endpoint focusing 不再是逃逸分支</h2><p>moving-cutoff identity 直接作用于 total field；persistence 与 rapid-rise 两支穷尽并统一给出 W-remote payment lower：</p><p>\((P_R^M)^{2/3}\gtrsim h_{\rm rem}R^{2/3}\omega^{-5/6}L^{-1/6}\)，且 exact exponent gap 为 \(64279/238140000>0\)。该结论对有限 family size、coefficients、spectral bandwidth 与 temporal conditioning 统一，因为它不逐 packet 分解。它没有给出 whole-shell upper 或 complete-clock upper。</p></section>
+<section id="open-next"><p class="eyebrow">04 / OPEN NEXT</p><h2>A.63 remote complete-clock extraction</h2><p>后续必须同时控制 endpoint、accumulated 与 off-target rows，并避免把 strip lower 改写成 whole-shell upper。complete K、fixed deletion、arbitrary suitable weak extension、contraction、regularity 与 singularity 仍 OPEN。R0.75B/C/D 未读取、未发布。</p></section>
+<section id="audit"><p class="eyebrow">05 / AUDIT BOX</p><h2>冻结 commits、prose hashes、certificate 与 figure ledger</h2><div class="boundary"><p><strong>Core commit：</strong><code>d15b7d8f9a3b16b63b4f324c75c9e156e9d03ff8</code></p><p><strong>Figure archive commit：</strong><code>243969b9d75d71224070bbdb3da64ce0103c1441</code></p><p><strong>Recap delta commit：</strong><code>9f01a3a8df2f60633a16e41eb2a1cb606c750198</code></p><p><strong>Main / primary / literature SHA-256：</strong><code>f8117a7ff6380676d2ed05e749119579cc3f6972463834dcc6ad2a0b03026388</code> / <code>c599a1dcee8a82ec1c91512d5b664b1394707fd6d69ac2ca7ba022ebf715d3f6</code> / <code>169eff2e607338ae990fb9994db3f75e11830246a36ee5cce8a7376e64302cea</code></p><p><strong>Certificate：</strong>Python 14/14；Ruby 17/17；64 unique tags；3 seeds byte-identical；8 targeted mutations rejected by both implementations。</p><p><strong>Figure：</strong>25 files；2,588,462 bytes；SVG <code>cfbb92394ebbcb5ce9603b3f7df32568e37837c5b2238112b69bfec31f8dfe27</code>；PNG <code>81546061c9febeac81ff683e8a7bd0811d7a9f3c10a90db05037febc0ee25d70</code>；PDF <code>ab588b17586d556744bebe8a5957725f4f92033bc1d0133619710c76aee13f5f</code>。</p><p><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r075a_spectral_persistence_payment_dichotomy.md">main</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r075a_spectral_persistence_payment_dichotomy_primary_audit.md">primary audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r075a_spectral_persistence_payment_dichotomy_literature_audit.md">literature audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/r075a_spectral_persistence_payment_dichotomy_certificate.json">certificate JSON</a> · <a href="/figures/r075a/fig-r075a-local-persistence-payment/manifest.json">figure manifest</a></p><p><strong>Literature boundary：</strong>pure-heat nested cutoff 有明确方法先例；bounded non-hit 不证明 novelty 或 priority。<strong>NOT CLAY.</strong></p></div></section>
+<section id="node-index"><p class="eyebrow">NODE INDEX / 169</p><h2>R0.61–R0.75A 全部节点</h2><div class="node-links"><a href="/notes/r0-61.html">61</a>
+<a href="/notes/r0-62.html">62</a>
+<a href="/notes/r0-63.html">63</a>
+<a href="/notes/r0-64.html">64</a>
+<a href="/notes/r0-65.html">65</a>
+<a href="/notes/r0-66.html">66</a>
+<a href="/notes/r0-67.html">67</a>
+<a href="/notes/r0-67b.html">67B</a>
+<a href="/notes/r0-67c1.html">67C1</a>
+<a href="/notes/r0-67c2.html">67C2</a>
+<a href="/notes/r0-68a.html">68A</a>
+<a href="/notes/r0-68b1.html">68B1</a>
+<a href="/notes/r0-68b2.html">68B2</a>
+<a href="/notes/r0-68b2de.html">68B2DE</a>
+<a href="/notes/r0-68b2fgh.html">68B2FGH</a>
+<a href="/notes/r0-69a.html">69A</a>
+<a href="/notes/r0-69b.html">69B</a>
+<a href="/notes/r0-69c.html">69C</a>
+<a href="/notes/r0-69d.html">69D</a>
+<a href="/notes/r0-69e.html">69E</a>
+<a href="/notes/r0-69f.html">69F</a>
+<a href="/notes/r0-69g.html">69G</a>
+<a href="/notes/r0-69h.html">69H</a>
+<a href="/notes/r0-69i.html">69I</a>
+<a href="/notes/r0-69j.html">69J</a>
+<a href="/notes/r0-69k.html">69K</a>
+<a href="/notes/r0-69l.html">69L</a>
+<a href="/notes/r0-69m.html">69M</a>
+<a href="/notes/r0-69n.html">69N</a>
+<a href="/notes/r0-69o.html">69O</a>
+<a href="/notes/r0-69p.html">69P</a>
+<a href="/notes/r0-69q.html">69Q</a>
+<a href="/notes/r0-69r.html">69R</a>
+<a href="/notes/r0-69s.html">69S</a>
+<a href="/notes/r0-69t.html">69T</a>
+<a href="/notes/r0-69u.html">69U</a>
+<a href="/notes/r0-69v.html">69V</a>
+<a href="/notes/r0-69w.html">69W</a>
+<a href="/notes/r0-70a.html">70A</a>
+<a href="/notes/r0-70b.html">70B</a>
+<a href="/notes/r0-70c.html">70C</a>
+<a href="/notes/r0-70d.html">70D</a>
+<a href="/notes/r0-70e.html">70E</a>
+<a href="/notes/r0-70f.html">70F</a>
+<a href="/notes/r0-70g.html">70G</a>
+<a href="/notes/r0-70h.html">70H</a>
+<a href="/notes/r0-70i.html">70I</a>
+<a href="/notes/r0-70j.html">70J</a>
+<a href="/notes/r0-70k.html">70K</a>
+<a href="/notes/r0-70l.html">70L</a>
+<a href="/notes/r0-70m.html">70M</a>
+<a href="/notes/r0-70n.html">70N</a>
+<a href="/notes/r0-70o.html">70O</a>
+<a href="/notes/r0-70p.html">70P</a>
+<a href="/notes/r0-70q.html">70Q</a>
+<a href="/notes/r0-70r.html">70R</a>
+<a href="/notes/r0-70s.html">70S</a>
+<a href="/notes/r0-70t.html">70T</a>
+<a href="/notes/r0-70u.html">70U</a>
+<a href="/notes/r0-70v.html">70V</a>
+<a href="/notes/r0-70w.html">70W</a>
+<a href="/notes/r0-70x.html">70X</a>
+<a href="/notes/r0-70y.html">70Y</a>
+<a href="/notes/r0-70z.html">70Z</a>
+<a href="/notes/r0-71a.html">71A</a>
+<a href="/notes/r0-71b.html">71B</a>
+<a href="/notes/r0-71c.html">71C</a>
+<a href="/notes/r0-71d.html">71D</a>
+<a href="/notes/r0-71e.html">71E</a>
+<a href="/notes/r0-71f.html">71F</a>
+<a href="/notes/r0-71g.html">71G</a>
+<a href="/notes/r0-71h.html">71H</a>
+<a href="/notes/r0-71i.html">71I</a>
+<a href="/notes/r0-71j.html">71J</a>
+<a href="/notes/r0-71k.html">71K</a>
+<a href="/notes/r0-71l.html">71L</a>
+<a href="/notes/r0-71m.html">71M</a>
+<a href="/notes/r0-71n.html">71N</a>
+<a href="/notes/r0-71o.html">71O</a>
+<a href="/notes/r0-71p.html">71P</a>
+<a href="/notes/r0-71q.html">71Q</a>
+<a href="/notes/r0-71r.html">71R</a>
+<a href="/notes/r0-71s.html">71S</a>
+<a href="/notes/r0-71t.html">71T</a>
+<a href="/notes/r0-71u.html">71U</a>
+<a href="/notes/r0-71v.html">71V</a>
+<a href="/notes/r0-71w.html">71W</a>
+<a href="/notes/r0-71x.html">71X</a>
+<a href="/notes/r0-71y.html">71Y</a>
+<a href="/notes/r0-71z.html">71Z</a>
+<a href="/notes/r0-72a.html">72A</a>
+<a href="/notes/r0-72b.html">72B</a>
+<a href="/notes/r0-72c.html">72C</a>
+<a href="/notes/r0-72d.html">72D</a>
+<a href="/notes/r0-72e.html">72E</a>
+<a href="/notes/r0-72f.html">72F</a>
+<a href="/notes/r0-72g.html">72G</a>
+<a href="/notes/r0-72h.html">72H</a>
+<a href="/notes/r0-72i.html">72I</a>
+<a href="/notes/r0-72j.html">72J</a>
+<a href="/notes/r0-72k.html">72K</a>
+<a href="/notes/r0-72l.html">72L</a>
+<a href="/notes/r0-72m.html">72M</a>
+<a href="/notes/r0-72n.html">72N</a>
+<a href="/notes/r0-72o.html">72O</a>
+<a href="/notes/r0-72p.html">72P</a>
+<a href="/notes/r0-72q.html">72Q</a>
+<a href="/notes/r0-72r.html">72R</a>
+<a href="/notes/r0-72s.html">72S</a>
+<a href="/notes/r0-72t.html">72T</a>
+<a href="/notes/r0-72u.html">72U</a>
+<a href="/notes/r0-72v.html">72V</a>
+<a href="/notes/r0-72w.html">72W</a>
+<a href="/notes/r0-72x.html">72X</a>
+<a href="/notes/r0-72y.html">72Y</a>
+<a href="/notes/r0-72z.html">72Z</a>
+<a href="/notes/r0-73a.html">73A</a>
+<a href="/notes/r0-73b.html">73B</a>
+<a href="/notes/r0-73c.html">73C</a>
+<a href="/notes/r0-73d.html">73D</a>
+<a href="/notes/r0-73e.html">73E</a>
+<a href="/notes/r0-73f.html">73F</a>
+<a href="/notes/r0-73g.html">73G</a>
+<a href="/notes/r0-73h.html">73H</a>
+<a href="/notes/r0-73i.html">73I</a>
+<a href="/notes/r0-73j.html">73J</a>
+<a href="/notes/r0-73k.html">73K</a>
+<a href="/notes/r0-73l.html">73L</a>
+<a href="/notes/r0-73m.html">73M</a>
+<a href="/notes/r0-73n.html">73N</a>
+<a href="/notes/r0-73o.html">73O</a>
+<a href="/notes/r0-73p.html">73P</a>
+<a href="/notes/r0-73q.html">73Q</a>
+<a href="/notes/r0-73r.html">73R</a>
+<a href="/notes/r0-73s.html">73S</a>
+<a href="/notes/r0-73t.html">73T</a>
+<a href="/notes/r0-73u.html">73U</a>
+<a href="/notes/r0-73v.html">73V</a>
+<a href="/notes/r0-73w.html">73W</a>
+<a href="/notes/r0-73x.html">73X</a>
+<a href="/notes/r0-73y.html">73Y</a>
+<a href="/notes/r0-73z.html">73Z</a>
+<a href="/notes/r0-74a.html">74A</a>
+<a href="/notes/r0-74b.html">74B</a>
+<a href="/notes/r0-74c.html">74C</a>
+<a href="/notes/r0-74d.html">74D</a>
+<a href="/notes/r0-74e.html">74E</a>
+<a href="/notes/r0-74f.html">74F</a>
+<a href="/notes/r0-74g.html">74G</a>
+<a href="/notes/r0-74h.html">74H</a>
+<a href="/notes/r0-74i.html">74I</a>
+<a href="/notes/r0-74j.html">74J</a>
+<a href="/notes/r0-74k.html">74K</a>
+<a href="/notes/r0-74l.html">74L</a>
+<a href="/notes/r0-74m.html">74M</a>
+<a href="/notes/r0-74n.html">74N</a>
+<a href="/notes/r0-74o.html">74O</a>
+<a href="/notes/r0-74p.html">74P</a>
+<a href="/notes/r0-74q.html">74Q</a>
+<a href="/notes/r0-74r.html">74R</a>
+<a href="/notes/r0-74s.html">74S</a>
+<a href="/notes/r0-74t.html">74T</a>
+<a href="/notes/r0-74u.html">74U</a>
+<a href="/notes/r0-74v.html">74V</a>
+<a href="/notes/r0-74w.html">74W</a>
+<a href="/notes/r0-74x.html">74X</a>
+<a href="/notes/r0-74y.html">74Y</a>
+<a href="/notes/r0-74z.html">74Z</a>
+<a href="/notes/r0-75a.html">75A</a></div></section></article></main></body></html>

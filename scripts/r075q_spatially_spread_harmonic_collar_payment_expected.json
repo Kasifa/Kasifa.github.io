@@ -1,0 +1,102 @@
+{
+  "schema": "r075q-spatially-spread-harmonic-collar-payment-expected-v1",
+  "radial": {
+    "outerRadius": "3/8",
+    "innerRadius": "1/8",
+    "shellVolumeOverPi": "13/192",
+    "derivativeL1BoundOverPi": "13/12",
+    "benchmarkA2R2": "1/16",
+    "centralChartCertified": true
+  },
+  "harmonic": {
+    "timeCoefficient": "-k^2",
+    "driftCoefficient": "+k*B*sin",
+    "transportCoefficient": "-k*B*sin",
+    "diffusionCoefficient": "+k^2",
+    "operatorSum": "0"
+  },
+  "flux": {
+    "outerHalf": "1/2",
+    "squareHalf": "1/2",
+    "constantRow": "0",
+    "preTimeFactor": "1/4",
+    "timeIntegralUpper": "1/2048",
+    "finalFactor": "1/(8*k^2)",
+    "fixtureBound": "315/16384"
+  },
+  "rectangle": {
+    "maxTransverseRadiusSquared": "1/128",
+    "safeRadiusSquared": "1/64",
+    "insideFibreSafeDisk": true,
+    "fibreLower": "1/4",
+    "x2Length": "1/8",
+    "x3Length": "1/8",
+    "kTimesX2Length": "4",
+    "completePeriods": "1",
+    "onePeriodIntegral": "1/24",
+    "claimedX2LowerTimesPi": "1/12",
+    "phaseUniform": true,
+    "spatialLowerTimesPi": "1/384"
+  },
+  "cubic": {
+    "timeLower": "(1-exp(-3))/(3*k^2)",
+    "cBox": "2*(1-exp(-3))/(9*pi)",
+    "massLowerCoefficientWithoutExpOverPi": "3/131072",
+    "massPowers": {
+      "delta0": "1",
+      "a": "2",
+      "R": "3",
+      "k": "-2",
+      "A": "3"
+    },
+    "inversePowers": {
+      "delta0": "-2/3",
+      "a": "-4/3",
+      "R": "-2",
+      "k": "4/3",
+      "M": "2/3"
+    },
+    "combinedPowers": {
+      "delta0": "-2/3",
+      "absB": "1",
+      "a": "2/3",
+      "R": "0",
+      "k": "-2/3",
+      "M": "2/3"
+    }
+  },
+  "normalization": {
+    "beforeScaleBounds": {
+      "absB": "1",
+      "a": "2/3",
+      "R": "1/3",
+      "omega": "1/3",
+      "k": "-2/3",
+      "p": "2/3"
+    },
+    "afterScaleBounds": {
+      "L": "2/3",
+      "R": "-2/3",
+      "omega": "1/3",
+      "p": "2/3"
+    },
+    "exponentialRate": "-4279/238140000",
+    "strictlyNegative": true
+  },
+  "ledger": {
+    "velocityMagnitude": "5",
+    "packetCubicIntegral": "1008/5",
+    "versionMRowContribution": "1400",
+    "packetToRowRatio": "18/125",
+    "pointwiseDominated": true,
+    "projectionDominationValid": false
+  },
+  "entrance": {
+    "E0OverPiSquared": "18",
+    "entranceUpperOverPi": "9/16",
+    "fractionUpperTimesPi": "1/32",
+    "sigmaSample": "1",
+    "powerGap": "1",
+    "validForEveryFixedSigmaBelowTwo": true
+  }
+}

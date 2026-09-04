@@ -1,0 +1,70 @@
+{
+  "schema": "r075n-radial-collar-averaged-wiener-row-expected-v1",
+  "calibration": {
+    "p": "32/63",
+    "a": "8",
+    "r": "1/2",
+    "aAtLeastMax2Delta1": true,
+    "outerSupportRadius": "9/16",
+    "centralChartCertifiedByOuterRadiusBelowOne": true
+  },
+  "fourierDerivative": {
+    "normalization": "1/(2*pi)",
+    "reconstructionPhase": "+i*ell*x2",
+    "derivativeRule": "d_ell=i*ell*Xi_ell",
+    "rows": [
+      {"ell": -2, "XiReal": "0", "XiImag": "-2", "dReal": "-4", "dImag": "0"},
+      {"ell": -1, "XiReal": "1", "XiImag": "0", "dReal": "0", "dImag": "-1"},
+      {"ell": 0, "XiReal": "3", "XiImag": "0", "dReal": "0", "dImag": "0"},
+      {"ell": 1, "XiReal": "1", "XiImag": "0", "dReal": "0", "dImag": "1"},
+      {"ell": 2, "XiReal": "0", "XiImag": "2", "dReal": "-4", "dImag": "0"}
+    ],
+    "dZero": "0+0i"
+  },
+  "sampling": {
+    "cutoffIndex": "4",
+    "lowIntegerCount": "9",
+    "lowRawBound": "27",
+    "highReciprocalTailBound": "1/2",
+    "highRawBound": "24",
+    "finiteHighReciprocalSum": "73249/352800",
+    "finiteHighRawBound": "73249/7350",
+    "rows": [
+      {"nu": 1, "lowWeightedBound": "27/4", "highWeightedBound": "6", "combinedWeightedBound": "51/4", "targetRPower": "0"},
+      {"nu": 2, "lowWeightedBound": "27/16", "highWeightedBound": "3/2", "combinedWeightedBound": "51/16", "targetRPower": "1"}
+    ],
+    "lowMechanism": "count-O(R^-1)-times-L1",
+    "highMechanism": "two-IBP-R^-2-times-tail-O(R)",
+    "supremumOrder": "sum-over-ell-of-sup-over-z"
+  },
+  "sliceAreas": {
+    "uniformCapOverPi": "32",
+    "rows": [
+      {"z": "0", "region": "interior", "areaOverPi": "32", "capGapOverPi": "0"},
+      {"z": "7", "region": "interior-boundary", "areaOverPi": "32", "capGapOverPi": "0"},
+      {"z": "15/2", "region": "tangency", "areaOverPi": "99/4", "capGapOverPi": "29/4"},
+      {"z": "17/2", "region": "tangency", "areaOverPi": "35/4", "capGapOverPi": "93/4"},
+      {"z": "9", "region": "empty-boundary", "areaOverPi": "0", "capGapOverPi": "32"},
+      {"z": "10", "region": "empty", "areaOverPi": "0", "capGapOverPi": "32"}
+    ]
+  },
+  "fullShell": {
+    "volumeOverPi": "1544/3",
+    "exactExpansionOverPi": "8*a^2*delta+8*delta^3/3",
+    "volumeOverPiDividedByASquared": "193/24",
+    "order": "O_delta(a^2)"
+  },
+  "scaling": {
+    "x1Average": {"prefactorR": "1", "afterX2DerivativeR": "0", "fourierCoefficientR": "1", "fubiniL1A": "1", "wienerRowR": "0", "wienerRowA": "1"},
+    "fullAverage": {"prefactorR": "2", "afterX2DerivativeR": "1", "fourierCoefficientR": "2", "fubiniL1A": "2", "wienerRowR": "1", "wienerRowA": "2"},
+    "radialDerivativeOrders": [1, 3],
+    "radialDenominatorSafe": "radius>=a-delta>=a/2>=1/2"
+  },
+  "frequency": {
+    "KLowerRPower": "-3/2",
+    "gainKPower": "-2/3",
+    "impliedRPower": "1",
+    "x1AveragedResult": {"L": "1", "R": "1"},
+    "fullyAveragedResult": {"L": "2", "R": "2"}
+  }
+}

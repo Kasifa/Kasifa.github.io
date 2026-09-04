@@ -1,0 +1,60 @@
+{
+  "schema": "r075l-single-harmonic-diffusive-signed-flux-gain-expected-v1",
+  "operator": {
+    "timeCoefficient": "1",
+    "driftCoefficientSymbol": "B",
+    "secondDerivativeCoefficient": "-1"
+  },
+  "eta": {
+    "rows": [
+      {"eta": "0", "admissible": true},
+      {"eta": "1/3", "admissible": true},
+      {"eta": "1", "admissible": true}
+    ],
+    "absoluteValueMayUseEtaUpperBound": true
+  },
+  "passiveFamily": [
+    {"k": 1, "timeCos": "-1", "timeSin": "2", "driftSin": "-2", "diffusionCos": "1", "residualCos": "0", "residualSin": "0", "squareModes": [-2, 0, 2], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "diagonalPairing": "0", "timeIntegralDenominator": "2", "fluxCoefficientTimesOneMinusQ2": "45/4", "fluxUpperCoefficient": "45/4", "massCoefficientTimesOneMinusQ3": "24"},
+    {"k": 2, "timeCos": "-4", "timeSin": "4", "driftSin": "-4", "diffusionCos": "4", "residualCos": "0", "residualSin": "0", "squareModes": [-4, 0, 4], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "diagonalPairing": "0", "timeIntegralDenominator": "8", "fluxCoefficientTimesOneMinusQ2": "45/16", "fluxUpperCoefficient": "45/16", "massCoefficientTimesOneMinusQ3": "6"},
+    {"k": 5, "timeCos": "-25", "timeSin": "10", "driftSin": "-10", "diffusionCos": "25", "residualCos": "0", "residualSin": "0", "squareModes": [-10, 0, 10], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "diagonalPairing": "0", "timeIntegralDenominator": "50", "fluxCoefficientTimesOneMinusQ2": "9/20", "fluxUpperCoefficient": "9/20", "massCoefficientTimesOneMinusQ3": "24/25"}
+  ],
+  "timeIntegral": {
+    "exactSymbol": "(1-q2)/(2*k^2)",
+    "q2Symbol": "exp(-2*k^2*T)",
+    "q2Interval": "0<q2<1",
+    "dropFactorDirection": "1-q2<=1"
+  },
+  "absoluteCosineMoment": {
+    "quarterIntegral": "2/3",
+    "symmetryFactor": "4",
+    "fullIntegral": "8/3"
+  },
+  "massConversion": {
+    "exactSymbol": "8*A^3*(1-q3)/(9*k^2)",
+    "q3Symbol": "exp(-3*k^2*T)",
+    "condition": "k^2*T>=1",
+    "q3Comparison": "0<q3<=exp(-3)<1",
+    "c3Symbol": "1-exp(-3)",
+    "c3Interval": "0<c3<1",
+    "A2Conversion": "A^2<=(9/(8*c3))^(2/3)*k^(4/3)*M^(2/3)",
+    "CStar": "1/8*(9/(8*c3))^(2/3)"
+  },
+  "exponents": {
+    "fluxUpper": {"A": "2", "B": "1", "Vxi": "1", "k": "-2"},
+    "mass": {"A": "3", "k": "-2"},
+    "massTwoThirds": {"A": "2", "k": "-4/3"},
+    "fluxOverMassTwoThirds": {"A": "0", "B": "1", "Vxi": "1", "k": "-2/3"},
+    "targetNormalized": {"R": "1/3", "omega": "1/3", "k": "-2/3", "p": "2/3"},
+    "amplitudeCancels": true
+  },
+  "threshold": {
+    "alphaStar": "27163/107163",
+    "kappaStar": "27163/71442",
+    "endpointEquality": "2*kappaStar/3=alphaStar",
+    "displayRounded10": "0.3802105204",
+    "strictTestKappa": "2/5",
+    "strictKappaMargin": "7069/357210",
+    "strictExponentMargin": "7069/535815",
+    "RInterval": "0<R<1"
+  }
+}

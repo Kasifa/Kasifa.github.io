@@ -1135,7 +1135,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     "收录节点：" + recapNodes,
     "回顾截止时公开笔记：" +
       (htmlNotes.length - (publishedNodes - recapNodes)),
-    recapRelease === latestRelease ? "后续版本未授权" : recapNextCode,
+    "后续版本未授权",
     recapCode,
   ]) {
     assert.ok(recap.includes(phrase), phrase);

@@ -303,7 +303,7 @@ test("maps the complete published route as a branching tree", async () => {
   ).length;
   assert.ok(currentRouteCount > 0);
   assert.ok(route.includes(`展开 ${currentRouteCount} 篇公开笔记`));
-  assert.ok(route.includes(["R0.76H", "R0.76I"].includes(latestCode) ? "STOP · NO LATER RELEASE AUTHORIZED" : latestCode === "R0.76F" ? "NEXT · R0.76G" : latestCode === "R0.76E" ? "NEXT · R0.76F" : ["R0.75F", "R0.75G", "R0.75H", "R0.75I", "R0.75J", "R0.75K", "R0.75L", "R0.75M", "R0.75N", "R0.75O", "R0.75P", "R0.75Q", "R0.75R", "R0.75S", "R0.75T", "R0.75U", "R0.75V", "R0.75W", "R0.75X", "R0.75Y", "R0.75Z", "R0.76A", "R0.76B", "R0.76C", "R0.76D"].includes(latestCode) ? "NEXT · NOT AUTHORIZED" : `NEXT · ${nextCode}`));
+  assert.ok(route.includes(["R0.76H", "R0.76I", "R0.76J"].includes(latestCode) ? "STOP · NO LATER RELEASE AUTHORIZED" : latestCode === "R0.76F" ? "NEXT · R0.76G" : latestCode === "R0.76E" ? "NEXT · R0.76F" : ["R0.75F", "R0.75G", "R0.75H", "R0.75I", "R0.75J", "R0.75K", "R0.75L", "R0.75M", "R0.75N", "R0.75O", "R0.75P", "R0.75Q", "R0.75R", "R0.75S", "R0.75T", "R0.75U", "R0.75V", "R0.75W", "R0.75X", "R0.75Y", "R0.75Z", "R0.76A", "R0.76B", "R0.76C", "R0.76D"].includes(latestCode) ? "NEXT · NOT AUTHORIZED" : `NEXT · ${nextCode}`));
   assert.match(route, /路线回返/);
   assert.match(route, /当前主线/);
   assert.doesNotMatch(route, /我们|攻关|主攻|研究纪律|杀死错误想法|突破/);

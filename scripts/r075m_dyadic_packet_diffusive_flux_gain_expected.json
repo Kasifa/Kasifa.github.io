@@ -1,0 +1,80 @@
+{
+  "schema": "r075m-dyadic-packet-diffusive-flux-gain-expected-v1",
+  "operator": {"timeCoefficient": "1", "driftCoefficientSymbol": "B", "secondDerivativeCoefficient": "-1"},
+  "packet": {
+    "K": 2,
+    "B": "3",
+    "modes": [-4, -3, -2, 2, 3, 4],
+    "modeCount": 6,
+    "realAdmissible": true,
+    "allModesInDyadicBand": true,
+    "coefficientEnergy": "28",
+    "E0OverPi": "56"
+  },
+  "evolutionCases": [
+    {"n": -4, "timeReal": "-16", "timeImag": "12", "driftImag": "-12", "diffusionReal": "16", "residualReal": "0", "residualImag": "0"},
+    {"n": -3, "timeReal": "-9", "timeImag": "9", "driftImag": "-9", "diffusionReal": "9", "residualReal": "0", "residualImag": "0"},
+    {"n": -2, "timeReal": "-4", "timeImag": "6", "driftImag": "-6", "diffusionReal": "4", "residualReal": "0", "residualImag": "0"},
+    {"n": 2, "timeReal": "-4", "timeImag": "-6", "driftImag": "6", "diffusionReal": "4", "residualReal": "0", "residualImag": "0"},
+    {"n": 3, "timeReal": "-9", "timeImag": "-9", "driftImag": "9", "diffusionReal": "9", "residualReal": "0", "residualImag": "0"},
+    {"n": 4, "timeReal": "-16", "timeImag": "-12", "driftImag": "12", "diffusionReal": "16", "residualReal": "0", "residualImag": "0"}
+  ],
+  "fourierConvention": {
+    "reconstructionPhase": "+i*ell*x",
+    "kernelIndex": "m-n",
+    "dZero": "0",
+    "diagonalVanishesBeforeAbsoluteValue": true,
+    "spatialIntegralFactor": "2*pi",
+    "fluxKernelFactor": "pi*B"
+  },
+  "eta": {"rows": [{"eta": "0", "admissible": true}, {"eta": "1/2", "admissible": true}, {"eta": "1", "admissible": true}]},
+  "schur": {
+    "Wxi": "761/140",
+    "denominatorLowerBound": "8",
+    "rowSums": {"-4": "11149/134400", "-3": "36187/245700", "-2": "979/6240", "2": "979/6240", "3": "36187/245700", "4": "11149/134400"},
+    "columnSums": {"-4": "11149/134400", "-3": "36187/245700", "-2": "979/6240", "2": "979/6240", "3": "36187/245700", "4": "11149/134400"},
+    "maximumExactRowOrColumn": "979/6240",
+    "crudeRowColumnBound": "761/1120",
+    "absoluteQuadraticForm": "28505017/7862400",
+    "schurQuadraticUpper": "761/40",
+    "parsevalEnergyFactor": "2*pi",
+    "finalEnergyCoefficient": "Wxi/(4*K^2)",
+    "modeCountFactor": "none"
+  },
+  "shortTime": {
+    "interval": "0<=t<=1/(8*K^2)",
+    "upperModeSquareBound": "4*K^2",
+    "squaredHeatExponent": "-8*K^2*t",
+    "endpointL2Factor": "exp(-1)",
+    "holderCircleFactor": "(2*pi)^(-1/2)",
+    "endpointL3Factor": "exp(-3/2)",
+    "cubicLowerMonomial": {"rational": "1/8", "e": "-3/2", "2pi": "-1/2", "K": "-2", "E0": "3/2"},
+    "energyInversionMonomial": {"rational": "4", "e": "1", "2pi": "1/3", "K": "4/3", "M": "2/3"},
+    "combinedFluxMonomial": {"rational": "1", "e": "1", "2pi": "1/3", "B": "1", "Wxi": "1", "K": "-2/3", "M": "2/3"}
+  },
+  "wiener": {
+    "Wxi": "761/140",
+    "finiteWeightedSquareSum": "6722549/352800",
+    "finiteInverseWeightSum": "596797/204425",
+    "WxiSquared": "579121/19600",
+    "cauchySchwarzGap": "1881034487903/72121140000",
+    "weightSymbol": "1+ell^2",
+    "parsevalIdentity": "sum(1+ell^2)|d_ell|^2=(||xi'||_2^2+||xi''||_2^2)/(2*pi)",
+    "highestXiDerivative": 2,
+    "pointwiseSupAloneSufficient": false
+  },
+  "normalization": {
+    "fluxGain": {"B": "1", "Wxi": "1", "K": "-2/3", "M": "2/3"},
+    "targetNormalized": {"B": "1", "Wxi": "1", "R": "1/3", "omega": "1/3", "K": "-2/3", "p": "2/3"}
+  },
+  "threshold": {
+    "alphaStar": "27163/107163",
+    "kappaStar": "27163/71442",
+    "endpointEquality": "2*kappaStar/3=alphaStar",
+    "strictTestKappa": "2/5",
+    "strictKappaMargin": "7069/357210",
+    "strictExponentMargin": "7069/535815",
+    "RInterval": "0<R<1",
+    "powerDirection": "larger-exponent-gives-smaller-power"
+  }
+}

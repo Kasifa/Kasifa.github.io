@@ -1,0 +1,104 @@
+{
+  "schema": "r076k-real-dyadic-edge-sharpness-fixtures-v1",
+  "files": {
+    "main": "research/r076k_real_dyadic_edge_sharpness.md",
+    "source": "research/r076k_report-source.md",
+    "primaryAudit": "research/r076k_real_dyadic_edge_sharpness_primary_audit.md",
+    "r076jMain": "research/r076j_local_edge_extrapolation_reconstruction.md",
+    "r076jPrimaryAudit": "research/r076j_local_edge_extrapolation_reconstruction_primary_audit.md"
+  },
+  "frozen": {
+    "mainSha256": "e293a3aa3e9c1dde443ed7a8c07afd2c709d3855d8b469b38033b04d71116bf2",
+    "sourceSha256": "21dbd71aae07ecbe910d4bcefbf6e1caccc3cddc41171a57ffd239c6eed34f3e",
+    "primaryAuditSha256": "36a26cb421a108127b516e47a0008625d67ec43a1d009a14bef9d7684ef03671",
+    "r076jMainSha256": "a3d67c8a27ef6ffb7068313732e8e8a08ba98931226df726ac4ee2140ab0f57f",
+    "r076jPrimaryAuditSha256": "1b2a608c6ffe16c35489b95fd384f0f47a1d4a79b22491a7825ac53382a746d5",
+    "r076jCoreCommit": "25d44e986d5283107816f910f89b94bceb1d5726"
+  },
+  "polynomialSamples": [
+    {
+      "name": "genericCubic",
+      "coefficientsAscending": ["2", "-1", "3", "2"],
+      "epsilon": "1/4"
+    },
+    {
+      "name": "chebyshevT3",
+      "coefficientsAscending": ["0", "-3", "0", "4"],
+      "epsilon": "1/8"
+    },
+    {
+      "name": "normalizedLegendreKernelQ4",
+      "coefficientsAscending": ["-3/16", "-15/16", "15/16", "35/16"],
+      "epsilon": "1/8"
+    }
+  ],
+  "pointwiseSample": {
+    "q": 4,
+    "d": "1/2",
+    "polynomialSample": "chebyshevT3"
+  },
+  "exteriorSample": {
+    "q": 4,
+    "d": "8/63"
+  },
+  "integerSliceSample": {
+    "q": 4,
+    "n0": 3,
+    "eta": "1/8",
+    "thetaOverPi": "1/6",
+    "transportPhaseOverPi": "1/10",
+    "heatScale": "1/7",
+    "xOverPi": "4",
+    "polynomialSample": "chebyshevT3"
+  },
+  "asymptoticSample": {
+    "rho": "9/10000",
+    "q": 4,
+    "eta": "1/614656",
+    "errorPower": 2,
+    "convergenceBase": 7,
+    "approximationBase": 6,
+    "remainderBase": 5,
+    "provedWindowExponent": "2",
+    "upperWindowExponent": "5/2"
+  },
+  "signedCapSample": {
+    "delta0": "1",
+    "rCenter": "5",
+    "halfWidth": "1",
+    "collarRadius": "9",
+    "A": "100",
+    "identityTestX": "1",
+    "capLeftX": "21/20",
+    "chebyshevDegree": 3
+  },
+  "semigroupSample": {
+    "epsilon": "1/4",
+    "tau": "1",
+    "A": "2",
+    "e": "1/2",
+    "v": "-1",
+    "M": "1",
+    "x": "0",
+    "polynomialCoefficientsAscending": ["0", "0", "1"]
+  },
+  "backwardHeatSample": {
+    "n": 2,
+    "m": 4,
+    "A": "10",
+    "T": "1"
+  },
+  "claims": {
+    "realDyadicSharpness": true,
+    "exactIntegerSingleSlice": true,
+    "signedTwoCapSingleSlice": true,
+    "completeFluxLowerBound": false,
+    "fullQOLFiveHalvesRange": false,
+    "qOLSquaredRange": true,
+    "l3EndpointOptimality": false,
+    "formalFigureRequired": false,
+    "simulationRequired": false,
+    "noveltyClaimed": false,
+    "clayClaimed": false
+  }
+}

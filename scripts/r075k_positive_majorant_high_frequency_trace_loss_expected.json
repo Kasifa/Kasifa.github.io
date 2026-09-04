@@ -1,0 +1,58 @@
+{
+  "schema": "r075k-positive-majorant-high-frequency-trace-loss-expected-v1",
+  "operators": {
+    "forward": {"time": "1", "drift": "1", "secondDerivative": "-1"},
+    "adjoint": {"time": "-1", "drift": "-1", "secondDerivative": "-1"}
+  },
+  "majorantSource": {
+    "rows": [
+      {"cosine": "-1", "q": "0", "a": "-1", "qMinusA": "1"},
+      {"cosine": "0", "q": "1", "a": "0", "qMinusA": "1"},
+      {"cosine": "1", "q": "2", "a": "1", "qMinusA": "1"}
+    ],
+    "qNonnegativeOnCosineRange": true,
+    "qMajorizesAOnCosineRange": true,
+    "qModes": [-1, 0, 1],
+    "aModes": [-1, 1]
+  },
+  "semigroup": {
+    "timeDirection": "forward-in-tau",
+    "duhamelOrientation": "integral-0-to-T",
+    "reversedGeneratorDrift": "1",
+    "reversedGeneratorDiffusion": "1",
+    "sourceSign": "1",
+    "terminalValue": "0",
+    "PhiNonnegative": true,
+    "PhiEntranceModes": [-1, 0, 1],
+    "spatialMassSymbol": "2*pi*T",
+    "spatialMassOverPi": "4"
+  },
+  "passiveFamily": [
+    {"k": 1, "timeCos": "-1", "timeSin": "1", "driftSin": "-1", "diffusionCos": "1", "residualCos": "0", "residualSin": "0", "squareModes": [-2, 0, 2], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "BOverPi": "9", "massCoefficientTimesOneMinusQ": "24", "massUpperCoefficient": "24", "ratioCubeNormalized": "81/64", "signedFlux": "0"},
+    {"k": 2, "timeCos": "-4", "timeSin": "2", "driftSin": "-2", "diffusionCos": "4", "residualCos": "0", "residualSin": "0", "squareModes": [-4, 0, 4], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "BOverPi": "9", "massCoefficientTimesOneMinusQ": "6", "massUpperCoefficient": "6", "ratioCubeNormalized": "81/4", "signedFlux": "0"},
+    {"k": 5, "timeCos": "-25", "timeSin": "5", "driftSin": "-5", "diffusionCos": "25", "residualCos": "0", "residualSin": "0", "squareModes": [-10, 0, 10], "squareModeCoefficients": ["9/4", "9/2", "9/4"], "BOverPi": "9", "massCoefficientTimesOneMinusQ": "24/25", "massUpperCoefficient": "24/25", "ratioCubeNormalized": "50625/64", "signedFlux": "0"}
+  ],
+  "absoluteCosineMoment": {
+    "quarterIntegral": "2/3",
+    "symmetryFactor": "4",
+    "fullIntegral": "8/3"
+  },
+  "exponents": {
+    "boundary": {"A": "2", "k": "0"},
+    "massUpper": {"A": "3", "k": "-2"},
+    "massTwoThirds": {"A": "2", "k": "-4/3"},
+    "ratio": {"A": "0", "k": "4/3"},
+    "amplitudeCancels": true,
+    "ratioDiverges": true
+  },
+  "fixedWeight": {
+    "quantifier": "for-each-fixed-W-then-k-to-infinity",
+    "continuous": true,
+    "nonnegative": true,
+    "integralPositive": true,
+    "dependsOnK": false,
+    "oscillatoryTerm": "integral-W-cos(2kx)",
+    "oscillatoryLimit": "0",
+    "boundaryLimit": "A^2/4*integral(W)>0"
+  }
+}

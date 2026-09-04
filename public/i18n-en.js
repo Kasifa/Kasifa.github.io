@@ -878,7 +878,7 @@ globalThis.NS_EN_TRANSLATIONS = Object.freeze({
   "R0.75Q Step 42 的 bounded primary-source screen 与主张边界": "R0.75Q Step 42 bounded primary-source screen and claim boundary",
   "R0.75Q Step 42 公开边界": "R0.75Q Step 42 public boundary",
   "R0.75R Step 43 的 bounded primary-source screen 与主张边界": "R0.75R Step 43 bounded primary-source screen and claim boundary",
-  "R0.75R Step 43 公开边界": "R0.75R Step 43 public boundary",
+  "R0.75R Step 43 公开边界 · LIMITED NO-GO": "R0.75R Step 43 public boundary",
   "raw viscous collar 精确融合，rowwise absolute payment 关闭": "The raw viscous collar fuses exactly; rowwise absolute payment is closed",
   "scalar cubic 的超水平集是显式中间开区间；完整一载波 zero-diffusion reference 有 Bessel 解、action-poor placement 与 \\((16/\\pi^2)a^2\\log\\sigma\\) true-cubic law。": "The scalar cubic superlevel set is an explicit middle open interval; the complete one-carrier zero-diffusion reference has a Bessel solution, action-poor placement, and the true-cubic law \\((16/\\pi^2)a^2\\log\\sigma\\).",
   "Schmid 的 time-independent-domain 定理": "Schmid's time-independent-domain theorem",

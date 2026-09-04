@@ -86,6 +86,7 @@ const ENDPOINTS = Object.freeze({
   r076b: { version: "2.32", code: "R0.76B", slug: "r0-76b", next: "R0.76C" },
   r076c: { version: "2.33", code: "R0.76C", slug: "r0-76c", next: "R0.76D" },
   r076d: { version: "2.34", code: "R0.76D", slug: "r0-76d", next: "R0.76E" },
+  r076e: { version: "2.35", code: "R0.76E", slug: "r0-76e", next: "R0.76F" },
 });
 
 async function page(name) {
@@ -161,7 +162,7 @@ test("homepage current route reaches the materialized G through R0.74A boundary 
     assert.ok(home.includes(
       `<a class="route-map-latest" href="/notes/${endpoint.slug}.pdf">阅读最新 ${endpoint.code} 研究笔记 →</a>`,
     ));
-    assert.ok(home.includes(["r075f", "r075g", "r075h", "r075i", "r075j", "r075k", "r075l", "r075m", "r075n", "r075o", "r075p", "r075q", "r075r", "r075s", "r075t", "r075u", "r075v", "r075w", "r075x", "r075y", "r075z", "r076a", "r076b", "r076c", "r076d"].includes(endpoint.release) ? "NEXT · NOT AUTHORIZED" : ["r074x", "r074y", "r074z"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
+    assert.ok(home.includes(endpoint.release === "r076e" ? "NEXT · R0.76F" : ["r075f", "r075g", "r075h", "r075i", "r075j", "r075k", "r075l", "r075m", "r075n", "r075o", "r075p", "r075q", "r075r", "r075s", "r075t", "r075u", "r075v", "r075w", "r075x", "r075y", "r075z", "r076a", "r076b", "r076c", "r076d"].includes(endpoint.release) ? "NEXT · NOT AUTHORIZED" : ["r074x", "r074y", "r074z"].includes(endpoint.release) ? `NEXT · ${endpoint.next} FROZEN PACKAGE` : ["r074t", "r074u", "r074w"].includes(endpoint.release) ? "NEXT · FROZEN PACKAGE" : `NEXT · ${endpoint.next}`));
     const routeStart = home.indexOf('<section class="route-overview"');
     const routeEnd = home.indexOf('<div class="page-shell">', routeStart);
     const route = home.slice(routeStart, routeEnd);
@@ -491,7 +492,7 @@ test("literature route records the materialized G through R0.74A boundary", asyn
   const intro = match[1];
   const topology = match[2];
   const boundary = claimBoundary(literature, endpoint.release);
-  assert.ok(topology.includes(["r075f", "r075g", "r075h", "r075i", "r075j", "r075k", "r075l", "r075m", "r075n", "r075o", "r075p", "r075q", "r075r", "r075s", "r075t", "r075u", "r075v", "r075w", "r075x", "r075y", "r075z", "r076a", "r076b", "r076c", "r076d"].includes(endpoint.release) ? "开放接口 · 后续未授权" : endpoint.release === "r075a" ? "开放接口 · A.63" : ["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
+  assert.ok(topology.includes(endpoint.release === "r076e" ? "开放接口 · R0.76F" : ["r075f", "r075g", "r075h", "r075i", "r075j", "r075k", "r075l", "r075m", "r075n", "r075o", "r075p", "r075q", "r075r", "r075s", "r075t", "r075u", "r075v", "r075w", "r075x", "r075y", "r075z", "r076a", "r076b", "r076c", "r076d"].includes(endpoint.release) ? "开放接口 · 后续未授权" : endpoint.release === "r075a" ? "开放接口 · A.63" : ["r074t", "r074u", "r074w", "r074x", "r074y", "r074z"].includes(endpoint.release) ? "开放接口 · 等待冻结包" : `开放接口 · ${endpoint.next}`));
 
   if (endpoint.release.localeCompare("r074b") >= 0) {
     assert.ok(literature.includes(`id="${endpoint.release}-boundary"`));

@@ -1,0 +1,98 @@
+{
+  "schema": "r076i-chebyshev-scale-full-plateau-window-fixtures-v1",
+  "freeze": {
+    "state": "HASH_SEALED",
+    "placeholderPrefix": "PENDING_R076I_",
+    "placeholderSuffix": "_SHA256"
+  },
+  "frozen": {
+    "p": "32/63",
+    "rho": "9/10000",
+    "cGamma": "8/3969",
+    "omegaThirdLogRate": "-2/11907"
+  },
+  "sample": {
+    "a": 64,
+    "delta0": "1/10",
+    "delta": "1/2",
+    "q": 3,
+    "alpha": "5/2"
+  },
+  "zhang": {
+    "AFr": 8191,
+    "positiveModeCountRule": "q",
+    "complexBranchCountRule": "2q",
+    "amplitudeExponentRule": "3sqrt2*N*sqrtd",
+    "squaredExponentRule": "6sqrt2*N*sqrtd",
+    "qSquaredExponentRule": "12sqrt2*q*sqrtDelta",
+    "normRule": "unnormalized-L2-minus1-plus1",
+    "duplicateFrequencyRule": "merge-before-counting",
+    "coefficientField": "complex",
+    "frequencyField": "real"
+  },
+  "geometry": {
+    "eRule": "1-delta0/a",
+    "deltaRule": "(delta+delta0)/(a-delta0)",
+    "rightEndpointRule": "1+delta/a",
+    "rescaledRightEndpointRule": "1+Delta",
+    "endpointRegimeRule": "a>=delta+2delta0"
+  },
+  "derivative": {
+    "markovCoefficient": 108,
+    "branchPower": 5,
+    "frequencySquareCoefficient": 8,
+    "observationQPower": 2,
+    "leadingQPower": 7,
+    "carrierQPower": 3,
+    "carrierAlphaPower": 2
+  },
+  "terminal": {
+    "branchUpperRule": "2q",
+    "endpointFactorRule": "4q",
+    "cubedRule": "64q3",
+    "twoThirdsRule": "16q2",
+    "timeInterval": "3-to-4"
+  },
+  "energyIdentity": {
+    "rowCount": 4,
+    "rows": [
+      {"name": "terminal", "sign": 1, "coefficient": 1, "aPower": 0},
+      {"name": "cutoff", "sign": -1, "coefficient": 1, "aPower": 0},
+      {"name": "curvature", "sign": -1, "coefficient": 1, "aPower": -2},
+      {"name": "gradient", "sign": 1, "coefficient": 2, "aPower": -2}
+    ]
+  },
+  "physical": {
+    "aPower": "2/3",
+    "rPower": "-1/3",
+    "polynomialQPower": 7,
+    "modeWindowExponent": "5/2",
+    "growingExampleExponent": "12/5",
+    "normalizedLogRate": "-2/11907"
+  },
+  "sources": {
+    "zhangAbs": "https://arxiv.org/abs/2607.10501v1",
+    "zhangPdf": "https://arxiv.org/pdf/2607.10501v1",
+    "erdelyiAbs": "https://arxiv.org/abs/1602.02315",
+    "erdelyiJournal": "https://www.mathnet.ru/eng/sm8670",
+    "erdelyiPdf": "https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&option_lang=eng&paperid=8670&what=fullteng",
+    "kosJournal": "https://link.springer.com/article/10.1007/s10474-007-6176-5"
+  },
+  "dependencies": {
+    "research/r076e_linear_modal_entropy_window.md": "1494cb7e3863ef934f87746412f2a64ef98f78deb5ce81be3cece7d5a7571ca4",
+    "research/r076h_full_plateau_absorption_for_shifted_packet.md": "11490112a1893400a1099dd9f45b906ce78d7dab1ebcf549eaa7870241dc0ef4"
+  },
+  "boundary": {
+    "conditionalLiterature": true,
+    "zhangPeerReviewed": false,
+    "fullClassSharpnessOnly": true,
+    "realDyadicSharpness": false,
+    "arbitraryPacketGeneralization": false,
+    "versionMExtraction": false,
+    "regularityClaimed": false,
+    "singularityClaimed": false,
+    "formalFigureRequired": false,
+    "simulationClaimed": false,
+    "clayClaimed": false
+  }
+}

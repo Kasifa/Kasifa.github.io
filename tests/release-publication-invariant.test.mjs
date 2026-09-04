@@ -1135,13 +1135,16 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     "收录节点：" + recapNodes,
     "回顾截止时公开笔记：" +
       (htmlNotes.length - (publishedNodes - recapNodes)),
-    recapNextCode,
+    recapRelease === latestRelease ? "后续版本未授权" : recapNextCode,
     recapCode,
   ]) {
     assert.ok(recap.includes(phrase), phrase);
   }
   assert.match(recap, /id="retained"/);
-  for (const token of ["projected-Lamb", "\\mathcal V\\in L_t^1", "2K^2"]) {
+  const recapTokens = recapRelease === "r076i"
+    ? ["exp(Cq)", "CONDITIONAL-LITERATURE", "NO FULL-CLASS SHARPNESS CLAIM"]
+    : ["projected-Lamb", "\\mathcal V\\in L_t^1", "2K^2"];
+  for (const token of recapTokens) {
     assert.ok(recap.includes(token), token);
   }
   assert.doesNotMatch(

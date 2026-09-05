@@ -1,0 +1,70 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+const root = resolve(import.meta.dirname, "..");
+const bytes = (relative) => readFileSync(resolve(root, relative));
+const read = (relative) => bytes(relative).toString("utf8");
+const sha = (relative) => createHash("sha256").update(bytes(relative)).digest("hex");
+const figureId = "fig-r076l-parabolic-edge";
+
+test("R0.76L note PDF is bound while the I recap and J/K notes are preserved", () => {
+  const binding = JSON.parse(read("research/r076l_pdf_bindings.json"));
+  assert.equal(binding.release, "R0.76L");
+  assert.equal(binding.step, 63);
+  assert.equal(binding.publicChineseHtml.sha256, sha(binding.publicChineseHtml.path));
+  assert.equal(binding.publicPdf.sha256, sha(binding.publicPdf.path));
+  assert.equal(binding.provenance.sha256, sha(binding.provenance.path));
+  assert.ok(binding.publicPdf.pageCount >= 300);
+  assert.equal(binding.frozenAuthority.sourceCommit, "b234b63c24c7b19efc703367e23b092385066a1c");
+  assert.equal(binding.frozenAuthority.certificateCommit, "2f3e0f466cc38fd2b61f2c79773352d95b2464e1");
+  assert.equal(binding.frozenAuthority.handoffCommit, "a5edefb014ebc6dd13ce052aad196ff5115b9629");
+  assert.equal(binding.frozenAuthority.frozenFileCount, 24);
+  assert.equal(binding.claimBoundary.completeClockSignedFlux, "EVENTUALLY_POSITIVE_FOR_THIS_FAMILY");
+  assert.equal(binding.claimBoundary.normalizedQuadraticLogRate, "MINUS_2_OVER_11907");
+  assert.equal(binding.claimBoundary.formalHighDegreePrediction, "M_COMPARABLE_KAPPA_A_TO_FOUR_OPEN_NOT_A_THEOREM");
+  assert.equal(binding.formalFigure.required, true);
+  assert.equal(binding.formalFigure.finiteP075Tilt, "MOVES_SLIGHTLY_AWAY_FROM_LIMIT_ON_DISPLAYED_GRID_PREASYMPTOTIC");
+  assert.deepEqual(binding.cumulativeRecap.excludesLaterReleases, ["R0.76J", "R0.76K", "R0.76L"]);
+  assert.equal(sha("public/recap-r0-61-r0-76i.html"), "1ea5048bcbecf791a557da94aa4bbf7fbda0a9517c83f40327d119af4f8103c9");
+  assert.equal(sha("public/recap-r0-61-r0-76i.pdf"), "5bff642caa0c7ad4bf6cdfc3df252b3c0e68312373e185e3a85f27a5828baa98");
+  assert.equal(sha("public/notes/r0-76j.html"), "501371270954bb64dae9db784c6981a945730f346d5db971550f3b9d85505de2");
+  assert.equal(sha("public/notes/r0-76j.pdf"), "d264c951c9e3e43ab02181ebc4827513a1f6abe0ff37b07bb89ca9d2c6351d87");
+  assert.equal(sha("public/notes/r0-76k.html"), "d4960ea6616b718a4a9edf217f53cbfc276df9fe0662b107f10bca8bf779042d");
+  assert.equal(sha("public/notes/r0-76k.pdf"), "b3dce39a5d020a3c2d74133bdfd5c0324e46aefe8b34471b0acb349f90ddc7e1");
+});
+
+test("R0.76L routes, counts, manifests, and formal figure publication are current", () => {
+  const home = read("public/research-review.html");
+  const literature = read("public/literature-review.html");
+  assert.equal((home.match(/id="r076l"/g) ?? []).length, 1);
+  assert.equal((literature.match(/id="r076l-boundary"/g) ?? []).length, 1);
+  for (const marker of ["R0.76L Step 63", "PARABOLIC EDGE COMPLETE CLOCK", "168 节已公开", "105 节完整封存", "STOP · NO LATER RELEASE AUTHORIZED", "不覆盖 J/K/L", `/assets/r076l/${figureId}.pdf`]) assert.ok(home.includes(marker), marker);
+  for (const marker of ["R0.76L Step 63 的 polynomial heat flow", "LITERATURE", "PROVED LOCALLY", "FINITE COMPUTATION", "FAMILY-SPECIFIC RESULT", "NOT CLAY"]) assert.ok(literature.includes(marker), marker);
+  assert.equal(home.includes("R0.76M"), false);
+  assert.equal(literature.includes("R0.76M"), false);
+  const version = JSON.parse(read("public/site-version.json"));
+  assert.deepEqual({ version: version.version, html: version.publicHtmlNoteCount, pdf: version.publicPdfNoteCount, published: version.postR060PublishedNodeCount, recap: version.postR060RecapNodeCount, latestRecap: version.latestRecapRelease, latestRelease: version.latestRelease },
+    { version: "2.42", html: 266, pdf: 223, published: 206, recap: 203, latestRecap: "R0.76I", latestRelease: "R0.76L" });
+  const inventory = JSON.parse(read("research/formal-archive-inventory.json"));
+  assert.equal(inventory.publishedReleaseCount, 168);
+  assert.equal(inventory.formalSealedReleaseCount, 105);
+  assert.equal(inventory.formalFigureExemptReleaseCount, 39);
+  assert.equal(inventory.latestPublishedRelease, "r076l");
+  assert.equal(inventory.sameReleaseCompletedSteps.r076l, 63);
+  assert.equal(inventory.formalSealedReleases.includes("r076l"), true);
+  assert.equal(inventory.formalFigureExemptReleases.includes("r076l"), false);
+  const manifest = JSON.parse(read("research/release-manifest.json"));
+  assert.equal(manifest.latestCompletedRelease, "r076l");
+  assert.equal(manifest.latestCompletedStep, 63);
+  assert.equal(manifest.nextRelease, "r076m");
+  assert.equal(manifest.latestRecapRelease, "r076i");
+  assert.equal(manifest.latestPublicationIdentity.formalFigureRequired, true);
+  assert.equal(manifest.latestFormalFigurePublication.figureId, figureId);
+  const freeze = JSON.parse(read("research/r076l_freeze_manifest.json"));
+  assert.equal(freeze.claim_status.packet_scope, "EXPLICIT_START_PREPAID_REAL_INTEGER_ONE_DYADIC_BAND_FAMILY_ONLY");
+  assert.equal(freeze.claim_status.normalized_quadratic_log_rate, "MINUS_2_OVER_11907");
+  assert.equal(freeze.claim_status.formal_high_degree_threshold, "M_COMPARABLE_KAPPA_A_TO_FOUR_OPEN_NOT_A_THEOREM");
+});

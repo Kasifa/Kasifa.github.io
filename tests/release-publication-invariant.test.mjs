@@ -235,6 +235,15 @@ async function verifyFlatHashLedger(directory, { requireSorted = true } = {}) {
 }
 
 const frozenNativeFigureConfigs = {
+  "R0.76L": {
+    release: "r076l", schema: "research-figure-manifest-v1",
+    artifactId: "fig-r076l-parabolic-edge",
+    publicationSchema: "r076l-native-figure-publication-binding-v1",
+    researchSourceCommit: "b234b63c24c7b19efc703367e23b092385066a1c",
+    certificateCommit: "2f3e0f466cc38fd2b61f2c79773352d95b2464e1",
+    handoffCommit: "a5edefb014ebc6dd13ce052aad196ff5115b9629",
+    files: 12, bytes: 599429, format: "r076l",
+  },
   "R0.74W": {
     release: "r074w", schema: "r074w-figure-manifest-v1",
     artifactId: "fig-r074w-remote-adjacent-inward-threshold", validationChecks: 12,
@@ -272,6 +281,15 @@ const frozenNativeFigureConfigs = {
 
 function frozenNativeFigureConfig(manifest, latestCode) {
   const config = frozenNativeFigureConfigs[latestCode];
+  if (config?.format === "r076l") {
+    return manifest.schemaVersion === config.schema &&
+      manifest.status === "formal" &&
+      manifest.figureId === config.artifactId &&
+      manifest.git?.sourceCommit === config.researchSourceCommit &&
+      manifest.git?.certificateCommit === config.certificateCommit
+      ? config
+      : null;
+  }
   if (config?.format === "r075a") {
     return manifest.schema === config.schema &&
       manifest.status === "PASS" &&
@@ -299,6 +317,54 @@ async function verifyLatestFormalFigure(record, latestCode) {
   // SHA-256 seal. The later frozen Git commit is bound in the publication
   // ledger instead of rewriting any of the 25 scientific archive files.
   const frozenConfig = frozenNativeFigureConfig(manifest, latestCode);
+  if (frozenConfig?.format === "r076l") {
+    const entries = await readdir(packageUrl, { withFileTypes: true });
+    assert.ok(entries.every((entry) => entry.isFile() && !entry.isSymbolicLink()), `${latestCode}: flat regular archive`);
+    const names = entries.filter((entry) => !isOneDriveConflictCopyName(entry.name)).map((entry) => entry.name).sort();
+    assert.equal(names.length, frozenConfig.files, `${latestCode}: frozen file count`);
+    const sourcePayloads = await Promise.all(names.map((name) => readFile(new URL(name, packageUrl))));
+    assert.equal(sourcePayloads.reduce((sum, payload) => sum + payload.length, 0), frozenConfig.bytes, `${latestCode}: frozen byte count`);
+
+    const releaseIndex = await releaseManifest();
+    const publication = releaseIndex.latestFormalFigurePublication;
+    assert.equal(publication.schemaVersion, frozenConfig.publicationSchema);
+    assert.equal(publication.release, latestCode);
+    assert.equal(publication.figureId, manifest.figureId);
+    assert.equal(publication.researchSourceCommit, frozenConfig.researchSourceCommit);
+    assert.equal(publication.certificateCommit, frozenConfig.certificateCommit);
+    assert.equal(publication.handoffCommit, frozenConfig.handoffCommit);
+    assert.equal(publication.inventory.files, frozenConfig.files);
+    assert.equal(publication.inventory.bytes, frozenConfig.bytes);
+    assert.equal(publication.byteIdentityRequired, true);
+    assert.equal(publication.publicCopiesComplete, true);
+
+    const researchPackageUrl = new URL(`${publication.researchArchiveDirectory}/`, root);
+    const publicPackageUrl = new URL(`${publication.archiveDirectory}/`, root);
+    for (const [index, name] of names.entries()) {
+      const [researchPayload, publicPayload] = await Promise.all([
+        readFile(new URL(name, researchPackageUrl)),
+        readFile(new URL(name, publicPackageUrl)),
+      ]);
+      assert.equal(Buffer.compare(sourcePayloads[index], researchPayload), 0, `${latestCode}: frozen research copy ${name}`);
+      assert.equal(Buffer.compare(sourcePayloads[index], publicPayload), 0, `${latestCode}: frozen public copy ${name}`);
+    }
+
+    const outputs = new Map(manifest.figure.outputs.map((row) => [row.path.split(".").at(-1), row]));
+    assert.equal(publication.assets.length, 3);
+    for (const row of publication.assets) {
+      const suffix = row.path.split(".").at(-1);
+      const output = outputs.get(suffix);
+      assert.ok(output, `${latestCode}: archived ${suffix}`);
+      const master = await readFile(new URL(output.path, packageUrl));
+      const published = await readFile(new URL(row.path, root));
+      const hash = createHash("sha256").update(master).digest("hex");
+      assert.equal(hash, output.sha256, `${latestCode}: archived ${suffix} hash`);
+      assert.equal(hash, row.sha256, `${latestCode}: public ${suffix} hash`);
+      assert.equal(master.length, row.bytes, `${latestCode}: public ${suffix} bytes`);
+      assert.equal(Buffer.compare(master, published), 0, `${latestCode}: public ${suffix} byte identity`);
+    }
+    return;
+  }
   if (frozenConfig?.format === "r075a") {
     assert.equal(manifest.inventory.fileCount, 25, `${latestCode}: frozen inventory count`);
     assert.equal(manifest.inventory.ledgerEntryCount, 24, `${latestCode}: frozen ledger count`);
@@ -1238,10 +1304,13 @@ test("separates the published inventory from the formal-sealed archive", async (
         (value.status === "formal" && typeof value.release === "string") ||
         Object.keys(frozenNativeFigureConfigs).some((code) => frozenNativeFigureConfig(value, code)),
     )
-    .map(({ value }) => value.status === "formal"
-      ? value.release.split(/\s+/)[0].toLowerCase().replace(".", "")
-      : Object.entries(frozenNativeFigureConfigs)
-        .find(([code]) => frozenNativeFigureConfig(value, code))[1].release)
+    .map(({ value }) => {
+      const frozen = Object.entries(frozenNativeFigureConfigs)
+        .find(([code]) => frozenNativeFigureConfig(value, code));
+      return frozen
+        ? frozen[1].release
+        : value.release.split(/\s+/)[0].toLowerCase().replace(".", "");
+    })
     .filter((release) => releases.includes(release)))]
     .sort();
   assert.deepEqual(

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "research-figure-manifest-v1",
+  "figureId": "fig-r076l-parabolic-edge",
+  "status": "formal",
+  "analyticalQuestion": "How do the positive Chebyshev heat-integral saddle, amplitude, and unit-coordinate tilt compare with the double-scale limits?",
+  "supportedClaim": "Finite binary64 diagnostic for R0.76L L.67-L.69. The p=0.75 tilt moves slightly away from its limit on this grid; no asymptotic or PDE theorem is inferred from the plotted data.",
+  "createdAt": "2026-09-04T19:35:03.931Z",
+  "git": {
+    "repository": "https://github.com/Kasifa/Kasifa.github.io.git",
+    "sourceCommit": "b234b63c24c7b19efc703367e23b092385066a1c",
+    "certificateCommit": "2f3e0f466cc38fd2b61f2c79773352d95b2464e1",
+    "dirtyAtCertifiedRun": false,
+    "dirtyScope": "All scientific inputs and outputs match the indicated commit trees at certification.",
+    "workingTreeHasUnrelatedChanges": true,
+    "excludedUserChanges": [
+      "AGENTS.md"
+    ]
+  },
+  "computation": {
+    "kind": "data-analysis",
+    "configuration": "config.json",
+    "precision": "IEEE-754 binary64; finite exact rational and cubic-field checks are recorded in the separate certificates.",
+    "solver": "120-step bisection for the saddle; shifted-log trapezoidal quadrature with 40001/20001 grids and phase-drop sensitivity checks.",
+    "formalCommand": "python3 -B figures/r076l-parabolic-edge/fig-r076l-parabolic-edge/plot.py --formal",
+    "verificationCommand": "python3 -B figures/r076l-parabolic-edge/fig-r076l-parabolic-edge/plot.py --check",
+    "renderCommand": "NODE_PATH=<bundled Node packages> node figures/r076l-parabolic-edge/fig-r076l-parabolic-edge/render.cjs",
+    "wallTimeSeconds": 0.040806,
+    "wallTimeDefinition": "Elapsed scientific run time at the archived complete event; excludes PDF/PNG rendering.",
+    "randomSeed": null,
+    "randomness": "none",
+    "parallelismRationale": "The complete 16-case run takes about 0.04 seconds; worker or remote startup exceeds this workload.",
+    "monitoring": {
+      "enabled": true,
+      "progressLog": "progress.ndjson",
+      "resourceLog": "resources.csv",
+      "trackedFields": [
+        "stage",
+        "step",
+        "totalSteps",
+        "elapsedSeconds",
+        "estimatedSecondsRemaining",
+        "cpuPercentProcessApprox",
+        "rssMiB"
+      ],
+      "samplePolicy": "Start, each of 16 cases, and completion."
+    }
+  },
+  "compute": {
+    "host": "local workstation",
+    "operatingSystem": "macOS 26.6.2 arm64",
+    "cpu": "Apple M5 Max, 18 logical CPUs",
+    "memoryGiB": 36,
+    "processes": 1,
+    "threadsPerProcess": 1,
+    "gpuUsed": false
+  },
+  "environment": {
+    "python": "3.12.14",
+    "packagesLock": "requirements-research.txt",
+    "numpy": "2.3.5",
+    "node": "24.19.0",
+    "renderPackages": {
+      "sharp": "0.35.4",
+      "playwright": "1.62.1",
+      "pdf-lib": "1.17.1"
+    },
+    "runtimeBundle": "26.904.11930"
+  },
+  "data": [
+    {
+      "path": "config.json",
+      "schema": "r076l-parabolic-edge-diagnostic-v1",
+      "sha256": "ec613babd5ff988c732bbd9881962e93dc6e5ef2821832eb22a069b843fece28"
+    },
+    {
+      "path": "data.csv",
+      "schema": "r076l-parabolic-edge-diagnostic-csv-v1",
+      "sha256": "bbc7139237a9120d91284c0ddb80c0c73aa93708bb4a8f778f38e1d24d18c96d"
+    },
+    {
+      "path": "progress.ndjson",
+      "schema": "r076l-progress-ndjson-v1",
+      "sha256": "84569637a2602f6832bbbb2cf2b3fe3fcf9698af2aff088904f3f661ed00430d"
+    },
+    {
+      "path": "resources.csv",
+      "schema": "r076l-resource-csv-v1",
+      "sha256": "14f817a9bf9a28dc4f17541f94a26442bee8de83aa2571a6cf92e69cafd517c6"
+    }
+  ],
+  "sourceData": [
+    {
+      "path": "research/r076l_parabolic_edge_smoothing_complete_clock.md",
+      "sha256": "13492867aa83ead472d8db8d55c9a5d8c65a2418b1de397e0cffdd845b8a5c7a"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "plot.py",
+      "sha256": "079a32963e6f9bf72771b647683e83d6264e3c1c365ae0004ac58f29b48ba8a2"
+    },
+    {
+      "path": "render.cjs",
+      "sha256": "2981e7c156aa9b9807a6c7b92c16d9a99ee48aac4deeb362116eb3849b3fa99d"
+    },
+    {
+      "path": "caption.md",
+      "sha256": "102e7d96396173cc56cacf0e1552241d617c3d9b94495f1404b74e07c3829316"
+    },
+    {
+      "path": "qa-report.md",
+      "sha256": "4c55f693c1ca644edc778d93f2ee232d8ae55a03b44b0c2d0dd20820260dfb2c"
+    }
+  ],
+  "figure": {
+    "widthMillimetres": 178,
+    "heightMillimetres": 72,
+    "outputs": [
+      {
+        "path": "figure.svg",
+        "sha256": "5e9061d5b76b03c60d58cac98320513dc442b7a595604ee9c59697b2e4190662"
+      },
+      {
+        "path": "figure.pdf",
+        "sha256": "6de47c8df62ae35fc85e5b1ca2010038dd505d2e15b39caaa1f765b30cf4e7ea"
+      },
+      {
+        "path": "figure.png",
+        "sha256": "a5bff2596a6bf9ab0becc41cba0a985744c3b31878c6b11281ca2f4cf891fc75",
+        "dpi": 600,
+        "pixels": [
+          4205,
+          1701
+        ]
+      }
+    ]
+  },
+  "caption": {
+    "english": "caption.md"
+  },
+  "qa": {
+    "status": "passed",
+    "report": "qa-report.md",
+    "finalSizeInspected": true,
+    "grayscaleInspected": true,
+    "labelsAndLegendsInspected": true,
+    "scalesAndUnitsInspected": true,
+    "dataCrossChecked": true
+  },
+  "claimBoundary": {
+    "finiteDiagnostic": true,
+    "simulation": false,
+    "provesAsymptoticLimit": false,
+    "provesExactShearTransfer": false,
+    "provesSignedFlux": false,
+    "regularityOrSingularityClaim": false,
+    "notClay": true
+  }
+}

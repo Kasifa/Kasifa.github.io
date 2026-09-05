@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import subprocess
@@ -116,12 +117,27 @@ def main() -> None:
         raise SystemExit("figure file-count drift")
     if sum(path.stat().st_size for path in archive.iterdir() if path.is_file()) != FIGURE_BYTES:
         raise SystemExit("figure byte-count drift")
+    ledger = {
+        "schemaVersion": "r076l-step63-frozen-ledger-v1",
+        "release": "R0.76L",
+        "step": 63,
+        "sourceCommit": SOURCE_COMMIT,
+        "certificateCommit": CERTIFICATE_COMMIT,
+        "handoffCommit": HANDOFF_COMMIT,
+        "handoffSha256": HANDOFF_SHA256,
+        "handoffIndependentAuditSha256": HANDOFF_AUDIT_SHA256,
+        "fileCount": len(FROZEN),
+        "files": [{"path": path, "sha256": digest} for path, digest in sorted(FROZEN.items())],
+    }
+    ledger_path = ROOT / "research/r076l_frozen_ledger.json"
+    ledger_path.write_text(json.dumps(ledger, indent=2) + "\n", encoding="utf-8")
     print({
         "status": "PASS", "release": "R0.76L Step 63", "source": SOURCE_COMMIT,
         "certificateCommit": CERTIFICATE_COMMIT, "handoffCommit": HANDOFF_COMMIT,
         "handoffSha256": HANDOFF_SHA256, "handoffIndependentAuditSha256": HANDOFF_AUDIT_SHA256,
         "frozenFiles": len(FROZEN), "formalFigureRequired": True, "figureFiles": len(FIGURE_NAMES),
         "figureBytes": FIGURE_BYTES, "recapRequired": False,
+        "portableLedger": str(ledger_path.relative_to(ROOT)),
     })
 
 

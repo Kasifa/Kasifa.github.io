@@ -9,11 +9,16 @@ const root = resolve(import.meta.dirname, "..");
 const bytes = (relative) => readFileSync(resolve(root, relative));
 const read = (relative) => bytes(relative).toString("utf8");
 const sha = (relative) => createHash("sha256").update(bytes(relative)).digest("hex");
-const handoff = read("/Users/kasifa/Documents/Math/navier-stokes-r074m/research/r076l_publication_handoff.md");
-const frozen = Object.fromEntries([...handoff.matchAll(/^\| `([0-9a-f]{64})` \| `([^`]+)` \|$/gm)].map((row) => [row[2], row[1]]));
+const ledger = JSON.parse(read("research/r076l_frozen_ledger.json"));
+const frozen = Object.fromEntries(ledger.files.map(({ path, sha256 }) => [path, sha256]));
 const figureId = "fig-r076l-parabolic-edge";
 
 test("R0.76L frozen ledger, certificates, and formal figure are exact", () => {
+  assert.equal(ledger.schemaVersion, "r076l-step63-frozen-ledger-v1");
+  assert.equal(ledger.sourceCommit, "b234b63c24c7b19efc703367e23b092385066a1c");
+  assert.equal(ledger.certificateCommit, "2f3e0f466cc38fd2b61f2c79773352d95b2464e1");
+  assert.equal(ledger.handoffCommit, "a5edefb014ebc6dd13ce052aad196ff5115b9629");
+  assert.equal(ledger.fileCount, 24);
   assert.equal(Object.keys(frozen).length, 24);
   for (const [relative, expected] of Object.entries(frozen)) assert.equal(sha(relative), expected, relative);
   const certificate = JSON.parse(read("research/r076l_parabolic_edge_smoothing_complete_clock_certificate.json"));

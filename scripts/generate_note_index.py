@@ -166,8 +166,6 @@ def independent_section(site: dict[str, object]) -> str:
     count = site.get("publicIndependentNoteCount", 0)
     if count == 0:
         return ""
-    if count != 1:
-        raise RuntimeError("only one independent research note is currently supported")
     declared_html = site.get("latestIndependentResearchHtml")
     declared_pdf = site.get("latestIndependentResearchPdf")
     declared_id = site.get("latestIndependentNote")
@@ -175,20 +173,56 @@ def independent_section(site: dict[str, object]) -> str:
         r"/notes/[a-z0-9]+(?:-[a-z0-9]+)*\.html", declared_html
     ):
         raise RuntimeError("malformed latestIndependentResearchHtml")
-    if not isinstance(declared_pdf, str) or declared_pdf != declared_html.removesuffix(".html") + ".pdf":
-        raise RuntimeError("independent PDF path must match its HTML path")
-    path = PUBLIC / declared_html.removeprefix("/")
-    pdf = PUBLIC / declared_pdf.removeprefix("/")
-    if not path.is_file() or path.is_symlink() or not pdf.is_file() or pdf.is_symlink():
-        raise RuntimeError("declared independent HTML/PDF pair is missing")
-    parser = TitleParser()
-    parser.feed(path.read_text(encoding="utf-8"))
-    parser.close()
-    title = html.escape(parser.title)
-    if not title or not isinstance(declared_id, str):
-        raise RuntimeError("independent note title or identifier is missing")
-    slug = path.stem
-    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT BRIDGE NOTE</p><h2 id="series-independent">Clay-B</h2></div><span>ONE NOTE</span></header><ol class="note-list"><li class="note-entry independent-entry" data-note="{slug}"><article><div class="entry-copy"><p class="note-code">{html.escape(declared_id)}</p><h3>{title}</h3></div><nav class="entry-files" aria-label="Clay-B two-scale files"><a class="file-link html" href="{declared_html}" aria-label="Read Clay-B two-scale HTML">HTML</a><a class="file-link pdf" href="{declared_pdf}" aria-label="Download Clay-B two-scale PDF">PDF</a></nav></article></li></ol><p class="index-note">独立桥梁笔记不占用 R0 主序列编号，也不改变 R0.76L 的当前端点；它单独记录一个已冻结的 Clay-B 推法审计。</p></section>'''
+    if declared_pdf is not None and (
+        not isinstance(declared_pdf, str)
+        or declared_pdf != declared_html.removesuffix(".html") + ".pdf"
+    ):
+        raise RuntimeError("latest independent PDF must be null or match its HTML path")
+    if not isinstance(declared_id, str):
+        raise RuntimeError("latest independent identifier is missing")
+
+    paths = sorted(
+        NOTES.glob("clay-b-*.html"),
+        key=lambda item: (str(item) != str(PUBLIC / declared_html.removeprefix("/")), item.name),
+    )
+    if len(paths) != count:
+        raise RuntimeError("publicIndependentNoteCount disagrees with the HTML inventory")
+
+    rows = []
+    for index, path in enumerate(paths):
+        if not path.is_file() or path.is_symlink():
+            raise RuntimeError("independent HTML must be a regular file")
+        parser = TitleParser()
+        parser.feed(path.read_text(encoding="utf-8"))
+        parser.close()
+        title = html.escape(parser.title)
+        if not title:
+            raise RuntimeError("independent note title is missing")
+        slug = path.stem
+        topic, date = slug.removeprefix("clay-b-").rsplit("-", 1)
+        display_id = f"ClayB-{''.join(part.title() for part in topic.split('-'))}-{date}"
+        href = f"/notes/{slug}.html"
+        if index == 0:
+            if href != declared_html or display_id != declared_id:
+                raise RuntimeError("latest independent note metadata disagrees with its file")
+            if (path.with_suffix(".pdf").is_file()) != isinstance(declared_pdf, str):
+                raise RuntimeError("latest independent PDF metadata disagrees with inventory")
+        pdf_path = path.with_suffix(".pdf")
+        if pdf_path.is_file() and not pdf_path.is_symlink():
+            pdf = f'<a class="file-link pdf" href="/notes/{slug}.pdf" aria-label="Download {display_id} PDF">PDF</a>'
+        elif pdf_path.exists():
+            raise RuntimeError("independent PDF must be a regular file")
+        else:
+            pdf = '<span class="file-link missing">按政策不生成 PDF</span>'
+        rows.append(
+            f'<li class="note-entry independent-entry" data-note="{slug}"><article>'
+            f'<div class="entry-copy"><p class="note-code">{html.escape(display_id)}</p><h3>{title}</h3></div>'
+            f'<nav class="entry-files" aria-label="{html.escape(display_id)} files">'
+            f'<a class="file-link html" href="{href}" aria-label="Read {html.escape(display_id)} HTML">HTML</a>{pdf}'
+            '</nav></article></li>'
+        )
+
+    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT CLAY-B NOTES</p><h2 id="series-independent">Clay-B</h2></div><span>{count} NOTES</span></header><ol class="note-list">{"".join(rows)}</ol><p class="index-note">独立 Clay-B 笔记不占用 R0 主序列编号，也不改变 R0.76L 的当前端点。自 ClayB-SignedScale-20260905 起，新发布只生成 HTML；既有 PDF 保留不动。</p></section>'''
 
 
 def render(notes: list[Note]) -> str:

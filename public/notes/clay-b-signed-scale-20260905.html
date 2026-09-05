@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="2.44">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>精确尺度相消与收缩定位的冲突</title>
+  <meta name="description" content="An independent Clay-B note on exact signed scale cancellation, localization mismatch, and a smooth Navier-Stokes obstruction family.">
+  <link rel="canonical" href="https://kasifa.github.io/notes/clay-b-signed-scale-20260905.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js?v=2.44"></script>
+  <script defer src="/bilingual.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f3ecd8;
+      --panel: #fff8e8;
+      --ink: #26231d;
+      --muted: #625d52;
+      --rule: #8b2f2b;
+      --line: #b8ad97;
+      --proved: #2f6d4a;
+      --open: #8b2f2b;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #181714;
+        --panel: #24211c;
+        --ink: #eee5d2;
+        --muted: #b9ad9b;
+        --rule: #df8c6a;
+        --line: #665d52;
+        --proved: #84c49d;
+        --open: #df8c6a;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--paper); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 17px/1.72 Georgia, "Songti SC", "Noto Serif SC", serif;
+    }
+    button, a { color: inherit; }
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 10px max(5vw, 20px);
+      border-top: 5px solid var(--ink);
+      border-bottom: 3px double var(--ink);
+      background: color-mix(in srgb, var(--paper) 94%, transparent);
+      backdrop-filter: blur(8px);
+    }
+    .masthead strong, .kicker, .section-no, .badge {
+      font: 700 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .075em;
+      text-transform: uppercase;
+    }
+    .switch {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .48rem .8rem;
+      background: var(--panel);
+      font: 700 13px/1 sans-serif;
+      cursor: pointer;
+    }
+    main { width: min(980px, 90vw); margin: 0 auto; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(225px, 290px);
+      gap: 2rem;
+      padding: 58px 0 34px;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      max-width: 15ch;
+      margin: .25rem 0 .6rem;
+      font-size: clamp(2.25rem, 6vw, 4.5rem);
+      line-height: 1.04;
+      letter-spacing: -.035em;
+    }
+    h2 {
+      margin: .35rem 0 1rem;
+      color: var(--rule);
+      font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+      line-height: 1.25;
+    }
+    h3 { margin: 1.4rem 0 .5rem; font-size: 1.08rem; }
+    .deck { max-width: 68ch; font-size: 1.08rem; }
+    .stamp {
+      align-self: start;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: 7px 7px 0 color-mix(in srgb, var(--line) 30%, transparent);
+    }
+    .stamp p { margin: .55rem 0; }
+    .proved { color: var(--proved); }
+    .open { color: var(--open); }
+    .badges { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+    .badge { padding: .28rem .55rem; border: 1px solid var(--line); background: var(--panel); }
+    article { padding: 12px 0 74px; }
+    section { padding: 2.15rem 0 1.25rem; border-bottom: 1px dotted var(--line); }
+    p, li, td { overflow-wrap: anywhere; }
+    .equation {
+      margin: 1rem 0;
+      padding: 14px 16px;
+      overflow-x: auto;
+      border-left: 4px solid var(--rule);
+      background: var(--panel);
+      font: 15px/1.62 "SFMono-Regular", Consolas, monospace;
+      white-space: pre-wrap;
+    }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem; margin: 1.2rem 0; }
+    .card { padding: .9rem; border: 1px solid var(--line); background: var(--panel); }
+    .card strong { display: block; margin-bottom: .35rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: .94rem; }
+    th, td { padding: .7rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    a { color: var(--rule); text-underline-offset: .18em; }
+    .note { color: var(--muted); font-size: .94rem; }
+    .footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; }
+    main[data-language="en"] { display: none; }
+    html[data-language="en"] main[data-language="zh"] { display: none; }
+    html[data-language="en"] main[data-language="en"] { display: block; }
+    @media (max-width: 760px) {
+      body { font-size: 15.5px; }
+      .hero, .grid { grid-template-columns: 1fr; }
+      .masthead { align-items: flex-start; }
+      h1 { max-width: none; }
+      .equation { font-size: 13px; }
+    }
+    @media print {
+      :root { color-scheme: light; --paper: #fff; --panel: #fff; --ink: #111; --muted: #444; --rule: #7d251f; --line: #999; }
+      .masthead { position: static; }
+      .switch { display: none; }
+      main { width: auto; margin: 0 14mm; }
+      .hero { padding-top: 18px; }
+      section, .equation, .card, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <strong><a href="/research-review.html">研究首页</a> · ClayB-SignedScale-20260905</strong>
+  </header>
+
+  <main data-language="zh">
+    <header class="hero">
+      <div>
+        <div class="kicker">独立 Clay-B 解析笔记 · 2026-09-05</div>
+        <h1>精确尺度相消与收缩定位的冲突</h1>
+        <p class="deck">热滤波给出非负带能量和精确的有符号尺度预算，但逐尺度缩小的空间球、移动中心、时间窗口与临界权重会产生明确失配。若强制非负热对偶测试完全零失配，它会向粗尺度扩散而不是收缩定位；纯振幅重标得到的“小量”也不能普适替代原同尺度移动能量。</p>
+        <p><strong>本页只记录一个有边界的解析结果：不推进 R0 主序列，不是正则性证明，不声称经典 SGS 方法为新发现。合同 G 仍 OPEN。NOT CLAY.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">LITERATURE</span><span class="badge">NO NUMERICAL CERTIFICATE</span><span class="badge">NO FIGURE</span><span class="badge">NO SIMULATION</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp">
+        <strong>结论边界</strong>
+        <p class="proved">完整有符号预算：已证</p>
+        <p class="proved">零失配定位障碍：已证</p>
+        <p class="proved">统一比较反例：已证</p>
+        <p>初始 L²：统一</p>
+        <p>初始 H¹：不统一</p>
+        <p>T<sub>R</sub> = 128R²：随 R 变化</p>
+        <p class="open">合同 G：OPEN</p>
+      </aside>
+    </header>
+
+    <article>
+      <section>
+        <div class="section-no">01 / 结论地图</div>
+        <h2>精确相消存在，但它不免费提供收缩定位</h2>
+        <div class="grid">
+          <div class="card"><strong class="proved">保留</strong>固定尺度热滤波的非负带能量、带耗散与完整有符号时空预算。</div>
+          <div class="card"><strong class="proved">排除</strong>指定的“非负热对偶、逐层零失配、同时真实收缩定位”设计。</div>
+          <div class="card"><strong class="open">未闭合</strong>允许失配的临界可求和预算、指定中心好尺度合同 G 与任何正则性结论。</div>
+        </div>
+        <p>本节还给出一族真实、无外力、全时光滑的三维周期 Navier-Stokes 解：初始 L² 一致有界，但初始 H¹ 不一致。沿 T<sub>R</sub>=128R²，重标热权量趋零，而原同尺度移动能量保持固定正下界。因此被排除的是对解、合法时间和尺度统一、且只依赖统一初始 L² 上界的普适比较。</p>
+      </section>
+
+      <section>
+        <div class="section-no">02 / F.1--F.4</div>
+        <h2>嵌套热滤波：全局望远镜与局部余项</h2>
+        <p>令 H<sub>s</sub>=exp(sΔ)，b<sub>r</sub>=H<sub>r²</sub>u，b<sub>R</sub>=H<sub>R²</sub>u，d=R²-r²。热半群嵌套给出 b<sub>R</sub>=H<sub>d</sub>b<sub>r</sub>，并由 Jensen 不等式得到非负带能量</p>
+        <div class="equation">k_{r,R} = 1/2 ( H_d |b_r|² - |b_R|² ) ≥ 0.                         (F.1)</div>
+        <p>局部化并不保持这一差分的纯望远镜结构。对任意空间 cutoff χ，精确式多出</p>
+        <div class="equation">∫χ k_{r,R}
+= 1/2∫χ(|b_r|²-|b_R|²) + 1/2∫(H_dχ-χ)|b_r|².             (F.2)</div>
+        <p>当 χ=1 时余项消失；沿 R<sub>n</sub>=θⁿR<sub>0</sub> 的有限尺度链，</p>
+        <div class="equation">Σ_{n=0}^{N-1} ∫k_{R_{n+1},R_n}
+= 1/2 ( ||b_N||₂² - ||b_0||₂² ) ≤ 1/2 ||u||₂².           (F.4)</div>
+        <p>但局部正则性门槛含 R<sub>n</sub><sup>-1</sup> 型临界归一化及依尺度变化的时间窗和中心。有限总和本身不能推出归一化后的好尺度。</p>
+      </section>
+
+      <section>
+        <div class="section-no">03 / S.1--S.7</div>
+        <h2>固定尺度的完整有符号带能量预算</h2>
+        <p>对滤波速度 b<sub>ρ</sub>、压力 p<sub>ρ</sub> 与应力 τ<sub>ρ</sub>，采用标准 SGS 符号 Π<sub>ρ</sub> 和完整输运 J<sub>ρ</sub>。精确滤波方程的能量式为</p>
+        <div class="equation">∂_t e_ρ + ∇·J_ρ = -D_ρ - Π_ρ.                                  (S.3)</div>
+        <p>在两个嵌套热尺度之间定义 k<sub>r,R</sub>、q<sub>r,R</sub>≥0 和 L<sub>r,R</sub>=H<sub>d</sub>J<sub>r</sub>-J<sub>R</sub>。相减得到</p>
+        <div class="equation">∂_t k_{r,R} + ∇·L_{r,R}
+= Π_R - H_d Π_r - q_{r,R}.                                (S.5)</div>
+        <p>对非负光滑时空测试 χ，在 [s,t] 上的完整预算是</p>
+        <div class="equation">⟨χ(t),k(t)⟩ + ∫⟨χ,q⟩
+= ⟨χ(s),k(s)⟩
+  + ∫[⟨∂_tχ,k⟩ + ⟨∇χ,L⟩ + ⟨χ,Π_R-H_dΠ_r⟩].               (S.6)</div>
+        <p>这同时保留两个时间端点、时间 cutoff、空间运输、压力、应力、黏性运输和移动中心功。k 与 q 的非负性不赋予通量差固定符号。固定正平滑尺度的 Leray-Hopf 端点可由平滑场的强时间连续性处理，但没有未经证明的一致 R→0 极限。</p>
+      </section>
+
+      <section>
+        <div class="section-no">04 / S.8--S.15</div>
+        <h2>逐尺度相加后，内部失配以完整单尺度预算返回</h2>
+        <p>每一层允许自己的时空测试 χ<sub>n</sub>。定义内部失配</p>
+        <div class="equation">A_m = H_{m-1}χ_{m-1} - χ_m,        1 ≤ m &lt; N.                 (S.8)</div>
+        <p>有限尺度层和中，端点、通量、运输、时间导数和耗散都产生相应 A<sub>m</sub> 项。它们恰好组合成单尺度能量恒等式</p>
+        <div class="equation">[⟨A_m,e_m⟩]_s^t + ∫⟨A_m,D_m⟩
+= ∫[⟨∂_tA_m,e_m⟩ + ⟨∇A_m,J_m⟩ - ⟨A_m,Π_m⟩].             (S.14)</div>
+        <p>因此不能只取消有符号通量项，同时免费丢掉时间、空间运输、耗散和端点支付。A<sub>m</sub> 可变号，S.14 是固定平滑尺度等式，不是把变号测试塞入原始局部能量不等式。</p>
+        <p>加入临界权重 w<sub>n</sub>=R<sub>n</sub><sup>-1</sup> 后，真正的失配变成</p>
+        <div class="equation">A_m^(w) = w_{m-1} H_{m-1}χ_{m-1} - w_m χ_m.                    (S.15)</div>
+        <p>即使无权失配为零，加权失配也未必为零；空间形状、中心、时间窗口与临界权重是四个独立来源。</p>
+      </section>
+
+      <section>
+        <div class="section-no">05 / T.1--T.3</div>
+        <h2>非负零失配热对偶不能同时保持真实收缩定位</h2>
+        <p>若从非负非零 χ<sub>0</sub> 出发并强制逐层零失配，</p>
+        <div class="equation">χ_{n+1} = H_{d_n}χ_n,
+χ_n = H_{R_0²-R_n²}χ_0,
+∫χ_n = ∫χ_0 = M &gt; 0.                                      (T.1-T.2)</div>
+        <p>质量守恒立即排除 ∫χ<sub>n</sub>≤CR<sub>n</sub>³。更强地，对任意中心 x<sub>n</sub> 与固定 c&gt;0，</p>
+        <div class="equation">∫_{B_{cR_n}(x_n)} χ_n / M
+≤ (||χ_0||∞/M) (4π/3)c³R_n³ → 0.                           (T.3)</div>
+        <p>概率形状向粗尺度扩散，并不聚焦到指定中心。若各层还要求支撑在收缩时间窗中，同一实际时刻的非零质量也与足够细层必须为零相冲突。这只否定指定的非负零失配设计，不否定显式支付 ∂<sub>t</sub>A<sub>m</sub> 的方法。</p>
+      </section>
+
+      <section>
+        <div class="section-no">06 / T.4--T.6</div>
+        <h2>振幅重标产生 θ²，但观测本身自动退化</h2>
+        <p>将热权乘以 (R<sub>n</sub>/R<sub>0</sub>)³，记 a<sub>n</sub>=∫χ̂<sub>n</sub>e<sub>n</sub>、ℓ<sub>n</sub>=∫χ̂<sub>n</sub>k<sub>n</sub>≥0、B<sub>n</sub>=R<sub>n</sub><sup>-1</sup>a<sub>n</sub>，则</p>
+        <div class="equation">B_{n+1} = θ² B_n + θ² R_n^{-1}ℓ_n.                              (T.5)</div>
+        <p>θ² 不是单独的收缩上界，因为右侧仍有未支付的非负源项。并且对任意固定时刻的 L² 场，</p>
+        <div class="equation">B_n ≤ (||χ_0||∞ / (2R_0³)) R_n² ||u||₂² → 0.                   (T.6)</div>
+        <p>变小的是振幅，不是归一化后的空间形状。这种自动小性未经独立比较，不能被命名为原同尺度移动能量的小性。</p>
+      </section>
+
+      <section>
+        <div class="section-no">07 / T.7--T.12</div>
+        <h2>统一初始 L² 的真实光滑 NS 家族排除普适转移</h2>
+        <p>固定非负非零 f∈C<sub>c</sub><sup>∞</sup>(B<sub>1</sub>⊂R²) 与 κ&gt;0。对足够小 R，把二维热流周期化并作均值扣除，定义</p>
+        <div class="equation">u^(R)(t,x) = (0,0,V_R(t,x_1,x_2)),     p^(R)=0,
+V_R = (κ/R) Σ_{m∈Z²} (e^{(t/R²)Δ}f)((x_h+2πm)/R)
+      - κRM_f/(2π)².                                                (T.7)</div>
+        <p>因为 (u·∇)u=V<sub>R</sub>∂<sub>3</sub>u=0，这是真实三维周期、无外力、黏性 1 的全时光滑 Navier-Stokes 解，而不是抽象能量序列。其初值满足</p>
+        <div class="equation">||u^(R)(0)||₂² ≤ 2πκ²||f||₂²,
+||∇u^(R)(0)||₂² = 2πκ²R^{-2}||∇f||₂².                              (T.8)</div>
+        <p>所以初始 L² 一致有界，H¹ 不一致。取普通光滑终点 T<sub>R</sub>=128R²，Gaussian 下界和移动路径的竖直平移不变性给出</p>
+        <div class="equation">E_R(T_R,0) ≥ κ²πc_f²/24 &gt; 0,                                  (T.11)
+B_R[u^(R)(T_R)] ≤ (πκ²||f||₂²/R_0³) R² → 0.                       (T.12)</div>
+        <p>因此不存在统一有限 C 使 E<sub>R</sub>≤CB<sub>R</sub>；也不能由 B<sub>R</sub>→0 普适推出 E<sub>R</sub>→0，或使用同一连续趋零模数。不同 R 对应不同解与不同 T<sub>R</sub>，这正是被检验全称量词的一部分。</p>
+      </section>
+
+      <section>
+        <div class="section-no">08 / 严格限制</div>
+        <h2>反例不是奇点，也不否定正则性准则</h2>
+        <ul>
+          <li>所有检验解都全时光滑；T<sub>R</sub> 是普通光滑时刻，不是首次奇点。</li>
+          <li>初始 L² 一致，但初始 H¹ 不一致；不否定依赖更强初值范数的比较。</li>
+          <li>T<sub>R</sub>=128R² 随 R→0；不否定随退化时间而退化的时间依赖估计。</li>
+          <li>没有检验只在首次奇点、同中心持续坏尺度等附加条件下断言的比较。</li>
+          <li>不否定显式支付失配的时空相消、其他滤波或测试函数、G-P/G-C 或一般正则性准则。</li>
+          <li>没有新的好尺度来源，没有临界可求和预算，没有正则性或奇点结论。</li>
+        </ul>
+        <p><strong>合同 G、实际 NS 的允许失配临界可求和性及后续物理时间对偶候选都仍 OPEN。后续工作计划中的候选方程不是本节定理。NOT CLAY.</strong></p>
+      </section>
+
+      <section>
+        <div class="section-no">09 / 文献与冻结证据</div>
+        <h2>经典背景、解析审查与字节边界</h2>
+        <p><a href="https://www.ams.jhu.edu/~eyink/Turbulence/classics/Germano92.pdf">Germano 1992</a> 提供复合滤波中心矩与嵌套带能量的经典背景；<a href="https://arxiv.org/html/0909.2386v1">Eyink-Aluie 2009</a> 提供粗粒化 SGS 能量预算背景。这些方法不作新发现声明，也不提供指定中心好尺度定理。</p>
+        <table>
+          <thead><tr><th>证据层</th><th>本页采用的边界</th></tr></thead>
+          <tbody>
+            <tr><td>PROVED LOCALLY</td><td>F.1-F.4、S.1-S.15、T.1-T.12 的解析恒等式、定位障碍与真实 NS 家族。</td></tr>
+            <tr><td>LITERATURE</td><td>经典 filtered stress、SGS 符号与嵌套带能量背景。</td></tr>
+            <tr><td>FINITE COMPUTATION</td><td>无。本节不依赖数值证书、仿真或数据图表。</td></tr>
+            <tr><td>OPEN</td><td>合同 G、允许失配的临界求和、首次奇点附加条件及工作计划中的物理时间对偶候选。</td></tr>
+          </tbody>
+        </table>
+        <p class="note">冻结来源：科学源码提交 f8534cf78950487c6d1d50d8781881043e5d0b1f；交接提交 37b74d4c564b67b85c3f8f385f47a877eb3e7b8e。6 项科学源文件与 2 项依赖的 SHA-256 已逐项匹配；两份核心稿均完成实际文件独立解析审查。哈希只证明字节身份，不替代数学正确性或外部同行评审。</p>
+        <p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_telescope_preflight_20260905.md">F 预检</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_local_budget_20260905.md">S 预算</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_heat_dual_test_obstruction_20260905.md">T 定位障碍</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_report-source_20260905.md">来源摘要</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_independent_audit_20260905.md">独立解析审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_release_20260905.json">冻结 manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_frozen_ledger_20260905.json">可移植账本</a></p>
+        <p class="note">公开页面不包含内部论文完成收悉记录，不公开或投稿任何英文论文。按当前发布政策，本节不生成 PDF；也不生成图件、仿真或累计 recap。</p>
+      </section>
+    </article>
+    <footer class="footer">独立 HTML 研究笔记 · ClayB-SignedScale-20260905 · 2026-09-05</footer>
+  </main>
+
+  <main data-language="en">
+    <header class="hero">
+      <div>
+        <div class="kicker">Independent Clay-B analytic note · 2026-09-05</div>
+        <h1>Exact scale cancellation conflicts with shrinking localization</h1>
+        <p class="deck">Heat filtering gives a nonnegative band energy and an exact signed scale budget, but scale-dependent balls, moving centres, time windows, and critical weights create explicit mismatches. If a nonnegative heat-dual test is forced to have zero mismatch, it diffuses toward the coarse scale instead of localizing at shrinking scales; smallness created only by amplitude rescaling cannot universally replace the original same-scale moving energy.</p>
+        <p><strong>This page records one bounded analytic result. It does not advance the R0 series, is not a regularity proof, and makes no novelty claim for classical SGS methods. Contract G remains OPEN. NOT CLAY.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">LITERATURE</span><span class="badge">NO NUMERICAL CERTIFICATE</span><span class="badge">NO FIGURE</span><span class="badge">NO SIMULATION</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp">
+        <strong>Claim boundary</strong>
+        <p class="proved">Complete signed budget: proved</p>
+        <p class="proved">Zero-mismatch localization obstruction: proved</p>
+        <p class="proved">Uniform comparison counterexample: proved</p>
+        <p>Initial L2: uniform</p>
+        <p>Initial H1: nonuniform</p>
+        <p>T<sub>R</sub> = 128R²: varies with R</p>
+        <p class="open">Contract G: OPEN</p>
+      </aside>
+    </header>
+
+    <article>
+      <section>
+        <div class="section-no">01 / Result map</div>
+        <h2>Exact cancellation exists, but it does not supply shrinking localization for free</h2>
+        <div class="grid">
+          <div class="card"><strong class="proved">Retained</strong>Nonnegative band energy, band dissipation, and the complete signed spacetime budget at fixed heat-filter scales.</div>
+          <div class="card"><strong class="proved">Ruled out</strong>The specified design combining nonnegative heat-dual tests, zero layer mismatch, and genuine shrinking localization.</div>
+          <div class="card"><strong class="open">Unclosed</strong>Critical summability with paid mismatch, prescribed-centre good scales under contract G, and every regularity conclusion.</div>
+        </div>
+        <p>A family of true, unforced, globally smooth periodic three-dimensional Navier-Stokes solutions is also constructed. Its initial L2 norm is uniformly bounded but its initial H1 norm is not. At T<sub>R</sub>=128R² the rescaled heat observable tends to zero while the original same-scale moving energy stays bounded below. The excluded comparison is therefore one that is uniform over solutions, admissible times, and scales and depends only on the common initial-L2 bound.</p>
+      </section>
+
+      <section>
+        <div class="section-no">02 / F.1--F.4</div>
+        <h2>Nested heat filters: global telescoping and a local remainder</h2>
+        <p>Let H<sub>s</sub>=exp(sΔ), b<sub>r</sub>=H<sub>r²</sub>u, b<sub>R</sub>=H<sub>R²</sub>u, and d=R²-r². The semigroup relation b<sub>R</sub>=H<sub>d</sub>b<sub>r</sub> and Jensen's inequality give</p>
+        <div class="equation">k_{r,R} = 1/2 ( H_d |b_r|² - |b_R|² ) ≥ 0.                         (F.1)</div>
+        <p>Localization adds an exact remainder:</p>
+        <div class="equation">∫χ k_{r,R}
+= 1/2∫χ(|b_r|²-|b_R|²) + 1/2∫(H_dχ-χ)|b_r|².             (F.2)</div>
+        <p>For χ=1, a finite geometric scale chain satisfies</p>
+        <div class="equation">Σ_{n=0}^{N-1} ∫k_{R_{n+1},R_n}
+= 1/2 ( ||b_N||₂² - ||b_0||₂² ) ≤ 1/2 ||u||₂².           (F.4)</div>
+        <p>The local regularity threshold, however, has inverse-scale critical normalization and scale-dependent times and centres. A finite unweighted sum alone cannot produce a normalized good scale.</p>
+      </section>
+
+      <section>
+        <div class="section-no">03 / S.1--S.7</div>
+        <h2>The complete signed band-energy budget at fixed scales</h2>
+        <p>For filtered velocity, pressure, and stress, use the standard SGS sign for Π<sub>ρ</sub> and the complete transport J<sub>ρ</sub>. The exact filtered energy equation is</p>
+        <div class="equation">∂_t e_ρ + ∇·J_ρ = -D_ρ - Π_ρ.                                  (S.3)</div>
+        <p>With the nonnegative quantities k<sub>r,R</sub> and q<sub>r,R</sub> and transport difference L<sub>r,R</sub>, subtracting the two scales gives</p>
+        <div class="equation">∂_t k_{r,R} + ∇·L_{r,R}
+= Π_R - H_d Π_r - q_{r,R}.                                (S.5)</div>
+        <p>For a nonnegative smooth spacetime test χ on [s,t], the complete identity is</p>
+        <div class="equation">⟨χ(t),k(t)⟩ + ∫⟨χ,q⟩
+= ⟨χ(s),k(s)⟩
+  + ∫[⟨∂_tχ,k⟩ + ⟨∇χ,L⟩ + ⟨χ,Π_R-H_dΠ_r⟩].               (S.6)</div>
+        <p>Both time endpoints, time cutoff, spatial transport, pressure, stress, viscous transport, and moving-centre work remain. Positivity of k and q does not assign a sign to the flux difference. Fixed-positive-scale Leray-Hopf endpoints follow from strong time continuity of the smoothed fields, with no unproved uniform limit as R tends to zero.</p>
+      </section>
+
+      <section>
+        <div class="section-no">04 / S.8--S.15</div>
+        <h2>Layer mismatch returns as a complete single-scale budget</h2>
+        <p>Allow each scale layer to use its own test χ<sub>n</sub>, and define</p>
+        <div class="equation">A_m = H_{m-1}χ_{m-1} - χ_m,        1 ≤ m &lt; N.                 (S.8)</div>
+        <p>The endpoint, flux, transport, time-derivative, and dissipation mismatches recombine as</p>
+        <div class="equation">[⟨A_m,e_m⟩]_s^t + ∫⟨A_m,D_m⟩
+= ∫[⟨∂_tA_m,e_m⟩ + ⟨∇A_m,J_m⟩ - ⟨A_m,Π_m⟩].             (S.14)</div>
+        <p>One cannot cancel only the signed flux while discarding time, transport, dissipation, and endpoint payments. Since A<sub>m</sub> can change sign, S.14 is a fixed-smoothed-scale equality, not an insertion of a signed test into the original local energy inequality.</p>
+        <p>For critical weights w<sub>n</sub>=R<sub>n</sub><sup>-1</sup>, the actual mismatch is</p>
+        <div class="equation">A_m^(w) = w_{m-1} H_{m-1}χ_{m-1} - w_m χ_m.                    (S.15)</div>
+        <p>Shape, centre, time window, and critical weight are separate sources of mismatch.</p>
+      </section>
+
+      <section>
+        <div class="section-no">05 / T.1--T.3</div>
+        <h2>A nonnegative zero-mismatch heat dual cannot genuinely shrink-localize</h2>
+        <p>Starting from nonzero χ<sub>0</sub>≥0, enforce zero layer mismatch:</p>
+        <div class="equation">χ_{n+1} = H_{d_n}χ_n,
+χ_n = H_{R_0²-R_n²}χ_0,
+∫χ_n = ∫χ_0 = M &gt; 0.                                      (T.1-T.2)</div>
+        <p>Mass conservation rules out volume-scale mass. Uniformly over all centres x<sub>n</sub>,</p>
+        <div class="equation">∫_{B_{cR_n}(x_n)} χ_n / M
+≤ (||χ_0||∞/M) (4π/3)c³R_n³ → 0.                           (T.3)</div>
+        <p>The normalized shape diffuses toward the coarse scale rather than concentrating at the prescribed centre. Shrinking time supports are likewise incompatible at one physical time. This rules out only the specified nonnegative zero-mismatch design, not methods that explicitly pay the time mismatch.</p>
+      </section>
+
+      <section>
+        <div class="section-no">06 / T.4--T.6</div>
+        <h2>Amplitude rescaling creates a theta-squared factor while the observable degenerates</h2>
+        <p>After multiplying the heat weight by (R<sub>n</sub>/R<sub>0</sub>)³ and defining B<sub>n</sub>=R<sub>n</sub><sup>-1</sup>a<sub>n</sub>,</p>
+        <div class="equation">B_{n+1} = θ² B_n + θ² R_n^{-1}ℓ_n.                              (T.5)</div>
+        <p>The second term is an unpaid nonnegative source. More basically, every L2 field obeys</p>
+        <div class="equation">B_n ≤ (||χ_0||∞ / (2R_0³)) R_n² ||u||₂² → 0.                   (T.6)</div>
+        <p>Only the amplitude becomes small; the normalized spatial shape does not improve. This automatic smallness cannot be renamed as smallness of the original same-scale moving energy without a separate comparison.</p>
+      </section>
+
+      <section>
+        <div class="section-no">07 / T.7--T.12</div>
+        <h2>A true smooth NS family with uniform initial L2 rules out universal transfer</h2>
+        <p>For nonzero f≥0 compactly supported in the unit ball of R2 and κ&gt;0, periodize a two-dimensional heat flow, subtract its mean, and set</p>
+        <div class="equation">u^(R)(t,x) = (0,0,V_R(t,x_1,x_2)),     p^(R)=0,
+V_R = (κ/R) Σ_{m∈Z²} (e^{(t/R²)Δ}f)((x_h+2πm)/R)
+      - κRM_f/(2π)².                                                (T.7)</div>
+        <p>Because (u·∇)u=V<sub>R</sub>∂<sub>3</sub>u=0, this is a true globally smooth solution of the unforced three-dimensional periodic Navier-Stokes equations. Its initial norms satisfy</p>
+        <div class="equation">||u^(R)(0)||₂² ≤ 2πκ²||f||₂²,
+||∇u^(R)(0)||₂² = 2πκ²R^{-2}||∇f||₂².                              (T.8)</div>
+        <p>The initial L2 bound is uniform and the initial H1 bound is not. At the ordinary smooth time T<sub>R</sub>=128R², a Gaussian lower bound gives</p>
+        <div class="equation">E_R(T_R,0) ≥ κ²πc_f²/24 &gt; 0,                                  (T.11)
+B_R[u^(R)(T_R)] ≤ (πκ²||f||₂²/R_0³) R² → 0.                       (T.12)</div>
+        <p>There is therefore no uniform finite C with E<sub>R</sub>≤CB<sub>R</sub>, and no universal implication from B<sub>R</sub>→0 to E<sub>R</sub>→0 through one common vanishing modulus. Different R values use different smooth solutions and different terminal times, exactly as allowed by the universal claim under test.</p>
+      </section>
+
+      <section>
+        <div class="section-no">08 / Strict limitations</div>
+        <h2>The counterexample is not a singularity and does not refute regularity criteria</h2>
+        <ul>
+          <li>Every test solution is globally smooth; T<sub>R</sub> is an ordinary smooth time, not a first singular time.</li>
+          <li>The initial L2 norm is uniform but the initial H1 norm is not; comparisons depending on stronger initial norms are not ruled out.</li>
+          <li>T<sub>R</sub>=128R² tends to zero; time-dependent estimates allowed to degenerate with T<sub>R</sub> are not ruled out.</li>
+          <li>No comparison restricted to a first singular point or persistent bad scales at one centre is tested.</li>
+          <li>Paid mismatch methods, other filters or tests, G-P/G-C, and general regularity criteria are not refuted.</li>
+          <li>No good-scale source, critical summability, regularity statement, or singularity exclusion is obtained.</li>
+        </ul>
+        <p><strong>Contract G, critical summability of admissible mismatch for actual NS, and the physical-time dual candidate in the work plan remain OPEN. The candidate equation in that plan is not a theorem of this note. NOT CLAY.</strong></p>
+      </section>
+
+      <section>
+        <div class="section-no">09 / Literature and frozen evidence</div>
+        <h2>Classical background, analytic review, and byte boundary</h2>
+        <p><a href="https://www.ams.jhu.edu/~eyink/Turbulence/classics/Germano92.pdf">Germano 1992</a> supplies the classical composite-filter and nested band-energy background. <a href="https://arxiv.org/html/0909.2386v1">Eyink-Aluie 2009</a> supplies the coarse-grained SGS energy-budget background. These methods are not claimed as new and do not provide a prescribed-centre good-scale theorem.</p>
+        <table>
+          <thead><tr><th>Evidence layer</th><th>Boundary used here</th></tr></thead>
+          <tbody>
+            <tr><td>PROVED LOCALLY</td><td>The analytic identities, localization obstruction, and true NS family in F.1-F.4, S.1-S.15, and T.1-T.12.</td></tr>
+            <tr><td>LITERATURE</td><td>Classical filtered stress, SGS signs, and nested band-energy background.</td></tr>
+            <tr><td>FINITE COMPUTATION</td><td>None. No numerical certificate, simulation, or data figure supports this note.</td></tr>
+            <tr><td>OPEN</td><td>Contract G, critical summation with admissible mismatch, first-singular-time hypotheses, and the physical-time dual candidate.</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Frozen scientific source commit: f8534cf78950487c6d1d50d8781881043e5d0b1f. Handoff commit: 37b74d4c564b67b85c3f8f385f47a877eb3e7b8e. The SHA-256 values of six scientific sources and two dependencies were matched item by item, and both principal manuscripts received independent whole-file analytic review. Hashes establish byte identity, not mathematical correctness or external peer review.</p>
+        <p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_telescope_preflight_20260905.md">F preflight</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_local_budget_20260905.md">S budget</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_heat_dual_test_obstruction_20260905.md">T localization obstruction</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_report-source_20260905.md">Source summary</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_independent_audit_20260905.md">Independent analytic audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_release_20260905.json">Frozen manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_scale_frozen_ledger_20260905.json">Portable ledger</a></p>
+        <p class="note">This public page excludes the internal paper-completion receipt and grants no public or submission authorization for any English paper. Under the current publishing policy, this release creates no PDF; it also creates no figure, simulation, or cumulative recap.</p>
+      </section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-SignedScale-20260905 · 2026-09-05</footer>
+  </main>
+</body>
+</html>

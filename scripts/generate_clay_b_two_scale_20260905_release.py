@@ -1,0 +1,306 @@
+#!/usr/bin/env python3
+"""Publish the independent Clay-B two-scale reader note from frozen sources."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+PUBLIC = ROOT / "public"
+BASELINE = "54aa86c9ee4757974574670ca48eb682b7c56f8f"
+VERSION = "2.43"
+SLUG = "clay-b-two-scale-20260905"
+TITLE = "两尺度差能量：瞬时吸收的限制与完整支付"
+SOURCE_COMMIT = "59e628a44e71b5bc54317db16758d9e6efd91334"
+HANDOFF_COMMIT = "a09229a714247c6f6e959661ba428e91c1cb3ab1"
+PROTECTED = {
+    "public/recap-r0-61-r0-76i.html": "1ea5048bcbecf791a557da94aa4bbf7fbda0a9517c83f40327d119af4f8103c9",
+    "public/recap-r0-61-r0-76i.pdf": "5bff642caa0c7ad4bf6cdfc3df252b3c0e68312373e185e3a85f27a5828baa98",
+    "public/notes/r0-76j.html": "501371270954bb64dae9db784c6981a945730f346d5db971550f3b9d85505de2",
+    "public/notes/r0-76j.pdf": "d264c951c9e3e43ab02181ebc4827513a1f6abe0ff37b07bb89ca9d2c6351d87",
+    "public/notes/r0-76k.html": "d4960ea6616b718a4a9edf217f53cbfc276df9fe0662b107f10bca8bf779042d",
+    "public/notes/r0-76k.pdf": "b3dce39a5d020a3c2d74133bdfd5c0324e46aefe8b34471b0acb349f90ddc7e1",
+    "public/notes/r0-76l.html": "78085c5f2772e4b719004a1e9698147f84d84db73485ddcba2cf155c812e48b2",
+    "public/notes/r0-76l.pdf": "3facbf01db259bf6ce2c247f0979b41ea64fe11be88c6c9b7a15a2d0d81d7ad8",
+}
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def write_json(path: Path, value: object) -> None:
+    write_text(path, json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+
+def baseline_text(path: str) -> str:
+    return subprocess.check_output(
+        ["git", "show", f"{BASELINE}:{path}"], cwd=ROOT
+    ).decode("utf-8")
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    if text.count(old) != 1:
+        raise RuntimeError(f"{label}: expected one occurrence, found {text.count(old)}")
+    return text.replace(old, new, 1)
+
+
+def verify_protected() -> None:
+    for relative, expected in PROTECTED.items():
+        if sha256(ROOT / relative) != expected:
+            raise RuntimeError(f"protected artifact drift: {relative}")
+
+
+def verify_frozen() -> None:
+    ledger_path = ROOT / "research/clay_b_two_scale_frozen_ledger_20260905.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    if ledger.get("sourceCommit") != SOURCE_COMMIT or ledger.get("handoffCommit") != HANDOFF_COMMIT:
+        raise RuntimeError("Clay-B frozen ledger identity drift")
+    if (ledger.get("scientificFileCount"), ledger.get("dependencyFileCount")) != (7, 2):
+        raise RuntimeError("Clay-B frozen ledger count drift")
+    for row in [*ledger["files"], *ledger["handoffEnvelope"]]:
+        if sha256(ROOT / row["path"]) != row["sha256"]:
+            raise RuntimeError(f"Clay-B frozen byte drift: {row['path']}")
+
+
+def render_note() -> str:
+    return r'''<!doctype html>
+<html lang="zh-CN" data-site-version="2.43"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>两尺度差能量：瞬时吸收的限制与完整支付</title><meta name="description" content="An independent Clay-B bridge note on the exact two-scale difference-energy identity, a smooth Navier--Stokes obstruction to uniform instantaneous absorption, and the complete paid fixed-scale estimate.">
+<link rel="canonical" href="https://kasifa.github.io/notes/clay-b-two-scale-20260905.html"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/bilingual.css">
+<script>document.documentElement.classList.add('js')</script><script defer src="/i18n-en.js?v=2.43"></script><script defer src="/bilingual.js"></script>
+<script>window.MathJax={tex:{inlineMath:[["\\(","\\)"]],displayMath:[["\\[","\\]"]]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>:root{color-scheme:light dark;--paper:#f3ecd8;--raised:#fff8e8;--ink:#26231d;--muted:#625d52;--rule:#8b2f2b;--line:#b8ad97;--proved:#2f6d4a;--open:#8b2f2b}@media(prefers-color-scheme:dark){:root{--paper:#181714;--raised:#24211c;--ink:#eee5d2;--muted:#b9ad9b;--rule:#df8c6a;--line:#665d52;--proved:#84c49d;--open:#df8c6a}}*{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif}.top{border-top:5px solid var(--ink);border-bottom:3px double var(--ink);padding:12px 5vw;display:flex;justify-content:space-between;gap:1rem}.top a{font-weight:700;text-decoration:none}main{width:min(940px,90vw);margin:auto}.hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,290px);gap:2rem}h1{font-size:clamp(2rem,5.7vw,3.8rem);line-height:1.08;margin:.35em 0}h2{margin:2.5rem 0 1rem;color:var(--rule);font-size:1.55rem}.stamp,.section-no,.label{font:700 12px/1.5 ui-monospace,SFMono-Regular,monospace;letter-spacing:.07em;text-transform:uppercase}.stamp{border:1px solid var(--line);padding:1rem;background:var(--raised)}article{padding:14px 0 72px}section{padding-bottom:.8rem;border-bottom:1px dotted var(--line)}p,li,td{overflow-wrap:anywhere}.equation{overflow:auto;background:var(--raised);padding:13px 15px;border-left:4px solid var(--rule);margin:1rem 0}.labels{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.label{border:1px solid var(--line);padding:.28rem .55rem;background:var(--raised)}.proved{color:var(--proved)}.open{color:var(--open)}a{color:var(--rule)}.files{line-height:2}.note{color:var(--muted);font-size:.94rem}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;background:var(--raised);font-size:.94rem}th,td{padding:.65rem;border:1px solid var(--line);vertical-align:top;text-align:left}@media(max-width:720px){body{font-size:15px}.hero-inner{grid-template-columns:1fr}main,article,section{min-width:0}.top{font-size:13px}.equation mjx-container[display="true"]{display:block!important;width:100%!important;overflow-x:auto;overflow-y:hidden}}@media print{:root{color-scheme:light;--paper:#fff;--raised:#fff;--ink:#111;--muted:#444;--rule:#7d251f;--line:#999}body{background:#fff;font-size:9.4pt;line-height:1.52}.top{display:none}main{width:auto}.hero{padding-top:0}.hero-inner{grid-template-columns:1fr 220px}h2{margin:1.5rem 0 .5rem;break-after:avoid}.equation,.stamp,table{break-inside:avoid}a{color:inherit;text-decoration:none}a[href]::after{content:none!important}}</style></head>
+<body><nav class="top"><a href="/research-review.html">研究首页</a><span>Clay-B 独立桥梁笔记 · 2026-09-05</span></nav><main><header class="hero"><div class="hero-inner"><div><div class="section-no">INDEPENDENT CLAY-B BRIDGE NOTE · TWO-SCALE DIFFERENCE ENERGY</div><h1>两尺度差能量：瞬时吸收的限制与完整支付</h1><p>在三维周期、黏性归一为 1、无外力的真实 Navier--Stokes 方程上，我把同一解的两个滤波尺度相减，保留移动截止、时间截止、应力差与压力功。一个全时光滑检验族排除了与解、时间和合法尺度无关的无额外支付瞬时吸收；固定正尺度上则得到由局部二次量、三次量和压力 3/2 次量支付的闭时间端点估计。</p><p><strong>这份独立笔记不占用 R0 主序列编号，不是正则性证明，也不声称新颖性或优先权。指定中心合同 G 仍 OPEN。NOT CLAY.</strong></p><div class="labels"><span class="label">PROVED LOCALLY</span><span class="label">FINITE COMPUTATION</span><span class="label">LITERATURE</span><span class="label">FIXED POSITIVE SCALE</span><span class="label">NO FIGURE</span><span class="label">NO SIMULATION</span><span class="label">OPEN</span><span class="label">NOT CLAY</span></div></div><div class="stamp"><strong>结论边界</strong><p class="proved">差能量恒等式：已证</p><p class="proved">统一瞬时吸收：已排除</p><p class="proved">完整支付 E.5：已证</p><p>Fourier 回归：精确有理数</p><p>正式图件：不适用</p><p>仿真：未运行</p><p class="open">合同 G：OPEN</p><p>标识：ClayB-TwoScale-20260905</p></div></div></header><article>
+<section id="map"><div class="section-no">01 / 结论地图</div><h2>一条推法被排除，一条带支付的估计被保留</h2><p>滤波应力的协方差正性不能升级为两尺度差能量自动耗散。对任意有限常数 C，可以先选检验族振幅 A，再选固定正时间，最后选满足时间—尺度限制的 R，使瞬时生产超过 C 倍的“耗散加能量”。这个量词次序避免把初始切片或非法尺度当成反例。</p><p>负面结论只针对没有额外支付、且常数独立于解与时间的瞬时估计。它不排除 R 的负二次幂支付、依赖初值的常数、完整时间积分中的抵消，或其他真正使用三维涡量结构的桥梁。</p><p>正面结论是固定 0&lt;r=θR&lt;R 时的局部估计：完整保留截止与压力账本后，两尺度差的局部能量和耗散由同一移动管中的 A₂、C₃ 与 D₃⁄₂ 支付。右侧的有限性并不等于小性，也没有给出尺度可求和性。</p></section>
+<section id="identity"><div class="section-no">02 / D.1--D.8</div><h2>同一原方程上的两尺度差能量恒等式</h2><p>令 Sρ 为固定偶径向平滑核的周期卷积，bρ=Sρu，τρ=Sρ(u⊗u)−bρ⊗bρ。对 r=θR，定义 g=bᵣ−bᴿ、δτ=τᵣ−τᴿ、δp=pᵣ−pᴿ。两个精确滤波方程相减得到</p>
+<div class="equation">\[
+(\partial_t-\Delta+b_R\!\cdot\!\nabla)g
+=-(g\!\cdot\!\nabla)b_r-\nabla\!\cdot\!\delta\tau-\nabla\delta p.
+\tag{D.3}\]</div>
+<p>沿粗尺度路径 Xᴿ 取 χ(t,x)=η(t)χ₀(x−Xᴿ(t))，逐项分部积分后有</p>
+<div class="equation">\[
+\begin{aligned}
+\frac12\frac d{dt}\langle\chi|g|^2\rangle+\langle\chi|\nabla g|^2\rangle
+={}&\frac12\langle|g|^2(\partial_t\chi+\Delta\chi+b_R\cdot\nabla\chi)\rangle\\
+&-\langle\chi g_i g_j\partial_j b_{r,i}\rangle
++\langle\delta\tau_{ij}\partial_j(\chi g_i)\rangle
++\langle\delta p\,g\cdot\nabla\chi\rangle .
+\end{aligned}\tag{D.5}\]</div>
+<div class="equation">\[
+\partial_t\chi+\Delta\chi+b_R\cdot\nabla\chi
+=\eta'\chi_0+\eta\Delta\chi_0+(b_R-\dot X_R)\cdot\nabla\chi.
+\tag{D.6}\]</div>
+<p>因此拉伸、应力差、压力边界功、残余漂移、空间截止和时间截止都在账本内。取 χ=1 后，压力和截止项消失，偶核的自伴性给出等价全局表达</p>
+<div class="equation">\[
+\frac12\frac d{dt}\|g\|_2^2+\|\nabla g\|_2^2
+=\mathcal N_{r,R}(u)
+=-\langle (S_r-S_R)^2u,(u\cdot\nabla)u\rangle .
+\tag{D.8}\]</div>
+<p>这里 g 是空间滤波差，不是两条路径之差；它的体积能量也不能自动转成沿路径的迹估计。</p></section>
+<section id="smooth-family"><div class="section-no">03 / D.9--D.20</div><h2>全时光滑的真实 NS 检验族与精确系数</h2><p>对任意 A&gt;0，取零均值初值</p>
+<div class="equation">\[
+u_A(0,x)=A(-\cos x_2,\ 0,\ \sin x_1+\cos(x_1+x_2)).
+\tag{D.9}\]</div>
+<p>第一分量 Uᴬ=−Ae⁻ᵗcos x₂，第三分量 Wᴬ 解带光滑剪切的二维线性输运扩散方程，压力为零。这给出原始无外力 NS 的全时光滑不变类，而不是线性近似。逐阶能量估计给出</p>
+<div class="equation">\[
+\frac d{dt}\|W_A(t)\|_{H^m}^2+2\|\nabla W_A(t)\|_{H^m}^2
+\le C_mAe^{-t}\|W_A(t)\|_{H^m}^2.
+\tag{D.12}\]</div>
+<p>初始 L²、梯度 L² 与 H¹ 范数平方分别为 3A²/2、2A²、7A²/2。改变 A 会改变初值，所以这不是同一解发生奇点。</p>
+<p>令 f 为核的径向 Fourier 乘子，d₁=f(θR)−f(R)，d₂=f(√2θR)−f(√2R)。三角正交计算得到</p>
+<div class="equation">\[
+\|g(0)\|_2^2=A^2(d_1^2+\tfrac12d_2^2),\qquad
+\|\nabla g(0)\|_2^2=A^2(d_1^2+d_2^2),
+\tag{D.16}\]</div>
+<div class="equation">\[
+\mathcal N_{r,R}(u_A(0))=\frac{A^3}{4}(d_2^2-d_1^2).
+\tag{D.18}\]</div>
+<p>由 f(s)=1−(σ₂/2)s²+O(s⁴)，固定 θ 时 d₁=cθR²+O(R⁴)、d₂=2cθR²+O(R⁴)，于是</p>
+<div class="equation">\[
+\frac{\mathcal N_{r,R}}{\|\nabla g\|_2^2}\to\frac{3A}{20},\qquad
+\frac{\mathcal N_{r,R}}{\|\nabla g\|_2^2+\|g\|_2^2}\to\frac{3A}{32}.
+\tag{D.20}\]</div>
+<p>这些常数来自解析正交计算；精确 Fraction Fourier 程序从模式卷积独立复算它们，只承担有限初始切片的回归校验。</p></section>
+<section id="positive-time"><div class="section-no">04 / D.21--D.24</div><h2>正时间与合法尺度：统一瞬时吸收失效</h2><p>对每个固定光滑 h，R⁻²(Sθᴿ−Sᴿ)h 在 Sobolev 空间中趋于 cθ(−Δ)h。对光滑 u(t)，这把生产项和二次项都缩放到 R⁴，并保持比值在 t=0 附近连续。</p>
+<div class="equation">\[
+R^{-4}\mathcal N_{r,R}(u(t))
+\to-c_\theta^2\langle-\Delta u(t),-\Delta((u(t)\cdot\nabla)u(t))\rangle,
+\tag{D.22}\]</div>
+<div class="equation">\[
+R^{-4}(\|\nabla g(t)\|_2^2+\|g(t)\|_2^2)
+\to c_\theta^2(\|\nabla\Delta u(t)\|_2^2+\|\Delta u(t)\|_2^2).
+\tag{D.23}\]</div>
+<p>给定 C，先取 A 使 3A/32&gt;C，再取固定正时间 tᴬ 保持极限比值仍大于 C，最后取足够小的 R，同时满足 R&lt;π/16 与 64R²&lt;tᴬ。因此不存在与解、时间和合法尺度无关的有限 C，使所有光滑真实 NS 解都满足</p>
+<div class="equation">\[
+\mathcal N_{\theta R,R}(u(t))
+\le C\bigl(\|\nabla(u_{\theta R}-u_R)(t)\|_2^2
++\|(u_{\theta R}-u_R)(t)\|_2^2\bigr).
+\tag{D.24-false}\]</div>
+<p>压力在这个族中恒为零，所以失败不能归咎于遗漏压力边界项。结论也不能被扩大为爆破解、坏尺度必然存在或合同 G 不可能成立。</p></section>
+<section id="weak-endpoint"><div class="section-no">05 / E.1--E.2</div><h2>固定正平滑尺度的弱解时间端点</h2><p>对 Leray--Hopf 解和任意固定 ρ&gt;0，周期卷积后的方程可以写成</p>
+<div class="equation">\[
+\partial_t b_\rho=\Delta b_\rho-\mathbb P\nabla\cdot S_\rho(u\otimes u).
+\tag{E.1}\]</div>
+<p>平滑核与 Leray 投影给出 ∂tbρ 在每个固定空间 Cᵐ 中的 L∞ 时间界；Sρ 从 L² 到 Cᵐ 的紧性把 u 的弱连续代表变成 bρ 的强连续代表。因此固定 r、R 的路径与差场在闭时间区间端点都有明确代表，D.5 可以积分到任意两个闭端点。</p><p>这不是原始弱解 u 的能量等式，也没有消去局部能量缺陷；它只对固定正尺度的平滑卷积场作配对，不能在缺少统一界时令 R 趋于零。</p></section>
+<section id="paid"><div class="section-no">06 / E.3--E.10</div><h2>移动管中的完整支付估计</h2><p>固定 t₀ 与 0&lt;R&lt;min(π/16,√t₀/8)，令 J=(t₀−64R²,t₀)、J₁=(t₀−R²,t₀)，并沿同一粗尺度路径 Xᴿ 定义半径 cR 的移动管 Qc。写</p>
+<div class="equation">\[
+A_2=R^{-3}\int_{Q_3}|u|^2,\qquad
+C_3=R^{-2}\int_{Q_3}|u|^3,\qquad
+D_{3/2}=R^{-2}\int_{Q_3}|p-c(t)|^{3/2}.
+\tag{E.4}\]</div>
+<p>取从 J 左端开启、在 J₁ 恒为 1 的时间截止，并取支撑于半径 2R、在半径 R 内为 1 的移动空间截止。完整估计是</p>
+<div class="equation">\[
+\begin{aligned}
+\mathscr D_{r,R}:={}&R^{-1}\sup_{t\in J_1}\int_{B_R(X_R(t))}|g(t)|^2\\
+&+R^{-1}\int_{J_1}\int_{B_R(X_R(t))}|\nabla g|^2
+\le C_{\theta,\varphi,\psi}(A_2+C_3+D_{3/2}).
+\end{aligned}\tag{E.5}\]</div>
+<p>证明逐项使用局部 Young、Hölder 与路径点值界。残余漂移、拉伸、应力梯度、应力截止、压力边界、时间截止和空间 Laplacian 全部有明确支付，没有把压力或应力赋予有利符号。</p>
+<div class="table-wrap"><table><thead><tr><th>账本项</th><th>逐时上界</th></tr></thead><tbody><tr><td>时间截止与空间 Laplacian</td><td>CR⁻²∫|u|²</td></tr><tr><td>残余漂移与拉伸</td><td>CR⁻¹∫|u|³</td></tr><tr><td>应力差的两项</td><td>CR⁻¹∫|u|³</td></tr><tr><td>压力边界功</td><td>CR⁻¹(∫|p−c|³ᐟ²+∫|u|³)</td></tr></tbody></table></div>
+<p>移动管体积为 O(R⁵)，所以还有</p>
+<div class="equation">\[
+A_2\le C C_3^{2/3},\qquad
+\mathscr D_{r,R}\le C_\theta(C_3^{2/3}+C_3+D_{3/2}).
+\tag{E.10}\]</div>
+<p>E.5 与 E.10 是尺度无量纲的固定尺度支付形式，但没有从任意初值推出右侧小性，也没有得到小于 1 的收缩系数。</p></section>
+<section id="boundary"><div class="section-no">07 / 严格边界</div><h2>这节没有证明什么</h2><ul><li>没有排除带 R⁻²‖g‖² 的真实截止支付、初值依赖常数或完整时间抵消。</li><li>没有把 g 的体积能量等同于原始 Eᴿ、路径差或路径迹。</li><li>没有证明 C₃、D₃⁄₂ 在候选中心随尺度变小或可求和。</li><li>没有得到跨尺度收缩、packing、指定中心好尺度合同 G、正则性或奇点排除。</li><li>没有把有限 Fourier 回归称为仿真、DNS 或连续 PDE 证书。</li><li>没有科学图件；解析不等式无需为了展示制造曲线。</li></ul><p><strong>G 仍 OPEN。全局正则性与奇点形成仍 OPEN。NOT CLAY.</strong></p></section>
+<section id="literature"><div class="section-no">08 / 文献边界</div><h2>经典 filtering 背景与当前对象的区别</h2><p><a href="https://www.ams.jhu.edu/~eyink/Turbulence/classics/Germano92.pdf">Germano 1992</a> 给出保常数、与导数交换的复合滤波应力恒等式。当前一般紧支撑核不保证两个尺度组成嵌套滤波，g⊗g 也不能直接当作 Leonard stress。</p><p><a href="https://arxiv.org/html/0909.2386v1">Eyink--Aluie 2009</a> 给出经典粗粒化 SGS 能量预算。标准通量与这里 D.7 的两项差场生产不是同一个量，不能凭单项符号把它解释成完整净回传。</p><p>这些文献事实不提供指定候选中心的好尺度定理。本地工作只承担当前候选估计的逐项推导和反例核验；检索未承担查新，也不支持新颖性或优先权声明。</p></section>
+<section id="evidence"><div class="section-no">09 / 冻结证据</div><h2>可复算的来源、审查与字节绑定</h2><p class="files"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_energy_working_20260905.md">D 稿</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_paid_budget_20260905.md">E 稿</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_report-source_20260905.md">来源摘要</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_independent_audit_20260905.md">独立解析审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/scripts/clay_b_two_scale_fourier_check.py">精确 Fourier 程序</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_fourier_certificate_20260905.json">保存结果</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_release_20260905.json">冻结 manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_two_scale_frozen_ledger_20260905.json">可移植账本</a></p><p>独立解析审查逐项通读 D.1--D.24 与 E.1--E.10，没有发现必须修正的数学问题。精确程序以 Fraction 有理复数复算能量系数 (1,1/2)、耗散系数 (1,1)、生产系数 (−1/4,1/4)，并通过反号与删模态敏感性检查。</p><p>7 项新科学资产与 2 项上游依赖已由源码提交和 SHA-256 绑定；交接与 manifest 另由冻结提交绑定。哈希证明字节身份，不证明数学正确性。</p><p><a href="/notes/clay-b-two-scale-20260905.pdf">下载同步中文 PDF</a> · <a href="/notes/">返回研究笔记索引</a></p></section>
+</article></main></body></html>
+'''
+
+
+def update_home() -> None:
+    page = baseline_text("public/research-review.html")
+    for old, new, label in (
+        ('data-site-version="2.42"', 'data-site-version="2.43"', "home version"),
+        ('/i18n-en.js?v=2.42', '/i18n-en.js?v=2.43', "home i18n"),
+        ('/site-refresh.js?v=2.42.1', '/site-refresh.js?v=2.43.1', "home refresh"),
+        ('<span><strong>v2.42</strong>网页版本</span>', '<span><strong>v2.43</strong>网页版本</span>', "home version stat"),
+        ('综述 v2.42 · 2026-09-05', '综述 v2.43 · 2026-09-05', "home footer"),
+    ):
+        page = replace_once(page, old, new, label)
+    page, count = re.subn(
+        r'<div class="summary-item"><strong>我目前关注</strong><span>.*?</span></div>',
+        '<div class="summary-item"><strong>我目前关注</strong><span>Clay-B 两尺度差能量已经排除无额外支付的统一瞬时吸收，并保留完整 cutoff、cubic 与 pressure 支付的固定尺度估计。R⁻² 支付、初值依赖常数、完整时间抵消与合同 G 仍开放。</span></div>',
+        page, count=1, flags=re.S,
+    )
+    if count != 1:
+        raise RuntimeError("home focus replacement failed")
+    spotlight = '''<section class="route-overview independent-release-spotlight" id="clay-b-two-scale" aria-labelledby="clay-b-two-scale-title"><div class="route-overview-inner"><header class="route-map-header"><div><p class="eyebrow">INDEPENDENT CLAY-B BRIDGE NOTE · 2026-09-05 · TWO-SCALE DIFFERENCE ENERGY</p><h2 class="route-map-title" id="clay-b-two-scale-title">两尺度差能量：瞬时吸收的限制与完整支付</h2><p class="route-map-intro">一个全时光滑真实 NS 族排除无额外支付的统一瞬时吸收；固定正尺度上，完整移动截止账本给出由局部二次量、三次量和压力 3/2 次量支付的 E.5。R⁻² 支付、初值依赖常数与完整时间抵消没有被排除，合同 G 仍 OPEN。NOT CLAY.</p></div><nav class="route-map-actions" aria-label="Clay-B 独立笔记快捷入口"><a class="route-map-latest" href="/notes/clay-b-two-scale-20260905.html">阅读 Clay-B 两尺度笔记 →</a><a href="/notes/clay-b-two-scale-20260905.pdf">下载同步中文 PDF</a><a href="/literature-review.html#clay-b-two-scale-boundary">查看文献与主张边界</a><a href="/notes/">研究笔记总索引</a></nav></header><div class="route-legend" aria-label="Clay-B 结论边界"><span><i class="route-legend-mark kept" aria-hidden="true"></i>瞬时统一吸收：已排除</span><span><i class="route-legend-mark kept" aria-hidden="true"></i>完整支付 E.5：已证</span><span><i class="route-legend-mark current" aria-hidden="true"></i>合同 G：OPEN · NOT CLAY</span></div></div></section>'''
+    anchor = '<section class="route-overview latest-release-spotlight" id="latest-release"'
+    page = replace_once(page, anchor, spotlight + "\n" + anchor, "home independent spotlight")
+    write_text(PUBLIC / "research-review.html", page)
+
+
+def update_literature() -> None:
+    page = baseline_text("public/literature-review.html")
+    for old, new, label in (
+        ('data-site-version="2.42"', 'data-site-version="2.43"', "literature version"),
+        ('/i18n-en.js?v=2.42', '/i18n-en.js?v=2.43', "literature i18n"),
+        ('文献综述 v2.42 · 2026-09-05', '文献综述 v2.43 · 2026-09-05', "literature footer"),
+    ):
+        page = replace_once(page, old, new, label)
+    boundary = '''<h3 id="clay-b-two-scale-boundary">Clay-B 两尺度差能量的 filtering 文献与主张边界</h3><p><a href="https://www.ams.jhu.edu/~eyink/Turbulence/classics/Germano92.pdf">Germano 1992</a> 承担复合滤波 stress identity 的经典背景；<a href="https://arxiv.org/html/0909.2386v1">Eyink--Aluie 2009</a> 承担 smooth coarse-graining 与 SGS energy budget 的经典背景。一般 Sᵣ、Sᴿ 不自动组成 Germano 的嵌套滤波，本节的差场生产也不是标准 SGS 通量。</p><div class="boundary"><strong>ClayB-TwoScale-20260905 公开边界</strong><p>PROVED LOCALLY：完整移动截止差能量恒等式；全时光滑真实 NS 族排除与解、时间和合法尺度无关的无额外支付瞬时吸收；固定正尺度弱端点与完整支付 E.5。FINITE COMPUTATION：Fraction Fourier 模式卷积只复算初始切片系数。LITERATURE：经典滤波应力和粗粒化通量预算。OPEN：R⁻² 支付、初值依赖、完整时间抵消、尺度小性与可求和性、跨尺度收缩、指定中心合同 G、regularity 与 singularity。没有仿真或科学图件，不宣称新颖性或优先权。NOT CLAY。<a href="/notes/clay-b-two-scale-20260905.html">阅读完整笔记</a>。</p></div>
+'''
+    page = replace_once(page, '<section id="references">', boundary + '<section id="references">', "literature independent boundary")
+    write_text(PUBLIC / "literature-review.html", page)
+
+
+def update_index() -> None:
+    page = baseline_text("public/notes/index.html")
+    for old, new, label in (
+        ('data-site-version="2.42"', 'data-site-version="2.43"', "index version"),
+        ('/i18n-en.js?v=2.42', '/i18n-en.js?v=2.43', "index i18n"),
+        ('/site-refresh.js?v=2.42', '/site-refresh.js?v=2.43', "index refresh"),
+        ('研究笔记总索引 · v2.42 · 2026-09-05', '研究笔记总索引 · v2.43 · 2026-09-05', "index footer"),
+    ):
+        page = replace_once(page, old, new, label)
+    independent = '''<section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT BRIDGE NOTE</p><h2 id="series-independent">Clay-B</h2></div><span>ONE NOTE</span></header><ol class="note-list"><li class="note-entry independent-entry" data-note="clay-b-two-scale-20260905"><article><div class="entry-copy"><p class="note-code">ClayB-TwoScale-20260905</p><h3>两尺度差能量：瞬时吸收的限制与完整支付</h3></div><nav class="entry-files" aria-label="Clay-B two-scale files"><a class="file-link html" href="/notes/clay-b-two-scale-20260905.html" aria-label="Read Clay-B two-scale HTML">HTML</a><a class="file-link pdf" href="/notes/clay-b-two-scale-20260905.pdf" aria-label="Download Clay-B two-scale PDF">PDF</a></nav></article></li></ol><p class="index-note">独立桥梁笔记不占用 R0 主序列编号，也不改变 R0.76L 的当前端点；它单独记录一个已冻结的 Clay-B 推法审计。</p></section>
+
+      '''
+    anchor = '<section class="release-group" aria-labelledby="series-76">'
+    page = replace_once(page, anchor, independent + anchor, "index independent section")
+    write_text(PUBLIC / "notes/index.html", page)
+
+
+def update_accounting() -> None:
+    write_text(ROOT / "VERSION", VERSION + "\n")
+    site = json.loads(baseline_text("public/site-version.json"))
+    site.update({
+        "version": VERSION,
+        "publishedDate": "2026-09-05",
+        "publicIndependentNoteCount": 1,
+        "latestIndependentNote": "ClayB-TwoScale-20260905",
+        "latestIndependentResearchHtml": f"/notes/{SLUG}.html",
+        "latestIndependentResearchPdf": f"/notes/{SLUG}.pdf",
+    })
+    write_json(PUBLIC / "site-version.json", site)
+    manifest = json.loads(baseline_text("research/release-manifest.json"))
+    manifest["siteVersion"] = VERSION
+    manifest["latestPublication"] = {
+        "schemaVersion": "independent-research-publication-v1",
+        "kind": "independent-bridge-note",
+        "releaseId": SLUG,
+        "displayReleaseId": "ClayB-TwoScale-20260905",
+        "sourceCommit": SOURCE_COMMIT,
+        "handoffCommit": HANDOFF_COMMIT,
+        "logicalPredecessor": "R0.76L-Step63",
+        "html": f"public/notes/{SLUG}.html",
+        "pdf": f"public/notes/{SLUG}.pdf",
+        "gate": f"tests/{SLUG}-gate.test.mjs",
+        "publicationTest": f"tests/{SLUG}-release.test.mjs",
+        "translationScript": f"scripts/add-{SLUG}-translations.mjs",
+        "pdfBinder": f"scripts/bind-{SLUG}-pdf.mjs",
+        "browserQaScript": f"scripts/qa-{SLUG}-browser.mjs",
+        "onlineVerifierScript": f"scripts/verify-{SLUG}-online.mjs",
+        "formalFigureRequired": False,
+        "formalFigureStatus": "NOT_APPLICABLE_ANALYTIC_RELEASE",
+        "simulationRequired": False,
+        "recapRequired": False,
+        "advancesCanonicalR0Series": False,
+        "canonicalR0EndpointPreserved": "r076l",
+        "claimBoundary": "PROVED_LOCAL_LIMITED_SCOPE_OPEN_G_NOT_CLAY_NO_NOVELTY_CLAIM",
+    }
+    manifest["publicIndependentNoteCount"] = 1
+    manifest["latestIndependentResearchHtml"] = f"/notes/{SLUG}.html"
+    manifest["latestIndependentResearchPdf"] = f"/notes/{SLUG}.pdf"
+    write_json(ROOT / "research/release-manifest.json", manifest)
+
+
+def main() -> None:
+    verify_protected()
+    verify_frozen()
+    write_text(PUBLIC / f"notes/{SLUG}.html", render_note())
+    update_home()
+    update_literature()
+    update_index()
+    update_accounting()
+    verify_protected()
+    print(json.dumps({
+        "status": "generated",
+        "releaseId": "ClayB-TwoScale-20260905",
+        "siteVersion": VERSION,
+        "canonicalR0Endpoint": "R0.76L",
+        "advancesCanonicalR0Series": False,
+        "formalFigureRequired": False,
+        "simulationRequired": False,
+        "recapUpdated": False,
+        "translationRoute": "LOCAL_DIRECT_NO_DGX",
+        "notClay": True,
+    }, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

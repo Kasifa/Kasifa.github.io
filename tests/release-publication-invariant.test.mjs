@@ -993,6 +993,12 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
     readFile(new URL(recapStem + ".html", publicRoot), "utf8"),
     readFile(new URL(recapStem + ".pdf", publicRoot)),
   ]);
+  const latestPublicationNote = site.latestIndependentResearchHtml
+    ? await readFile(
+      new URL(site.latestIndependentResearchHtml.replace(/^\//, ""), publicRoot),
+      "utf8",
+    )
+    : latestNote;
 
   const nodeIndexStart = recap.indexOf('<section id="node-index">');
   const nodeIndexEnd = recap.indexOf("</section>", nodeIndexStart);
@@ -1022,7 +1028,7 @@ test("derives homepage counts, latest release, route size, and recap endpoint", 
   for (const [label, html] of [
     ["homepage", home],
     ["literature", literature],
-    ["latest note", latestNote],
+    ["latest publication note", latestPublicationNote],
   ]) {
     assert.ok(
       html.includes('src="/i18n-en.js?v=' + version + '"'),

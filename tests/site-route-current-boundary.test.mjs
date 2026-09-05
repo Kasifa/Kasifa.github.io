@@ -108,7 +108,11 @@ async function currentEndpoint() {
   const manifest = await repositoryJson("research/release-manifest.json");
   const endpoint = ENDPOINTS[manifest.latestCompletedRelease];
   assert.ok(endpoint, `unsupported current endpoint: ${manifest.latestCompletedRelease}`);
-  return { release: manifest.latestCompletedRelease, ...endpoint };
+  return {
+    release: manifest.latestCompletedRelease,
+    ...endpoint,
+    version: manifest.siteVersion ?? endpoint.version,
+  };
 }
 
 function claimBoundary(html, release) {
@@ -116,7 +120,7 @@ function claimBoundary(html, release) {
   const start = html.indexOf(heading);
   assert.ok(start >= 0, `${release} boundary heading`);
   const tail = html.slice(start + heading.length);
-  const next = tail.search(/<h3 id="r0\d{2}[a-z]-boundary">/);
+  const next = tail.search(/<h3 id="[a-z0-9-]+-boundary">/);
   const section = next < 0 ? tail : tail.slice(0, next);
   const blocks = [...section.matchAll(/<div class="boundary">([\s\S]*?)<\/div>/g)];
   assert.equal(blocks.length, 1, `${release} must have one claim boundary`);

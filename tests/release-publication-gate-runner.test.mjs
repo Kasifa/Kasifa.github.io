@@ -51,6 +51,8 @@ test("resolves the merged endpoint to release-owned, regular repository files", 
     await readFile(resolve(root, "research/release-manifest.json"), "utf8"),
   );
   const gate = await resolveReleasePublicationGate(root);
+  const publication = manifest.latestPublication;
+  const release = publication?.releaseId ?? manifest.latestCompletedRelease;
   assert.deepEqual(
     {
       release: gate.release,
@@ -60,11 +62,11 @@ test("resolves the merged endpoint to release-owned, regular repository files", 
       translation: gate.translation,
     },
     {
-      release: manifest.latestCompletedRelease,
+      release,
       invariant: "tests/release-publication-invariant.test.mjs",
-      gate: manifest.latestReleaseGate,
-      publication: manifest.latestReleasePublicationTest,
-      translation: `scripts/add-${manifest.latestCompletedRelease}-translations.mjs`,
+      gate: publication?.gate ?? manifest.latestReleaseGate,
+      publication: publication?.publicationTest ?? manifest.latestReleasePublicationTest,
+      translation: `scripts/add-${release}-translations.mjs`,
     },
   );
 });
@@ -74,6 +76,8 @@ test("runs the fail-closed stages in the declared order", async () => {
     await readFile(resolve(root, "research/release-manifest.json"), "utf8"),
   );
   const gate = await resolveReleasePublicationGate(root);
+  const publication = manifest.latestPublication;
+  const release = publication?.releaseId ?? manifest.latestCompletedRelease;
   const calls = [];
   runResolvedReleasePublicationGate(gate, (directory, label, arguments_) => {
     calls.push({ directory, label, arguments_ });
@@ -82,13 +86,40 @@ test("runs the fail-closed stages in the declared order", async () => {
     calls.map(({ arguments_ }) => arguments_),
     [
       ["--test", "tests/release-publication-invariant.test.mjs"],
-      ["--test", manifest.latestReleaseGate],
-      ["--test", manifest.latestReleasePublicationTest],
-      [`scripts/add-${manifest.latestCompletedRelease}-translations.mjs`, "--check-only"],
+      ["--test", publication?.gate ?? manifest.latestReleaseGate],
+      ["--test", publication?.publicationTest ?? manifest.latestReleasePublicationTest],
+      [`scripts/add-${release}-translations.mjs`, "--check-only"],
       ...RETAINED_GLOBAL_TESTS.map((testPath) => ["--test", testPath]),
     ],
   );
   assert.ok(calls.every(({ directory }) => directory === root));
+});
+
+test("supports an independently named publication without advancing the R0 endpoint", async () => {
+  const latestPublication = {
+    releaseId: "clay-b-two-scale-20260905",
+    gate: "tests/clay-b-two-scale-20260905-gate.test.mjs",
+    publicationTest: "tests/clay-b-two-scale-20260905-release.test.mjs",
+    translationScript: "scripts/add-clay-b-two-scale-20260905-translations.mjs",
+  };
+  const directory = await fixture({ latestPublication });
+  try {
+    await Promise.all([
+      writeFile(join(directory, latestPublication.gate), "// fixture\n"),
+      writeFile(join(directory, latestPublication.publicationTest), "// fixture\n"),
+      writeFile(
+        join(directory, latestPublication.translationScript),
+        'if (process.argv.includes("--check-only")) process.exitCode = 0;\n',
+      ),
+    ]);
+    const gate = await resolveReleasePublicationGate(directory);
+    assert.equal(gate.release, latestPublication.releaseId);
+    assert.equal(gate.gate, latestPublication.gate);
+    assert.equal(gate.publication, latestPublication.publicationTest);
+    assert.equal(gate.translation, latestPublication.translationScript);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("rejects traversal and release-mismatched manifest pointers", async (context) => {

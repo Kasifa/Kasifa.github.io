@@ -96,9 +96,20 @@ export async function resolveReleasePublicationGate(root = defaultRoot) {
     fail("unsupported release manifest schema");
   }
 
-  const release = manifest.latestCompletedRelease;
-  if (typeof release !== "string" || !/^r0\d{2}[a-z]$/.test(release)) {
-    fail("latestCompletedRelease is not a canonical release id");
+  const independent = manifest.latestPublication;
+  if (
+    independent !== undefined &&
+    (independent === null || typeof independent !== "object" || Array.isArray(independent))
+  ) {
+    fail("latestPublication must be an object when present");
+  }
+  const release = independent?.releaseId ?? manifest.latestCompletedRelease;
+  const releaseLabel = independent ? "latestPublication.releaseId" : "latestCompletedRelease";
+  const releasePattern = independent
+    ? /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+    : /^r0\d{2}[a-z]$/;
+  if (typeof release !== "string" || !releasePattern.test(release)) {
+    fail(`${releaseLabel} is not a valid release id`);
   }
   const escapedRelease = escapeRegularExpression(release);
   const gatePattern = new RegExp(
@@ -108,16 +119,23 @@ export async function resolveReleasePublicationGate(root = defaultRoot) {
     `^tests/${escapedRelease}(?:-[a-z0-9]+)*\\.test\\.mjs$`,
   );
 
+  const gateLabel = independent ? "latestPublication.gate" : "latestReleaseGate";
+  const publicationLabel = independent
+    ? "latestPublication.publicationTest"
+    : "latestReleasePublicationTest";
+  const translationLabel = independent
+    ? "latestPublication.translationScript"
+    : "latestReleaseTranslationScript";
   const gate = requireSafeRelativePath(
-    manifest.latestReleaseGate,
-    "latestReleaseGate",
+    independent?.gate ?? manifest.latestReleaseGate,
+    gateLabel,
   );
   if (!gatePattern.test(gate)) {
     fail(`latestReleaseGate does not belong to ${release}: ${gate}`);
   }
   const publication = requireSafeRelativePath(
-    manifest.latestReleasePublicationTest,
-    "latestReleasePublicationTest",
+    independent?.publicationTest ?? manifest.latestReleasePublicationTest,
+    publicationLabel,
   );
   if (
     !publicationPattern.test(publication) ||
@@ -131,8 +149,8 @@ export async function resolveReleasePublicationGate(root = defaultRoot) {
 
   const derivedTranslation = `scripts/add-${release}-translations.mjs`;
   const translation = requireSafeRelativePath(
-    manifest.latestReleaseTranslationScript ?? derivedTranslation,
-    "latestReleaseTranslationScript",
+    independent?.translationScript ?? manifest.latestReleaseTranslationScript ?? derivedTranslation,
+    translationLabel,
   );
   if (translation !== derivedTranslation) {
     fail(

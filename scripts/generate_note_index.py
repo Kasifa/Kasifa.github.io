@@ -162,6 +162,35 @@ def entry(note: Note) -> str:
           </li>'''
 
 
+def independent_section(site: dict[str, object]) -> str:
+    count = site.get("publicIndependentNoteCount", 0)
+    if count == 0:
+        return ""
+    if count != 1:
+        raise RuntimeError("only one independent research note is currently supported")
+    declared_html = site.get("latestIndependentResearchHtml")
+    declared_pdf = site.get("latestIndependentResearchPdf")
+    declared_id = site.get("latestIndependentNote")
+    if not isinstance(declared_html, str) or not re.fullmatch(
+        r"/notes/[a-z0-9]+(?:-[a-z0-9]+)*\.html", declared_html
+    ):
+        raise RuntimeError("malformed latestIndependentResearchHtml")
+    if not isinstance(declared_pdf, str) or declared_pdf != declared_html.removesuffix(".html") + ".pdf":
+        raise RuntimeError("independent PDF path must match its HTML path")
+    path = PUBLIC / declared_html.removeprefix("/")
+    pdf = PUBLIC / declared_pdf.removeprefix("/")
+    if not path.is_file() or path.is_symlink() or not pdf.is_file() or pdf.is_symlink():
+        raise RuntimeError("declared independent HTML/PDF pair is missing")
+    parser = TitleParser()
+    parser.feed(path.read_text(encoding="utf-8"))
+    parser.close()
+    title = html.escape(parser.title)
+    if not title or not isinstance(declared_id, str):
+        raise RuntimeError("independent note title or identifier is missing")
+    slug = path.stem
+    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT BRIDGE NOTE</p><h2 id="series-independent">Clay-B</h2></div><span>ONE NOTE</span></header><ol class="note-list"><li class="note-entry independent-entry" data-note="{slug}"><article><div class="entry-copy"><p class="note-code">{html.escape(declared_id)}</p><h3>{title}</h3></div><nav class="entry-files" aria-label="Clay-B two-scale files"><a class="file-link html" href="{declared_html}" aria-label="Read Clay-B two-scale HTML">HTML</a><a class="file-link pdf" href="{declared_pdf}" aria-label="Download Clay-B two-scale PDF">PDF</a></nav></article></li></ol><p class="index-note">独立桥梁笔记不占用 R0 主序列编号，也不改变 R0.76L 的当前端点；它单独记录一个已冻结的 Clay-B 推法审计。</p></section>'''
+
+
 def render(notes: list[Note]) -> str:
     site = json.loads((PUBLIC / "site-version.json").read_text(encoding="utf-8"))
     if site.get("publicHtmlNoteCount") != len(notes):
@@ -200,6 +229,9 @@ def render(notes: list[Note]) -> str:
     published_date = html.escape(str(site["publishedDate"]))
     latest = html.escape(notes[0].code)
     content = "\n\n".join(sections)
+    independent = independent_section(site)
+    if independent:
+        content = independent + "\n\n" + content
     return f'''<!doctype html>
 <html lang="zh-CN" data-site-version="{version}">
 <head>

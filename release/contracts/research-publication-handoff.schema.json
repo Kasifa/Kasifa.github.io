@@ -18,13 +18,25 @@
   ],
   "properties": {
     "schemaVersion": { "const": "research-publication-handoff-v1" },
-    "releaseId": { "type": "string", "pattern": "^r0[0-9]{2}[a-z]$" },
+    "releaseId": {
+      "type": "string",
+      "pattern": "^(?:r0[0-9]{2}[a-z]|[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-[0-9]{8})$"
+    },
     "frozenCommit": { "$ref": "#/$defs/commit" },
     "translationRoute": { "const": "LOCAL_DIRECT_NO_DGX" },
     "artifacts": {
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/artifact" }
+    },
+    "artifactPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["readerPdf", "scientificFigure"],
+      "properties": {
+        "readerPdf": { "enum": ["REQUIRED", "OMIT_NEW"] },
+        "scientificFigure": { "enum": ["REQUIRED", "NOT_REQUIRED"] }
+      }
     },
     "claimBoundary": {
       "type": "object",
@@ -65,7 +77,7 @@
     "stages": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["generate", "translate", "bind"],
+      "required": ["generate", "translate"],
       "properties": {
         "generate": { "$ref": "#/$defs/stage" },
         "translate": { "$ref": "#/$defs/stage" },
@@ -109,7 +121,7 @@
         },
         "expectedLive": {
           "type": "array",
-          "minItems": 8,
+          "minItems": 4,
           "items": { "$ref": "#/$defs/live" }
         },
         "expectedAbsent": {
@@ -126,6 +138,7 @@
       "required": ["evidencePath", "requiredChecks"],
       "properties": {
         "evidencePath": { "$ref": "#/$defs/path" },
+        "configPath": { "$ref": "#/$defs/path" },
         "requiredChecks": {
           "type": "array",
           "minItems": 1,
@@ -135,6 +148,66 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "artifactPolicy": {
+            "properties": { "readerPdf": { "const": "REQUIRED" } },
+            "required": ["readerPdf"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "stages": { "required": ["generate", "translate", "bind"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["artifactPolicy"],
+        "properties": {
+          "artifactPolicy": {
+            "properties": { "readerPdf": { "const": "OMIT_NEW" } },
+            "required": ["readerPdf"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "visualQa": { "required": ["evidencePath", "requiredChecks", "configPath"] },
+          "stages": { "not": { "required": ["bind"] } },
+          "publication": {
+            "properties": {
+              "expectedLive": {
+                "not": {
+                  "contains": {
+                    "type": "object",
+                    "required": ["role"],
+                    "properties": { "role": { "const": "note-pdf" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["releaseId"],
+        "properties": {
+          "releaseId": { "not": { "pattern": "^r0[0-9]{2}[a-z]$" } }
+        }
+      },
+      "then": {
+        "properties": {
+          "visualQa": { "required": ["evidencePath", "requiredChecks", "configPath"] }
+        }
+      }
+    }
+  ],
   "$defs": {
     "path": {
       "type": "string",

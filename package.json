@@ -11,6 +11,7 @@
     "i18n:extract": "node scripts/extract-i18n.mjs",
     "i18n:build": "node scripts/build-i18n.mjs translations/en.json",
     "release:publish": "node scripts/publish-release.mjs",
+    "release:status": "node scripts/publish-release.mjs --status",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "pnpm run i18n:build && pnpm run build && node --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .qa",
@@ -23,6 +24,7 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "ajv": "8.20.0",
     "@cloudflare/vite-plugin": "1.37.1",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",

@@ -14,6 +14,7 @@ import {
 import { dirname, isAbsolute, posix, relative, resolve, sep } from "node:path";
 
 import { resolveReleasePublicationGate } from "./run-release-publication-gate.mjs";
+import { loadPublicationQaConfig } from "./publication-qa-lib.mjs";
 
 export const STAGES = Object.freeze([
   "intake",
@@ -40,17 +41,61 @@ export const STATE_AFTER_STAGE = Object.freeze({
 });
 
 const REQUIRED_BOUNDARIES = Object.freeze(["PROVED", "FINITE", "OPEN", "NOT CLAY"]);
-const REQUIRED_LIVE_ROLES = Object.freeze([
-  "homepage",
-  "note-html",
-  "note-pdf",
-  "note-index",
-  "site-version",
-  "figure-pdf",
-  "figure-svg",
-  "figure-png",
-]);
+const CORE_LIVE_ROLES = Object.freeze(["homepage", "note-html", "note-index", "site-version"]);
+const PDF_LIVE_ROLES = Object.freeze(["note-pdf"]);
+const FIGURE_LIVE_ROLES = Object.freeze(["figure-pdf", "figure-svg", "figure-png"]);
+const CACHEABLE_STAGES = new Set(["intake", "generate", "translate", "bind", "gate"]);
 const RUNTIME_SCHEMA = "research-publication-runtime-v1";
+export const DETERMINISTIC_RUNTIME_INPUTS = Object.freeze([
+  "package.json",
+  "pnpm-lock.yaml",
+  "scripts/release-pipeline-lib.mjs",
+  "scripts/run-release-publication-gate.mjs",
+]);
+
+function releaseFileStem(releaseId) {
+  return releaseId.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+function isSupportedReleaseId(releaseId) {
+  return /^r0\d{2}[a-z]$/.test(releaseId) ||
+    /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*-\d{8}$/.test(releaseId);
+}
+
+function artifactPolicy(contract) {
+  return contract.artifactPolicy ?? { readerPdf: "REQUIRED", scientificFigure: "REQUIRED" };
+}
+
+export function stateAfterStage(contract, name) {
+  if (name === "bind" && artifactPolicy(contract).readerPdf === "OMIT_NEW") {
+    return "HTML_ARTIFACTS_BOUND";
+  }
+  return STATE_AFTER_STAGE[name];
+}
+
+export function isStageCacheable(name) {
+  return CACHEABLE_STAGES.has(name);
+}
+
+export function canReuseStage(name, { noCache, cachedFingerprint, fingerprint, outputsMatch }) {
+  return isStageCacheable(name) && !noCache && cachedFingerprint === fingerprint && outputsMatch;
+}
+
+export function recordSuccessfulStage(state, contract, name, stageReceipt) {
+  state.currentState = stateAfterStage(contract, name);
+  state.stages[name] = stageReceipt;
+  if (state.failedStage === name) delete state.failedStage;
+  return state;
+}
+
+function requiredLiveRoles(contract) {
+  const policy = artifactPolicy(contract);
+  return [
+    ...CORE_LIVE_ROLES,
+    ...(policy.readerPdf === "REQUIRED" ? PDF_LIVE_ROLES : []),
+    ...(policy.scientificFigure === "REQUIRED" ? FIGURE_LIVE_ROLES : []),
+  ];
+}
 
 export class ReleasePipelineError extends Error {
   constructor(stage, failures) {
@@ -179,8 +224,8 @@ export function validateHandoff(contract) {
   if (contract.schemaVersion !== "research-publication-handoff-v1") {
     fail("contract", "unsupported handoff schemaVersion");
   }
-  if (typeof contract.releaseId !== "string" || !/^r0\d{2}[a-z]$/.test(contract.releaseId)) {
-    fail("contract", "releaseId must match r0NNx");
+  if (typeof contract.releaseId !== "string" || !isSupportedReleaseId(contract.releaseId)) {
+    fail("contract", "releaseId must match r0NNx or a dated independent release id");
   }
   requireCommit(contract.frozenCommit, "frozenCommit");
   if (contract.translationRoute !== "LOCAL_DIRECT_NO_DGX") {
@@ -228,24 +273,44 @@ export function validateHandoff(contract) {
     requireSha256(artifact.sha256, `recap.preservedArtifacts[${index}].sha256`);
   }
 
+  const policy = contract.artifactPolicy ?? {
+    readerPdf: "REQUIRED",
+    scientificFigure: "REQUIRED",
+  };
+  if (!isObject(policy) || !["REQUIRED", "OMIT_NEW"].includes(policy.readerPdf) ||
+      !["REQUIRED", "NOT_REQUIRED"].includes(policy.scientificFigure)) {
+    fail("contract", "artifactPolicy must declare readerPdf and scientificFigure");
+  }
+  contract.artifactPolicy = policy;
+
+  const stem = releaseFileStem(contract.releaseId);
+  const formal = /^r0\d{2}[a-z]$/.test(contract.releaseId);
   validateStage(
     contract,
     "generate",
-    `scripts/generate_${contract.releaseId}_release.py`,
+    formal
+      ? `scripts/generate_${contract.releaseId}_release.py`
+      : `scripts/generate_${stem.replaceAll("-", "_")}_release.py`,
     "python-local",
   );
   validateStage(
     contract,
     "translate",
-    `scripts/add-${contract.releaseId}-translations.mjs`,
+    `scripts/add-${stem}-translations.mjs`,
     "node-local",
   );
-  validateStage(
-    contract,
-    "bind",
-    `scripts/bind-${contract.releaseId}-pdfs.mjs`,
-    "node-local",
-  );
+  if (policy.readerPdf === "REQUIRED") {
+    validateStage(
+      contract,
+      "bind",
+      formal
+        ? `scripts/bind-${contract.releaseId}-pdfs.mjs`
+        : `scripts/bind-${stem}-pdfs.mjs`,
+      "node-local",
+    );
+  } else if (contract.stages?.bind !== undefined) {
+    fail("contract", "HTML-only releases must omit stages.bind");
+  }
 
   if (!isObject(contract.publication)) fail("contract", "publication is required");
   if (contract.publication.expectedCommit !== null) {
@@ -269,13 +334,17 @@ export function validateHandoff(contract) {
     contract.publication.managedPaths,
     "publication.managedPaths",
   ).map((value, index) => requireSafeRelativePath(value, `publication.managedPaths[${index}]`));
-  if (typeof contract.publication.commitMessage !== "string" ||
+  if (typeof contract.publication.commitMessage !== "string" || contract.publication.commitMessage.length === 0) {
+    fail("contract", "publication.commitMessage must be nonempty");
+  }
+  if (formal &&
       !contract.publication.commitMessage.includes(contract.releaseId.toUpperCase().replace("R0", "R0."))) {
     fail("contract", "publication.commitMessage must name the public release code");
   }
 
+  const requiredRoles = requiredLiveRoles(contract);
   if (!Array.isArray(contract.publication.expectedLive) ||
-      contract.publication.expectedLive.length < REQUIRED_LIVE_ROLES.length) {
+      contract.publication.expectedLive.length < requiredRoles.length) {
     fail("contract", "publication.expectedLive is incomplete");
   }
   const liveRoles = new Set();
@@ -299,7 +368,7 @@ export function validateHandoff(contract) {
     liveRoles.add(item.role);
     livePaths.add(item.urlPath);
   }
-  for (const role of REQUIRED_LIVE_ROLES) {
+  for (const role of requiredRoles) {
     if (!liveRoles.has(role)) fail("contract", `publication.expectedLive omits ${role}`);
   }
   contract.publication.expectedAbsent = requireStringArray(
@@ -310,6 +379,16 @@ export function validateHandoff(contract) {
   for (const path of contract.publication.expectedAbsent) {
     if (!path.startsWith("/") || path.includes("..")) fail("contract", `unsafe expectedAbsent path ${path}`);
   }
+  if (policy.readerPdf === "OMIT_NEW") {
+    if (liveRoles.has("note-pdf")) {
+      fail("contract", "HTML-only releases must not declare a live note-pdf role");
+    }
+    const note = contract.publication.expectedLive.find((item) => item.role === "note-html");
+    const expectedPdf = note?.urlPath?.replace(/\.html$/, ".pdf");
+    if (!expectedPdf || !contract.publication.expectedAbsent.includes(expectedPdf)) {
+      fail("contract", "HTML-only releases must explicitly require the new note PDF to be absent");
+    }
+  }
   if (!isObject(contract.publication.siteVersionExpectations)) {
     fail("contract", "publication.siteVersionExpectations is required");
   }
@@ -319,6 +398,12 @@ export function validateHandoff(contract) {
     contract.visualQa.requiredChecks,
     "visualQa.requiredChecks",
   );
+  if (contract.visualQa.configPath !== undefined) {
+    requireSafeRelativePath(contract.visualQa.configPath, "visualQa.configPath");
+  }
+  if ((!formal || policy.readerPdf === "OMIT_NEW") && !contract.visualQa.configPath) {
+    fail("contract", "independent and HTML-only releases require visualQa.configPath");
+  }
   return contract;
 }
 
@@ -568,18 +653,37 @@ function stageIndex(name) {
 
 async function stageFingerprint(root, loaded, name, mode, publicationCommit) {
   const contract = loaded.contract;
+  const runtime = runtimeIdentityForStage(contract, name);
   if (name === "intake") {
-    return fingerprintPaths(root, [loaded.path, ...contract.artifacts.map((item) => item.path)], {
+    return fingerprintPaths(root, [
+      loaded.path,
+      ...contract.artifacts.map((item) => item.path),
+      ...DETERMINISTIC_RUNTIME_INPUTS,
+    ], {
       name,
       mode,
       frozenCommit: contract.frozenCommit,
+      runtime,
     });
   }
   if (["generate", "translate", "bind"].includes(name)) {
     const stage = contract.stages[name];
-    return fingerprintPaths(root, [loaded.path, stage.script, ...stage.inputs], { name, mode });
+    if (!stage) {
+      return fingerprintPaths(root, DETERMINISTIC_RUNTIME_INPUTS, {
+        name,
+        mode,
+        policy: artifactPolicy(contract),
+        runtime,
+      });
+    }
+    return fingerprintPaths(root, [
+      loaded.path,
+      stage.script,
+      ...stage.inputs,
+      ...DETERMINISTIC_RUNTIME_INPUTS,
+    ], { name, mode, runtime });
   }
-  if (name === "gate") return workspaceFingerprint(root, { name, mode });
+  if (name === "gate") return workspaceFingerprint(root, { name, mode, runtime });
   if (["commit", "push", "deploy"].includes(name)) {
     return sha256Bytes(JSON.stringify({
       name,
@@ -595,6 +699,7 @@ async function stageFingerprint(root, loaded, name, mode, publicationCommit) {
       [
         loaded.path,
         contract.visualQa.evidencePath,
+        ...(contract.visualQa.configPath ? [contract.visualQa.configPath] : []),
         ...contract.publication.expectedLive.map((item) => item.localPath),
       ],
       { name, mode, publicationCommit },
@@ -608,8 +713,39 @@ function executableFor(stage) {
   return process.env.RELEASE_PYTHON ?? "python3";
 }
 
+export function runtimeIdentityForStage(contract, name) {
+  const stage = contract.stages?.[name];
+  const executable = stage ? executableFor(stage) : process.execPath;
+  if (stage?.runner === "python-local") {
+    const identity = spawnSync(executable, [
+      "-c",
+      "import json,sys; print(json.dumps({'executable':sys.executable,'prefix':sys.prefix,'version':sys.version}))",
+    ], { encoding: "utf8" });
+    if (identity.status === 0) {
+      return {
+        ...JSON.parse(identity.stdout),
+        command: executable,
+        nodeExecutable: process.execPath,
+        nodeVersion: process.version,
+      };
+    }
+  }
+  const version = spawnSync(executable, ["--version"], { encoding: "utf8" });
+  return {
+    executable,
+    version: version.status === 0
+      ? `${version.stdout ?? ""}${version.stderr ?? ""}`.trim()
+      : `unavailable:${version.status ?? version.error?.message ?? "unknown"}`,
+    nodeExecutable: process.execPath,
+    nodeVersion: process.version,
+  };
+}
+
 async function runScriptStage(root, contract, name, verifyExisting) {
   const stage = contract.stages[name];
+  if (!stage && name === "bind" && artifactPolicy(contract).readerPdf === "OMIT_NEW") {
+    return { execution: "omitted-by-html-only-policy", outputs: {} };
+  }
   const executable = executableFor(stage);
   const commands = verifyExisting
     ? [[stage.script, "--check-only"]]
@@ -628,9 +764,58 @@ async function runScriptStage(root, contract, name, verifyExisting) {
   await verifyClaimBoundary(root, contract);
   return {
     execution: verifyExisting ? "check-only" : "apply-then-check",
-    commands: results.map(({ arguments_ }) => [executable, ...arguments_]),
+    commands: results.map(({ arguments_, result }) => ({
+      command: [executable, ...arguments_],
+      status: result.status,
+      stdout: result.stdout,
+      stderr: result.stderr,
+    })),
     outputs: await outputHashes(root, stage.outputs),
   };
+}
+
+export async function validateFreshBrowserQaConfig(root, contract) {
+  if (!contract.visualQa.configPath) {
+    throw new ReleasePipelineError("qa", [{
+      label: "fresh browser QA",
+      message: "visualQa.configPath is required for a complete online QA result",
+    }]);
+  }
+  const config = await loadPublicationQaConfig(root, contract.visualQa.configPath);
+  const failures = [];
+  if (config.releaseId !== contract.releaseId) failures.push("releaseId mismatch");
+  if (config.browser.evidencePath !== contract.visualQa.evidencePath) {
+    failures.push("browser evidencePath does not match handoff visualQa.evidencePath");
+  }
+  const configuredChecks = new Set(config.browser.targets.flatMap((target) =>
+    config.browser.scenarios.map((scenario) => `${target.id}-${scenario.id}`)));
+  for (const id of contract.visualQa.requiredChecks) {
+    if (!configuredChecks.has(id)) failures.push(`browser config omits required check ${id}`);
+  }
+  if (failures.length > 0) {
+    throw new ReleasePipelineError("qa", failures.map((message) => ({
+      label: "fresh browser QA config",
+      message,
+    })));
+  }
+  return config;
+}
+
+async function runFreshBrowserQa(root, contract, publicationCommit) {
+  await validateFreshBrowserQaConfig(root, contract);
+  const result = await runProcess(process.execPath, [
+    "scripts/qa-publication-browser.mjs",
+    "--config",
+    contract.visualQa.configPath,
+    "--commit",
+    publicationCommit,
+    "--base-url",
+    contract.publication.siteBaseUrl,
+  ], { cwd: root });
+  if (result.status !== 0 || result.error) {
+    throw new ReleasePipelineError("qa", [commandFailure("fresh browser QA", result)]);
+  }
+  return { command: "scripts/qa-publication-browser.mjs", summary: result.stdout.trim() };
 }
 
 export async function runChecksCollectingFailures(root, checks) {
@@ -715,7 +900,12 @@ async function runAuditStage(root, contract) {
   if (failures.length > 0) throw new ReleasePipelineError("gate", failures);
   const structural = JSON.parse(completed.find((item) => item.label === "public-site-structural-audit").result.stdout);
   return {
-    checks: [...completed, ...diagnostic].map((item) => ({ label: item.label, status: "pass" })),
+    checks: [...completed, ...diagnostic].map((item) => ({
+      label: item.label,
+      status: "pass",
+      stdout: item.result.stdout,
+      stderr: item.result.stderr,
+    })),
     structural,
     outputs: {},
   };
@@ -906,8 +1096,17 @@ export async function verifyLivePublication(root, contract, publicationCommit) {
   if (failures.length > 0) throw new ReleasePipelineError("qa", failures);
   const visual = await verifyVisualEvidence(root, contract, publicationCommit);
   return {
-    files: liveChecks.map(({ body: _body, errors: _errors, ...check }) => check),
-    expectedAbsent: absentChecks.map(({ errors: _errors, ...check }) => check),
+    files: liveChecks.map((check) => {
+      const result = { ...check };
+      delete result.body;
+      delete result.errors;
+      return result;
+    }),
+    expectedAbsent: absentChecks.map((check) => {
+      const result = { ...check };
+      delete result.errors;
+      return result;
+    }),
     visual,
     outputs: {},
   };
@@ -939,6 +1138,8 @@ export async function runReleasePipeline(options) {
     stages: {},
   });
   const startedAt = new Date().toISOString();
+  const runId = startedAt.replaceAll(":", "-");
+  const logRoot = resolve(runtimeRoot, "logs", contract.releaseId, runId);
   const receipt = {
     schemaVersion: "research-publication-receipt-v1",
     releaseId: contract.releaseId,
@@ -954,6 +1155,7 @@ export async function runReleasePipeline(options) {
     },
     claimBoundary: [...REQUIRED_BOUNDARIES],
     stages: [],
+    logs: [],
     errors: [],
   };
   let publicationCommit = options.verifyExisting ? contract.publication.expectedCommit : null;
@@ -962,22 +1164,34 @@ export async function runReleasePipeline(options) {
     const stageStarted = Date.now();
     const fingerprint = await stageFingerprint(root, loaded, name, mode, publicationCommit);
     const cached = cache.stages[name];
-    if (!options.noCache && cached?.fingerprint === fingerprint &&
-        await outputsStillMatch(root, cached.outputs)) {
+    const outputsMatch = cached && isStageCacheable(name)
+      ? await outputsStillMatch(root, cached.outputs)
+      : false;
+    if (canReuseStage(name, {
+      noCache: options.noCache,
+      cachedFingerprint: cached?.fingerprint,
+      fingerprint,
+      outputsMatch,
+    })) {
       publicationCommit = cached.details?.publicationCommit ?? publicationCommit;
       const stageReceipt = {
         name,
-        state: STATE_AFTER_STAGE[name],
+        state: stateAfterStage(contract, name),
         status: "pass",
         cached: true,
         durationMs: Date.now() - stageStarted,
         fingerprint,
         details: cached.details,
       };
+      const logPath = resolve(logRoot, `${name}.json`);
+      stageReceipt.logPath = relative(root, logPath);
       receipt.stages.push(stageReceipt);
-      state.currentState = STATE_AFTER_STAGE[name];
-      state.stages[name] = stageReceipt;
-      await atomicJson(statePath, { ...state, updatedAt: new Date().toISOString() });
+      receipt.logs.push(stageReceipt.logPath);
+      recordSuccessfulStage(state, contract, name, stageReceipt);
+      await Promise.all([
+        atomicJson(statePath, { ...state, updatedAt: new Date().toISOString() }),
+        atomicJson(logPath, stageReceipt),
+      ]);
       options.onProgress?.(stageReceipt);
       continue;
     }
@@ -1005,29 +1219,36 @@ export async function runReleasePipeline(options) {
           pollMs: options.deploymentPollMs,
         });
       } else if (name === "qa") {
+        const browser = await runFreshBrowserQa(root, contract, publicationCommit);
         details = await verifyLivePublication(root, contract, publicationCommit);
+        details.browser = browser;
       }
       const stageReceipt = {
         name,
-        state: STATE_AFTER_STAGE[name],
+        state: stateAfterStage(contract, name),
         status: "pass",
         cached: false,
         durationMs: Date.now() - stageStarted,
         fingerprint,
         details,
       };
+      const logPath = resolve(logRoot, `${name}.json`);
+      stageReceipt.logPath = relative(root, logPath);
       receipt.stages.push(stageReceipt);
-      state.currentState = STATE_AFTER_STAGE[name];
-      state.stages[name] = stageReceipt;
-      cache.stages[name] = {
-        fingerprint,
-        outputs: details.outputs ?? {},
-        details,
-        completedAt: new Date().toISOString(),
-      };
+      receipt.logs.push(stageReceipt.logPath);
+      recordSuccessfulStage(state, contract, name, stageReceipt);
+      if (isStageCacheable(name)) {
+        cache.stages[name] = {
+          fingerprint,
+          outputs: details.outputs ?? {},
+          details,
+          completedAt: new Date().toISOString(),
+        };
+      }
       await Promise.all([
         atomicJson(statePath, { ...state, updatedAt: new Date().toISOString() }),
         atomicJson(cachePath, cache),
+        atomicJson(logPath, stageReceipt),
       ]);
       options.onProgress?.(stageReceipt);
     } catch (error) {
@@ -1043,7 +1264,10 @@ export async function runReleasePipeline(options) {
         fingerprint,
         errors: normalized.failures,
       };
+      const logPath = resolve(logRoot, `${name}.json`);
+      stageReceipt.logPath = relative(root, logPath);
       receipt.stages.push(stageReceipt);
+      receipt.logs.push(stageReceipt.logPath);
       receipt.errors.push(...normalized.failures);
       receipt.completedAt = new Date().toISOString();
       receipt.finalState = state.currentState;
@@ -1053,6 +1277,7 @@ export async function runReleasePipeline(options) {
       await Promise.all([
         atomicJson(statePath, { ...state, updatedAt: new Date().toISOString() }),
         atomicJson(receiptPath, receipt),
+        atomicJson(logPath, stageReceipt),
       ]);
       options.onProgress?.(stageReceipt);
       normalized.receiptPath = relative(root, receiptPath);
@@ -1061,7 +1286,7 @@ export async function runReleasePipeline(options) {
   }
 
   receipt.completedAt = new Date().toISOString();
-  receipt.finalState = STATE_AFTER_STAGE[through];
+  receipt.finalState = stateAfterStage(contract, through);
   receipt.publicationCommit = publicationCommit;
   receipt.receiptPath = relative(root, receiptPath);
   await atomicJson(receiptPath, receipt);

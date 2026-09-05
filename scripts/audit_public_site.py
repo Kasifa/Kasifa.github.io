@@ -80,6 +80,15 @@ def main() -> None:
 
     root = args.root.resolve()
     public = root / "public"
+    baseline_path = root / "release" / "structural-audit-baseline.json"
+    baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    if baseline.get("schemaVersion") != "public-site-structural-audit-baseline-v1":
+        raise SystemExit("unsupported structural-audit baseline schema")
+    approved = {
+        (item["kind"], source, item["target"])
+        for item in baseline.get("approvedExistingIssues", [])
+        for source in item.get("sources", [])
+    }
     html_files = sorted(public.rglob("*.html"))
     if not html_files:
         raise SystemExit("no public HTML files found")
@@ -119,18 +128,30 @@ def main() -> None:
                 if fragment not in set(target_parser.ids):
                     errors.append({"kind": "missing-fragment", "source": str(source.relative_to(public)), "target": reference.value})
 
+    baselined = [
+        error for error in errors
+        if (error["kind"], error["source"], error["target"]) in approved
+    ]
+    unexpected = [
+        error for error in errors
+        if (error["kind"], error["source"], error["target"]) not in approved
+    ]
+    observed = {(error["kind"], error["source"], error["target"]) for error in errors}
+    stale_baseline = sorted(approved - observed)
     result = {
         "schemaVersion": "public-site-structural-audit-v1",
         "htmlFiles": len(html_files),
         "localReferences": local_refs,
         "externalReferencesNotFetched": external_refs,
         "checkedHtmlFragments": checked_fragments,
-        "errorCount": len(errors),
-        "errors": errors[: max(0, args.max_errors)],
-        "status": "pass" if not errors else "fail",
+        "baselinedIssueCount": len(baselined),
+        "staleBaselineCount": len(stale_baseline),
+        "errorCount": len(unexpected),
+        "errors": unexpected[: max(0, args.max_errors)],
+        "status": "pass" if not unexpected else "fail",
     }
     print(json.dumps(result, ensure_ascii=False, indent=2) if args.json else result)
-    if errors:
+    if unexpected:
         raise SystemExit(1)
 
 

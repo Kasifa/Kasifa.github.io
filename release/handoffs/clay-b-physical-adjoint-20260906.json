@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "research-publication-handoff-v1",
+  "releaseId": "ClayB-PhysicalAdjoint-20260906",
+  "frozenCommit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578",
+  "sourceRepository": "navier-stokes-r074m",
+  "translationRoute": "LOCAL_DIRECT_NO_DGX",
+  "artifacts": [
+    { "path": "research/clay_b_physical_adjoint_budget_20260905.md", "sha256": "71bea08e6eba0a042ead57f1ef985de9b9d9aaa09968a7ae03a8cc2fae9f2430", "role": "frozen-physical-adjoint-budget", "commit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578" },
+    { "path": "research/clay_b_physical_adjoint_shear_20260905.md", "sha256": "e99105914e344077d66ab53d4f0b6e8726409f80aa09f7707d7ae1a2fd4685f0", "role": "frozen-true-ns-shear-test", "commit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578" },
+    { "path": "research/clay_b_physical_adjoint_report-source_20260905.md", "sha256": "44d3a3b09dc64d088d3a95f27d016f11f0e636d3d63539cc26756f87387da589", "role": "frozen-reader-source-report", "commit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578" },
+    { "path": "research/clay_b_physical_adjoint_independent_audit_20260906.md", "sha256": "f836b0c5ce1e1404ed1166c163c53cd829d42feb46c62bfc32851328e20421c4", "role": "frozen-independent-analytic-audit", "commit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578" },
+    { "path": "research/clay_b_physical_adjoint_work_plan_20260905.md", "sha256": "3b937d518a802e66edc2f961d8ebac8b2736fd98bde685efdea682dfbcbda7da", "role": "frozen-work-plan", "commit": "ed51a0e43c9de159c0388218b0b45cf3b83c6578" },
+    { "path": "research/clay_b_physical_adjoint_test_preflight_20260905.md", "sha256": "da75b76fcdff1203477d93377fb3d63b0fdbe1e59af0da5de943a6de6d0d27a0", "role": "frozen-preflight-dependency", "commit": "19dfae0b63e3475b28b6bd9799958d6c83d6a57f" },
+    { "path": "research/clay_b_prescribed_centre_contract_20260905.md", "sha256": "d82a36827a7e4b956079db1d66101478ffbb6b743cb65b6d4d0b317c37119f2c", "role": "frozen-contract-g-dependency", "commit": "bbe05cfc584b550d52b5f2c899dfc5e32491114d" },
+    { "path": "research/clay_b_physical_adjoint_release_20260906.json", "sha256": "e4637e2b6b6e715ce5e0ebf85434f31d42a145257ce995e2020c7ec219b5b9f3", "role": "frozen-release-manifest", "commit": "7cb9b74effa96fa4c9a4c04abcfa48e16fa40461" },
+    { "path": "research/clay_b_physical_adjoint_handoff_20260906.md", "sha256": "d449dd0d2344a2984188056620f803d0120408b18c2f07c52d1d9086a525d57d", "role": "frozen-one-time-handoff", "commit": "7cb9b74effa96fa4c9a4c04abcfa48e16fa40461" }
+  ],
+  "artifactPolicy": {
+    "readerPdf": "OMIT_NEW",
+    "scientificFigure": "NOT_REQUIRED"
+  },
+  "claimBoundary": {
+    "requiredLabels": ["PROVED", "FINITE", "OPEN", "NOT CLAY"],
+    "publicFiles": [
+      "public/notes/clay-b-physical-adjoint-20260906.html",
+      "public/research-review.html",
+      "public/literature-review.html"
+    ]
+  },
+  "recap": {
+    "mode": "PRESERVE",
+    "latestRecapRelease": "r076i",
+    "preservedArtifacts": [
+      { "path": "public/recap-r0-61-r0-76i.html", "sha256": "1ea5048bcbecf791a557da94aa4bbf7fbda0a9517c83f40327d119af4f8103c9" },
+      { "path": "public/recap-r0-61-r0-76i.pdf", "sha256": "5bff642caa0c7ad4bf6cdfc3df252b3c0e68312373e185e3a85f27a5828baa98" }
+    ]
+  },
+  "stages": {
+    "generate": {
+      "runner": "python-local",
+      "script": "scripts/generate_clay_b_physical_adjoint_20260906_release.py",
+      "inputs": [
+        "research/clay_b_physical_adjoint_budget_20260905.md",
+        "research/clay_b_physical_adjoint_shear_20260905.md",
+        "research/clay_b_physical_adjoint_report-source_20260905.md",
+        "research/clay_b_physical_adjoint_independent_audit_20260906.md",
+        "research/clay_b_physical_adjoint_work_plan_20260905.md",
+        "research/clay_b_physical_adjoint_test_preflight_20260905.md",
+        "research/clay_b_prescribed_centre_contract_20260905.md",
+        "research/clay_b_physical_adjoint_release_20260906.json",
+        "research/clay_b_physical_adjoint_handoff_20260906.md",
+        "research/clay_b_physical_adjoint_frozen_ledger_20260906.json"
+      ],
+      "outputs": [
+        "public/notes/clay-b-physical-adjoint-20260906.html",
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/index.html",
+        "public/site-version.json",
+        "research/release-manifest.json",
+        "VERSION"
+      ]
+    },
+    "translate": {
+      "runner": "node-local",
+      "script": "scripts/add-clay-b-physical-adjoint-20260906-translations.mjs",
+      "inputs": [
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/index.html",
+        "translations/en.json"
+      ],
+      "outputs": [
+        "translations/en.json",
+        "public/i18n-en.js"
+      ]
+    }
+  },
+  "publication": {
+    "expectedCommit": null,
+    "siteBaseUrl": "https://kasifa.github.io",
+    "repository": "Kasifa/Kasifa.github.io",
+    "workflow": "pages.yml",
+    "remote": "origin",
+    "targetBranch": "main",
+    "commitMessage": "Publish ClayB PhysicalAdjoint HTML note",
+    "managedPaths": [
+      "VERSION",
+      "public/notes/clay-b-physical-adjoint-20260906.html",
+      "public/research-review.html",
+      "public/literature-review.html",
+      "public/notes/index.html",
+      "public/site-version.json",
+      "public/i18n-en.js",
+      "research/clay_b_physical_adjoint_budget_20260905.md",
+      "research/clay_b_physical_adjoint_shear_20260905.md",
+      "research/clay_b_physical_adjoint_report-source_20260905.md",
+      "research/clay_b_physical_adjoint_independent_audit_20260906.md",
+      "research/clay_b_physical_adjoint_work_plan_20260905.md",
+      "research/clay_b_physical_adjoint_test_preflight_20260905.md",
+      "research/clay_b_prescribed_centre_contract_20260905.md",
+      "research/clay_b_physical_adjoint_release_20260906.json",
+      "research/clay_b_physical_adjoint_handoff_20260906.md",
+      "research/clay_b_physical_adjoint_frozen_ledger_20260906.json",
+      "research/release-manifest.json",
+      "release/README.md",
+      "release/contracts/research-publication-handoff.schema.json",
+      "release/handoffs/clay-b-physical-adjoint-20260906.json",
+      "release/qa/clay-b-physical-adjoint-20260906.json",
+      "release/structural-audit-baseline.json",
+      "scripts/audit_public_site.py",
+      "scripts/release-pipeline-lib.mjs",
+      "scripts/generate_clay_b_physical_adjoint_20260906_release.py",
+      "scripts/add-clay-b-physical-adjoint-20260906-translations.mjs",
+      "tests/release-pipeline.test.mjs",
+      "tests/clay-b-physical-adjoint-20260906-gate.test.mjs",
+      "tests/clay-b-physical-adjoint-20260906-release.test.mjs",
+      "translations/en.json"
+    ],
+    "expectedLive": [
+      { "role": "note-html", "localPath": "public/notes/clay-b-physical-adjoint-20260906.html", "urlPath": "/notes/clay-b-physical-adjoint-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "previous-independent-html", "localPath": "public/notes/clay-b-signed-scale-20260905.html", "urlPath": "/notes/clay-b-signed-scale-20260905.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "canonical-html", "localPath": "public/notes/r0-76l.html", "urlPath": "/notes/r0-76l.html", "contentTypes": ["text/html"] },
+      { "role": "canonical-pdf", "localPath": "public/notes/r0-76l.pdf", "urlPath": "/notes/r0-76l.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "recap-html", "localPath": "public/recap-r0-61-r0-76i.html", "urlPath": "/recap-r0-61-r0-76i.html", "contentTypes": ["text/html"] },
+      { "role": "recap-pdf", "localPath": "public/recap-r0-61-r0-76i.pdf", "urlPath": "/recap-r0-61-r0-76i.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": [
+      "/notes/clay-b-physical-adjoint-20260906.pdf"
+    ],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.45",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-PhysicalAdjoint-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-physical-adjoint-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "visualQa": {
+    "evidencePath": ".release/qa/ClayB-PhysicalAdjoint-20260906.json",
+    "configPath": "release/qa/clay-b-physical-adjoint-20260906.json",
+    "requiredChecks": [
+      "adjoint-note-desktop-light-zh",
+      "adjoint-note-desktop-dark-en",
+      "adjoint-note-mobile-light-en",
+      "adjoint-note-mobile-dark-zh",
+      "roadmap-desktop-light-zh",
+      "roadmap-desktop-dark-en",
+      "roadmap-mobile-light-en",
+      "roadmap-mobile-dark-zh"
+    ]
+  }
+}

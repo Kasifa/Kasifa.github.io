@@ -47,6 +47,15 @@ test("handoff rejects path traversal and arbitrary stage scripts", async () => {
   const injected = structuredClone(original);
   injected.stages.generate.script = "scripts/not-the-release-generator.py";
   assert.throws(() => validateHandoff(injected), /must be scripts\/generate_r073y_release\.py/);
+
+  const unsafeRepository = structuredClone(original);
+  unsafeRepository.sourceRepository = "../navier-stokes-r074m";
+  assert.throws(() => validateHandoff(unsafeRepository), /sourceRepository/);
+
+  const crossRepository = structuredClone(original);
+  crossRepository.sourceRepository = "navier-stokes-r074m";
+  crossRepository.artifacts[0].commit = "a".repeat(40);
+  assert.equal(validateHandoff(crossRepository).sourceRepository, "navier-stokes-r074m");
 });
 
 test("state machine order is explicit and monotone", () => {
@@ -184,6 +193,8 @@ test("contract schemas retain legacy bind and admit HTML-only state", async () =
   const validateSchema = new Ajv2020({ strict: false, validateFormats: false }).compile(handoffSchema);
   const legacy = JSON.parse(await readFile(baselinePath, "utf8"));
   assert.equal(validateSchema(legacy), true, JSON.stringify(validateSchema.errors));
+  const physicalAdjoint = JSON.parse(await readFile(resolve(root, "release/handoffs/clay-b-physical-adjoint-20260906.json"), "utf8"));
+  assert.equal(validateSchema(physicalAdjoint), true, JSON.stringify(validateSchema.errors));
 
   const htmlOnly = structuredClone(legacy);
   htmlOnly.releaseId = "ClayB-Test-20260906";
@@ -217,6 +228,8 @@ test("contract schemas retain legacy bind and admit HTML-only state", async () =
 
   assert.ok(handoffSchema.allOf.some((rule) => rule.then?.properties?.stages?.required?.includes("bind")));
   assert.ok(handoffSchema.properties.artifactPolicy.properties.readerPdf.enum.includes("OMIT_NEW"));
+  assert.equal(handoffSchema.properties.sourceRepository.pattern, "^[A-Za-z0-9_.-]+$");
+  assert.equal(handoffSchema.$defs.artifact.properties.commit.$ref, "#/$defs/commit");
   assert.ok(receiptSchema.properties.finalState.enum.includes("HTML_ARTIFACTS_BOUND"));
 });
 

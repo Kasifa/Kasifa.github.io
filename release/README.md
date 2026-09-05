@@ -6,6 +6,12 @@ audit, push, monitor, and verify those artifacts; it must not edit the
 mathematical proof, theorem quantifiers, certificate payloads, formal-figure
 scientific data, or research route.
 
+When research and publication live in sibling repositories, the handoff names
+the sibling with `sourceRepository` and may pin each artifact to its own
+`commit`. Intake verifies both the copied publication-tree bytes and the exact
+source-repository blobs. Path separators are forbidden in the repository name,
+so this mechanism cannot escape the shared Math workspace.
+
 ## Single entry point
 
 Use the bundled/local Node runtime to run:
@@ -40,6 +46,11 @@ deterministic local stages only: a stage is reused only when its inputs,
 declared output hashes, runtime identity, dependency lock, and shared pipeline
 modules still match. Commit, push, GitHub Actions deployment lookup, live object
 verification, and browser QA are always fresh.
+
+The structural site audit fails on every new defect. Its baseline contains only
+the exact historical duplicate identifiers already present in byte-preserved
+legacy pages; resolving one makes that baseline entry stale, while any new
+source/identifier pair remains an error.
 
 Read local state without network access or writes:
 

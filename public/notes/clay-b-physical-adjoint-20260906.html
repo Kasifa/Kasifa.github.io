@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN" data-site-version="2.45">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>伴随测试的定位代价</title>
+  <meta name="description" content="An independent Clay-B note on physical-time adjoint tests, a linear dissipation moment cost, and a smooth Navier-Stokes shear obstruction.">
+  <link rel="canonical" href="https://kasifa.github.io/notes/clay-b-physical-adjoint-20260906.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js?v=2.45"></script>
+  <script defer src="/bilingual.js"></script>
+  <style>
+    :root { color-scheme: light dark; --paper:#f3ecd8; --panel:#fff8e8; --ink:#26231d; --muted:#625d52; --rule:#235b6b; --line:#b8ad97; --proved:#2f6d4a; --open:#8b2f2b; }
+    @media (prefers-color-scheme: dark) { :root { --paper:#181714; --panel:#24211c; --ink:#eee5d2; --muted:#b9ad9b; --rule:#77b6c7; --line:#665d52; --proved:#84c49d; --open:#df8c6a; } }
+    * { box-sizing:border-box; } html,body { background:var(--paper); } body { margin:0; color:var(--ink); font:17px/1.72 Georgia,"Songti SC","Noto Serif SC",serif; }
+    button,a { color:inherit; } a { color:var(--rule); text-underline-offset:.18em; }
+    .masthead { position:sticky; top:0; z-index:5; display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:10px max(5vw,20px); border-top:5px solid var(--ink); border-bottom:3px double var(--ink); background:color-mix(in srgb,var(--paper) 94%,transparent); backdrop-filter:blur(8px); }
+    .masthead strong,.kicker,.section-no,.badge { font:700 12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.075em; text-transform:uppercase; }
+    main { width:min(980px,90vw); margin:0 auto; } .hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(225px,290px); gap:2rem; padding:58px 0 34px; border-bottom:1px solid var(--line); }
+    h1 { max-width:15ch; margin:.25rem 0 .6rem; font-size:clamp(2.25rem,6vw,4.5rem); line-height:1.04; letter-spacing:-.035em; }
+    h2 { margin:.35rem 0 1rem; color:var(--rule); font-size:clamp(1.35rem,2.4vw,1.75rem); line-height:1.25; } h3 { margin:1.3rem 0 .45rem; font-size:1.08rem; }
+    .deck { max-width:68ch; font-size:1.08rem; } .stamp,.card { border:1px solid var(--line); background:var(--panel); } .stamp { align-self:start; padding:1rem; box-shadow:7px 7px 0 color-mix(in srgb,var(--line) 30%,transparent); } .stamp p { margin:.55rem 0; }
+    .proved { color:var(--proved); } .open { color:var(--open); } .badges { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; } .badge { padding:.28rem .55rem; border:1px solid var(--line); background:var(--panel); }
+    article { padding:12px 0 74px; } section { padding:2.15rem 0 1.25rem; border-bottom:1px dotted var(--line); } p,li,td { overflow-wrap:anywhere; }
+    .equation { margin:1rem 0; padding:14px 16px; overflow-x:auto; border-left:4px solid var(--rule); background:var(--panel); font:15px/1.62 SFMono-Regular,Consolas,monospace; white-space:pre-wrap; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin:1.2rem 0; } .card { padding:.9rem; } .card strong { display:block; margin-bottom:.35rem; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); font-size:.94rem; } th,td { padding:.7rem; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    .note,.footer { color:var(--muted); font-size:.92rem; } .footer { padding:2rem 0 3rem; }
+    main[data-language="en"] { display:none; } html[data-language="en"] main[data-language="zh"] { display:none; } html[data-language="en"] main[data-language="en"] { display:block; }
+    @media (max-width:760px) { body { font-size:15.5px; } .hero,.grid { grid-template-columns:1fr; } .masthead { align-items:flex-start; } h1 { max-width:none; } .equation { font-size:13px; } }
+  </style>
+</head>
+<body>
+  <header class="masthead"><strong><a href="/research-review.html">研究首页</a> · ClayB-PhysicalAdjoint-20260906</strong></header>
+
+  <main data-language="zh">
+    <header class="hero">
+      <div>
+        <div class="kicker">独立 Clay-B 解析笔记 · 2026-09-06</div>
+        <h1>伴随测试的定位代价</h1>
+        <p class="deck">真实物理时间的反向伴随测试可以合法进入 suitable Leray–Hopf 局部能量不等式，并把提升二阶矩控制到 <strong>C(1+D<sub>J</sub>/R)</strong>；但它仍保留早期能量、有符号残余输运和压力，也没有自动给出原移动管的能量下界。</p>
+        <p><strong>这是固定正尺度的局部结果与有限范围反例：不推进 R0 主序列，不是正则性证明，不是奇点构造，不主张新颖性。合同 G 仍 OPEN。NOT CLAY.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">NO SIMULATION</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp">
+        <strong>结论边界</strong>
+        <p class="proved">B.1–B.5 弱端点预算：已证</p>
+        <p class="proved">B.6–B.13 线性矩代价：已证</p>
+        <p class="proved">C.1–C.6 免费定位：已排除</p>
+        <p>固定 R 与普通光滑 T</p>
+        <p>初始 L²/H¹：均不统一</p>
+        <p class="open">原移动管比较与合同 G：OPEN</p>
+      </aside>
+    </header>
+    <article>
+      <section>
+        <div class="section-no">01 / 结论地图</div><h2>伴随测试能定位，但定位并不是免费的</h2>
+        <div class="grid"><div class="card"><strong class="proved">保留</strong>真实时间、移动中心、压力、残余输运、早期能量和弱端点。</div><div class="card"><strong class="proved">改进</strong>从 Lipschitz 指数代价降到线性的 C(1+D<sub>J</sub>/R)。</div><div class="card"><strong class="open">未闭合</strong>原移动管能量、有符号压力/输运与首次奇点合同 G。</div></div>
+        <p>路线上的作用是明确下一道真正的支付：伴随密度的矩和质量尾界可以得到，但它们尚不能替代移动球内的原局部能量，也不能令剩余有符号项自动可吸收。</p>
+      </section>
+      <section>
+        <div class="section-no">02 / B.1–B.5</div><h2>固定尺度的真实时间反向测试</h2>
+        <p>令 b<sub>R</sub> 为尺度 R 的平滑速度，令非负测试 ψ 沿 b<sub>R</sub> 的物理时间伴随方程反向演化。代入 suitable 弱解的局部能量不等式后，平滑主输运被抵消，但残余速度 u−b<sub>R</sub>、压力和早期能量仍在账本中。</p>
+        <div class="equation">terminal localized energy + viscous payment
+≤ starting localized energy + residual transport + pressure.              (B.1–B.5)</div>
+        <p>起点必须是强 L² 右 Lebesgue 时间；终点可以取任意弱代表并用正权弱下半连续性处理。终点的弱下半连续缺口不能被冒充为局部能量 defect measure 的时间原子。</p>
+      </section>
+      <section>
+        <div class="section-no">03 / B.6–B.13</div><h2>相对平滑路径的提升二阶矩只有线性耗散代价</h2>
+        <p>把伴随密度提升到有限质量的欧氏代表，以原平滑路径为参考。随机表示、速度相对空间均值的振荡、Young 与 Sobolev–Poincaré 给出</p>
+        <div class="equation">Q / (M R²) ≤ C ( 1 + D_J / R ).                                (B.8)</div>
+        <p>这里 Q 是提升二阶矩，M 是质量，D<sub>J</sub> 是对应时间窗上的耗散尺度量。线性优于直接 Lipschitz 形变产生的指数代价，但 B.8 并不证明 D<sub>J</sub>/R 一致有界或趋小。</p>
+        <p>Chebyshev 只能把该矩转成质量尾界；它不提供原移动球内能量的统一正下界。</p>
+      </section>
+      <section>
+        <div class="section-no">04 / B.14–B.16</div><h2>周期 Nash 高度界与直接 Hölder 缺口</h2>
+        <p>固定三维环面上的 Nash 不等式带有常数模态修正。不可压缩漂移保持 L¹ 收缩，并给伴随核标准的漂移无关高度控制。</p>
+        <div class="equation">||ψ(τ)||∞ ≤ C (1 + τ^{-3/2}) ||ψ(0)||₁.                        (B.14)</div>
+        <p>这仍只是核密度高度，不是空间中心控制。对残余输运与压力直接使用 Hölder 时，需要的核范数与当前能量级支付并不自动闭合；B.16 记录的是这条直接路线的缺口，不是否定其他补偿机制。</p>
+      </section>
+      <section>
+        <div class="section-no">05 / C.1–C.6</div><h2>真实光滑 NS 剪切族排除幅值与漂移无关的免费矩定位</h2>
+        <p>一个精确周期剪切解使非线性平流恒为零，因而是无外力、全时光滑的真实三维 Navier–Stokes 解。固定 R 与普通光滑终点 T 后放大幅值 A，可使提升欧氏二阶矩的 A² 系数严格为正。</p>
+        <div class="equation">fixed R,T;  all solutions smooth;
+lifted second moment has a strictly positive A² contribution.             (C.1–C.6)</div>
+        <p>因此，不含任何初值幅值或漂移支付的统一 O(R²) 矩界不成立。这里初始 L² 与 H¹ 都不统一；该族不检验首次奇点，不证明 B.8 最优，也不否定合同 G。</p>
+      </section>
+      <section>
+        <div class="section-no">06 / 文献边界</div><h2>借用经典工具，不把适用域外推成定理</h2>
+        <table><thead><tr><th>来源</th><th>本页使用范围</th></tr></thead><tbody>
+          <tr><td><a href="https://math.stanford.edu/~ryzhik/STANF272-12/lect-notes.pdf">Ryzhik, Theorem 2.2</a></td><td>全空间不可压缩漂移下的 L¹→L∞ 衰减背景；不推出中心或梯度控制。</td></tr>
+          <tr><td><a href="https://arxiv.org/pdf/2503.16723v1">Hess-Childs–Raquépas–Rowan, Theorems 1.7/1.14</a></td><td>全空间集中度比较及周期情形限制；不把全空间结论直接搬到环面。</td></tr>
+          <tr><td><a href="https://arxiv.org/pdf/1704.02173v3">Qian–Xi, Theorem 2</a></td><td>带临界漂移范数依赖的双边 Gaussian 界；不是免费梯度或周期提升估计。</td></tr>
+        </tbody></table>
+        <p>以上只标为 LITERATURE。B.1–B.16 与 C.1–C.6 标为 PROVED LOCALLY；本页没有 FINITE COMPUTATION、数值证书、仿真或科学图件。</p>
+      </section>
+      <section>
+        <div class="section-no">07 / 严格限制与下一步</div><h2>下一节点是原计时合同的持留/上穿输入</h2>
+        <ul><li>本页没有把质量尾界转成原移动管的能量控制。</li><li>临界压力和残余输运没有闭合。</li><li>没有证明真实 NS 自动产生 D<sub>J</sub>/R 的小性。</li><li>没有降低合同 G 的未证条件。</li></ul>
+        <p><strong>下一研发工作检查原计时合同的持留/上穿预算究竟给什么，不把条件性抽取定理误写成前提自动成立。该方向仍 OPEN、NOT CLAY，也不占用 R0.76M。</strong></p>
+      </section>
+      <section>
+        <div class="section-no">08 / 冻结证据</div><h2>源提交、交接提交与可审计文件</h2>
+        <p class="note">科学源提交：ed51a0e43c9de159c0388218b0b45cf3b83c6578。一次性交接提交：7cb9b74effa96fa4c9a4c04abcfa48e16fa40461。五份科学源文件、两份依赖、冻结 manifest 与交接说明逐项按 SHA-256 绑定。哈希只证明字节身份，不代替数学正确性或外部同行评审。</p>
+        <p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_budget_20260905.md">B 预算</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_shear_20260905.md">C 剪切检验</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_report-source_20260905.md">源摘要</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_independent_audit_20260906.md">独立解析审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_release_20260906.json">冻结 manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_frozen_ledger_20260906.json">便携台账</a></p>
+        <p class="note">依当前发布政策，本版本只生成双语 HTML；不生成新 PDF，也不创建图件、仿真或累计 recap。</p>
+      </section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-PhysicalAdjoint-20260906 · 2026-09-06</footer>
+  </main>
+
+  <main data-language="en">
+    <header class="hero">
+      <div>
+        <div class="kicker">Independent Clay-B analytic note · 2026-09-06</div>
+        <h1>The localization cost of an adjoint test</h1>
+        <p class="deck">A backward adjoint on physical time is admissible in the suitable Leray–Hopf local-energy inequality and controls the lifted second moment by <strong>C(1+D<sub>J</sub>/R)</strong>. It still retains the early energy, signed residual transport, and pressure, and it does not automatically control the original moving energy tube.</p>
+        <p><strong>This is a fixed-positive-scale local result with a limited counterexample. It does not advance the R0 series, prove regularity, construct a singularity, or claim novelty. Contract G remains OPEN. NOT CLAY.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">NO SIMULATION</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp"><strong>Claim boundary</strong><p class="proved">B.1–B.5 weak endpoints: proved</p><p class="proved">B.6–B.13 linear moment cost: proved</p><p class="proved">C.1–C.6 free localization: excluded</p><p>Fixed R and ordinary smooth T</p><p>Initial L2/H1: neither uniform</p><p class="open">Original tube comparison and G: OPEN</p></aside>
+    </header>
+    <article>
+      <section><div class="section-no">01 / Result map</div><h2>An adjoint can localize, but localization is not free</h2><div class="grid"><div class="card"><strong class="proved">Retained</strong>Physical time, moving centre, pressure, residual transport, early energy, and weak endpoints.</div><div class="card"><strong class="proved">Improved</strong>The Lipschitz exponential cost is replaced by linear C(1+D<sub>J</sub>/R).</div><div class="card"><strong class="open">Not closed</strong>Original moving-tube energy, signed pressure/transport, and first-singularity Contract G.</div></div><p>The route-level conclusion is precise: a moment and a mass-tail bound are available for the adjoint density, but neither substitutes for the original local energy inside the moving ball or makes the remaining signed terms absorbable.</p></section>
+      <section><div class="section-no">02 / B.1–B.5</div><h2>A backward physical-time test at fixed scale</h2><p>Let b<sub>R</sub> be the velocity smoothed at scale R, and evolve a nonnegative test backward by the physical-time adjoint transported by b<sub>R</sub>. In the suitable local-energy inequality the smoothed transport cancels, while the residual u−b<sub>R</sub>, pressure, and early energy remain.</p><div class="equation">terminal localized energy + viscous payment
+≤ starting localized energy + residual transport + pressure.              (B.1–B.5)</div><p>The starting time must be a strong right-Lebesgue time in L2. An arbitrary weak terminal representative is allowed through positive-weight weak lower semicontinuity. Its gap must not be re-labelled as a time atom of the local-energy defect measure.</p></section>
+      <section><div class="section-no">03 / B.6–B.13</div><h2>The lifted second moment pays linearly in dissipation</h2><p>Lift the adjoint density to a finite-mass Euclidean representative and compare it with the smoothed path. A stochastic representation, velocity oscillation about its spatial mean, Young's inequality, and Sobolev–Poincare give</p><div class="equation">Q / (M R²) ≤ C ( 1 + D_J / R ).                                (B.8)</div><p>Q is the lifted second moment, M the mass, and D<sub>J</sub> the scale dissipation on the time window. This improves the direct Lipschitz exponential cost, but does not make D<sub>J</sub>/R uniformly bounded or small. Chebyshev yields only a mass-tail estimate, not a uniform lower bound for the original moving-ball energy.</p></section>
+      <section><div class="section-no">04 / B.14–B.16</div><h2>Periodic Nash height and the direct Hölder gap</h2><p>The Nash inequality on a fixed three-torus includes a constant-mode correction. Incompressible drift preserves L1 contraction and yields a standard drift-independent height estimate for the adjoint kernel.</p><div class="equation">||ψ(τ)||∞ ≤ C (1 + τ^{-3/2}) ||ψ(0)||₁.                        (B.14)</div><p>This is a density-height estimate, not centre control. Direct Hölder estimates of residual transport and pressure demand kernel norms that the present energy payments do not automatically close. B.16 identifies that direct-method gap; it does not rule out another compensation mechanism.</p></section>
+      <section><div class="section-no">05 / C.1–C.6</div><h2>A true smooth NS shear rules out amplitude- and drift-free moment localization</h2><p>An exact periodic shear has identically zero nonlinear transport and is therefore a genuine globally smooth unforced three-dimensional Navier–Stokes solution. Fix R and an ordinary smooth terminal time T, then increase amplitude A; the Euclidean lifted second moment has a strictly positive A-squared coefficient.</p><div class="equation">fixed R,T;  all solutions smooth;
+lifted second moment has a strictly positive A² contribution.             (C.1–C.6)</div><p>Thus a uniform O(R²) moment bound with no initial-amplitude or drift payment is false. Initial L2 and H1 are both nonuniform. The family does not test a first singular time, prove B.8 optimal, or refute Contract G.</p></section>
+      <section><div class="section-no">06 / Literature boundary</div><h2>Classical tools are used only within their stated domains</h2><table><thead><tr><th>Source</th><th>Scope used here</th></tr></thead><tbody><tr><td><a href="https://math.stanford.edu/~ryzhik/STANF272-12/lect-notes.pdf">Ryzhik, Theorem 2.2</a></td><td>Whole-space L1-to-L-infinity decay with incompressible drift; no centre or gradient conclusion.</td></tr><tr><td><a href="https://arxiv.org/pdf/2503.16723v1">Hess-Childs–Raquépas–Rowan, Theorems 1.7/1.14</a></td><td>Whole-space concentration comparison and its periodic limitations; no direct transplantation to the torus.</td></tr><tr><td><a href="https://arxiv.org/pdf/1704.02173v3">Qian–Xi, Theorem 2</a></td><td>Two-sided Gaussian bounds whose constants depend on a critical drift norm; not a free gradient or periodic-lift estimate.</td></tr></tbody></table><p>These are marked LITERATURE. B.1–B.16 and C.1–C.6 are PROVED LOCALLY. This note uses no FINITE COMPUTATION, numerical certificate, simulation, or scientific figure.</p></section>
+      <section><div class="section-no">07 / Strict limitations and next step</div><h2>The next node is persistence/upcrossing input for the original clock contract</h2><ul><li>The mass-tail bound is not converted into original moving-tube energy control.</li><li>Critical pressure and residual transport remain unclosed.</li><li>No automatic smallness of D<sub>J</sub>/R is proved for true NS.</li><li>No unproved condition in Contract G is removed.</li></ul><p><strong>The next research work asks what the original clock's persistence/upcrossing budget actually supplies, without treating a conditional extraction theorem as an automatic premise. It remains OPEN and NOT CLAY, and it does not occupy R0.76M.</strong></p></section>
+      <section><div class="section-no">08 / Frozen evidence</div><h2>Source commit, handoff commit, and auditable files</h2><p class="note">Scientific source commit: ed51a0e43c9de159c0388218b0b45cf3b83c6578. One-time handoff commit: 7cb9b74effa96fa4c9a4c04abcfa48e16fa40461. Five scientific sources, two dependencies, the frozen manifest, and the handoff note are bound item by item by SHA-256. Hashes establish byte identity, not mathematical correctness or external peer review.</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_budget_20260905.md">B budget</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_shear_20260905.md">C shear test</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_report-source_20260905.md">Source summary</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_independent_audit_20260906.md">Independent analytic audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_release_20260906.json">Frozen manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_physical_adjoint_frozen_ledger_20260906.json">Portable ledger</a></p><p class="note">Under the current publication policy, this release creates bilingual HTML only: no new PDF, figure, simulation, or cumulative recap.</p></section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-PhysicalAdjoint-20260906 · 2026-09-06</footer>
+  </main>
+</body>
+</html>

@@ -228,6 +228,11 @@ export function validateHandoff(contract) {
     fail("contract", "releaseId must match r0NNx or a dated independent release id");
   }
   requireCommit(contract.frozenCommit, "frozenCommit");
+  if (contract.sourceRepository !== undefined &&
+      (typeof contract.sourceRepository !== "string" ||
+       !/^[A-Za-z0-9_.-]+$/.test(contract.sourceRepository))) {
+    fail("contract", "sourceRepository must name one sibling repository without path separators");
+  }
   if (contract.translationRoute !== "LOCAL_DIRECT_NO_DGX") {
     fail("contract", "translationRoute must be LOCAL_DIRECT_NO_DGX");
   }
@@ -240,6 +245,9 @@ export function validateHandoff(contract) {
     if (!isObject(artifact)) fail("contract", `artifacts[${index}] must be an object`);
     requireSafeRelativePath(artifact.path, `artifacts[${index}].path`);
     requireSha256(artifact.sha256, `artifacts[${index}].sha256`);
+    if (artifact.commit !== undefined) {
+      requireCommit(artifact.commit, `artifacts[${index}].commit`);
+    }
     if (typeof artifact.role !== "string" || artifact.role.length === 0) {
       fail("contract", `artifacts[${index}].role must be a nonempty string`);
     }
@@ -440,9 +448,26 @@ async function requireRegularFile(root, repositoryPath, label) {
 
 export async function verifyFrozenArtifacts(root, contract) {
   const failures = [];
+  let sourceRoot = root;
+  if (contract.sourceRepository) {
+    try {
+      const workspaceRoot = await realpath(dirname(root));
+      const candidate = resolve(workspaceRoot, contract.sourceRepository);
+      const metadata = await lstat(candidate);
+      if (!metadata.isDirectory() || metadata.isSymbolicLink()) {
+        throw new Error("sourceRepository must be a regular sibling directory");
+      }
+      sourceRoot = await realpath(candidate);
+      if (dirname(sourceRoot) !== workspaceRoot) {
+        throw new Error("sourceRepository escaped the publication workspace");
+      }
+    } catch (error) {
+      failures.push({ label: "source repository", message: error.message });
+    }
+  }
   try {
-    git(root, ["rev-parse", "--verify", `${contract.frozenCommit}^{commit}`]);
-    git(root, ["merge-base", "--is-ancestor", contract.frozenCommit, "HEAD"]);
+    git(sourceRoot, ["rev-parse", "--verify", `${contract.frozenCommit}^{commit}`]);
+    git(sourceRoot, ["merge-base", "--is-ancestor", contract.frozenCommit, "HEAD"]);
   } catch (error) {
     failures.push({ label: "frozen commit", message: error.message });
   }
@@ -453,10 +478,13 @@ export async function verifyFrozenArtifacts(root, contract) {
       if (current !== artifact.sha256) {
         throw new Error(`working-tree SHA-256 ${current} != ${artifact.sha256}`);
       }
-      const objectId = git(root, ["rev-parse", `${contract.frozenCommit}:${artifact.path}`]);
-      const frozen = sha256Bytes(git(root, ["cat-file", "blob", objectId], { binary: true }));
+      const sourceCommit = artifact.commit ?? contract.frozenCommit;
+      git(sourceRoot, ["rev-parse", "--verify", `${sourceCommit}^{commit}`]);
+      git(sourceRoot, ["merge-base", "--is-ancestor", sourceCommit, "HEAD"]);
+      const objectId = git(sourceRoot, ["rev-parse", `${sourceCommit}:${artifact.path}`]);
+      const frozen = sha256Bytes(git(sourceRoot, ["cat-file", "blob", objectId], { binary: true }));
       if (frozen !== artifact.sha256) {
-        throw new Error(`frozen-commit SHA-256 ${frozen} != ${artifact.sha256}`);
+        throw new Error(`source commit ${sourceCommit} SHA-256 ${frozen} != ${artifact.sha256}`);
       }
     } catch (error) {
       failures.push({ label: artifact.path, message: error.message });
@@ -476,6 +504,7 @@ export async function verifyFrozenArtifacts(root, contract) {
   if (failures.length > 0) throw new ReleasePipelineError("intake", failures);
   return {
     frozenCommit: contract.frozenCommit,
+    sourceRepository: contract.sourceRepository ?? ".",
     artifactCount: contract.artifacts.length,
     recapMode: contract.recap.mode,
     latestRecapRelease: contract.recap.latestRecapRelease,

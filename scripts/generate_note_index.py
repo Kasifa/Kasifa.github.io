@@ -35,6 +35,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-lagged-pressure-reduction-20260906": "CB.12",
     "clay-b-recent-source-screen-20260906": "CB.13",
     "clay-b-pressure-mechanism-screen-20260906": "CB.14",
+    "clay-b-ancient-constant-screen-20260906": "CB.15",
 }
 
 

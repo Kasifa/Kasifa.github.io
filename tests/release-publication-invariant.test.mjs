@@ -111,6 +111,7 @@ test("homepage keeps only the latest independent topic spotlight", async () => {
     "/notes/clay-b-pressure-quotient-20260906.html",
     "/notes/clay-b-pressure-work-window-20260906.html",
     "/notes/clay-b-bad-time-net-work-20260906.html",
+    "/notes/clay-b-pressure-test-coupling-20260906.html",
   ]) {
     assert.ok(home.includes(`href="${path}"`), `roadmap must retain ${path}`);
   }

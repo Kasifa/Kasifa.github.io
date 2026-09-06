@@ -31,6 +31,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-pressure-quotient-20260906": "CB.8",
     "clay-b-pressure-work-window-20260906": "CB.9",
     "clay-b-bad-time-net-work-20260906": "CB.10",
+    "clay-b-pressure-test-coupling-20260906": "CB.11",
 }
 
 

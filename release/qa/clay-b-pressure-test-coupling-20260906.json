@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "publication-qa-config-v1",
+  "releaseId": "ClayB-PressureTestCoupling-20260906",
+  "siteBaseUrl": "https://kasifa.github.io/",
+  "online": {
+    "expectedLive": [
+      { "role": "note-html", "localPath": "public/notes/clay-b-pressure-test-coupling-20260906.html", "urlPath": "/notes/clay-b-pressure-test-coupling-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "previous-independent-html", "localPath": "public/notes/clay-b-bad-time-net-work-20260906.html", "urlPath": "/notes/clay-b-bad-time-net-work-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "canonical-html", "localPath": "public/notes/r0-76l.html", "urlPath": "/notes/r0-76l.html", "contentTypes": ["text/html"] },
+      { "role": "canonical-pdf", "localPath": "public/notes/r0-76l.pdf", "urlPath": "/notes/r0-76l.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "recap-html", "localPath": "public/recap-r0-61-r0-76i.html", "urlPath": "/recap-r0-61-r0-76i.html", "contentTypes": ["text/html"] },
+      { "role": "recap-pdf", "localPath": "public/recap-r0-61-r0-76i.pdf", "urlPath": "/recap-r0-61-r0-76i.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": ["/notes/clay-b-pressure-test-coupling-20260906.pdf"],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.55",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-PressureTestCoupling-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-pressure-test-coupling-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "browser": {
+    "evidencePath": ".release/qa/ClayB-PressureTestCoupling-20260906.json",
+    "targets": [
+      {
+        "id": "pressure-test-coupling-note",
+        "path": "/notes/clay-b-pressure-test-coupling-20260906.html",
+        "languageScoped": true,
+        "headingPatterns": { "zh": "压力不能与它的测试因子分开估计", "en": "Pressure cannot be estimated apart from its test factor" },
+        "requiredTextPatterns": {
+          "all": ["CB.11", "STATIC OBSTRUCTION", "CONDITIONAL", "OPEN", "NOT CLAY"],
+          "zh": ["不把静态压力绝对和写成压力 L∞", "充分条件", "不证明"],
+          "en": ["only sufficient", "It proves no pressure-L∞ divergence", "does not conflict"]
+        },
+        "imageCount": 0
+      },
+      {
+        "id": "roadmap",
+        "path": "/research-review.html",
+        "headingPatterns": { "zh": "全局正则性", "en": "Global\\s*Regularity" },
+        "requiredTextPatterns": {
+          "all": ["OPEN", "NOT CLAY", "CB.11", "CB.12 · NEXT"],
+          "zh": ["实线主序列", "单独的虚线泳道", "压力侧静态阻碍与原测试配对上界"],
+          "en": ["solid-line main sequence", "own dashed lane", "Static pressure-side obstruction and original-test-matched upper bound"]
+        },
+        "requiredSelectors": [".r0-route-tree", ".route-lane-divider", ".clay-b-route-tree", ".clay-b-pressure-test-coupling-row", ".independent-release-spotlight a[href=\"/notes/clay-b-pressure-test-coupling-20260906.html\"]"]
+      }
+    ],
+    "scenarios": [
+      { "id": "desktop-light-zh", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "light", "lang": "zh" },
+      { "id": "desktop-dark-en", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "dark", "lang": "en" },
+      { "id": "mobile-light-en", "viewport": { "width": 390, "height": 844 }, "colorScheme": "light", "lang": "en" },
+      { "id": "mobile-dark-zh", "viewport": { "width": 390, "height": 844 }, "colorScheme": "dark", "lang": "zh" }
+    ]
+  }
+}

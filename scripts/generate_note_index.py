@@ -44,6 +44,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-convex-pressure-trace-20260906": "CB.21",
     "clay-b-same-parent-residual-20260906": "CB.22",
     "clay-b-signed-mixed-pressure-20260907": "CB.23",
+    "clay-b-source-enstrophy-20260907": "CB.24",
 }
 
 

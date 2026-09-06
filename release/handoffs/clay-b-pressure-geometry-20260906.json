@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "research-publication-handoff-v1",
+  "releaseId": "ClayB-PressureGeometry-20260906",
+  "frozenCommit": "e63575d6bbb81332441d74c0916c5663e89ac74c",
+  "sourceRepository": "navier-stokes-r074m",
+  "translationRoute": "LOCAL_DIRECT_NO_DGX",
+  "artifacts": [
+    { "path": "research/clay_b_mature_l3_budget_preflight_20260906.md", "sha256": "1ceac5020681abef7d7c0f36181214929bf08d597b2c3216e04cbe6e7f778652", "role": "frozen-local-l3-budget", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_pressure_geometry_20260906.md", "sha256": "a608bdf61adcdf3b080e8be3efed495dd2d1b5c289551a7774bfaf5ea3732db5", "role": "frozen-direction-geometry-source", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_pressure_sign_20260906.md", "sha256": "c02090cf86979b1b8a6edb9fc6380d4bc254ee81d3e7bc688876442b80d5655f", "role": "frozen-pressure-sign-source", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_pressure_geometry_independent_audit_20260906.md", "sha256": "0ef2fe6ec1c75d83b288da87b309640e86303004f5f091e4ab27dbc41e00a53d", "role": "frozen-independent-audit", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_pressure_geometry_report-source_20260906.md", "sha256": "c74c06d8a2d3524643ea4db1bacec996d5dcbabdd1c077c7da3fb5330369b6b7", "role": "frozen-reader-source", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_pressure_geometry_work_plan_20260906.md", "sha256": "298e5fa4e500ccd3f7f66545cfcf319f0703a42d6e7f636808ac96dcdf55b515", "role": "frozen-work-plan", "commit": "40b18a9c29499f4956d72e197f8d285bd3f6b453" },
+    { "path": "research/clay_b_prescribed_centre_contract_20260905.md", "sha256": "d82a36827a7e4b956079db1d66101478ffbb6b743cb65b6d4d0b317c37119f2c", "role": "frozen-prescribed-centre-dependency", "commit": "b462101c34b2479580048893485e4ab291a9fcff" },
+    { "path": "research/clay_b_local_persistence_obstruction_20260906.md", "sha256": "3a5013bc18f4dd54435ec6af17c73f0c31f36893a29a34d78bf356863e3ab1d1", "role": "frozen-persistence-dependency", "commit": "b462101c34b2479580048893485e4ab291a9fcff" },
+    { "path": "research/clay_b_concentration_path_limits_20260906.md", "sha256": "18107e469330f34cf230660d7d8becb7030afca9ee38526237f5287b7c238fcf", "role": "frozen-concentration-dependency", "commit": "b462101c34b2479580048893485e4ab291a9fcff" },
+    { "path": "research/clay_b_pressure_geometry_release_20260906.json", "sha256": "c4145adc09ef0c1620f7349be207908f30697f025bf7cba05b2c2948dd3b3d73", "role": "frozen-release-manifest", "commit": "e63575d6bbb81332441d74c0916c5663e89ac74c" },
+    { "path": "research/clay_b_pressure_geometry_handoff_20260906.md", "sha256": "2699e39b93dd071fc60b45cbf0c8e888ebb26b5ca72ccc71f49c7240df1b7b5b", "role": "frozen-one-time-handoff", "commit": "e63575d6bbb81332441d74c0916c5663e89ac74c" }
+  ],
+  "artifactPolicy": {
+    "readerPdf": "OMIT_NEW",
+    "historicalReaderPdfs": "PRESERVE",
+    "scientificFigure": "NOT_REQUIRED",
+    "simulation": "FORBIDDEN",
+    "recap": "PRESERVE"
+  },
+  "claimBoundary": {
+    "requiredLabels": ["PROVED", "FINITE", "OPEN", "NOT CLAY", "LITERATURE", "CONDITIONAL"],
+    "publicFiles": [
+      "public/notes/clay-b-pressure-geometry-20260906.html",
+      "public/research-review.html",
+      "public/literature-review.html"
+    ]
+  },
+  "recap": {
+    "mode": "PRESERVE",
+    "latestRecapRelease": "r076i",
+    "preservedArtifacts": [
+      { "path": "public/recap-r0-61-r0-76i.html", "sha256": "1ea5048bcbecf791a557da94aa4bbf7fbda0a9517c83f40327d119af4f8103c9" },
+      { "path": "public/recap-r0-61-r0-76i.pdf", "sha256": "5bff642caa0c7ad4bf6cdfc3df252b3c0e68312373e185e3a85f27a5828baa98" }
+    ]
+  },
+  "stages": {
+    "generate": {
+      "runner": "python-local",
+      "script": "scripts/generate_clay_b_pressure_geometry_20260906_release.py",
+      "inputs": [
+        "research/clay_b_mature_l3_budget_preflight_20260906.md",
+        "research/clay_b_pressure_geometry_20260906.md",
+        "research/clay_b_pressure_sign_20260906.md",
+        "research/clay_b_pressure_geometry_independent_audit_20260906.md",
+        "research/clay_b_pressure_geometry_report-source_20260906.md",
+        "research/clay_b_pressure_geometry_work_plan_20260906.md",
+        "research/clay_b_prescribed_centre_contract_20260905.md",
+        "research/clay_b_local_persistence_obstruction_20260906.md",
+        "research/clay_b_concentration_path_limits_20260906.md",
+        "research/clay_b_pressure_geometry_release_20260906.json",
+        "research/clay_b_pressure_geometry_handoff_20260906.md",
+        "research/clay_b_pressure_geometry_frozen_ledger_20260906.json"
+      ],
+      "outputs": [
+        "public/notes/clay-b-pressure-geometry-20260906.html",
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/index.html",
+        "public/site-version.json",
+        "research/release-manifest.json",
+        "VERSION"
+      ]
+    },
+    "translate": {
+      "runner": "node-local",
+      "script": "scripts/add-clay-b-pressure-geometry-20260906-translations.mjs",
+      "inputs": [
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/index.html",
+        "translations/en.json"
+      ],
+      "outputs": ["translations/en.json", "public/i18n-en.js"]
+    }
+  },
+  "publication": {
+    "expectedCommit": null,
+    "siteBaseUrl": "https://kasifa.github.io",
+    "repository": "Kasifa/Kasifa.github.io",
+    "workflow": "pages.yml",
+    "remote": "origin",
+    "targetBranch": "main",
+    "commitMessage": "Publish ClayB PressureGeometry HTML note",
+    "managedPaths": [
+      "VERSION",
+      "public/notes/clay-b-pressure-geometry-20260906.html",
+      "public/research-review.html",
+      "public/literature-review.html",
+      "public/notes/index.html",
+      "public/site-version.json",
+      "public/i18n-en.js",
+      "research/clay_b_mature_l3_budget_preflight_20260906.md",
+      "research/clay_b_pressure_geometry_20260906.md",
+      "research/clay_b_pressure_sign_20260906.md",
+      "research/clay_b_pressure_geometry_independent_audit_20260906.md",
+      "research/clay_b_pressure_geometry_report-source_20260906.md",
+      "research/clay_b_pressure_geometry_work_plan_20260906.md",
+      "research/clay_b_prescribed_centre_contract_20260905.md",
+      "research/clay_b_local_persistence_obstruction_20260906.md",
+      "research/clay_b_concentration_path_limits_20260906.md",
+      "research/clay_b_pressure_geometry_release_20260906.json",
+      "research/clay_b_pressure_geometry_handoff_20260906.md",
+      "research/clay_b_pressure_geometry_frozen_ledger_20260906.json",
+      "research/release-manifest.json",
+      "release/handoffs/clay-b-pressure-geometry-20260906.json",
+      "release/qa/clay-b-pressure-geometry-20260906.json",
+      "scripts/import_clay_b_pressure_geometry_20260906_frozen.py",
+      "scripts/generate_clay_b_pressure_geometry_20260906_release.py",
+      "scripts/generate_note_index.py",
+      "scripts/add-clay-b-pressure-geometry-20260906-translations.mjs",
+      "tests/clay-b-pressure-geometry-20260906-gate.test.mjs",
+      "tests/clay-b-pressure-geometry-20260906-release.test.mjs",
+      "tests/release-publication-invariant.test.mjs",
+      "translations/en.json"
+    ],
+    "expectedLive": [
+      { "role": "note-html", "localPath": "public/notes/clay-b-pressure-geometry-20260906.html", "urlPath": "/notes/clay-b-pressure-geometry-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "previous-independent-html", "localPath": "public/notes/clay-b-concentration-limits-20260906.html", "urlPath": "/notes/clay-b-concentration-limits-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "canonical-html", "localPath": "public/notes/r0-76l.html", "urlPath": "/notes/r0-76l.html", "contentTypes": ["text/html"] },
+      { "role": "canonical-pdf", "localPath": "public/notes/r0-76l.pdf", "urlPath": "/notes/r0-76l.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "recap-html", "localPath": "public/recap-r0-61-r0-76i.html", "urlPath": "/recap-r0-61-r0-76i.html", "contentTypes": ["text/html"] },
+      { "role": "recap-pdf", "localPath": "public/recap-r0-61-r0-76i.pdf", "urlPath": "/recap-r0-61-r0-76i.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": ["/notes/clay-b-pressure-geometry-20260906.pdf"],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.51",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-PressureGeometry-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-pressure-geometry-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "visualQa": {
+    "evidencePath": ".release/qa/ClayB-PressureGeometry-20260906.json",
+    "configPath": "release/qa/clay-b-pressure-geometry-20260906.json",
+    "requiredChecks": [
+      "pressure-geometry-note-desktop-light-zh",
+      "pressure-geometry-note-desktop-dark-en",
+      "pressure-geometry-note-mobile-light-en",
+      "pressure-geometry-note-mobile-dark-zh",
+      "roadmap-desktop-light-zh",
+      "roadmap-desktop-dark-en",
+      "roadmap-mobile-light-en",
+      "roadmap-mobile-dark-zh"
+    ]
+  }
+}

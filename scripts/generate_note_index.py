@@ -27,6 +27,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-window-localisation-20260906": "CB.4",
     "clay-b-plateau-history-20260906": "CB.5",
     "clay-b-concentration-limits-20260906": "CB.6",
+    "clay-b-pressure-geometry-20260906": "CB.7",
 }
 
 
@@ -195,6 +196,10 @@ def independent_section(site: dict[str, object]) -> str:
     if {path.stem for path in paths} != set(INDEPENDENT_CHAPTERS):
         raise RuntimeError("Clay-B chapter map disagrees with the HTML inventory")
     paths.sort(key=lambda path: int(INDEPENDENT_CHAPTERS[path.stem].split(".", 1)[1]), reverse=True)
+    ordered_chapters = sorted(
+        INDEPENDENT_CHAPTERS.values(), key=lambda chapter: int(chapter.split(".", 1)[1])
+    )
+    chapter_range = f"{ordered_chapters[0]}–{ordered_chapters[-1]}"
 
     rows = []
     for index, path in enumerate(paths):
@@ -231,7 +236,7 @@ def independent_section(site: dict[str, object]) -> str:
             '</nav></article></li>'
         )
 
-    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT CLAY-B NOTES · CB.1–CB.6</p><h2 id="series-independent">Clay-B</h2></div><span>{count} NOTES</span></header><ol class="note-list">{"".join(rows)}</ol><p class="index-note">CB.1–CB.6 是 Clay-B 路线的独立章节号，不占用 R0 主序列编号，也不改变 R0.76L 的当前端点。自 ClayB-SignedScale-20260905 起，新发布只生成 HTML；既有 PDF 保留不动。</p></section>'''
+    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT CLAY-B NOTES · {chapter_range}</p><h2 id="series-independent">Clay-B</h2></div><span>{count} NOTES</span></header><ol class="note-list">{"".join(rows)}</ol><p class="index-note">{chapter_range} 是 Clay-B 路线的独立章节号，不占用 R0 主序列编号，也不改变 R0.76L 的当前端点。自 ClayB-SignedScale-20260905 起，新发布只生成 HTML；既有 PDF 保留不动。</p></section>'''
 
 
 def render(notes: list[Note]) -> str:

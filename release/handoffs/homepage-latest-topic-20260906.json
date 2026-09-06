@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "research-publication-handoff-v1",
+  "releaseId": "Homepage-LatestTopic-20260906",
+  "frozenCommit": "d277e7aba9992e249c03adc78665d3782fd10d02",
+  "sourceRepository": "navier-stokes-research",
+  "translationRoute": "LOCAL_DIRECT_NO_DGX",
+  "artifacts": [
+    {
+      "path": "research/clay_b_plateau_history_handoff_20260906.md",
+      "sha256": "6ff16f0ae51b1b2c315585e638aa09a64b34d716d7e7bccc920f40461132da06",
+      "role": "verified-publication-baseline",
+      "commit": "d277e7aba9992e249c03adc78665d3782fd10d02"
+    }
+  ],
+  "artifactPolicy": { "readerPdf": "OMIT_NEW", "scientificFigure": "NOT_REQUIRED" },
+  "claimBoundary": {
+    "requiredLabels": ["PROVED", "FINITE", "OPEN", "NOT CLAY"],
+    "publicFiles": ["public/research-review.html"]
+  },
+  "recap": {
+    "mode": "PRESERVE",
+    "latestRecapRelease": "r076i",
+    "preservedArtifacts": [
+      { "path": "public/recap-r0-61-r0-76i.html", "sha256": "1ea5048bcbecf791a557da94aa4bbf7fbda0a9517c83f40327d119af4f8103c9" },
+      { "path": "public/recap-r0-61-r0-76i.pdf", "sha256": "5bff642caa0c7ad4bf6cdfc3df252b3c0e68312373e185e3a85f27a5828baa98" }
+    ]
+  },
+  "stages": {
+    "generate": {
+      "runner": "python-local",
+      "script": "scripts/generate_homepage_latest_topic_20260906_release.py",
+      "inputs": [
+        "VERSION",
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/clay-b-plateau-history-20260906.html",
+        "public/site-version.json",
+        "research/release-manifest.json"
+      ],
+      "outputs": [
+        "VERSION",
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/clay-b-plateau-history-20260906.html",
+        "public/notes/index.html",
+        "public/site-version.json",
+        "research/release-manifest.json"
+      ]
+    },
+    "translate": {
+      "runner": "node-local",
+      "script": "scripts/add-homepage-latest-topic-20260906-translations.mjs",
+      "inputs": [
+        "public/research-review.html",
+        "public/literature-review.html",
+        "public/notes/index.html",
+        "translations/en.json"
+      ],
+      "outputs": ["translations/en.json", "public/i18n-en.js"]
+    }
+  },
+  "publication": {
+    "expectedCommit": null,
+    "siteBaseUrl": "https://kasifa.github.io",
+    "repository": "Kasifa/Kasifa.github.io",
+    "workflow": "pages.yml",
+    "remote": "origin",
+    "targetBranch": "main",
+    "commitMessage": "Curate homepage to latest independent topic",
+    "managedPaths": [
+      "VERSION",
+      "public/research-review.html",
+      "public/literature-review.html",
+      "public/notes/clay-b-plateau-history-20260906.html",
+      "public/notes/index.html",
+      "public/site-version.json",
+      "public/i18n-en.js",
+      "research/release-manifest.json",
+      "translations/en.json",
+      "scripts/add-clay-b-plateau-history-20260906-translations.mjs",
+      "scripts/generate_clay_b_plateau_history_20260906_release.py",
+      "tests/clay-b-plateau-history-20260906-release.test.mjs",
+      "tests/release-publication-invariant.test.mjs",
+      "scripts/generate_homepage_latest_topic_20260906_release.py",
+      "scripts/add-homepage-latest-topic-20260906-translations.mjs",
+      "release/handoffs/homepage-latest-topic-20260906.json",
+      "release/qa/homepage-latest-topic-20260906.json"
+    ],
+    "expectedLive": [
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-html", "localPath": "public/notes/clay-b-plateau-history-20260906.html", "urlPath": "/notes/clay-b-plateau-history-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "previous-independent-html", "localPath": "public/notes/clay-b-window-localisation-20260906.html", "urlPath": "/notes/clay-b-window-localisation-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": ["/notes/clay-b-plateau-history-20260906.pdf"],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.48",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-PlateauHistory-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-plateau-history-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "visualQa": {
+    "evidencePath": ".release/qa/Homepage-LatestTopic-20260906.json",
+    "configPath": "release/qa/homepage-latest-topic-20260906.json",
+    "requiredChecks": [
+      "homepage-desktop-light-zh",
+      "homepage-desktop-dark-en",
+      "homepage-mobile-light-en",
+      "homepage-mobile-dark-zh"
+    ]
+  }
+}

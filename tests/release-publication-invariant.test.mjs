@@ -85,6 +85,32 @@ async function releaseManifest() {
   );
 }
 
+test("homepage keeps only the latest independent topic spotlight", async () => {
+  const [site, home] = await Promise.all([
+    readFile(new URL("site-version.json", publicRoot), "utf8").then(JSON.parse),
+    readFile(new URL("research-review.html", publicRoot), "utf8"),
+  ]);
+  const spotlights = [
+    ...home.matchAll(
+      /<section class="route-overview independent-release-spotlight"[\s\S]*?<\/section>/g,
+    ),
+  ].map((match) => match[0]);
+  assert.equal(spotlights.length, 1, "homepage must expose exactly one independent topic spotlight");
+  assert.ok(
+    spotlights[0].includes(`href="${site.latestIndependentResearchHtml}"`),
+    "the sole independent topic spotlight must link to the latest independent note",
+  );
+  for (const path of [
+    "/notes/clay-b-two-scale-20260905.html",
+    "/notes/clay-b-signed-scale-20260905.html",
+    "/notes/clay-b-physical-adjoint-20260906.html",
+    "/notes/clay-b-window-localisation-20260906.html",
+    "/notes/clay-b-plateau-history-20260906.html",
+  ]) {
+    assert.ok(home.includes(`href="${path}"`), `roadmap must retain ${path}`);
+  }
+});
+
 test("keeps a declared next-release source stage non-public and path-safe", async () => {
   const manifest = await releaseManifest();
   const stage = manifest.nextReleaseSourceStage;

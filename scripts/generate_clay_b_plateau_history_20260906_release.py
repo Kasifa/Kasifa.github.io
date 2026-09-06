@@ -65,7 +65,7 @@ require_text(
 
 site = json.loads((ROOT / "public/site-version.json").read_text(encoding="utf-8"))
 manifest = json.loads((ROOT / "research/release-manifest.json").read_text(encoding="utf-8"))
-if site.get("version") != "2.47" or site.get("latestRelease") != "R0.76L":
+if site.get("version") != "2.48" or site.get("latestRelease") != "R0.76L":
     raise RuntimeError("site version or canonical endpoint drift")
 if site.get("latestIndependentNote") != "ClayB-PlateauHistory-20260906":
     raise RuntimeError("latest independent note drift")

@@ -70,12 +70,12 @@ test("the X/Y plateau-history node continues the existing homepage roadmap", asy
   assert.equal(noteFiles.filter((name) => /^r0-[0-9a-z]+\.html$/.test(name)).length, 266);
   assert.equal(noteFiles.filter((name) => /^r0-[0-9a-z]+\.pdf$/.test(name)).length, 223);
   assert.equal(noteFiles.includes("clay-b-plateau-history-20260906.pdf"), false);
-  assert.equal(site.version, "2.47");
+  assert.equal(site.version, "2.48");
   assert.equal(site.latestRelease, "R0.76L");
   assert.equal(site.publicIndependentNoteCount, 5);
   assert.equal(site.latestIndependentNote, "ClayB-PlateauHistory-20260906");
   assert.equal(site.latestIndependentResearchPdf, null);
-  assert.equal(manifest.siteVersion, "2.47");
+  assert.equal(manifest.siteVersion, "2.48");
   assert.equal(manifest.latestCompletedRelease, "r076l");
   assert.equal(manifest.latestCompletedStep, 63);
   assert.equal(manifest.latestPublication.releaseId, "clay-b-plateau-history-20260906");

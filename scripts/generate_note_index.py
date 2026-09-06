@@ -20,6 +20,14 @@ NOTES = PUBLIC / "notes"
 OUTPUT = NOTES / "index.html"
 NOTE_NAME = re.compile(r"^r0-(\d+)[a-z0-9]*\.html$")
 RECAP_NAME = re.compile(r"^recap-r0-61-r0-(\d+)[a-z0-9]*\.html$")
+INDEPENDENT_CHAPTERS = {
+    "clay-b-two-scale-20260905": "CB.1",
+    "clay-b-signed-scale-20260905": "CB.2",
+    "clay-b-physical-adjoint-20260906": "CB.3",
+    "clay-b-window-localisation-20260906": "CB.4",
+    "clay-b-plateau-history-20260906": "CB.5",
+    "clay-b-concentration-limits-20260906": "CB.6",
+}
 
 
 class TitleParser(HTMLParser):
@@ -181,12 +189,12 @@ def independent_section(site: dict[str, object]) -> str:
     if not isinstance(declared_id, str):
         raise RuntimeError("latest independent identifier is missing")
 
-    paths = sorted(
-        NOTES.glob("clay-b-*.html"),
-        key=lambda item: (str(item) != str(PUBLIC / declared_html.removeprefix("/")), item.name),
-    )
+    paths = list(NOTES.glob("clay-b-*.html"))
     if len(paths) != count:
         raise RuntimeError("publicIndependentNoteCount disagrees with the HTML inventory")
+    if {path.stem for path in paths} != set(INDEPENDENT_CHAPTERS):
+        raise RuntimeError("Clay-B chapter map disagrees with the HTML inventory")
+    paths.sort(key=lambda path: int(INDEPENDENT_CHAPTERS[path.stem].split(".", 1)[1]), reverse=True)
 
     rows = []
     for index, path in enumerate(paths):
@@ -199,6 +207,7 @@ def independent_section(site: dict[str, object]) -> str:
         if not title:
             raise RuntimeError("independent note title is missing")
         slug = path.stem
+        chapter = INDEPENDENT_CHAPTERS[slug]
         topic, date = slug.removeprefix("clay-b-").rsplit("-", 1)
         display_id = f"ClayB-{''.join(part.title() for part in topic.split('-'))}-{date}"
         href = f"/notes/{slug}.html"
@@ -216,13 +225,13 @@ def independent_section(site: dict[str, object]) -> str:
             pdf = '<span class="file-link missing">按政策不生成 PDF</span>'
         rows.append(
             f'<li class="note-entry independent-entry" data-note="{slug}"><article>'
-            f'<div class="entry-copy"><p class="note-code">{html.escape(display_id)}</p><h3>{title}</h3></div>'
+            f'<div class="entry-copy"><p class="note-code">{chapter} · {html.escape(display_id)}</p><h3>{title}</h3></div>'
             f'<nav class="entry-files" aria-label="{html.escape(display_id)} files">'
             f'<a class="file-link html" href="{href}" aria-label="Read {html.escape(display_id)} HTML">HTML</a>{pdf}'
             '</nav></article></li>'
         )
 
-    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT CLAY-B NOTES</p><h2 id="series-independent">Clay-B</h2></div><span>{count} NOTES</span></header><ol class="note-list">{"".join(rows)}</ol><p class="index-note">独立 Clay-B 笔记不占用 R0 主序列编号，也不改变 R0.76L 的当前端点。自 ClayB-SignedScale-20260905 起，新发布只生成 HTML；既有 PDF 保留不动。</p></section>'''
+    return f'''      <section class="release-group independent-release-group" aria-labelledby="series-independent"><header class="group-header"><div><p>INDEPENDENT CLAY-B NOTES · CB.1–CB.6</p><h2 id="series-independent">Clay-B</h2></div><span>{count} NOTES</span></header><ol class="note-list">{"".join(rows)}</ol><p class="index-note">CB.1–CB.6 是 Clay-B 路线的独立章节号，不占用 R0 主序列编号，也不改变 R0.76L 的当前端点。自 ClayB-SignedScale-20260905 起，新发布只生成 HTML；既有 PDF 保留不动。</p></section>'''
 
 
 def render(notes: list[Note]) -> str:

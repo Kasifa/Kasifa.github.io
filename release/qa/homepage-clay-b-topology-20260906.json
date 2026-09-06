@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "publication-qa-config-v1",
+  "releaseId": "Homepage-ClayB-Topology-20260906",
+  "siteBaseUrl": "https://kasifa.github.io/",
+  "online": {
+    "expectedLive": [
+      { "role": "note-html", "localPath": "public/notes/clay-b-concentration-limits-20260906.html", "urlPath": "/notes/clay-b-concentration-limits-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "clay-b-two-scale-html", "localPath": "public/notes/clay-b-two-scale-20260905.html", "urlPath": "/notes/clay-b-two-scale-20260905.html", "contentTypes": ["text/html"] },
+      { "role": "clay-b-signed-scale-html", "localPath": "public/notes/clay-b-signed-scale-20260905.html", "urlPath": "/notes/clay-b-signed-scale-20260905.html", "contentTypes": ["text/html"] },
+      { "role": "clay-b-physical-adjoint-html", "localPath": "public/notes/clay-b-physical-adjoint-20260906.html", "urlPath": "/notes/clay-b-physical-adjoint-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "clay-b-window-localisation-html", "localPath": "public/notes/clay-b-window-localisation-20260906.html", "urlPath": "/notes/clay-b-window-localisation-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "clay-b-plateau-history-html", "localPath": "public/notes/clay-b-plateau-history-20260906.html", "urlPath": "/notes/clay-b-plateau-history-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "canonical-html", "localPath": "public/notes/r0-76l.html", "urlPath": "/notes/r0-76l.html", "contentTypes": ["text/html"] },
+      { "role": "canonical-pdf", "localPath": "public/notes/r0-76l.pdf", "urlPath": "/notes/r0-76l.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "recap-html", "localPath": "public/recap-r0-61-r0-76i.html", "urlPath": "/recap-r0-61-r0-76i.html", "contentTypes": ["text/html"] },
+      { "role": "recap-pdf", "localPath": "public/recap-r0-61-r0-76i.pdf", "urlPath": "/recap-r0-61-r0-76i.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": [
+      "/notes/clay-b-signed-scale-20260905.pdf",
+      "/notes/clay-b-physical-adjoint-20260906.pdf",
+      "/notes/clay-b-window-localisation-20260906.pdf",
+      "/notes/clay-b-plateau-history-20260906.pdf",
+      "/notes/clay-b-concentration-limits-20260906.pdf"
+    ],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.50",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-ConcentrationLimits-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-concentration-limits-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "browser": {
+    "evidencePath": ".release/qa/Homepage-ClayB-Topology-20260906.json",
+    "targets": [
+      {
+        "id": "homepage",
+        "path": "/research-review.html",
+        "headingPatterns": { "zh": "全局正则性", "en": "Global\\s*Regularity" },
+        "requiredTextPatterns": {
+          "all": ["CB.1", "CB.6", "OPEN", "NOT CLAY"],
+          "zh": ["R0 主序列停在 R0.76L", "Clay-B 局部集中与持留预算", "虚线只连接 Clay-B 内部"],
+          "en": ["The R0 main sequence stops at R0.76L", "Clay-B local concentration and persistence budgets", "dashed line connects only the published chapter order"]
+        },
+        "requiredSelectors": [".r0-route-tree", ".route-lane-divider", ".clay-b-route-tree", ".clay-b-two-scale-row", ".clay-b-concentration-limits-row"]
+      },
+      {
+        "id": "cb1-note",
+        "path": "/notes/clay-b-two-scale-20260905.html",
+        "headingPatterns": { "zh": "CB\\.1｜两尺度差能量", "en": "CB\\.1\\s*\\|\\s*Two-scale difference energy" },
+        "requiredTextPatterns": {
+          "all": ["CB.1", "OPEN", "NOT CLAY"],
+          "zh": ["章节：CB.1", "不占用 R0 主序列编号"],
+          "en": ["Chapter: CB.1", "does not occupy an R0-series number"]
+        },
+        "imageCount": 0
+      },
+      {
+        "id": "cb6-note",
+        "path": "/notes/clay-b-concentration-limits-20260906.html",
+        "languageScoped": true,
+        "headingPatterns": { "zh": "CB\\.6｜固定球集中之后", "en": "CB\\.6\\s*\\|\\s*What remains after fixed-ball concentration" },
+        "requiredTextPatterns": {
+          "all": ["CB.6", "OPEN", "NOT CLAY"],
+          "zh": ["固定球文献输入", "裸远源压力冲量"],
+          "en": ["fixed-ball literature input", "bare far-source pressure impulse"]
+        },
+        "imageCount": 0
+      }
+    ],
+    "scenarios": [
+      { "id": "desktop-light-zh", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "light", "lang": "zh" },
+      { "id": "desktop-dark-en", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "dark", "lang": "en" },
+      { "id": "mobile-light-en", "viewport": { "width": 390, "height": 844 }, "colorScheme": "light", "lang": "en" },
+      { "id": "mobile-dark-zh", "viewport": { "width": 390, "height": 844 }, "colorScheme": "dark", "lang": "zh" }
+    ]
+  }
+}

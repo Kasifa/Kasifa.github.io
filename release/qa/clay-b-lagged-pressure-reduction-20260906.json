@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "publication-qa-config-v1",
+  "releaseId": "ClayB-LaggedPressureReduction-20260906",
+  "siteBaseUrl": "https://kasifa.github.io/",
+  "online": {
+    "expectedLive": [
+      { "role": "note-html", "localPath": "public/notes/clay-b-lagged-pressure-reduction-20260906.html", "urlPath": "/notes/clay-b-lagged-pressure-reduction-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "previous-independent-html", "localPath": "public/notes/clay-b-pressure-test-coupling-20260906.html", "urlPath": "/notes/clay-b-pressure-test-coupling-20260906.html", "contentTypes": ["text/html"] },
+      { "role": "historical-independent-pdf", "localPath": "public/notes/clay-b-two-scale-20260905.pdf", "urlPath": "/notes/clay-b-two-scale-20260905.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "canonical-html", "localPath": "public/notes/r0-76l.html", "urlPath": "/notes/r0-76l.html", "contentTypes": ["text/html"] },
+      { "role": "canonical-pdf", "localPath": "public/notes/r0-76l.pdf", "urlPath": "/notes/r0-76l.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "recap-html", "localPath": "public/recap-r0-61-r0-76i.html", "urlPath": "/recap-r0-61-r0-76i.html", "contentTypes": ["text/html"] },
+      { "role": "recap-pdf", "localPath": "public/recap-r0-61-r0-76i.pdf", "urlPath": "/recap-r0-61-r0-76i.pdf", "contentTypes": ["application/pdf"] },
+      { "role": "homepage", "localPath": "public/research-review.html", "urlPath": "/research-review.html", "contentTypes": ["text/html"] },
+      { "role": "literature", "localPath": "public/literature-review.html", "urlPath": "/literature-review.html", "contentTypes": ["text/html"] },
+      { "role": "note-index", "localPath": "public/notes/index.html", "urlPath": "/notes/index.html", "contentTypes": ["text/html"] },
+      { "role": "site-version", "localPath": "public/site-version.json", "urlPath": "/site-version.json", "contentTypes": ["application/json"] },
+      { "role": "translations", "localPath": "public/i18n-en.js", "urlPath": "/i18n-en.js", "contentTypes": ["text/javascript", "application/javascript"] }
+    ],
+    "expectedAbsent": ["/notes/clay-b-lagged-pressure-reduction-20260906.pdf"],
+    "siteVersionExpectations": {
+      "schemaVersion": "research-site-version-v1",
+      "version": "2.56",
+      "latestRelease": "R0.76L",
+      "latestIndependentNote": "ClayB-LaggedPressureReduction-20260906",
+      "latestIndependentResearchHtml": "/notes/clay-b-lagged-pressure-reduction-20260906.html",
+      "latestIndependentResearchPdf": null,
+      "newPdfPolicy": "NO_NEW_PDFS_FROM_CLAYB_SIGNED_SCALE_20260905"
+    }
+  },
+  "browser": {
+    "evidencePath": ".release/qa/ClayB-LaggedPressureReduction-20260906.json",
+    "targets": [
+      {
+        "id": "lagged-pressure-reduction-note",
+        "path": "/notes/clay-b-lagged-pressure-reduction-20260906.html",
+        "languageScoped": true,
+        "headingPatterns": {
+          "zh": "旧热背景可以移走，近期源项仍待估计",
+          "en": "The old heat background can be removed; the recent source remains"
+        },
+        "requiredTextPatterns": {
+          "all": ["CB.12", "CONDITIONAL REDUCTION", "SUFFICIENT SCALE ONLY", "OPEN", "NOT CLAY"],
+          "zh": ["没有证明旧压力功自身", "不是必要性、最优性", "不是 p\\(R\\) 的上界"],
+          "en": ["does not prove that old pressure work itself", "neither necessary nor optimal", "not an upper bound for p\\(R\\)"]
+        },
+        "imageCount": 0
+      },
+      {
+        "id": "roadmap",
+        "path": "/research-review.html",
+        "headingPatterns": { "zh": "全局正则性", "en": "Global\\s*Regularity" },
+        "requiredTextPatterns": {
+          "all": ["OPEN", "NOT CLAY", "CB.12", "CB.13 · NEXT"],
+          "zh": ["实线主序列", "单独的虚线泳道", "旧热压力的耗散支付与近期源条件下界"],
+          "en": ["solid-line main sequence", "own dashed lane", "Dissipation payment for old heat pressure and a conditional lower bound for the recent source"]
+        },
+        "requiredSelectors": [
+          ".r0-route-tree",
+          ".route-lane-divider",
+          ".clay-b-route-tree",
+          ".clay-b-lagged-pressure-reduction-row",
+          ".independent-release-spotlight a[href=\"/notes/clay-b-lagged-pressure-reduction-20260906.html\"]"
+        ]
+      }
+    ],
+    "scenarios": [
+      { "id": "desktop-light-zh", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "light", "lang": "zh" },
+      { "id": "desktop-dark-en", "viewport": { "width": 1440, "height": 900 }, "colorScheme": "dark", "lang": "en" },
+      { "id": "mobile-light-en", "viewport": { "width": 390, "height": 844 }, "colorScheme": "light", "lang": "en" },
+      { "id": "mobile-dark-zh", "viewport": { "width": 390, "height": 844 }, "colorScheme": "dark", "lang": "zh" }
+    ]
+  }
+}

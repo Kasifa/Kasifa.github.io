@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh" data-site-version="2.46">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>短窗口的局部耗散与压力余项</title>
+  <meta name="description" content="Clay-B 正变差窗口、固定尺度时间可积性、环壳压力分解与扩大域耗散债务的双语解析笔记。">
+  <link rel="canonical" href="https://kasifa.github.io/notes/clay-b-window-localisation-20260906.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js?v=2.46"></script>
+  <script defer src="/bilingual.js"></script>
+  <style>
+    :root { color-scheme: light dark; --paper:#f3eee2; --panel:#fbf7ee; --ink:#231f1a; --muted:#6d6358; --line:#8d8174; --rule:#0f5960; --proved:#216848; --open:#a14432; }
+    @media (prefers-color-scheme:dark) { :root { --paper:#171714; --panel:#22201c; --ink:#eee5d5; --muted:#b8ad9d; --line:#685f54; --rule:#77c5c9; --proved:#8bd0a5; --open:#ef9b83; } }
+    * { box-sizing:border-box; } html { background:var(--paper); } body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.68 Georgia,"Songti SC","Noto Serif CJK SC",serif; }
+    a { color:var(--rule); } .masthead { display:flex; justify-content:space-between; gap:1rem; padding:14px max(20px,calc((100vw - 1120px)/2)); border-bottom:1px solid var(--line); font:13px/1.4 SFMono-Regular,Consolas,monospace; }
+    .hero,article,.footer { width:min(1120px,calc(100% - 40px)); margin:auto; } .hero { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:2rem; padding:58px 0 34px; border-bottom:1px solid var(--line); }
+    .kicker,.section-no { color:var(--rule); font:700 12px/1.4 SFMono-Regular,Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; }
+    h1 { max-width:15ch; margin:.25rem 0 .65rem; font-size:clamp(2.3rem,6vw,4.6rem); line-height:1.04; letter-spacing:-.035em; } h2 { margin:.3rem 0 1rem; color:var(--rule); font-size:clamp(1.35rem,2.5vw,1.8rem); line-height:1.3; } h3 { margin:1.2rem 0 .4rem; }
+    .deck { max-width:70ch; font-size:1.08rem; } .stamp,.card { border:1px solid var(--line); background:var(--panel); } .stamp { align-self:start; padding:1rem; box-shadow:7px 7px 0 color-mix(in srgb,var(--line) 30%,transparent); } .stamp p { margin:.55rem 0; }
+    .proved { color:var(--proved); } .open { color:var(--open); } .badges { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; } .badge { padding:.28rem .55rem; border:1px solid var(--line); background:var(--panel); }
+    article { padding:12px 0 74px; } section { padding:2.15rem 0 1.25rem; border-bottom:1px dotted var(--line); } p,li,td { overflow-wrap:anywhere; }
+    .equation { margin:1rem 0; padding:14px 16px; overflow-x:auto; border-left:4px solid var(--rule); background:var(--panel); font:15px/1.62 SFMono-Regular,Consolas,monospace; white-space:pre-wrap; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin:1.2rem 0; } .card { padding:.9rem; } .card strong { display:block; margin-bottom:.35rem; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); font-size:.94rem; } th,td { padding:.7rem; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    .note,.footer { color:var(--muted); font-size:.92rem; } .footer { padding:2rem 0 3rem; }
+    main[data-language="en"] { display:none; } html[data-language="en"] main[data-language="zh"] { display:none; } html[data-language="en"] main[data-language="en"] { display:block; }
+    @media (max-width:760px) { body { font-size:15.5px; } .hero,.grid { grid-template-columns:1fr; } .masthead { align-items:flex-start; } h1 { max-width:none; } .equation { font-size:13px; } }
+  </style>
+</head>
+<body>
+  <header class="masthead"><strong><a href="/research-review.html">研究首页</a> · ClayB-WindowLocalisation-20260906</strong></header>
+
+  <main data-language="zh">
+    <header class="hero">
+      <div>
+        <div class="kicker">独立 Clay-B 解析笔记 · 2026-09-06</div>
+        <h1>短窗口的局部耗散与压力余项</h1>
+        <p class="deck">正变差给出壳层持留窗口，固定尺度通量速率具有时间 (L^{4/3}) 控制；把压力局部化后，过窄窗口只能导向“调和压力与中心漂移的联合正工作”或带 cutoff 扣除的局部耗散分支。跨壳有限重叠必须使用半径 (2R) 的权重，因此会产生新的扩大外壳耗散债务。</p>
+        <p><strong>本页合并 U/V 既有内部基础与 W 局部化，不把三段拆成多个发布。它不推进 R0 主序列，不证明统一全壳预算、真实 NS 反例、合同 G 或正则性。OPEN / NOT CLAY，不主张新颖性。</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">CONDITIONAL</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp">
+        <strong>结论边界</strong>
+        <p class="proved">U.1–U.9 正变差窗口：已证</p>
+        <p class="proved">V.1–V.12 固定尺度 (L_t^{4/3})：已证</p>
+        <p class="proved">W.1–W.6 压力分解：已证</p>
+        <p>W.9–W.10：条件二分支</p>
+        <p class="proved">W.11–W.14 正确重叠账本：已证</p>
+        <p class="open">统一支付与合同 G：OPEN</p>
+      </aside>
+    </header>
+    <article>
+      <section>
+        <div class="section-no">01 / 结论地图</div><h2>窗口宽度、局部余项和扩大域账本必须同时保留</h2>
+        <div class="grid"><div class="card"><strong class="proved">时间侧</strong>正变差窗口与固定尺度 (L_t^{4/3}) 控制给出定量宽度。</div><div class="card"><strong class="proved">空间侧</strong>局部压力进入三次量；调和压力与中心漂移保留联合有符号工作。</div><div class="card"><strong class="open">全壳侧</strong>有限重叠只支付半径 (2R) 的权重，原 (R) 账本不自动覆盖。</div></div>
+        <p>策略上的变化不是再优化一个局部常数，而是把下一研发问题改为量词审查：原 G 只问指定可能首次奇点是否存在一个好尺度；R.216–R.217 则要求对任意好终点统一抽取全部壳层的窗口与系数。</p>
+      </section>
+      <section>
+        <div class="section-no">02 / U.1–U.9</div><h2>正变差产生壳层窗口，但耗散主导支路仍未支付</h2>
+        <p>对 defect-completed clock (K=E+D=Q+F)，先对完整空间积分后的 (F') 取正部。端点能量若没有被耗散或 (Q) 的正变差支付，就产生一个保持固定比例能量的壳层时间窗。</p>
+        <div class="equation">terminal clock
+→ dissipation branch  OR  quadratic-Q branch  OR  positive-flux window.     (U.1–U.9)</div>
+        <p>二次 (Q) 行由既有预算支付；第三支可转为持留因子 Θ 的下界。U.9 所需的是跨壳加权逆窗口宽度和，当前并未证明；第一条耗散主导支也没有被反向速度三次量估计支付。</p>
+      </section>
+      <section>
+        <div class="section-no">03 / V.1–V.12</div><h2>固定尺度的 (L_t^{4/3}) 通量速率给出四次宽度</h2>
+        <p>在一个固定半径和固定时间窗内，周期 Sobolev 插值、压力 Calderón–Zygmund 估计与中心速度界给出正通量速率的时间 (L^{4/3}) 控制。由 Hölder 可得第三支窗口的定量下界：</p>
+        <div class="equation">δ_F  ≳  ( E / (4N) )^4,
+β := R^(1/2) N / E,
+so the conditional all-shell price is an eighth-power β budget.           (V.8–V.12)</div>
+        <p>这个结论只在固定尺度成立。粗略 β 包络没有统一的全壳八次和；因此 (L_t^{4/3}) 可积性阻止单壳任意尖锐，却不排除跨无穷多壳的时间集中。</p>
+      </section>
+      <section>
+        <div class="section-no">04 / W.1–W.6</div><h2>局部压力可支付，调和余项与中心漂移不能消失</h2>
+        <p>在单一欧氏提升上的加厚环壳，把压力写成紧支撑源的 Riesz 部分与内加厚域上的调和余项 (h)。局部部分由速度三次量支付；剩余通量写成完整空间积分后的联合项：</p>
+        <div class="equation">F' = L + S,
+S = harmonic-pressure work + prescribed-centre drift work,
+and only [ ∫shell S ]_+ is taken.                                          (W.3–W.6)</div>
+        <p>压力的时间 gauge 可在整壳积分中消去，但这不等于压力功消失。中心速度也不能改成另一个平滑速度来删除漂移项；先拆绝对值再取正部会丢掉本节必须保留的抵消。</p>
+      </section>
+      <section>
+        <div class="section-no">05 / W.7–W.10</div><h2>过窄窗口给出条件二分支，不是自动的正耗散下界</h2>
+        <p>局部 Sobolev–Gagliardo–Nirenberg 估计把窗口内的三次量写成局部质量、耗散与 cutoff 代价。达到阈值时，只能推出下面的替代：</p>
+        <div class="equation">joint signed residual work is large,
+OR
+local viscous dissipation ≥ main threshold − C δ R^(-2) M_k^2.            (W.9–W.10)</div>
+        <p><strong>负的 cutoff 修正不可删除，右端可以非正。</strong>所以 W.10 是严格保留修正项的条件分支，不能写成每个过窄窗口都产生一个正的、可求和的局部耗散包。</p>
+      </section>
+      <section>
+        <div class="section-no">06 / W.11–W.14</div><h2>有限重叠成立，但正确权重位于扩大半径</h2>
+        <p>加厚环壳的最大重叠数有限；然而几何包含关系把第 (k) 个半径 (R) 的区域放入半径 (2R) 的相邻权重。原同尺度权重之间的比值并不统一，因此“有限重叠”不能偷换为原 (R) 账本支付。</p>
+        <div class="equation">Σ_k γ_k · local_dissipation(enlarged shell at R)
+≤ C · doubled-radius dissipation ledger,
+not the original radius-R exterior dissipation or P_R.                    (W.11–W.14)</div>
+        <p>不同壳层的窗口只通过非负性扩张到共同的 (I_{2R})，没有假设它们相同。扩大域耗散是否由目标预算控制，仍是独立未证项。</p>
+      </section>
+      <section>
+        <div class="section-no">07 / 文献、主张与下一研发问题</div><h2>经典局部工具已经够用，缺口在统一量词与真实 NS 输入</h2>
+        <table><thead><tr><th>类别</th><th>本页边界</th></tr></thead><tbody>
+          <tr><td>PROVED LOCALLY</td><td>U.1–U.9、V.1–V.12、W.1–W.6、W.11–W.14。</td></tr>
+          <tr><td>CONDITIONAL</td><td>W.9–W.10 的联合余项工作/局部耗散替代；cutoff 扣除保留。</td></tr>
+          <tr><td>LITERATURE</td><td><a href="https://arxiv.org/pdf/2001.11526v1">Bradshaw–Tsai, arXiv:2001.11526v1</a> 的局部压力展开、尾项与 gauge 区分；另用经典 Sobolev 与 Calderón–Zygmund 工具。</td></tr>
+          <tr><td>FINITE COMPUTATION</td><td>无；没有仿真、数值证书或科学图件。</td></tr>
+          <tr><td>OPEN</td><td>全壳宽度/β 八次预算、有符号余项工作、扩大外壳耗散、真实 NS 对 R.216–R.217 的输入、指定首次奇点合同 G。</td></tr>
+        </tbody></table>
+        <p><strong>下一步复评辅助条件的量词强度：区分 H/I 的平台时间通量、Q 的更强全时间目标，以及 G 在指定可能首次奇点只要求存在一个好尺度的原问题。任何首次奇点文献输入都必须显式保留 Type-I 或临界范数假设。NOT CLAY。</strong></p>
+      </section>
+      <section>
+        <div class="section-no">08 / 冻结证据</div><h2>一个科学包、一个发布节点、一个首页主路线</h2>
+        <p class="note">科学源提交：d34e9a1126b05902f75a7c6aba0fd13024ba51a0。一次性交接提交：e91a6997f9b3a3a88fb44bd3fda936c2c99ba798。七份直接科学源、六份依赖、冻结 manifest 与交接说明逐项按 SHA-256 绑定；35 个公式标签与 13 个源/依赖哈希已检查。哈希证明字节身份，不代替数学正确性或外部同行评审。</p>
+        <p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_upcrossing_preflight_20260906.md">U 稿</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_upcrossing_time_integrability_20260906.md">V 稿</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_20260906.md">W 稿</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_independent_audit_20260906.md">独立解析审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_release_20260906.json">冻结 manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_frozen_ledger_20260906.json">便携台账</a></p>
+        <p class="note">依当前发布政策，本版本只生成双语 HTML；不生成新读者 PDF，不创建图件、仿真或累计 recap。U/V/W 作为同一路线的连续论证同时并入首页现有研究路线图。</p>
+      </section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-WindowLocalisation-20260906 · 2026-09-06</footer>
+  </main>
+
+  <main data-language="en">
+    <header class="hero">
+      <div>
+        <div class="kicker">Independent Clay-B analytic note · 2026-09-06</div>
+        <h1>Local dissipation and pressure remainders on short windows</h1>
+        <p class="deck">Positive variation yields shellwise persistence windows, and the fixed-scale flux rate is controlled in time (L^{4/3}). After localizing pressure, a window below threshold leads either to joint positive work from the harmonic pressure and centre drift or to a local-dissipation branch with a cutoff subtraction. Finite overlap across shells requires weights at radius (2R), creating a new enlarged-exterior dissipation debt.</p>
+        <p><strong>This page combines the earlier internal U/V baselines with the W localization result. It does not split them into multiple releases, advance the R0 series, prove a uniform all-shell budget, construct a true NS counterexample, establish Contract G, or prove regularity. OPEN / NOT CLAY. No novelty claim.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">CONDITIONAL</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp"><strong>Claim boundary</strong><p class="proved">U.1–U.9 variation windows: proved</p><p class="proved">V.1–V.12 fixed-scale (L_t^{4/3}): proved</p><p class="proved">W.1–W.6 pressure split: proved</p><p>W.9–W.10: conditional alternative</p><p class="proved">W.11–W.14 correct overlap ledger: proved</p><p class="open">Uniform payment and G: OPEN</p></aside>
+    </header>
+    <article>
+      <section><div class="section-no">01 / Result map</div><h2>Window width, local remainders, and the enlarged ledger must stay together</h2><div class="grid"><div class="card"><strong class="proved">Time</strong>Positive-variation windows and fixed-scale (L_t^{4/3}) control quantify persistence.</div><div class="card"><strong class="proved">Space</strong>The local pressure is paid by cubic mass; harmonic pressure and centre drift remain as joint signed work.</div><div class="card"><strong class="open">All shells</strong>Finite overlap uses radius-(2R) weights, which the original radius-(R) ledger does not automatically pay.</div></div><p>The strategy change is therefore not another optimization of a local constant. The next research question audits quantifiers: Contract G asks for one good scale at a prescribed possible first singularity, whereas R.216–R.217 uniformly extract windows and coefficients across all shells at every good endpoint.</p></section>
+      <section><div class="section-no">02 / U.1–U.9</div><h2>Positive variation creates a shellwise window, but the dissipation-dominant branch is unpaid</h2><p>For the defect-completed clock (K=E+D=Q+F), the positive part is taken only after the full spatial integral defining (F'). Unless the terminal energy is paid by dissipation or positive variation of (Q), one obtains a shellwise interval on which a fixed fraction of that energy persists.</p><div class="equation">terminal clock
+→ dissipation branch  OR  quadratic-Q branch  OR  positive-flux window.     (U.1–U.9)</div><p>The quadratic (Q) row is covered by the inherited budget, and the third branch yields a lower bound for the persistence factor Θ. The weighted inverse-width sum required by U.9 is not proved, and the first branch still lacks a reverse velocity-cubic payment.</p></section>
+      <section><div class="section-no">03 / V.1–V.12</div><h2>Fixed-scale (L_t^{4/3}) control produces a fourth-power width</h2><p>On one fixed radius and time interval, periodic Sobolev interpolation, the Calderón–Zygmund pressure bound, and the centre-speed estimate put the positive flux rate in time (L^{4/3}). Hölder then yields</p><div class="equation">δ_F  ≳  ( E / (4N) )^4,
+β := R^(1/2) N / E,
+so the conditional all-shell price is an eighth-power β budget.           (V.8–V.12)</div><p>This is a fixed-scale statement. The crude β envelope has no uniform weighted eighth-power sum. Thus (L_t^{4/3}) rules out an arbitrarily sharp spike on one shell without ruling out concentration distributed over infinitely many shells.</p></section>
+      <section><div class="section-no">04 / W.1–W.6</div><h2>The local pressure is payable; the harmonic remainder and centre drift do not disappear</h2><p>On padded annuli in a single Euclidean lift, pressure is split into a Riesz transform of a compactly supported source and a remainder (h) harmonic on the inner padded region. The local term is paid by cubic velocity mass, while the rest remains as one signed spatial integral.</p><div class="equation">F' = L + S,
+S = harmonic-pressure work + prescribed-centre drift work,
+and only [ ∫shell S ]_+ is taken.                                          (W.3–W.6)</div><p>A time-dependent pressure gauge cancels over the whole shell, but the pressure work does not vanish. The centre velocity cannot be replaced by a different smoothed velocity to delete drift, and taking absolute values before the positive part would discard the cancellation retained here.</p></section>
+      <section><div class="section-no">05 / W.7–W.10</div><h2>A too-short window yields a conditional alternative, not automatic positive dissipation</h2><p>Local Sobolev–Gagliardo–Nirenberg bounds express cubic mass on the window through local mass, viscous dissipation, and a cutoff cost. At the threshold the conclusion is only</p><div class="equation">joint signed residual work is large,
+OR
+local viscous dissipation ≥ main threshold − C δ R^(-2) M_k^2.            (W.9–W.10)</div><p><strong>The negative cutoff correction cannot be dropped, and the right-hand side may be nonpositive.</strong> W.10 is therefore a conditional branch with the correction retained, not a positive summable dissipation packet produced by every narrow window.</p></section>
+      <section><div class="section-no">06 / W.11–W.14</div><h2>Overlap is finite, but the correct weights live at the enlarged radius</h2><p>The padded annuli have bounded overlap. Their containment, however, assigns an annulus at radius (R) to neighboring weights at radius (2R). Ratios of the original same-radius weights are not uniformly bounded, so finite overlap cannot be relabeled as payment by the original ledger.</p><div class="equation">Σ_k γ_k · local_dissipation(enlarged shell at R)
+≤ C · doubled-radius dissipation ledger,
+not the original radius-R exterior dissipation or P_R.                    (W.11–W.14)</div><p>The shell windows are enlarged to a common (I_{2R}) only by nonnegativity; they are not assumed equal. Control of this enlarged-exterior dissipation remains a separate open input.</p></section>
+      <section><div class="section-no">07 / Literature, claims, and the next research question</div><h2>The classical local tools suffice; the gap is uniform quantification and true-NS input</h2><table><thead><tr><th>Class</th><th>Boundary on this page</th></tr></thead><tbody><tr><td>PROVED LOCALLY</td><td>U.1–U.9, V.1–V.12, W.1–W.6, and W.11–W.14.</td></tr><tr><td>CONDITIONAL</td><td>The W.9–W.10 joint-residual-work/local-dissipation alternative, with the cutoff subtraction retained.</td></tr><tr><td>LITERATURE</td><td><a href="https://arxiv.org/pdf/2001.11526v1">Bradshaw–Tsai, arXiv:2001.11526v1</a> for the local-pressure/tail/gauge distinction, together with classical Sobolev and Calderón–Zygmund tools.</td></tr><tr><td>FINITE COMPUTATION</td><td>None; no simulation, numerical certificate, or scientific figure.</td></tr><tr><td>OPEN</td><td>All-shell width and β-eighth-power budgets, signed remainder work, enlarged-exterior dissipation, true-NS production of R.216–R.217, and prescribed-first-singularity Contract G.</td></tr></tbody></table><p><strong>The next step audits the strength of the auxiliary quantifiers: distinguish the plateau-time flux in H/I, the stronger all-time target in Q, and G's original request for one good scale at a prescribed possible first singularity. Any first-singularity literature input must retain every Type-I or critical-norm assumption. NOT CLAY.</strong></p></section>
+      <section><div class="section-no">08 / Frozen evidence</div><h2>One scientific package, one publication node, one homepage route</h2><p class="note">Scientific source commit: d34e9a1126b05902f75a7c6aba0fd13024ba51a0. One-time handoff commit: e91a6997f9b3a3a88fb44bd3fda936c2c99ba798. Seven direct scientific sources, six dependencies, the frozen manifest, and the handoff note are bound item by item by SHA-256. Thirty-five formula tags and thirteen source/dependency hashes were checked. Hashes establish byte identity, not mathematical correctness or external peer review.</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_upcrossing_preflight_20260906.md">U source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_signed_upcrossing_time_integrability_20260906.md">V source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_20260906.md">W source</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_independent_audit_20260906.md">Independent analytic audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_release_20260906.json">Frozen manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_window_localisation_frozen_ledger_20260906.json">Portable ledger</a></p><p class="note">Under the current publication policy, this release creates bilingual HTML only: no new reader PDF, figure, simulation, or cumulative recap. U/V/W enter the existing homepage research roadmap as one continuous argument.</p></section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-WindowLocalisation-20260906 · 2026-09-06</footer>
+  </main>
+</body>
+</html>

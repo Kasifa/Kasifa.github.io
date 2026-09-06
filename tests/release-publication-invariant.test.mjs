@@ -125,6 +125,7 @@ test("homepage keeps only the latest independent topic spotlight", async () => {
     "/notes/clay-b-same-parent-residual-20260906.html",
     "/notes/clay-b-signed-mixed-pressure-20260907.html",
     "/notes/clay-b-source-enstrophy-20260907.html",
+    "/notes/clay-b-frequency-activation-20260907.html",
   ]) {
     assert.ok(home.includes(`href="${path}"`), `roadmap must retain ${path}`);
   }

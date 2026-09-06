@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "research_id": "ClayB-FrequencyActivation-20260907",
+  "baseline_source_commit": "c9bb03ff544c81cedeb3a6d116514d204033eb63",
+  "status": "PASS",
+  "scope": "Read-only exact rational centre/scaling checks and byte/structure checks; not PDE, limit, uniform-existence, rendering, novelty or peer-review certification.",
+  "main": {
+    "path": "research/clay_b_frequency_activation_20260907.md",
+    "sha256": "42bbc2ba3abae7aa1eeb25ee0b29f896d7d8ddcafccb0da518dded4851dd897a",
+    "bytes": 12364,
+    "lines": 283
+  },
+  "ordered_tags": [
+    "FA.1",
+    "FA.2",
+    "FA.3",
+    "FA.4",
+    "FA.5",
+    "FA.6",
+    "FA.7",
+    "FA.8",
+    "FA.9",
+    "FA.10",
+    "FA.11",
+    "FA.12",
+    "FA.13",
+    "FA.14",
+    "FA.15",
+    "FA.16",
+    "FA.17"
+  ],
+  "display_pairs": 17,
+  "exact_arithmetic": {
+    "convention": "Fourier nonlinear coefficient equals i times the real vector checked here; convolution also carries positive(2pi)^-3 and bump mass. These finite checks do not verify the small-delta limit.",
+    "inputs": {
+      "p": [
+        "3/2",
+        "0",
+        "0"
+      ],
+      "q": [
+        "0",
+        "3/2",
+        "0"
+      ],
+      "A": [
+        "0",
+        "1",
+        "0"
+      ],
+      "B": [
+        "0",
+        "0",
+        "1"
+      ]
+    },
+    "checks": [
+      {
+        "name": "p_transverse_A",
+        "value": "0",
+        "passed": true
+      },
+      {
+        "name": "q_transverse_B",
+        "value": "0",
+        "passed": true
+      },
+      {
+        "name": "q_dot_A",
+        "value": "3/2",
+        "passed": true
+      },
+      {
+        "name": "p_dot_B",
+        "value": "0",
+        "passed": true
+      },
+      {
+        "name": "Leray_preserves_B_at_output",
+        "value": [
+          "0",
+          "0",
+          "1"
+        ],
+        "passed": true
+      },
+      {
+        "name": "output_imaginary_vector",
+        "value": [
+          "0",
+          "0",
+          "3/2"
+        ],
+        "passed": true
+      },
+      {
+        "name": "output_vector_squared_norm",
+        "value": "9/4",
+        "passed": true
+      },
+      {
+        "name": "input_squared_radius",
+        "value": "9/4",
+        "passed": true
+      },
+      {
+        "name": "output_squared_radius",
+        "value": "9/2",
+        "passed": true
+      },
+      {
+        "name": "output_strict_cutoff_interval",
+        "value": [
+          "41/20",
+          "sqrt(9/2)",
+          "11/5"
+        ],
+        "passed": true
+      },
+      {
+        "name": "exactly_two_ordered_centre_pairs",
+        "value": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "passed": true
+      },
+      {
+        "name": "exact_NS_time_balance",
+        "value": "4",
+        "passed": true
+      },
+      {
+        "name": "rescaled_viscosity_exponent",
+        "value": "-1/2",
+        "passed": true
+      },
+      {
+        "name": "energy_and_band_L2_preserved",
+        "value": "0",
+        "passed": true
+      },
+      {
+        "name": "band_source_L2_exponent",
+        "value": "5/2",
+        "passed": true
+      },
+      {
+        "name": "dissipation_integral_exponent",
+        "value": "-1/2",
+        "passed": true
+      }
+    ],
+    "passed": 16,
+    "negative_controls": [
+      {
+        "mutation": "B=(1,0,0): longitudinal raw output is killed by Leray",
+        "rejected_nonzero_output": true
+      },
+      {
+        "mutation": "Remove both q packets",
+        "rejected_output_pair": true
+      },
+      {
+        "mutation": "Replace time exponent5/2 by2 at fixed velocity exponent3/2",
+        "rejected_NS_balance": true
+      },
+      {
+        "mutation": "Replace velocity exponent3/2 by1",
+        "rejected_fixed_energy_scaling": true
+      }
+    ],
+    "negative_controls_passed": 4
+  },
+  "source_bindings": [
+    {
+      "path": "research/clay_b_short_time_pressure_work_preflight_20260906.md",
+      "sha256": "a8061f7c4fbc8e274414e97561cee4d7d9da7fc52120778e82ee5ab8ab8d14ea",
+      "bytes": 12310,
+      "lines": 416
+    },
+    {
+      "path": "research/r071i_literature_audit.md",
+      "sha256": "d4e5aeebc07ea7766b9d8b55b535d672d245a13d9309c7f91cce7b82b8aed513",
+      "bytes": 15646,
+      "lines": 355
+    },
+    {
+      "path": "research/clay_b_mature_frequency_literature_bridge_20260906.md",
+      "sha256": "ac52fde83f1a441c4933c0c9322e5e937fb4b5073f762eab2c09306b39c337e1",
+      "bytes": 2934,
+      "lines": 49
+    },
+    {
+      "path": "research/clay_b_helical_sector_dynamics_20260907.md",
+      "sha256": "558b249728879db0c52f402db8769666e0a0ab3a6b5da992e7b889a33e6d0318",
+      "bytes": 7277,
+      "lines": 126
+    },
+    {
+      "path": "research/clay_b_source_enstrophy_release_20260907.json",
+      "sha256": "9f90254f6dcbcce7c6066b4f90d6fae63d797502901ef35014531700f63eae58",
+      "bytes": 41497,
+      "lines": 910
+    }
+  ],
+  "source_phase_protection": {
+    "scope": "At the analytic source checkpoint only. Mutable research checkpoint and dispatch receipt are not future release-file bindings.",
+    "checkpoint_sha256": "a85002100ef33ad744a58624ab49b193a36bb8a06e213b55774283d03293f10e",
+    "checkpoint_unchanged_from_base": true,
+    "old_review_fields_preserved": 32,
+    "scientific_identities_preserved": 16,
+    "private_paper_sha256": "c9755ea86f93575cc96c28ac5b3caa1a059bddec2b58a448d09d9cc54d6431c5",
+    "private_paper_serialization": "Python json.dumps(paper,sort_keys=True), defaults; UTF8; no appended LF",
+    "user_AGENTS": {
+      "path": "AGENTS.md",
+      "sha256": "80959a5c6d2db01543f8f1ae1ddc2e1ba7430c1b14d1b4ef658dcc965efecfab",
+      "bytes": 4589,
+      "lines": 29
+    },
+    "workflow_sha256": "4977c4db891381fe45c319568d1080606094b54d8af8bf0a4b53d72079223566"
+  },
+  "limitations": [
+    "No uniform post-arrival residence conclusion",
+    "No single-fixed-data infinite cascade or singularity construction",
+    "No low-to-high cascade: initial spectrum already at comparable high frequency",
+    "No novelty certification: AJ scaling and local theory already existed",
+    "No simulation,DGX,scientific figures,readerHTML/PDF or publication-side inspection"
+  ]
+}

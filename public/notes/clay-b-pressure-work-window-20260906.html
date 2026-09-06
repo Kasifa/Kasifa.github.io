@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh" data-site-version="2.53">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>固定总能量不能给出这条 L³ 增长预算</title>
+  <meta name="description" content="Clay-B 紧支撑正压力功、固定能量单泡与统一早时真实 L³ 增长的双语解析笔记。">
+  <link rel="canonical" href="https://kasifa.github.io/notes/clay-b-pressure-work-window-20260906.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js?v=2.53"></script>
+  <script defer src="/bilingual.js"></script>
+  <style>
+    :root { color-scheme:light dark; --paper:#f0ede4; --panel:#faf7ef; --ink:#25211c; --muted:#6b6259; --line:#8b8278; --rule:#385b55; --proved:#216848; --open:#a14432; }
+    @media (prefers-color-scheme:dark) { :root { --paper:#171716; --panel:#22211e; --ink:#eee7da; --muted:#b8aea0; --line:#665f57; --rule:#8bc1b3; --proved:#8bd0a5; --open:#ef9b83; } }
+    * { box-sizing:border-box; } html { background:var(--paper); } body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.68 Georgia,"Songti SC","Noto Serif CJK SC",serif; }
+    a { color:var(--rule); } .masthead { display:flex; justify-content:space-between; gap:1rem; padding:14px max(20px,calc((100vw - 1120px)/2)); border-bottom:1px solid var(--line); font:13px/1.4 SFMono-Regular,Consolas,monospace; }
+    .hero,article,.footer { width:min(1120px,calc(100% - 40px)); margin:auto; } .hero { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:2rem; padding:58px 0 34px; border-bottom:1px solid var(--line); }
+    .kicker,.section-no { color:var(--rule); font:700 12px/1.4 SFMono-Regular,Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; }
+    h1 { max-width:16ch; overflow-wrap:anywhere; margin:.25rem 0 .65rem; font-size:clamp(2.3rem,6vw,4.6rem); line-height:1.04; letter-spacing:-.035em; } h2 { margin:.3rem 0 1rem; color:var(--rule); font-size:clamp(1.35rem,2.5vw,1.8rem); line-height:1.3; }
+    .deck { max-width:70ch; font-size:1.08rem; } .stamp,.card { border:1px solid var(--line); background:var(--panel); } .stamp { align-self:start; padding:1rem; box-shadow:7px 7px 0 color-mix(in srgb,var(--line) 30%,transparent); } .stamp p { margin:.55rem 0; }
+    .proved { color:var(--proved); } .open { color:var(--open); } .badges { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; } .badge { padding:.28rem .55rem; border:1px solid var(--line); background:var(--panel); }
+    article { padding:12px 0 74px; } section { padding:2.15rem 0 1.25rem; border-bottom:1px dotted var(--line); } p,li,td { overflow-wrap:anywhere; }
+    .equation { margin:1rem 0; padding:14px 16px; overflow-x:auto; border-left:4px solid var(--rule); background:var(--panel); font:15px/1.62 SFMono-Regular,Consolas,monospace; white-space:pre-wrap; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin:1.2rem 0; } .card { padding:.9rem; } .card strong { display:block; margin-bottom:.35rem; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); font-size:.94rem; } th,td { padding:.7rem; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    .note,.footer { color:var(--muted); font-size:.92rem; } .footer { padding:2rem 0 3rem; }
+    main[data-language="en"] { display:none; } html[data-language="en"] main[data-language="zh"] { display:none; } html[data-language="en"] main[data-language="en"] { display:block; }
+    @media (max-width:760px) { body { font-size:15.5px; } .hero,.grid { grid-template-columns:1fr; } .masthead { align-items:flex-start; } h1 { max-width:none; } .equation { font-size:13px; } }
+  </style>
+</head>
+<body>
+  <header class="masthead"><strong><a href="/research-review.html">研究首页</a> · CB.9 · ClayB-PressureWorkWindow-20260906</strong></header>
+
+  <main data-language="zh">
+    <article>
+      <header class="hero">
+        <div class="kicker">CB.9 · 独立 Clay-B 解析笔记 · 2026-09-06</div>
+        <h1>CB.9｜固定总能量不能给出这条 L³ 增长预算</h1>
+        <p class="dek">对每个固定初始 L² 能量，构造一族真实、光滑、黏性为 1 的周期 Navier–Stokes 解：真实正压力功在统一早时窗内造成固定比例的 L³ 三次方增长，而同期累计梯度平方趋于零。这只排除一条前置系数为 1、无加性预算、常数仅依赖总能量的精确估计。</p>
+        <div class="meta"><span>PROVED LOCALLY</span><span>LITERATURE BOUNDED</span><span>FINITE: NONE</span><span>G OPEN · NOT CLAY</span></div>
+      </header>
+      <section><div class="section-no">01 / 结论地图</div><h2>真实压力做功，而不是 CB.8 的零做功残差平台</h2><div class="grid"><div class="card"><strong class="proved">紧支撑正压力功</strong>周期正压力功种子经过 curl cutoff 和高频压力调制，得到光滑紧支撑的全空间无散场。</div><div class="card"><strong class="proved">统一真实增长</strong>固定能量单泡在 tε=τ₀ε^(5/2) 内保持正压力功，并获得与 ε 无关的相对 H 增量。</div><div class="card"><strong class="open">严格边界</strong>这是变化初值族的早时窗口；成熟时间、固定单解历史、首次奇点与合同 G 仍 OPEN。</div></div><p>与 CB.8 的 F=0 常速平台不同，CB.9 控制的是真实有符号压力功和净 L³ 增长。</p></section>
+      <section><div class="section-no">02 / AI.1–AI.18</div><h2>从周期正压力功到紧支撑 Euclidean 无散场</h2><p>从固定有限 Fourier、周期、无散且正压力功的种子出发，先取周期向量势，再对其作 curl cutoff。这样保持精确无散；零速处使用全局 Lipschitz 张量 B(z)=z⊗z/|z|，不除以速度或 cutoff。</p><div class="equation">W_R³(V_N)=N f̄ ∫a⁴+O(1)&gt;0.                                  (AI.18)</div><p>全空间压力乘子的高频主项保留正号；总频率零点由 Schwartz 尾部控制，低频平均压力与 cutoff 修正也被压入误差。辅助调制场不冒充 NS 速度。</p></section>
+      <section><div class="section-no">03 / AI.19–AI.30</div><h2>固定 L² 能量的单泡具有真实初始净增长</h2><p>把一个正压力功紧支撑场 V 归一化到 E₀，再缩成单泡嵌入单位环面。对应量的主尺度为</p><div class="equation">H≈ε^(−3/2),  ||∇u||₂²≈ε^(−2),
+D≈ε^(−7/2),  W≈ε^(−4),
+H′(0)=ε^(−4)W_V−ε^(−7/2)D_V+O(ε^(−1))&gt;0.             (AI.24–AI.28)</div><p>因此 ((H′(0))₊/H)/(1+||∇u||₂²)≈ε^(−1/2) 发散。这里已经是真实 NS 初始压力功，不是大残差替代物；但瞬时结论本身还不是正时间窗口。</p></section>
+      <section><div class="section-no">04 / AJ.1–AJ.9</div><h2>扩张环面把物理短窗变成固定重标时间</h2><p>令 L=ε⁻¹，并作 y=(x−x₀)/ε、τ=ε^(−5/2)t、uε=ε^(−3/2)Uε。单位环面上黏性 1 的方程精确变为扩张环面上的低黏性方程</p><div class="equation">∂τUε+Uε·∇Uε+∇Pε=√ε ΔUε,
+div Uε=0,  Uε(0)=V_L.                                      (AJ.3–AJ.4)</div><p>非归一化 Sobolev 范数、格点分壳、Leray 投影和压力零频约定都显式固定；嵌入常数不随 L 增长。</p></section>
+      <section><div class="section-no">05 / AJ.10–AJ.22</div><h2>统一 H⁵ 生命周期与正压力功连续性</h2><p>直接 Leibniz 交换子估计、Galerkin 构造和高阶延拓给出只依赖 V 的统一 τ₁ 与 H⁵ 上界。时间导数的 H³ 控制使 Uε(τ) 在 H³ 中以 O(τ) 靠近初值。</p><div class="equation">sup_(0≤τ≤τ₁)||Uε(τ)||_(H⁵)≤M,
+W_L(Uε(τ))≥w₀/2  for 0≤τ≤τ₀.                         (AJ.13, AJ.22)</div><p>初始 Euclidean 比较保留 Newtonian Hessian 的 delta 项；正时间则使用全环面乘子与压力功的 H²-Lipschitz 连续性，不假设黏性解继续紧支撑。</p></section>
+      <section><div class="section-no">06 / AJ.23–AJ.29</div><h2>固定相对 H 增长与消失的累计梯度预算</h2><div class="equation">tε=τ₀ε^(5/2),
+Hε(tε)/Hε(0)≥1+δ₀,
+∫₀^(tε)||∇uε(t)||₂²dt≤C√ε→0.                         (AJ.27–AJ.28)</div><p>在整个窗口中还有 W(uε(t))≥(w₀/2)ε⁻⁴ 和 H′ε(t)≥(w₀/4)ε⁻⁴。这是光滑周期真实 NS 解族的解析结论，不是有限采样、仿真或数值拟合。</p></section>
+      <section><div class="section-no">07 / AJ.30</div><h2>只排除一个量词完全固定的指数估计</h2><div class="equation">H(t)≤H(0) exp[C(E₀)∫₀ᵗ(1+||∇u(s)||₂²)ds].                 (AJ.30)</div><p>若该式对所有相应光滑解从初始时刻成立，且前置系数严格为 1、没有加性预算、C 只依赖 E₀，那么右侧相对增量趋于零，与固定的 δ₀ 矛盾。允许 K&gt;1、加性预算或依赖 H(0) 等其他初值范数的估计并未被排除。</p></section>
+      <section><div class="section-no">08 / 文献、证据与下一问题</div><h2>早时窗口不能冒充成熟时间</h2><p>tε/ε²=τ₀√ε→0，且 Hε(0)≈ε⁻³ᐟ²、||∇uε(0)||₂²≈ε⁻² 都发散。这是一族变化初值，不是一条固定解的首次奇点历史。下一研发问题回到同一解、固定半径和 t≥Cε² 的成熟时间恒等式，保留近源压力、外壳输运与黏性支付。</p><table><thead><tr><th>类别</th><th>本章范围</th></tr></thead><tbody><tr><td>PROVED LOCALLY</td><td>AI 的紧支撑正压力功与固定能量初始净增长；AJ 的统一早时真实压力功、固定相对 H 增长和 O(√ε) 累计梯度平方。</td></tr><tr><td>LITERATURE</td><td>Tran–Yu 已有 Lq 压力功与 speed moderator；Bourgain–Pavlović 和 Kang–Yun–Protas 研究的是不同空间、不同固定量或数值对象。</td></tr><tr><td>FINITE COMPUTATION</td><td>无；没有仿真、数值证书或科学图。</td></tr><tr><td>OPEN</td><td>成熟时间上的同一解压力功，近源、外壳、首次奇点、缩球、原路径和 G/G-P/G-C。</td></tr></tbody></table><p class="note">科学源提交：fd6fa4b2bcebb702ddc2e8c03884496dca139101；冻结提交：4c52c02026ce0191a121e03241d88fa6573d5536。七份科学源、四份依赖和两份冻结信封按 SHA-256 绑定；AI 与 AJ 共 60 个公式标签。内部实际文件审查不是外部同行评审。</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_compact_pressure_work_preflight_20260906.md">AI 紧支撑正压力功</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_short_time_pressure_work_preflight_20260906.md">AJ 统一短窗</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_literature-boundary_20260906.md">有限文献边界</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_freeze_audit_20260906.md">最终实际源审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_frozen_ledger_20260906.json">便携台账</a></p><p><strong>本章不生成新读者 PDF，不创建图件、仿真、DGX 数据或累计 recap。独立论文 v2 私有包不在本次发布范围。G OPEN / NOT CLAY。</strong></p></section>
+    </article>
+    <footer class="footer">CB.9 · Independent HTML research note · ClayB-PressureWorkWindow-20260906 · 2026-09-06</footer>
+  </main>
+
+  <main data-language="en">
+    <article>
+      <header class="hero">
+        <div class="kicker">CB.9 · Independent Clay-B analytic note · 2026-09-06</div>
+        <h1>CB.9 | Fixed total energy cannot provide this L³ growth budget</h1>
+        <p class="dek">For every fixed initial L² energy, construct a family of genuine smooth periodic Navier–Stokes solutions with viscosity one: genuine positive pressure work causes a fixed relative increase of the cubic L³ quantity on a uniform early-time window, while the accumulated squared-gradient action tends to zero. This excludes only one exact estimate with leading factor one, no additive budget, and a constant depending solely on total energy.</p>
+        <div class="meta"><span>PROVED LOCALLY</span><span>LITERATURE BOUNDED</span><span>FINITE: NONE</span><span>G OPEN · NOT CLAY</span></div>
+      </header>
+      <section><div class="section-no">01 / Result map</div><h2>Genuine pressure work, not the zero-work residual plateau of CB.8</h2><div class="grid"><div class="card"><strong class="proved">Compact positive pressure work</strong>A periodic positive-pressure-work seed becomes a smooth compactly supported whole-space divergence-free field through curl cutoff and high-frequency pressure modulation.</div><div class="card"><strong class="proved">Uniform genuine growth</strong>At fixed energy, a single bubble retains positive pressure work until tε=τ₀ε^(5/2) and gains a relative amount of H independent of ε.</div><div class="card"><strong class="open">Strict boundary</strong>This is an early-time window for a changing-data family; mature time, one fixed solution's history, first singularities, and contract G remain OPEN.</div></div><p>Unlike the F=0 constant-speed plateau in CB.8, CB.9 controls genuine signed pressure work and net L³ growth.</p></section>
+      <section><div class="section-no">02 / AI.1–AI.18</div><h2>From periodic positive pressure work to a compact Euclidean solenoidal field</h2><p>Start with a fixed finite-Fourier periodic divergence-free seed having positive pressure work, take a periodic vector potential, and apply a curl cutoff. Exact solenoidality is preserved. At zero velocity the globally Lipschitz tensor B(z)=z⊗z/|z| is used, with no division by the velocity or cutoff.</p><div class="equation">W_R³(V_N)=N f̄ ∫a⁴+O(1)&gt;0.                                  (AI.18)</div><p>The high-frequency main term of the whole-space pressure multiplier keeps its positive sign. A Schwartz tail controls total frequency zero, while the low-frequency mean pressure and cutoff correction enter the error. The auxiliary modulation field is not presented as an NS velocity.</p></section>
+      <section><div class="section-no">03 / AI.19–AI.30</div><h2>A fixed-L²-energy single bubble has genuine initial net growth</h2><p>Normalize one compact positive-pressure-work field V to E₀, then shrink it to one bubble and embed it in the unit torus. The leading scales are</p><div class="equation">H≈ε^(−3/2),  ||∇u||₂²≈ε^(−2),
+D≈ε^(−7/2),  W≈ε^(−4),
+H′(0)=ε^(−4)W_V−ε^(−7/2)D_V+O(ε^(−1))&gt;0.             (AI.24–AI.28)</div><p>Thus ((H′(0))₊/H)/(1+||∇u||₂²) diverges like ε^(−1/2). This is genuine initial NS pressure work, not a large-residual surrogate, but an instantaneous statement alone is not yet a positive-time window.</p></section>
+      <section><div class="section-no">04 / AJ.1–AJ.9</div><h2>An expanding torus turns the physical short window into fixed rescaled time</h2><p>Set L=ε⁻¹ and use y=(x−x₀)/ε, τ=ε^(−5/2)t, and uε=ε^(−3/2)Uε. The viscosity-one equation on the unit torus becomes exactly the low-viscosity equation on the expanding torus</p><div class="equation">∂τUε+Uε·∇Uε+∇Pε=√ε ΔUε,
+div Uε=0,  Uε(0)=V_L.                                      (AJ.3–AJ.4)</div><p>The nonnormalized Sobolev norms, lattice-shell count, Leray projection, and pressure zero-mode convention are all explicit. The embedding constants do not grow with L.</p></section>
+      <section><div class="section-no">05 / AJ.10–AJ.22</div><h2>A uniform H⁵ lifespan and continuity of positive pressure work</h2><p>Direct Leibniz commutator estimates, a Galerkin construction, and high-order continuation give a uniform τ₁ and H⁵ bound depending only on V. The H³ bound on the time derivative keeps Uε(τ) within O(τ) of its initial datum in H³.</p><div class="equation">sup_(0≤τ≤τ₁)||Uε(τ)||_(H⁵)≤M,
+W_L(Uε(τ))≥w₀/2  for 0≤τ≤τ₀.                         (AJ.13, AJ.22)</div><p>The initial Euclidean comparison retains the delta term in the Newtonian Hessian. Positive time uses global torus multipliers and H²-Lipschitz continuity of pressure work, without assuming that the viscous solution remains compactly supported.</p></section>
+      <section><div class="section-no">06 / AJ.23–AJ.29</div><h2>Fixed relative H growth with vanishing accumulated gradient action</h2><div class="equation">tε=τ₀ε^(5/2),
+Hε(tε)/Hε(0)≥1+δ₀,
+∫₀^(tε)||∇uε(t)||₂²dt≤C√ε→0.                         (AJ.27–AJ.28)</div><p>Throughout the window, W(uε(t))≥(w₀/2)ε⁻⁴ and H′ε(t)≥(w₀/4)ε⁻⁴. This is an analytic result for a family of genuine smooth periodic NS solutions, not finite sampling, simulation, or numerical fitting.</p></section>
+      <section><div class="section-no">07 / AJ.30</div><h2>Only one estimate with completely fixed quantifiers is excluded</h2><div class="equation">H(t)≤H(0) exp[C(E₀)∫₀ᵗ(1+||∇u(s)||₂²)ds].                 (AJ.30)</div><p>If this held for every corresponding smooth solution from its initial time, with leading factor exactly one, no additive budget, and C depending only on E₀, then its relative increment would tend to zero, contradicting the fixed δ₀. Bounds allowing K&gt;1, an additive budget, or dependence on H(0) or other initial norms are not excluded.</p></section>
+      <section><div class="section-no">08 / Literature, evidence, and next question</div><h2>The early-time window must not be presented as mature time</h2><p>Here tε/ε²=τ₀√ε→0, while Hε(0)≈ε⁻³ᐟ² and ||∇uε(0)||₂²≈ε⁻² both diverge. This is a changing-initial-data family, not the first-singularity history of one fixed solution. The next research problem returns to one solution at fixed radius and the mature-time identity for t≥Cε², retaining near-source pressure, outer-shell transport, and viscous payment.</p><table><thead><tr><th>Class</th><th>Scope here</th></tr></thead><tbody><tr><td>PROVED LOCALLY</td><td>AI's compact positive pressure work and fixed-energy initial net growth; AJ's uniform early-time genuine pressure work, fixed relative H growth, and O(√ε) accumulated squared gradient.</td></tr><tr><td>LITERATURE</td><td>Tran–Yu precedes the Lq pressure-work identity and speed moderator. Bourgain–Pavlović and Kang–Yun–Protas concern different spaces, fixed quantities, or numerical objects.</td></tr><tr><td>FINITE COMPUTATION</td><td>None; there is no simulation, numerical certificate, or scientific figure.</td></tr><tr><td>OPEN</td><td>Same-solution pressure work at mature time, near field, outer shell, first singularity, shrinking balls, original paths, and G/G-P/G-C.</td></tr></tbody></table><p class="note">Scientific source commit: fd6fa4b2bcebb702ddc2e8c03884496dca139101; freeze commit: 4c52c02026ce0191a121e03241d88fa6573d5536. Seven scientific sources, four dependencies, and two frozen envelopes are SHA-256-bound; AI and AJ contain 60 formula tags. Internal actual-file review is not external peer review.</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_compact_pressure_work_preflight_20260906.md">AI compact positive pressure work</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_short_time_pressure_work_preflight_20260906.md">AJ uniform short window</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_literature-boundary_20260906.md">bounded literature boundary</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_freeze_audit_20260906.md">final actual-source audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_pressure_work_frozen_ledger_20260906.json">portable ledger</a></p><p><strong>This chapter creates no new reader PDF, figure, simulation, DGX data, or cumulative recap. The private independent-paper v2 package is outside this release. G OPEN / NOT CLAY.</strong></p></section>
+    </article>
+    <footer class="footer">CB.9 · Independent HTML research note · ClayB-PressureWorkWindow-20260906 · 2026-09-06</footer>
+  </main>
+</body>
+</html>

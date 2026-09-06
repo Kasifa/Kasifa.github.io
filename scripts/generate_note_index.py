@@ -40,6 +40,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-euler-compactness-screen-20260906": "CB.17",
     "clay-b-energy-atom-cost-screen-20260906": "CB.18",
     "clay-b-common-adjoint-screen-20260906": "CB.19",
+    "clay-b-adjoint-weak-trace-screen-20260906": "CB.20",
 }
 
 

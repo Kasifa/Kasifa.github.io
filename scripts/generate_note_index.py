@@ -38,6 +38,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-ancient-constant-screen-20260906": "CB.15",
     "clay-b-fixed-history-screen-20260906": "CB.16",
     "clay-b-euler-compactness-screen-20260906": "CB.17",
+    "clay-b-energy-atom-cost-screen-20260906": "CB.18",
 }
 
 

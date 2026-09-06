@@ -41,6 +41,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-energy-atom-cost-screen-20260906": "CB.18",
     "clay-b-common-adjoint-screen-20260906": "CB.19",
     "clay-b-adjoint-weak-trace-screen-20260906": "CB.20",
+    "clay-b-convex-pressure-trace-20260906": "CB.21",
 }
 
 

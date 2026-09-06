@@ -28,6 +28,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-plateau-history-20260906": "CB.5",
     "clay-b-concentration-limits-20260906": "CB.6",
     "clay-b-pressure-geometry-20260906": "CB.7",
+    "clay-b-pressure-quotient-20260906": "CB.8",
 }
 
 

@@ -33,6 +33,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-bad-time-net-work-20260906": "CB.10",
     "clay-b-pressure-test-coupling-20260906": "CB.11",
     "clay-b-lagged-pressure-reduction-20260906": "CB.12",
+    "clay-b-recent-source-screen-20260906": "CB.13",
 }
 
 

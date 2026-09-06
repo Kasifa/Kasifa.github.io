@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh" data-site-version="2.47">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平台时间内能量历史的准确代价</title>
+  <meta name="description" content="Clay-B 平台终点量词、跨平台阈值窗口、总耗散与负工作历史成本的双语解析笔记。">
+  <link rel="canonical" href="https://kasifa.github.io/notes/clay-b-plateau-history-20260906.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/bilingual.css">
+  <script defer src="/i18n-en.js?v=2.47"></script>
+  <script defer src="/bilingual.js"></script>
+  <style>
+    :root { color-scheme:light dark; --paper:#f0ede4; --panel:#faf7ef; --ink:#25211c; --muted:#6b6259; --line:#8b8278; --rule:#385b55; --proved:#216848; --open:#a14432; }
+    @media (prefers-color-scheme:dark) { :root { --paper:#171716; --panel:#22211e; --ink:#eee7da; --muted:#b8aea0; --line:#665f57; --rule:#8bc1b3; --proved:#8bd0a5; --open:#ef9b83; } }
+    * { box-sizing:border-box; } html { background:var(--paper); } body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.68 Georgia,"Songti SC","Noto Serif CJK SC",serif; }
+    a { color:var(--rule); } .masthead { display:flex; justify-content:space-between; gap:1rem; padding:14px max(20px,calc((100vw - 1120px)/2)); border-bottom:1px solid var(--line); font:13px/1.4 SFMono-Regular,Consolas,monospace; }
+    .hero,article,.footer { width:min(1120px,calc(100% - 40px)); margin:auto; } .hero { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:2rem; padding:58px 0 34px; border-bottom:1px solid var(--line); }
+    .kicker,.section-no { color:var(--rule); font:700 12px/1.4 SFMono-Regular,Consolas,monospace; letter-spacing:.06em; text-transform:uppercase; }
+    h1 { max-width:16ch; margin:.25rem 0 .65rem; font-size:clamp(2.3rem,6vw,4.6rem); line-height:1.04; letter-spacing:-.035em; } h2 { margin:.3rem 0 1rem; color:var(--rule); font-size:clamp(1.35rem,2.5vw,1.8rem); line-height:1.3; }
+    .deck { max-width:70ch; font-size:1.08rem; } .stamp,.card { border:1px solid var(--line); background:var(--panel); } .stamp { align-self:start; padding:1rem; box-shadow:7px 7px 0 color-mix(in srgb,var(--line) 30%,transparent); } .stamp p { margin:.55rem 0; }
+    .proved { color:var(--proved); } .open { color:var(--open); } .badges { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; } .badge { padding:.28rem .55rem; border:1px solid var(--line); background:var(--panel); }
+    article { padding:12px 0 74px; } section { padding:2.15rem 0 1.25rem; border-bottom:1px dotted var(--line); } p,li,td { overflow-wrap:anywhere; }
+    .equation { margin:1rem 0; padding:14px 16px; overflow-x:auto; border-left:4px solid var(--rule); background:var(--panel); font:15px/1.62 SFMono-Regular,Consolas,monospace; white-space:pre-wrap; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin:1.2rem 0; } .card { padding:.9rem; } .card strong { display:block; margin-bottom:.35rem; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); font-size:.94rem; } th,td { padding:.7rem; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    .note,.footer { color:var(--muted); font-size:.92rem; } .footer { padding:2rem 0 3rem; }
+    main[data-language="en"] { display:none; } html[data-language="en"] main[data-language="zh"] { display:none; } html[data-language="en"] main[data-language="en"] { display:block; }
+    @media (max-width:760px) { body { font-size:15.5px; } .hero,.grid { grid-template-columns:1fr; } .masthead { align-items:flex-start; } h1 { max-width:none; } .equation { font-size:13px; } }
+  </style>
+</head>
+<body>
+  <header class="masthead"><strong><a href="/research-review.html">研究首页</a> · ClayB-PlateauHistory-20260906</strong></header>
+
+  <main data-language="zh">
+    <header class="hero">
+      <div>
+        <div class="kicker">独立 Clay-B 解析笔记 · 2026-09-06</div>
+        <h1>平台时间内能量历史的准确代价</h1>
+        <p class="deck">原 H 只需要末端平台 (I_R) 上的通量控制，Q/R 则采用更强的完整截止时间量词。把目标先限制到平台可以减弱辅助要求，但平台终点的阈值窗口仍可能跨入早期 cutoff 段；对真正位于平台内的窗口，过去能量必须由终点、总耗散、二次变差与负工作共同支付。</p>
+        <p><strong>全壳重算只得到 (C(A_R+P_R^M))，没有改进为 (C(A_R+Z_R))。新扩大时钟不是原时钟，Y.9 的负修正可能令右端非正，完整 (I_{2R}) 上未加权的 W.14 也未获支付。G OPEN / NOT CLAY，不主张新颖性。</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">CONDITIONAL</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp"><strong>结论边界</strong><p class="proved">X.1–X.4 平台终点归约：已证</p><p class="proved">Y.1–Y.2 跨平台/等号分支：已证</p><p class="proved">Y.3–Y.8 历史成本：已证</p><p>Y.9：条件耗散下界</p><p class="proved">Y.10–Y.12 粗全壳预算：已证</p><p class="open">A+Z、R 输入与 G：OPEN</p></aside>
+    </header>
+    <article>
+      <section><div class="section-no">01 / 结论地图</div><h2>减弱终点量词，不等于免费获得平台内历史</h2><div class="grid"><div class="card"><strong class="proved">可减弱</strong>先为 H 的平台通量验证 tail 输入，无须先承担 Q 的全部早期终点。</div><div class="card"><strong class="open">仍分支</strong>终点虽在平台，原阈值窗口仍可能跨出平台；等号也必须单独处理。</div><div class="card"><strong class="open">准确代价</strong>扩大 cutoff 的反向历史包含 total dissipation、负工作与弱端点 BV 迹。</div></div><p>这项检查改变的是辅助路线的顺序：平台输入可以先做，但跨平台窗口、负工作目标级预算和耗散主导支路仍在。原 Clay B 的一般初值与指定中心要求没有减少。</p></section>
+      <section><div class="section-no">02 / X.1–X.4</div><h2>原 H 的平台目标弱于 Q/R 的全时间目标</h2><p>对任意时间集合 Τ，逐点终端归约仍成立；它只用 (K=Q+F)、二次变差账本与有限例外壳上的 Cauchy–Schwarz，不要求 Τ 是完整截止区间。</p><div class="equation">C_R^M(Τ) ≤ C A_R + √N Z_R + S^K_{N,R}(Τ).                       (X.1–X.3)
+
+If the R.216–R.217 tail input is verified only at good τ in I_R,
+then C_R^M(I_R) ≤ C(A_R + Z_R).                                            (X.4)</div><p>good-time 稠密性与 best-(N) 尾的下半连续性只把结论延拓到平台区间 (I_R)。X.4 足以服务原 H，却不证明 Q 的全时间增强目标；有符号累计通量不单调，较晚上界不能反推较早峰值。</p></section>
+      <section><div class="section-no">03 / Y.1–Y.2</div><h2>平台终点不保证原阈值窗口留在平台内</h2><p>令 (t_p=t_0-R^2)。若平台段累计正工作不足 (E/4)，原 U 窗口必然跨过 (t_p)。若平台段达到阈值，可以重新选择一个平台内窗口 (J_k^P)，但必须保留等号情形：</p><div class="equation">G_k(τ−t_p) &lt; E/4  → original threshold window crosses the ramp;
+G_k(τ−t_p) ≥ E/4  → select δ_k^P ≤ δ_k^F inside I_R.                       (Y.1–Y.2)</div><p>在等号时，平台前的零速率区间可能使原最大窗口更长，不能声称原窗口已完全位于平台。改选较短窗口后，((R^2/delta_k^P)^2) 可能更大，原逆宽度预算不能自动继承，R.217 必须针对所选平台窗重新证明。</p></section>
+      <section><div class="section-no">04 / Y.3–Y.8</div><h2>反向控制过去能量必须支付总耗散和负工作</h2><p>为覆盖 W.7 的加厚质量域，引入新的空间 cutoff ξ_k，并保持原路径、原速度提升、常向量 a_R 与统一压力 gauge。由 defect-completed 局部能量等式，平台窗口 J=(a,τ) 内的历史成本是</p><div class="equation">H_k(J) = Ê_k(τ) + total-dissipation_k(J)
+         + TV_J Q̂_k + ∫_J(F̂'_k)_−,
+
+M_k² ≤ (2R/γ_k) H_k(J).                                                    (Y.3–Y.8)</div><p>总耗散包含黏性耗散与 suitable 缺陷，并在反向历史中取正号；完整空间积分后的负工作也必须作为正成本保留。任意弱终点需要加权能量的左 BV 迹，不能用可能更小的物理端点值替换右侧，也不能把差额重新命名为端点 defect 原子。</p></section>
+      <section><div class="section-no">05 / Y.9</div><h2>代回局部耗散分支仍保留非正修正</h2><p>在非余项分支中，以 (w=|J|/R^2) 和扩大历史 (H_k(J)) 代入 W.10，可得</p><div class="equation">d_k^vis ≥ c γ_k^(2/3) E_k(τ)^(4/3) H_k(J)^(−1) w^(−1/3)
+          − 2w H_k(J).                                                      (Y.9)</div><p>γ_k^(2/3) 来自加权与未加权量的转换；末项是不可删除的 cutoff 修正，右端可能非正。该式没有把 H_k 或联合压力/中心漂移余项变成已知小量。</p></section>
+      <section><div class="section-no">06 / Y.10–Y.12</div><h2>正确几何给出 A+P，而不是目标 A+Z</h2><p>加厚 (3R/4) 环壳仍至多重叠两次，外部只能由 (W_{2R}) 权重支付。重新运行二次、速度、压力和中心漂移的绝对账本后：</p><div class="equation">Σ_k TV Q̂_k ≤ C A_R,
+Σ_k TV F̂_k ≤ C P_R^M,
+Σ_k H_k(J_k) ≤ C(A_R + P_R^M).                                             (Y.10–Y.12)</div><p>这里先逐壳用修改后的完整时钟，再求和；不同窗口的时间上确界没有与空间重叠错误交换。结果只恢复粗 (A+P) 层级：扩大时钟不是原 (K_k)，负变差不进入原 (Z_R)。它也只控制 η 加权时钟与平台窗口，未支付整个 (I_{2R}) 上未加权的 W.14。</p></section>
+      <section><div class="section-no">07 / 文献、边界与下一研发问题</div><h2>下一步需要首次奇点的真实时间集中信息</h2><table><thead><tr><th>类别</th><th>本页范围</th></tr></thead><tbody><tr><td>PROVED LOCALLY</td><td>X.1–X.4、Y.1–Y.8、Y.10–Y.12。</td></tr><tr><td>CONDITIONAL</td><td>Y.9 的局部黏性耗散下界；负 cutoff 修正保留。</td></tr><tr><td>LITERATURE</td><td><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Fefferman 的 Clay 问题说明</a>用于保持最终范围；<a href="https://arxiv.org/pdf/2001.11526v1">Bradshaw–Tsai</a>用于 suitable 局部能量与压力局部/尾项/gauge 的经典背景。</td></tr><tr><td>FINITE COMPUTATION</td><td>无；没有仿真、数值证书或科学图件。</td></tr><tr><td>OPEN</td><td>跨平台阈值支路、逆宽度与 R.216–R.217 动力学输入、A+Z 级负工作、耗散主导支、完整 W.14 支付和合同 G。</td></tr></tbody></table><p><strong>下一研究节点核验指定首次奇点的局部 (L^3) 必要条件与短时持留文献，逐项区分固定球/抛物缩球、指定中心/事后中心、全空间/周期，以及 Type-I、临界范数和无穷远衰减假设。必要条件不能直接当作矛盾。NOT CLAY。</strong></p></section>
+      <section><div class="section-no">08 / 冻结证据</div><h2>平台历史作为首页主路线的下一连续节点</h2><p class="note">科学源提交：24ba1c640fb52d2cdef4d4d21c58a5745871b75a。一次性交接提交：5049060cb94f39c411bdf6fceb85f3ea79b22816。五份科学源、八份依赖、冻结 manifest 与交接说明逐项按 SHA-256 绑定；X 四个与 Y 十二个公式标签、13 个源/依赖哈希均通过检查。哈希证明字节身份，不代替数学正确性或外部同行评审。</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_target_time_scope_preflight_20260906.md">X 量词预检</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_20260906.md">Y 平台历史</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_independent_audit_20260906.md">独立解析审查</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_release_20260906.json">冻结 manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_frozen_ledger_20260906.json">便携台账</a></p><p class="note">依当前发布政策，本版本只生成双语 HTML；不生成新读者 PDF，不创建图件、仿真或累计 recap。本节点直接接在首页现有 WindowLocalisation 路线之后。</p></section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-PlateauHistory-20260906 · 2026-09-06</footer>
+  </main>
+
+  <main data-language="en">
+    <header class="hero">
+      <div>
+        <div class="kicker">Independent Clay-B analytic note · 2026-09-06</div>
+        <h1>The exact cost of energy history inside the plateau</h1>
+        <p class="deck">The original H target needs flux control only on the terminal plateau (I_R), while Q/R uses a stronger full-cutoff-time quantifier. Restricting the first target to the plateau reduces an auxiliary requirement, but a threshold window ending in the plateau may still cross into the earlier cutoff ramp. For a window that truly lies in the plateau, past energy is paid jointly by terminal energy, total dissipation, quadratic variation, and negative work.</p>
+        <p><strong>The all-shell reconstruction yields only (C(A_R+P_R^M)), not (C(A_R+Z_R)). The enlarged clock is not the original clock, the negative correction in Y.9 may make the right-hand side nonpositive, and the unweighted W.14 over the full (I_{2R}) remains unpaid. G OPEN / NOT CLAY. No novelty claim.</strong></p>
+        <div class="badges"><span class="badge">PROVED LOCALLY</span><span class="badge">CONDITIONAL</span><span class="badge">LITERATURE</span><span class="badge">FINITE: NONE</span><span class="badge">NO FIGURE</span><span class="badge">OPEN</span><span class="badge">NOT CLAY</span></div>
+      </div>
+      <aside class="stamp"><strong>Claim boundary</strong><p class="proved">X.1–X.4 plateau reduction: proved</p><p class="proved">Y.1–Y.2 cross-ramp/equality branch: proved</p><p class="proved">Y.3–Y.8 history cost: proved</p><p>Y.9: conditional dissipation bound</p><p class="proved">Y.10–Y.12 coarse all-shell budget: proved</p><p class="open">A+Z, R input, and G: OPEN</p></aside>
+    </header>
+    <article>
+      <section><div class="section-no">01 / Result map</div><h2>A weaker endpoint quantifier does not make plateau history free</h2><div class="grid"><div class="card"><strong class="proved">Weaker target</strong>Supply tail input first for H's plateau flux, without first covering every early endpoint required by Q.</div><div class="card"><strong class="open">Branch retained</strong>An endpoint in the plateau may have an original threshold window crossing the ramp; equality also needs separate treatment.</div><div class="card"><strong class="open">Exact cost</strong>Backward history for the enlarged cutoff retains total dissipation, negative work, and the weak-endpoint BV trace.</div></div><p>This changes the order of an auxiliary route: plateau input can be attempted first, while the cross-ramp window, target-level control of negative work, and the dissipation-dominant branch remain open. The general-data and prescribed-centre scope of Clay B is unchanged.</p></section>
+      <section><div class="section-no">02 / X.1–X.4</div><h2>The original H plateau target is weaker than the Q/R all-time target</h2><p>For any time set Τ, the pointwise terminal reduction remains valid. It uses only (K=Q+F), the quadratic-variation ledger, and Cauchy–Schwarz on finitely many exceptional shells; it does not require Τ to be the whole cutoff interval.</p><div class="equation">C_R^M(Τ) ≤ C A_R + √N Z_R + S^K_{N,R}(Τ).                       (X.1–X.3)
+
+If the R.216–R.217 tail input is verified only at good τ in I_R,
+then C_R^M(I_R) ≤ C(A_R + Z_R).                                            (X.4)</div><p>Good-time density and lower semicontinuity of the best-(N) tail extend the result only through the plateau interval (I_R). X.4 is enough for the original H target, but it does not prove Q's strengthened all-time target. Signed cumulative flux is not monotone, so a later bound cannot recover an earlier peak.</p></section>
+      <section><div class="section-no">03 / Y.1–Y.2</div><h2>A plateau endpoint does not put the original threshold window inside the plateau</h2><p>Let (t_p=t_0-R^2). If the positive work accumulated on the plateau is below (E/4), the original U window crosses (t_p). If the plateau reaches the threshold, one may select a new window (J_k^P) inside it, but the equality case must remain explicit.</p><div class="equation">G_k(τ−t_p) &lt; E/4  → original threshold window crosses the ramp;
+G_k(τ−t_p) ≥ E/4  → select δ_k^P ≤ δ_k^F inside I_R.                       (Y.1–Y.2)</div><p>At equality, a zero-rate interval before the plateau may make the original maximal window longer. Hence the original window need not lie inside the plateau. A shorter selected window can increase ((R^2/delta_k^P)^2), so the old inverse-width budget is not inherited; R.217 must be reproved for the selected plateau windows.</p></section>
+      <section><div class="section-no">04 / Y.3–Y.8</div><h2>Backward control of past energy must pay total dissipation and negative work</h2><p>A new spatial cutoff ξ_k covers the enlarged mass domain in W.7 while retaining the original path, lifted velocity, constant vector a_R, and common pressure gauge. The defect-completed local-energy equality gives the history cost on J=(a,τ):</p><div class="equation">H_k(J) = Ê_k(τ) + total-dissipation_k(J)
+         + TV_J Q̂_k + ∫_J(F̂'_k)_−,
+
+M_k² ≤ (2R/γ_k) H_k(J).                                                    (Y.3–Y.8)</div><p>Total dissipation includes both viscous dissipation and the suitable defect, with a positive sign in the backward history; negative work after the full spatial integral is also a positive cost. An arbitrary weak endpoint requires the left BV trace of weighted energy. A possibly smaller physical endpoint value cannot replace that right-hand term, and the gap is not relabeled as an endpoint defect atom.</p></section>
+      <section><div class="section-no">05 / Y.9</div><h2>Substitution into the local-dissipation branch retains a nonpositive correction</h2><p>In the non-remainder branch, substituting the enlarged history into W.10, with (w=|J|/R^2), yields</p><div class="equation">d_k^vis ≥ c γ_k^(2/3) E_k(τ)^(4/3) H_k(J)^(−1) w^(−1/3)
+          − 2w H_k(J).                                                      (Y.9)</div><p>The power γ_k^(2/3) comes from converting between weighted and unweighted quantities. The last term is a cutoff correction that cannot be removed, and the right-hand side may be nonpositive. The formula does not make H_k, or the joint pressure/centre-drift remainder, a known small quantity.</p></section>
+      <section><div class="section-no">06 / Y.10–Y.12</div><h2>The correct geometry yields A+P, not the target A+Z</h2><p>The (3R/4)-padded annuli still overlap at most twice, and their exterior is paid only by the (W_{2R}) weight. Re-running the quadratic, velocity, pressure, and centre-drift absolute ledgers gives</p><div class="equation">Σ_k TV Q̂_k ≤ C A_R,
+Σ_k TV F̂_k ≤ C P_R^M,
+Σ_k H_k(J_k) ≤ C(A_R + P_R^M).                                             (Y.10–Y.12)</div><p>Each shell first uses its modified complete clock, and only then are shells summed; the time suprema of different windows are not exchanged with spatial overlap. This recovers only the coarse A+P level. The enlarged clock is not the original (K_k), and its negative variation is not part of the original (Z_R). The result also controls only η-weighted clocks and plateau windows, not the unweighted W.14 over the full (I_{2R}).</p></section>
+      <section><div class="section-no">07 / Literature, boundary, and next research question</div><h2>The next node needs genuine first-singularity time-concentration information</h2><table><thead><tr><th>Class</th><th>Scope on this page</th></tr></thead><tbody><tr><td>PROVED LOCALLY</td><td>X.1–X.4, Y.1–Y.8, and Y.10–Y.12.</td></tr><tr><td>CONDITIONAL</td><td>The local viscous-dissipation lower bound Y.9, with its negative cutoff correction retained.</td></tr><tr><td>LITERATURE</td><td><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Fefferman's Clay problem description</a> preserves the final scope; <a href="https://arxiv.org/pdf/2001.11526v1">Bradshaw–Tsai</a> supplies classical background for suitable local energy and the local/tail/gauge pressure split.</td></tr><tr><td>FINITE COMPUTATION</td><td>None; no simulation, numerical certificate, or scientific figure.</td></tr><tr><td>OPEN</td><td>The cross-ramp threshold branch, inverse width and R.216–R.217 dynamics, A+Z-level negative work, the dissipation-dominant branch, full W.14 payment, and Contract G.</td></tr></tbody></table><p><strong>The next research node audits local (L^3) necessary conditions and short-time persistence at a prescribed first singularity, distinguishing fixed balls from parabolic shrinking balls, prescribed from post-selected centres, whole space from the torus, and every Type-I, critical-norm, or far-field assumption. A necessary condition is not itself a contradiction. NOT CLAY.</strong></p></section>
+      <section><div class="section-no">08 / Frozen evidence</div><h2>Plateau history is the next continuous node in the homepage route</h2><p class="note">Scientific source commit: 24ba1c640fb52d2cdef4d4d21c58a5745871b75a. One-time handoff commit: 5049060cb94f39c411bdf6fceb85f3ea79b22816. Five scientific sources, eight dependencies, the frozen manifest, and the handoff note are bound item by item by SHA-256. Four X tags, twelve Y tags, and thirteen source/dependency hashes passed their checks. Hashes establish byte identity, not mathematical correctness or external peer review.</p><p class="note"><a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_target_time_scope_preflight_20260906.md">X quantifier preflight</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_20260906.md">Y plateau history</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_independent_audit_20260906.md">Independent analytic audit</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_release_20260906.json">Frozen manifest</a> · <a href="https://github.com/Kasifa/Kasifa.github.io/blob/main/research/clay_b_plateau_history_frozen_ledger_20260906.json">Portable ledger</a></p><p class="note">Under the current publication policy, this release creates bilingual HTML only: no new reader PDF, figure, simulation, or cumulative recap. This node directly follows WindowLocalisation in the existing homepage research roadmap.</p></section>
+    </article>
+    <footer class="footer">Independent HTML research note · ClayB-PlateauHistory-20260906 · 2026-09-06</footer>
+  </main>
+</body>
+</html>

@@ -123,6 +123,7 @@ test("homepage keeps only the latest independent topic spotlight", async () => {
     "/notes/clay-b-adjoint-weak-trace-screen-20260906.html",
     "/notes/clay-b-convex-pressure-trace-20260906.html",
     "/notes/clay-b-same-parent-residual-20260906.html",
+    "/notes/clay-b-signed-mixed-pressure-20260907.html",
   ]) {
     assert.ok(home.includes(`href="${path}"`), `roadmap must retain ${path}`);
   }

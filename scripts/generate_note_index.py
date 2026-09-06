@@ -43,6 +43,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-adjoint-weak-trace-screen-20260906": "CB.20",
     "clay-b-convex-pressure-trace-20260906": "CB.21",
     "clay-b-same-parent-residual-20260906": "CB.22",
+    "clay-b-signed-mixed-pressure-20260907": "CB.23",
 }
 
 

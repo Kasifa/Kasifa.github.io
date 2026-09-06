@@ -37,6 +37,7 @@ INDEPENDENT_CHAPTERS = {
     "clay-b-pressure-mechanism-screen-20260906": "CB.14",
     "clay-b-ancient-constant-screen-20260906": "CB.15",
     "clay-b-fixed-history-screen-20260906": "CB.16",
+    "clay-b-euler-compactness-screen-20260906": "CB.17",
 }
 
 

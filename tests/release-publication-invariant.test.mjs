@@ -117,6 +117,7 @@ test("homepage keeps only the latest independent topic spotlight", async () => {
     "/notes/clay-b-pressure-mechanism-screen-20260906.html",
     "/notes/clay-b-ancient-constant-screen-20260906.html",
     "/notes/clay-b-fixed-history-screen-20260906.html",
+    "/notes/clay-b-euler-compactness-screen-20260906.html",
   ]) {
     assert.ok(home.includes(`href="${path}"`), `roadmap must retain ${path}`);
   }

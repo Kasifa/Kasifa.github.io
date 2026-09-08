@@ -1,0 +1,65 @@
+:root { color-scheme: light dark; --paper:#f0ede4; --panel:#faf7ef; --ink:#25211c; --muted:#6b6259; --line:#bab2a5; --accent:#385b55; }
+@media(prefers-color-scheme:dark) { :root { --paper:#171716; --panel:#22211e; --ink:#eee7da; --muted:#b8aea0; --line:#665f57; --accent:#8bc1b3; } }
+* { box-sizing:border-box; }
+html { background:var(--paper); scroll-padding-top:80px; }
+body { margin:0; background:var(--paper); color:var(--ink); font:17px/1.8 Georgia,"Songti SC","Noto Serif CJK SC",serif; }
+main { width:min(1020px,calc(100% - 48px)); margin:0 auto; }
+main[data-language="en"] { display:none; }
+html[data-language="en"] main[data-language="zh"] { display:none; }
+html[data-language="en"] main[data-language="en"] { display:block; }
+a { color:var(--accent); text-underline-offset:4px; }
+a:hover { text-decoration-thickness:2px; }
+a:focus-visible,button:focus-visible,summary:focus-visible { outline:3px solid var(--accent); outline-offset:5px; }
+.site-nav { display:flex; gap:1.2rem; flex-wrap:wrap; align-items:center; min-height:76px; padding:16px 100px 16px 0; border-bottom:1px solid var(--line); font:14px/1.5 system-ui,sans-serif; }
+.site-nav a { text-decoration:none; }
+.language-switcher { position:fixed; z-index:5; right:20px; top:18px; padding:9px 15px; background:var(--panel); color:var(--accent); border:1px solid var(--line); border-radius:3px; font:14px/1.5 system-ui,sans-serif; cursor:pointer; }
+.hero { padding:48px 0 30px; max-width:940px; }
+.kicker { font:14px/1.5 system-ui,sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+h1 { font-size:clamp(2rem,4.1vw,3.2rem); font-weight:500; line-height:1.19; letter-spacing:-.025em; margin:14px 0 24px; overflow-wrap:anywhere; }
+.author { color:var(--muted); margin:10px 0; font-size:15px; }
+.downloads { display:flex; flex-wrap:wrap; gap:10px; margin:24px 0 8px; font:14px/1.5 system-ui,sans-serif; }
+.downloads a { padding:10px 14px; border:1px solid var(--line); background:var(--panel); text-decoration:none; }
+.downloads a:first-child { border-color:var(--accent); }
+.scope { border-left:3px solid var(--accent); padding:10px 18px; color:var(--muted); font-size:15px; }
+.status-labels { font:12px/1.5 ui-monospace,monospace; color:var(--muted); letter-spacing:.04em; margin:12px 0; }
+.abstract { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:22px 0; margin-top:22px; }
+.abstract h2 { margin:0; font-size:24px; color:var(--accent); }
+.abstract p { margin:14px 0; }
+.contents { margin:24px 0 32px; padding:16px 20px; background:var(--panel); border:1px solid var(--line); font:15px/1.7 system-ui,sans-serif; }
+.contents summary { cursor:pointer; color:var(--accent); }
+.contents ol { columns:2; padding-left:24px; }
+.contents li { break-inside:avoid; padding:4px 8px 4px 0; }
+.paper-body { padding-bottom:44px; }
+.paper-body h2 { margin:52px 0 22px; border-top:1px solid var(--line); padding-top:25px; font-size:28px; line-height:1.35; color:var(--accent); }
+.paper-body h3 { font-size:22px; line-height:1.4; margin:30px 0 16px; }
+.paper-body h4,.paper-body h5 { font-size:18px; margin:26px 0 12px; }
+p { margin:18px 0; }
+.paper-body p,.paper-body li { overflow-wrap:break-word; }
+.theorem,.proposition,.lemma,.corollary { margin:24px 0; padding:6px 22px; border:1px solid var(--line); border-left:3px solid var(--accent); background:var(--panel); }
+.proof { margin:24px 0 34px; }
+.remark { color:var(--muted); }
+.math.display { display:block; max-width:100%; overflow-x:auto; overflow-y:hidden; padding:12px 3px; margin:12px 0 0; }
+.math.inline { max-width:100%; }
+mjx-container { max-width:100%; }
+mjx-container[display="true"] { margin:0!important; text-align:left!important; }
+.math.inline mjx-container { overflow-x:auto; overflow-y:hidden; vertical-align:middle; padding:3px 0; }
+.equation-numbers { display:block; text-align:right; font:14px/1.5 Georgia,serif; color:var(--muted); padding-bottom:8px; }
+.tex-anchor { scroll-margin-top:30px; }
+figure { margin:34px 0; }
+figure img { display:block; width:100%; max-width:100%; height:auto; background:white; padding:8px; border:1px solid var(--line); }
+figcaption { font-size:15px; line-height:1.7; color:var(--muted); margin-top:16px; }
+table { width:100%; border-collapse:collapse; margin:25px 0; font-size:16px; }
+.table-scroll { max-width:100%; overflow-x:auto; }
+th,td { padding:12px 10px; border-bottom:1px solid var(--line); text-align:left; }
+.numbered-bibliography { padding-left:32px; font-size:15px; }
+.numbered-bibliography li { margin:16px 0; padding-left:8px; overflow-wrap:anywhere; }
+.numbered-bibliography p { margin:0; }
+.footer { border-top:1px solid var(--line); padding:24px 0 42px; color:var(--muted); font:13px/1.7 system-ui,sans-serif; overflow-wrap:anywhere; }
+.paper-card { padding:32px 0; border-top:1px solid var(--line); }
+.paper-card h2 { font-size:27px; line-height:1.35; max-width:900px; margin:12px 0; }
+.paper-card h2 a { text-decoration:none; }
+.paper-card p { max-width:900px; }
+.paper-number { color:var(--accent); font:14px/1.5 ui-monospace,monospace; }
+.intro { max-width:780px; color:var(--muted); font-size:18px; }
+@media(max-width:650px) { body { font-size:16px; } main { width:calc(100% - 32px); } .hero { padding-top:30px; } h1 { font-size:32px; } .contents ol { columns:1; } .paper-body h2 { font-size:25px; } .theorem,.proposition,.lemma,.corollary { padding:4px 12px; } .language-switcher { right:16px; } .site-nav { gap:12px; } .math.display { font-size:15px; } }
+@media print { .site-nav,.language-switcher,.contents,.downloads { display:none; } :root { --paper:white; --panel:white; --ink:black; --muted:#444; --accent:black; --line:#888; } main { width:100%; } h1 { font-size:26pt; } body { font-size:11pt; } .math.display { overflow:visible; } }

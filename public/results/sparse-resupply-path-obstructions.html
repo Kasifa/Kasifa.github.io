@@ -1,0 +1,1241 @@
+<!doctype html><html lang="zh-CN" data-language="zh" data-selected-paper="sparse-resupply-path-obstructions"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Navier–Stokes 流中指定稀疏来源链的黏性障碍</title>
+<meta name="description" content="Along one cyclically symmetric full classical solution, two prescribed sparse frequency recursions obey decaying received-layer gradient bounds under explicit conditions on their actual nonlinear sources. A fixed-datum example gives a short-time difference-frequency source-lag obstruction.">
+<meta name="author" content="C. K. Zeng"><meta name="citation_title" content="Viscous Obstructions to Prescribed Sparse Source Chains in Navier–Stokes Flow">
+<meta name="citation_author" content="C. K. Zeng"><meta name="citation_publication_date" content="2026/09/09">
+<link rel="stylesheet" href="/results/results.css"><link rel="stylesheet" href="/results/source-papers.css">
+<script>window.MathJax={"tex":{"inlineMath":[["\\(","\\)"]],"displayMath":[["\\[","\\]"]],"tags":"none","useLabelIds":true,"macros":{"T":"\\mathbb T","Pj":"\\mathbb P","A":"\\mathcal A","dd":"\\,\\mathrm d","ii":"\\mathrm i","supp":"\\operatorname{supp}","Div":"\\operatorname{div}","norm":["\\left\\|#1\\right\\|",1],"abs":["\\left|#1\\right|",1]}},"options":{"skipHtmlTags":["script","noscript","style","textarea","pre","code"]}};</script>
+<script defer src="/results/results.js"></script><script defer src="/vendor/math.js"></script>
+</head><body class="source-paper">
+<main data-language="zh" data-title="Navier–Stokes 流中指定稀疏来源链的黏性障碍"><nav class="site-nav"><a href="/research-review.html?lang=zh">研究首页</a><a href="/results/?lang=zh">前沿成果</a></nav>
+<header class="hero"><p class="kicker">WORKING MANUSCRIPT · 2026-09-09 · NOT CLAY</p><h1>Navier–Stokes 流中指定稀疏来源链的黏性障碍</h1>
+<p class="source-subtitle" lang="en">Viscous Obstructions to Prescribed Sparse Source Chains in Navier–Stokes Flow</p>
+<p class="author">C. K. Zeng · 独立研究者 · ORCID <a href="https://orcid.org/0009-0002-5402-3374">0009-0002-5402-3374</a></p>
+<p class="source-status">工作论文；按 arXiv 源码规范准备，尚未向 arXiv 提交。</p><p class="scope">条件性全层结论只控制指定投影链。同一时刻全部层的条件不能由不同接收时刻的条件替代；论文没有排除路径外机制，也没有给出完整 NS 解的正则性或奇性结论。</p>
+<div class="downloads source-actions"><a href="#zh-full-text">阅读英文全文</a><a href="/assets/papers/sparse-resupply-path-obstructions.pdf">英文 PDF</a></div>
+<section class="abstract"><h2>中文摘要</h2><p>本文沿标准三维环面上一个实值、循环对称、不可压、无外力且黏性为一的 Navier–Stokes 解，研究两条指定的稀疏 Fourier 来源链。所选输入投影的贡献由完整 Duhamel 积分定义；余项包含原有目标及全部未选相互作用。对相邻求和链，频率差保持固定，指定来源受目标频率平方倒数型上界控制；逐频率对的来源占优条件进一步给出新接收层的梯度衰减。对跨边链，频率差随层数增长，但在两项来源占优条件成立、且第一阶段条件覆盖第二次作用的整个积分窗时，两次热积分给出明确的几何梯度衰减。若同一时刻所有层均满足条件，则对应链投影的一阶导数尾部绝对可和。本文还给出一般的短时间来源滞后引理，并以固定代数初值说明：差型输出为时间的一阶响应，而所选接收层的自供给具有更高的时间阶。这些来源条件必须在实际解上验证；结论只涉及指定投影，不证明完整 Navier–Stokes 流的正则性或奇性。</p></section>
+<p class="source-language-note">题名、摘要与结论边界提供中英文；下方为完整英文正文，并非全文中文翻译。</p></header>
+<details class="contents source-contents"><summary>正文目录（英文）</summary><ol><li class="toc-level-2"><a href="#zh-section-1">1. Introduction</a></li><li class="toc-level-2"><a href="#zh-section-2">2. The full equation and source attribution</a></li><li class="toc-level-3"><a href="#zh-subsection-1">2.1. Fixed setting and conventions</a></li><li class="toc-level-3"><a href="#zh-subsection-2">2.2. Cyclic symmetry and the energy bound</a></li><li class="toc-level-3"><a href="#zh-subsection-3">2.3. Source integrals, remainders and pairwise conditions</a></li><li class="toc-level-2"><a href="#zh-section-3">3. The adjacent-sum chain</a></li><li class="toc-level-2"><a href="#zh-section-4">4. The cross-edge chain with two source conditions</a></li><li class="toc-level-3"><a href="#zh-subsection-4">4.1. All-layer geometry</a></li><li class="toc-level-3"><a href="#zh-subsection-5">4.2. The two heat integrations</a></li><li class="toc-level-3"><a href="#zh-subsection-6">4.3. The complete remainders and the time qualification</a></li><li class="toc-level-2"><a href="#zh-section-5">5. A short-time source-lag obstruction</a></li><li class="toc-level-3"><a href="#zh-subsection-7">5.1. An explicit fixed datum</a></li><li class="toc-level-2"><a href="#zh-section-6">6. Scope, proof ingredients and computational assistance</a></li><li class="toc-level-2"><a href="#zh-section-7">A. Explicit algebraic datum and rational checks</a></li><li class="toc-level-3"><a href="#zh-subsection-8">A.1. The datum and the local constants</a></li><li class="toc-level-3"><a href="#zh-subsection-9">A.2. A nonzero coordinate of the difference response</a></li><li class="toc-level-3"><a href="#zh-subsection-10">A.3. Exact verification procedure</a></li></ol></details>
+<article class="paper-body" id="zh-full-text" lang="en"><div class="paper-abstract" id="zh-abstract-1">
+<h2>Abstract</h2>
+<p>We study two prescribed sparse Fourier source chains along one real, cyclically symmetric, incompressible, unforced Navier–Stokes solution on a fixed three-dimensional torus with viscosity one. The contribution of a selected input projection is defined by its full Duhamel integral; its remainder includes the existing target and every omitted interaction. For an adjacent-sum chain, the frequency differences remain fixed and the selected source is bounded by a constant times the inverse square of the target frequency. A pairwise source-dominance condition then forces the newly received layer&#x27;s gradient to decay. For a cross-edge chain, the frequency differences grow, but two heat integrations yield an explicit geometric gradient decay under the two stated source-dominance conditions, with the first holding throughout the second interaction interval. At a common time, conditions at every layer imply absolutely summable first-derivative tails for the corresponding chain projection. We also give a general short-time source-lag lemma and a fixed algebraic-data example in which a difference output precedes the selected receiver&#x27;s self-supply. The source conditions are hypotheses to be checked on the actual solution. These results concern specified projections and do not establish regularity or singularity of the full Navier–Stokes flow.</p>
+</div>
+<p><strong>2020 Mathematics Subject Classification.</strong> 35Q30, 76D05, 42B05.</p>
+<p><strong>Keywords.</strong> Navier–Stokes equations; Fourier interaction; viscosity; source attribution; sparse frequency chain.</p>
+<h2 id="zh-section-1">1. Introduction</h2>
+<p>A frequency produced by a quadratic interaction need not subsequently become the dominant source of another frequency. This distinction matters when a finite interaction pattern is proposed as one step of a repeated construction. Frequency arithmetic describes possible outputs; source attribution must also account for the evolution of the input, viscous damping, and all other contributions to the target.</p>
+<p>We examine two fixed recurrences beginning with the cyclic orbit of \((3,4,6)\). Both are tested on projections of one complete Navier–Stokes solution. No projected field is assumed to solve a closed finite-dimensional system. The adjacent-sum recurrence doubles an axial component while preserving every within-layer frequency difference. In this case incompressibility replaces the derivative frequency in the selected interaction by a fixed difference. The cross-edge recurrence expands those differences, but both of its prescribed intermediate frequency types remain comparable to the sending frequency. Two full heat integrations then give a different decay estimate.</p>
+<p>The main results are Theorems <a class="paper-ref" href="#zh-theorem-1">3.1</a> and <a class="paper-ref" href="#zh-theorem-2">4.2</a>. Energy and heat estimates give unconditional bounds for the adjacent-sum source and the first cross-edge source. The second cross-edge source bound additionally requires the first source condition throughout its integration interval. Bounds for the actual targets use precise pairwise comparisons between the complete remainder and the designated source. These conditions form a sufficient attribution test, not a necessary definition of every possible transfer mechanism. We distinguish reception at different times from conditions holding for all layers at one time. Only the latter permits a simultaneous chain estimate.</p>
+<p>Section <a class="paper-ref" href="#zh-section-5">5</a> treats a complementary finite-time obstruction. A target with a nonzero first-order response cannot, on a sufficiently short original time interval, be predominantly supplied by the self-interaction of a projection that is third order in time. We prove this as a general source-lag statement, including every truncated integration interval, and apply it to the fixed algebraic initial datum of the companion manuscript [<a href="#zh-bibitem-3">3</a>]. This example links finite source selection to the need for a separate test of subsequent supply.</p>
+<p>The energy identity, Fourier representation and heat estimates used here are standard; see, for example, [<a href="#zh-bibitem-1">1</a>]. Fourier triad interactions and their channel-dependent cancellations are classical topics; see Waleffe&#x27;s helical analysis [<a href="#zh-bibitem-2">2</a>]. Here the norm comparison concerns velocity coefficients, and is not a claim of positive net energy flux. The purpose is to give complete estimates for the two stated recurrences, with explicit constants and time quantifiers. In particular, the statements do not refute a construction for a different fluid equation, and they do not exclude other input sets, growing numbers of modes, or mechanisms outside these source conditions.</p>
+<h2 id="zh-section-2">2. The full equation and source attribution</h2>
+<h3 id="zh-subsection-1">2.1. Fixed setting and conventions</h3>
+<p>Throughout the two chain theorems,</p>
+<div class="equation paper-equation" id="zh-display_math-1">\begin{equation*}
+ \Omega=\T^3=(\mathbb R/2\pi\mathbb Z)^3,\qquad
+ \partial_tu-\Delta u+(u\cdot\nabla)u+\nabla p=0,
+ \qquad \Div u=0.
+\tag{2.1}\label{zh-math-eq-2-1}\end{equation*}</div>
+<p>The viscosity is exactly one. Let \(u,p\) be a real classical solution on \([0,T)\), smooth on every compact time subinterval, with one fixed smooth, zero-mean, divergence-free initial datum \(a=u(0)\). No conclusion about the size of \(T\) is assumed. Define</p>
+<div class="equation paper-equation" id="zh-display_math-2">\begin{equation*}
+ u(x,t)=\sum_{k\in\mathbb Z^3}u_k(t)e^{\ii k\cdot x},\qquad
+ \norm{f}_2^2=(2\pi)^{-3}\int_\Omega |f|^2
+ =\sum_k|f_k|^2,\qquad M=\norm{a}_2.
+\tag{2.2}\label{zh-math-eq-2-2}\end{equation*}</div>
+<p>Complex coefficient lengths are Hermitian Euclidean lengths; the dot products in the convolution are complex bilinear. Reality and incompressibility give \(u_{-k}=\overline{u_k}\) and \(k\cdot u_k=0\). For \(k\ne0\), put \(\Pj_k=I-k\otimes k/|k|^2\) and</p>
+<div class="equation paper-equation" id="zh-display_math-3">\begin{equation*}
+ B(f,g)_k=-\ii\Pj_k\sum_{p+q=k}(f_p\cdot q)g_q,
+ \qquad B(f,g)_0=0.
+\tag{2.3}\label{zh-math-eq-2-3}\end{equation*}</div>
+<p>The projected equation is \(u_t-\Delta u=B(u,u)\). Thus every source below retains the complete Leray projection; a vanishing pressure term in the energy identity does not remove pressure from this equation.</p>
+<p>For a symmetric frequency set \(F=-F\), let \(P_F\) be coefficient projection and write</p>
+<div class="equation paper-equation" id="zh-display_math-4">\begin{equation*}
+ \norm{f}_{\A_0}=\sum_k|f_k|,\qquad
+ |f|_{\dot\A_1}=\sum_k|k|\,|f_k|.
+\tag{2.4}\label{zh-math-eq-2-4}\end{equation*}</div>
+<p>These expressions are finite on the finite projections used below. In particular,</p>
+<div class="equation paper-equation" id="zh-display_math-5">\begin{equation*}
+ \norm{\nabla f}_{L^\infty}\le |f|_{\dot\A_1},
+ \qquad
+ \norm{B(f,g)}_{\A_0}\le\norm f_{\A_0}|g|_{\dot\A_1}.
+\tag{2.5}\label{zh-math-eq-2-5}\end{equation*}</div>
+<p>The matrix norm in the first inequality is Frobenius. Both inequalities follow by taking absolute values of the complete Fourier sums and using \(\norm{\Pj_k}_{\mathrm{op}}\le1\).</p>
+<h3 id="zh-subsection-2">2.2. Cyclic symmetry and the energy bound</h3>
+<p>Let \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and assume</p>
+<div class="equation paper-equation" id="zh-display_math-6">\begin{equation*}
+ a(Rx)=Ra(x).
+\tag{2.6}\label{zh-math-eq-2-6}\end{equation*}</div>
+<p>Orthogonality gives \(\Pj_{Rk}=R\Pj_kR^\top\). Applying \(R\) to space and velocity therefore preserves the full equation. Classical uniqueness on each compact existence interval implies</p>
+<div class="equation paper-equation" id="zh-display_math-7">\begin{equation*}
+ u(Rx,t)=Ru(x,t),\qquad u_{Rk}(t)=Ru_k(t).
+\tag{2.7}\label{zh-math-eq-2-7}\end{equation*}</div>
+<p>For completeness, uniqueness follows from the difference equation for two classical solutions: its \(L^2\) energy is bounded by a constant times the \(L^\infty\) norm of the gradient of one solution times the difference energy. That coefficient is bounded on each compact interval, so Gronwall applies. This also justifies applying uniqueness to the rotated solution.</p>
+<p>Multiplication of <a class="paper-ref" href="#zh-display_math-1">(2.1)</a> by \(u\), followed by periodic integration, gives</p>
+<div class="equation paper-equation" id="zh-display_math-8">\begin{equation*}
+ \norm{u(t)}_2^2+2\int_0^t\norm{\nabla u(r)}_2^2\dd r=M^2.
+\tag{2.8}\label{zh-math-eq-2-8}\end{equation*}</div>
+<p>The convection integral is an integral of a divergence, and the pressure integral vanishes by incompressibility. Consequently, if \(D=\{\pm k,\pm Rk,\pm R^2k\}\) consists of six distinct frequencies and \(h=P_Du\), then</p>
+<div class="equation paper-equation" id="zh-display_math-9">\begin{equation*}
+ 6|u_k(r)|^2=\norm{h(r)}_2^2\le M^2.
+\tag{2.9}\label{zh-math-eq-2-9}\end{equation*}</div>
+<p>This bound holds for the actual complex coefficients, with no prescribed phase, polarization line, or nonvanishing assumption.</p>
+<h3 id="zh-subsection-3">2.3. Source integrals, remainders and pairwise conditions</h3>
+<p>Let \(h=P_Du\) be any actual finite projection and let \(F=-F\) be a finite target set. For \(0\le s&lt;t&lt;T\), define</p>
+<div class="equation paper-equation" id="zh-display_math-10">\begin{equation*}
+ S^h_F(t;s)=\int_s^t e^{(t-r)\Delta}P_FB(h(r),h(r))\dd r,
+ \qquad Z^h_F(t;s)=P_Fu(t)-S^h_F(t;s).
+\tag{2.10}\label{zh-math-eq-2-10}\end{equation*}</div>
+<p>Writing \(z=u-h\), the full Duhamel formula gives the exact identity</p>
+<div class="equation paper-equation" id="zh-display_math-11">\begin{align*}
+ Z^h_F(t;s)
+ &amp;=e^{(t-s)\Delta}P_Fu(s)\\
+ &amp;\quad+\int_s^t e^{(t-r)\Delta}P_F
+ \bigl[B(h,z)+B(z,h)+B(z,z)\bigr](r)\dd r.
+\tag{2.11}\label{zh-math-eq-2-11}\end{align*}</div>
+<p>The first term contains the target already present at \(s\). The other terms contain all frequencies outside \(D\), both ordered cross interactions, and their self-interactions. Formula <a class="paper-ref" href="#zh-display_math-11">(2.11)</a> is not a closure assumption for \(h\).</p>
+<div class="paper-definition paper-statement" id="zh-definition-1"><p class="statement-heading"><strong>Definition 2.1 (Pairwise source dominance).</strong></p>
+<p>For a nonzero \(k\) with \(\{k,-k\}\subset F\), the source condition at \((s,t)\) is</p>
+<div class="equation paper-equation" id="zh-display_math-12">\begin{equation*}
+ \norm{P_{\{\pm k\}}Z^h_F(t;s)}_{\A_0}
+ \le\frac14\norm{P_{\{\pm k\}}S^h_F(t;s)}_{\A_0}.
+\tag{2.12}\label{zh-math-eq-2-12}\end{equation*}</div>
+<p>Conditions for a layer always mean <a class="paper-ref" href="#zh-display_math-12">(2.12)</a> for every one of its positive–negative frequency pairs, with the same starting time within that layer.</p>
+</div>
+<p>Both fields are real, so a pair norm equals twice its representative coefficient length. The triangle inequality therefore yields</p>
+<div class="equation paper-equation" id="zh-display_math-13">\begin{equation*}
+ |u_k(t)|\le\frac54|S^h_F(t;s)_k|
+\tag{2.13}\label{zh-math-eq-2-13}\end{equation*}</div>
+<p>when the pair condition holds. No division by the source is needed. A zero source together with the condition forces a zero target; it does not certify effective nonzero reception. A condition on a whole-band norm cannot in general be substituted for the separate pairwise conditions.</p>
+<h2 id="zh-section-3">3. The adjacent-sum chain</h2>
+<p>Indices \(j\) below are taken modulo three. Set</p>
+<div class="equation paper-equation" id="zh-display_math-14">\begin{equation*}
+ k_j^{(0)}=R^j(3,4,6),\qquad
+ k_j^{(n+1)}=k_j^{(n)}+k_{j+1}^{(n)},\qquad
+ D_n=\{\pm k_j^{(n)}:0\le j&lt;3\},\quad h_n=P_{D_n}u.
+\tag{3.1}\label{zh-math-eq-3-1}\end{equation*}</div>
+<p>Let \(S_{n+1}(t;s)=S^{h_n}_{D_{n+1}}(t;s)\) and \(Z_{n+1}=h_{n+1}-S_{n+1}\), as in <a class="paper-ref" href="#zh-display_math-10">(2.10)</a>.</p>
+<div class="paper-theorem paper-statement" id="zh-theorem-1"><p class="statement-heading"><strong>Theorem 3.1 (Adjacent-sum source and target bounds).</strong></p>
+<p>Assume the full setting <a class="paper-ref" href="#zh-display_math-1">(2.1)</a>–<a class="paper-ref" href="#zh-display_math-6">(2.6)</a>. Put</p>
+<div class="equation paper-equation" id="zh-display_math-15">\begin{equation*}
+ L_n^2=\frac{169\,4^n+14}{3}.
+\tag{3.2}\label{zh-math-eq-3-2}\end{equation*}</div>
+<p>For every \(n\ge0\), every existing interval \(0\le s&lt;t&lt;T\), and every \(k\in D_{n+1}\),</p>
+<div class="equation paper-equation" id="zh-display_math-16">\begin{equation*}
+ |S_{n+1}(t;s)_k|
+ \le\frac{\sqrt{14}}3 M^2
+ \frac{1-e^{-L_{n+1}^2(t-s)}}{L_{n+1}^2}.
+\tag{3.3}\label{zh-math-eq-3-3}\end{equation*}</div>
+<p>If the three target pairs satisfy Definition <a class="paper-ref" href="#zh-definition-1">2.1</a> on this interval, then</p>
+<div class="equation paper-equation" id="zh-display_math-17">\begin{equation*}
+ \norm{\nabla h_{n+1}(t)}_\infty
+ \le |h_{n+1}(t)|_{\dot\A_1}
+ \le\frac{5\sqrt{14}}2\frac{M^2}{L_{n+1}}.
+\tag{3.4}\label{zh-math-eq-3-4}\end{equation*}</div>
+<p>Fix one time \(t&lt;T\). If for every \(n\ge0\) there exists \(s_n(t)\in[0,t)\) such that all three conditions for that layer hold on \([s_n(t),t]\), then for every integer \(N\ge0\),</p>
+<div class="equation paper-equation" id="zh-display_math-18">\begin{equation*}
+ \sum_{m&gt;N}|h_m(t)|_{\dot\A_1}
+ \le\frac{5\sqrt{42}}{26}M^2\,2^{-N}.
+\tag{3.5}\label{zh-math-eq-3-5}\end{equation*}</div>
+<p>The chain projection \(v_{\rm sum}(t)=\sum_{m\ge0}h_m(t)\) and its first spatial derivatives converge absolutely and uniformly, and</p>
+<div class="equation paper-equation" id="zh-display_math-19">\begin{equation*}
+ \norm{\nabla v_{\rm sum}(t)}_\infty
+ \le\sqrt{366}M+\frac{5\sqrt{42}}{26}M^2.
+\tag{3.6}\label{zh-math-eq-3-6}\end{equation*}</div>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-1"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>Write \(A=(13/3)(1,1,1)\) and \(w_j=k_j^{(0)}-A\). Direct dot products give</p>
+<div class="equation paper-equation" id="zh-display_math-20">\begin{equation*}
+ \sum_jw_j=0,\quad A\cdot w_j=0,\quad
+ |A|^2=169/3,\quad |w_j|^2=14/3,\quad
+ w_i\cdot w_j=-7/3\quad(i\ne j).
+\tag{3.7}\label{zh-math-eq-3-7}\end{equation*}</div>
+<p>Since \(w_j+w_{j+1}=-w_{j+2}\), induction in <a class="paper-ref" href="#zh-display_math-14">(3.1)</a> gives</p>
+<div class="equation paper-equation" id="zh-display_math-21">\begin{equation*}
+ k_j^{(n)}=2^nA+(-1)^nw_{j+2n},\qquad
+ |k_j^{(n)}|=L_n,\qquad
+ |k_i^{(n)}-k_j^{(n)}|=\sqrt{14}\quad(i\ne j).
+\tag{3.8}\label{zh-math-eq-3-8}\end{equation*}</div>
+<p>Integrality follows from the recurrence. The three transverse vectors have Gram matrix with diagonal \(14/3\) and off-diagonal \(-7/3\); its kernel is spanned by \((1,1,1)\). In any linear dependence among the three \(k_j^{(n)}\), the transverse component thus makes the coefficients equal, and the nonzero axial component then makes them zero. The three positive vectors are independent. Their coordinate sums are \(13\,2^n\); the negative vectors have the opposite sums. Hence every layer has six distinct modes, and distinct layers are disjoint.</p>
+<p>Fix \(m=k_j^{(n+1)}=p+q\), with \(p=k_j^{(n)}\) and \(q=k_{j+1}^{(n)}\). A mixed-sign input pair has coordinate sum zero and a negative pair has a negative sum, so neither can produce \(m\). Independence of the positive vectors shows that the only positive pairs producing \(m\) are \((p,q)\) and \((q,p)\), including exclusion of a repeated input. Consequently the entire selected Fourier source is</p>
+<div class="equation paper-equation" id="zh-display_math-22">\begin{equation*}
+ B(h_n,h_n)_m=-\ii\Pj_m
+ \bigl[(U\cdot q)V+(V\cdot p)U\bigr],
+ \qquad U=u_p(r),\quad V=u_q(r).
+\tag{3.9}\label{zh-math-eq-3-9}\end{equation*}</div>
+<p>Incompressibility gives \(U\cdot q=U\cdot(q-p)\) and \(V\cdot p=V\cdot(p-q)\). Using <a class="paper-ref" href="#zh-display_math-9">(2.9)</a>, the full two-term coefficient is bounded by</p>
+<div class="equation paper-equation" id="zh-display_math-23">\begin{equation*}
+ |B(h_n,h_n)_m|
+ \le2\sqrt{14}|U||V|\le\frac{\sqrt{14}}3M^2.
+\tag{3.10}\label{zh-math-eq-3-10}\end{equation*}</div>
+<p>This estimate allows arbitrary actual complex phases and uses both ordered terms. The negative targets obey the same bound by conjugation.</p>
+<p>The target heat multiplier is exactly \(e^{-L_{n+1}^2(t-r)}\). Integrating <a class="paper-ref" href="#zh-display_math-23">(3.10)</a> along the actual history gives <a class="paper-ref" href="#zh-display_math-16">(3.3)</a>. When the pair condition holds, <a class="paper-ref" href="#zh-display_math-13">(2.13)</a> gives</p>
+<div class="equation paper-equation" id="zh-display_math-24">\begin{equation*}
+ |u_k(t)|\le\frac{5\sqrt{14}}{12}
+ \frac{M^2}{L_{n+1}^2}\qquad(k\in D_{n+1}).
+\tag{3.11}\label{zh-math-eq-3-11}\end{equation*}</div>
+<p>Summing the six coefficients with their common derivative weight \(L_{n+1}\) proves <a class="paper-ref" href="#zh-display_math-17">(3.4)</a>.</p>
+<p>Under the common-time hypothesis, these estimates apply simultaneously to all \(m\ge1\). Since \(L_m\ge(13/\sqrt3)2^m\),</p>
+<div class="equation paper-equation" id="zh-display_math-25">\[
+ \sum_{m&gt;N}L_m^{-1}\le\frac{\sqrt3}{13}
+ \sum_{m=N+1}^\infty2^{-m}=\frac{\sqrt3}{13}2^{-N}.
+\]</div>
+<p>Multiplication by \(5\sqrt{14}M^2/2\) proves <a class="paper-ref" href="#zh-display_math-18">(3.5)</a>. The same summable majorant controls the field itself because \(L_m\ge1\). The Weierstrass criterion therefore gives uniform absolute convergence of the Fourier series and its first derivatives. Disjoint supports identify the sum as the original solution&#x27;s projection on \(\bigcup_mD_m\). The bottom layer satisfies</p>
+<div class="equation paper-equation" id="zh-display_math-26">\[
+ |h_0(t)|_{\dot\A_1}\le6\sqrt{61}\,M/\sqrt6=\sqrt{366}M.
+\]</div>
+<p>Adding it to <a class="paper-ref" href="#zh-display_math-18">(3.5)</a> with \(N=0\) proves <a class="paper-ref" href="#zh-display_math-19">(3.6)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-corollary paper-statement" id="zh-corollary-1"><p class="statement-heading"><strong>Corollary 3.2 (Different reception times).</strong></p>
+<p>For one fixed solution, suppose layer \(m\ge1\) satisfies the three conditions at some existing time \(t_m\), with a legal starting time \(s_{m-1}&lt;t_m\). Then</p>
+<div class="equation paper-equation" id="zh-display_math-27">\[
+ \norm{\nabla h_m(t_m)}_\infty
+ \le\frac{5\sqrt{14}}2\frac{M^2}{L_m}\longrightarrow0.
+\]</div>
+<p>This conclusion does not require the \(t_m\) to coincide.</p>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-2"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>Apply <a class="paper-ref" href="#zh-display_math-17">(3.4)</a> separately at each \((s_{m-1},t_m)\), using the same \(M\) and the explicit growth of \(L_m\).</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>This corollary controls the newly received layer at its own reception time. It does not permit the fields \(h_m(t_m)\) to be added and interpreted as a single-time state. If the common-time assumptions of Theorem <a class="paper-ref" href="#zh-theorem-1">3.1</a> hold at every point of an already existing time set, then <a class="paper-ref" href="#zh-display_math-18">(3.5)</a>–<a class="paper-ref" href="#zh-display_math-19">(3.6)</a> are uniform on that set. Neither statement controls the complementary projection of \(u\) or extends the classical existence interval.</p>
+<h2 id="zh-section-4">4. The cross-edge chain with two source conditions</h2>
+<p>This is a second prescribed path, not the next stage of the previous one. Define</p>
+<div class="equation paper-equation" id="zh-display_math-28">\begin{equation*}
+ p_j^{(0)}=R^j(3,4,6),\qquad
+ p_j^{(n+1)}=2p_j^{(n)}+p_{j+1}^{(n)}-p_{j+2}^{(n)}.
+\tag{4.1}\label{zh-math-eq-4-1}\end{equation*}</div>
+<p>In this section only, use</p>
+<div class="equation paper-equation" id="zh-display_math-29">\begin{align*}
+ D_n&amp;=\{\pm p_j^{(n)}:0\le j&lt;3\},\qquad h_n=P_{D_n}u,\\
+ E_n&amp;=\{\pm(p_i^{(n)}+p_j^{(n)}),\
+          \pm(p_i^{(n)}-p_j^{(n)}):0\le i&lt;j&lt;3\},
+ \qquad b_n=P_{E_n}u.
+\tag{4.2}\label{zh-math-eq-4-2}\end{align*}</div>
+<p>There are three sum pairs and three difference pairs in \(E_n\). For \(0\le s&lt;a&lt;t&lt;T\), put</p>
+<div class="equation paper-equation" id="zh-display_math-30">\begin{align*}
+ g_{n,s}(r)&amp;=\int_s^r e^{(r-q)\Delta}P_{E_n}
+                  B(h_n(q),h_n(q))\dd q,\qquad s\le r\le t,\\
+ e_{n,s}(r)&amp;=b_n(r)-g_{n,s}(r),
+\tag{4.3}\label{zh-math-eq-4-3}\end{align*}</div>
+<p>and</p>
+<div class="equation paper-equation" id="zh-display_math-31">\begin{align*}
+ S_{n+1}(t;a)&amp;=\int_a^t e^{(t-r)\Delta}P_{D_{n+1}}
+                         B(b_n(r),b_n(r))\dd r,\\
+ Z_{n+1}(t;a)&amp;=h_{n+1}(t)-S_{n+1}(t;a).
+\tag{4.4}\label{zh-math-eq-4-4}\end{align*}</div>
+<div class="paper-definition paper-statement" id="zh-definition-2"><p class="statement-heading"><strong>Definition 4.1 (Two-stage source conditions).</strong></p>
+<p>The first condition requires, for every pair \(F\subset E_n\) and every \(r\in[a,t]\),</p>
+<div class="equation paper-equation" id="zh-display_math-32">\begin{equation*}
+ \norm{P_Fe_{n,s}(r)}_{\A_0}
+ \le\tfrac14\norm{P_Fg_{n,s}(r)}_{\A_0}.
+\tag{4.5}\label{zh-math-eq-4-5}\end{equation*}</div>
+<p>The second condition requires, for every pair \(F\subset D_{n+1}\),</p>
+<div class="equation paper-equation" id="zh-display_math-33">\begin{equation*}
+ \norm{P_FZ_{n+1}(t;a)}_{\A_0}
+ \le\tfrac14\norm{P_FS_{n+1}(t;a)}_{\A_0}.
+\tag{4.6}\label{zh-math-eq-4-6}\end{equation*}</div>
+<p>All pairs in this layer share the same \(s,a,t\). In particular, the first condition holds throughout the interval where the second source uses the actual field \(b_n\).</p>
+</div>
+<div class="paper-theorem paper-statement" id="zh-theorem-2"><p class="statement-heading"><strong>Theorem 4.2 (Cross-edge decay).</strong></p>
+<p>Under the assumptions of Section <a class="paper-ref" href="#zh-section-2">2</a>, if Definition <a class="paper-ref" href="#zh-definition-2">4.1</a> holds at layer \(n\) on an existing interval \(0\le s&lt;a&lt;t&lt;T\), then</p>
+<div class="equation paper-equation" id="zh-display_math-34">\begin{equation*}
+ \norm{\nabla h_{n+1}(t)}_\infty
+ \le |h_{n+1}(t)|_{\dot\A_1}
+ \le\frac{125}{672}M^4\,4^{-n}.
+\tag{4.7}\label{zh-math-eq-4-7}\end{equation*}</div>
+<p>If one common existing time \(t\) admits, for every \(n\ge0\), times \(0\le s_n(t)&lt;a_n(t)&lt;t\) satisfying these two-stage conditions, then</p>
+<div class="equation paper-equation" id="zh-display_math-35">\begin{equation*}
+ \sum_{m&gt;N}|h_m(t)|_{\dot\A_1}
+ \le\frac{125}{504}M^4\,4^{-N},\qquad N\ge0,
+\tag{4.8}\label{zh-math-eq-4-8}\end{equation*}</div>
+<p>and the chain projection \(v_{\rm cross}(t)=\sum_{m\ge0}h_m(t)\) belongs to \(C^1(\Omega)\), with</p>
+<div class="equation paper-equation" id="zh-display_math-36">\begin{equation*}
+ \norm{\nabla v_{\rm cross}(t)}_\infty
+ \le\sqrt{366}M+\frac{125}{504}M^4.
+\tag{4.9}\label{zh-math-eq-4-9}\end{equation*}</div>
+</div>
+<h3 id="zh-subsection-4">4.1. All-layer geometry</h3>
+<p>Use \(A,w_j\) from <a class="paper-ref" href="#zh-display_math-20">(3.7)</a> and write \(\mathcal T=2I+R-R^2\). On the axial line \(\mathbb R(1,1,1)\), \(\mathcal T\) is multiplication by two. On its orthogonal plane, \(R^2+R+I=0\). Thus \(J=R-R^2\) satisfies \(J^*=-J\), \(J^2=-3I\), and \(\mathcal T^*\mathcal T=(2I-J)(2I+J)=7I\) there. Induction gives</p>
+<div class="equation paper-equation" id="zh-display_math-37">\begin{equation*}
+ p_j^{(n)}=2^nA+\mathcal T^nw_j,\quad
+ K_n^2:=|p_j^{(n)}|^2=\frac{169\,4^n+14\,7^n}{3},\quad
+ |p_i^{(n)}-p_j^{(n)}|^2=14\,7^n.
+\tag{4.10}\label{zh-math-eq-4-10}\end{equation*}</div>
+<p>The transverse dot products are those in <a class="paper-ref" href="#zh-display_math-20">(3.7)</a> multiplied by \(7^n\). Hence the sum and difference lengths are</p>
+<div class="equation paper-equation" id="zh-display_math-38">\begin{align*}
+ A_n^+&amp;:=|p_i^{(n)}+p_j^{(n)}|^2
+       =\frac{676\,4^n+14\,7^n}{3}\ge K_n^2,\\
+ A_n^-&amp;:=|p_i^{(n)}-p_j^{(n)}|^2
+       =14\,7^n\ge\frac{14}{61}K_n^2,\qquad
+ K_n^2\ge61\,4^n.
+\tag{4.11}\label{zh-math-eq-4-11}\end{align*}</div>
+<p>For the second inequality, multiplication by \(3\cdot61\) reduces the claim to \(169\,7^n\ge169\,4^n\); the last follows in the same way. The matrix \(\mathcal T\) is invertible on the axis and the transverse plane. The three vectors are consequently independent at every layer, by the same argument as in Section <a class="paper-ref" href="#zh-section-3">3</a>. Integer recurrence gives integer frequencies; the coordinate sums \(\pm13\,2^n\) show that the six-mode \(D_n\) are pairwise disjoint. Independence also shows that all twelve frequencies in \(E_n\) are distinct.</p>
+<h3 id="zh-subsection-5">4.2. The two heat integrations</h3>
+<p>Fix a layer and suppress its superscript on the \(p_j\). A target in \(E_n\) has exactly the two ordered inputs corresponding to its indicated edge, with conjugate coefficients where a negative input occurs. This follows by expressing the target in the independent basis \((p_0,p_1,p_2)\). Each input frequency has length \(K_n\), and each coefficient has length at most \(M/\sqrt6\) by <a class="paper-ref" href="#zh-display_math-9">(2.9)</a>. Therefore</p>
+<div class="equation paper-equation" id="zh-display_math-39">\begin{equation*}
+ |B(h_n,h_n)_k(r)|\le\frac{K_nM^2}{3},\qquad k\in E_n.
+\tag{4.12}\label{zh-math-eq-4-12}\end{equation*}</div>
+<p>Both ordered Leray terms are included. The first real-time integral gives</p>
+<div class="equation paper-equation" id="zh-display_math-40">\begin{equation*}
+ |g_{n,s}(r)_k|
+ \le\frac{K_nM^2}{3|k|^2}
+       (1-e^{-|k|^2(r-s)}).
+\tag{4.13}\label{zh-math-eq-4-13}\end{equation*}</div>
+<p>Using <a class="paper-ref" href="#zh-display_math-38">(4.11)</a> and then the first source condition on \([a,t]\) yields the following bounds for actual intermediate coefficients:</p>
+<div class="equation paper-equation" id="zh-display_math-41">\begin{equation*}
+ |b_n(r)_{p_i+p_j}|\le\frac{5M^2}{12K_n},\qquad
+ |b_n(r)_{p_i-p_j}|\le\frac{305M^2}{168K_n},\qquad a\le r\le t.
+\tag{4.14}\label{zh-math-eq-4-14}\end{equation*}</div>
+<p>Indeed, the ungated source bounds are \(M^2/(3K_n)\) and \(61M^2/(42K_n)\), respectively, and the condition multiplies each by \(5/4\).</p>
+<p>Let \((i,j,k)\) be cyclically ordered. The next target is \(m=2p_i+p_j-p_k\). Every element of \(E_n\) has exactly two nonzero coordinates, each equal to \(1\) or \(-1\), in the independent \(p\) basis. For two such elements to sum to \((2,1,-1)\) in the order \((i,j,k)\), both must have \(i\) coordinate \(1\), and their remaining coordinates must be \(+j\) and \(-k\). Thus the complete list of ordered inputs is</p>
+<div class="equation paper-equation" id="zh-display_math-42">\begin{equation*}
+ (p_i+p_j,p_i-p_k),\qquad(p_i-p_k,p_i+p_j).
+\tag{4.15}\label{zh-math-eq-4-15}\end{equation*}</div>
+<p>With \(q_+=p_i+p_j\), \(q_-=p_i-p_k\), \(U=b_n(r)_{q_+}\) and \(V=b_n(r)_{q_-}\), the full coefficient is</p>
+<div class="equation paper-equation" id="zh-display_math-43">\[
+ B(b_n,b_n)_m=-\ii\Pj_m
+       [(U\cdot q_-)V+(V\cdot q_+)U].
+\]</div>
+<p>Since \(U\cdot q_+=V\cdot q_-=0\), the dot products can be written as \(U\cdot m\) and \(V\cdot m\). By <a class="paper-ref" href="#zh-display_math-41">(4.14)</a>,</p>
+<div class="equation paper-equation" id="zh-display_math-44">\begin{equation*}
+ |B(b_n,b_n)_m(r)|\le2K_{n+1}|U||V|
+ \le\frac{1525}{1008}\frac{K_{n+1}M^4}{K_n^2}.
+\tag{4.16}\label{zh-math-eq-4-16}\end{equation*}</div>
+<p>The factor is \(2(5/12)(305/168)\). A second integration with the exact target heat multiplier gives</p>
+<div class="equation paper-equation" id="zh-display_math-45">\begin{equation*}
+ |S_{n+1}(t;a)_m|
+ \le\frac{1525}{1008}\frac{M^4}{K_n^2K_{n+1}}
+       (1-e^{-K_{n+1}^2(t-a)}).
+\tag{4.17}\label{zh-math-eq-4-17}\end{equation*}</div>
+<p>The second pairwise condition, followed by summation of the six target modes, proves</p>
+<div class="equation paper-equation" id="zh-display_math-46">\begin{equation*}
+ |u_m(t)|\le\frac{7625}{4032}\frac{M^4}{K_n^2K_{n+1}},\qquad
+ |h_{n+1}(t)|_{\dot\A_1}\le\frac{7625}{672}\frac{M^4}{K_n^2}.
+\tag{4.18}\label{zh-math-eq-4-18}\end{equation*}</div>
+<p>Together with \(K_n^2\ge61\,4^n\) and \(7625=61\cdot125\), this is <a class="paper-ref" href="#zh-display_math-34">(4.7)</a>.</p>
+<p>Under the common-time hypothesis, summing <a class="paper-ref" href="#zh-display_math-34">(4.7)</a> for \(n\ge N\) gives \(125M^4\,4^{-N}/504\), because \(\sum_{n=N}^\infty4^{-n}=(4/3)4^{-N}\). This proves <a class="paper-ref" href="#zh-display_math-35">(4.8)</a>. Frequency lengths are at least one, so the field and its first spatial derivatives converge absolutely and uniformly. Adding the same bottom-layer bound \(\sqrt{366}M\) proves <a class="paper-ref" href="#zh-display_math-36">(4.9)</a>, and completes the proof of Theorem <a class="paper-ref" href="#zh-theorem-2">4.2</a>.</p>
+<h3 id="zh-subsection-6">4.3. The complete remainders and the time qualification</h3>
+<p>For clarity, putting \(z_n=u-h_n\) and \(w_n=u-b_n\) gives both exact remainders explicitly:</p>
+<div class="equation paper-equation" id="zh-display_math-47">\begin{align*}
+ e_{n,s}(r)&amp;=e^{(r-s)\Delta}b_n(s)\\
+ &amp;\quad+\int_s^r e^{(r-q)\Delta}P_{E_n}
+ [B(h_n,z_n)+B(z_n,h_n)+B(z_n,z_n)](q)\dd q,
+\tag{4.19}\label{zh-math-eq-4-19}\end{align*}</div>
+<div class="equation paper-equation" id="zh-display_math-48">\begin{align*}
+ Z_{n+1}(t;a)&amp;=e^{(t-a)\Delta}h_{n+1}(a)\\
+ &amp;\quad+\int_a^t e^{(t-r)\Delta}P_{D_{n+1}}
+ [B(b_n,w_n)+B(w_n,b_n)+B(w_n,w_n)](r)\dd r.
+\tag{4.20}\label{zh-math-eq-4-20}\end{align*}</div>
+<p>In particular, an existing intermediate field at \(s\) or target at \(a\) is not reset to zero. The second source uses \(B(b_n,b_n)\), not \(B(g_{n,s},g_{n,s})\). The identity \(B(b_n,b_n)-B(g_{n,s},g_{n,s})
+=B(g_{n,s},e_{n,s})+B(e_{n,s},g_{n,s})+B(e_{n,s},e_{n,s})\) does not by itself provide a favorable vector alignment or a relative quadratic error estimate.</p>
+<p>If each layer satisfies the two conditions only at its own reception time \(t_{n+1}\), <a class="paper-ref" href="#zh-display_math-34">(4.7)</a> still gives \(\norm{\nabla h_{n+1}(t_{n+1})}_\infty\to0\). The fields at those different times cannot be summed to obtain <a class="paper-ref" href="#zh-display_math-36">(4.9)</a>. A first condition known only at the preparation endpoint \(a\) does not supply <a class="paper-ref" href="#zh-display_math-41">(4.14)</a> on \([a,t]\) and is not sufficient for this proof. These restrictions are part of the theorem&#x27;s hypotheses, not conclusions about conditions satisfied by an actual flow.</p>
+<h2 id="zh-section-5">5. A short-time source-lag obstruction</h2>
+<p>The chain theorems do not assert their source conditions. The following lemma gives a situation where a selected condition must fail, uniformly over all starting times inside one original short interval.</p>
+<div class="paper-lemma paper-statement" id="zh-lemma-1"><p class="statement-heading"><strong>Lemma 5.1 (Source lag).</strong></p>
+<p>Let \(u\) be a classical solution as in Section <a class="paper-ref" href="#zh-section-2">2</a>, and let \(h=P_Du\), where \(D\) is finite, \(K_D&gt;0\), and \(|k|\le K_D\) for \(k\in D\). Let \(E_0,E_1,E_2\) be disjoint frequency pairs. Suppose that positive constants \(H,Q,d,T_0\) and fields \(F_j\) supported on \(E_j\) satisfy</p>
+<div class="equation paper-equation" id="zh-display_math-49">\begin{align*}
+\norm{h(r)}_{\A_0}&amp;\le Hr^3 &amp;&amp;(0\le r\le T_0),\tag{5.1}\label{zh-math-eq-5-1}\\
+\norm{P_{E_j}u(t)-tF_j}_{\A_0}&amp;\le Qt^2,
+&amp;\norm{F_j}_{\A_0}&amp;\ge d &amp;&amp;(0\le t\le T_0).
+\tag{5.2}\label{zh-math-eq-5-2}\end{align*}</div>
+<p>Put</p>
+<div class="equation paper-equation" id="zh-display_math-50">\begin{equation*}
+C=\frac{K_DH^2}{7},\qquad
+\tau=\min\left\{T_0,1,\frac d{2Q},\frac d{8C}\right\}.
+\tag{5.3}\label{zh-math-eq-5-3}\end{equation*}</div>
+<p>For \(E=E_j\) or \(E=E_0\cup E_1\cup E_2\), and every \(0\le s&lt;t\le\tau\), define</p>
+<div class="equation paper-equation" id="zh-display_math-51">\[
+S_{s,E}(t)=\int_s^t e^{(t-r)\Delta}P_EB(h(r),h(r))\dd r,
+\qquad Z_{s,E}(t)=P_Eu(t)-S_{s,E}(t).
+\]</div>
+<p>Then</p>
+<div class="equation paper-equation" id="zh-display_math-52">\begin{gather*}
+\norm{P_Eu(t)}_{\A_0}&gt;0,\qquad
+\norm{S_{s,E}(t)}_{\A_0}\le\tfrac14\norm{P_Eu(t)}_{\A_0},\tag{5.4}\label{zh-math-eq-5-4}\\
+\norm{Z_{s,E}(t)}_{\A_0}\ge
+\tfrac34\norm{P_Eu(t)}_{\A_0}\ge3\norm{S_{s,E}(t)}_{\A_0}.
+
+\tag{5.5}\label{zh-math-eq-5-5}\end{gather*}</div>
+<p>Thus the source condition of Definition <a class="paper-ref" href="#zh-definition-1">2.1</a> fails on each pair and on their union. When \(S_{s,E}(t)=0\), its remainder is nonzero; no quotient with zero denominator is used.</p>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-3"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The convolution bound and the input support give</p>
+<div class="equation paper-equation" id="zh-display_math-53">\[
+\norm{B(h(r),h(r))}_{\A_0}
+\le\norm{h(r)}_{\A_0}|h(r)|_{\dot\A_1}
+\le K_DH^2r^6.
+\]</div>
+<p>Fourier projection and the heat semigroup are contractions in \(\A_0\). Consequently, for each permitted \(E\),</p>
+<div class="equation paper-equation" id="zh-display_math-54">\begin{equation*}
+\norm{S_{s,E}(t)}_{\A_0}
+\le C(t^7-s^7)\le Ct^7.
+\tag{5.6}\label{zh-math-eq-5-6}\end{equation*}</div>
+<p>On each pair, <a class="paper-ref" href="#zh-display_math-49">(5.2)</a> gives \(\norm{P_{E_j}u(t)}_{\A_0}\ge dt-Qt^2\ge dt/2\). Since \(t\le1\) and \(Ct\le d/8\), we have \(Ct^7\le dt/8\). This proves <a class="paper-ref" href="#zh-display_math-52">(5.4)</a> separately on the three pairs. The \(\A_0\) norm is additive across disjoint Fourier supports; summing these three inequalities proves the assertion on their union. The reverse triangle inequality proves <a class="paper-ref" href="#zh-display_math-52">(5.5)</a>. If \(z=u-h\), the exact remainder is</p>
+<div class="equation paper-equation" id="zh-display_math-55">\begin{equation*}
+\begin{split}
+Z_{s,E}(t)={}&amp;e^{(t-s)\Delta}P_Eu(s)\\
+&amp;+\int_s^t e^{(t-r)\Delta}P_E
+\{B(h,z)+B(z,h)+B(z,z)\}(r)\dd r.
+\end{split}
+\tag{5.7}\label{zh-math-eq-5-7}\end{equation*}</div>
+<p>Thus an existing target at time \(s\) has not been discarded.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-remark paper-statement" id="zh-remark-1"><p class="statement-heading"><strong>Remark 5.2.</strong></p>
+<p>The bound in <a class="paper-ref" href="#zh-display_math-54">(5.6)</a> is obtained before any temporal cancellation. It does not use the generally false inequality \(\norm{S_{s,E}(t)}\le\norm{S_{0,E}(t)}\). The input estimate is in the original time \(r\), not in \(r-s\). There is no assertion for arbitrary starting times beyond \(\tau\).</p>
+</div>
+<h3 id="zh-subsection-7">5.1. An explicit fixed datum</h3>
+<p>Let \(a_*\) be the twelve-mode real datum specified in Appendix <a class="paper-ref" href="#zh-section-7">A</a>; this is the same datum as in [<a href="#zh-bibitem-3">3</a>]. In this subsection set</p>
+<div class="equation paper-equation" id="zh-display_math-56">\begin{equation*}
+\begin{split}
+p&amp;=(2,3,5),\quad \kappa=(3,4,6),\quad q=p-Rp=(-3,1,2),\\
+D&amp;=\{\pm R^j\kappa:0\le j\le2\},\qquad
+E_j=\{\pm R^jq\},\qquad E_-=\bigcup_{j=0}^2E_j.
+\end{split}
+\tag{5.8}\label{zh-math-eq-5-8}\end{equation*}</div>
+<p>Let \(\bar A,\bar b,T_*,\delta\) be the explicit positive rational constants in <a class="paper-ref" href="#zh-display_math-73">(A.6)</a>–<a class="paper-ref" href="#zh-display_math-82">(A.12)</a>, and put</p>
+<div class="equation paper-equation" id="zh-display_math-57">\begin{equation*}
+\begin{split}
+d&amp;=2\delta,\qquad Q_0=315\bar A^2+2\bar A\bar b^2,\qquad
+C_0=\frac{32}{7}\bar A^2\bar b^6,\\
+\tau_*&amp;=\min\left\{T_*,1,\frac d{2Q_0},\frac d{8C_0}\right\}&gt;0.
+\end{split}
+\tag{5.9}\label{zh-math-eq-5-9}\end{equation*}</div>
+<div class="paper-proposition paper-statement" id="zh-proposition-1"><p class="statement-heading"><strong>Proposition 5.3 (A difference output precedes receiver self-supply).</strong></p>
+<p>The datum \(a_*\) has a unique smooth unforced viscosity-one solution on \([0,T_*]\). For this same solution, with \(h=P_Du\), the conclusions <a class="paper-ref" href="#zh-display_math-52">(5.4)</a>–<a class="paper-ref" href="#zh-display_math-52">(5.5)</a> hold for every \(0\le s&lt;t\le\tau_*\), separately for each \(E_j\) and for \(E_-\). In particular, the selected \(D\)-self-interaction cannot satisfy the source-dominance condition for these difference outputs in this interval.</p>
+</div>
+<p>We supply the local bounds used in this application, so the proposition does not rely on an unreported numerical evolution or a finite truncation.</p>
+<div class="paper-lemma paper-statement" id="zh-lemma-2"><p class="statement-heading"><strong>Lemma 5.4 (Finite-support local series).</strong></p>
+<p>Let \(a\) be a real, mean-zero, divergence-free trigonometric polynomial, let \(A=\norm a_{\A_0}\), and suppose its Fourier support \(F\) satisfies \(|k|\le K\). Define</p>
+<div class="equation paper-equation" id="zh-display_math-58">\begin{equation*}
+v_0(t)=e^{t\Delta}a,\qquad
+v_n(t)=\sum_{j=0}^{n-1}\int_0^t e^{(t-r)\Delta}
+B(v_j(r),v_{n-1-j}(r))\dd r\quad(n\ge1).
+\tag{5.10}\label{zh-math-eq-5-10}\end{equation*}</div>
+<p>If \(4AKt&lt;1\), then \(u(t)=\sum_{n\ge0}v_n(t)\) is the classical local solution, and</p>
+<div class="equation paper-equation" id="zh-display_math-59">\begin{equation*}
+\supp\widehat v_n\subset\underbrace{F+\cdots+F}_{n+1\text{ summands}},
+\qquad \norm{v_n(t)}_{\A_0}\le A(4AKt)^n.
+\tag{5.11}\label{zh-math-eq-5-11}\end{equation*}</div>
+<p>In particular, if \(A\le\bar A\), \(4AK\le\bar b\), and \(\bar bt\le1/2\), then</p>
+<div class="equation paper-equation" id="zh-display_math-60">\begin{equation*}
+\sum_{n\ge m}\norm{v_n(t)}_{\A_0}
+\le2\bar A\bar b^m t^m\qquad(m\ge1).
+\tag{5.12}\label{zh-math-eq-5-12}\end{equation*}</div>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-4"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The support assertion follows by induction from convolution and the heat multiplier. Let \(c_0=1\) and \(c_n=\sum_{j=0}^{n-1}c_jc_{n-1-j}\). These Catalan numbers obey \(c_n\le4^n\). Inductively, the sharper bound \(\norm{v_n(t)}_{\A_0}\le c_n A^{n+1}(Kt)^n\) follows from \(|v_{n-1-j}|_{\dot\A_1}\le(n-j)K\norm{v_{n-1-j}}_{\A_0}\) and</p>
+<div class="equation paper-equation" id="zh-display_math-61">\[
+\frac1n\sum_{j=0}^{n-1}(n-j)c_jc_{n-1-j}
+=\frac{n+1}{2n}c_n\le c_n.
+\]</div>
+<p>For every nonnegative integer \(m\), the support bound also gives</p>
+<div class="equation paper-equation" id="zh-display_math-62">\[
+\sum_k(1+|k|)^m|(v_n)_k|
+\le[1+(n+1)K]^m A(4AKt)^n.
+\]</div>
+<p>On a compact time interval with \(4AKt&lt;1\), the right side is summable in \(n\), for all \(m\). Thus the series and all spatial derivatives converge uniformly. The same estimates with two extra powers of the support radius justify differentiating the integral equation once in time; successive differentiation of the equation gives smoothness. Absolute convergence permits the double series for \(B(u,u)\) to be regrouped by \(n\), giving the full mild equation. Reality, zero mean and incompressibility are preserved term by term. Recovering the pressure by the complementary Fourier projection gives the unforced Navier–Stokes equation. Classical uniqueness follows by the energy estimate for the difference of two solutions: the transport term of one divergence-free field vanishes, and the remaining term is at most its bounded velocity gradient times the square of the difference&#x27;s \(L^2\) norm. Gronwall&#x27;s inequality applies. Finally, summing a geometric series proves <a class="paper-ref" href="#zh-display_math-60">(5.12)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-5"><p class="statement-heading"><strong>Proof of Proposition <a class="paper-ref" href="#zh-proposition-1">5.3</a>.</strong></p>
+<p>The datum in Appendix <a class="paper-ref" href="#zh-section-7">A</a> satisfies \(A\le\bar A\) and \(K=\sqrt{38}&lt;7\), while \(\bar b=28\bar A\) and \(\bar bT_*\le1/2\). Lemma <a class="paper-ref" href="#zh-lemma-2">5.4</a> proves existence and uniqueness throughout the stated closed interval.</p>
+<p>For a frequency \(k\), write \(\sigma(k)=k_1+k_2+k_3\). Every initial frequency has \(\sigma=\pm1\) or \(\pm10\). A sum of at most three such frequencies cannot have coordinate sum \(13\): if \(h\) and \(l\) are the signed numbers of high and low leaves, respectively, then \(10h+l=13\) and \(|h|+|l|\le3\) have no integer solution. The same argument applies to \(-13\). Consequently, \(P_Dv_0=P_Dv_1=P_Dv_2=0\) identically in time, and</p>
+<div class="equation paper-equation" id="zh-display_math-63">\begin{equation*}
+\norm{h(r)}_{\A_0}\le2\bar A\bar b^3r^3
+\qquad(0\le r\le T_*).
+\tag{5.13}\label{zh-math-eq-5-13}\end{equation*}</div>
+<p>This is a bound for the actual projection, including every higher-order interaction. For completeness, a four-leaf representation of \(\kappa\) must have one positive high leaf and three positive low leaves. Of the three high choices, only \(p\) leaves a nonnegative vector with coordinate sum three, namely \(\kappa-p=(1,1,1)\).</p>
+<p>At \(q=p-Rp\), exactly the two ordered initial pairs \((p,-Rp)\) and \((-Rp,p)\) contribute. Indeed \(\sigma(q)=0\) excludes a high–low pair; a difference of low frequencies has all coordinates in \(\{-1,0,1\}\), and the three high-frequency differences are precisely the three pairs \(E_j\). Write</p>
+<div class="equation paper-equation" id="zh-display_math-64">\[
+V=(3v_*+5w_*,-2v_*,-2w_*),\qquad
+N=p\times Rp=(-1,19,-11).
+\]</div>
+<p>The sum before the Leray projection is</p>
+<div class="equation paper-equation" id="zh-display_math-65">\begin{equation*}
+X=-(11v_*+19w_*)RV+(-v_*+11w_*)V.
+\tag{5.14}\label{zh-math-eq-5-14}\end{equation*}</div>
+<p>Since \(|q|^2=14\), a direct projection yields</p>
+<div class="equation paper-equation" id="zh-display_math-66">\begin{equation*}
+\Pj_qX=-\frac47(3v_*+2w_*)(v_*+3w_*)N,
+\qquad B(a_*,a_*)_q=\ii G,
+\quad G=\frac47(3v_*+2w_*)(v_*+3w_*)N.
+\tag{5.15}\label{zh-math-eq-5-15}\end{equation*}</div>
+<p>One can verify the projection without dropping any component: \(q\cdot X=22v_*^2-204v_*w_*-418w_*^2\) and \(\Pj_qX=X-q(q\cdot X)/14\). Rotation and complex conjugation give the other five coefficients.</p>
+<p>Both inputs in this calculation have squared length \(38\). Thus, if \(F_j\) has coefficients \(\ii R^jG\) and \(-\ii R^jG\) at \(R^jq\) and \(-R^jq\), respectively, then</p>
+<div class="equation paper-equation" id="zh-display_math-67">\begin{equation*}
+P_{E_j}v_1(t)=\Phi(t)F_j,
+\qquad
+\Phi(t)=\int_0^t e^{-14(t-r)}e^{-76r}\dd r
+=\frac{e^{-14t}-e^{-76t}}{62}.
+\tag{5.16}\label{zh-math-eq-5-16}\end{equation*}</div>
+<p>For \(0\le r\le t\), the inequality \(0\le1-e^{-x}\le x\) for \(x\ge0\) gives</p>
+<div class="equation paper-equation" id="zh-display_math-68">\[
+0\le t-\Phi(t)
+\le\int_0^t[14(t-r)+76r]\dd r=45t^2.
+\]</div>
+<p>Also \(P_{E_j}v_0=0\) and \(\norm{F_j}_{\A_0}\le\norm{B(a_*,a_*)}_{\A_0}
+\le7\bar A^2\). Hence <a class="paper-ref" href="#zh-display_math-60">(5.12)</a> with \(m=2\) gives</p>
+<div class="equation paper-equation" id="zh-display_math-69">\begin{equation*}
+\norm{P_{E_j}u(t)-tF_j}_{\A_0}
+\le(315\bar A^2+2\bar A\bar b^2)t^2=Q_0t^2.
+\tag{5.17}\label{zh-math-eq-5-17}\end{equation*}</div>
+<p>Appendix <a class="paper-ref" href="#zh-section-7">A</a> verifies \(|G_1|\ge\delta&gt;0\); therefore \(\norm{F_j}_{\A_0}=2|G|\ge2\delta=d\) on every pair. Finally \(|k|=\sqrt{61}&lt;8\) on \(D\). Apply Lemma <a class="paper-ref" href="#zh-lemma-1">5.1</a> with \(K_D=8\), \(H=2\bar A\bar b^3\), \(Q=Q_0\) and \(T_0=T_*\). Its constant is exactly \(C_0\), and its interval is <a class="paper-ref" href="#zh-display_math-57">(5.9)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>The companion result proves an earlier source-selection property for this same datum and the same receiver \(D\), using its actual first generated band [<a href="#zh-bibitem-3">3</a>]. Proposition <a class="paper-ref" href="#zh-proposition-1">5.3</a> addresses a different source: the self-interaction of the receiver \(D\) into \(E_-\). It does not negate that earlier property, nor assert that a general regeneration mechanism fails at later times.</p>
+<h2 id="zh-section-6">6. Scope, proof ingredients and computational assistance</h2>
+<p>Both chain arguments combine estimates on selected Duhamel sources with conditions comparing each source with its complete remainder. The adjacent-sum source and the first cross-edge source are bounded unconditionally. In the cross-edge argument, the first condition on the whole second integration interval is needed to bound the second source. The corresponding target conditions then give the actual target gradient bounds. If a required condition fails, the calculation has not shown that the target is small. The remainder can contain sources outside the chosen sparse chain, including interactions with already generated frequencies.</p>
+<p>The assertions keep the domain, viscosity, solution and initial datum fixed. They allow different starting and reception times at different layers, but these times must belong to that solution&#x27;s classical interval. Summing layer bounds requires the stronger common-time conditions stated in the theorems. Even then the resulting regularity concerns the chain projection. No estimate for its complementary Fourier projection, no continuation criterion for the full velocity and no exclusion of all possible singularity mechanisms is established here.</p>
+<p>The first chain uses its exact all-layer frequency differences, not a generic bound by the sending frequency. In the second chain those differences grow, but the first heat integration controls both prescribed edge types and the second controls their subsequent interaction. The first source condition must hold throughout that second integral. An endpoint comparison cannot replace it, and replacing the actual edge field by its selected source would require a further cancellation estimate which is not assumed or proved here.</p>
+<p>The short-time example has a separate purpose. Its nonzero difference response is first order in the original time, whereas the selected receiver is bounded by a third-order tail. This mismatch gives a uniform obstruction for all truncated integrals within one explicitly specified short interval. It does not reset the initial datum at a new time or extend that interval by translation.</p>
+<h4 id="zh-paragraph-1">Exact calculations and reproducibility.</h4>
+<p>The two chain proofs use analytic estimates and finite-dimensional vector identities displayed in the text. The fixed-datum example additionally uses exact rational polynomial arithmetic, Sturm root counts and rational interval evaluation. Appendix <a class="paper-ref" href="#zh-section-7">A</a> gives the polynomials, intervals, constants and checking procedures needed for its application. The finite calculations were developed and checked with exact-arithmetic programs; floating-point evolution is not used as proof of any assertion. The analytic estimates control the infinite Fourier series. Raw development logs and general research programs are not public supplementary material for this manuscript.</p>
+<h4 id="zh-paragraph-2">AI assistance and responsibility.</h4>
+<p>Generative AI tools assisted with drafting, literature retrieval, proof organization, symbolic derivations and verification scripts. Exact finite calculations and automated checks are distinct from the analytic arguments presented here. They are not human peer review or formal proof-assistant certification. The author is responsible for the manuscript and its claims.</p>
+<h2 id="zh-section-7">Appendix A. Explicit algebraic datum and rational checks</h2>
+<p>This appendix supplies the finite data used only in Proposition <a class="paper-ref" href="#zh-proposition-1">5.3</a>. The two chain theorems do not depend on these polynomials or on an algebraic choice of initial datum.</p>
+<h3 id="zh-subsection-8">A.1. The datum and the local constants</h3>
+<p>Define</p>
+<div class="equation paper-equation" id="zh-display_math-70">\begin{align*}
+P(X)={}&amp;\frac{12379608041588}{607290075}
++\frac{129169813631527}{1012150125}X
++\frac{111813118362046}{337383375}X^2\\
+&amp;+\frac{1377133612024132}{3036450375}X^3
++\frac{207263796033514}{607290075}X^4\\
+&amp;+\frac{401161881122159}{3036450375}X^5
++\frac{4124532235492}{202430025}X^6,\tag{A.1}\label{zh-math-eq-A-1}\\
+r(X)={}&amp;\frac{1807613971}{12393675}
++\frac{9523582624}{20656125}X
++\frac{27816146846}{61968375}X^2
++\frac{196585982}{1770525}X^3,\tag{A.2}\label{zh-math-eq-A-2}\\
+s(X)={}&amp;\frac{536919079}{2699067}
++\frac{9469267576}{13495335}X
++\frac{10524885968}{13495335}X^2
++\frac{646271818}{2699067}X^3.
+\tag{A.3}\label{zh-math-eq-A-3}\end{align*}</div>
+<p>Let \(\alpha_*\) be the unique root of \(P\) in \(I_0=(-75/32,-125/64]\), and put</p>
+<div class="equation paper-equation" id="zh-display_math-71">\begin{equation*}
+v_*=-s(\alpha_*),\quad w_*=r(\alpha_*),\quad
+U=(0,1,\alpha_*),\quad V=(3v_*+5w_*,-2v_*,-2w_*).
+\tag{A.4}\label{zh-math-eq-A-4}\end{equation*}</div>
+<p>The root assertion is checked below; irreducibility of \(P\) is not needed. With \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and \(p=(2,3,5)\), define</p>
+<div class="equation paper-equation" id="zh-display_math-72">\begin{equation*}
+\begin{split}
+a_*(x)=\sum_{j=0}^2\big[&amp;R^jU
+\{e^{\ii(R^je_1)\cdot x}+e^{-\ii(R^je_1)\cdot x}\}\\
+&amp;+R^jV
+\{e^{\ii(R^jp)\cdot x}+e^{-\ii(R^jp)\cdot x}\}\big].
+\end{split}
+\tag{A.5}\label{zh-math-eq-A-5}\end{equation*}</div>
+<p>No amplitude is subsequently rescaled. These are twelve fixed Fourier coefficients. Reality and zero mean are immediate, and \(e_1\cdot U=p\cdot V=0\) proves incompressibility on every rotated frequency. The datum obeys \(a_*(Rx)=Ra_*(x)\).</p>
+<p>Use the positive rational constants</p>
+<div class="equation paper-equation" id="zh-display_math-73">\begin{equation*}
+\begin{split}
+\bar A&amp;=\frac{13990473994187561}{829153382400},
+\qquad \bar b=28\bar A,\qquad A_\alpha=\frac{75}{32},\\
+\ell&amp;=\frac{32000398665717304027531027}{477317255069800857600},\\
+\bar E&amp;=80\bar A^4 7^5+3\bar A\bar b^4,
+\qquad D_{\mathrm f}=2(1+A_\alpha^2)+2\bar A\bar b^2,\\
+T_*&amp;=\min\left\{\frac1{2\bar b},\frac\ell{8\bar E},
+\frac1{2D_{\mathrm f}}\right\}.
+\end{split}
+\tag{A.6}\label{zh-math-eq-A-6}\end{equation*}</div>
+<p>This retains the same conservative interval used for the datum in [<a href="#zh-bibitem-3">3</a>]. In the present paper only \(T_*&gt;0\) and \(\bar bT_*\le1/2\) are needed; both follow directly from this definition.</p>
+<p>On the closure of \(I_0\), rational interval evaluation gives</p>
+<div class="equation paper-equation" id="zh-display_math-74">\begin{equation*}
+\begin{aligned}
+|s(X)|&amp;\le U_v=\frac{39312542562313}{88443027456},\qquad
+|r(X)|\le U_w=\frac{19711525523669}{58016563200},\\
+|-3s(X)+5r(X)|&amp;\le U_1=\frac{585728660549}{472227840}.
+\end{aligned}
+\tag{A.7}\label{zh-math-eq-A-7}\end{equation*}</div>
+<p>These constants satisfy the exact identity</p>
+<div class="equation paper-equation" id="zh-display_math-75">\[
+\bar A=6(1+A_\alpha+U_1+2U_v+2U_w).
+\]</div>
+<p>The Euclidean norm of a vector is at most the sum of its coordinate absolute values. Therefore</p>
+<div class="equation paper-equation" id="zh-display_math-76">\[
+\norm{a_*}_{\A_0}=6(|U|+|V|)
+\le6(1+|\alpha_*|+|-3s(\alpha_*)+5r(\alpha_*)|
++2|s(\alpha_*)|+2|r(\alpha_*)|)\le\bar A.
+\]</div>
+<p>All initial frequencies have length at most \(\sqrt{38}&lt;7\).</p>
+<h3 id="zh-subsection-9">A.2. A nonzero coordinate of the difference response</h3>
+<p>The first coordinate of \(G\) in <a class="paper-ref" href="#zh-display_math-66">(5.15)</a> is</p>
+<div class="equation paper-equation" id="zh-display_math-77">\begin{equation*}
+f(\alpha_*),\qquad
+f(X)=-\frac47\bigl(-3s(X)+2r(X)\bigr)
+                    \bigl(-s(X)+3r(X)\bigr).
+\tag{A.8}\label{zh-math-eq-A-8}\end{equation*}</div>
+<p>For an exact replay of the interval calculation, write \(f(X)=\sum_{j=0}^6f_jX^j\). Its rational coefficients are</p>
+<div class="equation paper-equation" id="zh-display_math-78">\begin{equation*}
+\begin{aligned}
+f_0&amp;=\frac{35798055470904413384872}{860536215451513125},&amp;
+f_1&amp;=\frac{401729094518327896325536}{1434227025752521875},\\
+f_2&amp;=\frac{16265521854261904842210248}{21513405386287828125},&amp;
+f_3&amp;=\frac{22128606310912506680936608}{21513405386287828125},\\
+f_4&amp;=\frac{15565564652878394325142432}{21513405386287828125},&amp;
+f_5&amp;=\frac{1023532801151109314237936}{4302681077257565625},\\
+f_6&amp;=\frac{22854636325453540780192}{860536215451513125}.&amp;&amp;
+\end{aligned}
+\tag{A.9}\label{zh-math-eq-A-9}\end{equation*}</div>
+<p>The same root lies in the refined interval</p>
+<div class="equation paper-equation" id="zh-display_math-79">\begin{equation*}
+I_5=(-2075/1024,-4125/2048].
+\tag{A.10}\label{zh-math-eq-A-10}\end{equation*}</div>
+<p>Horner interval evaluation of <a class="paper-ref" href="#zh-display_math-78">(A.9)</a> on the closure of \(I_5\) gives</p>
+<div class="equation paper-equation" id="zh-display_math-80">\begin{equation*}
+f(\alpha_*)\in[-N_-/D_f,-N_+/D_f],
+\tag{A.11}\label{zh-math-eq-A-11}\end{equation*}</div>
+<p>where the integers are</p>
+<div class="equation paper-equation" id="zh-display_math-81">\begin{align*}
+N_-&amp;=29437612184526502853366735142169004680277,\\
+N_+&amp;=3880728698927672352860026215467141443157,\\
+D_f&amp;=248032677071760087808993803632640000.
+\end{align*}</div>
+<p>In particular, the explicitly positive rational number</p>
+<div class="equation paper-equation" id="zh-display_math-82">\begin{equation*}
+\delta=\frac{N_+}{D_f}
+\tag{A.12}\label{zh-math-eq-A-12}\end{equation*}</div>
+<p>satisfies \(|G_1|=|f(\alpha_*)|\ge\delta&gt;0\). This is a lower bound from one coordinate, not an evaluation of the full Hermitian vector norm. The rotation and conjugation identities in <a class="paper-ref" href="#zh-display_math-66">(5.15)</a> give the same pair bound \(d=2\delta\) for all three pairs.</p>
+<h3 id="zh-subsection-10">A.3. Exact verification procedure</h3>
+<p>For clarity, the rational checks behind the preceding statements can be performed using only the displayed coefficients. Polynomial addition, multiplication and long division are taken in \(\mathbb Q[X]\), with trailing zero coefficients removed. To form a Sturm sequence, start with \(P,P&#x27;\) and successively append the negative remainder of the preceding two polynomials, stopping at zero. An entry may be multiplied by a positive rational number without changing the sign variations. At a rational endpoint evaluate every entry by Horner&#x27;s rule, delete zero values and count changes of sign. At the two endpoints of \(I_0\) the variation numbers are \(4\) and \(3\), respectively; neither endpoint is a root of \(P\). Sturm&#x27;s theorem therefore gives the required unique root in \(I_0\). The root counts in its five successive bisections are displayed in Table <a class="paper-ref" href="#zh-table-1">1</a>. None of the listed midpoints is a root. This proves <a class="paper-ref" href="#zh-display_math-79">(A.10)</a> for the original fixed root.</p>
+<figure class="paper-table" id="zh-table-1">
+<div class="table-wrap" id="zh-tabular-1"><table class="paper-table"><thead>
+<tr><th scope="col">Step</th><th scope="col">Midpoint</th><th scope="col">Left count</th><th scope="col">Right count</th><th scope="col">Retained interval</th></tr>
+</thead><tbody>
+<tr><td>1</td><td>\(-275/128\)</td><td>0</td><td>1</td><td>\((-275/128,-125/64]\)</td></tr>
+<tr><td>2</td><td>\(-525/256\)</td><td>0</td><td>1</td><td>\((-525/256,-125/64]\)</td></tr>
+<tr><td>3</td><td>\(-1025/512\)</td><td>1</td><td>0</td><td>\((-525/256,-1025/512]\)</td></tr>
+<tr><td>4</td><td>\(-2075/1024\)</td><td>0</td><td>1</td><td>\((-2075/1024,-1025/512]\)</td></tr>
+<tr><td>5</td><td>\(-4125/2048\)</td><td>1</td><td>0</td><td>\((-2075/1024,-4125/2048]\)</td></tr>
+</tbody></table></div>
+<figcaption>Table 1. Exact bisections retaining the same root. Counts refer to the left and right subintervals of the retained interval from the preceding step.</figcaption>
+</figure>
+<p>For a closed rational interval \(I=[a,b]\), addition is endpointwise and multiplication of \([a,b]\) by \([c,d]\) is the interval with endpoints the minimum and maximum of \(ac,ad,bc,bd\). Evaluate a polynomial \(\sum_{j=0}^m c_jX^j\) by starting with \([c_m,c_m]\) and replacing the current interval \(J\) by \(JI+[c_j,c_j]\), for \(j=m-1,\ldots,0\). Every step encloses all exact polynomial values on \(I\). Apply this rule to \(s\), \(r\) and the expanded polynomial \(-3s+5r\) on the closure of \(I_0\) and take the larger absolute endpoint; this gives <a class="paper-ref" href="#zh-display_math-74">(A.7)</a>. Expanding the two products in <a class="paper-ref" href="#zh-display_math-77">(A.8)</a> gives exactly <a class="paper-ref" href="#zh-display_math-78">(A.9)</a>; applying the same interval rule to those coefficients on the closure of \(I_5\) gives <a class="paper-ref" href="#zh-display_math-80">(A.11)</a>.</p>
+<p>These procedures involve finite rational operations and the elementary Sturm root-count theorem. They do not require a minimal polynomial for \(\alpha_*\), a floating-point approximation to that root, or any numerical solution of Navier–Stokes. They establish the lower bound and the positive window used in Proposition <a class="paper-ref" href="#zh-proposition-1">5.3</a>; no later-time extension follows from the finite calculations.</p>
+<h2 id="zh-bibliography-1">References</h2><ol class="paper-references">
+<li id="zh-bibitem-1">C. Foias, O. Manley, R. Rosa, and R. Temam, <em>Navier–Stokes Equations and Turbulence</em>, Encyclopedia of Mathematics and its Applications, vol. 83, Cambridge University Press, Cambridge, 2001. <a href="https://doi.org/10.1017/CBO9780511546754">doi:10.1017/CBO9780511546754</a>.</li>
+<li id="zh-bibitem-2">F. Waleffe, Non-linear Interactions in Homogeneous Turbulence with and without Background Rotation, in <em>Annual Research Briefs—1991</em>, Center for Turbulence Research, 1991, pp. 31–43. <a href="https://web.stanford.edu/group/ctr/ResBriefs/1991/05_WALEFFE.pdf">https://web.stanford.edu/group/ctr/ResBriefs/1991/05_WALEFFE.pdf</a>.</li>
+<li id="zh-bibitem-3">C. K. Zeng, <em>Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow</em>, working manuscript, 2026. <a href="https://kasifa.github.io/results/fixed-datum-three-direction-supply.html">https://kasifa.github.io/results/fixed-datum-three-direction-supply.html</a>.</li>
+</ol>
+</article>
+<aside class="source-review-note"><h2>AI 辅助与责任</h2><p>生成式 AI 协助稿件起草、证明组织、符号推导及核验脚本。文中区分精确有限计算与解析证明；自动检查不等于真人同行评审或形式化证明认证。作者对稿件及其主张负责。</p></aside>
+<footer class="footer">C. K. Zeng · 9 September 2026 · Working manuscript · NOT CLAY</footer></main>
+<main data-language="en" data-title="Viscous Obstructions to Prescribed Sparse Source Chains in Navier–Stokes Flow"><nav class="site-nav"><a href="/research-review.html?lang=en">Research home</a><a href="/results/?lang=en">Frontier Results</a></nav>
+<header class="hero"><p class="kicker">WORKING MANUSCRIPT · 2026-09-09 · NOT CLAY</p><h1>Viscous Obstructions to Prescribed Sparse Source Chains in Navier–Stokes Flow</h1>
+<p class="source-subtitle" lang="zh-CN">Navier–Stokes 流中指定稀疏来源链的黏性障碍</p>
+<p class="author">C. K. Zeng · Independent Researcher · ORCID <a href="https://orcid.org/0009-0002-5402-3374">0009-0002-5402-3374</a></p>
+<p class="source-status">Working manuscript prepared in standard arXiv-compatible LaTeX format; not submitted to arXiv.</p><p class="scope">The conditional all-layer estimates control only the prescribed projection chains. Conditions at different reception times do not replace the simultaneous conditions required for a full chain bound. No exclusion of other mechanisms or conclusion on regularity or singularity of the complete NS solution is asserted.</p>
+<div class="downloads source-actions"><a href="#en-full-text">Read English full text</a><a href="/assets/papers/sparse-resupply-path-obstructions.pdf">English PDF</a></div>
+<p class="source-language-note">Titles, abstracts and scope notes are bilingual. The complete manuscript below and its PDF are in English; a full Chinese translation is not supplied.</p></header>
+<details class="contents source-contents"><summary>Contents</summary><ol><li class="toc-level-2"><a href="#en-section-1">1. Introduction</a></li><li class="toc-level-2"><a href="#en-section-2">2. The full equation and source attribution</a></li><li class="toc-level-3"><a href="#en-subsection-1">2.1. Fixed setting and conventions</a></li><li class="toc-level-3"><a href="#en-subsection-2">2.2. Cyclic symmetry and the energy bound</a></li><li class="toc-level-3"><a href="#en-subsection-3">2.3. Source integrals, remainders and pairwise conditions</a></li><li class="toc-level-2"><a href="#en-section-3">3. The adjacent-sum chain</a></li><li class="toc-level-2"><a href="#en-section-4">4. The cross-edge chain with two source conditions</a></li><li class="toc-level-3"><a href="#en-subsection-4">4.1. All-layer geometry</a></li><li class="toc-level-3"><a href="#en-subsection-5">4.2. The two heat integrations</a></li><li class="toc-level-3"><a href="#en-subsection-6">4.3. The complete remainders and the time qualification</a></li><li class="toc-level-2"><a href="#en-section-5">5. A short-time source-lag obstruction</a></li><li class="toc-level-3"><a href="#en-subsection-7">5.1. An explicit fixed datum</a></li><li class="toc-level-2"><a href="#en-section-6">6. Scope, proof ingredients and computational assistance</a></li><li class="toc-level-2"><a href="#en-section-7">A. Explicit algebraic datum and rational checks</a></li><li class="toc-level-3"><a href="#en-subsection-8">A.1. The datum and the local constants</a></li><li class="toc-level-3"><a href="#en-subsection-9">A.2. A nonzero coordinate of the difference response</a></li><li class="toc-level-3"><a href="#en-subsection-10">A.3. Exact verification procedure</a></li></ol></details>
+<article class="paper-body" id="en-full-text" lang="en"><div class="paper-abstract" id="en-abstract-1">
+<h2>Abstract</h2>
+<p>We study two prescribed sparse Fourier source chains along one real, cyclically symmetric, incompressible, unforced Navier–Stokes solution on a fixed three-dimensional torus with viscosity one. The contribution of a selected input projection is defined by its full Duhamel integral; its remainder includes the existing target and every omitted interaction. For an adjacent-sum chain, the frequency differences remain fixed and the selected source is bounded by a constant times the inverse square of the target frequency. A pairwise source-dominance condition then forces the newly received layer&#x27;s gradient to decay. For a cross-edge chain, the frequency differences grow, but two heat integrations yield an explicit geometric gradient decay under the two stated source-dominance conditions, with the first holding throughout the second interaction interval. At a common time, conditions at every layer imply absolutely summable first-derivative tails for the corresponding chain projection. We also give a general short-time source-lag lemma and a fixed algebraic-data example in which a difference output precedes the selected receiver&#x27;s self-supply. The source conditions are hypotheses to be checked on the actual solution. These results concern specified projections and do not establish regularity or singularity of the full Navier–Stokes flow.</p>
+</div>
+<p><strong>2020 Mathematics Subject Classification.</strong> 35Q30, 76D05, 42B05.</p>
+<p><strong>Keywords.</strong> Navier–Stokes equations; Fourier interaction; viscosity; source attribution; sparse frequency chain.</p>
+<h2 id="en-section-1">1. Introduction</h2>
+<p>A frequency produced by a quadratic interaction need not subsequently become the dominant source of another frequency. This distinction matters when a finite interaction pattern is proposed as one step of a repeated construction. Frequency arithmetic describes possible outputs; source attribution must also account for the evolution of the input, viscous damping, and all other contributions to the target.</p>
+<p>We examine two fixed recurrences beginning with the cyclic orbit of \((3,4,6)\). Both are tested on projections of one complete Navier–Stokes solution. No projected field is assumed to solve a closed finite-dimensional system. The adjacent-sum recurrence doubles an axial component while preserving every within-layer frequency difference. In this case incompressibility replaces the derivative frequency in the selected interaction by a fixed difference. The cross-edge recurrence expands those differences, but both of its prescribed intermediate frequency types remain comparable to the sending frequency. Two full heat integrations then give a different decay estimate.</p>
+<p>The main results are Theorems <a class="paper-ref" href="#en-theorem-1">3.1</a> and <a class="paper-ref" href="#en-theorem-2">4.2</a>. Energy and heat estimates give unconditional bounds for the adjacent-sum source and the first cross-edge source. The second cross-edge source bound additionally requires the first source condition throughout its integration interval. Bounds for the actual targets use precise pairwise comparisons between the complete remainder and the designated source. These conditions form a sufficient attribution test, not a necessary definition of every possible transfer mechanism. We distinguish reception at different times from conditions holding for all layers at one time. Only the latter permits a simultaneous chain estimate.</p>
+<p>Section <a class="paper-ref" href="#en-section-5">5</a> treats a complementary finite-time obstruction. A target with a nonzero first-order response cannot, on a sufficiently short original time interval, be predominantly supplied by the self-interaction of a projection that is third order in time. We prove this as a general source-lag statement, including every truncated integration interval, and apply it to the fixed algebraic initial datum of the companion manuscript [<a href="#en-bibitem-3">3</a>]. This example links finite source selection to the need for a separate test of subsequent supply.</p>
+<p>The energy identity, Fourier representation and heat estimates used here are standard; see, for example, [<a href="#en-bibitem-1">1</a>]. Fourier triad interactions and their channel-dependent cancellations are classical topics; see Waleffe&#x27;s helical analysis [<a href="#en-bibitem-2">2</a>]. Here the norm comparison concerns velocity coefficients, and is not a claim of positive net energy flux. The purpose is to give complete estimates for the two stated recurrences, with explicit constants and time quantifiers. In particular, the statements do not refute a construction for a different fluid equation, and they do not exclude other input sets, growing numbers of modes, or mechanisms outside these source conditions.</p>
+<h2 id="en-section-2">2. The full equation and source attribution</h2>
+<h3 id="en-subsection-1">2.1. Fixed setting and conventions</h3>
+<p>Throughout the two chain theorems,</p>
+<div class="equation paper-equation" id="en-display_math-1">\begin{equation*}
+ \Omega=\T^3=(\mathbb R/2\pi\mathbb Z)^3,\qquad
+ \partial_tu-\Delta u+(u\cdot\nabla)u+\nabla p=0,
+ \qquad \Div u=0.
+\tag{2.1}\label{en-math-eq-2-1}\end{equation*}</div>
+<p>The viscosity is exactly one. Let \(u,p\) be a real classical solution on \([0,T)\), smooth on every compact time subinterval, with one fixed smooth, zero-mean, divergence-free initial datum \(a=u(0)\). No conclusion about the size of \(T\) is assumed. Define</p>
+<div class="equation paper-equation" id="en-display_math-2">\begin{equation*}
+ u(x,t)=\sum_{k\in\mathbb Z^3}u_k(t)e^{\ii k\cdot x},\qquad
+ \norm{f}_2^2=(2\pi)^{-3}\int_\Omega |f|^2
+ =\sum_k|f_k|^2,\qquad M=\norm{a}_2.
+\tag{2.2}\label{en-math-eq-2-2}\end{equation*}</div>
+<p>Complex coefficient lengths are Hermitian Euclidean lengths; the dot products in the convolution are complex bilinear. Reality and incompressibility give \(u_{-k}=\overline{u_k}\) and \(k\cdot u_k=0\). For \(k\ne0\), put \(\Pj_k=I-k\otimes k/|k|^2\) and</p>
+<div class="equation paper-equation" id="en-display_math-3">\begin{equation*}
+ B(f,g)_k=-\ii\Pj_k\sum_{p+q=k}(f_p\cdot q)g_q,
+ \qquad B(f,g)_0=0.
+\tag{2.3}\label{en-math-eq-2-3}\end{equation*}</div>
+<p>The projected equation is \(u_t-\Delta u=B(u,u)\). Thus every source below retains the complete Leray projection; a vanishing pressure term in the energy identity does not remove pressure from this equation.</p>
+<p>For a symmetric frequency set \(F=-F\), let \(P_F\) be coefficient projection and write</p>
+<div class="equation paper-equation" id="en-display_math-4">\begin{equation*}
+ \norm{f}_{\A_0}=\sum_k|f_k|,\qquad
+ |f|_{\dot\A_1}=\sum_k|k|\,|f_k|.
+\tag{2.4}\label{en-math-eq-2-4}\end{equation*}</div>
+<p>These expressions are finite on the finite projections used below. In particular,</p>
+<div class="equation paper-equation" id="en-display_math-5">\begin{equation*}
+ \norm{\nabla f}_{L^\infty}\le |f|_{\dot\A_1},
+ \qquad
+ \norm{B(f,g)}_{\A_0}\le\norm f_{\A_0}|g|_{\dot\A_1}.
+\tag{2.5}\label{en-math-eq-2-5}\end{equation*}</div>
+<p>The matrix norm in the first inequality is Frobenius. Both inequalities follow by taking absolute values of the complete Fourier sums and using \(\norm{\Pj_k}_{\mathrm{op}}\le1\).</p>
+<h3 id="en-subsection-2">2.2. Cyclic symmetry and the energy bound</h3>
+<p>Let \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and assume</p>
+<div class="equation paper-equation" id="en-display_math-6">\begin{equation*}
+ a(Rx)=Ra(x).
+\tag{2.6}\label{en-math-eq-2-6}\end{equation*}</div>
+<p>Orthogonality gives \(\Pj_{Rk}=R\Pj_kR^\top\). Applying \(R\) to space and velocity therefore preserves the full equation. Classical uniqueness on each compact existence interval implies</p>
+<div class="equation paper-equation" id="en-display_math-7">\begin{equation*}
+ u(Rx,t)=Ru(x,t),\qquad u_{Rk}(t)=Ru_k(t).
+\tag{2.7}\label{en-math-eq-2-7}\end{equation*}</div>
+<p>For completeness, uniqueness follows from the difference equation for two classical solutions: its \(L^2\) energy is bounded by a constant times the \(L^\infty\) norm of the gradient of one solution times the difference energy. That coefficient is bounded on each compact interval, so Gronwall applies. This also justifies applying uniqueness to the rotated solution.</p>
+<p>Multiplication of <a class="paper-ref" href="#en-display_math-1">(2.1)</a> by \(u\), followed by periodic integration, gives</p>
+<div class="equation paper-equation" id="en-display_math-8">\begin{equation*}
+ \norm{u(t)}_2^2+2\int_0^t\norm{\nabla u(r)}_2^2\dd r=M^2.
+\tag{2.8}\label{en-math-eq-2-8}\end{equation*}</div>
+<p>The convection integral is an integral of a divergence, and the pressure integral vanishes by incompressibility. Consequently, if \(D=\{\pm k,\pm Rk,\pm R^2k\}\) consists of six distinct frequencies and \(h=P_Du\), then</p>
+<div class="equation paper-equation" id="en-display_math-9">\begin{equation*}
+ 6|u_k(r)|^2=\norm{h(r)}_2^2\le M^2.
+\tag{2.9}\label{en-math-eq-2-9}\end{equation*}</div>
+<p>This bound holds for the actual complex coefficients, with no prescribed phase, polarization line, or nonvanishing assumption.</p>
+<h3 id="en-subsection-3">2.3. Source integrals, remainders and pairwise conditions</h3>
+<p>Let \(h=P_Du\) be any actual finite projection and let \(F=-F\) be a finite target set. For \(0\le s&lt;t&lt;T\), define</p>
+<div class="equation paper-equation" id="en-display_math-10">\begin{equation*}
+ S^h_F(t;s)=\int_s^t e^{(t-r)\Delta}P_FB(h(r),h(r))\dd r,
+ \qquad Z^h_F(t;s)=P_Fu(t)-S^h_F(t;s).
+\tag{2.10}\label{en-math-eq-2-10}\end{equation*}</div>
+<p>Writing \(z=u-h\), the full Duhamel formula gives the exact identity</p>
+<div class="equation paper-equation" id="en-display_math-11">\begin{align*}
+ Z^h_F(t;s)
+ &amp;=e^{(t-s)\Delta}P_Fu(s)\\
+ &amp;\quad+\int_s^t e^{(t-r)\Delta}P_F
+ \bigl[B(h,z)+B(z,h)+B(z,z)\bigr](r)\dd r.
+\tag{2.11}\label{en-math-eq-2-11}\end{align*}</div>
+<p>The first term contains the target already present at \(s\). The other terms contain all frequencies outside \(D\), both ordered cross interactions, and their self-interactions. Formula <a class="paper-ref" href="#en-display_math-11">(2.11)</a> is not a closure assumption for \(h\).</p>
+<div class="paper-definition paper-statement" id="en-definition-1"><p class="statement-heading"><strong>Definition 2.1 (Pairwise source dominance).</strong></p>
+<p>For a nonzero \(k\) with \(\{k,-k\}\subset F\), the source condition at \((s,t)\) is</p>
+<div class="equation paper-equation" id="en-display_math-12">\begin{equation*}
+ \norm{P_{\{\pm k\}}Z^h_F(t;s)}_{\A_0}
+ \le\frac14\norm{P_{\{\pm k\}}S^h_F(t;s)}_{\A_0}.
+\tag{2.12}\label{en-math-eq-2-12}\end{equation*}</div>
+<p>Conditions for a layer always mean <a class="paper-ref" href="#en-display_math-12">(2.12)</a> for every one of its positive–negative frequency pairs, with the same starting time within that layer.</p>
+</div>
+<p>Both fields are real, so a pair norm equals twice its representative coefficient length. The triangle inequality therefore yields</p>
+<div class="equation paper-equation" id="en-display_math-13">\begin{equation*}
+ |u_k(t)|\le\frac54|S^h_F(t;s)_k|
+\tag{2.13}\label{en-math-eq-2-13}\end{equation*}</div>
+<p>when the pair condition holds. No division by the source is needed. A zero source together with the condition forces a zero target; it does not certify effective nonzero reception. A condition on a whole-band norm cannot in general be substituted for the separate pairwise conditions.</p>
+<h2 id="en-section-3">3. The adjacent-sum chain</h2>
+<p>Indices \(j\) below are taken modulo three. Set</p>
+<div class="equation paper-equation" id="en-display_math-14">\begin{equation*}
+ k_j^{(0)}=R^j(3,4,6),\qquad
+ k_j^{(n+1)}=k_j^{(n)}+k_{j+1}^{(n)},\qquad
+ D_n=\{\pm k_j^{(n)}:0\le j&lt;3\},\quad h_n=P_{D_n}u.
+\tag{3.1}\label{en-math-eq-3-1}\end{equation*}</div>
+<p>Let \(S_{n+1}(t;s)=S^{h_n}_{D_{n+1}}(t;s)\) and \(Z_{n+1}=h_{n+1}-S_{n+1}\), as in <a class="paper-ref" href="#en-display_math-10">(2.10)</a>.</p>
+<div class="paper-theorem paper-statement" id="en-theorem-1"><p class="statement-heading"><strong>Theorem 3.1 (Adjacent-sum source and target bounds).</strong></p>
+<p>Assume the full setting <a class="paper-ref" href="#en-display_math-1">(2.1)</a>–<a class="paper-ref" href="#en-display_math-6">(2.6)</a>. Put</p>
+<div class="equation paper-equation" id="en-display_math-15">\begin{equation*}
+ L_n^2=\frac{169\,4^n+14}{3}.
+\tag{3.2}\label{en-math-eq-3-2}\end{equation*}</div>
+<p>For every \(n\ge0\), every existing interval \(0\le s&lt;t&lt;T\), and every \(k\in D_{n+1}\),</p>
+<div class="equation paper-equation" id="en-display_math-16">\begin{equation*}
+ |S_{n+1}(t;s)_k|
+ \le\frac{\sqrt{14}}3 M^2
+ \frac{1-e^{-L_{n+1}^2(t-s)}}{L_{n+1}^2}.
+\tag{3.3}\label{en-math-eq-3-3}\end{equation*}</div>
+<p>If the three target pairs satisfy Definition <a class="paper-ref" href="#en-definition-1">2.1</a> on this interval, then</p>
+<div class="equation paper-equation" id="en-display_math-17">\begin{equation*}
+ \norm{\nabla h_{n+1}(t)}_\infty
+ \le |h_{n+1}(t)|_{\dot\A_1}
+ \le\frac{5\sqrt{14}}2\frac{M^2}{L_{n+1}}.
+\tag{3.4}\label{en-math-eq-3-4}\end{equation*}</div>
+<p>Fix one time \(t&lt;T\). If for every \(n\ge0\) there exists \(s_n(t)\in[0,t)\) such that all three conditions for that layer hold on \([s_n(t),t]\), then for every integer \(N\ge0\),</p>
+<div class="equation paper-equation" id="en-display_math-18">\begin{equation*}
+ \sum_{m&gt;N}|h_m(t)|_{\dot\A_1}
+ \le\frac{5\sqrt{42}}{26}M^2\,2^{-N}.
+\tag{3.5}\label{en-math-eq-3-5}\end{equation*}</div>
+<p>The chain projection \(v_{\rm sum}(t)=\sum_{m\ge0}h_m(t)\) and its first spatial derivatives converge absolutely and uniformly, and</p>
+<div class="equation paper-equation" id="en-display_math-19">\begin{equation*}
+ \norm{\nabla v_{\rm sum}(t)}_\infty
+ \le\sqrt{366}M+\frac{5\sqrt{42}}{26}M^2.
+\tag{3.6}\label{en-math-eq-3-6}\end{equation*}</div>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-1"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>Write \(A=(13/3)(1,1,1)\) and \(w_j=k_j^{(0)}-A\). Direct dot products give</p>
+<div class="equation paper-equation" id="en-display_math-20">\begin{equation*}
+ \sum_jw_j=0,\quad A\cdot w_j=0,\quad
+ |A|^2=169/3,\quad |w_j|^2=14/3,\quad
+ w_i\cdot w_j=-7/3\quad(i\ne j).
+\tag{3.7}\label{en-math-eq-3-7}\end{equation*}</div>
+<p>Since \(w_j+w_{j+1}=-w_{j+2}\), induction in <a class="paper-ref" href="#en-display_math-14">(3.1)</a> gives</p>
+<div class="equation paper-equation" id="en-display_math-21">\begin{equation*}
+ k_j^{(n)}=2^nA+(-1)^nw_{j+2n},\qquad
+ |k_j^{(n)}|=L_n,\qquad
+ |k_i^{(n)}-k_j^{(n)}|=\sqrt{14}\quad(i\ne j).
+\tag{3.8}\label{en-math-eq-3-8}\end{equation*}</div>
+<p>Integrality follows from the recurrence. The three transverse vectors have Gram matrix with diagonal \(14/3\) and off-diagonal \(-7/3\); its kernel is spanned by \((1,1,1)\). In any linear dependence among the three \(k_j^{(n)}\), the transverse component thus makes the coefficients equal, and the nonzero axial component then makes them zero. The three positive vectors are independent. Their coordinate sums are \(13\,2^n\); the negative vectors have the opposite sums. Hence every layer has six distinct modes, and distinct layers are disjoint.</p>
+<p>Fix \(m=k_j^{(n+1)}=p+q\), with \(p=k_j^{(n)}\) and \(q=k_{j+1}^{(n)}\). A mixed-sign input pair has coordinate sum zero and a negative pair has a negative sum, so neither can produce \(m\). Independence of the positive vectors shows that the only positive pairs producing \(m\) are \((p,q)\) and \((q,p)\), including exclusion of a repeated input. Consequently the entire selected Fourier source is</p>
+<div class="equation paper-equation" id="en-display_math-22">\begin{equation*}
+ B(h_n,h_n)_m=-\ii\Pj_m
+ \bigl[(U\cdot q)V+(V\cdot p)U\bigr],
+ \qquad U=u_p(r),\quad V=u_q(r).
+\tag{3.9}\label{en-math-eq-3-9}\end{equation*}</div>
+<p>Incompressibility gives \(U\cdot q=U\cdot(q-p)\) and \(V\cdot p=V\cdot(p-q)\). Using <a class="paper-ref" href="#en-display_math-9">(2.9)</a>, the full two-term coefficient is bounded by</p>
+<div class="equation paper-equation" id="en-display_math-23">\begin{equation*}
+ |B(h_n,h_n)_m|
+ \le2\sqrt{14}|U||V|\le\frac{\sqrt{14}}3M^2.
+\tag{3.10}\label{en-math-eq-3-10}\end{equation*}</div>
+<p>This estimate allows arbitrary actual complex phases and uses both ordered terms. The negative targets obey the same bound by conjugation.</p>
+<p>The target heat multiplier is exactly \(e^{-L_{n+1}^2(t-r)}\). Integrating <a class="paper-ref" href="#en-display_math-23">(3.10)</a> along the actual history gives <a class="paper-ref" href="#en-display_math-16">(3.3)</a>. When the pair condition holds, <a class="paper-ref" href="#en-display_math-13">(2.13)</a> gives</p>
+<div class="equation paper-equation" id="en-display_math-24">\begin{equation*}
+ |u_k(t)|\le\frac{5\sqrt{14}}{12}
+ \frac{M^2}{L_{n+1}^2}\qquad(k\in D_{n+1}).
+\tag{3.11}\label{en-math-eq-3-11}\end{equation*}</div>
+<p>Summing the six coefficients with their common derivative weight \(L_{n+1}\) proves <a class="paper-ref" href="#en-display_math-17">(3.4)</a>.</p>
+<p>Under the common-time hypothesis, these estimates apply simultaneously to all \(m\ge1\). Since \(L_m\ge(13/\sqrt3)2^m\),</p>
+<div class="equation paper-equation" id="en-display_math-25">\[
+ \sum_{m&gt;N}L_m^{-1}\le\frac{\sqrt3}{13}
+ \sum_{m=N+1}^\infty2^{-m}=\frac{\sqrt3}{13}2^{-N}.
+\]</div>
+<p>Multiplication by \(5\sqrt{14}M^2/2\) proves <a class="paper-ref" href="#en-display_math-18">(3.5)</a>. The same summable majorant controls the field itself because \(L_m\ge1\). The Weierstrass criterion therefore gives uniform absolute convergence of the Fourier series and its first derivatives. Disjoint supports identify the sum as the original solution&#x27;s projection on \(\bigcup_mD_m\). The bottom layer satisfies</p>
+<div class="equation paper-equation" id="en-display_math-26">\[
+ |h_0(t)|_{\dot\A_1}\le6\sqrt{61}\,M/\sqrt6=\sqrt{366}M.
+\]</div>
+<p>Adding it to <a class="paper-ref" href="#en-display_math-18">(3.5)</a> with \(N=0\) proves <a class="paper-ref" href="#en-display_math-19">(3.6)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-corollary paper-statement" id="en-corollary-1"><p class="statement-heading"><strong>Corollary 3.2 (Different reception times).</strong></p>
+<p>For one fixed solution, suppose layer \(m\ge1\) satisfies the three conditions at some existing time \(t_m\), with a legal starting time \(s_{m-1}&lt;t_m\). Then</p>
+<div class="equation paper-equation" id="en-display_math-27">\[
+ \norm{\nabla h_m(t_m)}_\infty
+ \le\frac{5\sqrt{14}}2\frac{M^2}{L_m}\longrightarrow0.
+\]</div>
+<p>This conclusion does not require the \(t_m\) to coincide.</p>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-2"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>Apply <a class="paper-ref" href="#en-display_math-17">(3.4)</a> separately at each \((s_{m-1},t_m)\), using the same \(M\) and the explicit growth of \(L_m\).</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>This corollary controls the newly received layer at its own reception time. It does not permit the fields \(h_m(t_m)\) to be added and interpreted as a single-time state. If the common-time assumptions of Theorem <a class="paper-ref" href="#en-theorem-1">3.1</a> hold at every point of an already existing time set, then <a class="paper-ref" href="#en-display_math-18">(3.5)</a>–<a class="paper-ref" href="#en-display_math-19">(3.6)</a> are uniform on that set. Neither statement controls the complementary projection of \(u\) or extends the classical existence interval.</p>
+<h2 id="en-section-4">4. The cross-edge chain with two source conditions</h2>
+<p>This is a second prescribed path, not the next stage of the previous one. Define</p>
+<div class="equation paper-equation" id="en-display_math-28">\begin{equation*}
+ p_j^{(0)}=R^j(3,4,6),\qquad
+ p_j^{(n+1)}=2p_j^{(n)}+p_{j+1}^{(n)}-p_{j+2}^{(n)}.
+\tag{4.1}\label{en-math-eq-4-1}\end{equation*}</div>
+<p>In this section only, use</p>
+<div class="equation paper-equation" id="en-display_math-29">\begin{align*}
+ D_n&amp;=\{\pm p_j^{(n)}:0\le j&lt;3\},\qquad h_n=P_{D_n}u,\\
+ E_n&amp;=\{\pm(p_i^{(n)}+p_j^{(n)}),\
+          \pm(p_i^{(n)}-p_j^{(n)}):0\le i&lt;j&lt;3\},
+ \qquad b_n=P_{E_n}u.
+\tag{4.2}\label{en-math-eq-4-2}\end{align*}</div>
+<p>There are three sum pairs and three difference pairs in \(E_n\). For \(0\le s&lt;a&lt;t&lt;T\), put</p>
+<div class="equation paper-equation" id="en-display_math-30">\begin{align*}
+ g_{n,s}(r)&amp;=\int_s^r e^{(r-q)\Delta}P_{E_n}
+                  B(h_n(q),h_n(q))\dd q,\qquad s\le r\le t,\\
+ e_{n,s}(r)&amp;=b_n(r)-g_{n,s}(r),
+\tag{4.3}\label{en-math-eq-4-3}\end{align*}</div>
+<p>and</p>
+<div class="equation paper-equation" id="en-display_math-31">\begin{align*}
+ S_{n+1}(t;a)&amp;=\int_a^t e^{(t-r)\Delta}P_{D_{n+1}}
+                         B(b_n(r),b_n(r))\dd r,\\
+ Z_{n+1}(t;a)&amp;=h_{n+1}(t)-S_{n+1}(t;a).
+\tag{4.4}\label{en-math-eq-4-4}\end{align*}</div>
+<div class="paper-definition paper-statement" id="en-definition-2"><p class="statement-heading"><strong>Definition 4.1 (Two-stage source conditions).</strong></p>
+<p>The first condition requires, for every pair \(F\subset E_n\) and every \(r\in[a,t]\),</p>
+<div class="equation paper-equation" id="en-display_math-32">\begin{equation*}
+ \norm{P_Fe_{n,s}(r)}_{\A_0}
+ \le\tfrac14\norm{P_Fg_{n,s}(r)}_{\A_0}.
+\tag{4.5}\label{en-math-eq-4-5}\end{equation*}</div>
+<p>The second condition requires, for every pair \(F\subset D_{n+1}\),</p>
+<div class="equation paper-equation" id="en-display_math-33">\begin{equation*}
+ \norm{P_FZ_{n+1}(t;a)}_{\A_0}
+ \le\tfrac14\norm{P_FS_{n+1}(t;a)}_{\A_0}.
+\tag{4.6}\label{en-math-eq-4-6}\end{equation*}</div>
+<p>All pairs in this layer share the same \(s,a,t\). In particular, the first condition holds throughout the interval where the second source uses the actual field \(b_n\).</p>
+</div>
+<div class="paper-theorem paper-statement" id="en-theorem-2"><p class="statement-heading"><strong>Theorem 4.2 (Cross-edge decay).</strong></p>
+<p>Under the assumptions of Section <a class="paper-ref" href="#en-section-2">2</a>, if Definition <a class="paper-ref" href="#en-definition-2">4.1</a> holds at layer \(n\) on an existing interval \(0\le s&lt;a&lt;t&lt;T\), then</p>
+<div class="equation paper-equation" id="en-display_math-34">\begin{equation*}
+ \norm{\nabla h_{n+1}(t)}_\infty
+ \le |h_{n+1}(t)|_{\dot\A_1}
+ \le\frac{125}{672}M^4\,4^{-n}.
+\tag{4.7}\label{en-math-eq-4-7}\end{equation*}</div>
+<p>If one common existing time \(t\) admits, for every \(n\ge0\), times \(0\le s_n(t)&lt;a_n(t)&lt;t\) satisfying these two-stage conditions, then</p>
+<div class="equation paper-equation" id="en-display_math-35">\begin{equation*}
+ \sum_{m&gt;N}|h_m(t)|_{\dot\A_1}
+ \le\frac{125}{504}M^4\,4^{-N},\qquad N\ge0,
+\tag{4.8}\label{en-math-eq-4-8}\end{equation*}</div>
+<p>and the chain projection \(v_{\rm cross}(t)=\sum_{m\ge0}h_m(t)\) belongs to \(C^1(\Omega)\), with</p>
+<div class="equation paper-equation" id="en-display_math-36">\begin{equation*}
+ \norm{\nabla v_{\rm cross}(t)}_\infty
+ \le\sqrt{366}M+\frac{125}{504}M^4.
+\tag{4.9}\label{en-math-eq-4-9}\end{equation*}</div>
+</div>
+<h3 id="en-subsection-4">4.1. All-layer geometry</h3>
+<p>Use \(A,w_j\) from <a class="paper-ref" href="#en-display_math-20">(3.7)</a> and write \(\mathcal T=2I+R-R^2\). On the axial line \(\mathbb R(1,1,1)\), \(\mathcal T\) is multiplication by two. On its orthogonal plane, \(R^2+R+I=0\). Thus \(J=R-R^2\) satisfies \(J^*=-J\), \(J^2=-3I\), and \(\mathcal T^*\mathcal T=(2I-J)(2I+J)=7I\) there. Induction gives</p>
+<div class="equation paper-equation" id="en-display_math-37">\begin{equation*}
+ p_j^{(n)}=2^nA+\mathcal T^nw_j,\quad
+ K_n^2:=|p_j^{(n)}|^2=\frac{169\,4^n+14\,7^n}{3},\quad
+ |p_i^{(n)}-p_j^{(n)}|^2=14\,7^n.
+\tag{4.10}\label{en-math-eq-4-10}\end{equation*}</div>
+<p>The transverse dot products are those in <a class="paper-ref" href="#en-display_math-20">(3.7)</a> multiplied by \(7^n\). Hence the sum and difference lengths are</p>
+<div class="equation paper-equation" id="en-display_math-38">\begin{align*}
+ A_n^+&amp;:=|p_i^{(n)}+p_j^{(n)}|^2
+       =\frac{676\,4^n+14\,7^n}{3}\ge K_n^2,\\
+ A_n^-&amp;:=|p_i^{(n)}-p_j^{(n)}|^2
+       =14\,7^n\ge\frac{14}{61}K_n^2,\qquad
+ K_n^2\ge61\,4^n.
+\tag{4.11}\label{en-math-eq-4-11}\end{align*}</div>
+<p>For the second inequality, multiplication by \(3\cdot61\) reduces the claim to \(169\,7^n\ge169\,4^n\); the last follows in the same way. The matrix \(\mathcal T\) is invertible on the axis and the transverse plane. The three vectors are consequently independent at every layer, by the same argument as in Section <a class="paper-ref" href="#en-section-3">3</a>. Integer recurrence gives integer frequencies; the coordinate sums \(\pm13\,2^n\) show that the six-mode \(D_n\) are pairwise disjoint. Independence also shows that all twelve frequencies in \(E_n\) are distinct.</p>
+<h3 id="en-subsection-5">4.2. The two heat integrations</h3>
+<p>Fix a layer and suppress its superscript on the \(p_j\). A target in \(E_n\) has exactly the two ordered inputs corresponding to its indicated edge, with conjugate coefficients where a negative input occurs. This follows by expressing the target in the independent basis \((p_0,p_1,p_2)\). Each input frequency has length \(K_n\), and each coefficient has length at most \(M/\sqrt6\) by <a class="paper-ref" href="#en-display_math-9">(2.9)</a>. Therefore</p>
+<div class="equation paper-equation" id="en-display_math-39">\begin{equation*}
+ |B(h_n,h_n)_k(r)|\le\frac{K_nM^2}{3},\qquad k\in E_n.
+\tag{4.12}\label{en-math-eq-4-12}\end{equation*}</div>
+<p>Both ordered Leray terms are included. The first real-time integral gives</p>
+<div class="equation paper-equation" id="en-display_math-40">\begin{equation*}
+ |g_{n,s}(r)_k|
+ \le\frac{K_nM^2}{3|k|^2}
+       (1-e^{-|k|^2(r-s)}).
+\tag{4.13}\label{en-math-eq-4-13}\end{equation*}</div>
+<p>Using <a class="paper-ref" href="#en-display_math-38">(4.11)</a> and then the first source condition on \([a,t]\) yields the following bounds for actual intermediate coefficients:</p>
+<div class="equation paper-equation" id="en-display_math-41">\begin{equation*}
+ |b_n(r)_{p_i+p_j}|\le\frac{5M^2}{12K_n},\qquad
+ |b_n(r)_{p_i-p_j}|\le\frac{305M^2}{168K_n},\qquad a\le r\le t.
+\tag{4.14}\label{en-math-eq-4-14}\end{equation*}</div>
+<p>Indeed, the ungated source bounds are \(M^2/(3K_n)\) and \(61M^2/(42K_n)\), respectively, and the condition multiplies each by \(5/4\).</p>
+<p>Let \((i,j,k)\) be cyclically ordered. The next target is \(m=2p_i+p_j-p_k\). Every element of \(E_n\) has exactly two nonzero coordinates, each equal to \(1\) or \(-1\), in the independent \(p\) basis. For two such elements to sum to \((2,1,-1)\) in the order \((i,j,k)\), both must have \(i\) coordinate \(1\), and their remaining coordinates must be \(+j\) and \(-k\). Thus the complete list of ordered inputs is</p>
+<div class="equation paper-equation" id="en-display_math-42">\begin{equation*}
+ (p_i+p_j,p_i-p_k),\qquad(p_i-p_k,p_i+p_j).
+\tag{4.15}\label{en-math-eq-4-15}\end{equation*}</div>
+<p>With \(q_+=p_i+p_j\), \(q_-=p_i-p_k\), \(U=b_n(r)_{q_+}\) and \(V=b_n(r)_{q_-}\), the full coefficient is</p>
+<div class="equation paper-equation" id="en-display_math-43">\[
+ B(b_n,b_n)_m=-\ii\Pj_m
+       [(U\cdot q_-)V+(V\cdot q_+)U].
+\]</div>
+<p>Since \(U\cdot q_+=V\cdot q_-=0\), the dot products can be written as \(U\cdot m\) and \(V\cdot m\). By <a class="paper-ref" href="#en-display_math-41">(4.14)</a>,</p>
+<div class="equation paper-equation" id="en-display_math-44">\begin{equation*}
+ |B(b_n,b_n)_m(r)|\le2K_{n+1}|U||V|
+ \le\frac{1525}{1008}\frac{K_{n+1}M^4}{K_n^2}.
+\tag{4.16}\label{en-math-eq-4-16}\end{equation*}</div>
+<p>The factor is \(2(5/12)(305/168)\). A second integration with the exact target heat multiplier gives</p>
+<div class="equation paper-equation" id="en-display_math-45">\begin{equation*}
+ |S_{n+1}(t;a)_m|
+ \le\frac{1525}{1008}\frac{M^4}{K_n^2K_{n+1}}
+       (1-e^{-K_{n+1}^2(t-a)}).
+\tag{4.17}\label{en-math-eq-4-17}\end{equation*}</div>
+<p>The second pairwise condition, followed by summation of the six target modes, proves</p>
+<div class="equation paper-equation" id="en-display_math-46">\begin{equation*}
+ |u_m(t)|\le\frac{7625}{4032}\frac{M^4}{K_n^2K_{n+1}},\qquad
+ |h_{n+1}(t)|_{\dot\A_1}\le\frac{7625}{672}\frac{M^4}{K_n^2}.
+\tag{4.18}\label{en-math-eq-4-18}\end{equation*}</div>
+<p>Together with \(K_n^2\ge61\,4^n\) and \(7625=61\cdot125\), this is <a class="paper-ref" href="#en-display_math-34">(4.7)</a>.</p>
+<p>Under the common-time hypothesis, summing <a class="paper-ref" href="#en-display_math-34">(4.7)</a> for \(n\ge N\) gives \(125M^4\,4^{-N}/504\), because \(\sum_{n=N}^\infty4^{-n}=(4/3)4^{-N}\). This proves <a class="paper-ref" href="#en-display_math-35">(4.8)</a>. Frequency lengths are at least one, so the field and its first spatial derivatives converge absolutely and uniformly. Adding the same bottom-layer bound \(\sqrt{366}M\) proves <a class="paper-ref" href="#en-display_math-36">(4.9)</a>, and completes the proof of Theorem <a class="paper-ref" href="#en-theorem-2">4.2</a>.</p>
+<h3 id="en-subsection-6">4.3. The complete remainders and the time qualification</h3>
+<p>For clarity, putting \(z_n=u-h_n\) and \(w_n=u-b_n\) gives both exact remainders explicitly:</p>
+<div class="equation paper-equation" id="en-display_math-47">\begin{align*}
+ e_{n,s}(r)&amp;=e^{(r-s)\Delta}b_n(s)\\
+ &amp;\quad+\int_s^r e^{(r-q)\Delta}P_{E_n}
+ [B(h_n,z_n)+B(z_n,h_n)+B(z_n,z_n)](q)\dd q,
+\tag{4.19}\label{en-math-eq-4-19}\end{align*}</div>
+<div class="equation paper-equation" id="en-display_math-48">\begin{align*}
+ Z_{n+1}(t;a)&amp;=e^{(t-a)\Delta}h_{n+1}(a)\\
+ &amp;\quad+\int_a^t e^{(t-r)\Delta}P_{D_{n+1}}
+ [B(b_n,w_n)+B(w_n,b_n)+B(w_n,w_n)](r)\dd r.
+\tag{4.20}\label{en-math-eq-4-20}\end{align*}</div>
+<p>In particular, an existing intermediate field at \(s\) or target at \(a\) is not reset to zero. The second source uses \(B(b_n,b_n)\), not \(B(g_{n,s},g_{n,s})\). The identity \(B(b_n,b_n)-B(g_{n,s},g_{n,s})
+=B(g_{n,s},e_{n,s})+B(e_{n,s},g_{n,s})+B(e_{n,s},e_{n,s})\) does not by itself provide a favorable vector alignment or a relative quadratic error estimate.</p>
+<p>If each layer satisfies the two conditions only at its own reception time \(t_{n+1}\), <a class="paper-ref" href="#en-display_math-34">(4.7)</a> still gives \(\norm{\nabla h_{n+1}(t_{n+1})}_\infty\to0\). The fields at those different times cannot be summed to obtain <a class="paper-ref" href="#en-display_math-36">(4.9)</a>. A first condition known only at the preparation endpoint \(a\) does not supply <a class="paper-ref" href="#en-display_math-41">(4.14)</a> on \([a,t]\) and is not sufficient for this proof. These restrictions are part of the theorem&#x27;s hypotheses, not conclusions about conditions satisfied by an actual flow.</p>
+<h2 id="en-section-5">5. A short-time source-lag obstruction</h2>
+<p>The chain theorems do not assert their source conditions. The following lemma gives a situation where a selected condition must fail, uniformly over all starting times inside one original short interval.</p>
+<div class="paper-lemma paper-statement" id="en-lemma-1"><p class="statement-heading"><strong>Lemma 5.1 (Source lag).</strong></p>
+<p>Let \(u\) be a classical solution as in Section <a class="paper-ref" href="#en-section-2">2</a>, and let \(h=P_Du\), where \(D\) is finite, \(K_D&gt;0\), and \(|k|\le K_D\) for \(k\in D\). Let \(E_0,E_1,E_2\) be disjoint frequency pairs. Suppose that positive constants \(H,Q,d,T_0\) and fields \(F_j\) supported on \(E_j\) satisfy</p>
+<div class="equation paper-equation" id="en-display_math-49">\begin{align*}
+\norm{h(r)}_{\A_0}&amp;\le Hr^3 &amp;&amp;(0\le r\le T_0),\tag{5.1}\label{en-math-eq-5-1}\\
+\norm{P_{E_j}u(t)-tF_j}_{\A_0}&amp;\le Qt^2,
+&amp;\norm{F_j}_{\A_0}&amp;\ge d &amp;&amp;(0\le t\le T_0).
+\tag{5.2}\label{en-math-eq-5-2}\end{align*}</div>
+<p>Put</p>
+<div class="equation paper-equation" id="en-display_math-50">\begin{equation*}
+C=\frac{K_DH^2}{7},\qquad
+\tau=\min\left\{T_0,1,\frac d{2Q},\frac d{8C}\right\}.
+\tag{5.3}\label{en-math-eq-5-3}\end{equation*}</div>
+<p>For \(E=E_j\) or \(E=E_0\cup E_1\cup E_2\), and every \(0\le s&lt;t\le\tau\), define</p>
+<div class="equation paper-equation" id="en-display_math-51">\[
+S_{s,E}(t)=\int_s^t e^{(t-r)\Delta}P_EB(h(r),h(r))\dd r,
+\qquad Z_{s,E}(t)=P_Eu(t)-S_{s,E}(t).
+\]</div>
+<p>Then</p>
+<div class="equation paper-equation" id="en-display_math-52">\begin{gather*}
+\norm{P_Eu(t)}_{\A_0}&gt;0,\qquad
+\norm{S_{s,E}(t)}_{\A_0}\le\tfrac14\norm{P_Eu(t)}_{\A_0},\tag{5.4}\label{en-math-eq-5-4}\\
+\norm{Z_{s,E}(t)}_{\A_0}\ge
+\tfrac34\norm{P_Eu(t)}_{\A_0}\ge3\norm{S_{s,E}(t)}_{\A_0}.
+
+\tag{5.5}\label{en-math-eq-5-5}\end{gather*}</div>
+<p>Thus the source condition of Definition <a class="paper-ref" href="#en-definition-1">2.1</a> fails on each pair and on their union. When \(S_{s,E}(t)=0\), its remainder is nonzero; no quotient with zero denominator is used.</p>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-3"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The convolution bound and the input support give</p>
+<div class="equation paper-equation" id="en-display_math-53">\[
+\norm{B(h(r),h(r))}_{\A_0}
+\le\norm{h(r)}_{\A_0}|h(r)|_{\dot\A_1}
+\le K_DH^2r^6.
+\]</div>
+<p>Fourier projection and the heat semigroup are contractions in \(\A_0\). Consequently, for each permitted \(E\),</p>
+<div class="equation paper-equation" id="en-display_math-54">\begin{equation*}
+\norm{S_{s,E}(t)}_{\A_0}
+\le C(t^7-s^7)\le Ct^7.
+\tag{5.6}\label{en-math-eq-5-6}\end{equation*}</div>
+<p>On each pair, <a class="paper-ref" href="#en-display_math-49">(5.2)</a> gives \(\norm{P_{E_j}u(t)}_{\A_0}\ge dt-Qt^2\ge dt/2\). Since \(t\le1\) and \(Ct\le d/8\), we have \(Ct^7\le dt/8\). This proves <a class="paper-ref" href="#en-display_math-52">(5.4)</a> separately on the three pairs. The \(\A_0\) norm is additive across disjoint Fourier supports; summing these three inequalities proves the assertion on their union. The reverse triangle inequality proves <a class="paper-ref" href="#en-display_math-52">(5.5)</a>. If \(z=u-h\), the exact remainder is</p>
+<div class="equation paper-equation" id="en-display_math-55">\begin{equation*}
+\begin{split}
+Z_{s,E}(t)={}&amp;e^{(t-s)\Delta}P_Eu(s)\\
+&amp;+\int_s^t e^{(t-r)\Delta}P_E
+\{B(h,z)+B(z,h)+B(z,z)\}(r)\dd r.
+\end{split}
+\tag{5.7}\label{en-math-eq-5-7}\end{equation*}</div>
+<p>Thus an existing target at time \(s\) has not been discarded.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-remark paper-statement" id="en-remark-1"><p class="statement-heading"><strong>Remark 5.2.</strong></p>
+<p>The bound in <a class="paper-ref" href="#en-display_math-54">(5.6)</a> is obtained before any temporal cancellation. It does not use the generally false inequality \(\norm{S_{s,E}(t)}\le\norm{S_{0,E}(t)}\). The input estimate is in the original time \(r\), not in \(r-s\). There is no assertion for arbitrary starting times beyond \(\tau\).</p>
+</div>
+<h3 id="en-subsection-7">5.1. An explicit fixed datum</h3>
+<p>Let \(a_*\) be the twelve-mode real datum specified in Appendix <a class="paper-ref" href="#en-section-7">A</a>; this is the same datum as in [<a href="#en-bibitem-3">3</a>]. In this subsection set</p>
+<div class="equation paper-equation" id="en-display_math-56">\begin{equation*}
+\begin{split}
+p&amp;=(2,3,5),\quad \kappa=(3,4,6),\quad q=p-Rp=(-3,1,2),\\
+D&amp;=\{\pm R^j\kappa:0\le j\le2\},\qquad
+E_j=\{\pm R^jq\},\qquad E_-=\bigcup_{j=0}^2E_j.
+\end{split}
+\tag{5.8}\label{en-math-eq-5-8}\end{equation*}</div>
+<p>Let \(\bar A,\bar b,T_*,\delta\) be the explicit positive rational constants in <a class="paper-ref" href="#en-display_math-73">(A.6)</a>–<a class="paper-ref" href="#en-display_math-82">(A.12)</a>, and put</p>
+<div class="equation paper-equation" id="en-display_math-57">\begin{equation*}
+\begin{split}
+d&amp;=2\delta,\qquad Q_0=315\bar A^2+2\bar A\bar b^2,\qquad
+C_0=\frac{32}{7}\bar A^2\bar b^6,\\
+\tau_*&amp;=\min\left\{T_*,1,\frac d{2Q_0},\frac d{8C_0}\right\}&gt;0.
+\end{split}
+\tag{5.9}\label{en-math-eq-5-9}\end{equation*}</div>
+<div class="paper-proposition paper-statement" id="en-proposition-1"><p class="statement-heading"><strong>Proposition 5.3 (A difference output precedes receiver self-supply).</strong></p>
+<p>The datum \(a_*\) has a unique smooth unforced viscosity-one solution on \([0,T_*]\). For this same solution, with \(h=P_Du\), the conclusions <a class="paper-ref" href="#en-display_math-52">(5.4)</a>–<a class="paper-ref" href="#en-display_math-52">(5.5)</a> hold for every \(0\le s&lt;t\le\tau_*\), separately for each \(E_j\) and for \(E_-\). In particular, the selected \(D\)-self-interaction cannot satisfy the source-dominance condition for these difference outputs in this interval.</p>
+</div>
+<p>We supply the local bounds used in this application, so the proposition does not rely on an unreported numerical evolution or a finite truncation.</p>
+<div class="paper-lemma paper-statement" id="en-lemma-2"><p class="statement-heading"><strong>Lemma 5.4 (Finite-support local series).</strong></p>
+<p>Let \(a\) be a real, mean-zero, divergence-free trigonometric polynomial, let \(A=\norm a_{\A_0}\), and suppose its Fourier support \(F\) satisfies \(|k|\le K\). Define</p>
+<div class="equation paper-equation" id="en-display_math-58">\begin{equation*}
+v_0(t)=e^{t\Delta}a,\qquad
+v_n(t)=\sum_{j=0}^{n-1}\int_0^t e^{(t-r)\Delta}
+B(v_j(r),v_{n-1-j}(r))\dd r\quad(n\ge1).
+\tag{5.10}\label{en-math-eq-5-10}\end{equation*}</div>
+<p>If \(4AKt&lt;1\), then \(u(t)=\sum_{n\ge0}v_n(t)\) is the classical local solution, and</p>
+<div class="equation paper-equation" id="en-display_math-59">\begin{equation*}
+\supp\widehat v_n\subset\underbrace{F+\cdots+F}_{n+1\text{ summands}},
+\qquad \norm{v_n(t)}_{\A_0}\le A(4AKt)^n.
+\tag{5.11}\label{en-math-eq-5-11}\end{equation*}</div>
+<p>In particular, if \(A\le\bar A\), \(4AK\le\bar b\), and \(\bar bt\le1/2\), then</p>
+<div class="equation paper-equation" id="en-display_math-60">\begin{equation*}
+\sum_{n\ge m}\norm{v_n(t)}_{\A_0}
+\le2\bar A\bar b^m t^m\qquad(m\ge1).
+\tag{5.12}\label{en-math-eq-5-12}\end{equation*}</div>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-4"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The support assertion follows by induction from convolution and the heat multiplier. Let \(c_0=1\) and \(c_n=\sum_{j=0}^{n-1}c_jc_{n-1-j}\). These Catalan numbers obey \(c_n\le4^n\). Inductively, the sharper bound \(\norm{v_n(t)}_{\A_0}\le c_n A^{n+1}(Kt)^n\) follows from \(|v_{n-1-j}|_{\dot\A_1}\le(n-j)K\norm{v_{n-1-j}}_{\A_0}\) and</p>
+<div class="equation paper-equation" id="en-display_math-61">\[
+\frac1n\sum_{j=0}^{n-1}(n-j)c_jc_{n-1-j}
+=\frac{n+1}{2n}c_n\le c_n.
+\]</div>
+<p>For every nonnegative integer \(m\), the support bound also gives</p>
+<div class="equation paper-equation" id="en-display_math-62">\[
+\sum_k(1+|k|)^m|(v_n)_k|
+\le[1+(n+1)K]^m A(4AKt)^n.
+\]</div>
+<p>On a compact time interval with \(4AKt&lt;1\), the right side is summable in \(n\), for all \(m\). Thus the series and all spatial derivatives converge uniformly. The same estimates with two extra powers of the support radius justify differentiating the integral equation once in time; successive differentiation of the equation gives smoothness. Absolute convergence permits the double series for \(B(u,u)\) to be regrouped by \(n\), giving the full mild equation. Reality, zero mean and incompressibility are preserved term by term. Recovering the pressure by the complementary Fourier projection gives the unforced Navier–Stokes equation. Classical uniqueness follows by the energy estimate for the difference of two solutions: the transport term of one divergence-free field vanishes, and the remaining term is at most its bounded velocity gradient times the square of the difference&#x27;s \(L^2\) norm. Gronwall&#x27;s inequality applies. Finally, summing a geometric series proves <a class="paper-ref" href="#en-display_math-60">(5.12)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-5"><p class="statement-heading"><strong>Proof of Proposition <a class="paper-ref" href="#en-proposition-1">5.3</a>.</strong></p>
+<p>The datum in Appendix <a class="paper-ref" href="#en-section-7">A</a> satisfies \(A\le\bar A\) and \(K=\sqrt{38}&lt;7\), while \(\bar b=28\bar A\) and \(\bar bT_*\le1/2\). Lemma <a class="paper-ref" href="#en-lemma-2">5.4</a> proves existence and uniqueness throughout the stated closed interval.</p>
+<p>For a frequency \(k\), write \(\sigma(k)=k_1+k_2+k_3\). Every initial frequency has \(\sigma=\pm1\) or \(\pm10\). A sum of at most three such frequencies cannot have coordinate sum \(13\): if \(h\) and \(l\) are the signed numbers of high and low leaves, respectively, then \(10h+l=13\) and \(|h|+|l|\le3\) have no integer solution. The same argument applies to \(-13\). Consequently, \(P_Dv_0=P_Dv_1=P_Dv_2=0\) identically in time, and</p>
+<div class="equation paper-equation" id="en-display_math-63">\begin{equation*}
+\norm{h(r)}_{\A_0}\le2\bar A\bar b^3r^3
+\qquad(0\le r\le T_*).
+\tag{5.13}\label{en-math-eq-5-13}\end{equation*}</div>
+<p>This is a bound for the actual projection, including every higher-order interaction. For completeness, a four-leaf representation of \(\kappa\) must have one positive high leaf and three positive low leaves. Of the three high choices, only \(p\) leaves a nonnegative vector with coordinate sum three, namely \(\kappa-p=(1,1,1)\).</p>
+<p>At \(q=p-Rp\), exactly the two ordered initial pairs \((p,-Rp)\) and \((-Rp,p)\) contribute. Indeed \(\sigma(q)=0\) excludes a high–low pair; a difference of low frequencies has all coordinates in \(\{-1,0,1\}\), and the three high-frequency differences are precisely the three pairs \(E_j\). Write</p>
+<div class="equation paper-equation" id="en-display_math-64">\[
+V=(3v_*+5w_*,-2v_*,-2w_*),\qquad
+N=p\times Rp=(-1,19,-11).
+\]</div>
+<p>The sum before the Leray projection is</p>
+<div class="equation paper-equation" id="en-display_math-65">\begin{equation*}
+X=-(11v_*+19w_*)RV+(-v_*+11w_*)V.
+\tag{5.14}\label{en-math-eq-5-14}\end{equation*}</div>
+<p>Since \(|q|^2=14\), a direct projection yields</p>
+<div class="equation paper-equation" id="en-display_math-66">\begin{equation*}
+\Pj_qX=-\frac47(3v_*+2w_*)(v_*+3w_*)N,
+\qquad B(a_*,a_*)_q=\ii G,
+\quad G=\frac47(3v_*+2w_*)(v_*+3w_*)N.
+\tag{5.15}\label{en-math-eq-5-15}\end{equation*}</div>
+<p>One can verify the projection without dropping any component: \(q\cdot X=22v_*^2-204v_*w_*-418w_*^2\) and \(\Pj_qX=X-q(q\cdot X)/14\). Rotation and complex conjugation give the other five coefficients.</p>
+<p>Both inputs in this calculation have squared length \(38\). Thus, if \(F_j\) has coefficients \(\ii R^jG\) and \(-\ii R^jG\) at \(R^jq\) and \(-R^jq\), respectively, then</p>
+<div class="equation paper-equation" id="en-display_math-67">\begin{equation*}
+P_{E_j}v_1(t)=\Phi(t)F_j,
+\qquad
+\Phi(t)=\int_0^t e^{-14(t-r)}e^{-76r}\dd r
+=\frac{e^{-14t}-e^{-76t}}{62}.
+\tag{5.16}\label{en-math-eq-5-16}\end{equation*}</div>
+<p>For \(0\le r\le t\), the inequality \(0\le1-e^{-x}\le x\) for \(x\ge0\) gives</p>
+<div class="equation paper-equation" id="en-display_math-68">\[
+0\le t-\Phi(t)
+\le\int_0^t[14(t-r)+76r]\dd r=45t^2.
+\]</div>
+<p>Also \(P_{E_j}v_0=0\) and \(\norm{F_j}_{\A_0}\le\norm{B(a_*,a_*)}_{\A_0}
+\le7\bar A^2\). Hence <a class="paper-ref" href="#en-display_math-60">(5.12)</a> with \(m=2\) gives</p>
+<div class="equation paper-equation" id="en-display_math-69">\begin{equation*}
+\norm{P_{E_j}u(t)-tF_j}_{\A_0}
+\le(315\bar A^2+2\bar A\bar b^2)t^2=Q_0t^2.
+\tag{5.17}\label{en-math-eq-5-17}\end{equation*}</div>
+<p>Appendix <a class="paper-ref" href="#en-section-7">A</a> verifies \(|G_1|\ge\delta&gt;0\); therefore \(\norm{F_j}_{\A_0}=2|G|\ge2\delta=d\) on every pair. Finally \(|k|=\sqrt{61}&lt;8\) on \(D\). Apply Lemma <a class="paper-ref" href="#en-lemma-1">5.1</a> with \(K_D=8\), \(H=2\bar A\bar b^3\), \(Q=Q_0\) and \(T_0=T_*\). Its constant is exactly \(C_0\), and its interval is <a class="paper-ref" href="#en-display_math-57">(5.9)</a>.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>The companion result proves an earlier source-selection property for this same datum and the same receiver \(D\), using its actual first generated band [<a href="#en-bibitem-3">3</a>]. Proposition <a class="paper-ref" href="#en-proposition-1">5.3</a> addresses a different source: the self-interaction of the receiver \(D\) into \(E_-\). It does not negate that earlier property, nor assert that a general regeneration mechanism fails at later times.</p>
+<h2 id="en-section-6">6. Scope, proof ingredients and computational assistance</h2>
+<p>Both chain arguments combine estimates on selected Duhamel sources with conditions comparing each source with its complete remainder. The adjacent-sum source and the first cross-edge source are bounded unconditionally. In the cross-edge argument, the first condition on the whole second integration interval is needed to bound the second source. The corresponding target conditions then give the actual target gradient bounds. If a required condition fails, the calculation has not shown that the target is small. The remainder can contain sources outside the chosen sparse chain, including interactions with already generated frequencies.</p>
+<p>The assertions keep the domain, viscosity, solution and initial datum fixed. They allow different starting and reception times at different layers, but these times must belong to that solution&#x27;s classical interval. Summing layer bounds requires the stronger common-time conditions stated in the theorems. Even then the resulting regularity concerns the chain projection. No estimate for its complementary Fourier projection, no continuation criterion for the full velocity and no exclusion of all possible singularity mechanisms is established here.</p>
+<p>The first chain uses its exact all-layer frequency differences, not a generic bound by the sending frequency. In the second chain those differences grow, but the first heat integration controls both prescribed edge types and the second controls their subsequent interaction. The first source condition must hold throughout that second integral. An endpoint comparison cannot replace it, and replacing the actual edge field by its selected source would require a further cancellation estimate which is not assumed or proved here.</p>
+<p>The short-time example has a separate purpose. Its nonzero difference response is first order in the original time, whereas the selected receiver is bounded by a third-order tail. This mismatch gives a uniform obstruction for all truncated integrals within one explicitly specified short interval. It does not reset the initial datum at a new time or extend that interval by translation.</p>
+<h4 id="en-paragraph-1">Exact calculations and reproducibility.</h4>
+<p>The two chain proofs use analytic estimates and finite-dimensional vector identities displayed in the text. The fixed-datum example additionally uses exact rational polynomial arithmetic, Sturm root counts and rational interval evaluation. Appendix <a class="paper-ref" href="#en-section-7">A</a> gives the polynomials, intervals, constants and checking procedures needed for its application. The finite calculations were developed and checked with exact-arithmetic programs; floating-point evolution is not used as proof of any assertion. The analytic estimates control the infinite Fourier series. Raw development logs and general research programs are not public supplementary material for this manuscript.</p>
+<h4 id="en-paragraph-2">AI assistance and responsibility.</h4>
+<p>Generative AI tools assisted with drafting, literature retrieval, proof organization, symbolic derivations and verification scripts. Exact finite calculations and automated checks are distinct from the analytic arguments presented here. They are not human peer review or formal proof-assistant certification. The author is responsible for the manuscript and its claims.</p>
+<h2 id="en-section-7">Appendix A. Explicit algebraic datum and rational checks</h2>
+<p>This appendix supplies the finite data used only in Proposition <a class="paper-ref" href="#en-proposition-1">5.3</a>. The two chain theorems do not depend on these polynomials or on an algebraic choice of initial datum.</p>
+<h3 id="en-subsection-8">A.1. The datum and the local constants</h3>
+<p>Define</p>
+<div class="equation paper-equation" id="en-display_math-70">\begin{align*}
+P(X)={}&amp;\frac{12379608041588}{607290075}
++\frac{129169813631527}{1012150125}X
++\frac{111813118362046}{337383375}X^2\\
+&amp;+\frac{1377133612024132}{3036450375}X^3
++\frac{207263796033514}{607290075}X^4\\
+&amp;+\frac{401161881122159}{3036450375}X^5
++\frac{4124532235492}{202430025}X^6,\tag{A.1}\label{en-math-eq-A-1}\\
+r(X)={}&amp;\frac{1807613971}{12393675}
++\frac{9523582624}{20656125}X
++\frac{27816146846}{61968375}X^2
++\frac{196585982}{1770525}X^3,\tag{A.2}\label{en-math-eq-A-2}\\
+s(X)={}&amp;\frac{536919079}{2699067}
++\frac{9469267576}{13495335}X
++\frac{10524885968}{13495335}X^2
++\frac{646271818}{2699067}X^3.
+\tag{A.3}\label{en-math-eq-A-3}\end{align*}</div>
+<p>Let \(\alpha_*\) be the unique root of \(P\) in \(I_0=(-75/32,-125/64]\), and put</p>
+<div class="equation paper-equation" id="en-display_math-71">\begin{equation*}
+v_*=-s(\alpha_*),\quad w_*=r(\alpha_*),\quad
+U=(0,1,\alpha_*),\quad V=(3v_*+5w_*,-2v_*,-2w_*).
+\tag{A.4}\label{en-math-eq-A-4}\end{equation*}</div>
+<p>The root assertion is checked below; irreducibility of \(P\) is not needed. With \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and \(p=(2,3,5)\), define</p>
+<div class="equation paper-equation" id="en-display_math-72">\begin{equation*}
+\begin{split}
+a_*(x)=\sum_{j=0}^2\big[&amp;R^jU
+\{e^{\ii(R^je_1)\cdot x}+e^{-\ii(R^je_1)\cdot x}\}\\
+&amp;+R^jV
+\{e^{\ii(R^jp)\cdot x}+e^{-\ii(R^jp)\cdot x}\}\big].
+\end{split}
+\tag{A.5}\label{en-math-eq-A-5}\end{equation*}</div>
+<p>No amplitude is subsequently rescaled. These are twelve fixed Fourier coefficients. Reality and zero mean are immediate, and \(e_1\cdot U=p\cdot V=0\) proves incompressibility on every rotated frequency. The datum obeys \(a_*(Rx)=Ra_*(x)\).</p>
+<p>Use the positive rational constants</p>
+<div class="equation paper-equation" id="en-display_math-73">\begin{equation*}
+\begin{split}
+\bar A&amp;=\frac{13990473994187561}{829153382400},
+\qquad \bar b=28\bar A,\qquad A_\alpha=\frac{75}{32},\\
+\ell&amp;=\frac{32000398665717304027531027}{477317255069800857600},\\
+\bar E&amp;=80\bar A^4 7^5+3\bar A\bar b^4,
+\qquad D_{\mathrm f}=2(1+A_\alpha^2)+2\bar A\bar b^2,\\
+T_*&amp;=\min\left\{\frac1{2\bar b},\frac\ell{8\bar E},
+\frac1{2D_{\mathrm f}}\right\}.
+\end{split}
+\tag{A.6}\label{en-math-eq-A-6}\end{equation*}</div>
+<p>This retains the same conservative interval used for the datum in [<a href="#en-bibitem-3">3</a>]. In the present paper only \(T_*&gt;0\) and \(\bar bT_*\le1/2\) are needed; both follow directly from this definition.</p>
+<p>On the closure of \(I_0\), rational interval evaluation gives</p>
+<div class="equation paper-equation" id="en-display_math-74">\begin{equation*}
+\begin{aligned}
+|s(X)|&amp;\le U_v=\frac{39312542562313}{88443027456},\qquad
+|r(X)|\le U_w=\frac{19711525523669}{58016563200},\\
+|-3s(X)+5r(X)|&amp;\le U_1=\frac{585728660549}{472227840}.
+\end{aligned}
+\tag{A.7}\label{en-math-eq-A-7}\end{equation*}</div>
+<p>These constants satisfy the exact identity</p>
+<div class="equation paper-equation" id="en-display_math-75">\[
+\bar A=6(1+A_\alpha+U_1+2U_v+2U_w).
+\]</div>
+<p>The Euclidean norm of a vector is at most the sum of its coordinate absolute values. Therefore</p>
+<div class="equation paper-equation" id="en-display_math-76">\[
+\norm{a_*}_{\A_0}=6(|U|+|V|)
+\le6(1+|\alpha_*|+|-3s(\alpha_*)+5r(\alpha_*)|
++2|s(\alpha_*)|+2|r(\alpha_*)|)\le\bar A.
+\]</div>
+<p>All initial frequencies have length at most \(\sqrt{38}&lt;7\).</p>
+<h3 id="en-subsection-9">A.2. A nonzero coordinate of the difference response</h3>
+<p>The first coordinate of \(G\) in <a class="paper-ref" href="#en-display_math-66">(5.15)</a> is</p>
+<div class="equation paper-equation" id="en-display_math-77">\begin{equation*}
+f(\alpha_*),\qquad
+f(X)=-\frac47\bigl(-3s(X)+2r(X)\bigr)
+                    \bigl(-s(X)+3r(X)\bigr).
+\tag{A.8}\label{en-math-eq-A-8}\end{equation*}</div>
+<p>For an exact replay of the interval calculation, write \(f(X)=\sum_{j=0}^6f_jX^j\). Its rational coefficients are</p>
+<div class="equation paper-equation" id="en-display_math-78">\begin{equation*}
+\begin{aligned}
+f_0&amp;=\frac{35798055470904413384872}{860536215451513125},&amp;
+f_1&amp;=\frac{401729094518327896325536}{1434227025752521875},\\
+f_2&amp;=\frac{16265521854261904842210248}{21513405386287828125},&amp;
+f_3&amp;=\frac{22128606310912506680936608}{21513405386287828125},\\
+f_4&amp;=\frac{15565564652878394325142432}{21513405386287828125},&amp;
+f_5&amp;=\frac{1023532801151109314237936}{4302681077257565625},\\
+f_6&amp;=\frac{22854636325453540780192}{860536215451513125}.&amp;&amp;
+\end{aligned}
+\tag{A.9}\label{en-math-eq-A-9}\end{equation*}</div>
+<p>The same root lies in the refined interval</p>
+<div class="equation paper-equation" id="en-display_math-79">\begin{equation*}
+I_5=(-2075/1024,-4125/2048].
+\tag{A.10}\label{en-math-eq-A-10}\end{equation*}</div>
+<p>Horner interval evaluation of <a class="paper-ref" href="#en-display_math-78">(A.9)</a> on the closure of \(I_5\) gives</p>
+<div class="equation paper-equation" id="en-display_math-80">\begin{equation*}
+f(\alpha_*)\in[-N_-/D_f,-N_+/D_f],
+\tag{A.11}\label{en-math-eq-A-11}\end{equation*}</div>
+<p>where the integers are</p>
+<div class="equation paper-equation" id="en-display_math-81">\begin{align*}
+N_-&amp;=29437612184526502853366735142169004680277,\\
+N_+&amp;=3880728698927672352860026215467141443157,\\
+D_f&amp;=248032677071760087808993803632640000.
+\end{align*}</div>
+<p>In particular, the explicitly positive rational number</p>
+<div class="equation paper-equation" id="en-display_math-82">\begin{equation*}
+\delta=\frac{N_+}{D_f}
+\tag{A.12}\label{en-math-eq-A-12}\end{equation*}</div>
+<p>satisfies \(|G_1|=|f(\alpha_*)|\ge\delta&gt;0\). This is a lower bound from one coordinate, not an evaluation of the full Hermitian vector norm. The rotation and conjugation identities in <a class="paper-ref" href="#en-display_math-66">(5.15)</a> give the same pair bound \(d=2\delta\) for all three pairs.</p>
+<h3 id="en-subsection-10">A.3. Exact verification procedure</h3>
+<p>For clarity, the rational checks behind the preceding statements can be performed using only the displayed coefficients. Polynomial addition, multiplication and long division are taken in \(\mathbb Q[X]\), with trailing zero coefficients removed. To form a Sturm sequence, start with \(P,P&#x27;\) and successively append the negative remainder of the preceding two polynomials, stopping at zero. An entry may be multiplied by a positive rational number without changing the sign variations. At a rational endpoint evaluate every entry by Horner&#x27;s rule, delete zero values and count changes of sign. At the two endpoints of \(I_0\) the variation numbers are \(4\) and \(3\), respectively; neither endpoint is a root of \(P\). Sturm&#x27;s theorem therefore gives the required unique root in \(I_0\). The root counts in its five successive bisections are displayed in Table <a class="paper-ref" href="#en-table-1">1</a>. None of the listed midpoints is a root. This proves <a class="paper-ref" href="#en-display_math-79">(A.10)</a> for the original fixed root.</p>
+<figure class="paper-table" id="en-table-1">
+<div class="table-wrap" id="en-tabular-1"><table class="paper-table"><thead>
+<tr><th scope="col">Step</th><th scope="col">Midpoint</th><th scope="col">Left count</th><th scope="col">Right count</th><th scope="col">Retained interval</th></tr>
+</thead><tbody>
+<tr><td>1</td><td>\(-275/128\)</td><td>0</td><td>1</td><td>\((-275/128,-125/64]\)</td></tr>
+<tr><td>2</td><td>\(-525/256\)</td><td>0</td><td>1</td><td>\((-525/256,-125/64]\)</td></tr>
+<tr><td>3</td><td>\(-1025/512\)</td><td>1</td><td>0</td><td>\((-525/256,-1025/512]\)</td></tr>
+<tr><td>4</td><td>\(-2075/1024\)</td><td>0</td><td>1</td><td>\((-2075/1024,-1025/512]\)</td></tr>
+<tr><td>5</td><td>\(-4125/2048\)</td><td>1</td><td>0</td><td>\((-2075/1024,-4125/2048]\)</td></tr>
+</tbody></table></div>
+<figcaption>Table 1. Exact bisections retaining the same root. Counts refer to the left and right subintervals of the retained interval from the preceding step.</figcaption>
+</figure>
+<p>For a closed rational interval \(I=[a,b]\), addition is endpointwise and multiplication of \([a,b]\) by \([c,d]\) is the interval with endpoints the minimum and maximum of \(ac,ad,bc,bd\). Evaluate a polynomial \(\sum_{j=0}^m c_jX^j\) by starting with \([c_m,c_m]\) and replacing the current interval \(J\) by \(JI+[c_j,c_j]\), for \(j=m-1,\ldots,0\). Every step encloses all exact polynomial values on \(I\). Apply this rule to \(s\), \(r\) and the expanded polynomial \(-3s+5r\) on the closure of \(I_0\) and take the larger absolute endpoint; this gives <a class="paper-ref" href="#en-display_math-74">(A.7)</a>. Expanding the two products in <a class="paper-ref" href="#en-display_math-77">(A.8)</a> gives exactly <a class="paper-ref" href="#en-display_math-78">(A.9)</a>; applying the same interval rule to those coefficients on the closure of \(I_5\) gives <a class="paper-ref" href="#en-display_math-80">(A.11)</a>.</p>
+<p>These procedures involve finite rational operations and the elementary Sturm root-count theorem. They do not require a minimal polynomial for \(\alpha_*\), a floating-point approximation to that root, or any numerical solution of Navier–Stokes. They establish the lower bound and the positive window used in Proposition <a class="paper-ref" href="#en-proposition-1">5.3</a>; no later-time extension follows from the finite calculations.</p>
+<h2 id="en-bibliography-1">References</h2><ol class="paper-references">
+<li id="en-bibitem-1">C. Foias, O. Manley, R. Rosa, and R. Temam, <em>Navier–Stokes Equations and Turbulence</em>, Encyclopedia of Mathematics and its Applications, vol. 83, Cambridge University Press, Cambridge, 2001. <a href="https://doi.org/10.1017/CBO9780511546754">doi:10.1017/CBO9780511546754</a>.</li>
+<li id="en-bibitem-2">F. Waleffe, Non-linear Interactions in Homogeneous Turbulence with and without Background Rotation, in <em>Annual Research Briefs—1991</em>, Center for Turbulence Research, 1991, pp. 31–43. <a href="https://web.stanford.edu/group/ctr/ResBriefs/1991/05_WALEFFE.pdf">https://web.stanford.edu/group/ctr/ResBriefs/1991/05_WALEFFE.pdf</a>.</li>
+<li id="en-bibitem-3">C. K. Zeng, <em>Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow</em>, working manuscript, 2026. <a href="https://kasifa.github.io/results/fixed-datum-three-direction-supply.html">https://kasifa.github.io/results/fixed-datum-three-direction-supply.html</a>.</li>
+</ol>
+</article>
+<aside class="source-review-note"><h2>AI assistance and responsibility</h2><p>Generative AI assisted drafting, proof organization, symbolic derivations, and verification scripts. Exact finite calculations are distinguished from analytic proofs; automated checks are not human peer review or formal proof-assistant certification. The author is responsible for the manuscript and its claims.</p></aside>
+<footer class="footer">C. K. Zeng · 9 September 2026 · Working manuscript · NOT CLAY</footer></main>
+</body></html>

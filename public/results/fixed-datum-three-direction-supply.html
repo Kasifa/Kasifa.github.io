@@ -1,0 +1,841 @@
+<!doctype html><html lang="zh-CN" data-language="zh" data-selected-paper="fixed-datum-three-direction-supply"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>三维 Navier–Stokes 流中固定初值的有限两层来源选择</title>
+<meta name="description" content="An explicit real algebraic datum for the full unforced three-dimensional Navier–Stokes equations generates an initially absent band whose actual self-interaction dominates the supply of three independent target frequency pairs on one common short time interval.">
+<meta name="author" content="C. K. Zeng"><meta name="citation_title" content="Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow">
+<meta name="citation_author" content="C. K. Zeng"><meta name="citation_publication_date" content="2026/09/09">
+<link rel="stylesheet" href="/results/results.css"><link rel="stylesheet" href="/results/source-papers.css">
+<script>window.MathJax={"tex":{"inlineMath":[["\\(","\\)"]],"displayMath":[["\\[","\\]"]],"tags":"none","useLabelIds":true,"macros":{"R":"\\mathbb R","C":"\\mathbb C","Z":"\\mathbb Z","T":"\\mathbb T","A":"\\mathcal A","PP":"\\mathbb P","norm":["\\left\\lVert#1\\right\\rVert",1],"abs":["\\left\\lvert#1\\right\\rvert",1],"dd":"\\,\\mathrm d","supp":"\\operatorname{supp}","diag":"\\operatorname{diag}","wt":"\\widetilde"}},"options":{"skipHtmlTags":["script","noscript","style","textarea","pre","code"]}};</script>
+<script defer src="/results/results.js"></script><script defer src="/vendor/math.js"></script>
+</head><body class="source-paper">
+<main data-language="zh" data-title="三维 Navier–Stokes 流中固定初值的有限两层来源选择"><nav class="site-nav"><a href="/research-review.html?lang=zh">研究首页</a><a href="/results/?lang=zh">前沿成果</a></nav>
+<header class="hero"><p class="kicker">WORKING MANUSCRIPT · 2026-09-09 · NOT CLAY</p><h1>三维 Navier–Stokes 流中固定初值的有限两层来源选择</h1>
+<p class="source-subtitle" lang="en">Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow</p>
+<p class="author">C. K. Zeng · 独立研究者 · ORCID <a href="https://orcid.org/0009-0002-5402-3374">0009-0002-5402-3374</a></p>
+<p class="source-status">工作论文；按 arXiv 源码规范准备，尚未向 arXiv 提交。</p><p class="scope">这是固定初值、黏性为一、标准三维环面上的有限两层来源定理。来源比例不是能量转移比例；论文没有证明梯度放大、无限再生或有限时间奇性。</p>
+<div class="downloads source-actions"><a href="#zh-full-text">阅读英文全文</a><a href="/assets/papers/fixed-datum-three-direction-supply.pdf">英文 PDF</a></div>
+<section class="abstract"><h2>中文摘要</h2><p>本文为标准三维环面上黏性为一、无外力的不可压 Navier–Stokes 方程给出一份明确的实代数三角多项式初值。在同一个完整光滑解中，初始为空的 Fourier 频带被生成，其实际二次自作用向三个线性独立的目标频率对供给。在一个明确的正有理时间区间内，每个目标减去该 Duhamel 来源后的 Wiener 范数，不超过来源范数的七分之一；来源和目标在区间内每个正时刻均非零。构造使完整混合四叶领先系数相消，同时保留非零的平衡系数。精确有理运算核验系数、参数多项式的两个实根及原时间窗；完整 Wiener 级数、热传播树估计和无穷尾项界将有限恒等式转移到原方程。这是固定初值的有限两层来源选择结论，不主张净能量转移、迭代再生或奇性机制。</p></section>
+<p class="source-language-note">题名、摘要与结论边界提供中英文；下方为完整英文正文，并非全文中文翻译。</p></header>
+<details class="contents source-contents"><summary>正文目录（英文）</summary><ol><li class="toc-level-2"><a href="#zh-section-1">1. Introduction</a></li><li class="toc-level-2"><a href="#zh-section-2">2. The fixed datum and the main theorem</a></li><li class="toc-level-2"><a href="#zh-section-3">3. Full solutions and quantitative four-leaf bounds</a></li><li class="toc-level-2"><a href="#zh-section-4">4. Exact finite coefficient and root certification</a></li><li class="toc-level-3"><a href="#zh-subsection-1">4.1. A completely specified finite coefficient algorithm</a></li><li class="toc-level-3"><a href="#zh-subsection-2">4.2. Polynomial identities and finite arithmetic conclusions</a></li><li class="toc-level-2"><a href="#zh-section-5">5. Application to the fixed twelve-mode datum</a></li><li class="toc-level-3"><a href="#zh-subsection-3">5.1. All possible short-leaf target contributions</a></li><li class="toc-level-3"><a href="#zh-subsection-4">5.2. Full-data bounds and the original time interval</a></li><li class="toc-level-3"><a href="#zh-subsection-5">5.3. Nonzero generation of the initially empty band</a></li><li class="toc-level-2"><a href="#zh-section-6">6. Scope and verification</a></li><li class="toc-level-2"><a href="#zh-section-7">A. Complete rational coefficient table</a></li><li class="toc-level-3"><a href="#zh-subsection-6">\(C\)</a></li><li class="toc-level-3"><a href="#zh-subsection-7">\(Z\)</a></li><li class="toc-level-3"><a href="#zh-subsection-8">\(M_{13}\)</a></li><li class="toc-level-3"><a href="#zh-subsection-9">\(M_{31}\)</a></li></ol></details>
+<article class="paper-body" id="zh-full-text" lang="en"><div class="paper-abstract" id="zh-abstract-1">
+<h2>Abstract</h2>
+<p>I give an explicit real algebraic trigonometric-polynomial initial datum for the unforced incompressible Navier–Stokes equations on the standard three-dimensional torus at viscosity one. In the same full smooth solution, an initially empty Fourier band is generated and its actual quadratic self-interaction supplies three linearly independent target frequency pairs. On one explicit positive rational time interval, the Wiener norm of each target minus this Duhamel source is at most one seventh of the source norm; the source and target are nonzero at every positive time in that interval. The construction cancels the complete mixed four-leaf leading coefficient while retaining a nonzero balanced coefficient. Exact rational computation certifies the coefficients, both real roots of the parameter polynomial, and the original time window. A full Wiener-series construction and explicit heat-tree and infinite-tail bounds transfer those finite identities to the original equations. The result is finite two-layer source selection from one fixed datum; it asserts neither a net energy transfer nor an iterated regeneration or singularity mechanism.</p>
+</div>
+<p><strong>2020 Mathematics Subject Classification.</strong> 35Q30, 76D05, 65G20.</p>
+<p><strong>Keywords.</strong> Navier–Stokes equations; Fourier–Leray interaction; Wiener algebra; fixed initial datum; exact rational certificate.</p>
+<h2 id="zh-section-1">1. Introduction</h2>
+<p>A nonzero coefficient in a finite nonlinear expansion need not identify the dominant source of the corresponding mode in a solution of the full equations. Other ordered interactions can reach the same frequency, and their leading terms can be of the same size. Heat propagation and the remainder of the expansion must also be controlled. This paper constructs one explicit example in which this source comparison can be made rigorously for three target directions at once.</p>
+<p>The datum consists of three cyclically related low-frequency pairs and three cyclically related high-frequency pairs. Each target first appears at four leaves. The complete four-leaf contribution splits into a balanced \(2+2\) part and the sum of the \(1+3\) and \(3+1\) parts. A real algebraic choice of the polarizations cancels the entire mixed leading term, without cancelling the balanced term. The source studied below is nevertheless defined from the actual generated band of the same Navier–Stokes solution, not from its leading coefficient. Two separate remainder estimates establish the comparison on a common interval, including its positive endpoint.</p>
+<p>The main contribution is this explicit fixed-datum construction and its quantitative source attribution. Local smooth existence, the heat semigroup, Wiener estimates, ordered binary trees, cyclic symmetry, and real-root isolation are used as tools. We make no claim of a new local existence principle or of priority for those tools. For the classical analytic setting see [<a href="#zh-bibitem-1">1</a>]; for the real algebraic algorithms used in the finite certificate see [<a href="#zh-bibitem-2">2</a>]. The analytic estimates needed here are proved below, and the exact finite arithmetic is specified in Section <a class="paper-ref" href="#zh-section-4">4</a> and Appendix <a class="paper-ref" href="#zh-section-7">A</a>.</p>
+<p>Source selection has a precise meaning in this paper: the norm of a target minus one specified Duhamel source is small relative to that source. This is not an orthogonal decomposition of kinetic energy. In particular, the factor \(1/7\) is not an energy-transfer fraction. The construction concerns two finite layers; no repeated input structure or infinite-scale evolution is asserted.</p>
+<p>Section <a class="paper-ref" href="#zh-section-2">2</a> states the explicit datum and the main theorem. Section <a class="paper-ref" href="#zh-section-3">3</a> proves the full-solution and source estimates for general finite data. Section <a class="paper-ref" href="#zh-section-4">4</a> gives the finite coefficient and real-root certificate. Section <a class="paper-ref" href="#zh-section-5">5</a> verifies the support conditions and proves the theorem for the stated datum.</p>
+<h2 id="zh-section-2">2. The fixed datum and the main theorem</h2>
+<p>We use \(\T^3=(\R/2\pi\Z)^3\), Fourier coefficients \(f_k=(2\pi)^{-3}\int_{\T^3}f(x)e^{-ik\cdot x}\dd x\), and</p>
+<div class="equation paper-equation" id="zh-display_math-1">\[
+\norm{f}_{\A_m}=\sum_{k\in\Z^3}(1+|k|)^m|f_k|,
+\qquad \norm{f}_{\A}=\norm{f}_{\A_0},\qquad
+|f|_{\dot\A_1}=\sum_k|k|\,|f_k|.
+\]</div>
+<p>Vector lengths are Hermitian Euclidean lengths. A frequency dot product inside a Fourier convolution is complex bilinear. For divergence-free inputs define the full ordered bilinear operator</p>
+<div class="equation paper-equation" id="zh-display_math-2">\begin{equation*}
+B(f,z)_k=-i\PP_k\sum_{r+s=k}(f_r\cdot s)z_s,
+\quad \PP_k=I-\frac{k\otimes k}{|k|^2}\ (k\ne0),
+\qquad B(f,z)_0=0.
+\tag{1}\label{zh-math-eq-1}\end{equation*}</div>
+<p>For \(k=0\) the ordered summands vanish by \(f_r\cdot r=0\). For a set \(H\subset\Z^3\), \(P_H\) retains precisely its Fourier coefficients.</p>
+<p>Define the rational polynomials</p>
+<div class="equation paper-equation" id="zh-display_math-3">\begin{align*}
+P(X)={}&amp;\frac{12379608041588}{607290075}
++\frac{129169813631527}{1012150125}X
++\frac{111813118362046}{337383375}X^2\\
+&amp;+\frac{1377133612024132}{3036450375}X^3
++\frac{207263796033514}{607290075}X^4\\
+&amp;+\frac{401161881122159}{3036450375}X^5
++\frac{4124532235492}{202430025}X^6,\tag{2}\label{zh-math-eq-2}\\
+r(X)={}&amp;\frac{1807613971}{12393675}
++\frac{9523582624}{20656125}X
++\frac{27816146846}{61968375}X^2
++\frac{196585982}{1770525}X^3,\tag{3}\label{zh-math-eq-3}\\
+s(X)={}&amp;\frac{536919079}{2699067}
++\frac{9469267576}{13495335}X
++\frac{10524885968}{13495335}X^2
++\frac{646271818}{2699067}X^3.
+\tag{4}\label{zh-math-eq-4}\end{align*}</div>
+<p>Lemma <a class="paper-ref" href="#zh-lemma-1">4.1</a> proves that \(P\) has exactly two real roots, both simple, one in each of</p>
+<div class="equation paper-equation" id="zh-display_math-4">\begin{equation*}
+(-75/32,-125/64],\qquad(-125/64,-25/16].
+\tag{5}\label{zh-math-eq-5}\end{equation*}</div>
+<p>Let \(\alpha_*\) be the first root and set</p>
+<div class="equation paper-equation" id="zh-display_math-5">\begin{equation*}
+v_*=-s(\alpha_*),\qquad w_*=r(\alpha_*),\qquad
+U=(0,1,\alpha_*),\qquad
+V=(3v_*+5w_*,-2v_*,-2w_*).
+\tag{6}\label{zh-math-eq-6}\end{equation*}</div>
+<p>There is no further scaling of \((v_*,w_*)\). Put \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and \(p_0=(2,3,5)\), and define</p>
+<div class="equation paper-equation" id="zh-display_math-6">\begin{equation*}
+\begin{split}
+a_*(x)=\sum_{j=0}^2\big[&amp;R^jU
+\{e^{i(R^je_1)\cdot x}+e^{-i(R^je_1)\cdot x}\}\\
+&amp;+R^jV
+\{e^{i(R^jp_0)\cdot x}+e^{-i(R^jp_0)\cdot x}\}\big].
+\end{split}
+\tag{7}\label{zh-math-eq-7}\end{equation*}</div>
+<p>This fixes twelve Fourier coefficients, including both signs. In particular, it fixes a single real, smooth, divergence-free, mean-zero initial datum.</p>
+<p>Here and below \(F=\supp\widehat a_*\), \(L=(F+F)\setminus\{0\}\), \(\kappa=(3,4,6)\), \(D_j=\{\pm R^j\kappa\}\), and \(D=D_0\cup D_1\cup D_2\). The three positive target vectors have determinant \(91\). The constants used to state the time interval are</p>
+<div class="equation paper-equation" id="zh-display_math-7">\begin{align*}
+\bar A&amp;=\frac{13990473994187561}{829153382400},
+&amp; A_\alpha&amp;=\frac{75}{32},
+&amp; \ell&amp;=\frac{32000398665717304027531027}{477317255069800857600},
+\tag{8}\label{zh-math-eq-8}\\
+\bar b&amp;=28\bar A,
+&amp;\bar E&amp;=80\bar A^4 7^5+3\bar A\bar b^4,
+&amp;D_{\mathrm f}&amp;=2(1+A_\alpha^2)+2\bar A\bar b^2.
+\end{align*}</div>
+<p>Define the explicit positive rational number</p>
+<div class="equation paper-equation" id="zh-display_math-8">\begin{equation*}
+T_*=\min\left\{\frac1{2\bar b},\frac\ell{8\bar E},
+\frac1{2D_{\mathrm f}}\right\}
+=\frac\ell{8\bar E}.
+\tag{9}\label{zh-math-eq-9}\end{equation*}</div>
+<p>The equality and all rational inequalities used below are included in Lemma <a class="paper-ref" href="#zh-lemma-1">4.1</a>. This is a conservative local interval obtained from absolute remainder estimates, not a claimed time scale of amplification.</p>
+<div class="paper-theorem paper-statement" id="zh-theorem-1"><p class="statement-heading"><strong>Theorem 2.1 (Finite two-layer source selection).</strong></p>
+<p>For viscosity one and zero external force, the datum <a class="paper-ref" href="#zh-display_math-6">(7)</a> has a unique smooth Navier–Stokes solution \(u\) on \([0,T_*]\). Set \(g=P_Lu\) and, for \(j=0,1,2\), define</p>
+<div class="equation paper-equation" id="zh-display_math-9">\begin{equation*}
+S_j(t)=\int_0^t e^{(t-s)\Delta}P_{D_j}B(g(s),g(s))\dd s.
+\tag{10}\label{zh-math-eq-10}\end{equation*}</div>
+<p>Then \(g(0)=0\). For every \(0&lt;t\le T_*\) and every \(j\),</p>
+<div class="equation paper-equation" id="zh-display_math-10">\begin{gather*}
+|g_{(1,1,0)}(t)|\ge t/2,
+\qquad \norm{S_j(t)}_{\A}&gt;0,
+\qquad \norm{P_{D_j}u(t)}_{\A}&gt;0,\tag{11}\label{zh-math-eq-11}\\
+\frac{\norm{P_{D_j}u(t)-S_j(t)}_{\A}}
+{\norm{S_j(t)}_{\A}}\le\frac17&lt;\frac14.
+\tag{12}\label{zh-math-eq-12}\end{gather*}</div>
+<p>The same ratio bound holds for \(P_Du\) and \(S_D=\sum_{j=0}^2S_j\).</p>
+</div>
+<p>The source in <a class="paper-ref" href="#zh-display_math-9">(10)</a> uses the actual projection of the same complete solution at every integration time. No leading-order field or frequency projection is reset as a new initial datum. The remainder \(P_{D_j}u-S_j\) retains all other contributions. The assertion concerns three frequency directions, not the rank of three velocity vectors or a repeated input profile.</p>
+<h2 id="zh-section-3">3. Full solutions and quantitative four-leaf bounds</h2>
+<p>This section proves the analytic estimates used for the fixed datum. Let \(a\) be any nonzero real, divergence-free, mean-zero trigonometric polynomial, let \(F=\supp\widehat a\), and put \(A=\norm{a}_{\A}\) and \(K=\max_{k\in F}|k|\). In this section the viscosity is any fixed \(\nu&gt;0\). Define the full, untruncated recursion</p>
+<div class="equation paper-equation" id="zh-display_math-11">\begin{equation*}
+v_0(t)=e^{\nu t\Delta}a,\qquad
+v_n(t)=\sum_{j=0}^{n-1}\int_0^t e^{\nu(t-s)\Delta}
+B(v_j(s),v_{n-1-j}(s))\dd s\quad(n\ge1).
+\tag{13}\label{zh-math-eq-13}\end{equation*}</div>
+<p>Each \(v_n\) contains \(n+1\) leaves. In particular, if \(\Sigma_m\) is the set of sums of \(m\) elements of \(F\), then</p>
+<div class="equation paper-equation" id="zh-display_math-12">\begin{equation*}
+\supp\widehat v_n(t)\subset\Sigma_{n+1},\qquad
+|k|\le(n+1)K\quad(k\in\Sigma_{n+1}).
+\tag{14}\label{zh-math-eq-14}\end{equation*}</div>
+<p>All coincident frequencies are added in this recursion.</p>
+<div class="paper-proposition paper-statement" id="zh-proposition-1"><p class="statement-heading"><strong>Proposition 3.1 (Full-series construction).</strong></p>
+<p>Put \(q(t)=4AKt\) and \(T_{\rm a}=(8AK)^{-1}\). On \([0,T_{\rm a}]\), \(u=\sum_{n\ge0}v_n\) is the unique smooth solution of the unforced Navier–Stokes equations with datum \(a\). For every integer \(m\ge0\) and \(N\ge0\),</p>
+<div class="equation paper-equation" id="zh-display_math-13">\begin{align*}
+\norm{v_n(t)}_{\A}&amp;\le A q^n,
+&amp;\norm{v_1(t)}_{\A}&amp;\le Aq/4,\tag{15}\label{zh-math-eq-15}\\
+\norm{u(t)}_{\A}&amp;\le\frac{A}{1-q},
+&amp;\left\lVert u(t)-\sum_{n=0}^Nv_n(t)\right\rVert_{\A}
+&amp;\le\frac{Aq^{N+1}}{1-q},\tag{16}\label{zh-math-eq-16}\\
+\norm{u(t)}_{\A_m}&amp;\le\frac{A(1+K)^m m!}{(1-q)^{m+1}},\tag{17}\label{zh-math-eq-17}\\
+\left\lVert u(t)-\sum_{n=0}^Nv_n(t)\right\rVert_{\A_m}
+&amp;\le\frac{A[1+(N+2)K]^m m!q^{N+1}}{(1-q)^{m+1}}.
+\tag{18}\label{zh-math-eq-18}\end{align*}</div>
+<p>Here and below \(q=q(t)\) in time-dependent estimates.</p>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-1"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The Leray projections have norm at most one, so</p>
+<div class="equation paper-equation" id="zh-display_math-14">\begin{equation*}
+\norm{B(f,z)}_{\A}\le\norm{f}_{\A}|z|_{\dot\A_1},\qquad
+\norm{B(f,z)}_{\A_m}\le\norm{f}_{\A_m}\norm{z}_{\A_{m+1}}.
+\tag{19}\label{zh-math-eq-19}\end{equation*}</div>
+<p>The second bound uses \(1+|r+s|\le(1+|r|)(1+|s|)\). By <a class="paper-ref" href="#zh-display_math-12">(14)</a>,</p>
+<div class="equation paper-equation" id="zh-display_math-15">\[
+\norm{v_n(t)}_{\A}\le K\sum_{j=0}^{n-1}(n-j)
+\int_0^t\norm{v_j(s)}_{\A}\norm{v_{n-1-j}(s)}_{\A}\dd s.
+\]</div>
+<p>Let \(c_0=1\) and \(c_n=\sum_{j=0}^{n-1}c_jc_{n-1-j}\). These count plane binary trees with \(n\) internal vertices; encoding such a tree by a balanced parenthesis word of length \(2n\) gives \(c_n\le4^n\). Symmetry in \(j\) gives \(\sum_j(n-j)c_jc_{n-1-j}=(n+1)c_n/2\). Since integration of \(s^{n-1}\) divides by \(n\), and \((n+1)/(2n)\le1\), induction yields \(\norm{v_n}_{\A}\le c_n A^{n+1}(Kt)^n\). The \(n=1\) estimate directly gives \(A^2Kt=Aq/4\). Thus the series and its tails satisfy <a class="paper-ref" href="#zh-display_math-13">(15)</a>–<a class="paper-ref" href="#zh-display_math-13">(16)</a> when \(q\le1/2\).</p>
+<p>The support bound also gives \(\norm{v_n}_{\A_m}\le A[1+(n+1)K]^m q^n\). Use \((r+1)^m\le m!\binom{r+m}{m}\) and sum the resulting power series. For the tail set \(n=N+1+r\) and use \(1+(N+2+r)K\le[1+(N+2)K](r+1)\). This proves <a class="paper-ref" href="#zh-display_math-13">(17)</a>–<a class="paper-ref" href="#zh-display_math-13">(18)</a>.</p>
+<p>In every \(\A_m\) the Laplacian series and the double nonlinear series are absolutely and uniformly convergent: apply the preceding estimates with \(m+2\) and <a class="paper-ref" href="#zh-display_math-14">(19)</a> with \(m+1\). Differentiating <a class="paper-ref" href="#zh-display_math-11">(13)</a> and summing therefore gives \(u\in C^1([0,T_{\rm a}];\A_m)\) and \(u_t=\nu\Delta u+B(u,u)\), \(u(0)=a\); at zero take the right derivative. Repeated differentiation of this equation uses only finitely many higher spatial norms and proves smoothness on the same closed interval.</p>
+<p>For completeness, incompressibility moves the differentiated frequency from the second input to the output. Since \(\sup_{x\ge0}xe^{-\nu\tau x^2}\le(\nu\tau)^{-1/2}\),</p>
+<div class="equation paper-equation" id="zh-display_math-16">\[
+\norm{e^{\nu\tau\Delta}B(f,z)}_{\A}
+\le(\nu\tau)^{-1/2}\norm{f}_{\A}\norm{z}_{\A}.
+\]</div>
+<p>For two continuous mild solutions with the same initial value, their difference on a subinterval of length \(h\) is bounded by its supremum norm times \(2\sqrt{h/\nu}(M_u+M_{\wt u})\). Choosing this factor below one and covering the common compact interval by finitely many subintervals proves uniqueness. This comparison is used after existence has been established.</p>
+<p>The recursion preserves reality, incompressibility, and zero mean. Set</p>
+<div class="equation paper-equation" id="zh-display_math-17">\begin{equation*}
+p_k=-\frac1{|k|^2}\sum_{r+s=k}(k\cdot u_r)(k\cdot u_s)\quad(k\ne0),
+\qquad p_0=0.
+\tag{20}\label{zh-math-eq-20}\end{equation*}</div>
+<p>The weighted bounds imply smoothness of this pressure and recover \(u_t-\nu\Delta u+(u\cdot\nabla)u+\nabla p=0\).</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>Let \(L\) and \(H\) be fixed frequency sets satisfying, throughout this interval,</p>
+<div class="equation paper-equation" id="zh-display_math-18">\begin{equation*}
+L\cap F=\varnothing,\qquad P_Lv_1=v_1,\qquad
+P_Hv_j=0\quad(j=0,1,2).
+\tag{21}\label{zh-math-eq-21}\end{equation*}</div>
+<p>Define \(g=P_Lu\) and</p>
+<div class="equation paper-equation" id="zh-display_math-19">\begin{align*}
+S(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_HB(g(s),g(s))\dd s,\\
+W(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_HB(v_1(s),v_1(s))\dd s,\tag{22}\label{zh-math-eq-22}\\
+M(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_H
+\{B(v_0(s),v_2(s))+B(v_2(s),v_0(s))\}\dd s.
+\end{align*}</div>
+<p>Thus \(P_Hv_3=W+M\). Introduce the finite spatial coefficients</p>
+<div class="equation paper-equation" id="zh-display_math-20">\begin{equation*}
+\begin{split}
+a_1&amp;=B(a,a),\qquad a_2=\tfrac12\{B(a,a_1)+B(a_1,a)\},\\
+W_0&amp;=\tfrac13P_HB(a_1,a_1),\qquad
+M_0=\tfrac13P_H\{B(a,a_2)+B(a_2,a)\}.
+\end{split}
+\tag{23}\label{zh-math-eq-23}\end{equation*}</div>
+<div class="paper-proposition paper-statement" id="zh-proposition-2"><p class="statement-heading"><strong>Proposition 3.2 (Actual source and complete tails).</strong></p>
+<p>Under <a class="paper-ref" href="#zh-display_math-18">(21)</a>, for \(0\le t\le T_{\rm a}\),</p>
+<div class="equation paper-equation" id="zh-display_math-21">\begin{align*}
+\norm{S-W}_{\A}&amp;\le C_St^4,&amp;C_S&amp;=\tfrac{752}{5}A^5K^4,\tag{24}\label{zh-math-eq-24}\\
+\norm{P_Hu-W-M}_{\A}&amp;\le C_Dt^4,&amp;C_D&amp;=512A^5K^4,\tag{25}\label{zh-math-eq-25}\\
+\norm{W-t^3W_0}_{\A}&amp;\le C_Wt^4,&amp;C_W&amp;=\tfrac{32}{3}\nu A^4K^5,\tag{26}\label{zh-math-eq-26}\\
+\norm{M-t^3M_0}_{\A}&amp;\le C_Mt^4,&amp;C_M&amp;=32\nu A^4K^5.
+\tag{27}\label{zh-math-eq-27}\end{align*}</div>
+<p>In particular, if \(M_0=0\), then</p>
+<div class="equation paper-equation" id="zh-display_math-22">\begin{align*}
+\norm{P_Hu-S}_{\A}&amp;\le C_Et^4,
+&amp;C_E&amp;=\tfrac{3312}{5}A^5K^4+32\nu A^4K^5,\tag{28}\label{zh-math-eq-28}\\
+\norm{S-t^3W_0}_{\A}&amp;\le C_{\rm src}t^4,
+&amp;C_{\rm src}&amp;=\tfrac{752}{5}A^5K^4+\tfrac{32}{3}\nu A^4K^5.
+\tag{29}\label{zh-math-eq-29}\end{align*}</div>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-2"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The first two conditions in <a class="paper-ref" href="#zh-display_math-18">(21)</a> give \(e=g-v_1=P_L\sum_{n\ge2}v_n\). Hence</p>
+<div class="equation paper-equation" id="zh-display_math-23">\[
+\norm e_{\A}\le2Aq^2,\qquad
+|e|_{\dot\A_1}\le AK\frac{q^2(3-2q)}{(1-q)^2}\le8AKq^2,
+\qquad |v_1|_{\dot\A_1}\le AKq/2.
+\]</div>
+<p>The three ordered terms \(B(e,v_1)+B(v_1,e)+B(e,e)\) have total norm at most \(A^2K(3q^3+16q^4)\). Integrating, with \(q(s)=q(t)s/t\), yields</p>
+<div class="equation paper-equation" id="zh-display_math-24">\[
+\norm{S-W}_{\A}\le Aq^4(3/16+4q/5)
+\le(47/80)Aq^4=C_St^4.
+\]</div>
+<p>The last condition in <a class="paper-ref" href="#zh-display_math-18">(21)</a> and <a class="paper-ref" href="#zh-display_math-13">(16)</a> give \(\norm{P_Hu-W-M}_{\A}\le Aq^4/(1-q)\le2Aq^4\). These are different remainders: the first includes every higher-order contribution to the actual field \(g\).</p>
+<p>There are five plane ordered trees with four leaves: one balanced tree for \(W\), and four chain trees for \(M\). For fixed leaf frequencies and admissible vertex times, the product of all leaf, intermediate, and output heat factors is \(e^{-\nu\mathcal H}\), where \(\mathcal H=\sum_{\text{edges }e}|k_e|^2\Delta t_e\). At any intervening time the propagating edges partition the four leaves. If their descendant counts are \(m_e\), then \(|k_e|\le m_eK\) and \(\sum_e m_e=4\). Consequently</p>
+<div class="equation paper-equation" id="zh-display_math-25">\begin{equation*}
+0\le\mathcal H\le16K^2t,\qquad
+|e^{-\nu\mathcal H}-1|\le16\nu K^2t.
+\tag{30}\label{zh-math-eq-30}\end{equation*}</div>
+<p>This accounts for every heat factor, including those before the first interaction.</p>
+<p>Take absolute values before any coefficient cancellation. Each vertex costs at most the leaf count of its second subtree times \(K\), and the sum of absolute leaf products is \(A^4\). The balanced tree has derivative factor \(2K^3\) and time volume \(t^3/3\). The four chains have factors \(6K^3,3K^3,2K^3,K^3\) and volume \(t^3/6\) each. Their absolute bounds are therefore \((2/3)A^4K^3t^3\) and \(2A^4K^3t^3\), respectively. Multiplying by <a class="paper-ref" href="#zh-display_math-25">(30)</a> proves <a class="paper-ref" href="#zh-display_math-21">(26)</a>–<a class="paper-ref" href="#zh-display_math-21">(27)</a>. The fractions in <a class="paper-ref" href="#zh-display_math-20">(23)</a> are precisely these vertex-time integrals with the heat factors set equal to one. Finally combine the four estimates. In <a class="paper-ref" href="#zh-display_math-22">(28)</a>, \(W\) cancels exactly between target and source, so \(C_W\) need not be added there.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<h2 id="zh-section-4">4. Exact finite coefficient and root certification</h2>
+<p>We first regard \(X,v,w\) as formal real variables, replace \(\alpha_*\) by \(X\), and use \(V=(3v+5w,-2v,-2w)\). Write \(B=-iQ\) at every vertex. The three-vertex physical phase is \((-i)^3=i\). At \(\kappa\), define real polynomial vectors by</p>
+<div class="equation paper-equation" id="zh-display_math-26">\begin{equation*}
+(W_0)_\kappa=iC(X;v,w),\qquad
+(M_0)_\kappa=iZ(X;v,w),\qquad Z=M_{13}+M_{31}.
+\tag{31}\label{zh-math-eq-31}\end{equation*}</div>
+<p>The subscripts \(13,31\) specify the numbers of leaves of the two root subtrees. Every vector in <a class="paper-ref" href="#zh-display_math-26">(31)</a> has three components, each linear in \((v,w)\) and of degree at most three in \(X\). Appendix <a class="paper-ref" href="#zh-section-7">A</a> prints all coefficients of \(C,M_{13},M_{31},Z\), without deleting mixed terms. Write, for example, \(C_j=C_{jv}v+C_{jw}w\).</p>
+<h3 id="zh-subsection-1">4.1. A completely specified finite coefficient algorithm</h3>
+<p>Here is one way to reproduce the table using only rational polynomial arithmetic. Give the four labelled leaves the frequencies \((e_1,e_2,e_3,p_0)\) and amplitudes \((U,RU,R^2U,V)\), with \(U=(0,1,X)\). For each of the five plane binary tree shapes</p>
+<div class="equation paper-equation" id="zh-display_math-27">\[
+((ab)(cd)),\quad (a(b(cd))),\quad(a((bc)d)),\quad
+((a(bc))d),\quad(((ab)c)d),
+\]</div>
+<p>run all \(24\) permutations of these four distinct labels. A leaf returns its frequency and amplitude. A vertex whose subtrees return \((r,A)\) and \((s,B)\), with \(m\) total descendant leaves, returns frequency \(k=r+s\) and the polynomial vector</p>
+<div class="equation paper-equation" id="zh-display_math-28">\begin{equation*}
+\frac1{m-1}\left(I-\frac{k\otimes k}{|k|^2}\right)
+\{(A\cdot s)B\}\quad(k\ne0),
+\qquad 0\quad(k=0).
+\tag{32}\label{zh-math-eq-32}\end{equation*}</div>
+<p>The dot product is bilinear. Sum the balanced shape for \(C\), the two shapes whose first root subtree is a leaf for \(M_{13}\), and the remaining two for \(M_{31}\). To obtain the two columns separately use \(V=(3,-2,0)\) and \(V=(5,0,-2)\). Each complete expression is linear in that one high leaf; the common low leaves must not be added twice. The factors \(1/(m-1)\) give weight \(1/3\) to the balanced tree and \(1/6\) to each chain.</p>
+<p>For a target \(\varepsilon R^j\kappa\), where \(\varepsilon=\pm1\), rotate all four leaf frequencies and amplitudes by \(R^j\) and multiply the frequencies, but not the real amplitudes, by \(\varepsilon\). The same algorithm gives \(\varepsilon R^jC\), \(\varepsilon R^jM_{13}\), and \(\varepsilon R^jM_{31}\). This also follows directly from \(\PP_{Rk}=R\PP_kR^{-1}\) and the three differentiated vertices. After the factor \(i\) is restored, the two signs are complex conjugates. Section <a class="paper-ref" href="#zh-section-5">5</a> proves that these four labelled leaves exhaust all possible contributions to the targets through four leaves in the full twelve-mode problem.</p>
+<h3 id="zh-subsection-2">4.2. Polynomial identities and finite arithmetic conclusions</h3>
+<p>Set</p>
+<div class="equation paper-equation" id="zh-display_math-29">\[
+\mathsf M(X)=\begin{pmatrix}Z_{1v}&amp;Z_{1w}\\ Z_{2v}&amp;Z_{2w}\end{pmatrix}.
+\]</div>
+<p>Direct rational polynomial addition and multiplication in the printed table give</p>
+<div class="equation paper-equation" id="zh-display_math-30">\begin{equation*}
+\det\mathsf M=P,\quad Z_{1v}=r,\quad Z_{1w}=s,
+\quad 3Y_1+4Y_2+6Y_3=0
+\tag{33}\label{zh-math-eq-33}\end{equation*}</div>
+<p>for each column \(Y\) of each of \(C,M_{13},M_{31},Z\). Define the normalized polynomials</p>
+<div class="equation paper-equation" id="zh-display_math-31">\begin{equation*}
+\mathcal C_j=-C_{jv}s+C_{jw}r,\qquad
+\mathcal Z_j=-Z_{jv}s+Z_{jw}r.
+\tag{34}\label{zh-math-eq-34}\end{equation*}</div>
+<p>In particular,</p>
+<div class="equation paper-equation" id="zh-display_math-32">\begin{equation*}
+\mathcal Z=(0,P,-2P/3).
+\tag{35}\label{zh-math-eq-35}\end{equation*}</div>
+<p>All objects used in the following finite calculation are thus specified by rational numbers in this paper.</p>
+<div class="paper-lemma paper-statement" id="zh-lemma-1"><p class="statement-heading"><strong>Lemma 4.1 (Rational certificate).</strong></p>
+<p>Let \(Q=P/(4124532235492/202430025)\). The following exact arithmetic statements hold.</p>
+<ol id="zh-enumerate-1">
+<li><p>\(\gcd(Q,Q&#x27;)=1\). All real roots lie in \((-25,25)\), and the Sturm variation numbers at \(-25,-75/32,-125/64,-25/16,25\) are respectively \(4,4,3,2,2\). None of those endpoints is a root. Thus <a class="paper-ref" href="#zh-display_math-4">(5)</a> contains exactly the two real roots of \(P\).</p></li>
+<li><p>Each of \(Z_{1v},Z_{1w},Z_{2v},Z_{2w}\), the three \(\mathcal C_j\), and the three components of \((-3s+5r,2s,-2r)\) has greatest common divisor one with \(Q\). Thus the original matrix has rank one at both roots, the chosen \((v,w)\) is nonzero, and all three normalized balanced components are nonzero there.</p></li>
+<li><p>On \(I=[-75/32,-125/64]\), interval evaluation gives</p>
+<div class="equation paper-equation" id="zh-display_math-33">\begin{equation*}
+\mathcal C_1(I)\subset
+\left[-\frac{82074009235302994201}{712907528601600},
+-\frac{32000398665717304027531027}{954634510139601715200}\right].
+\tag{36}\label{zh-math-eq-36}\end{equation*}</div>
+<p>Moreover \(|X|\le A_\alpha\), \(|s(X)|\le U_v\), \(|r(X)|\le U_w\), and \(|-3s(X)+5r(X)|\le U_{V_1}\) on \(I\), where</p>
+<div class="equation paper-equation" id="zh-display_math-34">\begin{equation*}
+U_v=\frac{39312542562313}{88443027456},\quad
+U_w=\frac{19711525523669}{58016563200},\quad
+U_{V_1}=\frac{585728660549}{472227840}.
+\tag{37}\label{zh-math-eq-37}\end{equation*}</div>
+<p>These obey \(\bar A=6(1+A_\alpha+U_{V_1}+2U_v+2U_w)\).</p></li>
+<li><p>With the definitions <a class="paper-ref" href="#zh-display_math-7">(8)</a>, the three positive rationals in the minimum <a class="paper-ref" href="#zh-display_math-8">(9)</a> have their unique minimum at \(\ell/(8\bar E)\). Hence \(\bar bT_*&lt;1/2\), \(\bar ET_*=\ell/8\), and \(D_{\rm f}T_*&lt;1/2\).</p></li>
+</ol>
+</div>
+<div class="paper-proof paper-statement" id="zh-proof-3"><p class="statement-heading"><strong>Exact arithmetic verification.</strong></p>
+<p>For clarity, the complete algorithms for checking these finite assertions are given here; large intermediate quotients need not be taken as additional inputs. Represent a polynomial by its coefficients in ascending powers, trim zero trailing coefficients, and use exact rational long division. For the greatest common divisor use Euclid&#x27;s successive remainders and make the last nonzero remainder monic. This gives the gcd values in items 1 and 2. In particular the monic \(Q\) is square-free; neither irreducibility nor a number-field representation is needed.</p>
+<p>For the Sturm calculation start with \((Q,Q&#x27;)\) and append the negative remainder of the last two entries until the remainder is zero. A positive rational rescaling of any entry is allowed; a negative rescaling is not. At each indicated rational endpoint, evaluate exactly by Horner&#x27;s rule, delete zero values, and count sign changes. The resulting counts are those in item 1. The Cauchy bound \(1+\max_{j&lt;6}|q_j|&lt;25\) for the monic \(Q(X)=X^6+\sum_{j&lt;6}q_jX^j\) places all its roots inside this interval. Sturm&#x27;s theorem then gives the asserted complete real-root count and isolation; its hypotheses are square-freeness and the verified nonroot endpoints. These are the usual exact Euclidean and Sturm procedures [<a href="#zh-bibitem-2">2</a>].</p>
+<p>For item 3, perform Horner evaluation in rational intervals. Addition is endpointwise; the endpoints of a product are the minimum and maximum of the four endpoint products. Begin with the leading coefficient as a singleton interval, multiply by \(I\), and add each next coefficient. Apply this rule to \(\mathcal C_1\), \(s\), \(r\), and \(-3s+5r\), constructed by <a class="paper-ref" href="#zh-display_math-31">(34)</a>. It yields <a class="paper-ref" href="#zh-display_math-33">(36)</a> and <a class="paper-ref" href="#zh-display_math-34">(37)</a>; take the larger endpoint absolute value for each upper bound. Finally substitute the displayed rational constants, reduce fractions, and cross-multiply their positive denominators. The three candidate times, in their original order, are</p>
+<div class="equation paper-equation" id="zh-display_math-35">\begin{align*}
+&amp;\frac{14806310400}{13990473994187561},\\
+&amp;\frac{137004842759380260925278829617938421911800292198400000000}
+{41232299689611034755668076451183233780893088052675593910262741694227351226981677},\\
+&amp;\frac{181772665668062877931536384000000}
+{2738402518998898245306036855761599274683120039481}.
+\end{align*}</div>
+<p>The second is strictly smaller than the others, proving item 4.</p>
+<p>The coefficient and rational assertions in this lemma were checked by exact computation, including a separately organized four-leaf calculation and a verifier for the rational root evidence. The definitions, complete coefficient inputs, arithmetic operations, and checkable conclusions are printed here so that the argument does not require access to a particular program or private computation record. No floating-point root or time approximation is used in the proof.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<h2 id="zh-section-5">5. Application to the fixed twelve-mode datum</h2>
+<p>We verify the support hypotheses for the full recursion, then apply the exact algebra and analytic bounds. These steps also prove Theorem <a class="paper-ref" href="#zh-theorem-1">2.1</a>.</p>
+<h3 id="zh-subsection-3">5.1. All possible short-leaf target contributions</h3>
+<p>The coordinate sums of the positive low and high frequencies are \(1\) and \(10\), respectively. Modulo nine every initial frequency has coordinate sum \(1\) or \(-1\), whereas every member of \(F+F\) has sum \(0,2\), or \(-2\). Thus \(L\cap F=\varnothing\). All two-leaf nonzero frequencies belong to \(L\), and zero output vanishes by incompressibility. Therefore \(P_Lv_1=v_1\) as an identity for the entire time interval, and \(g(0)=0\).</p>
+<p>Consider a representation of \(\kappa\) by at most four signed initial frequencies. If \(h\) is the number of positive high leaves minus negative high leaves and \(l\) the analogous signed number of low leaves, its coordinate sum satisfies \(10h+l=13\) and \(|h|+|l|\le4\). The only possibility is \(h=1,l=3\). The representation must therefore use exactly one positive high leaf and three positive low leaves. The differences from the three possible high leaves are</p>
+<div class="equation paper-equation" id="zh-display_math-36">\[
+\kappa-p_0=(1,1,1),\quad
+\kappa-Rp_0=(-2,2,3),\quad
+\kappa-R^2p_0=(0,-1,4).
+\]</div>
+<p>Only the first is a sum of three positive coordinate vectors. Thus the four leaves are precisely \(p_0,e_1,e_2,e_3\), each once. Rotation and sign reversal prove the corresponding statement for all six targets. In particular \(P_{D_j}v_n=0\) for \(n=0,1,2\) at all times. These support identities follow from <a class="paper-ref" href="#zh-display_math-12">(14)</a>, not from a test of only the initial Taylor coefficients.</p>
+<p>It follows that the algorithm of Section <a class="paper-ref" href="#zh-section-4">4</a> computes the complete four-leaf leading terms at the targets. By <a class="paper-ref" href="#zh-display_math-32">(35)</a>, \(M_0=0\) on every \(D_j\). By <a class="paper-ref" href="#zh-display_math-33">(36)</a> and the restored phase, the common pair norm is</p>
+<div class="equation paper-equation" id="zh-display_math-37">\begin{equation*}
+\omega:=\norm{P_{D_j}W_0}_{\A}=2|\mathcal C(\alpha_*)|\ge\ell&gt;0.
+\tag{38}\label{zh-math-eq-38}\end{equation*}</div>
+<p>Here \(W_0\) can equivalently be defined with \(H=D\) and then restricted to \(D_j\). The factor two counts both conjugate Fourier coefficients.</p>
+<h3 id="zh-subsection-4">5.2. Full-data bounds and the original time interval</h3>
+<p>The actual norm and support radius of <a class="paper-ref" href="#zh-display_math-6">(7)</a> are</p>
+<div class="equation paper-equation" id="zh-display_math-38">\[
+A=6\left(\sqrt{1+\alpha_*^2}
++\sqrt{(3v_*+5w_*)^2+4v_*^2+4w_*^2}\right),\qquad K=\sqrt{38}&lt;7.
+\]</div>
+<p>The upper bounds of Lemma <a class="paper-ref" href="#zh-lemma-1">4.1</a> give \(A\le\bar A\); in particular every one of the twelve modes is included. Consequently \(4AK\le\bar b\), and \(T_*\le(2\bar b)^{-1}\le(8AK)^{-1}\). Proposition <a class="paper-ref" href="#zh-proposition-1">3.1</a> constructs the unique full smooth solution throughout \([0,T_*]\). Rotation invariance and uniqueness imply \(u(Rx,t)=Ru(x,t)\), although the following bounds require only the coefficient symmetries already established.</p>
+<p>Since</p>
+<div class="equation paper-equation" id="zh-display_math-39">\[
+\bar E=80\bar A^4 7^5+768\bar A^5 7^4,
+\]</div>
+<p>it dominates both \(C_E\) and \(C_{\rm src}\) in <a class="paper-ref" href="#zh-display_math-22">(28)</a>–<a class="paper-ref" href="#zh-display_math-22">(29)</a>, with \(\nu=1\). For each \(D_j\), Proposition <a class="paper-ref" href="#zh-proposition-2">3.2</a> therefore gives</p>
+<div class="equation paper-equation" id="zh-display_math-40">\begin{equation*}
+\norm{S_j-t^3P_{D_j}W_0}_{\A}\le\bar E t^4,
+\qquad \norm{P_{D_j}u-S_j}_{\A}\le\bar E t^4.
+\tag{39}\label{zh-math-eq-39}\end{equation*}</div>
+<p>For \(0&lt;t\le T_*\), \(\bar Et\le\ell/8\le\omega/8\). The reverse triangle inequality gives</p>
+<div class="equation paper-equation" id="zh-display_math-41">\[
+\norm{S_j}_{\A}\ge\tfrac78\omega t^3,\qquad
+\norm{P_{D_j}u}_{\A}\ge\tfrac34\omega t^3,
+\qquad
+\frac{\norm{P_{D_j}u-S_j}_{\A}}{\norm{S_j}_{\A}}\le\frac17.
+\]</div>
+<p>The \(D_j\) are disjoint, so summing their Wiener norms proves the same ratio for \(D\).</p>
+<h3 id="zh-subsection-5">5.3. Nonzero generation of the initially empty band</h3>
+<p>Set \(r_0=(1,1,0)\). Its only two-leaf input pair is \(e_1,e_2\) and its reverse. Indeed coordinate sums for two leaves force two positive low leaves. With \(U=(0,1,\alpha_*)\) and \(RU=(\alpha_*,0,1)\), the ordered sum before projection is \((\alpha_*,\alpha_*,1+\alpha_*^2)\). Projection onto \(r_0^\perp\) removes the first two coordinates. Both input frequencies have squared length one and the output has squared length two. Thus the complete first response is exactly</p>
+<div class="equation paper-equation" id="zh-display_math-42">\begin{equation*}
+(v_1)_{r_0}(t)=-it e^{-2t}(1+\alpha_*^2)e_3.
+\tag{40}\label{zh-math-eq-40}\end{equation*}</div>
+<p>The initial coefficient at \(r_0\) is zero. Using \(1-e^{-2t}\le2t\) and <a class="paper-ref" href="#zh-display_math-13">(16)</a>,</p>
+<div class="equation paper-equation" id="zh-display_math-43">\[
+\left|g_{r_0}(t)+it(1+\alpha_*^2)e_3\right|
+\le2(1+A_\alpha^2)t^2+2\bar A\bar b^2t^2
+=D_{\rm f}t^2.
+\]</div>
+<p>Since \(D_{\rm f}T_*&lt;1/2\), this proves \(|g_{r_0}(t)|\ge t/2\) on the whole positive interval. All conclusions of Theorem <a class="paper-ref" href="#zh-theorem-1">2.1</a> now follow.</p>
+<h2 id="zh-section-6">6. Scope and verification</h2>
+<p>The conclusion identifies a specified Duhamel contribution to three target frequency pairs in one full solution. The datum is fixed before time evolves, and the source uses the actual generated band throughout the integral. Exact cancellation concerns the complete mixed leading coefficient. The mixed positive-time trees need not vanish; their heat correction is included in the fourth-order error.</p>
+<p>The time \(T_*\) is obtained from absolute majorants and is deliberately conservative. It supplies an explicit nonempty interval and a relative source estimate, without optimizing the interval. A lower bound on a target Fourier coefficient is not a statement about the sign of the energy flux. Nor does the linear independence of the target frequencies show that their velocity polarizations form a reusable seed. The theorem does not establish repeated regeneration, an infinite cascade, norm growth, or finite-time singularity.</p>
+<h4 id="zh-paragraph-1">Verification materials.</h4>
+<p>The complete rational coefficient table and the finite algorithms needed to reproduce the arithmetic conclusions are part of this manuscript. A separate local support package contains mathematical certificate data and a portable exact verifier. It is auxiliary to the printed definitions and proof, and is not a claim of formal verification in a proof assistant. The analytic estimates are proved above for the full equation, rather than inferred from a truncated numerical evolution.</p>
+<h4 id="zh-paragraph-2">AI assistance and review status.</h4>
+<p>AI systems assisted the symbolic derivations, code preparation, checking, and exposition. Separate computational organizations and additional AI-assisted checks were used, but they are not independent human peer review or machine-checked formal proofs. The author is responsible for the manuscript. This version is a working manuscript and has not been independently peer reviewed.</p>
+<h2 id="zh-section-7">Appendix A. Complete rational coefficient table</h2>
+<p>For a row \([a_0,a_1,a_2,a_3]\), the polynomial is \(a_0+a_1X+a_2X^2+a_3X^3\). Each pair of rows gives the coefficients of \(v\) and \(w\) in one vector component. The coefficient algorithm <a class="paper-ref" href="#zh-display_math-28">(32)</a> specifies all ordered terms underlying these numbers. Together with <a class="paper-ref" href="#zh-display_math-3">(2)</a>–<a class="paper-ref" href="#zh-display_math-3">(4)</a>, this appendix supplies all rational inputs to the arithmetic verification in Lemma <a class="paper-ref" href="#zh-lemma-1">4.1</a>.</p>
+<h3 id="zh-subsection-6">\(C\)</h3>
+<div class="paper-center" id="zh-center-1">
+<div class="table-wrap" id="zh-tabular-1"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{2615504}{70821}\)</td><td>\(\frac{2300276}{70821}\)</td><td>\(\frac{2615504}{70821}\)</td><td>\(\frac{2300276}{70821}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{7408984}{128527}\)</td><td>\(\frac{22702528}{385581}\)</td><td>\(\frac{7408984}{128527}\)</td><td>\(\frac{22702528}{385581}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{53398}{2623}\)</td><td>\(-\frac{351272}{13115}\)</td><td>\(-\frac{53398}{2623}\)</td><td>\(-\frac{351272}{13115}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{618764}{128527}\)</td><td>\(-\frac{889852}{128527}\)</td><td>\(\frac{618764}{128527}\)</td><td>\(-\frac{889852}{128527}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{346588}{70821}\)</td><td>\(\frac{572206}{354105}\)</td><td>\(-\frac{346588}{70821}\)</td><td>\(\frac{572206}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{12351004}{385581}\)</td><td>\(-\frac{3190520}{128527}\)</td><td>\(-\frac{12351004}{385581}\)</td><td>\(-\frac{3190520}{128527}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="zh-subsection-7">\(Z\)</h3>
+<div class="paper-center" id="zh-center-2">
+<div class="table-wrap" id="zh-tabular-2"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{1807613971}{12393675}\)</td><td>\(\frac{9523582624}{20656125}\)</td><td>\(\frac{27816146846}{61968375}\)</td><td>\(\frac{196585982}{1770525}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{536919079}{2699067}\)</td><td>\(\frac{9469267576}{13495335}\)</td><td>\(\frac{10524885968}{13495335}\)</td><td>\(\frac{646271818}{2699067}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{283061969}{4131225}\)</td><td>\(-\frac{831709144}{2950875}\)</td><td>\(-\frac{6974917244}{20656125}\)</td><td>\(-\frac{126138761}{1180350}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{41668527}{899689}\)</td><td>\(\frac{65415951}{4498445}\)</td><td>\(-\frac{445867592}{4498445}\)</td><td>\(-\frac{84482311}{1799378}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{135073219}{4957470}\)</td><td>\(-\frac{528289184}{12393675}\)</td><td>\(\frac{2784071}{4131225}\)</td><td>\(\frac{5569154}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{703593187}{5398134}\)</td><td>\(-\frac{973093138}{2699067}\)</td><td>\(-\frac{291380520}{899689}\)</td><td>\(-\frac{238653598}{2699067}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="zh-subsection-8">\(M_{13}\)</h3>
+<div class="paper-center" id="zh-center-3">
+<div class="table-wrap" id="zh-tabular-3"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{1862244506}{12393675}\)</td><td>\(\frac{29012164492}{61968375}\)</td><td>\(\frac{28749609676}{61968375}\)</td><td>\(\frac{220946972}{1770525}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{197843914}{899689}\)</td><td>\(\frac{9848113606}{13495335}\)</td><td>\(\frac{10737054758}{13495335}\)</td><td>\(\frac{221447588}{899689}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{110057513}{1377075}\)</td><td>\(-\frac{2052627541}{6885375}\)</td><td>\(-\frac{780936266}{2295125}\)</td><td>\(-\frac{7120292}{65575}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{28435077}{899689}\)</td><td>\(\frac{12088176}{4498445}\)</td><td>\(-\frac{353248767}{4498445}\)</td><td>\(-\frac{31876662}{899689}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{10831087}{495747}\)</td><td>\(-\frac{17522536}{495747}\)</td><td>\(-\frac{12718082}{2478735}\)</td><td>\(\frac{3538354}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{117878675}{899689}\)</td><td>\(-\frac{989646631}{2699067}\)</td><td>\(-\frac{932405969}{2699067}\)</td><td>\(-\frac{89472686}{899689}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="zh-subsection-9">\(M_{31}\)</h3>
+<div class="paper-center" id="zh-center-4">
+<div class="table-wrap" id="zh-tabular-4"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(-\frac{10926107}{2478735}\)</td><td>\(-\frac{88283324}{12393675}\)</td><td>\(-\frac{186692566}{12393675}\)</td><td>\(-\frac{1624066}{118035}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(-\frac{56612663}{2699067}\)</td><td>\(-\frac{25256402}{899689}\)</td><td>\(-\frac{14144586}{899689}\)</td><td>\(-\frac{18070946}{2699067}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(\frac{9422114}{826245}\)</td><td>\(\frac{67183723}{4131225}\)</td><td>\(\frac{2140366}{826245}\)</td><td>\(\frac{405299}{236070}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{13233450}{899689}\)</td><td>\(\frac{10665555}{899689}\)</td><td>\(-\frac{18523765}{899689}\)</td><td>\(-\frac{20728987}{1799378}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{8920783}{1652490}\)</td><td>\(-\frac{90225784}{12393675}\)</td><td>\(\frac{71942623}{12393675}\)</td><td>\(\frac{406160}{70821}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(\frac{3678863}{5398134}\)</td><td>\(\frac{5517831}{899689}\)</td><td>\(\frac{8323487}{385581}\)</td><td>\(\frac{29764460}{2699067}\)</td></tr>
+</tbody></table></div>
+</div>
+<h2 id="zh-bibliography-1">References</h2><ol class="paper-references">
+<li id="zh-bibitem-1">J. C. Robinson, J. L. Rodrigo, and W. Sadowski, <em>The Three-Dimensional Navier–Stokes Equations: Classical Theory</em>, Cambridge Studies in Advanced Mathematics 157, Cambridge University Press, Cambridge, 2016. <a href="https://doi.org/10.1017/CBO9781139095143">doi:10.1017/CBO9781139095143</a>.</li>
+<li id="zh-bibitem-2">S. Basu, R. Pollack, and M.-F. Roy, <em>Algorithms in Real Algebraic Geometry</em>, second edition, Algorithms and Computation in Mathematics 10, Springer, Berlin, 2006. <a href="https://doi.org/10.1007/3-540-33099-2">doi:10.1007/3-540-33099-2</a>.</li>
+</ol>
+</article>
+<aside class="source-review-note"><h2>AI 辅助与责任</h2><p>生成式 AI 协助稿件起草、证明组织、符号推导及核验脚本。文中区分精确有限计算与解析证明；自动检查不等于真人同行评审或形式化证明认证。作者对稿件及其主张负责。</p></aside>
+<footer class="footer">C. K. Zeng · 9 September 2026 · Working manuscript · NOT CLAY</footer></main>
+<main data-language="en" data-title="Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow"><nav class="site-nav"><a href="/research-review.html?lang=en">Research home</a><a href="/results/?lang=en">Frontier Results</a></nav>
+<header class="hero"><p class="kicker">WORKING MANUSCRIPT · 2026-09-09 · NOT CLAY</p><h1>Finite Two-Layer Source Selection in Three-Dimensional Navier–Stokes Flow</h1>
+<p class="source-subtitle" lang="zh-CN">三维 Navier–Stokes 流中固定初值的有限两层来源选择</p>
+<p class="author">C. K. Zeng · Independent Researcher · ORCID <a href="https://orcid.org/0009-0002-5402-3374">0009-0002-5402-3374</a></p>
+<p class="source-status">Working manuscript prepared in standard arXiv-compatible LaTeX format; not submitted to arXiv.</p><p class="scope">The theorem concerns finite two-layer source selection from one fixed datum at viscosity one on the standard three-torus. The source ratio is not an energy-transfer fraction. Gradient amplification, infinite regeneration, and finite-time singularity are not established.</p>
+<div class="downloads source-actions"><a href="#en-full-text">Read English full text</a><a href="/assets/papers/fixed-datum-three-direction-supply.pdf">English PDF</a></div>
+<p class="source-language-note">Titles, abstracts and scope notes are bilingual. The complete manuscript below and its PDF are in English; a full Chinese translation is not supplied.</p></header>
+<details class="contents source-contents"><summary>Contents</summary><ol><li class="toc-level-2"><a href="#en-section-1">1. Introduction</a></li><li class="toc-level-2"><a href="#en-section-2">2. The fixed datum and the main theorem</a></li><li class="toc-level-2"><a href="#en-section-3">3. Full solutions and quantitative four-leaf bounds</a></li><li class="toc-level-2"><a href="#en-section-4">4. Exact finite coefficient and root certification</a></li><li class="toc-level-3"><a href="#en-subsection-1">4.1. A completely specified finite coefficient algorithm</a></li><li class="toc-level-3"><a href="#en-subsection-2">4.2. Polynomial identities and finite arithmetic conclusions</a></li><li class="toc-level-2"><a href="#en-section-5">5. Application to the fixed twelve-mode datum</a></li><li class="toc-level-3"><a href="#en-subsection-3">5.1. All possible short-leaf target contributions</a></li><li class="toc-level-3"><a href="#en-subsection-4">5.2. Full-data bounds and the original time interval</a></li><li class="toc-level-3"><a href="#en-subsection-5">5.3. Nonzero generation of the initially empty band</a></li><li class="toc-level-2"><a href="#en-section-6">6. Scope and verification</a></li><li class="toc-level-2"><a href="#en-section-7">A. Complete rational coefficient table</a></li><li class="toc-level-3"><a href="#en-subsection-6">\(C\)</a></li><li class="toc-level-3"><a href="#en-subsection-7">\(Z\)</a></li><li class="toc-level-3"><a href="#en-subsection-8">\(M_{13}\)</a></li><li class="toc-level-3"><a href="#en-subsection-9">\(M_{31}\)</a></li></ol></details>
+<article class="paper-body" id="en-full-text" lang="en"><div class="paper-abstract" id="en-abstract-1">
+<h2>Abstract</h2>
+<p>I give an explicit real algebraic trigonometric-polynomial initial datum for the unforced incompressible Navier–Stokes equations on the standard three-dimensional torus at viscosity one. In the same full smooth solution, an initially empty Fourier band is generated and its actual quadratic self-interaction supplies three linearly independent target frequency pairs. On one explicit positive rational time interval, the Wiener norm of each target minus this Duhamel source is at most one seventh of the source norm; the source and target are nonzero at every positive time in that interval. The construction cancels the complete mixed four-leaf leading coefficient while retaining a nonzero balanced coefficient. Exact rational computation certifies the coefficients, both real roots of the parameter polynomial, and the original time window. A full Wiener-series construction and explicit heat-tree and infinite-tail bounds transfer those finite identities to the original equations. The result is finite two-layer source selection from one fixed datum; it asserts neither a net energy transfer nor an iterated regeneration or singularity mechanism.</p>
+</div>
+<p><strong>2020 Mathematics Subject Classification.</strong> 35Q30, 76D05, 65G20.</p>
+<p><strong>Keywords.</strong> Navier–Stokes equations; Fourier–Leray interaction; Wiener algebra; fixed initial datum; exact rational certificate.</p>
+<h2 id="en-section-1">1. Introduction</h2>
+<p>A nonzero coefficient in a finite nonlinear expansion need not identify the dominant source of the corresponding mode in a solution of the full equations. Other ordered interactions can reach the same frequency, and their leading terms can be of the same size. Heat propagation and the remainder of the expansion must also be controlled. This paper constructs one explicit example in which this source comparison can be made rigorously for three target directions at once.</p>
+<p>The datum consists of three cyclically related low-frequency pairs and three cyclically related high-frequency pairs. Each target first appears at four leaves. The complete four-leaf contribution splits into a balanced \(2+2\) part and the sum of the \(1+3\) and \(3+1\) parts. A real algebraic choice of the polarizations cancels the entire mixed leading term, without cancelling the balanced term. The source studied below is nevertheless defined from the actual generated band of the same Navier–Stokes solution, not from its leading coefficient. Two separate remainder estimates establish the comparison on a common interval, including its positive endpoint.</p>
+<p>The main contribution is this explicit fixed-datum construction and its quantitative source attribution. Local smooth existence, the heat semigroup, Wiener estimates, ordered binary trees, cyclic symmetry, and real-root isolation are used as tools. We make no claim of a new local existence principle or of priority for those tools. For the classical analytic setting see [<a href="#en-bibitem-1">1</a>]; for the real algebraic algorithms used in the finite certificate see [<a href="#en-bibitem-2">2</a>]. The analytic estimates needed here are proved below, and the exact finite arithmetic is specified in Section <a class="paper-ref" href="#en-section-4">4</a> and Appendix <a class="paper-ref" href="#en-section-7">A</a>.</p>
+<p>Source selection has a precise meaning in this paper: the norm of a target minus one specified Duhamel source is small relative to that source. This is not an orthogonal decomposition of kinetic energy. In particular, the factor \(1/7\) is not an energy-transfer fraction. The construction concerns two finite layers; no repeated input structure or infinite-scale evolution is asserted.</p>
+<p>Section <a class="paper-ref" href="#en-section-2">2</a> states the explicit datum and the main theorem. Section <a class="paper-ref" href="#en-section-3">3</a> proves the full-solution and source estimates for general finite data. Section <a class="paper-ref" href="#en-section-4">4</a> gives the finite coefficient and real-root certificate. Section <a class="paper-ref" href="#en-section-5">5</a> verifies the support conditions and proves the theorem for the stated datum.</p>
+<h2 id="en-section-2">2. The fixed datum and the main theorem</h2>
+<p>We use \(\T^3=(\R/2\pi\Z)^3\), Fourier coefficients \(f_k=(2\pi)^{-3}\int_{\T^3}f(x)e^{-ik\cdot x}\dd x\), and</p>
+<div class="equation paper-equation" id="en-display_math-1">\[
+\norm{f}_{\A_m}=\sum_{k\in\Z^3}(1+|k|)^m|f_k|,
+\qquad \norm{f}_{\A}=\norm{f}_{\A_0},\qquad
+|f|_{\dot\A_1}=\sum_k|k|\,|f_k|.
+\]</div>
+<p>Vector lengths are Hermitian Euclidean lengths. A frequency dot product inside a Fourier convolution is complex bilinear. For divergence-free inputs define the full ordered bilinear operator</p>
+<div class="equation paper-equation" id="en-display_math-2">\begin{equation*}
+B(f,z)_k=-i\PP_k\sum_{r+s=k}(f_r\cdot s)z_s,
+\quad \PP_k=I-\frac{k\otimes k}{|k|^2}\ (k\ne0),
+\qquad B(f,z)_0=0.
+\tag{1}\label{en-math-eq-1}\end{equation*}</div>
+<p>For \(k=0\) the ordered summands vanish by \(f_r\cdot r=0\). For a set \(H\subset\Z^3\), \(P_H\) retains precisely its Fourier coefficients.</p>
+<p>Define the rational polynomials</p>
+<div class="equation paper-equation" id="en-display_math-3">\begin{align*}
+P(X)={}&amp;\frac{12379608041588}{607290075}
++\frac{129169813631527}{1012150125}X
++\frac{111813118362046}{337383375}X^2\\
+&amp;+\frac{1377133612024132}{3036450375}X^3
++\frac{207263796033514}{607290075}X^4\\
+&amp;+\frac{401161881122159}{3036450375}X^5
++\frac{4124532235492}{202430025}X^6,\tag{2}\label{en-math-eq-2}\\
+r(X)={}&amp;\frac{1807613971}{12393675}
++\frac{9523582624}{20656125}X
++\frac{27816146846}{61968375}X^2
++\frac{196585982}{1770525}X^3,\tag{3}\label{en-math-eq-3}\\
+s(X)={}&amp;\frac{536919079}{2699067}
++\frac{9469267576}{13495335}X
++\frac{10524885968}{13495335}X^2
++\frac{646271818}{2699067}X^3.
+\tag{4}\label{en-math-eq-4}\end{align*}</div>
+<p>Lemma <a class="paper-ref" href="#en-lemma-1">4.1</a> proves that \(P\) has exactly two real roots, both simple, one in each of</p>
+<div class="equation paper-equation" id="en-display_math-4">\begin{equation*}
+(-75/32,-125/64],\qquad(-125/64,-25/16].
+\tag{5}\label{en-math-eq-5}\end{equation*}</div>
+<p>Let \(\alpha_*\) be the first root and set</p>
+<div class="equation paper-equation" id="en-display_math-5">\begin{equation*}
+v_*=-s(\alpha_*),\qquad w_*=r(\alpha_*),\qquad
+U=(0,1,\alpha_*),\qquad
+V=(3v_*+5w_*,-2v_*,-2w_*).
+\tag{6}\label{en-math-eq-6}\end{equation*}</div>
+<p>There is no further scaling of \((v_*,w_*)\). Put \(R(x_1,x_2,x_3)=(x_3,x_1,x_2)\) and \(p_0=(2,3,5)\), and define</p>
+<div class="equation paper-equation" id="en-display_math-6">\begin{equation*}
+\begin{split}
+a_*(x)=\sum_{j=0}^2\big[&amp;R^jU
+\{e^{i(R^je_1)\cdot x}+e^{-i(R^je_1)\cdot x}\}\\
+&amp;+R^jV
+\{e^{i(R^jp_0)\cdot x}+e^{-i(R^jp_0)\cdot x}\}\big].
+\end{split}
+\tag{7}\label{en-math-eq-7}\end{equation*}</div>
+<p>This fixes twelve Fourier coefficients, including both signs. In particular, it fixes a single real, smooth, divergence-free, mean-zero initial datum.</p>
+<p>Here and below \(F=\supp\widehat a_*\), \(L=(F+F)\setminus\{0\}\), \(\kappa=(3,4,6)\), \(D_j=\{\pm R^j\kappa\}\), and \(D=D_0\cup D_1\cup D_2\). The three positive target vectors have determinant \(91\). The constants used to state the time interval are</p>
+<div class="equation paper-equation" id="en-display_math-7">\begin{align*}
+\bar A&amp;=\frac{13990473994187561}{829153382400},
+&amp; A_\alpha&amp;=\frac{75}{32},
+&amp; \ell&amp;=\frac{32000398665717304027531027}{477317255069800857600},
+\tag{8}\label{en-math-eq-8}\\
+\bar b&amp;=28\bar A,
+&amp;\bar E&amp;=80\bar A^4 7^5+3\bar A\bar b^4,
+&amp;D_{\mathrm f}&amp;=2(1+A_\alpha^2)+2\bar A\bar b^2.
+\end{align*}</div>
+<p>Define the explicit positive rational number</p>
+<div class="equation paper-equation" id="en-display_math-8">\begin{equation*}
+T_*=\min\left\{\frac1{2\bar b},\frac\ell{8\bar E},
+\frac1{2D_{\mathrm f}}\right\}
+=\frac\ell{8\bar E}.
+\tag{9}\label{en-math-eq-9}\end{equation*}</div>
+<p>The equality and all rational inequalities used below are included in Lemma <a class="paper-ref" href="#en-lemma-1">4.1</a>. This is a conservative local interval obtained from absolute remainder estimates, not a claimed time scale of amplification.</p>
+<div class="paper-theorem paper-statement" id="en-theorem-1"><p class="statement-heading"><strong>Theorem 2.1 (Finite two-layer source selection).</strong></p>
+<p>For viscosity one and zero external force, the datum <a class="paper-ref" href="#en-display_math-6">(7)</a> has a unique smooth Navier–Stokes solution \(u\) on \([0,T_*]\). Set \(g=P_Lu\) and, for \(j=0,1,2\), define</p>
+<div class="equation paper-equation" id="en-display_math-9">\begin{equation*}
+S_j(t)=\int_0^t e^{(t-s)\Delta}P_{D_j}B(g(s),g(s))\dd s.
+\tag{10}\label{en-math-eq-10}\end{equation*}</div>
+<p>Then \(g(0)=0\). For every \(0&lt;t\le T_*\) and every \(j\),</p>
+<div class="equation paper-equation" id="en-display_math-10">\begin{gather*}
+|g_{(1,1,0)}(t)|\ge t/2,
+\qquad \norm{S_j(t)}_{\A}&gt;0,
+\qquad \norm{P_{D_j}u(t)}_{\A}&gt;0,\tag{11}\label{en-math-eq-11}\\
+\frac{\norm{P_{D_j}u(t)-S_j(t)}_{\A}}
+{\norm{S_j(t)}_{\A}}\le\frac17&lt;\frac14.
+\tag{12}\label{en-math-eq-12}\end{gather*}</div>
+<p>The same ratio bound holds for \(P_Du\) and \(S_D=\sum_{j=0}^2S_j\).</p>
+</div>
+<p>The source in <a class="paper-ref" href="#en-display_math-9">(10)</a> uses the actual projection of the same complete solution at every integration time. No leading-order field or frequency projection is reset as a new initial datum. The remainder \(P_{D_j}u-S_j\) retains all other contributions. The assertion concerns three frequency directions, not the rank of three velocity vectors or a repeated input profile.</p>
+<h2 id="en-section-3">3. Full solutions and quantitative four-leaf bounds</h2>
+<p>This section proves the analytic estimates used for the fixed datum. Let \(a\) be any nonzero real, divergence-free, mean-zero trigonometric polynomial, let \(F=\supp\widehat a\), and put \(A=\norm{a}_{\A}\) and \(K=\max_{k\in F}|k|\). In this section the viscosity is any fixed \(\nu&gt;0\). Define the full, untruncated recursion</p>
+<div class="equation paper-equation" id="en-display_math-11">\begin{equation*}
+v_0(t)=e^{\nu t\Delta}a,\qquad
+v_n(t)=\sum_{j=0}^{n-1}\int_0^t e^{\nu(t-s)\Delta}
+B(v_j(s),v_{n-1-j}(s))\dd s\quad(n\ge1).
+\tag{13}\label{en-math-eq-13}\end{equation*}</div>
+<p>Each \(v_n\) contains \(n+1\) leaves. In particular, if \(\Sigma_m\) is the set of sums of \(m\) elements of \(F\), then</p>
+<div class="equation paper-equation" id="en-display_math-12">\begin{equation*}
+\supp\widehat v_n(t)\subset\Sigma_{n+1},\qquad
+|k|\le(n+1)K\quad(k\in\Sigma_{n+1}).
+\tag{14}\label{en-math-eq-14}\end{equation*}</div>
+<p>All coincident frequencies are added in this recursion.</p>
+<div class="paper-proposition paper-statement" id="en-proposition-1"><p class="statement-heading"><strong>Proposition 3.1 (Full-series construction).</strong></p>
+<p>Put \(q(t)=4AKt\) and \(T_{\rm a}=(8AK)^{-1}\). On \([0,T_{\rm a}]\), \(u=\sum_{n\ge0}v_n\) is the unique smooth solution of the unforced Navier–Stokes equations with datum \(a\). For every integer \(m\ge0\) and \(N\ge0\),</p>
+<div class="equation paper-equation" id="en-display_math-13">\begin{align*}
+\norm{v_n(t)}_{\A}&amp;\le A q^n,
+&amp;\norm{v_1(t)}_{\A}&amp;\le Aq/4,\tag{15}\label{en-math-eq-15}\\
+\norm{u(t)}_{\A}&amp;\le\frac{A}{1-q},
+&amp;\left\lVert u(t)-\sum_{n=0}^Nv_n(t)\right\rVert_{\A}
+&amp;\le\frac{Aq^{N+1}}{1-q},\tag{16}\label{en-math-eq-16}\\
+\norm{u(t)}_{\A_m}&amp;\le\frac{A(1+K)^m m!}{(1-q)^{m+1}},\tag{17}\label{en-math-eq-17}\\
+\left\lVert u(t)-\sum_{n=0}^Nv_n(t)\right\rVert_{\A_m}
+&amp;\le\frac{A[1+(N+2)K]^m m!q^{N+1}}{(1-q)^{m+1}}.
+\tag{18}\label{en-math-eq-18}\end{align*}</div>
+<p>Here and below \(q=q(t)\) in time-dependent estimates.</p>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-1"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The Leray projections have norm at most one, so</p>
+<div class="equation paper-equation" id="en-display_math-14">\begin{equation*}
+\norm{B(f,z)}_{\A}\le\norm{f}_{\A}|z|_{\dot\A_1},\qquad
+\norm{B(f,z)}_{\A_m}\le\norm{f}_{\A_m}\norm{z}_{\A_{m+1}}.
+\tag{19}\label{en-math-eq-19}\end{equation*}</div>
+<p>The second bound uses \(1+|r+s|\le(1+|r|)(1+|s|)\). By <a class="paper-ref" href="#en-display_math-12">(14)</a>,</p>
+<div class="equation paper-equation" id="en-display_math-15">\[
+\norm{v_n(t)}_{\A}\le K\sum_{j=0}^{n-1}(n-j)
+\int_0^t\norm{v_j(s)}_{\A}\norm{v_{n-1-j}(s)}_{\A}\dd s.
+\]</div>
+<p>Let \(c_0=1\) and \(c_n=\sum_{j=0}^{n-1}c_jc_{n-1-j}\). These count plane binary trees with \(n\) internal vertices; encoding such a tree by a balanced parenthesis word of length \(2n\) gives \(c_n\le4^n\). Symmetry in \(j\) gives \(\sum_j(n-j)c_jc_{n-1-j}=(n+1)c_n/2\). Since integration of \(s^{n-1}\) divides by \(n\), and \((n+1)/(2n)\le1\), induction yields \(\norm{v_n}_{\A}\le c_n A^{n+1}(Kt)^n\). The \(n=1\) estimate directly gives \(A^2Kt=Aq/4\). Thus the series and its tails satisfy <a class="paper-ref" href="#en-display_math-13">(15)</a>–<a class="paper-ref" href="#en-display_math-13">(16)</a> when \(q\le1/2\).</p>
+<p>The support bound also gives \(\norm{v_n}_{\A_m}\le A[1+(n+1)K]^m q^n\). Use \((r+1)^m\le m!\binom{r+m}{m}\) and sum the resulting power series. For the tail set \(n=N+1+r\) and use \(1+(N+2+r)K\le[1+(N+2)K](r+1)\). This proves <a class="paper-ref" href="#en-display_math-13">(17)</a>–<a class="paper-ref" href="#en-display_math-13">(18)</a>.</p>
+<p>In every \(\A_m\) the Laplacian series and the double nonlinear series are absolutely and uniformly convergent: apply the preceding estimates with \(m+2\) and <a class="paper-ref" href="#en-display_math-14">(19)</a> with \(m+1\). Differentiating <a class="paper-ref" href="#en-display_math-11">(13)</a> and summing therefore gives \(u\in C^1([0,T_{\rm a}];\A_m)\) and \(u_t=\nu\Delta u+B(u,u)\), \(u(0)=a\); at zero take the right derivative. Repeated differentiation of this equation uses only finitely many higher spatial norms and proves smoothness on the same closed interval.</p>
+<p>For completeness, incompressibility moves the differentiated frequency from the second input to the output. Since \(\sup_{x\ge0}xe^{-\nu\tau x^2}\le(\nu\tau)^{-1/2}\),</p>
+<div class="equation paper-equation" id="en-display_math-16">\[
+\norm{e^{\nu\tau\Delta}B(f,z)}_{\A}
+\le(\nu\tau)^{-1/2}\norm{f}_{\A}\norm{z}_{\A}.
+\]</div>
+<p>For two continuous mild solutions with the same initial value, their difference on a subinterval of length \(h\) is bounded by its supremum norm times \(2\sqrt{h/\nu}(M_u+M_{\wt u})\). Choosing this factor below one and covering the common compact interval by finitely many subintervals proves uniqueness. This comparison is used after existence has been established.</p>
+<p>The recursion preserves reality, incompressibility, and zero mean. Set</p>
+<div class="equation paper-equation" id="en-display_math-17">\begin{equation*}
+p_k=-\frac1{|k|^2}\sum_{r+s=k}(k\cdot u_r)(k\cdot u_s)\quad(k\ne0),
+\qquad p_0=0.
+\tag{20}\label{en-math-eq-20}\end{equation*}</div>
+<p>The weighted bounds imply smoothness of this pressure and recover \(u_t-\nu\Delta u+(u\cdot\nabla)u+\nabla p=0\).</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<p>Let \(L\) and \(H\) be fixed frequency sets satisfying, throughout this interval,</p>
+<div class="equation paper-equation" id="en-display_math-18">\begin{equation*}
+L\cap F=\varnothing,\qquad P_Lv_1=v_1,\qquad
+P_Hv_j=0\quad(j=0,1,2).
+\tag{21}\label{en-math-eq-21}\end{equation*}</div>
+<p>Define \(g=P_Lu\) and</p>
+<div class="equation paper-equation" id="en-display_math-19">\begin{align*}
+S(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_HB(g(s),g(s))\dd s,\\
+W(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_HB(v_1(s),v_1(s))\dd s,\tag{22}\label{en-math-eq-22}\\
+M(t)&amp;=\int_0^t e^{\nu(t-s)\Delta}P_H
+\{B(v_0(s),v_2(s))+B(v_2(s),v_0(s))\}\dd s.
+\end{align*}</div>
+<p>Thus \(P_Hv_3=W+M\). Introduce the finite spatial coefficients</p>
+<div class="equation paper-equation" id="en-display_math-20">\begin{equation*}
+\begin{split}
+a_1&amp;=B(a,a),\qquad a_2=\tfrac12\{B(a,a_1)+B(a_1,a)\},\\
+W_0&amp;=\tfrac13P_HB(a_1,a_1),\qquad
+M_0=\tfrac13P_H\{B(a,a_2)+B(a_2,a)\}.
+\end{split}
+\tag{23}\label{en-math-eq-23}\end{equation*}</div>
+<div class="paper-proposition paper-statement" id="en-proposition-2"><p class="statement-heading"><strong>Proposition 3.2 (Actual source and complete tails).</strong></p>
+<p>Under <a class="paper-ref" href="#en-display_math-18">(21)</a>, for \(0\le t\le T_{\rm a}\),</p>
+<div class="equation paper-equation" id="en-display_math-21">\begin{align*}
+\norm{S-W}_{\A}&amp;\le C_St^4,&amp;C_S&amp;=\tfrac{752}{5}A^5K^4,\tag{24}\label{en-math-eq-24}\\
+\norm{P_Hu-W-M}_{\A}&amp;\le C_Dt^4,&amp;C_D&amp;=512A^5K^4,\tag{25}\label{en-math-eq-25}\\
+\norm{W-t^3W_0}_{\A}&amp;\le C_Wt^4,&amp;C_W&amp;=\tfrac{32}{3}\nu A^4K^5,\tag{26}\label{en-math-eq-26}\\
+\norm{M-t^3M_0}_{\A}&amp;\le C_Mt^4,&amp;C_M&amp;=32\nu A^4K^5.
+\tag{27}\label{en-math-eq-27}\end{align*}</div>
+<p>In particular, if \(M_0=0\), then</p>
+<div class="equation paper-equation" id="en-display_math-22">\begin{align*}
+\norm{P_Hu-S}_{\A}&amp;\le C_Et^4,
+&amp;C_E&amp;=\tfrac{3312}{5}A^5K^4+32\nu A^4K^5,\tag{28}\label{en-math-eq-28}\\
+\norm{S-t^3W_0}_{\A}&amp;\le C_{\rm src}t^4,
+&amp;C_{\rm src}&amp;=\tfrac{752}{5}A^5K^4+\tfrac{32}{3}\nu A^4K^5.
+\tag{29}\label{en-math-eq-29}\end{align*}</div>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-2"><p class="statement-heading"><strong>Proof.</strong></p>
+<p>The first two conditions in <a class="paper-ref" href="#en-display_math-18">(21)</a> give \(e=g-v_1=P_L\sum_{n\ge2}v_n\). Hence</p>
+<div class="equation paper-equation" id="en-display_math-23">\[
+\norm e_{\A}\le2Aq^2,\qquad
+|e|_{\dot\A_1}\le AK\frac{q^2(3-2q)}{(1-q)^2}\le8AKq^2,
+\qquad |v_1|_{\dot\A_1}\le AKq/2.
+\]</div>
+<p>The three ordered terms \(B(e,v_1)+B(v_1,e)+B(e,e)\) have total norm at most \(A^2K(3q^3+16q^4)\). Integrating, with \(q(s)=q(t)s/t\), yields</p>
+<div class="equation paper-equation" id="en-display_math-24">\[
+\norm{S-W}_{\A}\le Aq^4(3/16+4q/5)
+\le(47/80)Aq^4=C_St^4.
+\]</div>
+<p>The last condition in <a class="paper-ref" href="#en-display_math-18">(21)</a> and <a class="paper-ref" href="#en-display_math-13">(16)</a> give \(\norm{P_Hu-W-M}_{\A}\le Aq^4/(1-q)\le2Aq^4\). These are different remainders: the first includes every higher-order contribution to the actual field \(g\).</p>
+<p>There are five plane ordered trees with four leaves: one balanced tree for \(W\), and four chain trees for \(M\). For fixed leaf frequencies and admissible vertex times, the product of all leaf, intermediate, and output heat factors is \(e^{-\nu\mathcal H}\), where \(\mathcal H=\sum_{\text{edges }e}|k_e|^2\Delta t_e\). At any intervening time the propagating edges partition the four leaves. If their descendant counts are \(m_e\), then \(|k_e|\le m_eK\) and \(\sum_e m_e=4\). Consequently</p>
+<div class="equation paper-equation" id="en-display_math-25">\begin{equation*}
+0\le\mathcal H\le16K^2t,\qquad
+|e^{-\nu\mathcal H}-1|\le16\nu K^2t.
+\tag{30}\label{en-math-eq-30}\end{equation*}</div>
+<p>This accounts for every heat factor, including those before the first interaction.</p>
+<p>Take absolute values before any coefficient cancellation. Each vertex costs at most the leaf count of its second subtree times \(K\), and the sum of absolute leaf products is \(A^4\). The balanced tree has derivative factor \(2K^3\) and time volume \(t^3/3\). The four chains have factors \(6K^3,3K^3,2K^3,K^3\) and volume \(t^3/6\) each. Their absolute bounds are therefore \((2/3)A^4K^3t^3\) and \(2A^4K^3t^3\), respectively. Multiplying by <a class="paper-ref" href="#en-display_math-25">(30)</a> proves <a class="paper-ref" href="#en-display_math-21">(26)</a>–<a class="paper-ref" href="#en-display_math-21">(27)</a>. The fractions in <a class="paper-ref" href="#en-display_math-20">(23)</a> are precisely these vertex-time integrals with the heat factors set equal to one. Finally combine the four estimates. In <a class="paper-ref" href="#en-display_math-22">(28)</a>, \(W\) cancels exactly between target and source, so \(C_W\) need not be added there.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<h2 id="en-section-4">4. Exact finite coefficient and root certification</h2>
+<p>We first regard \(X,v,w\) as formal real variables, replace \(\alpha_*\) by \(X\), and use \(V=(3v+5w,-2v,-2w)\). Write \(B=-iQ\) at every vertex. The three-vertex physical phase is \((-i)^3=i\). At \(\kappa\), define real polynomial vectors by</p>
+<div class="equation paper-equation" id="en-display_math-26">\begin{equation*}
+(W_0)_\kappa=iC(X;v,w),\qquad
+(M_0)_\kappa=iZ(X;v,w),\qquad Z=M_{13}+M_{31}.
+\tag{31}\label{en-math-eq-31}\end{equation*}</div>
+<p>The subscripts \(13,31\) specify the numbers of leaves of the two root subtrees. Every vector in <a class="paper-ref" href="#en-display_math-26">(31)</a> has three components, each linear in \((v,w)\) and of degree at most three in \(X\). Appendix <a class="paper-ref" href="#en-section-7">A</a> prints all coefficients of \(C,M_{13},M_{31},Z\), without deleting mixed terms. Write, for example, \(C_j=C_{jv}v+C_{jw}w\).</p>
+<h3 id="en-subsection-1">4.1. A completely specified finite coefficient algorithm</h3>
+<p>Here is one way to reproduce the table using only rational polynomial arithmetic. Give the four labelled leaves the frequencies \((e_1,e_2,e_3,p_0)\) and amplitudes \((U,RU,R^2U,V)\), with \(U=(0,1,X)\). For each of the five plane binary tree shapes</p>
+<div class="equation paper-equation" id="en-display_math-27">\[
+((ab)(cd)),\quad (a(b(cd))),\quad(a((bc)d)),\quad
+((a(bc))d),\quad(((ab)c)d),
+\]</div>
+<p>run all \(24\) permutations of these four distinct labels. A leaf returns its frequency and amplitude. A vertex whose subtrees return \((r,A)\) and \((s,B)\), with \(m\) total descendant leaves, returns frequency \(k=r+s\) and the polynomial vector</p>
+<div class="equation paper-equation" id="en-display_math-28">\begin{equation*}
+\frac1{m-1}\left(I-\frac{k\otimes k}{|k|^2}\right)
+\{(A\cdot s)B\}\quad(k\ne0),
+\qquad 0\quad(k=0).
+\tag{32}\label{en-math-eq-32}\end{equation*}</div>
+<p>The dot product is bilinear. Sum the balanced shape for \(C\), the two shapes whose first root subtree is a leaf for \(M_{13}\), and the remaining two for \(M_{31}\). To obtain the two columns separately use \(V=(3,-2,0)\) and \(V=(5,0,-2)\). Each complete expression is linear in that one high leaf; the common low leaves must not be added twice. The factors \(1/(m-1)\) give weight \(1/3\) to the balanced tree and \(1/6\) to each chain.</p>
+<p>For a target \(\varepsilon R^j\kappa\), where \(\varepsilon=\pm1\), rotate all four leaf frequencies and amplitudes by \(R^j\) and multiply the frequencies, but not the real amplitudes, by \(\varepsilon\). The same algorithm gives \(\varepsilon R^jC\), \(\varepsilon R^jM_{13}\), and \(\varepsilon R^jM_{31}\). This also follows directly from \(\PP_{Rk}=R\PP_kR^{-1}\) and the three differentiated vertices. After the factor \(i\) is restored, the two signs are complex conjugates. Section <a class="paper-ref" href="#en-section-5">5</a> proves that these four labelled leaves exhaust all possible contributions to the targets through four leaves in the full twelve-mode problem.</p>
+<h3 id="en-subsection-2">4.2. Polynomial identities and finite arithmetic conclusions</h3>
+<p>Set</p>
+<div class="equation paper-equation" id="en-display_math-29">\[
+\mathsf M(X)=\begin{pmatrix}Z_{1v}&amp;Z_{1w}\\ Z_{2v}&amp;Z_{2w}\end{pmatrix}.
+\]</div>
+<p>Direct rational polynomial addition and multiplication in the printed table give</p>
+<div class="equation paper-equation" id="en-display_math-30">\begin{equation*}
+\det\mathsf M=P,\quad Z_{1v}=r,\quad Z_{1w}=s,
+\quad 3Y_1+4Y_2+6Y_3=0
+\tag{33}\label{en-math-eq-33}\end{equation*}</div>
+<p>for each column \(Y\) of each of \(C,M_{13},M_{31},Z\). Define the normalized polynomials</p>
+<div class="equation paper-equation" id="en-display_math-31">\begin{equation*}
+\mathcal C_j=-C_{jv}s+C_{jw}r,\qquad
+\mathcal Z_j=-Z_{jv}s+Z_{jw}r.
+\tag{34}\label{en-math-eq-34}\end{equation*}</div>
+<p>In particular,</p>
+<div class="equation paper-equation" id="en-display_math-32">\begin{equation*}
+\mathcal Z=(0,P,-2P/3).
+\tag{35}\label{en-math-eq-35}\end{equation*}</div>
+<p>All objects used in the following finite calculation are thus specified by rational numbers in this paper.</p>
+<div class="paper-lemma paper-statement" id="en-lemma-1"><p class="statement-heading"><strong>Lemma 4.1 (Rational certificate).</strong></p>
+<p>Let \(Q=P/(4124532235492/202430025)\). The following exact arithmetic statements hold.</p>
+<ol id="en-enumerate-1">
+<li><p>\(\gcd(Q,Q&#x27;)=1\). All real roots lie in \((-25,25)\), and the Sturm variation numbers at \(-25,-75/32,-125/64,-25/16,25\) are respectively \(4,4,3,2,2\). None of those endpoints is a root. Thus <a class="paper-ref" href="#en-display_math-4">(5)</a> contains exactly the two real roots of \(P\).</p></li>
+<li><p>Each of \(Z_{1v},Z_{1w},Z_{2v},Z_{2w}\), the three \(\mathcal C_j\), and the three components of \((-3s+5r,2s,-2r)\) has greatest common divisor one with \(Q\). Thus the original matrix has rank one at both roots, the chosen \((v,w)\) is nonzero, and all three normalized balanced components are nonzero there.</p></li>
+<li><p>On \(I=[-75/32,-125/64]\), interval evaluation gives</p>
+<div class="equation paper-equation" id="en-display_math-33">\begin{equation*}
+\mathcal C_1(I)\subset
+\left[-\frac{82074009235302994201}{712907528601600},
+-\frac{32000398665717304027531027}{954634510139601715200}\right].
+\tag{36}\label{en-math-eq-36}\end{equation*}</div>
+<p>Moreover \(|X|\le A_\alpha\), \(|s(X)|\le U_v\), \(|r(X)|\le U_w\), and \(|-3s(X)+5r(X)|\le U_{V_1}\) on \(I\), where</p>
+<div class="equation paper-equation" id="en-display_math-34">\begin{equation*}
+U_v=\frac{39312542562313}{88443027456},\quad
+U_w=\frac{19711525523669}{58016563200},\quad
+U_{V_1}=\frac{585728660549}{472227840}.
+\tag{37}\label{en-math-eq-37}\end{equation*}</div>
+<p>These obey \(\bar A=6(1+A_\alpha+U_{V_1}+2U_v+2U_w)\).</p></li>
+<li><p>With the definitions <a class="paper-ref" href="#en-display_math-7">(8)</a>, the three positive rationals in the minimum <a class="paper-ref" href="#en-display_math-8">(9)</a> have their unique minimum at \(\ell/(8\bar E)\). Hence \(\bar bT_*&lt;1/2\), \(\bar ET_*=\ell/8\), and \(D_{\rm f}T_*&lt;1/2\).</p></li>
+</ol>
+</div>
+<div class="paper-proof paper-statement" id="en-proof-3"><p class="statement-heading"><strong>Exact arithmetic verification.</strong></p>
+<p>For clarity, the complete algorithms for checking these finite assertions are given here; large intermediate quotients need not be taken as additional inputs. Represent a polynomial by its coefficients in ascending powers, trim zero trailing coefficients, and use exact rational long division. For the greatest common divisor use Euclid&#x27;s successive remainders and make the last nonzero remainder monic. This gives the gcd values in items 1 and 2. In particular the monic \(Q\) is square-free; neither irreducibility nor a number-field representation is needed.</p>
+<p>For the Sturm calculation start with \((Q,Q&#x27;)\) and append the negative remainder of the last two entries until the remainder is zero. A positive rational rescaling of any entry is allowed; a negative rescaling is not. At each indicated rational endpoint, evaluate exactly by Horner&#x27;s rule, delete zero values, and count sign changes. The resulting counts are those in item 1. The Cauchy bound \(1+\max_{j&lt;6}|q_j|&lt;25\) for the monic \(Q(X)=X^6+\sum_{j&lt;6}q_jX^j\) places all its roots inside this interval. Sturm&#x27;s theorem then gives the asserted complete real-root count and isolation; its hypotheses are square-freeness and the verified nonroot endpoints. These are the usual exact Euclidean and Sturm procedures [<a href="#en-bibitem-2">2</a>].</p>
+<p>For item 3, perform Horner evaluation in rational intervals. Addition is endpointwise; the endpoints of a product are the minimum and maximum of the four endpoint products. Begin with the leading coefficient as a singleton interval, multiply by \(I\), and add each next coefficient. Apply this rule to \(\mathcal C_1\), \(s\), \(r\), and \(-3s+5r\), constructed by <a class="paper-ref" href="#en-display_math-31">(34)</a>. It yields <a class="paper-ref" href="#en-display_math-33">(36)</a> and <a class="paper-ref" href="#en-display_math-34">(37)</a>; take the larger endpoint absolute value for each upper bound. Finally substitute the displayed rational constants, reduce fractions, and cross-multiply their positive denominators. The three candidate times, in their original order, are</p>
+<div class="equation paper-equation" id="en-display_math-35">\begin{align*}
+&amp;\frac{14806310400}{13990473994187561},\\
+&amp;\frac{137004842759380260925278829617938421911800292198400000000}
+{41232299689611034755668076451183233780893088052675593910262741694227351226981677},\\
+&amp;\frac{181772665668062877931536384000000}
+{2738402518998898245306036855761599274683120039481}.
+\end{align*}</div>
+<p>The second is strictly smaller than the others, proving item 4.</p>
+<p>The coefficient and rational assertions in this lemma were checked by exact computation, including a separately organized four-leaf calculation and a verifier for the rational root evidence. The definitions, complete coefficient inputs, arithmetic operations, and checkable conclusions are printed here so that the argument does not require access to a particular program or private computation record. No floating-point root or time approximation is used in the proof.</p>
+<p class="proof-end" aria-label="End of proof">□</p>
+</div>
+<h2 id="en-section-5">5. Application to the fixed twelve-mode datum</h2>
+<p>We verify the support hypotheses for the full recursion, then apply the exact algebra and analytic bounds. These steps also prove Theorem <a class="paper-ref" href="#en-theorem-1">2.1</a>.</p>
+<h3 id="en-subsection-3">5.1. All possible short-leaf target contributions</h3>
+<p>The coordinate sums of the positive low and high frequencies are \(1\) and \(10\), respectively. Modulo nine every initial frequency has coordinate sum \(1\) or \(-1\), whereas every member of \(F+F\) has sum \(0,2\), or \(-2\). Thus \(L\cap F=\varnothing\). All two-leaf nonzero frequencies belong to \(L\), and zero output vanishes by incompressibility. Therefore \(P_Lv_1=v_1\) as an identity for the entire time interval, and \(g(0)=0\).</p>
+<p>Consider a representation of \(\kappa\) by at most four signed initial frequencies. If \(h\) is the number of positive high leaves minus negative high leaves and \(l\) the analogous signed number of low leaves, its coordinate sum satisfies \(10h+l=13\) and \(|h|+|l|\le4\). The only possibility is \(h=1,l=3\). The representation must therefore use exactly one positive high leaf and three positive low leaves. The differences from the three possible high leaves are</p>
+<div class="equation paper-equation" id="en-display_math-36">\[
+\kappa-p_0=(1,1,1),\quad
+\kappa-Rp_0=(-2,2,3),\quad
+\kappa-R^2p_0=(0,-1,4).
+\]</div>
+<p>Only the first is a sum of three positive coordinate vectors. Thus the four leaves are precisely \(p_0,e_1,e_2,e_3\), each once. Rotation and sign reversal prove the corresponding statement for all six targets. In particular \(P_{D_j}v_n=0\) for \(n=0,1,2\) at all times. These support identities follow from <a class="paper-ref" href="#en-display_math-12">(14)</a>, not from a test of only the initial Taylor coefficients.</p>
+<p>It follows that the algorithm of Section <a class="paper-ref" href="#en-section-4">4</a> computes the complete four-leaf leading terms at the targets. By <a class="paper-ref" href="#en-display_math-32">(35)</a>, \(M_0=0\) on every \(D_j\). By <a class="paper-ref" href="#en-display_math-33">(36)</a> and the restored phase, the common pair norm is</p>
+<div class="equation paper-equation" id="en-display_math-37">\begin{equation*}
+\omega:=\norm{P_{D_j}W_0}_{\A}=2|\mathcal C(\alpha_*)|\ge\ell&gt;0.
+\tag{38}\label{en-math-eq-38}\end{equation*}</div>
+<p>Here \(W_0\) can equivalently be defined with \(H=D\) and then restricted to \(D_j\). The factor two counts both conjugate Fourier coefficients.</p>
+<h3 id="en-subsection-4">5.2. Full-data bounds and the original time interval</h3>
+<p>The actual norm and support radius of <a class="paper-ref" href="#en-display_math-6">(7)</a> are</p>
+<div class="equation paper-equation" id="en-display_math-38">\[
+A=6\left(\sqrt{1+\alpha_*^2}
++\sqrt{(3v_*+5w_*)^2+4v_*^2+4w_*^2}\right),\qquad K=\sqrt{38}&lt;7.
+\]</div>
+<p>The upper bounds of Lemma <a class="paper-ref" href="#en-lemma-1">4.1</a> give \(A\le\bar A\); in particular every one of the twelve modes is included. Consequently \(4AK\le\bar b\), and \(T_*\le(2\bar b)^{-1}\le(8AK)^{-1}\). Proposition <a class="paper-ref" href="#en-proposition-1">3.1</a> constructs the unique full smooth solution throughout \([0,T_*]\). Rotation invariance and uniqueness imply \(u(Rx,t)=Ru(x,t)\), although the following bounds require only the coefficient symmetries already established.</p>
+<p>Since</p>
+<div class="equation paper-equation" id="en-display_math-39">\[
+\bar E=80\bar A^4 7^5+768\bar A^5 7^4,
+\]</div>
+<p>it dominates both \(C_E\) and \(C_{\rm src}\) in <a class="paper-ref" href="#en-display_math-22">(28)</a>–<a class="paper-ref" href="#en-display_math-22">(29)</a>, with \(\nu=1\). For each \(D_j\), Proposition <a class="paper-ref" href="#en-proposition-2">3.2</a> therefore gives</p>
+<div class="equation paper-equation" id="en-display_math-40">\begin{equation*}
+\norm{S_j-t^3P_{D_j}W_0}_{\A}\le\bar E t^4,
+\qquad \norm{P_{D_j}u-S_j}_{\A}\le\bar E t^4.
+\tag{39}\label{en-math-eq-39}\end{equation*}</div>
+<p>For \(0&lt;t\le T_*\), \(\bar Et\le\ell/8\le\omega/8\). The reverse triangle inequality gives</p>
+<div class="equation paper-equation" id="en-display_math-41">\[
+\norm{S_j}_{\A}\ge\tfrac78\omega t^3,\qquad
+\norm{P_{D_j}u}_{\A}\ge\tfrac34\omega t^3,
+\qquad
+\frac{\norm{P_{D_j}u-S_j}_{\A}}{\norm{S_j}_{\A}}\le\frac17.
+\]</div>
+<p>The \(D_j\) are disjoint, so summing their Wiener norms proves the same ratio for \(D\).</p>
+<h3 id="en-subsection-5">5.3. Nonzero generation of the initially empty band</h3>
+<p>Set \(r_0=(1,1,0)\). Its only two-leaf input pair is \(e_1,e_2\) and its reverse. Indeed coordinate sums for two leaves force two positive low leaves. With \(U=(0,1,\alpha_*)\) and \(RU=(\alpha_*,0,1)\), the ordered sum before projection is \((\alpha_*,\alpha_*,1+\alpha_*^2)\). Projection onto \(r_0^\perp\) removes the first two coordinates. Both input frequencies have squared length one and the output has squared length two. Thus the complete first response is exactly</p>
+<div class="equation paper-equation" id="en-display_math-42">\begin{equation*}
+(v_1)_{r_0}(t)=-it e^{-2t}(1+\alpha_*^2)e_3.
+\tag{40}\label{en-math-eq-40}\end{equation*}</div>
+<p>The initial coefficient at \(r_0\) is zero. Using \(1-e^{-2t}\le2t\) and <a class="paper-ref" href="#en-display_math-13">(16)</a>,</p>
+<div class="equation paper-equation" id="en-display_math-43">\[
+\left|g_{r_0}(t)+it(1+\alpha_*^2)e_3\right|
+\le2(1+A_\alpha^2)t^2+2\bar A\bar b^2t^2
+=D_{\rm f}t^2.
+\]</div>
+<p>Since \(D_{\rm f}T_*&lt;1/2\), this proves \(|g_{r_0}(t)|\ge t/2\) on the whole positive interval. All conclusions of Theorem <a class="paper-ref" href="#en-theorem-1">2.1</a> now follow.</p>
+<h2 id="en-section-6">6. Scope and verification</h2>
+<p>The conclusion identifies a specified Duhamel contribution to three target frequency pairs in one full solution. The datum is fixed before time evolves, and the source uses the actual generated band throughout the integral. Exact cancellation concerns the complete mixed leading coefficient. The mixed positive-time trees need not vanish; their heat correction is included in the fourth-order error.</p>
+<p>The time \(T_*\) is obtained from absolute majorants and is deliberately conservative. It supplies an explicit nonempty interval and a relative source estimate, without optimizing the interval. A lower bound on a target Fourier coefficient is not a statement about the sign of the energy flux. Nor does the linear independence of the target frequencies show that their velocity polarizations form a reusable seed. The theorem does not establish repeated regeneration, an infinite cascade, norm growth, or finite-time singularity.</p>
+<h4 id="en-paragraph-1">Verification materials.</h4>
+<p>The complete rational coefficient table and the finite algorithms needed to reproduce the arithmetic conclusions are part of this manuscript. A separate local support package contains mathematical certificate data and a portable exact verifier. It is auxiliary to the printed definitions and proof, and is not a claim of formal verification in a proof assistant. The analytic estimates are proved above for the full equation, rather than inferred from a truncated numerical evolution.</p>
+<h4 id="en-paragraph-2">AI assistance and review status.</h4>
+<p>AI systems assisted the symbolic derivations, code preparation, checking, and exposition. Separate computational organizations and additional AI-assisted checks were used, but they are not independent human peer review or machine-checked formal proofs. The author is responsible for the manuscript. This version is a working manuscript and has not been independently peer reviewed.</p>
+<h2 id="en-section-7">Appendix A. Complete rational coefficient table</h2>
+<p>For a row \([a_0,a_1,a_2,a_3]\), the polynomial is \(a_0+a_1X+a_2X^2+a_3X^3\). Each pair of rows gives the coefficients of \(v\) and \(w\) in one vector component. The coefficient algorithm <a class="paper-ref" href="#en-display_math-28">(32)</a> specifies all ordered terms underlying these numbers. Together with <a class="paper-ref" href="#en-display_math-3">(2)</a>–<a class="paper-ref" href="#en-display_math-3">(4)</a>, this appendix supplies all rational inputs to the arithmetic verification in Lemma <a class="paper-ref" href="#en-lemma-1">4.1</a>.</p>
+<h3 id="en-subsection-6">\(C\)</h3>
+<div class="paper-center" id="en-center-1">
+<div class="table-wrap" id="en-tabular-1"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{2615504}{70821}\)</td><td>\(\frac{2300276}{70821}\)</td><td>\(\frac{2615504}{70821}\)</td><td>\(\frac{2300276}{70821}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{7408984}{128527}\)</td><td>\(\frac{22702528}{385581}\)</td><td>\(\frac{7408984}{128527}\)</td><td>\(\frac{22702528}{385581}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{53398}{2623}\)</td><td>\(-\frac{351272}{13115}\)</td><td>\(-\frac{53398}{2623}\)</td><td>\(-\frac{351272}{13115}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{618764}{128527}\)</td><td>\(-\frac{889852}{128527}\)</td><td>\(\frac{618764}{128527}\)</td><td>\(-\frac{889852}{128527}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{346588}{70821}\)</td><td>\(\frac{572206}{354105}\)</td><td>\(-\frac{346588}{70821}\)</td><td>\(\frac{572206}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{12351004}{385581}\)</td><td>\(-\frac{3190520}{128527}\)</td><td>\(-\frac{12351004}{385581}\)</td><td>\(-\frac{3190520}{128527}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="en-subsection-7">\(Z\)</h3>
+<div class="paper-center" id="en-center-2">
+<div class="table-wrap" id="en-tabular-2"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{1807613971}{12393675}\)</td><td>\(\frac{9523582624}{20656125}\)</td><td>\(\frac{27816146846}{61968375}\)</td><td>\(\frac{196585982}{1770525}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{536919079}{2699067}\)</td><td>\(\frac{9469267576}{13495335}\)</td><td>\(\frac{10524885968}{13495335}\)</td><td>\(\frac{646271818}{2699067}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{283061969}{4131225}\)</td><td>\(-\frac{831709144}{2950875}\)</td><td>\(-\frac{6974917244}{20656125}\)</td><td>\(-\frac{126138761}{1180350}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{41668527}{899689}\)</td><td>\(\frac{65415951}{4498445}\)</td><td>\(-\frac{445867592}{4498445}\)</td><td>\(-\frac{84482311}{1799378}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{135073219}{4957470}\)</td><td>\(-\frac{528289184}{12393675}\)</td><td>\(\frac{2784071}{4131225}\)</td><td>\(\frac{5569154}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{703593187}{5398134}\)</td><td>\(-\frac{973093138}{2699067}\)</td><td>\(-\frac{291380520}{899689}\)</td><td>\(-\frac{238653598}{2699067}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="en-subsection-8">\(M_{13}\)</h3>
+<div class="paper-center" id="en-center-3">
+<div class="table-wrap" id="en-tabular-3"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(\frac{1862244506}{12393675}\)</td><td>\(\frac{29012164492}{61968375}\)</td><td>\(\frac{28749609676}{61968375}\)</td><td>\(\frac{220946972}{1770525}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(\frac{197843914}{899689}\)</td><td>\(\frac{9848113606}{13495335}\)</td><td>\(\frac{10737054758}{13495335}\)</td><td>\(\frac{221447588}{899689}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(-\frac{110057513}{1377075}\)</td><td>\(-\frac{2052627541}{6885375}\)</td><td>\(-\frac{780936266}{2295125}\)</td><td>\(-\frac{7120292}{65575}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{28435077}{899689}\)</td><td>\(\frac{12088176}{4498445}\)</td><td>\(-\frac{353248767}{4498445}\)</td><td>\(-\frac{31876662}{899689}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{10831087}{495747}\)</td><td>\(-\frac{17522536}{495747}\)</td><td>\(-\frac{12718082}{2478735}\)</td><td>\(\frac{3538354}{354105}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(-\frac{117878675}{899689}\)</td><td>\(-\frac{989646631}{2699067}\)</td><td>\(-\frac{932405969}{2699067}\)</td><td>\(-\frac{89472686}{899689}\)</td></tr>
+</tbody></table></div>
+</div>
+<h3 id="en-subsection-9">\(M_{31}\)</h3>
+<div class="paper-center" id="en-center-4">
+<div class="table-wrap" id="en-tabular-4"><table class="paper-table"><thead>
+<tr><th scope="col">Row</th><th scope="col">\(a_0\)</th><th scope="col">\(a_1\)</th><th scope="col">\(a_2\)</th><th scope="col">\(a_3\)</th></tr>
+</thead><tbody>
+<tr><td>\(1v\)</td><td>\(-\frac{10926107}{2478735}\)</td><td>\(-\frac{88283324}{12393675}\)</td><td>\(-\frac{186692566}{12393675}\)</td><td>\(-\frac{1624066}{118035}\)</td></tr>
+<tr><td>\(1w\)</td><td>\(-\frac{56612663}{2699067}\)</td><td>\(-\frac{25256402}{899689}\)</td><td>\(-\frac{14144586}{899689}\)</td><td>\(-\frac{18070946}{2699067}\)</td></tr>
+<tr><td>\(2v\)</td><td>\(\frac{9422114}{826245}\)</td><td>\(\frac{67183723}{4131225}\)</td><td>\(\frac{2140366}{826245}\)</td><td>\(\frac{405299}{236070}\)</td></tr>
+<tr><td>\(2w\)</td><td>\(\frac{13233450}{899689}\)</td><td>\(\frac{10665555}{899689}\)</td><td>\(-\frac{18523765}{899689}\)</td><td>\(-\frac{20728987}{1799378}\)</td></tr>
+<tr><td>\(3v\)</td><td>\(-\frac{8920783}{1652490}\)</td><td>\(-\frac{90225784}{12393675}\)</td><td>\(\frac{71942623}{12393675}\)</td><td>\(\frac{406160}{70821}\)</td></tr>
+<tr><td>\(3w\)</td><td>\(\frac{3678863}{5398134}\)</td><td>\(\frac{5517831}{899689}\)</td><td>\(\frac{8323487}{385581}\)</td><td>\(\frac{29764460}{2699067}\)</td></tr>
+</tbody></table></div>
+</div>
+<h2 id="en-bibliography-1">References</h2><ol class="paper-references">
+<li id="en-bibitem-1">J. C. Robinson, J. L. Rodrigo, and W. Sadowski, <em>The Three-Dimensional Navier–Stokes Equations: Classical Theory</em>, Cambridge Studies in Advanced Mathematics 157, Cambridge University Press, Cambridge, 2016. <a href="https://doi.org/10.1017/CBO9781139095143">doi:10.1017/CBO9781139095143</a>.</li>
+<li id="en-bibitem-2">S. Basu, R. Pollack, and M.-F. Roy, <em>Algorithms in Real Algebraic Geometry</em>, second edition, Algorithms and Computation in Mathematics 10, Springer, Berlin, 2006. <a href="https://doi.org/10.1007/3-540-33099-2">doi:10.1007/3-540-33099-2</a>.</li>
+</ol>
+</article>
+<aside class="source-review-note"><h2>AI assistance and responsibility</h2><p>Generative AI assisted drafting, proof organization, symbolic derivations, and verification scripts. Exact finite calculations are distinguished from analytic proofs; automated checks are not human peer review or formal proof-assistant certification. The author is responsible for the manuscript and its claims.</p></aside>
+<footer class="footer">C. K. Zeng · 9 September 2026 · Working manuscript · NOT CLAY</footer></main>
+</body></html>

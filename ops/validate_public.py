@@ -3,6 +3,14 @@
 import hashlib, json, re, subprocess, sys
 from pathlib import Path
 
+# Exactly the two user-designated frozen PDFs; this is not a general PDF allowlist.
+DESIGNATED_PAPER_PDFS = {
+    'public/assets/papers/fixed-datum-three-direction-supply.pdf': (
+        '2eb59ec64d977787c08e17a960d1b9737650ce38e8dd94074937a52cccc39ad5', 394514),
+    'public/assets/papers/sparse-resupply-path-obstructions.pdf': (
+        'c95d0a2bd9b80cc312dc0170f833f35f865e759de12377b230d02c74497462ca', 412415),
+}
+
 def digest(b):
     return hashlib.sha256(b).hexdigest()
 
@@ -30,11 +38,16 @@ def verify(root, manifest=None, tracked=False):
         data = (root / name).read_bytes()
         if not (digest(data) == f['sha256'] and len(data) == f['bytes']):
             raise ValueError('hash mismatch: ' + name)
-        if not f['class'] in ['HISTORICAL_PUBLIC_EXCEPTION', 'REVIEWED_SITE_INFRASTRUCTURE', 'PUBLIC_PROGRESS_OVERVIEW', 'PUBLIC_PROGRESS_INDEX', 'REVIEWED_PUBLIC_SUMMARY']:
+        if not f['class'] in ['HISTORICAL_PUBLIC_EXCEPTION', 'REVIEWED_SITE_INFRASTRUCTURE', 'PUBLIC_PROGRESS_OVERVIEW', 'PUBLIC_PROGRESS_INDEX', 'REVIEWED_PUBLIC_SUMMARY', 'REVIEWED_DESIGNATED_PAPER_PDF']:
             raise ValueError(name)
         if manifest['policy']=='REVIEWED_SUMMARY_ONLY' and f['class']=='HISTORICAL_PUBLIC_EXCEPTION':
             raise ValueError('Historical detail is not permitted in the summary repository')
-        if f['class'] != 'HISTORICAL_PUBLIC_EXCEPTION':
+        if manifest['policy']=='REVIEWED_SUMMARY_ONLY' and name.lower().endswith('.pdf') and f['class'] != 'REVIEWED_DESIGNATED_PAPER_PDF':
+            raise ValueError('PDF requires the exact designated-paper class: ' + name)
+        if f['class'] == 'REVIEWED_DESIGNATED_PAPER_PDF':
+            if DESIGNATED_PAPER_PDFS.get(name) != (f['sha256'], f['bytes']):
+                raise ValueError('PDF differs from the exact user-designated paper: ' + name)
+        elif f['class'] != 'HISTORICAL_PUBLIC_EXCEPTION':
             if not not name.endswith(('.map', '.zip', '.gz', '.npz', '.tar', '.pdf', '.csv', '.ndjson', '.tex')):
                 raise ValueError(name)
     return {'status': 'PASS', 'files': len(expected), 'policy': manifest['policy']}
